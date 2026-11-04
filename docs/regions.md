@@ -18,6 +18,12 @@ the inspector or use the interactive editor below.
 
 ## Draw and edit on an image
 
+**Shape mask** has a **Draw / edit mask…** editor and an optional `pose` input.
+**Region relative to pose** has a **Draw / edit region…** editor for local geometry.
+These use the same drawing/resize/move gestures described below, while mapping
+through the supplied coordinate frame. See [pose-relative editing](poses.md) for
+local coordinates, captured pose behavior and an example project.
+
 1. Connect an image to Shape region and **Run once** to capture a frame. A new
    region can also use its upstream block's latest output before the region has run.
 2. Select the region node and click **Draw / edit region…** in its inspector.

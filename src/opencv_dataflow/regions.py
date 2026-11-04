@@ -23,6 +23,7 @@ def region_result(image, region):
 
 
 class ShapeRegion(Block):
+    supports_region_editor = True
     type_id, title, category = "region.shape", "Shape region", "Image processing"
     block_type, subtype = "Image processing", "Regions"
     inputs = (Port("image"),)

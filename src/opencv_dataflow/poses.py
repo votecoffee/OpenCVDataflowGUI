@@ -209,67 +209,97 @@ class PoseRegion(Block):
         "invert": "Select the target-image area outside the positioned shape.",
     }
 
+    supports_region_editor = True
+
     def process(self, inputs):
-        image, p = inputs["image"], self.parameters
-        pose = pose_for_image(inputs["pose"], image)
-        # Allocate a tight local raster, preserving shapes on either side of the origin.
-        if p["shape"] == "rectangle":
-            x, y, w, h = p["rectangle"]
-            bounds = [x, y, x + w - 1, y + h - 1]
-        elif p["shape"] == "circle":
-            x, y = p["center"]
-            r = p["radius"]
-            bounds = [x - r, y - r, x + r, y + r]
-        else:
-            points = np.asarray(p["vertices"], float)
-            if points.ndim != 2 or points.shape[1] != 2 or len(points) < 3:
-                raise ValueError("Polygon needs at least three finite local vertices")
-            bounds = [*points.min(axis=0), *points.max(axis=0)]
-        bounds = np.asarray(bounds, float)
-        if not np.isfinite(bounds).all() or np.max(np.abs(bounds)) > 1_000_000:
-            raise ValueError("Local region bounds must be finite and within one million pixels")
-        left, top = map(int, np.floor(bounds[:2]))
-        width, height = (np.ceil(bounds[2:]).astype(int) - [left, top] + 1).tolist()
-        source = {
-            "model": "image_region_v1",
-            "image_size": [width, height],
-            **copy.deepcopy(p),
-            "invert": False,
-        }
-        region_size(source)
-        if p["shape"] == "rectangle":
-            source["rectangle"] = [
-                p["rectangle"][0] - left,
-                p["rectangle"][1] - top,
-                *p["rectangle"][2:],
-            ]
-        elif p["shape"] == "circle":
-            source["center"] = [p["center"][0] - left, p["center"][1] - top]
-        else:
-            source["vertices"] = (np.asarray(p["vertices"]) - [left, top]).tolist()
-        # Validate active geometry before constructing a lazy, serializable region tree.
-        rasterize(source, (height, width))
-        matrix = np.asarray(pose["source_to_target"]) @ local_offset(left, top, 0)
-        corners = np.array(
-            [[0, 0, 1], [width - 1, 0, 1], [width - 1, height - 1, 1], [0, height - 1, 1]]
-        )
-        denominators = corners @ matrix[2]
-        if not (np.all(denominators > 1e-10) or np.all(denominators < -1e-10)):
-            raise ValueError("Region crosses the projective pose horizon")
-        region = {
-            "model": "image_region_v1",
-            "image_size": pose["target_size"],
-            "shape": "transformed",
-            "source": source,
-            "source_to_target": matrix.tolist(),
-            "interpolation": "nearest",
-            "threshold": 0.5,
-            "invert": p["invert"],
-            "pose": pose,
-        }
+        image = inputs["image"]
+        region = relative_region(image, inputs["pose"], self.parameters)
         result = region_result(image, region)
-        draw_pose(result.outputs["overlay"], pose)
+        draw_pose(result.outputs["overlay"], region["pose"])
         return result
 
 
-POSE_BLOCKS = (DefinePose, OffsetPose, PoseFromFeature, PoseRegion)
+def relative_region(image, pose, parameters):
+    """Build the same pose-relative geometry for execution and interactive previews."""
+    p = parameters
+    pose = pose_for_image(pose, image)
+    # Allocate a tight local raster, preserving shapes on either side of the origin.
+    if p["shape"] == "rectangle":
+        x, y, w, h = p["rectangle"]
+        bounds = [x, y, x + w - 1, y + h - 1]
+    elif p["shape"] == "circle":
+        x, y = p["center"]
+        r = p["radius"]
+        bounds = [x - r, y - r, x + r, y + r]
+    else:
+        points = np.asarray(p["vertices"], float)
+        if points.ndim != 2 or points.shape[1] != 2 or len(points) < 3:
+            raise ValueError("Polygon needs at least three finite local vertices")
+        bounds = [*points.min(axis=0), *points.max(axis=0)]
+    bounds = np.asarray(bounds, float)
+    if not np.isfinite(bounds).all() or np.max(np.abs(bounds)) > 1_000_000:
+        raise ValueError("Local region bounds must be finite and within one million pixels")
+    left, top = map(int, np.floor(bounds[:2]))
+    width, height = (np.ceil(bounds[2:]).astype(int) - [left, top] + 1).tolist()
+    source = {
+        "model": "image_region_v1",
+        "image_size": [width, height],
+        **copy.deepcopy(p),
+        "invert": False,
+    }
+    region_size(source)
+    if p["shape"] == "rectangle":
+        source["rectangle"] = [
+            p["rectangle"][0] - left,
+            p["rectangle"][1] - top,
+            *p["rectangle"][2:],
+        ]
+    elif p["shape"] == "circle":
+        source["center"] = [p["center"][0] - left, p["center"][1] - top]
+    else:
+        source["vertices"] = (np.asarray(p["vertices"]) - [left, top]).tolist()
+    # Validate active geometry before constructing a lazy, serializable region tree.
+    rasterize(source, (height, width))
+    matrix = np.asarray(pose["source_to_target"]) @ local_offset(left, top, 0)
+    corners = np.array(
+        [[0, 0, 1], [width - 1, 0, 1], [width - 1, height - 1, 1], [0, height - 1, 1]]
+    )
+    denominators = corners @ matrix[2]
+    if not (np.all(denominators > 1e-10) or np.all(denominators < -1e-10)):
+        raise ValueError("Region crosses the projective pose horizon")
+    region = {
+        "model": "image_region_v1",
+        "image_size": pose["target_size"],
+        "shape": "transformed",
+        "source": source,
+        "source_to_target": matrix.tolist(),
+        "interpolation": "nearest",
+        "threshold": 0.5,
+        "invert": p["invert"],
+        "pose": pose,
+    }
+    return region
+
+
+class ShapeMask(ShapeRegion):
+    type_id, title = "mask.shape", "Shape mask"
+    subtype = "Masks"
+    inputs = (Port("image"), Port("pose", "data", required=False))
+    editor_kind = "mask"
+    parameter_help = {
+        **ShapeRegion.parameter_help,
+        "rectangle": "[x,y,width,height] in image pixels, or local pixels when pose is connected.",
+        "center": "Image-space circle center, or local coordinates when pose is connected.",
+        "vertices": "Image-space vertices, or local coordinates when pose is connected.",
+    }
+
+    def process(self, inputs):
+        if "pose" not in inputs:
+            return super().process(inputs)
+        region = relative_region(inputs["image"], inputs["pose"], self.parameters)
+        result = region_result(inputs["image"], region)
+        draw_pose(result.outputs["overlay"], region["pose"])
+        return result
+
+
+POSE_BLOCKS = (DefinePose, OffsetPose, PoseFromFeature, PoseRegion, ShapeMask)

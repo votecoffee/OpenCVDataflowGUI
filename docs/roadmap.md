@@ -25,6 +25,7 @@
 - Trainable geometric and ORB/SIFT patterns, persisted/importable models, pose outputs and wired trainers.
 - Oriented edge bands with thickness, continuity, strength, intensity, contrast and coverage filtering.
 - Image-plane poses, feature-derived frames, local pattern/pose offsets and pose-relative inspection regions.
+- Interactive pose-local region and mask editors, captured frame pairs and optional-frame Shape mask blocks.
 
 ## Point clouds and 3D vision
 

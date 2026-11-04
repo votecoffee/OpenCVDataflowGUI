@@ -70,9 +70,26 @@ dimensions must match and coordinates are assumed to use that same image grid.
 Connect a pose to **Region relative to pose**, and connect the target image to
 its image port. Define rectangle `[x,y,width,height]`, circle center/radius or
 polygon vertices in local pose pixels. Negative positions are allowed: the default
-rectangle `[-20,-20,40,40]` surrounds the pose origin. Geometry controls currently
-use the inspector's numeric fields; this block does not use the image-space region
-drawing dialog.
+rectangle `[-20,-20,40,40]` surrounds the pose origin. Click **Draw / edit region…**
+to draw or change it over the captured image. Pointer coordinates, drag handles
+and shape movement are transformed into local pose pixels; circles remain circles
+in the local frame even when they appear scaled or distorted on the image. The
+editor shows local axes and identifies its coordinate mode. Numeric fields remain
+available for exact local geometry. Apply saves local parameters, so future poses
+move the region; Cancel leaves the block unchanged.
+
+**Shape mask** (`mask.shape`, under Image processing > Masks) has its own **Draw /
+edit mask…** entry. It outputs a uint8 binary mask, a reusable region definition
+and an overlay. Leave its optional `pose` port disconnected to draw in image pixels,
+or connect a pose/coordinate frame to draw local geometry that follows it. Both
+mask and relative-region editors support rectangles, circles, polygons, inversion,
+resize/move handles and transactional acceptance. The existing **Shape region**
+editor continues to define image-space regions.
+
+Editors capture the image and pose together. Run once before editing a newly
+connected frame. A cached pair can be reopened after applying geometry while the
+same node remains selected. A fresh missing/failed pose is rejected; it cannot
+silently reuse an earlier frame. Stop continuous execution before editing.
 
 The region follows the full pose matrix. A scaled circle can become an ellipse;
 a homography retains projective distortion. The local shape is rasterized in a
@@ -105,6 +122,8 @@ Open **File > Load pose-relative inspection example** or
 3. Pass through an **Offset pose** block, initially zero. Change its local offsets
    to move the inspection independently of matching.
 4. Position a radius-18 circle and calculate a histogram using that moving region.
+5. Draw or edit the **Draw a local mask** block and inspect its separate masked
+   histogram. The region and mask branches follow the same pose.
 
 No camera, asset download or output writer is needed. Headless verification:
 

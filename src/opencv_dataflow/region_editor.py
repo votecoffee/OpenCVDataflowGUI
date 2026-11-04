@@ -1,4 +1,4 @@
-"""Image-space region drawing with transactional dialog acceptance."""
+"""Region/mask drawing in image or pose coordinates with transactional acceptance."""
 
 import copy
 import math
@@ -19,19 +19,24 @@ from PySide6.QtWidgets import (
 )
 
 from .images import preview_rgb
+from .poses import pose_for_image, relative_region
 from .selection import contains, rasterize
 
 
 class RegionCanvas(QWidget):
     changed = Signal()
 
-    def __init__(self, image, parameters, parent=None):
+    def __init__(self, image, parameters, parent=None, *, pose=None):
         super().__init__(parent)
         rgb = np.ascontiguousarray(preview_rgb(image))
         self.image = QImage(
             rgb.data, rgb.shape[1], rgb.shape[0], rgb.strides[0], QImage.Format.Format_RGB888
         ).copy()
         self.parameters = copy.deepcopy(parameters)
+        self.frame_image = image
+        self.pose = pose_for_image(pose, image) if pose is not None else None
+        self.matrix = np.asarray(self.pose["source_to_target"]) if self.pose else np.eye(3)
+        self.inverse = np.linalg.inv(self.matrix)
         self.image_shape = image.shape[:2]
         rasterize(self.region(), self.image_shape)
         self.drawing = False
@@ -51,6 +56,7 @@ class RegionCanvas(QWidget):
         )
 
     def to_widget(self, point):
+        point = self.project(point, self.matrix)
         rect = self.image_rect()
         scale = rect.width() / self.image_shape[1]
         # Draw pixel centers, including the half-pixel offset inside the image bounds.
@@ -65,13 +71,40 @@ class RegionCanvas(QWidget):
         h, w = self.image_shape
         x = math.floor((point.x() - rect.left()) * w / rect.width())
         y = math.floor((point.y() - rect.top()) * h / rect.height())
-        return [max(0, min(w - 1, x)), max(0, min(h - 1, y))]
+        pixel = [max(0, min(w - 1, x)), max(0, min(h - 1, y))]
+        if self.pose:
+            # Transform continuous pixel centers before rounding in the local frame.
+            pixel = [
+                (point.x() - rect.left()) * w / rect.width() - 0.5,
+                (point.y() - rect.top()) * h / rect.height() - 0.5,
+            ]
+            pixel = np.clip(pixel, [0, 0], [w - 1, h - 1])
+            try:
+                local = self.project(pixel, self.inverse)
+                if np.max(np.abs(local)) > 1_000_000:
+                    return None
+                return np.rint(local).astype(int).tolist()
+            except ValueError:
+                return None
+        return pixel
 
-    def region(self, invert=None):
+    @staticmethod
+    def project(point, matrix):
+        mapped = matrix @ [*point, 1]
+        if not np.isfinite(mapped).all() or abs(mapped[2]) < 1e-10:
+            raise ValueError("Editor point maps to the coordinate frame horizon")
+        return (mapped[:2] / mapped[2]).tolist()
+
+    def region(self, invert=None, parameters=None):
+        parameters = copy.deepcopy(self.parameters if parameters is None else parameters)
+        if invert is not None:
+            parameters["invert"] = invert
+        if self.pose:
+            return relative_region(self.frame_image, self.pose, parameters)
         data = {
             "model": "image_region_v1",
             "image_size": list(self.image_shape[::-1]),
-            **self.parameters,
+            **parameters,
         }
         if invert is not None:
             data["invert"] = invert
@@ -110,10 +143,10 @@ class RegionCanvas(QWidget):
             return
         if len(self._vertices) < 3:
             return
-        proposal = self.region()
+        proposal = copy.deepcopy(self.parameters)
         proposal["vertices"] = self._vertices
         try:
-            rasterize(proposal, self.image_shape)
+            rasterize(self.region(parameters=proposal), self.image_shape)
         except ValueError:
             return
         self.parameters["vertices"] = copy.deepcopy(self._vertices)
@@ -150,7 +183,7 @@ class RegionCanvas(QWidget):
                 None,
             )
             if self.drag is None and contains(
-                rasterize(self.region(False), self.image_shape), point
+                rasterize(self.region(False), self.image_shape), self.project(point, self.matrix)
             ):
                 self.drag = "move"
             if self.drag is None:
@@ -200,6 +233,8 @@ class RegionCanvas(QWidget):
         if not event.buttons() & Qt.MouseButton.LeftButton:
             return
         point = self.to_image(event.position(), clamp=True)
+        if point is None:
+            return
         if self.drawing and self._start is not None and self.parameters["shape"] != "polygon":
             self.update_draw(point)
         elif self.drag is not None:
@@ -211,6 +246,9 @@ class RegionCanvas(QWidget):
         if event.button() != Qt.MouseButton.LeftButton:
             return
         point = self.to_image(event.position(), clamp=True)
+        if point is None:
+            self.cancel_gesture()
+            return
         if self.drawing and self._start is not None and self.parameters["shape"] != "polygon":
             self.update_draw(point)
             self.drawing = False
@@ -244,9 +282,10 @@ class RegionCanvas(QWidget):
         painter.fillRect(self.rect(), QColor("#111b29"))
         painter.drawImage(self.image_rect(), self.image)
         try:
-            region = self.region()
-            if self.drawing and region["shape"] == "polygon":
-                region["vertices"] = self._vertices
+            parameters = copy.deepcopy(self.parameters)
+            if self.drawing and parameters["shape"] == "polygon":
+                parameters["vertices"] = self._vertices
+            region = self.region(parameters=parameters)
             mask = rasterize(region, self.image_shape)
             tint = np.zeros((*self.image_shape, 4), np.uint8)
             tint[..., :3] = [60, 220, 120]
@@ -269,7 +308,14 @@ class RegionCanvas(QWidget):
             if self.drawing and self.parameters["shape"] == "polygon"
             else self.handles()
         )
-        if self.parameters["shape"] == "circle":
+        if self.parameters["shape"] == "circle" and self.pose:
+            center, radius = np.array(self.parameters["center"]), self.parameters["radius"]
+            outline = [
+                center + radius * np.array([math.cos(a), math.sin(a)])
+                for a in np.linspace(0, 2 * math.pi, 97)
+            ]
+            painter.drawPolyline(QPolygonF([self.to_widget(p) for p in outline]))
+        elif self.parameters["shape"] == "circle":
             center = self.to_widget(self.parameters["center"])
             radius = self.parameters["radius"] * self.image_rect().width() / self.image_shape[1]
             painter.drawEllipse(center, radius, radius)
@@ -280,12 +326,19 @@ class RegionCanvas(QWidget):
         painter.setBrush(QColor("#f5cd65"))
         for point in points:
             painter.drawEllipse(self.to_widget(point), 4, 4)
+        if self.pose:
+            for endpoint, color in (([20, 0], "#f84e4e"), ([0, 20], "#52edab")):
+                try:
+                    painter.setPen(QPen(QColor(color), 2))
+                    painter.drawLine(self.to_widget([0, 0]), self.to_widget(endpoint))
+                except ValueError:
+                    pass
 
 
 class RegionEditor(QDialog):
-    def __init__(self, image, parameters, parent=None):
+    def __init__(self, image, parameters, parent=None, *, pose=None, kind="region"):
         super().__init__(parent)
-        self.setWindowTitle("Draw / edit region")
+        self.setWindowTitle(f"Draw / edit {kind}")
         self.resize(900, 680)
         layout = QVBoxLayout(self)
         toolbar = QHBoxLayout()
@@ -307,9 +360,19 @@ class RegionEditor(QDialog):
         hint.setWordWrap(True)
         layout.addWidget(hint)
         layout.addWidget(
-            QLabel("Editing a captured frame. Run again after upstream image changes.")
+            QLabel(
+                "Editing a captured image and pose. Run again after upstream changes."
+                if pose is not None
+                else "Editing a captured image. Run again after upstream changes."
+            )
         )
-        self.canvas = RegionCanvas(image, parameters)
+        self.canvas = RegionCanvas(image, parameters, pose=pose)
+        self.coordinates = QLabel(
+            "Local pose pixels · negative coordinates allowed · x red, y green"
+            if pose is not None
+            else "Input-image pixel coordinates"
+        )
+        layout.addWidget(self.coordinates)
         layout.addWidget(self.canvas, 1)
         self.status = QLabel()
         self.status.setWordWrap(True)
@@ -317,7 +380,7 @@ class RegionEditor(QDialog):
         buttons = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
         )
-        buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Apply region")
+        buttons.button(QDialogButtonBox.StandardButton.Ok).setText(f"Apply {kind}")
         self.ok = buttons.button(QDialogButtonBox.StandardButton.Ok)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)

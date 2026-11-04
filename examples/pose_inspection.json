@@ -234,6 +234,82 @@
       ],
       "thumbnail": true,
       "preview_output": ""
+    },
+    {
+      "id": "pose_mask",
+      "type": "mask.shape",
+      "name": "Draw a local mask",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          -18,
+          -18,
+          36,
+          36
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        620,
+        820
+      ],
+      "exposed_inputs": [
+        "image",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "pose_mask_histogram",
+      "type": "inspect.histogram",
+      "name": "Inspect editable mask",
+      "parameters": {
+        "bins": 256,
+        "range_mode": "automatic",
+        "range_min": 0.0,
+        "range_max": 1.0,
+        "include_alpha": false
+      },
+      "position": [
+        960,
+        820
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
     }
   ],
   "connections": [
@@ -284,6 +360,30 @@
       "output": "region",
       "target": "pose_histogram",
       "input": "region"
+    },
+    {
+      "source": "pose_images",
+      "output": "image",
+      "target": "pose_mask",
+      "input": "image"
+    },
+    {
+      "source": "pose_offset",
+      "output": "pose",
+      "target": "pose_mask",
+      "input": "pose"
+    },
+    {
+      "source": "pose_images",
+      "output": "image",
+      "target": "pose_mask_histogram",
+      "input": "image"
+    },
+    {
+      "source": "pose_mask",
+      "output": "mask",
+      "target": "pose_mask_histogram",
+      "input": "mask"
     }
   ]
 }
