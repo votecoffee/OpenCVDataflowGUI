@@ -71,6 +71,28 @@ SQLite append; XML and image writers reject existing files. Output blocks write
 on every run, including continuous runs. Relative paths resolve from the process's
 working directory; use absolute paths for portable local execution expectations.
 
+### Image file formats
+
+The **Image file** input loads a file and reformats it using inspector dropdowns:
+
+- **Color format:** unchanged, BGR, RGB, BGRA, RGBA, grayscale, HSV, or Lab.
+- **Pixel depth:** unchanged, uint8, uint16, or float32 (depth is per channel).
+
+Choose **unchanged** for both to preserve decoded channels, alpha, and depth.
+Defaults remain BGR/uint8 for existing jobs. Integer depth conversion scales the
+full range (8-bit 255 maps to 16-bit 65535); integer-to-float maps to [0,1]. Float
+sources keep their numeric values in float outputs, and float-to-integer clips
+to [0,1] before scaling and rounding. There is no per-image contrast normalization.
+HSV and Lab support uint8 or float32, not uint16, and use OpenCV's native channel
+ranges. See [image format details](docs/image-formats.md).
+
+The `image` output carries the requested format. The `info` output reports size,
+channel count, depth, and source/output formats; the decoded source is also available
+in the graphic preview selector. Previews and built-in tools interpret the color
+encoding correctly. Processing tools still have their own depth requirements:
+native G-API Grayscale and Canny require uint8. For 16-bit or float grayscale, select
+grayscale directly in the file input.
+
 ### Reusable ToolBlocks
 
 Select nodes and use **ToolBlocks > Create from selected nodes** to encapsulate

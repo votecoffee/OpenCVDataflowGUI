@@ -129,7 +129,11 @@ class Inspector(QWidget):
                 button.clicked.connect(callback)
                 self.form.addRow(button)
         for key, value in block.parameters.items():
-            if isinstance(value, bool):
+            if key in block.parameter_choices:
+                field = QComboBox()
+                field.addItems(block.parameter_choices[key])
+                field.setCurrentText(str(value))
+            elif isinstance(value, bool):
                 field = QCheckBox()
                 field.setChecked(value)
             else:
@@ -186,7 +190,9 @@ class Inspector(QWidget):
             parameters = {}
             for key, field in self.fields.items():
                 initial = b.defaults[key]
-                if isinstance(initial, bool):
+                if isinstance(field, QComboBox):
+                    value = field.currentText()
+                elif isinstance(initial, bool):
                     value = field.isChecked()
                 elif isinstance(initial, int):
                     value = int(field.text())

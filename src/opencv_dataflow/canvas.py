@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import cv2
 import numpy as np
 from PySide6.QtCore import QPointF, QRectF, Qt, Signal
 from PySide6.QtGui import QColor, QImage, QPainter, QPainterPath, QPen, QPixmap
@@ -14,16 +13,11 @@ from PySide6.QtWidgets import (
     QGraphicsView,
 )
 
+from .images import preview_rgb
+
 
 def pixmap(image):
-    if image.dtype != np.uint8:
-        image = cv2.normalize(image, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-    if image.ndim == 2:
-        rgb = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
-    elif image.shape[2] == 4:
-        rgb = cv2.cvtColor(image, cv2.COLOR_BGRA2RGB)
-    else:
-        rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    rgb = preview_rgb(image)
     rgb = np.ascontiguousarray(rgb)
     return QPixmap.fromImage(
         QImage(

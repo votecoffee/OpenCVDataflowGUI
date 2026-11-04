@@ -14,6 +14,7 @@ from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.canvas import CanvasScene, CanvasView
 from opencv_dataflow.core import Graph
+from opencv_dataflow.images import ImageArray
 from opencv_dataflow.toolblock_editor import InterfaceDialog
 from opencv_dataflow.toolblocks import encapsulate
 
@@ -181,5 +182,38 @@ def test_toolblock_interface_dialog_and_library_instances(app):
     assert first.graph is not second.graph
     first.graph.blocks[original[-1].id].parameters["expected_count"] = 9
     assert second.graph.blocks[original[-1].id].parameters["expected_count"] == 2
+    window.dirty = False
+    window.close()
+
+
+def test_image_file_dropdowns_metadata_and_preview(app, tmp_path):
+    import cv2
+    import numpy as np
+
+    window = MainWindow()
+    window.show()
+    path = tmp_path / "red16.png"
+    image = np.zeros((20, 30, 3), np.uint16)
+    image[..., 2] = 65535
+    ok, encoded = cv2.imencode(".png", image)
+    assert ok
+    path.write_bytes(encoded.tobytes())
+    block = window.graph.add(window.registry.create("input.file"))
+    window.scene.rebuild(block.id)
+    window.inspector.fields["path"].setText(str(path))
+    window.inspector.fields["color_format"].setCurrentText("rgb")
+    window.inspector.fields["pixel_depth"].setCurrentText("uint16")
+    window.inspector.apply()
+    assert block.parameters["color_format"] == "rgb"
+    window.start_run(False)
+    pump_until(app, lambda: window.runner is None)
+    assert block.state == "pass", block.error
+    assert isinstance(block.last_output_images["image"], ImageArray)
+    assert block.last_output_images["image"].color_format == "rgb"
+    window.inspector.preview_choice.setCurrentText("Output / image")
+    shown = window.inspector.image.pixmap().toImage()
+    color = shown.pixelColor(shown.width() // 2, shown.height() // 2)
+    assert color.red() == 255 and color.blue() == 0
+    assert '"bits_per_channel": 16' in window.inspector.details.toPlainText()
     window.dirty = False
     window.close()
