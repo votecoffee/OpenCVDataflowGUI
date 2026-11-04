@@ -7,6 +7,7 @@ import json
 import math
 import time
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, ClassVar
@@ -14,14 +15,16 @@ from typing import Any, ClassVar
 import numpy as np
 
 from .payloads import (
+    NO_VALUE,
+    FlowGroup,
     ImagePyramid,
     ValuePacket,
     compatible,
     finish_outputs,
-    packet_for,
     prepare_inputs,
     validate_payload,
 )
+from .tickets import DEFAULT_TICKET_SETTINGS, DIRECT_CLOCK, TICKET_MODES, TicketClock
 
 
 @dataclass(frozen=True)
@@ -39,6 +42,7 @@ class Result:
     score: float | None = None
     message: str = ""
     payloads: dict[str, dict] = field(default_factory=dict)
+    emissions: dict[str, list[ValuePacket]] = field(default_factory=dict)
 
 
 class Block:
@@ -75,6 +79,15 @@ class Block:
         self.thumbnail = True
         self.preview_output = ""
         self.input_levels = {}
+        self.ticket_source = self.type_id.startswith("input.")
+        self.ticket_settings = copy.deepcopy(DEFAULT_TICKET_SETTINGS)
+        if self.ticket_source:
+            if not any(p.name == "ticket" for p in self.inputs):
+                self.inputs = (*self.inputs, Port("ticket", "data", required=False))
+            if not any(p.name == "ticket" for p in self.outputs):
+                self.outputs = (*self.outputs, Port("ticket", "data"))
+            self.exposed_inputs = [p.name for p in self.inputs]
+            self.exposed_outputs = [p.name for p in self.outputs]
         self.clear_result()
 
     def clear_result(self):
@@ -108,6 +121,7 @@ class Block:
 
     def execute(self, values, cancelled=lambda: False):
         self.clear_result()
+        self._source_ticket = None
         self._cancelled = cancelled
         started = time.perf_counter()
         try:
@@ -123,6 +137,20 @@ class Block:
             if not isinstance(result, Result):
                 raise TypeError("process() must return Result")
             result = self.finalize_result(result, self.last_inputs)
+            if self.ticket_source:
+                settings = self.ticket_settings
+                if settings.get("mode") not in TICKET_MODES:
+                    raise ValueError("Unknown source ticket mode")
+                external = self.last_inputs.get(
+                    "ticket", settings.get("value") if settings["mode"] == "fixed" else None
+                )
+                if settings["mode"] == "external" and "ticket" not in self.last_inputs:
+                    raise ValueError("External ticket mode requires the ticket input")
+                ticket = getattr(self, "_clock", DIRECT_CLOCK).issue(
+                    self.id, settings["mode"], external
+                )
+                result.outputs["ticket"] = ticket
+                self._source_ticket = ticket
             result = finish_outputs(self, result)
             if result.score is not None and (
                 not math.isfinite(result.score) or not 0 <= result.score <= 1
@@ -133,25 +161,47 @@ class Block:
                 raise ValueError(f"Result outputs must match {sorted(expected)}")
             for port in self.outputs:
                 validate_value(port, result.outputs[port.name])
+            if not result.emissions.keys() <= expected:
+                raise ValueError("Emissions must name declared outputs")
+            for name, packets in result.emissions.items():
+                if len(packets) > 1024:
+                    raise ValueError("Output exceeds 1024 emissions per invocation")
+                for packet in packets:
+                    if not isinstance(packet, ValuePacket):
+                        raise ValueError("Emissions must be ValuePackets")
+                    validate_value(next(p for p in self.outputs if p.name == name), packet)
             for name, value in result.graphics.items():
                 validate_value(Port(name), value)
             self.last_result = copy.deepcopy(result)
             self.last_output_images = {
                 p.name: self.last_result.outputs[p.name]
                 for p in self.outputs
-                if p.kind in ("image", "depth", "pyramid")
+                if isinstance(self.last_result.outputs[p.name], (np.ndarray, ImagePyramid))
             }
             self.last_graphics = self.last_result.graphics
             self.state = "pass" if result.passed else "fail"
+            if result.outputs and all(
+                result.outputs[name] is NO_VALUE
+                for name in getattr(self, "flow_primary", tuple(result.outputs))
+            ):
+                self.state = "waiting"
         except Exception as exc:
             self.state = "error"
             self.error = f"{type(exc).__name__}: {exc}"
+            if getattr(self, "accept_events", False):
+                self.reset_runtime()
         finally:
             self.elapsed_ms = (time.perf_counter() - started) * 1000
         return self.last_result
 
     def close(self):
         """Release optional native resources, on the execution thread."""
+
+    def reset_runtime(self):
+        """Clear transient stream state after configuration changes or explicit reset."""
+
+    def copy_runtime_from(self, other):
+        """Copy only transient stream state into a separate execution/display graph."""
 
     def serialize_extra(self):
         return {}
@@ -160,6 +210,7 @@ class Block:
         """Restore optional JSON configuration beyond ordinary parameter controls."""
 
     def copy_results_from(self, other):
+        self.copy_runtime_from(other)
         for name in (
             "last_inputs",
             "input_payloads",
@@ -174,9 +225,16 @@ class Block:
 
 
 def validate_value(port, value):
+    if value is NO_VALUE:
+        return
     if isinstance(value, ValuePacket):
         validate_payload(value.payload)
         value = value.value
+    if isinstance(value, FlowGroup):
+        value.__post_init__()
+        if port.kind != "any":
+            raise TypeError("Use Unbatch or Select group entry before consuming a flow group")
+        return
     if port.kind == "pyramid" or (port.kind == "image" and isinstance(value, ImagePyramid)):
         if not isinstance(value, ImagePyramid):
             raise TypeError(f"{port.name} requires an image pyramid")
@@ -230,6 +288,7 @@ class Graph:
         self.blocks: dict[str, Block] = {}
         self.connections: list[Connection] = []
         self.project_dir = None
+        self.clock = TicketClock()
 
     def bind_project_dir(self, directory):
         self.project_dir = Path(directory).resolve() if directory is not None else None
@@ -257,8 +316,19 @@ class Graph:
         self.invalidate()
 
     def invalidate(self):
+        self.clock = TicketClock()
+        self.clear_results()
+        for block in self.blocks.values():
+            block.reset_runtime()
+
+    def clear_results(self):
         for block in self.blocks.values():
             block.clear_result()
+
+    def copy_runtime_from(self, other):
+        self.clock = other.clock.clone()
+        for key, block in self.blocks.items():
+            block.copy_runtime_from(other.blocks[key])
 
     def connect(self, source, output, target, input):
         if source == target:
@@ -300,7 +370,9 @@ class Graph:
         return order
 
     def run(self, cancelled=lambda: False, injected=None):
-        self.invalidate()
+        from .toolblocks import ToolBlock
+
+        self.clear_results()
         injected = injected or {}
         for (target, name), value in injected.items():
             block = self.blocks[target]
@@ -310,24 +382,140 @@ class Graph:
             ):
                 raise ValueError("Invalid or internally connected public input")
             validate_value(port, value)
-        for key in self.ordered():
+        self.ordered()  # Reject cycles before acquiring sources.
+        emitted = {}
+
+        def run_block(key):
             block = self.blocks[key]
-            if cancelled():
-                block.state = "skipped"
-                block.error = "Run stopped"
-                continue
+            block._clock = self.clock
             incoming = [c for c in self.connections if c.target == key]
+            if cancelled():
+                block.state, block.error = "skipped", "Run stopped"
+                return
             if any(self.blocks[c.source].state in ("error", "skipped") for c in incoming):
-                block.state = "skipped"
-                block.error = "Upstream block unavailable"
-                continue
-            values = {
-                c.input: packet_for(self.blocks[c.source].last_result, c.output) for c in incoming
-            }
-            values.update(
-                {name: value for (target, name), value in injected.items() if target == key}
-            )
-            block.execute(values, cancelled)
+                block.state, block.error = "skipped", "Upstream block unavailable"
+                return
+            streams = {c.input: emitted.get((c.source, c.output), []) for c in incoming}
+            constants = {name: value for (target, name), value in injected.items() if target == key}
+            outputs = {p.name: [] for p in block.outputs}
+            if getattr(block, "accept_events", False):
+                calls = [
+                    {name: values[index]}
+                    for index in range(max((len(v) for v in streams.values()), default=0))
+                    for name, values in streams.items()
+                    if index < len(values)
+                ]
+                if constants:
+                    calls[0:0] = [{name: value} for name, value in constants.items()]
+            elif any(
+                not values and next(p for p in block.inputs if p.name == name).required
+                for name, values in streams.items()
+            ):
+                calls = []
+            else:
+                had_streams = bool(streams)
+                streams = {name: values for name, values in streams.items() if values}
+                length = max((len(v) for v in streams.values()), default=1)
+                if had_streams and not streams and not constants:
+                    length = 0
+                if any(len(v) not in (1, length) for v in streams.values()):
+                    block.state, block.error = (
+                        "error",
+                        "Stream lengths differ; join/batch explicitly",
+                    )
+                    return
+                calls = [
+                    {
+                        **constants,
+                        **{
+                            name: values[0 if len(values) == 1 else index]
+                            for name, values in streams.items()
+                        },
+                    }
+                    for index in range(length)
+                ]
+            if len(calls) > 1024:
+                block.state, block.error = "error", "Block exceeds 1024 input events per run"
+                return
+            if not calls:
+                block.state = "inactive"
+                return
+            failed = False
+            for values in calls:
+                if cancelled():
+                    block.state, block.error = "skipped", "Run stopped"
+                    return
+                result = block.execute(values, cancelled)
+                if result is None:
+                    return
+                failed |= block.state == "fail"
+                for port in block.outputs:
+                    if port.name in result.emissions:
+                        outputs[port.name].extend(result.emissions[port.name])
+                    elif result.outputs[port.name] is not NO_VALUE:
+                        outputs[port.name].append(
+                            ValuePacket(
+                                result.outputs[port.name], result.payloads.get(port.name, {})
+                            )
+                        )
+                    if len(outputs[port.name]) > 1024:
+                        block.state, block.error = "error", "Output exceeds 1024 events per run"
+                        return
+            if failed:
+                block.state = "fail"
+            elif block.state == "waiting" and any(
+                outputs[n] for n in getattr(block, "flow_primary", outputs)
+            ):
+                block.state = "pass"
+            # Retain all emissions for ToolBlock boundaries, receipts and UI snapshots.
+            block.last_result.emissions = outputs
+            for name, packets in outputs.items():
+                if packets:
+                    block.last_result.outputs[name] = packets[-1].value
+                    block.last_result.payloads[name] = packets[-1].payload
+                    if isinstance(packets[-1].value, (np.ndarray, ImagePyramid)):
+                        block.last_output_images[name] = packets[-1].value
+                emitted[key, name] = packets
+
+        pending = set(self.blocks)
+        workers = max(
+            (
+                int(b.parameters.get("workers", 1))
+                for b in self.blocks.values()
+                if b.type_id == "flow.split"
+            ),
+            default=1,
+        )
+        if not 1 <= workers <= 8:
+            raise ValueError("Parallel worker count must be 1..8")
+        executor = ThreadPoolExecutor(max_workers=workers) if workers > 1 else None
+        try:
+            while pending:
+                ready = [
+                    key
+                    for key in self.blocks
+                    if key in pending
+                    and not any(c.target == key and c.source in pending for c in self.connections)
+                ]
+                # Source acquisition remains deterministic and on the owning execution thread.
+                parallel = [
+                    key
+                    for key in ready
+                    if executor is not None
+                    and not self.blocks[key].ticket_source
+                    and not isinstance(self.blocks[key], ToolBlock)
+                    and not getattr(self.blocks[key], "accept_events", False)
+                ]
+                futures = [executor.submit(run_block, key) for key in parallel] if executor else []
+                for key in ready:
+                    if key not in parallel:
+                        run_block(key)
+                for future in futures:
+                    future.result()
+                pending.difference_update(ready)
+        finally:
+            if executor:
+                executor.shutdown(wait=True)
 
     def close(self):
         for block in self.blocks.values():
@@ -348,6 +536,11 @@ class Graph:
                     "thumbnail": b.thumbnail,
                     "preview_output": b.preview_output,
                     **({"input_levels": b.input_levels} if b.input_levels else {}),
+                    **(
+                        {"ticket_settings": b.ticket_settings}
+                        if b.ticket_source and b.ticket_settings != DEFAULT_TICKET_SETTINGS
+                        else {}
+                    ),
                     **b.serialize_extra(),
                 }
                 for b in self.blocks.values()
@@ -387,6 +580,17 @@ class Graph:
                     item["type"], block_id=item["id"], parameters=item["parameters"]
                 )
             block.name = item["name"]
+            if "ticket_settings" in item:
+                settings = item["ticket_settings"]
+                if (
+                    not block.ticket_source
+                    or not isinstance(settings, dict)
+                    or set(settings) != {"mode", "value"}
+                    or settings["mode"] not in TICKET_MODES
+                ):
+                    raise ValueError("Invalid source ticket settings")
+                json.dumps(settings, allow_nan=False)
+                block.ticket_settings = copy.deepcopy(settings)
             block.restore_extra(item)
             position = item["position"]
             if len(position) != 2 or not all(math.isfinite(v) for v in position):

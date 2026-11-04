@@ -10,7 +10,7 @@ import numpy as np
 
 from .blocks import builtin_registry
 from .core import Graph
-from .payloads import ImagePyramid
+from .payloads import ImagePyramid, describe_value
 from .plugins import load_plugin
 from .toolblocks import ToolBlock
 
@@ -28,7 +28,7 @@ def describe(graph):
             "score": result.score if result else None,
             "message": block.error or (result.message if result else ""),
             "outputs": {
-                p.name: result.outputs[p.name]
+                p.name: describe_value(result.outputs[p.name])
                 for p in block.outputs
                 if p.kind not in ("image", "depth", "pyramid")
                 and not isinstance(result.outputs[p.name], (np.ndarray, ImagePyramid))
@@ -36,6 +36,9 @@ def describe(graph):
             if result
             else {},
             "payloads": result.payloads if result else {},
+            "emitted": {name: len(packets) for name, packets in result.emissions.items()}
+            if result
+            else {},
         }
         if isinstance(block, ToolBlock):
             record["children"] = describe(block.graph)
@@ -74,7 +77,7 @@ def main(argv=None):
             started = time.perf_counter()
             graph.run()
             records = describe(graph)
-            ok = all(b.state == "pass" for b in graph.blocks.values())
+            ok = all(b.state in ("pass", "waiting", "inactive") for b in graph.blocks.values())
             passed = passed and ok
             runs.append(
                 {
@@ -86,7 +89,7 @@ def main(argv=None):
             )
             print(f"Run {index + 1}: {'PASS' if ok else 'FAIL'} ({len(records)} blocks)")
             for block in graph.blocks.values():
-                if block.state != "pass":
+                if block.state not in ("pass", "waiting", "inactive"):
                     message = block.error or (
                         block.last_result.message if block.last_result else ""
                     )

@@ -751,3 +751,62 @@ def pose_inspection_graph(registry):
     graph.blocks["pose_region"].preview_output = "overlay"
     graph.blocks["pose_mask"].preview_output = "overlay"
     return graph
+
+
+def control_flow_graph(registry):
+    """Three acquisitions, grouping, parallel work, routing and explicit FIFO restoration."""
+    graph = Graph()
+    specs = [
+        ("flow_cam1", "input.demo", "Synthetic camera 1", [0, 0], {}),
+        ("flow_cam2", "input.demo", "Synthetic camera 2", [0, 350], {}),
+        ("flow_cam3", "input.demo", "Synthetic camera 3", [0, 700], {}),
+        ("flow_batch", "flow.batch", "Group three cameras", [300, 350], {"distinct_sources": True}),
+        ("flow_expected", "flow.unbatch", "Original FIFO order", [620, 0], {}),
+        (
+            "flow_reverse",
+            "flow.unbatch",
+            "Exercise reversed arrivals",
+            [620, 550],
+            {"order": "sequence_descending"},
+        ),
+        ("flow_split", "flow.split", "Two parallel branches", [940, 550], {}),
+        ("flow_gray", "gapi.gray", "Grayscale branch", [1260, 350], {}),
+        ("flow_blur", "gapi.blur", "Blur branch", [1260, 750], {}),
+        ("flow_join", "flow.join", "Synchronize same ticket", [1580, 550], {}),
+        ("flow_select", "flow.select_entry", "Use grayscale result", [1900, 550], {}),
+        (
+            "flow_case",
+            "flow.case",
+            "Route even and odd tickets",
+            [2220, 550],
+            {"cases": [0, 1], "modulo": 2},
+        ),
+        ("flow_even", "cv.flip", "Even ticket branch", [2540, 350], {"direction": "horizontal"}),
+        ("flow_odd", "cv.flip", "Odd ticket branch", [2540, 750], {"direction": "vertical"}),
+        ("flow_fifo", "flow.reorder", "Restore acquisition FIFO", [2860, 200], {}),
+        ("flow_histogram", "inspect.histogram", "Inspect ordered frames", [3180, 200], {}),
+    ]
+    for key, kind, name, position, parameters in specs:
+        block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
+        block.name, block.position = name, position
+    wires = [(f"flow_cam{i}", "image", "flow_batch", f"item_{i}") for i in range(1, 4)]
+    wires += [
+        ("flow_batch", "group", "flow_expected", "group"),
+        ("flow_batch", "group", "flow_reverse", "group"),
+        ("flow_reverse", "value", "flow_split", "value"),
+        ("flow_split", "branch_1", "flow_gray", "image"),
+        ("flow_split", "branch_2", "flow_blur", "image"),
+        ("flow_gray", "image", "flow_join", "branch_1"),
+        ("flow_blur", "image", "flow_join", "branch_2"),
+        ("flow_join", "group", "flow_select", "group"),
+        ("flow_select", "value", "flow_case", "value"),
+        ("flow_case", "case_1", "flow_even", "image"),
+        ("flow_case", "case_2", "flow_odd", "image"),
+        ("flow_expected", "value", "flow_fifo", "expected"),
+        ("flow_even", "image", "flow_fifo", "value_1"),
+        ("flow_odd", "image", "flow_fifo", "value_2"),
+        ("flow_fifo", "value", "flow_histogram", "image"),
+    ]
+    for source, output, target, input in wires:
+        graph.connect(source, output, target, input)
+    return graph

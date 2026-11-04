@@ -27,6 +27,7 @@
 - Image-plane poses, feature-derived frames, local pattern/pose offsets and pose-relative inspection regions.
 - Interactive pose-local region and mask editors, captured frame pairs and optional-frame Shape mask blocks.
 - OpenCV 5 contrib runtime, retained native G-API nodes and normalized line-detector vector outputs.
+- Acquisition tickets, bounded join/batch/FIFO buffers, serial group expansion, case routing and explicit branch concurrency.
 
 ## Point clouds and 3D vision
 

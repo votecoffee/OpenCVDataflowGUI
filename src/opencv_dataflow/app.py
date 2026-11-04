@@ -44,6 +44,7 @@ from .core import Graph
 from .examples import (
     channel_pyramid_graph,
     combined_regions_graph,
+    control_flow_graph,
     object_collections_graph,
     pose_inspection_graph,
     regions_graph,
@@ -52,9 +53,10 @@ from .examples import (
     trained_patterns_graph,
     transformed_regions_graph,
 )
-from .payloads import packet_for, prepare_inputs
+from .payloads import describe_value, packet_for, prepare_inputs
 from .plugins import load_plugin
 from .region_editor import RegionEditor
+from .tickets import TICKET_MODES
 from .toolblock_editor import InterfaceDialog
 from .toolblocks import ToolBlock, encapsulate
 
@@ -146,6 +148,17 @@ class Inspector(QWidget):
         )
         self.name_field = QLineEdit(block.name)
         self.form.addRow("Name", self.name_field)
+        if block.ticket_source:
+            self.ticket_mode = QComboBox()
+            self.ticket_mode.addItems(TICKET_MODES)
+            self.ticket_mode.setCurrentText(block.ticket_settings["mode"])
+            self.ticket_value = QLineEdit(json.dumps(block.ticket_settings["value"]))
+            self.ticket_value.setToolTip(
+                "Fixed JSON number/string or {timestamp: ISO8601}; "
+                "external mode uses the ticket input."
+            )
+            self.form.addRow("Ticket mode", self.ticket_mode)
+            self.form.addRow("Fixed ticket", self.ticket_value)
         if isinstance(block, ToolBlock):
             self.type_field = QLineEdit(block.block_type)
             self.subtype_field = QLineEdit(block.subtype)
@@ -450,6 +463,13 @@ class Inspector(QWidget):
                 ):
                     raise ValueError("Delete the wire before hiding a connected port")
             name = self.name_field.text().strip()
+            ticket_settings = None
+            if b.ticket_source:
+                ticket_settings = {
+                    "mode": self.ticket_mode.currentText(),
+                    "value": json.loads(self.ticket_value.text()),
+                }
+                json.dumps(ticket_settings, allow_nan=False)
             if not name:
                 raise ValueError("Name cannot be empty")
             if isinstance(b, ToolBlock):
@@ -458,6 +478,8 @@ class Inspector(QWidget):
                     raise ValueError("ToolBlock type and subtype cannot be empty")
                 b.block_type, b.subtype = kind, subtype
             b.name, b.parameters = name, parameters
+            if ticket_settings is not None:
+                b.ticket_settings = ticket_settings
             b.input_levels = {
                 name: field.currentText()
                 for name, field in self.level_fields.items()
@@ -497,7 +519,7 @@ class Inspector(QWidget):
             result = b.last_result
             outputs = (
                 {
-                    key: value
+                    key: describe_value(value)
                     for key, value in result.outputs.items()
                     if key not in b.last_output_images
                 }
@@ -617,6 +639,8 @@ class MainWindow(QMainWindow):
             ("Load object collections example", None, self.load_object_collections_example),
             ("Load trained patterns and edges example", None, self.load_trained_patterns_example),
             ("Load pose-relative inspection example", None, self.load_pose_inspection_example),
+            ("Load ticketed control flow example", None, self.load_control_flow_example),
+            ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
             if shortcut:
@@ -895,6 +919,10 @@ class MainWindow(QMainWindow):
         if not self.runner and self.confirm_discard():
             self.replace_graph(pose_inspection_graph(self.registry))
 
+    def load_control_flow_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(control_flow_graph(self.registry))
+
     def open_project(self):
         if self.runner or not self.confirm_discard():
             return
@@ -956,6 +984,7 @@ class MainWindow(QMainWindow):
             execution_graph = Graph.from_dict(
                 self.root_graph.to_dict(), self.registry, project_dir=self.root_graph.project_dir
             )
+            execution_graph.copy_runtime_from(self.root_graph)
         except Exception as exc:
             self.warn(str(exc))
             return
@@ -972,8 +1001,16 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage("Running…")
         self.runner.start()
 
+    def reset_flow_state(self):
+        if not self.runner:
+            self.root_graph.invalidate()
+            self.scene.update()
+            self.inspector.refresh_result()
+            self.statusBar().showMessage("Flow buffers cleared; a new ticket session will start")
+
     def on_frame(self):
         try:
+            self.root_graph.copy_runtime_from(self.runner.graph)
             for key, executed in self.runner.graph.blocks.items():
                 self.root_graph.blocks[key].copy_results_from(executed)
             self.scene.update()
@@ -983,6 +1020,7 @@ class MainWindow(QMainWindow):
                 f"{len(states)} blocks · {self.runner.duration:.1f} ms · "
                 f"{states.count('pass')} pass · {states.count('fail')} fail · "
                 f"{states.count('error')} errors · {states.count('skipped')} skipped"
+                f" · {states.count('waiting')} waiting · {states.count('inactive')} inactive"
             )
         finally:
             self.runner.ack.set()

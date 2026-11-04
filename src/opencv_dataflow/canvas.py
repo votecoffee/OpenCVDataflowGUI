@@ -114,6 +114,8 @@ class Node(QGraphicsItem):
             "fail": "#ae6430",
             "error": "#b14e5b",
             "skipped": "#646377",
+            "inactive": "#46536a",
+            "waiting": "#426b99",
         }[b.state]
         status = QColor(base)
         if b.last_result and b.last_result.score is not None:

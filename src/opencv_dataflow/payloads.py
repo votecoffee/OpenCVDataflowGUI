@@ -3,14 +3,36 @@
 import copy
 import json
 from dataclasses import dataclass
+from enum import Enum
 
 import numpy as np
+
+
+class FlowSignal(Enum):
+    EMPTY = "no emission"
+
+
+NO_VALUE = FlowSignal.EMPTY
 
 
 @dataclass
 class ValuePacket:
     value: object
     payload: dict
+
+
+@dataclass
+class FlowGroup:
+    items: tuple[ValuePacket, ...]
+    labels: tuple[str, ...]
+
+    def __post_init__(self):
+        if not 1 <= len(self.items) <= 64 or len(self.labels) != len(self.items):
+            raise ValueError("Flow groups require 1..64 labeled entries")
+        for packet in self.items:
+            if not isinstance(packet, ValuePacket) or packet.value is NO_VALUE:
+                raise ValueError("Flow groups require actual value packets")
+            validate_payload(packet.payload)
 
 
 @dataclass
@@ -56,6 +78,10 @@ def validate_payload(payload):
     if not isinstance(payload, dict):
         raise ValueError("Port payload must be a JSON object")
     json.dumps(payload, allow_nan=False)
+    if "ticket" in payload:
+        from .tickets import validate_ticket
+
+        validate_ticket(payload["ticket"])
     if "spatial" in payload:
         spatial = payload["spatial"]
         if not isinstance(spatial, dict) or not isinstance(spatial.get("image_size"), list):
@@ -188,8 +214,12 @@ def finish_outputs(block, result):
         None,
     )
     base = copy.deepcopy(block.input_payloads.get(reference, {}))
+    if not base:
+        base = copy.deepcopy(next((p for p in block.input_payloads.values() if "ticket" in p), {}))
     if reference is None and len(block.input_payloads) == 1:
         base = copy.deepcopy(next(iter(block.input_payloads.values())))
+    if getattr(block, "_source_ticket", None) is not None:
+        base["ticket"] = block._source_ticket
     geometry = result.outputs.get("geometry")
     if reference is not None and isinstance(geometry, dict) and "output_to_input" in geometry:
         base = moved_payload(base, np.asarray(geometry["output_to_input"]), geometry["output_size"])
@@ -200,6 +230,8 @@ def finish_outputs(block, result):
         base["spatial"] = frame([first_image.shape[1], first_image.shape[0]], f"{block.id}:image")
     for port in block.outputs:
         value = result.outputs[port.name]
+        if value is NO_VALUE:
+            continue
         if isinstance(value, ValuePacket):
             result.payloads.setdefault(port.name, metadata(value))
             value = value.value
@@ -216,6 +248,8 @@ def finish_outputs(block, result):
                 },
             }
         payload = copy.deepcopy(explicit if explicit is not None else (inherited or base))
+        if "ticket" in base and "ticket" not in payload:
+            payload["ticket"] = copy.deepcopy(base["ticket"])
         if isinstance(value, np.ndarray):
             size = [value.shape[1], value.shape[0]]
             if payload.get("spatial", {}).get("image_size") != size:
@@ -245,6 +279,31 @@ def finish_outputs(block, result):
 def packet_for(result, name):
     payload = result.payloads.get(name, {})
     return ValuePacket(result.outputs[name], payload) if payload else result.outputs[name]
+
+
+def describe_value(value):
+    """Bounded JSON descriptions for receipts and inspectors, never image pixels."""
+    if value is NO_VALUE:
+        return {"emitted": False}
+    if isinstance(value, np.ndarray):
+        return {"image_shape": list(value.shape), "dtype": str(value.dtype)}
+    if isinstance(value, ImagePyramid):
+        return {"pyramid": [describe_value(level) for level in value.levels]}
+    if isinstance(value, FlowGroup):
+        return {
+            "model": "flow_group_v1",
+            "entries": [
+                {"label": label, "value": describe_value(packet.value), "payload": packet.payload}
+                for label, packet in zip(value.labels, value.items)
+            ],
+        }
+    if isinstance(value, dict):
+        return {key: describe_value(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [describe_value(item) for item in value]
+    if isinstance(value, np.generic):
+        return value.item()
+    return value
 
 
 def compatible(out_kind, in_kind):

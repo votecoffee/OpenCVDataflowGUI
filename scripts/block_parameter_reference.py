@@ -18,6 +18,8 @@ def render():
         "are managed by the runtime. Some controls apply only to the selected method or codec.",
         "Image inputs also have an inspector pyramid-level dropdown (largest by default).",
         "See [payloads, channels and pyramids](payloads-pyramids.md) for coordinate provenance.",
+        "Input sources also expose ticket input/output ports and inspector ticket mode/fixed value",
+        "controls. See [tickets and control flow](control-flow.md) for their shared configuration.",
         "",
     ]
     for kind, cls in sorted(builtin_registry().types.items()):
@@ -29,6 +31,14 @@ def render():
                 "",
             ]
         )
+        if kind.startswith("input."):
+            lines.extend(
+                [
+                    "Ticket terminals: optional `ticket` data input and `ticket` data output.",
+                    "Ticket mode and fixed value are common inspector controls.",
+                    "",
+                ]
+            )
         if cls.inputs:
             lines.append(
                 "Inputs: "
