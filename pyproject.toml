@@ -16,6 +16,7 @@ dev = ["pytest>=8,<10", "ruff>=0.9"]
 
 [project.scripts]
 opencv-dataflow = "opencv_dataflow.app:main"
+opencv-dataflow-run = "opencv_dataflow.runner:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

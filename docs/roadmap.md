@@ -9,6 +9,8 @@
 - Toolbox tree grouped by block type and subtype; monochrome and per-channel histograms.
 - Grid-derived planar mapping, lens calibration/undistortion, white/color balance and profile files.
 - Typed depth planes, depth-file input, RGB-D pairing and sampling with physical units.
+- Base OpenCV conversion, geometry, filters, segmentation, morphology, image math and gradients.
+- Component measurements, template matching, portable sample jobs and a headless repeat/report runner.
 
 ## Point clouds and 3D vision
 
@@ -27,7 +29,7 @@ frame transforms and robot pose/measurement adapters. See
 ## Vision development
 
 - ROI editing and overlays with calibrated coordinates and measurement tools.
-- More OpenCV tools: morphology, template matching, advanced calibration, feature detection.
+- More OpenCV tools: multi-match/rotated matching, feature detection and advanced calibration.
 - Dynamic parameter binding, richer types, promoted parameters and versioned ToolBlock libraries.
 - Compile compatible connected segments into shared native G-API computations.
 - Camera enumeration, trigger controls, bounded acquisition and recorded test sets.
