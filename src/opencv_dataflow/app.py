@@ -99,6 +99,7 @@ class Inspector(QWidget):
         self.block = None
         self._region_image = None
         self._region_source = None
+        self._region_inputs = {}
         self.fields, self.port_checks, self.level_fields = {}, [], {}
         layout = QVBoxLayout(self)
         title = QLabel("BLOCK INSPECTOR")
@@ -130,6 +131,7 @@ class Inspector(QWidget):
         if block is not self.block:
             self._region_image = None
             self._region_source = None
+            self._region_inputs = {}
         self.block = block
         while self.form.rowCount():
             self.form.removeRow(0)
@@ -210,8 +212,9 @@ class Inspector(QWidget):
                 self.form.addRow(key.replace("_", " ").title(), row)
             else:
                 self.form.addRow(key.replace("_", " ").title(), field)
-        if block.type_id == "region.shape":
-            draw_region = QPushButton("Draw / edit region…")
+        if getattr(block, "supports_region_editor", False):
+            kind = getattr(block, "editor_kind", "region")
+            draw_region = QPushButton(f"Draw / edit {kind}…")
             draw_region.clicked.connect(self.edit_region)
             self.form.addRow(draw_region)
         if not getattr(block, "preserve_image_sets", False):
@@ -280,33 +283,59 @@ class Inspector(QWidget):
 
     def edit_region(self):
         block = self.block
-        if block is None or block.type_id != "region.shape" or self.window.runner:
+        if (
+            block is None
+            or not getattr(block, "supports_region_editor", False)
+            or self.window.runner
+        ):
             return
         try:
             parameters = self.read_parameters()
-            connection = next(
-                (
-                    c
-                    for c in self.window.graph.connections
-                    if c.target == block.id and c.input == "image"
-                ),
-                None,
+            connections = [
+                c
+                for c in self.window.graph.connections
+                if c.target == block.id and c.input in ("image", "pose")
+            ]
+            source = (
+                tuple((c.input, c.source, c.output) for c in connections),
+                self.level_fields["image"].currentText(),
             )
-            source = (connection.source, connection.output) if connection else None
-            image = block.last_inputs.get("image")
-            if image is None and connection:
-                image = self.window.graph.blocks[connection.source].last_output_images.get(
-                    connection.output
-                )
-            if image is not None:
-                self._region_image, self._region_source = image, source
-            elif source == self._region_source:
-                image = self._region_image
+            values = dict(block.last_inputs)
+            for connection in connections:
+                result = self.window.graph.blocks[connection.source].last_result
+                if result is not None:
+                    values[connection.input] = packet_for(result, connection.output)
+            if (
+                not values
+                and source == self._region_source
+                and all(self.window.graph.blocks[c.source].state == "idle" for c in connections)
+            ):
+                values = self._region_inputs
+            candidate = self.window.registry.create(block.type_id, parameters=parameters)
+            candidate.input_levels = {
+                key: field.currentText()
+                for key, field in self.level_fields.items()
+                if field.currentText() != "largest"
+            }
+            values, _ = prepare_inputs(candidate, values)
+            image = values.get("image")
             if image is None:
                 raise ValueError(
-                    "Connect an image and Run once to capture it before drawing a region."
+                    "Connect an image and Run once to capture it before drawing a region or mask."
                 )
-            dialog = RegionEditor(image, parameters, self)
+            requires_pose = any(c.input == "pose" for c in connections) or any(
+                port.name == "pose" and port.required for port in block.inputs
+            )
+            pose = values.get("pose")
+            if requires_pose and not pose:
+                raise ValueError(
+                    "Run once with a valid pose before editing a relative region or mask"
+                )
+            self._region_image, self._region_source = image, source
+            self._region_inputs = values
+            dialog = RegionEditor(
+                image, parameters, self, pose=pose, kind=getattr(block, "editor_kind", "region")
+            )
             accepted = dialog.exec() == QDialog.DialogCode.Accepted
             updated = dialog.parameters if accepted else None
             dialog.deleteLater()
@@ -322,6 +351,7 @@ class Inspector(QWidget):
                 self.apply()
                 if self.block is block:
                     self._region_image, self._region_source = image, source
+                    self._region_inputs = values
         except (ValueError, TypeError, KeyError) as exc:
             self.window.warn(str(exc))
 

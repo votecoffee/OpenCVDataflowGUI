@@ -720,6 +720,14 @@ def pose_inspection_graph(registry):
             {"shape": "circle", "radius": 18},
         ),
         ("pose_histogram", "inspect.histogram", "Inspect positioned circle", [960, 420], None),
+        (
+            "pose_mask",
+            "mask.shape",
+            "Draw a local mask",
+            [620, 820],
+            {"rectangle": [-18, -18, 36, 36]},
+        ),
+        ("pose_mask_histogram", "inspect.histogram", "Inspect editable mask", [960, 820], None),
     ]
     for key, kind, name, position, parameters in specs:
         block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
@@ -733,8 +741,13 @@ def pose_inspection_graph(registry):
         ("pose_images", "image", "pose_region", "image"),
         ("pose_images", "image", "pose_histogram", "image"),
         ("pose_region", "region", "pose_histogram", "region"),
+        ("pose_images", "image", "pose_mask", "image"),
+        ("pose_offset", "pose", "pose_mask", "pose"),
+        ("pose_images", "image", "pose_mask_histogram", "image"),
+        ("pose_mask", "mask", "pose_mask_histogram", "mask"),
     ]:
         graph.connect(source, output, target, input)
     graph.blocks["pose_match"].preview_output = "overlay"
     graph.blocks["pose_region"].preview_output = "overlay"
+    graph.blocks["pose_mask"].preview_output = "overlay"
     return graph

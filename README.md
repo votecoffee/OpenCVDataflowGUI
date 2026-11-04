@@ -88,6 +88,11 @@ rectangle, circle or polygon for downstream masked inspections. Try **File > Loa
 pose-relative inspection example** or `examples/pose_inspection.json`; see
 [pose-relative inspection](docs/poses.md) for coordinates and a complete workflow.
 
+**Shape region**, **Region relative to pose** and **Shape mask** have visual
+rectangle/circle/polygon editors in their inspectors. Relative-region and mask
+editors map drawing and handle movements into the supplied pose's local frame.
+Shape mask can also operate in ordinary image pixels with its pose disconnected.
+
 The current supported dependency is OpenCV 4.x (development checks use 4.14.0).
 This desktop application uses native Python bindings. OpenCV 5 migration and a
 possible browser/WebAssembly backend are considered in the

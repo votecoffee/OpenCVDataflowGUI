@@ -1181,6 +1181,21 @@ Inputs: `image` (image), `points` (data).
 | `max_iterations` | `30` |  |
 | `epsilon` | `0.01` |  |
 
+## Shape mask (`mask.shape`)
+
+Image processing / Masks
+
+Inputs: `image` (image), `pose` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `shape` | `"rectangle"` | `rectangle`, `circle`, `polygon` |
+| `rectangle` | `[0, 0, 100, 100]` | [x,y,width,height] in image pixels, or local pixels when pose is connected. |
+| `center` | `[100, 100]` | Image-space circle center, or local coordinates when pose is connected. |
+| `radius` | `50` |  |
+| `vertices` | `[[0, 0], [100, 0], [50, 100]]` | Image-space vertices, or local coordinates when pose is connected. |
+| `invert` | `false` | Select everything outside the shape. |
+
 ## Save calibration profile (`output.calibration`)
 
 Output / Calibration profiles
