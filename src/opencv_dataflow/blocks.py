@@ -12,6 +12,7 @@ import cv2
 import numpy as np
 
 from .core import Block, Graph, Port, Registry, Result
+from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 
 
 class DemoImage(Block):
@@ -28,15 +29,33 @@ class DemoImage(Block):
 
 class ImageFile(Block):
     type_id, title, category = "input.file", "Image file", "Input"
-    outputs = (Port("image"),)
-    defaults = {"path": ""}
+    outputs = (Port("image"), Port("info", "data"))
+    defaults = {"path": "", "color_format": "bgr", "pixel_depth": "uint8"}
+    parameter_choices = {"color_format": COLOR_FORMATS, "pixel_depth": PIXEL_DEPTHS}
 
     def process(self, inputs):
         path = Path(self.parameters["path"])
-        image = cv2.imdecode(np.frombuffer(path.read_bytes(), np.uint8), cv2.IMREAD_COLOR)
+        image = cv2.imdecode(np.frombuffer(path.read_bytes(), np.uint8), cv2.IMREAD_UNCHANGED)
         if image is None:
             raise ValueError(f"Unable to decode image: {path}")
-        return Result({"image": image}, message=path.name)
+        output = format_image(
+            image, self.parameters["color_format"], self.parameters["pixel_depth"]
+        )
+        info = {
+            "width": int(output.shape[1]),
+            "height": int(output.shape[0]),
+            "channels": 1 if output.ndim == 2 else int(output.shape[2]),
+            "color_format": image_format(output),
+            "pixel_depth": str(output.dtype),
+            "bits_per_channel": output.dtype.itemsize * 8,
+            "source_color_format": image_format(image),
+            "source_pixel_depth": str(image.dtype),
+        }
+        return Result(
+            {"image": output, "info": info},
+            graphics={"decoded source": image},
+            message=f"{path.name} · {info['color_format']} / {output.dtype}",
+        )
 
 
 class Camera(Block):
@@ -74,6 +93,7 @@ class GAPIBlock(Block):
 
     category = "G-API"
     inputs, outputs = (Port("image"),), (Port("image"),)
+    input_depths = (np.uint8, np.uint16, np.float32)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -84,13 +104,17 @@ class GAPIBlock(Block):
         raise NotImplementedError
 
     def process(self, inputs):
+        source = opencv_image(inputs["image"])
+        if source.dtype not in self.input_depths:
+            names = ", ".join(np.dtype(dtype).name for dtype in self.input_depths)
+            raise ValueError(f"{self.title} requires pixel depth {names}; got {source.dtype}")
         key = json.dumps(self.parameters, sort_keys=True)
         if self._computation is None or self._key != key:
             image = cv2.GMat()
             output = self.build(image)
             self._computation = cv2.GComputation(cv2.GIn(image), cv2.GOut(output))
             self._key = key
-        image = self._computation.apply([inputs["image"]])
+        image = self._computation.apply([source])
         if isinstance(image, (tuple, list)):
             image = image[0]
         return Result({"image": image}, message="OpenCV G-API / CPU")
@@ -98,6 +122,7 @@ class GAPIBlock(Block):
 
 class Grayscale(GAPIBlock):
     type_id, title = "gapi.gray", "Grayscale"
+    input_depths = (np.uint8,)
 
     def build(self, image):
         return cv2.gapi.BGR2Gray(image)
@@ -119,6 +144,7 @@ class Blur(GAPIBlock):
 
 class Canny(GAPIBlock):
     type_id, title = "gapi.canny", "Canny edges"
+    input_depths = (np.uint8,)
     defaults = {"low": 60.0, "high": 150.0}
 
     def build(self, image):
@@ -134,7 +160,7 @@ class Threshold(Block):
     defaults = {"value": 127, "invert": False}
 
     def process(self, inputs):
-        image = inputs["image"]
+        image = opencv_image(inputs["image"])
         if image.ndim == 3:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         value = int(self.parameters["value"])
@@ -152,7 +178,7 @@ class Contours(Block):
     defaults = {"min_area": 100.0, "expected_count": 2}
 
     def process(self, inputs):
-        image = inputs["image"]
+        image = opencv_image(inputs["image"])
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if image.ndim == 3 else image
         contours, _ = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         minimum = float(self.parameters["min_area"])
@@ -185,7 +211,7 @@ class SaveImage(Block):
         path = Path(self.parameters["path"])
         if path.exists():
             raise FileExistsError("Choose a new path; existing images are preserved")
-        ok, encoded = cv2.imencode(path.suffix, inputs["image"])
+        ok, encoded = cv2.imencode(path.suffix, opencv_image(inputs["image"]))
         if not ok:
             raise ValueError("Image encoding failed")
         with path.open("xb") as stream:

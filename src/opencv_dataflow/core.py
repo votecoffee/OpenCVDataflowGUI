@@ -43,6 +43,7 @@ class Block:
     inputs: ClassVar[tuple[Port, ...]] = ()
     outputs: ClassVar[tuple[Port, ...]] = ()
     defaults: ClassVar[dict[str, Any]] = {}
+    parameter_choices: ClassVar[dict[str, tuple]] = {}
 
     def __init__(self, *, block_id=None, parameters=None):
         self.id = block_id or uuid.uuid4().hex

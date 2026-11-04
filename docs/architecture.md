@@ -13,6 +13,11 @@ Built-in processing expects OpenCV-compatible images (normally uint8); grayscale
 expects BGR input and Canny expects grayscale input. Invalid native inputs become
 visible block errors rather than implicit color conversions.
 
+Image-file inputs additionally support explicit color encodings and pixel depths.
+Tagged `ImageArray` values preserve encoding through snapshots; built-in image
+consumers interpret those tags before native processing. Color interpretation does
+not imply automatic depth conversion. See [image-formats.md](image-formats.md).
+
 Results also carry a pass/fail flag, optional score in [0, 1], message, and a map of
 named graphic images. Graphics are diagnostic visualizations; declare an image
 output as well if downstream tools should consume one. Inspection fail means a
