@@ -176,7 +176,7 @@ and calibrated physical-area conversion are not implemented by this block.
 
 | Tools | Selection behavior |
 | --- | --- |
-| Gaussian G-API, box/median/bilateral filters, Filter2D, unsharp, separable/box filter, gamma, CLAHE, blend | Write processed pixels only inside selection; retain original samples outside when channels match |
+| Gaussian (ordinary and G-API), box/median/bilateral filters, Filter2D, unsharp, separable/box filter, gamma, CLAHE, blend | Write processed pixels only inside selection; retain original samples outside when channels match |
 | Threshold, automatic/adaptive threshold, InRange, morphology, Canny, gradient and corner response | Write selected outputs and zero outside |
 | Automatic threshold | Learn Otsu/Triangle threshold from selected samples only; empty selection is an error |
 | Equalize histogram | Learn and apply equalization from selected samples; preserve outside with matching channels |

@@ -32,9 +32,7 @@ def starter_graph(registry):
     )
     components.preview_output = "overlay"
     histogram = add("starter_histogram", "inspect.histogram", "ROI histogram", (570, 620))
-    edges = add(
-        "starter_edges", "gapi.canny", "Part edges", (285, 620), {"low": 40.0, "high": 120.0}
-    )
+    edges = add("starter_edges", "cv.canny", "Part edges", (285, 620), {"low": 40.0, "high": 120.0})
     chain = [source, crop, gray, median, threshold, morphology, components]
     for previous, following in zip(chain, chain[1:]):
         graph.connect(previous.id, "image", following.id, "image")
@@ -87,7 +85,7 @@ def lena_graph(registry):
     source.exposed_outputs = ["image"]
     inner = Graph()
     gray = inner.add(registry.create("cv.convert", block_id="lena_inner_gray"))
-    blur = inner.add(registry.create("gapi.blur", block_id="lena_inner_blur"))
+    blur = inner.add(registry.create("cv.gaussian_blur", block_id="lena_inner_blur"))
     blur.position = [285, 0]
     inner.connect(gray.id, "image", blur.id, "image")
     preprocess = ToolBlock(
@@ -98,7 +96,7 @@ def lena_graph(registry):
     )
     preprocess.name, preprocess.position = "Grayscale + blur", [310, 0]
     graph.add(preprocess)
-    edges = add("lena_edges", "gapi.canny", "Canny edges", (620, 0))
+    edges = add("lena_edges", "cv.canny", "Canny edges", (620, 0))
     color_hist = add("lena_color_hist", "inspect.histogram", "Color histogram", (0, 340))
     gray_hist = add("lena_gray_hist", "inspect.histogram", "Gray histogram", (310, 340))
     reference = add(
@@ -137,7 +135,7 @@ def lena_features_graph(registry):
         ("feature_clahe", "cv.clahe", "Local contrast", [600, 0], None),
         ("feature_corners", "inspect.corners", "Trackable corners", [900, 0], None),
         ("feature_histogram", "inspect.histogram", "Contrast histogram", [300, 340], None),
-        ("feature_edges", "gapi.canny", "Contrast edges", [600, 340], None),
+        ("feature_edges", "cv.canny", "Contrast edges", [600, 340], None),
         ("feature_lines", "inspect.hough_lines", "Line segments", [900, 340], None),
     ]
     for key, type_id, name, position, parameters in specs:
@@ -254,7 +252,7 @@ def regions_graph(registry):
         ("roi_left", "inspect.components", "Measure left part", [900, 0], {"expected_count": 1}),
         ("roi_right", "inspect.contours", "Inspect right part", [900, 360], {"expected_count": 1}),
         ("roi_histogram", "inspect.histogram", "Histogram inside polygon", [1200, 360], None),
-        ("roi_blur", "gapi.blur", "Blur only inside circle", [1200, 0], {"kernel": 15}),
+        ("roi_blur", "cv.gaussian_blur", "Blur only inside circle", [1200, 0], {"kernel": 15}),
     ]
     for key, kind, name, position, parameters in specs:
         block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
@@ -770,8 +768,8 @@ def control_flow_graph(registry):
             {"order": "sequence_descending"},
         ),
         ("flow_split", "flow.split", "Two parallel branches", [940, 550], {}),
-        ("flow_gray", "gapi.gray", "Grayscale branch", [1260, 350], {}),
-        ("flow_blur", "gapi.blur", "Blur branch", [1260, 750], {}),
+        ("flow_gray", "cv.gray", "Grayscale branch", [1260, 350], {}),
+        ("flow_blur", "cv.gaussian_blur", "Blur branch", [1260, 750], {}),
         ("flow_join", "flow.join", "Synchronize same ticket", [1580, 550], {}),
         ("flow_select", "flow.select_entry", "Use grayscale result", [1900, 550], {}),
         (

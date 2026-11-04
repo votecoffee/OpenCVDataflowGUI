@@ -49,7 +49,7 @@ dimensions and floating depth; units describe the angle output only.
 ## Expanded existing controls
 
 - Gaussian kernels can be rectangular, with separate X/Y sigma and border controls.
-  Canny exposes aperture and L2 gradient calculation through native G-API.
+  Ordinary and Advanced G-API Canny expose aperture and L2 gradient calculation.
 - Filters, gradients, morphology and pyramids expose relevant anchors, borders,
   dimensions and output depths. `reflect` retains the historical REFLECT_101
   behavior; `reflect_edge` selects BORDER_REFLECT. Unsupported native depth/border

@@ -157,7 +157,7 @@ class GAPIBlock(Block):
     """Cache a native GComputation per parameter set; never silently fall back."""
 
     category = "G-API"
-    block_type, subtype = "Image processing", "G-API"
+    block_type, subtype = "Advanced", "G-API"
     inputs, outputs = (Port("image"),), (Port("image"),)
     input_depths = (np.uint8, np.uint16, np.float32)
 
@@ -523,6 +523,7 @@ class WriteResults(Block):
 
 def builtin_registry():
     from .analysis_tools import ANALYSIS_BLOCKS
+    from .basic_processing import BASIC_PROCESSING_BLOCKS
     from .calibration import (
         CalibrationGrid,
         ColorBalance,
@@ -556,6 +557,7 @@ def builtin_registry():
         Grayscale,
         Blur,
         Canny,
+        *BASIC_PROCESSING_BLOCKS,
         Threshold,
         Contours,
         SaveImage,
@@ -598,7 +600,7 @@ def demo_graph(registry):
     graph = Graph()
     chain = [
         graph.add(registry.create(t))
-        for t in ("input.demo", "gapi.gray", "gapi.blur", "cv.threshold", "inspect.contours")
+        for t in ("input.demo", "cv.gray", "cv.gaussian_blur", "cv.threshold", "inspect.contours")
     ]
     chain[3].parameters["value"] = 100
     chain[4].parameters["min_area"] = 1000.0

@@ -30,6 +30,7 @@
 - Acquisition tickets, bounded join/batch/FIFO buffers, serial group expansion, case routing and explicit branch concurrency.
 - Parallel per-pose ToolBlock inspections, aggregate outcomes, scoped part tickets and N-pass/N-failure stopping.
 - Bounded input-image FIFO queues, serialized frame leases, optional background acquisition and Stop/Resume retention.
+- Ordinary Grayscale/Gaussian blur/Canny defaults and examples; legacy blocks under Advanced > G-API.
 
 ## Point clouds and 3D vision
 
@@ -50,7 +51,11 @@ frame transforms and robot pose/measurement adapters. See
 - Calibrated region overlays, physical measurements and nonlinear region remapping for lens distortion.
 - More OpenCV tools: multiple template matches, additional descriptors/robust matching and advanced calibration.
 - Dynamic parameter binding, richer types, promoted parameters and versioned ToolBlock libraries.
-- Compile compatible connected segments into shared native G-API computations.
+- [Opt-in compiled ToolBlocks with selected diagnostic outputs](https://github.com/votecoffee/OpenCVDataflowGUI/issues/4):
+  stable compatible chains only; preserve ordinary execution for development. Require
+  reproducible end-to-end performance benefit, including diagnostics and compilation
+  amortization, before enabling or expanding the compiled feature. See the
+  [benchmark gate](opencv-backend.md#compiled-toolblocks-future).
 - Consider OpenCV.js/WebAssembly for a future browser viewer/editor; retain the native Python/Qt runtime today.
 - Camera enumeration, trigger controls, bounded acquisition and recorded test sets.
 
