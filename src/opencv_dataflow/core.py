@@ -59,6 +59,7 @@ class Block:
         self.exposed_inputs = [p.name for p in self.inputs]
         self.exposed_outputs = [p.name for p in self.outputs]
         self.position = [0.0, 0.0]
+        self.project_dir = None
         self.thumbnail = True
         self.preview_output = ""
         self.clear_result()
@@ -182,11 +183,26 @@ class Graph:
     def __init__(self):
         self.blocks: dict[str, Block] = {}
         self.connections: list[Connection] = []
+        self.project_dir = None
+
+    def bind_project_dir(self, directory):
+        self.project_dir = Path(directory).resolve() if directory is not None else None
+        for block in self.blocks.values():
+            block.project_dir = self.project_dir
+            from .toolblocks import ToolBlock
+
+            if isinstance(block, ToolBlock):
+                block.graph.bind_project_dir(self.project_dir)
 
     def add(self, block):
         if block.id in self.blocks:
             raise ValueError("Duplicate block id")
         self.blocks[block.id] = block
+        block.project_dir = self.project_dir
+        from .toolblocks import ToolBlock
+
+        if isinstance(block, ToolBlock):
+            block.graph.bind_project_dir(self.project_dir)
         return block
 
     def remove(self, block_id):
@@ -298,14 +314,15 @@ class Graph:
         temporary = path.with_suffix(path.suffix + ".tmp")
         temporary.write_text(content, encoding="utf-8")
         temporary.replace(path)
+        self.bind_project_dir(path.resolve().parent)
 
     @classmethod
     def load(cls, path, registry):
         data = json.loads(Path(path).read_text(encoding="utf-8"))
-        return cls.from_dict(data, registry)
+        return cls.from_dict(data, registry, project_dir=Path(path).resolve().parent)
 
     @classmethod
-    def from_dict(cls, data, registry, _depth=0):
+    def from_dict(cls, data, registry, _depth=0, project_dir=None):
         if _depth > 16:
             raise ValueError("ToolBlock nesting exceeds 16 levels")
         if data.get("schema_version") != 1:
@@ -338,4 +355,5 @@ class Graph:
             graph.add(block)
         for c in data["connections"]:
             graph.connect(**c)
+        graph.bind_project_dir(project_dir)
         return graph

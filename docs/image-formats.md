@@ -7,6 +7,13 @@ The decoded source is retained as a diagnostic graphic. Source files are read on
 Available codecs depend on the installed OpenCV build. This is pixel conversion,
 not ICC profile management, Bayer demosaicing, EXIF autorotation, or raw camera decoding.
 
+`path_base` defaults to `working_directory` for existing jobs. Select `project` to
+resolve a relative image path against the saved root project JSON's directory.
+The path remains relative in saved files and survives worker execution and nested
+ToolBlocks. Save/open a project before using that mode; when moving a project or
+saving it elsewhere, move/copy its image assets too. This option currently applies
+to Image file inputs; other file blocks retain their existing path behavior.
+
 ## Settings
 
 | Setting | Choices | Default |

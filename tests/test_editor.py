@@ -297,3 +297,20 @@ def test_starter_project_editor_run_edit_save_and_template_example(app, tmp_path
     ]
     window.dirty = False
     window.close()
+
+
+def test_project_relative_image_works_in_editor_worker(app, tmp_path, monkeypatch):
+    from test_lena_example import make_bundle
+
+    project = make_bundle(tmp_path / "bundle")
+    monkeypatch.chdir(tmp_path)
+    window = MainWindow()
+    window.replace_graph(Graph.load(project, window.registry), project)
+    window.show()
+    window.start_run(False)
+    pump_until(app, lambda: window.runner is None)
+    assert all(b.state == "pass" for b in window.graph.blocks.values())
+    source = window.graph.blocks["lena_source"]
+    assert source.parameters["path"] == "assets/lena.jpg"
+    window.dirty = False
+    window.close()
