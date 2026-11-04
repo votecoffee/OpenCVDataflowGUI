@@ -82,6 +82,13 @@ point-cloud processing is implemented.
 
 ### Build and test a starter project
 
+For the real-image Lena review example, run `python scripts/prepare_lena.py` once,
+then open `examples/lena.json`. The optional, hash-checked image is not committed
+or included under this project's MIT license; see [asset provenance](examples/assets/README.md).
+This example includes grayscale/blur, Canny, color/grayscale histograms and template
+matching, including an editable nested ToolBlock. Its image input uses a
+project-relative path, so move its `assets` folder together with its JSON file.
+
 Open **File > Load starter inspection**, or launch it directly:
 
 ```powershell

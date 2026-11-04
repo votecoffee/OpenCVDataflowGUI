@@ -684,7 +684,9 @@ class MainWindow(QMainWindow):
             return
         # Worker owns a separate runtime graph. Qt paints stable display snapshots.
         try:
-            execution_graph = Graph.from_dict(self.root_graph.to_dict(), self.registry)
+            execution_graph = Graph.from_dict(
+                self.root_graph.to_dict(), self.registry, project_dir=self.root_graph.project_dir
+            )
         except Exception as exc:
             self.warn(str(exc))
             return

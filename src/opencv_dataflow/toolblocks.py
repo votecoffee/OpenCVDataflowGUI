@@ -224,7 +224,7 @@ def encapsulate(graph, selected, name, registry, owner=None):
             c for c in data["connections"] if c["source"] in selected and c["target"] in selected
         ],
     }
-    inner = Graph.from_dict(copy.deepcopy(inner_data), registry)
+    inner = Graph.from_dict(copy.deepcopy(inner_data), registry, project_dir=graph.project_dir)
     ins, outs = {}, {}
     input_names, output_names = {}, {}
 
@@ -272,6 +272,7 @@ def encapsulate(graph, selected, name, registry, owner=None):
             )
         )
     candidate = Graph()
+    candidate.project_dir = graph.project_dir
     candidate.blocks = {k: b for k, b in graph.blocks.items() if k not in selected}
     candidate.add(composite)
     candidate.connections = replacements

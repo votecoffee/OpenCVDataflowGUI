@@ -64,3 +64,60 @@ def template_graph(registry):
     graph.connect(source.id, "image", matcher.id, "image")
     graph.connect(template.id, "image", matcher.id, "template")
     return graph
+
+
+def lena_graph(registry):
+    """An editable real-image review project; assets are relative to its JSON file."""
+    from .toolblocks import Binding, ToolBlock
+
+    graph = Graph()
+
+    def add(key, type_id, name, position, parameters=None):
+        block = registry.create(type_id, block_id=key, parameters=parameters)
+        block.name, block.position = name, list(position)
+        return graph.add(block)
+
+    source = add(
+        "lena_source",
+        "input.file",
+        "Lena - source",
+        (0, 0),
+        {"path": "assets/lena.jpg", "path_base": "project"},
+    )
+    source.exposed_outputs = ["image"]
+    inner = Graph()
+    gray = inner.add(registry.create("cv.convert", block_id="lena_inner_gray"))
+    blur = inner.add(registry.create("gapi.blur", block_id="lena_inner_blur"))
+    blur.position = [285, 0]
+    inner.connect(gray.id, "image", blur.id, "image")
+    preprocess = ToolBlock(
+        inner,
+        {"image": Binding(gray.id, "image")},
+        {"gray": Binding(gray.id, "image"), "image": Binding(blur.id, "image")},
+        block_id="lena_preprocess",
+    )
+    preprocess.name, preprocess.position = "Grayscale + blur", [310, 0]
+    graph.add(preprocess)
+    edges = add("lena_edges", "gapi.canny", "Canny edges", (620, 0))
+    color_hist = add("lena_color_hist", "inspect.histogram", "Color histogram", (0, 340))
+    gray_hist = add("lena_gray_hist", "inspect.histogram", "Gray histogram", (310, 340))
+    reference = add(
+        "lena_reference",
+        "cv.crop",
+        "Face reference patch",
+        (310, 680),
+        {"x": 220, "y": 200, "width": 170, "height": 190},
+    )
+    reference.exposed_outputs = ["image"]
+    match = add(
+        "lena_match", "inspect.match_template", "Locate reference", (620, 340), {"min_score": 0.99}
+    )
+    match.exposed_outputs = ["overlay", "score", "center"]
+    graph.connect(source.id, "image", preprocess.id, "image")
+    graph.connect(preprocess.id, "image", edges.id, "image")
+    graph.connect(source.id, "image", color_hist.id, "image")
+    graph.connect(preprocess.id, "gray", gray_hist.id, "image")
+    graph.connect(source.id, "image", reference.id, "image")
+    graph.connect(source.id, "image", match.id, "image")
+    graph.connect(reference.id, "image", match.id, "template")
+    return graph

@@ -32,11 +32,29 @@ class ImageFile(Block):
     block_type, subtype = "Input", "Files"
     type_id, title, category = "input.file", "Image file", "Input"
     outputs = (Port("image"), Port("info", "data"))
-    defaults = {"path": "", "color_format": "bgr", "pixel_depth": "uint8"}
-    parameter_choices = {"color_format": COLOR_FORMATS, "pixel_depth": PIXEL_DEPTHS}
+    defaults = {
+        "path": "",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "working_directory",
+    }
+    parameter_choices = {
+        "color_format": COLOR_FORMATS,
+        "pixel_depth": PIXEL_DEPTHS,
+        "path_base": ("working_directory", "project"),
+    }
 
     def process(self, inputs):
         path = Path(self.parameters["path"])
+        base = self.parameters["path_base"]
+        if base not in ("working_directory", "project"):
+            raise ValueError("Path base must be working_directory or project")
+        if base == "project" and not path.is_absolute():
+            if self.project_dir is None:
+                raise ValueError(
+                    "Save or open the project before using a project-relative image path"
+                )
+            path = self.project_dir / path
         image = cv2.imdecode(np.frombuffer(path.read_bytes(), np.uint8), cv2.IMREAD_UNCHANGED)
         if image is None:
             raise ValueError(f"Unable to decode image: {path}")
