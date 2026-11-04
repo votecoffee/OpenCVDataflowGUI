@@ -95,7 +95,7 @@ class ToolBlock(Block):
     def close(self):
         self.graph.close()
 
-    def update_interface(self, inputs, outputs, parent):
+    def update_interface(self, inputs, outputs, parent, owner=None):
         """Rename/remap terminals atomically; preserve the meaning of existing wires."""
         candidate = copy.copy(self)
         candidate.input_bindings, candidate.output_bindings = dict(inputs), dict(outputs)
@@ -122,6 +122,29 @@ class ToolBlock(Block):
             if out.kind != inp.kind and inp.kind != "any":
                 raise ValueError("Updated interface would break a connected port type")
             connections.append(Connection(c.source, output, c.target, input))
+        if owner is not None:
+            if owner.graph is not parent:
+                raise ValueError("ToolBlock owner does not contain the parent graph")
+            owner_inputs = {
+                n: Binding(self.id, mapped(b.port, self.input_bindings, inputs))
+                if b.block == self.id
+                else b
+                for n, b in owner.input_bindings.items()
+            }
+            owner_outputs = {
+                n: Binding(self.id, mapped(b.port, self.output_bindings, outputs))
+                if b.block == self.id
+                else b
+                for n, b in owner.output_bindings.items()
+            }
+            parent_copy = Graph()
+            parent_copy.blocks = {**parent.blocks, self.id: candidate}
+            parent_copy.connections = connections
+            owner_copy = copy.copy(owner)
+            owner_copy.graph = parent_copy
+            owner_copy.input_bindings, owner_copy.output_bindings = owner_inputs, owner_outputs
+            owner_copy.validate_interface()
+            owner.input_bindings, owner.output_bindings = owner_inputs, owner_outputs
         self.input_bindings, self.output_bindings = dict(inputs), dict(outputs)
         self.inputs, self.outputs = candidate.inputs, candidate.outputs
         self.exposed_inputs = list(inputs)
@@ -175,7 +198,7 @@ class ToolBlock(Block):
         return cls.from_definition(json.loads(Path(path).read_text(encoding="utf-8")), registry)
 
 
-def encapsulate(graph, selected, name, registry):
+def encapsulate(graph, selected, name, registry, owner=None):
     """Atomically replace selected nodes with an independent embedded graph.
 
     Preserve crossing wires, expose unbound inputs and terminal output ports.
@@ -186,6 +209,8 @@ def encapsulate(graph, selected, name, registry):
         raise ValueError("Select at least one node")
     if not name.strip():
         raise ValueError("ToolBlock name cannot be empty")
+    if owner is not None and owner.graph is not graph:
+        raise ValueError("ToolBlock owner does not contain this graph")
     data = graph.to_dict()
     inner_data = {
         "schema_version": 1,
@@ -217,6 +242,8 @@ def encapsulate(graph, selected, name, registry):
                 c.source == block.id and c.output == port.name and c.target not in selected
                 for c in graph.connections
             )
+            if owner is not None:
+                crosses = crosses or Binding(block.id, port.name) in owner.output_bindings.values()
             consumed = any(
                 c.source == block.id and c.output == port.name for c in inner.connections
             )
@@ -244,6 +271,19 @@ def encapsulate(graph, selected, name, registry):
     candidate.add(composite)
     candidate.connections = replacements
     candidate.ordered()
+    if owner is not None:
+        inputs = {
+            n: Binding(composite.id, input_names[b.block, b.port]) if b.block in selected else b
+            for n, b in owner.input_bindings.items()
+        }
+        outputs = {
+            n: Binding(composite.id, output_names[b.block, b.port]) if b.block in selected else b
+            for n, b in owner.output_bindings.items()
+        }
+        shadow = copy.copy(owner)
+        shadow.graph, shadow.input_bindings, shadow.output_bindings = candidate, inputs, outputs
+        shadow.validate_interface()
+        owner.input_bindings, owner.output_bindings = inputs, outputs
     graph.blocks, graph.connections = candidate.blocks, replacements
     graph.invalidate()
     return composite

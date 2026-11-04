@@ -5,12 +5,13 @@
 - Node canvas, typed connections, configurable port visibility, inspector and previews.
 - Single and continuous execution, worker-thread scheduling, save/load, trusted plugins.
 - Acquisition, basic processing, contour inspection, image and structured result sinks.
+- Reusable nested ToolBlocks, public-terminal mapping, editor navigation and JSON definitions.
 
 ## Vision development
 
 - ROI editing and overlays with calibrated coordinates and measurement tools.
 - More OpenCV tools: morphology, template matching, calibration, feature detection.
-- Dynamic parameter binding, richer types, subgraphs and reusable tool groups.
+- Dynamic parameter binding, richer types, promoted parameters and versioned ToolBlock libraries.
 - Compile compatible connected segments into shared native G-API computations.
 - Camera enumeration, trigger controls, bounded acquisition and recorded test sets.
 

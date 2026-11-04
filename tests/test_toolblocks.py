@@ -146,3 +146,42 @@ def test_nesting_limit():
         graph = outer
     with pytest.raises(ValueError, match="16 levels"):
         Graph.from_dict(graph.to_dict(), registry)
+
+
+def test_nested_grouping_and_renaming_preserve_owner_terminals():
+    registry, graph, nodes, outer = inspection_toolblock()
+    outer.update_interface(
+        outer.input_bindings,
+        {**outer.output_bindings, "gray": Binding(nodes[1].id, "image")},
+        graph,
+    )
+    inner = encapsulate(
+        outer.graph, [nodes[1].id, nodes[2].id], "Preprocess", registry, owner=outer
+    )
+    assert outer.output_bindings["gray"].block == inner.id
+    inner.update_interface(
+        {"image": next(iter(inner.input_bindings.values()))},
+        inner.output_bindings,
+        outer.graph,
+        owner=outer,
+    )
+    assert next(iter(outer.input_bindings.values())) == Binding(inner.id, "image")
+    graph.run()
+    assert outer.state == "pass", outer.error
+    assert outer.last_result.outputs["gray"].ndim == 2
+    # Child run records are recursively copied into the UI display graph.
+    display = Graph.from_dict(graph.to_dict(), registry)
+    display.blocks[outer.id].copy_results_from(outer)
+    displayed_inner = display.blocks[outer.id].graph.blocks[inner.id]
+    assert displayed_inner.graph.blocks[nodes[1].id].state == "pass"
+
+
+def test_shipped_inspection_pattern():
+    registry = builtin_registry()
+    block = ToolBlock.read("examples/inspect_shapes.toolblock.json", registry)
+    source = registry.create("input.demo")
+    source.execute({})
+    block.execute({"image": source.last_output_images["image"]})
+    assert block.state == "pass", block.error
+    assert block.last_result.outputs["count"] == 2
+    assert set(block.last_output_images) == {"overlay", "mask"}

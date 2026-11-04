@@ -1,0 +1,183 @@
+{
+  "toolblock_version": 1,
+  "name": "Inspect shapes",
+  "graph": {
+    "schema_version": 1,
+    "blocks": [
+      {
+        "id": "17d3198110684736afdb1884c037b062",
+        "type": "cv.threshold",
+        "name": "Threshold",
+        "parameters": {
+          "value": 100,
+          "invert": false
+        },
+        "position": [
+          795.0,
+          45.0
+        ],
+        "exposed_inputs": [
+          "image"
+        ],
+        "exposed_outputs": [
+          "image",
+          "threshold"
+        ],
+        "thumbnail": true,
+        "preview_output": ""
+      },
+      {
+        "id": "7df0b6dd3c144173b4afd094c493d731",
+        "type": "inspect.contours",
+        "name": "Find contours",
+        "parameters": {
+          "min_area": 1000.0,
+          "expected_count": 2
+        },
+        "position": [
+          1060.0,
+          0.0
+        ],
+        "exposed_inputs": [
+          "image"
+        ],
+        "exposed_outputs": [
+          "overlay",
+          "mask",
+          "count",
+          "data"
+        ],
+        "thumbnail": true,
+        "preview_output": ""
+      },
+      {
+        "id": "aa94a2a301114a4295c1656d4ef5eec7",
+        "type": "core.toolblock",
+        "name": "Preprocess",
+        "parameters": {},
+        "position": [
+          265.0,
+          45.0
+        ],
+        "exposed_inputs": [
+          "Grayscale_image"
+        ],
+        "exposed_outputs": [
+          "Gaussian_blur_image"
+        ],
+        "thumbnail": true,
+        "preview_output": "",
+        "toolblock": {
+          "toolblock_version": 1,
+          "name": "Preprocess",
+          "graph": {
+            "schema_version": 1,
+            "blocks": [
+              {
+                "id": "638250b60b2c4035a2c9464fb6975fce",
+                "type": "gapi.gray",
+                "name": "Grayscale",
+                "parameters": {},
+                "position": [
+                  265.0,
+                  45.0
+                ],
+                "exposed_inputs": [
+                  "image"
+                ],
+                "exposed_outputs": [
+                  "image"
+                ],
+                "thumbnail": true,
+                "preview_output": ""
+              },
+              {
+                "id": "f3bfa9e5808d44ee93ec22bb3d668a75",
+                "type": "gapi.blur",
+                "name": "Gaussian blur",
+                "parameters": {
+                  "kernel": 5,
+                  "sigma": 1.2
+                },
+                "position": [
+                  530.0,
+                  0.0
+                ],
+                "exposed_inputs": [
+                  "image"
+                ],
+                "exposed_outputs": [
+                  "image"
+                ],
+                "thumbnail": true,
+                "preview_output": ""
+              }
+            ],
+            "connections": [
+              {
+                "source": "638250b60b2c4035a2c9464fb6975fce",
+                "output": "image",
+                "target": "f3bfa9e5808d44ee93ec22bb3d668a75",
+                "input": "image"
+              }
+            ]
+          },
+          "inputs": {
+            "Grayscale_image": {
+              "block": "638250b60b2c4035a2c9464fb6975fce",
+              "port": "image"
+            }
+          },
+          "outputs": {
+            "Gaussian_blur_image": {
+              "block": "f3bfa9e5808d44ee93ec22bb3d668a75",
+              "port": "image"
+            }
+          }
+        }
+      }
+    ],
+    "connections": [
+      {
+        "source": "aa94a2a301114a4295c1656d4ef5eec7",
+        "output": "Gaussian_blur_image",
+        "target": "17d3198110684736afdb1884c037b062",
+        "input": "image"
+      },
+      {
+        "source": "17d3198110684736afdb1884c037b062",
+        "output": "image",
+        "target": "7df0b6dd3c144173b4afd094c493d731",
+        "input": "image"
+      }
+    ]
+  },
+  "inputs": {
+    "image": {
+      "block": "aa94a2a301114a4295c1656d4ef5eec7",
+      "port": "Grayscale_image"
+    }
+  },
+  "outputs": {
+    "Threshold_threshold": {
+      "block": "17d3198110684736afdb1884c037b062",
+      "port": "threshold"
+    },
+    "overlay": {
+      "block": "7df0b6dd3c144173b4afd094c493d731",
+      "port": "overlay"
+    },
+    "mask": {
+      "block": "7df0b6dd3c144173b4afd094c493d731",
+      "port": "mask"
+    },
+    "count": {
+      "block": "7df0b6dd3c144173b4afd094c493d731",
+      "port": "count"
+    },
+    "data": {
+      "block": "7df0b6dd3c144173b4afd094c493d731",
+      "port": "data"
+    }
+  }
+}

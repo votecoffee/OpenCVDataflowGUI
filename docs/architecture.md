@@ -66,6 +66,13 @@ security sandbox. Extensions can use the full Python environment. A project with
 unavailable plugin types fails clearly; load the plugin and reopen the project.
 Plugins are session-local, and projects never execute embedded scripts.
 
+ToolBlocks implement the same base block contract with an embedded graph and typed
+public-terminal bindings. Projects embed their definitions; reusable definition
+files can be exported/imported separately. Execution, failure handling, cancellation,
+cleanup and display-result copying recurse through nested graphs. The same canvas
+edits each graph level, while save and run actions retain root-job scope. See
+[toolblocks.md](toolblocks.md) for contracts, interface editing and reuse semantics.
+
 ## Output behavior
 
 Image and XML writers use exclusive creation to preserve existing files. CSV writes
