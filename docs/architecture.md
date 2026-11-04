@@ -69,6 +69,13 @@ singleton ancillary inputs can broadcast, while mismatched stream lengths requir
 explicit join/batch operations. Inactive paths do not execute; waiting queues are
 normal runtime states. UI snapshots also copy ticket clocks and transient queues
 so repeated Run once commands continue the same stream session.
+
+`flow.inspect_each` owns a separate bounded part-job pool and an embedded inspection
+ToolBlock definition. Each detected pose receives an isolated clone; the parent
+emits aggregate data after jobs settle. Project load restores that definition using
+the active registry, with the existing nesting limit and explicit plugin policy.
+The GUI can navigate the inspection graph and retain one part's internal snapshots.
+See [parallel inspection](parallel-inspection.md) for early-stop and coverage rules.
 Stopping is cooperative between blocks; it cannot interrupt a blocking camera
 driver, OpenCV call or custom Python function. Closing waits for that work to return.
 Camera handles are reused within a continuous session and released on worker exit.

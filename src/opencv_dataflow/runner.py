@@ -10,6 +10,7 @@ import numpy as np
 
 from .blocks import builtin_registry
 from .core import Graph
+from .parallel_inspection import ParallelInspect
 from .payloads import ImagePyramid, describe_value
 from .plugins import load_plugin
 from .toolblocks import ToolBlock
@@ -42,6 +43,9 @@ def describe(graph):
         }
         if isinstance(block, ToolBlock):
             record["children"] = describe(block.graph)
+        elif isinstance(block, ParallelInspect):
+            record["inspection_preview"] = describe(block.graph)
+            record["preview_index"] = block.last_preview_index
         records.append(record)
     return records
 

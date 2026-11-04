@@ -272,7 +272,10 @@ class Registry:
     def create(self, type_id, **kwargs):
         if type_id not in self.types:
             raise ValueError(f"Unavailable block type: {type_id}. Load its plugin first.")
-        return self.types[type_id](**kwargs)
+        block = self.types[type_id](**kwargs)
+        if hasattr(block, "bind_registry"):
+            block.bind_registry(self)
+        return block
 
 
 @dataclass(frozen=True)
@@ -296,7 +299,7 @@ class Graph:
             block.project_dir = self.project_dir
             from .toolblocks import ToolBlock
 
-            if isinstance(block, ToolBlock):
+            if isinstance(block, ToolBlock) or getattr(block, "owns_workers", False):
                 block.graph.bind_project_dir(self.project_dir)
 
     def add(self, block):
@@ -306,7 +309,7 @@ class Graph:
         block.project_dir = self.project_dir
         from .toolblocks import ToolBlock
 
-        if isinstance(block, ToolBlock):
+        if isinstance(block, ToolBlock) or getattr(block, "owns_workers", False):
             block.graph.bind_project_dir(self.project_dir)
         return block
 
@@ -504,6 +507,7 @@ class Graph:
                     if executor is not None
                     and not self.blocks[key].ticket_source
                     and not isinstance(self.blocks[key], ToolBlock)
+                    and not getattr(self.blocks[key], "owns_workers", False)
                     and not getattr(self.blocks[key], "accept_events", False)
                 ]
                 futures = [executor.submit(run_block, key) for key in parallel] if executor else []
@@ -569,7 +573,17 @@ class Graph:
             raise ValueError("Unsupported project schema version")
         graph = cls()
         for item in data["blocks"]:
-            if item["type"] == "core.toolblock":
+            if item["type"] == "flow.inspect_each":
+                from .parallel_inspection import ParallelInspect
+
+                block = ParallelInspect.from_definition(
+                    item["inspection"],
+                    registry,
+                    _depth + 1,
+                    block_id=item["id"],
+                    parameters=item["parameters"],
+                )
+            elif item["type"] == "core.toolblock":
                 from .toolblocks import ToolBlock
 
                 block = ToolBlock.from_definition(

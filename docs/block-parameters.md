@@ -807,6 +807,31 @@ Inputs: `value` (any), `selector` (data, optional).
 | `comparison` | `"equals"` | `equals`, `less_than`, `greater_than`, `range` |
 | `modulo` | `0` |  |
 
+## Inspect each pose in parallel (`flow.inspect_each`)
+
+Control flow / Parallel inspection
+
+Inputs: `image` (image), `features` (data), `context` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `workers` | `4` | 1..32 concurrent part inspections; each owns a fresh ToolBlock graph. |
+| `max_items` | `64` | Reject larger collections before starting work (1..64). |
+| `max_result_mb` | `128.0` | Retained per-part data/images budget; stop with an error if exceeded. |
+| `max_input_mb` | `256.0` | Image bytes times workers ceiling; intermediates use extra memory. |
+| `stop_after_passes` | `0` | Zero disables. Stop submitting after N completed passing parts. |
+| `stop_after_failures` | `0` | Zero disables. Failures and errors count toward this limit. |
+| `result_policy` | `"all_pass"` | `all_pass`, `any_pass`, `min_passes`, `max_failures` All-pass/max-failures need coverage; other policies allow partial work. |
+| `required_passes` | `1` |  |
+| `allowed_failures` | `0` |  |
+| `empty_policy` | `"fail"` | `fail`, `pass` |
+| `image_terminal` | `"image"` | Public image input name in the inspection ToolBlock. |
+| `pose_terminal` | `"pose"` | Public pose input name in the inspection ToolBlock. |
+| `context_terminal` | `"context"` | Optional shared data input in the inspection ToolBlock. |
+| `image_output` | `"overlay"` | Public image output collected into the images group; empty disables it. |
+| `preview_index` | `0` | Retain this part's internal steps; fall back to a completed part. |
+| `feature_angle` | `"fixed"` | `fixed`, `feature` |
+
 ## Join parallel branches (`flow.join`)
 
 Control flow / Synchronization
@@ -989,6 +1014,19 @@ Ticket mode and fixed value are common inspector controls.
 | `color_format` | `"bgr"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` |
 | `pixel_depth` | `"uint8"` | `unchanged`, `uint8`, `uint16`, `float32` |
 | `path_base` | `"working_directory"` | `working_directory`, `project` |
+
+## Repeated parts demo (`input.parts_demo`)
+
+Input / Synthetic
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `count` | `25` |  |
+| `columns` | `5` |  |
+| `fail_every` | `0` |  |
 
 ## Pattern training demo images (`input.pattern_demo`)
 

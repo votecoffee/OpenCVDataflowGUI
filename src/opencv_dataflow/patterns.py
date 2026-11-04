@@ -456,7 +456,7 @@ class MatchShapePattern(TrainableMatcher, Block):
         )
         if tolerance <= 0 or max(minimum, coverage_min, maximum_overlap) > 1:
             raise ValueError("Invalid shape score, coverage, overlap or distance tolerance")
-        required = integer(p["max_matches"], "Maximum matches", 1, 20)
+        required = integer(p["max_matches"], "Maximum matches", 1, 256)
         if not features.any():
             return pattern_result(inputs["image"], model, [])
         distance = cv2.distanceTransform(255 - features, cv2.DIST_L2, 3)

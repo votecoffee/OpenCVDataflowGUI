@@ -1,0 +1,383 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "parts_source",
+      "type": "input.parts_demo",
+      "name": "25 synthetic parts",
+      "parameters": {
+        "count": 25,
+        "columns": 5,
+        "fail_every": 0
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "reference",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "parts_train",
+      "type": "pattern.train_shape",
+      "name": "Train fixed geometry",
+      "parameters": {
+        "feature_mode": "edges",
+        "blur_kernel": 3,
+        "blur_sigma": 1.0,
+        "edge_low": 50.0,
+        "edge_high": 150.0,
+        "edge_aperture": "3",
+        "edge_l2": true,
+        "max_points": 512,
+        "min_points": 8,
+        "corner_quality": 0.01,
+        "corner_distance": 3.0,
+        "corner_block": 3,
+        "corner_gradient": "3",
+        "corner_harris": false,
+        "corner_k": 0.04,
+        "line_votes": 20,
+        "line_min_length": 10.0,
+        "line_max_gap": 3.0,
+        "line_rho": 1.0,
+        "line_theta_degrees": 1.0,
+        "circle_dp": 1.2,
+        "circle_min_distance": 10.0,
+        "circle_threshold": 20.0,
+        "circle_min_radius": 0,
+        "circle_max_radius": 0
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "model",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "parts_match",
+      "type": "pattern.match_shape",
+      "name": "Locate all 25 parts",
+      "parameters": {
+        "feature_mode": "edges",
+        "blur_kernel": 3,
+        "blur_sigma": 1.0,
+        "edge_low": 50.0,
+        "edge_high": 150.0,
+        "edge_aperture": "3",
+        "edge_l2": true,
+        "max_points": 512,
+        "min_points": 8,
+        "corner_quality": 0.01,
+        "corner_distance": 3.0,
+        "corner_block": 3,
+        "corner_gradient": "3",
+        "corner_harris": false,
+        "corner_k": 0.04,
+        "line_votes": 20,
+        "line_min_length": 10.0,
+        "line_max_gap": 3.0,
+        "line_rho": 1.0,
+        "line_theta_degrees": 1.0,
+        "circle_dp": 1.2,
+        "circle_min_distance": 10.0,
+        "circle_threshold": 20.0,
+        "circle_min_radius": 0,
+        "circle_max_radius": 0,
+        "pose_offset_x": 0.0,
+        "pose_offset_y": 0.0,
+        "pose_offset_angle": 0.0,
+        "rotation_min": 0.0,
+        "rotation_max": 0.0,
+        "rotation_step": 5.0,
+        "scale_min": 1.0,
+        "scale_max": 1.0,
+        "scale_step": 0.1,
+        "distance_tolerance": 3.0,
+        "min_score": 0.95,
+        "min_coverage": 0.95,
+        "max_matches": 25,
+        "max_overlap": 0.3
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "model",
+        "training_mask",
+        "training_region"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count",
+        "score",
+        "transform",
+        "pose",
+        "points",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "parts_inspect",
+      "type": "flow.inspect_each",
+      "name": "Inspect every part",
+      "parameters": {
+        "workers": 4,
+        "max_items": 64,
+        "max_result_mb": 128.0,
+        "max_input_mb": 256.0,
+        "stop_after_passes": 0,
+        "stop_after_failures": 0,
+        "result_policy": "all_pass",
+        "required_passes": 1,
+        "allowed_failures": 0,
+        "empty_policy": "fail",
+        "image_terminal": "image",
+        "pose_terminal": "pose",
+        "context_terminal": "context",
+        "image_output": "overlay",
+        "preview_index": 0,
+        "feature_angle": "fixed"
+      },
+      "position": [
+        980,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "features",
+        "context"
+      ],
+      "exposed_outputs": [
+        "results",
+        "group",
+        "images",
+        "pass_count",
+        "fail_count",
+        "error_count",
+        "complete",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay",
+      "inspection": {
+        "block_type": "ToolBlocks",
+        "subtype": "Reusable",
+        "toolblock_version": 1,
+        "name": "Per-part inspection",
+        "graph": {
+          "schema_version": 1,
+          "blocks": [
+            {
+              "id": "part_image",
+              "type": "flow.split",
+              "name": "Part image",
+              "parameters": {
+                "branches": 2,
+                "workers": 1
+              },
+              "position": [
+                0,
+                0
+              ],
+              "exposed_inputs": [
+                "value"
+              ],
+              "exposed_outputs": [
+                "branch_1",
+                "branch_2",
+                "branch_3",
+                "branch_4"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "part_region",
+              "type": "region.pose",
+              "name": "Local inspection region",
+              "parameters": {
+                "shape": "circle",
+                "rectangle": [
+                  -20,
+                  -20,
+                  40,
+                  40
+                ],
+                "center": [
+                  0,
+                  0
+                ],
+                "radius": 5,
+                "vertices": [
+                  [
+                    -20,
+                    -20
+                  ],
+                  [
+                    20,
+                    -20
+                  ],
+                  [
+                    0,
+                    20
+                  ]
+                ],
+                "invert": false
+              },
+              "position": [
+                310,
+                0
+              ],
+              "exposed_inputs": [
+                "image",
+                "pose"
+              ],
+              "exposed_outputs": [
+                "mask",
+                "region",
+                "overlay"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "part_blobs",
+              "type": "inspect.blobs",
+              "name": "One local blob",
+              "parameters": {
+                "connectivity": 8,
+                "min_area": 3,
+                "max_area": 0,
+                "expected_count": 1,
+                "algorithm": "default",
+                "region_mode": "clip",
+                "check_count": true
+              },
+              "position": [
+                620,
+                0
+              ],
+              "exposed_inputs": [
+                "image",
+                "mask",
+                "region"
+              ],
+              "exposed_outputs": [
+                "overlay",
+                "mask",
+                "count",
+                "centroids",
+                "data",
+                "collection"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            }
+          ],
+          "connections": [
+            {
+              "source": "part_image",
+              "output": "branch_1",
+              "target": "part_region",
+              "input": "image"
+            },
+            {
+              "source": "part_image",
+              "output": "branch_2",
+              "target": "part_blobs",
+              "input": "image"
+            },
+            {
+              "source": "part_region",
+              "output": "region",
+              "target": "part_blobs",
+              "input": "region"
+            }
+          ]
+        },
+        "inputs": {
+          "image": {
+            "block": "part_image",
+            "port": "value"
+          },
+          "pose": {
+            "block": "part_region",
+            "port": "pose"
+          }
+        },
+        "outputs": {
+          "data": {
+            "block": "part_blobs",
+            "port": "data"
+          },
+          "count": {
+            "block": "part_blobs",
+            "port": "count"
+          },
+          "overlay": {
+            "block": "part_blobs",
+            "port": "overlay"
+          }
+        }
+      }
+    }
+  ],
+  "connections": [
+    {
+      "source": "parts_source",
+      "output": "reference",
+      "target": "parts_train",
+      "input": "image"
+    },
+    {
+      "source": "parts_source",
+      "output": "image",
+      "target": "parts_match",
+      "input": "image"
+    },
+    {
+      "source": "parts_train",
+      "output": "model",
+      "target": "parts_match",
+      "input": "model"
+    },
+    {
+      "source": "parts_source",
+      "output": "image",
+      "target": "parts_inspect",
+      "input": "image"
+    },
+    {
+      "source": "parts_match",
+      "output": "matches",
+      "target": "parts_inspect",
+      "input": "features"
+    }
+  ]
+}

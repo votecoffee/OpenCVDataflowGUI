@@ -810,3 +810,33 @@ def control_flow_graph(registry):
     for source, output, target, input in wires:
         graph.connect(source, output, target, input)
     return graph
+
+
+def parallel_parts_graph(registry):
+    """Find 25 repeated patterns and inspect a local region around each matched pose."""
+    graph = Graph()
+    source = graph.add(registry.create("input.parts_demo", block_id="parts_source"))
+    train = graph.add(registry.create("pattern.train_shape", block_id="parts_train"))
+    match = graph.add(
+        registry.create(
+            "pattern.match_shape",
+            block_id="parts_match",
+            parameters={"max_matches": 25, "min_score": 0.95, "min_coverage": 0.95},
+        )
+    )
+    inspect = graph.add(registry.create("flow.inspect_each", block_id="parts_inspect"))
+    source.name, train.name, match.name, inspect.name = (
+        "25 synthetic parts",
+        "Train fixed geometry",
+        "Locate all 25 parts",
+        "Inspect every part",
+    )
+    source.position, train.position = [0, 0], [320, 0]
+    match.position, inspect.position = [640, 0], [980, 0]
+    graph.connect(source.id, "reference", train.id, "image")
+    graph.connect(source.id, "image", match.id, "image")
+    graph.connect(train.id, "model", match.id, "model")
+    graph.connect(source.id, "image", inspect.id, "image")
+    graph.connect(match.id, "matches", inspect.id, "features")
+    match.preview_output = inspect.preview_output = "overlay"
+    return graph

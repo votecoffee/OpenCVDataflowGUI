@@ -46,6 +46,7 @@ from .examples import (
     combined_regions_graph,
     control_flow_graph,
     object_collections_graph,
+    parallel_parts_graph,
     pose_inspection_graph,
     regions_graph,
     starter_graph,
@@ -53,6 +54,7 @@ from .examples import (
     trained_patterns_graph,
     transformed_regions_graph,
 )
+from .parallel_inspection import ParallelInspect
 from .payloads import describe_value, packet_for, prepare_inputs
 from .plugins import load_plugin
 from .region_editor import RegionEditor
@@ -167,6 +169,15 @@ class Inspector(QWidget):
             for title, callback in (
                 ("Edit internal graph", lambda: self.window.enter_toolblock(block)),
                 ("Edit public terminals", self.window.edit_interface),
+            ):
+                button = QPushButton(title)
+                button.clicked.connect(callback)
+                self.form.addRow(button)
+        if isinstance(block, ParallelInspect):
+            for title, callback in (
+                ("Edit inspection graph", lambda: self.window.enter_toolblock(block)),
+                ("Load inspection ToolBlock…", self.load_inspection),
+                ("Export inspection ToolBlock…", self.window.export_toolblock),
             ):
                 button = QPushButton(title)
                 button.clicked.connect(callback)
@@ -399,6 +410,31 @@ class Inspector(QWidget):
                 )
         except (ValueError, TypeError, KeyError, cv2.error) as exc:
             self.window.warn(str(exc))
+
+    def load_inspection(self):
+        block = self.block
+        if self.window.runner or not isinstance(block, ParallelInspect):
+            return
+        path, _ = QFileDialog.getOpenFileName(
+            self, "Load inspection ToolBlock", filter="ToolBlock (*.toolblock.json)"
+        )
+        if path:
+            try:
+                tool = ToolBlock.from_definition(
+                    json.loads(Path(path).read_text(encoding="utf-8")), self.window.registry
+                )
+                candidate = ParallelInspect(
+                    inspection=tool,
+                    registry=self.window.registry,
+                    parameters=self.read_parameters(),
+                )
+                candidate.validate_inspection()
+                if self.apply():
+                    block.inspection = tool
+                    block.graph.bind_project_dir(self.window.root_graph.project_dir)
+                    self.select(block)
+            except (ValueError, TypeError, KeyError, OSError) as exc:
+                self.window.warn(str(exc))
 
     def load_pattern_model(self):
         block = self.block
@@ -640,6 +676,7 @@ class MainWindow(QMainWindow):
             ("Load trained patterns and edges example", None, self.load_trained_patterns_example),
             ("Load pose-relative inspection example", None, self.load_pose_inspection_example),
             ("Load ticketed control flow example", None, self.load_control_flow_example),
+            ("Load parallel part inspection example", None, self.load_parallel_parts_example),
             ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
@@ -736,6 +773,9 @@ class MainWindow(QMainWindow):
 
     def selected_toolblock(self):
         selected = self.inspector.block
+        if isinstance(selected, ParallelInspect):
+            selected.inspection._parent_node_id = selected.id
+            return selected.inspection, self.graph
         if isinstance(selected, ToolBlock):
             return selected, self.graph
         if self.graph_stack:
@@ -767,6 +807,9 @@ class MainWindow(QMainWindow):
         self.enter_toolblock(self.inspector.block)
 
     def enter_toolblock(self, block):
+        if isinstance(block, ParallelInspect):
+            block.inspection._parent_node_id = block.id
+            block = block.inspection
         if self.runner or not isinstance(block, ToolBlock):
             return
         self.graph_stack.append((self.graph, block))
@@ -784,7 +827,7 @@ class MainWindow(QMainWindow):
         if self.runner or not self.graph_stack:
             return
         parent, owner = self.graph_stack.pop()
-        self.show_graph(parent, owner.id)
+        self.show_graph(parent, getattr(owner, "_parent_node_id", owner.id))
 
     def update_navigation(self):
         self.back_action.setEnabled(bool(self.graph_stack) and self.runner is None)
@@ -922,6 +965,10 @@ class MainWindow(QMainWindow):
     def load_control_flow_example(self):
         if not self.runner and self.confirm_discard():
             self.replace_graph(control_flow_graph(self.registry))
+
+    def load_parallel_parts_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(parallel_parts_graph(self.registry))
 
     def open_project(self):
         if self.runner or not self.confirm_discard():
