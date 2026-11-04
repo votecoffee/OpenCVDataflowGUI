@@ -199,15 +199,24 @@ def test_toolblock_interface_dialog_and_library_instances(app):
     window.close()
 
 
-def test_regions_example_editor_load_save_and_shape_dropdown(app, tmp_path):
+@pytest.mark.parametrize(
+    "loader,count,shape_id",
+    [
+        ("load_regions_example", 10, "roi_circle"),
+        ("load_combined_regions_example", 11, "combined_outer"),
+    ],
+)
+def test_regions_example_editor_load_save_and_shape_dropdown(
+    app, tmp_path, loader, count, shape_id
+):
     from PySide6.QtWidgets import QComboBox
 
     window = MainWindow()
     window.show()
     app.processEvents()
-    window.load_regions_example()
-    assert len(window.graph.blocks) == 10
-    circle = window.graph.blocks["roi_circle"]
+    getattr(window, loader)()
+    assert len(window.graph.blocks) == count
+    circle = window.graph.blocks[shape_id]
     window.scene.nodes[circle.id].setSelected(True)
     assert isinstance(window.inspector.fields["shape"], QComboBox)
     assert window.inspector.fields["shape"].currentText() == "circle"

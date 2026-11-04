@@ -995,6 +995,16 @@ Inputs: `data` (data).
 | `path` | `"results.csv"` |  |
 | `format` | `"csv"` | `csv`, `xml`, `sqlite` |
 
+## Combine regions (`region.combine`)
+
+Image processing / Regions
+
+Inputs: `image` (image), `region_a` (data), `region_b` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `operation` | `"union"` | `union`, `intersection`, `difference`, `xor`, `invert` Difference selects A outside B. Invert uses A only; otherwise B is required. |
+
 ## Filter points by region (`region.filter_points`)
 
 Inspection / Regions
@@ -1002,6 +1012,19 @@ Inspection / Regions
 Inputs: `image` (image), `points` (data), `mask` (image, optional), `region` (data, optional).
 
 No configurable algorithm parameters.
+
+## Measure selected region (`region.measure`)
+
+Inspection / Regions
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `min_area` | `0` |  |
+| `max_area` | `0` | Maximum selected pixel count; zero means unlimited. |
+| `min_coverage` | `0.0` | Selected pixels / image pixels, from zero to one. |
+| `max_coverage` | `1.0` |  |
 
 ## Shape region (`region.shape`)
 

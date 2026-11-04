@@ -40,7 +40,7 @@ from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
 from .canvas import CanvasScene, CanvasView, Node, pixmap
 from .core import Graph
-from .examples import regions_graph, starter_graph, template_graph
+from .examples import combined_regions_graph, regions_graph, starter_graph, template_graph
 from .plugins import load_plugin
 from .region_editor import RegionEditor
 from .toolblock_editor import InterfaceDialog
@@ -448,6 +448,7 @@ class MainWindow(QMainWindow):
             ("Load starter inspection", None, self.load_starter),
             ("Load template matching example", None, self.load_template_example),
             ("Load regions example", None, self.load_regions_example),
+            ("Load combined regions example", None, self.load_combined_regions_example),
         ):
             action = QAction(title, self)
             if shortcut:
@@ -701,6 +702,10 @@ class MainWindow(QMainWindow):
     def load_regions_example(self):
         if not self.runner and self.confirm_discard():
             self.replace_graph(regions_graph(self.registry))
+
+    def load_combined_regions_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(combined_regions_graph(self.registry))
 
     def open_project(self):
         if self.runner or not self.confirm_discard():

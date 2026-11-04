@@ -1,0 +1,457 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "combined_source",
+      "type": "input.demo",
+      "name": "Synthetic parts",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "combined_outer",
+      "type": "region.shape",
+      "name": "Outer circle",
+      "parameters": {
+        "shape": "circle",
+        "rectangle": [
+          0,
+          0,
+          100,
+          100
+        ],
+        "center": [
+          140,
+          180
+        ],
+        "radius": 80,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        300,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "combined_inner",
+      "type": "region.shape",
+      "name": "Exclude center",
+      "parameters": {
+        "shape": "circle",
+        "rectangle": [
+          0,
+          0,
+          100,
+          100
+        ],
+        "center": [
+          140,
+          180
+        ],
+        "radius": 28,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        300,
+        340
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "combined_rectangle",
+      "type": "region.shape",
+      "name": "Second part",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          260,
+          95,
+          150,
+          170
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        300,
+        680
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "combined_ring",
+      "type": "region.combine",
+      "name": "Circle minus center",
+      "parameters": {
+        "operation": "difference"
+      },
+      "position": [
+        620,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "region_a",
+        "region_b"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "combined_union",
+      "type": "region.combine",
+      "name": "Ring or second part",
+      "parameters": {
+        "operation": "union"
+      },
+      "position": [
+        940,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "region_a",
+        "region_b"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "combined_measure",
+      "type": "region.measure",
+      "name": "Selection size",
+      "parameters": {
+        "min_area": 40000,
+        "max_area": 45000,
+        "min_coverage": 0.0,
+        "max_coverage": 1.0
+      },
+      "position": [
+        1260,
+        340
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "area",
+        "coverage",
+        "centroid",
+        "bounds",
+        "data"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "combined_histogram",
+      "type": "inspect.histogram",
+      "name": "Combined histogram",
+      "parameters": {
+        "bins": 256,
+        "range_mode": "automatic",
+        "range_min": 0.0,
+        "range_max": 1.0,
+        "include_alpha": false
+      },
+      "position": [
+        1260,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "combined_gray",
+      "type": "cv.convert",
+      "name": "Grayscale",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "unchanged"
+      },
+      "position": [
+        620,
+        680
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "combined_threshold",
+      "type": "cv.threshold",
+      "name": "Segment selected pixels",
+      "parameters": {
+        "value": 100.0,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        940,
+        680
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "combined_components",
+      "type": "inspect.components",
+      "name": "Measure ring and rectangle",
+      "parameters": {
+        "connectivity": 8,
+        "min_area": 100,
+        "max_area": 0,
+        "expected_count": 2,
+        "algorithm": "default",
+        "region_mode": "clip"
+      },
+      "position": [
+        1260,
+        680
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "centroids",
+        "data"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "combined_source",
+      "output": "image",
+      "target": "combined_outer",
+      "input": "image"
+    },
+    {
+      "source": "combined_source",
+      "output": "image",
+      "target": "combined_inner",
+      "input": "image"
+    },
+    {
+      "source": "combined_source",
+      "output": "image",
+      "target": "combined_rectangle",
+      "input": "image"
+    },
+    {
+      "source": "combined_source",
+      "output": "image",
+      "target": "combined_ring",
+      "input": "image"
+    },
+    {
+      "source": "combined_source",
+      "output": "image",
+      "target": "combined_union",
+      "input": "image"
+    },
+    {
+      "source": "combined_source",
+      "output": "image",
+      "target": "combined_measure",
+      "input": "image"
+    },
+    {
+      "source": "combined_source",
+      "output": "image",
+      "target": "combined_histogram",
+      "input": "image"
+    },
+    {
+      "source": "combined_source",
+      "output": "image",
+      "target": "combined_gray",
+      "input": "image"
+    },
+    {
+      "source": "combined_outer",
+      "output": "region",
+      "target": "combined_ring",
+      "input": "region_a"
+    },
+    {
+      "source": "combined_inner",
+      "output": "region",
+      "target": "combined_ring",
+      "input": "region_b"
+    },
+    {
+      "source": "combined_ring",
+      "output": "region",
+      "target": "combined_union",
+      "input": "region_a"
+    },
+    {
+      "source": "combined_rectangle",
+      "output": "region",
+      "target": "combined_union",
+      "input": "region_b"
+    },
+    {
+      "source": "combined_union",
+      "output": "region",
+      "target": "combined_measure",
+      "input": "region"
+    },
+    {
+      "source": "combined_union",
+      "output": "region",
+      "target": "combined_histogram",
+      "input": "region"
+    },
+    {
+      "source": "combined_union",
+      "output": "region",
+      "target": "combined_threshold",
+      "input": "region"
+    },
+    {
+      "source": "combined_union",
+      "output": "region",
+      "target": "combined_components",
+      "input": "region"
+    },
+    {
+      "source": "combined_gray",
+      "output": "image",
+      "target": "combined_threshold",
+      "input": "image"
+    },
+    {
+      "source": "combined_threshold",
+      "output": "image",
+      "target": "combined_components",
+      "input": "image"
+    }
+  ]
+}

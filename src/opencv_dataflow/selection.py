@@ -20,12 +20,44 @@ def whole(value, name, minimum=-1_000_000, maximum=1_000_000):
     return int(value)
 
 
-def rasterize(region, shape):
+def rasterize(region, shape, *, _depth=0, _budget=None):
+    if _budget is None:
+        _budget = [128]
+    _budget[0] -= 1
+    if _depth > 16 or _budget[0] < 0:
+        raise ValueError("Region expression exceeds 16 levels or 128 shapes/operators")
     height, width = shape[:2]
-    if region.get("model") != "image_region_v1" or region.get("image_size") != [width, height]:
+    if (
+        not isinstance(region, dict)
+        or region.get("model") != "image_region_v1"
+        or region.get("image_size") != [width, height]
+    ):
         raise ValueError("Region must use image_region_v1 and match image dimensions")
-    mask = np.zeros((height, width), np.uint8)
     kind = region["shape"]
+    if kind == "composite":
+        operation = region.get("operation")
+        children = region.get("children")
+        if (
+            operation not in ("union", "intersection", "difference", "xor", "invert")
+            or not isinstance(children, list)
+            or len(children) != (1 if operation == "invert" else 2)
+        ):
+            raise ValueError("Composite region needs a supported operation and one/two children")
+        a = rasterize(children[0], shape, _depth=_depth + 1, _budget=_budget)
+        if operation == "invert":
+            mask = cv2.bitwise_not(a)
+        else:
+            b = rasterize(children[1], shape, _depth=_depth + 1, _budget=_budget)
+            if operation == "difference":
+                mask = cv2.bitwise_and(a, cv2.bitwise_not(b))
+            else:
+                mask = {
+                    "union": cv2.bitwise_or,
+                    "intersection": cv2.bitwise_and,
+                    "xor": cv2.bitwise_xor,
+                }[operation](a, b)
+        return cv2.bitwise_not(mask) if region.get("invert", False) else mask
+    mask = np.zeros((height, width), np.uint8)
     if kind == "rectangle":
         x, y, w, h = [whole(v, "Rectangle") for v in region["rectangle"]]
         if w <= 0 or h <= 0:

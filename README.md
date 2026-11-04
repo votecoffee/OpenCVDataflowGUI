@@ -169,6 +169,12 @@ vertices. Drag handles to resize, or drag a shape to move it. **Apply region**
 updates the block and marks the project modified; **Cancel** preserves it.
 The editor uses a captured frame, with correctly scaled pixel coordinates.
 
+Use **Combine regions** to union, intersect, subtract, XOR or invert shapes;
+its output is another reusable region, so combinations can be nested. **Measure
+selected region** reports pixel area, image coverage, bounds and centroid, with
+configurable inspection limits. **File > Load combined regions example** opens
+an 11-block project that excludes a circle's center and adds a second part region.
+
 Open **File > Load regions example**, or `examples/regions.json`, for a working
 10-block project that inspects each synthetic part separately, computes a polygon
 histogram and blurs only the circular selection. No image download is required.
