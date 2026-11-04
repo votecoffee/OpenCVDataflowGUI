@@ -9,6 +9,10 @@ They are not silently fused into a shared G-API graph.
 
 ## New block catalog
 
+Trainable geometric and ORB/SIFT patterns, plus oriented gradient-band edge
+measurements, are documented in [pattern training and edges](patterns-edges.md).
+The portable `examples/trained_patterns.json` job exercises all three tools.
+
 | Toolbox subtype | Block | OpenCV operation / behavior |
 | --- | --- | --- |
 | Color and depth | Convert image | Color conversion and deterministic depth scaling; same choices as image-file input |

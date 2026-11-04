@@ -28,6 +28,12 @@ METRICS = (
     "line_width",
     "precision",
     "nfa",
+    "thickness",
+    "continuous_length",
+    "strength",
+    "intensity",
+    "coverage",
+    "contrast",
     *(f"hu_{i}" for i in range(1, 8)),
     *(f"hu_log_{i}" for i in range(1, 8)),
 )

@@ -602,3 +602,90 @@ def object_collections_graph(registry):
     for key in ("objects_blob_draw", "objects_contour_draw", "objects_line_draw"):
         graph.blocks[key].preview_output = "overlay"
     return graph
+
+
+def trained_patterns_graph(registry):
+    """Separate reference training, geometric/texture search and oriented edge inspection."""
+    graph = Graph()
+    specs = [
+        ("patterns_images", "input.pattern_demo", "References and search scene", [0, 0], None),
+        (
+            "patterns_shape_train",
+            "pattern.train_shape",
+            "Train geometric reference",
+            [320, 0],
+            None,
+        ),
+        (
+            "patterns_shape_match",
+            "pattern.match_shape",
+            "Find rotated geometry",
+            [660, 0],
+            {"rotation_min": -20.0, "rotation_max": 20.0, "rotation_step": 5.0, "min_score": 0.7},
+        ),
+        (
+            "patterns_texture_train",
+            "pattern.train_texture",
+            "Train ORB reference",
+            [320, 400],
+            None,
+        ),
+        (
+            "patterns_texture_match",
+            "pattern.match_texture",
+            "Find textured reference",
+            [660, 400],
+            None,
+        ),
+        (
+            "patterns_edge_region",
+            "region.shape",
+            "Inspect right-hand bar",
+            [320, 800],
+            {"rectangle": [565, 30, 60, 340]},
+        ),
+        (
+            "patterns_edges",
+            "inspect.oriented_edges",
+            "Strong continuous vertical edges",
+            [660, 800],
+            {
+                "min_length": 250.0,
+                "min_continuous_length": 250.0,
+                "max_thickness": 6.0,
+                "min_contrast": 150.0,
+            },
+        ),
+        (
+            "patterns_edge_overlay",
+            "collection.draw",
+            "Measured edges",
+            [1000, 800],
+            {"draw_bounds": False, "color": [240, 180, 60]},
+        ),
+    ]
+    for key, kind, name, position, parameters in specs:
+        block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
+        block.name, block.position = name, position
+    for source, output, target, input in [
+        ("patterns_images", "shape_reference", "patterns_shape_train", "image"),
+        ("patterns_images", "texture_reference", "patterns_texture_train", "image"),
+        ("patterns_images", "image", "patterns_shape_match", "image"),
+        ("patterns_images", "image", "patterns_texture_match", "image"),
+        ("patterns_shape_train", "model", "patterns_shape_match", "model"),
+        ("patterns_texture_train", "model", "patterns_texture_match", "model"),
+        ("patterns_images", "image", "patterns_edge_region", "image"),
+        ("patterns_images", "image", "patterns_edges", "image"),
+        ("patterns_edge_region", "region", "patterns_edges", "region"),
+        ("patterns_images", "image", "patterns_edge_overlay", "image"),
+        ("patterns_edges", "collection", "patterns_edge_overlay", "collection"),
+    ]:
+        graph.connect(source, output, target, input)
+    for key in (
+        "patterns_shape_match",
+        "patterns_texture_match",
+        "patterns_edges",
+        "patterns_edge_overlay",
+    ):
+        graph.blocks[key].preview_output = "overlay"
+    return graph

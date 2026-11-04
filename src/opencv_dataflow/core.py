@@ -156,6 +156,9 @@ class Block:
     def serialize_extra(self):
         return {}
 
+    def restore_extra(self, data):
+        """Restore optional JSON configuration beyond ordinary parameter controls."""
+
     def copy_results_from(self, other):
         for name in (
             "last_inputs",
@@ -384,6 +387,7 @@ class Graph:
                     item["type"], block_id=item["id"], parameters=item["parameters"]
                 )
             block.name = item["name"]
+            block.restore_extra(item)
             position = item["position"]
             if len(position) != 2 or not all(math.isfinite(v) for v in position):
                 raise ValueError("Invalid node position")

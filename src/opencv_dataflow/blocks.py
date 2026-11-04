@@ -536,10 +536,13 @@ def builtin_registry():
     from .depth import RGBD, DepthFile, DepthSample
     from .features import FEATURE_BLOCKS
     from .histogram import Histogram
+    from .oriented_edges import FindOrientedEdges
+    from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .processing import PROCESSING_BLOCKS
     from .pyramids import PYRAMID_BLOCKS
     from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
+    from .texture_patterns import MatchTexturePattern, TrainTexturePattern
 
     registry = Registry()
     for block in (
@@ -571,6 +574,12 @@ def builtin_registry():
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,
         *COLLECTION_BLOCKS,
+        TrainShapePattern,
+        MatchShapePattern,
+        TrainTexturePattern,
+        MatchTexturePattern,
+        FindOrientedEdges,
+        PatternDemoImages,
     ):
         registry.register(block)
     return registry

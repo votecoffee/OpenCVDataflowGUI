@@ -661,6 +661,12 @@ class TransformPoints(Block):
                     "source_to_target": matrix.tolist(),
                 }
             }
+        if isinstance(inputs.get("transform"), dict):
+            target_payload = inputs["transform"].get(
+                "source_payload" if self.parameters["invert"] else "target_payload"
+            )
+            if target_payload is not None:
+                context = target_payload
         return Result({"points": output.tolist()}, payloads={"points": context})
 
 

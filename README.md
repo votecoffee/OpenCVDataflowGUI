@@ -65,6 +65,21 @@ positions even when connections are unchanged**, including layouts inside nested
 ToolBlocks. Layout-only moves retain existing results. Positions are saved in the
 project; there is no automatic save on movement.
 
+Train geometric and texture patterns with **Match shape pattern** and **Match
+texture pattern**. Select a matcher, run once to capture its input, then click
+**Train from input** in the inspector. Models are retained in saved projects and
+can also be imported/exported as JSON. Separate **Train shape pattern** and
+**Train texture pattern** blocks provide reusable wired models. Geometric features
+include edges, corners, lines and circles; texture detection supports ORB and SIFT.
+**Find oriented edges** selects vertical, horizontal or angled edges and filters
+thickness, continuous length, strength, intensity, contrast and coverage.
+
+Open **File > Load trained patterns and edges example**, or
+[`examples/trained_patterns.json`](examples/trained_patterns.json), and press F5.
+It needs no external assets: expected results are one geometric match, one texture
+match and two vertical edges. See [training and edge workflows](docs/patterns-edges.md)
+for training regions, pose coordinates, controls and current algorithm limits.
+
 Load trusted custom blocks via **File > Load Python plugin**. Start with
 [`examples/custom_invert.py`](examples/custom_invert.py). Plugins run arbitrary Python;
 project files never automatically import them. Load the same plugins before opening
