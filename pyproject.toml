@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "opencv-dataflow-gui"
+version = "0.1.0"
+description = "Visual OpenCV development and execution with extensible Python blocks"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["numpy>=2,<3", "opencv-python>=4.10,<5", "PySide6>=6.8,<7"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "ruff>=0.9"]
+
+[project.scripts]
+opencv-dataflow = "opencv_dataflow.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
