@@ -348,3 +348,26 @@ def test_layout_only_moves_persist_root_and_nested_without_rewiring_or_result_lo
     window.replace_graph(restored, window.path)
     assert window.scene.nodes[toolblock.id].pos().x() == 235.5
     window.close()
+
+
+def test_enum_fields_are_dropdowns_and_unknown_values_are_not_silently_replaced(app, monkeypatch):
+    from PySide6.QtWidgets import QComboBox
+
+    window = MainWindow()
+    for kind, cls in window.registry.types.items():
+        block = window.registry.create(kind)
+        window.inspector.select(block)
+        for key in cls.parameter_choices:
+            field = window.inspector.fields[key]
+            assert isinstance(field, QComboBox)
+            assert field.currentText() == str(block.parameters[key])
+    block = window.graph.add(window.registry.create("inspect.orb"))
+    block.parameters["score_type"] = "obsolete"
+    window.inspector.select(block)
+    assert window.inspector.fields["score_type"].currentText() == "obsolete"
+    errors = []
+    monkeypatch.setattr(window, "warn", errors.append)
+    window.inspector.apply()
+    assert errors and block.parameters["score_type"] == "obsolete"
+    window.dirty = False
+    window.close()

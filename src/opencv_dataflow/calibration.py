@@ -8,6 +8,7 @@ import numpy as np
 
 from .core import Block, Graph, Port, Result
 from .images import opencv_image, preview_rgb
+from .processing import finite, integer
 from .toolblocks import Binding, ToolBlock
 
 
@@ -23,13 +24,51 @@ def grid_settings(parameters):
     return (columns, rows), world
 
 
-def find_grid(image, size):
+GRID_OPTIONS = {
+    "detector": "sb",
+    "normalize": True,
+    "exhaustive": True,
+    "accuracy": False,
+    "adaptive_threshold": True,
+    "fast_check": False,
+    "subpixel_window": 11,
+    "subpixel_iterations": 30,
+    "subpixel_epsilon": 0.001,
+}
+CALIB_FLAGS = {
+    "use_intrinsic_guess": cv2.CALIB_USE_INTRINSIC_GUESS,
+    "fix_principal_point": cv2.CALIB_FIX_PRINCIPAL_POINT,
+    "fix_aspect_ratio": cv2.CALIB_FIX_ASPECT_RATIO,
+    "zero_tangent": cv2.CALIB_ZERO_TANGENT_DIST,
+    "rational_model": cv2.CALIB_RATIONAL_MODEL,
+    "thin_prism_model": cv2.CALIB_THIN_PRISM_MODEL,
+    "tilted_model": cv2.CALIB_TILTED_MODEL,
+    **{f"fix_k{i}": getattr(cv2, f"CALIB_FIX_K{i}") for i in range(1, 7)},
+}
+
+
+def find_grid(image, size, parameters=None):
     # Detection copy only: numeric source pixels remain unchanged.
     display = cv2.cvtColor(preview_rgb(image), cv2.COLOR_RGB2BGR)
     gray = cv2.cvtColor(display, cv2.COLOR_BGR2GRAY)
-    found, corners = cv2.findChessboardCornersSB(
-        gray, size, flags=cv2.CALIB_CB_NORMALIZE_IMAGE | cv2.CALIB_CB_EXHAUSTIVE
-    )
+    p = GRID_OPTIONS if parameters is None else parameters
+    flags = cv2.CALIB_CB_NORMALIZE_IMAGE if p["normalize"] else 0
+    if p["detector"] == "sb":
+        flags |= cv2.CALIB_CB_EXHAUSTIVE if p["exhaustive"] else 0
+        flags |= cv2.CALIB_CB_ACCURACY if p["accuracy"] else 0
+        found, corners = cv2.findChessboardCornersSB(gray, size, flags=flags)
+    else:
+        flags |= cv2.CALIB_CB_ADAPTIVE_THRESH if p["adaptive_threshold"] else 0
+        flags |= cv2.CALIB_CB_FAST_CHECK if p["fast_check"] else 0
+        found, corners = cv2.findChessboardCorners(gray, size, flags=flags)
+        if found:
+            window = integer(p["subpixel_window"], "Subpixel window", 1, 255)
+            criteria = (
+                cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT,
+                integer(p["subpixel_iterations"], "Subpixel iterations", 1, 10000),
+                finite(p["subpixel_epsilon"], "Subpixel epsilon", 0),
+            )
+            corners = cv2.cornerSubPix(gray, corners, (window, window), (-1, -1), criteria)
     if not found:
         raise ValueError(
             f"Calibration grid not found: expected {size[0]} by {size[1]} inner corners"
@@ -43,6 +82,7 @@ class CalibrationGrid(Block):
     inputs = (Port("image"),)
     outputs = (Port("mapping", "data"), Port("corners", "data"), Port("overlay"))
     defaults = {
+        **GRID_OPTIONS,
         "columns": 9,
         "rows": 6,
         "spacing": 10.0,
@@ -52,6 +92,7 @@ class CalibrationGrid(Block):
         "reverse_order": False,
         "max_error": 1.0,
     }
+    parameter_choices = {"detector": ("sb", "classic")}
 
     def process(self, inputs):
         size, world = grid_settings(self.parameters)
@@ -63,7 +104,7 @@ class CalibrationGrid(Block):
             or maximum <= 0
         ):
             raise ValueError("Origin must be a grid corner and max error must be positive")
-        corners, overlay = find_grid(inputs["image"], size)
+        corners, overlay = find_grid(inputs["image"], size, self.parameters)
         if self.parameters["reverse_order"]:
             corners = corners[::-1].copy()
         origin_index = row * size[0] + column
@@ -186,6 +227,13 @@ class LensCalibration(Block):
     block_type, subtype = "Calibration", "Lens distortion"
     outputs = (Port("calibration", "data"), Port("rms", "number"))
     defaults = {
+        **GRID_OPTIONS,
+        **dict.fromkeys(CALIB_FLAGS, False),
+        "solver": "svd",
+        "initial_camera_matrix": [],
+        "initial_distortion": [],
+        "max_iterations": 30,
+        "epsilon": float(np.finfo(float).eps),
         "image_paths": [],
         "columns": 9,
         "rows": 6,
@@ -193,6 +241,7 @@ class LensCalibration(Block):
         "units": "mm",
         "max_rms_pixels": 1.0,
     }
+    parameter_choices = {"detector": ("sb", "classic"), "solver": ("svd", "lu", "qr")}
 
     def process(self, inputs):
         size, world = grid_settings(self.parameters)
@@ -213,12 +262,44 @@ class LensCalibration(Block):
             if image_size is not None and current_size != image_size:
                 raise ValueError("All lens calibration images must have identical dimensions")
             image_size = current_size
-            corners, _ = find_grid(image, size)
+            corners, _ = find_grid(image, size, self.parameters)
             if any(np.sqrt(np.mean((corners - previous) ** 2)) < 0.5 for previous in points):
                 raise ValueError("Calibration views are duplicates; use varied board poses")
             points.append(corners)
+        p = self.parameters
+        matrix = (
+            np.asarray(p["initial_camera_matrix"], np.float64)
+            if p["initial_camera_matrix"]
+            else None
+        )
+        distortion = (
+            np.asarray(p["initial_distortion"], np.float64) if p["initial_distortion"] else None
+        )
+        if matrix is not None and (matrix.shape != (3, 3) or not np.isfinite(matrix).all()):
+            raise ValueError("Initial camera matrix must be finite 3x3")
+        if distortion is not None and (
+            distortion.size not in (4, 5, 8, 12, 14) or not np.isfinite(distortion).all()
+        ):
+            raise ValueError("Initial distortion must contain 4,5,8,12 or 14 finite values")
+        if (
+            p["use_intrinsic_guess"] or p["fix_aspect_ratio"] or p["fix_principal_point"]
+        ) and matrix is None:
+            raise ValueError("Selected intrinsic constraints require an initial camera matrix")
+        flags = sum(value for key, value in CALIB_FLAGS.items() if p[key])
+        flags |= {"svd": 0, "lu": cv2.CALIB_USE_LU, "qr": cv2.CALIB_USE_QR}[p["solver"]]
+        criteria = (
+            cv2.TERM_CRITERIA_COUNT | cv2.TERM_CRITERIA_EPS,
+            integer(p["max_iterations"], "Maximum iterations", 1, 10000),
+            finite(p["epsilon"], "Epsilon", 0),
+        )
         rms, matrix, distortion, rotations, translations = cv2.calibrateCamera(
-            [world.copy() for _ in points], points, image_size, None, None
+            [world.copy() for _ in points],
+            points,
+            image_size,
+            matrix,
+            distortion,
+            flags=flags,
+            criteria=criteria,
         )
         calibration = {
             "model": "opencv_pinhole_v1",
@@ -245,7 +326,7 @@ class Undistort(Block):
     block_type, subtype = "Calibration", "Lens distortion"
     inputs = (Port("image"), Port("calibration", "data"))
     outputs = (Port("image"),)
-    defaults = {"max_rms_pixels": 1.0}
+    defaults = {"max_rms_pixels": 1.0, "new_camera_matrix": []}
 
     def process(self, inputs):
         calibration = inputs["calibration"]
@@ -256,7 +337,13 @@ class Undistort(Block):
             raise ValueError("Lens calibration exceeds the allowed reprojection error")
         if calibration["image_size"] != [image.shape[1], image.shape[0]]:
             raise ValueError("Image dimensions do not match the lens calibration")
-        output = cv2.undistort(image, matrix, distortion)
+        replacement = self.parameters["new_camera_matrix"]
+        replacement = np.asarray(replacement, np.float64) if replacement else None
+        if replacement is not None and (
+            replacement.shape != (3, 3) or not np.isfinite(replacement).all()
+        ):
+            raise ValueError("New camera matrix must be finite 3x3")
+        output = cv2.undistort(image, matrix, distortion, newCameraMatrix=replacement)
         return Result({"image": output}, graphics={"undistorted": output})
 
 

@@ -51,6 +51,8 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
    ports are cyan, numeric ports amber, and structured-data ports purple.
 3. Select a block, edit parameters in the right inspector, and click **Apply
    configuration**. Choose exposed ports and the optional node thumbnail there.
+   OpenCV enum controls use dropdowns; booleans use checkboxes. Hover over controls
+   with help text for method-specific guidance.
 4. Run once or continuously. Inspect retained input, output, and graphic images
    with the preview selector. Nodes show pass/fail/error state, timing, and score
    intensity where provided. A failed inspection still supplies results downstream;
@@ -141,6 +143,19 @@ masking, FAST/ORB features, descriptor matching, homography estimation and point
 transforms. Open `examples/lena_registration.json` after preparing the Lena asset
 to match the image to a known rotated copy and compare the estimated warp.
 
+Further tools include box and separable filtering, Harris/minimum-eigenvalue
+responses, subpixel corner refinement, phase correlation, full/partial affine
+estimation, coordinate remapping, and Cartesian-to-polar image fields. See
+[analysis tools and parameter conventions](docs/analysis-tools.md).
+
+The [complete parameter reference](docs/block-parameters.md) lists defaults,
+dropdown choices and input ports directly from the block definitions. Existing
+wrappers also expose kernel dimensions, anchors, borders, output depths, masks,
+threshold modes, contour modes, feature detector controls, matching norms, robust
+solver settings, calibration flags and image encoder options where applicable.
+Native buffers are managed by the runtime; hardware requests depend on the camera
+backend. Existing saved projects acquire new defaults when loaded.
+
 ### Image file formats
 
 The **Image file** input loads a file and reformats it using inspector dropdowns:
@@ -211,6 +226,7 @@ graph.close()
 - `core.py`: block/result contracts, typed ports, acyclic graph scheduling, JSON projects.
 - `blocks.py`: acquisition, native G-API processing, inspection, and output sinks.
 - `processing.py`: base OpenCV geometry, filtering, segmentation, math and inspection wrappers.
+- `features.py`, `registration.py`, `analysis_tools.py`: contrast, features, registration and numerical image tools.
 - `examples.py` and `runner.py`: built-in starter graphs and headless project verification.
 - `plugins.py`: explicitly loaded trusted Python extensions.
 - `canvas.py`: movable nodes, typed sockets, selectable wires, pan and zoom.
@@ -244,6 +260,7 @@ Run local checks before committing:
 ```powershell
 .\.venv\Scripts\python -m pytest
 .\.venv\Scripts\python -m ruff check src tests examples
+.\.venv\Scripts\python scripts/block_parameter_reference.py --check
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development conventions and

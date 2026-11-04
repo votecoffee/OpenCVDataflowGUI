@@ -111,7 +111,7 @@ def test_lens_solver_against_known_synthetic_camera(tmp_path, monkeypatch):
         path.write_bytes(pixels.tobytes())
         paths.append(str(path))
     counter = iter(views)
-    monkeypatch.setattr(calibration, "find_grid", lambda image, size: (next(counter), image))
+    monkeypatch.setattr(calibration, "find_grid", lambda image, size, *args: (next(counter), image))
     block.parameters["image_paths"] = paths
     block.execute({})
     assert block.state == "pass", block.error

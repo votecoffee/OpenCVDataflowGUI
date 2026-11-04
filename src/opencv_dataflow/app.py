@@ -142,6 +142,8 @@ class Inspector(QWidget):
             if key in block.parameter_choices:
                 field = QComboBox()
                 field.addItems(block.parameter_choices[key])
+                if field.findText(str(value)) < 0:
+                    field.addItem(str(value))
                 field.setCurrentText(str(value))
             elif isinstance(value, bool):
                 field = QCheckBox()
@@ -151,6 +153,7 @@ class Inspector(QWidget):
                     json.dumps(value) if isinstance(value, (list, dict)) else str(value)
                 )
             self.fields[key] = field
+            field.setToolTip(block.parameter_help.get(key, ""))
             if key == "path":
                 row = QWidget()
                 row_layout = QHBoxLayout(row)
@@ -218,6 +221,7 @@ class Inspector(QWidget):
                     value = field.text()
                 parameters[key] = value
             json.dumps(parameters, allow_nan=False)
+            b.validate_parameters(parameters)
             exposed = {
                 d: [
                     n

@@ -13,6 +13,7 @@ import numpy as np
 
 from .core import Block, Graph, Port, Registry, Result
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
+from .parameters import BORDERS, scalar_value
 
 
 class DemoImage(Block):
@@ -82,7 +83,17 @@ class Camera(Block):
     block_type, subtype = "Input", "Cameras"
     type_id, title, category = "input.camera", "Camera", "Input"
     outputs = (Port("image"),)
-    defaults = {"device": 0}
+    defaults = {
+        "device": 0,
+        "backend": "auto",
+        "width": 0,
+        "height": 0,
+        "fps": 0.0,
+        "buffer_size": 0,
+    }
+    parameter_choices = {
+        "backend": ("auto", "dshow", "msmf", "v4l2", "gstreamer", "ffmpeg", "avfoundation")
+    }
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -91,10 +102,40 @@ class Camera(Block):
 
     def process(self, inputs):
         device = int(self.parameters["device"])
-        if self._capture is None or device != self._device:
+        from .processing import finite, integer
+
+        p = self.parameters
+        width, height, buffer_size = (
+            integer(p[k], k, 0, 16384) for k in ("width", "height", "buffer_size")
+        )
+        fps = finite(p["fps"], "FPS", 0)
+        settings = (device, p["backend"], width, height, fps, buffer_size)
+        if self._capture is None or settings != self._device:
             self.close()
-            self._capture = cv2.VideoCapture(device)
-            self._device = device
+            backends = {
+                "auto": cv2.CAP_ANY,
+                "dshow": cv2.CAP_DSHOW,
+                "msmf": cv2.CAP_MSMF,
+                "v4l2": cv2.CAP_V4L2,
+                "gstreamer": cv2.CAP_GSTREAMER,
+                "ffmpeg": cv2.CAP_FFMPEG,
+                "avfoundation": cv2.CAP_AVFOUNDATION,
+            }
+            self._capture = (
+                cv2.VideoCapture(device)
+                if p["backend"] == "auto"
+                else cv2.VideoCapture(device, backends[p["backend"]])
+            )
+            self._device = settings
+            for prop, value in (
+                (cv2.CAP_PROP_FRAME_WIDTH, width),
+                (cv2.CAP_PROP_FRAME_HEIGHT, height),
+                (cv2.CAP_PROP_FPS, fps),
+                (cv2.CAP_PROP_BUFFERSIZE, buffer_size),
+            ):
+                if value and not self._capture.set(prop, value):
+                    self.close()
+                    raise ValueError("Camera backend rejected a requested acquisition setting")
         if not self._capture.isOpened():
             self.close()
             raise RuntimeError(f"Cannot open camera {device}")
@@ -152,45 +193,88 @@ class Grayscale(GAPIBlock):
 
 class Blur(GAPIBlock):
     type_id, title = "gapi.blur", "Gaussian blur"
-    defaults = {"kernel": 5, "sigma": 1.2}
+    defaults = {
+        "kernel": 5,
+        "sigma": 1.2,
+        "kernel_y": 0,
+        "sigma_y": 0.0,
+        "border": "reflect",
+        "border_value": [0.0, 0.0, 0.0, 0.0],
+    }
+    parameter_choices = {"border": tuple(BORDERS)}
+    parameter_help = {
+        "kernel_y": "0 uses the legacy square kernel size.",
+        "sigma_y": "0 uses sigma X, following OpenCV.",
+        "border_value": "Used only by the constant border mode.",
+    }
 
     def build(self, image):
         kernel = int(self.parameters["kernel"])
-        if kernel < 1 or kernel % 2 != 1:
+        if kernel < 0 or (kernel != 0 and kernel % 2 != 1):
             raise ValueError("Kernel must be a positive odd integer")
         sigma = float(self.parameters["sigma"])
         if sigma < 0:
             raise ValueError("Sigma must be nonnegative")
-        return cv2.gapi.gaussianBlur(image, (kernel, kernel), sigma)
+        ky = int(self.parameters["kernel_y"]) or kernel
+        sy = float(self.parameters["sigma_y"])
+        if ky < 0 or (ky != 0 and ky % 2 != 1) or not np.isfinite([sigma, sy]).all() or sy < 0:
+            raise ValueError("Gaussian kernel Y must be positive odd and sigmas finite/nonnegative")
+        if (kernel == 0 and sigma <= 0) or (ky == 0 and sigma <= 0 and sy <= 0):
+            raise ValueError("Automatic Gaussian kernel sizing requires positive sigma")
+        return cv2.gapi.gaussianBlur(
+            image,
+            (kernel, ky),
+            sigma,
+            sy,
+            BORDERS[self.parameters["border"]],
+            scalar_value(self.parameters["border_value"]),
+        )
 
 
 class Canny(GAPIBlock):
     type_id, title = "gapi.canny", "Canny edges"
     input_depths = (np.uint8,)
-    defaults = {"low": 60.0, "high": 150.0}
+    defaults = {"low": 60.0, "high": 150.0, "aperture": "3", "l2_gradient": False}
+    parameter_choices = {"aperture": ("3", "5", "7")}
 
     def build(self, image):
         low, high = float(self.parameters["low"]), float(self.parameters["high"])
         if not 0 <= low <= high:
             raise ValueError("Thresholds must satisfy 0 <= low <= high")
-        return cv2.gapi.Canny(image, low, high)
+        return cv2.gapi.Canny(
+            image, low, high, int(self.parameters["aperture"]), self.parameters["l2_gradient"]
+        )
 
 
 class Threshold(Block):
     block_type, subtype = "Image processing", "Segmentation"
     type_id, title, category = "cv.threshold", "Threshold", "Processing"
     inputs, outputs = (Port("image"),), (Port("image"), Port("threshold", "number"))
-    defaults = {"value": 127, "invert": False}
+    defaults = {"value": 127.0, "invert": False, "max_value": 255.0, "mode": "binary"}
+    parameter_choices = {"mode": ("binary", "binary_inv", "trunc", "tozero", "tozero_inv")}
 
     def process(self, inputs):
         image = opencv_image(inputs["image"])
         if image.ndim == 3:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        value = int(self.parameters["value"])
-        if not 0 <= value <= 255:
-            raise ValueError("Threshold must be between 0 and 255")
-        mode = cv2.THRESH_BINARY_INV if self.parameters["invert"] else cv2.THRESH_BINARY
-        level, mask = cv2.threshold(image, value, 255, mode)
+        value, maximum = float(self.parameters["value"]), float(self.parameters["max_value"])
+        if not np.isfinite([value, maximum]).all() or maximum < 0:
+            raise ValueError("Threshold/max value must be finite and max value nonnegative")
+        name = self.parameters["mode"]
+        if self.parameters["invert"]:
+            if name != "binary":
+                raise ValueError(
+                    "Legacy invert applies to binary mode; otherwise choose an inverse mode"
+                )
+            name = "binary_inv"
+        mode = {
+            "binary": cv2.THRESH_BINARY,
+            "binary_inv": cv2.THRESH_BINARY_INV,
+            "trunc": cv2.THRESH_TRUNC,
+            "tozero": cv2.THRESH_TOZERO,
+            "tozero_inv": cv2.THRESH_TOZERO_INV,
+        }[name]
+        level, mask = cv2.threshold(image, value, maximum, mode)
         return Result({"image": mask, "threshold": level})
 
 
@@ -199,12 +283,46 @@ class Contours(Block):
     type_id, title, category = "inspect.contours", "Find contours", "Inspection"
     inputs = (Port("image"),)
     outputs = (Port("overlay"), Port("mask"), Port("count", "number"), Port("data", "data"))
-    defaults = {"min_area": 100.0, "expected_count": 2}
+    defaults = {
+        "min_area": 100.0,
+        "expected_count": 2,
+        "retrieval": "external",
+        "approximation": "simple",
+        "offset": [0, 0],
+    }
+    parameter_choices = {
+        "retrieval": ("external", "list", "ccomp", "tree"),
+        "approximation": ("none", "simple", "tc89_l1", "tc89_kcos"),
+    }
 
     def process(self, inputs):
         image = opencv_image(inputs["image"])
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if image.ndim == 3 else image
-        contours, _ = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        retrieval = {
+            "external": cv2.RETR_EXTERNAL,
+            "list": cv2.RETR_LIST,
+            "ccomp": cv2.RETR_CCOMP,
+            "tree": cv2.RETR_TREE,
+        }
+        approximation = {
+            "none": cv2.CHAIN_APPROX_NONE,
+            "simple": cv2.CHAIN_APPROX_SIMPLE,
+            "tc89_l1": cv2.CHAIN_APPROX_TC89_L1,
+            "tc89_kcos": cv2.CHAIN_APPROX_TC89_KCOS,
+        }
+        offset = np.asarray(self.parameters["offset"], float)
+        if (
+            offset.shape != (2,)
+            or not np.isfinite(offset).all()
+            or np.any(offset != np.rint(offset))
+        ):
+            raise ValueError("Contour offset must be a whole-pixel [x,y] pair")
+        contours, _ = cv2.findContours(
+            gray,
+            retrieval[self.parameters["retrieval"]],
+            approximation[self.parameters["approximation"]],
+            offset=tuple(offset.astype(int)),
+        )
         minimum = float(self.parameters["min_area"])
         expected = int(self.parameters["expected_count"])
         if minimum < 0 or expected < 0:
@@ -212,11 +330,17 @@ class Contours(Block):
         selected = [c for c in contours if cv2.contourArea(c) >= minimum]
         overlay = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
         mask = np.zeros_like(gray)
-        cv2.drawContours(overlay, selected, -1, (80, 230, 140), 2)
-        cv2.drawContours(mask, selected, -1, 255, -1)
+        local = [(c - offset.astype(np.int32).reshape(1, 1, 2)).astype(np.int32) for c in selected]
+        cv2.drawContours(overlay, local, -1, (80, 230, 140), 2)
+        cv2.drawContours(mask, local, -1, 255, -1)
         count = len(selected)
         score = max(0.0, 1.0 - abs(count - expected) / max(expected, 1))
-        data = {"count": count, "areas": [float(cv2.contourArea(c)) for c in selected]}
+        data = {
+            "count": count,
+            "areas": [float(cv2.contourArea(c)) for c in selected],
+            "contours": [c.reshape(-1, 2).tolist() for c in selected],
+            "offset": offset.tolist(),
+        }
         return Result(
             {"overlay": overlay, "mask": mask, "count": count, "data": data},
             graphics={"contours": overlay},
@@ -230,13 +354,78 @@ class SaveImage(Block):
     block_type, subtype = "Output", "Images"
     type_id, title, category = "output.image", "Save image", "Output"
     inputs = (Port("image"),)
-    defaults = {"path": "output.png"}
+    defaults = {
+        "path": "output.png",
+        "jpeg_quality": -1,
+        "jpeg_progressive": False,
+        "jpeg_optimize": False,
+        "jpeg_restart_interval": 0,
+        "jpeg_luma_quality": -1,
+        "jpeg_chroma_quality": -1,
+        "png_compression": -1,
+        "png_strategy": "native",
+        "png_bilevel": False,
+        "webp_quality": -1,
+    }
+    parameter_choices = {
+        "png_strategy": ("native", "default", "filtered", "huffman", "rle", "fixed")
+    }
+    parameter_help = {
+        "jpeg_quality": "-1 preserves the codec default; otherwise 0..100. JPEG only.",
+        "png_compression": "-1 preserves the codec default; otherwise 0..9. PNG only.",
+        "webp_quality": "-1 preserves the codec default; otherwise 1..100. WebP only.",
+    }
 
     def process(self, inputs):
         path = Path(self.parameters["path"])
         if path.exists():
             raise FileExistsError("Choose a new path; existing images are preserved")
-        ok, encoded = cv2.imencode(path.suffix, opencv_image(inputs["image"]))
+        from .processing import integer
+
+        options = []
+        ext = path.suffix.lower()
+        if ext in (".jpg", ".jpeg"):
+            for key, flag in (
+                ("jpeg_quality", cv2.IMWRITE_JPEG_QUALITY),
+                ("jpeg_luma_quality", cv2.IMWRITE_JPEG_LUMA_QUALITY),
+                ("jpeg_chroma_quality", cv2.IMWRITE_JPEG_CHROMA_QUALITY),
+            ):
+                value = integer(self.parameters[key], key, -1, 100)
+                if value >= 0:
+                    options.extend([flag, value])
+            options.extend(
+                [
+                    cv2.IMWRITE_JPEG_PROGRESSIVE,
+                    int(self.parameters["jpeg_progressive"]),
+                    cv2.IMWRITE_JPEG_OPTIMIZE,
+                    int(self.parameters["jpeg_optimize"]),
+                    cv2.IMWRITE_JPEG_RST_INTERVAL,
+                    integer(self.parameters["jpeg_restart_interval"], "Restart interval", 0, 65535),
+                ]
+            )
+        elif ext == ".png":
+            compression = integer(self.parameters["png_compression"], "PNG compression", -1, 9)
+            if compression >= 0:
+                options.extend([cv2.IMWRITE_PNG_COMPRESSION, compression])
+            strategy = self.parameters["png_strategy"]
+            if strategy != "native":
+                value = {
+                    "default": cv2.IMWRITE_PNG_STRATEGY_DEFAULT,
+                    "filtered": cv2.IMWRITE_PNG_STRATEGY_FILTERED,
+                    "huffman": cv2.IMWRITE_PNG_STRATEGY_HUFFMAN_ONLY,
+                    "rle": cv2.IMWRITE_PNG_STRATEGY_RLE,
+                    "fixed": cv2.IMWRITE_PNG_STRATEGY_FIXED,
+                }[strategy]
+                options.extend([cv2.IMWRITE_PNG_STRATEGY, value])
+            if self.parameters["png_bilevel"]:
+                options.extend([cv2.IMWRITE_PNG_BILEVEL, 1])
+        elif ext == ".webp":
+            quality = integer(self.parameters["webp_quality"], "WebP quality", -1, 100)
+            if quality >= 0:
+                if quality == 0:
+                    raise ValueError("WebP quality must be 1..100 or -1 for the native default")
+                options.extend([cv2.IMWRITE_WEBP_QUALITY, quality])
+        ok, encoded = cv2.imencode(path.suffix, opencv_image(inputs["image"]), options)
         if not ok:
             raise ValueError("Image encoding failed")
         with path.open("xb") as stream:
@@ -249,6 +438,7 @@ class WriteResults(Block):
     type_id, title, category = "output.results", "Write results", "Output"
     inputs = (Port("data", "data"),)
     defaults = {"path": "results.csv", "format": "csv"}
+    parameter_choices = {"format": ("csv", "xml", "sqlite")}
 
     def process(self, inputs):
         path = Path(self.parameters["path"])
@@ -283,6 +473,7 @@ class WriteResults(Block):
 
 
 def builtin_registry():
+    from .analysis_tools import ANALYSIS_BLOCKS
     from .calibration import (
         CalibrationGrid,
         ColorBalance,
@@ -324,6 +515,7 @@ def builtin_registry():
         *PROCESSING_BLOCKS,
         *FEATURE_BLOCKS,
         *REGISTRATION_BLOCKS,
+        *ANALYSIS_BLOCKS,
     ):
         registry.register(block)
     return registry
