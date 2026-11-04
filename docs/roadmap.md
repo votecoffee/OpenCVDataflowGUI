@@ -16,6 +16,7 @@
 - Explicit enum dropdowns and expanded algorithm controls, plus a generated parameter reference.
 - Separable/box filtering, corner response/refinement, phase correlation, affine estimation, remap and polar fields.
 - Circle/rectangle/polygon regions, shared mask selection, selected processing and result filtering.
+- Interactive region drawing, resize/move handles, polygon vertex editing and captured-frame previews.
 
 ## Point clouds and 3D vision
 
@@ -33,7 +34,7 @@ frame transforms and robot pose/measurement adapters. See
 
 ## Vision development
 
-- Interactive drawing/editing of regions, calibrated overlays and measurement tools.
+- Calibrated region overlays, additional measurement tools and region transforms across image geometry.
 - More OpenCV tools: multiple template matches, additional descriptors/robust matching and advanced calibration.
 - Dynamic parameter binding, richer types, promoted parameters and versioned ToolBlock libraries.
 - Compile compatible connected segments into shared native G-API computations.

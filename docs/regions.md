@@ -13,8 +13,39 @@ a JSON-compatible `region` definition, and a tinted `overlay`.
 - Invert selects everything outside the shape. Shapes extending beyond the image
   are clipped to the image boundary. A wholly excluded shape produces an empty mask.
 
-Fields are in full input-image pixel coordinates. Shapes are configured in the
-inspector; direct mouse drawing/editing is future work.
+Fields are in full input-image pixel coordinates. Configure them numerically in
+the inspector or use the interactive editor below.
+
+## Draw and edit on an image
+
+1. Connect an image to Shape region and **Run once** to capture a frame. A new
+   region can also use its upstream block's latest output before the region has run.
+2. Select the region node and click **Draw / edit region…** in its inspector.
+3. Choose a shape from the dropdown, or click **Draw new** to replace the current
+   shape of the same type. Drag between rectangle corners; drag from a circle's
+   center to its radius. Click polygon vertices, then Enter, double-click or
+   right-click to finish. Backspace/Delete removes the last unfinished vertex.
+4. Drag yellow handles to resize a rectangle, change a circle's center/radius,
+   or move individual polygon vertices. Drag inside a shape away from its handles
+   to move the entire shape. Shape movement tests the shape interior even when
+   inversion selects the outside.
+5. **Apply region** applies the inspector configuration, clears stale results and
+   marks the project modified. Run again to update outputs, then save normally.
+   **Cancel** leaves the block and any existing inspector drafts untouched.
+
+Escape cancels an active drawing/drag gesture and restores its prior geometry;
+otherwise it closes the dialog. An unfinished or zero-area polygon cannot be
+applied. Pointer coordinates map through the fitted image rectangle, including
+letterboxing and resizing; clicks in the margins do not start shapes. Drag
+endpoints clamp to the image bounds. Shapes moved partly outside an image retain
+their geometry and use the normal clipped mask behavior.
+
+The dialog edits a **captured frame**, not a live stream. While the same node stays
+selected, its last captured source remains available for repeated edits after
+applying configuration. Run again after changing upstream images or geometry.
+Changing selection or the source connection invalidates that editing cache. It is
+not saved in the project. Drawing is disabled during graph execution; stop a
+continuous run before editing. Numeric fields remain available for exact pixel values.
 
 ## Connecting selections
 

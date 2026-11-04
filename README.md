@@ -163,6 +163,12 @@ polygon from its dropdown, and connect its `region` or `mask` output to supporte
 blocks. Regions retain input-image coordinates and include a tinted overlay.
 When both a mask and region are connected, their intersection is used.
 
+Run once, select the Shape region block, then click **Draw / edit region…** in
+the inspector. Draw rectangles/circles by dragging or polygons by clicking
+vertices. Drag handles to resize, or drag a shape to move it. **Apply region**
+updates the block and marks the project modified; **Cancel** preserves it.
+The editor uses a captured frame, with correctly scaled pixel coordinates.
+
 Open **File > Load regions example**, or `examples/regions.json`, for a working
 10-block project that inspects each synthetic part separately, computes a polygon
 histogram and blurs only the circular selection. No image download is required.
@@ -246,6 +252,7 @@ graph.close()
 - `processing.py`: base OpenCV geometry, filtering, segmentation, math and inspection wrappers.
 - `features.py`, `registration.py`, `analysis_tools.py`: contrast, features, registration and numerical image tools.
 - `regions.py`, `selection.py`: reusable shape regions, mask intersections and selection policies.
+- `region_editor.py`: interactive image-space drawing and editing of region shapes.
 - `examples.py` and `runner.py`: built-in starter graphs and headless project verification.
 - `plugins.py`: explicitly loaded trusted Python extensions.
 - `canvas.py`: movable nodes, typed sockets, selectable wires, pan and zoom.
