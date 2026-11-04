@@ -1,29 +1,17 @@
 """Offscreen pointer and transactional checks for image-space region editing."""
 
 import copy
-import gc
 import os
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 import numpy as np
-import pytest
-from PySide6.QtCore import QCoreApplication, QEvent, QPointF, Qt
+from PySide6.QtCore import QPointF, Qt
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication, QDialog
+from PySide6.QtWidgets import QDialog
 
 from opencv_dataflow.region_editor import RegionCanvas, RegionEditor
 from opencv_dataflow.regions import ShapeRegion
-
-
-@pytest.fixture(scope="module")
-def app():
-    application = QApplication.instance() or QApplication([])
-    yield application
-    application.processEvents()
-    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
-    gc.collect()
-    application.processEvents()
 
 
 def canvas(app, shape="rectangle"):

@@ -7,7 +7,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .images import preview_rgb
-from .selection import contains, rasterize, selection_mask
+from .selection import contains, rasterize, region_matrix, region_size, selection_mask
 
 
 def region_result(image, region):
@@ -79,6 +79,83 @@ class CombineRegions(Block):
             "children": children,
         }
         return region_result(image, region)
+
+
+class TransformRegion(Block):
+    type_id, title, category = "region.transform", "Transform region", "Image processing"
+    block_type, subtype = "Image processing", "Regions"
+    inputs = (Port("image"), Port("region", "data"), Port("transform", "data", required=False))
+    outputs = (*ShapeRegion.outputs, Port("transform", "data"))
+    defaults = {
+        "matrix": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
+        "direction": "forward",
+        "interpolation": "nearest",
+        "threshold": 0.5,
+    }
+    parameter_choices = {
+        "direction": ("forward", "inverse"),
+        "interpolation": ("nearest", "linear"),
+    }
+    parameter_help = {
+        "matrix": "Source-to-target 2x3/3x3 matrix, used when the transform port is unconnected.",
+        "direction": "Forward follows image geometry or source_to_target; inverse goes back.",
+        "interpolation": "Nearest preserves discrete masks; linear thresholds resampled coverage.",
+        "threshold": "Linear sampling cutoff in (0,1]; nearest is binary at any valid cutoff.",
+    }
+
+    def process(self, inputs):
+        image, source = inputs["image"], inputs["region"]
+        source_size = list(region_size(source))
+        target_size = [image.shape[1], image.shape[0]]
+        inverse = self.parameters["direction"] == "inverse"
+        payload = inputs.get("transform", self.parameters["matrix"])
+        expected_source = expected_target = None
+        if isinstance(payload, dict):
+            if "output_to_input" in payload and "source_to_target" in payload:
+                raise ValueError("Transform has ambiguous mapping keys")
+            if "output_to_input" in payload:
+                matrix = region_matrix(payload["output_to_input"])
+                if not inverse:
+                    matrix = np.linalg.inv(matrix)
+                expected_source = payload.get("output_size" if inverse else "input_size")
+                expected_target = payload.get("input_size" if inverse else "output_size")
+                if expected_source is None or expected_target is None:
+                    raise ValueError("Image geometry must include input_size and output_size")
+            elif "source_to_target" in payload:
+                matrix = region_matrix(payload["source_to_target"])
+                if inverse:
+                    matrix = np.linalg.inv(matrix)
+                expected_source = payload.get("target_size" if inverse else "source_size")
+                expected_target = payload.get("source_size" if inverse else "target_size")
+            else:
+                raise ValueError(
+                    "Transform needs source_to_target or image geometry output_to_input"
+                )
+        else:
+            matrix = region_matrix(payload)
+            if inverse:
+                matrix = np.linalg.inv(matrix)
+        if (expected_source is not None and expected_source != source_size) or (
+            expected_target is not None and expected_target != target_size
+        ):
+            raise ValueError("Transform dimensions do not match the source region and target image")
+        region = {
+            "model": "image_region_v1",
+            "image_size": target_size,
+            "shape": "transformed",
+            "source": copy.deepcopy(source),
+            "source_to_target": matrix.tolist(),
+            "interpolation": self.parameters["interpolation"],
+            "threshold": self.parameters["threshold"],
+        }
+        result = region_result(image, region)
+        result.outputs["transform"] = {
+            "model": "image_transform_v1",
+            "source_to_target": matrix.tolist(),
+            "source_size": source_size,
+            "target_size": target_size,
+        }
+        return result
 
 
 class MeasureRegion(Block):
@@ -164,4 +241,4 @@ class FilterPoints(Block):
         return Result({"points": selected, "count": len(selected)})
 
 
-REGION_BLOCKS = (ShapeRegion, CombineRegions, MeasureRegion, FilterPoints)
+REGION_BLOCKS = (ShapeRegion, CombineRegions, TransformRegion, MeasureRegion, FilterPoints)

@@ -1,15 +1,14 @@
 """Offscreen Qt interaction checks: ports, inspector, and worker lifecycle."""
 
-import gc
 import os
 import time
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 import pytest
-from PySide6.QtCore import QCoreApplication, QEvent, QPoint, Qt
+from PySide6.QtCore import QPoint, Qt
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication, QDialog, QInputDialog
+from PySide6.QtWidgets import QDialog, QInputDialog
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
@@ -18,17 +17,6 @@ from opencv_dataflow.core import Graph
 from opencv_dataflow.images import ImageArray
 from opencv_dataflow.toolblock_editor import InterfaceDialog
 from opencv_dataflow.toolblocks import encapsulate
-
-
-@pytest.fixture(scope="module")
-def app():
-    application = QApplication.instance() or QApplication([])
-    yield application
-    # Complete queued QObject disposal while QApplication is still alive.
-    application.processEvents()
-    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
-    gc.collect()
-    application.processEvents()
 
 
 def pump_until(app, predicate, seconds=8):
@@ -204,6 +192,7 @@ def test_toolblock_interface_dialog_and_library_instances(app):
     [
         ("load_regions_example", 10, "roi_circle"),
         ("load_combined_regions_example", 11, "combined_outer"),
+        ("load_transformed_regions_example", 12, "tracked_shape"),
     ],
 )
 def test_regions_example_editor_load_save_and_shape_dropdown(
