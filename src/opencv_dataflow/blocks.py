@@ -296,6 +296,7 @@ def builtin_registry():
     from .features import FEATURE_BLOCKS
     from .histogram import Histogram
     from .processing import PROCESSING_BLOCKS
+    from .registration import REGISTRATION_BLOCKS
 
     registry = Registry()
     for block in (
@@ -322,6 +323,7 @@ def builtin_registry():
         SaveCalibration,
         *PROCESSING_BLOCKS,
         *FEATURE_BLOCKS,
+        *REGISTRATION_BLOCKS,
     ):
         registry.register(block)
     return registry
