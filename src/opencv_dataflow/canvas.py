@@ -40,6 +40,7 @@ class Socket(QGraphicsEllipseItem):
         self.setPos(220 if output else 0, 62 + row * 25)
         colors = {
             "image": "#51c7db",
+            "pyramid": "#63d1a7",
             "number": "#dca65e",
             "data": "#b497ea",
             "any": "#c2cbd5",

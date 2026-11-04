@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "pyr_source",
+      "type": "input.demo",
+      "name": "Synthetic parts",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pyr_crop",
+      "type": "cv.crop",
+      "name": "Inspection image",
+      "parameters": {
+        "x": 50,
+        "y": 70,
+        "width": 380,
+        "height": 220
+      },
+      "position": [
+        300,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pyr_split",
+      "type": "cv.split_channels",
+      "name": "Split BGR channels",
+      "parameters": {},
+      "position": [
+        600,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "channel_0",
+        "channel_1",
+        "channel_2"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pyr_merge",
+      "type": "cv.merge_channels",
+      "name": "Merge BGR channels",
+      "parameters": {
+        "color_format": "bgr"
+      },
+      "position": [
+        900,
+        0
+      ],
+      "exposed_inputs": [
+        "channel_0",
+        "channel_1",
+        "channel_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pyr_payload",
+      "type": "core.attach_payload",
+      "name": "Attach recipe payload",
+      "parameters": {
+        "payload": {
+          "recipe": {
+            "name": "Pyramid inspection",
+            "revision": 1
+          }
+        }
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "value",
+        "payload"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pyr_set",
+      "type": "cv.image_pyramid",
+      "name": "Four image levels",
+      "parameters": {
+        "levels": 4,
+        "border": "reflect"
+      },
+      "position": [
+        300,
+        350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "images",
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pyr_threshold",
+      "type": "cv.threshold",
+      "name": "Threshold at level 2",
+      "parameters": {
+        "value": 127.0,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        600,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "input_levels": {
+        "image": "2"
+      }
+    },
+    {
+      "id": "pyr_components",
+      "type": "inspect.components",
+      "name": "Blobs in level-2 coordinates",
+      "parameters": {
+        "connectivity": 8,
+        "min_area": 100,
+        "max_area": 0,
+        "expected_count": 2,
+        "algorithm": "default",
+        "region_mode": "center"
+      },
+      "position": [
+        900,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "centroids",
+        "data"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "pyr_coordinates",
+      "type": "core.read_payload",
+      "name": "Mapping to largest image",
+      "parameters": {
+        "reference": "largest"
+      },
+      "position": [
+        1200,
+        350
+      ],
+      "exposed_inputs": [
+        "value"
+      ],
+      "exposed_outputs": [
+        "value",
+        "payload",
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pyr_centroids",
+      "type": "cv.transform_points",
+      "name": "Centroids in largest image",
+      "parameters": {
+        "matrix": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "pixel_points": [
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        1500,
+        350
+      ],
+      "exposed_inputs": [
+        "transform",
+        "points"
+      ],
+      "exposed_outputs": [
+        "points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pyr_preview",
+      "type": "cv.pyramid_level",
+      "name": "Preview level 1",
+      "parameters": {
+        "level": "1"
+      },
+      "position": [
+        300,
+        700
+      ],
+      "exposed_inputs": [
+        "images"
+      ],
+      "exposed_outputs": [
+        "image",
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pyr_histogram",
+      "type": "inspect.histogram",
+      "name": "Largest level by default",
+      "parameters": {
+        "bins": 256,
+        "range_mode": "automatic",
+        "range_min": 0.0,
+        "range_max": 1.0,
+        "include_alpha": false
+      },
+      "position": [
+        600,
+        700
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "pyr_source",
+      "output": "image",
+      "target": "pyr_crop",
+      "input": "image"
+    },
+    {
+      "source": "pyr_crop",
+      "output": "image",
+      "target": "pyr_split",
+      "input": "image"
+    },
+    {
+      "source": "pyr_split",
+      "output": "channel_0",
+      "target": "pyr_merge",
+      "input": "channel_0"
+    },
+    {
+      "source": "pyr_split",
+      "output": "channel_1",
+      "target": "pyr_merge",
+      "input": "channel_1"
+    },
+    {
+      "source": "pyr_split",
+      "output": "channel_2",
+      "target": "pyr_merge",
+      "input": "channel_2"
+    },
+    {
+      "source": "pyr_merge",
+      "output": "image",
+      "target": "pyr_payload",
+      "input": "value"
+    },
+    {
+      "source": "pyr_payload",
+      "output": "value",
+      "target": "pyr_set",
+      "input": "image"
+    },
+    {
+      "source": "pyr_set",
+      "output": "images",
+      "target": "pyr_threshold",
+      "input": "image"
+    },
+    {
+      "source": "pyr_threshold",
+      "output": "image",
+      "target": "pyr_components",
+      "input": "image"
+    },
+    {
+      "source": "pyr_components",
+      "output": "centroids",
+      "target": "pyr_coordinates",
+      "input": "value"
+    },
+    {
+      "source": "pyr_coordinates",
+      "output": "value",
+      "target": "pyr_centroids",
+      "input": "points"
+    },
+    {
+      "source": "pyr_coordinates",
+      "output": "transform",
+      "target": "pyr_centroids",
+      "input": "transform"
+    },
+    {
+      "source": "pyr_set",
+      "output": "images",
+      "target": "pyr_preview",
+      "input": "images"
+    },
+    {
+      "source": "pyr_set",
+      "output": "images",
+      "target": "pyr_histogram",
+      "input": "image"
+    }
+  ]
+}

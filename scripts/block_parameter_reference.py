@@ -16,6 +16,8 @@ def render():
         "are checkboxes, and vectors/matrices use JSON fields. Image/data inputs are ports,",
         "not hidden parameters. Native output buffers, in-place pointers and backend internals",
         "are managed by the runtime. Some controls apply only to the selected method or codec.",
+        "Image inputs also have an inspector pyramid-level dropdown (largest by default).",
+        "See [payloads, channels and pyramids](payloads-pyramids.md) for coordinate provenance.",
         "",
     ]
     for kind, cls in sorted(builtin_registry().types.items()):

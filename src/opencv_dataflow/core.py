@@ -13,6 +13,16 @@ from typing import Any, ClassVar
 
 import numpy as np
 
+from .payloads import (
+    ImagePyramid,
+    ValuePacket,
+    compatible,
+    finish_outputs,
+    packet_for,
+    prepare_inputs,
+    validate_payload,
+)
+
 
 @dataclass(frozen=True)
 class Port:
@@ -28,6 +38,7 @@ class Result:
     passed: bool = True
     score: float | None = None
     message: str = ""
+    payloads: dict[str, dict] = field(default_factory=dict)
 
 
 class Block:
@@ -63,10 +74,12 @@ class Block:
         self.project_dir = None
         self.thumbnail = True
         self.preview_output = ""
+        self.input_levels = {}
         self.clear_result()
 
     def clear_result(self):
         self.last_inputs: dict[str, Any] = {}
+        self.input_payloads = {}
         self.last_result: Result | None = None
         self.last_output_images: dict[str, np.ndarray] = {}
         self.last_graphics: dict[str, np.ndarray] = {}
@@ -82,6 +95,11 @@ class Block:
         return result
 
     def validate_parameters(self, parameters=None):
+        allowed = {p.name for p in self.inputs if p.kind == "image"}
+        if not self.input_levels.keys() <= allowed or any(
+            level not in ("largest", *map(str, range(9))) for level in self.input_levels.values()
+        ):
+            raise ValueError("Invalid image input pyramid level selection")
         values = self.parameters if parameters is None else parameters
         for name, choices in self.parameter_choices.items():
             if str(values[name]) not in tuple(map(str, choices)):
@@ -94,6 +112,7 @@ class Block:
         started = time.perf_counter()
         try:
             self.validate_parameters()
+            values, self.input_payloads = prepare_inputs(self, values)
             self.last_inputs = copy.deepcopy(values)
             for port in self.inputs:
                 if port.required and port.name not in values:
@@ -104,6 +123,7 @@ class Block:
             if not isinstance(result, Result):
                 raise TypeError("process() must return Result")
             result = self.finalize_result(result, self.last_inputs)
+            result = finish_outputs(self, result)
             if result.score is not None and (
                 not math.isfinite(result.score) or not 0 <= result.score <= 1
             ):
@@ -119,7 +139,7 @@ class Block:
             self.last_output_images = {
                 p.name: self.last_result.outputs[p.name]
                 for p in self.outputs
-                if p.kind in ("image", "depth")
+                if p.kind in ("image", "depth", "pyramid")
             }
             self.last_graphics = self.last_result.graphics
             self.state = "pass" if result.passed else "fail"
@@ -139,6 +159,7 @@ class Block:
     def copy_results_from(self, other):
         for name in (
             "last_inputs",
+            "input_payloads",
             "last_result",
             "last_output_images",
             "last_graphics",
@@ -150,6 +171,14 @@ class Block:
 
 
 def validate_value(port, value):
+    if isinstance(value, ValuePacket):
+        validate_payload(value.payload)
+        value = value.value
+    if port.kind == "pyramid" or (port.kind == "image" and isinstance(value, ImagePyramid)):
+        if not isinstance(value, ImagePyramid):
+            raise TypeError(f"{port.name} requires an image pyramid")
+        value.__post_init__()
+        return
     if port.kind == "depth":
         if (
             not isinstance(value, np.ndarray)
@@ -238,7 +267,7 @@ class Graph:
             raise ValueError("Unknown port")
         if output not in src.exposed_outputs or input not in dst.exposed_inputs:
             raise ValueError("Expose both ports in the inspector before connecting")
-        if out.kind != inp.kind and inp.kind != "any":
+        if not compatible(out.kind, inp.kind):
             raise ValueError(f"Cannot connect {out.kind} to {inp.kind}")
         if any(c.target == target and c.input == input for c in self.connections):
             raise ValueError("Input already connected; delete its wire first")
@@ -290,7 +319,7 @@ class Graph:
                 block.error = "Upstream block unavailable"
                 continue
             values = {
-                c.input: self.blocks[c.source].last_result.outputs[c.output] for c in incoming
+                c.input: packet_for(self.blocks[c.source].last_result, c.output) for c in incoming
             }
             values.update(
                 {name: value for (target, name), value in injected.items() if target == key}
@@ -315,6 +344,7 @@ class Graph:
                     "exposed_outputs": b.exposed_outputs,
                     "thumbnail": b.thumbnail,
                     "preview_output": b.preview_output,
+                    **({"input_levels": b.input_levels} if b.input_levels else {}),
                     **b.serialize_extra(),
                 }
                 for b in self.blocks.values()
@@ -366,6 +396,15 @@ class Graph:
                 setattr(block, f"exposed_{direction}", exposed)
             block.thumbnail = item.get("thumbnail", True)
             block.preview_output = item.get("preview_output", "")
+            levels = item.get("input_levels", {})
+            allowed_inputs = {p.name for p in block.inputs if p.kind == "image"}
+            if (
+                not isinstance(levels, dict)
+                or not levels.keys() <= allowed_inputs
+                or any(v not in ("largest", *map(str, range(9))) for v in levels.values())
+            ):
+                raise ValueError("Invalid image input pyramid level selections")
+            block.input_levels = dict(levels)
             graph.add(block)
         for c in data["connections"]:
             graph.connect(**c)

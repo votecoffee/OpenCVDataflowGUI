@@ -512,6 +512,7 @@ def builtin_registry():
     from .features import FEATURE_BLOCKS
     from .histogram import Histogram
     from .processing import PROCESSING_BLOCKS
+    from .pyramids import PYRAMID_BLOCKS
     from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
 
@@ -543,6 +544,7 @@ def builtin_registry():
         *REGISTRATION_BLOCKS,
         *ANALYSIS_BLOCKS,
         *REGION_BLOCKS,
+        *PYRAMID_BLOCKS,
     ):
         registry.register(block)
     return registry

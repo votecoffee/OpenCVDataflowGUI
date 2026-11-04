@@ -94,5 +94,6 @@ class Histogram(Block):
                 "plot": graphic,
             },
             graphics={"histogram": graphic},
+            payloads={"plot": {}},
             message=f"{len(channels)} channels · {bins} bins",
         )

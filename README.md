@@ -48,7 +48,7 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
 
 1. Expand a type and subtype in the left toolbox tree, then double-click a tool to add a block.
 2. Drag between an output socket and an input socket in either direction. Image
-   ports are cyan, numeric ports amber, and structured-data ports purple.
+   ports are cyan, pyramid sets green, numeric ports amber, and structured-data ports purple.
 3. Select a block, edit parameters in the right inspector, and click **Apply
    configuration**. Choose exposed ports and the optional node thumbnail there.
    OpenCV enum controls use dropdowns; booleans use checkboxes. Hover over controls
@@ -192,6 +192,30 @@ Contour/component **Region mode** chooses whole-object center filtering or clipp
 measurements. See [region behavior and supported tools](docs/regions.md) for
 outside-pixel policies, neighborhood behavior and coordinate rules.
 
+### Channels, payloads and image pyramids
+
+Use **Split three channels / Merge three channels**, or the four-channel alpha
+variants, to process planes independently. **Extract image channel** and **Replace
+image channel** use channel-index dropdowns and preserve coordinate payloads.
+
+**Gaussian image pyramid set** sends all levels together on its `images` port.
+Connect it to an ordinary image input: the largest level is used by default.
+Choose a smaller level using the inspector's **Pyramid level: input name** dropdown.
+**Select pyramid level** provides an explicit single-image output; **Pyramid down**
+and **Pyramid up** are separate toolbox entries too.
+
+Images and other port values can carry optional JSON payloads. Built-in spatial
+payloads record image dimensions, the mapping to the original image and pyramid
+level provenance. Results stay in their working coordinates and show the source
+level in the inspector and headless receipts. **Read port payload / coordinates**
+exposes a mapping to the largest or original image for **Transform points** and
+**Transform region**. **Attach port payload** adds recipe or custom data.
+
+Try **File > Load channels and pyramids example**, or open
+`examples/channels_pyramids.json`: it splits/merges channels, carries a recipe
+payload through a four-level pyramid, detects blobs at level 2, and maps their
+centroids back to the largest image. See [payload and pyramid contracts](docs/payloads-pyramids.md).
+
 ### Image file formats
 
 The **Image file** input loads a file and reformats it using inspector dropdowns:
@@ -265,6 +289,7 @@ graph.close()
 - `features.py`, `registration.py`, `analysis_tools.py`: contrast, features, registration and numerical image tools.
 - `regions.py`, `selection.py`: reusable shape regions, mask intersections and selection policies.
 - `region_editor.py`: interactive image-space drawing and editing of region shapes.
+- `payloads.py`, `pyramids.py`: optional wire payloads, image coordinate provenance and bundled pyramids.
 - `examples.py` and `runner.py`: built-in starter graphs and headless project verification.
 - `plugins.py`: explicitly loaded trusted Python extensions.
 - `canvas.py`: movable nodes, typed sockets, selectable wires, pan and zoom.

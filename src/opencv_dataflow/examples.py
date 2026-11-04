@@ -451,3 +451,55 @@ def transformed_regions_graph(registry):
     ):
         graph.blocks[key].preview_output = "overlay"
     return graph
+
+
+def channel_pyramid_graph(registry):
+    """Channel round-trip, bundled levels and explicitly mapped small-level measurements."""
+    graph = Graph()
+    specs = [
+        ("pyr_source", "input.demo", "Synthetic parts", [0, 0], None),
+        (
+            "pyr_crop",
+            "cv.crop",
+            "Inspection image",
+            [300, 0],
+            {"x": 50, "y": 70, "width": 380, "height": 220},
+        ),
+        ("pyr_split", "cv.split_channels", "Split BGR channels", [600, 0], None),
+        ("pyr_merge", "cv.merge_channels", "Merge BGR channels", [900, 0], None),
+        (
+            "pyr_payload",
+            "core.attach_payload",
+            "Attach recipe payload",
+            [0, 350],
+            {"payload": {"recipe": {"name": "Pyramid inspection", "revision": 1}}},
+        ),
+        ("pyr_set", "cv.image_pyramid", "Four image levels", [300, 350], {"levels": 4}),
+        ("pyr_threshold", "cv.threshold", "Threshold at level 2", [600, 350], None),
+        ("pyr_components", "inspect.components", "Blobs in level-2 coordinates", [900, 350], None),
+        ("pyr_coordinates", "core.read_payload", "Mapping to largest image", [1200, 350], None),
+        ("pyr_centroids", "cv.transform_points", "Centroids in largest image", [1500, 350], None),
+        ("pyr_preview", "cv.pyramid_level", "Preview level 1", [300, 700], {"level": "1"}),
+        ("pyr_histogram", "inspect.histogram", "Largest level by default", [600, 700], None),
+    ]
+    for key, kind, name, position, parameters in specs:
+        block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
+        block.name, block.position = name, position
+    graph.blocks["pyr_threshold"].input_levels = {"image": "2"}
+    for source, output, target, input in [
+        ("pyr_source", "image", "pyr_crop", "image"),
+        ("pyr_crop", "image", "pyr_split", "image"),
+        *[("pyr_split", f"channel_{i}", "pyr_merge", f"channel_{i}") for i in range(3)],
+        ("pyr_merge", "image", "pyr_payload", "value"),
+        ("pyr_payload", "value", "pyr_set", "image"),
+        ("pyr_set", "images", "pyr_threshold", "image"),
+        ("pyr_threshold", "image", "pyr_components", "image"),
+        ("pyr_components", "centroids", "pyr_coordinates", "value"),
+        ("pyr_coordinates", "value", "pyr_centroids", "points"),
+        ("pyr_coordinates", "transform", "pyr_centroids", "transform"),
+        ("pyr_set", "images", "pyr_preview", "images"),
+        ("pyr_set", "images", "pyr_histogram", "image"),
+    ]:
+        graph.connect(source, output, target, input)
+    graph.blocks["pyr_components"].preview_output = "overlay"
+    return graph

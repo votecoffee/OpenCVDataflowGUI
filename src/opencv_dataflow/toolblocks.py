@@ -9,6 +9,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from .core import Block, Connection, Graph, Port, Result
+from .payloads import ValuePacket, compatible
 
 
 @dataclass(frozen=True)
@@ -18,6 +19,7 @@ class Binding:
 
 
 class ToolBlock(Block):
+    preserve_image_sets = True
     type_id, title, category = "core.toolblock", "ToolBlock", "ToolBlocks"
     block_type, subtype = "ToolBlocks", "Reusable"
 
@@ -66,7 +68,7 @@ class ToolBlock(Block):
         if self.validate_interface() != (self.inputs, self.outputs):
             raise ValueError("ToolBlock interface changed; update its public terminals")
         injected = {
-            (b.block, b.port): inputs[name]
+            (b.block, b.port): ValuePacket(inputs[name], self.input_payloads.get(name, {}))
             for name, b in self.input_bindings.items()
             if name in inputs
         }
@@ -91,6 +93,10 @@ class ToolBlock(Block):
             passed=all(b.state == "pass" for b in children),
             score=min(scores) if scores else None,
             message=f"{len(children)} tools · {sum(b.state == 'fail' for b in children)} fail",
+            payloads={
+                name: self.graph.blocks[b.block].last_result.payloads.get(b.port, {})
+                for name, b in self.output_bindings.items()
+            },
         )
 
     def close(self):
@@ -120,7 +126,7 @@ class ToolBlock(Block):
             target = candidate if c.target == self.id else parent.blocks[c.target]
             out = next(p for p in source.outputs if p.name == output)
             inp = next(p for p in target.inputs if p.name == input)
-            if out.kind != inp.kind and inp.kind != "any":
+            if not compatible(out.kind, inp.kind):
                 raise ValueError("Updated interface would break a connected port type")
             connections.append(Connection(c.source, output, c.target, input))
         if owner is not None:
