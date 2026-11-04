@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "registration_source",
+      "type": "input.file",
+      "name": "Lena source",
+      "parameters": {
+        "path": "assets/lena.jpg",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "registration_rotate",
+      "type": "cv.rotate",
+      "name": "Known 8 degree rotation",
+      "parameters": {
+        "angle_degrees": 8.0,
+        "scale": 1.0,
+        "center": [],
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        310,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "registration_query",
+      "type": "inspect.orb",
+      "name": "Original ORB features",
+      "parameters": {
+        "max_features": 750,
+        "scale_factor": 1.2,
+        "levels": 8,
+        "fast_threshold": 20,
+        "edge_threshold": 31
+      },
+      "position": [
+        0,
+        340
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "features",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "registration_train",
+      "type": "inspect.orb",
+      "name": "Rotated ORB features",
+      "parameters": {
+        "max_features": 750,
+        "scale_factor": 1.2,
+        "levels": 8,
+        "fast_threshold": 20,
+        "edge_threshold": 31
+      },
+      "position": [
+        310,
+        340
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "features",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "registration_match",
+      "type": "inspect.match_orb",
+      "name": "Match descriptors",
+      "parameters": {
+        "ratio": 0.75,
+        "max_distance": 64.0
+      },
+      "position": [
+        620,
+        340
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "registration_estimate",
+      "type": "inspect.homography",
+      "name": "Estimate original to rotated",
+      "parameters": {
+        "ransac_pixels": 3.0,
+        "min_inliers": 20,
+        "min_inlier_ratio": 0.5
+      },
+      "position": [
+        930,
+        340
+      ],
+      "exposed_inputs": [
+        "matches"
+      ],
+      "exposed_outputs": [
+        "transform",
+        "inliers"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "registration_warp",
+      "type": "cv.warp_perspective",
+      "name": "Warp original with estimate",
+      "parameters": {
+        "matrix": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "width": 0,
+        "height": 0,
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        930,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "registration_difference",
+      "type": "cv.absdiff",
+      "name": "Registration difference",
+      "parameters": {},
+      "position": [
+        1240,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "registration_source",
+      "output": "image",
+      "target": "registration_rotate",
+      "input": "image"
+    },
+    {
+      "source": "registration_source",
+      "output": "image",
+      "target": "registration_query",
+      "input": "image"
+    },
+    {
+      "source": "registration_rotate",
+      "output": "image",
+      "target": "registration_train",
+      "input": "image"
+    },
+    {
+      "source": "registration_query",
+      "output": "features",
+      "target": "registration_match",
+      "input": "query"
+    },
+    {
+      "source": "registration_train",
+      "output": "features",
+      "target": "registration_match",
+      "input": "train"
+    },
+    {
+      "source": "registration_match",
+      "output": "matches",
+      "target": "registration_estimate",
+      "input": "matches"
+    },
+    {
+      "source": "registration_source",
+      "output": "image",
+      "target": "registration_warp",
+      "input": "image"
+    },
+    {
+      "source": "registration_estimate",
+      "output": "transform",
+      "target": "registration_warp",
+      "input": "transform"
+    },
+    {
+      "source": "registration_rotate",
+      "output": "image",
+      "target": "registration_difference",
+      "input": "image_a"
+    },
+    {
+      "source": "registration_warp",
+      "output": "image",
+      "target": "registration_difference",
+      "input": "image_b"
+    }
+  ]
+}

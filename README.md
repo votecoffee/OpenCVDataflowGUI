@@ -135,6 +135,12 @@ circles and distance transform. See [additional tools](docs/additional-tools.md)
 After preparing the optional Lena asset, open `examples/lena_features.json` to try
 CLAHE → corners, edges → line segments, and a histogram in one project.
 
+The [registration and transform tools](docs/registration-tools.md) add arbitrary
+rotation, affine/perspective warps, borders, pyramids, custom filtering, unsharp
+masking, FAST/ORB features, descriptor matching, homography estimation and point
+transforms. Open `examples/lena_registration.json` after preparing the Lena asset
+to match the image to a known rotated copy and compare the estimated warp.
+
 ### Image file formats
 
 The **Image file** input loads a file and reformats it using inspector dropdowns:

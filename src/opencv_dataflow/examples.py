@@ -156,3 +156,68 @@ def lena_features_graph(registry):
     graph.blocks["feature_corners"].preview_output = "overlay"
     graph.blocks["feature_lines"].preview_output = "overlay"
     return graph
+
+
+def lena_registration_graph(registry):
+    """Feature matching against a known rotation, with a warped-image comparison."""
+    graph = Graph()
+    specs = [
+        (
+            "registration_source",
+            "input.file",
+            "Lena source",
+            [0, 0],
+            {"path": "assets/lena.jpg", "path_base": "project"},
+        ),
+        (
+            "registration_rotate",
+            "cv.rotate",
+            "Known 8 degree rotation",
+            [310, 0],
+            {"angle_degrees": 8.0},
+        ),
+        (
+            "registration_query",
+            "inspect.orb",
+            "Original ORB features",
+            [0, 340],
+            {"max_features": 750},
+        ),
+        (
+            "registration_train",
+            "inspect.orb",
+            "Rotated ORB features",
+            [310, 340],
+            {"max_features": 750},
+        ),
+        ("registration_match", "inspect.match_orb", "Match descriptors", [620, 340], None),
+        (
+            "registration_estimate",
+            "inspect.homography",
+            "Estimate original to rotated",
+            [930, 340],
+            {"min_inliers": 20, "min_inlier_ratio": 0.5},
+        ),
+        ("registration_warp", "cv.warp_perspective", "Warp original with estimate", [930, 0], None),
+        ("registration_difference", "cv.absdiff", "Registration difference", [1240, 0], None),
+    ]
+    for key, type_id, name, position, parameters in specs:
+        block = registry.create(type_id, block_id=key, parameters=parameters)
+        block.name, block.position = name, position
+        graph.add(block)
+    for source, output, target, input in [
+        ("registration_source", "image", "registration_rotate", "image"),
+        ("registration_source", "image", "registration_query", "image"),
+        ("registration_rotate", "image", "registration_train", "image"),
+        ("registration_query", "features", "registration_match", "query"),
+        ("registration_train", "features", "registration_match", "train"),
+        ("registration_match", "matches", "registration_estimate", "matches"),
+        ("registration_source", "image", "registration_warp", "image"),
+        ("registration_estimate", "transform", "registration_warp", "transform"),
+        ("registration_rotate", "image", "registration_difference", "image_a"),
+        ("registration_warp", "image", "registration_difference", "image_b"),
+    ]:
+        graph.connect(source, output, target, input)
+    for key in ("registration_query", "registration_train"):
+        graph.blocks[key].preview_output = "overlay"
+    return graph

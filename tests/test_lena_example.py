@@ -8,7 +8,7 @@ import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
-from opencv_dataflow.examples import lena_features_graph, lena_graph
+from opencv_dataflow.examples import lena_features_graph, lena_graph, lena_registration_graph
 from opencv_dataflow.toolblocks import encapsulate
 
 
@@ -104,3 +104,34 @@ def test_lena_feature_pipeline_and_saved_graph():
     assert graph.blocks["feature_lines"].last_result.outputs["count"] > 0
     histogram = graph.blocks["feature_histogram"].last_result.outputs["histogram"]
     assert sum(histogram["channels"][0]["counts"]) == 512 * 512
+
+
+@pytest.mark.skipif(
+    not Path("examples/assets/lena.jpg").exists(), reason="Optional Lena asset not fetched"
+)
+def test_lena_registration_matches_known_rotation():
+    registry = builtin_registry()
+    graph = Graph.load("examples/lena_registration.json", registry)
+    assert graph.to_dict() == lena_registration_graph(registry).to_dict()
+    graph.run()
+    assert all(b.state == "pass" for b in graph.blocks.values()), [
+        (b.name, b.error) for b in graph.blocks.values()
+    ]
+    known = np.linalg.inv(
+        np.array(
+            graph.blocks["registration_rotate"].last_result.outputs["geometry"]["output_to_input"]
+        )
+    )
+    found = np.array(
+        graph.blocks["registration_estimate"].last_result.outputs["transform"]["source_to_target"]
+    )
+    points = np.float64([[[100, 100], [200, 150], [300, 300], [400, 350]]])
+    expected = cv2.perspectiveTransform(points, known)
+    actual = cv2.perspectiveTransform(points, found)
+    np.testing.assert_allclose(actual, expected, atol=3.0)
+    assert graph.blocks["registration_estimate"].last_result.outputs["inliers"] >= 20
+    assert graph.blocks["registration_difference"].last_output_images["image"].shape == (
+        512,
+        512,
+        3,
+    )

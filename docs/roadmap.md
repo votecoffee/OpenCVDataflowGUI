@@ -12,6 +12,7 @@
 - Base OpenCV conversion, geometry, filters, segmentation, morphology, image math and gradients.
 - Component measurements, template matching, portable sample jobs and a headless repeat/report runner.
 - Additional contrast/channel/mask tools, corners, Hough lines/circles and distance transform.
+- Affine/perspective geometry, pyramids/filtering, FAST/ORB descriptors, matching and image registration.
 
 ## Point clouds and 3D vision
 
@@ -30,7 +31,7 @@ frame transforms and robot pose/measurement adapters. See
 ## Vision development
 
 - ROI editing and overlays with calibrated coordinates and measurement tools.
-- More OpenCV tools: multi-match/rotated matching, feature descriptors/matching and advanced calibration.
+- More OpenCV tools: multiple template matches, additional descriptors/robust matching and advanced calibration.
 - Dynamic parameter binding, richer types, promoted parameters and versioned ToolBlock libraries.
 - Compile compatible connected segments into shared native G-API computations.
 - Camera enumeration, trigger controls, bounded acquisition and recorded test sets.
