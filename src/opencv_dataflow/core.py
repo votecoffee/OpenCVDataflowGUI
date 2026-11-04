@@ -260,6 +260,10 @@ class Graph:
     @classmethod
     def load(cls, path, registry):
         data = json.loads(Path(path).read_text(encoding="utf-8"))
+        return cls.from_dict(data, registry)
+
+    @classmethod
+    def from_dict(cls, data, registry):
         if data.get("schema_version") != 1:
             raise ValueError("Unsupported project schema version")
         graph = cls()
