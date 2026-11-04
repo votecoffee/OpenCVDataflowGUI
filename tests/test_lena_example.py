@@ -8,7 +8,7 @@ import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
-from opencv_dataflow.examples import lena_graph
+from opencv_dataflow.examples import lena_features_graph, lena_graph
 from opencv_dataflow.toolblocks import encapsulate
 
 
@@ -89,3 +89,18 @@ def test_lena_downloader_preserves_mismatched_existing_asset(tmp_path):
     with pytest.raises(ValueError, match="preserved"):
         module.prepare(path)
     assert path.read_bytes() == b"preserve this file"
+
+
+@pytest.mark.skipif(
+    not Path("examples/assets/lena.jpg").exists(), reason="Optional Lena asset not fetched"
+)
+def test_lena_feature_pipeline_and_saved_graph():
+    registry = builtin_registry()
+    graph = Graph.load("examples/lena_features.json", registry)
+    assert graph.to_dict() == lena_features_graph(registry).to_dict()
+    graph.run()
+    assert all(b.state == "pass" for b in graph.blocks.values())
+    assert 0 < graph.blocks["feature_corners"].last_result.outputs["count"] <= 100
+    assert graph.blocks["feature_lines"].last_result.outputs["count"] > 0
+    histogram = graph.blocks["feature_histogram"].last_result.outputs["histogram"]
+    assert sum(histogram["channels"][0]["counts"]) == 512 * 512

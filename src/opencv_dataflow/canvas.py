@@ -180,7 +180,7 @@ class Node(QGraphicsItem):
             self.block.position = [self.pos().x(), self.pos().y()]
             if self.scene():
                 self.scene().update_wires()
-                self.scene().edited.emit()
+                self.scene().layout_changed.emit()
         return super().itemChange(change, value)
 
 
@@ -205,6 +205,7 @@ class CanvasScene(QGraphicsScene):
     selected_block = Signal(object)
     open_block = Signal(object)
     edited = Signal()
+    layout_changed = Signal()
     warning = Signal(str)
 
     def __init__(self, graph):

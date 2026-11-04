@@ -58,6 +58,11 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
 5. Save/load JSON projects from File. Select a wire or block and press Delete to
    remove it. Use the wheel to zoom, middle-drag to pan, and **Fit graph** to frame it.
 
+Node rearrangements mark the project as modified. **Save/Ctrl+S remembers node
+positions even when connections are unchanged**, including layouts inside nested
+ToolBlocks. Layout-only moves retain existing results. Positions are saved in the
+project; there is no automatic save on movement.
+
 Load trusted custom blocks via **File > Load Python plugin**. Start with
 [`examples/custom_invert.py`](examples/custom_invert.py). Plugins run arbitrary Python;
 project files never automatically import them. Load the same plugins before opening
@@ -123,6 +128,12 @@ The expanded [base-tool catalog](docs/base-tools.md) covers conversion, crop/res
 flip/rotate, filters, automatic/adaptive thresholds, color-range masks, morphology,
 bitwise operations, blending, gradients, components and template matching. These
 new wrappers use eager OpenCV calls alongside the existing native G-API tools.
+
+Additional wrappers include histogram equalization, CLAHE, normalization, gamma,
+channel split/merge, masking, absolute difference, corner detection, Hough lines/
+circles and distance transform. See [additional tools](docs/additional-tools.md).
+After preparing the optional Lena asset, open `examples/lena_features.json` to try
+CLAHE → corners, edges → line segments, and a histogram in one project.
 
 ### Image file formats
 

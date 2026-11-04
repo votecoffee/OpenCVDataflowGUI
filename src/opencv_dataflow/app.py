@@ -359,6 +359,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(split)
         self.scene.selected_block.connect(self.inspector.select)
         self.scene.edited.connect(self.mark_dirty)
+        self.scene.layout_changed.connect(self.mark_layout_dirty)
         self.scene.warning.connect(self.warn)
         self.scene.open_block.connect(self.enter_toolblock)
         self.make_actions()
@@ -574,6 +575,10 @@ class MainWindow(QMainWindow):
     def mark_dirty(self):
         if self.graph_stack:
             self.root_graph.invalidate()
+        self.dirty = True
+        self.update_title()
+
+    def mark_layout_dirty(self):
         self.dirty = True
         self.update_title()
 
