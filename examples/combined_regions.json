@@ -338,7 +338,8 @@
         "mask",
         "count",
         "centroids",
-        "data"
+        "data",
+        "collection"
       ],
       "thumbnail": true,
       "preview_output": "overlay"

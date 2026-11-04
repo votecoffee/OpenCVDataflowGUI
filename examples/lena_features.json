@@ -173,7 +173,8 @@
       "exposed_outputs": [
         "segments",
         "count",
-        "overlay"
+        "overlay",
+        "collection"
       ],
       "thumbnail": true,
       "preview_output": "overlay"

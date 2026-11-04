@@ -13,7 +13,9 @@ import numpy as np
 
 from .core import Block, Graph, Port, Registry, Result
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
+from .objects import collection, contour_item
 from .parameters import BORDERS, scalar_value
+from .payloads import moved_payload
 from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
 
 
@@ -289,7 +291,13 @@ class Contours(Block):
     block_type, subtype = "Inspection", "Shapes"
     type_id, title, category = "inspect.contours", "Find contours", "Inspection"
     inputs = SELECTION_INPUTS
-    outputs = (Port("overlay"), Port("mask"), Port("count", "number"), Port("data", "data"))
+    outputs = (
+        Port("overlay"),
+        Port("mask"),
+        Port("count", "number"),
+        Port("data", "data"),
+        Port("collection", "data"),
+    )
     defaults = {
         "min_area": 100.0,
         "expected_count": 2,
@@ -330,7 +338,7 @@ class Contours(Block):
         search = gray
         if selection is not None and self.parameters["region_mode"] == "clip":
             search = np.where(selection != 0, gray, 0).astype(gray.dtype)
-        contours, _ = cv2.findContours(
+        contours, hierarchy = cv2.findContours(
             search,
             retrieval[self.parameters["retrieval"]],
             approximation[self.parameters["approximation"]],
@@ -340,6 +348,7 @@ class Contours(Block):
         expected = int(self.parameters["expected_count"])
         if minimum < 0 or expected < 0:
             raise ValueError("Minimum area and expected count must be nonnegative")
+        contour_ids = {id(c): index for index, c in enumerate(contours)}
         selected = [c for c in contours if cv2.contourArea(c) >= minimum]
         if selection is not None and self.parameters["region_mode"] == "center":
             retained = []
@@ -366,8 +375,23 @@ class Contours(Block):
             "contours": [c.reshape(-1, 2).tolist() for c in selected],
             "offset": offset.tolist(),
         }
+        payload = moved_payload(
+            self.input_payloads["image"],
+            np.array([[1, 0, -offset[0]], [0, 1, -offset[1]], [0, 0, 1]]),
+            [gray.shape[1], gray.shape[0]],
+        )
+        items = [
+            contour_item(c, contour_ids[id(c)], hierarchy[0][contour_ids[id(c)]]) for c in selected
+        ]
         return Result(
-            {"overlay": overlay, "mask": mask, "count": count, "data": data},
+            {
+                "overlay": overlay,
+                "mask": mask,
+                "count": count,
+                "data": data,
+                "collection": collection("contours", items, gray, payload, offset),
+            },
+            payloads={"collection": payload, "data": payload},
             graphics={"contours": overlay},
             passed=count == expected,
             score=score,
@@ -508,6 +532,7 @@ def builtin_registry():
         SaveCalibration,
         Undistort,
     )
+    from .collection_tools import COLLECTION_BLOCKS
     from .depth import RGBD, DepthFile, DepthSample
     from .features import FEATURE_BLOCKS
     from .histogram import Histogram
@@ -545,6 +570,7 @@ def builtin_registry():
         *ANALYSIS_BLOCKS,
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,
+        *COLLECTION_BLOCKS,
     ):
         registry.register(block)
     return registry

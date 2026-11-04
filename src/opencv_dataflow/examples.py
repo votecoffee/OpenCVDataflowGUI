@@ -503,3 +503,102 @@ def channel_pyramid_graph(registry):
         graph.connect(source, output, target, input)
     graph.blocks["pyr_components"].preview_output = "overlay"
     return graph
+
+
+def object_collections_graph(registry):
+    """Measured blobs, round contours and long vertical lines with visual ranked results."""
+    graph = Graph()
+    specs = [
+        ("objects_source", "input.demo", "Synthetic parts", [0, -330], None),
+        ("objects_roi", "cv.crop", "Exclude caption", [0, 0], {"width": 480, "height": 290}),
+        ("objects_gray", "cv.convert", "Grayscale", [300, 0], None),
+        ("objects_threshold", "cv.threshold", "Segment shapes", [600, 0], None),
+        ("objects_blobs", "inspect.blobs", "Find all blobs", [0, 360], None),
+        (
+            "objects_blob_filter",
+            "collection.filter",
+            "Keep tall parts",
+            [300, 360],
+            {"metric": "height", "minimum": 80.0},
+        ),
+        (
+            "objects_blob_sort",
+            "collection.sort",
+            "Order parts left to right",
+            [600, 360],
+            {"metric": "center_x", "direction": "ascending"},
+        ),
+        ("objects_blob_draw", "collection.draw", "Ranked parts", [900, 360], None),
+        ("objects_contours", "inspect.contours", "Find contours", [0, 720], None),
+        (
+            "objects_contour_filter",
+            "collection.filter",
+            "Keep round contour",
+            [300, 720],
+            {"metric": "circularity", "minimum": 0.85},
+        ),
+        (
+            "objects_contour_draw",
+            "collection.draw",
+            "Round contour",
+            [600, 720],
+            {"color": [80, 180, 250]},
+        ),
+        ("objects_lines", "inspect.line_segments", "Find line segments", [0, 1080], None),
+        (
+            "objects_line_length",
+            "collection.filter",
+            "Keep long lines",
+            [300, 1080],
+            {"metric": "length", "minimum": 100.0},
+        ),
+        (
+            "objects_line_angle",
+            "collection.filter",
+            "Keep vertical lines",
+            [600, 1080],
+            {"metric": "angle", "minimum": 85.0, "maximum": 95.0, "use_maximum": True},
+        ),
+        (
+            "objects_line_sort",
+            "collection.sort",
+            "Order lines left to right",
+            [900, 1080],
+            {"metric": "center_x", "direction": "ascending"},
+        ),
+        (
+            "objects_line_draw",
+            "collection.draw",
+            "Vertical line results",
+            [1200, 1080],
+            {"color": [240, 160, 70]},
+        ),
+    ]
+    for key, kind, name, position, parameters in specs:
+        block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
+        block.name, block.position = name, position
+    for source, output, target, input in [
+        ("objects_source", "image", "objects_roi", "image"),
+        ("objects_roi", "image", "objects_gray", "image"),
+        ("objects_gray", "image", "objects_threshold", "image"),
+        ("objects_threshold", "image", "objects_blobs", "image"),
+        ("objects_blobs", "collection", "objects_blob_filter", "collection"),
+        ("objects_blob_filter", "collection", "objects_blob_sort", "collection"),
+        ("objects_blob_sort", "collection", "objects_blob_draw", "collection"),
+        ("objects_threshold", "image", "objects_contours", "image"),
+        ("objects_contours", "collection", "objects_contour_filter", "collection"),
+        ("objects_contour_filter", "collection", "objects_contour_draw", "collection"),
+        ("objects_gray", "image", "objects_lines", "image"),
+        ("objects_lines", "collection", "objects_line_length", "collection"),
+        ("objects_line_length", "collection", "objects_line_angle", "collection"),
+        ("objects_line_angle", "collection", "objects_line_sort", "collection"),
+        ("objects_line_sort", "collection", "objects_line_draw", "collection"),
+        *[
+            ("objects_roi", "image", key, "image")
+            for key in ("objects_blob_draw", "objects_contour_draw", "objects_line_draw")
+        ],
+    ]:
+        graph.connect(source, output, target, input)
+    for key in ("objects_blob_draw", "objects_contour_draw", "objects_line_draw"):
+        graph.blocks[key].preview_output = "overlay"
+    return graph

@@ -110,6 +110,54 @@ Inputs: `image` (image), `calibration` (data).
 | `max_rms_pixels` | `1.0` |  |
 | `new_camera_matrix` | `[]` |  |
 
+## Draw object collection (`collection.draw`)
+
+Inspection / Collections
+
+Inputs: `image` (image), `collection` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `color` | `[80, 230, 140]` |  |
+| `thickness` | `2` |  |
+| `draw_bounds` | `true` |  |
+| `draw_centers` | `true` |  |
+| `labels` | `"rank"` | `rank`, `id`, `none` |
+
+## Filter object collection (`collection.filter`)
+
+Inspection / Collections
+
+Inputs: `collection` (data), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `distance`, `line_width`, `precision`, `nfa`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
+| `use_minimum` | `true` |  |
+| `minimum` | `0.0` |  |
+| `include_minimum` | `true` |  |
+| `use_maximum` | `false` |  |
+| `maximum` | `0.0` |  |
+| `include_maximum` | `true` |  |
+| `invert_range` | `false` | Invert numeric range only; the optional region/mask still intersects it. |
+| `missing` | `"reject"` | `reject`, `keep`, `error` Undefined metrics (e.g. Hu moments on lines) use this policy. |
+| `reference_point` | `[0.0, 0.0]` | [x,y] in reported collection coordinates; used for distance. |
+
+## Sort object collection (`collection.sort`)
+
+Inspection / Collections
+
+Inputs: `collection` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `distance`, `line_width`, `precision`, `nfa`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
+| `direction` | `"descending"` | `ascending`, `descending` |
+| `secondary_metric` | `"none"` | `none`, `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `distance`, `line_width`, `precision`, `nfa`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
+| `secondary_direction` | `"ascending"` | `ascending`, `descending` |
+| `missing` | `"last"` | `last`, `first`, `error` |
+| `reference_point` | `[0.0, 0.0]` |  |
+
 ## Attach port payload (`core.attach_payload`)
 
 Data / Payloads
@@ -848,6 +896,22 @@ Inputs: `matches` (data).
 | `min_inliers` | `3` |  |
 | `min_inlier_ratio` | `0.5` |  |
 
+## Find blobs (`inspect.blobs`)
+
+Inspection / Shapes
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `connectivity` | `8` | `4`, `8` |
+| `min_area` | `100` |  |
+| `max_area` | `0` |  |
+| `expected_count` | `2` |  |
+| `algorithm` | `"default"` | `default`, `sauf`, `bbdt`, `spaghetti` |
+| `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
+| `check_count` | `false` |  |
+
 ## Connected components (`inspect.components`)
 
 Inspection / Shapes
@@ -991,6 +1055,23 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `max_gap` | `10.0` |  |
 | `rho` | `1.0` |  |
 | `theta_degrees` | `1.0` |  |
+
+## Find line segments (LSD) (`inspect.line_segments`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `refinement` | `"standard"` | `none`, `standard`, `advanced` |
+| `scale` | `0.8` | Detection image scale in (0,1]. Returned coordinates use the input image. |
+| `sigma_scale` | `0.6` |  |
+| `quantization` | `2.0` |  |
+| `angle_tolerance` | `22.5` |  |
+| `log_epsilon` | `0.0` | -log10(NFA) threshold; used only with advanced refinement. |
+| `density_threshold` | `0.7` |  |
+| `bins` | `1024` |  |
 
 ## Match ORB descriptors (`inspect.match_orb`)
 
