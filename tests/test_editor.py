@@ -434,3 +434,33 @@ def test_enum_fields_are_dropdowns_and_unknown_values_are_not_silently_replaced(
     assert errors and block.parameters["score_type"] == "obsolete"
     window.dirty = False
     window.close()
+
+
+def test_object_collection_editor_filter_sort_preview_worker_and_save(app, tmp_path):
+    from PySide6.QtWidgets import QComboBox
+
+    window = MainWindow()
+    window.load_object_collections_example()
+    window.scene.nodes["objects_blob_filter"].setSelected(True)
+    assert isinstance(window.inspector.fields["metric"], QComboBox)
+    assert window.inspector.fields["metric"].currentText() == "height"
+    window.start_run(False)
+    pump_until(app, lambda: window.runner is None)
+    assert all(block.state == "pass" for block in window.graph.blocks.values())
+    window.scene.clearSelection()
+    window.scene.nodes["objects_blob_draw"].setSelected(True)
+    window.inspector.preview_choice.setCurrentText("Output / overlay")
+    assert not window.inspector.image.pixmap().isNull()
+    window.scene.clearSelection()
+    window.scene.nodes["objects_blob_sort"].setSelected(True)
+    window.inspector.fields["direction"].setCurrentText("descending")
+    window.inspector.apply()
+    window.path = tmp_path / "objects.json"
+    assert window.save_project()
+    loaded = Graph.load(window.path, window.registry)
+    loaded.run()
+    objects = loaded.blocks["objects_blob_sort"].last_result.outputs["collection"]["items"]
+    assert objects[0]["metrics"]["center_x"] > objects[1]["metrics"]["center_x"]
+    assert loaded.blocks["objects_blob_draw"].last_result.outputs["count"] == 2
+    window.dirty = False
+    window.close()

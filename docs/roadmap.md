@@ -21,6 +21,7 @@
 - Affine/projective region transforms, image-geometry direction/size checks and transformed inspection jobs.
 - Optional port payloads, image/root coordinate provenance, bundled Gaussian pyramids and per-input level selection.
 - Three/four-channel split/merge, channel extraction/replacement and explicit pyramid up/down tools.
+- Blob/contour/Hough/LSD collections, geometric and Hu descriptors, range/region filtering, stable sorting and ranked overlays.
 
 ## Point clouds and 3D vision
 

@@ -192,6 +192,23 @@ Contour/component **Region mode** chooses whole-object center filtering or clipp
 measurements. See [region behavior and supported tools](docs/regions.md) for
 outside-pixel policies, neighborhood behavior and coordinate rules.
 
+### Blob, line and contour collections
+
+**Find blobs**, **Connected components**, **Find contours**, **Hough line segments**
+and **Find line segments (LSD)** expose a `collection` output. Connect it to
+**Filter object collection**, **Sort object collection**, and **Draw object
+collection** to select and visualize measured objects without code.
+
+Filter/sort criteria use dropdowns: area, bounding width/height and position,
+centroid, aspect ratio, principal-axis angle, line length, perimeter, fitted box
+sizes, extent, solidity, circularity, distance and all seven raw/signed-log Hu moments.
+Chain filters for multiple criteria, inspect rejected objects, and use stable
+two-key sorting with explicit policies for undefined measurements.
+
+Try **File > Load object collections example**, or `examples/object_collections.json`.
+This 16-block project orders two parts left-to-right, selects the round contour and
+isolates two long vertical lines. See [collection tools and measurement conventions](docs/object-collections.md).
+
 ### Channels, payloads and image pyramids
 
 Use **Split three channels / Merge three channels**, or the four-channel alpha
@@ -290,6 +307,7 @@ graph.close()
 - `regions.py`, `selection.py`: reusable shape regions, mask intersections and selection policies.
 - `region_editor.py`: interactive image-space drawing and editing of region shapes.
 - `payloads.py`, `pyramids.py`: optional wire payloads, image coordinate provenance and bundled pyramids.
+- `objects.py`, `collection_tools.py`: measured blob/line/contour collections, filtering, sorting and rendering.
 - `examples.py` and `runner.py`: built-in starter graphs and headless project verification.
 - `plugins.py`: explicitly loaded trusted Python extensions.
 - `canvas.py`: movable nodes, typed sockets, selectable wires, pan and zoom.

@@ -43,6 +43,7 @@ from .core import Graph
 from .examples import (
     channel_pyramid_graph,
     combined_regions_graph,
+    object_collections_graph,
     regions_graph,
     starter_graph,
     template_graph,
@@ -476,6 +477,7 @@ class MainWindow(QMainWindow):
             ("Load combined regions example", None, self.load_combined_regions_example),
             ("Load transformed regions example", None, self.load_transformed_regions_example),
             ("Load channels and pyramids example", None, self.load_channel_pyramid_example),
+            ("Load object collections example", None, self.load_object_collections_example),
         ):
             action = QAction(title, self)
             if shortcut:
@@ -741,6 +743,10 @@ class MainWindow(QMainWindow):
     def load_channel_pyramid_example(self):
         if not self.runner and self.confirm_discard():
             self.replace_graph(channel_pyramid_graph(self.registry))
+
+    def load_object_collections_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(object_collections_graph(self.registry))
 
     def open_project(self):
         if self.runner or not self.confirm_discard():

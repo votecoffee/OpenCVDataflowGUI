@@ -5,6 +5,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .images import ImageArray, image_format, preview_rgb
+from .objects import collection, line_item
 from .parameters import optional_mask
 from .payloads import require_same_frame
 from .processing import (
@@ -334,7 +335,12 @@ class HoughLines(ImageTool):
     inputs = SELECTION_INPUTS
     type_id, title, subtype = "inspect.hough_lines", "Hough line segments", "Features"
     category, block_type = "Inspection", "Inspection"
-    outputs = (Port("segments", "data"), Port("count", "number"), Port("overlay"))
+    outputs = (
+        Port("segments", "data"),
+        Port("count", "number"),
+        Port("overlay"),
+        Port("collection", "data"),
+    )
     defaults = {"votes": 50, "min_length": 30.0, "max_gap": 10.0, "rho": 1.0, "theta_degrees": 1.0}
 
     def process(self, inputs):
@@ -361,7 +367,17 @@ class HoughLines(ImageTool):
         for x1, y1, x2, y2 in segments:
             cv2.line(overlay, (x1, y1), (x2, y2), (0, 220, 120), 1)
         return Result(
-            {"segments": segments, "count": len(segments), "overlay": overlay},
+            {
+                "segments": segments,
+                "count": len(segments),
+                "overlay": overlay,
+                "collection": collection(
+                    "lines",
+                    [line_item(s, i) for i, s in enumerate(segments)],
+                    image,
+                    self.input_payloads["image"],
+                ),
+            },
             graphics={"lines": overlay},
             message=f"{len(segments)} line segments",
         )

@@ -9,6 +9,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .images import DepthArray, ImageArray, format_image, image_format, opencv_image, preview_rgb
+from .objects import blob_item, collection
 from .parameters import BORDERS, OUTPUT_DEPTHS, anchor_value, optional_mask, scalar_value
 from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
 
@@ -539,6 +540,7 @@ class ConnectedComponents(ImageTool):
         Port("count", "number"),
         Port("centroids", "data"),
         Port("data", "data"),
+        Port("collection", "data"),
     )
     defaults = {
         "connectivity": 8,
@@ -580,6 +582,7 @@ class ConnectedComponents(ImageTool):
         overlay = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
         mask = np.zeros_like(image)
         components = []
+        items = []
         for label in range(1, total):
             x, y, width, height, area = map(int, stats[label])
             if area < minimum or (maximum and area > maximum):
@@ -588,6 +591,11 @@ class ConnectedComponents(ImageTool):
             if self.parameters["region_mode"] == "center" and not contains(selection, center):
                 continue
             components.append({"area": area, "bounds": [x, y, width, height], "centroid": center})
+            items.append(
+                blob_item(
+                    (labels[y : y + height, x : x + width] == label).astype(np.uint8), x, y, label
+                )
+            )
             mask[labels == label] = 255
             cv2.rectangle(overlay, (x, y), (x + width - 1, y + height - 1), (70, 220, 140), 1)
             cv2.drawMarker(
@@ -601,6 +609,7 @@ class ConnectedComponents(ImageTool):
                 "count": count,
                 "centroids": [c["centroid"] for c in components],
                 "data": {"count": count, "components": components},
+                "collection": collection("blobs", items, image, self.input_payloads["image"]),
             },
             graphics={"components": overlay},
             passed=count == expected,
