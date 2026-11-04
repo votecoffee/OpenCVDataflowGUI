@@ -73,7 +73,7 @@
             },
             {
               "id": "lena_inner_blur",
-              "type": "gapi.blur",
+              "type": "cv.gaussian_blur",
               "name": "Gaussian blur",
               "parameters": {
                 "kernel": 5,
@@ -133,7 +133,7 @@
     },
     {
       "id": "lena_edges",
-      "type": "gapi.canny",
+      "type": "cv.canny",
       "name": "Canny edges",
       "parameters": {
         "low": 60.0,

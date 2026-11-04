@@ -310,7 +310,7 @@
     },
     {
       "id": "roi_blur",
-      "type": "gapi.blur",
+      "type": "cv.gaussian_blur",
       "name": "Blur only inside circle",
       "parameters": {
         "kernel": 15,

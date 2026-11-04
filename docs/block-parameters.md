@@ -307,6 +307,22 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `output_depth` | `"same"` | `same`, `uint8`, `uint16`, `int16`, `float32`, `float64` |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 
+## Canny edges (`cv.canny`)
+
+Image processing / Edges
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `low` | `60.0` |  |
+| `high` | `150.0` |  |
+| `aperture` | `"3"` | `3`, `5`, `7` |
+| `l2_gradient` | `false` |  |
+
 ## Cartesian to polar fields (`cv.cart_to_polar`)
 
 Image processing / Image math
@@ -444,6 +460,25 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | --- | --- | --- |
 | `gamma` | `1.0` |  |
 
+## Gaussian blur (`cv.gaussian_blur`)
+
+Image processing / Filtering
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `kernel` | `5` | Odd X size; 0 derives it from positive sigma X. |
+| `sigma` | `1.2` |  |
+| `kernel_y` | `0` | 0 uses kernel X; if both are zero, derive Y size from sigma. |
+| `sigma_y` | `0.0` | 0 uses sigma X, following OpenCV. |
+| `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
+| `border_value` | `[0.0, 0.0, 0.0, 0.0]` | Used only by the constant border mode, in source channel order. |
+| `algorithm_hint` | `"default"` | `default`, `accurate`, `approximate` |
+
 ## Sobel / Scharr / Laplacian (`cv.gradient`)
 
 Image processing / Edges
@@ -463,6 +498,16 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `delta` | `0.0` |  |
 | `output_depth` | `"float32"` | `int16`, `float32`, `float64` |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
+
+## Grayscale (`cv.gray`)
+
+Image processing / Color and depth
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `algorithm_hint` | `"default"` | `default`, `accurate`, `approximate` |
 
 ## Gaussian image pyramid set (`cv.image_pyramid`)
 
@@ -916,7 +961,7 @@ Inputs: `group` (any).
 
 ## Gaussian blur (`gapi.blur`)
 
-Image processing / G-API
+Advanced / G-API
 
 Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
@@ -934,7 +979,7 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 
 ## Canny edges (`gapi.canny`)
 
-Image processing / G-API
+Advanced / G-API
 
 Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
@@ -950,7 +995,7 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 
 ## Grayscale (`gapi.gray`)
 
-Image processing / G-API
+Advanced / G-API
 
 Inputs: `image` (image).
 

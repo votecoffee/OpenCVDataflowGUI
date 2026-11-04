@@ -130,7 +130,7 @@
     },
     {
       "id": "feature_edges",
-      "type": "gapi.canny",
+      "type": "cv.canny",
       "name": "Contrast edges",
       "parameters": {
         "low": 60.0,

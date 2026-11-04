@@ -17,7 +17,7 @@ def registry():
     return builtin_registry()
 
 
-def test_demo_native_gapi_and_retained_results(registry):
+def test_demo_eager_opencv_and_retained_results(registry):
     graph = demo_graph(registry)
     graph.run()
     assert all(b.state == "pass" for b in graph.blocks.values())

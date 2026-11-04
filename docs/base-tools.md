@@ -4,8 +4,9 @@
 
 These tools are usable node blocks with typed ports, inspector parameters, latest
 input/output records, native errors and previews. They use ordinary OpenCV calls;
-the existing G-API grayscale/blur/Canny blocks continue to use native GComputation.
-They are not silently fused into a shared G-API graph.
+ordinary Grayscale, Gaussian blur and Canny are the defaults. Legacy variants live
+under **Advanced > G-API**, with their existing IDs retained for older projects.
+They are not silently fused into a shared graph.
 
 ## New block catalog
 
@@ -15,6 +16,9 @@ The portable `examples/trained_patterns.json` job exercises all three tools.
 
 | Toolbox subtype | Block | OpenCV operation / behavior |
 | --- | --- | --- |
+| Color and depth | Grayscale | `cvtColor`; tagged color input or grayscale passthrough, uint8/uint16/float32 without depth scaling |
+| Filtering | Gaussian blur | `GaussianBlur`; X/Y kernels and sigmas, border policy/value, optional mask/region |
+| Edges | Canny edges | `Canny`; uint8 grayscale, low/high thresholds, aperture and L2 gradient, optional mask/region |
 | Color and depth | Convert image | Color conversion and deterministic depth scaling; same choices as image-file input |
 | Geometry | Crop ROI | Validated array ROI; zero width/height means remainder of image |
 | Geometry | Resize | `resize`; explicit width/height and nearest, linear, area or cubic interpolation |
@@ -33,9 +37,9 @@ The portable `examples/trained_patterns.json` job exercises all three tools.
 | Inspection / Shapes | Connected components | `connectedComponentsWithStats`; area filtering, bounds, centroids, count, overlay and mask |
 | Inspection / Matching | Match template | `matchTemplate`; normalized coefficient, correlation or squared-difference matching |
 
-Older tools remain available: native G-API grayscale/Gaussian blur/Canny, fixed
+Older tools remain available: Advanced G-API grayscale/Gaussian blur/Canny, fixed
 threshold, contour inspection, per-channel histogram, calibration and depth tools.
-There are 17 new block classes; operation dropdowns expose further native variants.
+Operation dropdowns expose further native variants.
 
 ## Data and coordinate contracts
 
@@ -100,7 +104,7 @@ encapsulation into a reusable ToolBlock.
 ```text
 Synthetic parts -> Inspection ROI -> Grayscale -> Remove noise
                                         |              |
-                                        v              +-> Part edges (G-API Canny)
+                                        v              +-> Part edges (Canny)
                                   ROI histogram        |
                                                        v
 Measure two parts <- Clean mask <- Segment parts (Otsu)

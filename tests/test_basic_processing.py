@@ -1,0 +1,192 @@
+import copy
+import json
+from pathlib import Path
+
+import cv2
+import numpy as np
+import pytest
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QComboBox
+
+from opencv_dataflow.app import MainWindow
+from opencv_dataflow.blocks import builtin_registry, demo_graph
+from opencv_dataflow.core import Graph
+from opencv_dataflow.images import ImageArray, image_format
+from opencv_dataflow.toolblocks import ToolBlock
+
+
+def execute(kind, image, parameters=None, **extra):
+    block = builtin_registry().create(kind, parameters=parameters)
+    block.execute({"image": image, **extra})
+    assert block.state == "pass", block.error
+    return block.last_output_images["image"]
+
+
+@pytest.mark.parametrize("depth", [np.uint8, np.uint16, np.float32])
+@pytest.mark.parametrize("encoding", ["bgr", "rgb", "bgra", "gray"])
+def test_grayscale_preserves_depth_and_interprets_encoding(depth, encoding):
+    image = np.random.default_rng(16).integers(0, 255, (17, 23, 3), dtype=np.uint8).astype(depth)
+    expected = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    if encoding == "rgb":
+        image = image[:, :, ::-1].copy()
+    elif encoding == "bgra":
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)
+        expected = cv2.cvtColor(image, cv2.COLOR_BGRA2GRAY)
+    elif encoding == "gray":
+        image = expected.copy()
+    image = ImageArray(image, encoding, metadata={"custom": {"part": 12}})
+    output = execute("cv.gray", image)
+    np.testing.assert_array_equal(output, expected)
+    assert output.dtype == depth and image_format(output) == "gray"
+    assert output.metadata["custom"] == {"part": 12}
+
+
+@pytest.mark.parametrize("depth", [np.uint8, np.uint16, np.int16, np.float32, np.float64])
+@pytest.mark.parametrize("automatic", [False, True])
+def test_gaussian_matches_opencv_with_rectangular_or_automatic_kernel(depth, automatic):
+    image = np.random.default_rng(11).integers(0, 255, (23, 31, 3), dtype=np.uint8).astype(depth)
+    image = ImageArray(image, "rgb")
+    kx, ky = (0, 0) if automatic else (3, 7)
+    output = execute(
+        "cv.gaussian_blur",
+        image,
+        {"kernel": kx, "kernel_y": ky, "sigma": 0.8, "sigma_y": 2.1, "border": "replicate"},
+    )
+    expected = cv2.GaussianBlur(
+        np.asarray(image), (kx, ky), 0.8, sigmaY=2.1, borderType=cv2.BORDER_REPLICATE
+    )
+    np.testing.assert_array_equal(output, expected)
+    assert image_format(output) == "rgb"
+
+
+def test_gaussian_constant_border_and_mask():
+    image = np.zeros((19, 25, 3), np.uint8)
+    mask = np.zeros(image.shape[:2], np.uint8)
+    mask[:10, :12] = 255
+    output = execute(
+        "cv.gaussian_blur",
+        image,
+        {"kernel": 3, "kernel_y": 7, "border": "constant", "border_value": [20, 80, 180, 0]},
+        mask=mask,
+    )
+    padded = cv2.copyMakeBorder(image, 3, 3, 1, 1, cv2.BORDER_CONSTANT, value=(20, 80, 180))
+    expected = cv2.GaussianBlur(padded, (3, 7), 1.2)[3:-3, 1:-1]
+    expected[mask == 0] = image[mask == 0]
+    np.testing.assert_array_equal(output, expected)
+
+
+@pytest.mark.parametrize("aperture", ["3", "5", "7"])
+@pytest.mark.parametrize("l2", [False, True])
+def test_canny_parameters_and_region_selection(aperture, l2):
+    image = np.random.default_rng(15).integers(0, 255, (40, 60), dtype=np.uint8)
+    # Use a mask for exact pixel inclusion and retain a separate region integration
+    # check in test_regions.py shared with the legacy implementation.
+    mask = np.zeros_like(image)
+    mask[:, :25] = 255
+    output = execute("cv.canny", image, {"aperture": aperture, "l2_gradient": l2}, mask=mask)
+    expected = cv2.Canny(image, 60, 150, apertureSize=int(aperture), L2gradient=l2)
+    expected[mask == 0] = 0
+    np.testing.assert_array_equal(output, expected)
+    assert image_format(output) == "gray"
+
+
+@pytest.mark.parametrize(
+    "kind, parameters, image",
+    [
+        ("cv.gaussian_blur", {"kernel": 2}, np.zeros((10, 10), np.uint8)),
+        ("cv.gaussian_blur", {"kernel": 3.5}, np.zeros((10, 10), np.uint8)),
+        ("cv.gaussian_blur", {"sigma": float("nan")}, np.zeros((10, 10), np.uint8)),
+        ("cv.gaussian_blur", {"kernel": 0, "sigma": 0}, np.zeros((10, 10), np.uint8)),
+        ("cv.canny", {"high": 50}, np.zeros((10, 10), np.uint8)),
+        ("cv.canny", {"low": float("inf")}, np.zeros((10, 10), np.uint8)),
+        ("cv.canny", {"aperture": "9"}, np.zeros((10, 10), np.uint8)),
+        ("cv.canny", {}, np.zeros((10, 10), np.uint16)),
+        ("cv.canny", {}, np.zeros((10, 10, 3), np.uint8)),
+    ],
+)
+def test_invalid_inputs_fail_visibly(kind, parameters, image):
+    block = builtin_registry().create(kind, parameters=parameters)
+    block.execute({"image": image})
+    assert block.state == "error" and block.error
+    assert not block.last_output_images
+
+
+def test_default_graph_runs_without_gapi_and_legacy_projects_remain_loadable(monkeypatch):
+    registry = builtin_registry()
+    graph = demo_graph(registry)
+    data = copy.deepcopy(graph.to_dict())
+    mapping = {"cv.gray": "gapi.gray", "cv.gaussian_blur": "gapi.blur"}
+    for block in data["blocks"]:
+        block["type"] = mapping.get(block["type"], block["type"])
+        if block["type"].startswith("gapi."):
+            block["parameters"].pop("algorithm_hint", None)
+    legacy = Graph.from_dict(data, registry)
+    legacy.run()
+    assert all(b.state == "pass" for b in legacy.blocks.values())
+    assert Graph.from_dict(legacy.to_dict(), registry).to_dict() == legacy.to_dict()
+
+    def no_gapi(*args, **kwargs):
+        raise AssertionError("Ordinary graph tried to construct a GComputation")
+
+    monkeypatch.setattr(cv2, "GComputation", no_gapi)
+    graph.run()
+    assert all(b.state == "pass" for b in graph.blocks.values())
+    assert list(graph.blocks.values())[-1].last_result.outputs["count"] == 2
+    for path in Path("examples").glob("*.json"):
+
+        def check(value):
+            if isinstance(value, dict):
+                assert not str(value.get("type", "")).startswith("gapi."), path
+                for child in value.values():
+                    check(child)
+            elif isinstance(value, list):
+                for child in value:
+                    check(child)
+
+        check(json.loads(path.read_text(encoding="utf-8")))
+    definition = ToolBlock.read("examples/inspect_shapes.toolblock.json", registry)
+    assert definition is not None
+
+
+def test_toolbox_separates_advanced_gapi_and_eager_enum_controls(app):
+    window = MainWindow()
+    found = {}
+    tree = window.library
+    for i in range(tree.topLevelItemCount()):
+        category = tree.topLevelItem(i)
+        for j in range(category.childCount()):
+            subtype = category.child(j)
+            for k in range(subtype.childCount()):
+                item = subtype.child(k)
+                found[item.data(0, Qt.ItemDataRole.UserRole)] = (category.text(0), subtype.text(0))
+    assert found["gapi.gray"] == found["gapi.blur"] == found["gapi.canny"] == ("Advanced", "G-API")
+    assert found["cv.gray"] == ("Image processing", "Color and depth")
+    assert found["cv.gaussian_blur"] == ("Image processing", "Filtering")
+    assert found["cv.canny"] == ("Image processing", "Edges")
+    for kind, parameter in (
+        ("cv.gaussian_blur", "border"),
+        ("cv.canny", "aperture"),
+        ("cv.gaussian_blur", "algorithm_hint"),
+        ("cv.gray", "algorithm_hint"),
+    ):
+        window.inspector.select(window.registry.create(kind))
+        field = window.inspector.fields[parameter]
+        assert isinstance(field, QComboBox)
+        assert field.count() > 1
+    window.close()
+
+
+@pytest.mark.parametrize(
+    "hint_name, hint",
+    [
+        ("default", cv2.ALGO_HINT_DEFAULT),
+        ("accurate", cv2.ALGO_HINT_ACCURATE),
+        ("approximate", cv2.ALGO_HINT_APPROX),
+    ],
+)
+def test_algorithm_hints_match_native_execution(hint_name, hint):
+    image = np.random.default_rng(67).integers(0, 255, (32, 48, 3), dtype=np.uint8)
+    gray = execute("cv.gray", image, {"algorithm_hint": hint_name})
+    np.testing.assert_array_equal(gray, cv2.cvtColor(image, cv2.COLOR_BGR2GRAY, hint=hint))
+    blur = execute("cv.gaussian_blur", image, {"algorithm_hint": hint_name})
+    np.testing.assert_array_equal(blur, cv2.GaussianBlur(image, (5, 5), 1.2, hint=hint))

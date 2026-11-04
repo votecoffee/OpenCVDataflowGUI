@@ -9,8 +9,9 @@ identifiers. Parameters configure a block; ports carry values between blocks.
 `process(inputs)` returns a `Result` containing exactly the declared outputs. Image
 ports accept nonempty NumPy arrays, numeric ports accept numbers, and data ports
 accept JSON-compatible structures. An `any` input accepts any upstream port kind.
-Built-in processing expects OpenCV-compatible images (normally uint8); grayscale
-expects BGR input and Canny expects grayscale input. Invalid native inputs become
+Built-in processing expects OpenCV-compatible images. Ordinary Grayscale interprets
+tagged color formats and supports uint8/uint16/float32; Canny requires uint8
+grayscale. Invalid native inputs become
 visible block errors rather than implicit color conversions.
 
 Image-file inputs additionally support explicit color encodings and pixel depths.
@@ -50,12 +51,13 @@ An inspection that returns `passed=False` still feeds downstream result writers.
 Port exposure controls editor visibility only; hiding a required port does not
 make it optional. Connected ports cannot be hidden until the wire is removed.
 
-`GAPIBlock` builds and caches a native `cv2.GComputation` per parameter set. Current
-native operations are BGR-to-gray, Gaussian blur, and Canny. The orchestration DAG
-is a Python graph containing those native computations alongside eager OpenCV,
-custom Python, acquisition and output operations. There is no silent eager fallback
-and no claim that the full graph is fused or compiled. Shared-subgraph compilation
-is future work.
+Default Grayscale (`cv.gray`), Gaussian blur (`cv.gaussian_blur`) and Canny
+(`cv.canny`) execute ordinary OpenCV calls. Shipped projects use these observable
+blocks. The legacy `gapi.gray`, `gapi.blur` and `gapi.canny` IDs remain loadable
+under **Advanced > G-API**; `GAPIBlock` caches one native `cv2.GComputation` per
+parameter set without an eager fallback. The Python orchestration graph is not
+fused. [Compiled ToolBlocks](opencv-backend.md#compiled-toolblocks-future) are
+future opt-in scope, with selected diagnostic outputs and a measured-benefit gate.
 
 The desktop worker owns a separate execution graph. After a run, it signals the UI
 and waits while Qt copies a stable result snapshot into the display graph. Qt never

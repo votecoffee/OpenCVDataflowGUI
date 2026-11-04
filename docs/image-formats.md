@@ -61,8 +61,9 @@ color format, pixel depth, bits per channel, and decoded source format/depth.
 The Qt preview converts tagged encodings to RGB for display. Built-in G-API tools,
 thresholding, contour inspection and image saving use `opencv_image(image)` to
 interpret RGB/RGBA/HSV/Lab before processing. This canonicalizes color encoding,
-without silently converting pixel depth. Native G-API Grayscale and Canny currently
-require uint8. Other native tools may also limit channel layouts or depths; a typed
+without silently converting pixel depth. Ordinary Grayscale accepts uint8, uint16
+and float32, including tagged BGR/RGB/BGRA/RGBA/HSV/Lab or grayscale input.
+Ordinary Canny requires uint8 grayscale. Legacy G-API Grayscale and Canny require uint8. Other native tools may also limit channel layouts or depths; a typed
 image wire does not promise that every operation accepts every image representation.
 
 Custom blocks can import helpers from `opencv_dataflow.images`. Call

@@ -209,7 +209,7 @@
     },
     {
       "id": "starter_edges",
-      "type": "gapi.canny",
+      "type": "cv.canny",
       "name": "Part edges",
       "parameters": {
         "low": 40.0,

@@ -75,7 +75,7 @@
             "blocks": [
               {
                 "id": "638250b60b2c4035a2c9464fb6975fce",
-                "type": "gapi.gray",
+                "type": "cv.gray",
                 "name": "Grayscale",
                 "parameters": {},
                 "position": [
@@ -93,7 +93,7 @@
               },
               {
                 "id": "f3bfa9e5808d44ee93ec22bb3d668a75",
-                "type": "gapi.blur",
+                "type": "cv.gaussian_blur",
                 "name": "Gaussian blur",
                 "parameters": {
                   "kernel": 5,

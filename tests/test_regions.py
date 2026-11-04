@@ -52,7 +52,13 @@ def test_filters_preserve_background_and_segmentation_zeroes_it():
     expected = cv2.blur(image, (3, 3))
     expected[mask == 0] = image[mask == 0]
     np.testing.assert_array_equal(blurred, expected)
-    for kind in ("cv.threshold", "gapi.canny", "cv.gradient", "inspect.corner_response"):
+    for kind in (
+        "cv.threshold",
+        "cv.canny",
+        "gapi.canny",
+        "cv.gradient",
+        "inspect.corner_response",
+    ):
         output = run(kind, {"image": image, "mask": mask})
         key = {"cv.gradient": "gradient", "inspect.corner_response": "response"}.get(kind, "image")
         assert np.all(output[key][mask == 0] == 0)

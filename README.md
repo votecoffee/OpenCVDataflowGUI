@@ -123,7 +123,8 @@ example**, then Continuous. See [input queues](docs/input-queues.md) for capacit
 metadata pairing and Stop/Resume behavior.
 
 The supported dependency is OpenCV 5 contrib (development checks use 5.0.0.93).
-This desktop application uses native Python bindings and retains its G-API blocks.
+This desktop application uses native Python bindings. Ordinary OpenCV blocks are
+the defaults; legacy G-API blocks remain under **Advanced > G-API**.
 Migration details and a possible browser/WebAssembly backend are covered in the
 [backend notes](docs/opencv-backend.md).
 
@@ -132,7 +133,7 @@ Load trusted custom blocks via **File > Load Python plugin**. Start with
 project files never automatically import them. Load the same plugins before opening
 projects that use their types. No code is needed for built-in pipelines.
 
-Built-in tools include demo/image/camera inputs; G-API grayscale, Gaussian blur,
+Built-in tools include demo/image/camera inputs; ordinary grayscale, Gaussian blur,
 and Canny; threshold; contour inspection with overlay and mask images; image saving;
 and structured result output to CSV, XML, or SQLite. Set a Write results block's
 `format` to `csv`, `xml`, or `sqlite` and connect a `data` output to it. CSV and
@@ -191,7 +192,7 @@ run. `python -m opencv_dataflow.runner` is an alternative to the console command
 The expanded [base-tool catalog](docs/base-tools.md) covers conversion, crop/resize/
 flip/rotate, filters, automatic/adaptive thresholds, color-range masks, morphology,
 bitwise operations, blending, gradients, components and template matching. These
-new wrappers use eager OpenCV calls alongside the existing native G-API tools.
+new wrappers use eager OpenCV calls; legacy native G-API tools live under Advanced.
 
 Additional wrappers include histogram equalization, CLAHE, normalization, gamma,
 channel split/merge, masking, absolute difference, corner detection, Hough lines/
@@ -314,8 +315,9 @@ The `image` output carries the requested format. The `info` output reports size,
 channel count, depth, and source/output formats; the decoded source is also available
 in the graphic preview selector. Previews and built-in tools interpret the color
 encoding correctly. Processing tools still have their own depth requirements:
-native G-API Grayscale and Canny require uint8. For 16-bit or float grayscale, select
-grayscale directly in the file input.
+ordinary Grayscale supports uint8/uint16/float32; Canny requires uint8 grayscale.
+Legacy G-API Grayscale also requires uint8. For explicit conversion, choose the
+color format and pixel depth in the file input or a Convert image block.
 
 ### Reusable ToolBlocks
 
@@ -363,7 +365,8 @@ graph.close()
 ## Architecture
 
 - `core.py`: block/result contracts, typed ports, acyclic graph scheduling, JSON projects.
-- `blocks.py`: acquisition, native G-API processing, inspection, and output sinks.
+- `blocks.py`: acquisition, legacy G-API processing, inspection, and output sinks.
+- `basic_processing.py`: ordinary Grayscale, Gaussian blur and Canny defaults.
 - `processing.py`: base OpenCV geometry, filtering, segmentation, math and inspection wrappers.
 - `features.py`, `registration.py`, `analysis_tools.py`: contrast, features, registration and numerical image tools.
 - `regions.py`, `selection.py`: reusable shape regions, mask intersections and selection policies.
@@ -379,9 +382,11 @@ graph.close()
 - `examples/`: reusable custom content.
 - `tests/`: local runtime and persistence checks.
 
-Grayscale, Gaussian blur, and Canny each build a native `cv2.GComputation`.
-The Python scheduler connects them with ordinary OpenCV, custom code, and I/O.
-The complete editor graph is **not** compiled into one fused G-API computation.
+Default Grayscale, Gaussian blur and Canny use ordinary OpenCV calls, retaining
+per-node results for inspection. Legacy variants under **Advanced > G-API** each
+cache a `cv2.GComputation`; the editor graph is not fused. An explicitly compiled
+ToolBlock with selected diagnostics is [future work](docs/opencv-backend.md#compiled-toolblocks-future),
+subject to demonstrated performance benefit before enablement or expansion.
 Block histories retain the latest run only; projects store configuration, not
 camera frames or execution histories.
 

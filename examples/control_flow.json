@@ -153,7 +153,7 @@
     },
     {
       "id": "flow_gray",
-      "type": "gapi.gray",
+      "type": "cv.gray",
       "name": "Grayscale branch",
       "parameters": {},
       "position": [
@@ -171,7 +171,7 @@
     },
     {
       "id": "flow_blur",
-      "type": "gapi.blur",
+      "type": "cv.gaussian_blur",
       "name": "Blur branch",
       "parameters": {
         "kernel": 5,
