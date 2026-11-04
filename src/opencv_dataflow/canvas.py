@@ -38,7 +38,13 @@ class Socket(QGraphicsEllipseItem):
         super().__init__(-7, -7, 14, 14, node)
         self.node, self.port, self.output = node, port, output
         self.setPos(220 if output else 0, 62 + row * 25)
-        colors = {"image": "#51c7db", "number": "#dca65e", "data": "#b497ea", "any": "#c2cbd5"}
+        colors = {
+            "image": "#51c7db",
+            "number": "#dca65e",
+            "data": "#b497ea",
+            "any": "#c2cbd5",
+            "depth": "#e98fc7",
+        }
         self.setBrush(QColor(colors.get(port.kind, "#c2cbd5")))
         self.setPen(QPen(QColor("#17202c"), 2))
         self.setToolTip(f"{port.name} · {port.kind} · {'output' if output else 'input'}")

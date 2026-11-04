@@ -123,7 +123,7 @@ def test_toolblock_group_navigation_run_and_save(app, monkeypatch, tmp_path):
     block = window.inspector.block
     assert block.name == "Inspect"
     assert len(window.graph.blocks) == 2
-    assert len(window.toolblock_templates) == 1
+    assert window.toolblock_templates[-1]["name"] == "Inspect"
     # Enter by double-clicking the actual node header.
     center = window.view.mapFromScene(window.scene.nodes[block.id].scenePos() + QPoint(80, 20))
     QTest.mouseDClick(window.view.viewport(), Qt.MouseButton.LeftButton, pos=center)
@@ -173,7 +173,9 @@ def test_toolblock_interface_dialog_and_library_instances(app):
     assert window.graph.connections[0].input == "image"
     window.toolblock_templates.append(block.definition())
     window.populate_library()
-    item = window.library.item(window.library.count() - 1)
+    item = window.library.findItems(
+        "Inspect", Qt.MatchFlag.MatchExactly | Qt.MatchFlag.MatchRecursive
+    )[0]
     window.add_block(item)
     first = window.inspector.block
     window.add_block(item)
@@ -215,5 +217,47 @@ def test_image_file_dropdowns_metadata_and_preview(app, tmp_path):
     color = shown.pixelColor(shown.width() // 2, shown.height() // 2)
     assert color.red() == 255 and color.blue() == 0
     assert '"bits_per_channel": 16' in window.inspector.details.toPlainText()
+    window.dirty = False
+    window.close()
+
+
+def test_toolbox_tree_types_subtypes_search_and_leaf_activation(app, monkeypatch):
+    window = MainWindow()
+    tree = window.library
+    input_group = tree.findItems("Input", Qt.MatchFlag.MatchExactly)[0]
+    assert input_group.childCount() >= 3
+    histogram = tree.findItems(
+        "Histogram", Qt.MatchFlag.MatchExactly | Qt.MatchFlag.MatchRecursive
+    )[0]
+    assert histogram.parent().text(0) == "Statistics"
+    assert histogram.parent().parent().text(0) == "Image processing"
+    before = len(window.graph.blocks)
+    window.add_block(input_group)
+    assert len(window.graph.blocks) == before
+    window.add_block(histogram)
+    assert window.inspector.block.type_id == "inspect.histogram"
+    window.search.setText("Lens distortion")
+    assert tree.topLevelItemCount() == 1 and tree.topLevelItem(0).text(0) == "Calibration"
+    leaf = tree.findItems(
+        "Calibrate lens ToolBlock", Qt.MatchFlag.MatchExactly | Qt.MatchFlag.MatchRecursive
+    )[0]
+    window.add_block(leaf)
+    toolblock = window.inspector.block
+    assert toolblock.block_type == "Calibration"
+    window.inspector.type_field.setText("Custom calibration")
+    window.inspector.subtype_field.setText("Camera A")
+    window.inspector.apply()
+    assert toolblock.definition()["subtype"] == "Camera A"
+    window.enter_toolblock(toolblock)
+    child = next(iter(window.graph.blocks.values()))
+    window.scene.nodes[child.id].setSelected(True)
+    window.inspector.fields["image_paths"].setText('["a.png", "b.png", "c.png"]')
+    window.inspector.apply()
+    assert child.parameters["image_paths"] == ["a.png", "b.png", "c.png"]
+    errors = []
+    monkeypatch.setattr(window, "warn", errors.append)
+    window.inspector.fields["image_paths"].setText('"not a list"')
+    window.inspector.apply()
+    assert errors and child.parameters["image_paths"] == ["a.png", "b.png", "c.png"]
     window.dirty = False
     window.close()

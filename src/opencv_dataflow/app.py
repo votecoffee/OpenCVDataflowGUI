@@ -22,8 +22,6 @@ from PySide6.QtWidgets import (
     QInputDialog,
     QLabel,
     QLineEdit,
-    QListWidget,
-    QListWidgetItem,
     QMainWindow,
     QMessageBox,
     QPushButton,
@@ -31,11 +29,14 @@ from PySide6.QtWidgets import (
     QSplitter,
     QTextEdit,
     QToolBar,
+    QTreeWidget,
+    QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
 )
 
 from .blocks import builtin_registry, demo_graph
+from .calibration import calibration_templates
 from .canvas import CanvasScene, CanvasView, Node, pixmap
 from .core import Graph
 from .plugins import load_plugin
@@ -117,10 +118,17 @@ class Inspector(QWidget):
             self.caption.setText("Select a block to configure its tools and ports.")
             self.refresh_result()
             return
-        self.caption.setText(f"{block.title}  /  {block.category}\n{block.type_id}")
+        self.caption.setText(
+            f"{block.title} / {block.block_type or block.category} / {block.subtype}"
+            f"\n{block.type_id}"
+        )
         self.name_field = QLineEdit(block.name)
         self.form.addRow("Name", self.name_field)
         if isinstance(block, ToolBlock):
+            self.type_field = QLineEdit(block.block_type)
+            self.subtype_field = QLineEdit(block.subtype)
+            self.form.addRow("Block type", self.type_field)
+            self.form.addRow("Subtype", self.subtype_field)
             for title, callback in (
                 ("Edit internal graph", lambda: self.window.enter_toolblock(block)),
                 ("Edit public terminals", self.window.edit_interface),
@@ -137,7 +145,9 @@ class Inspector(QWidget):
                 field = QCheckBox()
                 field.setChecked(value)
             else:
-                field = QLineEdit(str(value))
+                field = QLineEdit(
+                    json.dumps(value) if isinstance(value, (list, dict)) else str(value)
+                )
             self.fields[key] = field
             if key == "path":
                 row = QWidget()
@@ -157,7 +167,7 @@ class Inspector(QWidget):
         self.node_image = QComboBox()
         self.node_image.addItem("Automatic", "")
         for port in block.outputs:
-            if port.kind == "image":
+            if port.kind in ("image", "depth"):
                 self.node_image.addItem(port.name, port.name)
         index = self.node_image.findData(block.preview_output)
         self.node_image.setCurrentIndex(max(0, index))
@@ -198,6 +208,10 @@ class Inspector(QWidget):
                     value = int(field.text())
                 elif isinstance(initial, float):
                     value = float(field.text())
+                elif isinstance(initial, (list, dict)):
+                    value = json.loads(field.text())
+                    if not isinstance(value, type(initial)):
+                        raise ValueError(f"{key} requires a JSON {type(initial).__name__}")
                 else:
                     value = field.text()
                 parameters[key] = value
@@ -218,6 +232,11 @@ class Inspector(QWidget):
             name = self.name_field.text().strip()
             if not name:
                 raise ValueError("Name cannot be empty")
+            if isinstance(b, ToolBlock):
+                kind, subtype = self.type_field.text().strip(), self.subtype_field.text().strip()
+                if not kind or not subtype:
+                    raise ValueError("ToolBlock type and subtype cannot be empty")
+                b.block_type, b.subtype = kind, subtype
             b.name, b.parameters = name, parameters
             b.exposed_inputs, b.exposed_outputs = exposed["inputs"], exposed["outputs"]
             b.thumbnail = self.thumb.isChecked()
@@ -298,7 +317,7 @@ class MainWindow(QMainWindow):
         self.registry = builtin_registry()
         self.graph = demo_graph(self.registry)
         self.graph_stack = []
-        self.toolblock_templates = []
+        self.toolblock_templates = calibration_templates(self.registry)
         self.path = None
         self.dirty = False
         self.runner = None
@@ -308,7 +327,9 @@ class MainWindow(QMainWindow):
         self.scene = CanvasScene(self.graph)
         self.view = CanvasView(self.scene)
         self.inspector = Inspector(self)
-        self.library = QListWidget()
+        self.library = QTreeWidget()
+        self.library.setHeaderHidden(True)
+        self.library.setIndentation(14)
         self.library.itemDoubleClicked.connect(self.add_block)
         self.search = QLineEdit()
         self.search.setPlaceholderText("Search blocks…")
@@ -393,23 +414,42 @@ class MainWindow(QMainWindow):
     def populate_library(self):
         self.library.clear()
         query = self.search.text().lower()
-        for block_type in self.registry.types.values():
-            text = f"{block_type.category}  /  {block_type.title}"
-            if query in text.lower():
-                item = QListWidgetItem(text)
-                item.setData(Qt.ItemDataRole.UserRole, block_type.type_id)
-                self.library.addItem(item)
-        for index, definition in enumerate(self.toolblock_templates):
-            text = f"ToolBlocks / {definition['name']}"
-            if query in text.lower():
-                item = QListWidgetItem(text)
-                item.setData(Qt.ItemDataRole.UserRole, f"template:{index}")
-                self.library.addItem(item)
+        groups = {}
 
-    def add_block(self, item):
+        def add_entry(kind, subtype, title, type_id):
+            if query not in f"{kind} {subtype} {title}".lower():
+                return
+            if kind not in groups:
+                groups[kind] = QTreeWidgetItem(self.library, [kind])
+            key = (kind, subtype)
+            if key not in groups:
+                groups[key] = QTreeWidgetItem(groups[kind], [subtype])
+            item = QTreeWidgetItem(groups[key], [title])
+            item.setToolTip(0, f"{kind} / {subtype} / {title}")
+            item.setData(0, Qt.ItemDataRole.UserRole, type_id)
+
+        for block_type in self.registry.types.values():
+            add_entry(
+                block_type.block_type or block_type.category,
+                block_type.subtype,
+                block_type.title,
+                block_type.type_id,
+            )
+        for index, definition in enumerate(self.toolblock_templates):
+            add_entry(
+                definition.get("block_type", "ToolBlocks"),
+                definition.get("subtype", "Reusable"),
+                definition["name"],
+                f"template:{index}",
+            )
+        self.library.expandAll()
+
+    def add_block(self, item, column=0):
         if self.runner:
             return
-        type_id = item.data(Qt.ItemDataRole.UserRole)
+        type_id = item.data(0, Qt.ItemDataRole.UserRole)
+        if not type_id:
+            return
         if type_id.startswith("template:"):
             definition = self.toolblock_templates[int(type_id.split(":")[1])]
             block = ToolBlock.from_definition(definition, self.registry)
@@ -564,6 +604,7 @@ class MainWindow(QMainWindow):
         self.path, self.dirty = path, False
         self.update_title()
         self.view.fit_graph()
+        self.statusBar().showMessage(f"Job ready · {len(graph.blocks)} blocks")
 
     def new_project(self):
         if not self.runner and self.confirm_discard():
@@ -703,10 +744,10 @@ QToolButton, QPushButton { background: #30455d; border: 1px solid #46617f;
                           border-radius: 4px; padding: 7px 10px; }
 QToolButton:hover, QPushButton:hover { background: #3a617c; }
 QWidget:disabled { color: #6f7e91; }
-QLineEdit, QComboBox, QTextEdit, QListWidget { background: #142031; border: 1px solid #34475f;
+QLineEdit, QComboBox, QTextEdit, QTreeWidget { background: #142031; border: 1px solid #34475f;
                                           border-radius: 4px; padding: 5px; }
-QListWidget::item { padding: 9px 3px; }
-QListWidget::item:selected { background: #31566c; }
+QTreeWidget::item { padding: 5px 2px; }
+QTreeWidget::item:selected { background: #31566c; }
 QGroupBox { border: 1px solid #34475f; margin-top: 14px; padding-top: 12px; }
 QGroupBox::title { subcontrol-origin: margin; left: 9px; }
 QLabel#sectionTitle { color: #70d3e3; font-weight: bold; padding: 10px 0; }

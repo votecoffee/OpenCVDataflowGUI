@@ -60,6 +60,8 @@ class DepthFile(Block):
                 },
             },
             graphics={"depth": graphic},
+            passed=bool(valid.any()),
+            score=float(valid.mean()),
             message=f"Physical depth in {p['units']}",
         )
 

@@ -96,6 +96,14 @@ class CalibrationGrid(Block):
         origin = tuple(np.rint(corners[origin_index]).astype(int))
         cv2.drawMarker(overlay, origin, (0, 0, 255), cv2.MARKER_CROSS, 24, 2)
         cv2.putText(overlay, "Origin", origin, cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+        axes = cv2.perspectiveTransform(
+            np.float64([[[self.parameters["spacing"], 0], [0, self.parameters["spacing"]]]]),
+            np.linalg.inv(matrix),
+        ).reshape(-1, 2)
+        for endpoint, label, color in zip(axes, ("+X", "+Y"), ((0, 0, 255), (0, 180, 0))):
+            end = tuple(np.rint(endpoint).astype(int))
+            cv2.arrowedLine(overlay, origin, end, color, 2, tipLength=0.2)
+            cv2.putText(overlay, label, end, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
         return Result(
             {"mapping": mapping, "corners": corners.tolist(), "overlay": overlay},
             graphics={"grid origin": overlay},
