@@ -17,6 +17,7 @@
 - Separable/box filtering, corner response/refinement, phase correlation, affine estimation, remap and polar fields.
 - Circle/rectangle/polygon regions, shared mask selection, selected processing and result filtering.
 - Interactive region drawing, resize/move handles, polygon vertex editing and captured-frame previews.
+- Nested region union/intersection/difference/XOR/inversion and selected-area/coverage measurements.
 
 ## Point clouds and 3D vision
 

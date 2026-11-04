@@ -65,6 +65,49 @@ regions are never resized automatically. Regenerate regions for resized/cropped
 images and transform their coordinates explicitly for rotated/warped images.
 Equal dimensions alone do not prove that two images share the same coordinate frame.
 
+## Combine and measure regions
+
+**Combine regions** takes `image`, `region_a` and optional `region_b`. Its
+operation dropdown offers:
+
+| Operation | Selected pixels |
+| --- | --- |
+| union | Inside A or B |
+| intersection | Inside both A and B |
+| difference | Inside A and outside B (A minus B) |
+| xor | Inside exactly one of A and B |
+| invert | Outside A; B is unused |
+
+All operations except invert require B. Both regions and every nested child must
+match the supplied image dimensions. Outputs are the usual mask, region definition
+and tinted overlay. The output `region` can connect to another Combine regions or
+any existing region-enabled tool. Holes and disjoint shapes are preserved; edit
+the original Shape region blocks to change the geometry. Expressions are bounded
+to 16 nested levels and 128 total shapes/operators per rasterization.
+
+**Measure selected region** accepts the normal optional mask and region inputs;
+without either it measures the full image. It reports:
+
+- `area`: count of selected pixels, rather than contour-integrated area.
+- `coverage`: selected pixel count divided by total image pixel count, in [0,1].
+- `bounds`: `[x,y,width,height]` enclosing all selected pixels, or `[]` when empty.
+- `centroid`: one `[[x,y]]` point, or `[]` when empty, compatible with point tools.
+- `data`: these measurements with explicit pixel units and image dimensions.
+
+The centroid can lie in a hole or between disconnected islands. Minimum/maximum
+area and coverage control pass/fail; maximum area zero means unlimited. Failed
+inspections retain their measurements for downstream reporting. This block does
+not convert area or coordinates into calibrated physical units.
+
+Open **File > Load combined regions example** or `examples/combined_regions.json`
+for a ring selection unioned with a separate rectangle, then measured and used by
+histogram, threshold and component tools. The component tool uses `clip` mode:
+center filtering would reject a ring whose centroid lies in its excluded hole.
+
+```powershell
+.\.venv\Scripts\opencv-dataflow-run examples/combined_regions.json --repeat 3
+```
+
 ## Processing and result policies
 
 | Tools | Selection behavior |

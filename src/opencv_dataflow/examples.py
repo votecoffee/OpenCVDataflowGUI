@@ -277,3 +277,105 @@ def regions_graph(registry):
     for key in ("roi_circle", "roi_rectangle", "roi_polygon", "roi_left", "roi_right"):
         graph.blocks[key].preview_output = "overlay"
     return graph
+
+
+def combined_regions_graph(registry):
+    """A circular selection with a hole, unioned with a second inspection region."""
+    graph = Graph()
+    specs = [
+        ("combined_source", "input.demo", "Synthetic parts", [0, 0], None),
+        (
+            "combined_outer",
+            "region.shape",
+            "Outer circle",
+            [300, 0],
+            {"shape": "circle", "center": [140, 180], "radius": 80},
+        ),
+        (
+            "combined_inner",
+            "region.shape",
+            "Exclude center",
+            [300, 340],
+            {"shape": "circle", "center": [140, 180], "radius": 28},
+        ),
+        (
+            "combined_rectangle",
+            "region.shape",
+            "Second part",
+            [300, 680],
+            {"rectangle": [260, 95, 150, 170]},
+        ),
+        (
+            "combined_ring",
+            "region.combine",
+            "Circle minus center",
+            [620, 0],
+            {"operation": "difference"},
+        ),
+        ("combined_union", "region.combine", "Ring or second part", [940, 0], None),
+        (
+            "combined_measure",
+            "region.measure",
+            "Selection size",
+            [1260, 340],
+            {"min_area": 40000, "max_area": 45000},
+        ),
+        ("combined_histogram", "inspect.histogram", "Combined histogram", [1260, 0], None),
+        ("combined_gray", "cv.convert", "Grayscale", [620, 680], None),
+        (
+            "combined_threshold",
+            "cv.threshold",
+            "Segment selected pixels",
+            [940, 680],
+            {"value": 100.0},
+        ),
+        (
+            "combined_components",
+            "inspect.components",
+            "Measure ring and rectangle",
+            [1260, 680],
+            {"region_mode": "clip", "expected_count": 2},
+        ),
+    ]
+    for key, kind, name, position, parameters in specs:
+        block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
+        block.name, block.position = name, position
+    for key in (
+        "combined_outer",
+        "combined_inner",
+        "combined_rectangle",
+        "combined_ring",
+        "combined_union",
+        "combined_measure",
+        "combined_histogram",
+        "combined_gray",
+    ):
+        graph.connect("combined_source", "image", key, "image")
+    for source, output, target, input in [
+        ("combined_outer", "region", "combined_ring", "region_a"),
+        ("combined_inner", "region", "combined_ring", "region_b"),
+        ("combined_ring", "region", "combined_union", "region_a"),
+        ("combined_rectangle", "region", "combined_union", "region_b"),
+        *[
+            ("combined_union", "region", key, "region")
+            for key in (
+                "combined_measure",
+                "combined_histogram",
+                "combined_threshold",
+                "combined_components",
+            )
+        ],
+        ("combined_gray", "image", "combined_threshold", "image"),
+        ("combined_threshold", "image", "combined_components", "image"),
+    ]:
+        graph.connect(source, output, target, input)
+    for key in (
+        "combined_outer",
+        "combined_inner",
+        "combined_rectangle",
+        "combined_ring",
+        "combined_union",
+        "combined_components",
+    ):
+        graph.blocks[key].preview_output = "overlay"
+    return graph
