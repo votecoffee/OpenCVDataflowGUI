@@ -18,6 +18,7 @@ from .patterns import (
     training_result,
     validate_model,
 )
+from .poses import POSE_HELP, POSE_OFFSETS
 from .processing import finite, gray_image, integer
 from .registration import ORBFeatures
 from .selection import SELECTION_INPUTS, contains, selection_mask
@@ -137,6 +138,7 @@ class MatchTexturePattern(TrainableMatcher, Block):
     outputs = PATTERN_OUTPUTS
     defaults = {
         **TEXTURE_DEFAULTS,
+        **POSE_OFFSETS,
         "ratio": 0.75,
         "mutual": True,
         "orb_max_distance": 64.0,
@@ -161,6 +163,7 @@ class MatchTexturePattern(TrainableMatcher, Block):
         "robust_method": ("ransac", "lmeds"),
     }
     parameter_help = {
+        **POSE_HELP,
         "algorithm": "Training control; a supplied/stored model retains its detector settings.",
         "min_inlier_ratio": "Pose score = inliers / accepted descriptor correspondences.",
         "min_model_coverage": "Inliers / trained feature count, from 0 to 1.",

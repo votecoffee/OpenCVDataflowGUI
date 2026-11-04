@@ -77,3 +77,29 @@ def test_inspector_training_worker_save_load_and_model_files(app, tmp_path, monk
     assert "native training failed" in warnings[-1] and matcher.trained_model == model
     window.dirty = False
     window.close()
+
+
+def test_pose_inspection_menu_edit_and_background_reload(app, tmp_path):
+    window = MainWindow()
+    window.load_pose_inspection_example()
+    run(window, app)
+    assert all(b.state == "pass" for b in window.graph.blocks.values())
+    matcher = window.graph.blocks["pose_match"]
+    before = matcher.last_result.outputs["pose"]["origin"]
+    window.inspector.select(matcher)
+    window.inspector.fields["pose_offset_x"].setText("25.5")
+    assert window.inspector.apply()
+    run(window, app)
+    after = matcher.last_result.outputs["pose"]["origin"]
+    assert after[0] > before[0] + 4 and after[1] < before[1]
+    region = window.graph.blocks["pose_region"]
+    window.inspector.select(region)
+    assert window.inspector.fields["shape"].currentText() == "circle"
+    project = tmp_path / "pose_editor.json"
+    window.graph.save(project)
+    window.replace_graph(Graph.load(project, window.registry), project)
+    run(window, app)
+    assert all(b.state == "pass" for b in window.graph.blocks.values())
+    assert window.graph.blocks["pose_match"].parameters["pose_offset_x"] == 25.5
+    window.dirty = False
+    window.close()

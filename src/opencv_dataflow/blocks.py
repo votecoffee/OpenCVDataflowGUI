@@ -538,6 +538,7 @@ def builtin_registry():
     from .histogram import Histogram
     from .oriented_edges import FindOrientedEdges
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
+    from .poses import POSE_BLOCKS
     from .processing import PROCESSING_BLOCKS
     from .pyramids import PYRAMID_BLOCKS
     from .regions import REGION_BLOCKS
@@ -580,6 +581,7 @@ def builtin_registry():
         MatchTexturePattern,
         FindOrientedEdges,
         PatternDemoImages,
+        *POSE_BLOCKS,
     ):
         registry.register(block)
     return registry
