@@ -76,6 +76,16 @@ emits aggregate data after jobs settle. Project load restores that definition us
 the active registry, with the existing nesting limit and explicit plugin policy.
 The GUI can navigate the inspection graph and retain one part's internal snapshots.
 See [parallel inspection](parallel-inspection.md) for early-stop and coverage rules.
+
+Image queues own a frame lease until the consumer graph iteration exits, including
+error/cancellation paths. A queue can retain incoming serial emissions and return
+one image; queue-containing ToolBlocks preserve that gate across their public
+boundary. Captured upstream snapshots can supply an iteration without rerunning
+its source. In background mode a private producer graph runs on an acquisition
+thread, while consumer graph runs remain serialized. Queues synchronize storage
+and snapshots with a condition variable. The UI receives a final queue snapshot
+after joining acquisition so Stop/Resume preserves captures accepted after its
+last display update. See [input queues](input-queues.md) for limits and lifecycle.
 Stopping is cooperative between blocks; it cannot interrupt a blocking camera
 driver, OpenCV call or custom Python function. Closing waits for that work to return.
 Camera handles are reused within a continuous session and released on worker exit.

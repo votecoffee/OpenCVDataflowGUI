@@ -116,6 +116,12 @@ identify uninspected parts. **File > Load parallel part inspection example** fin
 and inspects 25 parts. See [parallel part inspection](docs/parallel-inspection.md)
 for editing the inspection, acceptance policies and cancellation behavior.
 
+Insert **Queue input images** after a source to retain frames and release them
+one at a time. It supports bounded FIFO storage, explicit overflow policies and
+optional background acquisition during inspection. Try **File > Load queued input
+example**, then Continuous. See [input queues](docs/input-queues.md) for capacity,
+metadata pairing and Stop/Resume behavior.
+
 The supported dependency is OpenCV 5 contrib (development checks use 5.0.0.93).
 This desktop application uses native Python bindings and retains its G-API blocks.
 Migration details and a possible browser/WebAssembly backend are covered in the

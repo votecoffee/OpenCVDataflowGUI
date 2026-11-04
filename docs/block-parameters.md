@@ -807,6 +807,20 @@ Inputs: `value` (any), `selector` (data, optional).
 | `comparison` | `"equals"` | `equals`, `less_than`, `greater_than`, `range` |
 | `modulo` | `0` |  |
 
+## Queue input images (`flow.image_queue`)
+
+Control flow / Acquisition queues
+
+Inputs: `image` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"buffer_only"` | `buffer_only`, `background_acquisition` Buffer bursts, or capture in the background during Continuous/CLI repeats. |
+| `capacity` | `32` | Maximum waiting frames, excluding the one being inspected. |
+| `max_bytes_mb` | `128.0` |  |
+| `overflow` | `"block"` | `block`, `drop_oldest`, `drop_newest`, `error` Block pauses background capture. Synchronous overflow is an error. |
+| `capture_interval_ms` | `0.0` | Pause between acquisition iterations; zero uses source pacing. |
+
 ## Inspect each pose in parallel (`flow.inspect_each`)
 
 Control flow / Parallel inspection

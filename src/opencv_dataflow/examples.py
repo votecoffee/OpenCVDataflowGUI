@@ -840,3 +840,29 @@ def parallel_parts_graph(registry):
     graph.connect(match.id, "matches", inspect.id, "features")
     match.preview_output = inspect.preview_output = "overlay"
     return graph
+
+
+def queued_input_graph(registry):
+    """Capture synthetic frames while one frame's 25 part inspections are running."""
+    graph = parallel_parts_graph(registry)
+    queue = graph.add(
+        registry.create(
+            "flow.image_queue",
+            block_id="input_queue",
+            parameters={
+                "mode": "background_acquisition",
+                "capacity": 4,
+                "capture_interval_ms": 5.0,
+            },
+        )
+    )
+    queue.name, queue.position = "FIFO input queue", [320, 440]
+    graph.connections = [
+        c
+        for c in graph.connections
+        if not (c.source == "parts_source" and c.output == "image" and c.input == "image")
+    ]
+    graph.connect("parts_source", "image", queue.id, "image")
+    graph.connect(queue.id, "image", "parts_match", "image")
+    graph.connect(queue.id, "image", "parts_inspect", "image")
+    return graph

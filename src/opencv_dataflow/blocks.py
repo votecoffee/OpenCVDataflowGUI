@@ -537,6 +537,7 @@ def builtin_registry():
     from .depth import RGBD, DepthFile, DepthSample
     from .features import FEATURE_BLOCKS
     from .histogram import Histogram
+    from .image_queue import ImageQueue
     from .oriented_edges import FindOrientedEdges
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
@@ -587,6 +588,7 @@ def builtin_registry():
         *CONTROL_BLOCKS,
         ParallelInspect,
         RepeatedPartsDemo,
+        ImageQueue,
     ):
         registry.register(block)
     return registry
