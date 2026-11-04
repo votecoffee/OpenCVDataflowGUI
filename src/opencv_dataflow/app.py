@@ -40,7 +40,7 @@ from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
 from .canvas import CanvasScene, CanvasView, Node, pixmap
 from .core import Graph
-from .examples import starter_graph, template_graph
+from .examples import regions_graph, starter_graph, template_graph
 from .plugins import load_plugin
 from .toolblock_editor import InterfaceDialog
 from .toolblocks import ToolBlock, encapsulate
@@ -385,6 +385,7 @@ class MainWindow(QMainWindow):
             ("Load demo", None, self.load_demo),
             ("Load starter inspection", None, self.load_starter),
             ("Load template matching example", None, self.load_template_example),
+            ("Load regions example", None, self.load_regions_example),
         ):
             action = QAction(title, self)
             if shortcut:
@@ -635,6 +636,10 @@ class MainWindow(QMainWindow):
         if not self.runner and self.confirm_discard():
             self.replace_graph(template_graph(self.registry))
 
+    def load_regions_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(regions_graph(self.registry))
+
     def open_project(self):
         if self.runner or not self.confirm_discard():
             return
@@ -734,6 +739,8 @@ class MainWindow(QMainWindow):
 
     def on_finished(self):
         worker = self.runner
+        # finished() can precede native thread-local cleanup; join before release.
+        worker.wait()
         self.runner = None
         worker.deleteLater()
         self.scene.set_locked(False)

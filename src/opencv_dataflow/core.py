@@ -77,6 +77,10 @@ class Block:
     def process(self, inputs: dict[str, Any]) -> Result:
         raise NotImplementedError
 
+    def finalize_result(self, result, inputs):
+        """Optional result policy for reusable block mixins."""
+        return result
+
     def validate_parameters(self, parameters=None):
         values = self.parameters if parameters is None else parameters
         for name, choices in self.parameter_choices.items():
@@ -99,6 +103,7 @@ class Block:
             result = self.process(copy.deepcopy(self.last_inputs))
             if not isinstance(result, Result):
                 raise TypeError("process() must return Result")
+            result = self.finalize_result(result, self.last_inputs)
             if result.score is not None and (
                 not math.isfinite(result.score) or not 0 <= result.score <= 1
             ):

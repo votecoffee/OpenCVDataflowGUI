@@ -112,7 +112,10 @@ Inputs: `image` (image), `calibration` (data).
 
 Image processing / Image math
 
-Inputs: `image_a` (image), `image_b` (image).
+Inputs: `image_a` (image), `image_b` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 No configurable algorithm parameters.
 
@@ -120,7 +123,10 @@ No configurable algorithm parameters.
 
 Image processing / Segmentation
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -142,7 +148,10 @@ No configurable algorithm parameters.
 
 Image processing / Segmentation
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -154,7 +163,10 @@ Inputs: `image` (image).
 
 Image processing / Filtering
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -167,7 +179,7 @@ Inputs: `image` (image).
 
 Image processing / Image math
 
-Inputs: `image_a` (image), `image_b` (image, optional), `mask` (image, optional).
+Inputs: `image_a` (image), `image_b` (image, optional), `mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -177,7 +189,10 @@ Inputs: `image_a` (image), `image_b` (image, optional), `mask` (image, optional)
 
 Image processing / Image math
 
-Inputs: `image_a` (image), `image_b` (image).
+Inputs: `image_a` (image), `image_b` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -190,7 +205,10 @@ Inputs: `image_a` (image), `image_b` (image).
 
 Image processing / Filtering
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -203,7 +221,10 @@ Inputs: `image` (image).
 
 Image processing / Filtering
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -228,7 +249,10 @@ Inputs: `x` (image), `y` (image).
 
 Image processing / Contrast
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -291,7 +315,10 @@ Inputs: `image` (image).
 
 Image processing / Contrast
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 No configurable algorithm parameters.
 
@@ -299,7 +326,10 @@ No configurable algorithm parameters.
 
 Image processing / Filtering
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -323,7 +353,10 @@ Inputs: `image` (image).
 
 Image processing / Contrast
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -333,7 +366,10 @@ Inputs: `image` (image).
 
 Image processing / Edges
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `gradient`, `preview`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -350,7 +386,10 @@ Inputs: `image` (image).
 
 Image processing / Segmentation
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -361,7 +400,10 @@ Inputs: `image` (image).
 
 Image processing / Filtering
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -381,7 +423,10 @@ Inputs: `channel_0` (image), `channel_1` (image), `channel_2` (image).
 
 Image processing / Morphology
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -399,7 +444,7 @@ Inputs: `image` (image).
 
 Image processing / Contrast
 
-Inputs: `image` (image), `mask` (image, optional).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -479,7 +524,10 @@ Inputs: `image` (image).
 
 Image processing / Filtering
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -502,7 +550,10 @@ No configurable algorithm parameters.
 
 Image processing / Segmentation
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -527,7 +578,10 @@ Inputs: `transform` (data, optional), `points` (data, optional).
 
 Image processing / Filtering
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -574,7 +628,10 @@ Inputs: `image` (image), `transform` (data, optional).
 
 Image processing / G-API
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -589,7 +646,10 @@ Inputs: `image` (image).
 
 Image processing / G-API
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -685,7 +745,7 @@ Inputs: `matches` (data).
 
 Inspection / Shapes
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -694,12 +754,13 @@ Inputs: `image` (image).
 | `max_area` | `0` |  |
 | `expected_count` | `2` |  |
 | `algorithm` | `"default"` | `default`, `sauf`, `bbdt`, `spaghetti` |
+| `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
 
 ## Find contours (`inspect.contours`)
 
 Inspection / Shapes
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -708,12 +769,16 @@ Inputs: `image` (image).
 | `retrieval` | `"external"` | `external`, `list`, `ccomp`, `tree` |
 | `approximation` | `"simple"` | `none`, `simple`, `tc89_l1`, `tc89_kcos` |
 | `offset` | `[0, 0]` |  |
+| `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
 
 ## Harris / minimum eigenvalue response (`inspect.corner_response`)
 
 Inspection / Features
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `response`, `preview`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -727,7 +792,7 @@ Inputs: `image` (image).
 
 Inspection / Features
 
-Inputs: `image` (image), `mask` (image, optional).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -753,7 +818,7 @@ Inputs: `depth` (depth), `points` (data, optional).
 
 Inspection / Features
 
-Inputs: `image` (image), `mask` (image, optional).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -765,7 +830,7 @@ Inputs: `image` (image), `mask` (image, optional).
 
 Image processing / Statistics
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -794,7 +859,7 @@ Inputs: `matches` (data).
 
 Inspection / Features
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -810,7 +875,7 @@ Inputs: `image` (image).
 
 Inspection / Features
 
-Inputs: `image` (image).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -837,7 +902,7 @@ Inputs: `query` (data), `train` (data).
 
 Inspection / Matching
 
-Inputs: `image` (image), `template` (image), `mask` (image, optional).
+Inputs: `image` (image), `template` (image), `mask` (image, optional), `search_mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -848,7 +913,7 @@ Inputs: `image` (image), `template` (image), `mask` (image, optional).
 
 Inspection / Features
 
-Inputs: `image` (image), `mask` (image, optional).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -929,3 +994,26 @@ Inputs: `data` (data).
 | --- | --- | --- |
 | `path` | `"results.csv"` |  |
 | `format` | `"csv"` | `csv`, `xml`, `sqlite` |
+
+## Filter points by region (`region.filter_points`)
+
+Inspection / Regions
+
+Inputs: `image` (image), `points` (data), `mask` (image, optional), `region` (data, optional).
+
+No configurable algorithm parameters.
+
+## Shape region (`region.shape`)
+
+Image processing / Regions
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `shape` | `"rectangle"` | `rectangle`, `circle`, `polygon` |
+| `rectangle` | `[0, 0, 100, 100]` | [x,y,width,height], whole input-image pixels. |
+| `center` | `[100, 100]` |  |
+| `radius` | `50` |  |
+| `vertices` | `[[0, 0], [100, 0], [50, 100]]` | Polygon [[x,y], ...] in input-image pixels; boundary is included. |
+| `invert` | `false` | Select everything outside the shape. |

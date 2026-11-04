@@ -37,6 +37,17 @@ def render():
                 + "."
             )
             lines.append("")
+        if hasattr(cls, "region_outputs"):
+            lines.extend(
+                [
+                    "Selection writes: "
+                    + ", ".join(f"`{p}`" for p in cls.region_outputs)
+                    + f"; outside policy: `{cls.region_background}`"
+                    + " (preserve requires matching channels).",
+                    "Neighborhood operations retain full-image context. See [regions](regions.md).",
+                    "",
+                ]
+            )
         if not cls.defaults:
             lines.extend(["No configurable algorithm parameters.", ""])
             continue

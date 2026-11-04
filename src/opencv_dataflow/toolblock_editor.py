@@ -79,7 +79,8 @@ class InterfaceDialog(QDialog):
                     choices.addItem(
                         f"{block.name} [{block.id[:8]}] / {port.name} ({port.kind})", endpoint
                     )
-        index = choices.findData(binding)
+        # QVariant comparison does not reliably compare Python dataclass values.
+        index = next((i for i in range(choices.count()) if choices.itemData(i) == binding), -1)
         choices.setCurrentIndex(index if index >= 0 else 0)
         self.table.setCellWidget(row, 2, choices)
 

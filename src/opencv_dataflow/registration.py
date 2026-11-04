@@ -16,6 +16,7 @@ from .processing import (
     image_value,
     integer,
 )
+from .selection import SELECTION_INPUTS, RegionalOperation, contains
 
 BORDERS = {
     **FILTER_BORDERS,
@@ -238,7 +239,7 @@ class Pyramid(ImageTool):
         return geometry_result(image, source, [[factor, 0, 0], [0, factor, 0], [0, 0, 1]])
 
 
-class Filter2D(ImageTool):
+class Filter2D(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.filter2d", "Custom 2D filter", "Filtering"
     defaults = {
         "kernel": [[0.0, -1.0, 0.0], [-1.0, 5.0, -1.0], [0.0, -1.0, 0.0]],
@@ -273,7 +274,7 @@ class Filter2D(ImageTool):
         return encoded_result(output, source)
 
 
-class UnsharpMask(ImageTool):
+class UnsharpMask(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.unsharp", "Unsharp mask", "Filtering"
     defaults = {
         "kernel": 5,
@@ -316,7 +317,7 @@ class UnsharpMask(ImageTool):
 class FASTFeatures(ImageTool):
     type_id, title, subtype = "inspect.fast", "FAST corners", "Features"
     category, block_type = "Inspection", "Inspection"
-    inputs = (Port("image"), Port("mask", required=False))
+    inputs = SELECTION_INPUTS
     outputs = (Port("points", "data"), Port("count", "number"), Port("overlay"))
     defaults = {"threshold": 10, "nonmax_suppression": True, "pattern": "9_16"}
     parameter_choices = {"pattern": ("5_8", "7_12", "9_16")}
@@ -350,7 +351,7 @@ class FASTFeatures(ImageTool):
 class ORBFeatures(ImageTool):
     type_id, title, subtype = "inspect.orb", "ORB keypoints and descriptors", "Features"
     category, block_type = "Inspection", "Inspection"
-    inputs = (Port("image"), Port("mask", required=False))
+    inputs = SELECTION_INPUTS
     outputs = (
         Port("features", "data"),
         Port("points", "data"),
@@ -387,7 +388,12 @@ class ORBFeatures(ImageTool):
             scoreType={"harris": cv2.ORB_HARRIS_SCORE, "fast": cv2.ORB_FAST_SCORE}[p["score_type"]],
             patchSize=integer(p["patch_size"], "Patch size", 3, 255, odd=True),
         )
-        keypoints, descriptors = detector.detectAndCompute(gray, optional_mask(inputs, gray))
+        mask = optional_mask(inputs, gray)
+        keypoints, descriptors = detector.detectAndCompute(gray, mask)
+        if mask is not None and keypoints:
+            keep = [index for index, point in enumerate(keypoints) if contains(mask, point.pt)]
+            keypoints = [keypoints[index] for index in keep]
+            descriptors = descriptors[keep] if descriptors is not None else None
         points = [list(k.pt) for k in keypoints]
         features = {
             "algorithm": "ORB",

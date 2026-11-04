@@ -14,6 +14,7 @@ import numpy as np
 from .core import Block, Graph, Port, Registry, Result
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 from .parameters import BORDERS, scalar_value
+from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
 
 
 class DemoImage(Block):
@@ -191,7 +192,7 @@ class Grayscale(GAPIBlock):
         return cv2.gapi.BGR2Gray(image)
 
 
-class Blur(GAPIBlock):
+class Blur(RegionalOperation, GAPIBlock):
     type_id, title = "gapi.blur", "Gaussian blur"
     defaults = {
         "kernel": 5,
@@ -231,7 +232,8 @@ class Blur(GAPIBlock):
         )
 
 
-class Canny(GAPIBlock):
+class Canny(RegionalOperation, GAPIBlock):
+    region_background = "zero"
     type_id, title = "gapi.canny", "Canny edges"
     input_depths = (np.uint8,)
     defaults = {"low": 60.0, "high": 150.0, "aperture": "3", "l2_gradient": False}
@@ -246,10 +248,12 @@ class Canny(GAPIBlock):
         )
 
 
-class Threshold(Block):
+class Threshold(RegionalOperation, Block):
+    inputs = SELECTION_INPUTS
+    region_background = "zero"
     block_type, subtype = "Image processing", "Segmentation"
     type_id, title, category = "cv.threshold", "Threshold", "Processing"
-    inputs, outputs = (Port("image"),), (Port("image"), Port("threshold", "number"))
+    inputs, outputs = SELECTION_INPUTS, (Port("image"), Port("threshold", "number"))
     defaults = {"value": 127.0, "invert": False, "max_value": 255.0, "mode": "binary"}
     parameter_choices = {"mode": ("binary", "binary_inv", "trunc", "tozero", "tozero_inv")}
 
@@ -279,9 +283,12 @@ class Threshold(Block):
 
 
 class Contours(Block):
+    parameter_help = {
+        "region_mode": "Center keeps whole objects; clip measures only their selected pixels."
+    }
     block_type, subtype = "Inspection", "Shapes"
     type_id, title, category = "inspect.contours", "Find contours", "Inspection"
-    inputs = (Port("image"),)
+    inputs = SELECTION_INPUTS
     outputs = (Port("overlay"), Port("mask"), Port("count", "number"), Port("data", "data"))
     defaults = {
         "min_area": 100.0,
@@ -289,10 +296,12 @@ class Contours(Block):
         "retrieval": "external",
         "approximation": "simple",
         "offset": [0, 0],
+        "region_mode": "center",
     }
     parameter_choices = {
         "retrieval": ("external", "list", "ccomp", "tree"),
         "approximation": ("none", "simple", "tc89_l1", "tc89_kcos"),
+        "region_mode": ("center", "clip"),
     }
 
     def process(self, inputs):
@@ -317,8 +326,12 @@ class Contours(Block):
             or np.any(offset != np.rint(offset))
         ):
             raise ValueError("Contour offset must be a whole-pixel [x,y] pair")
+        selection = selection_mask(inputs, gray)
+        search = gray
+        if selection is not None and self.parameters["region_mode"] == "clip":
+            search = np.where(selection != 0, gray, 0).astype(gray.dtype)
         contours, _ = cv2.findContours(
-            gray,
+            search,
             retrieval[self.parameters["retrieval"]],
             approximation[self.parameters["approximation"]],
             offset=tuple(offset.astype(int)),
@@ -328,6 +341,18 @@ class Contours(Block):
         if minimum < 0 or expected < 0:
             raise ValueError("Minimum area and expected count must be nonnegative")
         selected = [c for c in contours if cv2.contourArea(c) >= minimum]
+        if selection is not None and self.parameters["region_mode"] == "center":
+            retained = []
+            for contour in selected:
+                moments = cv2.moments(contour)
+                center = (
+                    [moments["m10"] / moments["m00"], moments["m01"] / moments["m00"]]
+                    if moments["m00"]
+                    else contour.reshape(-1, 2).mean(axis=0)
+                )
+                if contains(selection, np.asarray(center) - offset):
+                    retained.append(contour)
+            selected = retained
         overlay = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
         mask = np.zeros_like(gray)
         local = [(c - offset.astype(np.int32).reshape(1, 1, 2)).astype(np.int32) for c in selected]
@@ -487,6 +512,7 @@ def builtin_registry():
     from .features import FEATURE_BLOCKS
     from .histogram import Histogram
     from .processing import PROCESSING_BLOCKS
+    from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
 
     registry = Registry()
@@ -516,6 +542,7 @@ def builtin_registry():
         *FEATURE_BLOCKS,
         *REGISTRATION_BLOCKS,
         *ANALYSIS_BLOCKS,
+        *REGION_BLOCKS,
     ):
         registry.register(block)
     return registry

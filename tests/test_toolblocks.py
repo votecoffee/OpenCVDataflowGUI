@@ -19,7 +19,8 @@ def inspection_toolblock():
 def test_encapsulation_preserves_pipeline_and_records():
     registry, graph, nodes, block = inspection_toolblock()
     assert len(graph.blocks) == 2
-    assert len(block.inputs) == 1
+    assert sum(port.required for port in block.inputs) == 1
+    assert len(block.inputs) == 7  # Image plus optional mask/region terminals.
     assert {p.kind for p in block.outputs} == {"image", "number", "data"}
     graph.run()
     assert block.state == "pass", block.error
@@ -160,7 +161,10 @@ def test_nested_grouping_and_renaming_preserve_owner_terminals():
     )
     assert outer.output_bindings["gray"].block == inner.id
     inner.update_interface(
-        {"image": next(iter(inner.input_bindings.values()))},
+        {
+            "image": next(iter(inner.input_bindings.values())),
+            **dict(list(inner.input_bindings.items())[1:]),
+        },
         inner.output_bindings,
         outer.graph,
         owner=outer,

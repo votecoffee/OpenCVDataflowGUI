@@ -5,12 +5,13 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .images import image_format
+from .selection import SELECTION_INPUTS, selection_mask
 
 
 class Histogram(Block):
     type_id, title, category = "inspect.histogram", "Histogram", "Image processing"
     block_type, subtype = "Image processing", "Statistics"
-    inputs = (Port("image"),)
+    inputs = SELECTION_INPUTS
     outputs = (Port("histogram", "data"), Port("plot"))
     defaults = {
         "bins": 256,
@@ -44,8 +45,12 @@ class Histogram(Block):
         graphic = np.full((300, 600, 3), 25, np.uint8)
         colors = {"B": (240, 150, 70), "G": (90, 220, 90), "R": (80, 80, 245)}
         channels = []
+        selection = selection_mask(inputs, image)
         for index, (label, plane) in enumerate(zip(labels, planes)):
-            finite = np.asarray(plane)[np.isfinite(plane)]
+            valid = np.isfinite(plane)
+            if selection is not None:
+                valid &= selection != 0
+            finite = np.asarray(plane)[valid]
             mode = self.parameters["range_mode"]
             if mode == "manual":
                 low, high = float(self.parameters["range_min"]), float(self.parameters["range_max"])

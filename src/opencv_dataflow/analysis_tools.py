@@ -8,6 +8,7 @@ from .parameters import BORDERS, OUTPUT_DEPTHS, anchor_value
 from .processing import ImageTool, encoded_result, finite, gray_image, image_value, integer
 from .registration import BORDERS as WARP_BORDERS
 from .registration import INTERPOLATION
+from .selection import RegionalOperation
 
 
 def kernel_vector(value, name):
@@ -30,7 +31,7 @@ def criteria(parameters):
     )
 
 
-class BoxFilter(ImageTool):
+class BoxFilter(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.box_filter", "Box filter (depth/normalization)", "Filtering"
     defaults = {
         "width": 3,
@@ -57,7 +58,7 @@ class BoxFilter(ImageTool):
         return encoded_result(output, source)
 
 
-class SeparableFilter(ImageTool):
+class SeparableFilter(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.separable_filter", "Separable 2D filter", "Filtering"
     defaults = {
         "kernel_x": [0.25, 0.5, 0.25],
@@ -87,7 +88,9 @@ class SeparableFilter(ImageTool):
         return encoded_result(output, source)
 
 
-class CornerResponse(ImageTool):
+class CornerResponse(RegionalOperation, ImageTool):
+    region_outputs = ("response", "preview")
+    region_background = "zero"
     type_id, title, subtype = (
         "inspect.corner_response",
         "Harris / minimum eigenvalue response",
