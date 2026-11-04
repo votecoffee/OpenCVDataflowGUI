@@ -293,6 +293,7 @@ def builtin_registry():
         Undistort,
     )
     from .depth import RGBD, DepthFile, DepthSample
+    from .features import FEATURE_BLOCKS
     from .histogram import Histogram
     from .processing import PROCESSING_BLOCKS
 
@@ -320,6 +321,7 @@ def builtin_registry():
         LoadCalibration,
         SaveCalibration,
         *PROCESSING_BLOCKS,
+        *FEATURE_BLOCKS,
     ):
         registry.register(block)
     return registry

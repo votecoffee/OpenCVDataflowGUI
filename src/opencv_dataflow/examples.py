@@ -121,3 +121,38 @@ def lena_graph(registry):
     graph.connect(source.id, "image", match.id, "image")
     graph.connect(reference.id, "image", match.id, "template")
     return graph
+
+
+def lena_features_graph(registry):
+    graph = Graph()
+    specs = [
+        (
+            "feature_source",
+            "input.file",
+            "Lena source",
+            [0, 0],
+            {"path": "assets/lena.jpg", "path_base": "project"},
+        ),
+        ("feature_gray", "cv.convert", "Grayscale", [300, 0], None),
+        ("feature_clahe", "cv.clahe", "Local contrast", [600, 0], None),
+        ("feature_corners", "inspect.corners", "Trackable corners", [900, 0], None),
+        ("feature_histogram", "inspect.histogram", "Contrast histogram", [300, 340], None),
+        ("feature_edges", "gapi.canny", "Contrast edges", [600, 340], None),
+        ("feature_lines", "inspect.hough_lines", "Line segments", [900, 340], None),
+    ]
+    for key, type_id, name, position, parameters in specs:
+        block = registry.create(type_id, block_id=key, parameters=parameters)
+        block.name, block.position = name, position
+        graph.add(block)
+    for source, target in [
+        ("feature_source", "feature_gray"),
+        ("feature_gray", "feature_clahe"),
+        ("feature_clahe", "feature_corners"),
+        ("feature_clahe", "feature_histogram"),
+        ("feature_clahe", "feature_edges"),
+        ("feature_edges", "feature_lines"),
+    ]:
+        graph.connect(source, "image", target, "image")
+    graph.blocks["feature_corners"].preview_output = "overlay"
+    graph.blocks["feature_lines"].preview_output = "overlay"
+    return graph

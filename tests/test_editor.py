@@ -314,3 +314,37 @@ def test_project_relative_image_works_in_editor_worker(app, tmp_path, monkeypatc
     assert source.parameters["path"] == "assets/lena.jpg"
     window.dirty = False
     window.close()
+
+
+def test_layout_only_moves_persist_root_and_nested_without_rewiring_or_result_loss(app, tmp_path):
+    window = MainWindow()
+    graph = window.graph
+    original = list(graph.blocks.values())
+    toolblock = encapsulate(graph, [original[1].id, original[2].id], "Preprocess", window.registry)
+    window.scene.rebuild()
+    window.start_run(False)
+    pump_until(app, lambda: window.runner is None)
+    root_wires = list(graph.connections)
+    nested_wires = list(toolblock.graph.connections)
+    window.scene.nodes[toolblock.id].setPos(235.5, -128.25)
+    assert window.dirty and toolblock.state == "pass"
+    assert graph.connections == root_wires
+    window.enter_toolblock(toolblock)
+    child = next(iter(toolblock.graph.blocks.values()))
+    window.scene.nodes[child.id].setPos(-61.25, 290.75)
+    assert toolblock.state == "pass" and child.state == "pass"
+    assert toolblock.graph.connections == nested_wires
+    # Running copies results, without replacing either saved layout.
+    window.start_run(False)
+    pump_until(app, lambda: window.runner is None)
+    assert child.position == [-61.25, 290.75]
+    window.path = tmp_path / "layout.json"
+    assert window.save_project()
+    restored = Graph.load(window.path, window.registry)
+    assert restored.blocks[toolblock.id].position == [235.5, -128.25]
+    assert restored.blocks[toolblock.id].graph.blocks[child.id].position == [-61.25, 290.75]
+    assert restored.connections == root_wires
+    assert restored.blocks[toolblock.id].graph.connections == nested_wires
+    window.replace_graph(restored, window.path)
+    assert window.scene.nodes[toolblock.id].pos().x() == 235.5
+    window.close()
