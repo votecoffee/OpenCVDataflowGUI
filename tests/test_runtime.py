@@ -146,3 +146,73 @@ def test_stop_skips_unexecuted_blocks(registry):
     graph = demo_graph(registry)
     graph.run(cancelled=lambda: True)
     assert all(b.state == "skipped" for b in graph.blocks.values())
+
+
+def test_plugin_dataclass_import_and_atomic_registration(tmp_path, registry):
+    path = tmp_path / "extension.py"
+    path.write_text(
+        "from __future__ import annotations\n"
+        "from dataclasses import dataclass\n"
+        "from opencv_dataflow.core import Block\n"
+        "@dataclass\n"
+        "class Settings:\n"
+        "    value: int = 1\n"
+        "class Custom(Block):\n"
+        "    type_id = 'test.dataclass'\n"
+        "def register(registry):\n"
+        "    registry.register(Custom)\n"
+    )
+    load_plugin(path, registry)
+    assert "test.dataclass" in registry.types
+    before = dict(registry.types)
+    path.write_text(
+        path.read_text().replace("test.dataclass", "test.partial")
+        + "    raise ValueError('broken registration')\n"
+    )
+    with pytest.raises(ValueError, match="broken registration"):
+        load_plugin(path, registry)
+    assert registry.types == before
+
+
+def test_image_writer_preserves_existing_file(tmp_path, registry):
+    path = tmp_path / "capture.png"
+    image = np.full((20, 30, 3), 123, np.uint8)
+    block = registry.create("output.image", parameters={"path": str(path)})
+    block.execute({"image": image})
+    assert block.state == "pass", block.error
+    before = path.read_bytes()
+    np.testing.assert_array_equal(cv2.imdecode(np.frombuffer(before, np.uint8), 1), image)
+    block.execute({"image": np.zeros_like(image)})
+    assert block.state == "error"
+    assert path.read_bytes() == before
+
+
+def test_camera_handle_reuse_and_release(monkeypatch, registry):
+    handles = []
+
+    class Capture:
+        def __init__(self, device):
+            self.device, self.released, self.reads = device, False, 0
+            handles.append(self)
+
+        def isOpened(self):
+            return True
+
+        def read(self):
+            self.reads += 1
+            return True, np.full((4, 4, 3), self.device, np.uint8)
+
+        def release(self):
+            self.released = True
+
+    monkeypatch.setattr(cv2, "VideoCapture", Capture)
+    block = registry.create("input.camera")
+    block.execute({})
+    block.execute({})
+    assert len(handles) == 1 and handles[0].reads == 2
+    block.parameters["device"] = 1
+    block.execute({})
+    assert handles[0].released and len(handles) == 2
+    assert not handles[1].released
+    block.close()
+    assert handles[1].released
