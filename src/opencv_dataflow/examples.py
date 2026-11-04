@@ -689,3 +689,52 @@ def trained_patterns_graph(registry):
     ):
         graph.blocks[key].preview_output = "overlay"
     return graph
+
+
+def pose_inspection_graph(registry):
+    """Locate geometry, offset to a circle, then inspect a pose-relative region."""
+    graph = Graph()
+    specs = [
+        ("pose_images", "input.pattern_demo", "References and scene", [0, 0], None),
+        ("pose_train", "pattern.train_shape", "Train geometry", [300, 0], None),
+        (
+            "pose_match",
+            "pattern.match_shape",
+            "Find geometry and circle pose",
+            [620, 0],
+            {
+                "rotation_min": -20.0,
+                "rotation_max": 20.0,
+                "rotation_step": 5.0,
+                "min_score": 0.7,
+                "pose_offset_x": 20.5,
+                "pose_offset_y": -17.5,
+            },
+        ),
+        ("pose_offset", "pose.offset", "Adjust inspection origin", [960, 0], None),
+        (
+            "pose_region",
+            "region.pose",
+            "Circle-relative inspection",
+            [620, 420],
+            {"shape": "circle", "radius": 18},
+        ),
+        ("pose_histogram", "inspect.histogram", "Inspect positioned circle", [960, 420], None),
+    ]
+    for key, kind, name, position, parameters in specs:
+        block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
+        block.name, block.position = name, position
+    for source, output, target, input in [
+        ("pose_images", "shape_reference", "pose_train", "image"),
+        ("pose_images", "image", "pose_match", "image"),
+        ("pose_train", "model", "pose_match", "model"),
+        ("pose_match", "pose", "pose_offset", "pose"),
+        ("pose_offset", "pose", "pose_region", "pose"),
+        ("pose_images", "image", "pose_region", "image"),
+        ("pose_images", "image", "pose_histogram", "image"),
+        ("pose_region", "region", "pose_histogram", "region"),
+    ]:
+        graph.connect(source, output, target, input)
+    graph.blocks["pose_match"].preview_output = "overlay"
+    graph.blocks["pose_region"].preview_output = "overlay"
+    return graph

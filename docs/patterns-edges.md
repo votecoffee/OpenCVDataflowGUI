@@ -101,7 +101,7 @@ models or controls are execution errors and clear stale results.
 ## Results and coordinates
 
 Both matchers return `matches`, `count`, `score`, `transform`, center `points` and
-an `overlay` image. Each match includes center, corners, rotation, scale, score and
+an `overlay` image, plus an offset `pose`. Each match includes center, corners, rotation, scale, score and
 method-specific quality measurements. `transform` is the best match's 3-by-3
 `source_to_target` matrix; no match yields `{}`. Image inputs are uint8 grayscale
 or supported uint8 color converted to grayscale.
@@ -113,6 +113,13 @@ model-local points into the actual search-image frame. Pyramid-level image
 selection works through the existing input-level controls, and target payloads
 retain level/root provenance. Numeric coordinates refer to the selected image
 level; use coordinate mapping when comparing to full-resolution results.
+
+`pose_offset_x`, `pose_offset_y` and `pose_offset_angle` define a new inspection
+frame relative to the trained rectangle's center. Offsets are local model pixels
+and follow the fitted rotation/scale/projective mapping. Original match centers,
+corners and `transform` remain unchanged. Every match record includes its offset
+`pose`; the pose port returns the best one, or `{}` on no match. See
+[pose-relative inspection](poses.md) for feature-based frames and moving regions.
 
 ## Oriented edge finding
 

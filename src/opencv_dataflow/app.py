@@ -45,6 +45,7 @@ from .examples import (
     channel_pyramid_graph,
     combined_regions_graph,
     object_collections_graph,
+    pose_inspection_graph,
     regions_graph,
     starter_graph,
     template_graph,
@@ -585,6 +586,7 @@ class MainWindow(QMainWindow):
             ("Load channels and pyramids example", None, self.load_channel_pyramid_example),
             ("Load object collections example", None, self.load_object_collections_example),
             ("Load trained patterns and edges example", None, self.load_trained_patterns_example),
+            ("Load pose-relative inspection example", None, self.load_pose_inspection_example),
         ):
             action = QAction(title, self)
             if shortcut:
@@ -858,6 +860,10 @@ class MainWindow(QMainWindow):
     def load_trained_patterns_example(self):
         if not self.runner and self.confirm_discard():
             self.replace_graph(trained_patterns_graph(self.registry))
+
+    def load_pose_inspection_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(pose_inspection_graph(self.registry))
 
     def open_project(self):
         if self.runner or not self.confirm_discard():

@@ -24,6 +24,7 @@
 - Blob/contour/Hough/LSD collections, geometric and Hu descriptors, range/region filtering, stable sorting and ranked overlays.
 - Trainable geometric and ORB/SIFT patterns, persisted/importable models, pose outputs and wired trainers.
 - Oriented edge bands with thickness, continuity, strength, intensity, contrast and coverage filtering.
+- Image-plane poses, feature-derived frames, local pattern/pose offsets and pose-relative inspection regions.
 
 ## Point clouds and 3D vision
 
@@ -45,6 +46,8 @@ frame transforms and robot pose/measurement adapters. See
 - More OpenCV tools: multiple template matches, additional descriptors/robust matching and advanced calibration.
 - Dynamic parameter binding, richer types, promoted parameters and versioned ToolBlock libraries.
 - Compile compatible connected segments into shared native G-API computations.
+- Validate OpenCV 5 compatibility, including G-API's move to contrib, before expanding the supported dependency range.
+- Consider OpenCV.js/WebAssembly for a future browser viewer/editor; retain the native Python/Qt runtime today.
 - Camera enumeration, trigger controls, bounded acquisition and recorded test sets.
 
 ## Application runtime

@@ -11,6 +11,7 @@ import numpy as np
 from .core import Block, Port, Result
 from .features import overlay_image
 from .payloads import frame, metadata
+from .poses import POSE_HELP, POSE_OFFSETS, draw_pose, local_offset, make_pose, offset_pose
 from .processing import finite, gray_image, integer
 from .selection import SELECTION_INPUTS, contains, selection_mask
 
@@ -51,6 +52,7 @@ PATTERN_OUTPUTS = (
     Port("count", "number"),
     Port("score", "number"),
     Port("transform", "data"),
+    Port("pose", "data"),
     Port("points", "data"),
     Port("overlay"),
 )
@@ -281,6 +283,23 @@ class TrainableMatcher:
             raise ValueError("Train this pattern from its input or connect a trained model")
         return self.check_model(model)
 
+    def finalize_result(self, result, inputs):
+        p = self.parameters
+        # Validate even for negative inspections, so invalid controls are never hidden.
+        local_offset(*(p[k] for k in POSE_OFFSETS))
+        matches = result.outputs["matches"]["items"]
+        for match in matches:
+            transform = match["transform"]
+            w, h = transform["source_size"]
+            matrix = np.asarray(transform["source_to_target"]) @ local_offset(
+                (w - 1) / 2, (h - 1) / 2, 0
+            )
+            pose = make_pose(matrix, transform["target_size"], transform["target_payload"])
+            match["pose"] = offset_pose(pose, *(p[k] for k in POSE_OFFSETS))
+            draw_pose(result.outputs["overlay"], match["pose"])
+        result.outputs["pose"] = matches[0]["pose"] if matches else {}
+        return result
+
 
 class TrainShapePattern(Block):
     type_id, title, category = "pattern.train_shape", "Train shape pattern", "Inspection"
@@ -355,6 +374,7 @@ def pattern_result(image, model, matches):
             "count": len(matches),
             "score": score,
             "transform": matches[0]["transform"] if matches else {},
+            "pose": {},  # TrainableMatcher adds the offset pose after matching.
             "points": [m["center"] for m in matches],
             "overlay": overlay,
         },
@@ -386,6 +406,7 @@ class MatchShapePattern(TrainableMatcher, Block):
     outputs = PATTERN_OUTPUTS
     defaults = {
         **SHAPE_DEFAULTS,
+        **POSE_OFFSETS,
         "rotation_min": 0.0,
         "rotation_max": 0.0,
         "rotation_step": 5.0,
@@ -400,6 +421,7 @@ class MatchShapePattern(TrainableMatcher, Block):
     }
     parameter_choices = SHAPE_CHOICES
     parameter_help = {
+        **POSE_HELP,
         "feature_mode": "Training setting; stored models retain their extraction settings.",
         "distance_tolerance": "Pixel distance for coverage and chamfer score decay.",
         "rotation_min": "OpenCV rotation degrees; search is sampled, not unrestricted.",

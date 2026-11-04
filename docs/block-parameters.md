@@ -1255,6 +1255,9 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `m
 | `circle_threshold` | `20.0` |  |
 | `circle_min_radius` | `0` |  |
 | `circle_max_radius` | `0` |  |
+| `pose_offset_x` | `0.0` | Local x offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_y` | `0.0` | Local y offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_angle` | `0.0` | Local counterclockwise rotation in degrees (OpenCV convention). |
 | `rotation_min` | `0.0` | OpenCV rotation degrees; search is sampled, not unrestricted. |
 | `rotation_max` | `0.0` |  |
 | `rotation_step` | `5.0` |  |
@@ -1292,6 +1295,9 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `m
 | `sift_sigma` | `1.6` |  |
 | `sift_precise_upscale` | `false` |  |
 | `min_training_features` | `8` |  |
+| `pose_offset_x` | `0.0` | Local x offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_y` | `0.0` | Local y offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_angle` | `0.0` | Local counterclockwise rotation in degrees (OpenCV convention). |
 | `ratio` | `0.75` |  |
 | `mutual` | `true` |  |
 | `orb_max_distance` | `64.0` |  |
@@ -1370,6 +1376,46 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `sift_precise_upscale` | `false` |  |
 | `min_training_features` | `8` |  |
 
+## Define image pose (`pose.define`)
+
+Inspection / Poses
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `x` | `0.0` |  |
+| `y` | `0.0` |  |
+| `angle_degrees` | `0.0` | Counterclockwise degrees; local x right, local y down. |
+| `scale` | `1.0` |  |
+
+## Pose from feature (`pose.from_feature`)
+
+Inspection / Poses
+
+Inputs: `image` (image), `features` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `index` | `0` | Zero-based rank in a blob/line/contour collection or pattern matches. |
+| `angle_mode` | `"fixed"` | `fixed`, `feature` Fixed uses angle_degrees. Feature uses the measured principal/line axis. |
+| `angle_degrees` | `0.0` |  |
+| `pose_offset_x` | `0.0` | Local x offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_y` | `0.0` | Local y offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_angle` | `0.0` | Local counterclockwise rotation in degrees (OpenCV convention). |
+
+## Offset pose (`pose.offset`)
+
+Inspection / Poses
+
+Inputs: `pose` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `pose_offset_x` | `0.0` | Local x offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_y` | `0.0` | Local y offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_angle` | `0.0` | Local counterclockwise rotation in degrees (OpenCV convention). |
+
 ## Combine regions (`region.combine`)
 
 Image processing / Regions
@@ -1400,6 +1446,21 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `max_area` | `0` | Maximum selected pixel count; zero means unlimited. |
 | `min_coverage` | `0.0` | Selected pixels / image pixels, from zero to one. |
 | `max_coverage` | `1.0` |  |
+
+## Region relative to pose (`region.pose`)
+
+Image processing / Regions
+
+Inputs: `image` (image), `pose` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `shape` | `"rectangle"` | `rectangle`, `circle`, `polygon` |
+| `rectangle` | `[-20, -20, 40, 40]` | [x,y,width,height] in local pose pixels; negative positions are allowed. |
+| `center` | `[0, 0]` | Circle center in local pose pixels. |
+| `radius` | `50` |  |
+| `vertices` | `[[-20, -20], [20, -20], [0, 20]]` | Polygon vertices in local pose pixels. |
+| `invert` | `false` | Select the target-image area outside the positioned shape. |
 
 ## Shape region (`region.shape`)
 

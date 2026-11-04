@@ -80,6 +80,19 @@ It needs no external assets: expected results are one geometric match, one textu
 match and two vertical edges. See [training and edge workflows](docs/patterns-edges.md)
 for training regions, pose coordinates, controls and current algorithm limits.
 
+Pattern matchers also return a configurable **pose**: set local x/y/angular offsets
+to locate an inspection origin on the part. **Pose from feature** creates a frame
+from a ranked blob, line, contour or pattern match, and **Offset pose** composes
+another local offset. Connect a pose to **Region relative to pose** to position a
+rectangle, circle or polygon for downstream masked inspections. Try **File > Load
+pose-relative inspection example** or `examples/pose_inspection.json`; see
+[pose-relative inspection](docs/poses.md) for coordinates and a complete workflow.
+
+The current supported dependency is OpenCV 4.x (development checks use 4.14.0).
+This desktop application uses native Python bindings. OpenCV 5 migration and a
+possible browser/WebAssembly backend are considered in the
+[backend notes](docs/opencv-backend.md).
+
 Load trusted custom blocks via **File > Load Python plugin**. Start with
 [`examples/custom_invert.py`](examples/custom_invert.py). Plugins run arbitrary Python;
 project files never automatically import them. Load the same plugins before opening
