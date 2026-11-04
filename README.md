@@ -80,6 +80,43 @@ JSON for subsequent measurement jobs without a grid in every image. See
 coordinate-space contracts. These are offline tools; no live robot calibration or
 point-cloud processing is implemented.
 
+### Build and test a starter project
+
+Open **File > Load starter inspection**, or launch it directly:
+
+```powershell
+.\.venv\Scripts\opencv-dataflow --starter
+```
+
+The project uses nine blocks: synthetic parts → crop ROI → grayscale → median
+filter → Otsu threshold → morphology → connected-component measurements, with
+histogram and Canny branches. Run once to detect two parts at a 100% inspection
+score. Change **Measure two parts > Expected count** to 3 and apply it to exercise
+an inspection failure, then restore 2. Save the graph as your own project.
+
+The same project is saved in [`examples/starter_inspection.json`](examples/starter_inspection.json).
+Open it through File > Open or pass its path to `opencv-dataflow`. A second project,
+[`examples/template_matching.json`](examples/template_matching.json), locates a
+reference patch at pixel `(250, 85)`; it is also available from File.
+
+To verify a saved graph without the editor:
+
+```powershell
+.\.venv\Scripts\opencv-dataflow-run examples/starter_inspection.json --repeat 3
+```
+
+Add `--report <new-file.json>` for a JSON receipt of each run, including states,
+scores, timings and numeric/data outputs. Existing reports are preserved. Use
+`--plugin <trusted-file.py>` to explicitly load custom Python blocks. Exit status
+is 0 when all runs pass, 1 for an inspection/execution failure, and 2 for load or
+configuration errors. Output blocks still perform their configured writes on every
+run. `python -m opencv_dataflow.runner` is an alternative to the console command.
+
+The expanded [base-tool catalog](docs/base-tools.md) covers conversion, crop/resize/
+flip/rotate, filters, automatic/adaptive thresholds, color-range masks, morphology,
+bitwise operations, blending, gradients, components and template matching. These
+new wrappers use eager OpenCV calls alongside the existing native G-API tools.
+
 ### Image file formats
 
 The **Image file** input loads a file and reformats it using inspector dropdowns:

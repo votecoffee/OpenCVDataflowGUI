@@ -276,6 +276,7 @@ def builtin_registry():
     )
     from .depth import RGBD, DepthFile, DepthSample
     from .histogram import Histogram
+    from .processing import PROCESSING_BLOCKS
 
     registry = Registry()
     for block in (
@@ -300,6 +301,7 @@ def builtin_registry():
         DepthSample,
         LoadCalibration,
         SaveCalibration,
+        *PROCESSING_BLOCKS,
     ):
         registry.register(block)
     return registry

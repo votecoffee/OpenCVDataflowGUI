@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 import threading
@@ -39,6 +40,7 @@ from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
 from .canvas import CanvasScene, CanvasView, Node, pixmap
 from .core import Graph
+from .examples import starter_graph, template_graph
 from .plugins import load_plugin
 from .toolblock_editor import InterfaceDialog
 from .toolblocks import ToolBlock, encapsulate
@@ -376,6 +378,8 @@ class MainWindow(QMainWindow):
             ("Save as…", QKeySequence.StandardKey.SaveAs, lambda: self.save_project(True)),
             ("Load Python plugin…", None, self.open_plugin),
             ("Load demo", None, self.load_demo),
+            ("Load starter inspection", None, self.load_starter),
+            ("Load template matching example", None, self.load_template_example),
         ):
             action = QAction(title, self)
             if shortcut:
@@ -614,6 +618,14 @@ class MainWindow(QMainWindow):
         if not self.runner and self.confirm_discard():
             self.replace_graph(demo_graph(self.registry))
 
+    def load_starter(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(starter_graph(self.registry))
+
+    def load_template_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(template_graph(self.registry))
+
     def open_project(self):
         if self.runner or not self.confirm_discard():
             return
@@ -757,11 +769,27 @@ QStatusBar { background: #111c2a; color: #a5bdd4; }
 
 
 def main():
-    app = QApplication(sys.argv)
+    parser = argparse.ArgumentParser(description="Develop and run OpenCV node graphs")
+    parser.add_argument("project", nargs="?", type=Path, help="Saved JSON project to open")
+    parser.add_argument(
+        "--starter", action="store_true", help="Open the synthetic inspection starter"
+    )
+    args = parser.parse_args()
+    if args.project and args.starter:
+        parser.error("Choose a project path or --starter")
+    app = QApplication([sys.argv[0]])
     app.setApplicationName("OpenCV Dataflow")
     app.setStyle("Fusion")
     app.setStyleSheet(STYLE)
     window = MainWindow()
+    if args.starter:
+        window.replace_graph(starter_graph(window.registry))
+    elif args.project:
+        try:
+            window.replace_graph(Graph.load(args.project, window.registry), args.project)
+        except Exception as exc:
+            print(f"Unable to open project: {exc}", file=sys.stderr)
+            sys.exit(2)
     window.show()
     sys.exit(app.exec())
 

@@ -261,3 +261,39 @@ def test_toolbox_tree_types_subtypes_search_and_leaf_activation(app, monkeypatch
     assert errors and child.parameters["image_paths"] == ["a.png", "b.png", "c.png"]
     window.dirty = False
     window.close()
+
+
+def test_starter_project_editor_run_edit_save_and_template_example(app, tmp_path):
+    window = MainWindow()
+    window.show()
+    window.load_starter()
+    assert len(window.graph.blocks) == 9
+    components = window.graph.blocks["starter_components"]
+    window.scene.nodes[components.id].setSelected(True)
+    window.start_run(False)
+    pump_until(app, lambda: window.runner is None)
+    assert components.state == "pass" and components.last_result.outputs["count"] == 2
+    window.inspector.preview_choice.setCurrentText("Output / overlay")
+    assert not window.inspector.image.pixmap().isNull()
+    window.inspector.fields["expected_count"].setText("3")
+    window.inspector.apply()
+    window.start_run(False)
+    pump_until(app, lambda: window.runner is None)
+    assert components.state == "fail" and components.last_result.outputs["count"] == 2
+    window.inspector.fields["expected_count"].setText("2")
+    window.inspector.apply()
+    window.path = tmp_path / "edited-project.json"
+    assert window.save_project()
+    window.replace_graph(Graph.load(window.path, window.registry), window.path)
+    window.start_run(False)
+    pump_until(app, lambda: window.runner is None)
+    assert all(b.state == "pass" for b in window.graph.blocks.values())
+    window.load_template_example()
+    window.start_run(False)
+    pump_until(app, lambda: window.runner is None)
+    assert window.graph.blocks["match_result"].last_result.outputs["location"]["top_left"] == [
+        250,
+        85,
+    ]
+    window.dirty = False
+    window.close()
