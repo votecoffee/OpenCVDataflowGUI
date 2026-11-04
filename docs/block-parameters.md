@@ -132,7 +132,7 @@ Inputs: `collection` (data), `mask` (image, optional), `region` (data, optional)
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `distance`, `line_width`, `precision`, `nfa`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
+| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
 | `use_minimum` | `true` |  |
 | `minimum` | `0.0` |  |
 | `include_minimum` | `true` |  |
@@ -151,9 +151,9 @@ Inputs: `collection` (data).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `distance`, `line_width`, `precision`, `nfa`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
+| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
 | `direction` | `"descending"` | `ascending`, `descending` |
-| `secondary_metric` | `"none"` | `none`, `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `distance`, `line_width`, `precision`, `nfa`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
+| `secondary_metric` | `"none"` | `none`, `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
 | `secondary_direction` | `"ascending"` | `ascending`, `descending` |
 | `missing` | `"last"` | `last`, `first`, `error` |
 | `reference_point` | `[0.0, 0.0]` |  |
@@ -879,6 +879,12 @@ Input / Files
 | `pixel_depth` | `"uint8"` | `unchanged`, `uint8`, `uint16`, `float32` |
 | `path_base` | `"working_directory"` | `working_directory`, `project` |
 
+## Pattern training demo images (`input.pattern_demo`)
+
+Input / Synthetic
+
+No configurable algorithm parameters.
+
 ## Estimate affine transform (`inspect.affine`)
 
 Inspection / Registration
@@ -1115,6 +1121,39 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `score_type` | `"harris"` | `harris`, `fast` |
 | `patch_size` | `31` |  |
 
+## Find oriented edges (`inspect.oriented_edges`)
+
+Inspection / Edges
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `orientation` | `"vertical"` | `vertical`, `horizontal`, `angled` |
+| `angle_degrees` | `0.0` | Tangent degrees: 0 horizontal, 90 vertical; used for angled. |
+| `angle_tolerance` | `10.0` |  |
+| `polarity` | `"either"` | `either`, `rising`, `falling` Along normal (tangent-90) mod 180: right for vertical, down for horizontal. |
+| `blur_kernel` | `3` |  |
+| `blur_sigma` | `1.0` |  |
+| `gradient_aperture` | `"3"` | `3`, `5`, `7` |
+| `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
+| `response_threshold` | `10.0` | Pixel gradient threshold in grayscale intensity/pixel. |
+| `strength_statistic` | `"mean"` | `mean`, `median`, `peak` |
+| `min_strength` | `10.0` |  |
+| `max_strength` | `0.0` |  |
+| `min_thickness` | `0.0` | Gradient-band width normal to the fitted edge, not bright-stripe width. |
+| `max_thickness` | `0.0` |  |
+| `min_length` | `20.0` |  |
+| `min_continuous_length` | `20.0` | Longest original connected run, independent of gap joining. |
+| `min_intensity` | `0.0` | Mean original grayscale intensity over measured edge pixels (0..255). |
+| `max_intensity` | `255.0` |  |
+| `max_gap` | `0` | Join separated collinear runs; zero disables joining. |
+| `gap_normal_distance` | `2.0` |  |
+| `min_coverage` | `0.0` |  |
+| `min_contrast` | `0.0` |  |
+| `max_contrast` | `0.0` |  |
+| `contrast_offset` | `2.0` | Sample this far beyond half band width on each side for contrast. |
+
 ## Phase correlation shift (`inspect.phase_correlation`)
 
 Inspection / Registration
@@ -1182,6 +1221,154 @@ Inputs: `data` (data).
 | --- | --- | --- |
 | `path` | `"results.csv"` |  |
 | `format` | `"csv"` | `csv`, `xml`, `sqlite` |
+
+## Match shape pattern (`pattern.match_shape`)
+
+Inspection / Pattern matching
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `model` (data, optional), `training_mask` (image, optional), `training_region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `feature_mode` | `"edges"` | `edges`, `corners`, `lines`, `circles`, `combined` Training setting; stored models retain their extraction settings. |
+| `blur_kernel` | `3` |  |
+| `blur_sigma` | `1.0` |  |
+| `edge_low` | `50.0` |  |
+| `edge_high` | `150.0` |  |
+| `edge_aperture` | `"3"` | `3`, `5`, `7` |
+| `edge_l2` | `true` |  |
+| `max_points` | `512` |  |
+| `min_points` | `8` |  |
+| `corner_quality` | `0.01` |  |
+| `corner_distance` | `3.0` |  |
+| `corner_block` | `3` |  |
+| `corner_gradient` | `"3"` | `3`, `5`, `7` |
+| `corner_harris` | `false` |  |
+| `corner_k` | `0.04` |  |
+| `line_votes` | `20` |  |
+| `line_min_length` | `10.0` |  |
+| `line_max_gap` | `3.0` |  |
+| `line_rho` | `1.0` |  |
+| `line_theta_degrees` | `1.0` |  |
+| `circle_dp` | `1.2` |  |
+| `circle_min_distance` | `10.0` |  |
+| `circle_threshold` | `20.0` |  |
+| `circle_min_radius` | `0` |  |
+| `circle_max_radius` | `0` |  |
+| `rotation_min` | `0.0` | OpenCV rotation degrees; search is sampled, not unrestricted. |
+| `rotation_max` | `0.0` |  |
+| `rotation_step` | `5.0` |  |
+| `scale_min` | `1.0` |  |
+| `scale_max` | `1.0` |  |
+| `scale_step` | `0.1` |  |
+| `distance_tolerance` | `3.0` | Pixel distance for coverage and chamfer score decay. |
+| `min_score` | `0.8` | exp(-mean feature distance / tolerance), from 0 to 1. |
+| `min_coverage` | `0.8` |  |
+| `max_matches` | `1` |  |
+| `max_overlap` | `0.3` |  |
+
+## Match texture pattern (`pattern.match_texture`)
+
+Inspection / Pattern matching
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `model` (data, optional), `training_mask` (image, optional), `training_region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `algorithm` | `"orb"` | `orb`, `sift` Training control; a supplied/stored model retains its detector settings. |
+| `orb_max_features` | `500` |  |
+| `orb_scale_factor` | `1.2` |  |
+| `orb_levels` | `8` |  |
+| `orb_fast_threshold` | `20` |  |
+| `orb_edge_threshold` | `31` |  |
+| `orb_first_level` | `0` |  |
+| `orb_wta_k` | `"2"` | `2`, `3`, `4` |
+| `orb_score_type` | `"harris"` | `harris`, `fast` |
+| `orb_patch_size` | `31` |  |
+| `sift_max_features` | `1000` |  |
+| `sift_octave_layers` | `3` |  |
+| `sift_contrast` | `0.04` |  |
+| `sift_edge_threshold` | `10.0` |  |
+| `sift_sigma` | `1.6` |  |
+| `sift_precise_upscale` | `false` |  |
+| `min_training_features` | `8` |  |
+| `ratio` | `0.75` |  |
+| `mutual` | `true` |  |
+| `orb_max_distance` | `64.0` |  |
+| `sift_max_distance` | `250.0` |  |
+| `pose_model` | `"homography"` | `similarity`, `affine`, `homography` |
+| `robust_method` | `"ransac"` | `ransac`, `lmeds` |
+| `reprojection_pixels` | `3.0` |  |
+| `max_iterations` | `2000` |  |
+| `confidence` | `0.995` |  |
+| `min_matches` | `8` |  |
+| `min_inliers` | `6` |  |
+| `min_inlier_ratio` | `0.5` | Pose score = inliers / accepted descriptor correspondences. |
+| `min_model_coverage` | `0.02` | Inliers / trained feature count, from 0 to 1. |
+| `min_scale` | `0.2` |  |
+| `max_scale` | `5.0` |  |
+| `max_rms_pixels` | `3.0` |  |
+| `refine_iterations` | `10` |  |
+
+## Train shape pattern (`pattern.train_shape`)
+
+Inspection / Pattern training
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `feature_mode` | `"edges"` | `edges`, `corners`, `lines`, `circles`, `combined` |
+| `blur_kernel` | `3` |  |
+| `blur_sigma` | `1.0` |  |
+| `edge_low` | `50.0` |  |
+| `edge_high` | `150.0` |  |
+| `edge_aperture` | `"3"` | `3`, `5`, `7` |
+| `edge_l2` | `true` |  |
+| `max_points` | `512` |  |
+| `min_points` | `8` |  |
+| `corner_quality` | `0.01` |  |
+| `corner_distance` | `3.0` |  |
+| `corner_block` | `3` |  |
+| `corner_gradient` | `"3"` | `3`, `5`, `7` |
+| `corner_harris` | `false` |  |
+| `corner_k` | `0.04` |  |
+| `line_votes` | `20` |  |
+| `line_min_length` | `10.0` |  |
+| `line_max_gap` | `3.0` |  |
+| `line_rho` | `1.0` |  |
+| `line_theta_degrees` | `1.0` |  |
+| `circle_dp` | `1.2` |  |
+| `circle_min_distance` | `10.0` |  |
+| `circle_threshold` | `20.0` |  |
+| `circle_min_radius` | `0` |  |
+| `circle_max_radius` | `0` |  |
+
+## Train texture pattern (`pattern.train_texture`)
+
+Inspection / Pattern training
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `algorithm` | `"orb"` | `orb`, `sift` |
+| `orb_max_features` | `500` |  |
+| `orb_scale_factor` | `1.2` |  |
+| `orb_levels` | `8` |  |
+| `orb_fast_threshold` | `20` |  |
+| `orb_edge_threshold` | `31` |  |
+| `orb_first_level` | `0` |  |
+| `orb_wta_k` | `"2"` | `2`, `3`, `4` |
+| `orb_score_type` | `"harris"` | `harris`, `fast` |
+| `orb_patch_size` | `31` |  |
+| `sift_max_features` | `1000` |  |
+| `sift_octave_layers` | `3` |  |
+| `sift_contrast` | `0.04` |  |
+| `sift_edge_threshold` | `10.0` |  |
+| `sift_sigma` | `1.6` |  |
+| `sift_precise_upscale` | `false` |  |
+| `min_training_features` | `8` |  |
 
 ## Combine regions (`region.combine`)
 

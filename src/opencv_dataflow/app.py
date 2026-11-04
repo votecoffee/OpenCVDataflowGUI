@@ -9,6 +9,7 @@ import threading
 import time
 from pathlib import Path
 
+import cv2
 from PySide6.QtCore import Qt, QThread, QTimer, Signal
 from PySide6.QtGui import QAction, QKeySequence
 from PySide6.QtWidgets import (
@@ -47,8 +48,10 @@ from .examples import (
     regions_graph,
     starter_graph,
     template_graph,
+    trained_patterns_graph,
     transformed_regions_graph,
 )
+from .payloads import packet_for, prepare_inputs
 from .plugins import load_plugin
 from .region_editor import RegionEditor
 from .toolblock_editor import InterfaceDialog
@@ -151,6 +154,32 @@ class Inspector(QWidget):
             ):
                 button = QPushButton(title)
                 button.clicked.connect(callback)
+                self.form.addRow(button)
+        if getattr(block, "supports_training", False):
+            model = block.trained_model
+            external = any(
+                c.target == block.id and c.input == "model" for c in self.window.graph.connections
+            )
+            status = (
+                "External model input is connected"
+                if external
+                else f"Trained: {len(model['points'])} features, {model['size']} pixels"
+                if model
+                else "Not trained"
+            )
+            self.form.addRow(QLabel(status))
+            for label, callback in (
+                ("Train from input", self.train_pattern),
+                ("Load trained model…", self.load_pattern_model),
+                ("Save trained model…", self.save_pattern_model),
+                ("Clear trained model", self.clear_pattern_model),
+            ):
+                button = QPushButton(label)
+                button.clicked.connect(callback)
+                button.setEnabled(
+                    not external
+                    and (model is not None or label in ("Train from input", "Load trained model…"))
+                )
                 self.form.addRow(button)
         for key, value in block.parameters.items():
             if key in block.parameter_choices:
@@ -295,10 +324,85 @@ class Inspector(QWidget):
         except (ValueError, TypeError, KeyError) as exc:
             self.window.warn(str(exc))
 
+    def train_pattern(self):
+        block = self.block
+        if block is None or not getattr(block, "supports_training", False) or self.window.runner:
+            return
+        try:
+            candidate = self.window.registry.create(
+                block.type_id, parameters=self.read_parameters()
+            )
+            candidate.input_levels = {
+                key: field.currentText()
+                for key, field in self.level_fields.items()
+                if field.currentText() != "largest"
+            }
+            values = dict(block.last_inputs)
+            for connection in self.window.graph.connections:
+                if connection.target == block.id:
+                    source = self.window.graph.blocks[connection.source]
+                    if source.last_result is not None:
+                        values[connection.input] = packet_for(source.last_result, connection.output)
+            if "image" not in values:
+                raise ValueError("Connect an image and Run once to capture a training input")
+            values, _ = prepare_inputs(candidate, values)
+            model = candidate.train(values)
+            if self.apply():
+                block.trained_model = model
+                self.select(block)
+                self.window.statusBar().showMessage(
+                    f"Trained {len(model['points'])} features; save the project to retain the model"
+                )
+        except (ValueError, TypeError, KeyError, cv2.error) as exc:
+            self.window.warn(str(exc))
+
+    def load_pattern_model(self):
+        block = self.block
+        if block is None or self.window.runner:
+            return
+        path, _ = QFileDialog.getOpenFileName(
+            self, "Load trained pattern", filter="Pattern JSON (*.json)"
+        )
+        if path:
+            try:
+                model = json.loads(Path(path).read_text(encoding="utf-8"))
+                block.check_model(model)
+                if self.apply():
+                    block.trained_model = model
+                    self.select(block)
+            except (ValueError, TypeError, KeyError, OSError) as exc:
+                self.window.warn(str(exc))
+
+    def save_pattern_model(self):
+        block = self.block
+        if block is None or self.window.runner or block.trained_model is None:
+            return
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save trained pattern", filter="Pattern JSON (*.json)"
+        )
+        if path:
+            try:
+                with Path(path).open("x", encoding="utf-8") as stream:
+                    stream.write(json.dumps(block.trained_model, indent=2, allow_nan=False) + "\n")
+            except (ValueError, OSError) as exc:
+                self.window.warn(str(exc))
+
+    def clear_pattern_model(self):
+        block = self.block
+        if (
+            block is not None
+            and not self.window.runner
+            and getattr(block, "supports_training", False)
+        ):
+            block.trained_model = None
+            self.window.graph.invalidate()
+            self.window.scene.rebuild(block.id)
+            self.window.mark_dirty()
+
     def apply(self):
         b = self.block
         if b is None or self.window.runner:
-            return
+            return False
         try:
             parameters = self.read_parameters()
             exposed = {
@@ -335,8 +439,10 @@ class Inspector(QWidget):
             self.window.scene.rebuild(b.id)
             self.window.mark_dirty()
             self.window.statusBar().showMessage("Configuration applied; run to update results")
+            return True
         except (ValueError, TypeError) as exc:
             self.window.warn(str(exc))
+            return False
 
     def refresh_result(self):
         previous = self.preview_choice.currentText()
@@ -478,6 +584,7 @@ class MainWindow(QMainWindow):
             ("Load transformed regions example", None, self.load_transformed_regions_example),
             ("Load channels and pyramids example", None, self.load_channel_pyramid_example),
             ("Load object collections example", None, self.load_object_collections_example),
+            ("Load trained patterns and edges example", None, self.load_trained_patterns_example),
         ):
             action = QAction(title, self)
             if shortcut:
@@ -747,6 +854,10 @@ class MainWindow(QMainWindow):
     def load_object_collections_example(self):
         if not self.runner and self.confirm_discard():
             self.replace_graph(object_collections_graph(self.registry))
+
+    def load_trained_patterns_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(trained_patterns_graph(self.registry))
 
     def open_project(self):
         if self.runner or not self.confirm_discard():

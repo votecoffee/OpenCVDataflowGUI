@@ -1,0 +1,434 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "patterns_images",
+      "type": "input.pattern_demo",
+      "name": "References and search scene",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image",
+        "shape_reference",
+        "texture_reference"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "patterns_shape_train",
+      "type": "pattern.train_shape",
+      "name": "Train geometric reference",
+      "parameters": {
+        "feature_mode": "edges",
+        "blur_kernel": 3,
+        "blur_sigma": 1.0,
+        "edge_low": 50.0,
+        "edge_high": 150.0,
+        "edge_aperture": "3",
+        "edge_l2": true,
+        "max_points": 512,
+        "min_points": 8,
+        "corner_quality": 0.01,
+        "corner_distance": 3.0,
+        "corner_block": 3,
+        "corner_gradient": "3",
+        "corner_harris": false,
+        "corner_k": 0.04,
+        "line_votes": 20,
+        "line_min_length": 10.0,
+        "line_max_gap": 3.0,
+        "line_rho": 1.0,
+        "line_theta_degrees": 1.0,
+        "circle_dp": 1.2,
+        "circle_min_distance": 10.0,
+        "circle_threshold": 20.0,
+        "circle_min_radius": 0,
+        "circle_max_radius": 0
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "model",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "patterns_shape_match",
+      "type": "pattern.match_shape",
+      "name": "Find rotated geometry",
+      "parameters": {
+        "feature_mode": "edges",
+        "blur_kernel": 3,
+        "blur_sigma": 1.0,
+        "edge_low": 50.0,
+        "edge_high": 150.0,
+        "edge_aperture": "3",
+        "edge_l2": true,
+        "max_points": 512,
+        "min_points": 8,
+        "corner_quality": 0.01,
+        "corner_distance": 3.0,
+        "corner_block": 3,
+        "corner_gradient": "3",
+        "corner_harris": false,
+        "corner_k": 0.04,
+        "line_votes": 20,
+        "line_min_length": 10.0,
+        "line_max_gap": 3.0,
+        "line_rho": 1.0,
+        "line_theta_degrees": 1.0,
+        "circle_dp": 1.2,
+        "circle_min_distance": 10.0,
+        "circle_threshold": 20.0,
+        "circle_min_radius": 0,
+        "circle_max_radius": 0,
+        "rotation_min": -20.0,
+        "rotation_max": 20.0,
+        "rotation_step": 5.0,
+        "scale_min": 1.0,
+        "scale_max": 1.0,
+        "scale_step": 0.1,
+        "distance_tolerance": 3.0,
+        "min_score": 0.7,
+        "min_coverage": 0.8,
+        "max_matches": 1,
+        "max_overlap": 0.3
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "model",
+        "training_mask",
+        "training_region"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count",
+        "score",
+        "transform",
+        "points",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "patterns_texture_train",
+      "type": "pattern.train_texture",
+      "name": "Train ORB reference",
+      "parameters": {
+        "algorithm": "orb",
+        "orb_max_features": 500,
+        "orb_scale_factor": 1.2,
+        "orb_levels": 8,
+        "orb_fast_threshold": 20,
+        "orb_edge_threshold": 31,
+        "orb_first_level": 0,
+        "orb_wta_k": "2",
+        "orb_score_type": "harris",
+        "orb_patch_size": 31,
+        "sift_max_features": 1000,
+        "sift_octave_layers": 3,
+        "sift_contrast": 0.04,
+        "sift_edge_threshold": 10.0,
+        "sift_sigma": 1.6,
+        "sift_precise_upscale": false,
+        "min_training_features": 8
+      },
+      "position": [
+        320,
+        400
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "model",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "patterns_texture_match",
+      "type": "pattern.match_texture",
+      "name": "Find textured reference",
+      "parameters": {
+        "algorithm": "orb",
+        "orb_max_features": 500,
+        "orb_scale_factor": 1.2,
+        "orb_levels": 8,
+        "orb_fast_threshold": 20,
+        "orb_edge_threshold": 31,
+        "orb_first_level": 0,
+        "orb_wta_k": "2",
+        "orb_score_type": "harris",
+        "orb_patch_size": 31,
+        "sift_max_features": 1000,
+        "sift_octave_layers": 3,
+        "sift_contrast": 0.04,
+        "sift_edge_threshold": 10.0,
+        "sift_sigma": 1.6,
+        "sift_precise_upscale": false,
+        "min_training_features": 8,
+        "ratio": 0.75,
+        "mutual": true,
+        "orb_max_distance": 64.0,
+        "sift_max_distance": 250.0,
+        "pose_model": "homography",
+        "robust_method": "ransac",
+        "reprojection_pixels": 3.0,
+        "max_iterations": 2000,
+        "confidence": 0.995,
+        "min_matches": 8,
+        "min_inliers": 6,
+        "min_inlier_ratio": 0.5,
+        "min_model_coverage": 0.02,
+        "min_scale": 0.2,
+        "max_scale": 5.0,
+        "max_rms_pixels": 3.0,
+        "refine_iterations": 10
+      },
+      "position": [
+        660,
+        400
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "model",
+        "training_mask",
+        "training_region"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count",
+        "score",
+        "transform",
+        "points",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "patterns_edge_region",
+      "type": "region.shape",
+      "name": "Inspect right-hand bar",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          565,
+          30,
+          60,
+          340
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        320,
+        800
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "patterns_edges",
+      "type": "inspect.oriented_edges",
+      "name": "Strong continuous vertical edges",
+      "parameters": {
+        "orientation": "vertical",
+        "angle_degrees": 0.0,
+        "angle_tolerance": 10.0,
+        "polarity": "either",
+        "blur_kernel": 3,
+        "blur_sigma": 1.0,
+        "gradient_aperture": "3",
+        "border": "reflect",
+        "response_threshold": 10.0,
+        "strength_statistic": "mean",
+        "min_strength": 10.0,
+        "max_strength": 0.0,
+        "min_thickness": 0.0,
+        "max_thickness": 6.0,
+        "min_length": 250.0,
+        "min_continuous_length": 250.0,
+        "min_intensity": 0.0,
+        "max_intensity": 255.0,
+        "max_gap": 0,
+        "gap_normal_distance": 2.0,
+        "min_coverage": 0.0,
+        "min_contrast": 150.0,
+        "max_contrast": 0.0,
+        "contrast_offset": 2.0
+      },
+      "position": [
+        660,
+        800
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "segments",
+        "count",
+        "mask",
+        "response",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "patterns_edge_overlay",
+      "type": "collection.draw",
+      "name": "Measured edges",
+      "parameters": {
+        "color": [
+          240,
+          180,
+          60
+        ],
+        "thickness": 2,
+        "draw_bounds": false,
+        "draw_centers": true,
+        "labels": "rank"
+      },
+      "position": [
+        1000,
+        800
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "patterns_images",
+      "output": "shape_reference",
+      "target": "patterns_shape_train",
+      "input": "image"
+    },
+    {
+      "source": "patterns_images",
+      "output": "texture_reference",
+      "target": "patterns_texture_train",
+      "input": "image"
+    },
+    {
+      "source": "patterns_images",
+      "output": "image",
+      "target": "patterns_shape_match",
+      "input": "image"
+    },
+    {
+      "source": "patterns_images",
+      "output": "image",
+      "target": "patterns_texture_match",
+      "input": "image"
+    },
+    {
+      "source": "patterns_shape_train",
+      "output": "model",
+      "target": "patterns_shape_match",
+      "input": "model"
+    },
+    {
+      "source": "patterns_texture_train",
+      "output": "model",
+      "target": "patterns_texture_match",
+      "input": "model"
+    },
+    {
+      "source": "patterns_images",
+      "output": "image",
+      "target": "patterns_edge_region",
+      "input": "image"
+    },
+    {
+      "source": "patterns_images",
+      "output": "image",
+      "target": "patterns_edges",
+      "input": "image"
+    },
+    {
+      "source": "patterns_edge_region",
+      "output": "region",
+      "target": "patterns_edges",
+      "input": "region"
+    },
+    {
+      "source": "patterns_images",
+      "output": "image",
+      "target": "patterns_edge_overlay",
+      "input": "image"
+    },
+    {
+      "source": "patterns_edges",
+      "output": "collection",
+      "target": "patterns_edge_overlay",
+      "input": "collection"
+    }
+  ]
+}
