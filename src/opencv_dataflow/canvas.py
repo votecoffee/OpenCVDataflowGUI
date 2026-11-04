@@ -100,6 +100,11 @@ class Node(QGraphicsItem):
     def boundingRect(self):
         return QRectF(-9, -2, 238, self.height + 5)
 
+    def mouseDoubleClickEvent(self, event):
+        if not self.scene().locked:
+            self.scene().open_block.emit(self.block)
+        event.accept()
+
     def paint(self, painter, option, widget=None):
         b = self.block
         base = {
@@ -137,7 +142,9 @@ class Node(QGraphicsItem):
             rect = QRectF(12 if not output else 110, socket.pos().y() - 10, 98, 20)
             painter.setPen(QColor("#c4cfdd"))
             painter.drawText(
-                rect, Qt.AlignmentFlag.AlignRight if output else Qt.AlignmentFlag.AlignLeft, name
+                rect,
+                Qt.AlignmentFlag.AlignRight if output else Qt.AlignmentFlag.AlignLeft,
+                painter.fontMetrics().elidedText(name, Qt.TextElideMode.ElideRight, 94),
             )
         y = 72 + self.rows * 25
         if b.thumbnail:
@@ -196,6 +203,7 @@ class Wire(QGraphicsPathItem):
 
 class CanvasScene(QGraphicsScene):
     selected_block = Signal(object)
+    open_block = Signal(object)
     edited = Signal()
     warning = Signal(str)
 

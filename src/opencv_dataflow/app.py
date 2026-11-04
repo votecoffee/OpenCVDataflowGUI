@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import copy
 import json
 import sys
 import threading
@@ -15,10 +14,12 @@ from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
     QComboBox,
+    QDialog,
     QFileDialog,
     QFormLayout,
     QGroupBox,
     QHBoxLayout,
+    QInputDialog,
     QLabel,
     QLineEdit,
     QListWidget,
@@ -35,9 +36,11 @@ from PySide6.QtWidgets import (
 )
 
 from .blocks import builtin_registry, demo_graph
-from .canvas import CanvasScene, CanvasView, pixmap
+from .canvas import CanvasScene, CanvasView, Node, pixmap
 from .core import Graph
 from .plugins import load_plugin
+from .toolblock_editor import InterfaceDialog
+from .toolblocks import ToolBlock, encapsulate
 
 
 class Runner(QThread):
@@ -117,6 +120,14 @@ class Inspector(QWidget):
         self.caption.setText(f"{block.title}  /  {block.category}\n{block.type_id}")
         self.name_field = QLineEdit(block.name)
         self.form.addRow("Name", self.name_field)
+        if isinstance(block, ToolBlock):
+            for title, callback in (
+                ("Edit internal graph", lambda: self.window.enter_toolblock(block)),
+                ("Edit public terminals", self.window.edit_interface),
+            ):
+                button = QPushButton(title)
+                button.clicked.connect(callback)
+                self.form.addRow(button)
         for key, value in block.parameters.items():
             if isinstance(value, bool):
                 field = QCheckBox()
@@ -280,6 +291,8 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.registry = builtin_registry()
         self.graph = demo_graph(self.registry)
+        self.graph_stack = []
+        self.toolblock_templates = []
         self.path = None
         self.dirty = False
         self.runner = None
@@ -318,6 +331,7 @@ class MainWindow(QMainWindow):
         self.scene.selected_block.connect(self.inspector.select)
         self.scene.edited.connect(self.mark_dirty)
         self.scene.warning.connect(self.warn)
+        self.scene.open_block.connect(self.enter_toolblock)
         self.make_actions()
         self.statusBar().showMessage("Demo ready · Run once to inspect two shapes")
         QTimer.singleShot(0, self.view.fit_graph)
@@ -353,6 +367,22 @@ class MainWindow(QMainWindow):
         toolbar.addSeparator()
         toolbar.addAction("Fit graph", self.view.fit_graph)
         toolbar.addAction("Delete selected", self.scene.delete_selected)
+        tools = self.menuBar().addMenu("&ToolBlocks")
+        for title, callback in (
+            ("Create from selected nodes…", self.create_toolblock),
+            ("Edit selected ToolBlock", self.edit_selected_toolblock),
+            ("Public terminals…", self.edit_interface),
+            ("Export ToolBlock…", self.export_toolblock),
+            ("Import ToolBlock…", self.import_toolblock),
+        ):
+            action = tools.addAction(title, callback)
+            self.edit_actions.append(action)
+        toolbar.addSeparator()
+        self.back_action = toolbar.addAction("Up one level", self.leave_toolblock)
+        self.edit_actions.append(self.back_action)
+        self.breadcrumb = QLabel("Job")
+        toolbar.addWidget(self.breadcrumb)
+        self.update_navigation()
 
     def populate_library(self):
         self.library.clear()
@@ -363,11 +393,25 @@ class MainWindow(QMainWindow):
                 item = QListWidgetItem(text)
                 item.setData(Qt.ItemDataRole.UserRole, block_type.type_id)
                 self.library.addItem(item)
+        for index, definition in enumerate(self.toolblock_templates):
+            text = f"ToolBlocks / {definition['name']}"
+            if query in text.lower():
+                item = QListWidgetItem(text)
+                item.setData(Qt.ItemDataRole.UserRole, f"template:{index}")
+                self.library.addItem(item)
 
     def add_block(self, item):
         if self.runner:
             return
-        block = self.registry.create(item.data(Qt.ItemDataRole.UserRole))
+        type_id = item.data(Qt.ItemDataRole.UserRole)
+        if type_id.startswith("template:"):
+            definition = self.toolblock_templates[int(type_id.split(":")[1])]
+            block = ToolBlock.from_definition(definition, self.registry)
+        else:
+            block = self.registry.create(type_id)
+        self.insert_block(block)
+
+    def insert_block(self, block):
         center = self.view.mapToScene(self.view.viewport().rect().center())
         block.position = [center.x() - 110, center.y() - 80]
         self.graph.add(block)
@@ -375,7 +419,111 @@ class MainWindow(QMainWindow):
         self.scene.rebuild(block.id)
         self.mark_dirty()
 
+    @property
+    def root_graph(self):
+        return self.graph_stack[0][0] if self.graph_stack else self.graph
+
+    def selected_toolblock(self):
+        selected = self.inspector.block
+        if isinstance(selected, ToolBlock):
+            return selected, self.graph
+        if self.graph_stack:
+            parent, owner = self.graph_stack[-1]
+            return owner, parent
+        raise ValueError("Select a ToolBlock first")
+
+    def create_toolblock(self):
+        if self.runner:
+            return
+        selected = [item.block.id for item in self.scene.selectedItems() if isinstance(item, Node)]
+        if not selected:
+            self.warn("Select the nodes to include in a ToolBlock")
+            return
+        name, accepted = QInputDialog.getText(self, "Create ToolBlock", "Name:", text="ToolBlock")
+        if not accepted:
+            return
+        try:
+            owner = self.graph_stack[-1][1] if self.graph_stack else None
+            block = encapsulate(self.graph, selected, name, self.registry, owner)
+            self.toolblock_templates.append(block.definition())
+            self.populate_library()
+            self.scene.rebuild(block.id)
+            self.mark_dirty()
+        except ValueError as exc:
+            self.warn(str(exc))
+
+    def edit_selected_toolblock(self):
+        self.enter_toolblock(self.inspector.block)
+
+    def enter_toolblock(self, block):
+        if self.runner or not isinstance(block, ToolBlock):
+            return
+        self.graph_stack.append((self.graph, block))
+        self.show_graph(block.graph)
+
+    def show_graph(self, graph, selected=None):
+        self.graph = graph
+        self.scene.graph = graph
+        self.inspector.select(None)
+        self.scene.rebuild(selected)
+        self.update_navigation()
+        self.view.fit_graph()
+
+    def leave_toolblock(self):
+        if self.runner or not self.graph_stack:
+            return
+        parent, owner = self.graph_stack.pop()
+        self.show_graph(parent, owner.id)
+
+    def update_navigation(self):
+        self.back_action.setEnabled(bool(self.graph_stack) and self.runner is None)
+        self.breadcrumb.setText("Job" + "".join(f" / {b.name}" for _, b in self.graph_stack))
+
+    def edit_interface(self):
+        if self.runner:
+            return
+        try:
+            block, parent = self.selected_toolblock()
+            owner = next((b for _, b in self.graph_stack if b.graph is parent), None)
+            dialog = InterfaceDialog(block, parent, self, owner=owner)
+            if dialog.exec() == QDialog.DialogCode.Accepted:
+                selected = self.inspector.block
+                self.scene.rebuild(selected.id if selected else None)
+                self.mark_dirty()
+        except ValueError as exc:
+            self.warn(str(exc))
+
+    def export_toolblock(self):
+        if self.runner:
+            return
+        try:
+            block, _ = self.selected_toolblock()
+            path, _ = QFileDialog.getSaveFileName(
+                self, "Export ToolBlock", filter="ToolBlock (*.toolblock.json)"
+            )
+            if path:
+                block.export(path)
+                self.toolblock_templates.append(block.definition())
+                self.populate_library()
+        except Exception as exc:
+            self.warn(str(exc))
+
+    def import_toolblock(self):
+        if self.runner:
+            return
+        path, _ = QFileDialog.getOpenFileName(self, "Import ToolBlock", filter="ToolBlock (*.json)")
+        if path:
+            try:
+                block = ToolBlock.read(path, self.registry)
+                self.toolblock_templates.append(block.definition())
+                self.populate_library()
+                self.insert_block(block)
+            except Exception as exc:
+                self.warn(str(exc))
+
     def mark_dirty(self):
+        if self.graph_stack:
+            self.root_graph.invalidate()
         self.dirty = True
         self.update_title()
 
@@ -404,11 +552,9 @@ class MainWindow(QMainWindow):
         return response == QMessageBox.StandardButton.Discard
 
     def replace_graph(self, graph, path=None):
-        self.graph.close()
-        self.graph = graph
-        self.scene.graph = graph
-        self.inspector.select(None)
-        self.scene.rebuild()
+        self.root_graph.close()
+        self.graph_stack = []
+        self.show_graph(graph)
         self.path, self.dirty = path, False
         self.update_title()
         self.view.fit_graph()
@@ -444,7 +590,7 @@ class MainWindow(QMainWindow):
                 return False
             path = Path(selected)
         try:
-            self.graph.save(path)
+            self.root_graph.save(path)
             self.path, self.dirty = path, False
             self.update_title()
             return True
@@ -479,7 +625,7 @@ class MainWindow(QMainWindow):
             return
         # Worker owns a separate runtime graph. Qt paints stable display snapshots.
         try:
-            execution_graph = Graph.from_dict(self.graph.to_dict(), self.registry)
+            execution_graph = Graph.from_dict(self.root_graph.to_dict(), self.registry)
         except Exception as exc:
             self.warn(str(exc))
             return
@@ -499,20 +645,10 @@ class MainWindow(QMainWindow):
     def on_frame(self):
         try:
             for key, executed in self.runner.graph.blocks.items():
-                displayed = self.graph.blocks[key]
-                for name in (
-                    "last_inputs",
-                    "last_result",
-                    "last_output_images",
-                    "last_graphics",
-                    "state",
-                    "error",
-                    "elapsed_ms",
-                ):
-                    setattr(displayed, name, copy.deepcopy(getattr(executed, name)))
+                self.root_graph.blocks[key].copy_results_from(executed)
             self.scene.update()
             self.inspector.refresh_result()
-            states = [b.state for b in self.graph.blocks.values()]
+            states = [b.state for b in self.root_graph.blocks.values()]
             self.statusBar().showMessage(
                 f"{len(states)} blocks · {self.runner.duration:.1f} ms · "
                 f"{states.count('pass')} pass · {states.count('fail')} fail · "
@@ -536,6 +672,7 @@ class MainWindow(QMainWindow):
         for action in self.edit_actions + [self.run_action, self.continuous_action]:
             action.setEnabled(True)
         self.stop_action.setEnabled(False)
+        self.update_navigation()
         if self.closing:
             self.close()
 
@@ -545,7 +682,7 @@ class MainWindow(QMainWindow):
             self.stop_run()
             event.ignore()
         elif self.confirm_discard():
-            self.graph.close()
+            self.root_graph.close()
             event.accept()
         else:
             self.closing = False

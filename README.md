@@ -71,6 +71,37 @@ SQLite append; XML and image writers reject existing files. Output blocks write
 on every run, including continuous runs. Relative paths resolve from the process's
 working directory; use absolute paths for portable local execution expectations.
 
+### Reusable ToolBlocks
+
+Select nodes and use **ToolBlocks > Create from selected nodes** to encapsulate
+them as one reusable block. Crossing wires are preserved, unbound inputs become
+public inputs, and terminal outputs become public outputs. Double-click the new
+node (or use **Edit internal graph** in its inspector) to develop its contents in
+the same node editor. ToolBlocks can contain other ToolBlocks. **Up one level** and
+the job breadcrumb show where you are.
+
+Use **Public terminals** to name and map the interface to internal typed ports.
+Renaming a terminal preserves connected wires; disconnect a terminal before removing
+its binding. Exposed-port checkboxes then choose which public ports appear on the node.
+The outer block aggregates child pass/fail status, minimum available score, graphics,
+and errors. Internal run records remain inspectable by opening the block after a run.
+
+**Export ToolBlock** writes a `.toolblock.json` definition; **Import ToolBlock**
+adds an instance and a session library entry. Creation and export also add reusable
+library snapshots. Double-click a library entry to add another independent instance.
+Editing an instance does not change other instances or a previously captured library
+snapshot; export again to capture the edited version. Job files embed their ToolBlocks,
+so they do not depend on the original definition file. Required Python plugins must
+still be loaded explicitly.
+
+For a ready-made nested pattern, import
+[`examples/inspect_shapes.toolblock.json`](examples/inspect_shapes.toolblock.json)
+and connect a Demo image or Image file output to its `image` input.
+
+Run controls always execute the entire root job, including when viewing a nested
+ToolBlock. Saving also saves the root job. See [docs/toolblocks.md](docs/toolblocks.md)
+for the class model and a worked example.
+
 The Python runtime can also execute graphs independently of the editor:
 
 ```python
@@ -90,6 +121,8 @@ graph.close()
 - `plugins.py`: explicitly loaded trusted Python extensions.
 - `canvas.py`: movable nodes, typed sockets, selectable wires, pan and zoom.
 - `app.py`: Qt editor, inspector, worker execution, project and plugin actions.
+- `toolblocks.py`: composite blocks, public terminal mappings, reusable definitions.
+- `toolblock_editor.py`: public terminal configuration dialog.
 - `examples/`: reusable custom content.
 - `tests/`: local runtime and persistence checks.
 

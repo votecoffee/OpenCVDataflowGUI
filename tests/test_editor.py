@@ -8,12 +8,14 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 import pytest
 from PySide6.QtCore import QPoint, Qt
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QDialog, QInputDialog
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.canvas import CanvasScene, CanvasView
 from opencv_dataflow.core import Graph
+from opencv_dataflow.toolblock_editor import InterfaceDialog
+from opencv_dataflow.toolblocks import encapsulate
 
 
 @pytest.fixture(scope="module")
@@ -104,5 +106,80 @@ def test_canvas_node_movement_updates_wires(app):
     assert new.x() - old.x() == 40
     assert new.y() - old.y() == 30
     assert node.block.position == [40.0, 30.0]
+    window.dirty = False
+    window.close()
+
+
+def test_toolblock_group_navigation_run_and_save(app, monkeypatch, tmp_path):
+    window = MainWindow()
+    window.show()
+    app.processEvents()
+    original = list(window.graph.blocks.values())
+    for b in original[1:]:
+        window.scene.nodes[b.id].setSelected(True)
+    monkeypatch.setattr(QInputDialog, "getText", lambda *a, **k: ("Inspect", True))
+    window.create_toolblock()
+    block = window.inspector.block
+    assert block.name == "Inspect"
+    assert len(window.graph.blocks) == 2
+    assert len(window.toolblock_templates) == 1
+    # Enter by double-clicking the actual node header.
+    center = window.view.mapFromScene(window.scene.nodes[block.id].scenePos() + QPoint(80, 20))
+    QTest.mouseDClick(window.view.viewport(), Qt.MouseButton.LeftButton, pos=center)
+    app.processEvents()
+    assert window.graph is block.graph
+    assert "Inspect" in window.breadcrumb.text()
+    inner_nodes = list(block.graph.blocks.values())
+    inner = encapsulate(
+        window.graph,
+        [inner_nodes[0].id, inner_nodes[1].id],
+        "Preprocess",
+        window.registry,
+        owner=block,
+    )
+    assert next(iter(block.input_bindings.values())).block == inner.id
+    window.scene.rebuild(inner.id)
+    window.enter_toolblock(inner)
+    assert len(window.graph_stack) == 2
+    window.start_run(False)  # Still runs the complete job, including its image source.
+    pump_until(app, lambda: window.runner is None)
+    assert block.state == "pass", block.error
+    assert all(b.state == "pass" for b in window.graph.blocks.values())
+    assert window.back_action.isEnabled()
+    path = tmp_path / "job.json"
+    window.path = path
+    assert window.save_project()
+    loaded = Graph.load(path, window.registry)
+    assert len(loaded.blocks) == 2  # Save targets the root while editing nested graphs.
+    window.leave_toolblock()
+    assert window.graph is block.graph
+    window.leave_toolblock()
+    assert window.graph is window.root_graph and not window.graph_stack
+    assert window.inspector.block is block
+    window.dirty = False
+    window.close()
+
+
+def test_toolblock_interface_dialog_and_library_instances(app):
+    window = MainWindow()
+    original = list(window.graph.blocks.values())
+    block = encapsulate(window.graph, [b.id for b in original[1:]], "Inspect", window.registry)
+    dialog = InterfaceDialog(block, window.graph)
+    assert dialog.table.rowCount() == len(block.inputs) + len(block.outputs)
+    dialog.table.item(0, 1).setText("image")
+    dialog.apply()
+    assert dialog.result() == QDialog.DialogCode.Accepted
+    assert window.graph.connections[0].input == "image"
+    window.toolblock_templates.append(block.definition())
+    window.populate_library()
+    item = window.library.item(window.library.count() - 1)
+    window.add_block(item)
+    first = window.inspector.block
+    window.add_block(item)
+    second = window.inspector.block
+    assert first.id != second.id
+    assert first.graph is not second.graph
+    first.graph.blocks[original[-1].id].parameters["expected_count"] = 9
+    assert second.graph.blocks[original[-1].id].parameters["expected_count"] == 2
     window.dirty = False
     window.close()
