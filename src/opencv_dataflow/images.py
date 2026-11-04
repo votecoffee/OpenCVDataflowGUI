@@ -19,6 +19,20 @@ class ImageArray(np.ndarray):
         self.color_format = getattr(source, "color_format", None)
 
 
+class DepthArray(np.ndarray):
+    """Physical depth plane with units and a separate display range."""
+
+    def __new__(cls, values, units="m", display_min=0.0, display_max=5.0):
+        obj = np.asarray(values, dtype=np.float32).view(cls)
+        obj.units, obj.display_min, obj.display_max = units, display_min, display_max
+        return obj
+
+    def __array_finalize__(self, source):
+        self.units = getattr(source, "units", "unknown")
+        self.display_min = getattr(source, "display_min", 0.0)
+        self.display_max = getattr(source, "display_max", 5.0)
+
+
 def image_format(image):
     return getattr(image, "color_format", None) or (
         "gray" if image.ndim == 2 else "bgra" if image.shape[2] == 4 else "bgr"
@@ -106,6 +120,17 @@ def opencv_image(image):
 
 
 def preview_rgb(image):
+    if isinstance(image, DepthArray):
+        valid = np.isfinite(image) & (image > 0)
+        pixels = np.clip(
+            (np.nan_to_num(np.asarray(image)) - image.display_min)
+            / (image.display_max - image.display_min),
+            0,
+            1,
+        )
+        graphic = cv2.applyColorMap(np.rint(pixels * 255).astype(np.uint8), cv2.COLORMAP_TURBO)
+        graphic[~valid] = 0
+        return cv2.cvtColor(graphic, cv2.COLOR_BGR2RGB)
     image = opencv_image(image)
     image = convert_depth(image, "uint8")
     if image.ndim == 2:

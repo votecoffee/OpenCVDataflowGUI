@@ -16,6 +16,7 @@ from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, ope
 
 
 class DemoImage(Block):
+    block_type, subtype = "Input", "Synthetic"
     type_id, title, category = "input.demo", "Demo image", "Input"
     outputs = (Port("image"),)
 
@@ -28,6 +29,7 @@ class DemoImage(Block):
 
 
 class ImageFile(Block):
+    block_type, subtype = "Input", "Files"
     type_id, title, category = "input.file", "Image file", "Input"
     outputs = (Port("image"), Port("info", "data"))
     defaults = {"path": "", "color_format": "bgr", "pixel_depth": "uint8"}
@@ -59,6 +61,7 @@ class ImageFile(Block):
 
 
 class Camera(Block):
+    block_type, subtype = "Input", "Cameras"
     type_id, title, category = "input.camera", "Camera", "Input"
     outputs = (Port("image"),)
     defaults = {"device": 0}
@@ -92,6 +95,7 @@ class GAPIBlock(Block):
     """Cache a native GComputation per parameter set; never silently fall back."""
 
     category = "G-API"
+    block_type, subtype = "Image processing", "G-API"
     inputs, outputs = (Port("image"),), (Port("image"),)
     input_depths = (np.uint8, np.uint16, np.float32)
 
@@ -155,6 +159,7 @@ class Canny(GAPIBlock):
 
 
 class Threshold(Block):
+    block_type, subtype = "Image processing", "Segmentation"
     type_id, title, category = "cv.threshold", "Threshold", "Processing"
     inputs, outputs = (Port("image"),), (Port("image"), Port("threshold", "number"))
     defaults = {"value": 127, "invert": False}
@@ -172,6 +177,7 @@ class Threshold(Block):
 
 
 class Contours(Block):
+    block_type, subtype = "Inspection", "Shapes"
     type_id, title, category = "inspect.contours", "Find contours", "Inspection"
     inputs = (Port("image"),)
     outputs = (Port("overlay"), Port("mask"), Port("count", "number"), Port("data", "data"))
@@ -203,6 +209,7 @@ class Contours(Block):
 
 
 class SaveImage(Block):
+    block_type, subtype = "Output", "Images"
     type_id, title, category = "output.image", "Save image", "Output"
     inputs = (Port("image"),)
     defaults = {"path": "output.png"}
@@ -220,6 +227,7 @@ class SaveImage(Block):
 
 
 class WriteResults(Block):
+    block_type, subtype = "Output", "Structured data"
     type_id, title, category = "output.results", "Write results", "Output"
     inputs = (Port("data", "data"),)
     defaults = {"path": "results.csv", "format": "csv"}
@@ -257,6 +265,18 @@ class WriteResults(Block):
 
 
 def builtin_registry():
+    from .calibration import (
+        CalibrationGrid,
+        ColorBalance,
+        LensCalibration,
+        LoadCalibration,
+        PixelToPhysical,
+        SaveCalibration,
+        Undistort,
+    )
+    from .depth import RGBD, DepthFile, DepthSample
+    from .histogram import Histogram
+
     registry = Registry()
     for block in (
         DemoImage,
@@ -269,6 +289,17 @@ def builtin_registry():
         Contours,
         SaveImage,
         WriteResults,
+        Histogram,
+        CalibrationGrid,
+        LensCalibration,
+        Undistort,
+        ColorBalance,
+        PixelToPhysical,
+        DepthFile,
+        RGBD,
+        DepthSample,
+        LoadCalibration,
+        SaveCalibration,
     ):
         registry.register(block)
     return registry

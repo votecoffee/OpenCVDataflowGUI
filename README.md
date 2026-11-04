@@ -46,7 +46,7 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
 
 ![Editor showing the synthetic inspection demo](docs/images/editor.png)
 
-1. Double-click a tool in the left library to add a block.
+1. Expand a type and subtype in the left toolbox tree, then double-click a tool to add a block.
 2. Drag between an output socket and an input socket in either direction. Image
    ports are cyan, numeric ports amber, and structured-data ports purple.
 3. Select a block, edit parameters in the right inspector, and click **Apply
@@ -70,6 +70,15 @@ and structured result output to CSV, XML, or SQLite. Set a Write results block's
 SQLite append; XML and image writers reject existing files. Output blocks write
 on every run, including continuous runs. Relative paths resolve from the process's
 working directory; use absolute paths for portable local execution expectations.
+
+Additional tools include monochrome/per-channel color histograms, grid-based planar
+pixel-to-physical mapping, offline multi-view lens calibration, undistortion, white/
+color balance, reusable calibration ToolBlocks, and typed depth-image loading,
+RGB-D pairing and depth sampling. Calibration profiles can be saved and loaded as
+JSON for subsequent measurement jobs without a grid in every image. See
+[calibration and depth workflows](docs/calibration-depth.md) for units, origin and
+coordinate-space contracts. These are offline tools; no live robot calibration or
+point-cloud processing is implemented.
 
 ### Image file formats
 
