@@ -1,6 +1,7 @@
 """Explicit, session-only loading of trusted local Python plugins."""
 
 import importlib.util
+import sys
 import uuid
 
 from .core import Registry
@@ -16,8 +17,14 @@ def load_plugin(path, registry):
     if spec is None or spec.loader is None:
         raise ValueError("Select a Python plugin file")
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    staged = Registry()
-    staged.types.update(registry.types)
-    module.register(staged)
-    registry.types = staged.types
+    # Standard import semantics matter to dataclasses and annotation introspection.
+    sys.modules[spec.name] = module
+    try:
+        spec.loader.exec_module(module)
+        staged = Registry()
+        staged.types.update(registry.types)
+        module.register(staged)
+        registry.types = staged.types
+    except BaseException:
+        sys.modules.pop(spec.name, None)
+        raise
