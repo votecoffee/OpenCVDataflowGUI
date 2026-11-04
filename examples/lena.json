@@ -91,7 +91,9 @@
                 0
               ],
               "exposed_inputs": [
-                "image"
+                "image",
+                "mask",
+                "region"
               ],
               "exposed_outputs": [
                 "image"
@@ -142,7 +144,9 @@
         0
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "image"
@@ -166,7 +170,9 @@
         340
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "histogram",
@@ -191,7 +197,9 @@
         340
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "histogram",
@@ -238,7 +246,9 @@
       "exposed_inputs": [
         "image",
         "template",
-        "mask"
+        "mask",
+        "search_mask",
+        "region"
       ],
       "exposed_outputs": [
         "overlay",

@@ -15,20 +15,30 @@ from .processing import (
     integer,
     matching_images,
 )
+from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
 
 
 def overlay_image(image):
     return cv2.cvtColor(preview_rgb(image), cv2.COLOR_RGB2BGR)
 
 
-class EqualizeHistogram(ImageTool):
+class EqualizeHistogram(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.equalize", "Equalize histogram", "Contrast"
 
     def process(self, inputs):
-        return Result({"image": cv2.equalizeHist(gray_image(inputs["image"], (np.uint8,)))})
+        image = gray_image(inputs["image"], (np.uint8,))
+        selection = selection_mask(inputs, image)
+        if selection is None:
+            output = cv2.equalizeHist(image)
+        else:
+            output = image.copy()
+            selected = selection != 0
+            if selected.any():
+                output[selected] = cv2.equalizeHist(image[selected].reshape(-1, 1)).reshape(-1)
+        return Result({"image": output})
 
 
-class CLAHE(ImageTool):
+class CLAHE(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.clahe", "CLAHE local contrast", "Contrast"
     defaults = {"clip_limit": 2.0, "tiles_x": 8, "tiles_y": 8}
 
@@ -41,7 +51,7 @@ class CLAHE(ImageTool):
 
 class Normalize(ImageTool):
     type_id, title, subtype = "cv.normalize", "Normalize intensity", "Contrast"
-    inputs = (Port("image"), Port("mask", required=False))
+    inputs = SELECTION_INPUTS
     defaults = {
         "minimum": 0.0,
         "maximum": 255.0,
@@ -88,7 +98,7 @@ class Normalize(ImageTool):
         return encoded_result(output, source)
 
 
-class GammaCorrection(ImageTool):
+class GammaCorrection(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.gamma", "Gamma correction", "Contrast"
     defaults = {"gamma": 1.0}
 
@@ -160,10 +170,17 @@ class ApplyMask(Block):
         return encoded_result(cv2.copyTo(image, mask), inputs["image"])
 
 
-class AbsoluteDifference(Block):
+class AbsoluteDifference(RegionalOperation, Block):
+    region_source = "image_a"
+    region_background = "zero"
     type_id, title, category = "cv.absdiff", "Absolute difference", "Image processing"
     block_type, subtype = "Image processing", "Image math"
-    inputs = (Port("image_a"), Port("image_b"))
+    inputs = (
+        Port("image_a"),
+        Port("image_b"),
+        Port("mask", required=False),
+        Port("region", "data", required=False),
+    )
     outputs = (Port("image"),)
 
     def process(self, inputs):
@@ -177,7 +194,7 @@ class AbsoluteDifference(Block):
 class GoodFeatures(ImageTool):
     type_id, title, subtype = "inspect.corners", "Good features / corners", "Features"
     category, block_type = "Inspection", "Inspection"
-    inputs = (Port("image"), Port("mask", required=False))
+    inputs = SELECTION_INPUTS
     outputs = (Port("points", "data"), Port("count", "number"), Port("overlay"))
     defaults = {
         "max_corners": 100,
@@ -224,6 +241,7 @@ class GoodFeatures(ImageTool):
 
 
 class HoughLines(ImageTool):
+    inputs = SELECTION_INPUTS
     type_id, title, subtype = "inspect.hough_lines", "Hough line segments", "Features"
     category, block_type = "Inspection", "Inspection"
     outputs = (Port("segments", "data"), Port("count", "number"), Port("overlay"))
@@ -245,6 +263,10 @@ class HoughLines(ImageTool):
             maxLineGap=finite(self.parameters["max_gap"], "Maximum gap", 0),
         )
         segments = found.reshape(-1, 4).tolist() if found is not None else []
+        selection = selection_mask(inputs, image)
+        segments = [
+            s for s in segments if contains(selection, s[:2]) and contains(selection, s[2:])
+        ]
         overlay = overlay_image(inputs["image"])
         for x1, y1, x2, y2 in segments:
             cv2.line(overlay, (x1, y1), (x2, y2), (0, 220, 120), 1)
@@ -256,6 +278,7 @@ class HoughLines(ImageTool):
 
 
 class HoughCircles(ImageTool):
+    inputs = SELECTION_INPUTS
     type_id, title, subtype = "inspect.hough_circles", "Hough circles", "Features"
     category, block_type = "Inspection", "Inspection"
     outputs = (
@@ -303,6 +326,8 @@ class HoughCircles(ImageTool):
             maxRadius=maximum,
         )
         circles = found.reshape(-1, 3).tolist() if found is not None else []
+        selection = selection_mask(inputs, image)
+        circles = [c for c in circles if contains(selection, c[:2])]
         overlay = overlay_image(inputs["image"])
         for x, y, radius in circles:
             cv2.circle(overlay, (round(x), round(y)), round(radius), (0, 220, 120), 1)

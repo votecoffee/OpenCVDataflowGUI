@@ -10,6 +10,7 @@ import numpy as np
 from .core import Block, Port, Result
 from .images import DepthArray, ImageArray, format_image, image_format, opencv_image, preview_rgb
 from .parameters import BORDERS, OUTPUT_DEPTHS, anchor_value, optional_mask, scalar_value
+from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
 
 
 def integer(value, name, low=1, high=4095, odd=False):
@@ -223,7 +224,7 @@ class Rotate90(ImageTool):
         return geometry_result(cv2.rotate(image, code), source, matrix)
 
 
-class BoxBlur(ImageTool):
+class BoxBlur(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.box_blur", "Box blur", "Filtering"
     defaults = {"kernel": 5, "kernel_y": 0, "anchor": [-1, -1], "border": "reflect"}
     parameter_choices = {"border": tuple(BORDERS)}
@@ -241,7 +242,7 @@ class BoxBlur(ImageTool):
         )
 
 
-class MedianBlur(ImageTool):
+class MedianBlur(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.median_blur", "Median blur", "Filtering"
     defaults = {"kernel": 3}
 
@@ -253,7 +254,7 @@ class MedianBlur(ImageTool):
         return encoded_result(cv2.medianBlur(image, kernel), inputs["image"])
 
 
-class BilateralFilter(ImageTool):
+class BilateralFilter(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.bilateral", "Bilateral filter", "Filtering"
     defaults = {"diameter": 5, "sigma_color": 50.0, "sigma_space": 5.0, "border": "reflect"}
     parameter_choices = {"border": tuple(BORDERS)}
@@ -273,7 +274,8 @@ class BilateralFilter(ImageTool):
         )
 
 
-class AutoThreshold(ImageTool):
+class AutoThreshold(RegionalOperation, ImageTool):
+    region_background = "zero"
     type_id, title, subtype = "cv.auto_threshold", "Automatic threshold", "Segmentation"
     outputs = (Port("image"), Port("threshold", "number"))
     defaults = {"method": "otsu", "invert": False, "max_value": -1.0}
@@ -289,11 +291,21 @@ class AutoThreshold(ImageTool):
         maximum = finite(self.parameters["max_value"], "Maximum value")
         if maximum < 0:
             maximum = int(np.iinfo(image.dtype).max)
-        level, mask = cv2.threshold(image, 0, maximum, mode)
+        selection = selection_mask(inputs, image)
+        if selection is None:
+            level, mask = cv2.threshold(image, 0, maximum, mode)
+        else:
+            samples = image[selection != 0]
+            if not samples.size:
+                raise ValueError("Automatic threshold requires a nonempty selection")
+            level, _ = cv2.threshold(samples.reshape(-1, 1), 0, maximum, mode)
+            basic = cv2.THRESH_BINARY_INV if self.parameters["invert"] else cv2.THRESH_BINARY
+            _, mask = cv2.threshold(image, level, maximum, basic)
         return Result({"image": mask, "threshold": float(level)})
 
 
-class AdaptiveThreshold(ImageTool):
+class AdaptiveThreshold(RegionalOperation, ImageTool):
+    region_background = "zero"
     type_id, title, subtype = "cv.adaptive_threshold", "Adaptive threshold", "Segmentation"
     defaults = {
         "method": "gaussian",
@@ -322,7 +334,8 @@ class AdaptiveThreshold(ImageTool):
         return Result({"image": output})
 
 
-class InRange(ImageTool):
+class InRange(RegionalOperation, ImageTool):
+    region_background = "zero"
     type_id, title, subtype = "cv.in_range", "In range mask", "Segmentation"
     defaults = {"lower": [0], "upper": [255]}
 
@@ -341,7 +354,8 @@ class InRange(ImageTool):
         return Result({"image": cv2.inRange(image, tuple(bounds[0]), tuple(bounds[1]))})
 
 
-class Morphology(ImageTool):
+class Morphology(RegionalOperation, ImageTool):
+    region_background = "zero"
     type_id, title, subtype = "cv.morphology", "Morphology", "Morphology"
     defaults = {
         "operation": "open",
@@ -409,7 +423,12 @@ def matching_images(inputs):
 class Bitwise(Block):
     type_id, title, category = "cv.bitwise", "Bitwise image operation", "Image processing"
     block_type, subtype = "Image processing", "Image math"
-    inputs = (Port("image_a"), Port("image_b", required=False), Port("mask", required=False))
+    inputs = (
+        Port("image_a"),
+        Port("image_b", required=False),
+        Port("mask", required=False),
+        Port("region", "data", required=False),
+    )
     outputs = (Port("image"),)
     defaults = {"operation": "and"}
     parameter_choices = {"operation": ("and", "or", "xor", "not")}
@@ -428,10 +447,16 @@ class Bitwise(Block):
         return Result({"image": output})
 
 
-class Blend(Block):
+class Blend(RegionalOperation, Block):
+    region_source = "image_a"
     type_id, title, category = "cv.blend", "Weighted blend", "Image processing"
     block_type, subtype = "Image processing", "Image math"
-    inputs = (Port("image_a"), Port("image_b"))
+    inputs = (
+        Port("image_a"),
+        Port("image_b"),
+        Port("mask", required=False),
+        Port("region", "data", required=False),
+    )
     outputs = (Port("image"),)
     defaults = {"alpha": 0.5, "beta": 0.5, "gamma": 0.0, "output_depth": "same"}
     parameter_choices = {"output_depth": tuple(OUTPUT_DEPTHS)}
@@ -447,7 +472,9 @@ class Blend(Block):
         return Result({"image": output})
 
 
-class Gradient(ImageTool):
+class Gradient(RegionalOperation, ImageTool):
+    region_outputs = ("gradient", "preview")
+    region_background = "zero"
     type_id, title, subtype = "cv.gradient", "Sobel / Scharr / Laplacian", "Edges"
     outputs = (Port("gradient"), Port("preview"))
     defaults = {
@@ -500,6 +527,10 @@ class Gradient(ImageTool):
 
 
 class ConnectedComponents(ImageTool):
+    parameter_help = {
+        "region_mode": "Center keeps whole objects; clip measures only their selected pixels."
+    }
+    inputs = SELECTION_INPUTS
     type_id, title, subtype = "inspect.components", "Connected components", "Shapes"
     category, block_type = "Inspection", "Inspection"
     outputs = (
@@ -515,10 +546,12 @@ class ConnectedComponents(ImageTool):
         "max_area": 0,
         "expected_count": 2,
         "algorithm": "default",
+        "region_mode": "center",
     }
     parameter_choices = {
         "connectivity": ("4", "8"),
         "algorithm": ("default", "sauf", "bbdt", "spaghetti"),
+        "region_mode": ("center", "clip"),
     }
 
     def process(self, inputs):
@@ -537,8 +570,12 @@ class ConnectedComponents(ImageTool):
             "bbdt": cv2.CCL_BBDT,
             "spaghetti": cv2.CCL_SPAGHETTI,
         }[self.parameters["algorithm"]]
+        selection = selection_mask(inputs, image)
+        search = image != 0
+        if selection is not None and self.parameters["region_mode"] == "clip":
+            search &= selection != 0
         total, labels, stats, centers = cv2.connectedComponentsWithStatsWithAlgorithm(
-            (image != 0).astype(np.uint8), connectivity, cv2.CV_32S, algorithm
+            search.astype(np.uint8), connectivity, cv2.CV_32S, algorithm
         )
         overlay = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
         mask = np.zeros_like(image)
@@ -548,6 +585,8 @@ class ConnectedComponents(ImageTool):
             if area < minimum or (maximum and area > maximum):
                 continue
             center = centers[label].tolist()
+            if self.parameters["region_mode"] == "center" and not contains(selection, center):
+                continue
             components.append({"area": area, "bounds": [x, y, width, height], "centroid": center})
             mask[labels == label] = 255
             cv2.rectangle(overlay, (x, y), (x + width - 1, y + height - 1), (70, 220, 140), 1)
@@ -573,7 +612,13 @@ class ConnectedComponents(ImageTool):
 class MatchTemplate(Block):
     type_id, title, category = "inspect.match_template", "Match template", "Inspection"
     block_type, subtype = "Inspection", "Matching"
-    inputs = (Port("image"), Port("template"), Port("mask", required=False))
+    inputs = (
+        Port("image"),
+        Port("template"),
+        Port("mask", required=False),
+        Port("search_mask", required=False),
+        Port("region", "data", required=False),
+    )
     outputs = (
         Port("overlay"),
         Port("score", "number"),
@@ -625,7 +670,17 @@ class MatchTemplate(Block):
         response = cv2.matchTemplate(image, template, code, mask=mask)
         if not np.isfinite(response).all():
             raise ValueError("Template matching produced a nonfinite response")
-        low, high, low_pos, high_pos = cv2.minMaxLoc(response)
+        selection = selection_mask(
+            {"mask": inputs.get("search_mask"), "region": inputs.get("region")}, image
+        )
+        candidate_mask = None
+        if selection is not None:
+            # Match positions are top-left coordinates; selection tests the template center.
+            cy, cx = np.rint([(template.shape[0] - 1) / 2, (template.shape[1] - 1) / 2]).astype(int)
+            candidate_mask = selection[cy : cy + response.shape[0], cx : cx + response.shape[1]]
+            if not candidate_mask.any():
+                raise ValueError("Search region contains no legal template centers")
+        low, high, low_pos, high_pos = cv2.minMaxLoc(response, mask=candidate_mask)
         location = low_pos if method in ("sqdiff_normed", "sqdiff") else high_pos
         quality_code = {
             "sqdiff": cv2.TM_SQDIFF_NORMED,

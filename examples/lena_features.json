@@ -58,7 +58,9 @@
         0
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "image"
@@ -85,7 +87,8 @@
       ],
       "exposed_inputs": [
         "image",
-        "mask"
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "points",
@@ -111,7 +114,9 @@
         340
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "histogram",
@@ -135,7 +140,9 @@
         340
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "image"
@@ -159,7 +166,9 @@
         340
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "segments",

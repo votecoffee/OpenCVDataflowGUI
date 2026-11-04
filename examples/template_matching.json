@@ -56,7 +56,9 @@
       "exposed_inputs": [
         "image",
         "template",
-        "mask"
+        "mask",
+        "search_mask",
+        "region"
       ],
       "exposed_outputs": [
         "overlay",

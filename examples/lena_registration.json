@@ -70,7 +70,8 @@
       ],
       "exposed_inputs": [
         "image",
-        "mask"
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "features",
@@ -102,7 +103,8 @@
       ],
       "exposed_inputs": [
         "image",
-        "mask"
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "features",
@@ -219,7 +221,9 @@
       ],
       "exposed_inputs": [
         "image_a",
-        "image_b"
+        "image_b",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "image"

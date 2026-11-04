@@ -221,3 +221,59 @@ def lena_registration_graph(registry):
     for key in ("registration_query", "registration_train"):
         graph.blocks[key].preview_output = "overlay"
     return graph
+
+
+def regions_graph(registry):
+    """Regions select measurements and processing without moving image coordinates."""
+    graph = Graph()
+    specs = [
+        ("roi_source", "input.demo", "Two synthetic parts", [0, 0], None),
+        ("roi_gray", "cv.convert", "Grayscale", [300, 0], None),
+        ("roi_threshold", "cv.threshold", "Segment both parts", [600, 0], {"value": 100.0}),
+        (
+            "roi_circle",
+            "region.shape",
+            "Circle selects left part",
+            [0, 360],
+            {"shape": "circle", "center": [140, 180], "radius": 80},
+        ),
+        (
+            "roi_rectangle",
+            "region.shape",
+            "Rectangle selects right part",
+            [300, 360],
+            {"rectangle": [260, 95, 150, 170]},
+        ),
+        (
+            "roi_polygon",
+            "region.shape",
+            "Polygon excludes text",
+            [600, 360],
+            {"shape": "polygon", "vertices": [[50, 60], [420, 70], [420, 280], [50, 280]]},
+        ),
+        ("roi_left", "inspect.components", "Measure left part", [900, 0], {"expected_count": 1}),
+        ("roi_right", "inspect.contours", "Inspect right part", [900, 360], {"expected_count": 1}),
+        ("roi_histogram", "inspect.histogram", "Histogram inside polygon", [1200, 360], None),
+        ("roi_blur", "gapi.blur", "Blur only inside circle", [1200, 0], {"kernel": 15}),
+    ]
+    for key, kind, name, position, parameters in specs:
+        block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
+        block.name, block.position = name, position
+    for source, output, target, input in [
+        ("roi_source", "image", "roi_gray", "image"),
+        ("roi_gray", "image", "roi_threshold", "image"),
+        *[
+            ("roi_source", "image", key, "image")
+            for key in ("roi_circle", "roi_rectangle", "roi_polygon", "roi_histogram", "roi_blur")
+        ],
+        ("roi_threshold", "image", "roi_left", "image"),
+        ("roi_circle", "region", "roi_left", "region"),
+        ("roi_threshold", "image", "roi_right", "image"),
+        ("roi_rectangle", "mask", "roi_right", "mask"),
+        ("roi_polygon", "region", "roi_histogram", "region"),
+        ("roi_circle", "region", "roi_blur", "region"),
+    ]:
+        graph.connect(source, output, target, input)
+    for key in ("roi_circle", "roi_rectangle", "roi_polygon", "roi_left", "roi_right"):
+        graph.blocks[key].preview_output = "overlay"
+    return graph

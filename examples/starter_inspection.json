@@ -74,7 +74,9 @@
         310
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "image"
@@ -96,7 +98,9 @@
         310
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "image",
@@ -131,7 +135,9 @@
         310
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "image"
@@ -148,14 +154,17 @@
         "min_area": 1000,
         "max_area": 0,
         "expected_count": 2,
-        "algorithm": "default"
+        "algorithm": "default",
+        "region_mode": "center"
       },
       "position": [
         0,
         620
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "overlay",
@@ -183,7 +192,9 @@
         620
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "histogram",
@@ -207,7 +218,9 @@
         620
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask",
+        "region"
       ],
       "exposed_outputs": [
         "image"

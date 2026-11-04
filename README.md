@@ -156,6 +156,24 @@ solver settings, calibration flags and image encoder options where applicable.
 Native buffers are managed by the runtime; hardware requests depend on the camera
 backend. Existing saved projects acquire new defaults when loaded.
 
+### Masks and regions
+
+Add **Image processing > Regions > Shape region**, choose rectangle, circle or
+polygon from its dropdown, and connect its `region` or `mask` output to supported
+blocks. Regions retain input-image coordinates and include a tinted overlay.
+When both a mask and region are connected, their intersection is used.
+
+Open **File > Load regions example**, or `examples/regions.json`, for a working
+10-block project that inspects each synthetic part separately, computes a polygon
+histogram and blurs only the circular selection. No image download is required.
+Run it headlessly with `opencv-dataflow-run examples/regions.json --repeat 3`.
+
+Selections support filters, segmentation, gradients, image math, histogram and
+contrast tools, corner/ORB detectors, contours/components and template search.
+Contour/component **Region mode** chooses whole-object center filtering or clipped
+measurements. See [region behavior and supported tools](docs/regions.md) for
+outside-pixel policies, neighborhood behavior and coordinate rules.
+
 ### Image file formats
 
 The **Image file** input loads a file and reformats it using inspector dropdowns:
@@ -227,6 +245,7 @@ graph.close()
 - `blocks.py`: acquisition, native G-API processing, inspection, and output sinks.
 - `processing.py`: base OpenCV geometry, filtering, segmentation, math and inspection wrappers.
 - `features.py`, `registration.py`, `analysis_tools.py`: contrast, features, registration and numerical image tools.
+- `regions.py`, `selection.py`: reusable shape regions, mask intersections and selection policies.
 - `examples.py` and `runner.py`: built-in starter graphs and headless project verification.
 - `plugins.py`: explicitly loaded trusted Python extensions.
 - `canvas.py`: movable nodes, typed sockets, selectable wires, pan and zoom.

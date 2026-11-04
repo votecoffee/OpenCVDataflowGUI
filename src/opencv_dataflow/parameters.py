@@ -37,6 +37,10 @@ def anchor_value(value, width, height):
 
 
 def optional_mask(inputs, image, key="mask"):
+    if key == "mask":
+        from .selection import selection_mask
+
+        return selection_mask(inputs, image)
     mask = inputs.get(key)
     if mask is not None and (
         mask.dtype != np.uint8 or mask.ndim != 2 or mask.shape != image.shape[:2]

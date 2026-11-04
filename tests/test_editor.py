@@ -1,12 +1,13 @@
 """Offscreen Qt interaction checks: ports, inspector, and worker lifecycle."""
 
+import gc
 import os
 import time
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 import pytest
-from PySide6.QtCore import QPoint, Qt
+from PySide6.QtCore import QCoreApplication, QEvent, QPoint, Qt
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication, QDialog, QInputDialog
 
@@ -21,7 +22,13 @@ from opencv_dataflow.toolblocks import encapsulate
 
 @pytest.fixture(scope="module")
 def app():
-    return QApplication.instance() or QApplication([])
+    application = QApplication.instance() or QApplication([])
+    yield application
+    # Complete queued QObject disposal while QApplication is still alive.
+    application.processEvents()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+    gc.collect()
+    application.processEvents()
 
 
 def pump_until(app, predicate, seconds=8):
@@ -167,6 +174,10 @@ def test_toolblock_interface_dialog_and_library_instances(app):
     block = encapsulate(window.graph, [b.id for b in original[1:]], "Inspect", window.registry)
     dialog = InterfaceDialog(block, window.graph)
     assert dialog.table.rowCount() == len(block.inputs) + len(block.outputs)
+    for row, binding in enumerate(
+        [*block.input_bindings.values(), *block.output_bindings.values()]
+    ):
+        assert dialog.table.cellWidget(row, 2).currentData() == binding
     dialog.table.item(0, 1).setText("image")
     dialog.apply()
     assert dialog.result() == QDialog.DialogCode.Accepted
@@ -186,6 +197,30 @@ def test_toolblock_interface_dialog_and_library_instances(app):
     assert second.graph.blocks[original[-1].id].parameters["expected_count"] == 2
     window.dirty = False
     window.close()
+
+
+def test_regions_example_editor_load_save_and_shape_dropdown(app, tmp_path):
+    from PySide6.QtWidgets import QComboBox
+
+    window = MainWindow()
+    window.show()
+    app.processEvents()
+    window.load_regions_example()
+    assert len(window.graph.blocks) == 10
+    circle = window.graph.blocks["roi_circle"]
+    window.scene.nodes[circle.id].setSelected(True)
+    assert isinstance(window.inspector.fields["shape"], QComboBox)
+    assert window.inspector.fields["shape"].currentText() == "circle"
+    window.path = tmp_path / "regions.json"
+    assert window.save_project()
+    restored = Graph.load(window.path, window.registry)
+    assert restored.to_dict() == window.graph.to_dict()
+    window.start_run(False)
+    pump_until(app, lambda: window.runner is None)
+    assert all(b.state == "pass" for b in window.graph.blocks.values())
+    window.dirty = False
+    window.close()
+    app.processEvents()
 
 
 def test_image_file_dropdowns_metadata_and_preview(app, tmp_path):
