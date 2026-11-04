@@ -186,6 +186,8 @@ graph.close()
 
 - `core.py`: block/result contracts, typed ports, acyclic graph scheduling, JSON projects.
 - `blocks.py`: acquisition, native G-API processing, inspection, and output sinks.
+- `processing.py`: base OpenCV geometry, filtering, segmentation, math and inspection wrappers.
+- `examples.py` and `runner.py`: built-in starter graphs and headless project verification.
 - `plugins.py`: explicitly loaded trusted Python extensions.
 - `canvas.py`: movable nodes, typed sockets, selectable wires, pan and zoom.
 - `app.py`: Qt editor, inspector, worker execution, project and plugin actions.

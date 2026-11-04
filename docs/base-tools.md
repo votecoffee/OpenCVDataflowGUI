@@ -1,5 +1,7 @@
 # Base OpenCV tools and starter projects
 
+![Passing synthetic inspection starter](images/starter-project.png)
+
 These tools are usable node blocks with typed ports, inspector parameters, latest
 input/output records, native errors and previews. They use ordinary OpenCV calls;
 the existing G-API grayscale/blur/Canny blocks continue to use native GComputation.
