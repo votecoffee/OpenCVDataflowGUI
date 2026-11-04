@@ -1,5 +1,7 @@
 # Toolbox, histogram, calibration and depth workflows
 
+![Toolbox tree, histogram and grid calibration](images/calibration-toolbox.png)
+
 ## Block classification
 
 The left toolbox is a tree: **type → subtype → block**. Input, Output,
@@ -13,6 +15,7 @@ Stable `type_id` values still identify implementations in saved projects.
 Calibration also includes editable ToolBlock templates. Open their internal graph
 to configure primitive tools. They use the same public-port and result contracts
 as other reusable ToolBlocks; category/subtype metadata survives export/import.
+Their inspector allows editing type/subtype before exporting a reusable definition.
 
 ## Histogram
 
@@ -104,6 +107,8 @@ using JSON `null` for invalid samples. It rejects coordinates outside the image.
 Node/inspector previews use a configured physical display range and a false-color
 palette; invalid samples are black. The preview is separate from raw depth values.
 Depth ports cannot accidentally wire into ordinary color-processing inputs.
+Depth-file score reports the fraction of valid samples; a plane without any valid
+depth returns an inspection failure while retaining its diagnostic output.
 Point-cloud projection, XYZ/normal types, 3D viewing, RGB-D device adapters and
 registration are future work rather than an interpretation of a fourth color channel.
 
