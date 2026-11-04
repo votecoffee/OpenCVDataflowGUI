@@ -42,6 +42,7 @@ from .canvas import CanvasScene, CanvasView, Node, pixmap
 from .core import Graph
 from .examples import regions_graph, starter_graph, template_graph
 from .plugins import load_plugin
+from .region_editor import RegionEditor
 from .toolblock_editor import InterfaceDialog
 from .toolblocks import ToolBlock, encapsulate
 
@@ -84,6 +85,8 @@ class Inspector(QWidget):
         super().__init__()
         self.window = window
         self.block = None
+        self._region_image = None
+        self._region_source = None
         self.fields, self.port_checks = {}, []
         layout = QVBoxLayout(self)
         title = QLabel("BLOCK INSPECTOR")
@@ -112,6 +115,9 @@ class Inspector(QWidget):
         self.setMinimumWidth(310)
 
     def select(self, block):
+        if block is not self.block:
+            self._region_image = None
+            self._region_source = None
         self.block = block
         while self.form.rowCount():
             self.form.removeRow(0)
@@ -166,6 +172,10 @@ class Inspector(QWidget):
                 self.form.addRow(key.replace("_", " ").title(), row)
             else:
                 self.form.addRow(key.replace("_", " ").title(), field)
+        if block.type_id == "region.shape":
+            draw_region = QPushButton("Draw / edit region…")
+            draw_region.clicked.connect(self.edit_region)
+            self.form.addRow(draw_region)
         self.thumb = QCheckBox("Show image on node")
         self.thumb.setChecked(block.thumbnail)
         self.form.addRow(self.thumb)
@@ -197,31 +207,83 @@ class Inspector(QWidget):
         if path:
             field.setText(path)
 
+    def read_parameters(self):
+        b = self.block
+        parameters = {}
+        for key, field in self.fields.items():
+            initial = b.defaults[key]
+            if isinstance(field, QComboBox):
+                value = field.currentText()
+            elif isinstance(initial, bool):
+                value = field.isChecked()
+            elif isinstance(initial, int):
+                value = int(field.text())
+            elif isinstance(initial, float):
+                value = float(field.text())
+            elif isinstance(initial, (list, dict)):
+                value = json.loads(field.text())
+                if not isinstance(value, type(initial)):
+                    raise ValueError(f"{key} requires a JSON {type(initial).__name__}")
+            else:
+                value = field.text()
+            parameters[key] = value
+        json.dumps(parameters, allow_nan=False)
+        b.validate_parameters(parameters)
+        return parameters
+
+    def edit_region(self):
+        block = self.block
+        if block is None or block.type_id != "region.shape" or self.window.runner:
+            return
+        try:
+            parameters = self.read_parameters()
+            connection = next(
+                (
+                    c
+                    for c in self.window.graph.connections
+                    if c.target == block.id and c.input == "image"
+                ),
+                None,
+            )
+            source = (connection.source, connection.output) if connection else None
+            image = block.last_inputs.get("image")
+            if image is None and connection:
+                image = self.window.graph.blocks[connection.source].last_output_images.get(
+                    connection.output
+                )
+            if image is not None:
+                self._region_image, self._region_source = image, source
+            elif source == self._region_source:
+                image = self._region_image
+            if image is None:
+                raise ValueError(
+                    "Connect an image and Run once to capture it before drawing a region."
+                )
+            dialog = RegionEditor(image, parameters, self)
+            accepted = dialog.exec() == QDialog.DialogCode.Accepted
+            updated = dialog.parameters if accepted else None
+            dialog.deleteLater()
+            if accepted:
+                for key, value in updated.items():
+                    field = self.fields[key]
+                    if isinstance(field, QComboBox):
+                        field.setCurrentText(value)
+                    elif isinstance(field, QCheckBox):
+                        field.setChecked(value)
+                    else:
+                        field.setText(json.dumps(value) if isinstance(value, list) else str(value))
+                self.apply()
+                if self.block is block:
+                    self._region_image, self._region_source = image, source
+        except (ValueError, TypeError, KeyError) as exc:
+            self.window.warn(str(exc))
+
     def apply(self):
         b = self.block
         if b is None or self.window.runner:
             return
         try:
-            parameters = {}
-            for key, field in self.fields.items():
-                initial = b.defaults[key]
-                if isinstance(field, QComboBox):
-                    value = field.currentText()
-                elif isinstance(initial, bool):
-                    value = field.isChecked()
-                elif isinstance(initial, int):
-                    value = int(field.text())
-                elif isinstance(initial, float):
-                    value = float(field.text())
-                elif isinstance(initial, (list, dict)):
-                    value = json.loads(field.text())
-                    if not isinstance(value, type(initial)):
-                        raise ValueError(f"{key} requires a JSON {type(initial).__name__}")
-                else:
-                    value = field.text()
-                parameters[key] = value
-            json.dumps(parameters, allow_nan=False)
-            b.validate_parameters(parameters)
+            parameters = self.read_parameters()
             exposed = {
                 d: [
                     n
