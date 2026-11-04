@@ -538,6 +538,7 @@ def builtin_registry():
     from .features import FEATURE_BLOCKS
     from .histogram import Histogram
     from .oriented_edges import FindOrientedEdges
+    from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .poses import POSE_BLOCKS
     from .processing import PROCESSING_BLOCKS
@@ -584,6 +585,8 @@ def builtin_registry():
         PatternDemoImages,
         *POSE_BLOCKS,
         *CONTROL_BLOCKS,
+        ParallelInspect,
+        RepeatedPartsDemo,
     ):
         registry.register(block)
     return registry

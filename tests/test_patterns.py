@@ -236,7 +236,7 @@ def test_saved_trained_patterns_example(tmp_path):
 
 
 @pytest.mark.parametrize(
-    "parameters", [{"rotation_step": 0}, {"scale_min": 0}, {"min_score": 1.1}, {"max_matches": 21}]
+    "parameters", [{"rotation_step": 0}, {"scale_min": 0}, {"min_score": 1.1}, {"max_matches": 257}]
 )
 def test_invalid_shape_search_parameters_clear_results(parameters):
     matcher = tool("pattern.match_shape")

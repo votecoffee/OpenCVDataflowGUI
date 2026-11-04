@@ -109,6 +109,13 @@ Try **File > Load ticketed control flow example**. See
 [tickets and control flow](docs/control-flow.md) for external/PLC ticket inputs,
 buffer limits and stream execution semantics.
 
+**Inspect each pose in parallel** runs a reusable inspection ToolBlock for every
+pattern match, measured feature or supplied pose, then returns one aggregate. Set
+worker count and optional N-pass/N-failure stop thresholds; results explicitly
+identify uninspected parts. **File > Load parallel part inspection example** finds
+and inspects 25 parts. See [parallel part inspection](docs/parallel-inspection.md)
+for editing the inspection, acceptance policies and cancellation behavior.
+
 The supported dependency is OpenCV 5 contrib (development checks use 5.0.0.93).
 This desktop application uses native Python bindings and retains its G-API blocks.
 Migration details and a possible browser/WebAssembly backend are covered in the

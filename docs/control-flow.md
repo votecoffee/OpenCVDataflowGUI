@@ -45,6 +45,10 @@ ticketing; `ticket` is a runtime-managed reserved terminal name.
 
 ## Blocks
 
+For one inspection repeated across many detected parts, use
+[Inspect each pose in parallel](parallel-inspection.md). It has an editable
+per-part ToolBlock, bounded workers, aggregate results and optional early stopping.
+
 All new operators appear under **Control flow** in the toolbox.
 
 | Block | Behavior |
