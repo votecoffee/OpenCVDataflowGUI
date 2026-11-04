@@ -9,7 +9,7 @@ description = "Visual OpenCV development and execution with extensible Python bl
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
-dependencies = ["numpy>=2,<3", "opencv-python>=4.10,<5", "PySide6>=6.8,<7"]
+dependencies = ["numpy>=2,<3", "opencv-contrib-python>=5.0.0.93,<6", "PySide6>=6.8,<7"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "ruff>=0.9"]

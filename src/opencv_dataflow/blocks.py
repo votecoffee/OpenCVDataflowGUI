@@ -178,7 +178,7 @@ class GAPIBlock(Block):
         if self._computation is None or self._key != key:
             image = cv2.GMat()
             output = self.build(image)
-            self._computation = cv2.GComputation(cv2.GIn(image), cv2.GOut(output))
+            self._computation = cv2.GComputation([image], [output])
             self._key = key
         image = self._computation.apply([source])
         if isinstance(image, (tuple, list)):

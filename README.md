@@ -32,6 +32,15 @@ python -m venv .venv
 
 On Linux/macOS use `.venv/bin/python` instead of `.venv\Scripts\python`.
 
+OpenCV 5's **contrib** distribution is required. When upgrading an existing
+environment, remove the old OpenCV distributions before reinstalling; they share
+the `cv2` namespace and must not coexist:
+
+```powershell
+.\.venv\Scripts\python -m pip uninstall -y opencv-python opencv-python-headless opencv-contrib-python opencv-contrib-python-headless
+.\.venv\Scripts\python -m pip install -e ".[dev]"
+```
+
 ## Usage
 
 Start the editor from the repository's virtual environment:
@@ -93,9 +102,9 @@ rectangle/circle/polygon editors in their inspectors. Relative-region and mask
 editors map drawing and handle movements into the supplied pose's local frame.
 Shape mask can also operate in ordinary image pixels with its pose disconnected.
 
-The current supported dependency is OpenCV 4.x (development checks use 4.14.0).
-This desktop application uses native Python bindings. OpenCV 5 migration and a
-possible browser/WebAssembly backend are considered in the
+The supported dependency is OpenCV 5 contrib (development checks use 5.0.0.93).
+This desktop application uses native Python bindings and retains its G-API blocks.
+Migration details and a possible browser/WebAssembly backend are covered in the
 [backend notes](docs/opencv-backend.md).
 
 Load trusted custom blocks via **File > Load Python plugin**. Start with

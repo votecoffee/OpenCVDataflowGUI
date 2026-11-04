@@ -1,18 +1,34 @@
 # OpenCV runtime and browser options
 
-The project currently supports `opencv-python>=4.10,<5`. The local development
-environment was verified as OpenCV **4.14.0** on 2026-11-04. Its desktop UI is
+The project requires `opencv-contrib-python>=5.0.0.93,<6`. The local development
+environment uses OpenCV **5.0.0**, Python distribution **5.0.0.93**. Its desktop UI is
 PySide6/Qt, with native OpenCV Python bindings and NumPy image buffers. It does not
 embed a browser or execute WebAssembly.
 
-OpenCV's [official releases](https://opencv.org/releases/) list **5.0.0**. Expanding
-the supported major version requires a compatibility pass over native wrappers,
-saved examples and Python packages. In particular, the
-[OpenCV 5 changes](https://github.com/opencv/opencv/wiki/OpenCV-5) move G-API into
-`opencv_contrib`; the current app has real G-API blocks. The migration needs to
-verify the intended wheel's G-API bindings and image/geometry APIs, then run the
-existing local tests and example jobs before changing dependencies. No OpenCV 5
-compatibility is claimed by this change.
+## OpenCV 5 migration
+
+The contrib wheel includes extra modules and retains the G-API functionality used
+by existing grayscale/blur/Canny nodes. Their block IDs, parameters and saved
+connections remain unchanged. GComputation now receives native argument lists
+instead of the removed Python `GIn/GOut` helpers; no eager fallback is used.
+Line-segment detection normalizes scalar-per-line output vectors before exposing
+width, precision and NFA measurements.
+
+The migration was checked against the complete automated suite, offscreen Qt
+editor workflows and saved example graphs. Shape/ORB models trained and saved on
+4.14.0 were also loaded and matched on 5.0.0 without retraining. This is synthetic
+compatibility evidence; representative inspection images should determine actual
+acceptance tolerances. OpenCV's [migration guide](https://github.com/opencv/opencv/wiki/OpenCV-4-to-5-migration)
+documents array-layout, interpolation and rendering changes, so numerical results
+are not promised to be bit-identical across major versions.
+
+Install only one OpenCV distribution in an environment. The base, contrib and
+headless packages all provide `cv2`; contrib replaces the base wheel. See the
+[README upgrade commands](../README.md#install). The dependency exposes additional
+native APIs to plugins; new contrib algorithms still need explicit block wrappers
+to appear in the toolbox.
+
+## Browser option
 
 WebAssembly is worth considering for a future browser-based editor, viewer or
 portable preview runner. It is not new to version 5:

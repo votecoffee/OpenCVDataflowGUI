@@ -26,6 +26,7 @@
 - Oriented edge bands with thickness, continuity, strength, intensity, contrast and coverage filtering.
 - Image-plane poses, feature-derived frames, local pattern/pose offsets and pose-relative inspection regions.
 - Interactive pose-local region and mask editors, captured frame pairs and optional-frame Shape mask blocks.
+- OpenCV 5 contrib runtime, retained native G-API nodes and normalized line-detector vector outputs.
 
 ## Point clouds and 3D vision
 
@@ -47,7 +48,6 @@ frame transforms and robot pose/measurement adapters. See
 - More OpenCV tools: multiple template matches, additional descriptors/robust matching and advanced calibration.
 - Dynamic parameter binding, richer types, promoted parameters and versioned ToolBlock libraries.
 - Compile compatible connected segments into shared native G-API computations.
-- Validate OpenCV 5 compatibility, including G-API's move to contrib, before expanding the supported dependency range.
 - Consider OpenCV.js/WebAssembly for a future browser viewer/editor; retain the native Python/Qt runtime today.
 - Camera enumeration, trigger controls, bounded acquisition and recorded test sets.
 
