@@ -1,0 +1,494 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "flow_cam1",
+      "type": "input.demo",
+      "name": "Synthetic camera 1",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_cam2",
+      "type": "input.demo",
+      "name": "Synthetic camera 2",
+      "parameters": {},
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_cam3",
+      "type": "input.demo",
+      "name": "Synthetic camera 3",
+      "parameters": {},
+      "position": [
+        0,
+        700
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_batch",
+      "type": "flow.batch",
+      "name": "Group three cameras",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": true,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        300,
+        350
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_expected",
+      "type": "flow.unbatch",
+      "name": "Original FIFO order",
+      "parameters": {
+        "order": "stored"
+      },
+      "position": [
+        620,
+        0
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_reverse",
+      "type": "flow.unbatch",
+      "name": "Exercise reversed arrivals",
+      "parameters": {
+        "order": "sequence_descending"
+      },
+      "position": [
+        620,
+        550
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_split",
+      "type": "flow.split",
+      "name": "Two parallel branches",
+      "parameters": {
+        "branches": 2,
+        "workers": 2
+      },
+      "position": [
+        940,
+        550
+      ],
+      "exposed_inputs": [
+        "value"
+      ],
+      "exposed_outputs": [
+        "branch_1",
+        "branch_2",
+        "branch_3",
+        "branch_4"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_gray",
+      "type": "gapi.gray",
+      "name": "Grayscale branch",
+      "parameters": {},
+      "position": [
+        1260,
+        350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_blur",
+      "type": "gapi.blur",
+      "name": "Blur branch",
+      "parameters": {
+        "kernel": 5,
+        "sigma": 1.2,
+        "kernel_y": 0,
+        "sigma_y": 0.0,
+        "border": "reflect",
+        "border_value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        1260,
+        750
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_join",
+      "type": "flow.join",
+      "name": "Synchronize same ticket",
+      "parameters": {
+        "branches": 2,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        1580,
+        550
+      ],
+      "exposed_inputs": [
+        "branch_1",
+        "branch_2",
+        "branch_3",
+        "branch_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "branch_1",
+        "branch_2",
+        "branch_3",
+        "branch_4",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_select",
+      "type": "flow.select_entry",
+      "name": "Use grayscale result",
+      "parameters": {
+        "index": 0
+      },
+      "position": [
+        1900,
+        550
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_case",
+      "type": "flow.case",
+      "name": "Route even and odd tickets",
+      "parameters": {
+        "path": "ticket.value",
+        "cases": [
+          0,
+          1
+        ],
+        "comparison": "equals",
+        "modulo": 2
+      },
+      "position": [
+        2220,
+        550
+      ],
+      "exposed_inputs": [
+        "value",
+        "selector"
+      ],
+      "exposed_outputs": [
+        "case_1",
+        "case_2",
+        "case_3",
+        "case_4",
+        "default"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_even",
+      "type": "cv.flip",
+      "name": "Even ticket branch",
+      "parameters": {
+        "direction": "horizontal"
+      },
+      "position": [
+        2540,
+        350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_odd",
+      "type": "cv.flip",
+      "name": "Odd ticket branch",
+      "parameters": {
+        "direction": "vertical"
+      },
+      "position": [
+        2540,
+        750
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_fifo",
+      "type": "flow.reorder",
+      "name": "Restore acquisition FIFO",
+      "parameters": {
+        "mode": "manifest",
+        "start": 1,
+        "step": 1,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        2860,
+        200
+      ],
+      "exposed_inputs": [
+        "expected",
+        "value_1",
+        "value_2",
+        "value_3",
+        "value_4"
+      ],
+      "exposed_outputs": [
+        "value",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow_histogram",
+      "type": "inspect.histogram",
+      "name": "Inspect ordered frames",
+      "parameters": {
+        "bins": 256,
+        "range_mode": "automatic",
+        "range_min": 0.0,
+        "range_max": 1.0,
+        "include_alpha": false
+      },
+      "position": [
+        3180,
+        200
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "flow_cam1",
+      "output": "image",
+      "target": "flow_batch",
+      "input": "item_1"
+    },
+    {
+      "source": "flow_cam2",
+      "output": "image",
+      "target": "flow_batch",
+      "input": "item_2"
+    },
+    {
+      "source": "flow_cam3",
+      "output": "image",
+      "target": "flow_batch",
+      "input": "item_3"
+    },
+    {
+      "source": "flow_batch",
+      "output": "group",
+      "target": "flow_expected",
+      "input": "group"
+    },
+    {
+      "source": "flow_batch",
+      "output": "group",
+      "target": "flow_reverse",
+      "input": "group"
+    },
+    {
+      "source": "flow_reverse",
+      "output": "value",
+      "target": "flow_split",
+      "input": "value"
+    },
+    {
+      "source": "flow_split",
+      "output": "branch_1",
+      "target": "flow_gray",
+      "input": "image"
+    },
+    {
+      "source": "flow_split",
+      "output": "branch_2",
+      "target": "flow_blur",
+      "input": "image"
+    },
+    {
+      "source": "flow_gray",
+      "output": "image",
+      "target": "flow_join",
+      "input": "branch_1"
+    },
+    {
+      "source": "flow_blur",
+      "output": "image",
+      "target": "flow_join",
+      "input": "branch_2"
+    },
+    {
+      "source": "flow_join",
+      "output": "group",
+      "target": "flow_select",
+      "input": "group"
+    },
+    {
+      "source": "flow_select",
+      "output": "value",
+      "target": "flow_case",
+      "input": "value"
+    },
+    {
+      "source": "flow_case",
+      "output": "case_1",
+      "target": "flow_even",
+      "input": "image"
+    },
+    {
+      "source": "flow_case",
+      "output": "case_2",
+      "target": "flow_odd",
+      "input": "image"
+    },
+    {
+      "source": "flow_expected",
+      "output": "value",
+      "target": "flow_fifo",
+      "input": "expected"
+    },
+    {
+      "source": "flow_even",
+      "output": "image",
+      "target": "flow_fifo",
+      "input": "value_1"
+    },
+    {
+      "source": "flow_odd",
+      "output": "image",
+      "target": "flow_fifo",
+      "input": "value_2"
+    },
+    {
+      "source": "flow_fifo",
+      "output": "value",
+      "target": "flow_histogram",
+      "input": "image"
+    }
+  ]
+}

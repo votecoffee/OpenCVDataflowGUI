@@ -10,11 +10,14 @@
         0,
         0
       ],
-      "exposed_inputs": [],
+      "exposed_inputs": [
+        "ticket"
+      ],
       "exposed_outputs": [
         "image",
         "shape_reference",
-        "texture_reference"
+        "texture_reference",
+        "ticket"
       ],
       "thumbnail": true,
       "preview_output": ""

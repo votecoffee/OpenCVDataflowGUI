@@ -7,6 +7,8 @@ not hidden parameters. Native output buffers, in-place pointers and backend inte
 are managed by the runtime. Some controls apply only to the selected method or codec.
 Image inputs also have an inspector pyramid-level dropdown (largest by default).
 See [payloads, channels and pyramids](payloads-pyramids.md) for coordinate provenance.
+Input sources also expose ticket input/output ports and inspector ticket mode/fixed value
+controls. See [tickets and control flow](control-flow.md) for their shared configuration.
 
 ## White / color balance (`calibration.color_balance`)
 
@@ -779,6 +781,100 @@ Inputs: `image` (image), `transform` (data, optional).
 | `border_value` | `0.0` |  |
 | `inverse_map` | `false` |  |
 
+## Batch serial entries (`flow.batch`)
+
+Control flow / Groups
+
+Inputs: `item_1` (any, optional), `item_2` (any, optional), `item_3` (any, optional), `item_4` (any, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `size` | `3` |  |
+| `distinct_sources` | `false` |  |
+| `max_pending` | `64` |  |
+| `max_bytes_mb` | `128.0` |  |
+
+## Case select (`flow.case`)
+
+Control flow / Routing
+
+Inputs: `value` (any), `selector` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"ticket.value"` | Dotted path under ticket or value, unless selector is connected. |
+| `cases` | `[0, 1, 2, 3]` | 1..4 JSON values; range uses [minimum,maximum] pairs. First match wins. |
+| `comparison` | `"equals"` | `equals`, `less_than`, `greater_than`, `range` |
+| `modulo` | `0` |  |
+
+## Join parallel branches (`flow.join`)
+
+Control flow / Synchronization
+
+Inputs: `branch_1` (any, optional), `branch_2` (any, optional), `branch_3` (any, optional), `branch_4` (any, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `branches` | `2` |  |
+| `max_pending` | `64` |  |
+| `max_bytes_mb` | `128.0` |  |
+
+## FIFO reorder by ticket (`flow.reorder`)
+
+Control flow / Synchronization
+
+Inputs: `expected` (any, optional), `value_1` (any, optional), `value_2` (any, optional), `value_3` (any, optional), `value_4` (any, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"manifest"` | `manifest`, `number` |
+| `start` | `1` | First numeric ticket expected; number mode only. |
+| `step` | `1` |  |
+| `max_pending` | `64` |  |
+| `max_bytes_mb` | `128.0` |  |
+
+## Select group entry (`flow.select_entry`)
+
+Control flow / Groups
+
+Inputs: `group` (any).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `index` | `0` |  |
+
+## Split parallel branches (`flow.split`)
+
+Control flow / Routing
+
+Inputs: `value` (any).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `branches` | `2` |  |
+| `workers` | `2` | 1..8 workers for independent nodes in this graph; sources remain serial. |
+
+## Assign ticket (`flow.ticket`)
+
+Control flow / Routing
+
+Inputs: `value` (any), `ticket` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"auto_number"` | `auto_number`, `auto_timestamp`, `external`, `fixed` |
+| `value` | `1` | Fixed number/string, or {timestamp: ISO8601 with timezone}. |
+
+## Unbatch serial entries (`flow.unbatch`)
+
+Control flow / Groups
+
+Inputs: `group` (any).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `order` | `"stored"` | `stored`, `sequence_ascending`, `sequence_descending` |
+
 ## Gaussian blur (`gapi.blur`)
 
 Image processing / G-API
@@ -833,6 +929,9 @@ No configurable algorithm parameters.
 
 Input / Calibration profiles
 
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `path` | `""` |  |
@@ -840,6 +939,9 @@ Input / Calibration profiles
 ## Camera (`input.camera`)
 
 Input / Cameras
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -854,11 +956,17 @@ Input / Cameras
 
 Input / Synthetic
 
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
 No configurable algorithm parameters.
 
 ## Depth image file (`input.depth_file`)
 
 Input / Depth and RGB-D
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -872,6 +980,9 @@ Input / Depth and RGB-D
 
 Input / Files
 
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `path` | `""` |  |
@@ -882,6 +993,9 @@ Input / Files
 ## Pattern training demo images (`input.pattern_demo`)
 
 Input / Synthetic
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
 
 No configurable algorithm parameters.
 

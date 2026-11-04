@@ -10,9 +10,12 @@
         0,
         -330
       ],
-      "exposed_inputs": [],
+      "exposed_inputs": [
+        "ticket"
+      ],
       "exposed_outputs": [
-        "image"
+        "image",
+        "ticket"
       ],
       "thumbnail": true,
       "preview_output": ""

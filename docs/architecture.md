@@ -25,10 +25,20 @@ valid negative result, distinct from execution error. The node header indicates
 state; score adjusts its brightness. Text provides the same state information.
 
 The base executor captures `last_inputs`, `last_result`, `last_output_images`,
-`last_graphics`, `state`, `error`, and `elapsed_ms`. Every run clears previous results.
+`last_graphics`, `state`, `error`, and `elapsed_ms`. Every run clears display results;
+ticket counters and bounded control-flow buffers survive until reset/configuration changes.
 Input snapshots and output copies isolate sibling branches and retained histories
 from mutation in another block. This favors debugging clarity over throughput;
-only the latest run is retained. Implement `close()` to release optional resources.
+only the latest run is retained. Multiple stream emissions from that run are retained
+for downstream execution and nested boundaries. Implement `close()` to release optional resources.
+
+Sources with `input.*` IDs receive runtime-managed ticket terminals/settings. Tickets
+are payload metadata, not part of image encoding or spatial coordinates. A Result
+can mark an inactive output `NO_VALUE` or supply explicit `emissions` as lists of
+ValuePackets. Ordinary plugins still return one value per declared port. Buffered
+operators implement `reset_runtime` and `copy_runtime_from`; queues never enter
+project serialization. See [control flow](control-flow.md) for identities, bounds,
+FIFO expectations and fan-in policies.
 
 ## Scheduling and G-API
 
@@ -51,6 +61,14 @@ The desktop worker owns a separate execution graph. After a run, it signals the 
 and waits while Qt copies a stable result snapshot into the display graph. Qt never
 paints or configures the worker's mutable block objects. Editing is disabled during
 execution. Continuous execution uses one worker and never overlaps graph runs.
+An explicit Split can opt a graph into 1–8 branch workers. Independent ready nodes
+execute concurrently, while source acquisition, buffered fan-in and ToolBlock
+boundaries stay on the owning execution thread. ToolBlocks can enable their own
+internal branch workers. Unbatch expands entries serially through each node;
+singleton ancillary inputs can broadcast, while mismatched stream lengths require
+explicit join/batch operations. Inactive paths do not execute; waiting queues are
+normal runtime states. UI snapshots also copy ticket clocks and transient queues
+so repeated Run once commands continue the same stream session.
 Stopping is cooperative between blocks; it cannot interrupt a blocking camera
 driver, OpenCV call or custom Python function. Closing waits for that work to return.
 Camera handles are reused within a continuous session and released on worker exit.

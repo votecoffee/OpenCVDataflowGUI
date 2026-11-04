@@ -9,7 +9,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from .core import Block, Connection, Graph, Port, Result
-from .payloads import ValuePacket, compatible
+from .payloads import NO_VALUE, ValuePacket, compatible
 
 
 @dataclass(frozen=True)
@@ -22,6 +22,22 @@ class ToolBlock(Block):
     preserve_image_sets = True
     type_id, title, category = "core.toolblock", "ToolBlock", "ToolBlocks"
     block_type, subtype = "ToolBlocks", "Reusable"
+
+    @property
+    def accept_events(self):
+        return bool(self.input_bindings) and all(
+            getattr(self.graph.blocks[b.block], "accept_events", False)
+            for b in self.input_bindings.values()
+        )
+
+    @property
+    def flow_primary(self):
+        return tuple(
+            name
+            for name, binding in self.output_bindings.items()
+            if binding.port
+            in getattr(self.graph.blocks[binding.block], "flow_primary", (binding.port,))
+        )
 
     def __init__(self, graph, input_bindings, output_bindings, **kwargs):
         self.graph = graph
@@ -62,7 +78,13 @@ class ToolBlock(Block):
 
     def clear_result(self):
         super().clear_result()
+        self.graph.clear_results()
+
+    def reset_runtime(self):
         self.graph.invalidate()
+
+    def copy_runtime_from(self, other):
+        self.graph.copy_runtime_from(other.graph)
 
     def process(self, inputs):
         if self.validate_interface() != (self.inputs, self.outputs):
@@ -79,9 +101,15 @@ class ToolBlock(Block):
             raise RuntimeError("; ".join(f"{b.name}: {b.error}" for b in unavailable))
         outputs = {
             name: self.graph.blocks[b.block].last_result.outputs[b.port]
+            if self.graph.blocks[b.block].last_result
+            else NO_VALUE
             for name, b in self.output_bindings.items()
         }
-        scores = [b.last_result.score for b in children if b.last_result.score is not None]
+        scores = [
+            b.last_result.score
+            for b in children
+            if b.last_result and b.last_result.score is not None
+        ]
         graphics = {
             f"{b.name} [{b.id[:8]}] / {key}": image
             for b in children
@@ -90,11 +118,19 @@ class ToolBlock(Block):
         return Result(
             outputs,
             graphics,
-            passed=all(b.state == "pass" for b in children),
+            passed=all(b.state in ("pass", "waiting", "inactive") for b in children),
             score=min(scores) if scores else None,
             message=f"{len(children)} tools · {sum(b.state == 'fail' for b in children)} fail",
             payloads={
                 name: self.graph.blocks[b.block].last_result.payloads.get(b.port, {})
+                if self.graph.blocks[b.block].last_result
+                else {}
+                for name, b in self.output_bindings.items()
+            },
+            emissions={
+                name: self.graph.blocks[b.block].last_result.emissions.get(b.port, [])
+                if self.graph.blocks[b.block].last_result
+                else []
                 for name, b in self.output_bindings.items()
             },
         )

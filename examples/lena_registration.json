@@ -15,10 +15,13 @@
         0,
         0
       ],
-      "exposed_inputs": [],
+      "exposed_inputs": [
+        "ticket"
+      ],
       "exposed_outputs": [
         "image",
-        "info"
+        "info",
+        "ticket"
       ],
       "thumbnail": true,
       "preview_output": ""

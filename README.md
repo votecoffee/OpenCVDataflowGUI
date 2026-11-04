@@ -102,6 +102,13 @@ rectangle/circle/polygon editors in their inspectors. Relative-region and mask
 editors map drawing and handle movements into the supplied pose's local frame.
 Shape mask can also operate in ordinary image pixels with its pose disconnected.
 
+Input sources carry numeric, string or timestamp tickets, generated automatically
+or supplied through an external data input. **Control flow** tools split/join
+parallel branches, batch/unbatch entries, select cases and restore FIFO by ticket.
+Try **File > Load ticketed control flow example**. See
+[tickets and control flow](docs/control-flow.md) for external/PLC ticket inputs,
+buffer limits and stream execution semantics.
+
 The supported dependency is OpenCV 5 contrib (development checks use 5.0.0.93).
 This desktop application uses native Python bindings and retains its G-API blocks.
 Migration details and a possible browser/WebAssembly backend are covered in the

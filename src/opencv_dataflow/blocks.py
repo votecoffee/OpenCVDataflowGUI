@@ -533,6 +533,7 @@ def builtin_registry():
         Undistort,
     )
     from .collection_tools import COLLECTION_BLOCKS
+    from .control_flow import CONTROL_BLOCKS
     from .depth import RGBD, DepthFile, DepthSample
     from .features import FEATURE_BLOCKS
     from .histogram import Histogram
@@ -582,6 +583,7 @@ def builtin_registry():
         FindOrientedEdges,
         PatternDemoImages,
         *POSE_BLOCKS,
+        *CONTROL_BLOCKS,
     ):
         registry.register(block)
     return registry
