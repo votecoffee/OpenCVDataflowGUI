@@ -76,14 +76,16 @@
         "min_distance": 10.0,
         "block_size": 3,
         "use_harris": false,
-        "harris_k": 0.04
+        "harris_k": 0.04,
+        "gradient_size": "3"
       },
       "position": [
         900,
         0
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask"
       ],
       "exposed_outputs": [
         "points",
@@ -124,7 +126,9 @@
       "name": "Contrast edges",
       "parameters": {
         "low": 60.0,
-        "high": 150.0
+        "high": 150.0,
+        "aperture": "3",
+        "l2_gradient": false
       },
       "position": [
         600,

@@ -75,7 +75,16 @@
               "name": "Gaussian blur",
               "parameters": {
                 "kernel": 5,
-                "sigma": 1.2
+                "sigma": 1.2,
+                "kernel_y": 0,
+                "sigma_y": 0.0,
+                "border": "reflect",
+                "border_value": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
               },
               "position": [
                 285,
@@ -124,7 +133,9 @@
       "name": "Canny edges",
       "parameters": {
         "low": 60.0,
-        "high": 150.0
+        "high": 150.0,
+        "aperture": "3",
+        "l2_gradient": false
       },
       "position": [
         620,
@@ -226,7 +237,8 @@
       ],
       "exposed_inputs": [
         "image",
-        "template"
+        "template",
+        "mask"
       ],
       "exposed_outputs": [
         "overlay",

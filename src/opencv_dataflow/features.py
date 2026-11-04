@@ -5,6 +5,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .images import ImageArray, image_format, preview_rgb
+from .parameters import optional_mask
 from .processing import (
     ImageTool,
     encoded_result,
@@ -40,8 +41,18 @@ class CLAHE(ImageTool):
 
 class Normalize(ImageTool):
     type_id, title, subtype = "cv.normalize", "Normalize intensity", "Contrast"
-    defaults = {"minimum": 0.0, "maximum": 255.0, "pixel_depth": "uint8"}
-    parameter_choices = {"pixel_depth": ("uint8", "uint16", "float32")}
+    inputs = (Port("image"), Port("mask", required=False))
+    defaults = {
+        "minimum": 0.0,
+        "maximum": 255.0,
+        "pixel_depth": "uint8",
+        "norm_type": "minmax",
+        "norm_value": 1.0,
+    }
+    parameter_choices = {
+        "pixel_depth": ("uint8", "uint16", "int16", "float32", "float64"),
+        "norm_type": ("minmax", "l1", "l2", "inf"),
+    }
 
     def process(self, inputs):
         source = inputs["image"]
@@ -49,12 +60,31 @@ class Normalize(ImageTool):
         low, high = (finite(self.parameters[k], k) for k in ("minimum", "maximum"))
         if high <= low:
             raise ValueError("Maximum must be greater than minimum")
-        depth = {"uint8": cv2.CV_8U, "uint16": cv2.CV_16U, "float32": cv2.CV_32F}[
-            self.parameters["pixel_depth"]
-        ]
+        depth = {
+            "uint8": cv2.CV_8U,
+            "uint16": cv2.CV_16U,
+            "int16": cv2.CV_16S,
+            "float32": cv2.CV_32F,
+            "float64": cv2.CV_64F,
+        }[self.parameters["pixel_depth"]]
         if image_format(source) in ("hsv", "lab"):
             raise ValueError("Convert HSV/Lab to grayscale or BGR before intensity normalization")
-        output = cv2.normalize(image, None, low, high, cv2.NORM_MINMAX, dtype=depth)
+        mask = optional_mask(inputs, image)
+        if mask is not None and image.ndim != 2:
+            raise ValueError("Masked normalization requires monochrome input")
+        norm = self.parameters["norm_type"]
+        alpha, beta = (
+            (low, high)
+            if norm == "minmax"
+            else (finite(self.parameters["norm_value"], "Norm value", 0), 0)
+        )
+        mode = {
+            "minmax": cv2.NORM_MINMAX,
+            "l1": cv2.NORM_L1,
+            "l2": cv2.NORM_L2,
+            "inf": cv2.NORM_INF,
+        }[norm]
+        output = cv2.normalize(image, None, alpha, beta, mode, dtype=depth, mask=mask)
         return encoded_result(output, source)
 
 
@@ -147,6 +177,7 @@ class AbsoluteDifference(Block):
 class GoodFeatures(ImageTool):
     type_id, title, subtype = "inspect.corners", "Good features / corners", "Features"
     category, block_type = "Inspection", "Inspection"
+    inputs = (Port("image"), Port("mask", required=False))
     outputs = (Port("points", "data"), Port("count", "number"), Port("overlay"))
     defaults = {
         "max_corners": 100,
@@ -155,11 +186,13 @@ class GoodFeatures(ImageTool):
         "block_size": 3,
         "use_harris": False,
         "harris_k": 0.04,
+        "gradient_size": "3",
     }
+    parameter_choices = {"gradient_size": ("3", "5", "7")}
 
     def process(self, inputs):
         image = gray_image(inputs["image"], (np.uint8, np.float32))
-        count = integer(self.parameters["max_corners"], "Maximum corners", 1, 10000)
+        count = integer(self.parameters["max_corners"], "Maximum corners", 0, 10000)
         quality = finite(self.parameters["quality"], "Quality", 0)
         if not 0 < quality <= 1:
             raise ValueError("Quality must be greater than zero and at most one")
@@ -174,6 +207,8 @@ class GoodFeatures(ImageTool):
             blockSize=size,
             useHarrisDetector=self.parameters["use_harris"],
             k=k,
+            gradientSize=int(self.parameters["gradient_size"]),
+            mask=optional_mask(inputs, image),
         )
         points = found.reshape(-1, 2).tolist() if found is not None else []
         overlay = overlay_image(inputs["image"])
@@ -236,6 +271,11 @@ class HoughCircles(ImageTool):
         "center_threshold": 30.0,
         "min_radius": 0,
         "max_radius": 0,
+        "method": "gradient",
+    }
+    parameter_choices = {"method": ("gradient", "gradient_alt")}
+    parameter_help = {
+        "center_threshold": "For gradient_alt use a perfectness threshold below 1 (e.g. 0.9)."
     }
 
     def process(self, inputs):
@@ -246,12 +286,15 @@ class HoughCircles(ImageTool):
         edge = finite(p["edge_threshold"], "Edge threshold", 0)
         center = finite(p["center_threshold"], "Center threshold", 0)
         minimum = integer(p["min_radius"], "Minimum radius", 0, 100000)
-        maximum = integer(p["max_radius"], "Maximum radius", 0, 100000)
-        if min(distance, edge, center) <= 0 or (maximum and maximum < minimum):
+        maximum = integer(p["max_radius"], "Maximum radius", -1, 100000)
+        if min(distance, edge, center) <= 0 or (maximum > 0 and maximum < minimum):
             raise ValueError("Distances/thresholds must be positive and radius range ordered")
+        mode = {"gradient": cv2.HOUGH_GRADIENT, "gradient_alt": cv2.HOUGH_GRADIENT_ALT}[p["method"]]
+        if p["method"] == "gradient_alt" and (center >= 1 or maximum < 0):
+            raise ValueError("Gradient ALT needs center threshold <1 and nonnegative max radius")
         found = cv2.HoughCircles(
             image,
-            cv2.HOUGH_GRADIENT,
+            mode,
             dp,
             distance,
             param1=edge,
@@ -278,20 +321,30 @@ class HoughCircles(ImageTool):
 class DistanceTransform(ImageTool):
     type_id, title, subtype = "cv.distance_transform", "Distance transform", "Morphology"
     outputs = (Port("distance"), Port("preview"))
-    defaults = {"mask_size": "5"}
-    parameter_choices = {"mask_size": ("3", "5", "precise")}
+    defaults = {"mask_size": "5", "distance_type": "l2", "output_depth": "float32"}
+    parameter_choices = {
+        "mask_size": ("3", "5", "precise"),
+        "distance_type": ("l1", "l2", "chessboard"),
+        "output_depth": ("float32", "uint8"),
+    }
 
     def process(self, inputs):
         image = gray_image(inputs["image"], (np.uint8,))
         if np.all(image != 0):
             raise ValueError("Distance transform needs background zero pixels")
         mask = {"3": 3, "5": 5, "precise": cv2.DIST_MASK_PRECISE}[self.parameters["mask_size"]]
-        distance = cv2.distanceTransform(image, cv2.DIST_L2, mask)
+        mode = {"l1": cv2.DIST_L1, "l2": cv2.DIST_L2, "chessboard": cv2.DIST_C}[
+            self.parameters["distance_type"]
+        ]
+        depth = cv2.CV_8U if self.parameters["output_depth"] == "uint8" else cv2.CV_32F
+        if depth == cv2.CV_8U and mode != cv2.DIST_L1:
+            raise ValueError("uint8 distance output is supported only for L1")
+        distance = cv2.distanceTransform(image, mode, mask, dstType=depth)
         preview = cv2.normalize(distance, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
         return Result(
             {"distance": distance, "preview": preview},
             graphics={"distance": preview},
-            message="Euclidean distance to background in pixels; preview separately scaled",
+            message=f"{self.parameters['distance_type']} pixel distances; separate display scale",
         )
 
 

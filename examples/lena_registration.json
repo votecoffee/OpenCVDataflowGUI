@@ -58,14 +58,19 @@
         "scale_factor": 1.2,
         "levels": 8,
         "fast_threshold": 20,
-        "edge_threshold": 31
+        "edge_threshold": 31,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31
       },
       "position": [
         0,
         340
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask"
       ],
       "exposed_outputs": [
         "features",
@@ -85,14 +90,19 @@
         "scale_factor": 1.2,
         "levels": 8,
         "fast_threshold": 20,
-        "edge_threshold": 31
+        "edge_threshold": 31,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31
       },
       "position": [
         310,
         340
       ],
       "exposed_inputs": [
-        "image"
+        "image",
+        "mask"
       ],
       "exposed_outputs": [
         "features",
@@ -109,7 +119,9 @@
       "name": "Match descriptors",
       "parameters": {
         "ratio": 0.75,
-        "max_distance": 64.0
+        "max_distance": 64.0,
+        "mode": "ratio",
+        "norm": "auto"
       },
       "position": [
         620,
@@ -133,7 +145,10 @@
       "parameters": {
         "ransac_pixels": 3.0,
         "min_inliers": 20,
-        "min_inlier_ratio": 0.5
+        "min_inlier_ratio": 0.5,
+        "method": "ransac",
+        "max_iterations": 2000,
+        "confidence": 0.995
       },
       "position": [
         930,
@@ -175,7 +190,8 @@
         "height": 0,
         "interpolation": "linear",
         "border": "constant",
-        "border_value": 0.0
+        "border_value": 0.0,
+        "inverse_map": false
       },
       "position": [
         930,

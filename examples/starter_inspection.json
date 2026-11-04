@@ -88,7 +88,8 @@
       "name": "Segment parts",
       "parameters": {
         "method": "otsu",
-        "invert": false
+        "invert": false,
+        "max_value": -1.0
       },
       "position": [
         285,
@@ -112,7 +113,18 @@
         "operation": "open",
         "shape": "ellipse",
         "kernel": 3,
-        "iterations": 1
+        "iterations": 1,
+        "kernel_y": 0,
+        "anchor": [
+          -1,
+          -1
+        ],
+        "shape_anchor": [
+          -1,
+          -1
+        ],
+        "border": "constant",
+        "border_value": []
       },
       "position": [
         0,
@@ -135,7 +147,8 @@
         "connectivity": 8,
         "min_area": 1000,
         "max_area": 0,
-        "expected_count": 2
+        "expected_count": 2,
+        "algorithm": "default"
       },
       "position": [
         0,
@@ -185,7 +198,9 @@
       "name": "Part edges",
       "parameters": {
         "low": 40.0,
-        "high": 120.0
+        "high": 120.0,
+        "aperture": "3",
+        "l2_gradient": false
       },
       "position": [
         285,

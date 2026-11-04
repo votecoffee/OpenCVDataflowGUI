@@ -5,6 +5,8 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .features import overlay_image
+from .parameters import BORDERS as FILTER_BORDERS
+from .parameters import OUTPUT_DEPTHS, anchor_value, optional_mask
 from .processing import (
     ImageTool,
     encoded_result,
@@ -16,17 +18,23 @@ from .processing import (
 )
 
 BORDERS = {
-    "constant": cv2.BORDER_CONSTANT,
-    "replicate": cv2.BORDER_REPLICATE,
-    "reflect": cv2.BORDER_REFLECT_101,
+    **FILTER_BORDERS,
+    "wrap": cv2.BORDER_WRAP,
 }
-INTERPOLATION = {"nearest": cv2.INTER_NEAREST, "linear": cv2.INTER_LINEAR, "cubic": cv2.INTER_CUBIC}
+INTERPOLATION = {
+    "nearest": cv2.INTER_NEAREST,
+    "linear": cv2.INTER_LINEAR,
+    "cubic": cv2.INTER_CUBIC,
+    "lanczos4": cv2.INTER_LANCZOS4,
+}
 
 
 def matrix_value(value, shape):
     if isinstance(value, dict):
         value = value.get("source_to_target")
     matrix = np.asarray(value, np.float64)
+    if shape == (2, 3) and matrix.shape == (3, 3) and np.allclose(matrix[2], [0, 0, 1]):
+        matrix = matrix[:2]
     if matrix.shape != shape or not np.isfinite(matrix).all():
         raise ValueError(f"Transform must be a finite {shape[0]}x{shape[1]} matrix")
     homogeneous = np.vstack((matrix, [0, 0, 1])) if shape == (2, 3) else matrix
@@ -43,7 +51,7 @@ def output_size(parameters, image):
     return width, height
 
 
-def warped(source, matrix, size, interpolation, border, value):
+def warped(source, matrix, size, interpolation, border, value, inverse_map=False):
     image = image_value(source)
     value = finite(value, "Border value")
     fill = tuple([value] * image.shape[2]) if image.ndim == 3 else value
@@ -52,14 +60,16 @@ def warped(source, matrix, size, interpolation, border, value):
         image,
         matrix,
         size,
-        flags=INTERPOLATION[interpolation],
+        flags=INTERPOLATION[interpolation] | (cv2.WARP_INVERSE_MAP if inverse_map else 0),
         borderMode=BORDERS[border],
         borderValue=fill,
     )
     homogeneous = np.vstack((matrix, [0, 0, 1])) if matrix.shape == (2, 3) else matrix
     if not np.isfinite(result).all():
         raise ValueError("Warp produced nonfinite samples")
-    return geometry_result(result, source, np.linalg.inv(homogeneous))
+    return geometry_result(
+        result, source, homogeneous if inverse_map else np.linalg.inv(homogeneous)
+    )
 
 
 class WarpAffine(ImageTool):
@@ -73,6 +83,7 @@ class WarpAffine(ImageTool):
         "interpolation": "linear",
         "border": "constant",
         "border_value": 0.0,
+        "inverse_map": False,
     }
     parameter_choices = {"interpolation": tuple(INTERPOLATION), "border": tuple(BORDERS)}
 
@@ -87,6 +98,7 @@ class WarpAffine(ImageTool):
             p["interpolation"],
             p["border"],
             p["border_value"],
+            p["inverse_map"],
         )
 
 
@@ -108,6 +120,7 @@ class WarpPerspective(WarpAffine):
             p["interpolation"],
             p["border"],
             p["border_value"],
+            p["inverse_map"],
         )
 
 
@@ -177,8 +190,21 @@ class CopyBorder(ImageTool):
 class Pyramid(ImageTool):
     type_id, title, subtype = "cv.pyramid", "Gaussian pyramid up/down", "Geometry"
     outputs = (Port("image"), Port("geometry", "data"))
-    defaults = {"direction": "down", "levels": 1}
-    parameter_choices = {"direction": ("down", "up")}
+    defaults = {
+        "direction": "down",
+        "levels": 1,
+        "border": "reflect",
+        "output_width": 0,
+        "output_height": 0,
+    }
+    parameter_choices = {
+        "direction": ("down", "up"),
+        "border": ("replicate", "reflect", "reflect_101", "reflect_edge"),
+    }
+    parameter_help = {
+        "output_width": "0 uses native sizing. Explicit dimensions apply to the final level.",
+        "border": "PyrUp supports only reflect/reflect_101; PyrDown also supports other choices.",
+    }
 
     def process(self, inputs):
         source = inputs["image"]
@@ -189,8 +215,25 @@ class Pyramid(ImageTool):
             raise ValueError("Pyramid direction must be up or down")
         if direction == "up" and image.shape[0] * image.shape[1] * 4**levels > 64_000_000:
             raise ValueError("Pyramid output is limited to 64 million pixels")
-        for _ in range(levels):
-            image = cv2.pyrDown(image) if direction == "down" else cv2.pyrUp(image)
+        border = BORDERS[self.parameters["border"]]
+        if direction == "up" and border != cv2.BORDER_REFLECT_101:
+            raise ValueError("PyrUp supports only reflect_101 border")
+        width, height = (
+            integer(self.parameters[k], k, 0, 16384) for k in ("output_width", "output_height")
+        )
+        for level in range(levels):
+            default = (
+                ((image.shape[1] + 1) // 2, (image.shape[0] + 1) // 2)
+                if direction == "down"
+                else (image.shape[1] * 2, image.shape[0] * 2)
+            )
+            size = (width or default[0], height or default[1]) if level == levels - 1 else default
+            if size[0] * size[1] > 64_000_000:
+                raise ValueError("Pyramid output exceeds 64 million pixels")
+            if direction == "down":
+                image = cv2.pyrDown(image, dstsize=size, borderType=border)
+            else:
+                image = cv2.pyrUp(image, dstsize=size, borderType=border)
         factor = 2.0**levels if direction == "down" else 0.5**levels
         return geometry_result(image, source, [[factor, 0, 0], [0, factor, 0], [0, 0, 1]])
 
@@ -201,8 +244,10 @@ class Filter2D(ImageTool):
         "kernel": [[0.0, -1.0, 0.0], [-1.0, 5.0, -1.0], [0.0, -1.0, 0.0]],
         "delta": 0.0,
         "border": "reflect",
+        "anchor": [-1, -1],
+        "output_depth": "same",
     }
-    parameter_choices = {"border": tuple(BORDERS)}
+    parameter_choices = {"border": tuple(FILTER_BORDERS), "output_depth": tuple(OUTPUT_DEPTHS)}
 
     def process(self, inputs):
         source = inputs["image"]
@@ -217,8 +262,9 @@ class Filter2D(ImageTool):
             raise ValueError("Kernel must be a finite nonempty matrix with at most 31 rows/columns")
         output = cv2.filter2D(
             image,
-            -1,
+            OUTPUT_DEPTHS[self.parameters["output_depth"]],
             kernel,
+            anchor=anchor_value(self.parameters["anchor"], kernel.shape[1], kernel.shape[0]),
             delta=finite(self.parameters["delta"], "Delta"),
             borderType=BORDERS[self.parameters["border"]],
         )
@@ -229,7 +275,15 @@ class Filter2D(ImageTool):
 
 class UnsharpMask(ImageTool):
     type_id, title, subtype = "cv.unsharp", "Unsharp mask", "Filtering"
-    defaults = {"kernel": 5, "sigma": 1.0, "amount": 1.0}
+    defaults = {
+        "kernel": 5,
+        "sigma": 1.0,
+        "amount": 1.0,
+        "kernel_y": 0,
+        "sigma_y": 0.0,
+        "border": "reflect",
+    }
+    parameter_choices = {"border": tuple(FILTER_BORDERS)}
 
     def process(self, inputs):
         source = inputs["image"]
@@ -237,8 +291,22 @@ class UnsharpMask(ImageTool):
         size = integer(self.parameters["kernel"], "Kernel", 3, 255, odd=True)
         sigma = finite(self.parameters["sigma"], "Sigma", 0)
         amount = finite(self.parameters["amount"], "Amount", 0)
+        ky = integer(self.parameters["kernel_y"], "Kernel Y", 0, 255) or size
+        if ky % 2 == 0:
+            raise ValueError("Kernel Y must be odd")
+        sy = finite(self.parameters["sigma_y"], "Sigma Y", 0)
         output = cv2.addWeighted(
-            image, 1 + amount, cv2.GaussianBlur(image, (size, size), sigma), -amount, 0
+            image,
+            1 + amount,
+            cv2.GaussianBlur(
+                image,
+                (size, ky),
+                sigma,
+                sigmaY=sy,
+                borderType=FILTER_BORDERS[self.parameters["border"]],
+            ),
+            -amount,
+            0,
         )
         if not np.isfinite(output).all():
             raise ValueError("Unsharp mask overflowed the output depth")
@@ -248,6 +316,7 @@ class UnsharpMask(ImageTool):
 class FASTFeatures(ImageTool):
     type_id, title, subtype = "inspect.fast", "FAST corners", "Features"
     category, block_type = "Inspection", "Inspection"
+    inputs = (Port("image"), Port("mask", required=False))
     outputs = (Port("points", "data"), Port("count", "number"), Port("overlay"))
     defaults = {"threshold": 10, "nonmax_suppression": True, "pattern": "9_16"}
     parameter_choices = {"pattern": ("5_8", "7_12", "9_16")}
@@ -264,7 +333,7 @@ class FASTFeatures(ImageTool):
             nonmaxSuppression=self.parameters["nonmax_suppression"],
             type=pattern,
         )
-        keypoints = detector.detect(gray)
+        keypoints = detector.detect(gray, optional_mask(inputs, gray))
         overlay = cv2.drawKeypoints(
             overlay_image(inputs["image"]), keypoints, None, color=(70, 220, 140)
         )
@@ -281,6 +350,7 @@ class FASTFeatures(ImageTool):
 class ORBFeatures(ImageTool):
     type_id, title, subtype = "inspect.orb", "ORB keypoints and descriptors", "Features"
     category, block_type = "Inspection", "Inspection"
+    inputs = (Port("image"), Port("mask", required=False))
     outputs = (
         Port("features", "data"),
         Port("points", "data"),
@@ -293,7 +363,12 @@ class ORBFeatures(ImageTool):
         "levels": 8,
         "fast_threshold": 20,
         "edge_threshold": 31,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31,
     }
+    parameter_choices = {"wta_k": ("2", "3", "4"), "score_type": ("harris", "fast")}
 
     def process(self, inputs):
         gray = gray_image(inputs["image"], (np.uint8,))
@@ -307,12 +382,17 @@ class ORBFeatures(ImageTool):
             nlevels=integer(p["levels"], "Levels", 1, 32),
             fastThreshold=integer(p["fast_threshold"], "FAST threshold", 0, 255),
             edgeThreshold=integer(p["edge_threshold"], "Edge threshold", 0, 1024),
+            firstLevel=integer(p["first_level"], "First level", 0, int(p["levels"]) - 1),
+            WTA_K=int(p["wta_k"]),
+            scoreType={"harris": cv2.ORB_HARRIS_SCORE, "fast": cv2.ORB_FAST_SCORE}[p["score_type"]],
+            patchSize=integer(p["patch_size"], "Patch size", 3, 255, odd=True),
         )
-        keypoints, descriptors = detector.detectAndCompute(gray, None)
+        keypoints, descriptors = detector.detectAndCompute(gray, optional_mask(inputs, gray))
         points = [list(k.pt) for k in keypoints]
         features = {
             "algorithm": "ORB",
             "descriptor_size": 32,
+            "wta_k": int(p["wta_k"]),
             "image_size": [gray.shape[1], gray.shape[0]],
             "keypoints": [
                 {
@@ -341,7 +421,9 @@ class ORBFeatures(ImageTool):
 
 def orb_data(data):
     if data.get("algorithm") != "ORB" or data.get("descriptor_size") != 32:
-        raise ValueError("Matcher requires ORB descriptors with WTA_K=2 (32 bytes)")
+        raise ValueError("Matcher requires 32-byte ORB descriptors")
+    if data.get("wta_k", 2) not in (2, 3, 4):
+        raise ValueError("Invalid ORB WTA_K metadata")
     keys = data["keypoints"]
     raw = np.asarray(data["descriptors"])
     if not keys and raw.size == 0:
@@ -366,7 +448,8 @@ class MatchORB(Block):
     block_type, subtype = "Inspection", "Matching"
     inputs = (Port("query", "data"), Port("train", "data"))
     outputs = (Port("matches", "data"), Port("count", "number"))
-    defaults = {"ratio": 0.75, "max_distance": 64.0}
+    defaults = {"ratio": 0.75, "max_distance": 64.0, "mode": "ratio", "norm": "auto"}
+    parameter_choices = {"mode": ("ratio", "cross_check"), "norm": ("auto", "hamming", "hamming2")}
 
     def process(self, inputs):
         query, qpoints = orb_data(inputs["query"])
@@ -376,8 +459,22 @@ class MatchORB(Block):
         if not 0 < ratio < 1:
             raise ValueError("Ratio must be strictly between zero and one")
         selected = []
-        if len(query) and len(train) >= 2:
-            pairs = cv2.BFMatcher(cv2.NORM_HAMMING).knnMatch(query, train, k=2)
+        wta = inputs["query"].get("wta_k", 2)
+        if inputs["train"].get("wta_k", 2) != wta:
+            raise ValueError("ORB descriptor WTA_K values must match")
+        expected_norm = "hamming" if wta == 2 else "hamming2"
+        norm_name = expected_norm if self.parameters["norm"] == "auto" else self.parameters["norm"]
+        if norm_name != expected_norm:
+            raise ValueError("Matcher norm is incompatible with ORB WTA_K")
+        norm = cv2.NORM_HAMMING if norm_name == "hamming" else cv2.NORM_HAMMING2
+        if self.parameters["mode"] == "cross_check" and len(query) and len(train):
+            selected = [
+                m
+                for m in cv2.BFMatcher(norm, crossCheck=True).match(query, train)
+                if m.distance <= maximum
+            ]
+        elif len(query) and len(train) >= 2:
+            pairs = cv2.BFMatcher(norm).knnMatch(query, train, k=2)
             selected = [
                 pair[0]
                 for pair in pairs
@@ -406,7 +503,15 @@ class EstimateHomography(Block):
     block_type, subtype = "Inspection", "Registration"
     inputs = (Port("matches", "data"),)
     outputs = (Port("transform", "data"), Port("inliers", "number"))
-    defaults = {"ransac_pixels": 3.0, "min_inliers": 4, "min_inlier_ratio": 0.5}
+    defaults = {
+        "ransac_pixels": 3.0,
+        "min_inliers": 4,
+        "min_inlier_ratio": 0.5,
+        "method": "ransac",
+        "max_iterations": 2000,
+        "confidence": 0.995,
+    }
+    parameter_choices = {"method": ("direct", "ransac", "lmeds", "rho")}
 
     def process(self, inputs):
         data = inputs["matches"]
@@ -425,7 +530,20 @@ class EstimateHomography(Block):
         required = integer(self.parameters["min_inliers"], "Minimum inliers", 4, 100000)
         if threshold <= 0 or fraction > 1:
             raise ValueError("RANSAC threshold must be positive and inlier ratio at most one")
-        matrix, mask = cv2.findHomography(query, train, cv2.RANSAC, threshold)
+        confidence = finite(self.parameters["confidence"], "Confidence", 0)
+        if not 0 < confidence < 1:
+            raise ValueError("Confidence must be strictly between zero and one")
+        method = {"direct": 0, "ransac": cv2.RANSAC, "lmeds": cv2.LMEDS, "rho": cv2.RHO}[
+            self.parameters["method"]
+        ]
+        matrix, mask = cv2.findHomography(
+            query,
+            train,
+            method,
+            threshold,
+            maxIters=integer(self.parameters["max_iterations"], "Maximum iterations", 1, 100000),
+            confidence=confidence,
+        )
         if matrix is None or mask is None:
             raise ValueError("Cannot estimate a nondegenerate image homography")
         matrix = matrix_value(matrix, (3, 3))

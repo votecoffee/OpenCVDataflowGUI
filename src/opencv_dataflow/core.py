@@ -46,6 +46,7 @@ class Block:
     outputs: ClassVar[tuple[Port, ...]] = ()
     defaults: ClassVar[dict[str, Any]] = {}
     parameter_choices: ClassVar[dict[str, tuple]] = {}
+    parameter_help: ClassVar[dict[str, str]] = {}
 
     def __init__(self, *, block_id=None, parameters=None):
         self.id = block_id or uuid.uuid4().hex
@@ -76,11 +77,19 @@ class Block:
     def process(self, inputs: dict[str, Any]) -> Result:
         raise NotImplementedError
 
+    def validate_parameters(self, parameters=None):
+        values = self.parameters if parameters is None else parameters
+        for name, choices in self.parameter_choices.items():
+            if str(values[name]) not in tuple(map(str, choices)):
+                label = name.replace("_", " ").capitalize()
+                raise ValueError(f"{label} must be one of: {', '.join(map(str, choices))}")
+
     def execute(self, values, cancelled=lambda: False):
         self.clear_result()
         self._cancelled = cancelled
         started = time.perf_counter()
         try:
+            self.validate_parameters()
             self.last_inputs = copy.deepcopy(values)
             for port in self.inputs:
                 if port.required and port.name not in values:

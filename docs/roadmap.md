@@ -13,6 +13,8 @@
 - Component measurements, template matching, portable sample jobs and a headless repeat/report runner.
 - Additional contrast/channel/mask tools, corners, Hough lines/circles and distance transform.
 - Affine/perspective geometry, pyramids/filtering, FAST/ORB descriptors, matching and image registration.
+- Explicit enum dropdowns and expanded algorithm controls, plus a generated parameter reference.
+- Separable/box filtering, corner response/refinement, phase correlation, affine estimation, remap and polar fields.
 
 ## Point clouds and 3D vision
 

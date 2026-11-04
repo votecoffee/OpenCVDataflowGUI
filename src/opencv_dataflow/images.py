@@ -131,6 +131,12 @@ def preview_rgb(image):
         graphic = cv2.applyColorMap(np.rint(pixels * 255).astype(np.uint8), cv2.COLORMAP_TURBO)
         graphic[~valid] = 0
         return cv2.cvtColor(graphic, cv2.COLOR_BGR2RGB)
+    if image.dtype == np.int16:
+        # Signed filter samples remain raw in the result; only the view is stretched.
+        normalized = cv2.normalize(
+            np.asarray(image), None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U
+        )
+        image = ImageArray(normalized, image_format(image))
     image = opencv_image(image)
     image = convert_depth(image, "uint8")
     if image.ndim == 2:

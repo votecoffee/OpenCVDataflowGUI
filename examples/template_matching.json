@@ -55,13 +55,16 @@
       ],
       "exposed_inputs": [
         "image",
-        "template"
+        "template",
+        "mask"
       ],
       "exposed_outputs": [
         "overlay",
         "score",
         "location",
-        "center"
+        "center",
+        "raw_score",
+        "response"
       ],
       "thumbnail": true,
       "preview_output": ""

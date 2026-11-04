@@ -9,6 +9,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .images import DepthArray, ImageArray, format_image, image_format, opencv_image, preview_rgb
+from .parameters import BORDERS, OUTPUT_DEPTHS, anchor_value, optional_mask, scalar_value
 
 
 def integer(value, name, low=1, high=4095, odd=False):
@@ -29,7 +30,9 @@ def finite(value, name, low=None):
     return value
 
 
-def image_value(image, depths=(np.uint8, np.uint16, np.float32, np.float64), canonical=False):
+def image_value(
+    image, depths=(np.uint8, np.uint16, np.int16, np.float32, np.float64), canonical=False
+):
     if isinstance(image, DepthArray):
         raise ValueError("Use depth tools for physical depth planes")
     if (
@@ -122,14 +125,37 @@ class Crop(ImageTool):
 class Resize(ImageTool):
     type_id, title, subtype = "cv.resize", "Resize", "Geometry"
     outputs = (Port("image"), Port("geometry", "data"))
-    defaults = {"width": 640, "height": 480, "interpolation": "linear"}
-    parameter_choices = {"interpolation": ("nearest", "linear", "area", "cubic")}
+    defaults = {
+        "width": 640,
+        "height": 480,
+        "interpolation": "linear",
+        "size_mode": "absolute",
+        "scale_x": 1.0,
+        "scale_y": 1.0,
+    }
+    parameter_choices = {
+        "interpolation": (
+            "nearest",
+            "linear",
+            "area",
+            "cubic",
+            "lanczos4",
+            "nearest_exact",
+            "linear_exact",
+        ),
+        "size_mode": ("absolute", "scale"),
+    }
 
     def process(self, inputs):
         source = inputs["image"]
         image = image_value(source)
         width = integer(self.parameters["width"], "Width", high=16384)
         height = integer(self.parameters["height"], "Height", high=16384)
+        if self.parameters["size_mode"] == "scale":
+            fx, fy = (finite(self.parameters[k], k, 0) for k in ("scale_x", "scale_y"))
+            width, height = round(image.shape[1] * fx), round(image.shape[0] * fy)
+            if width < 1 or height < 1:
+                raise ValueError("Resize scales must produce nonempty dimensions")
         if width * height > 64_000_000:
             raise ValueError("Resize output is limited to 64 million pixels")
         method = {
@@ -137,6 +163,9 @@ class Resize(ImageTool):
             "linear": cv2.INTER_LINEAR,
             "area": cv2.INTER_AREA,
             "cubic": cv2.INTER_CUBIC,
+            "lanczos4": cv2.INTER_LANCZOS4,
+            "nearest_exact": cv2.INTER_NEAREST_EXACT,
+            "linear_exact": cv2.INTER_LINEAR_EXACT,
         }[self.parameters["interpolation"]]
         output = cv2.resize(image, (width, height), interpolation=method)
         sx, sy = image.shape[1] / width, image.shape[0] / height
@@ -196,12 +225,20 @@ class Rotate90(ImageTool):
 
 class BoxBlur(ImageTool):
     type_id, title, subtype = "cv.box_blur", "Box blur", "Filtering"
-    defaults = {"kernel": 5}
+    defaults = {"kernel": 5, "kernel_y": 0, "anchor": [-1, -1], "border": "reflect"}
+    parameter_choices = {"border": tuple(BORDERS)}
 
     def process(self, inputs):
         image = image_value(inputs["image"])
         kernel = integer(self.parameters["kernel"], "Kernel", high=255, odd=True)
-        return encoded_result(cv2.blur(image, (kernel, kernel)), inputs["image"])
+        ky = integer(self.parameters["kernel_y"], "Kernel Y", 0, 255) or kernel
+        anchor = anchor_value(self.parameters["anchor"], kernel, ky)
+        return encoded_result(
+            cv2.blur(
+                image, (kernel, ky), anchor=anchor, borderType=BORDERS[self.parameters["border"]]
+            ),
+            inputs["image"],
+        )
 
 
 class MedianBlur(ImageTool):
@@ -218,22 +255,28 @@ class MedianBlur(ImageTool):
 
 class BilateralFilter(ImageTool):
     type_id, title, subtype = "cv.bilateral", "Bilateral filter", "Filtering"
-    defaults = {"diameter": 5, "sigma_color": 50.0, "sigma_space": 5.0}
+    defaults = {"diameter": 5, "sigma_color": 50.0, "sigma_space": 5.0, "border": "reflect"}
+    parameter_choices = {"border": tuple(BORDERS)}
 
     def process(self, inputs):
         image = image_value(inputs["image"], (np.uint8, np.float32))
         if image.ndim == 3 and image.shape[2] != 3:
             raise ValueError("Bilateral filter accepts one or three channels")
-        diameter = integer(self.parameters["diameter"], "Diameter", high=255)
+        diameter = integer(self.parameters["diameter"], "Diameter", low=0, high=255)
         color = finite(self.parameters["sigma_color"], "Sigma color", 0)
         space = finite(self.parameters["sigma_space"], "Sigma space", 0)
-        return encoded_result(cv2.bilateralFilter(image, diameter, color, space), inputs["image"])
+        return encoded_result(
+            cv2.bilateralFilter(
+                image, diameter, color, space, borderType=BORDERS[self.parameters["border"]]
+            ),
+            inputs["image"],
+        )
 
 
 class AutoThreshold(ImageTool):
     type_id, title, subtype = "cv.auto_threshold", "Automatic threshold", "Segmentation"
     outputs = (Port("image"), Port("threshold", "number"))
-    defaults = {"method": "otsu", "invert": False}
+    defaults = {"method": "otsu", "invert": False, "max_value": -1.0}
     parameter_choices = {"method": ("otsu", "triangle")}
 
     def process(self, inputs):
@@ -243,13 +286,22 @@ class AutoThreshold(ImageTool):
             raise ValueError("Triangle threshold requires uint8")
         mode = {"otsu": cv2.THRESH_OTSU, "triangle": cv2.THRESH_TRIANGLE}[method]
         mode |= cv2.THRESH_BINARY_INV if self.parameters["invert"] else cv2.THRESH_BINARY
-        level, mask = cv2.threshold(image, 0, int(np.iinfo(image.dtype).max), mode)
+        maximum = finite(self.parameters["max_value"], "Maximum value")
+        if maximum < 0:
+            maximum = int(np.iinfo(image.dtype).max)
+        level, mask = cv2.threshold(image, 0, maximum, mode)
         return Result({"image": mask, "threshold": float(level)})
 
 
 class AdaptiveThreshold(ImageTool):
     type_id, title, subtype = "cv.adaptive_threshold", "Adaptive threshold", "Segmentation"
-    defaults = {"method": "gaussian", "block_size": 11, "constant": 2.0, "invert": False}
+    defaults = {
+        "method": "gaussian",
+        "block_size": 11,
+        "constant": 2.0,
+        "invert": False,
+        "max_value": 255.0,
+    }
     parameter_choices = {"method": ("mean", "gaussian")}
 
     def process(self, inputs):
@@ -260,7 +312,12 @@ class AdaptiveThreshold(ImageTool):
         ]
         mode = cv2.THRESH_BINARY_INV if self.parameters["invert"] else cv2.THRESH_BINARY
         output = cv2.adaptiveThreshold(
-            image, 255, method, mode, size, finite(self.parameters["constant"], "Constant")
+            image,
+            finite(self.parameters["max_value"], "Maximum value", 0),
+            method,
+            mode,
+            size,
+            finite(self.parameters["constant"], "Constant"),
         )
         return Result({"image": output})
 
@@ -286,10 +343,25 @@ class InRange(ImageTool):
 
 class Morphology(ImageTool):
     type_id, title, subtype = "cv.morphology", "Morphology", "Morphology"
-    defaults = {"operation": "open", "shape": "ellipse", "kernel": 3, "iterations": 1}
+    defaults = {
+        "operation": "open",
+        "shape": "ellipse",
+        "kernel": 3,
+        "iterations": 1,
+        "kernel_y": 0,
+        "anchor": [-1, -1],
+        "shape_anchor": [-1, -1],
+        "border": "constant",
+        "border_value": [],
+    }
     parameter_choices = {
         "operation": ("erode", "dilate", "open", "close", "gradient", "tophat", "blackhat"),
         "shape": ("rect", "ellipse", "cross"),
+        "border": tuple(BORDERS),
+    }
+    parameter_help = {
+        "border_value": "Empty keeps the neutral native border; otherwise one to four values.",
+        "shape_anchor": "Kernel construction anchor (cross shape); operation anchor is separate.",
     }
 
     def process(self, inputs):
@@ -308,8 +380,18 @@ class Morphology(ImageTool):
             "tophat": cv2.MORPH_TOPHAT,
             "blackhat": cv2.MORPH_BLACKHAT,
         }[self.parameters["operation"]]
+        ky = integer(self.parameters["kernel_y"], "Kernel Y", 0, 255) or size
+        anchor = anchor_value(self.parameters["anchor"], size, ky)
+        shape_anchor = anchor_value(self.parameters["shape_anchor"], size, ky)
+        options = {
+            "iterations": iterations,
+            "anchor": anchor,
+            "borderType": BORDERS[self.parameters["border"]],
+        }
+        if self.parameters["border_value"]:
+            options["borderValue"] = scalar_value(self.parameters["border_value"])
         output = cv2.morphologyEx(
-            image, op, cv2.getStructuringElement(shape, (size, size)), iterations=iterations
+            image, op, cv2.getStructuringElement(shape, (size, ky), shape_anchor), **options
         )
         return encoded_result(output, inputs["image"])
 
@@ -327,7 +409,7 @@ def matching_images(inputs):
 class Bitwise(Block):
     type_id, title, category = "cv.bitwise", "Bitwise image operation", "Image processing"
     block_type, subtype = "Image processing", "Image math"
-    inputs = (Port("image_a"), Port("image_b", required=False))
+    inputs = (Port("image_a"), Port("image_b", required=False), Port("mask", required=False))
     outputs = (Port("image"),)
     defaults = {"operation": "and"}
     parameter_choices = {"operation": ("and", "or", "xor", "not")}
@@ -335,12 +417,13 @@ class Bitwise(Block):
     def process(self, inputs):
         a = image_value(inputs["image_a"], (np.uint8, np.uint16), canonical=True)
         op = self.parameters["operation"]
+        mask = optional_mask(inputs, a)
         if op == "not":
-            output = cv2.bitwise_not(a)
+            output = cv2.bitwise_not(a, mask=mask)
         else:
             a, b = matching_images(inputs)
             output = {"and": cv2.bitwise_and, "or": cv2.bitwise_or, "xor": cv2.bitwise_xor}[op](
-                a, b
+                a, b, mask=mask
             )
         return Result({"image": output})
 
@@ -350,12 +433,15 @@ class Blend(Block):
     block_type, subtype = "Image processing", "Image math"
     inputs = (Port("image_a"), Port("image_b"))
     outputs = (Port("image"),)
-    defaults = {"alpha": 0.5, "beta": 0.5, "gamma": 0.0}
+    defaults = {"alpha": 0.5, "beta": 0.5, "gamma": 0.0, "output_depth": "same"}
+    parameter_choices = {"output_depth": tuple(OUTPUT_DEPTHS)}
 
     def process(self, inputs):
         a, b = matching_images(inputs)
         alpha, beta, gamma = (finite(self.parameters[k], k) for k in ("alpha", "beta", "gamma"))
-        output = cv2.addWeighted(a, alpha, b, beta, gamma)
+        output = cv2.addWeighted(
+            a, alpha, b, beta, gamma, dtype=OUTPUT_DEPTHS[self.parameters["output_depth"]]
+        )
         if not np.isfinite(output).all():
             raise ValueError("Blend coefficients overflowed the output image depth")
         return Result({"image": output})
@@ -364,30 +450,49 @@ class Blend(Block):
 class Gradient(ImageTool):
     type_id, title, subtype = "cv.gradient", "Sobel / Scharr / Laplacian", "Edges"
     outputs = (Port("gradient"), Port("preview"))
-    defaults = {"operator": "sobel", "dx": 1, "dy": 0, "kernel": 3, "scale": 1.0}
-    parameter_choices = {"operator": ("sobel", "scharr", "laplacian")}
+    defaults = {
+        "operator": "sobel",
+        "dx": 1,
+        "dy": 0,
+        "kernel": 3,
+        "scale": 1.0,
+        "delta": 0.0,
+        "output_depth": "float32",
+        "border": "reflect",
+    }
+    parameter_choices = {
+        "operator": ("sobel", "scharr", "laplacian"),
+        "output_depth": ("int16", "float32", "float64"),
+        "border": tuple(BORDERS),
+    }
 
     def process(self, inputs):
         image = gray_image(inputs["image"])
         op = self.parameters["operator"]
         size = integer(self.parameters["kernel"], "Kernel", high=7, odd=True)
         scale = finite(self.parameters["scale"], "Scale")
+        depth = OUTPUT_DEPTHS[self.parameters["output_depth"]]
+        options = {
+            "scale": scale,
+            "delta": finite(self.parameters["delta"], "Delta"),
+            "borderType": BORDERS[self.parameters["border"]],
+        }
         if op == "laplacian":
-            gradient = cv2.Laplacian(image, cv2.CV_32F, ksize=size, scale=scale)
+            gradient = cv2.Laplacian(image, depth, ksize=size, **options)
         else:
             dx = integer(self.parameters["dx"], "DX", 0, 2)
             dy = integer(self.parameters["dy"], "DY", 0, 2)
             if dx + dy == 0 or (op == "scharr" and dx + dy != 1):
                 raise ValueError("Derivative order must be positive; Scharr requires DX+DY=1")
             if op == "scharr":
-                gradient = cv2.Scharr(image, cv2.CV_32F, dx, dy, scale=scale)
+                gradient = cv2.Scharr(image, depth, dx, dy, **options)
             elif op == "sobel":
-                gradient = cv2.Sobel(image, cv2.CV_32F, dx, dy, ksize=size, scale=scale)
+                gradient = cv2.Sobel(image, depth, dx, dy, ksize=size, **options)
             else:
                 raise ValueError("Unknown gradient operator")
         if not np.isfinite(gradient).all():
             raise ValueError("Gradient overflowed float32 output")
-        absolute = np.abs(gradient)
+        absolute = np.abs(gradient.astype(np.float64))
         preview = np.rint(absolute / max(float(absolute.max()), 1e-20) * 255).astype(np.uint8)
         return Result(
             {"gradient": gradient, "preview": preview}, graphics={"absolute gradient": preview}
@@ -404,8 +509,17 @@ class ConnectedComponents(ImageTool):
         Port("centroids", "data"),
         Port("data", "data"),
     )
-    defaults = {"connectivity": 8, "min_area": 100, "max_area": 0, "expected_count": 2}
-    parameter_choices = {"connectivity": ("4", "8")}
+    defaults = {
+        "connectivity": 8,
+        "min_area": 100,
+        "max_area": 0,
+        "expected_count": 2,
+        "algorithm": "default",
+    }
+    parameter_choices = {
+        "connectivity": ("4", "8"),
+        "algorithm": ("default", "sauf", "bbdt", "spaghetti"),
+    }
 
     def process(self, inputs):
         image = gray_image(inputs["image"], (np.uint8,))
@@ -417,8 +531,14 @@ class ConnectedComponents(ImageTool):
         expected = integer(self.parameters["expected_count"], "Expected count", 0, 2**31 - 1)
         if maximum and maximum < minimum:
             raise ValueError("Maximum area must be zero (unlimited) or at least minimum area")
-        total, labels, stats, centers = cv2.connectedComponentsWithStats(
-            (image != 0).astype(np.uint8), connectivity=connectivity
+        algorithm = {
+            "default": cv2.CCL_DEFAULT,
+            "sauf": cv2.CCL_SAUF,
+            "bbdt": cv2.CCL_BBDT,
+            "spaghetti": cv2.CCL_SPAGHETTI,
+        }[self.parameters["algorithm"]]
+        total, labels, stats, centers = cv2.connectedComponentsWithStatsWithAlgorithm(
+            (image != 0).astype(np.uint8), connectivity, cv2.CV_32S, algorithm
         )
         overlay = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
         mask = np.zeros_like(image)
@@ -453,15 +573,19 @@ class ConnectedComponents(ImageTool):
 class MatchTemplate(Block):
     type_id, title, category = "inspect.match_template", "Match template", "Inspection"
     block_type, subtype = "Inspection", "Matching"
-    inputs = (Port("image"), Port("template"))
+    inputs = (Port("image"), Port("template"), Port("mask", required=False))
     outputs = (
         Port("overlay"),
         Port("score", "number"),
         Port("location", "data"),
         Port("center", "data"),
+        Port("raw_score", "number"),
+        Port("response"),
     )
     defaults = {"method": "ccoeff_normed", "min_score": 0.8}
-    parameter_choices = {"method": ("ccoeff_normed", "ccorr_normed", "sqdiff_normed")}
+    parameter_choices = {
+        "method": ("ccoeff_normed", "ccorr_normed", "sqdiff_normed", "ccoeff", "ccorr", "sqdiff")
+    }
 
     def process(self, inputs):
         image = gray_image(inputs["image"], (np.uint8, np.float32))
@@ -471,7 +595,7 @@ class MatchTemplate(Block):
         if template.shape[0] > image.shape[0] or template.shape[1] > image.shape[1]:
             raise ValueError("Template must fit inside the search image")
         method = self.parameters["method"]
-        if method == "ccoeff_normed" and float(template.std()) < 1e-12:
+        if method in ("ccoeff_normed", "ccoeff") and float(template.std()) < 1e-12:
             raise ValueError("Normalized coefficient matching requires a nonconstant template")
         if float(np.square(template.astype(float)).sum()) <= 1e-20:
             raise ValueError("Normalized matching requires a nonzero template")
@@ -482,14 +606,45 @@ class MatchTemplate(Block):
             "ccoeff_normed": cv2.TM_CCOEFF_NORMED,
             "ccorr_normed": cv2.TM_CCORR_NORMED,
             "sqdiff_normed": cv2.TM_SQDIFF_NORMED,
+            "ccoeff": cv2.TM_CCOEFF,
+            "ccorr": cv2.TM_CCORR,
+            "sqdiff": cv2.TM_SQDIFF,
         }[method]
-        response = cv2.matchTemplate(image, template, code)
+        mask = inputs.get("mask")
+        if mask is not None:
+            if (
+                mask.dtype not in (np.uint8, np.float32)
+                or mask.ndim != 2
+                or mask.shape != template.shape
+            ):
+                raise ValueError(
+                    "Template mask must be uint8/float32 monochrome and template-sized"
+                )
+            if method not in ("sqdiff", "ccorr_normed"):
+                raise ValueError("Portable mask support is available for SQDIFF or CCORR_NORMED")
+        response = cv2.matchTemplate(image, template, code, mask=mask)
         if not np.isfinite(response).all():
             raise ValueError("Template matching produced a nonfinite response")
         low, high, low_pos, high_pos = cv2.minMaxLoc(response)
-        location = low_pos if method == "sqdiff_normed" else high_pos
-        score = float(np.clip(1 - low if method == "sqdiff_normed" else high, 0, 1))
+        location = low_pos if method in ("sqdiff_normed", "sqdiff") else high_pos
+        quality_code = {
+            "sqdiff": cv2.TM_SQDIFF_NORMED,
+            "ccorr": cv2.TM_CCORR_NORMED,
+            "ccoeff": cv2.TM_CCOEFF_NORMED,
+        }.get(method, code)
+        quality = (
+            response
+            if quality_code == code
+            else cv2.matchTemplate(image, template, quality_code, mask=mask)
+        )
         x, y = location
+        score = float(
+            np.clip(
+                1 - quality[y, x] if method in ("sqdiff_normed", "sqdiff") else quality[y, x], 0, 1
+            )
+        )
+        if not np.isfinite(score):
+            raise ValueError("Template quality is nonfinite")
         height, width = template.shape
         overlay = cv2.cvtColor(preview_rgb(inputs["image"]), cv2.COLOR_RGB2BGR)
         cv2.rectangle(
@@ -499,7 +654,7 @@ class MatchTemplate(Block):
             (70, 220, 140) if score >= threshold else (60, 90, 240),
             2,
         )
-        heat = 1 - response if method == "sqdiff_normed" else response
+        heat = 1 - quality if method in ("sqdiff_normed", "sqdiff") else quality
         heat = cv2.applyColorMap(
             np.rint(np.clip(heat, 0, 1) * 255).astype(np.uint8), cv2.COLORMAP_TURBO
         )
@@ -509,6 +664,8 @@ class MatchTemplate(Block):
                 "score": score,
                 "location": {"top_left": [x, y], "bounds": [x, y, width, height], "method": method},
                 "center": [[x + (width - 1) / 2, y + (height - 1) / 2]],
+                "raw_score": float(response[y, x]),
+                "response": response,
             },
             graphics={"match": overlay, "response": heat},
             passed=score >= threshold,
