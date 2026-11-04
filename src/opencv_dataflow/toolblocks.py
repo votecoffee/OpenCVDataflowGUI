@@ -24,6 +24,24 @@ class ToolBlock(Block):
     block_type, subtype = "ToolBlocks", "Reusable"
 
     @property
+    def poll_without_input(self):
+        return any(
+            getattr(block, "queue_boundary", False) or getattr(block, "poll_without_input", False)
+            for block in self.graph.blocks.values()
+        )
+
+    @property
+    def queue_inputs(self):
+        mappings = {}
+        for name, binding in self.input_bindings.items():
+            child = self.graph.blocks[binding.block]
+            if getattr(child, "queue_boundary", False) and binding.port == "image":
+                mappings[name] = child
+            elif isinstance(child, ToolBlock) and binding.port in child.queue_inputs:
+                mappings[name] = child.queue_inputs[binding.port]
+        return mappings
+
+    @property
     def accept_events(self):
         return bool(self.input_bindings) and all(
             getattr(self.graph.blocks[b.block], "accept_events", False)
@@ -81,6 +99,7 @@ class ToolBlock(Block):
         self.graph.clear_results()
 
     def reset_runtime(self):
+        self._queued_public_events = {}
         self.graph.invalidate()
 
     def copy_runtime_from(self, other):
@@ -94,6 +113,10 @@ class ToolBlock(Block):
             for name, b in self.input_bindings.items()
             if name in inputs
         }
+        events = getattr(self, "_queued_public_events", {})
+        self._queued_public_events = {}
+        for name, packets in events.items():
+            self.queue_inputs[name].preloaded_events.extend(packets)
         self.graph.run(self._cancelled, injected)
         children = list(self.graph.blocks.values())
         unavailable = [b for b in children if b.state in ("error", "skipped")]

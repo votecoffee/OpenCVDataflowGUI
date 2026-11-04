@@ -48,15 +48,18 @@ from .examples import (
     object_collections_graph,
     parallel_parts_graph,
     pose_inspection_graph,
+    queued_input_graph,
     regions_graph,
     starter_graph,
     template_graph,
     trained_patterns_graph,
     transformed_regions_graph,
 )
+from .image_queue import ImageQueue
 from .parallel_inspection import ParallelInspect
 from .payloads import describe_value, packet_for, prepare_inputs
 from .plugins import load_plugin
+from .queued_execution import QueuedExecution, background_queue
 from .region_editor import RegionEditor
 from .tickets import TICKET_MODES
 from .toolblock_editor import InterfaceDialog
@@ -67,21 +70,31 @@ class Runner(QThread):
     frame = Signal()
     failed = Signal(str)
 
-    def __init__(self, graph, continuous):
+    def __init__(self, graph, continuous, registry=None):
         super().__init__()
         self.graph, self.continuous = graph, continuous
         self.stop_requested = threading.Event()
         self.ack = threading.Event()
         self.duration = 0.0
+        self.registry = registry or builtin_registry()
+        self.final_queue_states = {}
 
     def stop(self):
         self.stop_requested.set()
 
     def run(self):
+        queued = None
         try:
+            if self.continuous and background_queue(self.graph) is not None:
+                queued = QueuedExecution(self.graph, self.registry, self.stop_requested.is_set)
+                queued.start()
             while not self.stop_requested.is_set():
                 started = time.perf_counter()
-                self.graph.run(self.stop_requested.is_set)
+                if queued is not None:
+                    if not queued.run_one():
+                        break
+                else:
+                    self.graph.run(self.stop_requested.is_set)
                 self.duration = (time.perf_counter() - started) * 1000
                 self.ack.clear()
                 self.frame.emit()
@@ -93,6 +106,13 @@ class Runner(QThread):
         except Exception as exc:
             self.failed.emit(f"{type(exc).__name__}: {exc}")
         finally:
+            if queued is not None:
+                queued.close()
+            self.final_queue_states = {
+                key: b.snapshot_runtime()
+                for key, b in self.graph.blocks.items()
+                if isinstance(b, ImageQueue)
+            }
             self.graph.close()
 
 
@@ -677,6 +697,7 @@ class MainWindow(QMainWindow):
             ("Load pose-relative inspection example", None, self.load_pose_inspection_example),
             ("Load ticketed control flow example", None, self.load_control_flow_example),
             ("Load parallel part inspection example", None, self.load_parallel_parts_example),
+            ("Load queued input example", None, self.load_queued_input_example),
             ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
@@ -970,6 +991,10 @@ class MainWindow(QMainWindow):
         if not self.runner and self.confirm_discard():
             self.replace_graph(parallel_parts_graph(self.registry))
 
+    def load_queued_input_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(queued_input_graph(self.registry))
+
     def open_project(self):
         if self.runner or not self.confirm_discard():
             return
@@ -1035,7 +1060,7 @@ class MainWindow(QMainWindow):
         except Exception as exc:
             self.warn(str(exc))
             return
-        self.runner = Runner(execution_graph, continuous)
+        self.runner = Runner(execution_graph, continuous, self.registry)
         self.runner.frame.connect(self.on_frame)
         self.runner.failed.connect(self.warn)
         self.runner.finished.connect(self.on_finished)
@@ -1081,6 +1106,13 @@ class MainWindow(QMainWindow):
         worker = self.runner
         # finished() can precede native thread-local cleanup; join before release.
         worker.wait()
+        for key, snapshot in worker.final_queue_states.items():
+            block = self.root_graph.blocks.get(key)
+            if isinstance(block, ImageQueue):
+                block.restore_runtime(snapshot)
+                block.update_metrics()
+        self.scene.update()
+        self.inspector.refresh_result()
         self.runner = None
         worker.deleteLater()
         self.scene.set_locked(False)

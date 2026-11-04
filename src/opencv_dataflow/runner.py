@@ -13,6 +13,7 @@ from .core import Graph
 from .parallel_inspection import ParallelInspect
 from .payloads import ImagePyramid, describe_value
 from .plugins import load_plugin
+from .queued_execution import QueuedExecution, background_queue
 from .toolblocks import ToolBlock
 
 
@@ -68,6 +69,7 @@ def main(argv=None):
     if args.repeat < 1:
         parser.error("--repeat must be positive")
     graph = None
+    queued = None
     try:
         if args.report and args.report.exists():
             raise FileExistsError(f"Report already exists: {args.report}")
@@ -75,11 +77,17 @@ def main(argv=None):
         for plugin in args.plugin:
             load_plugin(plugin, registry)
         graph = Graph.load(args.project, registry)
+        if background_queue(graph) is not None:
+            queued = QueuedExecution(graph, registry)
+            queued.start()
         runs = []
         passed = True
         for index in range(args.repeat):
             started = time.perf_counter()
-            graph.run()
+            if queued is not None:
+                queued.run_one()
+            else:
+                graph.run()
             records = describe(graph)
             ok = all(b.state in ("pass", "waiting", "inactive") for b in graph.blocks.values())
             passed = passed and ok
@@ -116,6 +124,8 @@ def main(argv=None):
         print(f"{type(exc).__name__}: {exc}", file=sys.stderr)
         return 2
     finally:
+        if queued is not None:
+            queued.close()
         if graph is not None:
             graph.close()
 

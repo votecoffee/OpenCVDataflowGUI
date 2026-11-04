@@ -333,6 +333,17 @@ class Graph:
         for key, block in self.blocks.items():
             block.copy_runtime_from(other.blocks[key])
 
+    def restore_captured(self, provided):
+        for key, snapshot in provided.items():
+            if key not in self.blocks:
+                raise ValueError("Captured upstream graph changed; reset flow state")
+            block = self.blocks[key]
+            for name, value in snapshot.items():
+                if name == "_captured_graph":
+                    block.graph.restore_captured(value)
+                else:
+                    setattr(block, name, copy.deepcopy(value))
+
     def connect(self, source, output, target, input):
         if source == target:
             raise ValueError("A block cannot connect to itself")
@@ -372,9 +383,57 @@ class Graph:
                 deps.difference_update(ready)
         return order
 
-    def run(self, cancelled=lambda: False, injected=None):
+    def run(self, cancelled=lambda: False, injected=None, provided=None):
+        failed = False
+        try:
+            return self._run_iteration(cancelled, injected, provided)
+        except BaseException:
+            failed = True
+            raise
+        finally:
+            for key, block in self.blocks.items():
+                if getattr(block, "queue_boundary", False):
+                    affected = {key}
+                    while True:
+                        following = {c.target for c in self.connections if c.source in affected}
+                        if following <= affected:
+                            break
+                        affected.update(following)
+                    block.complete(
+                        failed=failed
+                        or any(
+                            self.blocks[k].state in ("fail", "error", "skipped")
+                            for k in affected
+                            if k in self.blocks
+                        )
+                    )
+                    block.update_metrics()
+
+    def _run_iteration(self, cancelled=lambda: False, injected=None, provided=None):
         from .toolblocks import ToolBlock
 
+        if provided is None and not cancelled():
+            captures = []
+            covered = set()
+            for block in self.blocks.values():
+                if getattr(block, "queue_boundary", False):
+                    with block.condition:
+                        pending = block.runtime["pending"]
+                        if pending and pending[0][0].snapshots:
+                            keys = set(pending[0][0].snapshots)
+                            if keys & covered:
+                                raise ValueError(
+                                    "Queued upstream graphs overlap; queue before splitting"
+                                )
+                            covered.update(keys)
+                            captures.append(block)
+            if captures:
+                provided = {}
+                for block in captures:
+                    capture = block.take(cancelled)
+                    if capture is not None:
+                        block.use_lease = True
+                        provided.update(capture.snapshots)
         self.clear_results()
         injected = injected or {}
         for (target, name), value in injected.items():
@@ -387,6 +446,13 @@ class Graph:
             validate_value(port, value)
         self.ordered()  # Reject cycles before acquiring sources.
         emitted = {}
+        provided = provided or {}
+        self.restore_captured(provided)
+        for key in provided:
+            block = self.blocks[key]
+            if block.last_result is not None:
+                for port in block.outputs:
+                    emitted[key, port.name] = block.last_result.emissions.get(port.name, [])
 
         def run_block(key):
             block = self.blocks[key]
@@ -395,13 +461,56 @@ class Graph:
             if cancelled():
                 block.state, block.error = "skipped", "Run stopped"
                 return
-            if any(self.blocks[c.source].state in ("error", "skipped") for c in incoming):
+            if any(
+                self.blocks[c.source].state in ("error", "skipped")
+                and not (getattr(block, "queue_boundary", False) and c.input == "image")
+                for c in incoming
+            ):
                 block.state, block.error = "skipped", "Upstream block unavailable"
                 return
             streams = {c.input: emitted.get((c.source, c.output), []) for c in incoming}
             constants = {name: value for (target, name), value in injected.items() if target == key}
             outputs = {p.name: [] for p in block.outputs}
-            if getattr(block, "accept_events", False):
+            if getattr(block, "queue_inputs", {}):
+                queued_inputs = block.queue_inputs
+                block._queued_public_events = {
+                    name: [
+                        *streams.get(name, []),
+                        *([constants.pop(name)] if name in constants else []),
+                    ]
+                    for name in queued_inputs
+                }
+                remaining = {
+                    name: values for name, values in streams.items() if name not in queued_inputs
+                }
+                if any(len(values) > 1 for values in remaining.values()):
+                    block.state, block.error = (
+                        "error",
+                        "Queue changing ancillary data with the image payload",
+                    )
+                    return
+                calls = [
+                    {
+                        **constants,
+                        **{name: values[0] for name, values in remaining.items() if values},
+                    }
+                ]
+            elif getattr(block, "queue_boundary", False):
+                if not block.use_lease:
+                    from .image_queue import QueuedCapture
+                    from .queued_execution import ancestors, snapshots_for_frame
+
+                    block.pending_events = [
+                        QueuedCapture(
+                            block.normalize(packet),
+                            snapshots_for_frame(
+                                self, block.normalize(packet), ancestors(self, key)
+                            ),
+                        )
+                        for packet in streams.get("image", [])
+                    ]
+                calls = [constants]
+            elif getattr(block, "accept_events", False):
                 calls = [
                     {name: values[index]}
                     for index in range(max((len(v) for v in streams.values()), default=0))
@@ -419,7 +528,12 @@ class Graph:
                 had_streams = bool(streams)
                 streams = {name: values for name, values in streams.items() if values}
                 length = max((len(v) for v in streams.values()), default=1)
-                if had_streams and not streams and not constants:
+                if (
+                    had_streams
+                    and not streams
+                    and not constants
+                    and not getattr(block, "poll_without_input", False)
+                ):
                     length = 0
                 if any(len(v) not in (1, length) for v in streams.values()):
                     block.state, block.error = (
@@ -480,7 +594,7 @@ class Graph:
                         block.last_output_images[name] = packets[-1].value
                 emitted[key, name] = packets
 
-        pending = set(self.blocks)
+        pending = set(self.blocks) - provided.keys()
         workers = max(
             (
                 int(b.parameters.get("workers", 1))
@@ -508,6 +622,7 @@ class Graph:
                     and not self.blocks[key].ticket_source
                     and not isinstance(self.blocks[key], ToolBlock)
                     and not getattr(self.blocks[key], "owns_workers", False)
+                    and not getattr(self.blocks[key], "queue_boundary", False)
                     and not getattr(self.blocks[key], "accept_events", False)
                 ]
                 futures = [executor.submit(run_block, key) for key in parallel] if executor else []
