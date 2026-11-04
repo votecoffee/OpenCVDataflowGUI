@@ -273,9 +273,11 @@ def test_lsd_controls_match_native_and_hough_also_exposes_collection():
     ).detect(image)
     np.testing.assert_allclose(output.last_result.outputs["segments"], native[0].reshape(-1, 4))
     assert output.last_result.outputs["count"] > 0
-    for item in output.last_result.outputs["collection"]["items"]:
+    for index, item in enumerate(output.last_result.outputs["collection"]["items"]):
         assert item["metrics"]["length"] > 0 and item["metrics"]["line_width"] > 0
         assert item["metrics"]["hu_1"] is None and item["metrics"]["nfa"] is not None
+        for metric, values in zip(("line_width", "precision", "nfa"), native[1:]):
+            assert item["metrics"][metric] == pytest.approx(values.reshape(-1)[index])
     edges = cv2.Canny(image, 30, 100)
     hough = run("inspect.hough_lines", {"image": edges}, votes=15, min_length=20.0)
     assert (

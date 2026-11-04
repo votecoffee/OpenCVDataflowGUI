@@ -155,6 +155,11 @@ class FindLineSegments(Block):
             integer(p["bins"], "Bins", 1, 100000),
         )
         found, widths, precisions, nfa = detector.detect(image)
+        # OpenCV 5 returns scalar-per-line measurements as 1D vectors.
+        widths, precisions, nfa = (
+            values.reshape(-1) if values is not None else None
+            for values in (widths, precisions, nfa)
+        )
         selection = selection_mask(inputs, image)
         items, segments = [], []
         overlay = overlay_image(inputs["image"])
@@ -165,9 +170,9 @@ class FindLineSegments(Block):
                 line_item(
                     segment,
                     index,
-                    widths[index, 0] if widths is not None else None,
-                    precisions[index, 0] if precisions is not None else None,
-                    nfa[index, 0] if nfa is not None else None,
+                    widths[index] if widths is not None else None,
+                    precisions[index] if precisions is not None else None,
+                    nfa[index] if nfa is not None else None,
                 )
             )
             segments.append(segment.tolist())
