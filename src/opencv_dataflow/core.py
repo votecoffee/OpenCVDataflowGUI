@@ -40,6 +40,8 @@ class Block:
     type_id: ClassVar[str] = "base"
     title: ClassVar[str] = "Block"
     category: ClassVar[str] = "Custom"
+    block_type: ClassVar[str] = ""
+    subtype: ClassVar[str] = "General"
     inputs: ClassVar[tuple[Port, ...]] = ()
     outputs: ClassVar[tuple[Port, ...]] = ()
     defaults: ClassVar[dict[str, Any]] = {}
@@ -100,7 +102,9 @@ class Block:
                 validate_value(Port(name), value)
             self.last_result = copy.deepcopy(result)
             self.last_output_images = {
-                p.name: self.last_result.outputs[p.name] for p in self.outputs if p.kind == "image"
+                p.name: self.last_result.outputs[p.name]
+                for p in self.outputs
+                if p.kind in ("image", "depth")
             }
             self.last_graphics = self.last_result.graphics
             self.state = "pass" if result.passed else "fail"
@@ -131,7 +135,15 @@ class Block:
 
 
 def validate_value(port, value):
-    if port.kind == "image":
+    if port.kind == "depth":
+        if (
+            not isinstance(value, np.ndarray)
+            or value.size == 0
+            or value.ndim != 2
+            or value.dtype not in (np.uint16, np.float32, np.float64)
+        ):
+            raise TypeError(f"{port.name} requires a 2D uint16 or floating depth image")
+    elif port.kind == "image":
         if not isinstance(value, np.ndarray) or value.size == 0 or value.ndim not in (2, 3):
             raise TypeError(f"{port.name} requires a nonempty image array")
     elif port.kind == "number":

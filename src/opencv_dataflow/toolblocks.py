@@ -19,6 +19,7 @@ class Binding:
 
 class ToolBlock(Block):
     type_id, title, category = "core.toolblock", "ToolBlock", "ToolBlocks"
+    block_type, subtype = "ToolBlocks", "Reusable"
 
     def __init__(self, graph, input_bindings, output_bindings, **kwargs):
         self.graph = graph
@@ -162,6 +163,8 @@ class ToolBlock(Block):
     def definition(self):
         self.validate_interface()
         return {
+            "block_type": self.block_type,
+            "subtype": self.subtype,
             "toolblock_version": 1,
             "name": self.name,
             "graph": self.graph.to_dict(),
@@ -184,6 +187,8 @@ class ToolBlock(Block):
             **kwargs,
         )
         block.name = data["name"]
+        block.block_type = data.get("block_type", "ToolBlocks")
+        block.subtype = data.get("subtype", "Reusable")
         return block
 
     def export(self, path):
