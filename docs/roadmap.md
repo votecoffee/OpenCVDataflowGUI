@@ -1,6 +1,6 @@
 # Roadmap
 
-## First usable editor
+## Implemented prototype
 
 - Node canvas, typed connections, configurable port visibility, inspector and previews.
 - Single and continuous execution, worker-thread scheduling, save/load, trusted plugins.
