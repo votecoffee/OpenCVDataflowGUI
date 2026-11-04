@@ -379,3 +379,75 @@ def combined_regions_graph(registry):
     ):
         graph.blocks[key].preview_output = "overlay"
     return graph
+
+
+def transformed_regions_graph(registry):
+    """Carry one inspection region through crop, scale and rotation geometry."""
+    graph = Graph()
+    specs = [
+        ("tracked_source", "input.demo", "Original image", [0, 0], None),
+        (
+            "tracked_shape",
+            "region.shape",
+            "Left-part region",
+            [0, 350],
+            {"shape": "circle", "center": [140, 180], "radius": 80},
+        ),
+        (
+            "tracked_crop",
+            "cv.crop",
+            "Crop image",
+            [300, 0],
+            {"x": 50, "y": 60, "width": 380, "height": 240},
+        ),
+        ("tracked_crop_region", "region.transform", "Region in crop", [300, 350], None),
+        ("tracked_resize", "cv.resize", "Resize image", [600, 0], {"width": 570, "height": 360}),
+        ("tracked_resize_region", "region.transform", "Region in resized image", [600, 350], None),
+        ("tracked_rotate", "cv.rotate", "Rotate image", [900, 0], {"angle_degrees": 10.0}),
+        ("tracked_rotate_region", "region.transform", "Region follows rotation", [900, 350], None),
+        ("tracked_histogram", "inspect.histogram", "Histogram in moved region", [1200, 0], None),
+        ("tracked_threshold", "cv.threshold", "Segment moved part", [1200, 350], {"value": 100.0}),
+        (
+            "tracked_components",
+            "inspect.components",
+            "Inspect one moved part",
+            [1500, 350],
+            {"expected_count": 1, "region_mode": "clip"},
+        ),
+        (
+            "tracked_measure",
+            "region.measure",
+            "Measure transformed selection",
+            [1500, 0],
+            {"min_area": 44000, "max_area": 46000},
+        ),
+    ]
+    for key, kind, name, position, parameters in specs:
+        block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
+        block.name, block.position = name, position
+    graph.connect("tracked_source", "image", "tracked_shape", "image")
+    previous_image, previous_region = "tracked_source", "tracked_shape"
+    for image, region in [
+        ("tracked_crop", "tracked_crop_region"),
+        ("tracked_resize", "tracked_resize_region"),
+        ("tracked_rotate", "tracked_rotate_region"),
+    ]:
+        graph.connect(previous_image, "image", image, "image")
+        graph.connect(image, "image", region, "image")
+        graph.connect(image, "geometry", region, "transform")
+        graph.connect(previous_region, "region", region, "region")
+        previous_image, previous_region = image, region
+    for key in ("tracked_histogram", "tracked_threshold", "tracked_measure"):
+        graph.connect(previous_image, "image", key, "image")
+        graph.connect(previous_region, "region", key, "region")
+    graph.connect("tracked_threshold", "image", "tracked_components", "image")
+    graph.connect(previous_region, "region", "tracked_components", "region")
+    for key in (
+        "tracked_shape",
+        "tracked_crop_region",
+        "tracked_resize_region",
+        "tracked_rotate_region",
+        "tracked_components",
+    ):
+        graph.blocks[key].preview_output = "overlay"
+    return graph

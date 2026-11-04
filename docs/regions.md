@@ -61,8 +61,8 @@ coordinates. Point membership uses the nearest raster pixel (`np.rint`).
 
 The region data contract is `image_region_v1`, with `image_size: [width,height]`,
 `shape`, the corresponding shape fields and `invert`. A size mismatch is an error;
-regions are never resized automatically. Regenerate regions for resized/cropped
-images and transform their coordinates explicitly for rotated/warped images.
+regions are never resized automatically. Use **Transform region** to explicitly
+carry a selection into a resized/cropped/rotated/warped image's coordinate system.
 Equal dimensions alone do not prove that two images share the same coordinate frame.
 
 ## Combine and measure regions
@@ -107,6 +107,64 @@ center filtering would reject a ring whose centroid lies in its excluded hole.
 ```powershell
 .\.venv\Scripts\opencv-dataflow-run examples/combined_regions.json --repeat 3
 ```
+
+## Transform regions between image coordinate systems
+
+**Transform region** accepts a source `region`, a target `image` (used for dimensions
+and overlay), and an optional `transform`. Outputs are the transformed region, its
+binary mask, a tinted overlay and the actual source-to-target transform.
+
+To follow an image operation, connect its **image** output to Transform region's
+**image**, and its **geometry** output to **transform**. Connect the region defined
+on the operation's input image to **region**. This works with crop, resize, flip,
+90-degree/arbitrary rotation, image borders, pyramids and affine/perspective warps.
+For a chain, transform the region after each image operation.
+
+The **Direction** dropdown controls the mapping:
+
+- `forward`: follow geometry from its input image to its output image. Geometry's
+  `output_to_input` matrix is inverted automatically. For registration payloads with
+  `source_to_target`, the matrix is used directly.
+- `inverse`: go from the operation's output coordinates back to its input, or reverse
+  a registration matrix. Supply the region from that output frame and the original
+  input image as the target.
+
+Geometry must declare `input_size` and `output_size`; both are checked against the
+source region and target image. Registration payloads may declare `source_size` and
+`target_size`, which are checked when present. A raw 2×3 affine or 3×3 projective
+matrix is also accepted; when the port is disconnected, the inspector's **Matrix**
+field supplies it. Raw matrices are source-to-target before applying Direction.
+Ambiguous mapping keys, nonfinite/singular matrices and inconsistent dimensions
+produce configuration/execution errors. Equal dimensions cannot establish frame
+identity; connect data from the corresponding image operation.
+
+**Interpolation** offers `nearest` (default, discrete mask samples) and `linear`
+(resample coverage then apply **Threshold**, in (0,1]). Outputs always contain
+only 0 and 255. Samples beyond the source image are unselected, even when the
+source region is inverted. Image border replication/reflection does not create
+new selected pixels. Mask resampling follows continuous pixel-center geometry;
+its boundaries can differ from the image's interpolation or legacy nearest-resize
+index rounding. Reverse transforms cannot recover pixels lost to clipping or sampling.
+
+Composite regions and holes are retained in the expression. Each transform
+rasterizes its source selection before sampling, so repeated transformations can
+accumulate discretization. They share the expression nesting/node limits above.
+Transformed source and target frames are limited to 16384 pixels per axis and
+64 million pixels total. The output transform includes source/target dimensions
+and connects directly to **Transform points** for associated annotations.
+
+Open **File > Load transformed regions example** or
+`examples/transformed_regions.json` for a 12-block project carrying a circular
+inspection region through crop, resize and arbitrary rotation. It measures the
+selection, computes its color histogram and inspects the same part in the final
+image. The project needs no external images or camera.
+
+```powershell
+.\.venv\Scripts\opencv-dataflow-run examples/transformed_regions.json --repeat 3
+```
+
+This is image-space affine/projective mapping. Lens-distortion/nonlinear remapping
+and calibrated physical-area conversion are not implemented by this block.
 
 ## Processing and result policies
 
@@ -164,4 +222,5 @@ to it and use e.g. circle center `[300,300]`, radius `110`. Connect `region` to 
 histogram, ORB or filter block to inspect only that part of the source image.
 
 Native references: [drawing functions](https://docs.opencv.org/4.x/d6/d6e/group__imgproc__draw.html)
-and [feature detection masks](https://docs.opencv.org/4.x/dd/d1a/group__imgproc__feature.html).
+[feature detection masks](https://docs.opencv.org/4.x/dd/d1a/group__imgproc__feature.html), and
+[geometric image transformations](https://docs.opencv.org/4.x/da/d54/group__imgproc__transform.html).

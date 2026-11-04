@@ -20,6 +20,29 @@ def whole(value, name, minimum=-1_000_000, maximum=1_000_000):
     return int(value)
 
 
+def region_size(region):
+    if not isinstance(region, dict) or region.get("model") != "image_region_v1":
+        raise ValueError("Source must be an image_region_v1 region")
+    size = region.get("image_size")
+    if not isinstance(size, list) or len(size) != 2:
+        raise ValueError("Region image_size must be [width,height]")
+    width, height = (whole(v, "Region dimension", 1, 16384) for v in size)
+    if width * height > 64_000_000:
+        raise ValueError("Region transform is limited to 64 million pixels")
+    return width, height
+
+
+def region_matrix(value):
+    matrix = np.asarray(value, np.float64)
+    if matrix.shape == (2, 3):
+        matrix = np.vstack((matrix, [0, 0, 1]))
+    if matrix.shape != (3, 3) or not np.isfinite(matrix).all():
+        raise ValueError("Region transform must be a finite 2x3 or 3x3 matrix")
+    if np.linalg.matrix_rank(matrix) != 3:
+        raise ValueError("Region transform must be invertible")
+    return matrix
+
+
 def rasterize(region, shape, *, _depth=0, _budget=None):
     if _budget is None:
         _budget = [128]
@@ -34,6 +57,31 @@ def rasterize(region, shape, *, _depth=0, _budget=None):
     ):
         raise ValueError("Region must use image_region_v1 and match image dimensions")
     kind = region["shape"]
+    if kind == "transformed":
+        source = region.get("source")
+        source_width, source_height = region_size(source)
+        region_size(region)
+        matrix = region_matrix(region.get("source_to_target"))
+        interpolation = region.get("interpolation", "nearest")
+        threshold = float(region.get("threshold", 0.5))
+        if interpolation not in ("nearest", "linear") or not 0 < threshold <= 1:
+            raise ValueError("Region sampling must be nearest/linear with threshold in (0,1]")
+        original = rasterize(
+            source, (source_height, source_width), _depth=_depth + 1, _budget=_budget
+        )
+        # Binary selections never inherit image border replication or interpolation colors.
+        samples = original if interpolation == "nearest" else original.astype(np.float32) / 255
+        warped = cv2.warpPerspective(
+            samples,
+            matrix,
+            (width, height),
+            flags=cv2.INTER_NEAREST if interpolation == "nearest" else cv2.INTER_LINEAR,
+            borderMode=cv2.BORDER_CONSTANT,
+            borderValue=0,
+        )
+        cutoff = threshold * 255 if interpolation == "nearest" else threshold
+        mask = np.where(warped >= cutoff, 255, 0).astype(np.uint8)
+        return cv2.bitwise_not(mask) if region.get("invert", False) else mask
     if kind == "composite":
         operation = region.get("operation")
         children = region.get("children")

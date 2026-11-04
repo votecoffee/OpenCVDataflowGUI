@@ -18,6 +18,7 @@
 - Circle/rectangle/polygon regions, shared mask selection, selected processing and result filtering.
 - Interactive region drawing, resize/move handles, polygon vertex editing and captured-frame previews.
 - Nested region union/intersection/difference/XOR/inversion and selected-area/coverage measurements.
+- Affine/projective region transforms, image-geometry direction/size checks and transformed inspection jobs.
 
 ## Point clouds and 3D vision
 
@@ -35,7 +36,7 @@ frame transforms and robot pose/measurement adapters. See
 
 ## Vision development
 
-- Calibrated region overlays, additional measurement tools and region transforms across image geometry.
+- Calibrated region overlays, physical measurements and nonlinear region remapping for lens distortion.
 - More OpenCV tools: multiple template matches, additional descriptors/robust matching and advanced calibration.
 - Dynamic parameter binding, richer types, promoted parameters and versioned ToolBlock libraries.
 - Compile compatible connected segments into shared native G-API computations.

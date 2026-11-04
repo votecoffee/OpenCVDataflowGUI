@@ -1040,3 +1040,16 @@ Inputs: `image` (image).
 | `radius` | `50` |  |
 | `vertices` | `[[0, 0], [100, 0], [50, 100]]` | Polygon [[x,y], ...] in input-image pixels; boundary is included. |
 | `invert` | `false` | Select everything outside the shape. |
+
+## Transform region (`region.transform`)
+
+Image processing / Regions
+
+Inputs: `image` (image), `region` (data), `transform` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `matrix` | `[[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]` | Source-to-target 2x3/3x3 matrix, used when the transform port is unconnected. |
+| `direction` | `"forward"` | `forward`, `inverse` Forward follows image geometry or source_to_target; inverse goes back. |
+| `interpolation` | `"nearest"` | `nearest`, `linear` Nearest preserves discrete masks; linear thresholds resampled coverage. |
+| `threshold` | `0.5` | Linear sampling cutoff in (0,1]; nearest is binary at any valid cutoff. |
