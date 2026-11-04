@@ -6,6 +6,7 @@ import numpy as np
 from .core import Block, Port, Result
 from .images import ImageArray, image_format, preview_rgb
 from .parameters import optional_mask
+from .payloads import require_same_frame
 from .processing import (
     ImageTool,
     encoded_result,
@@ -129,6 +130,13 @@ class SplitChannels(ImageTool):
         return Result(
             dict(zip((p.name for p in self.outputs), planes)),
             message=f"Channels in {image_format(inputs['image'])} order",
+            payloads={
+                p.name: {
+                    **self.input_payloads["image"],
+                    "channel": {"index": index, "source_format": image_format(inputs["image"])},
+                }
+                for index, p in enumerate(self.outputs)
+            },
         )
 
 
@@ -141,19 +149,101 @@ class MergeChannels(Block):
     parameter_choices = {"color_format": ("bgr", "rgb", "hsv", "lab")}
 
     def process(self, inputs):
-        planes = [
-            image_value(inputs[p.name], (np.uint8, np.uint16, np.float32)) for p in self.inputs
-        ]
+        require_same_frame([inputs[p.name] for p in self.inputs])
+        planes = [image_value(inputs[p.name]) for p in self.inputs]
         if any(
             p.ndim != 2 or p.shape != planes[0].shape or p.dtype != planes[0].dtype for p in planes
         ):
-            raise ValueError("Merge requires three monochrome planes with identical size and depth")
+            raise ValueError("Merge requires monochrome planes with identical size and depth")
         encoding = self.parameters["color_format"]
         if encoding not in self.parameter_choices["color_format"]:
             raise ValueError("Unknown merged channel encoding")
-        if encoding in ("hsv", "lab") and planes[0].dtype == np.uint16:
+        if encoding in ("hsv", "lab") and planes[0].dtype not in (np.uint8, np.float32):
             raise ValueError("HSV/Lab channel encodings require uint8 or float32")
-        return Result({"image": ImageArray(cv2.merge(planes), encoding)})
+        payload = dict(self.input_payloads.get("channel_0", {}))
+        payload.pop("channel", None)
+        return Result(
+            {"image": ImageArray(cv2.merge(planes), encoding)}, payloads={"image": payload}
+        )
+
+
+class SplitAlphaChannels(ImageTool):
+    type_id, title, subtype = "cv.split_alpha_channels", "Split four channels (alpha)", "Channels"
+    outputs = (Port("channel_0"), Port("channel_1"), Port("channel_2"), Port("alpha"))
+
+    def process(self, inputs):
+        image = image_value(inputs["image"])
+        if image.ndim != 3 or image.shape[2] != 4:
+            raise ValueError("Alpha split requires exactly four channels")
+        return Result(
+            dict(zip((p.name for p in self.outputs), cv2.split(image))),
+            message=f"Channels in {image_format(inputs['image'])} order",
+            payloads={
+                p.name: {
+                    **self.input_payloads["image"],
+                    "channel": {"index": index, "source_format": image_format(inputs["image"])},
+                }
+                for index, p in enumerate(self.outputs)
+            },
+        )
+
+
+class MergeAlphaChannels(MergeChannels):
+    type_id, title = "cv.merge_alpha_channels", "Merge four channels (alpha)"
+    inputs = (*MergeChannels.inputs, Port("alpha"))
+    defaults = {"color_format": "bgra"}
+    parameter_choices = {"color_format": ("bgra", "rgba")}
+
+
+class ExtractChannel(ImageTool):
+    type_id, title, subtype = "cv.extract_channel", "Extract image channel", "Channels"
+    defaults = {"channel": "0"}
+    parameter_choices = {"channel": ("0", "1", "2", "3")}
+
+    def process(self, inputs):
+        image = image_value(inputs["image"])
+        count = image.shape[2] if image.ndim == 3 else 1
+        index = int(self.parameters["channel"])
+        if index >= count:
+            raise ValueError(f"Image has no channel {index}")
+        output = image.copy() if image.ndim == 2 else cv2.extractChannel(image, index)
+        return Result(
+            {"image": output},
+            payloads={
+                "image": {
+                    **self.input_payloads["image"],
+                    "channel": {"index": index, "source_format": image_format(inputs["image"])},
+                }
+            },
+        )
+
+
+class InsertChannel(ImageTool):
+    type_id, title, subtype = "cv.insert_channel", "Replace image channel", "Channels"
+    inputs = (Port("image"), Port("channel"))
+    defaults = ExtractChannel.defaults
+    parameter_choices = ExtractChannel.parameter_choices
+
+    def process(self, inputs):
+        require_same_frame([inputs["image"], inputs["channel"]])
+        image, channel = (image_value(inputs[k]) for k in ("image", "channel"))
+        count = image.shape[2] if image.ndim == 3 else 1
+        index = int(self.parameters["channel"])
+        if (
+            index >= count
+            or channel.ndim != 2
+            or channel.shape != image.shape[:2]
+            or channel.dtype != image.dtype
+        ):
+            raise ValueError(
+                "Replacement requires a valid channel index and matching monochrome size/depth"
+            )
+        output = image.copy()
+        if output.ndim == 2:
+            output[:] = channel
+        else:
+            cv2.insertChannel(channel, output, index)
+        return encoded_result(output, inputs["image"])
 
 
 class ApplyMask(Block):
@@ -380,6 +470,10 @@ FEATURE_BLOCKS = (
     GammaCorrection,
     SplitChannels,
     MergeChannels,
+    SplitAlphaChannels,
+    MergeAlphaChannels,
+    ExtractChannel,
+    InsertChannel,
     ApplyMask,
     AbsoluteDifference,
     GoodFeatures,

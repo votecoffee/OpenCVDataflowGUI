@@ -7,6 +7,7 @@ from .core import Block, Port, Result
 from .features import overlay_image
 from .parameters import BORDERS as FILTER_BORDERS
 from .parameters import OUTPUT_DEPTHS, anchor_value, optional_mask
+from .payloads import metadata, moved_payload
 from .processing import (
     ImageTool,
     encoded_result,
@@ -189,6 +190,7 @@ class CopyBorder(ImageTool):
 
 
 class Pyramid(ImageTool):
+    direction = "down"
     type_id, title, subtype = "cv.pyramid", "Gaussian pyramid up/down", "Geometry"
     outputs = (Port("image"), Port("geometry", "data"))
     defaults = {
@@ -211,8 +213,8 @@ class Pyramid(ImageTool):
         source = inputs["image"]
         image = image_value(source)
         levels = integer(self.parameters["levels"], "Levels", 1, 6)
-        direction = self.parameters["direction"]
-        if direction not in self.parameter_choices["direction"]:
+        direction = self.parameters.get("direction", self.direction)
+        if direction not in ("down", "up"):
             raise ValueError("Pyramid direction must be up or down")
         if direction == "up" and image.shape[0] * image.shape[1] * 4**levels > 64_000_000:
             raise ValueError("Pyramid output is limited to 64 million pixels")
@@ -236,7 +238,33 @@ class Pyramid(ImageTool):
             else:
                 image = cv2.pyrUp(image, dstsize=size, borderType=border)
         factor = 2.0**levels if direction == "down" else 0.5**levels
-        return geometry_result(image, source, [[factor, 0, 0], [0, factor, 0], [0, 0, 1]])
+        matrix = np.diag([factor, factor, 1.0])
+        result = geometry_result(image, source, matrix)
+        payload = moved_payload(metadata(source), matrix, [image.shape[1], image.shape[0]])
+        payload["pyramid_operation"] = {"direction": direction, "levels": levels}
+        if "pyramid" not in payload:
+            payload["pyramid"] = {
+                "set_id": self.id,
+                "level": levels if direction == "down" else 0,
+                "largest_size": [source.shape[1], source.shape[0]]
+                if direction == "down"
+                else [image.shape[1], image.shape[0]],
+                "to_largest": matrix.tolist() if direction == "down" else np.eye(3).tolist(),
+            }
+        result.payloads = {"image": payload, "geometry": payload}
+        return result
+
+
+class PyramidDown(Pyramid):
+    type_id, title, subtype = "cv.pyramid_down", "Pyramid down", "Pyramids"
+    defaults = {key: value for key, value in Pyramid.defaults.items() if key != "direction"}
+    parameter_choices = {"border": Pyramid.parameter_choices["border"]}
+
+
+class PyramidUp(PyramidDown):
+    type_id, title = "cv.pyramid_up", "Pyramid up"
+    direction = "up"
+    parameter_choices = {"border": ("reflect", "reflect_101")}
 
 
 class Filter2D(RegionalOperation, ImageTool):
@@ -599,16 +627,41 @@ class TransformPoints(Block):
             matrix = np.linalg.inv(matrix)
         points = np.asarray(inputs.get("points", self.parameters["pixel_points"]), np.float64)
         if points.size == 0:
-            return Result({"points": []})
-        if points.ndim != 2 or points.shape[1] != 2 or not np.isfinite(points).all():
+            points = points.reshape(0, 2)
+        elif points.ndim != 2 or points.shape[1] != 2 or not np.isfinite(points).all():
             raise ValueError("Points must be finite [x,y] pairs")
         denominators = np.c_[points, np.ones(len(points))] @ matrix[2]
         if np.any(np.abs(denominators) < 1e-12):
             raise ValueError("A point maps to infinity")
-        output = cv2.perspectiveTransform(points[:, None, :], matrix).reshape(-1, 2)
+        output = (
+            cv2.perspectiveTransform(points[:, None, :], matrix).reshape(-1, 2)
+            if len(points)
+            else np.empty((0, 2))
+        )
         if not np.isfinite(output).all():
             raise ValueError("Point transform produced nonfinite coordinates")
-        return Result({"points": output.tolist()})
+        context = self.input_payloads.get("points", {})
+        target_size = None
+        if isinstance(inputs.get("transform"), dict):
+            transform = inputs["transform"]
+            if "output_to_input" in transform:
+                target_size = transform.get(
+                    "output_size" if self.parameters["invert"] else "input_size"
+                )
+            else:
+                target_size = transform.get(
+                    "source_size" if self.parameters["invert"] else "target_size"
+                )
+        if context.get("spatial") and target_size is not None:
+            context = moved_payload(context, np.linalg.inv(matrix), target_size)
+        elif context.get("spatial"):
+            context = {
+                "coordinate_mapping": {
+                    "source": context["spatial"],
+                    "source_to_target": matrix.tolist(),
+                }
+            }
+        return Result({"points": output.tolist()}, payloads={"points": context})
 
 
 REGISTRATION_BLOCKS = (
@@ -617,6 +670,8 @@ REGISTRATION_BLOCKS = (
     Rotate,
     CopyBorder,
     Pyramid,
+    PyramidDown,
+    PyramidUp,
     Filter2D,
     UnsharpMask,
     FASTFeatures,

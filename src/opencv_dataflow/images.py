@@ -1,5 +1,7 @@
 """Explicit pixel encodings and deterministic image depth conversion."""
 
+import copy
+
 import cv2
 import numpy as np
 
@@ -10,13 +12,17 @@ PIXEL_DEPTHS = ("unchanged", "uint8", "uint16", "float32")
 class ImageArray(np.ndarray):
     """NumPy image with channel-encoding metadata, retained by snapshot copies."""
 
-    def __new__(cls, image, color_format):
+    def __new__(cls, image, color_format, metadata=None):
         obj = np.asarray(image).view(cls)
         obj.color_format = color_format
+        obj.metadata = copy.deepcopy(
+            getattr(image, "metadata", {}) if metadata is None else metadata
+        )
         return obj
 
     def __array_finalize__(self, source):
         self.color_format = getattr(source, "color_format", None)
+        self.metadata = copy.deepcopy(getattr(source, "metadata", {}))
 
 
 class DepthArray(np.ndarray):
@@ -25,12 +31,14 @@ class DepthArray(np.ndarray):
     def __new__(cls, values, units="m", display_min=0.0, display_max=5.0):
         obj = np.asarray(values, dtype=np.float32).view(cls)
         obj.units, obj.display_min, obj.display_max = units, display_min, display_max
+        obj.metadata = copy.deepcopy(getattr(values, "metadata", {}))
         return obj
 
     def __array_finalize__(self, source):
         self.units = getattr(source, "units", "unknown")
         self.display_min = getattr(source, "display_min", 0.0)
         self.display_max = getattr(source, "display_max", 5.0)
+        self.metadata = copy.deepcopy(getattr(source, "metadata", {}))
 
 
 def image_format(image):
@@ -120,6 +128,10 @@ def opencv_image(image):
 
 
 def preview_rgb(image):
+    from .payloads import ImagePyramid
+
+    if isinstance(image, ImagePyramid):
+        image = image.largest
     if isinstance(image, DepthArray):
         valid = np.isfinite(image) & (image > 0)
         pixels = np.clip(

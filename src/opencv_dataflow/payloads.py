@@ -1,0 +1,267 @@
+"""Optional wire payloads and explicit image coordinate provenance, independent of Qt."""
+
+import copy
+import json
+from dataclasses import dataclass
+
+import numpy as np
+
+
+@dataclass
+class ValuePacket:
+    value: object
+    payload: dict
+
+
+@dataclass
+class ImagePyramid:
+    """Largest-first image set. Each image retains its own spatial payload."""
+
+    levels: tuple
+
+    def __post_init__(self):
+        if not 1 <= len(self.levels) <= 9:
+            raise ValueError("Image pyramids require 1..9 levels")
+        previous = None
+        for index, image in enumerate(self.levels):
+            if not isinstance(image, np.ndarray) or image.size == 0 or image.ndim not in (2, 3):
+                raise ValueError("Every pyramid level must be a nonempty image")
+            if previous is not None and (
+                image.size >= previous.size
+                or image.dtype != previous.dtype
+                or image.shape[2:] != previous.shape[2:]
+            ):
+                raise ValueError("Pyramid levels must decrease in size and share depth/channels")
+            payload = metadata(image)
+            validate_payload(payload)
+            if (
+                "spatial" not in payload
+                or payload.get("pyramid", {}).get("level") != index
+                or payload["pyramid"].get("largest_size")
+                != [self.levels[0].shape[1], self.levels[0].shape[0]]
+            ):
+                raise ValueError("Pyramid images require matching spatial and per-level payloads")
+            previous = image
+
+    @property
+    def largest(self):
+        return self.levels[0]
+
+    @property
+    def shape(self):
+        return self.largest.shape
+
+
+def validate_payload(payload):
+    if not isinstance(payload, dict):
+        raise ValueError("Port payload must be a JSON object")
+    json.dumps(payload, allow_nan=False)
+    if "spatial" in payload:
+        spatial = payload["spatial"]
+        if not isinstance(spatial, dict) or not isinstance(spatial.get("image_size"), list):
+            raise ValueError("Spatial payload must declare image_size")
+        check_spatial(payload, spatial["image_size"])
+    if "pyramid" in payload:
+        pyramid = payload["pyramid"]
+        if not isinstance(pyramid, dict) or not isinstance(pyramid.get("level"), int):
+            raise ValueError("Pyramid payload must declare an integer level")
+        matrix = np.asarray(pyramid.get("to_largest"), float)
+        size = pyramid.get("largest_size")
+        if (
+            not 0 <= pyramid["level"] <= 8
+            or matrix.shape != (3, 3)
+            or not np.isfinite(matrix).all()
+            or np.linalg.matrix_rank(matrix) != 3
+            or not isinstance(size, list)
+            or len(size) != 2
+            or any(not isinstance(n, int) or n < 1 for n in size)
+        ):
+            raise ValueError("Invalid pyramid level, largest_size or to_largest transform")
+
+
+def metadata(value):
+    if isinstance(value, ValuePacket):
+        return {**metadata(value.value), **copy.deepcopy(value.payload)}
+    if isinstance(value, ImagePyramid):
+        return metadata(value.largest)
+    return copy.deepcopy(getattr(value, "metadata", {}))
+
+
+def frame(size, root_id=None):
+    return {
+        "root_id": root_id,
+        "root_size": list(size),
+        "image_size": list(size),
+        "to_root": np.eye(3).tolist(),
+    }
+
+
+def image_with_payload(image, payload):
+    from .images import DepthArray, ImageArray, image_format
+
+    if isinstance(image, DepthArray):
+        output = image.view(DepthArray)
+        output.metadata = copy.deepcopy(payload)
+        return output
+    return ImageArray(image, image_format(image), metadata=payload)
+
+
+def check_spatial(payload, size):
+    spatial = payload.get("spatial")
+    if spatial is None:
+        return
+    if (
+        not isinstance(spatial, dict)
+        or spatial.get("image_size") != list(size)
+        or len(size) != 2
+        or any(not isinstance(n, int) or n < 1 for n in size)
+    ):
+        raise ValueError("Spatial payload dimensions do not match the image")
+    if spatial.get("root_id") is not None and not isinstance(spatial["root_id"], str):
+        raise ValueError("Spatial root_id must be a string or null")
+    matrix = np.asarray(spatial.get("to_root"), float)
+    root_size = spatial.get("root_size")
+    if (
+        matrix.shape != (3, 3)
+        or not np.isfinite(matrix).all()
+        or np.linalg.matrix_rank(matrix) != 3
+        or not isinstance(root_size, list)
+        or len(root_size) != 2
+        or any(not isinstance(n, int) or n < 1 for n in root_size)
+    ):
+        raise ValueError("Spatial payload needs valid root_size and invertible to_root matrix")
+
+
+def prepare_inputs(block, values):
+    prepared, payloads = {}, {}
+    for port in block.inputs:
+        if port.name not in values:
+            continue
+        wrapped = values[port.name]
+        payload = metadata(wrapped)
+        value = wrapped.value if isinstance(wrapped, ValuePacket) else wrapped
+        if (
+            isinstance(value, ImagePyramid)
+            and port.kind == "image"
+            and not getattr(block, "preserve_image_sets", False)
+        ):
+            choice = block.input_levels.get(port.name, "largest")
+            index = 0 if choice == "largest" else int(choice)
+            if not 0 <= index < len(value.levels):
+                raise ValueError(f"{port.name} has no pyramid level {index}")
+            value = value.levels[index]
+            payload = {
+                **metadata(value),
+                **{key: item for key, item in payload.items() if key not in ("spatial", "pyramid")},
+            }
+        if isinstance(value, np.ndarray) and value.ndim in (2, 3):
+            payload.setdefault("spatial", frame([value.shape[1], value.shape[0]]))
+            check_spatial(payload, [value.shape[1], value.shape[0]])
+            value = image_with_payload(value, payload)
+        validate_payload(payload)
+        prepared[port.name], payloads[port.name] = value, payload
+    return prepared, payloads
+
+
+def moved_payload(payload, matrix, size):
+    output = copy.deepcopy(payload)
+    if "spatial" in output:
+        spatial = output["spatial"]
+        spatial["to_root"] = (np.asarray(spatial["to_root"]) @ matrix).tolist()
+        spatial["image_size"] = list(size)
+    if "pyramid" in output:
+        output["pyramid"]["to_largest"] = (
+            np.asarray(output["pyramid"]["to_largest"]) @ matrix
+        ).tolist()
+    return output
+
+
+def finish_outputs(block, result):
+    if not isinstance(result.payloads, dict) or not result.payloads.keys() <= result.outputs.keys():
+        raise ValueError("Result payloads must name declared output ports")
+    reference = next(
+        (
+            key
+            for key, value in block.last_inputs.items()
+            if isinstance(value, np.ndarray) and key not in ("mask", "window", "template")
+        ),
+        None,
+    )
+    base = copy.deepcopy(block.input_payloads.get(reference, {}))
+    if reference is None and len(block.input_payloads) == 1:
+        base = copy.deepcopy(next(iter(block.input_payloads.values())))
+    geometry = result.outputs.get("geometry")
+    if reference is not None and isinstance(geometry, dict) and "output_to_input" in geometry:
+        base = moved_payload(base, np.asarray(geometry["output_to_input"]), geometry["output_size"])
+    first_image = next(
+        (value for value in result.outputs.values() if isinstance(value, np.ndarray)), None
+    )
+    if reference is None and first_image is not None and "spatial" not in base:
+        base["spatial"] = frame([first_image.shape[1], first_image.shape[0]], f"{block.id}:image")
+    for port in block.outputs:
+        value = result.outputs[port.name]
+        if isinstance(value, ValuePacket):
+            result.payloads.setdefault(port.name, metadata(value))
+            value = value.value
+            result.outputs[port.name] = value
+        explicit = result.payloads.get(port.name)
+        inherited = metadata(value)
+        if reference is not None and isinstance(geometry, dict) and "output_to_input" in geometry:
+            inherited = {
+                **base,
+                **{
+                    key: item
+                    for key, item in inherited.items()
+                    if key not in ("spatial", "pyramid")
+                },
+            }
+        payload = copy.deepcopy(explicit if explicit is not None else (inherited or base))
+        if isinstance(value, np.ndarray):
+            size = [value.shape[1], value.shape[0]]
+            if payload.get("spatial", {}).get("image_size") != size:
+                if explicit is not None or metadata(value):
+                    check_spatial(payload, size)
+                # Plots and response maps are different grids; do not label them as source pixels.
+                payload.pop("spatial", None)
+                payload.pop("pyramid", None)
+            result.outputs[port.name] = image_with_payload(value, payload)
+        elif (
+            isinstance(value, dict)
+            and value.get("model") == "image_region_v1"
+            and "spatial" in payload
+        ):
+            value["coordinate_context"] = copy.deepcopy(payload["spatial"])
+        validate_payload(payload)
+        if payload:
+            result.payloads[port.name] = payload
+    pyramid = base.get("pyramid")
+    if pyramid:
+        level = pyramid["level"]
+        size = base.get("spatial", {}).get("image_size", [])
+        result.message += f" · pyramid source level {level}, image {size}; coordinates are local"
+    return result
+
+
+def packet_for(result, name):
+    payload = result.payloads.get(name, {})
+    return ValuePacket(result.outputs[name], payload) if payload else result.outputs[name]
+
+
+def compatible(out_kind, in_kind):
+    return (
+        out_kind == in_kind
+        or "any" in (out_kind, in_kind)
+        or (out_kind == "pyramid" and in_kind == "image")
+    )
+
+
+def require_same_frame(values):
+    contexts = [metadata(value).get("spatial") for value in values]
+    known = [c for c in contexts if c and c.get("root_id") is not None]
+    if known and any(
+        c["root_id"] != known[0]["root_id"]
+        or c["image_size"] != known[0]["image_size"]
+        or not np.allclose(c["to_root"], known[0]["to_root"], atol=1e-9, rtol=0)
+        for c in known[1:]
+    ):
+        raise ValueError("Channel images use different coordinate frames")

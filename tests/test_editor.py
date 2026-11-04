@@ -203,6 +203,7 @@ def test_regions_example_editor_load_save_and_shape_dropdown(
     window = MainWindow()
     window.show()
     app.processEvents()
+
     getattr(window, loader)()
     assert len(window.graph.blocks) == count
     circle = window.graph.blocks[shape_id]
@@ -219,6 +220,35 @@ def test_regions_example_editor_load_save_and_shape_dropdown(
     window.dirty = False
     window.close()
     app.processEvents()
+
+
+def test_channel_pyramid_editor_preview_level_selection_and_save(app, tmp_path):
+    window = MainWindow()
+    window.load_channel_pyramid_example()
+    window.graph.run()
+    window.scene.nodes["pyr_set"].setSelected(True)
+    window.inspector.preview_choice.setCurrentText("Output / images")
+    assert not window.inspector.image.pixmap().isNull()
+    window.scene.clearSelection()
+    window.scene.nodes["pyr_threshold"].setSelected(True)
+    assert window.inspector.level_fields["image"].currentText() == "2"
+    window.inspector.level_fields["image"].setCurrentText("1")
+    window.inspector.apply()
+    assert window.graph.blocks["pyr_threshold"].input_levels == {"image": "1"}
+    window.path = tmp_path / "pyramids.json"
+    assert window.save_project()
+    loaded = Graph.load(window.path, window.registry)
+    loaded.run()
+    assert loaded.blocks["pyr_threshold"].last_output_images["image"].shape == (110, 190)
+    assert loaded.blocks["pyr_components"].last_result.outputs["count"] == 2
+    window.start_run(False)
+    pump_until(app, lambda: window.runner is None)
+    assert all(block.state == "pass" for block in window.graph.blocks.values())
+    assert (
+        window.graph.blocks["pyr_components"].last_result.payloads["data"]["pyramid"]["level"] == 1
+    )
+    window.dirty = False
+    window.close()
 
 
 def test_image_file_dropdowns_metadata_and_preview(app, tmp_path):

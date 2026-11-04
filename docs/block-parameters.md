@@ -5,6 +5,8 @@ come from the same metadata used by the inspector. Enums are dropdowns, booleans
 are checkboxes, and vectors/matrices use JSON fields. Image/data inputs are ports,
 not hidden parameters. Native output buffers, in-place pointers and backend internals
 are managed by the runtime. Some controls apply only to the selected method or codec.
+Image inputs also have an inspector pyramid-level dropdown (largest by default).
+See [payloads, channels and pyramids](payloads-pyramids.md) for coordinate provenance.
 
 ## White / color balance (`calibration.color_balance`)
 
@@ -107,6 +109,26 @@ Inputs: `image` (image), `calibration` (data).
 | --- | --- | --- |
 | `max_rms_pixels` | `1.0` |  |
 | `new_camera_matrix` | `[]` |  |
+
+## Attach port payload (`core.attach_payload`)
+
+Data / Payloads
+
+Inputs: `value` (any), `payload` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `payload` | `{}` |  |
+
+## Read port payload / coordinates (`core.read_payload`)
+
+Data / Payloads
+
+Inputs: `value` (any).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference` | `"largest"` | `largest`, `root` |
 
 ## Absolute difference (`cv.absdiff`)
 
@@ -322,6 +344,16 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 
 No configurable algorithm parameters.
 
+## Extract image channel (`cv.extract_channel`)
+
+Image processing / Channels
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `channel` | `"0"` | `0`, `1`, `2`, `3` |
+
 ## Custom 2D filter (`cv.filter2d`)
 
 Image processing / Filtering
@@ -382,6 +414,17 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `output_depth` | `"float32"` | `int16`, `float32`, `float64` |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 
+## Gaussian image pyramid set (`cv.image_pyramid`)
+
+Image processing / Pyramids
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `levels` | `4` | Total images including level 0 (largest), from 1 to 9. |
+| `border` | `"reflect"` | `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
+
 ## In range mask (`cv.in_range`)
 
 Image processing / Segmentation
@@ -396,6 +439,16 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `lower` | `[0]` |  |
 | `upper` | `[255]` |  |
 
+## Replace image channel (`cv.insert_channel`)
+
+Image processing / Channels
+
+Inputs: `image` (image), `channel` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `channel` | `"0"` | `0`, `1`, `2`, `3` |
+
 ## Median blur (`cv.median_blur`)
 
 Image processing / Filtering
@@ -408,6 +461,16 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `kernel` | `3` |  |
+
+## Merge four channels (alpha) (`cv.merge_alpha_channels`)
+
+Image processing / Channels
+
+Inputs: `channel_0` (image), `channel_1` (image), `channel_2` (image), `alpha` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `color_format` | `"bgra"` | `bgra`, `rgba` |
 
 ## Merge three channels (`cv.merge_channels`)
 
@@ -465,6 +528,42 @@ Inputs: `image` (image).
 | `direction` | `"down"` | `down`, `up` |
 | `levels` | `1` |  |
 | `border` | `"reflect"` | `replicate`, `reflect`, `reflect_101`, `reflect_edge` PyrUp supports only reflect/reflect_101; PyrDown also supports other choices. |
+| `output_width` | `0` | 0 uses native sizing. Explicit dimensions apply to the final level. |
+| `output_height` | `0` |  |
+
+## Pyramid down (`cv.pyramid_down`)
+
+Image processing / Pyramids
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `levels` | `1` |  |
+| `border` | `"reflect"` | `replicate`, `reflect`, `reflect_101`, `reflect_edge` PyrUp supports only reflect/reflect_101; PyrDown also supports other choices. |
+| `output_width` | `0` | 0 uses native sizing. Explicit dimensions apply to the final level. |
+| `output_height` | `0` |  |
+
+## Select pyramid level (`cv.pyramid_level`)
+
+Image processing / Pyramids
+
+Inputs: `images` (pyramid).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `level` | `"largest"` | `largest`, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8` |
+
+## Pyramid up (`cv.pyramid_up`)
+
+Image processing / Pyramids
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `levels` | `1` |  |
+| `border` | `"reflect"` | `reflect`, `reflect_101` PyrUp supports only reflect/reflect_101; PyrDown also supports other choices. |
 | `output_width` | `0` | 0 uses native sizing. Explicit dimensions apply to the final level. |
 | `output_height` | `0` |  |
 
@@ -537,6 +636,14 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `delta` | `0.0` |  |
 | `output_depth` | `"same"` | `same`, `uint8`, `uint16`, `int16`, `float32`, `float64` |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
+
+## Split four channels (alpha) (`cv.split_alpha_channels`)
+
+Image processing / Channels
+
+Inputs: `image` (image).
+
+No configurable algorithm parameters.
 
 ## Split three channels (`cv.split_channels`)
 

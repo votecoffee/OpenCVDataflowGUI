@@ -135,13 +135,35 @@ def rasterize(region, shape, *, _depth=0, _budget=None):
 
 
 def selection_mask(inputs, image):
+    from .payloads import metadata
+
+    context = metadata(inputs.get("image", inputs.get("image_a", image))).get("spatial")
+
+    def check_context(other):
+        if (
+            context
+            and other
+            and context.get("root_id") is not None
+            and other.get("root_id") is not None
+            and (
+                context["root_id"] != other["root_id"]
+                or context["image_size"] != other["image_size"]
+                or not np.allclose(context["to_root"], other["to_root"], atol=1e-9, rtol=0)
+            )
+        ):
+            raise ValueError(
+                "Selection coordinate frame differs from image; transform the region/mask first"
+            )
+
     mask = inputs.get("mask")
     if mask is not None:
         if mask.dtype != np.uint8 or mask.ndim != 2 or mask.shape != image.shape[:2]:
             raise ValueError("Mask must be uint8 monochrome with matching image dimensions")
+        check_context(metadata(mask).get("spatial"))
         mask = np.where(mask != 0, 255, 0).astype(np.uint8)
     region = inputs.get("region")
     if region is not None:
+        check_context(region.get("coordinate_context"))
         area = rasterize(region, image.shape)
         mask = area if mask is None else cv2.bitwise_and(mask, area)
     return mask

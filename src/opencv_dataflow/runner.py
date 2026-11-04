@@ -6,8 +6,11 @@ import sys
 import time
 from pathlib import Path
 
+import numpy as np
+
 from .blocks import builtin_registry
 from .core import Graph
+from .payloads import ImagePyramid
 from .plugins import load_plugin
 from .toolblocks import ToolBlock
 
@@ -27,10 +30,12 @@ def describe(graph):
             "outputs": {
                 p.name: result.outputs[p.name]
                 for p in block.outputs
-                if p.kind not in ("image", "depth")
+                if p.kind not in ("image", "depth", "pyramid")
+                and not isinstance(result.outputs[p.name], (np.ndarray, ImagePyramid))
             }
             if result
             else {},
+            "payloads": result.payloads if result else {},
         }
         if isinstance(block, ToolBlock):
             record["children"] = describe(block.graph)

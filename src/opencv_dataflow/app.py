@@ -41,6 +41,7 @@ from .calibration import calibration_templates
 from .canvas import CanvasScene, CanvasView, Node, pixmap
 from .core import Graph
 from .examples import (
+    channel_pyramid_graph,
     combined_regions_graph,
     regions_graph,
     starter_graph,
@@ -93,7 +94,7 @@ class Inspector(QWidget):
         self.block = None
         self._region_image = None
         self._region_source = None
-        self.fields, self.port_checks = {}, []
+        self.fields, self.port_checks, self.level_fields = {}, [], {}
         layout = QVBoxLayout(self)
         title = QLabel("BLOCK INSPECTOR")
         title.setObjectName("sectionTitle")
@@ -127,7 +128,7 @@ class Inspector(QWidget):
         self.block = block
         while self.form.rowCount():
             self.form.removeRow(0)
-        self.fields, self.port_checks = {}, []
+        self.fields, self.port_checks, self.level_fields = {}, [], {}
         if block is None:
             self.caption.setText("Select a block to configure its tools and ports.")
             self.refresh_result()
@@ -182,13 +183,22 @@ class Inspector(QWidget):
             draw_region = QPushButton("Draw / edit region…")
             draw_region.clicked.connect(self.edit_region)
             self.form.addRow(draw_region)
+        if not getattr(block, "preserve_image_sets", False):
+            for port in block.inputs:
+                if port.kind == "image":
+                    level = QComboBox()
+                    level.addItems(["largest", *map(str, range(9))])
+                    level.setCurrentText(block.input_levels.get(port.name, "largest"))
+                    level.setToolTip("Used when this input receives an image pyramid set.")
+                    self.level_fields[port.name] = level
+                    self.form.addRow(f"Pyramid level: {port.name}", level)
         self.thumb = QCheckBox("Show image on node")
         self.thumb.setChecked(block.thumbnail)
         self.form.addRow(self.thumb)
         self.node_image = QComboBox()
         self.node_image.addItem("Automatic", "")
         for port in block.outputs:
-            if port.kind in ("image", "depth"):
+            if port.kind in ("image", "depth", "pyramid"):
                 self.node_image.addItem(port.name, port.name)
         index = self.node_image.findData(block.preview_output)
         self.node_image.setCurrentIndex(max(0, index))
@@ -312,6 +322,11 @@ class Inspector(QWidget):
                     raise ValueError("ToolBlock type and subtype cannot be empty")
                 b.block_type, b.subtype = kind, subtype
             b.name, b.parameters = name, parameters
+            b.input_levels = {
+                name: field.currentText()
+                for name, field in self.level_fields.items()
+                if field.currentText() != "largest"
+            }
             b.exposed_inputs, b.exposed_outputs = exposed["inputs"], exposed["outputs"]
             b.thumbnail = self.thumb.isChecked()
             b.preview_output = self.node_image.currentData()
@@ -356,7 +371,11 @@ class Inspector(QWidget):
                 f"{b.state.upper()}   ·   {b.elapsed_ms:.2f} ms   ·   score {score}\n"
                 + (b.error or (result.message if result else "Not executed"))
                 + "\n\n"
-                + json.dumps(outputs, indent=2, default=str)
+                + json.dumps(
+                    {"outputs": outputs, "payloads": result.payloads} if result else outputs,
+                    indent=2,
+                    default=str,
+                )
             )
 
     def show_preview(self, choice):
@@ -456,6 +475,7 @@ class MainWindow(QMainWindow):
             ("Load regions example", None, self.load_regions_example),
             ("Load combined regions example", None, self.load_combined_regions_example),
             ("Load transformed regions example", None, self.load_transformed_regions_example),
+            ("Load channels and pyramids example", None, self.load_channel_pyramid_example),
         ):
             action = QAction(title, self)
             if shortcut:
@@ -717,6 +737,10 @@ class MainWindow(QMainWindow):
     def load_transformed_regions_example(self):
         if not self.runner and self.confirm_discard():
             self.replace_graph(transformed_regions_graph(self.registry))
+
+    def load_channel_pyramid_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(channel_pyramid_graph(self.registry))
 
     def open_project(self):
         if self.runner or not self.confirm_discard():
