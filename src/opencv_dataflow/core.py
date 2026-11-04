@@ -72,8 +72,9 @@ class Block:
     def process(self, inputs: dict[str, Any]) -> Result:
         raise NotImplementedError
 
-    def execute(self, values):
+    def execute(self, values, cancelled=lambda: False):
         self.clear_result()
+        self._cancelled = cancelled
         started = time.perf_counter()
         try:
             self.last_inputs = copy.deepcopy(values)
@@ -111,6 +112,21 @@ class Block:
 
     def close(self):
         """Release optional native resources, on the execution thread."""
+
+    def serialize_extra(self):
+        return {}
+
+    def copy_results_from(self, other):
+        for name in (
+            "last_inputs",
+            "last_result",
+            "last_output_images",
+            "last_graphics",
+            "state",
+            "error",
+            "elapsed_ms",
+        ):
+            setattr(self, name, copy.deepcopy(getattr(other, name)))
 
 
 def validate_value(port, value):
@@ -208,8 +224,17 @@ class Graph:
                 deps.difference_update(ready)
         return order
 
-    def run(self, cancelled=lambda: False):
+    def run(self, cancelled=lambda: False, injected=None):
         self.invalidate()
+        injected = injected or {}
+        for (target, name), value in injected.items():
+            block = self.blocks[target]
+            port = next((p for p in block.inputs if p.name == name), None)
+            if port is None or any(
+                c.target == target and c.input == name for c in self.connections
+            ):
+                raise ValueError("Invalid or internally connected public input")
+            validate_value(port, value)
         for key in self.ordered():
             block = self.blocks[key]
             if cancelled():
@@ -224,7 +249,10 @@ class Graph:
             values = {
                 c.input: self.blocks[c.source].last_result.outputs[c.output] for c in incoming
             }
-            block.execute(values)
+            values.update(
+                {name: value for (target, name), value in injected.items() if target == key}
+            )
+            block.execute(values, cancelled)
 
     def close(self):
         for block in self.blocks.values():
@@ -244,6 +272,7 @@ class Graph:
                     "exposed_outputs": b.exposed_outputs,
                     "thumbnail": b.thumbnail,
                     "preview_output": b.preview_output,
+                    **b.serialize_extra(),
                 }
                 for b in self.blocks.values()
             ],
@@ -263,14 +292,23 @@ class Graph:
         return cls.from_dict(data, registry)
 
     @classmethod
-    def from_dict(cls, data, registry):
+    def from_dict(cls, data, registry, _depth=0):
+        if _depth > 16:
+            raise ValueError("ToolBlock nesting exceeds 16 levels")
         if data.get("schema_version") != 1:
             raise ValueError("Unsupported project schema version")
         graph = cls()
         for item in data["blocks"]:
-            block = registry.create(
-                item["type"], block_id=item["id"], parameters=item["parameters"]
-            )
+            if item["type"] == "core.toolblock":
+                from .toolblocks import ToolBlock
+
+                block = ToolBlock.from_definition(
+                    item["toolblock"], registry, _depth + 1, block_id=item["id"]
+                )
+            else:
+                block = registry.create(
+                    item["type"], block_id=item["id"], parameters=item["parameters"]
+                )
             block.name = item["name"]
             position = item["position"]
             if len(position) != 2 or not all(math.isfinite(v) for v in position):
