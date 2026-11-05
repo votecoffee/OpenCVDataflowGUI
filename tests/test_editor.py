@@ -30,6 +30,7 @@ from opencv_dataflow.project_compare import ProjectCompare
 from opencv_dataflow.project_xml import read_project_xml
 from opencv_dataflow.toolblock_editor import InterfaceDialog
 from opencv_dataflow.toolblocks import encapsulate
+from opencv_dataflow.visual_style import BLOCK_STATE_COLORS
 
 
 def pump_until(app, predicate, seconds=8):
@@ -221,6 +222,90 @@ def test_drag_ports_both_directions(app, reverse):
     assert graph.connections[0].source == a.id
     assert graph.connections[0].target == b.id
     view.close()
+
+
+def test_result_image_popouts_follow_ticket_state_and_block_previews(app):
+    window = MainWindow()
+    window.show()
+    block = list(window.graph.blocks.values())[-1]
+    window.scene.nodes[block.id].setSelected(True)
+    inspector = window.inspector
+
+    def run_once():
+        window.start_run(False)
+        pump_until(app, lambda: window.runner is None)
+
+    def check(viewer, ticket, state):
+        assert f"Ticket {ticket} · {state.upper()}" in viewer.windowTitle()
+        assert BLOCK_STATE_COLORS[state] in viewer.frame.styleSheet()
+
+    try:
+        run_once()
+        assert not inspector.pop_out_image.isEnabled()
+        inspector.preview_choice.setCurrentText("Output / overlay")
+        inspector.pop_out_image.click()
+        output = next(iter(inspector.image_popouts.values()))
+        assert not output.image.pixmap().isNull()
+        check(output, 1, "pass")
+        inspector.pop_out_image.click()
+        assert len(inspector.image_popouts) == 1
+        inspector.preview_choice.setCurrentText("Graphic / contours")
+        inspector.pop_out_image.click()
+        graphic = list(inspector.image_popouts.values())[-1]
+        check(graphic, 1, "pass")
+
+        inspector.fields["expected_count"].setText("3")
+        inspector.run_block.click()
+        pump_until(app, lambda: inspector._live_result is not None)
+        check(output, 1, "fail")
+        check(graphic, 1, "fail")
+        window.scene.clearSelection()
+        check(output, 1, "pass")
+        check(graphic, 1, "pass")
+
+        block.parameters["expected_count"] = 3
+        run_once()
+        check(output, 2, "fail")
+        check(graphic, 2, "fail")
+        block.parameters["min_area"] = -1.0
+        run_once()
+        check(output, 3, "error")
+        assert output.image.text() == "No image for this result"
+        assert output.image.pixmap().isNull()
+
+        output.close()
+        assert len(inspector.image_popouts) == 1
+        window.replace_graph(Graph())
+        assert not inspector.image_popouts
+    finally:
+        window.close()
+
+
+def test_result_image_popout_stays_pinned_inside_a_toolblock(app):
+    window = MainWindow()
+    window.show()
+    graph = window.graph
+    ids = list(graph.blocks)
+    owner = encapsulate(graph, ids[-2:], "Inspection", window.registry)
+    graph.run()
+    window.enter_toolblock(owner)
+    window.scene.nodes[ids[-1]].setSelected(True)
+    inspector = window.inspector
+    try:
+        inspector.preview_choice.setCurrentText("Output / overlay")
+        inspector.pop_out_image.click()
+        viewer = next(iter(inspector.image_popouts.values()))
+        assert "Ticket 1" in viewer.windowTitle()
+        window.leave_toolblock()
+        window.start_run(False)
+        pump_until(app, lambda: window.runner is None)
+        assert "Ticket 2" in viewer.windowTitle()
+        window.scene.nodes[owner.id].setSelected(True)
+        window.scene.delete_selected()
+        assert not inspector.image_popouts
+    finally:
+        window.dirty = False
+        window.close()
 
 
 def test_run_inspector_delete_and_continuous_stop(app):

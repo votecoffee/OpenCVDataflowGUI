@@ -90,6 +90,7 @@ from .queued_execution import QueuedExecution, background_queue
 from .recipe_editor import RecipeManager
 from .recipes import validate_bindings
 from .region_editor import RegionEditor
+from .result_image import ResultImageWindow
 from .run_profiles import PROFILES
 from .sequence import share_native_sequence_runtime
 from .ticket_window import TicketResultsWindow
@@ -199,6 +200,7 @@ class Inspector(QWidget):
         self._live_due = False
         self._live_worker = None
         self._live_result = None
+        self.image_popouts = {}
         self.live_timer = QTimer(self)
         self.live_timer.setSingleShot(True)
         self.live_timer.timeout.connect(self.start_preview)
@@ -238,7 +240,14 @@ class Inspector(QWidget):
         layout.addWidget(scroll, 3)
         self.preview_choice = QComboBox()
         self.preview_choice.currentTextChanged.connect(self.show_preview)
-        layout.addWidget(self.preview_choice)
+        image_controls = QHBoxLayout()
+        image_controls.addWidget(self.preview_choice, 1)
+        self.pop_out_image = QPushButton("Pop out…")
+        self.pop_out_image.setEnabled(False)
+        self.pop_out_image.setToolTip("Open a live window for the selected output or graphic.")
+        self.pop_out_image.clicked.connect(self.open_image_popout)
+        image_controls.addWidget(self.pop_out_image)
+        layout.addLayout(image_controls)
         self.image = QLabel("No image available")
         self.image.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.image.setMinimumHeight(160)
@@ -1069,6 +1078,7 @@ class Inspector(QWidget):
         if not automatic and self.live_results.isChecked():
             self.stop_previews()
             return
+        self.refresh_image_popouts()
         previous = self.preview_choice.currentText()
         self.preview_choice.blockSignals(True)
         self.preview_choice.clear()
@@ -1124,6 +1134,7 @@ class Inspector(QWidget):
             )
 
     def show_preview(self, choice):
+        self.pop_out_image.setEnabled(choice.startswith(("Output / ", "Graphic / ")))
         self.image.clear()
         block = self._live_result or self.block
         if block and " / " in choice:
@@ -1144,6 +1155,43 @@ class Inspector(QWidget):
                 )
                 return
         self.image.setText("Run to inspect images")
+
+    def open_image_popout(self):
+        choice = self.preview_choice.currentText()
+        if self.block is None or not choice.startswith(("Output / ", "Graphic / ")):
+            return
+        kind, name = choice.split(" / ", 1)
+        path = tuple(
+            getattr(owner, "_parent_node_id", owner.id) for _, owner in self.window.graph_stack
+        )
+        key = (path, self.block.id, kind, name)
+        viewer = self.image_popouts.get(key)
+        if viewer is None:
+            viewer = ResultImageWindow(kind, name, self.window)
+            self.image_popouts[key] = viewer
+            viewer.finished.connect(lambda: self.image_popouts.pop(key, None))
+        viewer.refresh(self._live_result or self.block)
+        viewer.show()
+        viewer.raise_()
+
+    def refresh_image_popouts(self):
+        for (path, block_id, _, _), viewer in list(self.image_popouts.items()):
+            graph = self.window.root_graph
+            for node_id in path:
+                graph = getattr(graph.blocks.get(node_id), "graph", None)
+                if graph is None:
+                    break
+            block = graph.blocks.get(block_id) if graph is not None else None
+            if block is None:
+                viewer.close()
+            else:
+                if block is self.block and self._live_result is not None:
+                    block = self._live_result
+                viewer.refresh(block)
+
+    def close_image_popouts(self):
+        for viewer in list(self.image_popouts.values()):
+            viewer.close()
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
@@ -1550,6 +1598,7 @@ class MainWindow(QMainWindow):
     def mark_dirty(self):
         if self.graph_stack:
             self.root_graph.invalidate()
+        self.inspector.refresh_image_popouts()
         self.dirty = True
         self.update_title()
 
@@ -1582,6 +1631,7 @@ class MainWindow(QMainWindow):
         return response == QMessageBox.StandardButton.Discard
 
     def replace_graph(self, graph, path=None):
+        self.inspector.close_image_popouts()
         self.root_graph.close()
         self.graph_stack = []
         self.show_graph(graph)
@@ -1845,8 +1895,8 @@ class MainWindow(QMainWindow):
                 block.restore_runtime(snapshot)
                 block.update_metrics()
         self.scene.update()
-        self.inspector.refresh_result()
         self.runner = None
+        self.inspector.refresh_result()
         worker.deleteLater()
         self.scene.set_locked(False)
         self.library.setEnabled(True)
@@ -1941,6 +1991,7 @@ class MainWindow(QMainWindow):
             self.stop_run()
             event.ignore()
         elif self.confirm_discard():
+            self.inspector.close_image_popouts()
             self.inspector.stop_previews(wait=True)
             self.root_graph.close()
             event.accept()

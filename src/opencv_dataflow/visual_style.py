@@ -24,6 +24,16 @@ PORT_LABELS = {
     "cloud": "3D point cloud · coral",
 }
 
+BLOCK_STATE_COLORS = {
+    "idle": "#354257",
+    "pass": "#26835d",
+    "fail": "#ae6430",
+    "error": "#b14e5b",
+    "skipped": "#646377",
+    "inactive": "#46536a",
+    "waiting": "#426b99",
+}
+
 BLOCK_COLORS = {
     "Input": "#45c6ba",
     "Output": "#ed976f",
