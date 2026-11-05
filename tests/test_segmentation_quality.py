@@ -61,3 +61,31 @@ def test_quality_defect_and_selection(metric):
     masked = block.execute({"image_a": reference, "image_b": sample, "mask": selection})
     assert masked is not None, block.error
     assert masked.passed
+
+
+@pytest.mark.parametrize("mode", ["rectangle", "binary_mask", "labels"])
+def test_grabcut_modes(mode):
+    image = np.full((64, 64), 20, np.uint8)
+    image[24:40, 24:40] = 220
+    markers = np.zeros_like(image)
+    markers[16:48, 16:48] = 3 if mode == "labels" else 255
+    block = builtin_registry().create(
+        "inspect.grabcut", parameters={"mode": mode, "rectangle": [16, 16, 32, 32]}
+    )
+    result = block.execute({"image": image, "markers": markers})
+    assert result is not None, block.error
+    np.testing.assert_array_equal(result.outputs["mask"] != 0, image == 220)
+
+
+@pytest.mark.parametrize("method", ["zhang_suen", "guo_hall"])
+def test_thinning_removes_width_and_respects_selection(method):
+    image = np.zeros((24, 28), np.uint8)
+    image[8:15, 2:26] = 255
+    selection = np.zeros_like(image)
+    selection[:, :20] = 255
+    block = builtin_registry().create("inspect.thin_mask", parameters={"method": method})
+    result = block.execute({"image": image, "mask": selection})
+    assert result is not None, block.error
+    skeleton = result.outputs["mask"]
+    assert 5 < np.count_nonzero(skeleton) < 20
+    assert not skeleton[:, 20:].any()

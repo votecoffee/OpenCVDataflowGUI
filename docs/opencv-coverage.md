@@ -10,9 +10,9 @@ lists the tools that can be placed on a graph today.
 
 | Rank | Outstanding capability | OpenCV primitives and graph work |
 | --- | --- | --- |
-| 1 | Separate touching parts and isolate foreground | Distance-peak seeds, GrabCut from rectangle or mask, hole fill, morphological reconstruction and skeleton thinning. Watershed, flood fill, threshold, morphology, distance transform and components are available. |
+| 1 | Separate touching parts and isolate foreground | Distance-peak seeds, hole fill and morphological reconstruction. Watershed, flood fill, GrabCut initialization, skeleton thinning, threshold, morphology, distance transform and components are available. |
 | 2 | Reference comparison and defect scoring | Histogram comparison and backprojection, registered reference subtraction and packaged residual-component inspection. SSIM with a local similarity map, PSNR/MSE and configurable fail thresholds are available. |
-| 3 | Multi-result template search and pick selection | Response-map peaks from `matchTemplate`, score thresholds, non-maximum suppression, subpixel peaks and pose-relative clearance. Add distinct visible-feature coverage, overlap and depth occlusion evidence, and deterministic pick ranking. Existing trainable matchers and collection filters cover parts of this pipeline. |
+| 3 | Multi-result template search and pick selection | Subpixel template peaks, pose-relative clearance, distinct visible-feature coverage and depth occlusion evidence, and deterministic pick ranking. Fixed-scale multi-result template matching now supplies ranked peaks, overlap suppression and poses. Trainable matchers and collection filters cover other parts of this pipeline. |
 | 4 | Calipers, widths, contours and shape fitting | Intensity profiles along pose-relative calipers, paired edges, width/gap/discontinuity along a path, `fitLine`, `fitEllipse*`, `minEnclosingCircle`, convex hull/defects, `pointPolygonTest` and contour-to-contour `matchShapes`. Several descriptors are computed inside existing detectors. Dedicated fitting blocks should accept points or collections and report residuals. |
 | 5 | File video and replay | Video file/stream sources, decode timestamps, seek, frame ranges and extraction, codec/container selection, video writing and deterministic end-of-stream. Extend image-camera acquisition with timed replay and independent source readiness. |
 | 6 | Industrial text and code workflows | OCR text detection, recognition, character rules and training/recipe assets. Add verified Data Matrix and other required symbologies through a suitable backend, and a separate grading workflow. Basic QR and OpenCV linear-code decoding are available. |
@@ -100,9 +100,22 @@ or floating intensity tolerances, 4/8-connectivity and a mask or region
 that acts as a barrier. **Marker-controlled watershed** accepts a uint8
 seed mask or a nonnegative int32 label image. It returns labels, a boundary
 mask and a mask for one selected label or all positive labels.
+**GrabCut foreground** accepts a rectangle, a binary probable-foreground mask
+or native four-state markers. It initializes a new model for each activation.
+**Thin binary mask** exposes Zhang–Suen and Guo–Hall skeletonization.
 
 **Compare image quality** compares two registered images using SSIM, PSNR or
 MSE and an optional pass threshold. A region or mask selects pixels for the
 score. SSIM uses neighborhoods from the full images, so nearby unselected
 pixels can affect a selected pixel's similarity. SSIM and MSE return full
 maps. The score uses equal weighting across selected pixels and channels.
+
+
+## Available repeated template matching
+
+**Find template instances** searches for fixed-scale, fixed-orientation
+copies with a normalized matching method, minimum score, result limit,
+overlap suppression and optional mask/region inputs. It returns ranked
+bounds, centers, scores and a list of center poses. The pose list connects
+directly to **Inspect each pose in parallel**. Open the [25-part example](../examples/template_instances.json)
+or run it with `opencv-dataflow-run examples/template_instances.json`.

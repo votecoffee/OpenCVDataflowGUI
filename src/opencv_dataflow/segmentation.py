@@ -112,4 +112,79 @@ class Watershed(Block):
         return Result({"labels": labels, "boundaries": boundaries, "mask": mask, "count": count})
 
 
-SEGMENTATION_BLOCKS = (FloodFill, Watershed)
+class GrabCut(Block):
+    type_id, title = "inspect.grabcut", "GrabCut foreground"
+    category, block_type, subtype = "Inspection", "Inspection", "Segmentation"
+    inputs = (Port("image"), Port("markers", required=False))
+    outputs = (Port("mask"), Port("labels"))
+    defaults = {"mode": "rectangle", "rectangle": [10, 10, 100, 100], "iterations": 3}
+    parameter_choices = {"mode": ("rectangle", "binary_mask", "labels")}
+    parameter_help = {
+        "rectangle": "Initial foreground rectangle [x, y, width, height] in image pixels.",
+        "mode": "Use a rectangle, a probable-foreground binary mask, or GrabCut labels 0–3.",
+    }
+
+    def process(self, inputs):
+        source = inputs["image"]
+        image = bgr8(source)
+        height, width = image.shape[:2]
+        mode = self.parameters["mode"]
+        iterations = integer(self.parameters["iterations"], "Iterations", 1, 100)
+        rect = None
+        markers = np.zeros((height, width), np.uint8)
+        flag = cv2.GC_INIT_WITH_RECT
+        if mode == "rectangle":
+            x, y, w, h = self.parameters["rectangle"]
+            x = integer(x, "Rectangle x", 0, width - 1)
+            y = integer(y, "Rectangle y", 0, height - 1)
+            w = integer(w, "Rectangle width", 1, width - x)
+            h = integer(h, "Rectangle height", 1, height - y)
+            if w * h == width * height:
+                raise ValueError("GrabCut rectangle must leave some background pixels")
+            rect = x, y, w, h
+        else:
+            supplied = inputs.get("markers")
+            if supplied is None or supplied.shape != markers.shape or supplied.dtype != np.uint8:
+                raise ValueError("GrabCut requires a matching uint8 monochrome marker image")
+            require_same_frame((source, supplied))
+            if mode == "binary_mask":
+                markers[supplied != 0] = cv2.GC_PR_FGD
+            else:
+                if supplied.max() > cv2.GC_PR_FGD:
+                    raise ValueError("GrabCut marker labels must be 0, 1, 2, or 3")
+                markers = np.array(supplied, copy=True, order="C")
+            foreground = (markers & 1) != 0
+            if not foreground.any() or foreground.all():
+                raise ValueError("GrabCut requires foreground and background samples")
+            flag = cv2.GC_INIT_WITH_MASK
+        labels, _, _ = cv2.grabCut(image, markers, rect, None, None, iterations, flag)
+        return Result({"mask": (labels & 1) * np.uint8(255), "labels": labels})
+
+
+class ThinMask(Block):
+    type_id, title = "inspect.thin_mask", "Thin binary mask"
+    category, block_type, subtype = "Inspection", "Inspection", "Segmentation"
+    inputs = SELECTION_INPUTS
+    outputs = (Port("mask"),)
+    defaults = {"method": "zhang_suen"}
+    parameter_choices = {"method": ("zhang_suen", "guo_hall")}
+
+    def process(self, inputs):
+        source = inputs["image"]
+        if source.ndim != 2 or source.dtype != np.uint8:
+            raise ValueError("Thinning requires a uint8 monochrome mask")
+        mask = cv2.compare(np.asarray(source), 0, cv2.CMP_NE)
+        selection = selection_mask(inputs, mask)
+        if selection is not None:
+            mask = cv2.bitwise_and(mask, selection)
+        method = {
+            "zhang_suen": cv2.ximgproc.THINNING_ZHANGSUEN,
+            "guo_hall": cv2.ximgproc.THINNING_GUOHALL,
+        }[self.parameters["method"]]
+        # Padding gives components that touch the image edge a background border.
+        padded = cv2.copyMakeBorder(mask, 1, 1, 1, 1, cv2.BORDER_CONSTANT, value=0)
+        result = cv2.ximgproc.thinning(padded, thinningType=method)[1:-1, 1:-1].copy()
+        return Result({"mask": result})
+
+
+SEGMENTATION_BLOCKS = (FloodFill, Watershed, GrabCut, ThinMask)

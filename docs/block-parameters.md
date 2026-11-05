@@ -1809,6 +1809,18 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `connectivity` | `"4"` | `4`, `8` |
 | `range_mode` | `"fixed"` | `fixed`, `floating` Compare with the seed (fixed) or an accepted adjacent pixel (floating). |
 
+## GrabCut foreground (`inspect.grabcut`)
+
+Inspection / Segmentation
+
+Inputs: `image` (image), `markers` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"rectangle"` | `rectangle`, `binary_mask`, `labels` Use a rectangle, a probable-foreground binary mask, or GrabCut labels 0–3. |
+| `rectangle` | `[10, 10, 100, 100]` | Initial foreground rectangle [x, y, width, height] in image pixels. |
+| `iterations` | `3` |  |
+
 ## Histogram (`inspect.histogram`)
 
 Image processing / Statistics
@@ -2030,6 +2042,34 @@ Inputs: `image` (image), `points` (data).
 | `termination` | `"both"` | `count`, `epsilon`, `both` |
 | `max_iterations` | `30` |  |
 | `epsilon` | `0.01` |  |
+
+## Find template instances (`inspect.template_instances`)
+
+Inspection / Matching
+
+Inputs: `image` (image), `template` (image), `mask` (image, optional), `search_mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"ccoeff_normed"` | `ccoeff_normed`, `ccorr_normed`, `sqdiff_normed` |
+| `min_score` | `0.8` |  |
+| `maximum_matches` | `25` |  |
+| `minimum_matches` | `1` |  |
+| `maximum_iou` | `0.25` | Suppress candidates that overlap an accepted match above this IoU. |
+| `draw_overlay` | `true` |  |
+| `pose_offset_x` | `0.0` | Local x offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_y` | `0.0` | Local y offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_angle` | `0.0` | Local counterclockwise rotation in degrees (OpenCV convention). |
+
+## Thin binary mask (`inspect.thin_mask`)
+
+Inspection / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"zhang_suen"` | `zhang_suen`, `guo_hall` |
 
 ## Marker-controlled watershed (`inspect.watershed`)
 

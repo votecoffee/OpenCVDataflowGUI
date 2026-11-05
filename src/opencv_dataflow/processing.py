@@ -641,7 +641,7 @@ class MatchTemplate(Block):
         "method": ("ccoeff_normed", "ccorr_normed", "sqdiff_normed", "ccoeff", "ccorr", "sqdiff")
     }
 
-    def process(self, inputs):
+    def response_maps(self, inputs):
         image = gray_image(inputs["image"], (np.uint8, np.float32))
         template = gray_image(inputs["template"], (np.uint8, np.float32))
         if image.dtype != template.dtype:
@@ -680,7 +680,12 @@ class MatchTemplate(Block):
         if not np.isfinite(response).all():
             raise ValueError("Template matching produced a nonfinite response")
         selection = selection_mask(
-            {"mask": inputs.get("search_mask"), "region": inputs.get("region")}, image
+            {
+                "image": inputs["image"],
+                "mask": inputs.get("search_mask"),
+                "region": inputs.get("region"),
+            },
+            image,
         )
         candidate_mask = None
         if selection is not None:
@@ -689,8 +694,6 @@ class MatchTemplate(Block):
             candidate_mask = selection[cy : cy + response.shape[0], cx : cx + response.shape[1]]
             if not candidate_mask.any():
                 raise ValueError("Search region contains no legal template centers")
-        low, high, low_pos, high_pos = cv2.minMaxLoc(response, mask=candidate_mask)
-        location = low_pos if method in ("sqdiff_normed", "sqdiff") else high_pos
         quality_code = {
             "sqdiff": cv2.TM_SQDIFF_NORMED,
             "ccorr": cv2.TM_CCORR_NORMED,
@@ -701,6 +704,12 @@ class MatchTemplate(Block):
             if quality_code == code
             else cv2.matchTemplate(image, template, quality_code, mask=mask)
         )
+        return template, response, quality, candidate_mask, method, threshold
+
+    def process(self, inputs):
+        template, response, quality, candidate_mask, method, threshold = self.response_maps(inputs)
+        _, _, low_pos, high_pos = cv2.minMaxLoc(response, mask=candidate_mask)
+        location = low_pos if method in ("sqdiff_normed", "sqdiff") else high_pos
         x, y = location
         score = float(
             np.clip(
