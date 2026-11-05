@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import numpy as np
-from PySide6.QtCore import QPointF, QRectF, Qt, Signal
+from PySide6.QtCore import QPointF, QRectF, Qt, QTimer, Signal
 from PySide6.QtGui import (
     QColor,
     QImage,
@@ -110,6 +110,13 @@ class Node(QGraphicsItem):
 
     def boundingRect(self):
         return QRectF(-9, -2, 238, self.height + 5)
+
+    def mousePressEvent(self, event):
+        # Rubber-band selection can include both a visual container and its nodes.
+        # Dragging a node moves the selected nodes only, avoiding a second group delta.
+        for group in self.scene().groups.values():
+            group.setSelected(False)
+        super().mousePressEvent(event)
 
     def mouseDoubleClickEvent(self, event):
         if not self.scene().locked:
@@ -384,7 +391,9 @@ class CanvasView(QGraphicsView):
         for scrollbar in (self.horizontalScrollBar(), self.verticalScrollBar()):
             scrollbar.valueChanged.connect(lambda value: self.overview.update())
             scrollbar.sliderReleased.connect(self.remember_view)
-            scrollbar.actionTriggered.connect(lambda action: self.remember_view())
+            scrollbar.actionTriggered.connect(
+                lambda action: QTimer.singleShot(0, self.remember_view)
+            )
 
     def remember_view(self, *args):
         self.overview.update()
@@ -404,9 +413,16 @@ class CanvasView(QGraphicsView):
             if saved:
                 self.setTransform(QTransform.fromScale(saved["zoom"], saved["zoom"]))
                 center = QPointF(*saved["center"])
+                half_width = self.viewport().width() / (2 * saved["zoom"]) + 1000
+                half_height = self.viewport().height() / (2 * saved["zoom"]) + 1000
                 self.scene().setSceneRect(
                     self.sceneRect().united(
-                        QRectF(center.x() - 1000, center.y() - 1000, 2000, 2000)
+                        QRectF(
+                            center.x() - half_width,
+                            center.y() - half_height,
+                            2 * half_width,
+                            2 * half_height,
+                        )
                     )
                 )
                 self.centerOn(center)
@@ -516,6 +532,13 @@ class NodeGroup(QGraphicsItem):
 
     def boundingRect(self):
         return self.rect.adjusted(-3, -3, 3, 3)
+
+    def mousePressEvent(self, event):
+        super().mousePressEvent(event)
+        for group in self.scene().groups.values():
+            if group.isSelected():
+                for key in group.data["members"]:
+                    self.scene().nodes[key].setSelected(False)
 
     def shape(self):
         outline = QPainterPath()
