@@ -15,7 +15,8 @@ completion evidence.
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool is available on the pinned contrib build and ships with a CPU fixture, example and any capability limits. |
 | 5 | Application-specific ToolBlocks | Package reusable tray orientation, conveyor pick selection, depth-assisted bin picking, surface and bead inspection, OCR/code grading, color checks and robot-frame measurements. | Each package has documented ports and calibration assumptions, known-good and known-bad validation sets, and repeatable ticket verdicts and reasons. Hardware-dependent acceptance is tracked separately. |
 
-Stage 1 is in progress. The current catalog already covers common 2D workflows,
+Stage 1 is in progress. Cosine and Fourier transforms, inverse reconstruction
+and radial Fourier filtering are available. The current catalog covers common 2D workflows,
 but there are still gaps in the OpenCV `core` module itself. The
 [coverage backlog](opencv-coverage.md) tracks the missing workflows and the
 [binding inventory](opencv-bindings.tsv) maps static references to the pinned

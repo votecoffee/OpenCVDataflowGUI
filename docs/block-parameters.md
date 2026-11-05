@@ -956,6 +956,17 @@ Inputs: `image` (image).
 | `mode` | `"2d"` | `2d`, `rows` Transform the entire image or transform each row independently. |
 | `odd_size` | `"pad_even"` | `pad_even`, `reject` Extend odd transformed axes by repeating the last pixel, or reject them. |
 
+## Discrete Fourier transform (DFT) (`cv.dft`)
+
+Image processing / Spectral
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"2d"` | `2d`, `rows` Transform the entire image or transform each row independently. |
+| `size` | `"exact"` | `exact`, `optimal` Optimal zero-pads transformed axes to OpenCV's next efficient size. |
+
 ## Distance transform (`cv.distance_transform`)
 
 Image processing / Morphology
@@ -1023,6 +1034,18 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 | `anchor` | `[-1, -1]` |  |
 | `output_depth` | `"same"` | `same`, `uint8`, `uint16`, `int16`, `float32`, `float64` |
+
+## Filter Fourier spectrum (`cv.filter_fourier_spectrum`)
+
+Image processing / Spectral
+
+Inputs: `spectrum` (dft).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"low_pass"` | `low_pass`, `high_pass`, `band_pass`, `band_stop` |
+| `cutoff` | `0.1` | Value must be a finite number between 0 and 0.707107. Cutoff in cycles per pixel. For a band, this is the lower edge. |
+| `upper_cutoff` | `0.3` | Value must be a finite number between 0 and 0.707107. Upper edge in cycles per pixel. Used by the band modes. |
 
 ## Flat-field correction (`cv.flat_field`)
 
@@ -1134,6 +1157,16 @@ Image processing / Spectral
 Inputs: `coefficients` (dct).
 
 No configurable algorithm parameters.
+
+## Inverse discrete Fourier transform (IDFT) (`cv.idft`)
+
+Image processing / Spectral
+
+Inputs: `spectrum` (dft).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_depth` | `"unchanged"` | `unchanged`, `float32`, `float64` Use floating point to retain signed or out-of-range filtered samples. |
 
 ## Gaussian image pyramid set (`cv.image_pyramid`)
 
