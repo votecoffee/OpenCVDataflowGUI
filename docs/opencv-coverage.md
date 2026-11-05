@@ -117,6 +117,9 @@ the iteration limit is reached before convergence.
 **GrabCut foreground** accepts a rectangle, a binary probable-foreground mask
 or native four-state markers. It initializes a new model for each activation.
 **Thin binary mask** exposes Zhang–Suen and Guo–Hall skeletonization.
+The optional scikit-image blocks expose Zhang, Lee, Guo–Hall, and medial-axis
+skeletonization, plus length-based pruning of terminal branches. See the
+[skeleton pruning example](../examples/skeleton_pruning/README.md).
 **Fill holes in a binary mask** fills enclosed background components, with an
 optional maximum hole area and configurable background connectivity.
 

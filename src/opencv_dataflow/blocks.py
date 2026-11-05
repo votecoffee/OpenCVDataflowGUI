@@ -739,6 +739,7 @@ def builtin_registry():
     from .segmentation import SEGMENTATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
     from .shape_fitting import FitShape
+    from .skeleton import PruneSkeleton, Skeletonize
     from .stereo3d import STEREO3D_BLOCKS
     from .template_instances import FindTemplateInstances
     from .text_rules import VerifyText
@@ -790,6 +791,8 @@ def builtin_registry():
         ReadZXingBarcode,
         VerifyText,
         *SEGMENTATION_BLOCKS,
+        Skeletonize,
+        PruneSkeleton,
         WatershedPointSeeds,
         WatershedMaskSeeds,
         CompareImageQuality,

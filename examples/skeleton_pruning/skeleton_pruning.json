@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Thick binary trace with spur",
+      "parameters": {
+        "path": "assets/spur_mask.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "skeleton",
+      "type": "inspect.skeletonize",
+      "name": "Skeletonize mask (scikit-image)",
+      "parameters": {
+        "method": "zhang",
+        "max_iterations": 0,
+        "medial_axis_seed": 0
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "distance",
+        "pixel_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "prune",
+      "type": "inspect.prune_skeleton",
+      "name": "Prune skeleton spurs",
+      "parameters": {
+        "max_length": 20.0,
+        "max_passes": 4,
+        "connectivity": "8"
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "removed",
+        "preview",
+        "removed_branches",
+        "removed_pixels"
+      ],
+      "thumbnail": true,
+      "preview_output": "preview"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "skeleton",
+      "input": "image"
+    },
+    {
+      "source": "skeleton",
+      "output": "mask",
+      "target": "prune",
+      "input": "image"
+    }
+  ]
+}
