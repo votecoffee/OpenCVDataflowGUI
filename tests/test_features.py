@@ -3,6 +3,7 @@ import numpy as np
 import pytest
 
 from opencv_dataflow.blocks import builtin_registry
+from opencv_dataflow.core import Graph
 from opencv_dataflow.images import ImageArray, image_format
 
 
@@ -25,6 +26,32 @@ def test_equalization_and_uint16_clahe():
         block.last_output_images["image"],
         cv2.createCLAHE(clipLimit=2, tileGridSize=(8, 8)).apply(high),
     )
+
+
+@pytest.mark.parametrize("type_id", ["cv.equalize", "cv.clahe"])
+def test_contrast_preserves_rgba_depth_alpha_and_unselected_pixels(type_id):
+    rng = np.random.default_rng(42)
+    pixels = rng.integers(10000, 40000, (24, 32, 4), dtype=np.uint16)
+    image = ImageArray(pixels, "rgba")
+    mask = np.zeros(image.shape[:2], np.uint8)
+    mask[:, :16] = 255
+    output = run(type_id, {"image": image, "mask": mask}).last_output_images["image"]
+    assert output.dtype == np.uint16 and image_format(output) == "rgba"
+    np.testing.assert_array_equal(output[..., 3], pixels[..., 3])
+    np.testing.assert_array_equal(output[mask == 0], pixels[mask == 0])
+    assert np.any(output[mask != 0, :3] != pixels[mask != 0, :3])
+
+    registry = builtin_registry()
+    graph = Graph()
+    block = graph.add(registry.create(type_id))
+    old_project = graph.to_dict()
+    old_project["blocks"][0]["parameters"] = {
+        name: value for name, value in block.parameters.items() if name != "output_format"
+    }
+    legacy = Graph.from_dict(old_project, registry).blocks[block.id]
+    legacy.execute({"image": ImageArray((pixels // 257).astype(np.uint8), "rgba")})
+    assert legacy.parameters["output_format"] == "gray"
+    assert image_format(legacy.last_output_images["image"]) == "gray"
 
 
 def test_normalize_and_gamma_preserve_alpha():

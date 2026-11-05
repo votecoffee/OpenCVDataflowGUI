@@ -52,6 +52,7 @@
       "type": "cv.clahe",
       "name": "Local contrast",
       "parameters": {
+        "output_format": "source",
         "clip_limit": 2.0,
         "tiles_x": 8,
         "tiles_y": 8

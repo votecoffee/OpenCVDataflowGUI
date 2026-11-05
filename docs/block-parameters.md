@@ -883,6 +883,7 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
+| `output_format` | `"source"` | `source`, `gray` Source keeps channel encoding, depth and alpha; gray returns the processed monochrome plane at the working depth. |
 | `clip_limit` | `2.0` |  |
 | `tiles_x` | `8` |  |
 | `tiles_y` | `8` |  |
@@ -947,7 +948,9 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
 Neighborhood operations retain full-image context. See [regions](regions.md).
 
-No configurable algorithm parameters.
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_format` | `"source"` | `source`, `gray` Source keeps channel encoding, depth and alpha; gray returns the processed monochrome plane at the working depth. |
 
 ## Extract image channel (`cv.extract_channel`)
 

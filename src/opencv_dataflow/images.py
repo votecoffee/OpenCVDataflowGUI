@@ -118,12 +118,16 @@ def opencv_image(image):
     This changes channel encoding only; operation-specific depth requirements
     remain explicit and unsupported depths fail in the consuming OpenCV tool.
     """
+    encoding = image_format(image)
+    if image.dtype == np.float64 and encoding in ("rgb", "rgba"):
+        order = (2, 1, 0, 3) if encoding == "rgba" else (2, 1, 0)
+        return np.asarray(image)[..., order]
     code = {
         "rgb": cv2.COLOR_RGB2BGR,
         "rgba": cv2.COLOR_RGBA2BGRA,
         "hsv": cv2.COLOR_HSV2BGR,
         "lab": cv2.COLOR_Lab2BGR,
-    }.get(image_format(image))
+    }.get(encoding)
     return cv2.cvtColor(np.asarray(image), code) if code is not None else np.asarray(image)
 
 

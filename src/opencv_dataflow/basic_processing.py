@@ -6,7 +6,7 @@ import numpy as np
 from .core import Result
 from .images import ImageArray
 from .parameters import BORDERS, scalar_value
-from .processing import ImageTool, encoded_result, finite, image_value, integer
+from .processing import ImageTool, encoded_result, finite, gray_image, image_value, integer
 from .selection import RegionalOperation
 
 ALGORITHM_HINTS = {
@@ -93,9 +93,7 @@ class Canny(RegionalOperation, ImageTool):
     parameter_choices = {"aperture": ("3", "5", "7")}
 
     def process(self, inputs):
-        image = image_value(inputs["image"], (np.uint8,), canonical=True)
-        if image.ndim != 2:
-            raise ValueError("Canny requires uint8 grayscale; connect Grayscale first")
+        image = gray_image(inputs["image"], (np.uint8,), auto_depth=True)
         p = self.parameters
         low, high = (finite(p[k], k, 0) for k in ("low", "high"))
         if low > high:

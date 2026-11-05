@@ -66,10 +66,8 @@ class Inpaint(ImageTool):
     def process(self, inputs):
         source = inputs["image"]
         image = image_value(source, (np.uint8, np.uint16, np.float32))
-        if image.ndim != 2 and (
-            image.dtype != np.uint8 or image_format(source) not in ("bgr", "rgb")
-        ):
-            raise ValueError("Inpainting accepts monochrome or uint8 BGR/RGB")
+        if image_format(source) not in ("gray", "bgr", "rgb", "bgra", "rgba"):
+            raise ValueError("Inpainting accepts monochrome, BGR, RGB, BGRA, or RGBA")
         mask = selection_mask(inputs, image)
         if mask is None:
             raise ValueError("Connect an inpainting mask or region")
@@ -79,7 +77,18 @@ class Inpaint(ImageTool):
         if radius > 100:
             raise ValueError("Inpainting radius must be at most 100 pixels")
         method = cv2.INPAINT_TELEA if self.parameters["method"] == "telea" else cv2.INPAINT_NS
-        return encoded_result(cv2.inpaint(image, mask, radius, method), source)
+        if image.ndim == 2:
+            return encoded_result(cv2.inpaint(image, mask, radius, method), source)
+        colors = image[..., :3]
+        if image.dtype == np.uint8:
+            output = cv2.inpaint(colors, mask, radius, method)
+        else:
+            output = cv2.merge(
+                [cv2.inpaint(channel, mask, radius, method) for channel in cv2.split(colors)]
+            )
+        if image.shape[2] == 4:
+            output = np.concatenate((output, image[..., 3:]), axis=2)
+        return encoded_result(output, source)
 
 
 RESTORATION_BLOCKS = (NonLocalMeans, Inpaint)

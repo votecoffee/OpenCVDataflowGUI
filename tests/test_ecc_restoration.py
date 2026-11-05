@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 
 from opencv_dataflow.blocks import builtin_registry
+from opencv_dataflow.images import ImageArray, image_format
 from opencv_dataflow.toolblocks import ToolBlock
 
 
@@ -70,6 +71,23 @@ def test_inpaint_uses_mask(method):
     output = result.outputs["image"]
     np.testing.assert_array_equal(output[mask == 0], image[mask == 0])
     assert np.abs(output[mask != 0].astype(float) - 120).max() <= 5
+
+
+def test_inpaint_preserves_high_depth_color_and_alpha():
+    pixels = np.full((24, 32, 4), [8000, 16000, 24000, 35000], np.uint16)
+    pixels[10:14, 13:19, :3] = 0
+    mask = np.zeros(pixels.shape[:2], np.uint8)
+    mask[10:14, 13:19] = 255
+    block = builtin_registry().create("cv.inpaint")
+    result = block.execute({"image": ImageArray(pixels, "rgba"), "mask": mask})
+    assert result is not None, block.error
+    output = result.outputs["image"]
+    assert output.dtype == np.uint16 and image_format(output) == "rgba"
+    np.testing.assert_array_equal(output[..., 3], pixels[..., 3])
+    np.testing.assert_array_equal(output[mask == 0], pixels[mask == 0])
+    for channel in range(3):
+        expected = cv2.inpaint(pixels[..., channel], mask, 3, cv2.INPAINT_TELEA)
+        np.testing.assert_array_equal(output[..., channel], expected)
 
 
 @pytest.mark.parametrize("with_defect", [False, True])

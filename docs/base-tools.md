@@ -18,7 +18,7 @@ The portable `examples/trained_patterns.json` job exercises all three tools.
 | --- | --- | --- |
 | Color and depth | Grayscale | `cvtColor`; tagged color input or grayscale passthrough, uint8/uint16/float32 without depth scaling |
 | Filtering | Gaussian blur | `GaussianBlur`; X/Y kernels and sigmas, border policy/value, optional mask/region |
-| Edges | Canny edges | `Canny`; uint8 grayscale, low/high thresholds, aperture and L2 gradient, optional mask/region |
+| Edges | Canny edges | `Canny`; automatic uint8 grayscale working image, low/high thresholds, aperture and L2 gradient, optional mask/region |
 | Color and depth | Convert image | Color conversion and deterministic depth scaling; same choices as image-file input |
 | Geometry | Crop ROI | Validated array ROI; zero width/height means remainder of image |
 | Geometry | Resize | `resize`; explicit width/height and nearest, linear, area or cubic interpolation |
@@ -72,8 +72,9 @@ Operation dropdowns expose further native variants.
 
 ## Depth and validation limits
 
-No wrapper silently reduces pixel depth for compatibility. All reject nonfinite
-samples and physical `DepthArray` values; use dedicated depth tools for the latter.
+Tools with automatic working-depth conversion are listed below. These tools
+reject nonfinite samples and physical `DepthArray` values. Use dedicated tools
+for physical depth planes.
 Geometry, box blur, morphology and blending accept uint8/uint16/float32/float64.
 Some native combinations still have channel/kernel limitations:
 
@@ -81,7 +82,9 @@ Some native combinations still have channel/kernel limitations:
 - Bilateral: uint8 or float32, grayscale or three channels.
 - Otsu: uint8/uint16; Triangle: uint8. Automatic threshold emits full-scale binary
   values for its input depth (65535 for uint16).
-- Adaptive threshold and connected components: uint8 (color inputs become grayscale).
+- Canny and Adaptive Threshold convert color to grayscale and map uint16 and
+  floating-point intensity to a uint8 working image. Their masks are uint8.
+- Connected components uses uint8 intensity (color inputs become grayscale).
 - In range mask and gradients: uint8/uint16/float32.
 - Bitwise: uint8/uint16; matching: both inputs uint8 or both float32.
 - Convert image uses the [existing format/depth rules](image-formats.md). Changing
