@@ -73,9 +73,12 @@ def test_depth_units_pairing_sampling_and_nested_snapshots(tmp_path):
     assert paired.state == "pass" and isinstance(paired.last_output_images["depth"], DepthArray)
     paired.execute({"image": np.zeros((3, 2, 3), np.uint8), "depth": depth})
     assert "identical dimensions" in paired.error
-    gray = graph.add(registry.create("gapi.gray"))
-    with pytest.raises(ValueError, match="depth to image"):
-        graph.connect(load.id, "depth", gray.id, "image")
+    histogram = graph.add(registry.create("inspect.histogram"))
+    graph.connect(load.id, "depth", histogram.id, "image")
     restored = Graph.from_dict(graph.to_dict(), registry)
     restored.run()
     assert restored.blocks[nested.id].state == "pass"
+    measured = restored.blocks[histogram.id]
+    assert measured.state == "pass", measured.error
+    assert isinstance(measured.last_inputs["image"], DepthArray)
+    assert measured.last_inputs["image"].units == "m"

@@ -27,6 +27,7 @@ from PySide6.QtWidgets import (
 )
 
 from .images import preview_rgb
+from .port_types import connection_mode
 from .visual_style import (
     BLOCK_COLORS,
     BLOCK_STATE_COLORS,
@@ -262,7 +263,11 @@ class Wire(QGraphicsPathItem):
         self.connection, self.source, self.target = connection, source, target
         self.visual_type = connection_type(source.visual_type, target.visual_type)
         self.color = QColor(PORT_COLORS[self.visual_type])
-        self.setToolTip(f"{source.port.name} → {target.port.name} · {self.visual_type}")
+        mode = connection_mode(source.port.kind, target.port.kind)
+        detail = ""
+        if mode is not None and mode != "direct":
+            detail = f" · {source.port.kind} → {target.port.kind} · {mode}"
+        self.setToolTip(f"{source.port.name} → {target.port.name} · {self.visual_type}{detail}")
         self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable)
         self.setZValue(-1)
         self.refresh()

@@ -7,6 +7,9 @@ from enum import Enum
 
 import numpy as np
 
+from .port_types import coerce_scalar_input
+from .port_types import compatible as compatible
+
 
 class FlowSignal(Enum):
     EMPTY = "no emission"
@@ -179,6 +182,8 @@ def prepare_inputs(block, values):
         wrapped = values[port.name]
         payload = metadata(wrapped)
         value = wrapped.value if isinstance(wrapped, ValuePacket) else wrapped
+        if value is not NO_VALUE and not isinstance(value, FlowGroup):
+            value = coerce_scalar_input(port, value)
         if (
             isinstance(value, ImagePyramid)
             and port.kind == "image"
@@ -323,14 +328,6 @@ def describe_value(value):
     if isinstance(value, np.generic):
         return value.item()
     return value
-
-
-def compatible(out_kind, in_kind):
-    return (
-        out_kind == in_kind
-        or "any" in (out_kind, in_kind)
-        or (out_kind == "pyramid" and in_kind == "image")
-    )
 
 
 def require_same_frame(values):

@@ -1,5 +1,7 @@
 """Shared canvas layout and colors, independent of runtime port compatibility."""
 
+from .port_types import NUMERIC_KINDS
+
 DEFAULT_NODE_SIZE = "medium"
 # Width, socket row spacing, and thumbnail height in scene units.
 NODE_SIZES = {"small": (168, 22, 0), "medium": (220, 25, 90), "large": (320, 30, 160)}
@@ -85,6 +87,10 @@ def port_type(block, port, output=False, seen=None):
             return "region"
         if name in {"pose", "transform", "frame", "coordinate_frame"}:
             return "pose"
+    if port.kind in NUMERIC_KINDS:
+        return "number"
+    if port.kind in ("boolean", "text"):
+        return "data"
     return port.kind if port.kind in PORT_COLORS else "any"
 
 

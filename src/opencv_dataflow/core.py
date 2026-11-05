@@ -34,6 +34,7 @@ from .payloads import (
     prepare_inputs,
     validate_payload,
 )
+from .port_types import SCALAR_KINDS, validate_scalar
 from .recipes import RecipeCatalog, apply_recipe, validate_bindings
 from .run_profiles import PROFILES, captures, graphics_mode, profile
 from .scheduling import MAX_BRANCH_WORKERS, DependencyPlan, automatic_workers
@@ -649,9 +650,8 @@ def validate_value(port, value):
     elif port.kind == "image":
         if not isinstance(value, np.ndarray) or value.size == 0 or value.ndim not in (2, 3):
             raise TypeError(f"{port.name} requires a nonempty image array")
-    elif port.kind == "number":
-        if isinstance(value, bool) or not isinstance(value, (int, float, np.number)):
-            raise TypeError(f"{port.name} requires a number")
+    elif port.kind in SCALAR_KINDS:
+        validate_scalar(port, value)
     elif port.kind == "graphics":
         if not isinstance(value, GraphicsBundle):
             raise TypeError(f"{port.name} requires a result graphics bundle")
@@ -1053,14 +1053,13 @@ class Graph:
         self.bind_recipes()
         self.clear_results(preserve_history=True)
         injected = injected or {}
-        for (target, name), value in injected.items():
+        for target, name in injected:
             block = self.blocks[target]
             port = next((p for p in block.inputs if p.name == name), None)
             if port is None or any(
                 c.target == target and c.input == name for c in self.connections
             ):
                 raise ValueError("Invalid or internally connected public input")
-            validate_value(port, value)
         plan = DependencyPlan(self.blocks, self.connections)
         splits = [block for block in self.blocks.values() if block.type_id == "flow.split"]
         workers = self.branch_workers
