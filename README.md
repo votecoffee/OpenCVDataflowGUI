@@ -416,7 +416,9 @@ The `image` output carries the requested format. The `info` output reports size,
 channel count, depth, and source/output formats; the decoded source is also available
 in the graphic preview selector. Previews and built-in tools interpret the color
 encoding correctly. Processing tools still have their own depth requirements:
-ordinary Grayscale supports uint8/uint16/float32; Canny requires uint8 grayscale.
+ordinary Grayscale supports uint8/uint16/float32. Canny and Adaptive Threshold
+accept color or grayscale and use an 8-bit working image for their masks. Equalize
+Histogram, CLAHE, and Inpaint can preserve the source pixel depth and color encoding.
 Legacy G-API Grayscale also requires uint8. For explicit conversion, choose the
 color format and pixel depth in the file input or a Convert image block.
 

@@ -1,14 +1,22 @@
 """Small explicit OpenCV wrappers for building practical inspection graphs.
 
 These are eager OpenCV operations. Native G-API blocks remain in blocks.py;
-unsupported image types fail explicitly rather than silently changing depth.
+tools can opt into deterministic conversion to their native working depth.
 """
 
 import cv2
 import numpy as np
 
 from .core import Block, Port, Result
-from .images import DepthArray, ImageArray, format_image, image_format, opencv_image, preview_rgb
+from .images import (
+    DepthArray,
+    ImageArray,
+    convert_depth,
+    format_image,
+    image_format,
+    opencv_image,
+    preview_rgb,
+)
 from .objects import blob_item, collection
 from .parameters import BORDERS, OUTPUT_DEPTHS, anchor_value, optional_mask, scalar_value
 from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
@@ -48,11 +56,18 @@ def image_value(
     return opencv_image(image) if canonical else np.asarray(image)
 
 
-def gray_image(image, depths=(np.uint8, np.uint16, np.float32)):
-    image = image_value(image, depths, canonical=True)
-    if image.ndim == 2:
-        return image
-    return cv2.cvtColor(image, cv2.COLOR_BGRA2GRAY if image.shape[2] == 4 else cv2.COLOR_BGR2GRAY)
+def gray_image(image, depths=(np.uint8, np.uint16, np.float32), *, auto_depth=False):
+    supported = (np.uint8, np.uint16, np.float32, np.float64) if auto_depth else depths
+    native = image_value(image, supported)
+    if native.ndim == 3:
+        if auto_depth and native.dtype == np.float64:
+            image = ImageArray(convert_depth(native, "float32"), image_format(image))
+        color = opencv_image(image)
+        code = cv2.COLOR_BGRA2GRAY if color.shape[2] == 4 else cv2.COLOR_BGR2GRAY
+        native = cv2.cvtColor(color, code)
+    if native.dtype not in depths:
+        native = convert_depth(native, np.dtype(depths[-1]).name)
+    return native
 
 
 def encoded_result(image, original, **kwargs):
@@ -318,7 +333,7 @@ class AdaptiveThreshold(RegionalOperation, ImageTool):
     parameter_choices = {"method": ("mean", "gaussian")}
 
     def process(self, inputs):
-        image = gray_image(inputs["image"], (np.uint8,))
+        image = gray_image(inputs["image"], (np.uint8,), auto_depth=True)
         size = integer(self.parameters["block_size"], "Block size", low=3, high=255, odd=True)
         method = {"mean": cv2.ADAPTIVE_THRESH_MEAN_C, "gaussian": cv2.ADAPTIVE_THRESH_GAUSSIAN_C}[
             self.parameters["method"]

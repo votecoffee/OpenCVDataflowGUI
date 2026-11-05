@@ -63,8 +63,17 @@ thresholding, contour inspection and image saving use `opencv_image(image)` to
 interpret RGB/RGBA/HSV/Lab before processing. This canonicalizes color encoding,
 without silently converting pixel depth. Ordinary Grayscale accepts uint8, uint16
 and float32, including tagged BGR/RGB/BGRA/RGBA/HSV/Lab or grayscale input.
-Ordinary Canny requires uint8 grayscale. Legacy G-API Grayscale and Canny require uint8. Other native tools may also limit channel layouts or depths; a typed
-image wire does not promise that every operation accepts every image representation.
+Ordinary Canny and Adaptive Threshold convert supported color or monochrome input
+to uint8 grayscale internally and return uint8 masks. The conversion uses fixed
+full-scale mapping for uint16 and clips floating-point intensity to [0, 1] when
+quantizing. Equalize Histogram and CLAHE can adjust luminance and restore source
+encoding, pixel depth, and alpha, or return their monochrome working result.
+Equalize Histogram works at uint8 and CLAHE at uint8 or uint16, so a restored
+output can have fewer intensity levels than its source.
+Existing saved contrast blocks without an output-format setting keep monochrome
+output. Inpaint processes high-depth RGB/BGR by channel and retains alpha when
+present. Legacy G-API Grayscale and Canny require uint8. Other native tools retain
+their individual channel and depth requirements.
 
 Custom blocks can import helpers from `opencv_dataflow.images`. Call
 `opencv_image(image)` when a native operation expects OpenCV channel order. If an

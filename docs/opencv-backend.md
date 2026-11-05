@@ -13,7 +13,7 @@ Use the ordinary **Image processing** blocks for development:
 | --- | --- | --- |
 | Grayscale | `cv.gray` | `cvtColor`, or grayscale passthrough; uint8/uint16/float32, encoding-aware, no implicit depth conversion |
 | Gaussian blur | `cv.gaussian_blur` | `GaussianBlur`, independent X/Y kernels and sigmas, borders and constant border value |
-| Canny edges | `cv.canny` | `Canny`, uint8 grayscale, thresholds, aperture dropdown and L2-gradient option |
+| Canny edges | `cv.canny` | `Canny`, automatic uint8 grayscale working image, thresholds, aperture dropdown and L2-gradient option |
 
 Gaussian blur and Canny accept masks/regions with the existing full-image
 neighborhood policy. Blur preserves pixels outside selection; Canny zeroes them.

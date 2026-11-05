@@ -1,10 +1,12 @@
 """Additional contrast, channel, masking and geometric-feature OpenCV blocks."""
 
+from abc import ABC, abstractmethod
+
 import cv2
 import numpy as np
 
 from .core import Block, Port, Result
-from .images import ImageArray, image_format, preview_rgb
+from .images import ImageArray, convert_depth, format_image, image_format, preview_rgb
 from .objects import collection, line_item
 from .parameters import optional_mask
 from .payloads import require_same_frame
@@ -24,12 +26,53 @@ def overlay_image(image):
     return cv2.cvtColor(preview_rgb(image), cv2.COLOR_RGB2BGR)
 
 
-class EqualizeHistogram(RegionalOperation, ImageTool):
-    type_id, title, subtype = "cv.equalize", "Equalize histogram", "Contrast"
+class LuminanceContrast(RegionalOperation, ImageTool, ABC):
+    defaults = {"output_format": "source"}
+    parameter_choices = {"output_format": ("source", "gray")}
+    parameter_help = {
+        "output_format": "Source keeps channel encoding, depth and alpha; gray returns the "
+        "processed monochrome plane at the working depth."
+    }
+    working_depths = (np.uint8,)
+
+    @abstractmethod
+    def enhance(self, image, inputs):
+        """Apply the native operation to the working luminance plane."""
+
+    def restore_extra(self, data):
+        if "parameters" in data and "output_format" not in data["parameters"]:
+            self.parameters["output_format"] = "gray"
 
     def process(self, inputs):
-        image = gray_image(inputs["image"], (np.uint8,))
-        selection = selection_mask(inputs, image)
+        source = inputs["image"]
+        if self.parameters["output_format"] == "gray":
+            work = gray_image(source, self.working_depths, auto_depth=True)
+            return Result({"image": self.enhance(work, inputs)})
+        native = image_value(source, (np.uint8, np.uint16, np.float32), canonical=True)
+        ycc = cv2.cvtColor(native[..., :3], cv2.COLOR_BGR2YCrCb) if native.ndim == 3 else None
+        work = native if ycc is None else ycc[..., 0]
+        if work.dtype not in self.working_depths:
+            work = convert_depth(work, np.dtype(self.working_depths[-1]).name)
+        enhanced = self.enhance(work, inputs)
+        if enhanced.dtype != native.dtype:
+            enhanced = convert_depth(enhanced, native.dtype.name)
+        if ycc is None:
+            return encoded_result(enhanced, source)
+        ycc[..., 0] = enhanced
+        bgr = cv2.cvtColor(ycc, cv2.COLOR_YCrCb2BGR)
+        if bgr.dtype == np.float32:
+            np.clip(bgr, 0, 1, out=bgr)
+        restored = format_image(bgr, image_format(source), "unchanged")
+        if source.shape[2] == 4:
+            restored[..., 3] = source[..., 3]
+        return Result({"image": restored})
+
+
+class EqualizeHistogram(LuminanceContrast):
+    type_id, title, subtype = "cv.equalize", "Equalize histogram", "Contrast"
+
+    def enhance(self, image, inputs):
+        selection = selection_mask(inputs, inputs["image"])
         if selection is None:
             output = cv2.equalizeHist(image)
         else:
@@ -37,18 +80,18 @@ class EqualizeHistogram(RegionalOperation, ImageTool):
             selected = selection != 0
             if selected.any():
                 output[selected] = cv2.equalizeHist(image[selected].reshape(-1, 1)).reshape(-1)
-        return Result({"image": output})
+        return output
 
 
-class CLAHE(RegionalOperation, ImageTool):
+class CLAHE(LuminanceContrast):
     type_id, title, subtype = "cv.clahe", "CLAHE local contrast", "Contrast"
-    defaults = {"clip_limit": 2.0, "tiles_x": 8, "tiles_y": 8}
+    defaults = {**LuminanceContrast.defaults, "clip_limit": 2.0, "tiles_x": 8, "tiles_y": 8}
+    working_depths = (np.uint8, np.uint16)
 
-    def process(self, inputs):
-        image = gray_image(inputs["image"], (np.uint8, np.uint16))
+    def enhance(self, image, inputs):
         clip = finite(self.parameters["clip_limit"], "Clip limit", 0)
         tiles = tuple(integer(self.parameters[k], k, 1, 128) for k in ("tiles_x", "tiles_y"))
-        return Result({"image": cv2.createCLAHE(clipLimit=clip, tileGridSize=tiles).apply(image)})
+        return cv2.createCLAHE(clipLimit=clip, tileGridSize=tiles).apply(image)
 
 
 class Normalize(ImageTool):

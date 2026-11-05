@@ -11,7 +11,7 @@ from PySide6.QtWidgets import QComboBox
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry, demo_graph
 from opencv_dataflow.core import Graph
-from opencv_dataflow.images import ImageArray, image_format
+from opencv_dataflow.images import DepthArray, ImageArray, convert_depth, image_format, preview_rgb
 from opencv_dataflow.toolblocks import ToolBlock
 
 
@@ -90,6 +90,31 @@ def test_canny_parameters_and_region_selection(aperture, l2):
     assert image_format(output) == "gray"
 
 
+@pytest.mark.parametrize("dtype", [np.uint8, np.uint16, np.float32, np.float64])
+def test_canny_and_adaptive_threshold_convert_tagged_color_to_byte_masks(dtype):
+    color = np.random.default_rng(9).integers(0, 255, (24, 32, 4), dtype=np.uint8)
+    source = color.astype(dtype)
+    if dtype == np.uint16:
+        source *= 257
+    elif np.issubdtype(dtype, np.floating):
+        source /= 255
+    image = ImageArray(source, "rgba", metadata={"part": "fixture"})
+    np.testing.assert_array_equal(preview_rgb(image), color[..., :3])
+    working = source.astype(np.float32) if dtype == np.float64 else source
+    gray = convert_depth(cv2.cvtColor(working, cv2.COLOR_RGBA2GRAY), "uint8")
+    canny = execute("cv.canny", image)
+    adaptive = execute("cv.adaptive_threshold", image)
+    np.testing.assert_array_equal(canny, cv2.Canny(gray, 60, 150))
+    np.testing.assert_array_equal(
+        adaptive, cv2.adaptiveThreshold(
+            gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2,
+        )
+    )
+    assert canny.dtype == adaptive.dtype == np.uint8
+    assert image_format(canny) == image_format(adaptive) == "gray"
+    assert canny.metadata["part"] == adaptive.metadata["part"] == "fixture"
+
+
 @pytest.mark.parametrize(
     "kind, parameters, image",
     [
@@ -100,8 +125,8 @@ def test_canny_parameters_and_region_selection(aperture, l2):
         ("cv.canny", {"high": 50}, np.zeros((10, 10), np.uint8)),
         ("cv.canny", {"low": float("inf")}, np.zeros((10, 10), np.uint8)),
         ("cv.canny", {"aperture": "9"}, np.zeros((10, 10), np.uint8)),
-        ("cv.canny", {}, np.zeros((10, 10), np.uint16)),
-        ("cv.canny", {}, np.zeros((10, 10, 3), np.uint8)),
+        ("cv.canny", {}, np.zeros((10, 10), np.int16)),
+        ("cv.canny", {}, DepthArray(np.ones((10, 10), np.float32))),
     ],
 )
 def test_invalid_inputs_fail_visibly(kind, parameters, image):

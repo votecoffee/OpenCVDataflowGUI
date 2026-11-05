@@ -5,8 +5,8 @@ contracts. They are available immediately in the toolbox after restarting the ap
 
 | Type / subtype | Tool | Behavior |
 | --- | --- | --- |
-| Image processing / Contrast | Equalize histogram | `equalizeHist` on uint8 grayscale; color inputs are interpreted then converted to gray |
-| Image processing / Contrast | CLAHE local contrast | `createCLAHE().apply`; grayscale uint8/uint16, configurable clip limit and tile counts |
+| Image processing / Contrast | Equalize histogram | `equalizeHist` on uint8 luminance; source-format or grayscale output |
+| Image processing / Contrast | CLAHE local contrast | `createCLAHE().apply` on uint8/uint16 luminance; source-format or grayscale output, configurable clip limit and tile counts |
 | Image processing / Contrast | Normalize intensity | Global `normalize(..., NORM_MINMAX)` with explicit output range and uint8/uint16/float32 depth |
 | Image processing / Contrast | Gamma correction | uint8 `LUT`; `output=255*(input/255)^(1/gamma)`, alpha preserved |
 | Image processing / Channels | Split three channels | `split` preserves the actual channel order, including RGB/HSV; three monochrome outputs |
@@ -27,8 +27,10 @@ choose application-level acceptance limits or guarantee detection on arbitrary i
 Normalization operates on the entire array, not independently per channel; a
 constant image becomes the configured minimum. Set maximum to 1 for normalized
 float display. Convert HSV/Lab to gray/BGR before normalization or gamma correction
-to avoid treating encoded chroma/hue as brightness. Gamma and equalization require
-uint8. CLAHE also supports uint16. Corners accept uint8/float32; Hough tools and
+to avoid treating encoded chroma/hue as brightness. Gamma requires uint8.
+Equalization uses uint8 internally. CLAHE also works at uint16. Source-format
+contrast output restores the original encoding and depth after processing.
+Corners accept uint8/float32; Hough tools and
 distance transform require uint8. Color-capable detectors use canonical grayscale.
 Channel merge supports uint8/uint16/float32, with HSV/Lab limited to uint8/float32.
 
