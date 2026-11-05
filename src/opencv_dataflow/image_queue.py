@@ -84,6 +84,7 @@ class ImageQueue(FlowBlock):
                 "rejected": 0,
                 "high_water": 0,
                 "producer_error": "",
+                "producer_done": False,
             }
             self.lease = None
             self.use_lease = False
@@ -211,7 +212,7 @@ class ImageQueue(FlowBlock):
                     return None
                 if self.runtime["producer_error"]:
                     raise RuntimeError(self.runtime["producer_error"])
-                if not wait_for_frame:
+                if self.runtime.get("producer_done") or not wait_for_frame:
                     return None
                 self.condition.wait(0.05)
             if cancelled():

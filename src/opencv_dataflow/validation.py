@@ -161,6 +161,7 @@ def run_set(
     project_dir=None,
     cancelled=lambda: False,
     progress=lambda row: None,
+    filmstrip=None,
 ):
     manifest = validate_sets([manifest])[0]
     root = Path(project_dir or Path.cwd())
@@ -195,6 +196,8 @@ def run_set(
                     if graph is not None:
                         graph.close()
                     graph = prepare_graph(definition, manifest, registry, root)
+                    if filmstrip is not None:
+                        graph.filmstrip, graph.filmstrip_enabled = filmstrip, True
                 path = Path(case["path"])
                 path = path if path.is_absolute() else root / path
                 data = path.read_bytes()

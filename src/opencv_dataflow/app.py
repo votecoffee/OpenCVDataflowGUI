@@ -48,6 +48,7 @@ from .examples import (
     channel_pyramid_graph,
     combined_regions_graph,
     control_flow_graph,
+    image_set_workspace_graph,
     input_coordination_graph,
     object_collections_graph,
     parallel_parts_graph,
@@ -62,6 +63,7 @@ from .examples import (
     trained_patterns_graph,
     transformed_regions_graph,
 )
+from .filmstrip_viewer import FilmstripViewer
 from .image_queue import ImageQueue
 from .outcomes import INPUT_FAILURE_POLICIES
 from .parallel_inspection import ParallelInspect
@@ -128,7 +130,7 @@ class Runner(QThread):
                     publish()
                     dirty = False
                     published_at = time.perf_counter()
-                if not self.continuous:
+                if not self.continuous or (queued is None and self.graph.sources_exhausted()):
                     break
                 self.stop_requested.wait(self.graph.run_profile.iteration_pause_ms / 1000)
         except Exception as exc:
@@ -325,6 +327,14 @@ class Inspector(QWidget):
                 self.form.addRow(key.replace("_", " ").title(), row)
             else:
                 self.form.addRow(key.replace("_", " ").title(), field)
+        if getattr(block, "file_source", False):
+            for title, callback in (
+                ("Select images…", self.browse_images),
+                ("Select directory…", self.browse_directory),
+            ):
+                button = QPushButton(title)
+                button.clicked.connect(callback)
+                self.form.addRow(button)
         if getattr(block, "supports_region_editor", False):
             kind = getattr(block, "editor_kind", "region")
             draw_region = QPushButton(f"Draw / edit {kind}…")
@@ -387,6 +397,20 @@ class Inspector(QWidget):
         self.form.addRow(apply_button)
         self.editor.setEnabled(self.window.runner is None)
         self.refresh_result()
+
+    def browse_images(self):
+        paths, _ = QFileDialog.getOpenFileNames(self, "Select images", "", "Images (*.*)")
+        if paths:
+            self.fields["paths"].setText(json.dumps(paths))
+            self.fields["source_mode"].setCurrentText("files")
+            self.fields["path_base"].setCurrentText("working_directory")
+
+    def browse_directory(self):
+        directory = QFileDialog.getExistingDirectory(self, "Select image directory")
+        if directory:
+            self.fields["directory"].setText(directory)
+            self.fields["source_mode"].setCurrentText("directory")
+            self.fields["path_base"].setCurrentText("working_directory")
 
     def browse_path(self, field):
         if self.block.category == "Input":
@@ -878,6 +902,12 @@ class MainWindow(QMainWindow):
         self.diagnostics_dock.setWidget(self.diagnostics_view)
         self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, self.diagnostics_dock)
         self.diagnostics_dock.hide()
+        self.filmstrip_dock = QDockWidget("Image results filmstrip", self)
+        self.filmstrip_dock.setObjectName("imageResultsFilmstrip")
+        self.filmstrip_view = FilmstripViewer(lambda: self.root_graph.filmstrip, self)
+        self.filmstrip_dock.setWidget(self.filmstrip_view)
+        self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, self.filmstrip_dock)
+        self.filmstrip_dock.hide()
         self.scene.selected_block.connect(self.inspector.select)
         self.scene.edited.connect(self.mark_dirty)
         self.scene.layout_changed.connect(self.mark_layout_dirty)
@@ -892,7 +922,7 @@ class MainWindow(QMainWindow):
         self.production_timer.start()
         self.refresh_production()
         self.statusBar().showMessage("Demo ready · Run once to inspect two shapes")
-        QTimer.singleShot(0, self.view.fit_graph)
+        QTimer.singleShot(0, self.view.restore_view)
 
     def make_actions(self):
         menu = self.menuBar().addMenu("&File")
@@ -924,6 +954,7 @@ class MainWindow(QMainWindow):
             ("Load recipes example", None, self.load_recipes_example),
             ("Load sequence memory example", None, self.load_sequence_example),
             ("Load validation image set example", None, self.load_validation_example),
+            ("Load image-set workspace example", None, self.load_image_set_workspace),
             ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
@@ -951,9 +982,10 @@ class MainWindow(QMainWindow):
         self.profile_choice.currentTextChanged.connect(self.change_run_profile)
         toolbar.addWidget(self.profile_choice)
         toolbar.addSeparator()
-        toolbar.addAction("Fit graph", self.view.fit_graph)
+        toolbar.addAction("Fit graph", lambda: self.view.fit_graph())
         results_menu = self.menuBar().addMenu("&Results")
         results_menu.addAction("Ticket results…", self.show_ticket_results)
+        results_menu.addAction(self.filmstrip_dock.toggleViewAction())
         self.diagnostics_action = self.diagnostics_dock.toggleViewAction()
         self.diagnostics_action.setText("Block diagnostics")
         self.diagnostics_action.setShortcut("Ctrl+Shift+D")
@@ -971,6 +1003,14 @@ class MainWindow(QMainWindow):
         self.recipe_action = recipes_menu.addAction("Manage recipes…", self.manage_recipes)
         self.edit_actions.append(self.recipe_action)
         toolbar.addAction("Delete selected", self.scene.delete_selected)
+        workspace = self.menuBar().addMenu("&Workspace")
+        for title, shortcut, callback in (
+            ("Group selected nodes…", "Ctrl+G", self.group_nodes),
+            ("Ungroup selection", "Ctrl+Shift+G", self.scene.ungroup_selected),
+        ):
+            action = workspace.addAction(title, callback)
+            action.setShortcut(shortcut)
+            self.edit_actions.append(action)
         tools = self.menuBar().addMenu("&ToolBlocks")
         for title, callback in (
             ("Create from selected nodes…", self.create_toolblock),
@@ -987,6 +1027,16 @@ class MainWindow(QMainWindow):
         self.breadcrumb = QLabel("Job")
         toolbar.addWidget(self.breadcrumb)
         self.update_navigation()
+
+    def group_nodes(self):
+        if self.runner:
+            return
+        name, accepted = QInputDialog.getText(self, "Group nodes", "Group name:")
+        if accepted:
+            try:
+                self.scene.group_selected(name)
+            except ValueError as exc:
+                self.warn(str(exc))
 
     def populate_library(self):
         self.library.clear()
@@ -1096,7 +1146,7 @@ class MainWindow(QMainWindow):
         self.inspector.select(None)
         self.scene.rebuild(selected)
         self.update_navigation()
-        self.view.fit_graph()
+        self.view.restore_view()
 
     def leave_toolblock(self):
         if self.runner or not self.graph_stack:
@@ -1192,8 +1242,9 @@ class MainWindow(QMainWindow):
         self.profile_choice.blockSignals(True)
         self.profile_choice.setCurrentText(graph.run_profile.name)
         self.profile_choice.blockSignals(False)
+        self.filmstrip_view.capture.setChecked(graph.run_profile.name != "lean")
         self.update_title()
-        self.view.fit_graph()
+        self.view.restore_view()
         self.statusBar().showMessage(f"Job ready · {len(graph.blocks)} blocks")
 
     def new_project(self):
@@ -1331,6 +1382,10 @@ class MainWindow(QMainWindow):
             )
             execution_graph.copy_runtime_from(self.root_graph)
             execution_graph.bind_activity(self.root_graph.activity)
+            execution_graph.filmstrip = self.root_graph.filmstrip
+            execution_graph.filmstrip_enabled = self.filmstrip_view.capture.isChecked()
+            if any(getattr(b, "file_source", False) for b in self.root_graph.blocks.values()):
+                self.filmstrip_dock.show()
             for key, block in self.root_graph.blocks.items():
                 execution_graph.blocks[key].copy_results_from(block)
         except Exception as exc:
@@ -1350,6 +1405,13 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage("Running…")
         self.runner.start()
 
+    def load_image_set_workspace(self):
+        if self.confirm_discard():
+            examples = Path(__file__).resolve().parents[2] / "examples"
+            graph = image_set_workspace_graph(self.registry)
+            graph.bind_project_dir(examples)
+            self.replace_graph(graph)
+
     def reset_flow_state(self):
         if not self.runner:
             self.root_graph.invalidate()
@@ -1365,6 +1427,7 @@ class MainWindow(QMainWindow):
             for key, executed in self.runner.graph.blocks.items():
                 self.root_graph.blocks[key].copy_results_from(executed)
             self.scene.update()
+            self.filmstrip_view.refresh()
             self.inspector.refresh_result()
             states = [b.state for b in self.root_graph.blocks.values()]
             self.statusBar().showMessage(
@@ -1388,6 +1451,7 @@ class MainWindow(QMainWindow):
         self.root_graph.ticket_results.restore(worker.graph.ticket_results.snapshot())
         self.root_graph.recipes.copy_runtime_from(worker.graph.recipes)
         self.root_graph.copy_timing_from(worker.graph)
+        self.root_graph.copy_source_runtime_from(worker.graph)
         for key, snapshot in worker.final_queue_states.items():
             block = self.root_graph.blocks.get(key)
             if isinstance(block, ImageQueue):
@@ -1446,6 +1510,7 @@ class MainWindow(QMainWindow):
     def change_run_profile(self, name):
         if not self.runner:
             self.root_graph.set_run_profile(name)
+            self.filmstrip_view.capture.setChecked(name != "lean")
             self.mark_dirty()
             self.scene.update()
             self.inspector.refresh_result()

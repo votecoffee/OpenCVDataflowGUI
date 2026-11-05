@@ -1107,6 +1107,12 @@ Ticket mode and fixed value are common inspector controls.
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `path` | `""` |  |
+| `source_mode` | `"single"` | `single`, `files`, `directory` |
+| `paths` | `[]` | Ordered image paths; one image per activation in files mode. |
+| `directory` | `""` | Snapshot supported image filenames in sorted order. |
+| `recursive` | `false` |  |
+| `repeat` | `"stop"` | `stop`, `loop` Stop at end, or loop. Reset flow state to restart. |
+| `filename_ticket` | `true` | Use filename tickets unless an explicit ticket mode is selected. |
 | `color_format` | `"bgr"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` |
 | `pixel_depth` | `"uint8"` | `unchanged`, `uint8`, `uint16`, `float32` |
 | `path_base` | `"working_directory"` | `working_directory`, `project` |

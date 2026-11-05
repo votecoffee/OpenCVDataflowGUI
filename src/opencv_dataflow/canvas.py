@@ -4,13 +4,23 @@ from __future__ import annotations
 
 import numpy as np
 from PySide6.QtCore import QPointF, QRectF, Qt, Signal
-from PySide6.QtGui import QColor, QImage, QPainter, QPainterPath, QPen, QPixmap
+from PySide6.QtGui import (
+    QColor,
+    QImage,
+    QPainter,
+    QPainterPath,
+    QPainterPathStroker,
+    QPen,
+    QPixmap,
+    QTransform,
+)
 from PySide6.QtWidgets import (
     QGraphicsEllipseItem,
     QGraphicsItem,
     QGraphicsPathItem,
     QGraphicsScene,
     QGraphicsView,
+    QWidget,
 )
 
 from .images import preview_rgb
@@ -182,8 +192,7 @@ class Node(QGraphicsItem):
         if change == QGraphicsItem.GraphicsItemChange.ItemPositionHasChanged:
             self.block.position = [self.pos().x(), self.pos().y()]
             if self.scene():
-                self.scene().update_wires()
-                self.scene().layout_changed.emit()
+                self.scene().geometry_changed()
         return super().itemChange(change, value)
 
 
@@ -216,6 +225,8 @@ class CanvasScene(QGraphicsScene):
         self.graph = graph
         self.nodes = {}
         self.wires = []
+        self.groups = {}
+        self._moving_group = False
         self.locked = False
         self.drag_socket = None
         self.drag_path = None
@@ -227,7 +238,7 @@ class CanvasScene(QGraphicsScene):
         self.drag_socket = None
         self.drag_path = None
         self.clear()
-        self.nodes, self.wires = {}, []
+        self.nodes, self.wires, self.groups = {}, [], {}
         for b in self.graph.blocks.values():
             node = Node(b)
             self.addItem(node)
@@ -242,6 +253,57 @@ class CanvasScene(QGraphicsScene):
             )
             self.addItem(wire)
             self.wires.append(wire)
+
+        for group in self.graph.groups:
+            item = NodeGroup(group)
+            self.addItem(item)
+            self.groups[group["id"]] = item
+            item.refresh()
+        self.expand_workspace()
+        self.set_locked(self.locked)
+
+    def expand_workspace(self):
+        bounds = self.itemsBoundingRect().adjusted(-1000, -1000, 1000, 1000)
+        for view in self.views():
+            bounds = bounds.united(view.mapToScene(view.viewport().rect()).boundingRect())
+        self.setSceneRect(bounds.united(QRectF(-1500, -1200, 5000, 3200)))
+
+    def geometry_changed(self):
+        if self._moving_group:
+            return
+        self.update_wires()
+        for group in self.groups.values():
+            group.refresh()
+        self.expand_workspace()
+        self.layout_changed.emit()
+
+    def group_selected(self, name):
+        from .workspace import add_group
+
+        if self.locked:
+            return
+        members = [n.block.id for n in self.selectedItems() if isinstance(n, Node)]
+        if not members:
+            raise ValueError("Select nodes to group first")
+        group = add_group(self.graph, members, name)
+        self.rebuild()
+        self.groups[group["id"]].setSelected(True)
+        self.layout_changed.emit()
+        return group
+
+    def ungroup_selected(self):
+        if self.locked:
+            return
+        selected = self.selectedItems()
+        ids = {g.data["id"] for g in selected if isinstance(g, NodeGroup)}
+        members = {n.block.id for n in selected if isinstance(n, Node)}
+        self.graph.groups = [
+            g
+            for g in self.graph.groups
+            if g["id"] not in ids and not members.intersection(g["members"])
+        ]
+        self.rebuild()
+        self.layout_changed.emit()
 
     def on_selection(self):
         node = next((n for n in self.selectedItems() if isinstance(n, Node)), None)
@@ -292,13 +354,17 @@ class CanvasScene(QGraphicsScene):
                 self.graph.connections.remove(item.connection)
             elif isinstance(item, Node) and item.block.id in self.graph.blocks:
                 self.graph.remove(item.block.id)
-        self.graph.invalidate()
+        topology_changed = any(isinstance(i, (Node, Wire)) for i in selected)
+        group_ids = {i.data["id"] for i in selected if isinstance(i, NodeGroup)}
+        self.graph.groups = [g for g in self.graph.groups if g["id"] not in group_ids]
+        if topology_changed:
+            self.graph.invalidate()
         self.rebuild()
-        self.edited.emit()
+        (self.edited if topology_changed else self.layout_changed).emit()
 
     def set_locked(self, locked):
         self.locked = locked
-        for node in self.nodes.values():
+        for node in [*self.nodes.values(), *self.groups.values()]:
             node.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable, not locked)
 
 
@@ -311,19 +377,70 @@ class CanvasView(QGraphicsView):
         self.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
         self.setMinimumWidth(380)
         self.pan_start = None
+        self._restoring = False
+        self.overview = Overview(self)
+        scene.layout_changed.connect(self.overview.update)
+        scene.changed.connect(self.overview.update)
+        for scrollbar in (self.horizontalScrollBar(), self.verticalScrollBar()):
+            scrollbar.valueChanged.connect(lambda value: self.overview.update())
+            scrollbar.sliderReleased.connect(self.remember_view)
+            scrollbar.actionTriggered.connect(lambda action: self.remember_view())
+
+    def remember_view(self, *args):
+        self.overview.update()
+        if self._restoring or not self.isVisible():
+            return
+        center = self.mapToScene(self.viewport().rect().center())
+        self.scene().graph.viewport = {
+            "center": [center.x(), center.y()],
+            "zoom": max(0.005, min(3.0, self.transform().m11())),
+        }
+        self.scene().layout_changed.emit()
+
+    def restore_view(self):
+        saved = self.scene().graph.viewport
+        self._restoring = True
+        try:
+            if saved:
+                self.setTransform(QTransform.fromScale(saved["zoom"], saved["zoom"]))
+                center = QPointF(*saved["center"])
+                self.scene().setSceneRect(
+                    self.sceneRect().united(
+                        QRectF(center.x() - 1000, center.y() - 1000, 2000, 2000)
+                    )
+                )
+                self.centerOn(center)
+            else:
+                self.fit_graph(remember=False)
+        finally:
+            self._restoring = False
+        self.overview.update()
+
+    def resizeEvent(self, event):
+        self._restoring = True
+        try:
+            super().resizeEvent(event)
+        finally:
+            self._restoring = False
+        self.overview.move(max(0, self.viewport().width() - self.overview.width() - 12), 12)
+        self.overview.update()
 
     def drawBackground(self, painter, rect):
         super().drawBackground(painter, rect)
         painter.setPen(QPen(QColor("#253247"), 1))
-        left, top = int(rect.left()) // 25 * 25, int(rect.top()) // 25 * 25
-        for x in range(left, int(rect.right()), 25):
-            for y in range(top, int(rect.bottom()), 25):
+        spacing = 25
+        while spacing * self.transform().m11() < 15:
+            spacing *= 5
+        left, top = int(rect.left()) // spacing * spacing, int(rect.top()) // spacing * spacing
+        for x in range(left, int(rect.right()), spacing):
+            for y in range(top, int(rect.bottom()), spacing):
                 painter.drawPoint(QPointF(x, y))
 
     def wheelEvent(self, event):
         factor = 1.15 if event.angleDelta().y() > 0 else 1 / 1.15
-        if 0.2 < self.transform().m11() * factor < 3:
+        if 0.005 <= self.transform().m11() * factor <= 3:
             self.scale(factor, factor)
+            self.remember_view()
 
     def keyPressEvent(self, event):
         if event.key() in (Qt.Key.Key_Delete, Qt.Key.Key_Backspace):
@@ -351,12 +468,137 @@ class CanvasView(QGraphicsView):
         if event.button() == Qt.MouseButton.MiddleButton:
             self.pan_start = None
             self.unsetCursor()
+            self.remember_view()
         else:
             super().mouseReleaseEvent(event)
 
-    def fit_graph(self):
+    def fit_graph(self, remember=True):
         if self.scene().nodes:
             bounds = QRectF()
             for node in self.scene().nodes.values():
                 bounds = bounds.united(node.sceneBoundingRect())
-            self.fitInView(bounds.adjusted(-45, -60, 45, 60), Qt.AspectRatioMode.KeepAspectRatio)
+            previous = self._restoring
+            self._restoring = True
+            try:
+                self.fitInView(
+                    bounds.adjusted(-45, -60, 45, 60), Qt.AspectRatioMode.KeepAspectRatio
+                )
+                zoom = max(0.005, min(3.0, self.transform().m11()))
+                self.setTransform(QTransform.fromScale(zoom, zoom))
+                self.centerOn(bounds.center())
+            finally:
+                self._restoring = previous
+            if remember:
+                self.remember_view()
+
+
+class NodeGroup(QGraphicsItem):
+    """Visual container; absolute node coordinates and processing remain independent."""
+
+    def __init__(self, data):
+        super().__init__()
+        self.data = data
+        self.rect = QRectF()
+        self.setZValue(-2)
+        self.setFlags(
+            QGraphicsItem.GraphicsItemFlag.ItemIsMovable
+            | QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+            | QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges
+        )
+
+    def refresh(self):
+        bounds = QRectF()
+        for key in self.data["members"]:
+            bounds = bounds.united(self.scene().nodes[key].sceneBoundingRect())
+        self.prepareGeometryChange()
+        self.rect = bounds.adjusted(-22, -42, 22, 22).translated(-self.pos())
+        self.update()
+
+    def boundingRect(self):
+        return self.rect.adjusted(-3, -3, 3, 3)
+
+    def shape(self):
+        outline = QPainterPath()
+        outline.addRect(self.rect)
+        stroker = QPainterPathStroker()
+        stroker.setWidth(12)
+        path = stroker.createStroke(outline)
+        path.addRect(QRectF(self.rect.left(), self.rect.top(), self.rect.width(), 32))
+        return path
+
+    def paint(self, painter, option, widget=None):
+        painter.setPen(
+            QPen(QColor("#73d5e2" if self.isSelected() else "#66829f"), 2, Qt.PenStyle.DashLine)
+        )
+        painter.setBrush(QColor(70, 100, 140, 35))
+        painter.drawRoundedRect(self.rect, 8, 8)
+        painter.setPen(QColor("#c6d7eb"))
+        painter.drawText(
+            self.rect.adjusted(12, 3, -12, 0), Qt.AlignmentFlag.AlignTop, self.data["name"]
+        )
+
+    def itemChange(self, change, value):
+        if change == QGraphicsItem.GraphicsItemChange.ItemPositionChange and self.scene():
+            delta = value - self.pos()
+            scene = self.scene()
+            scene._moving_group = True
+            try:
+                for key in self.data["members"]:
+                    node = scene.nodes[key]
+                    node.setPos(node.pos() + delta)
+            finally:
+                scene._moving_group = False
+        result = super().itemChange(change, value)
+        if change == QGraphicsItem.GraphicsItemChange.ItemPositionHasChanged and self.scene():
+            self.scene().geometry_changed()
+        return result
+
+
+class Overview(QWidget):
+    """Cheap workspace map: no image previews or full-scene rendering."""
+
+    def __init__(self, view):
+        super().__init__(view.viewport())
+        self.view = view
+        self.setFixedSize(200, 140)
+        self.setToolTip("Workspace overview · click or drag to navigate")
+        self.world = QRectF()
+        self.ratio = 1.0
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.fillRect(self.rect(), QColor(17, 27, 41, 235))
+        visible = self.view.mapToScene(self.view.viewport().rect()).boundingRect()
+        self.world = (
+            self.view.scene().itemsBoundingRect().united(visible).adjusted(-50, -50, 50, 50)
+        )
+        self.ratio = min(
+            (self.width() - 12) / max(1, self.world.width()),
+            (self.height() - 12) / max(1, self.world.height()),
+        )
+        painter.translate(6, 6)
+        painter.scale(self.ratio, self.ratio)
+        painter.translate(-self.world.left(), -self.world.top())
+        for group in self.view.scene().groups.values():
+            painter.fillRect(group.sceneBoundingRect(), QColor("#31445c"))
+        for node in self.view.scene().nodes.values():
+            painter.fillRect(node.sceneBoundingRect(), QColor("#70adbd"))
+        painter.setPen(QPen(QColor("#f3c572"), 2 / self.ratio))
+        painter.setBrush(QColor(243, 197, 114, 25))
+        painter.drawRect(visible)
+
+    def navigate(self, position):
+        point = QPointF(
+            self.world.left() + (position.x() - 6) / self.ratio,
+            self.world.top() + (position.y() - 6) / self.ratio,
+        )
+        self.view.centerOn(point)
+        self.view.remember_view()
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.navigate(event.position())
+
+    def mouseMoveEvent(self, event):
+        if event.buttons() & Qt.MouseButton.LeftButton:
+            self.navigate(event.position())

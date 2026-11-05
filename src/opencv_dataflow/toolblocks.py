@@ -319,6 +319,7 @@ def encapsulate(graph, selected, name, registry, owner=None):
         "connections": [
             c for c in data["connections"] if c["source"] in selected and c["target"] in selected
         ],
+        "groups": [g for g in graph.groups if set(g["members"]) <= selected],
     }
     inner = Graph.from_dict(copy.deepcopy(inner_data), registry, project_dir=graph.project_dir)
     ins, outs = {}, {}
@@ -387,5 +388,10 @@ def encapsulate(graph, selected, name, registry, owner=None):
         shadow.validate_interface()
         owner.input_bindings, owner.output_bindings = inputs, outputs
     graph.blocks, graph.connections = candidate.blocks, replacements
+    graph.groups = [
+        {**g, "members": [m for m in g["members"] if m not in selected]}
+        for g in graph.groups
+        if any(m not in selected for m in g["members"])
+    ]
     graph.invalidate()
     return composite

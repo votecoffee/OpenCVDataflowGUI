@@ -1,6 +1,7 @@
 """Run a saved project without Qt, including repeatable verification receipts."""
 
 import argparse
+import itertools
 import json
 import sys
 import time
@@ -57,6 +58,11 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("project", type=Path)
     parser.add_argument("--repeat", type=int, default=1, help="Run the graph this many times")
+    parser.add_argument(
+        "--all-images",
+        action="store_true",
+        help="Run a finite file/directory sequence to completion",
+    )
     parser.add_argument("--profile", choices=PROFILES, help="Override the saved run profile")
     parser.add_argument(
         "--plugin",
@@ -82,15 +88,20 @@ def main(argv=None):
         graph = Graph.load(args.project, registry)
         if args.profile:
             graph.set_run_profile(args.profile)
+        if args.all_images and not graph.has_finite_sources():
+            raise ValueError("--all-images requires a finite file/directory source (repeat=stop)")
         if background_queue(graph) is not None:
             queued = QueuedExecution(graph, registry)
             queued.start()
         runs = []
         passed = True
-        for index in range(args.repeat):
+        for index in itertools.count() if args.all_images else range(args.repeat):
+            if queued is None and graph.sources_exhausted():
+                break
             started = time.perf_counter()
             if queued is not None:
-                queued.run_one()
+                if not queued.run_one():
+                    break
             else:
                 graph.run()
             records = describe(graph) if args.report else []

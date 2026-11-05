@@ -94,6 +94,8 @@ def snapshots_for_frame(graph, frame, keys=None):
         if keys is not None and key not in keys:
             continue
         snapshot = {name: getattr(block, name) for name in SNAPSHOT_FIELDS}
+        if getattr(block, "file_source", False):
+            snapshot["_source_runtime"] = block.snapshot_runtime()
         snapshot["last_output_images"] = dict(block.last_output_images)
         if isinstance(block, ToolBlock):
             snapshot["_captured_graph"] = snapshots_for_frame(block.graph, frame)
@@ -155,6 +157,7 @@ class QueuedExecution:
         self.producer.bind_activity(graph.activity)
         self.producer.bind_recipes(graph.recipes)
         self.producer.copy_timing_from(graph)
+        self.producer.copy_source_runtime_from(graph)
         self.stop = threading.Event()
         self.thread = None
 
@@ -191,12 +194,17 @@ class QueuedExecution:
                         continue
                     capture = QueuedCapture(frame, snapshots_for_frame(self.producer, frame))
                     self.queue.enqueue(capture, self.stopped, background=True)
+                if self.producer.sources_exhausted():
+                    break
                 delay = self.queue.parameters["capture_interval_ms"] / 1000
                 if self.stop.wait(max(delay, 0.01 if not packets else 0)):
                     break
         except Exception as exc:
             self.queue.producer_failed(f"Acquisition failed: {type(exc).__name__}: {exc}", exc)
         finally:
+            with self.queue.condition:
+                self.queue.runtime["producer_done"] = True
+                self.queue.condition.notify_all()
             self.producer.close()
 
     def start(self):
@@ -204,6 +212,7 @@ class QueuedExecution:
             raise ValueError("Acquisition already started")
         with self.queue.condition:
             self.queue.runtime["producer_error"] = ""
+            self.queue.runtime["producer_done"] = False
         self.thread = threading.Thread(
             target=self._capture, name="opencv-image-acquisition", daemon=False
         )
@@ -232,6 +241,7 @@ class QueuedExecution:
         else:
             self.producer.close()
         self.graph.copy_timing_from(self.producer)
+        self.graph.copy_source_runtime_from(self.producer)
 
     def __enter__(self):
         self.start()
