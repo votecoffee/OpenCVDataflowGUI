@@ -603,7 +603,8 @@ class CanvasView(QGraphicsView):
             super().resizeEvent(event)
         finally:
             self._restoring = False
-        self.overview.move(max(0, self.viewport().width() - self.overview.width() - 12), 12)
+        if self.overview.parentWidget() is self.viewport():
+            self.overview.move(max(0, self.viewport().width() - self.overview.width() - 2), 2)
         self.overview.update()
 
     def drawBackground(self, painter, rect):
