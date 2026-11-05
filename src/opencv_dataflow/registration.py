@@ -903,6 +903,17 @@ class MatchAKAZE(Block):
 FLANN_INDEX_KDTREE = 1
 
 
+def kaze_data(data):
+    extended, upright = data.get("extended"), data.get("upright")
+    if type(extended) is not bool or type(upright) is not bool:
+        raise ValidationError("KAZE descriptors require extended and upright settings")
+    width = 128 if extended else 64
+    if data.get("descriptor_size") != width:
+        raise ValidationError(f"KAZE descriptor size must be {width} for this mode")
+    descriptors, points = descriptor_arrays(data, width, -2, 2, False)
+    return descriptors.astype(np.float32), points, ("KAZE", extended, upright)
+
+
 def flann_data(data):
     if isinstance(data, dict) and data.get("algorithm") == "SIFT":
         descriptors, points = sift_data(data)
@@ -912,14 +923,7 @@ def flann_data(data):
         if descriptors.dtype == np.float32:
             return descriptors, points, ("AKAZE", *settings)
     if isinstance(data, dict) and data.get("algorithm") == "KAZE":
-        extended, upright = data.get("extended"), data.get("upright")
-        if type(extended) is not bool or type(upright) is not bool:
-            raise ValidationError("KAZE descriptors require extended and upright settings")
-        width = 128 if extended else 64
-        if data.get("descriptor_size") != width:
-            raise ValidationError(f"KAZE descriptor size must be {width} for this mode")
-        descriptors, points = descriptor_arrays(data, width, -2, 2, False)
-        return descriptors.astype(np.float32), points, ("KAZE", extended, upright)
+        return kaze_data(data)
     raise ValidationError("FLANN KD-tree requires SIFT, KAZE, or float AKAZE descriptors")
 
 
@@ -1055,6 +1059,73 @@ class MatchBRISK(Block):
             float(p["ratio"]),
             float(p["max_distance"]),
         )
+
+
+def radius_data(data):
+    family = data.get("algorithm") if isinstance(data, dict) else None
+    if family == "ORB":
+        descriptors, points = orb_data(data)
+        wta = data.get("wta_k", 2)
+        norm = cv2.NORM_HAMMING if wta == 2 else cv2.NORM_HAMMING2
+        return descriptors, points, (family, wta), norm
+    if family == "BRISK":
+        descriptors, points, scale = brisk_data(data)
+        return descriptors, points, (family, scale), cv2.NORM_HAMMING
+    if family == "AKAZE":
+        descriptors, points, settings = akaze_data(data)
+        norm = cv2.NORM_HAMMING if descriptors.dtype == np.uint8 else cv2.NORM_L2
+        return descriptors, points, (family, *settings), norm
+    if family == "SIFT":
+        descriptors, points = sift_data(data)
+        return descriptors, points, (family,), cv2.NORM_L2
+    if family == "KAZE":
+        descriptors, points, layout = kaze_data(data)
+        return descriptors, points, layout, cv2.NORM_L2
+    raise ValidationError("Connect ORB, BRISK, AKAZE, SIFT, or KAZE feature descriptors")
+
+
+class MatchDescriptorRadius(Block):
+    type_id = "inspect.match_descriptor_radius"
+    title, category = "Match descriptors within radius", "Inspection"
+    block_type, subtype = "Inspection", "Matching"
+    inputs, outputs = MatchSIFT.inputs, MatchSIFT.outputs
+    defaults = {"max_distance": 32.0, "max_neighbors": 4}
+    parameter_ranges = {
+        "max_distance": NumericRange(0, 65536),
+        "max_neighbors": NumericRange(1, 32, whole=True),
+    }
+    parameter_help = {
+        "max_distance": "Inclusive descriptor distance, in Hamming, Hamming2, or L2 units.",
+        "max_neighbors": "Maximum candidates per query keypoint, ordered by distance.",
+    }
+
+    def process(self, inputs):
+        query, qpoints, layout, norm = radius_data(inputs["query"])
+        train, tpoints, train_layout, _ = radius_data(inputs["train"])
+        if layout != train_layout:
+            raise ValidationError("Query and train need the same descriptor family and settings")
+        if max(len(query), len(train)) > 10_000:
+            raise ValidationError("Radius matching supports up to 10,000 descriptors per input")
+        if len(query) * len(train) > 10_000_000:
+            raise ValidationError("Radius matching supports up to 10 million descriptor pairs")
+        selected = []
+        if len(query) and len(train):
+            radius = float(self.parameters["max_distance"])
+            limit = int(self.parameters["max_neighbors"])
+            matcher = cv2.BFMatcher(norm)
+            # Bound the number of candidates OpenCV can materialize per call.
+            batch_size = max(1, 100_000 // len(train))
+            for start in range(0, len(query), batch_size):
+                rows = matcher.radiusMatch(
+                    query[start : start + batch_size], train, max(radius, 1e-6)
+                )
+                for row in rows:
+                    candidates = sorted(row, key=lambda match: (match.distance, match.trainIdx))
+                    for match in candidates[:limit]:
+                        if match.distance <= radius:
+                            match.queryIdx += start
+                            selected.append(match)
+        return paired_feature_result(inputs, qpoints, tpoints, selected)
 
 
 class EstimateHomography(Block):
@@ -1216,6 +1287,7 @@ REGISTRATION_BLOCKS = (
     MatchAKAZE,
     MatchFLANN,
     MatchBRISK,
+    MatchDescriptorRadius,
     EstimateHomography,
     TransformPoints,
 )

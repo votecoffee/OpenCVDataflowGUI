@@ -384,6 +384,85 @@ def test_flann_distance_and_single_neighbor_behavior():
     assert block.execute(inputs).outputs["count"] == 0
 
 
+def radius_packet(algorithm, components, **settings):
+    width = settings.pop("descriptor_size")
+    return {
+        "algorithm": algorithm,
+        "descriptor_size": width,
+        "image_size": [640, 640],
+        "keypoints": [{"point": [index, 10]} for index, _ in enumerate(components)],
+        "descriptors": [[value] + [0] * (width - 1) for value in components],
+        **settings,
+    }
+
+
+@pytest.mark.parametrize(
+    "family,settings,distance",
+    [
+        ("ORB", {"descriptor_size": 32, "wta_k": 2}, 2),
+        ("ORB", {"descriptor_size": 32, "wta_k": 3}, 1),
+        ("BRISK", {"descriptor_size": 64, "pattern_scale": 1.0}, 2),
+        ("SIFT", {"descriptor_size": 128, "descriptor_depth": "float32"}, 3),
+        ("KAZE", {"descriptor_size": 64, "extended": False, "upright": False}, 0.5),
+        (
+            "AKAZE",
+            {
+                "descriptor_size": 61,
+                "descriptor_mode": "mldb",
+                "descriptor_bits": 0,
+                "descriptor_channels": 3,
+            },
+            2,
+        ),
+        (
+            "AKAZE",
+            {
+                "descriptor_size": 64,
+                "descriptor_mode": "kaze",
+                "descriptor_bits": 0,
+                "descriptor_channels": 3,
+            },
+            0.5,
+        ),
+    ],
+)
+def test_descriptor_radius_uses_family_norm_and_includes_boundary(family, settings, distance):
+    value = 0.5 if distance == 0.5 else 3
+    query = radius_packet(family, [0], **settings)
+    train = radius_packet(family, [value, 0, value], **settings)
+    inputs = {"query": query, "train": train}
+    block = run(
+        "inspect.match_descriptor_radius", inputs, {"max_distance": distance, "max_neighbors": 2}
+    )
+    assert block.last_result.outputs["matches"]["matches"] == [
+        {"query_index": 0, "train_index": 1, "distance": 0},
+        {"query_index": 0, "train_index": 0, "distance": distance},
+    ]
+    block.parameters["max_distance"] = 0
+    assert block.execute(inputs).outputs["count"] == 1
+
+
+def test_descriptor_radius_keeps_indices_across_batches_and_rejects_mixed_layouts():
+    settings = {"descriptor_size": 32, "wta_k": 2}
+    query = radius_packet("ORB", [0] * 400, **settings)
+    train = radius_packet("ORB", [1] * 250 + [0], **settings)
+    block = run(
+        "inspect.match_descriptor_radius", {"query": query, "train": train}, {"max_distance": 0}
+    )
+    output = block.last_result.outputs["matches"]
+    assert [m["query_index"] for m in output["matches"]] == list(range(400))
+    assert all(m["train_index"] == 250 for m in output["matches"])
+    assert output["query_points"][-1] == [399, 10]
+    assert block.execute({"query": query, "train": {**train, "wta_k": 3}}) is None
+    assert block.error_kind == "invalid"
+    assert (
+        block.execute({"query": query, "train": radius_packet("ORB", [], **settings)}).outputs[
+            "count"
+        ]
+        == 0
+    )
+
+
 def test_flann_rejects_binary_akaze():
     image = np.zeros((64, 80), np.uint8)
     binary = run("inspect.akaze", {"image": image}).last_result.outputs["features"]

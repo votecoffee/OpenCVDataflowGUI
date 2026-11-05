@@ -2408,6 +2408,17 @@ Inputs: `query` (data), `train` (data).
 | `max_distance` | `100.0` | Value must be a finite number at least 0. Maximum descriptor distance using the selected norm. |
 | `mode` | `"ratio"` | `ratio`, `cross_check` |
 
+## Match descriptors within radius (`inspect.match_descriptor_radius`)
+
+Inspection / Matching
+
+Inputs: `query` (data), `train` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_distance` | `32.0` | Value must be a finite number between 0 and 65536. Inclusive descriptor distance, in Hamming, Hamming2, or L2 units. |
+| `max_neighbors` | `4` | Value must be a whole number between 1 and 32. Maximum candidates per query keypoint, ordered by distance. |
+
 ## Match descriptors with FLANN (`inspect.match_flann`)
 
 Inspection / Matching
