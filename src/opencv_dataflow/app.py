@@ -45,7 +45,7 @@ from .activity_window import ActivityWindow
 from .block_xml import block_xml_suffix, load_block_xml, save_block_xml
 from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
-from .canvas import CanvasScene, CanvasView, Node, pixmap
+from .canvas import CanvasScene, CanvasView, Node, block_preview_images, pixmap
 from .cloud_viewer import CloudViewer
 from .core import Graph
 from .diagnostic_viewer import DiagnosticViewer
@@ -1291,15 +1291,8 @@ class Inspector(QWidget):
         if b:
             if self.reference_capture is not None:
                 self.reference_capture.setEnabled("image" in b.last_inputs)
-            composed = getattr(b, "composes_result_image", False)
-            drawings = b.last_result.drawings if b.last_result is not None else {}
-            annotated = [name for name in b.last_graphics if name in drawings]
-            output_label = "Result" if composed else "Output"
-            outputs = [f"{output_label} / {name}" for name in b.last_output_images]
-            graphics = [f"Graphic / {name}" for name in annotated]
-            self.preview_choice.addItems(outputs + graphics if composed else graphics + outputs)
             self.preview_choice.addItems(
-                [f"Graphic / {name}" for name in b.last_graphics if name not in drawings]
+                [f"{kind} / {name}" for kind, name, _ in block_preview_images(b)]
             )
             self.preview_choice.addItems(
                 [

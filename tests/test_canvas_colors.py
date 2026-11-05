@@ -10,6 +10,7 @@ from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry, demo_graph
 from opencv_dataflow.canvas import CanvasScene, Wire
 from opencv_dataflow.core import Block, Graph, Port, Result
+from opencv_dataflow.graphics_layers import GraphicDrawing
 from opencv_dataflow.payloads import compatible
 from opencv_dataflow.toolblocks import Binding, ToolBlock
 from opencv_dataflow.visual_style import BLOCK_COLORS, PORT_COLORS, block_type, port_type
@@ -39,6 +40,35 @@ from opencv_dataflow.visual_style import BLOCK_COLORS, PORT_COLORS, block_type, 
 def test_semantic_ports_keep_runtime_contracts(port, expected):
     assert port_type(Block(), port) == expected
     assert compatible(port.kind, port.kind)
+
+
+def test_canvas_thumbnail_prefers_result_then_output(app):
+    graph = Graph()
+    block = graph.add(Block())
+    raw = np.full((12, 12), 40, np.uint8)
+    annotated = np.full((12, 12), 180, np.uint8)
+    plot = np.full((12, 12), 90, np.uint8)
+    block.last_output_images = {"image": raw}
+    block.last_graphics = {"annotations": annotated, "plot": plot}
+    block.last_result = Result({}, drawings={"annotations": GraphicDrawing(())})
+    scene = CanvasScene(graph)
+    node = scene.nodes[block.id]
+
+    def preview_pixel():
+        surface = QImage(int(node.width), int(node.height), QImage.Format.Format_RGB32)
+        with QPainter(surface) as painter:
+            node.paint(painter, None)
+        return surface.pixelColor(node.thumbnail_rect.center().toPoint()).red()
+
+    assert preview_pixel() == 180
+    block.preview_output = "image"
+    assert preview_pixel() == 40
+    block.preview_output = ""
+    block.last_graphics.pop("annotations")
+    assert preview_pixel() == 40
+    block.composes_result_image = True
+    block.last_graphics["annotations"] = annotated
+    assert preview_pixel() == 40
 
 
 def test_requested_colors_and_aliases_survive_nested_toolblocks(app):
