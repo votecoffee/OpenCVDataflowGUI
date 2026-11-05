@@ -1884,7 +1884,7 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | --- | --- | --- |
 | `descriptor_mode` | `"mldb"` | `mldb`, `mldb_upright`, `kaze`, `kaze_upright` Upright modes keep a fixed orientation. KAZE descriptors are floats. |
 | `descriptor_bits` | `0` | Value must be a whole number between 0 and 486. MLDB only. Zero selects full length with three channels. |
-| `descriptor_channels` | `"3"` | `1`, `2`, `3` Rotating MLDB can use fewer channels with an explicit bit count. |
+| `descriptor_channels` | `"3"` | `1`, `2`, `3` Use three channels on the current OpenCV build. |
 | `threshold` | `0.001` | Value must be a finite number between 1e-09 and 1. |
 | `octaves` | `4` | Value must be a whole number between 1 and 8. |
 | `octave_layers` | `4` | Value must be a whole number between 1 and 8. |
@@ -2366,6 +2366,20 @@ Inputs: `query` (data), `train` (data).
 | `ratio` | `0.75` | Value must be a finite number between 1e-06 and 0.999999. Reject a nearest neighbor too similar in distance to the runner-up. |
 | `max_distance` | `64.0` | Value must be a finite number at least 0. Maximum descriptor distance using the selected norm. |
 | `mode` | `"ratio"` | `ratio`, `cross_check` |
+
+## Match descriptors with FLANN (`inspect.match_flann`)
+
+Inspection / Matching
+
+Inputs: `query` (data), `train` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"ratio"` | `ratio`, `cross_check` |
+| `ratio` | `0.75` | Value must be a finite number between 1e-06 and 0.999999. Reject a nearest neighbor too similar in distance to the runner-up. |
+| `max_distance` | `250.0` | Value must be a finite number at least 0. Maximum descriptor distance using the selected norm. |
+| `trees` | `5` | Value must be a whole number between 1 and 32. Number of randomized KD-trees in the search index. |
+| `checks` | `50` | Value must be a whole number between 1 and 10000. Search budget. Higher values can improve recall at greater cost. |
 
 ## Match ORB descriptors (`inspect.match_orb`)
 

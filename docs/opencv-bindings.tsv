@@ -2777,7 +2777,7 @@ P3	method	cv2.flann_Index.load	alias	cv2.flann.Index.load
 P3	method	cv2.flann_Index.radiusSearch	alias	cv2.flann.Index.radiusSearch
 P3	method	cv2.flann_Index.release	alias	cv2.flann.Index.release
 P3	method	cv2.flann_Index.save	alias	cv2.flann.Index.save
-P3	class	cv2.FlannBasedMatcher	no static reference	-
+P3	class	cv2.FlannBasedMatcher	literal reference	-
 P3	method	cv2.FlannBasedMatcher.create	method name only	-
 P3	function	cv2.FlannBasedMatcher_create	no static reference	-
 P3	function	cv2.flip	literal reference	-

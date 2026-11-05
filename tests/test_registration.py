@@ -220,7 +220,7 @@ def test_sift_matcher_handles_empty_features_and_rejects_other_descriptors():
     "descriptor_mode,bits,channels,width",
     [
         ("mldb", 0, "3", 61),
-        ("mldb", 64, "1", 8),
+        ("mldb", 64, "3", 8),
         ("mldb_upright", 64, "3", 8),
         ("kaze", 0, "3", 64),
     ],
@@ -257,7 +257,9 @@ def test_akaze_registration_uses_matching_descriptor_settings(
 
 
 @pytest.mark.parametrize("channels", ["1", "2"])
-@pytest.mark.parametrize("mode,bits", [("mldb", 0), ("mldb_upright", 0), ("mldb_upright", 64)])
+@pytest.mark.parametrize(
+    "mode,bits", [("mldb", 0), ("mldb", 64), ("mldb_upright", 0), ("mldb_upright", 64)]
+)
 def test_akaze_rejects_unsafe_native_settings(channels, mode, bits):
     block = builtin_registry().create(
         "inspect.akaze",
@@ -290,3 +292,61 @@ def test_akaze_matcher_rejects_incompatible_layouts_of_the_same_byte_width():
     assert block.execute({"query": first, "train": second}) is None
     assert block.error_kind == "invalid"
     assert "settings" in block.error or "bit counts" in block.error
+
+
+@pytest.mark.parametrize(
+    "detector,mode",
+    [("inspect.sift", "ratio"), ("inspect.sift", "cross_check"), ("inspect.akaze", "ratio")],
+)
+def test_flann_recovers_known_shift_for_numeric_descriptors(detector, mode):
+    image = np.random.default_rng(37).integers(0, 256, (180, 224), dtype=np.uint8)
+    image = cv2.GaussianBlur(image, (3, 3), 0.8)
+    shifted = cv2.warpAffine(image, np.float32([[1, 0, 8], [0, 1, 12]]), image.shape[::-1])
+    settings = {"descriptor_mode": "kaze"} if detector == "inspect.akaze" else {}
+    query, train = [
+        run(detector, {"image": view}, settings).last_result.outputs["features"]
+        for view in (image, shifted)
+    ]
+    matched = run(
+        "inspect.match_flann",
+        {"query": query, "train": train},
+        {"mode": mode, "trees": 4, "checks": 100},
+    ).last_result
+    assert matched.outputs["count"] > 15
+    estimate = run("inspect.homography", {"matches": matched.outputs["matches"]})
+    assert estimate.state == "pass"
+    matrix = np.asarray(estimate.last_result.outputs["transform"]["source_to_target"])
+    np.testing.assert_allclose(matrix[:2, 2], [8, 12], atol=0.5)
+
+
+def test_flann_distance_and_single_neighbor_behavior():
+    def packet(first_components):
+        return {
+            "algorithm": "SIFT",
+            "descriptor_depth": "float32",
+            "descriptor_size": 128,
+            "image_size": [64, 64],
+            "keypoints": [{"point": [5 + index, 10]} for index, _ in enumerate(first_components)],
+            "descriptors": [[value] + [0] * 127 for value in first_components],
+        }
+
+    inputs = {"query": packet([1]), "train": packet([4])}
+    block = run("inspect.match_flann", inputs)
+    assert block.last_result.outputs["count"] == 0
+    block.parameters.update(mode="cross_check", max_distance=3)
+    result = block.execute(inputs)
+    assert result is not None, block.error
+    assert result.outputs["matches"]["matches"] == [
+        {"query_index": 0, "train_index": 0, "distance": 3.0}
+    ]
+    block.parameters["max_distance"] = 2.9
+    assert block.execute(inputs).outputs["count"] == 0
+
+
+def test_flann_rejects_binary_akaze():
+    image = np.zeros((64, 80), np.uint8)
+    binary = run("inspect.akaze", {"image": image}).last_result.outputs["features"]
+    block = builtin_registry().create("inspect.match_flann")
+    assert block.execute({"query": binary, "train": binary}) is None
+    assert block.error_kind == "invalid"
+    assert "float AKAZE" in block.error
