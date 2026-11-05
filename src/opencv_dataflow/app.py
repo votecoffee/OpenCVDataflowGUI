@@ -48,6 +48,7 @@ from .canvas import CanvasScene, CanvasView, Node, pixmap
 from .cloud_viewer import CloudViewer
 from .core import Graph
 from .diagnostic_viewer import DiagnosticViewer
+from .diagnostics import exception_message
 from .documentation_editor import DocumentationEditor
 from .examples import (
     annoy_graph,
@@ -158,8 +159,8 @@ class Runner(QThread):
                 if not self.continuous or (queued is None and self.graph.sources_exhausted()):
                     break
                 self.stop_requested.wait(self.graph.run_profile.iteration_pause_ms / 1000)
-        except Exception as exc:
-            self.failed.emit(f"{type(exc).__name__}: {exc}")
+        except (Exception, SystemExit) as exc:
+            self.failed.emit(exception_message(exc))
         finally:
             if dirty:
                 publish()
@@ -184,9 +185,9 @@ class LivePreview(QThread):
             try:
                 self.block.execute(self.inputs, self.isInterruptionRequested)
             finally:
-                self.block.close()
-        except Exception as exc:
-            self.error = f"{type(exc).__name__}: {exc}"
+                self.block._close_safely()
+        except (Exception, SystemExit) as exc:
+            self.error = exception_message(exc)
 
 
 class Inspector(QWidget):
@@ -675,8 +676,8 @@ class Inspector(QWidget):
                 name: ValuePacket(value, b.input_payloads.get(name, {}))
                 for name, value in b.last_inputs.items()
             }
-        except (ValueError, TypeError) as exc:
-            self.window.statusBar().showMessage(f"Block preview · {exc}")
+        except (Exception, SystemExit) as exc:
+            self.window.statusBar().showMessage(f"Block preview · {exception_message(exc)}")
             return
         worker = LivePreview(candidate, inputs, self._live_revision, self)
         self._live_worker = worker
@@ -1600,11 +1601,15 @@ class MainWindow(QMainWindow):
         type_id = item.data(0, Qt.ItemDataRole.UserRole)
         if not type_id:
             return
-        if type_id.startswith("template:"):
-            definition = self.toolblock_templates[int(type_id.split(":")[1])]
-            block = ToolBlock.from_definition(definition, self.registry)
-        else:
-            block = self.registry.create(type_id)
+        try:
+            if type_id.startswith("template:"):
+                definition = self.toolblock_templates[int(type_id.split(":")[1])]
+                block = ToolBlock.from_definition(definition, self.registry)
+            else:
+                block = self.registry.create(type_id)
+        except (Exception, SystemExit) as exc:
+            self.warn(exception_message(exc))
+            return
         self.insert_block(block)
 
     def insert_block(self, block):
@@ -1950,8 +1955,8 @@ class MainWindow(QMainWindow):
                 self.filmstrip_dock.show()
             for key, block in self.root_graph.blocks.items():
                 execution_graph.blocks[key].copy_results_from(block)
-        except Exception as exc:
-            self.warn(str(exc))
+        except (Exception, SystemExit) as exc:
+            self.warn(exception_message(exc))
             return
         self.runner = Runner(execution_graph, continuous, self.registry)
         self.runner.frame.connect(self.on_frame)
@@ -1991,6 +1996,7 @@ class MainWindow(QMainWindow):
             )
 
     def on_frame(self):
+        error = None
         try:
             self.root_graph.copy_runtime_from(self.runner.graph)
             share_native_sequence_runtime(self.root_graph, self.runner.graph)
@@ -2006,8 +2012,13 @@ class MainWindow(QMainWindow):
                 f"{states.count('error')} errors · {states.count('skipped')} skipped"
                 f" · {states.count('waiting')} waiting · {states.count('inactive')} inactive"
             )
+        except (Exception, SystemExit) as exc:
+            self.runner.stop()
+            error = exception_message(exc)
         finally:
             self.runner.ack.set()
+        if error is not None:
+            self.warn(error)
 
     def stop_run(self):
         if self.runner:
@@ -2021,7 +2032,11 @@ class MainWindow(QMainWindow):
         self.root_graph.ticket_results.restore(worker.graph.ticket_results.snapshot())
         self.root_graph.recipes.copy_runtime_from(worker.graph.recipes)
         self.root_graph.copy_timing_from(worker.graph)
-        self.root_graph.copy_source_runtime_from(worker.graph)
+        error = None
+        try:
+            self.root_graph.copy_source_runtime_from(worker.graph)
+        except (Exception, SystemExit) as exc:
+            error = exception_message(exc)
         for key, snapshot in worker.final_queue_states.items():
             block = self.root_graph.blocks.get(key)
             if isinstance(block, ImageQueue):
@@ -2040,6 +2055,8 @@ class MainWindow(QMainWindow):
         self.profile_choice.setEnabled(True)
         self.branch_workers_choice.setEnabled(True)
         self.update_navigation()
+        if error is not None:
+            self.warn(error)
         if self.closing:
             self.close()
 

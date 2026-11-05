@@ -97,6 +97,125 @@ def test_caught_exception_records_full_cause_chain_parameters_and_ticket():
     json.dumps(block.logger.snapshot(), allow_nan=False)
 
 
+@pytest.mark.parametrize("workers", [1, 2])
+def test_plugin_error_skips_dependents_and_preserves_other_branch(workers):
+    class UnprintableError(RuntimeError):
+        def __str__(self):
+            raise ValueError("broken exception message")
+
+    class Plugin(DiagnosticBlock):
+        parallel_safe = True
+        failure = SystemExit("plugin requested exit")
+
+        def process(self, inputs):
+            if self.failure is not None:
+                raise self.failure
+            return super().process(inputs)
+
+    graph = Graph()
+    graph.set_branch_workers(workers)
+    source = graph.add(builtin_registry().create("input.demo"))
+    broken, sibling, dependent = [
+        graph.add(cls()) for cls in (Plugin, DiagnosticBlock, DiagnosticBlock)
+    ]
+    graph.connect(source.id, "image", broken.id, "image")
+    graph.connect(source.id, "image", sibling.id, "image")
+    graph.connect(broken.id, "image", dependent.id, "image")
+
+    for failure in (SystemExit("plugin requested exit"), UnprintableError(), None):
+        broken.failure = failure
+        graph.run()
+        assert sibling.state == "pass"
+        if failure is None:
+            assert broken.state == dependent.state == "pass"
+            continue
+        assert broken.state == "error"
+        assert dependent.state == "skipped"
+        assert broken.last_result is None and broken.current_emissions == {}
+        event = records(broken, "exception")[-1]
+        assert type(failure).__name__ in event["exception"]["traceback"]
+        ticket = source.last_result.outputs["ticket"]
+        assert event["tickets"] == [ticket]
+        ticket_events = graph.ticket_results.find(ticket)["events"]
+        assert any(e["kind"] == "error" and e["source"]["id"] == broken.id for e in ticket_events)
+
+
+def test_gui_recovers_after_plugin_exception_in_runner(app, monkeypatch):
+    from test_pattern_editor import run
+
+    class Plugin(DiagnosticBlock):
+        type_id = "custom.exit_fixture"
+        defaults = {**DiagnosticBlock.defaults, "throw": True}
+
+        def process(self, inputs):
+            if self.parameters["throw"]:
+                raise SystemExit("editor must stay open")
+            return super().process(inputs)
+
+    window = MainWindow()
+    warnings = []
+    monkeypatch.setattr(window, "warn", warnings.append)
+    window.registry.register(Plugin)
+    graph = Graph()
+    source = graph.add(window.registry.create("input.demo"))
+    plugin = graph.add(window.registry.create(Plugin.type_id))
+    graph.connect(source.id, "image", plugin.id, "image")
+    window.replace_graph(graph)
+
+    run(window, app)
+    assert plugin.state == "error"
+    assert "editor must stay open" in records(plugin, "exception")[-1]["message"]
+    assert window.run_action.isEnabled()
+    assert warnings == []
+
+    plugin.parameters["throw"] = False
+    run(window, app)
+    assert plugin.state == "pass"
+    window.close()
+
+
+def test_runtime_hook_errors_preserve_primary_failure_and_close_other_blocks():
+    class Plugin(DiagnosticBlock):
+        sequence_memory = True
+
+        def process(self, inputs):
+            raise RuntimeError("inspection failed")
+
+        def reset_runtime(self):
+            raise SystemExit("reset failed")
+
+        def close(self):
+            raise SystemExit("close failed")
+
+    class Resource(DiagnosticBlock):
+        closed = False
+
+        def close(self):
+            self.closed = True
+
+    graph = Graph()
+    broken, resource = graph.add(Plugin()), graph.add(Resource())
+    broken.execute({"image": np.zeros((12, 16), np.uint8)})
+    assert broken.error == "RuntimeError: inspection failed"
+    assert "inspection failed" in records(broken, "finish")[0]["exception"]["traceback"]
+    assert "reset failed" in records(broken, "exception")[-1]["message"]
+    graph.close()
+    assert resource.closed
+    assert "close failed" in records(broken, "exception")[-1]["message"]
+
+
+def test_overridden_execute_error_is_contained_by_graph():
+    class Plugin(DiagnosticBlock):
+        def execute(self, values, cancelled):
+            raise SystemExit("overridden execution")
+
+    graph = Graph()
+    plugin = graph.add(Plugin())
+    graph.run()
+    assert plugin.state == "error"
+    assert "overridden execution" in records(plugin, "exception")[0]["message"]
+
+
 def test_logger_exception_within_handled_except_does_not_change_tool_judgment():
     class Recovering(DiagnosticBlock):
         def process(self, inputs):

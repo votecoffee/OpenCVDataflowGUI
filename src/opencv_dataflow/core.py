@@ -14,7 +14,7 @@ from typing import Any, ClassVar
 import numpy as np
 
 from .activity import ActivityLog, report
-from .diagnostics import BlockLogger
+from .diagnostics import BlockLogger, exception_message
 from .fail_reasons import normalize_reasons
 from .graphics_layers import RESULT_GRAPHICS, GraphicDrawing, GraphicsBundle, graphics_bundle
 from .outcomes import (
@@ -223,12 +223,16 @@ class Block:
                 if cancelled():
                     self.report_event("cancelled_wait", values=values, invocation=invocation)
                     return None
-            self.report_event("unblocked", values=values, invocation=invocation)
         self._execution_owner = threading.get_ident()
         self._activity_invocation = invocation
         self._activity_started = False
         try:
+            if not acquired:
+                self.report_event("unblocked", values=values, invocation=invocation)
             return self._execute(values, cancelled)
+        except (Exception, SystemExit) as exc:
+            self._record_execution_error(exc, values, active=self._activity_started)
+            return None
         finally:
             try:
                 if self._activity_started and captures(self, "finish"):
@@ -405,15 +409,42 @@ class Block:
                 self.last_result,
                 kind="final_judgment" if result.final_judgment is not None else "tool_result",
             )
-        except Exception as exc:
+        except (Exception, SystemExit) as exc:
+            self._record_execution_error(exc, values, active=True)
+            if getattr(self, "accept_events", False) or getattr(self, "sequence_memory", False):
+                try:
+                    self.reset_runtime()
+                except (Exception, SystemExit) as reset_error:
+                    # Keep the processing failure as the block's result.
+                    diagnostic = self._diagnostic_exception
+                    self.logger.exception(
+                        f"Runtime reset failed: {exception_message(reset_error)}",
+                        exc_info=reset_error,
+                    )
+                    self._diagnostic_exception = diagnostic
+        finally:
+            self.parameters = configured_parameters
+            if getattr(self, "supports_training", False):
+                self.trained_model = configured_model
+            self._finish_work()
+            if not self.run_profile.input_previews:
+                self.last_inputs = {}
+        return self.last_result
+
+    def _record_execution_error(self, exc, values, *, active=False):
+        self.state, self.error = "error", exception_message(exc)
+        self.input_rejected = False
+        self.last_result = None
+        self.last_output_images, self.last_graphics, self.current_emissions = {}, {}, {}
+        if active:
             self._finish_work()
             if not self._activity_start_reported:
                 self._report_activity_start(values)
-            self.state = "error"
-            self.error = f"{type(exc).__name__}: {exc}"
-            self.logger.exception(self.error, exc_info=exc, values=values)
-            self.last_result = None
-            self.last_output_images, self.last_graphics, self.current_emissions = {}, {}, {}
+        else:
+            self._source_ticket = self._work_started = self._work_finished = None
+        self.logger.exception(self.error, exc_info=exc, values=values)
+        failure_values = dict(values)
+        if active:
             failure_values = {
                 name: value
                 if isinstance(value, ValuePacket)
@@ -424,22 +455,11 @@ class Block:
                 failure_values["source_ticket"] = ValuePacket(
                     self._source_ticket, {"ticket": self._source_ticket}
                 )
-            publish_result(
-                self,
-                failure_values,
-                kind="error",
-                message=self.error,
-            )
-            if getattr(self, "accept_events", False) or getattr(self, "sequence_memory", False):
-                self.reset_runtime()
-        finally:
-            self.parameters = configured_parameters
-            if getattr(self, "supports_training", False):
-                self.trained_model = configured_model
-            self._finish_work()
-            if not self.run_profile.input_previews:
-                self.last_inputs = {}
-        return self.last_result
+        try:
+            publish_result(self, failure_values, kind="error", message=self.error)
+        except (Exception, SystemExit) as report_error:
+            # Invalid input metadata can fail both validation and ticket reporting.
+            self.logger.error("Could not record ticket error: %s", exception_message(report_error))
 
     def _report_activity_start(self, values):
         observed = dict(values)
@@ -455,6 +475,12 @@ class Block:
 
     def close(self):
         """Release optional native resources, on the execution thread."""
+
+    def _close_safely(self):
+        try:
+            self.close()
+        except (Exception, SystemExit) as exc:
+            self.logger.exception(f"Close failed: {exception_message(exc)}", exc_info=exc)
 
     def reset_runtime(self):
         """Clear transient stream state after configuration changes or explicit reset."""
@@ -612,9 +638,12 @@ class Registry:
     def create(self, type_id, **kwargs):
         if type_id not in self.types:
             raise ValueError(f"Unavailable block type: {type_id}. Load its plugin first.")
-        block = self.types[type_id](**kwargs)
-        if hasattr(block, "bind_registry"):
-            block.bind_registry(self)
+        try:
+            block = self.types[type_id](**kwargs)
+            if hasattr(block, "bind_registry"):
+                block.bind_registry(self)
+        except SystemExit as exc:
+            raise RuntimeError(f"Could not create {type_id}: {exception_message(exc)}") from exc
         return block
 
 
@@ -754,11 +783,17 @@ class Graph:
         self.clock = TicketClock()
         self.clear_results()
         for block in self.blocks.values():
-            block.reset_runtime()
+            try:
+                block.reset_runtime()
+            except (Exception, SystemExit) as exc:
+                block._record_execution_error(exc, {})
 
     def clear_results(self, preserve_history=False):
         for block in self.blocks.values():
-            block.clear_result(preserve_history=preserve_history)
+            try:
+                block.clear_result(preserve_history=preserve_history)
+            except (Exception, SystemExit) as exc:
+                block._record_execution_error(exc, {})
 
     def copy_runtime_from(self, other):
         self.clock = other.clock.clone()
@@ -991,6 +1026,15 @@ class Graph:
 
         def run_block(key):
             block = self.blocks[key]
+            try:
+                return dispatch(block, key)
+            except (Exception, SystemExit) as exc:
+                block._record_execution_error(exc, {})
+                return None
+
+        def dispatch(block, key):
+            if block.state == "error":  # The block's initial clear hook failed.
+                return
             block._clock = self.clock
             incoming = plan.incoming[key]
             if cancelled():
@@ -1154,7 +1198,11 @@ class Graph:
                 if cancelled():
                     block.state, block.error = "skipped", "Run stopped"
                     return
-                result = block.execute(values, cancelled)
+                try:
+                    result = block.execute(values, cancelled)
+                except (Exception, SystemExit) as exc:
+                    block._record_execution_error(exc, values)
+                    return
                 if result is None:
                     if block.input_rejected:
                         continue
@@ -1230,7 +1278,7 @@ class Graph:
 
     def close(self):
         for block in self.blocks.values():
-            block.close()
+            block._close_safely()
 
     def to_dict(self, include_recipes=True):
         catalog = self.recipes.definition() if include_recipes else None
