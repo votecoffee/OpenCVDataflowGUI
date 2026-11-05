@@ -1794,6 +1794,21 @@ Inputs: `value` (any), `passed` (data, optional), `reasons` (data, optional).
 | `fail_reason` | `""` | Stable code assigned when the final decision is FAIL. |
 | `reason_message` | `""` | Human-readable explanation; defaults to the reason code. |
 
+## Seeded flood fill (`inspect.flood_fill`)
+
+Inspection / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `seed_x` | `0` |  |
+| `seed_y` | `0` |  |
+| `lower_difference` | `0.0` | Nonnegative tolerance below the reference value. Number or BGR list. |
+| `upper_difference` | `0.0` | Nonnegative tolerance above the reference value. Number or BGR list. |
+| `connectivity` | `"4"` | `4`, `8` |
+| `range_mode` | `"fixed"` | `fixed`, `floating` Compare with the seed (fixed) or an accepted adjacent pixel (floating). |
+
 ## Histogram (`inspect.histogram`)
 
 Image processing / Statistics
@@ -1852,6 +1867,19 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `max_gap` | `10.0` |  |
 | `rho` | `1.0` |  |
 | `theta_degrees` | `1.0` |  |
+
+## Compare image quality (`inspect.image_quality`)
+
+Inspection / Measurements
+
+Inputs: `image_a` (image), `image_b` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `metric` | `"ssim"` | `ssim`, `psnr`, `mse` |
+| `check_threshold` | `false` |  |
+| `threshold` | `0.95` | Minimum for SSIM/PSNR, maximum for MSE. |
+| `peak_value` | `255.0` | Maximum sample value for PSNR. Default is 255 for uint8 images. |
 
 ## Find line segments (LSD) (`inspect.line_segments`)
 
@@ -2002,6 +2030,18 @@ Inputs: `image` (image), `points` (data).
 | `termination` | `"both"` | `count`, `epsilon`, `both` |
 | `max_iterations` | `30` |  |
 | `epsilon` | `0.01` |  |
+
+## Marker-controlled watershed (`inspect.watershed`)
+
+Inspection / Segmentation
+
+Inputs: `image` (image), `markers` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `marker_mode` | `"binary_components"` | `binary_components`, `labels` Label connected uint8 seeds or use an int32 map with 0 for unknown. |
+| `connectivity` | `"8"` | `4`, `8` Connectivity used to label binary seeds. |
+| `output_label` | `0` | Label to output as a mask. Zero includes every positive label. |
 
 ## Shape mask (`mask.shape`)
 

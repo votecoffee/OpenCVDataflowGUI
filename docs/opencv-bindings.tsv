@@ -22,7 +22,7 @@ P1	function	cv2.matchTemplate	literal reference	-
 P1	function	cv2.minAreaRect	literal reference	-
 P1	function	cv2.minEnclosingCircle	no static reference	-
 P1	function	cv2.pointPolygonTest	no static reference	-
-P1	function	cv2.PSNR	no static reference	-
+P1	function	cv2.PSNR	literal reference	-
 P1	class	cv2.QRCodeDetector	literal reference	-
 P1	method	cv2.QRCodeDetector.decodeCurved	no static reference	-
 P1	method	cv2.QRCodeDetector.detectAndDecodeCurved	method name only	-
@@ -68,7 +68,7 @@ P1	method	cv2.quality.QualityMSE.clear	method name only	-
 P1	method	cv2.quality.QualityMSE.compute	method name only	-
 P1	method	cv2.quality.QualityMSE.create	method name only	-
 P1	method	cv2.quality.QualityMSE.empty	method name only	-
-P1	function	cv2.quality.QualityMSE_compute	no static reference	-
+P1	function	cv2.quality.QualityMSE_compute	literal reference	-
 P1	function	cv2.quality.QualityMSE_create	no static reference	-
 P1	class	cv2.quality.QualityPSNR	no static reference	-
 P1	method	cv2.quality.QualityPSNR.clear	method name only	-
@@ -84,7 +84,7 @@ P1	method	cv2.quality.QualitySSIM.clear	method name only	-
 P1	method	cv2.quality.QualitySSIM.compute	method name only	-
 P1	method	cv2.quality.QualitySSIM.create	method name only	-
 P1	method	cv2.quality.QualitySSIM.empty	method name only	-
-P1	function	cv2.quality.QualitySSIM_compute	no static reference	-
+P1	function	cv2.quality.QualitySSIM_compute	literal reference	-
 P1	function	cv2.quality.QualitySSIM_create	no static reference	-
 P1	class	cv2.text.BaseOCR	no static reference	-
 P1	function	cv2.text.computeNMChannels	no static reference	-
