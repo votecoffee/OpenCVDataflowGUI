@@ -508,6 +508,8 @@ Use **Approximate contour** to simplify a detected boundary or open path.
 [Contour approximation example](examples/contour_approximation/README.md)
 Use **Contour hierarchy** to inspect nested boundaries, holes, and islands.
 [Contour hierarchy example](examples/contour_hierarchy/README.md)
+Use **Contour hull and convexity defects** to measure edge notches and judge their count.
+[Contour defect inspection example](examples/contour_defects/README.md)
 
 Try [object collections](examples/object_collections/object_collections.json).
 This 16-block project orders two parts left-to-right, selects the round contour and

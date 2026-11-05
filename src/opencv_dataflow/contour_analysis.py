@@ -12,6 +12,7 @@ from .parameter_validation import NumericRange, ValidationError
 from .parameters import CONTOUR_APPROXIMATIONS
 from .payloads import NO_VALUE, ValuePacket, require_same_frame
 from .processing import finite, integer
+from .result_graphics import ACCEPTED, REJECTED
 from .selection import SELECTION_INPUTS, selection_mask
 
 MATCH_METHODS = {
@@ -104,35 +105,59 @@ class ContourHull(Block):
         Port("defects", "data"),
         Port("count", "number"),
         Port("solidity", "number"),
+        Port("maximum_depth", "number"),
     )
     defaults = {
         "item_index": 0,
         "clockwise": False,
         "measure_defects": True,
         "minimum_depth": 0.0,
+        "check_defect_count": False,
+        "maximum_defects": 0,
+    }
+    parameter_ranges = {
+        "item_index": NumericRange(0, whole=True),
+        "minimum_depth": NumericRange(0),
+        "maximum_defects": NumericRange(0, whole=True),
     }
     parameter_help = {
         "item_index": "Zero-based collection item. A blob uses its largest boundary.",
         "clockwise": "Hull winding in OpenCV Cartesian coordinates (positive Y up).",
         "measure_defects": "Return concavity measurements for a simple whole-pixel contour.",
-        "minimum_depth": "Ignore convexity defects shallower than this many pixels.",
+        "minimum_depth": "Count concavities at or above this perpendicular depth in pixels.",
+        "check_defect_count": "Judge the count after applying the minimum depth.",
+        "maximum_defects": "Largest qualifying count that passes. Zero allows no defects.",
     }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["check_defect_count"] and not p["measure_defects"]:
+            raise ValidationError(
+                "Enable Measure defects to check the defect count",
+                "measure_defects",
+                "check_defect_count",
+            )
 
     def process(self, inputs):
         p = self.parameters
         points, native, area, payload = read_contour(self, inputs, "contour", p["item_index"])
         hull = cv2.convexHull(native, clockwise=p["clockwise"], returnPoints=False).ravel()
+        hull_points = points[hull]
         hull_area = cv2.contourArea(native[hull])
+        draw = self.generate_graphics
+        objects = {name: [] for name in ("qualifying defects", "shallow defects")}
         defects = []
         if p["measure_defects"]:
             if not np.array_equal(points, np.rint(points)):
-                raise ValueError("Convexity defects require whole-pixel contour coordinates")
-            minimum = finite(p["minimum_depth"], "Minimum depth", 0)
+                raise ValidationError("Convexity defects require whole-pixel contour coordinates")
+            minimum = float(p["minimum_depth"])
             raw = cv2.convexityDefects(points.astype(np.int32), hull)
             if raw is not None:
                 for start, end, deepest, depth in raw.reshape(-1, 4):
                     depth_pixels = float(depth) / 256
-                    if depth_pixels >= minimum:
+                    qualifies = depth_pixels >= minimum
+                    if qualifies:
                         defects.append(
                             {
                                 "start": points[start].tolist(),
@@ -141,13 +166,51 @@ class ContourHull(Block):
                                 "depth": depth_pixels,
                             }
                         )
+                    if draw:
+                        a, b, tip = points[[start, end, deepest]]
+                        edge = b - a
+                        foot = a + edge * ((tip - a) @ edge / (edge @ edge))
+                        layer = "qualifying defects" if qualifies else "shallow defects"
+                        color = REJECTED if qualifies else (0, 190, 240)
+                        objects[layer].append(graphic_object("polyline", (foot, tip), color))
+        count = len(defects)
+        maximum = int(p["maximum_defects"])
+        passed = not p["check_defect_count"] or count <= maximum
         outputs = {
-            "hull": points[hull].tolist(),
+            "hull": hull_points.tolist(),
             "defects": defects,
-            "count": len(defects),
+            "count": count,
             "solidity": area / hull_area,
+            "maximum_depth": max((row["depth"] for row in defects), default=0.0),
         }
-        return Result(outputs, payloads={name: payload for name in outputs})
+        drawings = {}
+        if draw:
+            outline = graphic_object("polyline", hull_points, ACCEPTED, closed=True)
+            drawings["convex hull"] = GraphicDrawing((outline,), "contour")
+            drawings.update(
+                {
+                    name: GraphicDrawing(tuple(graphics), "contour")
+                    for name, graphics in objects.items()
+                    if graphics
+                }
+            )
+        return Result(
+            outputs,
+            payloads=dict.fromkeys(outputs, payload),
+            drawings=drawings,
+            passed=passed,
+            message=f"{count} qualifying convexity defects"
+            if p["measure_defects"]
+            else "Convex hull",
+            fail_reasons=[]
+            if passed
+            else [
+                {
+                    "code": "too_many_convexity_defects",
+                    "message": f"Found {count} qualifying defects, maximum {maximum}",
+                }
+            ],
+        )
 
 
 class TestContourPoints(Block):

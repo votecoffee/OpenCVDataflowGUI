@@ -40,6 +40,41 @@ def test_hull_measures_concavity_in_pixels():
     assert defect["depth"] == 4
 
 
+def test_hull_depth_gate_marks_shallow_and_qualifying_defects_in_frame():
+    points = [[0, 0], [4, 2], [8, 0], [8, 8], [4, 4], [0, 8]]
+    payload = {"spatial": frame([16, 16], "source")}
+    packet = ValuePacket(points, payload)
+    block = builtin_registry().create(
+        "inspect.contour_hull",
+        parameters={"minimum_depth": 3.0, "check_defect_count": True, "maximum_defects": 0},
+    )
+    block.exposed_outputs.append("result_graphics")
+    result = block.execute({"contour": packet})
+    assert result is not None, block.error
+    assert not result.passed and result.outputs["count"] == 1
+    assert result.outputs["maximum_depth"] == 4
+    assert result.fail_reasons[0]["code"] == "too_many_convexity_defects"
+    assert result.payloads["maximum_depth"]["spatial"] == payload["spatial"]
+    layers = {layer.name: layer for layer in result.outputs["result_graphics"].layers}
+    assert set(layers) == {"convex hull", "shallow defects", "qualifying defects"}
+    assert layers["qualifying defects"].objects[0].points == ((4, 8), (4, 4))
+    assert layers["shallow defects"].objects[0].points == ((4, 0), (4, 2))
+    assert layers["convex hull"].payload["spatial"] == payload["spatial"]
+
+    block.parameters["minimum_depth"] = 4.5
+    result = block.execute({"contour": packet})
+    assert result is not None and result.passed, block.error
+    assert result.outputs["defects"] == [] and result.outputs["maximum_depth"] == 0
+
+    block.parameters["measure_defects"] = False
+    assert block.execute({"contour": packet}) is None
+    assert block.error_kind == "invalid"
+    block.parameters["check_defect_count"] = False
+    result = block.execute({"contour": packet})
+    assert result is not None and result.passed, block.error
+    assert list(result.drawings) == ["convex hull"]
+
+
 def test_point_contour_distance_filters_points_and_checks_frames():
     block = builtin_registry().create("inspect.contour_points", parameters={"minimum_distance": 1})
     points = [[2, 2], [9, 4], [8, 4]]

@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Replay two notched parts",
+      "parameters": {
+        "source_mode": "files",
+        "paths": [
+          "assets/shallow_notch.png",
+          "assets/deep_notch.png"
+        ],
+        "repeat": "stop",
+        "path_base": "project",
+        "color_format": "gray",
+        "filename_ticket": true
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "contours",
+      "type": "inspect.contours",
+      "name": "Locate the outer boundary",
+      "parameters": {
+        "expected_count": 1
+      },
+      "position": [
+        320,
+        230
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "defects",
+      "type": "inspect.contour_hull",
+      "name": "Reject edge notches at or above 8 px",
+      "parameters": {
+        "minimum_depth": 8.0,
+        "check_defect_count": true,
+        "maximum_defects": 0
+      },
+      "position": [
+        650,
+        230
+      ],
+      "exposed_inputs": [
+        "contour"
+      ],
+      "exposed_outputs": [
+        "count",
+        "maximum_depth",
+        "defects",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show hull and measured depths",
+      "parameters": {},
+      "position": [
+        980,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "contours",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "contours",
+      "output": "collection",
+      "target": "defects",
+      "input": "contour"
+    },
+    {
+      "source": "defects",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}
