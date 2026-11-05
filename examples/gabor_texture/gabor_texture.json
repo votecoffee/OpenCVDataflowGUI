@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Load both stripe orientations",
+      "parameters": {
+        "path": "assets/striped_texture.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vertical",
+      "type": "cv.gabor_response",
+      "name": "Respond to vertical stripes",
+      "parameters": {
+        "orientation_degrees": 0
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "response"
+      ],
+      "thumbnail": true,
+      "preview_output": "response"
+    },
+    {
+      "id": "horizontal",
+      "type": "cv.gabor_response",
+      "name": "Respond to horizontal stripes",
+      "parameters": {
+        "orientation_degrees": 90
+      },
+      "position": [
+        320,
+        230
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "response"
+      ],
+      "thumbnail": true,
+      "preview_output": "response"
+    },
+    {
+      "id": "compare",
+      "type": "cv.compare_pixels",
+      "name": "Where vertical stripes dominate",
+      "parameters": {
+        "operation": "greater"
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "vertical",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "horizontal",
+      "input": "image"
+    },
+    {
+      "source": "vertical",
+      "output": "response",
+      "target": "compare",
+      "input": "image_a"
+    },
+    {
+      "source": "horizontal",
+      "output": "response",
+      "target": "compare",
+      "input": "image_b"
+    }
+  ]
+}

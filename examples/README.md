@@ -31,6 +31,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Intensity profile](intensity_profile/README.md) | Plot the mean and locate the maximum in each selected column. |
 | [Find nonzero pixels](nonzero_pixels/README.md) | Extract a bounded set of coordinates and full bounds from a texture mask. |
 | [Pixel comparison](pixel_comparison/README.md) | Compare a background difference with a scalar to build a texture mask. |
+| [Gabor texture direction](gabor_texture/README.md) | Compare two oriented texture responses on vertical and horizontal stripes. |
 | [Derivative-fed Canny](canny_derivatives/README.md) | Inspect both Sobel derivatives and compare the resulting edges with ordinary Canny. |
 | [Polar field rotation](polar_fields/README.md) | Rotate a Sobel gradient field by 90 degrees while preserving its magnitude. |
 | [Image arithmetic](image_arithmetic/README.md) | Subtract a blurred background and apply scalar gain to the signed residual. |
