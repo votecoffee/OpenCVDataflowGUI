@@ -1,5 +1,14 @@
 # Roadmap
 
+Start with acquisition/replay and editor reliability in parallel. Use the replay
+fixtures to qualify the production runtime, then run a pilot before expanding
+deployment. Offline calibration can proceed alongside those tracks. Robot pose
+capture depends on validated calibration and timestamp alignment.
+
+Milestones are ordered by dependency and have exit criteria. Calendar dates and
+owners can be assigned once implementation capacity and hardware access are known.
+GitHub holds the work items and their current status.
+
 ## Implemented prototype
 
 - Node canvas, typed connections, configurable port visibility, inspector and previews.
@@ -41,51 +50,31 @@
   freshness guards and a synthetic shared part-counter example.
 - Versioned job recipe catalog, scalar/model outputs, temporary parameter/model bindings,
   queued-frame revision pinning and GUI recipe/training-asset management.
+- Grouped workspaces, saved viewport, minimap, typed colors, finite image sets and
+  verdict filmstrips.
+- Per-block diagnostics, ticket timing, concurrency views, running counts,
+  failure reasons, scored validation sets and Debug/Balanced/Lean run profiles.
+- ONNX inference, classification/embeddings, SIFT LightGlue and Annoy index search.
 
-## Point clouds and 3D vision
+The point-cloud baseline shipped in `f15cf75`. It includes typed clouds, retained
+pixel correspondence, calibrated projection, filtering, PLY/PCD interchange and
+the viewer. [Completed milestone](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/1),
+[acceptance issue](https://github.com/votecoffee/OpenCVDataflowGUI/issues/1).
 
-[Milestone 1](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/1) covers the
-implemented point-cloud baseline: typed XYZ/color/normals, retained pixel correspondence,
-calibrated projection, filtering, PLY/PCD interchange and viewing. See
-[issue 1](https://github.com/votecoffee/OpenCVDataflowGUI/issues/1).
-Future work includes binary/compressed PCD, meshing, hardware acquisition and larger
-streaming reconstructions. The tested wheel does not provide SFM/viz or runnable KinFu.
+## Remaining milestones
 
-## Camera frames and robot integration
+| Milestone | Work | Exit criteria and dependencies |
+| --- | --- | --- |
+| [Reliable acquisition and replay](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/3) | Independent camera workers, bounded queues, timestamp-window matching, backend enumeration and triggers, multi-source recordings and validation bundles. [#5](https://github.com/votecoffee/OpenCVDataflowGUI/issues/5), [#6](https://github.com/votecoffee/OpenCVDataflowGUI/issues/6) | A stalled source cannot stall another source or coordination deadlines. Replay reproduces ticket outcomes and failure reasons. Physical synchronization needs separate backend and trigger evidence. |
+| [Editor and reusable jobs](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/4) | Undo/redo, autosave recovery, schema migrations, promoted parameters, dynamic bindings and versioned ToolBlock/plugin contracts. [#7](https://github.com/votecoffee/OpenCVDataflowGUI/issues/7), [#8](https://github.com/votecoffee/OpenCVDataflowGUI/issues/8) | Existing and nested jobs round-trip with their layout and interfaces. Interrupted saves can be recovered. Start alongside acquisition. |
+| [Production runtime and validation](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/5) | Operator view, deployable jobs, recipe and asset revisions, durable ticket history, result routing and retention. [#9](https://github.com/votecoffee/OpenCVDataflowGUI/issues/9), [#10](https://github.com/votecoffee/OpenCVDataflowGUI/issues/10), [#11](https://github.com/votecoffee/OpenCVDataflowGUI/issues/11) | Operator and headless runs agree on the same package. An unattended replay pilot survives restart and sink failures, preserves decision provenance, and reports latency, throughput and memory. Depends on replay and compatible job files. |
+| [Camera frames and robot integration](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2) | Managed intrinsic/extrinsic revisions, identifiable calibration board origins, offline hand-eye calibration and read-only robot pose adapters. [#2](https://github.com/votecoffee/OpenCVDataflowGUI/issues/2), [#3](https://github.com/votecoffee/OpenCVDataflowGUI/issues/3) | Held-out geometry meets declared residual tolerances, and incorrect frames, units and degenerate poses are rejected. Robot pose exchange follows offline calibration and depends on acquisition timestamp alignment. Controller motion is outside this milestone. |
+| [3D reconstruction and interchange](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6) | Binary/compressed PCD, mesh output and longer bounded posed fusion. Evaluate additional backends where runnable. [#12](https://github.com/votecoffee/OpenCVDataflowGUI/issues/12), [#13](https://github.com/votecoffee/OpenCVDataflowGUI/issues/13) | Third-party interchange fixtures round-trip expected geometry and attributes. Reconstruction stays within memory bounds and meets surface tolerances on recorded, calibrated sequences. |
+| [Inspection and ML expansion](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/7) | More sequence, pattern and measurement tools, model-specific ONNX decoders, multi-input inference and additional LightGlue feature adapters. [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14), [#15](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Each tool ships with a runnable example and tested parameter, coordinate and failure contracts. ML outputs have a reproducible CPU baseline. Accelerator claims are build-specific. |
+| [Measured execution and browser feasibility](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/8) | Opt-in compiled ToolBlocks and a scoped OpenCV.js/WebAssembly viewer study. [#4](https://github.com/votecoffee/OpenCVDataflowGUI/issues/4), [#16](https://github.com/votecoffee/OpenCVDataflowGUI/issues/16) | Compilation preserves output semantics and selected diagnostics and shows a repeatable end-to-end benefit after amortization. The browser study ends in a go/no-go decision based on module coverage, transport, latency and memory. [Benchmark criteria](opencv-backend.md#compiled-toolblocks-future). |
 
-[Milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2): the 3D baseline
-now has explicit intrinsic models and named rigid frame transforms. Managed calibration
-revisions, identifiable grid origins, offline hand-eye calibration and robot
-pose/measurement adapters remain future work. See
-[issue 2](https://github.com/votecoffee/OpenCVDataflowGUI/issues/2) and
-[issue 3](https://github.com/votecoffee/OpenCVDataflowGUI/issues/3).
-
-## Vision development
-
-- Additional sequence algorithms: MOG2/KNN subtraction and CSRT/KCF object trackers,
-  with explicit ownership/snapshot support for opaque native state. Persisted reference
-  images and copyable running-background, Farneback and LK sequence blocks are available;
-  see [sequence memory](sequence-memory.md).
-
-- Calibrated region overlays, physical measurements and nonlinear region remapping for lens distortion.
-- More OpenCV tools: multiple template matches, additional descriptors/robust matching and advanced calibration.
-- General dynamic bindings beyond recipe paths, richer types, promoted parameters and versioned ToolBlock libraries.
-- External recipe services, revision lifecycle/pruning, released recipe packages and automated training publication.
-- [Opt-in compiled ToolBlocks with selected diagnostic outputs](https://github.com/votecoffee/OpenCVDataflowGUI/issues/4):
-  stable compatible chains only; preserve ordinary execution for development. Require
-  reproducible end-to-end performance benefit, including diagnostics and compilation
-  amortization, before enabling or expanding the compiled feature. See the
-  [benchmark gate](opencv-backend.md#compiled-toolblocks-future).
-- Consider OpenCV.js/WebAssembly for a future browser viewer/editor; retain the native Python/Qt runtime today.
-- Camera enumeration, trigger controls, bounded acquisition and recorded test sets.
-- [Independent source workers and timestamp-window matching](https://github.com/votecoffee/OpenCVDataflowGUI/issues/5),
-  with clock-domain, watermark, ownership and cancellation contracts.
-
-## Application runtime
-
-- Separate operator view, recipes, runtime-only packages and headless CLI execution.
-- Result routing, inspection history, configurable retention and rotating image sinks.
-- Database adapters beyond local SQLite, schema mapping and integration interfaces.
-- Plugin packaging/version compatibility, project migrations, undo/redo and recovery.
-
-These are future scope, not claims of existing capability or production readiness.
+Start with issues #5 and #6 as one acquisition workstream, and #7 as a separate
+editor workstream. Define the replay format with the source contract so both
+workstreams can use the same fixtures. Tool catalog and 3D interchange changes
+can land independently when they meet their own fixture checks. Keep physical
+commissioning results separate from automated fixture acceptance.
