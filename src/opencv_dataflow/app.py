@@ -88,6 +88,7 @@ from .parallel_inspection import ParallelInspect
 from .parameter_validation import ValidationError
 from .payloads import ValuePacket, describe_value, packet_for, prepare_inputs
 from .plugins import load_plugin
+from .program_documentation import export_program_documentation
 from .project_compare import ProjectCompare
 from .project_xml import XML_FILTER, export_project_xml
 from .queued_execution import QueuedExecution, background_queue
@@ -1454,6 +1455,7 @@ class MainWindow(QMainWindow):
             ("Open…", QKeySequence.StandardKey.Open, self.open_project),
             ("Save", QKeySequence.StandardKey.Save, self.save_project),
             ("Save as…", QKeySequence.StandardKey.SaveAs, lambda: self.save_project(True)),
+            ("Export program documentation…", None, self.export_program_guide),
             ("Export project XML…", None, self.export_project_snapshot),
             ("Compare project XML…", None, self.compare_project_snapshots),
             ("Load Python plugin…", None, self.open_plugin),
@@ -1987,6 +1989,31 @@ class MainWindow(QMainWindow):
         except Exception as exc:
             self.warn(str(exc))
             return False
+
+    def export_program_guide(self):
+        if self.runner:
+            return
+        title = self.path.stem if self.path else "Untitled program"
+        proposed = (
+            self.path.with_name(f"{title}-documentation.html")
+            if self.path
+            else Path("program-documentation.html")
+        )
+        selected, _ = QFileDialog.getSaveFileName(
+            self, "Export program documentation", str(proposed), "HTML (*.html *.htm)"
+        )
+        if not selected:
+            return
+        path = Path(selected)
+        if not path.suffix:
+            path = path.with_suffix(".html")
+        try:
+            if self.path and path.resolve() == self.path.resolve():
+                raise ValueError("Choose a separate file for program documentation")
+            export_program_documentation(self.root_graph, path, title)
+            self.statusBar().showMessage(f"Program documentation exported · {path.name}")
+        except (OSError, ValueError, TypeError, RecursionError) as exc:
+            self.warn(str(exc))
 
     def export_project_snapshot(self):
         if self.runner:

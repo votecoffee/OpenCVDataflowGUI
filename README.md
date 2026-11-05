@@ -122,6 +122,14 @@ exposed graphics to a separate public terminal.
 5. Save/load JSON projects from File. Select a wire or block and press Delete to
    remove it. Use the wheel to zoom, middle-drag to pan, and **Fit graph** to frame it.
 
+Use **File → Export program documentation…** to generate a self-contained HTML
+guide from the current applied configuration. It includes a simplified graph,
+a linked block index, wiring and port tables, applied parameters, and each
+block's description and rich-text notes. Nested ToolBlocks and parallel
+inspection templates include their own diagrams and public terminal mappings.
+Open the HTML in a browser to read it offline or print it to PDF. The export
+includes configured values such as file paths and retains basic note formatting.
+
 Use **File → Export project XML…** to snapshot the open project's saved fields and
 values, including in-memory edits that have been applied. The export includes
 nested ToolBlocks, recipes, saved training data, descriptions, and layout. External
