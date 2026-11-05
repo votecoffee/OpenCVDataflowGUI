@@ -152,6 +152,26 @@ def test_run_block_works_without_live_results_and_consumes_pending_live_edit(app
         window.close()
 
 
+def test_run_block_accepts_captured_text_input(app):
+    window = MainWindow()
+    graph = Graph()
+    verify = graph.add(window.registry.create("inspect.verify_text"))
+    window.replace_graph(graph)
+    verify.execute({"text": "part-42"})
+    window.scene.nodes[verify.id].setSelected(True)
+    inspector = window.inspector
+    try:
+        assert inspector.run_block.isEnabled()
+        inspector.fields["minimum_length"].setText("10")
+        inspector.run_block.click()
+        pump_until(app, lambda: inspector._live_result is not None)
+        assert inspector._live_result.state == "fail"
+        assert verify.state == "pass"
+        assert verify.parameters["minimum_length"] == 1
+    finally:
+        window.close()
+
+
 def test_invalid_parameter_draft_marks_field_and_node_and_pauses_live_preview(app, monkeypatch):
     window = MainWindow()
     window.show()

@@ -5,8 +5,10 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .features import overlay_image
+from .graphics_layers import GraphicDrawing, graphic_object
+from .parameter_validation import NumericRange
 from .payloads import NO_VALUE, image_with_payload
-from .processing import finite, gray_image, integer
+from .processing import finite, gray_image
 from .selection import SELECTION_INPUTS, selection_mask
 
 
@@ -33,6 +35,7 @@ class CodeReader(Block):
     inputs = SELECTION_INPUTS
     outputs = (Port("codes", "data"), Port("count", "number"), Port("overlay", required=False))
     defaults = {"minimum_reads": 1, "draw_overlay": True}
+    parameter_ranges = {"minimum_reads": NumericRange(0, 4095, whole=True)}
 
     def process(self, inputs):
         search, _ = barcode_image(inputs)
@@ -48,7 +51,7 @@ class CodeReader(Block):
         return self.code_result(inputs["image"], codes)
 
     def code_result(self, source, codes, **extra):
-        minimum = integer(self.parameters["minimum_reads"], "Minimum reads", 0)
+        minimum = int(self.parameters["minimum_reads"])
         overlay = overlay_image(source) if self.parameters["draw_overlay"] else None
         if overlay is not None:
             for code in codes:
@@ -69,6 +72,10 @@ class CodeReader(Block):
         return Result(
             outputs,
             graphics={"decoded codes": overlay} if overlay is not None else {},
+            drawings={"decoded codes": GraphicDrawing(tuple(
+                graphic_object("polyline", code["corners"], (60, 230, 120), closed=True)
+                for code in codes
+            ))} if self.generate_graphics and codes else {},
             passed=count >= minimum,
             message=f"Decoded {count} codes (minimum {minimum})",
             payloads=payloads,
@@ -86,11 +93,16 @@ class ReadQRCode(CodeReader):
         "use_alignment_markers": True,
     }
     parameter_choices = {"mode": ("multi", "single", "curved")}
+    parameter_ranges = {
+        **CodeReader.parameter_ranges,
+        "eps_x": NumericRange(0),
+        "eps_y": NumericRange(0),
+    }
 
     def decode(self, image):
         detector = cv2.QRCodeDetector()
-        detector.setEpsX(finite(self.parameters["eps_x"], "Horizontal epsilon", 0))
-        detector.setEpsY(finite(self.parameters["eps_y"], "Vertical epsilon", 0))
+        detector.setEpsX(float(self.parameters["eps_x"]))
+        detector.setEpsY(float(self.parameters["eps_y"]))
         detector.setUseAlignmentMarkers(self.parameters["use_alignment_markers"])
         mode = self.parameters["mode"]
         if mode == "multi":

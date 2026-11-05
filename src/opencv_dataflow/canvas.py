@@ -86,7 +86,9 @@ class Socket(QGraphicsEllipseItem):
                 value, (bool, int, float, np.bool_, np.integer, np.floating)
             ):
                 detail = f"<br>Value: {escape(str(value))}"
-        self.setToolTip(f"<qt>{heading}{detail}</qt>")
+        help_text = "" if self.output else block.input_help.get(port.name, "")
+        help_line = f"<br>{escape(help_text)}" if help_text else ""
+        self.setToolTip(f"<qt>{heading}{help_line}{detail}</qt>")
 
     def mousePressEvent(self, event):
         if not self.scene().locked:

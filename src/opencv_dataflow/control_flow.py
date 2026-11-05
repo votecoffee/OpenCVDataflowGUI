@@ -310,8 +310,10 @@ class Reorder(BufferedFlow):
     defaults = {"mode": "manifest", "start": 1, "step": 1, **LIMITS}
     parameter_choices = {"mode": ("manifest", "number")}
     flow_primary = ("value",)
-    parameter_help = {
+    input_help = {
         "expected": "Wire the pre-branch stream to expected to order arbitrary tickets.",
+    }
+    parameter_help = {
         "start": "First numeric ticket expected; number mode only.",
     }
 

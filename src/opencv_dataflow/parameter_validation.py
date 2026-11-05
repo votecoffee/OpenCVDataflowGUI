@@ -20,6 +20,25 @@ class NumericRange:
     odd: bool = False
     zero_allowed: bool = False
 
+    def describe(self):
+        if self.minimum is not None and self.maximum is not None:
+            limit = f"between {self.minimum:g} and {self.maximum:g}"
+        elif self.minimum is not None:
+            limit = f"at least {self.minimum:g}"
+        elif self.maximum is not None:
+            limit = f"at most {self.maximum:g}"
+        else:
+            limit = ""
+        if self.odd:
+            positive = self.minimum is not None and self.minimum > 0
+            kind = "a positive odd integer" if positive else "an odd integer"
+        elif self.whole:
+            kind = "a whole number"
+        else:
+            kind = "a finite number"
+        constraint = f"{kind} {limit}".strip()
+        return f"zero or {constraint}" if self.zero_allowed else constraint
+
     def check(self, value, label, *fields):
         try:
             number = float(value)
@@ -38,22 +57,5 @@ class NumericRange:
             or (self.maximum is not None and number > self.maximum)
             or (self.odd and number % 2 == 0)
         ):
-            if self.minimum is not None and self.maximum is not None:
-                limit = f"between {self.minimum:g} and {self.maximum:g}"
-            elif self.minimum is not None:
-                limit = f"at least {self.minimum:g}"
-            elif self.maximum is not None:
-                limit = f"at most {self.maximum:g}"
-            else:
-                limit = ""
-            if self.odd:
-                parity = "a positive odd integer" if self.minimum and self.minimum > 0 else (
-                    "an odd integer"
-                )
-                constraint = f"{parity} {limit}".strip()
-            else:
-                constraint = limit
-            if self.zero_allowed:
-                constraint = "zero or " + constraint
-            raise ValidationError(f"{label} must be {constraint}", *fields)
+            raise ValidationError(f"{label} must be {self.describe()}", *fields)
         return number

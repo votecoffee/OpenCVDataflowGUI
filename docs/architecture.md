@@ -23,6 +23,14 @@ and recipe overrides. Use `ValidationError` for expected invalid input discovere
 during processing. Checks that depend on an image or other live data run when
 that data is available.
 
+The catalog test checks every registered built-in's defaults, enum and range
+metadata, exposed ports, source ticket ports, and project JSON/XML persistence.
+Runtime capabilities depend on each tool. Image-space detections can export
+drawable geometry, while numeric measurements and plots use their declared
+outputs. Stateless built-ins can preview using captured image, depth, cloud or
+data inputs. Trusted plugins can opt in with `preview_safe = True` after checking
+that their preview execution is isolated and free of external side effects.
+
 `process(inputs)` returns a `Result` containing exactly the declared outputs. Image
 ports accept nonempty NumPy arrays, numeric ports accept numbers, and data ports
 accept JSON-compatible values. Plugins can declare narrower ports with `integer`,

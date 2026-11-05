@@ -87,6 +87,8 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
 3. Select a block, edit parameters in the right inspector, and click **Apply
    configuration**. Choose exposed ports and the optional node thumbnail there.
    The inspector highlights invalid entries and shows the applicable limit or rule.
+   **Run block** previews eligible tools with their last captured inputs, including text and
+   other structured data. The [parameter reference](docs/block-parameters.md) lists declared limits.
    On the canvas, **!** marks invalid configuration or input and **×** marks an
    execution exception. Hover over the node for details.
    Add a plain-text **Description** to explain the block in its hover tooltip.

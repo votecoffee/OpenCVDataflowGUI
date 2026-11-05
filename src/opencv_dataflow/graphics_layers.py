@@ -30,6 +30,12 @@ def graphic_box(x, y, width, height, color):
     )
 
 
+def graphic_circle(x, y, radius, color):
+    angles = np.linspace(0, 2 * np.pi, 64, endpoint=False)
+    points = np.column_stack((x + radius * np.cos(angles), y + radius * np.sin(angles)))
+    return graphic_object("polyline", points, color, closed=True, thickness=1)
+
+
 @dataclass(frozen=True)
 class GraphicDrawing:
     objects: tuple[GraphicObject, ...]

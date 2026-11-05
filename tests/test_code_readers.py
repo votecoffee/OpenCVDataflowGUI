@@ -6,6 +6,7 @@ import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
+from opencv_dataflow.graphics_layers import RESULT_GRAPHICS
 from opencv_dataflow.payloads import NO_VALUE
 
 
@@ -52,11 +53,16 @@ def ean13(check_digit, module_width):
 def test_ean13_decode_with_geometry():
     image = ean13("7", 2)
     reader = builtin_registry().create("inspect.read_barcode", parameters={"draw_overlay": False})
+    reader.exposed_outputs.append(RESULT_GRAPHICS)
+    reader.set_graphics_mode("off")
     result = reader.execute({"image": image})
     assert result is not None, reader.error
     assert result.passed, result.message
     assert result.outputs["count"] == 1
     assert result.outputs["overlay"] is NO_VALUE
+    layers = result.outputs[RESULT_GRAPHICS].layers
+    assert len(layers) == 1 and layers[0].objects[0].closed
+    assert not result.graphics
     code = result.outputs["codes"][0]
     assert code["text"] == "5901234123457"
     assert code["symbology"] == "EAN_13"
