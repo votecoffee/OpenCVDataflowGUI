@@ -104,6 +104,32 @@ assignment binds the asset to that selected recipe revision while retaining its 
 changing the asset/revision resets temporal context. The wired reference takes precedence
 over a stored reference. This supports swapping trained images along with pattern models.
 
+## OpenCV MOG2 and KNN foreground masks
+
+**MOG2 background subtraction** and **KNN background subtraction** maintain
+independent models per stream. During warmup the primary outputs wait while
+status reports learning activations. Once ready, the blocks emit the raw
+mask, binary foreground and shadow masks, a background estimate and an image
+containing the visible foreground. The main mask excludes shadows by default.
+
+Use a mask or region to restrict the reported foreground and shadow pixels.
+Learning still uses the full frame. Wire a separate `known_foreground` mask
+to mark pixels OpenCV should treat as foreground and skip while learning.
+MOG2 accepts uint8 or float32 intensity values in [0, 255]. KNN accepts uint8.
+Set MOG2's Learn input to false to freeze adaptation. KNN uses automatic or
+positive learning rates because the pinned native build still adapted at zero.
+
+The editor retains each live model across Run Once and Stop/Resume. Reset
+flow state, a stream or context reset, or reopening a project starts a
+fresh model. Independent execution graphs also start fresh. The sequence
+budget covers retained native CPU model arrays. Transient images and
+previews use additional memory.
+
+Run the [native background example](../examples/native_background.json)
+with `opencv-dataflow-run examples/native_background.json --repeat 25`.
+The synthetic target stays still during warmup, then moves.
+See the [OpenCV background subtraction tutorial](https://docs.opencv.org/5.0/tutorials/others/background_subtraction.html).
+
 ## Custom sequence blocks and future work
 
 Subclass `SequenceBlock`, declare `data_outputs`, defaults and choices, and implement
@@ -113,6 +139,5 @@ and fit the memory budget; override `estimate_state_bytes` for large models. Do 
 retain native handles, external resources or workers in this state. Register it through
 the existing trusted Python plugin system.
 
-MOG2/KNN native subtractors, CSRT/KCF object trackers, explicit learning of accumulated
-references and timestamp-aware sequence resampling remain future work. These need a
-deliberate ownership/snapshot contract before introducing opaque native state.
+CSRT/KCF object trackers, explicit learning of accumulated references and
+timestamp-aware sequence resampling remain future work.

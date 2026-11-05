@@ -3062,6 +3062,59 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `freeze_after_warmup` | `true` | Keep learned image after readiness; disable to keep learning. |
 | `reference_context` | `"strict"` | `strict`, `shape_only` Strict checks grid/recipe; shape_only permits reuse. |
 
+## KNN background subtraction (`sequence.knn_background`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `known_foreground` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `20` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `256.0` | Retained CPU model budget. Processing images require additional memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `history` | `500` |  |
+| `learning_rate` | `-1.0` | -1 selects OpenCV's automatic rate. Manual rates are in [1e-8, 1). |
+| `detect_shadows` | `true` |  |
+| `shadow_threshold` | `0.5` |  |
+| `shadow_value` | `127` | Value in the raw mask for detected shadows. The shadows port is binary. |
+| `include_shadows` | `false` | Include shadows in the main binary foreground mask. |
+| `squared_distance_threshold` | `400.0` | Squared distance used to decide if a sample matches. |
+| `samples` | `7` |  |
+| `neighbors` | `2` | Minimum matching samples required to classify a pixel as background. |
+
+## MOG2 background subtraction (`sequence.mog2`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `known_foreground` (image, optional), `learn` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `5` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `256.0` | Retained CPU model budget. Processing images require additional memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `history` | `500` |  |
+| `learning_rate` | `-1.0` | -1 selects OpenCV's automatic rate. Manual rates are in [1e-8, 1). |
+| `detect_shadows` | `true` |  |
+| `shadow_threshold` | `0.5` |  |
+| `shadow_value` | `127` | Value in the raw mask for detected shadows. The shadows port is binary. |
+| `include_shadows` | `false` | Include shadows in the main binary foreground mask. |
+| `variance_threshold` | `16.0` | Squared Mahalanobis distance threshold for background matching. |
+| `new_mixture_threshold` | `9.0` | Squared distance threshold for generating a new mixture. |
+| `mixtures` | `5` |  |
+| `background_ratio` | `0.9` |  |
+| `initial_variance` | `15.0` |  |
+| `minimum_variance` | `4.0` |  |
+| `maximum_variance` | `75.0` |  |
+| `complexity_reduction` | `0.05` | Evidence threshold for retaining a mixture. Zero disables it. |
+
 ## Track points (Lucas-Kanade) (`sequence.track_points`)
 
 Sequence / Temporal processing

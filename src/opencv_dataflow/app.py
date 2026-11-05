@@ -76,6 +76,7 @@ from .examples3d import (
 )
 from .filmstrip_viewer import FilmstripViewer
 from .image_queue import ImageQueue
+from .native_background import share_native_sequence_runtime
 from .outcomes import INPUT_FAILURE_POLICIES
 from .parallel_inspection import ParallelInspect
 from .payloads import describe_value, packet_for, prepare_inputs
@@ -1445,6 +1446,7 @@ class MainWindow(QMainWindow):
                 self.root_graph.to_dict(), self.registry, project_dir=self.root_graph.project_dir
             )
             execution_graph.copy_runtime_from(self.root_graph)
+            share_native_sequence_runtime(execution_graph, self.root_graph)
             execution_graph.bind_activity(self.root_graph.activity)
             execution_graph.filmstrip = self.root_graph.filmstrip
             execution_graph.filmstrip_enabled = self.filmstrip_view.capture.isChecked()
@@ -1494,6 +1496,7 @@ class MainWindow(QMainWindow):
     def on_frame(self):
         try:
             self.root_graph.copy_runtime_from(self.runner.graph)
+            share_native_sequence_runtime(self.root_graph, self.runner.graph)
             for key, executed in self.runner.graph.blocks.items():
                 self.root_graph.blocks[key].copy_results_from(executed)
             self.scene.update()

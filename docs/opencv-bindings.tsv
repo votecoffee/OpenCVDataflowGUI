@@ -10,8 +10,8 @@ P1	method	cv2.barcode.BarcodeDetector.setDownsamplingThreshold	method name only	
 P1	method	cv2.barcode.BarcodeDetector.setGradientThreshold	method name only	-
 P1	function	cv2.calcBackProject	literal reference	-
 P1	function	cv2.compareHist	literal reference	-
-P1	function	cv2.createBackgroundSubtractorKNN	no static reference	-
-P1	function	cv2.createBackgroundSubtractorMOG2	no static reference	-
+P1	function	cv2.createBackgroundSubtractorKNN	literal reference	-
+P1	function	cv2.createBackgroundSubtractorMOG2	literal reference	-
 P1	function	cv2.drawContours	literal reference	-
 P1	function	cv2.findContours	literal reference	-
 P1	function	cv2.fitEllipse	literal reference	-
@@ -220,7 +220,7 @@ P2	method	cv2.aruco.RefineParameters.readRefineParameters	no static reference	-
 P2	method	cv2.aruco.RefineParameters.writeRefineParameters	no static reference	-
 P2	class	cv2.bgsegm.BackgroundSubtractorCNT	no static reference	-
 P2	method	cv2.bgsegm.BackgroundSubtractorCNT.apply	method name only	-
-P2	method	cv2.bgsegm.BackgroundSubtractorCNT.getBackgroundImage	no static reference	-
+P2	method	cv2.bgsegm.BackgroundSubtractorCNT.getBackgroundImage	method name only	-
 P2	method	cv2.bgsegm.BackgroundSubtractorCNT.getIsParallel	no static reference	-
 P2	method	cv2.bgsegm.BackgroundSubtractorCNT.getMaxPixelStability	no static reference	-
 P2	method	cv2.bgsegm.BackgroundSubtractorCNT.getMinPixelStability	no static reference	-
@@ -231,7 +231,7 @@ P2	method	cv2.bgsegm.BackgroundSubtractorCNT.setMinPixelStability	no static refe
 P2	method	cv2.bgsegm.BackgroundSubtractorCNT.setUseHistory	no static reference	-
 P2	class	cv2.bgsegm.BackgroundSubtractorGMG	no static reference	-
 P2	method	cv2.bgsegm.BackgroundSubtractorGMG.apply	method name only	-
-P2	method	cv2.bgsegm.BackgroundSubtractorGMG.getBackgroundImage	no static reference	-
+P2	method	cv2.bgsegm.BackgroundSubtractorGMG.getBackgroundImage	method name only	-
 P2	method	cv2.bgsegm.BackgroundSubtractorGMG.getBackgroundPrior	no static reference	-
 P2	method	cv2.bgsegm.BackgroundSubtractorGMG.getDecisionThreshold	no static reference	-
 P2	method	cv2.bgsegm.BackgroundSubtractorGMG.getDefaultLearningRate	no static reference	-
@@ -254,10 +254,10 @@ P2	method	cv2.bgsegm.BackgroundSubtractorGMG.setSmoothingRadius	no static refere
 P2	method	cv2.bgsegm.BackgroundSubtractorGMG.setUpdateBackgroundModel	no static reference	-
 P2	class	cv2.bgsegm.BackgroundSubtractorGSOC	no static reference	-
 P2	method	cv2.bgsegm.BackgroundSubtractorGSOC.apply	method name only	-
-P2	method	cv2.bgsegm.BackgroundSubtractorGSOC.getBackgroundImage	no static reference	-
+P2	method	cv2.bgsegm.BackgroundSubtractorGSOC.getBackgroundImage	method name only	-
 P2	class	cv2.bgsegm.BackgroundSubtractorLSBP	no static reference	-
 P2	method	cv2.bgsegm.BackgroundSubtractorLSBP.apply	method name only	-
-P2	method	cv2.bgsegm.BackgroundSubtractorLSBP.getBackgroundImage	no static reference	-
+P2	method	cv2.bgsegm.BackgroundSubtractorLSBP.getBackgroundImage	method name only	-
 P2	class	cv2.bgsegm.BackgroundSubtractorLSBPDesc	no static reference	-
 P2	class	cv2.bgsegm.BackgroundSubtractorMOG	no static reference	-
 P2	method	cv2.bgsegm.BackgroundSubtractorMOG.apply	method name only	-
@@ -265,9 +265,9 @@ P2	method	cv2.bgsegm.BackgroundSubtractorMOG.getBackgroundRatio	no static refere
 P2	method	cv2.bgsegm.BackgroundSubtractorMOG.getHistory	no static reference	-
 P2	method	cv2.bgsegm.BackgroundSubtractorMOG.getNMixtures	no static reference	-
 P2	method	cv2.bgsegm.BackgroundSubtractorMOG.getNoiseSigma	no static reference	-
-P2	method	cv2.bgsegm.BackgroundSubtractorMOG.setBackgroundRatio	no static reference	-
+P2	method	cv2.bgsegm.BackgroundSubtractorMOG.setBackgroundRatio	method name only	-
 P2	method	cv2.bgsegm.BackgroundSubtractorMOG.setHistory	no static reference	-
-P2	method	cv2.bgsegm.BackgroundSubtractorMOG.setNMixtures	no static reference	-
+P2	method	cv2.bgsegm.BackgroundSubtractorMOG.setNMixtures	method name only	-
 P2	method	cv2.bgsegm.BackgroundSubtractorMOG.setNoiseSigma	no static reference	-
 P2	function	cv2.bgsegm.createBackgroundSubtractorCNT	no static reference	-
 P2	function	cv2.bgsegm.createBackgroundSubtractorGMG	no static reference	-
@@ -1776,7 +1776,7 @@ P3	method	cv2.AsyncArray.valid	method name only	-
 P3	method	cv2.AsyncArray.wait_for	no static reference	-
 P3	class	cv2.BackgroundSubtractor	no static reference	-
 P3	method	cv2.BackgroundSubtractor.apply	method name only	-
-P3	method	cv2.BackgroundSubtractor.getBackgroundImage	no static reference	-
+P3	method	cv2.BackgroundSubtractor.getBackgroundImage	method name only	-
 P3	class	cv2.BackgroundSubtractorKNN	no static reference	-
 P3	method	cv2.BackgroundSubtractorKNN.getDetectShadows	no static reference	-
 P3	method	cv2.BackgroundSubtractorKNN.getDist2Threshold	no static reference	-
@@ -1788,10 +1788,10 @@ P3	method	cv2.BackgroundSubtractorKNN.getShadowValue	no static reference	-
 P3	method	cv2.BackgroundSubtractorKNN.setDetectShadows	no static reference	-
 P3	method	cv2.BackgroundSubtractorKNN.setDist2Threshold	no static reference	-
 P3	method	cv2.BackgroundSubtractorKNN.setHistory	no static reference	-
-P3	method	cv2.BackgroundSubtractorKNN.setkNNSamples	no static reference	-
-P3	method	cv2.BackgroundSubtractorKNN.setNSamples	no static reference	-
-P3	method	cv2.BackgroundSubtractorKNN.setShadowThreshold	no static reference	-
-P3	method	cv2.BackgroundSubtractorKNN.setShadowValue	no static reference	-
+P3	method	cv2.BackgroundSubtractorKNN.setkNNSamples	method name only	-
+P3	method	cv2.BackgroundSubtractorKNN.setNSamples	method name only	-
+P3	method	cv2.BackgroundSubtractorKNN.setShadowThreshold	method name only	-
+P3	method	cv2.BackgroundSubtractorKNN.setShadowValue	method name only	-
 P3	class	cv2.BackgroundSubtractorMOG2	no static reference	-
 P3	method	cv2.BackgroundSubtractorMOG2.apply	method name only	-
 P3	method	cv2.BackgroundSubtractorMOG2.getBackgroundRatio	no static reference	-
@@ -1806,18 +1806,18 @@ P3	method	cv2.BackgroundSubtractorMOG2.getVarMax	no static reference	-
 P3	method	cv2.BackgroundSubtractorMOG2.getVarMin	no static reference	-
 P3	method	cv2.BackgroundSubtractorMOG2.getVarThreshold	no static reference	-
 P3	method	cv2.BackgroundSubtractorMOG2.getVarThresholdGen	no static reference	-
-P3	method	cv2.BackgroundSubtractorMOG2.setBackgroundRatio	no static reference	-
-P3	method	cv2.BackgroundSubtractorMOG2.setComplexityReductionThreshold	no static reference	-
+P3	method	cv2.BackgroundSubtractorMOG2.setBackgroundRatio	method name only	-
+P3	method	cv2.BackgroundSubtractorMOG2.setComplexityReductionThreshold	method name only	-
 P3	method	cv2.BackgroundSubtractorMOG2.setDetectShadows	no static reference	-
 P3	method	cv2.BackgroundSubtractorMOG2.setHistory	no static reference	-
-P3	method	cv2.BackgroundSubtractorMOG2.setNMixtures	no static reference	-
-P3	method	cv2.BackgroundSubtractorMOG2.setShadowThreshold	no static reference	-
-P3	method	cv2.BackgroundSubtractorMOG2.setShadowValue	no static reference	-
-P3	method	cv2.BackgroundSubtractorMOG2.setVarInit	no static reference	-
-P3	method	cv2.BackgroundSubtractorMOG2.setVarMax	no static reference	-
-P3	method	cv2.BackgroundSubtractorMOG2.setVarMin	no static reference	-
+P3	method	cv2.BackgroundSubtractorMOG2.setNMixtures	method name only	-
+P3	method	cv2.BackgroundSubtractorMOG2.setShadowThreshold	method name only	-
+P3	method	cv2.BackgroundSubtractorMOG2.setShadowValue	method name only	-
+P3	method	cv2.BackgroundSubtractorMOG2.setVarInit	method name only	-
+P3	method	cv2.BackgroundSubtractorMOG2.setVarMax	method name only	-
+P3	method	cv2.BackgroundSubtractorMOG2.setVarMin	method name only	-
 P3	method	cv2.BackgroundSubtractorMOG2.setVarThreshold	no static reference	-
-P3	method	cv2.BackgroundSubtractorMOG2.setVarThresholdGen	no static reference	-
+P3	method	cv2.BackgroundSubtractorMOG2.setVarThresholdGen	method name only	-
 P3	class	cv2.barcode_BarcodeDetector	alias	cv2.barcode.BarcodeDetector
 P3	method	cv2.barcode_BarcodeDetector.decodeWithType	alias	cv2.barcode.BarcodeDetector.decodeWithType
 P3	method	cv2.barcode_BarcodeDetector.detectAndDecodeWithType	alias	cv2.barcode.BarcodeDetector.detectAndDecodeWithType
