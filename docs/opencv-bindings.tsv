@@ -1249,7 +1249,7 @@ P2	method	cv2.xfeatures2d.KAZE.setNOctaveLayers	no static reference	-
 P2	method	cv2.xfeatures2d.KAZE.setNOctaves	no static reference	-
 P2	method	cv2.xfeatures2d.KAZE.setThreshold	no static reference	-
 P2	method	cv2.xfeatures2d.KAZE.setUpright	no static reference	-
-P2	function	cv2.xfeatures2d.KAZE_create	no static reference	-
+P2	function	cv2.xfeatures2d.KAZE_create	literal reference	-
 P2	class	cv2.xfeatures2d.LATCH	no static reference	-
 P2	method	cv2.xfeatures2d.LATCH.create	method name only	-
 P2	method	cv2.xfeatures2d.LATCH.getBytes	no static reference	-

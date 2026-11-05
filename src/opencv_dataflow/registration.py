@@ -691,7 +691,70 @@ class MatchSIFT(Block):
 
 
 AKAZE_MODES = ("mldb", "mldb_upright", "kaze", "kaze_upright")
-AKAZE_DIFFUSIVITY = ("pm_g1", "pm_g2", "weickert", "charbonnier")
+KAZE_DIFFUSIVITY = ("pm_g1", "pm_g2", "weickert", "charbonnier")
+
+
+class KAZEFeatures(ImageTool):
+    type_id, title, subtype = "inspect.kaze", "KAZE keypoints and descriptors", "Features"
+    category, block_type = "Inspection", "Inspection"
+    inputs, outputs = SELECTION_INPUTS, ORBFeatures.outputs
+    defaults = {
+        "extended": False,
+        "upright": False,
+        "threshold": 0.001,
+        "octaves": 4,
+        "octave_layers": 4,
+        "diffusivity": "pm_g2",
+        "max_features": 500,
+    }
+    parameter_choices = {"diffusivity": KAZE_DIFFUSIVITY}
+    parameter_ranges = {
+        "threshold": NumericRange(1e-9, 1),
+        "octaves": NumericRange(1, 8, whole=True),
+        "octave_layers": NumericRange(1, 8, whole=True),
+        "max_features": NumericRange(1, 10000, whole=True),
+    }
+    parameter_help = {
+        "extended": "Use 128 floating-point values per descriptor instead of 64.",
+        "upright": "Use a fixed descriptor orientation for scenes without rotation.",
+        "threshold": "Minimum detector response for accepting a keypoint.",
+        "octaves": "Maximum number of scales in the nonlinear scale space.",
+        "octave_layers": "Number of sublevels within each scale.",
+        "diffusivity": "Diffusion model used to build the nonlinear scale space.",
+        "max_features": "Keep up to this many of the strongest selected keypoints.",
+    }
+
+    def process(self, inputs):
+        gray = gray_image(inputs["image"], (np.uint8,), auto_depth=True)
+        p = self.parameters
+        detector = cv2.xfeatures2d.KAZE_create(
+            p["extended"],
+            p["upright"],
+            float(p["threshold"]),
+            int(p["octaves"]),
+            int(p["octave_layers"]),
+            getattr(cv2.xfeatures2d, f"KAZE_DIFF_{p['diffusivity'].upper()}"),
+        )
+        result = feature_result(
+            inputs,
+            gray,
+            detector,
+            "KAZE",
+            {
+                "descriptor_size": detector.descriptorSize(),
+                "extended": p["extended"],
+                "upright": p["upright"],
+            },
+            limit=int(p["max_features"]),
+        )
+        if self.generate_graphics and result.outputs["points"]:
+            result.drawings["KAZE"] = GraphicDrawing(
+                tuple(
+                    graphic_object("marker", [point], (70, 220, 140))
+                    for point in result.outputs["points"]
+                )
+            )
+        return result
 
 
 def akaze_descriptor_width(mode, bits, channels):
@@ -721,7 +784,7 @@ class AKAZEFeatures(ImageTool):
     parameter_choices = {
         "descriptor_mode": AKAZE_MODES,
         "descriptor_channels": ("1", "2", "3"),
-        "diffusivity": AKAZE_DIFFUSIVITY,
+        "diffusivity": KAZE_DIFFUSIVITY,
     }
     parameter_ranges = {
         "descriptor_bits": NumericRange(0, 486, whole=True),
@@ -848,7 +911,16 @@ def flann_data(data):
         descriptors, points, settings = akaze_data(data)
         if descriptors.dtype == np.float32:
             return descriptors, points, ("AKAZE", *settings)
-    raise ValidationError("FLANN KD-tree requires SIFT or float AKAZE KAZE descriptors")
+    if isinstance(data, dict) and data.get("algorithm") == "KAZE":
+        extended, upright = data.get("extended"), data.get("upright")
+        if type(extended) is not bool or type(upright) is not bool:
+            raise ValidationError("KAZE descriptors require extended and upright settings")
+        width = 128 if extended else 64
+        if data.get("descriptor_size") != width:
+            raise ValidationError(f"KAZE descriptor size must be {width} for this mode")
+        descriptors, points = descriptor_arrays(data, width, -2, 2, False)
+        return descriptors.astype(np.float32), points, ("KAZE", extended, upright)
+    raise ValidationError("FLANN KD-tree requires SIFT, KAZE, or float AKAZE descriptors")
 
 
 class MatchFLANN(Block):
@@ -1137,6 +1209,7 @@ REGISTRATION_BLOCKS = (
     ORBFeatures,
     SIFTFeatures,
     AKAZEFeatures,
+    KAZEFeatures,
     BRISKFeatures,
     MatchORB,
     MatchSIFT,
