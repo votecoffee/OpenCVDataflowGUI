@@ -331,7 +331,9 @@ lossless 16-bit RGBA PNG packet between blocks. The
 [TIFF page sequence example](examples/tiff_page_sequence/README.md) replays
 a multipage TIFF with separate tickets for each page. The
 [multipage TIFF output example](examples/multipage_tiff_output/README.md) batches
-the pages and writes them to a new TIFF file.
+the pages and writes them to a new TIFF file. The
+[raw YUV example](examples/raw_yuv/README.md) decodes an NV12 frame from a file
+and from a packed buffer in the graph.
 
 The [skeleton pruning example](examples/skeleton_pruning/README.md) extracts
 centerlines from a binary mask and removes short spurs. Install the optional
