@@ -372,6 +372,8 @@ def test_result_image_popouts_follow_ticket_state_and_block_previews(app):
 
     try:
         run_once()
+        assert inspector.pop_out_image.isEnabled()
+        inspector.preview_choice.setCurrentText("Input / image")
         assert not inspector.pop_out_image.isEnabled()
         inspector.preview_choice.setCurrentText("Output / overlay")
         inspector.pop_out_image.click()
@@ -451,6 +453,7 @@ def test_run_inspector_delete_and_continuous_stop(app):
     pump_until(app, lambda: window.runner is None)
     assert all(b.state == "pass" for b in window.graph.blocks.values())
     assert "2 contours" in window.inspector.details.toPlainText()
+    assert window.inspector.preview_choice.currentText() == "Graphic / contours"
     assert window.inspector.preview_choice.count() == 4  # input, two outputs, one graphic
     assert not window.inspector.image.pixmap().isNull()
     # Applying exposure and thumbnail choices must update the node and persist.
@@ -815,15 +818,15 @@ def test_toolblock_interface_dialog_and_library_instances(app):
 
 
 @pytest.mark.parametrize(
-    "loader,count,shape_id",
+    "folder,count,shape_id",
     [
-        ("load_regions_example", 10, "roi_circle"),
-        ("load_combined_regions_example", 11, "combined_outer"),
-        ("load_transformed_regions_example", 12, "tracked_shape"),
+        ("regions", 10, "roi_circle"),
+        ("combined_regions", 11, "combined_outer"),
+        ("transformed_regions", 12, "tracked_shape"),
     ],
 )
 def test_regions_example_editor_load_save_and_shape_dropdown(
-    app, tmp_path, loader, count, shape_id
+    app, load_example, tmp_path, folder, count, shape_id
 ):
     from PySide6.QtWidgets import QComboBox
 
@@ -831,7 +834,7 @@ def test_regions_example_editor_load_save_and_shape_dropdown(
     window.show()
     app.processEvents()
 
-    getattr(window, loader)()
+    load_example(window, folder)
     assert len(window.graph.blocks) == count
     circle = window.graph.blocks[shape_id]
     window.scene.nodes[circle.id].setSelected(True)
@@ -849,9 +852,9 @@ def test_regions_example_editor_load_save_and_shape_dropdown(
     app.processEvents()
 
 
-def test_channel_pyramid_editor_preview_level_selection_and_save(app, tmp_path):
+def test_channel_pyramid_editor_preview_level_selection_and_save(app, load_example, tmp_path):
     window = MainWindow()
-    window.load_channel_pyramid_example()
+    load_example(window, "channels_pyramids")
     window.graph.run()
     window.scene.nodes["pyr_set"].setSelected(True)
     window.inspector.preview_choice.setCurrentText("Output / images")
@@ -954,10 +957,10 @@ def test_toolbox_tree_types_subtypes_search_and_leaf_activation(app, monkeypatch
     window.close()
 
 
-def test_starter_project_editor_run_edit_save_and_template_example(app, tmp_path):
+def test_starter_project_editor_run_edit_save_and_template_example(app, load_example, tmp_path):
     window = MainWindow()
     window.show()
-    window.load_starter()
+    load_example(window, "starter_inspection")
     assert len(window.graph.blocks) == 9
     components = window.graph.blocks["starter_components"]
     window.scene.nodes[components.id].setSelected(True)
@@ -979,7 +982,7 @@ def test_starter_project_editor_run_edit_save_and_template_example(app, tmp_path
     window.start_run(False)
     pump_until(app, lambda: window.runner is None)
     assert all(b.state == "pass" for b in window.graph.blocks.values())
-    window.load_template_example()
+    load_example(window, "template_matching")
     window.start_run(False)
     pump_until(app, lambda: window.runner is None)
     assert window.graph.blocks["match_result"].last_result.outputs["location"]["top_left"] == [
@@ -1123,11 +1126,11 @@ def test_enum_fields_are_dropdowns_and_unknown_values_are_not_silently_replaced(
     window.close()
 
 
-def test_object_collection_editor_filter_sort_preview_worker_and_save(app, tmp_path):
+def test_object_collection_editor_filter_sort_preview_worker_and_save(app, load_example, tmp_path):
     from PySide6.QtWidgets import QComboBox
 
     window = MainWindow()
-    window.load_object_collections_example()
+    load_example(window, "object_collections")
     window.scene.nodes["objects_blob_filter"].setSelected(True)
     assert isinstance(window.inspector.fields["metric"], QComboBox)
     assert window.inspector.fields["metric"].currentText() == "height"
@@ -1151,3 +1154,74 @@ def test_object_collection_editor_filter_sort_preview_worker_and_save(app, tmp_p
     assert loaded.blocks["objects_blob_draw"].last_result.outputs["count"] == 2
     window.dirty = False
     window.close()
+
+
+def test_inspector_prefers_result_or_output_and_preserves_manual_choice(app):
+    window = MainWindow()
+    graph = Graph()
+    source = graph.add(window.registry.create("cv.threshold"))
+    overlay = graph.add(window.registry.create("cv.overlay_result_graphics"))
+    window.replace_graph(graph)
+    inspector = window.inspector
+    image = np.zeros((10, 12), np.uint8)
+    try:
+        source.execute({"image": image})
+        overlay.execute({"image": image})
+        inspector.select(source)
+        assert inspector.preview_choice.currentText() == "Output / image"
+        inspector.preview_choice.setCurrentText("Input / image")
+        inspector.preview_choice.textActivated.emit("Input / image")
+        inspector.refresh_result()
+        assert inspector.preview_choice.currentText() == "Input / image"
+        inspector.select(overlay)
+        assert inspector.preview_choice.currentText() == "Result / image"
+        inspector.select(source)
+        assert inspector.preview_choice.currentText() == "Output / image"
+    finally:
+        window.close()
+
+
+def test_inspector_advanced_visibility_and_unapplied_drafts(app):
+    window = MainWindow()
+    window.show()
+    graph = Graph()
+    block = graph.add(window.registry.create("cv.threshold"))
+    other = graph.add(window.registry.create("cv.threshold"))
+    window.replace_graph(graph)
+    inspector = window.inspector
+    try:
+        inspector.select(block)
+        app.processEvents()
+        assert not inspector.show_advanced.isChecked()
+        assert inspector.fields["value"].isVisible()
+        assert not inspector.recipe_group.isVisible()
+        inspector.show_advanced.setChecked(True)
+        assert inspector.recipe_group.isVisible()
+        assert inspector.node_size.isVisible()
+        inspector.fields["value"].setText("42")
+        inspector.show_advanced.setChecked(False)
+        assert inspector.fields["value"].text() == "42"
+        inspector.select(other)
+        inspector.select(block)
+        assert inspector.fields["value"].text() == str(block.parameters["value"])
+        assert inspector.fields["value"].text() != "42"
+        assert not inspector.show_advanced.isChecked()
+    finally:
+        window.close()
+
+
+def test_file_menu_opens_example_from_disk(app, monkeypatch):
+    window = MainWindow()
+    project = Path(__file__).resolve().parents[1] / "examples" / "regions" / "regions.json"
+    file_menu = window.menuBar().actions()[0].menu()
+    entries = {action.text(): action for action in file_menu.actions()}
+    try:
+        assert all("example" not in name.lower() for name in entries)
+        assert "Load demo" not in entries
+        assert "Load starter inspection" not in entries
+        monkeypatch.setattr(QFileDialog, "getOpenFileName", lambda *a, **k: (str(project), ""))
+        entries["Open…"].trigger()
+        assert window.path == project
+        assert "roi_circle" in window.graph.blocks
+    finally:
+        window.close()

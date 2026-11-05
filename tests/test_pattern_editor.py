@@ -79,9 +79,9 @@ def test_inspector_training_worker_save_load_and_model_files(app, tmp_path, monk
     window.close()
 
 
-def test_pose_inspection_menu_edit_and_background_reload(app, tmp_path):
+def test_pose_inspection_edit_and_background_reload(app, load_example, tmp_path):
     window = MainWindow()
-    window.load_pose_inspection_example()
+    load_example(window, "pose_inspection")
     run(window, app)
     assert all(b.state == "pass" for b in window.graph.blocks.values())
     matcher = window.graph.blocks["pose_match"]

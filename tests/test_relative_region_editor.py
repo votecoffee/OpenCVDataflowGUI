@@ -112,10 +112,10 @@ def test_shape_mask_runtime_optional_frame_and_saved_project(with_pose, tmp_path
 
 @pytest.mark.parametrize("kind", ["region.pose", "mask.shape"])
 def test_inspector_pose_editor_apply_cancel_cached_pair_and_missing_pose(
-    app, monkeypatch, tmp_path, kind
+    app, load_example, monkeypatch, tmp_path, kind
 ):
     window = MainWindow()
-    window.load_pose_inspection_example()
+    load_example(window, "pose_inspection")
     graph = window.graph
     if kind == "mask.shape":
         block = graph.add(

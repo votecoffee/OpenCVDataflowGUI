@@ -109,7 +109,7 @@ downstream of the queue when only inspected frames should cause writes.
 
 ## Example
 
-Open **File > Load queued input example** (`examples/queued_input/queued_input.json`) and start
+Open [queued input](../examples/queued_input/queued_input.json) and start
 **Continuous**. The synthetic source fills a four-frame queue while one frame's
 25 matched parts are inspected in parallel. Watch the queue counters, then Stop.
 Run once resumes the oldest accepted waiting capture. No camera or output writer

@@ -105,7 +105,7 @@ area and coverage control pass/fail; maximum area zero means unlimited. Failed
 inspections retain their measurements for downstream reporting. This block does
 not convert area or coordinates into calibrated physical units.
 
-Open **File > Load combined regions example** or `examples/combined_regions/combined_regions.json`
+Open [combined regions](../examples/combined_regions/combined_regions.json)
 for a ring selection unioned with a separate rectangle, then measured and used by
 histogram, threshold and component tools. The component tool uses `clip` mode:
 center filtering would reject a ring whose centroid lies in its excluded hole.
@@ -159,8 +159,7 @@ Transformed source and target frames are limited to 16384 pixels per axis and
 64 million pixels total. The output transform includes source/target dimensions
 and connects directly to **Transform points** for associated annotations.
 
-Open **File > Load transformed regions example** or
-`examples/transformed_regions/transformed_regions.json` for a 12-block project carrying a circular
+Open [transformed regions](../examples/transformed_regions/transformed_regions.json) for a 12-block project carrying a circular
 inspection region through crop, resize and arbitrary rotation. It measures the
 selection, computes its color histogram and inspects the same part in the final
 image. The project needs no external images or camera.
@@ -214,7 +213,7 @@ public terminals; hide unused ports with the inspector's exposure controls.
 
 ## Example
 
-Use **File > Load regions example** or open `examples/regions/regions.json`. It contains
+Use [regions](../examples/regions/regions.json). It contains
 circle, rectangle and polygon overlays, a one-part component measurement, a
 one-part contour inspection, a selected histogram and a circular blur. It runs
 without a camera or external assets:

@@ -113,8 +113,7 @@ transform** to map local points into the target frame.
 
 ## Example
 
-Open **File > Load pose-relative inspection example** or
-`examples/pose_inspection/pose_inspection.json`, then press F5:
+Open [pose-relative inspection](../examples/pose_inspection/pose_inspection.json), then press F5:
 
 1. Train the synthetic geometric reference and find it rotated +10 degrees.
 2. Set the matcher's pose origin on its circle with offsets `(20.5,-17.5)` from

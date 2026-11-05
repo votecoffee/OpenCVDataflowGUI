@@ -311,7 +311,7 @@ def test_inspector_enum_controls_and_policy_roundtrip(app):
     window.close()
 
 
-def test_saved_example_receipt_and_gui_repeated_runs(app, tmp_path):
+def test_saved_example_receipt_and_gui_repeated_runs(app, load_example, tmp_path):
     import json
 
     from PySide6.QtTest import QTest
@@ -342,7 +342,7 @@ def test_saved_example_receipt_and_gui_repeated_runs(app, tmp_path):
             assert len(row["sources"]) == 2
             assert row["events"][-1]["coordination"]["complete"]
     window = MainWindow()
-    window.load_input_coordination_example()
+    load_example(window, "input_coordination")
     for expected in (1, 2):
         window.start_run(False)
         for _ in range(800):

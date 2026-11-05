@@ -45,16 +45,14 @@ the `cv2` namespace and must not coexist:
 
 **3D vision** includes camera and pose geometry, stereo calibration/rectification,
 disparity, RGB-D projection and registration, point clouds, ICP/PPF, ArUco,
-structured light, odometry, and posed TSDF fusion. Try **File > Load stereo cloud
-example**, press **Run once**, and open **Results > 3D point-cloud viewer…**.
+structured light, odometry, and posed TSDF fusion. Try [stereo cloud](examples/stereo_cloud/stereo_cloud.json), press **Run once**, and open **Results > 3D point-cloud viewer…**.
 The example reconstructs a synthetic 3 m plane; no hardware or extra packages
 are needed. See [3D workflows and conventions](docs/vision-3d.md).
 
 **DNN/ML tools** are available under **ML** in the toolbox (model writers under **Output**): ONNX inference,
 classification, embedding conversion, SIFT + LightGlue matching, and Annoy vector
-index building/search/save/load. Try **File > Load DNN embedding example** with the
-included tiny synthetic ONNX model. **Load Annoy search example** and **Load
-LightGlue matcher example** use optional libraries. See [ML setup and workflows](docs/ml.md)
+index building/search/save/load. Try [DNN embedding](examples/dnn_embeddings/dnn_embeddings.json) with the
+included tiny synthetic ONNX model. [Annoy search](examples/annoy_search/annoy_search.json) and [LightGlue matcher](examples/lightglue_match/lightglue_match.json) use optional libraries. See [ML setup and workflows](docs/ml.md)
 for installation, local weights and runnable examples. Graph execution never downloads
 learned weights or imports optional ML libraries until their blocks need them.
 
@@ -86,7 +84,9 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
    number, boolean, or text value.
    The **Debug** run profile captures input values.
 3. Select a block, edit parameters in the right inspector, and click **Apply
-   configuration**. Choose exposed ports and the optional node thumbnail there.
+   configuration**. Switching blocks discards unapplied edits. Use **Show advanced**
+   to configure recipe overrides, ports, and node display. Block size and the
+   result graphics setting take effect immediately.
    Hover over a field for its limits. The inspector shows an inline message when an entry is invalid.
    **Run block** previews eligible tools with their last captured inputs, including text and
    other structured data. The [parameter reference](docs/block-parameters.md) lists declared limits.
@@ -100,6 +100,7 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
    with the preview selector. Nodes show pass/fail/error state, timing, and score
    intensity where provided. A failed inspection still supplies results downstream;
    execution errors skip dependent blocks.
+   The inspector opens on the result image when available, then an output image.
    Choose an output or graphic and click **Pop out…** to watch it in a separate
    window with a status-colored border and the ticket in its title.
    In the **Debug** run profile, pattern matching, template instances, oriented
@@ -120,8 +121,9 @@ The overlay block starts with two visible graphics inputs. Expose more in the
 inspector to connect up to eight sources. A ToolBlock's **Result graphics**
 collects drawings from its internal blocks. You can also map an internal block's
 exposed graphics to a separate public terminal.
-5. Save/load JSON projects from File. Select a wire or block and press Delete to
-   remove it. Use the wheel to zoom, middle-drag to pan, and **Fit graph** to frame it.
+5. Use **File → Open…** for saved projects and the [bundled examples](examples/README.md).
+   Select a wire or block and press Delete to remove it. Use the wheel to zoom,
+   middle-drag to pan, and **Fit graph** to frame the graph.
 
 Use **File → Export program documentation…** to generate a self-contained HTML
 guide from the current applied configuration. It includes a simplified graph,
@@ -181,7 +183,8 @@ For larger workspaces, select nodes and use **Workspace > Group selected nodes**
 inspector in the upper-right corner shows the visible region. Click or drag it to
 navigate. Save remembers groups, zoom, and viewport position, including inside ToolBlocks.
 
-**File > Load image-set workspace example** opens a grouped, three-image inspection.
+Open the [image-set workspace](examples/image_set_workspace/image_set_workspace.json)
+for a grouped, three-image inspection.
 Press **Continuous** to run the complete set and see filename tickets and verdict
 borders in **Results > Image results filmstrip**. In an **Image file** block, use
 **Select images…** or **Select directory…**, then **Apply configuration**. Run once
@@ -199,8 +202,7 @@ include edges, corners, lines and circles; texture detection supports ORB and SI
 **Find oriented edges** selects vertical, horizontal or angled edges and filters
 thickness, continuous length, strength, intensity, contrast and coverage.
 
-Open **File > Load trained patterns and edges example**, or
-[`examples/trained_patterns/trained_patterns.json`](examples/trained_patterns/trained_patterns.json), and press F5.
+Open [trained patterns and edges](examples/trained_patterns/trained_patterns.json) and press F5.
 It needs no external assets: expected results are one geometric match, one texture
 match and two vertical edges. See [training and edge workflows](docs/patterns-edges.md)
 for training regions, pose coordinates, controls and current algorithm limits.
@@ -209,8 +211,7 @@ Pattern matchers also return a configurable **pose**: set local x/y/angular offs
 to locate an inspection origin on the part. **Pose from feature** creates a frame
 from a ranked blob, line, contour or pattern match, and **Offset pose** composes
 another local offset. Connect a pose to **Region relative to pose** to position a
-rectangle, circle or polygon for downstream masked inspections. Try **File > Load
-pose-relative inspection example** or `examples/pose_inspection/pose_inspection.json`; see
+rectangle, circle or polygon for downstream masked inspections. Try [pose-relative inspection](examples/pose_inspection/pose_inspection.json); see
 [pose-relative inspection](docs/poses.md) for coordinates and a complete workflow.
 
 **Shape region**, **Region relative to pose** and **Shape mask** have visual
@@ -221,7 +222,7 @@ Shape mask can also operate in ordinary image pixels with its pose disconnected.
 Input sources carry numeric, string or timestamp tickets, generated automatically
 or supplied through an external data input. **Control flow** tools split/join
 parallel branches, batch/unbatch entries, select cases and restore FIFO by ticket.
-Try **File > Load ticketed control flow example**. See
+Try [ticketed control flow](examples/control_flow/control_flow.json). See
 [tickets and control flow](docs/control-flow.md) for external/PLC ticket inputs,
 buffer limits and stream execution semantics.
 
@@ -230,32 +231,30 @@ status. Every input has a **continue / reject_failed** policy; rejection emits n
 data and retains the last processed previews. **Final ticket judgment** assigns an
 explicit decision separately from intermediate tool results. Open **Results >
 Ticket results…** to search tickets and inspect their status and event timelines.
-Try **File > Load ticket results example**. See [ticket results](docs/ticket-results.md)
+Try [ticket results](examples/ticket_results/ticket_results.json). See [ticket results](docs/ticket-results.md)
 for status propagation, final decisions, retention limits and plugin event data.
 
 **Coordinate inputs** offers ticket-matched waiting with timeouts, latest snapshots,
 triggered latest snapshots, and first-arrival-per-ticket selection. Freshness,
-duplicate and late-arrival controls make reuse explicit. Try **File > Load input
-coordination example**. See [input coordination](docs/input-coordination.md) for
+duplicate and late-arrival controls make reuse explicit. Try [input coordination](examples/input_coordination/input_coordination.json). See [input coordination](docs/input-coordination.md) for
 recommended policies and cooperative timing limits.
 
 **Recipes > Manage recipes…** stores versioned settings and trained pattern models.
 Use **Select recipe** / **Recipe value or model** blocks, or bind tool parameters
 and matcher models in **Recipe overrides**. Images retain their recipe revision
-across queues and global changes. Try **File > Load recipes example**; see
+across queues and global changes. Try [recipes](examples/recipes/recipes.json); see
 [recipes and model swaps](docs/recipes.md) for activation and persistence rules.
 
 **Inspect each pose in parallel** runs a reusable inspection ToolBlock for every
 pattern match, measured feature or supplied pose, then returns one aggregate. Set
 worker count and optional N-pass/N-failure stop thresholds; results explicitly
-identify uninspected parts. **File > Load parallel part inspection example** finds
+identify uninspected parts. The [parallel inspection example](examples/parallel_parts/parallel_parts.json) finds
 and inspects 25 parts. See [parallel part inspection](docs/parallel-inspection.md)
 for editing the inspection, acceptance policies and cancellation behavior.
 
 Insert **Queue input images** after a source to retain frames and release them
 one at a time. It supports bounded FIFO storage, explicit overflow policies and
-optional background acquisition during inspection. Try **File > Load queued input
-example**, then Continuous. See [input queues](docs/input-queues.md) for capacity,
+optional background acquisition during inspection. Try [queued input](examples/queued_input/queued_input.json), then Continuous. See [input queues](docs/input-queues.md) for capacity,
 metadata pairing and Stop/Resume behavior.
 
 The supported dependency is OpenCV 5 contrib (development checks use 5.0.0.93).
@@ -320,7 +319,7 @@ This example includes grayscale/blur, Canny, color/grayscale histograms and temp
 matching, including an editable nested ToolBlock. Its image input uses a
 project-relative path, so move its `assets` folder together with its JSON file.
 
-Open **File > Load starter inspection**, or launch it directly:
+Open [starter inspection](examples/starter_inspection/starter_inspection.json), or launch it directly:
 
 ```powershell
 .\.venv\Scripts\opencv-dataflow --starter
@@ -399,16 +398,16 @@ The editor uses a captured frame, with correctly scaled pixel coordinates.
 Use **Combine regions** to union, intersect, subtract, XOR or invert shapes;
 its output is another reusable region, so combinations can be nested. **Measure
 selected region** reports pixel area, image coverage, bounds and centroid, with
-configurable inspection limits. **File > Load combined regions example** opens
+configurable inspection limits. The [combined regions example](examples/combined_regions/combined_regions.json) is
 an 11-block project that excludes a circle's center and adds a second part region.
 
 **Transform region** carries a selection into another image's coordinates. Connect
 the target image, source region and the image operation's `geometry` output, or a
 registration `transform`. Forward/inverse direction and mask sampling use dropdowns.
-Try **File > Load transformed regions example** for a 12-block crop → resize →
+Try [transformed regions](examples/transformed_regions/transformed_regions.json) for a 12-block crop → resize →
 rotation pipeline whose inspection region follows each image operation.
 
-Open **File > Load regions example**, or `examples/regions/regions.json`, for a working
+Open [regions](examples/regions/regions.json) for a working
 10-block project that inspects each synthetic part separately, computes a polygon
 histogram and blurs only the circular selection. No image download is required.
 Run it headlessly with `opencv-dataflow-run examples/regions/regions.json --repeat 3`.
@@ -432,7 +431,7 @@ sizes, extent, solidity, circularity, distance and all seven raw/signed-log Hu m
 Chain filters for multiple criteria, inspect rejected objects, and use stable
 two-key sorting with explicit policies for undefined measurements.
 
-Try **File > Load object collections example**, or `examples/object_collections/object_collections.json`.
+Try [object collections](examples/object_collections/object_collections.json).
 This 16-block project orders two parts left-to-right, selects the round contour and
 isolates two long vertical lines. See [collection tools and measurement conventions](docs/object-collections.md).
 
@@ -455,8 +454,7 @@ level in the inspector and headless receipts. **Read port payload / coordinates*
 exposes a mapping to the largest or original image for **Transform points** and
 **Transform region**. **Attach port payload** adds recipe or custom data.
 
-Try **File > Load channels and pyramids example**, or open
-`examples/channels_pyramids/channels_pyramids.json`: it splits/merges channels, carries a recipe
+Try [channels and pyramids](examples/channels_pyramids/channels_pyramids.json): it splits/merges channels, carries a recipe
 payload through a four-level pyramid, detects blobs at level 2, and maps their
 centroids back to the largest image. See [payload and pyramid contracts](docs/payloads-pyramids.md).
 
@@ -545,7 +543,7 @@ graph.close()
 flow, Lucas-Kanade point tracking and first/latest/mean image references. They report
 readiness and activation counts, suppress primary outputs during warmup, and support
 bounded per-stream state, resets and trained references stored in projects or recipes.
-Try **File > Load sequence memory example**, then run continuously. See
+Try [sequence memory](examples/sequence_memory/sequence_memory.json), then run continuously. See
 [sequence memory](docs/sequence-memory.md) for training, masks, ticket provenance and limits.
 
 ## Architecture
@@ -569,8 +567,7 @@ The bottom status bar shows running ticket totals, pass/fail counts, pass rate a
 average end-to-end time. Final judgments can attach stable failure codes and explanations.
 Use **Results > Validation image sets…** to grade saved images as must/should pass,
 unknown or must/should fail, optionally matching a preferred failure code. Runs produce
-a score and per-image report without affecting production counts. Try **File > Load
-validation image set example**; see [production counts and validation](docs/production-validation.md).
+a score and per-image report without affecting production counts. Try [validation image set](examples/validation_images/validation_images.json); see [production counts and validation](docs/production-validation.md).
 
 Open **Results > Block diagnostics** (**Ctrl+Shift+D**) for a bottom dock with
 severity-colored logs. Selecting a block isolates its logs; clearing the selection shows

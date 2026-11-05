@@ -476,9 +476,9 @@ def test_cloud_toolblock_and_headless_summary(tmp_path):
     assert cloud["model"] == "point_cloud_v1" and cloud["count"] > 0 and "points" not in cloud
 
 
-def test_offscreen_cloud_viewer_renders_retained_result(app):
+def test_offscreen_cloud_viewer_renders_retained_result(app, load_example):
     window = MainWindow()
-    window.load_ml_example(rgbd_cloud_graph, "rgbd_cloud")
+    load_example(window, "rgbd_cloud")
     window.graph.run()
     window.show_cloud_viewer()
     viewer = window.cloud_viewer

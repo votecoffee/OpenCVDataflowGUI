@@ -257,9 +257,9 @@ def test_ml_examples_roundtrip_and_registry(filename, factory):
     json.dumps(graph.to_dict(), allow_nan=False)
 
 
-def test_ml_inspector_exposes_enums_paths_and_library(app, monkeypatch):
+def test_ml_inspector_exposes_enums_paths_and_library(app, load_example, monkeypatch):
     window = MainWindow()
-    window.load_ml_example(dnn_graph, "dnn_embeddings")
+    load_example(window, "dnn_embeddings")
     window.scene.nodes["ml_net"].setSelected(True)
     for name in ("engine", "backend", "target", "color_format", "resize_mode"):
         assert isinstance(window.inspector.fields[name], QComboBox)
@@ -268,7 +268,7 @@ def test_ml_inspector_exposes_enums_paths_and_library(app, monkeypatch):
     window.inspector.browse_path(window.inspector.fields["model_path"])
     assert window.inspector.fields["model_path"].text() == ONNX
     assert window.scene.nodes["ml_net"].category == "ML"
-    window.load_ml_example(lightglue_graph, "lightglue_match")
+    load_example(window, "lightglue_match")
     window.scene.nodes["lg_match"].setSelected(True)
     assert isinstance(window.inspector.fields["device"], QComboBox)
     assert "weights_path" in window.inspector.fields

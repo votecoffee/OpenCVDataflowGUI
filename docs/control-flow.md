@@ -162,7 +162,7 @@ cooperative between block invocations; an in-flight native operation can finish.
 
 ## Example
 
-Open **File > Load ticketed control flow example** or `examples/control_flow/control_flow.json`.
+Open [ticketed control flow](../examples/control_flow/control_flow.json).
 Three synthetic camera sources are grouped, then deliberately unbatched in reverse
 order. Two parallel image-processing branches join by ticket, case selection routes
 even/odd tickets, and a manifest restores the original acquisition order before a

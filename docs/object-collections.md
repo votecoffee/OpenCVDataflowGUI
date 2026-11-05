@@ -129,8 +129,7 @@ level selections pass through nested ToolBlocks and save/load with normal projec
 
 ## Example
 
-Use **File > Load object collections example** or open
-`examples/object_collections/object_collections.json`. Its 16 blocks threshold synthetic parts, filter
+Use [object collections](../examples/object_collections/object_collections.json). Its 16 blocks threshold synthetic parts, filter
 and sort two blobs left-to-right, isolate a round contour by circularity, and select
 two long vertical LSD segments by length and angle. Each branch has a ranked
 overlay. No camera or optional image download is required.
