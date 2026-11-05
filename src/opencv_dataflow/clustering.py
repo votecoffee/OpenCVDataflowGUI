@@ -8,6 +8,7 @@ from .images import ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, frame, require_same_frame
 from .processing import image_value
+from .sample_tables import read_sample_table
 from .selection import SELECTION_INPUTS, selection_mask
 
 INITIALIZATION = {
@@ -164,20 +165,7 @@ class KMeansSamples(KMeans):
 
     def process(self, inputs):
         p = self.parameters
-        try:
-            samples = np.asarray(inputs.get("samples", p["samples"]))
-        except (TypeError, ValueError) as exc:
-            raise ValidationError("Samples must be a rectangular numeric table") from exc
-        if (
-            samples.ndim != 2
-            or not 1 <= samples.shape[0] <= 100_000
-            or not 1 <= samples.shape[1] <= 128
-            or samples.size > 2_000_000
-            or samples.dtype.kind not in "iuf"
-        ):
-            raise ValidationError(
-                "Use a numeric table with 1–100,000 rows, 1–128 features and at most 2M values"
-            )
+        samples = read_sample_table(inputs.get("samples", p["samples"]))
         try:
             initial = np.asarray(inputs["initial_labels"]) if "initial_labels" in inputs else None
         except (TypeError, ValueError) as exc:
