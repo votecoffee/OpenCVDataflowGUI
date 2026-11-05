@@ -510,6 +510,8 @@ Use **Contour hierarchy** to inspect nested boundaries, holes, and islands.
 [Contour hierarchy example](examples/contour_hierarchy/README.md)
 Use **Contour hull and convexity defects** to measure edge notches and judge their count.
 [Contour defect inspection example](examples/contour_defects/README.md)
+Use **Contour profile tolerance** to check a measured outline against an aligned reference.
+[Contour profile example](examples/contour_profile/README.md)
 
 Try [object collections](examples/object_collections/object_collections.json).
 This 16-block project orders two parts left-to-right, selects the round contour and
