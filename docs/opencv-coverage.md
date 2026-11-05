@@ -10,7 +10,7 @@ lists the tools that can be placed on a graph today.
 
 | Rank | Outstanding capability | OpenCV primitives and graph work |
 | --- | --- | --- |
-| 1 | Separate touching parts and isolate foreground | The basic workflow is available, including distance-peak seed generation, watershed and morphological reconstruction. Add a reusable touching-parts job with calibration and validation fixtures. |
+| 1 | Separate touching parts and isolate foreground | [Watershed separation](../examples/watershed/README.md) includes distance peaks, editable point seeds, mask seeds, and a synthetic touching-parts example. Production calibration and validation fixtures remain open. |
 | 2 | Reference comparison and defect scoring | The basic workflow is available, including histogram backprojection and a reusable registered defect inspection. Add validated defect-specific inspection recipes and lighting normalization. |
 | 3 | Multi-result template search and pick selection | Subpixel template peaks, explicit visible-feature evidence and depth-based occlusion checks. Multi-result matching and image-plane pick selection now support score, pose angle, clearance and deterministic downstream ranking. |
 | 4 | Calipers, widths, contours and shape fitting | Curved path sampling, contour-profile tolerances and physical-unit tolerance recipes. Pose-relative paired-edge calipers now measure width, center offset and gaps across straight parallel scans. Hull, contour similarity, point-to-contour distance and dedicated shape fits are available. |
@@ -106,6 +106,9 @@ unassigned pixels and labels 2 and up for foreground peaks. Connect
 `markers` to **Marker-controlled watershed**, select `labels` as the
 marker mode and set the background label to 1. Connect the original
 grayscale or color image to the watershed image input.
+**Watershed seeds from points** and **Watershed seeds from masks** construct the
+same label map from manually or programmatically selected cores. The watershed
+block includes a color preview and a per-label foreground area table.
 See the [OpenCV distance-transform watershed tutorial](https://docs.opencv.org/5.0/tutorials/imgproc/imgtrans/distance_transformation/distance_transform.html).
 **Morphological reconstruction** propagates a monochrome marker under
 an upper image bound by dilation or above a lower bound by erosion.

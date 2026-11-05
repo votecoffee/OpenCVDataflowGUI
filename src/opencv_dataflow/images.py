@@ -131,6 +131,22 @@ def opencv_image(image):
     return cv2.cvtColor(np.asarray(image), code) if code is not None else np.asarray(image)
 
 
+def label_color_map(labels, background=0):
+    """Make a BGR preview without changing the signed label plane."""
+    hsv = np.empty((*labels.shape, 3), dtype=np.uint8)
+    hue = np.remainder(np.asarray(labels, dtype=np.int32), 180)
+    hue *= 67
+    hue %= 180
+    hsv[..., 0] = hue
+    hsv[..., 1:] = (210, 238)
+    colors = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+    colors[labels <= 0] = 0
+    if background > 0:
+        colors[labels == background] = (55, 55, 55)
+    colors[labels == -1] = (255, 255, 255)
+    return colors
+
+
 def preview_rgb(image):
     from .payloads import ImagePyramid
 
@@ -147,6 +163,8 @@ def preview_rgb(image):
         graphic = cv2.applyColorMap(np.rint(pixels * 255).astype(np.uint8), cv2.COLORMAP_TURBO)
         graphic[~valid] = 0
         return cv2.cvtColor(graphic, cv2.COLOR_BGR2RGB)
+    if image.dtype == np.int32 and image.ndim == 2:
+        return cv2.cvtColor(label_color_map(image), cv2.COLOR_BGR2RGB)
     if image.dtype == np.int16:
         # Signed filter samples remain raw in the result; only the view is stretched.
         normalized = cv2.normalize(

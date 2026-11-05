@@ -10,6 +10,7 @@ import time
 from pathlib import Path
 
 import cv2
+import numpy as np
 from PySide6.QtCore import Qt, QThread, QTimer, Signal
 from PySide6.QtGui import QAction, QKeySequence
 from PySide6.QtWidgets import (
@@ -98,6 +99,7 @@ from .region_editor import RegionEditor
 from .result_image import ResultImageWindow
 from .run_profiles import PROFILES
 from .scheduling import MAX_BRANCH_WORKERS
+from .seed_editor import SeedEditor
 from .sequence import share_native_sequence_runtime
 from .ticket_window import TicketResultsWindow
 from .tickets import TICKET_MODES
@@ -462,6 +464,10 @@ class Inspector(QWidget):
             draw_region = QPushButton(f"Draw / edit {kind}…")
             draw_region.clicked.connect(self.edit_region)
             self.form.addRow(draw_region)
+        if getattr(block, "supports_seed_editor", False):
+            edit_seeds = QPushButton("Edit watershed seeds…")
+            edit_seeds.clicked.connect(self.edit_seeds)
+            self.form.addRow(edit_seeds)
         self.recipe_group = QGroupBox("Recipe overrides")
         self.recipe_group.setCheckable(True)
         self.recipe_group.setChecked(bool(block.recipe_bindings or block.recipe_model))
@@ -893,6 +899,44 @@ class Inspector(QWidget):
                 self.kernel_parameters = updated
                 self.update_kernel_label()
                 self.schedule_live_preview()
+        dialog.deleteLater()
+
+    def edit_seeds(self):
+        block = self.block
+        if block is None or self.window.runner:
+            return
+        try:
+            parameters = self.read_parameters()
+            image = block.last_inputs.get("image")
+            connection = next(
+                (
+                    wire
+                    for wire in self.window.graph.connections
+                    if wire.target == block.id and wire.input == "image"
+                ),
+                None,
+            )
+            if connection is not None:
+                result = self.window.graph.blocks[connection.source].last_result
+                if result is not None and connection.output in result.outputs:
+                    candidate = self.window.registry.create(block.type_id, parameters=parameters)
+                    candidate.input_levels = {"image": self.level_fields["image"].currentText()}
+                    values, _ = prepare_inputs(
+                        candidate, {"image": packet_for(result, connection.output)}
+                    )
+                    if isinstance(values["image"], np.ndarray):
+                        image = values["image"]
+            if image is None:
+                raise ValueError(
+                    "Connect an image and Run once in Debug to capture it before editing seeds."
+                )
+            dialog = SeedEditor(image, parameters, self)
+        except (ValueError, TypeError) as exc:
+            self.window.warn(str(exc))
+            return
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            for key, points in dialog.points.items():
+                self.fields[key].setText(json.dumps(points))
         dialog.deleteLater()
 
     def edit_region(self):

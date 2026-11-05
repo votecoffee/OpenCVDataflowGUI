@@ -4,8 +4,10 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
+from .images import label_color_map
+from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, require_same_frame
-from .processing import finite, image_value, integer
+from .processing import image_value, integer
 from .selection import SELECTION_INPUTS, selection_mask
 
 
@@ -74,7 +76,10 @@ class Watershed(Block):
     type_id, title = "inspect.watershed", "Marker-controlled watershed"
     category, block_type, subtype = "Inspection", "Inspection", "Segmentation"
     inputs = (Port("image"), Port("markers"))
-    outputs = (Port("labels"), Port("boundaries"), Port("mask"), Port("count", "number"))
+    outputs = (
+        Port("labels"), Port("boundaries"), Port("mask"), Port("count", "number"),
+        Port("preview"), Port("regions", "data"),
+    )
     defaults = {
         "marker_mode": "binary_components",
         "connectivity": "8",
@@ -82,6 +87,10 @@ class Watershed(Block):
         "background_label": 0,
     }
     parameter_choices = {"marker_mode": ("binary_components", "labels"), "connectivity": ("4", "8")}
+    parameter_ranges = {
+        "output_label": NumericRange(0, 2**31 - 1, whole=True),
+        "background_label": NumericRange(0, 2**31 - 1, whole=True),
+    }
     parameter_help = {
         "marker_mode": "Label connected uint8 seeds or use an int32 map with 0 for unknown.",
         "connectivity": "Connectivity used to label binary seeds.",
@@ -94,10 +103,10 @@ class Watershed(Block):
         markers = inputs["markers"]
         require_same_frame((inputs["image"], markers))
         if markers.shape != image.shape[:2]:
-            raise ValueError("Watershed markers must be monochrome and match the image size")
+            raise ValidationError("Watershed markers must be monochrome and match the image size")
         if self.parameters["marker_mode"] == "binary_components":
             if markers.dtype != np.uint8:
-                raise ValueError("Binary watershed markers must be uint8")
+                raise ValidationError("Binary watershed markers must be uint8")
             _, labels = cv2.connectedComponentsWithAlgorithm(
                 cv2.compare(markers, 0, cv2.CMP_NE),
                 int(self.parameters["connectivity"]),
@@ -106,20 +115,30 @@ class Watershed(Block):
             )
         else:
             if markers.dtype != np.int32 or (markers < 0).any():
-                raise ValueError("Watershed label markers must be nonnegative int32")
+                raise ValidationError("Watershed label markers must be nonnegative int32")
             labels = np.array(markers, copy=True, order="C")
         if not np.any(labels > 0):
-            raise ValueError("Watershed requires at least one positive seed")
+            raise ValidationError("Watershed requires at least one positive seed")
         labels = cv2.watershed(image, labels)
         boundaries = cv2.compare(labels, -1, cv2.CMP_EQ)
-        background = integer(self.parameters["background_label"], "Background label", 0, 2**31 - 1)
-        unique = np.unique(labels)
-        count = int(np.count_nonzero((unique > 0) & (unique != background)))
-        output_label = integer(self.parameters["output_label"], "Output label", 0, 2**31 - 1)
+        background = int(self.parameters["background_label"])
+        unique, areas = np.unique(labels, return_counts=True)
+        regions = [
+            {"label": int(label), "area_pixels": int(area)}
+            for label, area in zip(unique, areas, strict=True)
+            if label > 0 and label != background
+        ]
+        output_label = int(self.parameters["output_label"])
         mask = cv2.compare(labels, output_label, cv2.CMP_EQ if output_label else cv2.CMP_GT)
         if background and not output_label:
             mask[labels == background] = 0
-        return Result({"labels": labels, "boundaries": boundaries, "mask": mask, "count": count})
+        return Result(
+            {
+                "labels": labels, "boundaries": boundaries, "mask": mask, "count": len(regions),
+                "preview": label_color_map(labels, background), "regions": regions,
+            },
+            message=f"{len(regions)} foreground regions",
+        )
 
 
 class GrabCut(Block):
@@ -238,7 +257,9 @@ class DistancePeakMarkers(Block):
     type_id, title = "inspect.distance_markers", "Watershed seeds from distance peaks"
     category, block_type, subtype = "Inspection", "Inspection", "Segmentation"
     inputs = SELECTION_INPUTS
-    outputs = (Port("markers"), Port("seeds"), Port("distance"), Port("count", "number"))
+    outputs = (
+        Port("markers"), Port("seeds"), Port("distance"), Port("count", "number"), Port("preview")
+    )
     defaults = {
         "distance_type": "l2",
         "l2_mask_size": "precise",
@@ -252,6 +273,11 @@ class DistancePeakMarkers(Block):
         "l2_mask_size": ("precise", "3", "5"),
         "connectivity": ("4", "8"),
     }
+    parameter_ranges = {
+        "minimum_distance": NumericRange(0),
+        "peak_radius": NumericRange(1, 63, whole=True),
+        "background_gap": NumericRange(0, 255, whole=True),
+    }
     parameter_help = {
         "minimum_distance": "Minimum distance from a peak to the background, in pixels.",
         "peak_radius": "Compare each peak with neighbors in a square of this radius.",
@@ -262,7 +288,7 @@ class DistancePeakMarkers(Block):
     def process(self, inputs):
         source = inputs["image"]
         if source.ndim != 2 or source.dtype != np.uint8:
-            raise ValueError("Distance seeds require a uint8 monochrome foreground mask")
+            raise ValidationError("Distance seeds require a uint8 monochrome foreground mask")
         foreground = cv2.compare(np.asarray(source), 0, cv2.CMP_NE)
         selection = selection_mask(inputs, foreground)
         if selection is not None:
@@ -276,8 +302,8 @@ class DistancePeakMarkers(Block):
         )
         padded = cv2.copyMakeBorder(foreground, 1, 1, 1, 1, cv2.BORDER_CONSTANT, value=0)
         distance = cv2.distanceTransform(padded, mode, mask_size)[1:-1, 1:-1].copy()
-        radius = integer(self.parameters["peak_radius"], "Peak radius", 1, 63)
-        threshold = finite(self.parameters["minimum_distance"], "Minimum distance", 0)
+        radius = int(self.parameters["peak_radius"])
+        threshold = float(self.parameters["minimum_distance"])
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (2 * radius + 1,) * 2)
         local_maximum = cv2.dilate(distance, kernel)
         peaks = (foreground != 0) & (distance >= threshold) & (distance == local_maximum)
@@ -285,11 +311,14 @@ class DistancePeakMarkers(Block):
         count, labels = cv2.connectedComponentsWithAlgorithm(
             seeds, int(self.parameters["connectivity"]), cv2.CV_32S, cv2.CCL_SAUF
         )
-        gap = integer(self.parameters["background_gap"], "Background gap", 0, 255)
+        gap = int(self.parameters["background_gap"])
         expanded = cv2.dilate(foreground, None, iterations=gap) if gap else foreground
         markers = np.where(peaks, labels + 1, expanded == 0).astype(np.int32)
         return Result(
-            {"markers": markers, "seeds": seeds, "distance": distance, "count": count - 1}
+            {
+                "markers": markers, "seeds": seeds, "distance": distance, "count": count - 1,
+                "preview": label_color_map(markers, 1),
+            }
         )
 
 

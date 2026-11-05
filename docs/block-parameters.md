@@ -2030,9 +2030,9 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | --- | --- | --- |
 | `distance_type` | `"l2"` | `l2`, `l1`, `chessboard` |
 | `l2_mask_size` | `"precise"` | `precise`, `3`, `5` |
-| `minimum_distance` | `2.0` | Minimum distance from a peak to the background, in pixels. |
-| `peak_radius` | `3` | Compare each peak with neighbors in a square of this radius. |
-| `background_gap` | `1` | Number of pixel layers to leave unlabeled outside the foreground. |
+| `minimum_distance` | `2.0` | Value must be a finite number at least 0. Minimum distance from a peak to the background, in pixels. |
+| `peak_radius` | `3` | Value must be a whole number between 1 and 63. Compare each peak with neighbors in a square of this radius. |
+| `background_gap` | `1` | Value must be a whole number between 0 and 255. Number of pixel layers to leave unlabeled outside the foreground. |
 | `connectivity` | `"8"` | `4`, `8` Connectivity used to group adjacent peak pixels into one seed. |
 
 ## FAST corners (`inspect.fast`)
@@ -2471,8 +2471,39 @@ Inputs: `image` (image), `markers` (image).
 | --- | --- | --- |
 | `marker_mode` | `"binary_components"` | `binary_components`, `labels` Label connected uint8 seeds or use an int32 map with 0 for unknown. |
 | `connectivity` | `"8"` | `4`, `8` Connectivity used to label binary seeds. |
-| `output_label` | `0` | Label to output as a mask. Zero includes all foreground labels. |
-| `background_label` | `0` | Label excluded from the count and default mask. Zero disables this. |
+| `output_label` | `0` | Value must be a whole number between 0 and 2.14748e+09. Label to output as a mask. Zero includes all foreground labels. |
+| `background_label` | `0` | Value must be a whole number between 0 and 2.14748e+09. Label excluded from the count and default mask. Zero disables this. |
+
+## Watershed seeds from masks (`inspect.watershed_mask_seeds`)
+
+Inspection / Segmentation
+
+Inputs: `foreground` (image), `background` (image).
+
+Input `foreground` — One connected component per foreground seed.
+
+Input `background` — Known background pixels. Keep uncertain pixels clear in both masks.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `connectivity` | `"8"` | `4`, `8` Groups adjacent foreground seed pixels into one label. |
+
+## Watershed seeds from points (`inspect.watershed_point_seeds`)
+
+Inspection / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `foreground_points` (data, optional), `background_points` (data, optional).
+
+Input `foreground_points` — Overrides the saved foreground points.
+
+Input `background_points` — Overrides the saved background points.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `foreground_points` | `[]` | One local image [x,y] point per foreground label. |
+| `background_points` | `[]` | All points share background label 1. |
+| `radius` | `2` | Value must be a whole number between 0 and 64. |
+| `background_mode` | `"border"` | `border`, `points` Border adds an inset ring. Points uses only specified points. |
 
 ## Shape mask (`mask.shape`)
 
