@@ -2493,7 +2493,7 @@ P3	function	cv2.empty_array_desc	no static reference	-
 P3	function	cv2.empty_gopaque_desc	no static reference	-
 P3	function	cv2.empty_scalar_desc	no static reference	-
 P3	function	cv2.equalizeHist	literal reference	-
-P3	function	cv2.erode	no static reference	-
+P3	function	cv2.erode	literal reference	-
 P3	class	cv2.error	literal reference	-
 P3	function	cv2.estimateAffine2D	literal reference	-
 P3	function	cv2.estimateAffine3D	no static reference	-
@@ -3378,7 +3378,7 @@ P3	method	cv2.MatShape.expand	no static reference	-
 P3	method	cv2.MatShape.hasSymbols	no static reference	-
 P3	method	cv2.MatShape.isScalar	no static reference	-
 P3	method	cv2.MatShape.toLayout	no static reference	-
-P3	function	cv2.max	no static reference	-
+P3	function	cv2.max	literal reference	-
 P3	class	cv2.mcc.CChecker	no static reference	-
 P3	method	cv2.mcc.CChecker.create	method name only	-
 P3	method	cv2.mcc.CChecker.getBox	no static reference	-
@@ -3460,7 +3460,7 @@ P3	method	cv2.MergeMertens.setExposureWeight	no static reference	-
 P3	method	cv2.MergeMertens.setSaturationWeight	no static reference	-
 P3	class	cv2.MergeRobertson	no static reference	-
 P3	method	cv2.MergeRobertson.process	method name only	-
-P3	function	cv2.min	no static reference	-
+P3	function	cv2.min	literal reference	-
 P3	function	cv2.minEnclosingConvexPolygon	no static reference	-
 P3	function	cv2.minEnclosingTriangle	no static reference	-
 P3	function	cv2.minMaxLoc	literal reference	-

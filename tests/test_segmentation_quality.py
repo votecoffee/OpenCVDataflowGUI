@@ -1,5 +1,6 @@
 """Exercise segmentation labels, selection, and quality metrics through the registry."""
 
+import cv2
 import numpy as np
 import pytest
 
@@ -104,3 +105,60 @@ def test_fill_holes_leaves_edge_connected_background_and_large_holes():
     assert np.count_nonzero(result.outputs["holes"]) == 9
     assert result.outputs["mask"][7, 15] == 255
     assert result.outputs["mask"][7, 10] == result.outputs["mask"][17, 17] == 0
+
+
+def test_distance_markers_split_touching_parts_and_exclude_background():
+    image = np.zeros((64, 88), np.uint8)
+    cv2.circle(image, (29, 32), 18, 255, -1)
+    cv2.circle(image, (57, 32), 18, 255, -1)
+    registry = builtin_registry()
+    seeds = registry.create("inspect.distance_markers")
+    result = seeds.execute({"image": image})
+    assert result is not None, seeds.error
+    assert result.outputs["count"] == 2
+    markers = result.outputs["markers"]
+    assert markers.dtype == np.int32
+    assert tuple(markers[32, [29, 57]]) == (2, 3)
+    assert markers[32, 43] == 0
+    assert markers[5, 5] == 1
+    watershed = registry.create(
+        "inspect.watershed", parameters={"marker_mode": "labels", "background_label": 1}
+    )
+    segmented = watershed.execute({"image": image, "markers": markers})
+    assert segmented is not None, watershed.error
+    assert segmented.outputs["count"] == 2
+    assert segmented.outputs["mask"][5, 5] == 0
+    assert segmented.outputs["boundaries"][32, 43] == 255
+    empty = seeds.execute({"image": np.zeros_like(image)})
+    assert empty.outputs["count"] == 0
+    assert (
+        watershed.execute({"image": image, "markers": empty.outputs["markers"]}).outputs["count"]
+        == 0
+    )
+
+
+@pytest.mark.parametrize("method", ["dilation", "erosion"])
+def test_reconstruction_respects_barriers_and_reports_limit(method):
+    mask = np.zeros((8, 20), np.uint16)
+    mask[2:5, 2:10] = 300
+    mask[2:5, 11:17] = 200
+    marker = np.zeros_like(mask)
+    marker[3, 2] = 250
+    expected = np.zeros_like(mask)
+    expected[2:5, 2:10] = 250
+    if method == "erosion":
+        mask, marker, expected = (1000 - image for image in (mask, marker, expected))
+    block = builtin_registry().create(
+        "cv.morph_reconstruct", parameters={"method": method, "connectivity": "4"}
+    )
+    result = block.execute({"image": mask, "marker": marker})
+    assert result is not None, block.error
+    assert result.outputs["info"]["converged"]
+    assert result.outputs["iterations"] == 8
+    np.testing.assert_array_equal(result.outputs["image"], expected)
+    block.parameters["maximum_iterations"] = 1
+    limited = block.execute({"image": mask, "marker": marker})
+    assert limited is not None, block.error
+    assert not limited.passed
+    assert limited.outputs["image"] is NO_VALUE
+    assert limited.fail_reasons[0]["code"] == "reconstruction_iteration_limit"
