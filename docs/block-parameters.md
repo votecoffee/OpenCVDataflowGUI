@@ -982,6 +982,20 @@ Inputs: `encoded` (encoded_image).
 | `color_format` | `"unchanged"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` Unchanged restores the encoder's logical channel order. |
 | `pixel_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` Unchanged preserves the bit depth stored by the codec. |
 
+## Decode packed YUV (`cv.decode_yuv`)
+
+Image processing / Color and depth
+
+Inputs: `image` (image).
+
+Input `image` — Packed 2D uint8 byte matrix with no row padding.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `layout` | `"NV12"` | `NV12`, `NV21`, `I420`, `YV12`, `YUY2`, `UYVY`, `YVYU` Byte order and chroma subsampling of the input buffer. |
+| `color_format` | `"bgr"` | `gray`, `bgr`, `rgb`, `bgra`, `rgba` Gray extracts the stored luma samples. |
+| `algorithm_hint` | `"default"` | `default`, `accurate`, `approximate` |
+
 ## Demosaic Bayer image (`cv.demosaic_bayer`)
 
 Image processing / Color and depth
@@ -2065,6 +2079,24 @@ Ticket terminals: optional `ticket` data input and `ticket` data output.
 Ticket mode and fixed value are common inspector controls.
 
 No configurable algorithm parameters.
+
+## Raw YUV frame (`input.raw_yuv`)
+
+Input / Files
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
+| `width` | `640` | Value must be a whole number between 1 and 16384. Decoded image width in pixels, excluding row padding. |
+| `height` | `480` | Value must be a whole number between 1 and 16384. Decoded image height in pixels. |
+| `filename_ticket` | `true` | Use the filename for automatic tickets. |
+| `layout` | `"NV12"` | `NV12`, `NV21`, `I420`, `YV12`, `YUY2`, `UYVY`, `YVYU` Byte order and chroma subsampling of the input buffer. |
+| `color_format` | `"bgr"` | `gray`, `bgr`, `rgb`, `bgra`, `rgba` Gray extracts the stored luma samples. |
+| `algorithm_hint` | `"default"` | `default`, `accurate`, `approximate` |
 
 ## Sequence demo frames (`input.sequence_demo`)
 

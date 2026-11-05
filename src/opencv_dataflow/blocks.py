@@ -688,6 +688,7 @@ def builtin_registry():
     from .video_files import VideoFile, WriteVideo
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
     from .watershed_seeds import WatershedMaskSeeds, WatershedPointSeeds
+    from .yuv_formats import DecodePackedYuv, RawYuvFile
     from .zxing_reader import ReadZXingBarcode
 
     registry = Registry()
@@ -696,11 +697,13 @@ def builtin_registry():
         ImageFile,
         VideoFile,
         TiffFile,
+        RawYuvFile,
         Camera,
         Grayscale,
         Blur,
         Canny,
         *BASIC_PROCESSING_BLOCKS,
+        DecodePackedYuv,
         EncodeImage,
         DecodeImage,
         OverlayResultGraphics,
