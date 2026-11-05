@@ -980,6 +980,22 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `anchor` | `[-1, -1]` |  |
 | `output_depth` | `"same"` | `same`, `uint8`, `uint16`, `int16`, `float32`, `float64` |
 
+## Flat-field correction (`cv.flat_field`)
+
+Image processing / Color and depth
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `flat` (image), `dark` (image, optional).
+
+Input `flat` — Uniform bright reference in the same camera pixel grid, encoding, and depth.
+
+Input `dark` — Optional dark reference captured with the same camera settings.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `target_mode` | `"reference_mean"` | `reference_mean`, `fixed` |
+| `target_level` | `0.5` | Value must be a finite number between 0 and 1. Fixed target as a fraction of integer full scale or float sample units. |
+| `min_response` | `0.01` | Value must be a finite number between 0 and 1. Minimum flat minus dark, in full-scale fractions or float sample units. |
+
 ## Flip (`cv.flip`)
 
 Image processing / Geometry

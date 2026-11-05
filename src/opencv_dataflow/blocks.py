@@ -716,6 +716,7 @@ def builtin_registry():
     from .geometry3d import GEOMETRY3D_BLOCKS
     from .histogram import Histogram
     from .histogram_comparison import CompareHistograms, HistogramBackProjection
+    from .illumination import FlatFieldCorrection
     from .image_quality import CompareImageQuality
     from .image_queue import ImageQueue
     from .judgments import FinalJudgment
@@ -795,6 +796,7 @@ def builtin_registry():
         PruneSkeleton,
         WatershedPointSeeds,
         WatershedMaskSeeds,
+        FlatFieldCorrection,
         CompareImageQuality,
         CompareHistograms,
         *COLOR_MEASUREMENT_BLOCKS,
