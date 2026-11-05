@@ -7,14 +7,14 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 import numpy as np
 import pytest
-from PySide6.QtCore import QPoint, Qt
+from PySide6.QtCore import QEvent, QPoint, Qt
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QDialog, QInputDialog
+from PySide6.QtWidgets import QDialog, QGraphicsSceneHelpEvent, QInputDialog, QToolTip
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.canvas import CanvasScene, CanvasView
-from opencv_dataflow.core import Graph
+from opencv_dataflow.core import Block, Graph, Port, Result
 from opencv_dataflow.images import ImageArray
 from opencv_dataflow.kernel_editor import KernelEditor
 from opencv_dataflow.toolblock_editor import InterfaceDialog
@@ -247,6 +247,47 @@ def test_run_inspector_delete_and_continuous_stop(app):
     assert last.state == "idle"
     window.dirty = False
     window.close()
+
+
+def test_socket_tooltips_show_full_names_and_latest_scalar_values(app):
+    name = "a_long_input_name_that_is_truncated_on_the_node"
+
+    class Echo(Block):
+        inputs = (Port(name, "any"),)
+        outputs = (Port("echoed_value", "any"),)
+
+        def process(self, inputs):
+            return Result({"echoed_value": inputs[name]})
+
+    graph = Graph()
+    block = graph.add(Echo())
+    scene = CanvasScene(graph)
+    sockets = scene.nodes[block.id].sockets
+
+    def hover(output, port_name):
+        socket = sockets[output, port_name]
+        event = QGraphicsSceneHelpEvent(QEvent.Type.GraphicsSceneHelp)
+        event.setScenePos(socket.scenePos())
+        event.setScreenPos(QPoint(100, 100))
+        app.sendEvent(scene, event)
+        tooltip = QToolTip.text()
+        assert port_name in tooltip
+        assert ("output" if output else "input") in tooltip
+        return tooltip
+
+    try:
+        assert "Value:" not in hover(False, name)
+        assert "Value:" not in hover(True, "echoed_value")
+        for value, text in ((np.float32(2.5), "2.5"), (False, "False"), ("<x>", "&lt;x&gt;")):
+            block.execute({name: value})
+            assert block.state == "pass", block.error
+            assert text in hover(False, name)
+            assert text in hover(True, "echoed_value")
+        block.execute({name: np.zeros((4, 4), np.uint8)})
+        assert "Value:" not in hover(False, name)
+        assert "Value:" not in hover(True, "echoed_value")
+    finally:
+        QToolTip.hideText()
 
 
 def test_canvas_node_movement_updates_wires(app):

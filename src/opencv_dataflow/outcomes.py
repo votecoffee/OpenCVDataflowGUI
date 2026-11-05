@@ -144,7 +144,7 @@ def stamp_result(block, result):
                     [] if getattr(block, "outcome_passthrough", False) else incoming_reasons,
                 ),
             }
-        if hasattr(value, "ndim"):
+        if getattr(value, "ndim", 0) >= 2:
             value = image_with_payload(value, payload)
         elif isinstance(value, ImagePyramid):
             value = ImagePyramid(
