@@ -317,7 +317,7 @@ P2	class	cv2.detail.BestOf2NearestRangeMatcher	no static reference	-
 P2	class	cv2.detail.Blender	no static reference	-
 P2	method	cv2.detail.Blender.blend	no static reference	-
 P2	method	cv2.detail.Blender.createDefault	no static reference	-
-P2	method	cv2.detail.Blender.feed	no static reference	-
+P2	method	cv2.detail.Blender.feed	method name only	-
 P2	method	cv2.detail.Blender.prepare	no static reference	-
 P2	function	cv2.detail.Blender_createDefault	no static reference	-
 P2	class	cv2.detail.BlocksChannelsCompensator	no static reference	-
@@ -371,7 +371,7 @@ P2	method	cv2.detail.Estimator.apply	method name only	-
 P2	class	cv2.detail.ExposureCompensator	no static reference	-
 P2	method	cv2.detail.ExposureCompensator.apply	method name only	-
 P2	method	cv2.detail.ExposureCompensator.createDefault	no static reference	-
-P2	method	cv2.detail.ExposureCompensator.feed	no static reference	-
+P2	method	cv2.detail.ExposureCompensator.feed	method name only	-
 P2	method	cv2.detail.ExposureCompensator.getMatGains	no static reference	-
 P2	method	cv2.detail.ExposureCompensator.getUpdateGain	no static reference	-
 P2	method	cv2.detail.ExposureCompensator.setMatGains	no static reference	-
@@ -380,7 +380,7 @@ P2	function	cv2.detail.ExposureCompensator_createDefault	no static reference	-
 P2	class	cv2.detail.FeatherBlender	no static reference	-
 P2	method	cv2.detail.FeatherBlender.blend	no static reference	-
 P2	method	cv2.detail.FeatherBlender.createWeightMaps	no static reference	-
-P2	method	cv2.detail.FeatherBlender.feed	no static reference	-
+P2	method	cv2.detail.FeatherBlender.feed	method name only	-
 P2	method	cv2.detail.FeatherBlender.prepare	no static reference	-
 P2	method	cv2.detail.FeatherBlender.setSharpness	no static reference	-
 P2	method	cv2.detail.FeatherBlender.sharpness	no static reference	-
@@ -412,7 +412,7 @@ P2	method	cv2.detail.MatchesInfo.getInliers	no static reference	-
 P2	method	cv2.detail.MatchesInfo.getMatches	no static reference	-
 P2	class	cv2.detail.MultiBandBlender	no static reference	-
 P2	method	cv2.detail.MultiBandBlender.blend	no static reference	-
-P2	method	cv2.detail.MultiBandBlender.feed	no static reference	-
+P2	method	cv2.detail.MultiBandBlender.feed	method name only	-
 P2	method	cv2.detail.MultiBandBlender.numBands	no static reference	-
 P2	method	cv2.detail.MultiBandBlender.prepare	no static reference	-
 P2	method	cv2.detail.MultiBandBlender.setNumBands	no static reference	-
