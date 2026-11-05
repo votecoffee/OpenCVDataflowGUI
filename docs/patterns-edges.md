@@ -70,6 +70,11 @@ measures trained feature distance to the nearest detected target feature:
 that pixel tolerance. Minimum score and coverage must both pass. `max_matches` and
 `max_overlap` control multiple-instance output and bounding-box IoU suppression.
 
+In **Debug**, **Graphic / pattern matches** marks accepted poses in green and
+shows a bounded set of distinct rejected candidates in red with their score
+and rejection criterion. The wired overlay and pose outputs contain accepted
+matches. The review samples distinct local minima within a fixed review budget.
+
 This is sampled geometric localization, with no learned classifier or unrestricted
 deformation search. Extra scene edges are not penalized directly; repetitive or
 dense texture can create ambiguity. Restrict the search region and tune thresholds
@@ -91,6 +96,10 @@ models also expose refinement iterations. Quality gates include correspondence/
 inlier counts, inlier ratio, feature coverage, RMS reprojection error and scale.
 The score is inliers divided by accepted correspondences. Model coverage is
 inliers divided by trained feature count, not physical area coverage.
+
+In **Debug**, the pattern graphic can show a rejected fitted pose in red when
+its geometry can be drawn. **Graphic / texture correspondences** distinguishes
+geometric inliers from rejected proposals even when the overall pose fails.
 
 One best planar pose is returned per matcher. This does not yet find every repeated
 texture instance or handle nonrigid/3D pose. Reflected, nonconvex, degenerate or

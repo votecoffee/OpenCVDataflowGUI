@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 
 from .core import Block, Port
+from .features import overlay_image
 from .patterns import (
     MATCH_INPUTS,
     PATTERN_OUTPUTS,
@@ -21,6 +22,7 @@ from .patterns import (
 from .poses import POSE_HELP, POSE_OFFSETS
 from .processing import finite, gray_image, integer
 from .registration import ORBFeatures
+from .result_graphics import ACCEPTED, REJECTED, review_legend
 from .selection import SELECTION_INPUTS, contains, selection_mask
 
 TEXTURE_DEFAULTS = {
@@ -235,8 +237,23 @@ class MatchTexturePattern(TrainableMatcher, Block):
         for m in sorted(matches, key=lambda m: m.distance):
             unique.setdefault(m.trainIdx, m)
         matches = list(unique.values())
+
+        def finish(accepted=(), rejected=(), inliers=()):
+            result = pattern_result(inputs["image"], model, list(accepted), rejected)
+            if self.generate_graphics:
+                good = {m.trainIdx for m, keep in zip(matches, inliers) if keep}
+                proposed = {pair[0].trainIdx for pair in pairs if pair}
+                graphic = overlay_image(inputs["image"])
+                for indices, color in ((proposed - good, REJECTED), (good, ACCEPTED)):
+                    for index in sorted(indices):
+                        center = tuple(np.rint(target_points[index]).astype(int))
+                        cv2.circle(graphic, center, 3, color, 1)
+                review_legend(graphic, len(good), len(proposed - good))
+                result.graphics["texture correspondences"] = graphic
+            return result
+
         if len(matches) < required:
-            return pattern_result(inputs["image"], model, [])
+            return finish()
         a = np.asarray([points[m.queryIdx] for m in matches], np.float64)
         b = np.asarray([target_points[m.trainIdx] for m in matches], np.float64)
         method = cv2.RANSAC if p["robust_method"] == "ransac" else cv2.LMEDS
@@ -267,36 +284,52 @@ class MatchTexturePattern(TrainableMatcher, Block):
             or not np.isfinite(matrix).all()
             or np.linalg.matrix_rank(matrix) != 3
         ):
-            return pattern_result(inputs["image"], model, [])
+            return finish()
         valid = inliers.reshape(-1).astype(bool)
         count = int(valid.sum())
         score, model_coverage = count / len(matches), count / len(points)
-        if count < inlier_min or score < fraction or model_coverage < coverage:
-            return pattern_result(inputs["image"], model, [])
+        reason = ""
+        if count < inlier_min or score < fraction:
+            reason = "inliers"
+        elif model_coverage < coverage:
+            reason = "coverage"
+        if reason and (not self.generate_graphics or not count):
+            return finish(inliers=valid)
         projection = cv2.perspectiveTransform(a[valid, None], matrix).reshape(-1, 2)
         rms = float(np.sqrt(np.mean(np.sum((projection - b[valid]) ** 2, axis=1))))
-        record = pose_record(
-            model,
-            matrix,
-            inputs["image"],
-            score,
-            inliers=count,
-            correspondences=len(matches),
-            rms_pixels=rms,
-            model_coverage=model_coverage,
-        )
+        try:
+            record = pose_record(
+                model,
+                matrix,
+                inputs["image"],
+                score,
+                inliers=count,
+                correspondences=len(matches),
+                rms_pixels=rms,
+                model_coverage=model_coverage,
+            )
+        except ValueError:
+            if reason:
+                return finish(inliers=valid)
+            raise
         corners = np.asarray(record["corners"], np.float32)
-        if not np.isfinite(corners).all() or np.max(np.abs(corners)) > 10_000_000:
-            return pattern_result(inputs["image"], model, [])
+        if (
+            not np.isfinite(corners).all()
+            or np.max(np.abs(corners)) > 10_000_000
+            or max(map(abs, record["center"])) > 10_000_000
+        ):
+            return finish(inliers=valid)
         area = cv2.contourArea(corners, oriented=True)
         scale = math.sqrt(max(0, area) / ((model["size"][0] - 1) * (model["size"][1] - 1)))
-        if (
-            not cv2.isContourConvex(corners)
-            or not low <= scale <= high
-            or rms > rms_limit
-            or not contains(mask, record["center"])
-        ):
-            return pattern_result(inputs["image"], model, [])
+        if not cv2.isContourConvex(corners) or not contains(mask, record["center"]):
+            return finish(inliers=valid)
+        if not reason and not low <= scale <= high:
+            reason = "scale"
+        if not reason and rms > rms_limit:
+            reason = "RMS"
+        if reason:
+            rejected = [(record, reason)] if self.generate_graphics else []
+            return finish(rejected=rejected, inliers=valid)
         delta = corners[1] - corners[0]
         record.update(scale=scale, angle_degrees=-math.degrees(math.atan2(delta[1], delta[0])))
-        return pattern_result(inputs["image"], model, [record])
+        return finish(accepted=[record], inliers=valid)

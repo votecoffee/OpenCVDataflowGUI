@@ -6,6 +6,8 @@ import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
+from opencv_dataflow.result_graphics import ACCEPTED, REJECTED
+from opencv_dataflow.run_profiles import PROFILES
 
 
 def geometry_template():
@@ -45,6 +47,27 @@ def test_shape_training_translation_multiple_instances_and_no_match():
     assert (
         matcher.last_result.outputs["score"] == 0 and matcher.last_result.outputs["transform"] == {}
     )
+
+
+def test_shape_review_shows_below_threshold_candidates_without_emitting_them():
+    template = geometry_template()
+    matcher = tool("pattern.match_shape", max_matches=2)
+    matcher.train({"image": template})
+    search = np.zeros((220, 330), np.uint8)
+    search[50:146, 25:137] = template
+    search[50:146, 185:297] = template
+    search[50:105, 235:297] = 0
+    result = matcher.execute({"image": search})
+    assert result is not None, matcher.error
+    assert result.outputs["count"] == 1
+    graphic = result.graphics["pattern matches"][40:]
+    assert np.any(np.all(graphic[:, :155] == ACCEPTED, axis=-1))
+    assert np.any(np.all(graphic[:, 155:] == REJECTED, axis=-1))
+    assert not np.any(np.all(result.outputs["overlay"] == REJECTED, axis=-1))
+    matcher.run_profile = PROFILES["lean"]
+    lean = matcher.execute({"image": search})
+    assert lean.outputs["matches"] == result.outputs["matches"]
+    assert not lean.graphics
 
 
 def test_shape_rotation_scale_pose_and_search_region():
@@ -88,6 +111,12 @@ def test_texture_training_localizes_planar_target_and_rejects_blank(algorithm):
     assert matcher.last_result.outputs["count"] == 1
     np.testing.assert_allclose(matcher.last_result.outputs["points"][0], [220.5, 170.5], atol=2)
     assert matcher.last_result.outputs["matches"]["items"][0]["inliers"] >= 6
+    assert "texture correspondences" in matcher.last_graphics
+    matcher.parameters["min_inliers"] = 10000
+    rejected = matcher.execute({"image": image})
+    assert rejected.outputs["count"] == 0
+    assert np.any(np.all(rejected.graphics["pattern matches"][50:] == REJECTED, axis=-1))
+    assert not np.any(np.all(rejected.outputs["overlay"] == REJECTED, axis=-1))
     matcher.execute({"image": np.zeros_like(image)})
     assert matcher.state == "fail" and matcher.last_result.outputs["count"] == 0
     assert matcher.trained_model["id"] == model["id"]

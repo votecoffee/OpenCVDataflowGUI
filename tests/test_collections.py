@@ -8,6 +8,7 @@ from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.images import ImageArray
 from opencv_dataflow.objects import collection, line_item
 from opencv_dataflow.payloads import packet_for
+from opencv_dataflow.result_graphics import ACCEPTED, REJECTED
 
 
 def run(kind, inputs, **parameters):
@@ -100,6 +101,9 @@ def test_numeric_filter_chaining_size_aspect_angle_and_exclusive_bounds():
     assert (
         width.last_result.outputs["count"] == 2 and width.last_result.outputs["rejected_count"] == 1
     )
+    graphic = width.last_graphics["collection filter"][40:]
+    assert np.any(np.all(graphic[:, 60:100] == REJECTED, axis=-1))
+    assert np.any(np.all(graphic[:, 120:200] == ACCEPTED, axis=-1))
     aspect = run(
         "collection.filter",
         {"collection": width.last_result.outputs["collection"]},

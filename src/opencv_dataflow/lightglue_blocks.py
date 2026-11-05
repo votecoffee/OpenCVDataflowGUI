@@ -11,6 +11,7 @@ from .ml_common import file_key, local_path
 from .payloads import NO_VALUE, metadata
 from .poses import make_pose
 from .processing import finite, gray_image, integer
+from .result_graphics import review_legend
 from .selection import SELECTION_INPUTS, contains, selection_mask
 
 SIFT_DEFAULTS = {
@@ -338,6 +339,11 @@ class LightGlueMatch(Block):
             "reference_context": reference.get("coordinate_context", {}),
             "query_context": query["coordinate_context"],
         }
+        graphics = {}
+        if self.generate_graphics:
+            graphic = overlay.copy()
+            review_legend(graphic, good, count - good)
+            graphics["LightGlue correspondences"] = graphic
         return Result(
             {
                 "matches": matches,
@@ -347,6 +353,7 @@ class LightGlueMatch(Block):
                 "inliers": good,
                 "overlay": overlay,
             },
+            graphics=graphics,
             passed=passed,
             score=ratio,
             message=f"LightGlue: {count} matches / {good} geometric inliers",

@@ -93,6 +93,9 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
    execution errors skip dependent blocks.
    Choose an output or graphic and click **Pop out…** to watch it in a separate
    window with a status-colored border and the ticket in its title.
+   In the **Debug** run profile, pattern matching, template instances, oriented
+   edges, and collection filtering include review graphics with accepted items
+   in green and rejected candidates in red.
 5. Save/load JSON projects from File. Select a wire or block and press Delete to
    remove it. Use the wheel to zoom, middle-drag to pan, and **Fit graph** to frame it.
 

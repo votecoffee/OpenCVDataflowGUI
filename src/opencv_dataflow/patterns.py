@@ -13,6 +13,7 @@ from .features import overlay_image
 from .payloads import frame, metadata
 from .poses import POSE_HELP, POSE_OFFSETS, draw_pose, local_offset, make_pose, offset_pose
 from .processing import finite, gray_image, integer
+from .result_graphics import ACCEPTED, REJECTED, review_legend
 from .selection import SELECTION_INPUTS, contains, selection_mask
 
 SHAPE_DEFAULTS = {
@@ -356,22 +357,26 @@ def pose_record(model, matrix, target, score, **details):
     }
 
 
-def pattern_result(image, model, matches):
+def draw_pattern_candidate(overlay, match, color, label):
+    corners = np.rint(match["corners"]).astype(np.int32)
+    center = tuple(np.rint(match["center"]).astype(int))
+    cv2.polylines(overlay, [corners], True, color, 2)
+    cv2.drawMarker(overlay, center, color, cv2.MARKER_CROSS, 12, 1)
+    cv2.putText(overlay, label, center, cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 1)
+
+
+def pattern_result(image, model, matches, rejected=()):
     overlay = overlay_image(image)
     for index, match in enumerate(matches, 1):
-        corners = np.rint(match["corners"]).astype(np.int32)
-        cv2.polylines(overlay, [corners], True, (60, 230, 120), 2)
-        center = tuple(np.rint(match["center"]).astype(int))
-        cv2.drawMarker(overlay, center, (60, 230, 120), cv2.MARKER_CROSS, 12, 1)
-        cv2.putText(
-            overlay,
-            f"{index}: {match['score']:.2f}",
-            center,
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.45,
-            (60, 230, 120),
-            1,
-        )
+        draw_pattern_candidate(overlay, match, ACCEPTED, f"{index}: {match['score']:.2f}")
+    graphic = overlay
+    if rejected:
+        graphic = overlay_image(image)
+        for match, reason in rejected:
+            draw_pattern_candidate(graphic, match, REJECTED, f"{match['score']:.2f} {reason}")
+        for index, match in enumerate(matches, 1):
+            draw_pattern_candidate(graphic, match, ACCEPTED, f"{index}: {match['score']:.2f}")
+        review_legend(graphic, len(matches), len(rejected))
     score = matches[0]["score"] if matches else 0.0
     return Result(
         {
@@ -390,7 +395,7 @@ def pattern_result(image, model, matches):
         },
         passed=bool(matches),
         score=score,
-        graphics={"pattern matches": overlay},
+        graphics={"pattern matches": graphic},
         message=f"{len(matches)} pattern matches, best score {score:.3f}",
     )
 
@@ -407,6 +412,10 @@ def overlap(a, b):
     u, v, s, t = cv2.boundingRect(np.asarray(b["corners"], np.float32))
     intersection = max(0, min(x + w, u + s) - max(x, u)) * max(0, min(y + h, v + t) - max(y, v))
     return intersection / (w * h + s * t - intersection)
+
+
+def shape_review(corners, anchor, location, score, reason):
+    return {"corners": corners + location, "center": anchor + location, "score": score}, reason
 
 
 class MatchShapePattern(TrainableMatcher, Block):
@@ -472,7 +481,7 @@ class MatchShapePattern(TrainableMatcher, Block):
         distance = cv2.distanceTransform(255 - features, cv2.DIST_L2, 3)
         points = np.asarray(model["points"], np.float64)
         center = ((model["size"][0] - 1) / 2, (model["size"][1] - 1) / 2)
-        candidates = []
+        candidates, rejected = [], []
         for angle in angles:
             for scale in scales:
                 if self._cancelled():
@@ -487,6 +496,7 @@ class MatchShapePattern(TrainableMatcher, Block):
                 if w > image.shape[1] or h > image.shape[0]:
                     continue
                 matrix[:2, 2] -= low
+                corners -= low
                 transformed = cv2.perspectiveTransform(points[:, None], matrix).reshape(-1, 2)
                 indices = np.unique(np.rint(transformed).astype(int), axis=0)
                 kernel = np.zeros((h, w), np.float32)
@@ -497,6 +507,7 @@ class MatchShapePattern(TrainableMatcher, Block):
                     rows = np.rint(np.arange(cost.shape[0]) + anchor[1]).astype(int)
                     columns = np.rint(np.arange(cost.shape[1]) + anchor[0]).astype(int)
                     cost[selection[rows[:, None], columns[None, :]] == 0] = np.inf
+                review = []
                 for _ in range(required * 8):
                     mean, _, location, _ = cv2.minMaxLoc(cost)
                     if (
@@ -517,6 +528,13 @@ class MatchShapePattern(TrainableMatcher, Block):
                         float(np.mean(values <= tolerance)),
                     )
                     if score < minimum or coverage < coverage_min:
+                        if self.generate_graphics and len(review) < 8:
+                            review.append(
+                                shape_review(
+                                    corners, anchor, [x, y], score,
+                                    "score" if score < minimum else "coverage",
+                                )
+                            )
                         continue
                     pose = matrix.copy()
                     pose[:2, 2] += [x, y]
@@ -532,15 +550,42 @@ class MatchShapePattern(TrainableMatcher, Block):
                             mean_distance=float(values.mean()),
                         )
                     )
+                if self.generate_graphics:
+                    for _ in range(8):
+                        mean, _, (x, y), _ = cv2.minMaxLoc(cost)
+                        if not np.isfinite(mean):
+                            break
+                        radius = max(2, min(w, h) // 2)
+                        cost[
+                            max(0, y - radius) : y + radius + 1,
+                            max(0, x - radius) : x + radius + 1,
+                        ] = np.inf
+                        values = distance[indices[:, 1] + y, indices[:, 0] + x]
+                        score = math.exp(-float(values.mean()) / tolerance)
+                        if score < minimum:
+                            review.append(shape_review(corners, anchor, [x, y], score, "score"))
+                    rejected.extend(review)
         matches = []
-        for candidate in sorted(
+        ranked = sorted(
             candidates, key=lambda m: (-m["score"], abs(m["angle_degrees"]), abs(m["scale"] - 1))
-        ):
+        )
+        for index, candidate in enumerate(ranked):
             if all(overlap(candidate, previous) <= maximum_overlap for previous in matches):
                 matches.append(candidate)
                 if len(matches) >= required:
+                    if self.generate_graphics:
+                        rejected.extend((item, "limit") for item in ranked[index + 1 : index + 65])
                     break
-        return pattern_result(inputs["image"], model, matches)
+        visible = []
+        for candidate, reason in sorted(rejected, key=lambda item: -item[0]["score"]):
+            if any(overlap(candidate, match) > maximum_overlap for match in matches):
+                continue
+            if any(overlap(candidate, prior) > maximum_overlap for prior, _ in visible):
+                continue
+            visible.append((candidate, reason))
+            if len(visible) == 32:
+                break
+        return pattern_result(inputs["image"], model, matches, visible)
 
 
 class PatternDemoImages(Block):

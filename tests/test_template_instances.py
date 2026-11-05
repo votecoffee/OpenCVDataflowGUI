@@ -4,6 +4,7 @@ import numpy as np
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.payloads import NO_VALUE
+from opencv_dataflow.result_graphics import ACCEPTED, REJECTED
 
 
 def test_template_instances_detect_all_parts_and_limit_search():
@@ -29,6 +30,23 @@ def test_template_instances_detect_all_parts_and_limit_search():
     limited = block.execute({**inputs, "search_mask": search})
     assert limited.outputs["count"] == 1
     assert limited.outputs["matches"][0]["bounds"] == [20, 20, 32, 32]
+
+
+def test_template_instances_review_includes_weaker_peaks_without_emitting_poses():
+    registry = builtin_registry()
+    template = np.random.default_rng(9).integers(0, 255, (24, 24), dtype=np.uint8)
+    search = np.zeros((100, 160), np.uint8)
+    search[45:69, 20:44] = template
+    search[45:69, 100:124] = template
+    search[45:57, 100:124] = 0
+    block = registry.create("inspect.template_instances", parameters={"min_score": 0.9})
+    result = block.execute({"image": search, "template": template})
+    assert result is not None, block.error
+    assert result.outputs["count"] == 1
+    graphic = result.graphics["template instances"][40:]
+    assert np.any(np.all(graphic[:, :65] == ACCEPTED, axis=-1))
+    assert np.any(np.all(graphic[:, 85:] == REJECTED, axis=-1))
+    assert not np.any(np.all(result.outputs["overlay"] == REJECTED, axis=-1))
 
 
 def test_template_instances_accept_one_pixel_response():
