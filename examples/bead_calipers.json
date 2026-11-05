@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Demo image",
+      "parameters": {},
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "calipers",
+      "type": "inspect.bead_calipers",
+      "name": "Paired-edge bead calipers",
+      "parameters": {
+        "start": [
+          245,
+          180
+        ],
+        "end": [
+          420,
+          180
+        ],
+        "scan_count": 7,
+        "scan_span": 100,
+        "samples": 351,
+        "smoothing_sigma": 0.8,
+        "polarity": "bright",
+        "interpolation": "linear",
+        "min_gradient": 10.0,
+        "min_width": 124,
+        "max_width": 128,
+        "max_center_offset": 2,
+        "min_pass_fraction": 1.0,
+        "maximum_gap": 0,
+        "draw_overlay": true
+      },
+      "position": [
+        350,
+        20
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "points",
+        "mean_width",
+        "pass_fraction",
+        "longest_gap",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "calipers",
+      "input": "image"
+    }
+  ]
+}

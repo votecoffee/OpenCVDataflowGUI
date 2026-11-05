@@ -1740,6 +1740,30 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
 | `border_value` | `0.0` |  |
 
+## Paired-edge bead calipers (`inspect.bead_calipers`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `pose` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `start` | `[20.0, 50.0]` | Base scan start [x,y] in image pixels or local pose pixels. |
+| `end` | `[80.0, 50.0]` | Base scan end [x,y] in the same frame as start. |
+| `scan_count` | `5` |  |
+| `scan_span` | `20.0` | Total spacing from first to last scan, perpendicular to the base scan. |
+| `samples` | `121` |  |
+| `smoothing_sigma` | `0.8` | Gaussian smoothing along each scan, in sample units. Zero disables. |
+| `polarity` | `"bright"` | `bright`, `dark` |
+| `interpolation` | `"linear"` | `linear`, `nearest` |
+| `min_gradient` | `10.0` | Minimum intensity change per local pixel for each edge. |
+| `min_width` | `0.0` |  |
+| `max_width` | `0.0` | Maximum accepted edge spacing. Zero disables the upper bound. |
+| `max_center_offset` | `-1.0` | Maximum deviation from scan midpoint. Negative disables the check. |
+| `min_pass_fraction` | `1.0` |  |
+| `maximum_gap` | `-1` | Maximum consecutive scans with missing measurements. -1 disables. |
+| `draw_overlay` | `true` |  |
+
 ## Find blobs (`inspect.blobs`)
 
 Inspection / Shapes
