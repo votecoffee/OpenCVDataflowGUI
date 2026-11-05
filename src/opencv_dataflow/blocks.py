@@ -681,6 +681,7 @@ def builtin_registry():
     from .oriented_edges import FindOrientedEdges
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
+    from .pick_selection import SelectPickCandidate
     from .poses import POSE_BLOCKS
     from .processing import PROCESSING_BLOCKS
     from .ptcloud3d import PTCLOUD3D_BLOCKS
@@ -738,6 +739,7 @@ def builtin_registry():
         HistogramBackProjection,
         FitShape,
         FindTemplateInstances,
+        SelectPickCandidate,
         TrainShapePattern,
         MatchShapePattern,
         TrainTexturePattern,

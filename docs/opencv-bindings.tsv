@@ -2737,7 +2737,7 @@ P3	method	cv2.FileStorage.root	no static reference	-
 P3	method	cv2.FileStorage.startWriteStruct	no static reference	-
 P3	method	cv2.FileStorage.write	method name only	-
 P3	method	cv2.FileStorage.writeComment	no static reference	-
-P3	function	cv2.fillConvexPoly	no static reference	-
+P3	function	cv2.fillConvexPoly	literal reference	-
 P3	function	cv2.fillPoly	literal reference	-
 P3	function	cv2.filter2D	literal reference	-
 P3	function	cv2.filter2Dp	no static reference	-
@@ -3079,7 +3079,7 @@ P3	function	cv2.intensity_transform.BIMEF2	no static reference	-
 P3	function	cv2.intensity_transform.contrastStretching	no static reference	-
 P3	function	cv2.intensity_transform.gammaCorrection	no static reference	-
 P3	function	cv2.intensity_transform.logTransform	no static reference	-
-P3	function	cv2.intersectConvexConvex	no static reference	-
+P3	function	cv2.intersectConvexConvex	literal reference	-
 P3	function	cv2.invert	no static reference	-
 P3	function	cv2.invertAffineTransform	no static reference	-
 P3	function	cv2.isContourConvex	literal reference	-

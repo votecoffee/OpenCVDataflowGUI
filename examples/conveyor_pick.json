@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "parts_source",
+      "type": "input.parts_demo",
+      "name": "25 synthetic parts",
+      "parameters": {
+        "count": 25,
+        "columns": 5,
+        "fail_every": 0
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "reference",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "parts_matches",
+      "type": "inspect.template_instances",
+      "name": "Find 25 fixed-scale parts",
+      "parameters": {
+        "method": "ccoeff_normed",
+        "min_score": 0.85,
+        "maximum_matches": 25,
+        "minimum_matches": 25,
+        "maximum_iou": 0.25,
+        "draw_overlay": true,
+        "pose_offset_x": 0.0,
+        "pose_offset_y": 0.0,
+        "pose_offset_angle": 0.0
+      },
+      "position": [
+        340,
+        100
+      ],
+      "exposed_inputs": [
+        "image",
+        "template",
+        "mask",
+        "search_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "poses",
+        "matches",
+        "count",
+        "response",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "obstacle",
+      "type": "region.shape",
+      "name": "Simulated obstacle mask",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          278,
+          252,
+          5,
+          15
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        340,
+        340
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pick",
+      "type": "inspect.select_pick",
+      "name": "Select pick candidate",
+      "parameters": {
+        "footprint": [
+          -16.0,
+          -16.0,
+          32.0,
+          32.0
+        ],
+        "clearance": 8.0,
+        "min_score": 0.8,
+        "target_angle": 0.0,
+        "angle_tolerance": 180.0,
+        "angle_period": "360",
+        "ranking": "downstream",
+        "downstream_direction": [
+          0.0,
+          1.0
+        ],
+        "maximum_occupied_pixels": 0,
+        "require_occupancy": true,
+        "draw_overlay": true
+      },
+      "position": [
+        710,
+        125
+      ],
+      "exposed_inputs": [
+        "image",
+        "matches",
+        "occupancy",
+        "region"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "selected",
+        "candidates",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "parts_source",
+      "output": "image",
+      "target": "parts_matches",
+      "input": "image"
+    },
+    {
+      "source": "parts_source",
+      "output": "reference",
+      "target": "parts_matches",
+      "input": "template"
+    },
+    {
+      "source": "parts_source",
+      "output": "image",
+      "target": "obstacle",
+      "input": "image"
+    },
+    {
+      "source": "parts_source",
+      "output": "image",
+      "target": "pick",
+      "input": "image"
+    },
+    {
+      "source": "parts_matches",
+      "output": "matches",
+      "target": "pick",
+      "input": "matches"
+    },
+    {
+      "source": "obstacle",
+      "output": "mask",
+      "target": "pick",
+      "input": "occupancy"
+    }
+  ]
+}

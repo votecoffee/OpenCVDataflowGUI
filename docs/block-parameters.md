@@ -2212,6 +2212,26 @@ Inputs: `image` (image), `points` (data).
 | `max_iterations` | `30` |  |
 | `epsilon` | `0.01` |  |
 
+## Select pick candidate (`inspect.select_pick`)
+
+Inspection / Pick selection
+
+Inputs: `image` (image), `matches` (data), `occupancy` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `footprint` | `[-16.0, -16.0, 32.0, 32.0]` | Part rectangle [x, y, width, height] relative to each supplied pose. |
+| `clearance` | `8.0` | Extra margin on all sides of the footprint in local pose pixels. |
+| `min_score` | `0.8` |  |
+| `target_angle` | `0.0` | Desired image pose angle, counterclockwise in degrees. |
+| `angle_tolerance` | `180.0` |  |
+| `angle_period` | `"360"` | `360`, `180`, `90` Set 180 or 90 for a part with twofold or fourfold rotational symmetry. |
+| `ranking` | `"downstream"` | `downstream`, `score` |
+| `downstream_direction` | `[0.0, 1.0]` | Image-space vector [dx, dy], with positive Y down. |
+| `maximum_occupied_pixels` | `0` | Maximum nonzero occupancy pixels outside the part footprint. |
+| `require_occupancy` | `false` | Require an obstacle mask in addition to match footprints. |
+| `draw_overlay` | `true` |  |
+
 ## Find template instances (`inspect.template_instances`)
 
 Inspection / Matching
