@@ -419,7 +419,9 @@ a blurred background and scales the signed residual. The
 [intensity profile example](examples/intensity_profile/README.md) plots per-column
 mean intensity inside an inspection region. The
 [image statistics example](examples/image_statistics/README.md) reports
-selected-region measurements and marks the darkest and brightest pixels.
+selected-region measurements and marks the darkest and brightest pixels. The
+[tilted statistics example](examples/tilted_statistics/README.md) measures
+diagonal patches with 45-degree integral-image windows.
 
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing

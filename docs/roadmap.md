@@ -17,7 +17,7 @@ completion evidence.
 
 Stage 1 is in progress. Cosine and Fourier transforms, inverse reconstruction,
 radial Fourier filtering, custom spectrum masks, Fourier correlation,
-per-channel intensity LUTs, local window statistics,
+per-channel intensity LUTs, local and tilted window statistics,
 unary intensity transforms, binary image arithmetic, and row/column intensity
 profiles are available, along with selected image summary statistics.
 Specialized array operations remain open. The
