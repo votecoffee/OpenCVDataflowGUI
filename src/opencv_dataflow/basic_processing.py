@@ -3,12 +3,13 @@
 import cv2
 import numpy as np
 
-from .core import Result
-from .images import ImageArray
+from .core import Port, Result
+from .images import ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS, scalar_value
+from .payloads import require_same_frame
 from .processing import ImageTool, encoded_result, gray_image, image_value
-from .selection import RegionalOperation
+from .selection import SELECTION_INPUTS, RegionalOperation
 
 ALGORITHM_HINTS = {
     "default": cv2.ALGO_HINT_DEFAULT,
@@ -95,12 +96,10 @@ class GaussianBlur(RegionalOperation, ImageTool):
         return encoded_result(output, source)
 
 
-class Canny(RegionalOperation, ImageTool):
+class _CannyThresholds(RegionalOperation, ImageTool):
     process_inputs_readonly = True
-    type_id, title, subtype = "cv.canny", "Canny edges", "Edges"
     region_background = "zero"
-    defaults = {"low": 60.0, "high": 150.0, "aperture": "3", "l2_gradient": False}
-    parameter_choices = {"aperture": ("3", "5", "7")}
+    defaults = {"low": 60.0, "high": 150.0, "l2_gradient": False}
     parameter_ranges = {"low": NumericRange(0), "high": NumericRange(0)}
 
     def validate_parameters(self, parameters=None):
@@ -108,6 +107,12 @@ class Canny(RegionalOperation, ImageTool):
         p = self.parameters if parameters is None else parameters
         if float(p["low"]) > float(p["high"]):
             raise ValidationError("Thresholds must satisfy 0 <= low <= high", "low", "high")
+
+
+class Canny(_CannyThresholds):
+    type_id, title, subtype = "cv.canny", "Canny edges", "Edges"
+    defaults = {**_CannyThresholds.defaults, "aperture": "3"}
+    parameter_choices = {"aperture": ("3", "5", "7")}
 
     def process(self, inputs):
         image = gray_image(inputs["image"], (np.uint8,), auto_depth=True)
@@ -117,6 +122,52 @@ class Canny(RegionalOperation, ImageTool):
             image, low, high, apertureSize=int(p["aperture"]), L2gradient=p["l2_gradient"]
         )
         return Result({"image": ImageArray(output, "gray")})
+
+
+class SpatialGradient(RegionalOperation, ImageTool):
+    process_inputs_readonly = True
+    type_id, title, subtype = "cv.spatial_gradient", "Paired Sobel derivatives", "Edges"
+    outputs = (Port("dx"), Port("dy"))
+    region_outputs = ("dx", "dy")
+    region_background = "zero"
+    defaults = {"border": "reflect_101"}
+    parameter_choices = {"border": ("reflect_101", "replicate")}
+    input_help = {"image": "8-bit image. Color inputs are converted to grayscale."}
+
+    def process(self, inputs):
+        image = gray_image(inputs["image"], (np.uint8,))
+        dx, dy = cv2.spatialGradient(image, ksize=3, borderType=BORDERS[self.parameters["border"]])
+        return Result({"dx": ImageArray(dx, "gray"), "dy": ImageArray(dy, "gray")})
+
+
+class CannyDerivatives(_CannyThresholds):
+    type_id, title, subtype = "cv.canny_derivatives", "Canny from derivatives", "Edges"
+    inputs = (Port("dx"), Port("dy"), *SELECTION_INPUTS[1:])
+    region_source = "dx"
+    payload_reference = "dx"
+    input_help = {
+        "dx": "Signed int16 X derivatives in a matching one- or three-channel field.",
+        "dy": "Signed int16 Y derivatives in the same grid and channel order as Dx.",
+    }
+    parameter_help = {
+        "low": "Lower hysteresis threshold in derivative units.",
+        "high": "Upper hysteresis threshold in derivative units.",
+        "l2_gradient": "Use Euclidean magnitude instead of the sum of absolute components.",
+    }
+
+    def process(self, inputs):
+        first, second = inputs["dx"], inputs["dy"]
+        dx, dy = (image_value(value, (np.int16,)) for value in (first, second))
+        if dx.shape != dy.shape or (dx.ndim == 3 and dx.shape[2] != 3):
+            raise ValidationError("Derivatives must have matching one- or three-channel dimensions")
+        if image_format(first) != image_format(second):
+            raise ValidationError("Derivative fields must have matching channel order")
+        require_same_frame(
+            (first, second), message="Derivatives must share the same coordinate frame"
+        )
+        p = self.parameters
+        edges = cv2.Canny(dx, dy, float(p["low"]), float(p["high"]), L2gradient=p["l2_gradient"])
+        return Result({"image": ImageArray(edges, "gray")})
 
 
 BAYER_ALGORITHMS = {"bilinear": "", "edge_aware": "_EA", "vng": "_VNG"}
@@ -175,4 +226,11 @@ class DemosaicBayer(ImageTool):
         return Result({"image": ImageArray(cv2.demosaicing(image, code), encoding)})
 
 
-BASIC_PROCESSING_BLOCKS = (Grayscale, GaussianBlur, Canny, DemosaicBayer)
+BASIC_PROCESSING_BLOCKS = (
+    Grayscale,
+    GaussianBlur,
+    Canny,
+    SpatialGradient,
+    CannyDerivatives,
+    DemosaicBayer,
+)

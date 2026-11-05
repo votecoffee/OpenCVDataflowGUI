@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Load a synthetic inspection scene",
+      "parameters": {
+        "path": "assets/parts.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sobel",
+      "type": "cv.spatial_gradient",
+      "name": "Expose both signed derivatives",
+      "parameters": {
+        "border": "replicate"
+      },
+      "position": [
+        300,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "dx",
+        "dy"
+      ],
+      "thumbnail": true,
+      "preview_output": "dx"
+    },
+    {
+      "id": "edges",
+      "type": "cv.canny_derivatives",
+      "name": "Apply Canny to the derivatives",
+      "parameters": {
+        "low": 50,
+        "high": 100,
+        "l2_gradient": true
+      },
+      "position": [
+        600,
+        0
+      ],
+      "exposed_inputs": [
+        "dx",
+        "dy"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "direct",
+      "type": "cv.canny",
+      "name": "Compare to Canny on the source",
+      "parameters": {
+        "low": 50,
+        "high": 100,
+        "l2_gradient": true,
+        "aperture": "3"
+      },
+      "position": [
+        600,
+        230
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "compare",
+      "type": "cv.compare_pixels",
+      "name": "Count any differences",
+      "parameters": {
+        "operation": "not_equal"
+      },
+      "position": [
+        910,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "sobel",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "direct",
+      "input": "image"
+    },
+    {
+      "source": "sobel",
+      "output": "dx",
+      "target": "edges",
+      "input": "dx"
+    },
+    {
+      "source": "sobel",
+      "output": "dy",
+      "target": "edges",
+      "input": "dy"
+    },
+    {
+      "source": "edges",
+      "output": "image",
+      "target": "compare",
+      "input": "image_a"
+    },
+    {
+      "source": "direct",
+      "output": "image",
+      "target": "compare",
+      "input": "image_b"
+    }
+  ]
+}

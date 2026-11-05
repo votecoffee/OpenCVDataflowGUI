@@ -877,8 +877,27 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | --- | --- | --- |
 | `low` | `60.0` | Value must be a finite number at least 0. |
 | `high` | `150.0` | Value must be a finite number at least 0. |
-| `aperture` | `"3"` | `3`, `5`, `7` |
 | `l2_gradient` | `false` |  |
+| `aperture` | `"3"` | `3`, `5`, `7` |
+
+## Canny from derivatives (`cv.canny_derivatives`)
+
+Image processing / Edges
+
+Inputs: `dx` (image), `dy` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `dx` — Signed int16 X derivatives in a matching one- or three-channel field.
+
+Input `dy` — Signed int16 Y derivatives in the same grid and channel order as Dx.
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `low` | `60.0` | Value must be a finite number at least 0. Lower hysteresis threshold in derivative units. |
+| `high` | `150.0` | Value must be a finite number at least 0. Upper hysteresis threshold in derivative units. |
+| `l2_gradient` | `false` | Use Euclidean magnitude instead of the sum of absolute components. |
 
 ## Cartesian to polar fields (`cv.cart_to_polar`)
 
@@ -1688,6 +1707,21 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `delta` | `0.0` |  |
 | `output_depth` | `"same"` | `same`, `uint8`, `uint16`, `int16`, `float32`, `float64` |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
+
+## Paired Sobel derivatives (`cv.spatial_gradient`)
+
+Image processing / Edges
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — 8-bit image. Color inputs are converted to grayscale.
+
+Selection writes: `dx`, `dy`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `border` | `"reflect_101"` | `reflect_101`, `replicate` |
 
 ## Split four channels (alpha) (`cv.split_alpha_channels`)
 

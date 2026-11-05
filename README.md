@@ -455,6 +455,10 @@ Convert between Cartesian vector components and magnitude/angle fields.
 The angle output carries its units through compatible graph blocks.
 [Polar field rotation example](examples/polar_fields/README.md)
 
+**Paired Sobel derivatives** exposes signed X and Y gradients for reuse
+by **Canny from derivatives**.
+[Derivative-fed Canny example](examples/canny_derivatives/README.md)
+
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing
 wrappers also expose kernel dimensions, anchors, borders, output depths, masks,
