@@ -91,26 +91,20 @@ class SeparableFilter(RegionalOperation, ImageTool):
         return encoded_result(output, source)
 
 
-class GaborTextureResponse(RegionalOperation, ImageTool):
-    type_id, title, subtype = "cv.gabor_response", "Gabor texture response", "Filtering"
-    outputs = (Port("response"), Port("kernels", "data"))
-    region_outputs = ("response",)
+class _GaborFilter(RegionalOperation, ImageTool):
     region_background = "zero"
     defaults = {
         "width": 25,
         "height": 25,
         "sigma": 4.0,
-        "orientation_degrees": 0.0,
         "wavelength": 8.0,
         "aspect_ratio": 0.5,
         "phase_degrees": 0.0,
-        "mode": "energy",
         "normalization": "zero_mean_unit_l2",
         "output_depth": "float32",
         "border": "reflect_101",
     }
     parameter_choices = {
-        "mode": ("signed", "energy"),
         "normalization": ("none", "zero_mean_unit_l2"),
         "output_depth": ("float32", "float64"),
         "border": ("constant", "replicate", "reflect_101", "reflect_edge"),
@@ -119,29 +113,26 @@ class GaborTextureResponse(RegionalOperation, ImageTool):
         "width": NumericRange(3, 127, whole=True, odd=True),
         "height": NumericRange(3, 127, whole=True, odd=True),
         "sigma": NumericRange(0.05, 1000),
-        "orientation_degrees": NumericRange(),
         "wavelength": NumericRange(2, 10000),
         "aspect_ratio": NumericRange(0.001, 1000),
         "phase_degrees": NumericRange(),
     }
     parameter_help = {
         "sigma": "Gaussian envelope width in pixels along the stripe normal.",
-        "orientation_degrees": "Direction of the stripe normal. Zero detects vertical stripes.",
         "wavelength": "Distance between consecutive stripes in pixels.",
         "aspect_ratio": "Spatial aspect ratio of the Gaussian envelope.",
         "phase_degrees": "Phase of the first sinusoid in degrees.",
-        "mode": "Energy combines two responses whose phases are 90 degrees apart.",
         "normalization": "Subtract each kernel mean and scale it to unit L2 norm.",
         "output_depth": "Floating precision for both the filtered image and kernel coefficients.",
         "border": "The constant mode uses zero outside the image.",
     }
 
-    def kernel(self, phase, dtype):
+    def kernel(self, orientation, phase, dtype):
         p = self.parameters
         coefficients = cv2.getGaborKernel(
             (int(p["width"]), int(p["height"])),
             float(p["sigma"]),
-            np.deg2rad(float(p["orientation_degrees"]) % 360),
+            np.deg2rad(orientation % 360),
             float(p["wavelength"]),
             float(p["aspect_ratio"]),
             np.deg2rad(phase),
@@ -155,11 +146,9 @@ class GaborTextureResponse(RegionalOperation, ImageTool):
             coefficients /= norm
         return coefficients.astype(dtype)
 
-    def process(self, inputs):
-        p = self.parameters
-        source = inputs["image"]
+    def prepare_image(self, source):
         image = image_value(source)
-        dtype = np.dtype(p["output_depth"])
+        dtype = np.dtype(self.parameters["output_depth"])
         if (
             image.dtype == np.float64
             and (dtype == np.float32 or image.ndim == 3)
@@ -170,22 +159,101 @@ class GaborTextureResponse(RegionalOperation, ImageTool):
             image = gray_image(
                 source, (np.uint8, np.uint16, np.float32, np.float64), auto_depth=True
             )
-        image = image.astype(dtype, copy=False)
-        phase = float(p["phase_degrees"]) % 360
-        border = BORDERS[p["border"]]
-        primary = self.kernel(phase, dtype)
+        return image.astype(dtype, copy=False)
+
+    def filter_response(self, image, orientation, quadrature):
+        phase = float(self.parameters["phase_degrees"]) % 360
+        border = BORDERS[self.parameters["border"]]
+        primary = self.kernel(orientation, phase, image.dtype)
         response = cv2.filter2D(image, -1, primary, borderType=border)
-        kernels = {"primary": primary.tolist()}
-        if p["mode"] == "energy":
-            secondary = self.kernel((phase + 90) % 360, dtype)
+        kernels = {"primary": primary}
+        if quadrature:
+            secondary = self.kernel(orientation, (phase + 90) % 360, image.dtype)
             other = cv2.filter2D(image, -1, secondary, borderType=border)
             response = np.hypot(response, other)
-            kernels["quadrature"] = secondary.tolist()
+            kernels["quadrature"] = secondary
         if not np.isfinite(response).all():
             raise ValidationError("Gabor response overflowed. Reduce the image sample range.")
+        return response, kernels
+
+
+class GaborTextureResponse(_GaborFilter):
+    type_id, title, subtype = "cv.gabor_response", "Gabor texture response", "Filtering"
+    outputs = (Port("response"), Port("kernels", "data"))
+    region_outputs = ("response",)
+    defaults = {**_GaborFilter.defaults, "orientation_degrees": 0.0, "mode": "energy"}
+    parameter_choices = {**_GaborFilter.parameter_choices, "mode": ("signed", "energy")}
+    parameter_ranges = {**_GaborFilter.parameter_ranges, "orientation_degrees": NumericRange()}
+    parameter_help = {
+        **_GaborFilter.parameter_help,
+        "orientation_degrees": "Direction of the stripe normal. Zero detects vertical stripes.",
+        "mode": "Energy combines two responses whose phases are 90 degrees apart.",
+    }
+
+    def process(self, inputs):
+        p = self.parameters
+        image = self.prepare_image(inputs["image"])
+        response, kernels = self.filter_response(
+            image, float(p["orientation_degrees"]), p["mode"] == "energy"
+        )
         return Result(
-            {"response": ImageArray(response, "gray"), "kernels": kernels},
+            {
+                "response": ImageArray(response, "gray"),
+                "kernels": {name: kernel.tolist() for name, kernel in kernels.items()},
+            },
             payloads={"kernels": {}},
+        )
+
+
+class GaborOrientationBank(_GaborFilter):
+    type_id, title, subtype = "cv.gabor_bank", "Gabor orientation bank", "Filtering"
+    outputs = (Port("response"), Port("orientation"), Port("confidence"), Port("valid_mask"))
+    region_outputs = ("response", "orientation", "confidence", "valid_mask")
+    defaults = {
+        **_GaborFilter.defaults,
+        "orientations_degrees": [0, 45, 90, 135],
+        "minimum_response": 0.01,
+    }
+    parameter_ranges = {**_GaborFilter.parameter_ranges, "minimum_response": NumericRange(0)}
+    parameter_help = {
+        **_GaborFilter.parameter_help,
+        "orientations_degrees": "Two to sixteen distinct stripe-normal angles in [0, 180).",
+        "minimum_response": "Minimum winning energy for a valid orientation.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        angles = p["orientations_degrees"]
+        message = "Enter 2–16 distinct finite orientation angles in [0, 180)"
+        if not isinstance(angles, (list, tuple)) or not 2 <= len(angles) <= 16:
+            raise ValidationError(message, "orientations_degrees")
+        if any(
+            isinstance(angle, bool) or not isinstance(angle, (int, float)) or not 0 <= angle < 180
+            for angle in angles
+        ) or len(set(angles)) != len(angles):
+            raise ValidationError(message, "orientations_degrees")
+
+    def process(self, inputs):
+        p = self.parameters
+        image = self.prepare_image(inputs["image"])
+        best, runner_up, orientation = (np.zeros_like(image) for _ in range(3))
+        for angle in p["orientations_degrees"]:
+            energy, _ = self.filter_response(image, angle, quadrature=True)
+            orientation[energy > best] = angle
+            np.maximum(runner_up, np.minimum(energy, best), out=runner_up)
+            np.maximum(best, energy, out=best)
+        valid = (best > runner_up) & (best >= float(p["minimum_response"]))
+        orientation[~valid] = 0
+        confidence = np.divide(best - runner_up, best, out=np.zeros_like(best), where=valid)
+        return Result(
+            {
+                "response": ImageArray(best, "gray"),
+                "orientation": ImageArray(orientation, "gray"),
+                "confidence": ImageArray(confidence, "gray"),
+                "valid_mask": ImageArray(valid.astype(np.uint8) * 255, "gray"),
+            },
+            payloads={"orientation": {**self.input_payloads["image"], "angle_units": "degrees"}},
         )
 
 
@@ -928,6 +996,7 @@ ANALYSIS_BLOCKS = (
     ComparePixels,
     SeparableFilter,
     GaborTextureResponse,
+    GaborOrientationBank,
     CornerResponse,
     RefineCorners,
     PhaseCorrelation,

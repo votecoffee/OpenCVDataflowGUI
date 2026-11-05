@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Load striped and flat patches",
+      "parameters": {
+        "path": "assets/texture_patches.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "bank",
+      "type": "cv.gabor_bank",
+      "name": "Find the dominant stripe normal",
+      "parameters": {
+        "orientations_degrees": [
+          0,
+          45,
+          90,
+          135
+        ],
+        "minimum_response": 5
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "response",
+        "orientation",
+        "confidence",
+        "valid_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": "orientation"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "bank",
+      "input": "image"
+    }
+  ]
+}
