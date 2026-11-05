@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 
 from opencv_dataflow.blocks import builtin_registry
+from opencv_dataflow.images import ImageArray
 
 
 @pytest.mark.parametrize("shape", ["line", "ellipse", "enclosing_circle"])
@@ -51,3 +52,20 @@ def test_histogram_comparison_normalizes_counts_and_rejects_different_edges():
     c["channels"][0]["edges"][-1] += 1
     assert compare.execute({"reference": a, "sample": c}) is None
     assert "bin edges differ" in compare.error
+
+
+def test_backprojection_selects_logical_channel_and_includes_final_edge():
+    registry = builtin_registry()
+    ref = ImageArray(np.array([[[0, 2, 2], [0, 2, 2], [6, 2, 2]]], np.uint8), "rgb")
+    settings = {"bins": 3, "range_mode": "manual", "range_min": 0, "range_max": 6}
+    histogram = registry.create("inspect.histogram", parameters=settings)
+    model = histogram.execute({"image": ref}).outputs["histogram"]
+    image = np.array([[[2, 2, value] for value in (0, 2, 4, 6, 7, 0)]], np.uint8)
+    mask = np.array([[255, 255, 255, 255, 255, 0]], np.uint8)
+    block = registry.create(
+        "inspect.histogram_backproject", parameters={"channel": "R", "normalization": "probability"}
+    )
+    result = block.execute({"image": image, "histogram": model, "mask": mask})
+    assert result is not None, block.error
+    assert result.outputs["image"].dtype == np.float32
+    np.testing.assert_allclose(result.outputs["image"], [[2 / 3, 0, 1 / 3, 1 / 3, 0, 0]])

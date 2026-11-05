@@ -14,6 +14,7 @@ CATALOG = ROOT / "docs/opencv-bindings.tsv"
 # Group the long tail by its owning namespace. Top-level bindings are otherwise P3.
 P1_PREFIXES = ("cv2.barcode.", "cv2.QRCode", "cv2.Video", "cv2.quality.", "cv2.text.")
 P1_CALLS = {
+    "calcBackProject",
     "compareHist",
     "createBackgroundSubtractorKNN",
     "createBackgroundSubtractorMOG2",

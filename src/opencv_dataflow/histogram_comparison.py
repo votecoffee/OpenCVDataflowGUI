@@ -4,7 +4,10 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
-from .processing import finite
+from .histogram import HISTOGRAM_CHANNELS
+from .images import image_format
+from .processing import finite, image_value
+from .selection import SELECTION_INPUTS, selection_mask
 
 METRICS = {
     "correlation": cv2.HISTCMP_CORREL,
@@ -95,3 +98,69 @@ class CompareHistograms(Block):
             message=f"Histogram {method.replace('_', ' ')} = {value:.6g}",
             fail_reasons=[] if passed else ["histogram_out_of_tolerance"],
         )
+
+
+class HistogramBackProjection(Block):
+    type_id, title = "inspect.histogram_backproject", "Histogram backprojection"
+    category, block_type, subtype = "Inspection", "Inspection", "Measurements"
+    inputs = (*SELECTION_INPUTS, Port("histogram", "data"))
+    outputs = (Port("image"),)
+    defaults = {"channel": "auto", "normalization": "peak", "scale": 1.0}
+    parameter_choices = {
+        "channel": (
+            "auto",
+            *dict.fromkeys(c for names in HISTOGRAM_CHANNELS.values() for c in names),
+        ),
+        "normalization": ("peak", "probability", "counts"),
+    }
+    parameter_help = {
+        "channel": "Select the modeled channel. Auto requires exactly one compatible channel.",
+        "normalization": "Divide counts by their peak or sum, or keep the raw counts.",
+        "scale": "Multiplier applied to the resulting bin weights.",
+    }
+
+    def process(self, inputs):
+        source = inputs["image"]
+        image = image_value(source)
+        labels = HISTOGRAM_CHANNELS[image_format(source)]
+        channels = histogram_channels(inputs["histogram"])
+        channel = self.parameters["channel"]
+        if channel == "auto":
+            common = [label for label in labels if label in channels]
+            if len(common) != 1:
+                raise ValueError("Select a histogram channel or provide a single compatible plane")
+            channel = common[0]
+        if channel not in channels or (image.ndim == 3 and channel not in labels):
+            raise ValueError("Histogram channel must be present in the model and color image")
+        plane = image if image.ndim == 2 else image[..., labels.index(channel)]
+        counts, edges = channels[channel]
+        low, high = float(edges[0]), float(edges[-1])
+        width = (high - low) / len(counts)
+        limit = np.finfo(np.float32).max
+        if (
+            max(abs(low), abs(high)) > limit
+            or not np.isfinite(width)
+            or not np.allclose(np.diff(edges), width, rtol=1e-5, atol=0)
+            or not np.all(np.diff(edges.astype(np.float32).astype(float)) > 0)
+        ):
+            raise ValueError("Backprojection requires uniform float32-representable bin edges")
+        mode = self.parameters["normalization"]
+        if mode in ("peak", "probability"):
+            counts = counts / counts.max()
+            if mode == "probability":
+                counts /= counts.sum()
+        scale = finite(self.parameters["scale"], "Scale", 0)
+        if counts.max() > limit or counts.max() * scale > limit:
+            raise ValueError("Backprojection weights exceed the float32 output range")
+        in_range = (plane >= low) & (plane <= high)
+        samples = np.where(in_range, plane, low).astype(np.float32)
+        projection = cv2.calcBackProject(
+            [samples], [0], counts.astype(np.float32), [low, high], scale
+        )
+        # Histogram includes the rightmost endpoint. OpenCV uses a half-open interval.
+        projection[in_range & (samples == np.float32(high))] = counts[-1] * scale
+        selection = selection_mask(inputs, image)
+        if selection is not None:
+            in_range &= selection != 0
+        projection[~in_range] = 0
+        return Result({"image": projection}, message=f"{channel} histogram backprojection")

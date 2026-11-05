@@ -672,7 +672,7 @@ def builtin_registry():
     from .features import FEATURE_BLOCKS
     from .geometry3d import GEOMETRY3D_BLOCKS
     from .histogram import Histogram
-    from .histogram_comparison import CompareHistograms
+    from .histogram_comparison import CompareHistograms, HistogramBackProjection
     from .image_quality import CompareImageQuality
     from .image_queue import ImageQueue
     from .judgments import FinalJudgment
@@ -733,6 +733,7 @@ def builtin_registry():
         *SEGMENTATION_BLOCKS,
         CompareImageQuality,
         CompareHistograms,
+        HistogramBackProjection,
         FitShape,
         FindTemplateInstances,
         TrainShapePattern,
