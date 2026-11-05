@@ -3697,7 +3697,7 @@ P3	function	cv2.mulSpectrums	no static reference	-
 P3	function	cv2.multiply	literal reference	-
 P3	function	cv2.mulTransposed	no static reference	-
 P3	function	cv2.namedWindow	no static reference	-
-P3	function	cv2.norm	no static reference	-
+P3	function	cv2.norm	literal reference	-
 P3	function	cv2.normalize	literal reference	-
 P3	class	cv2.NormHistogramCostExtractor	no static reference	-
 P3	method	cv2.NormHistogramCostExtractor.getNormFlag	no static reference	-
@@ -4598,7 +4598,7 @@ P3	method	cv2.Subdiv2D.nextEdge	no static reference	-
 P3	method	cv2.Subdiv2D.rotateEdge	no static reference	-
 P3	method	cv2.Subdiv2D.symEdge	no static reference	-
 P3	function	cv2.subtract	literal reference	-
-P3	function	cv2.sumElems	no static reference	-
+P3	function	cv2.sumElems	literal reference	-
 P3	function	cv2.SVBackSubst	no static reference	-
 P3	function	cv2.SVDecomp	no static reference	-
 P3	class	cv2.text_BaseOCR	alias	cv2.text.BaseOCR

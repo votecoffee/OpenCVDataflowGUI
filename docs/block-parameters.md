@@ -1195,6 +1195,21 @@ Inputs: `image` (image).
 | `levels` | `4` | Value must be a whole number between 1 and 9. Total images including level 0 (largest), from 1 to 9. |
 | `border` | `"reflect"` | `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 
+## Image summary statistics (`cv.image_statistics`)
+
+Image processing / Statistics
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `channel` | `"auto"` | `auto`, `Gray`, `B`, `G`, `R`, `A`, `H`, `S`, `V`, `L`, `a`, `b` Channel used for scalar and location outputs. Auto uses the first channel. |
+| `statistic` | `"mean"` | `minimum`, `maximum`, `mean`, `standard_deviation`, `rms`, `sum`, `nonzero_count`, `percentile` Statistic emitted on Value. Summary contains every computed statistic. |
+| `percentiles` | `[]` | Optional list of up to 16 percentile levels between 0 and 100. |
+| `value_percentile` | `50.0` | Value must be a finite number between 0 and 100. Percentile level sent to Value when the statistic is Percentile. |
+| `percentile_method` | `"linear"` | `linear`, `lower`, `higher`, `midpoint`, `nearest` How to choose or interpolate between adjacent ordered samples. |
+| `include_alpha` | `false` | Include the alpha channel in the summary for four-channel input. |
+
 ## In range mask (`cv.in_range`)
 
 Image processing / Segmentation
