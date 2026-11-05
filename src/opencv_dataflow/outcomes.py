@@ -7,6 +7,8 @@ import uuid
 from collections import OrderedDict
 from datetime import datetime, timezone
 
+from .fail_reasons import merge_reasons, normalize_reasons, reasons_in
+from .production import ProductionStatistics
 from .tickets import ticket_key, validate_ticket
 
 INPUT_FAILURE_POLICIES = ("continue", "reject_failed")
@@ -23,6 +25,7 @@ def validate_outcome(outcome):
     ):
         raise ValueError("Invalid tool_outcome_v1 connection status")
     json.dumps(outcome, allow_nan=False)
+    normalize_reasons(outcome.get("fail_reasons", []))
 
 
 def packets_in(value):
@@ -85,6 +88,19 @@ def stamp_result(block, result):
         for name, value in block.last_inputs.items()
     )
     source = source_info(block)
+    incoming_reasons = merge_reasons(
+        *(
+            reasons_in(ValuePacket(value, block.input_payloads.get(name, {})))
+            for name, value in block.last_inputs.items()
+        )
+    )
+    if (not result.passed or result.final_judgment is False) and not result.fail_reasons:
+        result.fail_reasons = [
+            {
+                "code": f"{block.type_id}.failed"[:128],
+                "message": str(result.message or f"{block.name} failed")[:512],
+            }
+        ]
 
     def stamp(packet):
         payload = copy.deepcopy(packet.payload)
@@ -122,6 +138,11 @@ def stamp_result(block, result):
                 "score": score,
                 "message": result.message,
                 "data": copy.deepcopy(result.event_data),
+                "fail_reasons": merge_reasons(
+                    result.fail_reasons if not passed or result.final_judgment is False else [],
+                    payload.get("outcome", {}).get("fail_reasons", []),
+                    [] if getattr(block, "outcome_passthrough", False) else incoming_reasons,
+                ),
             }
         if hasattr(value, "ndim"):
             value = image_with_payload(value, payload)
@@ -225,10 +246,20 @@ def publish_result(block, values, result=None, kind="tool_result", message=""):
                 "data": result.event_data if result else {},
                 "final_judgment": result.final_judgment if result else None,
                 "parent_ticket": packet.payload.get("inspection", {}).get("parent_ticket"),
+                "production_excluded": bool(getattr(block, "_production_excluded", False)),
                 "coordination": packet.payload.get("coordination", context),
                 "recipe": packet.payload.get("recipe_ref", recipe_context),
                 "processing_time": timing,
                 "work_ms": block.timing.last_ms if handled and block._work_finished else None,
+                "fail_reasons": []
+                if result and result.final_judgment is True
+                else merge_reasons(
+                    result.fail_reasons if result else [],
+                    outcome.get("fail_reasons", []),
+                    [{"code": "execution.error", "message": str(message)[:512]}]
+                    if kind == "error"
+                    else [],
+                ),
             }
         )
 
@@ -246,12 +277,14 @@ class TicketResults:
         self.rows = OrderedDict()
         self.sequence = 0
         self.evicted_tickets = 0
+        self.production = ProductionStatistics()
 
     def consume(self, event):
         from .timing import merge_timing, validate_timing
 
         event = copy.deepcopy(event)
         validate_ticket(event["ticket"])
+        event["fail_reasons"] = normalize_reasons(event.get("fail_reasons", []))
         if event.get("processing_time") is not None:
             validate_timing(event["processing_time"])
         encoded = json.dumps(event, allow_nan=False)
@@ -280,6 +313,15 @@ class TicketResults:
                     "recipes": [],
                 }
             row = self.rows[key]
+            if event.get("parent_ticket"):
+                row["parent_ticket"] = event["parent_ticket"]
+            if event.get("production_excluded"):
+                row["production_excluded"] = True
+            row["fail_reasons"] = merge_reasons(row.get("fail_reasons", []), event["fail_reasons"])
+            if event["final_judgment"] is False:
+                row["final_fail_reasons"] = merge_reasons(
+                    row.get("final_fail_reasons", []), event["fail_reasons"]
+                )
             if event.get("processing_time") is not None:
                 row["processing_time"] = merge_timing(
                     row.get("processing_time"), event["processing_time"]
@@ -323,6 +365,18 @@ class TicketResults:
                 if row["had_failure"]
                 else "in_progress"
             )
+            if (
+                judgment is not None
+                and not row.get("parent_ticket")
+                and not row.get("production_excluded")
+            ):
+                self.production.record(
+                    row["ticket"],
+                    bool(judgment),
+                    row.get("processing_time", {}).get("elapsed_ms"),
+                    final=bool(judgment),
+                    conflict=len(row["judgments"]) > 1,
+                )
             while len(self.rows) > self.max_tickets or self.retained_bytes > self.max_bytes:
                 _, evicted = self.rows.popitem(last=False)
                 self.retained_bytes -= evicted["retained_bytes"]
@@ -334,6 +388,7 @@ class TicketResults:
                 "tickets": copy.deepcopy(list(self.rows.values())),
                 "sequence": self.sequence,
                 "evicted_tickets": self.evicted_tickets,
+                "production_statistics": copy.deepcopy(self.production.snapshot()),
             }
 
     def revision(self):
@@ -348,6 +403,43 @@ class TicketResults:
             self.sequence = snapshot["sequence"]
             self.evicted_tickets = snapshot["evicted_tickets"]
             self.retained_bytes = sum(row["retained_bytes"] for row in self.rows.values())
+            self.production = ProductionStatistics()
+            if "production_statistics" in snapshot:
+                self.production.restore(copy.deepcopy(snapshot["production_statistics"]))
+
+    def statistics(self):
+        with self.lock:
+            return self.production.summary()
+
+    def reset_statistics(self):
+        with self.lock:
+            self.production = ProductionStatistics()
+
+    def complete(self, ticket, passed, timing=None):
+        from .timing import advance_timing, mark
+
+        with self.lock:
+            row = self.rows.get(ticket_key(ticket))
+            if row and (row.get("parent_ticket") or row.get("production_excluded")):
+                return
+            previous = row.get("processing_time", timing) if row else timing
+            elapsed = advance_timing(previous, mark(), mark())["elapsed_ms"] if previous else None
+            final = row["judgments"][0] if row and row["judgments"] else None
+            accepted = passed and not (row and (row["had_error"] or row["had_failure"]))
+            if row is not None:
+                row["completion"] = {
+                    "passed": bool(
+                        (final if final is not None else accepted) and len(row["judgments"]) < 2
+                    ),
+                    "elapsed_ms": elapsed,
+                }
+            self.production.record(
+                ticket,
+                accepted,
+                elapsed,
+                final=final,
+                conflict=bool(row and len(row["judgments"]) > 1),
+            )
 
     def find(self, ticket):
         with self.lock:

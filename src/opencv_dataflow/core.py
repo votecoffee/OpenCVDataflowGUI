@@ -16,6 +16,7 @@ import numpy as np
 
 from .activity import ActivityLog, report
 from .diagnostics import BlockLogger
+from .fail_reasons import normalize_reasons
 from .outcomes import (
     INPUT_FAILURE_POLICIES,
     TicketResults,
@@ -56,6 +57,7 @@ class Result:
     emissions: dict[str, list[ValuePacket]] = field(default_factory=dict)
     event_data: dict = field(default_factory=dict)
     final_judgment: bool | None = None
+    fail_reasons: list = field(default_factory=list)
 
 
 class Block:
@@ -274,6 +276,9 @@ class Block:
             ):
                 raise ValueError("Tool result and final judgment must be boolean")
             result.passed = bool(result.passed)
+            result.fail_reasons = normalize_reasons(result.fail_reasons)
+            if result.passed and result.final_judgment is not False and result.fail_reasons:
+                raise ValueError("Passing results cannot assign fail reasons")
             if result.final_judgment is not None:
                 result.final_judgment = bool(result.final_judgment)
             if (
@@ -482,6 +487,8 @@ class Graph:
         self.activity = ActivityLog()
         self._activity_prefix = ""
         self._activity_logical_prefix = ""
+        self.production_completion = True
+        self.validation_sets = []
         self._event_prefix = ""
         self.recipes = RecipeCatalog()
         self._allow_recipe_activation = True
@@ -668,6 +675,46 @@ class Graph:
                         )
                     )
                     block.update_metrics()
+            if (
+                not failed
+                and not cancelled()
+                and self.production_completion
+                and not self._event_prefix
+            ):
+                self._complete_tickets()
+
+    def _complete_tickets(self):
+        from .outcomes import failed_input, packets_in
+        from .tickets import ticket_key
+
+        if any(
+            b.state == "waiting" and not getattr(b, "validation_skip_output", False)
+            for b in self.blocks.values()
+        ):
+            return
+        observed = {}
+        for block in self.blocks.values():
+            for packets in block.current_emissions.values():
+                for packet in packets:
+                    for member in packets_in(packet):
+                        ticket = member.payload.get("ticket")
+                        if ticket is not None and not member.payload.get("inspection", {}).get(
+                            "parent_ticket"
+                        ):
+                            key = ticket_key(ticket)
+                            previous = observed.get(
+                                key, (ticket, True, member.payload.get("processing_time"))
+                            )
+                            observed[key] = (
+                                ticket,
+                                previous[1] and not failed_input(member),
+                                member.payload.get("processing_time") or previous[2],
+                            )
+            if block.state == "error" and getattr(block, "_source_ticket", None):
+                ticket = block._source_ticket
+                observed[ticket_key(ticket)] = (ticket, False, None)
+        for ticket, passed, timing in observed.values():
+            self.ticket_results.complete(ticket, passed, timing)
 
     def _run_iteration(self, cancelled=lambda: False, injected=None, provided=None):
         from .toolblocks import ToolBlock
@@ -974,6 +1021,11 @@ class Graph:
         catalog = self.recipes.definition() if include_recipes else None
         return {
             "schema_version": 1,
+            **(
+                {"validation_sets": copy.deepcopy(self.validation_sets)}
+                if self.validation_sets
+                else {}
+            ),
             **({"recipes": catalog} if catalog and catalog["recipes"] else {}),
             "blocks": [
                 {
@@ -1026,6 +1078,10 @@ class Graph:
         if data.get("schema_version") != 1:
             raise ValueError("Unsupported project schema version")
         graph = cls()
+        if "validation_sets" in data:
+            from .validation import validate_sets
+
+            graph.validation_sets = validate_sets(data["validation_sets"])
         if "recipes" in data:
             graph.recipes = RecipeCatalog.from_dict(data["recipes"])
         for item in data["blocks"]:
@@ -1068,6 +1124,12 @@ class Graph:
             block.position = position
             for direction in ("inputs", "outputs"):
                 exposed = item[f"exposed_{direction}"]
+                if (
+                    block.type_id == "inspect.final_judgment"
+                    and direction == "inputs"
+                    and exposed == ["value", "passed"]
+                ):
+                    exposed = [*exposed, "reasons"]
                 allowed = {p.name for p in getattr(block, direction)}
                 if len(set(exposed)) != len(exposed) or not set(exposed) <= allowed:
                     raise ValueError("Invalid exposed ports")

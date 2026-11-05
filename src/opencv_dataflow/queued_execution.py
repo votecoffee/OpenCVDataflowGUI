@@ -143,6 +143,7 @@ class QueuedExecution:
         for key in self.upstream:
             check_upstream(graph.blocks[key])
         self.producer = Graph.from_dict(graph.to_dict(), registry, project_dir=graph.project_dir)
+        self.producer.production_completion = False
         self.producer.blocks = {k: b for k, b in self.producer.blocks.items() if k in self.upstream}
         self.producer.connections = [
             c

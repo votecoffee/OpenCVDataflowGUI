@@ -865,6 +865,13 @@ class MainWindow(QMainWindow):
         self.scene.warning.connect(self.warn)
         self.scene.open_block.connect(self.enter_toolblock)
         self.make_actions()
+        self.production_label = QLabel()
+        self.statusBar().addPermanentWidget(self.production_label)
+        self.production_timer = QTimer(self)
+        self.production_timer.setInterval(500)
+        self.production_timer.timeout.connect(self.refresh_production)
+        self.production_timer.start()
+        self.refresh_production()
         self.statusBar().showMessage("Demo ready · Run once to inspect two shapes")
         QTimer.singleShot(0, self.view.fit_graph)
 
@@ -897,6 +904,7 @@ class MainWindow(QMainWindow):
             ("Load input coordination example", None, self.load_input_coordination_example),
             ("Load recipes example", None, self.load_recipes_example),
             ("Load sequence memory example", None, self.load_sequence_example),
+            ("Load validation image set example", None, self.load_validation_example),
             ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
@@ -923,6 +931,13 @@ class MainWindow(QMainWindow):
         results_menu.addAction(self.diagnostics_action)
         results_menu.addAction("Ticket activity timeline…", lambda: self.show_activity("ticket"))
         results_menu.addAction("Block concurrency…", lambda: self.show_activity("concurrency"))
+        self.edit_actions.append(
+            results_menu.addAction("Reset running counts", self.reset_production)
+        )
+        self.validation_action = results_menu.addAction(
+            "Validation image sets…", self.show_validation
+        )
+        self.edit_actions.append(self.validation_action)
         recipes_menu = self.menuBar().addMenu("&Recipes")
         self.recipe_action = recipes_menu.addAction("Manage recipes…", self.manage_recipes)
         self.edit_actions.append(self.recipe_action)
@@ -1381,6 +1396,37 @@ class MainWindow(QMainWindow):
         window.show()
         window.raise_()
         window.activateWindow()
+
+    def refresh_production(self):
+        consumer = (
+            self.runner.graph.ticket_results if self.runner else self.root_graph.ticket_results
+        )
+        stats = consumer.statistics()
+        rate = f"{stats['pass_rate']:.1f}%" if stats["pass_rate"] is not None else "—"
+        average = f"{stats['average_ms']:.2f} ms" if stats["average_ms"] is not None else "—"
+        self.production_label.setText(
+            f"Total {stats['total']} · Pass {stats['pass']} · Fail {stats['fail']} · "
+            f"Pass rate {rate} · Avg end-to-end {average}"
+        )
+
+    def reset_production(self):
+        if not self.runner:
+            self.root_graph.ticket_results.reset_statistics()
+            self.refresh_production()
+
+    def show_validation(self):
+        from .validation_editor import ValidationManager
+
+        if not self.runner:
+            ValidationManager(self).exec()
+
+    def load_validation_example(self):
+        if not self.runner and self.confirm_discard():
+            project = Path(__file__).resolve().parents[2] / "examples" / "validation_images.json"
+            if project.exists():
+                self.replace_graph(Graph.load(project, self.registry), project)
+            else:
+                self.warn("Open examples/validation_images.json from the repository checkout")
 
     def manage_recipes(self):
         if not self.runner:
