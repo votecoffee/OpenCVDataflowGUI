@@ -2527,7 +2527,7 @@ P3	class	cv2.face.EigenFaceRecognizer	no static reference	-
 P3	method	cv2.face.EigenFaceRecognizer.create	method name only	-
 P3	function	cv2.face.EigenFaceRecognizer_create	no static reference	-
 P3	class	cv2.face.Facemark	no static reference	-
-P3	method	cv2.face.Facemark.fit	no static reference	-
+P3	method	cv2.face.Facemark.fit	method name only	-
 P3	method	cv2.face.Facemark.loadModel	no static reference	-
 P3	class	cv2.face.FacemarkAAM	no static reference	-
 P3	class	cv2.face.FacemarkKazemi	no static reference	-
@@ -3129,7 +3129,7 @@ P3	method	cv2.kinfu_Params.defaultParams	alias	cv2.kinfu.Params.defaultParams
 P3	method	cv2.kinfu_Params.hashTSDFParams	alias	cv2.kinfu.Params.hashTSDFParams
 P3	method	cv2.kinfu_Params.setInitialVolumePose	alias	cv2.kinfu.Params.setInitialVolumePose
 P3	class	cv2.kinfu_VolumeParams	alias	cv2.kinfu.VolumeParams
-P3	function	cv2.kmeans	no static reference	-
+P3	function	cv2.kmeans	literal reference	-
 P3	function	cv2.Laplacian	literal reference	-
 P3	class	cv2.large_kinfu.LargeKinfu	no static reference	-
 P3	method	cv2.large_kinfu.LargeKinfu.create	method name only	-
