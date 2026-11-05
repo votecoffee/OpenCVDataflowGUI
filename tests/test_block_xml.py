@@ -25,6 +25,7 @@ def test_block_xml_roundtrips_configuration_and_keeps_destination_layout_and_wir
     preset.description = "Use after thresholding"
     preset.documentation = "<p><b>Custom kernel</b></p>"
     preset.position = [300, 200]
+    preset.node_size = "large"
     preset.thumbnail = False
     preset.preview_output = "image"
     preset.input_levels = {"image": "1"}

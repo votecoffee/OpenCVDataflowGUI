@@ -1,4 +1,8 @@
-"""Shared editor colors. Semantic display types do not alter runtime compatibility."""
+"""Shared canvas layout and colors, independent of runtime port compatibility."""
+
+DEFAULT_NODE_SIZE = "medium"
+# Width, socket row spacing, and thumbnail height in scene units.
+NODE_SIZES = {"small": (168, 22, 0), "medium": (220, 25, 90), "large": (320, 30, 160)}
 
 PORT_COLORS = {
     "image": "#e6b94f",

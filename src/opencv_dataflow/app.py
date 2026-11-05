@@ -97,7 +97,7 @@ from .ticket_window import TicketResultsWindow
 from .tickets import TICKET_MODES
 from .toolblock_editor import InterfaceDialog
 from .toolblocks import ToolBlock, encapsulate
-from .visual_style import BLOCK_COLORS, PORT_COLORS, PORT_LABELS
+from .visual_style import BLOCK_COLORS, NODE_SIZES, PORT_COLORS, PORT_LABELS
 
 
 class Runner(QThread):
@@ -465,6 +465,13 @@ class Inspector(QWidget):
                     level.setToolTip("Used when this input receives an image pyramid set.")
                     self.level_fields[port.name] = level
                     self.form.addRow(f"Pyramid level: {port.name}", level)
+        self.node_size = QComboBox()
+        for size in NODE_SIZES:
+            self.node_size.addItem(size.capitalize(), size)
+        self.node_size.setCurrentIndex(self.node_size.findData(block.node_size))
+        self.node_size.setToolTip("Change the layout immediately. Small hides the node image.")
+        self.node_size.currentIndexChanged.connect(self.resize_selected_node)
+        self.form.addRow("Block size", self.node_size)
         self.thumb = QCheckBox("Show image on node")
         self.thumb.setChecked(block.thumbnail)
         self.form.addRow(self.thumb)
@@ -497,6 +504,14 @@ class Inspector(QWidget):
         self.form.addRow(apply_button)
         self.editor.setEnabled(self.window.runner is None)
         self.refresh_result()
+
+    def resize_selected_node(self):
+        if self.block is None or self.window.scene.locked:
+            return
+        node = self.window.scene.nodes.get(self.block.id)
+        size = self.node_size.currentData()
+        if node is not None and node.block is self.block and size is not None:
+            node.set_size(size)
 
     def edit_documentation(self):
         block = self.block

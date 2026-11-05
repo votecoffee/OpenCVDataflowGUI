@@ -127,6 +127,10 @@ Node rearrangements mark the project as modified. **Save/Ctrl+S remembers node
 positions even when connections are unchanged**, including layouts inside nested
 ToolBlocks. Layout-only moves retain existing results. Positions are saved in the
 project; there is no automatic save on movement.
+Choose **Small**, **Medium**, or **Large** under **Block size** in the inspector.
+The canvas applies the size immediately and keeps room for every exposed port.
+Small hides the thumbnail, and Large gives it more room. Save the project to keep
+the size, including for nodes inside ToolBlocks.
 
 Node borders indicate tool category (including purple region tools and blue pose
 tools); node headers keep their pass/fail/error status colors and score intensity.
