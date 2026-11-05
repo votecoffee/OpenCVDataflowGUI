@@ -16,7 +16,7 @@ P1	function	cv2.findContours	literal reference	-
 P1	function	cv2.fitEllipse	no static reference	-
 P1	function	cv2.fitLine	no static reference	-
 P1	function	cv2.floodFill	literal reference	-
-P1	function	cv2.grabCut	no static reference	-
+P1	function	cv2.grabCut	literal reference	-
 P1	function	cv2.matchShapes	no static reference	-
 P1	function	cv2.matchTemplate	literal reference	-
 P1	function	cv2.minAreaRect	literal reference	-
@@ -1643,7 +1643,7 @@ P2	method	cv2.ximgproc.SuperpixelSLIC.getLabelContourMask	no static reference	-
 P2	method	cv2.ximgproc.SuperpixelSLIC.getLabels	no static reference	-
 P2	method	cv2.ximgproc.SuperpixelSLIC.getNumberOfSuperpixels	no static reference	-
 P2	method	cv2.ximgproc.SuperpixelSLIC.iterate	no static reference	-
-P2	function	cv2.ximgproc.thinning	no static reference	-
+P2	function	cv2.ximgproc.thinning	literal reference	-
 P2	function	cv2.ximgproc.transformFD	no static reference	-
 P2	function	cv2.ximgproc.weightedMedianFilter	no static reference	-
 P3	function	cv2.absdiff	literal reference	-
@@ -2298,7 +2298,7 @@ P3	class	cv2.detail_VoronoiSeamFinder	alias	cv2.detail.VoronoiSeamFinder
 P3	method	cv2.detail_VoronoiSeamFinder.find	alias	cv2.detail.VoronoiSeamFinder.find
 P3	function	cv2.detailEnhance	no static reference	-
 P3	function	cv2.determinant	no static reference	-
-P3	function	cv2.dilate	no static reference	-
+P3	function	cv2.dilate	literal reference	-
 P3	class	cv2.DISK	no static reference	-
 P3	method	cv2.DISK.create	method name only	-
 P3	method	cv2.DISK.createFromMemory	no static reference	-

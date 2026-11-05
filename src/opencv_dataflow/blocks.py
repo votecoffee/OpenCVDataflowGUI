@@ -688,6 +688,7 @@ def builtin_registry():
     from .segmentation import SEGMENTATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
     from .stereo3d import STEREO3D_BLOCKS
+    from .template_instances import FindTemplateInstances
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
 
@@ -725,6 +726,7 @@ def builtin_registry():
         *CODE_READER_BLOCKS,
         *SEGMENTATION_BLOCKS,
         CompareImageQuality,
+        FindTemplateInstances,
         TrainShapePattern,
         MatchShapePattern,
         TrainTexturePattern,
