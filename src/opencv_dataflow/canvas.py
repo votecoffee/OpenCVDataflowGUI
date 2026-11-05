@@ -27,7 +27,14 @@ from PySide6.QtWidgets import (
 )
 
 from .images import preview_rgb
-from .visual_style import BLOCK_COLORS, PORT_COLORS, block_type, connection_type, port_type
+from .visual_style import (
+    BLOCK_COLORS,
+    BLOCK_STATE_COLORS,
+    PORT_COLORS,
+    block_type,
+    connection_type,
+    port_type,
+)
 
 
 def pixmap(image):
@@ -149,16 +156,7 @@ class Node(QGraphicsItem):
 
     def paint(self, painter, option, widget=None):
         b = self.block
-        base = {
-            "idle": "#354257",
-            "pass": "#26835d",
-            "fail": "#ae6430",
-            "error": "#b14e5b",
-            "skipped": "#646377",
-            "inactive": "#46536a",
-            "waiting": "#426b99",
-        }[b.state]
-        status = QColor(base)
+        status = QColor(BLOCK_STATE_COLORS[b.state])
         if b.last_result and b.last_result.score is not None:
             status = status.lighter(75 + int(50 * b.last_result.score))
         if self.isSelected():
