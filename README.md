@@ -216,7 +216,8 @@ Use **Subpixel** on template match blocks to refine centers and poses.
 The [SIFT registration example](examples/sift_registration/README.md) detects and
 matches keypoints before estimating an image homography. The
 [AKAZE registration example](examples/akaze_registration/README.md) runs the
-same workflow with binary MLDB descriptors.
+same workflow with binary MLDB descriptors. The [FLANN registration
+example](examples/flann_registration/README.md) uses approximate KD-tree matching.
 
 Pattern matchers also return a configurable **pose**: set local x/y/angular offsets
 to locate an inspection origin on the part. **Pose from feature** creates a frame

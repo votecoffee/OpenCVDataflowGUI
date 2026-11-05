@@ -578,13 +578,21 @@ def descriptor_match_result(inputs, query, train, qpoints, tpoints, norm, mode, 
         ]
     elif len(query) and len(train) >= 2:
         pairs = cv2.BFMatcher(norm).knnMatch(query, train, k=2)
-        selected = [
-            pair[0]
-            for pair in pairs
-            if len(pair) == 2
-            and pair[0].distance < ratio * pair[1].distance
-            and pair[0].distance <= maximum
-        ]
+        selected = ratio_matches(pairs, ratio, maximum)
+    return paired_feature_result(inputs, qpoints, tpoints, selected)
+
+
+def ratio_matches(pairs, ratio, maximum):
+    return [
+        pair[0]
+        for pair in pairs
+        if len(pair) == 2
+        and pair[0].distance < ratio * pair[1].distance
+        and pair[0].distance <= maximum
+    ]
+
+
+def paired_feature_result(inputs, qpoints, tpoints, selected):
     data = {
         "query_points": [qpoints[m.queryIdx].tolist() for m in selected],
         "train_points": [tpoints[m.trainIdx].tolist() for m in selected],
@@ -685,9 +693,6 @@ AKAZE_DIFFUSIVITY = ("pm_g1", "pm_g2", "weickert", "charbonnier")
 def akaze_descriptor_width(mode, bits, channels):
     if not mode.startswith("mldb"):
         return 64
-    # The OpenCV 5.0 Windows upright kernel can overwrite memory below three channels.
-    if mode == "mldb_upright" and channels != 3:
-        raise ValidationError("Upright MLDB requires three channels", "descriptor_channels")
     if bits == 0 and channels != 3:
         raise ValidationError("Full-length MLDB requires three channels", "descriptor_channels")
     if bits > 162 * channels:
@@ -723,13 +728,16 @@ class AKAZEFeatures(ImageTool):
     }
     parameter_help = {
         "descriptor_bits": "MLDB only. Zero selects full length with three channels.",
-        "descriptor_channels": "Rotating MLDB can use fewer channels with an explicit bit count.",
+        "descriptor_channels": "Use three channels on the current OpenCV build.",
         "descriptor_mode": "Upright modes keep a fixed orientation. KAZE descriptors are floats.",
     }
 
     def validate_parameters(self, parameters=None):
         super().validate_parameters(parameters)
         p = self.parameters if parameters is None else parameters
+        # Reduced-channel MLDB kernels can corrupt the heap in the OpenCV 5.0 wheel.
+        if p["descriptor_mode"].startswith("mldb") and p["descriptor_channels"] != "3":
+            raise ValidationError("MLDB requires three channels", "descriptor_channels")
         akaze_descriptor_width(
             p["descriptor_mode"], int(p["descriptor_bits"]), int(p["descriptor_channels"])
         )
@@ -823,6 +831,71 @@ class MatchAKAZE(Block):
             float(p["ratio"]),
             float(p["max_distance"]),
         )
+
+
+FLANN_INDEX_KDTREE = 1
+
+
+def flann_data(data):
+    if isinstance(data, dict) and data.get("algorithm") == "SIFT":
+        descriptors, points = sift_data(data)
+        return descriptors, points, ("SIFT",)
+    if isinstance(data, dict) and data.get("algorithm") == "AKAZE":
+        descriptors, points, settings = akaze_data(data)
+        if descriptors.dtype == np.float32:
+            return descriptors, points, ("AKAZE", *settings)
+    raise ValidationError("FLANN KD-tree requires SIFT or float AKAZE KAZE descriptors")
+
+
+class MatchFLANN(Block):
+    type_id, title, category = "inspect.match_flann", "Match descriptors with FLANN", "Inspection"
+    block_type, subtype = "Inspection", "Matching"
+    inputs, outputs = MatchSIFT.inputs, MatchSIFT.outputs
+    defaults = {
+        "mode": "ratio",
+        "ratio": 0.75,
+        "max_distance": 250.0,
+        "trees": 5,
+        "checks": 50,
+    }
+    parameter_choices = {"mode": ("ratio", "cross_check")}
+    parameter_ranges = {
+        **MatchSIFT.parameter_ranges,
+        "trees": NumericRange(1, 32, whole=True),
+        "checks": NumericRange(1, 10000, whole=True),
+    }
+    parameter_help = {
+        **MatchSIFT.parameter_help,
+        "trees": "Number of randomized KD-trees in the search index.",
+        "checks": "Search budget. Higher values can improve recall at greater cost.",
+    }
+
+    def process(self, inputs):
+        query, qpoints, layout = flann_data(inputs["query"])
+        train, tpoints, train_layout = flann_data(inputs["train"])
+        if layout != train_layout:
+            raise ValidationError("Query and train need the same FLANN descriptor family and mode")
+        p = self.parameters
+        maximum = float(p["max_distance"])
+        selected = []
+        if len(query) and len(train):
+            matcher = cv2.FlannBasedMatcher(
+                {"algorithm": FLANN_INDEX_KDTREE, "trees": int(p["trees"])},
+                {"checks": int(p["checks"])},
+            )
+            if p["mode"] == "cross_check":
+                forward = matcher.match(query, train)
+                reverse = {m.queryIdx: m.trainIdx for m in matcher.match(train, query)}
+                selected = [
+                    m
+                    for m in forward
+                    if m.distance <= maximum and reverse.get(m.trainIdx) == m.queryIdx
+                ]
+            elif len(train) >= 2:
+                selected = ratio_matches(
+                    matcher.knnMatch(query, train, k=2), float(p["ratio"]), maximum
+                )
+        return paired_feature_result(inputs, qpoints, tpoints, selected)
 
 
 class EstimateHomography(Block):
@@ -980,6 +1053,7 @@ REGISTRATION_BLOCKS = (
     MatchORB,
     MatchSIFT,
     MatchAKAZE,
+    MatchFLANN,
     EstimateHomography,
     TransformPoints,
 )

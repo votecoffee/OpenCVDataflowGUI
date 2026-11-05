@@ -10,9 +10,9 @@ approximately (8.94, 12.97) pixels on the bundled image.
 centers. Choose binary MLDB or float KAZE descriptors, with upright versions
 for a fixed orientation. The detector exposes threshold, octaves, octave
 layers, diffusivity, and the feature limit. **Descriptor bits** and
-**Descriptor channels** apply to MLDB. Full-length and upright MLDB require
-three channels in the tested OpenCV build. In the rotation-aware MLDB mode,
-one or two channels require an explicit length up to 162 bits per channel.
+**Descriptor channels** apply to MLDB. The tested OpenCV build requires
+three channels for MLDB extraction. The descriptor length can still be
+set explicitly in bits.
 [OpenCV AKAZE reference](https://docs.opencv.org/5.0/extra_modules/classcv_1_1xfeatures2d_1_1AKAZE.html)
 
 **Match AKAZE descriptors** requires matching descriptor modes, bit counts,
