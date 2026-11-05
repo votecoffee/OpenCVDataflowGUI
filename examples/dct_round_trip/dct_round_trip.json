@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Noisy edge",
+      "parameters": {
+        "path": "assets/noisy_edge.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dct",
+      "type": "cv.dct",
+      "name": "DCT coefficient magnitude",
+      "position": [
+        330,
+        0
+      ],
+      "preview_output": "magnitude",
+      "parameters": {},
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "coefficients"
+      ]
+    },
+    {
+      "id": "idct",
+      "type": "cv.idct",
+      "name": "Reconstructed image",
+      "position": [
+        660,
+        0
+      ],
+      "parameters": {},
+      "exposed_inputs": [
+        "coefficients"
+      ],
+      "exposed_outputs": [
+        "image"
+      ]
+    },
+    {
+      "id": "compare",
+      "type": "inspect.image_quality",
+      "name": "Check exact reconstruction",
+      "position": [
+        990,
+        90
+      ],
+      "parameters": {
+        "metric": "mse",
+        "check_threshold": true,
+        "threshold": 0.0
+      },
+      "exposed_inputs": [
+        "image_a",
+        "image_b"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "dct",
+      "input": "image"
+    },
+    {
+      "source": "dct",
+      "output": "coefficients",
+      "target": "idct",
+      "input": "coefficients"
+    },
+    {
+      "source": "idct",
+      "output": "image",
+      "target": "compare",
+      "input": "image_b"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "compare",
+      "input": "image_a"
+    }
+  ]
+}
