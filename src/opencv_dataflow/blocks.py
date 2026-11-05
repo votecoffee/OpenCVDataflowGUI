@@ -682,6 +682,7 @@ def builtin_registry():
     from .judgments import FinalJudgment
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .native_background import NATIVE_BACKGROUND_BLOCKS
+    from .native_trackers import NATIVE_TRACKER_BLOCKS
     from .ocr import OCR_BLOCKS
     from .oriented_edges import FindOrientedEdges
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
@@ -772,6 +773,7 @@ def builtin_registry():
         RecipeField,
         *SEQUENCE_BLOCKS,
         *NATIVE_BACKGROUND_BLOCKS,
+        *NATIVE_TRACKER_BLOCKS,
         FinalJudgment,
         *DNN_BLOCKS,
         *OCR_BLOCKS,

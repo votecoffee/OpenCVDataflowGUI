@@ -241,3 +241,55 @@ class SequenceBlock(Block):
                 states.pop(key, None)
                 self.memory["errors"] += 1
                 raise
+
+
+class NativeSequenceBlock(SequenceBlock):
+    """Editor-owned opaque CPU state, excluded from independent graph copies."""
+
+    def snapshot_runtime(self):
+        with self._memory_lock:
+            snapshot = dict(self.memory)
+            snapshot["streams"] = {
+                key: {k: v for k, v in state.items() if k != "native"}
+                for key, state in self.memory["streams"].items()
+            }
+            return copy.deepcopy(snapshot)
+
+    def copy_runtime_from(self, other):
+        # Independent runtime graphs start fresh. The editor explicitly shares its live state.
+        if self.memory is not other.memory:
+            self.reset_runtime()
+
+    def share_editor_runtime_from(self, other):
+        # Called only while the editor worker is idle or waiting for UI acknowledgement.
+        self._memory_lock = other._memory_lock
+        with self._memory_lock:
+            self.memory = other.memory
+
+    def state_bytes(self, states):
+        return sum(state.get("native_bytes", 0) for state in states.values())
+
+    def reserve_native_state(self, state, required):
+        p = self.parameters
+        limit = float(p["max_bytes_mb"]) * 1024 * 1024
+        streams = self.memory["streams"]
+        while self.state_bytes(streams) + required > limit:
+            oldest = next(
+                (key for key, item in streams.items() if item is not state and "native" in item),
+                None,
+            )
+            if p["overflow"] == "error" or oldest is None:
+                raise ValueError("Native model would exceed the sequence memory byte limit")
+            del streams[oldest]
+            self.memory["evicted"] += 1
+        state["native_bytes"] = required
+
+
+def share_native_sequence_runtime(target, source):
+    """Link only the GUI's display and execution copies of the same job."""
+    for key, block in target.blocks.items():
+        original = source.blocks[key]
+        if isinstance(block, NativeSequenceBlock):
+            block.share_editor_runtime_from(original)
+        elif hasattr(block, "graph") and hasattr(original, "graph"):
+            share_native_sequence_runtime(block.graph, original.graph)

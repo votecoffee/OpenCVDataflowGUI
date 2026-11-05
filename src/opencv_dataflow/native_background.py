@@ -1,7 +1,5 @@
 """OpenCV background subtractors with bounded, editor-owned sequence state."""
 
-import copy
-
 import cv2
 import numpy as np
 
@@ -9,7 +7,7 @@ from .core import Port
 from .images import ImageArray, image_format
 from .processing import finite, image_value, integer
 from .selection import selection_mask
-from .sequence import SEQUENCE_DEFAULTS, SEQUENCE_HELP, SequenceBlock, SequenceStep
+from .sequence import SEQUENCE_DEFAULTS, SEQUENCE_HELP, NativeSequenceBlock, SequenceStep
 
 BACKGROUND_DEFAULTS = {
     **SEQUENCE_DEFAULTS,
@@ -31,10 +29,13 @@ BACKGROUND_HELP = {
 }
 
 
-class NativeBackgroundSequence(SequenceBlock):
+class NativeBackgroundSequence(NativeSequenceBlock):
     """An opaque OpenCV model can move between editor runs without being serialized."""
 
-    inputs = (*SequenceBlock.inputs, Port("known_foreground", required=False, visual_type="mask"))
+    inputs = (
+        *NativeSequenceBlock.inputs,
+        Port("known_foreground", required=False, visual_type="mask"),
+    )
     data_outputs = (
         Port("mask"),
         Port("raw_mask", visual_type="mask"),
@@ -45,29 +46,6 @@ class NativeBackgroundSequence(SequenceBlock):
     defaults = BACKGROUND_DEFAULTS
     parameter_help = BACKGROUND_HELP
     image_depths = (np.uint8,)
-
-    def snapshot_runtime(self):
-        with self._memory_lock:
-            snapshot = dict(self.memory)
-            snapshot["streams"] = {
-                key: {k: v for k, v in state.items() if k != "native"}
-                for key, state in self.memory["streams"].items()
-            }
-            return copy.deepcopy(snapshot)
-
-    def copy_runtime_from(self, other):
-        # Independent runtime graphs start fresh. The editor explicitly shares its live state.
-        if self.memory is not other.memory:
-            self.reset_runtime()
-
-    def share_editor_runtime_from(self, other):
-        # Called only while the editor worker is idle or waiting for UI acknowledgement.
-        self._memory_lock = other._memory_lock
-        with self._memory_lock:
-            self.memory = other.memory
-
-    def state_bytes(self, states):
-        return sum(state.get("native_bytes", 0) for state in states.values())
 
     def learning_rate(self, inputs):
         rate = finite(self.parameters["learning_rate"], "Learning rate")
@@ -95,24 +73,7 @@ class NativeBackgroundSequence(SequenceBlock):
                     learned=False,
                     details={"reason": "learning_disabled"},
                 )
-            required = self.estimate_state_bytes(source)
-            limit = float(p["max_bytes_mb"]) * 1024 * 1024
-            streams = self.memory["streams"]
-            while self.state_bytes(streams) + required > limit:
-                oldest = next(
-                    (
-                        key
-                        for key, item in streams.items()
-                        if item is not state and "native" in item
-                    ),
-                    None,
-                )
-                if p["overflow"] == "error" or oldest is None:
-                    raise ValueError(
-                        "Background models would exceed the sequence memory byte limit"
-                    )
-                del streams[oldest]
-                self.memory["evicted"] += 1
+            self.reserve_native_state(state, self.estimate_state_bytes(source))
             model = self.new_model()
             shadow_threshold = finite(p["shadow_threshold"], "Shadow threshold", 0)
             if shadow_threshold > 1:
@@ -120,7 +81,6 @@ class NativeBackgroundSequence(SequenceBlock):
             model.setShadowThreshold(shadow_threshold)
             model.setShadowValue(integer(p["shadow_value"], "Shadow value", 1, 254))
             state["native"] = model
-            state["native_bytes"] = required
         model = state["native"]
         if known is None:
             raw = model.apply(image, learningRate=rate)
@@ -241,16 +201,6 @@ class KNNBackgroundSequence(NativeBackgroundSequence):
         model.setNSamples(samples)
         model.setkNNSamples(integer(p["neighbors"], "Neighbors", 1, samples * 3))
         return model
-
-
-def share_native_sequence_runtime(target, source):
-    """Link only the GUI's display and execution copies of the same job."""
-    for key, block in target.blocks.items():
-        original = source.blocks[key]
-        if isinstance(block, NativeBackgroundSequence):
-            block.share_editor_runtime_from(original)
-        elif hasattr(block, "graph") and hasattr(original, "graph"):
-            share_native_sequence_runtime(block.graph, original.graph)
 
 
 NATIVE_BACKGROUND_BLOCKS = (MOG2Sequence, KNNBackgroundSequence)

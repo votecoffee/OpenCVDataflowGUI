@@ -130,6 +130,34 @@ with `opencv-dataflow-run examples/native_background.json --repeat 25`.
 The synthetic target stays still during warmup, then moves.
 See the [OpenCV background subtraction tutorial](https://docs.opencv.org/5.0/tutorials/others/background_subtraction.html).
 
+## Track a seeded object box
+
+**Track object box (CSRT)** and **Track object box (KCF)** track one target
+per stream in a sequence of uint8 images. Provide a wired `seed` box, a
+configured initial rectangle, or a mask or region from which to take the
+bounding rectangle. The box is `[x, y, width, height]` in the input image
+grid. A wired object containing `bounds`, such as the location output
+from **Match template**, also works. CSRT can use the selected pixels as
+its initial segmentation mask. These inputs initialize the tracker and
+its later search follows the native tracker.
+
+The first successful update emits the box, center, a center pose and a
+rectangular region. The pose angle is zero. Status identifies the track
+and reports initialization, tracking, a missed update or the need for a
+seed. An optional overlay shows the current box. Contrast and center-jump
+limits can reject implausible updates. Misses withhold the box, pose and
+region. After the configured number of consecutive misses, use a new
+wired seed or reset the sequence to start a new track.
+
+Live models survive Run Once and Stop/Resume in the editor. Reopening the
+project initializes a fresh tracker. The state budget uses a conservative
+estimate from the search patch and algorithm settings.
+
+Run the [native box tracking example](../examples/native_box_tracking.json)
+with `opencv-dataflow-run examples/native_box_tracking.json --repeat 8`.
+Both blocks follow the same moving synthetic target.
+See the [OpenCV tracking tutorial](https://docs.opencv.org/5.0/tutorials_contrib/tracking/tutorial_introduction_to_tracker.html).
+
 ## Custom sequence blocks and future work
 
 Subclass `SequenceBlock`, declare `data_outputs`, defaults and choices, and implement
@@ -139,5 +167,5 @@ and fit the memory budget; override `estimate_state_bytes` for large models. Do 
 retain native handles, external resources or workers in this state. Register it through
 the existing trusted Python plugin system.
 
-CSRT/KCF object trackers, explicit learning of accumulated references and
-timestamp-aware sequence resampling remain future work.
+Multi-object association, encoder-correlated tracking, explicit learning of
+accumulated references and timestamp-aware sequence resampling remain future work.

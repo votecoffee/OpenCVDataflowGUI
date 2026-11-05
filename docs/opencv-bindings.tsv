@@ -34,7 +34,7 @@ P1	method	cv2.QRCodeDetector.setUseAlignmentMarkers	method name only	-
 P1	class	cv2.QRCodeDetectorAruco	no static reference	-
 P1	method	cv2.QRCodeDetectorAruco.getArucoParameters	no static reference	-
 P1	method	cv2.QRCodeDetectorAruco.getDetectorParameters	no static reference	-
-P1	method	cv2.QRCodeDetectorAruco.Params	no static reference	-
+P1	method	cv2.QRCodeDetectorAruco.Params	method name only	-
 P1	method	cv2.QRCodeDetectorAruco.setArucoParameters	no static reference	-
 P1	method	cv2.QRCodeDetectorAruco.setDetectorParameters	no static reference	-
 P1	class	cv2.QRCodeDetectorAruco_Params	no static reference	-
@@ -42,7 +42,7 @@ P1	class	cv2.QRCodeEncoder	no static reference	-
 P1	method	cv2.QRCodeEncoder.create	method name only	-
 P1	method	cv2.QRCodeEncoder.encode	method name only	-
 P1	method	cv2.QRCodeEncoder.encodeStructuredAppend	no static reference	-
-P1	method	cv2.QRCodeEncoder.Params	no static reference	-
+P1	method	cv2.QRCodeEncoder.Params	method name only	-
 P1	function	cv2.QRCodeEncoder_create	no static reference	-
 P1	class	cv2.QRCodeEncoder_Params	no static reference	-
 P1	class	cv2.quality.QualityBase	no static reference	-
@@ -1511,7 +1511,7 @@ P2	method	cv2.ximgproc.EdgeDrawing.getEdgeImage	no static reference	-
 P2	method	cv2.ximgproc.EdgeDrawing.getGradientImage	no static reference	-
 P2	method	cv2.ximgproc.EdgeDrawing.getSegmentIndicesOfLines	no static reference	-
 P2	method	cv2.ximgproc.EdgeDrawing.getSegments	no static reference	-
-P2	method	cv2.ximgproc.EdgeDrawing.Params	no static reference	-
+P2	method	cv2.ximgproc.EdgeDrawing.Params	method name only	-
 P2	method	cv2.ximgproc.EdgeDrawing.setParams	no static reference	-
 P2	function	cv2.ximgproc.edgePreservingFilter	no static reference	-
 P2	class	cv2.ximgproc.FastBilateralSolverFilter	no static reference	-
@@ -1687,7 +1687,7 @@ P3	method	cv2.AlignMTB.setMaxBits	no static reference	-
 P3	method	cv2.AlignMTB.shiftMat	no static reference	-
 P3	class	cv2.ALIKED	no static reference	-
 P3	method	cv2.ALIKED.create	method name only	-
-P3	method	cv2.ALIKED.Params	no static reference	-
+P3	method	cv2.ALIKED.Params	method name only	-
 P3	function	cv2.ALIKED_create	no static reference	-
 P3	class	cv2.ALIKED_Params	no static reference	-
 P3	class	cv2.Animation	no static reference	-
@@ -3174,14 +3174,14 @@ P3	method	cv2.legacy.MultiTracker.getObjects	no static reference	-
 P3	method	cv2.legacy.MultiTracker.update	method name only	-
 P3	function	cv2.legacy.MultiTracker_create	no static reference	-
 P3	class	cv2.legacy.Tracker	no static reference	-
-P3	method	cv2.legacy.Tracker.init	no static reference	-
+P3	method	cv2.legacy.Tracker.init	method name only	-
 P3	method	cv2.legacy.Tracker.update	method name only	-
 P3	class	cv2.legacy.TrackerBoosting	no static reference	-
 P3	method	cv2.legacy.TrackerBoosting.create	method name only	-
 P3	function	cv2.legacy.TrackerBoosting_create	no static reference	-
 P3	class	cv2.legacy.TrackerCSRT	no static reference	-
 P3	method	cv2.legacy.TrackerCSRT.create	method name only	-
-P3	method	cv2.legacy.TrackerCSRT.setInitialMask	no static reference	-
+P3	method	cv2.legacy.TrackerCSRT.setInitialMask	method name only	-
 P3	function	cv2.legacy.TrackerCSRT_create	no static reference	-
 P3	class	cv2.legacy.TrackerKCF	no static reference	-
 P3	method	cv2.legacy.TrackerKCF.create	method name only	-
@@ -3969,7 +3969,7 @@ P3	function	cv2.phase	no static reference	-
 P3	class	cv2.phase_unwrapping.HistogramPhaseUnwrapping	no static reference	-
 P3	method	cv2.phase_unwrapping.HistogramPhaseUnwrapping.create	method name only	-
 P3	method	cv2.phase_unwrapping.HistogramPhaseUnwrapping.getInverseReliabilityMap	no static reference	-
-P3	method	cv2.phase_unwrapping.HistogramPhaseUnwrapping.Params	no static reference	-
+P3	method	cv2.phase_unwrapping.HistogramPhaseUnwrapping.Params	method name only	-
 P3	function	cv2.phase_unwrapping.HistogramPhaseUnwrapping_create	no static reference	-
 P3	class	cv2.phase_unwrapping.PhaseUnwrapping	no static reference	-
 P3	method	cv2.phase_unwrapping.PhaseUnwrapping.unwrapPhaseMap	no static reference	-
@@ -4287,7 +4287,7 @@ P3	method	cv2.saliency.MotionSaliencyBinWangApr2014.computeSaliency	no static re
 P3	method	cv2.saliency.MotionSaliencyBinWangApr2014.create	method name only	-
 P3	method	cv2.saliency.MotionSaliencyBinWangApr2014.getImageHeight	no static reference	-
 P3	method	cv2.saliency.MotionSaliencyBinWangApr2014.getImageWidth	no static reference	-
-P3	method	cv2.saliency.MotionSaliencyBinWangApr2014.init	no static reference	-
+P3	method	cv2.saliency.MotionSaliencyBinWangApr2014.init	method name only	-
 P3	method	cv2.saliency.MotionSaliencyBinWangApr2014.setImageHeight	no static reference	-
 P3	method	cv2.saliency.MotionSaliencyBinWangApr2014.setImagesize	no static reference	-
 P3	method	cv2.saliency.MotionSaliencyBinWangApr2014.setImageWidth	no static reference	-
@@ -4442,7 +4442,7 @@ P3	method	cv2.SimpleBlobDetector.create	method name only	-
 P3	method	cv2.SimpleBlobDetector.getBlobContours	no static reference	-
 P3	method	cv2.SimpleBlobDetector.getDefaultName	no static reference	-
 P3	method	cv2.SimpleBlobDetector.getParams	no static reference	-
-P3	method	cv2.SimpleBlobDetector.Params	no static reference	-
+P3	method	cv2.SimpleBlobDetector.Params	method name only	-
 P3	method	cv2.SimpleBlobDetector.setParams	no static reference	-
 P3	function	cv2.SimpleBlobDetector_create	no static reference	-
 P3	class	cv2.SimpleBlobDetector_Params	no static reference	-
@@ -4555,7 +4555,7 @@ P3	method	cv2.structured_light.SinusoidalPattern.computeDataModulationTerm	no st
 P3	method	cv2.structured_light.SinusoidalPattern.computePhaseMap	no static reference	-
 P3	method	cv2.structured_light.SinusoidalPattern.create	method name only	-
 P3	method	cv2.structured_light.SinusoidalPattern.findProCamMatches	no static reference	-
-P3	method	cv2.structured_light.SinusoidalPattern.Params	no static reference	-
+P3	method	cv2.structured_light.SinusoidalPattern.Params	method name only	-
 P3	method	cv2.structured_light.SinusoidalPattern.unwrapPhaseMap	no static reference	-
 P3	function	cv2.structured_light.SinusoidalPattern_create	no static reference	-
 P3	class	cv2.structured_light.StructuredLightPattern	no static reference	-
@@ -4670,37 +4670,37 @@ P3	method	cv2.TonemapReinhard.setLightAdaptation	no static reference	-
 P3	function	cv2.trace	no static reference	-
 P3	class	cv2.Tracker	no static reference	-
 P3	method	cv2.Tracker.getTrackingScore	no static reference	-
-P3	method	cv2.Tracker.init	no static reference	-
+P3	method	cv2.Tracker.init	method name only	-
 P3	method	cv2.Tracker.update	method name only	-
-P3	class	cv2.TrackerCSRT	no static reference	-
-P3	method	cv2.TrackerCSRT.create	method name only	-
-P3	method	cv2.TrackerCSRT.Params	no static reference	-
-P3	method	cv2.TrackerCSRT.setInitialMask	no static reference	-
+P3	class	cv2.TrackerCSRT	literal reference	-
+P3	method	cv2.TrackerCSRT.create	literal reference	-
+P3	method	cv2.TrackerCSRT.Params	literal reference	-
+P3	method	cv2.TrackerCSRT.setInitialMask	method name only	-
 P3	function	cv2.TrackerCSRT_create	no static reference	-
 P3	class	cv2.TrackerCSRT_Params	no static reference	-
 P3	class	cv2.TrackerDaSiamRPN	no static reference	-
 P3	method	cv2.TrackerDaSiamRPN.create	method name only	-
-P3	method	cv2.TrackerDaSiamRPN.Params	no static reference	-
+P3	method	cv2.TrackerDaSiamRPN.Params	method name only	-
 P3	function	cv2.TrackerDaSiamRPN_create	no static reference	-
 P3	class	cv2.TrackerDaSiamRPN_Params	no static reference	-
-P3	class	cv2.TrackerKCF	no static reference	-
-P3	method	cv2.TrackerKCF.create	method name only	-
-P3	method	cv2.TrackerKCF.Params	no static reference	-
+P3	class	cv2.TrackerKCF	literal reference	-
+P3	method	cv2.TrackerKCF.create	literal reference	-
+P3	method	cv2.TrackerKCF.Params	literal reference	-
 P3	function	cv2.TrackerKCF_create	no static reference	-
 P3	class	cv2.TrackerKCF_Params	no static reference	-
 P3	class	cv2.TrackerMIL	no static reference	-
 P3	method	cv2.TrackerMIL.create	method name only	-
-P3	method	cv2.TrackerMIL.Params	no static reference	-
+P3	method	cv2.TrackerMIL.Params	method name only	-
 P3	function	cv2.TrackerMIL_create	no static reference	-
 P3	class	cv2.TrackerMIL_Params	no static reference	-
 P3	class	cv2.TrackerNano	no static reference	-
 P3	method	cv2.TrackerNano.create	method name only	-
-P3	method	cv2.TrackerNano.Params	no static reference	-
+P3	method	cv2.TrackerNano.Params	method name only	-
 P3	function	cv2.TrackerNano_create	no static reference	-
 P3	class	cv2.TrackerNano_Params	no static reference	-
 P3	class	cv2.TrackerVit	no static reference	-
 P3	method	cv2.TrackerVit.create	method name only	-
-P3	method	cv2.TrackerVit.Params	no static reference	-
+P3	method	cv2.TrackerVit.Params	method name only	-
 P3	function	cv2.TrackerVit_create	no static reference	-
 P3	class	cv2.TrackerVit_Params	no static reference	-
 P3	function	cv2.transform	literal reference	-
@@ -6004,7 +6004,7 @@ P4	method	cv2.utils.nested.ExportClassName.create	method name only	-
 P4	method	cv2.utils.nested.ExportClassName.getFloatParam	no static reference	-
 P4	method	cv2.utils.nested.ExportClassName.getIntParam	no static reference	-
 P4	method	cv2.utils.nested.ExportClassName.originalName	no static reference	-
-P4	method	cv2.utils.nested.ExportClassName.Params	no static reference	-
+P4	method	cv2.utils.nested.ExportClassName.Params	method name only	-
 P4	function	cv2.utils.nested.ExportClassName_create	no static reference	-
 P4	function	cv2.utils.nested.ExportClassName_originalName	no static reference	-
 P4	function	cv2.utils.nested.OriginalClassName_create	no static reference	-
