@@ -1,11 +1,14 @@
 """Compare histogram outputs using OpenCV's per-channel metrics."""
 
+from statistics import mean
+
 import cv2
 import numpy as np
 
 from .core import Block, Port, Result
 from .histogram import HISTOGRAM_CHANNELS
 from .images import image_format
+from .parameter_validation import ValidationError
 from .processing import finite, image_value
 from .selection import SELECTION_INPUTS, selection_mask
 
@@ -48,6 +51,41 @@ def histogram_channels(histogram):
     return channels
 
 
+def earth_movers_distance(a, a_edges, b, b_edges, normalize):
+    occupied_a, occupied_b = a > 0, b > 0
+    if max(np.count_nonzero(occupied_a), np.count_nonzero(occupied_b)) > 512:
+        raise ValidationError("Earth Mover's Distance supports up to 512 occupied bins per channel")
+    if not normalize:
+        mass_scale = max(float(a.max()), float(b.max()))
+        if not np.isclose((a / mass_scale).sum(), (b / mass_scale).sum(), rtol=1e-12, atol=0):
+            raise ValidationError("Earth Mover's Distance needs equal counts or Normalize enabled")
+
+    origin = min(float(a_edges[0]), float(b_edges[0]))
+    span = max(float(a_edges[-1]), float(b_edges[-1])) - origin
+    if not np.isfinite(span) or span <= 0:
+        raise ValidationError("Histogram bin coordinates exceed the supported range")
+    scale = span if span < 1e-10 or span > 1e10 else 1.0
+
+    def signature(counts, edges, occupied):
+        shifted = (edges - origin) / scale
+        centers = (shifted[:-1] * 0.5 + shifted[1:] * 0.5)[occupied]
+        weights = counts[occupied] / counts.max()
+        weights /= weights.sum()
+        return centers, np.column_stack((weights, centers)).astype(np.float32)
+
+    a_centers, a_signature = signature(a, a_edges, occupied_a)
+    b_centers, b_signature = signature(b, b_edges, occupied_b)
+    if (
+        np.any(a_signature[:, 0] == 0)
+        or np.any(b_signature[:, 0] == 0)
+        or np.unique(np.r_[a_signature[:, 1], b_signature[:, 1]]).size
+        != np.unique(np.r_[a_centers, b_centers]).size
+    ):
+        raise ValidationError("Occupied bins or weights are too close for OpenCV's EMD precision")
+    distance, _, _ = cv2.EMD(a_signature, b_signature, cv2.DIST_L1)
+    return float(distance) * scale
+
+
 class CompareHistograms(Block):
     type_id, title = "inspect.compare_histograms", "Compare histograms"
     category, block_type, subtype = "Inspection", "Inspection", "Measurements"
@@ -60,9 +98,12 @@ class CompareHistograms(Block):
         "check_threshold": False,
         "threshold": 0.1,
     }
-    parameter_choices = {"method": tuple(METRICS), "reduction": ("mean", "worst")}
+    parameter_choices = {
+        "method": (*METRICS, "earth_movers_distance"),
+        "reduction": ("mean", "worst"),
+    }
     parameter_help = {
-        "normalize": "Divide each histogram by its sample count before comparison.",
+        "normalize": "Compare relative counts. EMD requires equal counts when disabled.",
         "threshold": "Minimum for correlation/intersection. Maximum for the distance metrics.",
     }
 
@@ -76,24 +117,34 @@ class CompareHistograms(Block):
         measurements = {}
         for channel, (a, edges) in reference.items():
             b, other_edges = sample[channel]
-            if not np.array_equal(edges, other_edges):
-                raise ValueError("Histogram bin edges differ. Set matching manual ranges.")
-            if self.parameters["normalize"]:
-                a, b = a / a.sum(), b / b.sum()
-            value = cv2.compareHist(a.astype(np.float32), b.astype(np.float32), METRICS[method])
+            if method == "earth_movers_distance":
+                value = earth_movers_distance(
+                    a, edges, b, other_edges, self.parameters["normalize"]
+                )
+            else:
+                if not np.array_equal(edges, other_edges):
+                    raise ValueError("Histogram bin edges differ. Set matching manual ranges.")
+                if self.parameters["normalize"]:
+                    a, b = a / a.sum(), b / b.sum()
+                value = cv2.compareHist(a.astype(np.float32), b.astype(np.float32), METRICS[method])
             if not np.isfinite(value):
                 raise ValueError("Histogram metric produced a nonfinite result")
             measurements[channel] = float(value)
         values = list(measurements.values())
         if self.parameters["reduction"] == "worst":
             value = min(values) if similarity else max(values)
+        elif method == "earth_movers_distance":
+            value = mean(values)
         else:
             value = float(np.mean(values))
         check = self.parameters["check_threshold"]
         threshold = finite(self.parameters["threshold"], "Threshold") if check else None
         passed = not check or (value >= threshold if similarity else value <= threshold)
+        details = {"method": method, "channels": measurements}
+        if method == "earth_movers_distance":
+            details["units"] = "sample"
         return Result(
-            {"value": value, "measurements": {"method": method, "channels": measurements}},
+            {"value": value, "measurements": details},
             passed=passed,
             message=f"Histogram {method.replace('_', ' ')} = {value:.6g}",
             fail_reasons=[] if passed else ["histogram_out_of_tolerance"],
