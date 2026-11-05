@@ -547,6 +547,7 @@ def builtin_registry():
     from .poses import POSE_BLOCKS
     from .processing import PROCESSING_BLOCKS
     from .pyramids import PYRAMID_BLOCKS
+    from .recipe_blocks import RecipeField, RecipeSelect
     from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
@@ -595,6 +596,8 @@ def builtin_registry():
         ParallelInspect,
         RepeatedPartsDemo,
         ImageQueue,
+        RecipeSelect,
+        RecipeField,
         FinalJudgment,
     ):
         registry.register(block)

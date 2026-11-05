@@ -2,6 +2,12 @@
 
 ## Blocks and results
 
+The root graph owns a shared [recipe catalog](recipes.md). Immutable revisions
+hold settings and sealed pattern assets; frames carry compact `recipe_ref` values.
+Bound parameters/models are temporary invocation overrides, restored in `finally`.
+Captured frames resolve their pinned revision rather than mutable global state.
+Nested/parallel graphs share the catalog, with parallel recipe activation disabled.
+
 `Block` is the extension boundary. Subclasses declare `type_id`, `title`, `category`,
 `inputs`, `outputs`, and JSON-compatible `defaults`. The registry rejects duplicate
 identifiers. Parameters configure a block; ports carry values between blocks.

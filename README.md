@@ -123,6 +123,12 @@ duplicate and late-arrival controls make reuse explicit. Try **File > Load input
 coordination example**. See [input coordination](docs/input-coordination.md) for
 recommended policies and cooperative timing limits.
 
+**Recipes > Manage recipes…** stores versioned settings and trained pattern models.
+Use **Select recipe** / **Recipe value or model** blocks, or bind tool parameters
+and matcher models in **Recipe overrides**. Images retain their recipe revision
+across queues and global changes. Try **File > Load recipes example**; see
+[recipes and model swaps](docs/recipes.md) for activation and persistence rules.
+
 **Inspect each pose in parallel** runs a reusable inspection ToolBlock for every
 pattern match, measured feature or supplied pose, then returns one aggregate. Set
 worker count and optional N-pass/N-failure stop thresholds; results explicitly

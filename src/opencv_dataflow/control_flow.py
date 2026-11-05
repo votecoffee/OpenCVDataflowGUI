@@ -151,6 +151,9 @@ class Join(BufferedFlow):
         if ready is not None:
             row = pending.pop(ready)
             entries = tuple(row[n] for n in BRANCHES[:count])
+            from .recipes import unique_ref
+
+            unique_ref(entries)
             outputs["group"] = FlowGroup(entries, BRANCHES[:count])
             contexts["group"] = {"ticket": entries[0].payload["ticket"]}
             for name, value in zip(BRANCHES, entries):

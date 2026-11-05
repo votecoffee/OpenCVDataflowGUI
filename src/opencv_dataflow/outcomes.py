@@ -169,11 +169,12 @@ def publish_result(block, values, result=None, kind="tool_result", message=""):
     tickets = {}
     for value, stamped in candidates:
         context = metadata(value).get("coordination")
+        recipe_context = metadata(value).get("recipe_ref")
         for packet in packets_in(value):
             ticket = packet.payload.get("ticket")
             if ticket is not None:
-                tickets.setdefault(ticket_key(ticket), (packet, stamped, context))
-    for packet, stamped, context in tickets.values():
+                tickets.setdefault(ticket_key(ticket), (packet, stamped, context, recipe_context))
+    for packet, stamped, context, recipe_context in tickets.values():
         ticket = packet.payload["ticket"]
         outcome = packet.payload.get("outcome", {})
         consumer.consume(
@@ -199,6 +200,7 @@ def publish_result(block, values, result=None, kind="tool_result", message=""):
                 "final_judgment": result.final_judgment if result else None,
                 "parent_ticket": packet.payload.get("inspection", {}).get("parent_ticket"),
                 "coordination": packet.payload.get("coordination", context),
+                "recipe": packet.payload.get("recipe_ref", recipe_context),
             }
         )
 
@@ -243,8 +245,12 @@ class TicketResults:
                     "had_error": False,
                     "status": "in_progress",
                     "retained_bytes": 0,
+                    "recipes": [],
                 }
             row = self.rows[key]
+            recipe = event.get("recipe")
+            if recipe and recipe not in row["recipes"] and len(row["recipes"]) < 128:
+                row["recipes"].append(copy.deepcopy(recipe))
             self.rows.move_to_end(key)
             row["event_count"] += 1
             row["events"].append(event)

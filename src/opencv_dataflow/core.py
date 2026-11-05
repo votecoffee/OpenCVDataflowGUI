@@ -31,6 +31,7 @@ from .payloads import (
     prepare_inputs,
     validate_payload,
 )
+from .recipes import RecipeCatalog, apply_recipe, validate_bindings
 from .tickets import DEFAULT_TICKET_SETTINGS, DIRECT_CLOCK, TICKET_MODES, TicketClock
 
 
@@ -93,6 +94,10 @@ class Block:
         self.input_rejected = False
         self.last_rejection = ""
         self._ticket_results = None
+        self.recipe_bindings = {}
+        self.recipe_model = ""
+        self._recipes = None
+        self._allow_recipe_activation = True
         self.ticket_source = self.type_id.startswith("input.")
         self.ticket_settings = copy.deepcopy(DEFAULT_TICKET_SETTINGS)
         if self.ticket_source:
@@ -116,6 +121,8 @@ class Block:
         self.last_result: Result | None = None
         self.last_output_images: dict[str, np.ndarray] = {}
         self.last_graphics: dict[str, np.ndarray] = {}
+        self.last_recipe_ref = None
+        self.last_recipe_parameters = {}
         self.state = "idle"
         self.error = ""
         self.elapsed_ms = 0.0
@@ -128,6 +135,7 @@ class Block:
         return result
 
     def validate_parameters(self, parameters=None):
+        validate_bindings(self, self.recipe_bindings, self.recipe_model)
         if (
             not isinstance(self.input_failure_policies, dict)
             or not self.input_failure_policies.keys() <= {p.name for p in self.inputs}
@@ -164,10 +172,14 @@ class Block:
         self._source_ticket = None
         self._cancelled = cancelled
         started = time.perf_counter()
+        configured_parameters = self.parameters
+        configured_model = getattr(self, "trained_model", None)
         try:
             self.validate_parameters()
             values, self.input_payloads = prepare_inputs(self, values)
             self.last_inputs = copy.deepcopy(values)
+            apply_recipe(self)
+            self.validate_parameters()
             for port in self.inputs:
                 if port.required and port.name not in values:
                     raise ValueError(f"Missing input: {port.name}")
@@ -270,6 +282,9 @@ class Block:
             if getattr(self, "accept_events", False):
                 self.reset_runtime()
         finally:
+            self.parameters = configured_parameters
+            if getattr(self, "supports_training", False):
+                self.trained_model = configured_model
             self.elapsed_ms = (time.perf_counter() - started) * 1000
         return self.last_result
 
@@ -302,6 +317,8 @@ class Block:
             "current_emissions",
             "input_rejected",
             "last_rejection",
+            "last_recipe_ref",
+            "last_recipe_parameters",
         ):
             setattr(self, name, copy.deepcopy(getattr(other, name)))
 
@@ -376,6 +393,23 @@ class Graph:
         self.clock = TicketClock()
         self.ticket_results = TicketResults()
         self._event_prefix = ""
+        self.recipes = RecipeCatalog()
+        self._allow_recipe_activation = True
+
+    def bind_recipes(self, catalog=None, allow_activation=None):
+        if catalog is not None and catalog is not self.recipes:
+            catalog.merge(self.recipes)
+            self.recipes = catalog
+        if allow_activation is not None:
+            self._allow_recipe_activation = allow_activation
+        for block in self.blocks.values():
+            block._recipes = self.recipes
+            block._allow_recipe_activation = self._allow_recipe_activation
+            if hasattr(block, "graph"):
+                block.graph.bind_recipes(
+                    self.recipes,
+                    self._allow_recipe_activation and not getattr(block, "owns_workers", False),
+                )
 
     def bind_ticket_results(self, consumer=None, prefix=None):
         if consumer is not None:
@@ -401,7 +435,10 @@ class Graph:
     def add(self, block):
         if block.id in self.blocks:
             raise ValueError("Duplicate block id")
+        if hasattr(block, "graph"):
+            self.recipes.merge(block.graph.recipes)
         self.blocks[block.id] = block
+        self.bind_recipes()
         block.project_dir = self.project_dir
         from .toolblocks import ToolBlock
 
@@ -426,6 +463,8 @@ class Graph:
 
     def copy_runtime_from(self, other):
         self.clock = other.clock.clone()
+        if self.recipes is not other.recipes:
+            self.recipes.copy_runtime_from(other.recipes)
         if self.ticket_results is not other.ticket_results:
             self.ticket_results.restore(other.ticket_results.snapshot())
         for key, block in self.blocks.items():
@@ -533,6 +572,7 @@ class Graph:
                         block.use_lease = True
                         provided.update(capture.snapshots)
         self.bind_ticket_results()
+        self.bind_recipes()
         self.clear_results(preserve_history=True)
         injected = injected or {}
         for (target, name), value in injected.items():
@@ -789,6 +829,7 @@ class Graph:
                     and not getattr(self.blocks[key], "owns_workers", False)
                     and not getattr(self.blocks[key], "queue_boundary", False)
                     and not getattr(self.blocks[key], "accept_events", False)
+                    and not getattr(self.blocks[key], "requires_serial_execution", False)
                 ]
                 futures = [executor.submit(run_block, key) for key in parallel] if executor else []
                 for key in ready:
@@ -805,9 +846,11 @@ class Graph:
         for block in self.blocks.values():
             block.close()
 
-    def to_dict(self):
+    def to_dict(self, include_recipes=True):
+        catalog = self.recipes.definition() if include_recipes else None
         return {
             "schema_version": 1,
+            **({"recipes": catalog} if catalog and catalog["recipes"] else {}),
             "blocks": [
                 {
                     "id": b.id,
@@ -819,6 +862,8 @@ class Graph:
                     "exposed_outputs": b.exposed_outputs,
                     "thumbnail": b.thumbnail,
                     "preview_output": b.preview_output,
+                    **({"recipe_bindings": b.recipe_bindings} if b.recipe_bindings else {}),
+                    **({"recipe_model": b.recipe_model} if b.recipe_model else {}),
                     **({"input_levels": b.input_levels} if b.input_levels else {}),
                     **(
                         {"input_failure_policies": b.input_failure_policies}
@@ -857,6 +902,8 @@ class Graph:
         if data.get("schema_version") != 1:
             raise ValueError("Unsupported project schema version")
         graph = cls()
+        if "recipes" in data:
+            graph.recipes = RecipeCatalog.from_dict(data["recipes"])
         for item in data["blocks"]:
             if item["type"] == "flow.inspect_each":
                 from .parallel_inspection import ParallelInspect
@@ -920,6 +967,9 @@ class Graph:
             ):
                 raise ValueError("Invalid input failure policy")
             block.input_failure_policies = dict(policies)
+            block.recipe_bindings = copy.deepcopy(item.get("recipe_bindings", {}))
+            block.recipe_model = item.get("recipe_model", "")
+            validate_bindings(block, block.recipe_bindings, block.recipe_model)
             graph.add(block)
         for c in data["connections"]:
             graph.connect(**c)

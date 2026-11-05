@@ -22,6 +22,7 @@ class QueuedCapture:
         def snapshots_size(snapshots):
             total = 0
             for snapshot in snapshots.values():
+                total += byte_size(snapshot.get("last_recipe_parameters", {}))
                 result = snapshot["last_result"]
                 if result is not None:
                     total += byte_size(snapshot["last_inputs"]) + byte_size(result.outputs)

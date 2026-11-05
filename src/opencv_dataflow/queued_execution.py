@@ -24,6 +24,8 @@ SNAPSHOT_FIELDS = (
     "current_emissions",
     "input_rejected",
     "last_rejection",
+    "last_recipe_ref",
+    "last_recipe_parameters",
 )
 
 
@@ -143,6 +145,7 @@ class QueuedExecution:
             if c.source in self.upstream and c.target in self.upstream
         ]
         self.producer.bind_ticket_results(graph.ticket_results)
+        self.producer.bind_recipes(graph.recipes)
         self.stop = threading.Event()
         self.thread = None
 

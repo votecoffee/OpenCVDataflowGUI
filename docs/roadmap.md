@@ -35,6 +35,8 @@
   explicit final judgments and a live searchable ticket-results window.
 - Explicit ticket/deadline, latest, trigger-latest and first-arrival input coordination,
   freshness guards and a synthetic shared part-counter example.
+- Versioned job recipe catalog, scalar/model outputs, temporary parameter/model bindings,
+  queued-frame revision pinning and GUI recipe/training-asset management.
 
 ## Point clouds and 3D vision
 
@@ -54,7 +56,8 @@ frame transforms and robot pose/measurement adapters. See
 
 - Calibrated region overlays, physical measurements and nonlinear region remapping for lens distortion.
 - More OpenCV tools: multiple template matches, additional descriptors/robust matching and advanced calibration.
-- Dynamic parameter binding, richer types, promoted parameters and versioned ToolBlock libraries.
+- General dynamic bindings beyond recipe paths, richer types, promoted parameters and versioned ToolBlock libraries.
+- External recipe services, revision lifecycle/pruning, released recipe packages and automated training publication.
 - [Opt-in compiled ToolBlocks with selected diagnostic outputs](https://github.com/votecoffee/OpenCVDataflowGUI/issues/4):
   stable compatible chains only; preserve ordinary execution for development. Require
   reproducible end-to-end performance benefit, including diagnostics and compilation

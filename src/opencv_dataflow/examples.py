@@ -3,6 +3,88 @@
 from .core import Graph
 
 
+def recipes_graph(registry):
+    """Switch inspection settings and geometric/ORB/SIFT models by recipe revision."""
+    import numpy as np
+
+    from .recipes import reference
+
+    graph = Graph()
+    source = graph.add(registry.create("input.pattern_demo", block_id="recipe_images"))
+    source.position = [0, 250]
+    source.execute({})
+    shape_reference = np.asarray(source.last_result.outputs["shape_reference"])
+    texture_reference = np.asarray(source.last_result.outputs["texture_reference"])
+    recipes = []
+    for name, mode, algorithm, threshold in (
+        ("Widget A", "edges", "orb", 110),
+        ("Widget B", "corners", "sift", 150),
+    ):
+        shape = registry.create("pattern.match_shape", parameters={"feature_mode": mode})
+        texture = registry.create(
+            "pattern.match_texture",
+            parameters={"algorithm": algorithm, "orb_max_features": 500, "sift_max_features": 150},
+        )
+        models = {
+            "geometry": shape.train({"image": shape_reference}),
+            "surface": texture.train({"image": texture_reference}),
+        }
+        recipes.append(
+            graph.recipes.put(
+                name,
+                {
+                    "threshold": threshold,
+                    "shape_score": 0.65 if mode == "edges" else 0.5,
+                    "shape_coverage": 0.65 if mode == "edges" else 0.3,
+                    "shape_distance": 3.0 if mode == "edges" else 6.0,
+                    "texture_ratio": 0.4,
+                },
+                models,
+            )
+        )
+    graph.recipes.activate(reference(recipes[0]), project_default=True)
+    specs = [
+        ("recipe_select", "recipe.select", [300, 250], None),
+        ("recipe_surface", "recipe.field", [300, 650], {"path": "models.surface"}),
+        ("recipe_scalar", "recipe.field", [300, 1000], {"path": "settings.threshold"}),
+        (
+            "recipe_shape",
+            "pattern.match_shape",
+            [650, 0],
+            {"rotation_min": -20.0, "rotation_max": 20.0},
+        ),
+        ("recipe_texture", "pattern.match_texture", [650, 400], None),
+        ("recipe_threshold", "cv.threshold", [650, 800], None),
+        ("recipe_join", "flow.join", [1050, 250], None),
+        ("recipe_final", "inspect.final_judgment", [1350, 250], None),
+    ]
+    for key, kind, position, parameters in specs:
+        block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
+        block.position = position
+    graph.blocks["recipe_shape"].recipe_model = "models.geometry"
+    graph.blocks["recipe_shape"].recipe_bindings = {
+        "min_score": "settings.shape_score",
+        "min_coverage": "settings.shape_coverage",
+        "distance_tolerance": "settings.shape_distance",
+    }
+    graph.blocks["recipe_texture"].recipe_bindings = {"min_inlier_ratio": "settings.texture_ratio"}
+    graph.blocks["recipe_threshold"].recipe_bindings = {"value": "settings.threshold"}
+    for source_id, output, target, input_name in [
+        ("recipe_images", "image", "recipe_select", "value"),
+        ("recipe_select", "recipe", "recipe_surface", "recipe"),
+        ("recipe_select", "recipe", "recipe_scalar", "recipe"),
+        ("recipe_select", "value", "recipe_shape", "image"),
+        ("recipe_select", "value", "recipe_texture", "image"),
+        ("recipe_select", "value", "recipe_threshold", "image"),
+        ("recipe_surface", "value", "recipe_texture", "model"),
+        ("recipe_shape", "matches", "recipe_join", "branch_1"),
+        ("recipe_texture", "matches", "recipe_join", "branch_2"),
+        ("recipe_join", "group", "recipe_final", "value"),
+    ]:
+        graph.connect(source_id, output, target, input_name)
+    return graph
+
+
 def input_coordination_graph(registry):
     """Two synthetic cameras share a simulated PLC part counter."""
     graph = Graph()

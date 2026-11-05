@@ -50,6 +50,7 @@ from .examples import (
     parallel_parts_graph,
     pose_inspection_graph,
     queued_input_graph,
+    recipes_graph,
     regions_graph,
     starter_graph,
     template_graph,
@@ -63,6 +64,8 @@ from .parallel_inspection import ParallelInspect
 from .payloads import describe_value, packet_for, prepare_inputs
 from .plugins import load_plugin
 from .queued_execution import QueuedExecution, background_queue
+from .recipe_editor import RecipeManager
+from .recipes import validate_bindings
 from .region_editor import RegionEditor
 from .ticket_window import TicketResultsWindow
 from .tickets import TICKET_MODES
@@ -214,6 +217,8 @@ class Inspector(QWidget):
             status = (
                 "External model input is connected"
                 if external
+                else f"Recipe model: {block.recipe_model} (selected per image)"
+                if block.recipe_model
                 else f"Trained: {len(model['points'])} features, {model['size']} pixels"
                 if model
                 else "Not trained"
@@ -265,6 +270,22 @@ class Inspector(QWidget):
             draw_region = QPushButton(f"Draw / edit {kind}…")
             draw_region.clicked.connect(self.edit_region)
             self.form.addRow(draw_region)
+        self.recipe_group = QGroupBox("Recipe overrides")
+        self.recipe_group.setCheckable(True)
+        self.recipe_group.setChecked(bool(block.recipe_bindings or block.recipe_model))
+        recipe_form = QFormLayout(self.recipe_group)
+        self.recipe_fields = {}
+        for name in block.defaults:
+            field = QLineEdit(block.recipe_bindings.get(name, ""))
+            field.setPlaceholderText(f"settings.{name}")
+            self.recipe_fields[name] = field
+            recipe_form.addRow(name, field)
+        self.recipe_model_field = None
+        if getattr(block, "supports_training", False):
+            self.recipe_model_field = QLineEdit(block.recipe_model)
+            self.recipe_model_field.setPlaceholderText("models.part")
+            recipe_form.addRow("Trained model", self.recipe_model_field)
+        self.form.addRow(self.recipe_group)
         if not getattr(block, "preserve_image_sets", False):
             for port in block.inputs:
                 if port.kind == "image":
@@ -542,12 +563,28 @@ class Inspector(QWidget):
                 json.dumps(ticket_settings, allow_nan=False)
             if not name:
                 raise ValueError("Name cannot be empty")
+            recipe_bindings = {
+                key: field.text().strip()
+                for key, field in self.recipe_fields.items()
+                if self.recipe_group.isChecked() and field.text().strip()
+            }
+            recipe_model = (
+                self.recipe_model_field.text().strip()
+                if self.recipe_group.isChecked() and self.recipe_model_field
+                else ""
+            )
+            validate_bindings(b, recipe_bindings, recipe_model)
+            if recipe_model and any(
+                c.target == b.id and c.input == "model" for c in self.window.graph.connections
+            ):
+                raise ValueError("Disconnect the model input or clear the recipe model binding")
             if isinstance(b, ToolBlock):
                 kind, subtype = self.type_field.text().strip(), self.subtype_field.text().strip()
                 if not kind or not subtype:
                     raise ValueError("ToolBlock type and subtype cannot be empty")
                 b.block_type, b.subtype = kind, subtype
             b.name, b.parameters = name, parameters
+            b.recipe_bindings, b.recipe_model = recipe_bindings, recipe_model
             if ticket_settings is not None:
                 b.ticket_settings = ticket_settings
             b.input_levels = {
@@ -607,7 +644,14 @@ class Inspector(QWidget):
                 + (b.last_rejection or b.error or (result.message if result else "Not executed"))
                 + "\n\n"
                 + json.dumps(
-                    {"outputs": outputs, "payloads": result.payloads} if result else outputs,
+                    {
+                        "outputs": outputs,
+                        "payloads": result.payloads,
+                        "recipe": b.last_recipe_ref,
+                        "recipe_parameters": b.last_recipe_parameters,
+                    }
+                    if result
+                    else outputs,
                     indent=2,
                     default=str,
                 )
@@ -719,6 +763,7 @@ class MainWindow(QMainWindow):
             ("Load queued input example", None, self.load_queued_input_example),
             ("Load ticket results example", None, self.load_ticket_results_example),
             ("Load input coordination example", None, self.load_input_coordination_example),
+            ("Load recipes example", None, self.load_recipes_example),
             ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
@@ -739,6 +784,9 @@ class MainWindow(QMainWindow):
         toolbar.addAction("Fit graph", self.view.fit_graph)
         results_menu = self.menuBar().addMenu("&Results")
         results_menu.addAction("Ticket results…", self.show_ticket_results)
+        recipes_menu = self.menuBar().addMenu("&Recipes")
+        self.recipe_action = recipes_menu.addAction("Manage recipes…", self.manage_recipes)
+        self.edit_actions.append(self.recipe_action)
         toolbar.addAction("Delete selected", self.scene.delete_selected)
         tools = self.menuBar().addMenu("&ToolBlocks")
         for title, callback in (
@@ -1026,6 +1074,10 @@ class MainWindow(QMainWindow):
         if not self.runner and self.confirm_discard():
             self.replace_graph(input_coordination_graph(self.registry))
 
+    def load_recipes_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(recipes_graph(self.registry))
+
     def open_project(self):
         if self.runner or not self.confirm_discard():
             return
@@ -1140,6 +1192,7 @@ class MainWindow(QMainWindow):
         # finished() can precede native thread-local cleanup; join before release.
         worker.wait()
         self.root_graph.ticket_results.restore(worker.graph.ticket_results.snapshot())
+        self.root_graph.recipes.copy_runtime_from(worker.graph.recipes)
         for key, snapshot in worker.final_queue_states.items():
             block = self.root_graph.blocks.get(key)
             if isinstance(block, ImageQueue):
@@ -1172,6 +1225,10 @@ class MainWindow(QMainWindow):
         self.ticket_results_window.show()
         self.ticket_results_window.raise_()
         self.ticket_results_window.activateWindow()
+
+    def manage_recipes(self):
+        if not self.runner:
+            RecipeManager(self).exec()
 
     def closeEvent(self, event):
         if self.runner:
