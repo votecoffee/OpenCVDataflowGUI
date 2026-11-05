@@ -83,6 +83,8 @@ from .outcomes import INPUT_FAILURE_POLICIES
 from .parallel_inspection import ParallelInspect
 from .payloads import ValuePacket, describe_value, packet_for, prepare_inputs
 from .plugins import load_plugin
+from .project_compare import ProjectCompare
+from .project_xml import XML_FILTER, export_project_xml
 from .queued_execution import QueuedExecution, background_queue
 from .recipe_editor import RecipeManager
 from .recipes import validate_bindings
@@ -1157,6 +1159,8 @@ class MainWindow(QMainWindow):
             ("Open…", QKeySequence.StandardKey.Open, self.open_project),
             ("Save", QKeySequence.StandardKey.Save, self.save_project),
             ("Save as…", QKeySequence.StandardKey.SaveAs, lambda: self.save_project(True)),
+            ("Export project XML…", None, self.export_project_snapshot),
+            ("Compare project XML…", None, self.compare_project_snapshots),
             ("Load Python plugin…", None, self.open_plugin),
             ("Load demo", None, self.load_demo),
             ("Load starter inspection", None, self.load_starter),
@@ -1618,6 +1622,36 @@ class MainWindow(QMainWindow):
         except Exception as exc:
             self.warn(str(exc))
             return False
+
+    def export_project_snapshot(self):
+        if self.runner:
+            return
+        directory = str(self.path.parent) if self.path else ""
+        filename = self.path.with_suffix(".xml").name if self.path else "project.xml"
+        dialog = QFileDialog(self, "Export project XML", directory, XML_FILTER)
+        dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
+        dialog.setDefaultSuffix("xml")
+        dialog.selectFile(filename)
+        accepted = dialog.exec() == QDialog.DialogCode.Accepted
+        selected = dialog.selectedFiles() if accepted else []
+        dialog.deleteLater()
+        if not selected:
+            return
+        path = Path(selected[0])
+        try:
+            if path.suffix.lower() != ".xml" or (
+                self.path and path.resolve() == self.path.resolve()
+            ):
+                raise ValueError("Choose a separate .xml file for the snapshot")
+            export_project_xml(self.root_graph.to_dict(), path)
+            self.statusBar().showMessage(f"Project XML exported · {path.name}")
+        except (OSError, ValueError, TypeError, RecursionError) as exc:
+            self.warn(str(exc))
+
+    def compare_project_snapshots(self):
+        dialog = ProjectCompare(self)
+        dialog.exec()
+        dialog.deleteLater()
 
     def open_plugin(self):
         if self.runner:

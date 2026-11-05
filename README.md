@@ -94,6 +94,14 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
 5. Save/load JSON projects from File. Select a wire or block and press Delete to
    remove it. Use the wheel to zoom, middle-drag to pan, and **Fit graph** to frame it.
 
+Use **File → Export project XML…** to snapshot the open project's saved fields and
+values, including in-memory edits that have been applied. The export includes
+nested ToolBlocks, recipes, saved training data, descriptions, and layout. External
+assets are recorded by their saved references. Use **File → Compare project XML…**
+to inspect added, removed, and changed values alongside changes to block order.
+The comparison matches blocks by their saved IDs and shows before and after
+values. JSON remains the editable project format.
+
 After **Run once** captures inputs, click **Run block** in the inspector to preview
 a supported block once with its current parameter edits. Enable **Live results**
 to preview automatically. Edits within 300 ms of one another produce a single
