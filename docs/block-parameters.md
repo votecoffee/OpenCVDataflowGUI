@@ -2393,10 +2393,12 @@ Inputs: `contour` (data).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `item_index` | `0` | Zero-based collection item. A blob uses its largest boundary. |
+| `item_index` | `0` | Value must be a whole number at least 0. Zero-based collection item. A blob uses its largest boundary. |
 | `clockwise` | `false` | Hull winding in OpenCV Cartesian coordinates (positive Y up). |
 | `measure_defects` | `true` | Return concavity measurements for a simple whole-pixel contour. |
-| `minimum_depth` | `0.0` | Ignore convexity defects shallower than this many pixels. |
+| `minimum_depth` | `0.0` | Value must be a finite number at least 0. Count concavities at or above this perpendicular depth in pixels. |
+| `check_defect_count` | `false` | Judge the count after applying the minimum depth. |
+| `maximum_defects` | `0` | Value must be a whole number at least 0. Largest qualifying count that passes. Zero allows no defects. |
 
 ## Test points against contour (`inspect.contour_points`)
 
