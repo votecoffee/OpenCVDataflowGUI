@@ -12,7 +12,7 @@ lists the tools that can be placed on a graph today.
 | --- | --- | --- |
 | 1 | Separate touching parts and isolate foreground | The basic workflow is available, including distance-peak seed generation, watershed and morphological reconstruction. Add a reusable touching-parts job with calibration and validation fixtures. |
 | 2 | Reference comparison and defect scoring | The basic workflow is available, including histogram backprojection and a reusable registered defect inspection. Add validated defect-specific inspection recipes and lighting normalization. |
-| 3 | Multi-result template search and pick selection | Subpixel template peaks, pose-relative clearance, distinct visible-feature coverage and depth occlusion evidence, and deterministic pick ranking. Fixed-scale multi-result template matching now supplies ranked peaks, overlap suppression and poses. Trainable matchers and collection filters cover other parts of this pipeline. |
+| 3 | Multi-result template search and pick selection | Subpixel template peaks, explicit visible-feature evidence and depth-based occlusion checks. Multi-result matching and image-plane pick selection now support score, pose angle, clearance and deterministic downstream ranking. |
 | 4 | Calipers, widths, contours and shape fitting | Intensity profiles along pose-relative calipers, paired edges, width/gap/discontinuity along a path and contour-profile tolerances. Hull and convexity defects, point-to-contour distance, contour similarity and dedicated line, ellipse and minimum enclosing circle fits are available. |
 | 5 | File video and replay | Video file/stream sources, decode timestamps, seek, frame ranges and extraction, codec/container selection, video writing and deterministic end-of-stream. Extend image-camera acquisition with timed replay and independent source readiness. |
 | 6 | Industrial text and code workflows | OCR text detection, recognition, character rules and training/recipe assets. Add verified Data Matrix and other required symbologies through a suitable backend, and a separate grading workflow. Basic QR and OpenCV linear-code decoding are available. |
@@ -179,3 +179,24 @@ settings in the nested graph for your images.
 A region or mask limits where denoised pixels are written. **Inpaint selected
 pixels** reconstructs a masked area from neighboring pixels with Telea or
 Navier–Stokes.
+
+
+## Available conveyor pick selection
+
+**Select pick candidate** accepts the match records from shape, texture or
+fixed-scale template matching. It projects a configured part rectangle and
+clearance margin around each pose. Candidates can be rejected for a low
+score, an out-of-range angle, a center outside the pick region, a clearance
+rectangle outside the image, or interference with another detected part.
+An optional uint8 mask adds obstacle evidence outside the candidate's own
+footprint. Other supplied detections contribute obstacle footprints even
+when their scores or angles make them ineligible for selection.
+
+The block returns one pose, eligible count, per-candidate rejection reasons
+and an optional overlay. Ranking uses the configured image-space downstream
+vector or the match score, with stable input order as the final tie breaker.
+The [conveyor pick example](../examples/conveyor_pick.json) supplies a
+synthetic obstacle mask and runs with
+`opencv-dataflow-run examples/conveyor_pick.json`. The check measures visible
+image-plane clearance. Depth, gripper reachability and swept-volume collision
+checks remain separate work.
