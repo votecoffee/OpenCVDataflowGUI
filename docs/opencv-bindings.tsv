@@ -2752,7 +2752,7 @@ P3	function	cv2.findContoursLinkRuns	no static reference	-
 P3	function	cv2.findEssentialMat	literal reference	-
 P3	function	cv2.findFundamentalMat	literal reference	-
 P3	function	cv2.findHomography	literal reference	-
-P3	function	cv2.findNonZero	no static reference	-
+P3	function	cv2.findNonZero	literal reference	-
 P3	function	cv2.findPlanes	no static reference	-
 P3	function	cv2.findTransformECCMultiScale	literal reference	-
 P3	function	cv2.findTransformECCWithMask	literal reference	-

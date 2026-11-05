@@ -4,7 +4,9 @@ import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
+from opencv_dataflow.graphics_layers import RESULT_GRAPHICS
 from opencv_dataflow.images import ImageArray, image_format
+from opencv_dataflow.payloads import NO_VALUE, ValuePacket, frame
 
 
 def run(type_id, inputs, parameters=None):
@@ -221,3 +223,40 @@ def test_intensity_lut_step_includes_exact_knot_and_rejects_invalid_curve():
     block.parameters["channel_0_curve"] = [[0.5, 0], [0.5, 1]]
     assert block.execute({"image": image}) is None
     assert block.error_kind == "invalid"
+
+
+def test_find_nonzero_pixels_applies_selection_preserves_coordinates_and_reports_bounds():
+    image = np.array([[0, -1, 0, 0], [3, 0, 0, 0], [0, 0, 0, 6]], np.float32)
+    mask = np.ones(image.shape, np.uint8)
+    mask[1, 0] = 0
+    context = frame([4, 3], "source")
+    block = builtin_registry().create("cv.find_nonzero_pixels", parameters={"draw_points": True})
+    block.exposed_outputs.append(RESULT_GRAPHICS)
+    result = block.execute({"image": ValuePacket(image, {"spatial": context}), "mask": mask})
+    assert result is not None, block.error
+    assert result.outputs["points"] == [[1, 0], [3, 2]]
+    assert result.outputs["count"] == result.outputs["returned_count"] == 2
+    assert result.outputs["bounds"] == [1, 0, 3, 3]
+    assert result.payloads["points"]["spatial"] == context
+    layers = result.outputs[RESULT_GRAPHICS].layers
+    assert len(layers) == 2 and len(layers[1].objects) == 2
+    assert layers[1].payload["spatial"] == context
+    empty = block.execute({"image": image, "mask": np.zeros(image.shape, np.uint8)})
+    assert empty is not None, block.error
+    assert empty.outputs["points"] == [] and empty.outputs["count"] == 0
+    assert empty.outputs["bounds"] is NO_VALUE
+    assert not empty.drawings
+
+
+@pytest.mark.parametrize("limit", [1, 7])
+def test_find_nonzero_pixels_bounds_native_work_and_samples_across_strips(limit):
+    image = np.ones((259, 512), np.uint8)
+    image[128:256, :] = 0
+    block = run("cv.find_nonzero_pixels", {"image": image}, {"max_points": limit})
+    result = block.last_result.outputs
+    rows, columns = np.nonzero(image)
+    assert result["count"] == len(rows)
+    ranks = np.arange(limit) * (len(rows) - 1) // max(limit - 1, 1)
+    assert result["points"] == np.column_stack((columns[ranks], rows[ranks])).tolist()
+    assert result["returned_count"] == limit
+    assert result["bounds"] == [0, 0, 512, 259]

@@ -387,6 +387,86 @@ class ApplyMask(Block):
         return encoded_result(cv2.copyTo(image, mask), inputs["image"])
 
 
+def sampled_nonzero_points(mask, count, limit):
+    if not count:
+        return np.empty((0, 2), dtype=np.int32)
+    if count <= limit:
+        return cv2.findNonZero(mask).reshape(-1, 2)
+    if limit == 1:
+        ranks = np.zeros(1, dtype=np.int64)
+    else:
+        ranks = np.arange(limit, dtype=np.int64) * (count - 1) // (limit - 1)
+
+    # Extract only strips that contain requested ranks, bounding native allocations.
+    strip_height = max(1, 65536 // mask.shape[1])
+    selected = []
+    offset = start = 0
+    for y in range(0, mask.shape[0], strip_height):
+        strip = mask[y : y + strip_height]
+        end_offset = offset + cv2.countNonZero(strip)
+        end = int(np.searchsorted(ranks, end_offset))
+        if end > start:
+            points = cv2.findNonZero(strip).reshape(-1, 2)[ranks[start:end] - offset]
+            points[:, 1] += y
+            selected.append(points)
+            start = end
+            if start == len(ranks):
+                break
+        offset = end_offset
+    return np.concatenate(selected)
+
+
+class FindNonzeroPixels(Block):
+    type_id, title, category = "cv.find_nonzero_pixels", "Find nonzero pixels", "Image processing"
+    block_type, subtype = "Image processing", "Geometry"
+    inputs = SELECTION_INPUTS
+    outputs = (
+        Port("points", "data"),
+        Port("count", "number"),
+        Port("returned_count", "number"),
+        Port("bounds", "data", required=False),
+    )
+    defaults = {"max_points": 500, "draw_points": False}
+    parameter_ranges = {"max_points": NumericRange(1, 10000, whole=True)}
+    parameter_help = {
+        "max_points": "Cap coordinates by sampling larger selections in pixel scan order.",
+        "draw_points": "Draw markers at the returned coordinates in addition to the full bounds.",
+    }
+
+    def process(self, inputs):
+        source = inputs["image"]
+        image = image_value(source)
+        if image.ndim != 2:
+            raise ValidationError("Find nonzero pixels needs a monochrome image or binary mask")
+        selected = selection_mask(inputs, source)
+        mask = (image != 0).astype(np.uint8)
+        if selected is not None:
+            mask[selected == 0] = 0
+        count = cv2.countNonZero(mask)
+        bounds = list(cv2.boundingRect(mask)) if count else NO_VALUE
+        points = sampled_nonzero_points(mask, count, int(self.parameters["max_points"]))
+        drawings = {}
+        if self.generate_graphics and count:
+            drawings["nonzero bounds"] = GraphicDrawing((graphic_box(*bounds, (70, 220, 140)),))
+            if self.parameters["draw_points"]:
+                drawings["nonzero points"] = GraphicDrawing(
+                    tuple(
+                        graphic_object("marker", [point], (70, 185, 250), thickness=1)
+                        for point in points
+                    )
+                )
+        return Result(
+            {
+                "points": points.tolist(),
+                "count": count,
+                "returned_count": len(points),
+                "bounds": bounds,
+            },
+            drawings=drawings,
+            message=f"{count} nonzero pixels · {len(points)} coordinates returned",
+        )
+
+
 class AbsoluteDifference(RegionalOperation, Block):
     region_source = "image_a"
     region_background = "zero"
@@ -787,6 +867,7 @@ FEATURE_BLOCKS = (
     ExtractChannel,
     InsertChannel,
     ApplyMask,
+    FindNonzeroPixels,
     AbsoluteDifference,
     GoodFeatures,
     MSERRegions,

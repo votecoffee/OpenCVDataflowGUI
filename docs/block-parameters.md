@@ -1062,6 +1062,17 @@ Inputs: `spectrum` (dft).
 | `cutoff` | `0.1` | Value must be a finite number between 0 and 0.707107. Cutoff in cycles per pixel. For a band, this is the lower edge. |
 | `upper_cutoff` | `0.3` | Value must be a finite number between 0 and 0.707107. Upper edge in cycles per pixel. Used by the band modes. |
 
+## Find nonzero pixels (`cv.find_nonzero_pixels`)
+
+Image processing / Geometry
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_points` | `500` | Value must be a whole number between 1 and 10000. Cap coordinates by sampling larger selections in pixel scan order. |
+| `draw_points` | `false` | Draw markers at the returned coordinates in addition to the full bounds. |
+
 ## Flat-field correction (`cv.flat_field`)
 
 Image processing / Color and depth
