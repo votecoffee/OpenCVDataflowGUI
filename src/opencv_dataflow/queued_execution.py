@@ -20,6 +20,7 @@ SNAPSHOT_FIELDS = (
     "last_graphics",
     "state",
     "error",
+    "error_kind",
     "elapsed_ms",
     "timing",
     "current_emissions",

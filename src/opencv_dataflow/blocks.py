@@ -16,6 +16,7 @@ from .core import Block, Graph, Port, Registry, Result
 from .graphics_layers import GraphicDrawing, graphic_object
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 from .objects import collection, contour_item
+from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS, scalar_value
 from .payloads import NO_VALUE, moved_payload
 from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
@@ -223,6 +224,10 @@ class Camera(Block):
     parameter_choices = {
         "backend": ("auto", "dshow", "msmf", "v4l2", "gstreamer", "ffmpeg", "avfoundation")
     }
+    parameter_ranges = {
+        **{key: NumericRange(0, 16384, whole=True) for key in ("width", "height", "buffer_size")},
+        "fps": NumericRange(0),
+    }
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -231,13 +236,9 @@ class Camera(Block):
 
     def process(self, inputs):
         device = int(self.parameters["device"])
-        from .processing import finite, integer
-
         p = self.parameters
-        width, height, buffer_size = (
-            integer(p[k], k, 0, 16384) for k in ("width", "height", "buffer_size")
-        )
-        fps = finite(p["fps"], "FPS", 0)
+        width, height, buffer_size = (int(p[k]) for k in ("width", "height", "buffer_size"))
+        fps = float(p["fps"])
         settings = (device, p["backend"], width, height, fps, buffer_size)
         if self._capture is None or settings != self._device:
             self.close()
@@ -384,20 +385,25 @@ class Threshold(RegionalOperation, Block):
     inputs, outputs = SELECTION_INPUTS, (Port("image"), Port("threshold", "number"))
     defaults = {"value": 127.0, "invert": False, "max_value": 255.0, "mode": "binary"}
     parameter_choices = {"mode": ("binary", "binary_inv", "trunc", "tozero", "tozero_inv")}
+    parameter_ranges = {"value": NumericRange(), "max_value": NumericRange(0)}
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["invert"] and p["mode"] != "binary":
+            raise ValidationError(
+                "Legacy invert applies to binary mode; otherwise choose an inverse mode",
+                "invert",
+                "mode",
+            )
 
     def process(self, inputs):
         image = opencv_image(inputs["image"])
         if image.ndim == 3:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         value, maximum = float(self.parameters["value"]), float(self.parameters["max_value"])
-        if not np.isfinite([value, maximum]).all() or maximum < 0:
-            raise ValueError("Threshold/max value must be finite and max value nonnegative")
         name = self.parameters["mode"]
         if self.parameters["invert"]:
-            if name != "binary":
-                raise ValueError(
-                    "Legacy invert applies to binary mode; otherwise choose an inverse mode"
-                )
             name = "binary_inv"
         mode = {
             "binary": cv2.THRESH_BINARY,
@@ -437,6 +443,25 @@ class Contours(Block):
         "approximation": ("none", "simple", "tc89_l1", "tc89_kcos"),
         "region_mode": ("center", "clip"),
     }
+    parameter_ranges = {
+        "min_area": NumericRange(0),
+        "expected_count": NumericRange(0, whole=True),
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        message = "Contour offset must be a whole-pixel [x,y] pair"
+        try:
+            offset = np.asarray(p["offset"], float)
+        except (ValueError, TypeError) as exc:
+            raise ValidationError(message, "offset") from exc
+        if (
+            offset.shape != (2,)
+            or not np.isfinite(offset).all()
+            or np.any(offset != np.rint(offset))
+        ):
+            raise ValidationError(message, "offset")
 
     def process(self, inputs):
         image = opencv_image(inputs["image"])
@@ -454,12 +479,6 @@ class Contours(Block):
             "tc89_kcos": cv2.CHAIN_APPROX_TC89_KCOS,
         }
         offset = np.asarray(self.parameters["offset"], float)
-        if (
-            offset.shape != (2,)
-            or not np.isfinite(offset).all()
-            or np.any(offset != np.rint(offset))
-        ):
-            raise ValueError("Contour offset must be a whole-pixel [x,y] pair")
         selection = selection_mask(inputs, gray)
         search = gray
         if selection is not None and self.parameters["region_mode"] == "clip":
@@ -472,8 +491,6 @@ class Contours(Block):
         )
         minimum = float(self.parameters["min_area"])
         expected = int(self.parameters["expected_count"])
-        if minimum < 0 or expected < 0:
-            raise ValueError("Minimum area and expected count must be nonnegative")
         contour_ids = {id(c): index for index, c in enumerate(contours)}
         selected = [c for c in contours if cv2.contourArea(c) >= minimum]
         if selection is not None and self.parameters["region_mode"] == "center":

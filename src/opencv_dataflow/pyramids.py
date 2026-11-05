@@ -7,9 +7,10 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .images import ImageArray, image_format
+from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS
 from .payloads import ImagePyramid, metadata, moved_payload, validate_payload
-from .processing import image_value, integer
+from .processing import image_value
 
 
 class BuildPyramid(Block):
@@ -20,20 +21,23 @@ class BuildPyramid(Block):
     defaults = {"levels": 4, "border": "reflect"}
     parameter_choices = {"border": tuple(k for k in BORDERS if k != "constant")}
     parameter_help = {"levels": "Total images including level 0 (largest), from 1 to 9."}
+    parameter_ranges = {"levels": NumericRange(1, 9, whole=True)}
 
     def process(self, inputs):
         source = inputs["image"]
         image = image_value(source, (np.uint8, np.uint16, np.int16, np.float32, np.float64))
-        count = integer(self.parameters["levels"], "Levels", 1, 9)
+        count = int(self.parameters["levels"])
         if image.shape[0] * image.shape[1] > 64_000_000:
-            raise ValueError("Pyramid base is limited to 64 million pixels")
+            raise ValidationError("Pyramid base is limited to 64 million pixels")
         largest_size = [image.shape[1], image.shape[0]]
         levels = []
         info = []
         for level in range(count):
             if level:
                 if image.shape[:2] == (1, 1):
-                    raise ValueError("Requested pyramid has more levels than this image supports")
+                    raise ValidationError(
+                        "Requested pyramid has more levels than this image supports"
+                    )
                 image = cv2.pyrDown(image, borderType=BORDERS[self.parameters["border"]])
             matrix = np.diag([2.0**level, 2.0**level, 1.0])
             size = [image.shape[1], image.shape[0]]
@@ -66,7 +70,7 @@ class SelectPyramidLevel(Block):
         levels = inputs["images"].levels
         index = 0 if self.parameters["level"] == "largest" else int(self.parameters["level"])
         if index >= len(levels):
-            raise ValueError(f"Pyramid has no level {index}")
+            raise ValidationError(f"Pyramid has no level {index}")
         image = levels[index]
         payload = metadata(image)
         transform = {

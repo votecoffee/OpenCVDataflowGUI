@@ -152,6 +152,68 @@ def test_run_block_works_without_live_results_and_consumes_pending_live_edit(app
         window.close()
 
 
+def test_invalid_parameter_draft_marks_field_and_node_and_pauses_live_preview(app, monkeypatch):
+    window = MainWindow()
+    window.show()
+    graph = Graph()
+    source = graph.add(window.registry.create("input.demo"))
+    blur = graph.add(window.registry.create("cv.gaussian_blur"))
+    graph.connect(source.id, "image", blur.id, "image")
+    window.replace_graph(graph)
+    graph.run()
+    node = window.scene.nodes[blur.id]
+    node.setSelected(True)
+    inspector = window.inspector
+    inspector.live_results.setChecked(True)
+    inspector.live_delay_ms = 40
+    field = inspector.fields["kernel"]
+    warnings = []
+    monkeypatch.setattr(window, "warn", warnings.append)
+    try:
+        field.setText("4097")
+        assert not inspector.apply_button.isEnabled()
+        assert not inspector.run_block.isEnabled()
+        assert not inspector.apply()
+        assert warnings == []
+        assert "between 1 and 4095" in field.toolTip()
+        assert "Invalid configuration" in inspector.validation_label.text()
+        assert "Invalid configuration" in node.toolTip()
+        assert [badge[0] for badge in node.issue_badges()] == ["!"]
+        assert not inspector.live_timer.isActive()
+        assert blur.parameters["kernel"] == 5
+        assert not window.dirty
+
+        field.setText("7")
+        assert inspector.apply_button.isEnabled() and inspector.run_block.isEnabled()
+        assert inspector.validation_label.isHidden()
+        assert not node.issue_badges()
+        pump_until(app, lambda: inspector._live_result is not None)
+        assert inspector._live_result.parameters["kernel"] == 7
+        assert blur.parameters["kernel"] == 5
+    finally:
+        window.close()
+
+
+def test_cross_field_parameter_errors_highlight_both_controls(app):
+    window = MainWindow()
+    graph = Graph()
+    canny = graph.add(window.registry.create("cv.canny"))
+    window.replace_graph(graph)
+    window.scene.nodes[canny.id].setSelected(True)
+    inspector = window.inspector
+    try:
+        inspector.fields["low"].setText("200")
+        assert "low <= high" in inspector.fields["low"].toolTip()
+        assert "low <= high" in inspector.fields["high"].toolTip()
+        assert not inspector.apply_button.isEnabled()
+        inspector.fields["high"].setText("250")
+        assert inspector.apply()
+        assert canny.parameters["low"] == 200.0 and canny.parameters["high"] == 250.0
+    finally:
+        window.dirty = False
+        window.close()
+
+
 def test_morphology_kernel_editor_stages_a_custom_grid_for_live_preview(app, monkeypatch):
     window = MainWindow()
     graph = Graph()
@@ -775,8 +837,9 @@ def test_toolbox_tree_types_subtypes_search_and_leaf_activation(app, monkeypatch
     errors = []
     monkeypatch.setattr(window, "warn", errors.append)
     window.inspector.fields["image_paths"].setText('"not a list"')
-    window.inspector.apply()
-    assert errors and child.parameters["image_paths"] == ["a.png", "b.png", "c.png"]
+    assert not window.inspector.apply()
+    assert not errors and "requires a JSON list" in window.inspector.validation_label.text()
+    assert child.parameters["image_paths"] == ["a.png", "b.png", "c.png"]
     window.dirty = False
     window.close()
 
@@ -943,8 +1006,9 @@ def test_enum_fields_are_dropdowns_and_unknown_values_are_not_silently_replaced(
     assert window.inspector.fields["score_type"].currentText() == "obsolete"
     errors = []
     monkeypatch.setattr(window, "warn", errors.append)
-    window.inspector.apply()
-    assert errors and block.parameters["score_type"] == "obsolete"
+    assert not window.inspector.apply()
+    assert not errors and "must be one of" in window.inspector.validation_label.text()
+    assert block.parameters["score_type"] == "obsolete"
     window.dirty = False
     window.close()
 

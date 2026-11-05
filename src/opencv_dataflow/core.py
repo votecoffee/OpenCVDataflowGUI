@@ -24,6 +24,7 @@ from .outcomes import (
     rejected_inputs,
     stamp_result,
 )
+from .parameter_validation import NumericRange, ValidationError
 from .payloads import (
     NO_VALUE,
     FlowGroup,
@@ -86,6 +87,7 @@ class Block:
     defaults: ClassVar[dict[str, Any]] = {}
     parameter_choices: ClassVar[dict[str, tuple]] = {}
     parameter_help: ClassVar[dict[str, str]] = {}
+    parameter_ranges: ClassVar[dict[str, NumericRange]] = {}
 
     def __init__(self, *, block_id=None, parameters=None):
         self.id = block_id or uuid.uuid4().hex
@@ -159,6 +161,7 @@ class Block:
 
     def clear_result(self, preserve_history=False):
         self.current_emissions = {}
+        self.error_kind = ""
         self.input_rejected = False
         self.last_rejection = ""
         if preserve_history and "reject_failed" in self.input_failure_policies.values():
@@ -210,7 +213,10 @@ class Block:
         for name, choices in self.parameter_choices.items():
             if str(values[name]) not in tuple(map(str, choices)):
                 label = name.replace("_", " ").capitalize()
-                raise ValueError(f"{label} must be one of: {', '.join(map(str, choices))}")
+                choices_text = ", ".join(map(str, choices))
+                raise ValidationError(f"{label} must be one of: {choices_text}", name)
+        for name, limits in self.parameter_ranges.items():
+            limits.check(values[name], name.replace("_", " ").capitalize(), name)
 
     def execute(self, values, cancelled=lambda: False):
         invocation = uuid.uuid4().hex if self.run_profile.activity_spans else None
@@ -334,10 +340,11 @@ class Block:
             self._report_activity_start(values)
         configured_parameters = self.parameters
         configured_model = getattr(self, "trained_model", None)
+        validating = True
         try:
-            self.validate_parameters()
             values, self.input_payloads = prepare_inputs(self, values)
             self.last_inputs = copy.deepcopy(values)
+            self.validate_parameters()
             apply_recipe(self)
             self.validate_parameters()
             for port in self.inputs:
@@ -350,6 +357,7 @@ class Block:
                 if self._source_ticket is not None:
                     self._report_activity_start(values)
                     self.report_event("ticket_assigned", values={"ticket": self._source_ticket})
+            validating = False
             work_inputs = (
                 self.last_inputs
                 if (
@@ -444,7 +452,8 @@ class Block:
                 kind="final_judgment" if result.final_judgment is not None else "tool_result",
             )
         except (Exception, SystemExit) as exc:
-            self._record_execution_error(exc, values, active=True)
+            invalid = validating and isinstance(exc, (ValueError, TypeError))
+            self._record_execution_error(exc, values, active=True, invalid=invalid)
             if getattr(self, "accept_events", False) or getattr(self, "sequence_memory", False):
                 try:
                     self.reset_runtime()
@@ -465,8 +474,9 @@ class Block:
                 self.last_inputs = {}
         return self.last_result
 
-    def _record_execution_error(self, exc, values, *, active=False):
+    def _record_execution_error(self, exc, values, *, active=False, invalid=False):
         self.state, self.error = "error", exception_message(exc)
+        self.error_kind = "invalid" if invalid or isinstance(exc, ValidationError) else "exception"
         self.input_rejected = False
         self.last_result = None
         self.last_output_images, self.last_graphics, self.current_emissions = {}, {}, {}
@@ -569,6 +579,7 @@ class Block:
                 "input_payloads",
                 "state",
                 "error",
+                "error_kind",
                 "elapsed_ms",
                 "timing",
                 "input_rejected",
@@ -606,6 +617,7 @@ class Block:
             "last_graphics",
             "state",
             "error",
+            "error_kind",
             "elapsed_ms",
             "timing",
             "current_emissions",
@@ -1119,6 +1131,7 @@ class Graph:
                     name: values for name, values in streams.items() if name not in queued_inputs
                 }
                 if any(len(values) > 1 for values in remaining.values()):
+                    block.error_kind = "invalid"
                     block.state, block.error = (
                         "error",
                         "Queue changing ancillary data with the image payload",
@@ -1225,6 +1238,7 @@ class Graph:
                 ):
                     length = 0
                 if any(len(v) not in (1, length) for v in streams.values()):
+                    block.error_kind = "invalid"
                     block.state, block.error = (
                         "error",
                         "Stream lengths differ; join/batch explicitly",
@@ -1241,6 +1255,7 @@ class Graph:
                     for index in range(length)
                 ]
             if len(calls) > 1024:
+                block.error_kind = "invalid"
                 block.state, block.error = "error", "Block exceeds 1024 input events per run"
                 return
             if not calls:

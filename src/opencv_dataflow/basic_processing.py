@@ -5,8 +5,9 @@ import numpy as np
 
 from .core import Result
 from .images import ImageArray
+from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS, scalar_value
-from .processing import ImageTool, encoded_result, finite, gray_image, image_value, integer
+from .processing import ImageTool, encoded_result, gray_image, image_value
 from .selection import RegionalOperation
 
 ALGORITHM_HINTS = {
@@ -45,6 +46,12 @@ class GaussianBlur(RegionalOperation, ImageTool):
         "algorithm_hint": "default",
     }
     parameter_choices = {"border": tuple(BORDERS), "algorithm_hint": tuple(ALGORITHM_HINTS)}
+    parameter_ranges = {
+        "kernel": NumericRange(1, 4095, whole=True, odd=True, zero_allowed=True),
+        "kernel_y": NumericRange(1, 4095, whole=True, odd=True, zero_allowed=True),
+        "sigma": NumericRange(0),
+        "sigma_y": NumericRange(0),
+    }
     parameter_help = {
         "kernel": "Odd X size; 0 derives it from positive sigma X.",
         "kernel_y": "0 uses kernel X; if both are zero, derive Y size from sigma.",
@@ -52,17 +59,20 @@ class GaussianBlur(RegionalOperation, ImageTool):
         "border_value": "Used only by the constant border mode, in source channel order.",
     }
 
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["kernel"] == 0 and float(p["sigma"]) <= 0:
+            raise ValidationError(
+                "Automatic Gaussian sizing requires positive sigma X", "kernel", "sigma"
+            )
+
     def process(self, inputs):
         source = inputs["image"]
         image = image_value(source)
         p = self.parameters
-        kx = integer(p["kernel"], "Gaussian kernel X", 0)
-        ky = integer(p["kernel_y"], "Gaussian kernel Y", 0) or kx
-        sx, sy = (finite(p[k], k, 0) for k in ("sigma", "sigma_y"))
-        if any(k and k % 2 == 0 for k in (kx, ky)):
-            raise ValueError("Gaussian kernel sizes must be positive odd integers or zero")
-        if (kx == 0 and sx <= 0) or (ky == 0 and (sy or sx) <= 0):
-            raise ValueError("Automatic Gaussian kernel sizing requires positive sigma")
+        kx, ky = int(p["kernel"]), int(p["kernel_y"]) or int(p["kernel"])
+        sx, sy = float(p["sigma"]), float(p["sigma_y"])
         border = BORDERS[p["border"]]
         value = scalar_value(p["border_value"])
         px = py = 0
@@ -91,13 +101,18 @@ class Canny(RegionalOperation, ImageTool):
     region_background = "zero"
     defaults = {"low": 60.0, "high": 150.0, "aperture": "3", "l2_gradient": False}
     parameter_choices = {"aperture": ("3", "5", "7")}
+    parameter_ranges = {"low": NumericRange(0), "high": NumericRange(0)}
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if float(p["low"]) > float(p["high"]):
+            raise ValidationError("Thresholds must satisfy 0 <= low <= high", "low", "high")
 
     def process(self, inputs):
         image = gray_image(inputs["image"], (np.uint8,), auto_depth=True)
         p = self.parameters
-        low, high = (finite(p[k], k, 0) for k in ("low", "high"))
-        if low > high:
-            raise ValueError("Thresholds must satisfy 0 <= low <= high")
+        low, high = float(p["low"]), float(p["high"])
         output = cv2.Canny(
             image, low, high, apertureSize=int(p["aperture"]), L2gradient=p["l2_gradient"]
         )

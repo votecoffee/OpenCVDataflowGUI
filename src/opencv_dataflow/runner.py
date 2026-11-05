@@ -30,6 +30,7 @@ def describe(graph):
             "name": block.name,
             "type": block.type_id,
             "state": block.state,
+            **({"error_kind": block.error_kind} if block.error_kind else {}),
             "recipe": block.last_recipe_ref,
             "recipe_parameters": block.last_recipe_parameters,
             "elapsed_ms": block.elapsed_ms,

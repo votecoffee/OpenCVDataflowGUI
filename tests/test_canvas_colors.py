@@ -1,5 +1,6 @@
 """Semantic canvas colors, reusable terminal aliases and independent status styling."""
 
+import numpy as np
 import pytest
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QImage, QPainter
@@ -8,7 +9,7 @@ from PySide6.QtWidgets import QDialog, QLabel
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry, demo_graph
 from opencv_dataflow.canvas import CanvasScene, Wire
-from opencv_dataflow.core import Block, Graph, Port
+from opencv_dataflow.core import Block, Graph, Port, Result
 from opencv_dataflow.payloads import compatible
 from opencv_dataflow.toolblocks import Binding, ToolBlock
 from opencv_dataflow.visual_style import BLOCK_COLORS, PORT_COLORS, block_type, port_type
@@ -100,6 +101,39 @@ def test_explicit_plugin_hints_keep_arbitrary_public_names():
     )
     assert block.inputs[0].visual_type == "pose"
     assert port_type(block, block.outputs[0], True) == "region"
+
+
+def test_node_badges_distinguish_invalid_input_from_exception_and_clear(app):
+    class Plugin(Block):
+        broken = True
+
+        def process(self, inputs):
+            if self.broken:
+                raise ValueError("unexpected plugin exception")
+            return Result({})
+
+    registry = builtin_registry()
+    graph = Graph()
+    blur = graph.add(registry.create("cv.gaussian_blur"))
+    plugin = graph.add(Plugin())
+    graph.set_run_profile("lean")
+    graph.run(injected={(blur.id, "image"): "not pixels"})
+    scene = CanvasScene(graph)
+    invalid, exception = scene.nodes[blur.id], scene.nodes[plugin.id]
+    assert [item[0] for item in invalid.issue_badges()] == ["!"]
+    assert [item[0] for item in exception.issue_badges()] == ["×"]
+    invalid.refresh_issue_tooltip()
+    exception.refresh_issue_tooltip()
+    assert "Invalid data" in invalid.toolTip()
+    assert "unexpected plugin exception" in exception.toolTip()
+    display = registry.create("cv.gaussian_blur")
+    display.copy_results_from(blur)
+    assert display.error_kind == "invalid"
+
+    plugin.broken = False
+    graph.run(injected={(blur.id, "image"): np.zeros((16, 16), dtype=np.uint8)})
+    assert blur.state == plugin.state == "pass"
+    assert not invalid.issue_badges() and not exception.issue_badges()
 
 
 def test_node_category_border_and_selection_preserve_result_header(app):
