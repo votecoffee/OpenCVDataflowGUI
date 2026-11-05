@@ -373,10 +373,11 @@ class ParallelInspect(Block):
                 tool.graph.bind_ticket_results(self._ticket_results, tool._event_path)
                 tool.graph.bind_project_dir(self.project_dir)
                 # Per-item graphs run serially; the outer pool owns part concurrency.
+                tool.graph.set_branch_workers(1)
                 for block in walk(tool.graph):
                     block._production_excluded = True
-                    if block.type_id == "flow.split":
-                        block.parameters["workers"] = 1
+                    if isinstance(block, ToolBlock):
+                        block.graph.set_branch_workers(1)
                 values = {
                     p["image_terminal"]: ValuePacket(image, payload),
                     p["pose_terminal"]: ValuePacket(record["pose"], payload),

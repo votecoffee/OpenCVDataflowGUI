@@ -79,6 +79,7 @@ class BufferedFlow(FlowBlock):
 
 class AssignTicket(FlowBlock):
     type_id, title = "flow.ticket", "Assign ticket"
+    requires_serial_execution = True
     inputs = (Port("value", "any"), Port("ticket", "data", required=False))
     outputs = (Port("value", "any"), Port("ticket", "data"))
     defaults = {"mode": "auto_number", "value": 1}
@@ -107,7 +108,7 @@ class Split(FlowBlock):
     outputs = tuple(Port(name, "any") for name in BRANCHES)
     defaults = {"branches": 2, "workers": 2}
     parameter_help = {
-        "workers": "1..8 workers for independent nodes in this graph; sources remain serial."
+        "workers": "1..8 workers for independent nodes when the graph's Branch workers is Auto."
     }
 
     def process(self, inputs):

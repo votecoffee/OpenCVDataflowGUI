@@ -519,6 +519,11 @@ updates, and removes the development pacing delay while preserving processing ou
 failure reasons, counters and private input isolation. The headless runner accepts
 `--profile lean`. See [run profiles and measured performance](docs/run-profiles.md).
 
+Independent graph branches can run concurrently as soon as their inputs are ready.
+Use **Branch workers** in the toolbar to save **Auto**, **Serial**, or a worker
+limit for the current graph. The headless runner accepts `--branch-workers 1` to
+run the root graph serially. See [branch scheduling](docs/control-flow.md).
+
 The bottom status bar shows running ticket totals, pass/fail counts, pass rate and
 average end-to-end time. Final judgments can attach stable failure codes and explanations.
 Use **Results > Validation image sets…** to grade saved images as must/should pass,

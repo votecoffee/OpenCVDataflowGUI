@@ -1551,7 +1551,7 @@ Inputs: `value` (any).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `branches` | `2` |  |
-| `workers` | `2` | 1..8 workers for independent nodes in this graph; sources remain serial. |
+| `workers` | `2` | 1..8 workers for independent nodes when the graph's Branch workers is Auto. |
 
 ## Assign ticket (`flow.ticket`)
 
