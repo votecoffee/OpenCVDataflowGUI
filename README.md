@@ -168,7 +168,7 @@ include edges, corners, lines and circles; texture detection supports ORB and SI
 thickness, continuous length, strength, intensity, contrast and coverage.
 
 Open **File > Load trained patterns and edges example**, or
-[`examples/trained_patterns.json`](examples/trained_patterns.json), and press F5.
+[`examples/trained_patterns/trained_patterns.json`](examples/trained_patterns/trained_patterns.json), and press F5.
 It needs no external assets: expected results are one geometric match, one texture
 match and two vertical edges. See [training and edge workflows](docs/patterns-edges.md)
 for training regions, pose coordinates, controls and current algorithm limits.
@@ -178,7 +178,7 @@ to locate an inspection origin on the part. **Pose from feature** creates a fram
 from a ranked blob, line, contour or pattern match, and **Offset pose** composes
 another local offset. Connect a pose to **Region relative to pose** to position a
 rectangle, circle or polygon for downstream masked inspections. Try **File > Load
-pose-relative inspection example** or `examples/pose_inspection.json`; see
+pose-relative inspection example** or `examples/pose_inspection/pose_inspection.json`; see
 [pose-relative inspection](docs/poses.md) for coordinates and a complete workflow.
 
 **Shape region**, **Region relative to pose** and **Shape mask** have visual
@@ -233,7 +233,7 @@ Migration details and a possible browser/WebAssembly backend are covered in the
 [backend notes](docs/opencv-backend.md).
 
 Load trusted custom blocks via **File > Load Python plugin**. Start with
-[`examples/custom_invert.py`](examples/custom_invert.py). Plugins run arbitrary Python;
+[`examples/custom_invert/custom_invert.py`](examples/custom_invert/custom_invert.py). Plugins run arbitrary Python;
 project files never automatically import them. Load the same plugins before opening
 projects that use their types. No code is needed for built-in pipelines.
 
@@ -257,7 +257,7 @@ point-cloud processing is implemented.
 ### Build and test a starter project
 
 For the real-image Lena review example, run `python scripts/prepare_lena.py` once,
-then open `examples/lena.json`. The optional, hash-checked image is not committed
+then open `examples/lena/lena.json`. The optional, hash-checked image is not committed
 or included under this project's MIT license; see [asset provenance](examples/assets/README.md).
 This example includes grayscale/blur, Canny, color/grayscale histograms and template
 matching, including an editable nested ToolBlock. Its image input uses a
@@ -275,15 +275,15 @@ histogram and Canny branches. Run once to detect two parts at a 100% inspection
 score. Change **Measure two parts > Expected count** to 3 and apply it to exercise
 an inspection failure, then restore 2. Save the graph as your own project.
 
-The same project is saved in [`examples/starter_inspection.json`](examples/starter_inspection.json).
+The same project is saved in [`examples/starter_inspection/starter_inspection.json`](examples/starter_inspection/starter_inspection.json).
 Open it through File > Open or pass its path to `opencv-dataflow`. A second project,
-[`examples/template_matching.json`](examples/template_matching.json), locates a
+[`examples/template_matching/template_matching.json`](examples/template_matching/template_matching.json), locates a
 reference patch at pixel `(250, 85)`; it is also available from File.
 
 To verify a saved graph without the editor:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/starter_inspection.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/starter_inspection/starter_inspection.json --repeat 3
 ```
 
 Add `--report <new-file.json>` for a JSON receipt of each run, including states,
@@ -301,13 +301,13 @@ new wrappers use eager OpenCV calls; legacy native G-API tools live under Advanc
 Additional wrappers include histogram equalization, CLAHE, normalization, gamma,
 channel split/merge, masking, absolute difference, corner detection, Hough lines/
 circles and distance transform. See [additional tools](docs/additional-tools.md).
-After preparing the optional Lena asset, open `examples/lena_features.json` to try
+After preparing the optional Lena asset, open `examples/lena_features/lena_features.json` to try
 CLAHE → corners, edges → line segments, and a histogram in one project.
 
 The [registration and transform tools](docs/registration-tools.md) add arbitrary
 rotation, affine/perspective warps, borders, pyramids, custom filtering, unsharp
 masking, FAST/ORB features, descriptor matching, homography estimation and point
-transforms. Open `examples/lena_registration.json` after preparing the Lena asset
+transforms. Open `examples/lena_registration/lena_registration.json` after preparing the Lena asset
 to match the image to a known rotated copy and compare the estimated warp.
 
 Further tools include box and separable filtering, Harris/minimum-eigenvalue
@@ -351,10 +351,10 @@ registration `transform`. Forward/inverse direction and mask sampling use dropdo
 Try **File > Load transformed regions example** for a 12-block crop → resize →
 rotation pipeline whose inspection region follows each image operation.
 
-Open **File > Load regions example**, or `examples/regions.json`, for a working
+Open **File > Load regions example**, or `examples/regions/regions.json`, for a working
 10-block project that inspects each synthetic part separately, computes a polygon
 histogram and blurs only the circular selection. No image download is required.
-Run it headlessly with `opencv-dataflow-run examples/regions.json --repeat 3`.
+Run it headlessly with `opencv-dataflow-run examples/regions/regions.json --repeat 3`.
 
 Selections support filters, segmentation, gradients, image math, histogram and
 contrast tools, corner/ORB detectors, contours/components and template search.
@@ -375,7 +375,7 @@ sizes, extent, solidity, circularity, distance and all seven raw/signed-log Hu m
 Chain filters for multiple criteria, inspect rejected objects, and use stable
 two-key sorting with explicit policies for undefined measurements.
 
-Try **File > Load object collections example**, or `examples/object_collections.json`.
+Try **File > Load object collections example**, or `examples/object_collections/object_collections.json`.
 This 16-block project orders two parts left-to-right, selects the round contour and
 isolates two long vertical lines. See [collection tools and measurement conventions](docs/object-collections.md).
 
@@ -399,7 +399,7 @@ exposes a mapping to the largest or original image for **Transform points** and
 **Transform region**. **Attach port payload** adds recipe or custom data.
 
 Try **File > Load channels and pyramids example**, or open
-`examples/channels_pyramids.json`: it splits/merges channels, carries a recipe
+`examples/channels_pyramids/channels_pyramids.json`: it splits/merges channels, carries a recipe
 payload through a four-level pyramid, detects blobs at level 2, and maps their
 centroids back to the largest image. See [payload and pyramid contracts](docs/payloads-pyramids.md).
 
@@ -465,7 +465,7 @@ so they do not depend on the original definition file. Required Python plugins m
 still be loaded explicitly.
 
 For a ready-made nested pattern, import
-[`examples/inspect_shapes.toolblock.json`](examples/inspect_shapes.toolblock.json)
+[`examples/inspect_shapes/inspect_shapes.toolblock.json`](examples/inspect_shapes/inspect_shapes.toolblock.json)
 and connect a Demo image or Image file output to its `image` input.
 
 Run controls always execute the entire root job, including when viewing a nested
@@ -543,7 +543,8 @@ boundaries, parallel work and explicit final-decision timestamps.
 - `app.py`: Qt editor, inspector, worker execution, project and plugin actions.
 - `toolblocks.py`: composite blocks, public terminal mappings, reusable definitions.
 - `toolblock_editor.py`: public terminal configuration dialog.
-- `examples/`: reusable custom content.
+- [`examples/`](examples/README.md): runnable projects, reusable ToolBlocks, and a Python plugin,
+  each with its own README.
 - `tests/`: local runtime and persistence checks.
 
 Default Grayscale, Gaussian blur and Canny use ordinary OpenCV calls, retaining

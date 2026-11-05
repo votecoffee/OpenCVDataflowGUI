@@ -353,7 +353,7 @@ def test_saved_example_repeats_nested_and_headless_receipts_preserve_descriptors
     from opencv_dataflow.toolblocks import encapsulate
 
     registry = builtin_registry()
-    graph = Graph.load("examples/object_collections.json", registry)
+    graph = Graph.load("examples/object_collections/object_collections.json", registry)
     assert graph.to_dict() == object_collections_graph(registry).to_dict()
     for _ in range(3):
         graph.run()
@@ -376,7 +376,9 @@ def test_saved_example_repeats_nested_and_headless_receipts_preserve_descriptors
     assert restored.blocks[nested.id].state == "pass"
     assert restored.blocks["objects_blob_draw"].last_result.outputs["count"] == 2
     report = tmp_path / "report.json"
-    assert main(["examples/object_collections.json", "--report", str(report)]) == 0
+    assert (
+        main(["examples/object_collections/object_collections.json", "--report", str(report)]) == 0
+    )
     records = json.loads(report.read_text())["runs"][0]["blocks"]
     selected = next(row for row in records if row["id"] == "objects_blob_sort")
     assert "hu_7" in selected["outputs"]["collection"]["items"][0]["metrics"]

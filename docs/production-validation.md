@@ -113,7 +113,7 @@ expectations and should score **100%** with required checks passing; the must-fa
 reports `part_count`. No camera/download is needed.
 
 ```powershell
-.\.venv\Scripts\python -m opencv_dataflow.validation examples/validation_images.json --set validation_smoke --report .local/validation-report.json
+.\.venv\Scripts\python -m opencv_dataflow.validation examples/validation_images/validation_images.json --set validation_smoke --report .local/validation-report.json
 ```
 
 Choose a new report filename on each invocation. `--plugin path/to/trusted_plugin.py` loads

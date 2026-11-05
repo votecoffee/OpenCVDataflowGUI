@@ -152,5 +152,5 @@ feeding the cameras' ticket inputs. It is a demonstration source, not a PLC driv
 Production part identities must remain unique across workpieces and resets.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/input_coordination.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/input_coordination/input_coordination.json --repeat 3
 ```

@@ -24,7 +24,7 @@ from opencv_dataflow.validation_editor import ValidationManager
 @pytest.fixture
 def program():
     registry = builtin_registry()
-    graph = Graph.load("examples/validation_images.json", registry)
+    graph = Graph.load("examples/validation_images/validation_images.json", registry)
     return registry, graph
 
 
@@ -55,7 +55,7 @@ def test_saved_example_and_all_expected_classes(program):
 def test_production_counts_are_per_ticket_not_block(program):
     _, graph = program
     graph.run()
-    graph.blocks["validation_source"].parameters["path"] = "validation_assets/fail.png"
+    graph.blocks["validation_source"].parameters["path"] = "../assets/validation/fail.png"
     graph.run()
     stats = graph.ticket_results.statistics()
     assert (stats["total"], stats["pass"], stats["fail"], stats["pass_rate"]) == (2, 1, 1, 50)
@@ -134,7 +134,7 @@ def test_totals_survive_ticket_history_eviction():
 
 def test_fail_reasons_propagate_and_are_output_with_final_judgment(program):
     _, graph = program
-    graph.blocks["validation_source"].parameters["path"] = "validation_assets/fail.png"
+    graph.blocks["validation_source"].parameters["path"] = "../assets/validation/fail.png"
     graph.run()
     final = graph.blocks["validation_final"]
     reasons = final.last_result.outputs["judgment"]["fail_reasons"]
@@ -217,7 +217,7 @@ def test_manifest_roundtrip_and_cli_report_preserves_existing_file(program, tmp_
     assert (
         main(
             [
-                "examples/validation_images.json",
+                "examples/validation_images/validation_images.json",
                 "--set",
                 "validation_smoke",
                 "--report",
@@ -230,7 +230,7 @@ def test_manifest_roundtrip_and_cli_report_preserves_existing_file(program, tmp_
     assert (
         main(
             [
-                "examples/validation_images.json",
+                "examples/validation_images/validation_images.json",
                 "--set",
                 "validation_smoke",
                 "--report",
@@ -243,7 +243,7 @@ def test_manifest_roundtrip_and_cli_report_preserves_existing_file(program, tmp_
     content = json.loads(original)
     assert (
         content["cases"][0]["image_sha256"]
-        == hashlib.sha256(Path("examples/validation_assets/pass.png").read_bytes()).hexdigest()
+        == hashlib.sha256(Path("examples/assets/validation/pass.png").read_bytes()).hexdigest()
     )
 
 
@@ -316,8 +316,8 @@ def test_sequence_validation_can_warm_up_and_isolated_validation_starts_fresh(pr
     graph.connect(source.id, "image", memory.id, "image")
     graph.connect(memory.id, "image", final.id, "value")
     cases = [
-        {"id": "warmup", "path": "validation_assets/pass.png", "expectation": "unknown"},
-        {"id": "inspect", "path": "validation_assets/pass.png", "expectation": "must_pass"},
+        {"id": "warmup", "path": "../assets/validation/pass.png", "expectation": "unknown"},
+        {"id": "inspect", "path": "../assets/validation/pass.png", "expectation": "must_pass"},
     ]
     manifest = {
         "id": "memory",
@@ -352,7 +352,7 @@ def test_validation_cancellation_keeps_partial_report(program):
 def test_wired_reason_codes_are_consumable_and_forced_pass_does_not_publish_failure(program):
     registry, graph = program
     final = graph.blocks["validation_final"]
-    graph.blocks["validation_source"].parameters["path"] = "validation_assets/fail.png"
+    graph.blocks["validation_source"].parameters["path"] = "../assets/validation/fail.png"
     graph.run()
     packet = graph.blocks["validation_inspect"].current_emissions["overlay"][0]
     tool = registry.create("inspect.final_judgment", parameters={"mode": "boolean_input"})
@@ -384,7 +384,9 @@ def test_validation_can_use_automatic_terminal_results_with_no_final_tool(progra
         "id": "automatic",
         "name": "Automatic",
         "source": source,
-        "cases": [{"id": "one", "path": "validation_assets/pass.png", "expectation": "must_pass"}],
+        "cases": [
+            {"id": "one", "path": "../assets/validation/pass.png", "expectation": "must_pass"}
+        ],
     }
     report = run_set(graph.to_dict(), manifest, registry, original.project_dir)
     assert report["summary"]["passed"]
@@ -403,7 +405,7 @@ def test_automatic_counts_include_private_toolblock_inspection_failures(program)
         registry.create(
             "input.file",
             parameters={
-                "path": str((original.project_dir / "validation_assets/pass.png").resolve())
+                "path": str((original.project_dir / "../assets/validation/pass.png").resolve())
             },
         )
     )

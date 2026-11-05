@@ -87,7 +87,7 @@ def test_roundtrip_and_schema_rejection(tmp_path, registry):
 
 
 def test_custom_plugin_and_branch_isolation(registry):
-    load_plugin("examples/custom_invert.py", registry)
+    load_plugin("examples/custom_invert/custom_invert.py", registry)
     graph = Graph()
     source = graph.add(registry.create("input.demo"))
     invert = graph.add(registry.create("example.invert"))

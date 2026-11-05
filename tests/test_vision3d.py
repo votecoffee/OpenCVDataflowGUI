@@ -61,7 +61,7 @@ EXAMPLES = [
 @pytest.mark.parametrize("profile", ["debug", "balanced", "lean"])
 def test_saved_3d_examples_roundtrip_and_execute(name, factory, profile):
     registry = builtin_registry()
-    graph = Graph.load(Path("examples") / f"{name}.json", registry)
+    graph = Graph.load(Path("examples") / name / f"{name}.json", registry)
     assert graph.to_dict() == factory(registry).to_dict()
     graph.set_run_profile(profile)
     graph.run()
@@ -478,7 +478,7 @@ def test_cloud_toolblock_and_headless_summary(tmp_path):
 
 def test_offscreen_cloud_viewer_renders_retained_result(app):
     window = MainWindow()
-    window.load_ml_example(rgbd_cloud_graph)
+    window.load_ml_example(rgbd_cloud_graph, "rgbd_cloud")
     window.graph.run()
     window.show_cloud_viewer()
     viewer = window.cloud_viewer

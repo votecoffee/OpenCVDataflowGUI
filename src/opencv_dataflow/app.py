@@ -99,6 +99,8 @@ from .toolblock_editor import InterfaceDialog
 from .toolblocks import ToolBlock, encapsulate
 from .visual_style import BLOCK_COLORS, NODE_SIZES, PORT_COLORS, PORT_LABELS
 
+EXAMPLES_ROOT = Path(__file__).resolve().parents[2] / "examples"
+
 
 class Runner(QThread):
     frame = Signal()
@@ -1318,18 +1320,46 @@ class MainWindow(QMainWindow):
             ("Load sequence memory example", None, self.load_sequence_example),
             ("Load validation image set example", None, self.load_validation_example),
             ("Load image-set workspace example", None, self.load_image_set_workspace),
-            ("Load DNN embedding example", None, lambda: self.load_ml_example(dnn_graph)),
-            ("Load Annoy search example", None, lambda: self.load_ml_example(annoy_graph)),
-            ("Load LightGlue matcher example", None, lambda: self.load_ml_example(lightglue_graph)),
-            ("Load stereo cloud example", None, lambda: self.load_ml_example(stereo_cloud_graph)),
-            ("Load RGB-D cloud example", None, lambda: self.load_ml_example(rgbd_cloud_graph)),
-            ("Load 3D pose example", None, lambda: self.load_ml_example(pose_3d_graph)),
+            (
+                "Load DNN embedding example",
+                None,
+                lambda: self.load_ml_example(dnn_graph, "dnn_embeddings"),
+            ),
+            (
+                "Load Annoy search example",
+                None,
+                lambda: self.load_ml_example(annoy_graph, "annoy_search"),
+            ),
+            (
+                "Load LightGlue matcher example",
+                None,
+                lambda: self.load_ml_example(lightglue_graph, "lightglue_match"),
+            ),
+            (
+                "Load stereo cloud example",
+                None,
+                lambda: self.load_ml_example(stereo_cloud_graph, "stereo_cloud"),
+            ),
+            (
+                "Load RGB-D cloud example",
+                None,
+                lambda: self.load_ml_example(rgbd_cloud_graph, "rgbd_cloud"),
+            ),
+            (
+                "Load 3D pose example",
+                None,
+                lambda: self.load_ml_example(pose_3d_graph, "pose_3d"),
+            ),
             (
                 "Load structured light example",
                 None,
-                lambda: self.load_ml_example(structured_light_graph),
+                lambda: self.load_ml_example(structured_light_graph, "structured_light"),
             ),
-            ("Load TSDF fusion example", None, lambda: self.load_ml_example(tsdf_graph)),
+            (
+                "Load TSDF fusion example",
+                None,
+                lambda: self.load_ml_example(tsdf_graph, "tsdf_fusion"),
+            ),
             ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
@@ -1858,15 +1888,14 @@ class MainWindow(QMainWindow):
 
     def load_image_set_workspace(self):
         if self.confirm_discard():
-            examples = Path(__file__).resolve().parents[2] / "examples"
             graph = image_set_workspace_graph(self.registry)
-            graph.bind_project_dir(examples)
+            graph.bind_project_dir(EXAMPLES_ROOT / "image_set_workspace")
             self.replace_graph(graph)
 
-    def load_ml_example(self, factory):
+    def load_ml_example(self, factory, folder):
         if self.confirm_discard():
             graph = factory(self.registry)
-            graph.bind_project_dir(Path(__file__).resolve().parents[2] / "examples")
+            graph.bind_project_dir(EXAMPLES_ROOT / folder)
             self.replace_graph(graph)
 
     def reset_flow_state(self):
@@ -1996,11 +2025,14 @@ class MainWindow(QMainWindow):
 
     def load_validation_example(self):
         if not self.runner and self.confirm_discard():
-            project = Path(__file__).resolve().parents[2] / "examples" / "validation_images.json"
+            project = EXAMPLES_ROOT / "validation_images" / "validation_images.json"
             if project.exists():
                 self.replace_graph(Graph.load(project, self.registry), project)
             else:
-                self.warn("Open examples/validation_images.json from the repository checkout")
+                self.warn(
+                    "Open examples/validation_images/validation_images.json "
+                    "from the repository checkout"
+                )
 
     def manage_recipes(self):
         if not self.runner:

@@ -330,7 +330,7 @@ def test_shipped_control_flow_example_repeats_drains_and_reports_each_event():
     from opencv_dataflow.runner import describe
 
     r = builtin_registry()
-    graph = Graph.load(Path(__file__).parents[1] / "examples/control_flow.json", r)
+    graph = Graph.load(Path(__file__).parents[1] / "examples/control_flow/control_flow.json", r)
     assert graph.to_dict() == control_flow_graph(r).to_dict()
     for _ in range(3):
         graph.run()

@@ -130,8 +130,8 @@ maps. The score uses equal weighting across selected pixels and channels.
 copies with a normalized matching method, minimum score, result limit,
 overlap suppression and optional mask/region inputs. It returns ranked
 bounds, centers, scores and a list of center poses. The pose list connects
-directly to **Inspect each pose in parallel**. Open the [25-part example](../examples/template_instances.json)
-or run it with `opencv-dataflow-run examples/template_instances.json`.
+directly to **Inspect each pose in parallel**. Open the [25-part example](../examples/template_instances/template_instances.json)
+or run it with `opencv-dataflow-run examples/template_instances/template_instances.json`.
 
 
 ## Available histogram and shape measurements
@@ -168,7 +168,7 @@ transform and a minimum coefficient. It emits the aligned image and the
 sample-to-reference transform. The inverse mapping is available on its
 geometry output.
 
-Import the [Registered defect inspection ToolBlock](../examples/registered_defect_inspection.toolblock.json)
+Import the [Registered defect inspection ToolBlock](../examples/registered_defect_inspection/registered_defect_inspection.toolblock.json)
 to align a sample to a known-good reference, threshold the absolute
 difference and report connected defects. Its optional region is in reference
 coordinates. The included settings use translation, a residual threshold of
@@ -195,9 +195,9 @@ when their scores or angles make them ineligible for selection.
 The block returns one pose, eligible count, per-candidate rejection reasons
 and an optional overlay. Ranking uses the configured image-space downstream
 vector or the match score, with stable input order as the final tie breaker.
-The [conveyor pick example](../examples/conveyor_pick.json) supplies a
+The [conveyor pick example](../examples/conveyor_pick/conveyor_pick.json) supplies a
 synthetic obstacle mask and runs with
-`opencv-dataflow-run examples/conveyor_pick.json`. The check measures visible
+`opencv-dataflow-run examples/conveyor_pick/conveyor_pick.json`. The check measures visible
 image-plane clearance. Depth, gripper reachability and swept-volume collision
 checks remain separate work.
 
@@ -215,6 +215,6 @@ The block checks minimum edge gradient, width, center offset, passing-scan
 fraction and the longest run of missing scans. A mask or region must cover
 the full scan, including any interpolation neighbors that contribute.
 Missing scans, including scans outside the image or selection, count
-toward the gap. The [caliper example](../examples/bead_calipers.json) measures
+toward the gap. The [caliper example](../examples/bead_calipers/bead_calipers.json) measures
 a 126-pixel synthetic strip and runs with
-`opencv-dataflow-run examples/bead_calipers.json`.
+`opencv-dataflow-run examples/bead_calipers/bead_calipers.json`.

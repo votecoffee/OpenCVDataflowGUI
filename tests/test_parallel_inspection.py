@@ -222,7 +222,7 @@ def test_blob_collection_produces_25_local_inspections():
 
 def test_25_pattern_example_and_nested_saved_inspection(tmp_path):
     r = builtin_registry()
-    graph = Graph.load(Path(__file__).parents[1] / "examples/parallel_parts.json", r)
+    graph = Graph.load(Path(__file__).parents[1] / "examples/parallel_parts/parallel_parts.json", r)
     assert graph.to_dict() == parallel_parts_graph(r).to_dict()
     for _ in range(3):
         graph.run()

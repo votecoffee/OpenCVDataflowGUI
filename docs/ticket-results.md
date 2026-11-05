@@ -150,7 +150,7 @@ and that branch emits nothing. Configuration application intentionally clears ol
 previews; runtime failure rejection itself does not overwrite prior previews.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/ticket_results.json --repeat 3 --report .local/ticket-receipt.json
+.\.venv\Scripts\opencv-dataflow-run examples/ticket_results/ticket_results.json --repeat 3 --report .local/ticket-receipt.json
 ```
 
 ## Custom blocks

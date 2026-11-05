@@ -7,11 +7,11 @@ the optional backend for Data Matrix, Code 128, PDF417 and more symbologies.
 python -m pip install -e ".[barcodes]"
 ```
 
-Open the [Data Matrix example](../examples/datamatrix_reading.json), or run it
+Open the [Data Matrix example](../examples/datamatrix_reading/datamatrix_reading.json), or run it
 from the repository root with:
 
 ```powershell
-opencv-dataflow-run examples/datamatrix_reading.json
+opencv-dataflow-run examples/datamatrix_reading/datamatrix_reading.json
 ```
 
 The example loads a generated Data Matrix, reads its lot code and checks for

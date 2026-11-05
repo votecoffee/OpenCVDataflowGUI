@@ -11,7 +11,7 @@ def validation_graph(registry):
             "input.file",
             block_id="validation_source",
             parameters={
-                "path": "validation_assets/pass.png",
+                "path": "../assets/validation/pass.png",
                 "path_base": "project",
             },
         )
@@ -51,29 +51,29 @@ def validation_graph(registry):
             "cases": [
                 {
                     "id": "known_pass",
-                    "path": "validation_assets/pass.png",
+                    "path": "../assets/validation/pass.png",
                     "expectation": "must_pass",
                 },
                 {
                     "id": "known_fail",
-                    "path": "validation_assets/fail.png",
+                    "path": "../assets/validation/fail.png",
                     "expectation": "must_fail",
                     "preferred_fail_reason": "part_count",
                 },
                 {
                     "id": "likely_pass",
-                    "path": "validation_assets/pass.png",
+                    "path": "../assets/validation/pass.png",
                     "expectation": "should_pass",
                 },
                 {
                     "id": "likely_fail",
-                    "path": "validation_assets/fail.png",
+                    "path": "../assets/validation/fail.png",
                     "expectation": "should_fail",
                     "preferred_fail_reason": "part_count",
                 },
                 {
                     "id": "unclassified",
-                    "path": "validation_assets/unknown.png",
+                    "path": "../assets/validation/unknown.png",
                     "expectation": "unknown",
                 },
             ],
@@ -307,7 +307,7 @@ def lena_graph(registry):
         "input.file",
         "Lena - source",
         (0, 0),
-        {"path": "assets/lena.jpg", "path_base": "project"},
+        {"path": "../assets/lena.jpg", "path_base": "project"},
     )
     source.exposed_outputs = ["image"]
     inner = Graph()
@@ -356,7 +356,7 @@ def lena_features_graph(registry):
             "input.file",
             "Lena source",
             [0, 0],
-            {"path": "assets/lena.jpg", "path_base": "project"},
+            {"path": "../assets/lena.jpg", "path_base": "project"},
         ),
         ("feature_gray", "cv.convert", "Grayscale", [300, 0], None),
         ("feature_clahe", "cv.clahe", "Local contrast", [600, 0], None),
@@ -392,7 +392,7 @@ def lena_registration_graph(registry):
             "input.file",
             "Lena source",
             [0, 0],
-            {"path": "assets/lena.jpg", "path_base": "project"},
+            {"path": "../assets/lena.jpg", "path_base": "project"},
         ),
         (
             "registration_rotate",
@@ -1100,9 +1100,9 @@ def image_set_workspace_graph(registry):
     source.parameters.update(
         source_mode="files",
         paths=[
-            "validation_assets/pass.png",
-            "validation_assets/fail.png",
-            "validation_assets/unknown.png",
+            "../assets/validation/pass.png",
+            "../assets/validation/fail.png",
+            "../assets/validation/unknown.png",
         ],
     )
     graph.groups = [
@@ -1125,7 +1125,7 @@ def dnn_graph(registry):
             "ml_net",
             "ml.dnn",
             [330, 0],
-            {"model_path": "assets/rgb_average.onnx", "width": 32, "height": 32},
+            {"model_path": "../assets/rgb_average.onnx", "width": 32, "height": 32},
         ),
         (
             "ml_class",
@@ -1179,7 +1179,10 @@ def lightglue_graph(registry):
         registry.create(
             "ml.lightglue",
             block_id="lg_match",
-            parameters={"weights_path": "../.local/models/sift_lightglue.pth", "max_features": 256},
+            parameters={
+                "weights_path": "../../.local/models/sift_lightglue.pth",
+                "max_features": 256,
+            },
         )
     )
     source.position, reference.position, matcher.position = [0, 0], [330, 0], [660, 0]

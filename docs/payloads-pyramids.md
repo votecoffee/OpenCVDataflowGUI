@@ -150,12 +150,12 @@ the actual primary type at execution. A packet does not bypass image/data checks
 ## Example project
 
 Open **File > Load channels and pyramids example** or
-`examples/channels_pyramids.json`. It round-trips BGR channels, adds a recipe payload,
+`examples/channels_pyramids/channels_pyramids.json`. It round-trips BGR channels, adds a recipe payload,
 creates four image levels, detects two blobs at level 2, maps their centroids into
 the largest image, previews level 1 and computes a largest-level histogram.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/channels_pyramids.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/channels_pyramids/channels_pyramids.json --repeat 3
 ```
 
 Native reference: [OpenCV image pyramids](https://docs.opencv.org/4.x/d4/d1f/tutorial_pyramids.html).

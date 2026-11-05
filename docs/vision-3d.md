@@ -24,7 +24,7 @@ points; it does not modify or resample the processing output. **Render point
 cloud** makes a regular preview image for the graph.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/stereo_cloud.json --repeat 3 --profile lean
+.\.venv\Scripts\opencv-dataflow-run examples/stereo_cloud/stereo_cloud.json --repeat 3 --profile lean
 ```
 
 All examples use synthetic observations and require no cameras, projectors or robots.

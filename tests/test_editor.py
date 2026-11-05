@@ -829,7 +829,7 @@ def test_project_relative_image_works_in_editor_worker(app, tmp_path, monkeypatc
     pump_until(app, lambda: window.runner is None)
     assert all(b.state == "pass" for b in window.graph.blocks.values())
     source = window.graph.blocks["lena_source"]
-    assert source.parameters["path"] == "assets/lena.jpg"
+    assert source.parameters["path"] == "../assets/lena.jpg"
     window.dirty = False
     window.close()
 
