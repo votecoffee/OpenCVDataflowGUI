@@ -146,12 +146,16 @@ class ToolBlock(Block):
             for b in children
             if b.state != "inactive" and b.last_result and b.last_result.score is not None
         ]
-        graphics = {
-            f"{b.name} [{b.id[:8]}] / {key}": image
-            for b in children
-            if b.state != "inactive"
-            for key, image in b.last_graphics.items()
-        }
+        graphics = (
+            {
+                f"{b.name} [{b.id[:8]}] / {key}": image
+                for b in children
+                if b.state != "inactive"
+                for key, image in b.last_graphics.items()
+            }
+            if self.generate_graphics
+            else {}
+        )
         return Result(
             outputs,
             graphics,

@@ -117,7 +117,8 @@ def snapshots_for_frame(graph, frame, keys=None):
                     result.outputs[port.name] = packets[0].value
                     result.payloads[port.name] = packets[0].payload
                     if isinstance(packets[0].value, np.ndarray):
-                        snapshot["last_output_images"][port.name] = packets[0].value
+                        if block.run_profile.output_previews:
+                            snapshot["last_output_images"][port.name] = packets[0].value
                 else:
                     result.outputs[port.name] = NO_VALUE
             snapshots[key] = copy.deepcopy(snapshot)

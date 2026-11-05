@@ -14,6 +14,7 @@ from .parallel_inspection import ParallelInspect
 from .payloads import ImagePyramid, describe_value
 from .plugins import load_plugin
 from .queued_execution import QueuedExecution, background_queue
+from .run_profiles import PROFILES
 from .toolblocks import ToolBlock
 
 
@@ -56,6 +57,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("project", type=Path)
     parser.add_argument("--repeat", type=int, default=1, help="Run the graph this many times")
+    parser.add_argument("--profile", choices=PROFILES, help="Override the saved run profile")
     parser.add_argument(
         "--plugin",
         type=Path,
@@ -78,6 +80,8 @@ def main(argv=None):
         for plugin in args.plugin:
             load_plugin(plugin, registry)
         graph = Graph.load(args.project, registry)
+        if args.profile:
+            graph.set_run_profile(args.profile)
         if background_queue(graph) is not None:
             queued = QueuedExecution(graph, registry)
             queued.start()
@@ -89,18 +93,19 @@ def main(argv=None):
                 queued.run_one()
             else:
                 graph.run()
-            records = describe(graph)
+            records = describe(graph) if args.report else []
             ok = all(b.state in ("pass", "waiting", "inactive") for b in graph.blocks.values())
             passed = passed and ok
-            runs.append(
-                {
-                    "run": index + 1,
-                    "passed": ok,
-                    "elapsed_ms": (time.perf_counter() - started) * 1000,
-                    "blocks": records,
-                }
-            )
-            print(f"Run {index + 1}: {'PASS' if ok else 'FAIL'} ({len(records)} blocks)")
+            if args.report:
+                runs.append(
+                    {
+                        "run": index + 1,
+                        "passed": ok,
+                        "elapsed_ms": (time.perf_counter() - started) * 1000,
+                        "blocks": records,
+                    }
+                )
+            print(f"Run {index + 1}: {'PASS' if ok else 'FAIL'} ({len(graph.blocks)} blocks)")
             for block in graph.blocks.values():
                 if block.state not in ("pass", "waiting", "inactive"):
                     message = block.error or (
@@ -116,6 +121,7 @@ def main(argv=None):
                 json.dumps(
                     {
                         "project": str(args.project),
+                        "run_profile": graph.run_profile.name,
                         "passed": passed,
                         "runs": runs,
                         "ticket_results": graph.ticket_results.snapshot(),

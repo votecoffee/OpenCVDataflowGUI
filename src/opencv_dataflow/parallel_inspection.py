@@ -363,6 +363,8 @@ class ParallelInspect(Block):
                 tool.graph.bind_recipes(self._recipes, allow_activation=False)
                 tool._event_path = f"{getattr(self, '_event_path', self.id)}/part-{index}"
                 tool._activity = self._activity
+                tool.run_profile = self.run_profile
+                tool.graph.set_run_profile(self.run_profile)
                 tool._production_excluded = True
                 tool._activity_path = tool._event_path
                 logical = getattr(self, "_activity_logical_path", self.id)
@@ -488,7 +490,8 @@ class ParallelInspect(Block):
                         if tool is not None and (
                             self.last_preview_index is None or index == preview
                         ):
-                            self.inspection.copy_results_from(tool)
+                            if self.run_profile.output_previews:
+                                self.inspection.copy_results_from(tool)
                             self.last_preview_index = index
                     for b, timing, elapsed in timing_history:
                         b.timing, b.elapsed_ms = timing, elapsed

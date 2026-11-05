@@ -186,6 +186,19 @@ def publish_result(block, values, result=None, kind="tool_result", message=""):
     consumer = getattr(block, "_ticket_results", None)
     if consumer is None:
         return
+    if (
+        not block.run_profile.ticket_details
+        and kind == "tool_result"
+        and result
+        and result.passed
+        and (not block.ticket_source or getattr(block, "_production_excluded", False))
+        and not any(
+            p.payload.get("outcome", {}).get("chain_passed") is False
+            for packets in result.emissions.values()
+            for p in packets
+        )
+    ):
+        return
     candidates = []
     if result is not None:
         candidates.extend((p, True) for packets in result.emissions.values() for p in packets)
@@ -415,15 +428,39 @@ class TicketResults:
         with self.lock:
             self.production = ProductionStatistics()
 
-    def complete(self, ticket, passed, timing=None):
+    def complete(self, ticket, passed, timing=None, summary=False):
         from .timing import advance_timing, mark
 
         with self.lock:
             row = self.rows.get(ticket_key(ticket))
+            if summary and row is None:
+                now = mark()
+                self.consume(
+                    {
+                        "ticket": ticket,
+                        "source": {
+                            "id": "job",
+                            "name": "Job completion",
+                            "type": "core.job",
+                            "path": "",
+                        },
+                        "kind": "completion",
+                        "passed": passed,
+                        "chain_passed": passed,
+                        "score": None,
+                        "message": "Completed ticket",
+                        "data": {},
+                        "final_judgment": None,
+                        "processing_time": advance_timing(timing, now, now),
+                    }
+                )
+                row = self.rows.get(ticket_key(ticket))
             if row and (row.get("parent_ticket") or row.get("production_excluded")):
                 return
             previous = row.get("processing_time", timing) if row else timing
             elapsed = advance_timing(previous, mark(), mark())["elapsed_ms"] if previous else None
+            if summary and row and previous:
+                row["processing_time"] = advance_timing(previous, mark(), mark())
             final = row["judgments"][0] if row and row["judgments"] else None
             accepted = passed and not (row and (row["had_error"] or row["had_failure"]))
             if row is not None:

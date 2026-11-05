@@ -161,10 +161,11 @@ class BlockLogger:
         return snapshot
 
     def isEnabledFor(self, level):
-        level_name(level)
-        return True
+        return LEVELS[level_name(level)] >= self.block.run_profile.log_level
 
     def log(self, level, message, *args, parameters=None, exc_info=None, values=None):
+        if not self.isEnabledFor(level):
+            return
         if args:
             message = str(message) % args
         error = exception_details(exc_info)
@@ -180,7 +181,11 @@ class BlockLogger:
                 "message": bounded_text(message, 8192),
                 "parameters": parameters_snapshot(
                     self.block.parameters if parameters is None else parameters
-                ),
+                )
+                if parameters is not None
+                or self.block.run_profile.parameter_snapshots
+                or LEVELS[level_name(level)] >= 30
+                else {},
                 "exception": error,
             },
         )

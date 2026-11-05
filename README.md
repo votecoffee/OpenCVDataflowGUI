@@ -391,6 +391,12 @@ Try **File > Load sequence memory example**, then run continuously. See
 
 ## Architecture
 
+Choose **Run profile: debug / balanced / lean** in the toolbar to control observation
+overhead. Lean skips routine diagnostic capture and image preview transfers, samples GUI
+updates, and removes the development pacing delay while preserving processing outputs,
+failure reasons, counters and private input isolation. The headless runner accepts
+`--profile lean`. See [run profiles and measured performance](docs/run-profiles.md).
+
 The bottom status bar shows running ticket totals, pass/fail counts, pass rate and
 average end-to-end time. Final judgments can attach stable failure codes and explanations.
 Use **Results > Validation image sets…** to grade saved images as must/should pass,

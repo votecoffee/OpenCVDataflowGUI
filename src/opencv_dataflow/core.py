@@ -35,6 +35,7 @@ from .payloads import (
     validate_payload,
 )
 from .recipes import RecipeCatalog, apply_recipe, validate_bindings
+from .run_profiles import PROFILES, captures, profile
 from .tickets import DEFAULT_TICKET_SETTINGS, DIRECT_CLOCK, TICKET_MODES, TicketClock
 from .timing import WorkTiming
 
@@ -113,6 +114,7 @@ class Block:
             self.exposed_inputs = [p.name for p in self.inputs]
             self.exposed_outputs = [p.name for p in self.outputs]
         self.timing = WorkTiming()
+        self.run_profile = PROFILES["debug"]
         self._activity = None
         self.logger = BlockLogger(self)
         self._execution_lock = threading.Lock()
@@ -165,10 +167,11 @@ class Block:
                 raise ValueError(f"{label} must be one of: {', '.join(map(str, choices))}")
 
     def execute(self, values, cancelled=lambda: False):
-        invocation = uuid.uuid4().hex
+        invocation = uuid.uuid4().hex if self.run_profile.activity_spans else None
         self.report_event("input", values=values, invocation=invocation)
         acquired = self._execution_lock.acquire(blocking=False)
         if not acquired:
+            invocation = invocation or uuid.uuid4().hex
             self.report_event(
                 "blocked", {"reason": "input arrived while block active"}, values, invocation
             )
@@ -186,7 +189,7 @@ class Block:
             return self._execute(values, cancelled)
         finally:
             try:
-                if self._activity_started:
+                if self._activity_started and captures(self, "finish"):
                     observed = dict(values)
                     if self.last_result is not None:
                         observed.update(
@@ -208,6 +211,11 @@ class Block:
     def report_event(self, kind, data=None, values=None, invocation=None, at=None):
         """Publish a compact diagnostic marker to the shared job activity log."""
         report(self, kind, data, values, invocation, at)
+
+    @property
+    def generate_graphics(self):
+        """Custom tools can avoid constructing auxiliary graphics when this is false."""
+        return self.run_profile.graphics
 
     def _execute(self, values, cancelled=lambda: False):
         try:
@@ -263,7 +271,15 @@ class Block:
                 self._source_ticket = ticket
                 self._report_activity_start(values)
                 self.report_event("ticket_assigned", values={"ticket": ticket})
-            result = self.process(copy.deepcopy(self.last_inputs))
+            work_inputs = (
+                self.last_inputs
+                if (
+                    self.run_profile.readonly_input_optimization
+                    and type(self).__dict__.get("process_inputs_readonly", False)
+                )
+                else copy.deepcopy(self.last_inputs)
+            )
+            result = self.process(work_inputs)
             if not isinstance(result, Result):
                 raise TypeError("process() must return Result")
             result = self.finalize_result(result, self.last_inputs)
@@ -306,6 +322,8 @@ class Block:
                     if not isinstance(packet, ValuePacket):
                         raise ValueError("Emissions must be ValuePackets")
                     validate_value(next(p for p in self.outputs if p.name == name), packet)
+            if not self.run_profile.graphics:
+                result.graphics = {}
             for name, value in result.graphics.items():
                 validate_value(Port(name), value)
             result = stamp_result(self, result)
@@ -314,7 +332,8 @@ class Block:
             self.last_output_images = {
                 p.name: self.last_result.outputs[p.name]
                 for p in self.outputs
-                if isinstance(self.last_result.outputs[p.name], (np.ndarray, ImagePyramid))
+                if self.run_profile.output_previews
+                and isinstance(self.last_result.outputs[p.name], (np.ndarray, ImagePyramid))
             }
             self.last_graphics = self.last_result.graphics
             self.state = "pass" if result.passed else "fail"
@@ -365,6 +384,8 @@ class Block:
             if getattr(self, "supports_training", False):
                 self.trained_model = configured_model
             self._finish_work()
+            if not self.run_profile.input_previews:
+                self.last_inputs = {}
         return self.last_result
 
     def _report_activity_start(self, values):
@@ -396,6 +417,42 @@ class Block:
 
     def copy_results_from(self, other):
         self.copy_runtime_from(other)
+        self.run_profile = other.run_profile
+        if not other.run_profile.output_previews:
+            from .payloads import describe_value
+
+            for name in (
+                "input_payloads",
+                "state",
+                "error",
+                "elapsed_ms",
+                "timing",
+                "input_rejected",
+                "last_rejection",
+                "last_recipe_ref",
+                "last_recipe_parameters",
+            ):
+                setattr(self, name, copy.deepcopy(getattr(other, name)))
+            self.last_inputs, self.last_output_images, self.last_graphics = {}, {}, {}
+            self.current_emissions = {}
+            result = other.last_result
+            self.last_result = (
+                Result(
+                    outputs={
+                        p.name: describe_value(result.outputs[p.name])
+                        for p in self.outputs
+                        if p.kind not in ("image", "depth", "pyramid", "any")
+                    },
+                    passed=result.passed,
+                    score=result.score,
+                    message=result.message,
+                    fail_reasons=copy.deepcopy(result.fail_reasons),
+                    final_judgment=result.final_judgment,
+                )
+                if result
+                else None
+            )
+            return
         for name in (
             "last_inputs",
             "input_payloads",
@@ -489,6 +546,7 @@ class Graph:
         self._activity_logical_prefix = ""
         self.production_completion = True
         self.validation_sets = []
+        self.run_profile = PROFILES["debug"]
         self._event_prefix = ""
         self.recipes = RecipeCatalog()
         self._allow_recipe_activation = True
@@ -511,12 +569,14 @@ class Graph:
     def bind_activity(self, log=None, prefix=None, logical_prefix=None):
         if log is not None:
             self.activity = log
+        self.activity.capture_profile = self.run_profile.name
         if prefix is not None:
             self._activity_prefix = prefix
             self._activity_logical_prefix = prefix if logical_prefix is None else logical_prefix
         prefix = self._activity_prefix
         logical = self._activity_logical_prefix
         for block in self.blocks.values():
+            block.run_profile = self.run_profile
             block._activity = self.activity
             block._activity_path = f"{prefix}/{block.id}" if prefix else block.id
             block._activity_logical_path = f"{logical}/{block.id}" if logical else block.id
@@ -526,9 +586,24 @@ class Graph:
                 block.logger.bind(self.activity)
                 block.report_event("registered")
             if hasattr(block, "graph"):
+                block.graph.set_run_profile(self.run_profile)
                 block.graph.bind_activity(
                     self.activity, block._activity_path, block._activity_logical_path
                 )
+
+    def set_run_profile(self, value):
+        self.run_profile = profile(value)
+        self.activity.capture_profile = self.run_profile.name
+        for block in self.blocks.values():
+            block.run_profile = self.run_profile
+            if not self.run_profile.input_previews:
+                block.last_inputs = {}
+            if not self.run_profile.output_previews:
+                block.last_output_images = {}
+            if not self.run_profile.graphics:
+                block.last_graphics = {}
+            if hasattr(block, "graph"):
+                block.graph.set_run_profile(self.run_profile)
 
     def bind_ticket_results(self, consumer=None, prefix=None):
         if consumer is not None:
@@ -610,6 +685,14 @@ class Graph:
                     block.graph.restore_captured(value)
                 else:
                     setattr(block, name, copy.deepcopy(value))
+            if not self.run_profile.input_previews:
+                block.last_inputs = {}
+            if not self.run_profile.output_previews:
+                block.last_output_images = {}
+            if not self.run_profile.graphics:
+                block.last_graphics = {}
+                if block.last_result is not None:
+                    block.last_result.graphics = {}
 
     def connect(self, source, output, target, input):
         if source == target:
@@ -714,7 +797,9 @@ class Graph:
                 ticket = block._source_ticket
                 observed[ticket_key(ticket)] = (ticket, False, None)
         for ticket, passed, timing in observed.values():
-            self.ticket_results.complete(ticket, passed, timing)
+            self.ticket_results.complete(
+                ticket, passed, timing, summary=not self.run_profile.ticket_details
+            )
 
     def _run_iteration(self, cancelled=lambda: False, injected=None, provided=None):
         from .toolblocks import ToolBlock
@@ -966,7 +1051,9 @@ class Graph:
                 if packets:
                     block.last_result.outputs[name] = packets[-1].value
                     block.last_result.payloads[name] = packets[-1].payload
-                    if isinstance(packets[-1].value, (np.ndarray, ImagePyramid)):
+                    if block.run_profile.output_previews and isinstance(
+                        packets[-1].value, (np.ndarray, ImagePyramid)
+                    ):
                         block.last_output_images[name] = packets[-1].value
                 emitted[key, name] = packets
 
@@ -1021,6 +1108,7 @@ class Graph:
         catalog = self.recipes.definition() if include_recipes else None
         return {
             "schema_version": 1,
+            **({"run_profile": self.run_profile.name} if self.run_profile.name != "debug" else {}),
             **(
                 {"validation_sets": copy.deepcopy(self.validation_sets)}
                 if self.validation_sets
@@ -1078,6 +1166,7 @@ class Graph:
         if data.get("schema_version") != 1:
             raise ValueError("Unsupported project schema version")
         graph = cls()
+        graph.set_run_profile(data.get("run_profile", "debug"))
         if "validation_sets" in data:
             from .validation import validate_sets
 
