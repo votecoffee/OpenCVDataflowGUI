@@ -8,7 +8,14 @@ import numpy as np
 from .core import Port, Result
 from .images import ImageArray, convert_depth, image_format
 from .parameter_validation import NumericRange, ValidationError
-from .payloads import FlowGroup, check_spatial, image_with_payload, metadata, require_same_frame
+from .payloads import (
+    FlowGroup,
+    ValuePacket,
+    check_spatial,
+    image_with_payload,
+    metadata,
+    require_same_frame,
+)
 from .processing import ImageTool, encoded_result, finite, image_value, integer
 from .selection import SELECTION_INPUTS, RegionalOperation, selection_mask
 
@@ -62,6 +69,34 @@ class NonLocalMeans(RegionalOperation, ImageTool):
         return encoded_result(output, source)
 
 
+def aligned_observations(entries):
+    if any(not isinstance(entry.value, np.ndarray) or not entry.value.size for entry in entries):
+        raise ValidationError("Every observation must be a nonempty image")
+    originals = [entry.value for entry in entries]
+    center = originals[0]
+    encoding = image_format(center)
+    if any(
+        frame.shape != center.shape
+        or frame.dtype != center.dtype
+        or image_format(frame) != encoding
+        for frame in originals
+    ):
+        raise ValidationError("Temporal frames must have matching size, depth and channel order")
+    if sum(frame.nbytes for frame in originals) > 128 * 1024**2:
+        raise ValidationError("Observations exceed the 128 MiB source limit")
+    roots = {}
+    for entry in entries:
+        context = metadata(entry)
+        check_spatial(context, [center.shape[1], center.shape[0]])
+        root = context.get("spatial", {}).get("root_id")
+        if root is not None:
+            require_same_frame(
+                (roots.setdefault(root, entry), entry),
+                message="Frames sharing a source root must use the same pixel grid",
+            )
+    return originals
+
+
 class TemporalNonLocalMeans(ImageTool):
     type_id, title, subtype = "cv.temporal_nlm", "Temporal non-local means", "Filters"
     inputs = (Port("frames", "any"), *SELECTION_INPUTS[1:])
@@ -105,37 +140,12 @@ class TemporalNonLocalMeans(ImageTool):
         if target - half < 0 or target + half >= len(group.items):
             raise ValidationError("The temporal window does not fit around the target frame")
         entries = group.items[target - half : target + half + 1]
-        if any(
-            not isinstance(entry.value, np.ndarray) or not entry.value.size for entry in entries
-        ):
-            raise ValidationError("Every entry in the temporal window must be an image")
-        originals = [entry.value for entry in entries]
+        originals = aligned_observations(entries)
         center = originals[half]
         encoding = image_format(center)
         if encoding not in ("gray", "rgb", "bgr", "rgba", "bgra"):
             raise ValidationError("Temporal denoising requires gray or RGB/BGR channel encoding")
-        if any(
-            frame.shape != center.shape
-            or frame.dtype != center.dtype
-            or image_format(frame) != encoding
-            for frame in originals
-        ):
-            raise ValidationError(
-                "Temporal frames must have matching size, depth and channel order"
-            )
-        if sum(frame.nbytes for frame in originals) > 128 * 1024**2:
-            raise ValidationError("Temporal window exceeds the 128 MiB source limit")
         frames = [image_value(frame, (np.uint8, np.uint16)) for frame in originals]
-        roots = {}
-        for entry in entries:
-            context = metadata(entry)
-            check_spatial(context, [center.shape[1], center.shape[0]])
-            root = context.get("spatial", {}).get("root_id")
-            if root is not None:
-                require_same_frame(
-                    (roots.setdefault(root, entry), entry),
-                    message="Frames sharing a source root must use the same pixel grid",
-                )
         payload = metadata(entries[half])
         mask = selection_mask(inputs, image_with_payload(center, payload))
         alpha = encoding in ("rgba", "bgra")
@@ -190,6 +200,74 @@ class TemporalNonLocalMeans(ImageTool):
             {"image": ImageArray(output, encoding), "info": info},
             payloads={"image": payload, "info": payload},
             message=f"Denoised frame {target} using {size} frames",
+        )
+
+
+class DenoiseTVL1(ImageTool):
+    type_id, title, subtype = "cv.denoise_tvl1", "TV-L1 denoise", "Filters"
+    inputs = (
+        Port("image", required=False, required_when_connected=True),
+        Port("observations", "any", required=False, required_when_connected=True),
+        *SELECTION_INPUTS[1:],
+    )
+    outputs = (Port("image"), Port("observation_count", "number"))
+    defaults = {"lambda_weight": 1.0, "iterations": 30}
+    parameter_ranges = {
+        "lambda_weight": NumericRange(1e-6, 1e6),
+        "iterations": NumericRange(1, 200, whole=True),
+    }
+    parameter_help = {
+        "lambda_weight": "Weight of the L1 observation error relative to total variation.",
+        "iterations": "Number of primal-dual solver iterations.",
+    }
+    input_help = {
+        "image": "One 8-bit monochrome observation. Connect Image or Observations.",
+        "observations": "Ordered batch of aligned 8-bit monochrome views of the same scene.",
+    }
+
+    def process(self, inputs):
+        if ("image" in inputs) == ("observations" in inputs):
+            raise ValidationError("Connect exactly one of Image or Observations")
+        if "observations" in inputs:
+            group = inputs["observations"]
+            if not isinstance(group, FlowGroup):
+                raise ValidationError("Connect an ordered image batch to Observations")
+            entries = group.items
+        else:
+            entries = (ValuePacket(inputs["image"], self.input_payloads["image"]),)
+
+        originals = aligned_observations(entries)
+        reference = (len(entries) - 1) // 2
+        source = originals[reference]
+        if source.ndim != 2 or source.dtype != np.uint8:
+            raise ValidationError("TV-L1 requires 8-bit monochrome images")
+        # OpenCV allocates an eight-byte residual for each input and three work planes.
+        if (len(entries) + 3) * source.size * 8 > 256 * 1024**2:
+            raise ValidationError(
+                "TV-L1 workspace exceeds 256 MiB. Reduce the batch or image size."
+            )
+        p = self.parameters
+        iterations = int(p["iterations"])
+        if (len(entries) + 1) * source.size * iterations > 512_000_000:
+            raise ValidationError(
+                "TV-L1 work exceeds the limit. Reduce batch, image or iterations."
+            )
+        payload = metadata(entries[reference])
+        mask = selection_mask(inputs, image_with_payload(source, payload))
+        output = np.empty(source.shape, dtype=np.uint8)
+        cv2.denoise_TVL1(
+            [np.asarray(image) for image in originals],
+            output,
+            lambda_=float(p["lambda_weight"]),
+            niters=iterations,
+        )
+        if mask is not None:
+            output[mask == 0] = np.asarray(source)[mask == 0]
+        outputs = {"image": ImageArray(output, "gray"), "observation_count": len(entries)}
+        return Result(
+            outputs,
+            payloads=dict.fromkeys(outputs, payload),
+            message=f"Denoised {len(entries)} observations",
         )
 
 
@@ -336,6 +414,7 @@ class DomainTransformFilter(AlignedGuideFilter):
 RESTORATION_BLOCKS = (
     NonLocalMeans,
     TemporalNonLocalMeans,
+    DenoiseTVL1,
     Inpaint,
     GuidedFilter,
     DomainTransformFilter,
