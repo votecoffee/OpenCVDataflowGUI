@@ -3693,7 +3693,7 @@ P3	function	cv2.motempl.segmentMotion	no static reference	-
 P3	function	cv2.motempl.updateMotionHistory	no static reference	-
 P3	function	cv2.moveWindow	no static reference	-
 P3	class	cv2.MSTEdge	no static reference	-
-P3	function	cv2.mulSpectrums	no static reference	-
+P3	function	cv2.mulSpectrums	literal reference	-
 P3	function	cv2.multiply	literal reference	-
 P3	function	cv2.mulTransposed	no static reference	-
 P3	function	cv2.namedWindow	no static reference	-

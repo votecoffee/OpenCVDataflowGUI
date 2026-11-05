@@ -707,6 +707,7 @@ def builtin_registry():
     from .ecc_registration import AlignECC
     from .examples3d import StereoDemo
     from .features import FEATURE_BLOCKS
+    from .fourier_correlation import FourierCorrelation
     from .geometry3d import GEOMETRY3D_BLOCKS
     from .histogram import Histogram
     from .histogram_comparison import CompareHistograms, HistogramBackProjection
@@ -782,6 +783,7 @@ def builtin_registry():
         AlignECC,
         *RESTORATION_BLOCKS,
         *SPECTRAL_BLOCKS,
+        FourierCorrelation,
         *ANALYSIS_BLOCKS,
         IntensityProfile,
         ImageSummaryStatistics,
