@@ -298,7 +298,9 @@ measured cutoffs into lower-tail, middle-range, and upper-tail masks. Histograms
 also report per-channel mean, median, standard deviation, and extrema.
 
 The [flat-field correction example](examples/flat_field/README.md) uses bright and dark
-reference images to remove uneven illumination before inspection.
+reference images to remove uneven illumination before inspection. The
+[guided filter example](examples/guided_filter/README.md) reduces noise while
+preserving a high-contrast edge.
 
 The [skeleton pruning example](examples/skeleton_pruning/README.md) extracts
 centerlines from a binary mask and removes short spurs. Install the optional
