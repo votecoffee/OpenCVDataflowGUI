@@ -20,7 +20,8 @@ from .geometry3d_common import (
     rigid,
 )
 from .images import DepthArray, ImageArray, image_format, preview_rgb
-from .payloads import frame, metadata
+from .parameter_validation import NumericRange
+from .payloads import NO_VALUE, frame, metadata
 from .pointclouds import PointCloud
 from .processing import finite, gray_image, integer
 from .selection import selection_mask
@@ -302,7 +303,12 @@ class RectifyStereo(Tool3D):
 class StereoDisparity(Tool3D):
     type_id, title, subtype = "3d.disparity", "Stereo BM / SGBM disparity", "Stereo"
     inputs = (Port("left"), Port("right"))
-    outputs = (Port("disparity"), Port("valid_mask"), Port("preview"))
+    outputs = (
+        Port("disparity"),
+        Port("valid_mask"),
+        Port("preview"),
+        Port("confidence", required=False),
+    )
     defaults = {
         "algorithm": "sgbm",
         "min_disparity": 0,
@@ -322,6 +328,19 @@ class StereoDisparity(Tool3D):
         "wls": False,
         "wls_lambda": 8000.0,
         "wls_sigma": 1.5,
+        "wls_lr_threshold": 24,
+        "wls_depth_radius": -1,
+        "minimum_wls_confidence": 0.0,
+    }
+    parameter_ranges = {
+        "wls_lr_threshold": NumericRange(0, 4096, whole=True),
+        "wls_depth_radius": NumericRange(-1, 255, whole=True),
+        "minimum_wls_confidence": NumericRange(0, 1),
+    }
+    parameter_help = {
+        "wls_lr_threshold": "WLS left-right consistency tolerance in sixteenths of a pixel.",
+        "wls_depth_radius": "Radius near depth jumps. -1 uses the native default.",
+        "minimum_wls_confidence": "Reject WLS estimates below this value. Zero disables gating.",
     }
     parameter_choices = {
         "algorithm": ("bm", "sgbm"),
@@ -380,14 +399,25 @@ class StereoDisparity(Tool3D):
         matcher.setSpeckleRange(integer(p["speckle_range"], "Speckle range", 0, 256))
         matcher.setDisp12MaxDiff(integer(p["disp12_max_diff"], "Left-right difference", -1, 256))
         raw = matcher.compute(a, b)
+        confidence = NO_VALUE
         if p["wls"]:
             right_matcher = cv2.ximgproc.createRightMatcher(matcher)
             right_raw = right_matcher.compute(b, a)
             wls = cv2.ximgproc.createDisparityWLSFilter(matcher)
             wls.setLambda(finite(p["wls_lambda"], "WLS lambda", 0.0001))
             wls.setSigmaColor(finite(p["wls_sigma"], "WLS sigma", 0.0001))
+            wls.setLRCthresh(int(p["wls_lr_threshold"]))
+            radius = int(p["wls_depth_radius"])
+            if radius >= 0:
+                wls.setDepthDiscontinuityRadius(radius)
             raw = wls.filter(raw, a, disparity_map_right=right_raw)
+            confidence = wls.getConfidenceMap() / 255.0
+            confidence[~np.isfinite(confidence)] = 0
+            np.clip(confidence, 0, 1, out=confidence)
         valid = raw > (minimum - 1) * 16
+        if confidence is not NO_VALUE:
+            confidence[~valid] = 0
+            valid &= confidence >= float(p["minimum_wls_confidence"])
         disparity = raw.astype(np.float32) / 16.0
         disparity[~valid] = np.nan
         preview = cv2.applyColorMap(
@@ -402,10 +432,11 @@ class StereoDisparity(Tool3D):
                 "disparity": disparity,
                 "valid_mask": valid.astype(np.uint8) * 255,
                 "preview": preview,
+                "confidence": confidence,
             },
             passed=bool(valid.any()),
             score=float(valid.mean()),
-            message="Disparity in pixels (OpenCV fixed-point scale /16 applied)",
+            message=f"Disparity in pixels · {int(np.count_nonzero(valid))} valid estimates",
         )
 
 

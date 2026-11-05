@@ -21,7 +21,7 @@ from opencv_dataflow.examples3d import (
 )
 from opencv_dataflow.geometry3d_common import camera_record, pose_matrix, pose_record, rigid
 from opencv_dataflow.images import DepthArray, ImageArray, image_format
-from opencv_dataflow.payloads import FlowGroup, ValuePacket, frame
+from opencv_dataflow.payloads import NO_VALUE, FlowGroup, ValuePacket, frame
 from opencv_dataflow.pointclouds import PointCloud
 from opencv_dataflow.runner import main as run_headless
 from opencv_dataflow.toolblocks import encapsulate
@@ -123,6 +123,10 @@ def test_stereo_disparity_and_q_reprojection_native(algorithm, wls):
     )
     assert np.nanmedian(disp["disparity"]) == pytest.approx(8, abs=0.15)
     assert (disp["valid_mask"] == 0).any()
+    if wls:
+        assert disp["confidence"].dtype == np.float32
+    else:
+        assert disp["confidence"] is NO_VALUE
     out = execute(
         "3d.reproject",
         {"disparity": disp["disparity"], "rectification": rect["rectification"]},
@@ -491,3 +495,30 @@ def test_offscreen_cloud_viewer_renders_retained_result(app, load_example):
     viewer.close()
     window.dirty = False
     window.close()
+
+
+@pytest.mark.parametrize("algorithm", ["bm", "sgbm"])
+def test_stereo_confidence_rejects_occluded_pixels_and_keeps_the_left_frame(algorithm):
+    pair = stereo_pair()
+    rectified = execute("3d.stereo_rectify", {k: pair[k] for k in ("left", "right", "rig")})
+    left, right = rectified["left"], rectified["right"].copy()
+    right[:, 60:90] = 0
+    params = {"algorithm": algorithm, "num_disparities": 32, "wls": True, "wls_depth_radius": 3}
+    block = builtin_registry().create("3d.disparity", parameters=params)
+    inputs = {"left": left, "right": right}
+    baseline = block.execute(inputs)
+    assert baseline is not None and baseline.passed, block.error
+    block.parameters["minimum_wls_confidence"] = 0.8
+    filtered = block.execute(inputs)
+    assert filtered is not None and filtered.passed, block.error
+    confidence = filtered.outputs["confidence"]
+    assert confidence.shape == left.shape[:2] and confidence.dtype == np.float32
+    assert np.isfinite(confidence).all() and confidence.min() >= 0 and confidence.max() <= 1
+    np.testing.assert_array_equal(confidence, baseline.outputs["confidence"])
+    kept = filtered.outputs["valid_mask"] != 0
+    initial = baseline.outputs["valid_mask"] != 0
+    np.testing.assert_array_equal(kept, initial & (confidence >= 0.8))
+    assert kept.sum() < initial.sum()
+    assert np.isnan(filtered.outputs["disparity"][~kept]).all()
+    assert np.nanmedian(filtered.outputs["disparity"]) == pytest.approx(8, abs=0.1)
+    assert filtered.payloads["confidence"]["spatial"] == filtered.payloads["disparity"]["spatial"]

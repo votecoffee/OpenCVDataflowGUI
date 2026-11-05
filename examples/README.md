@@ -25,6 +25,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Contour approximation](contour_approximation/README.md) | Simplify the dense outline of a chamfered part into six polygon vertices. |
 | [Contour hierarchy](contour_hierarchy/README.md) | Follow parent and child links through nested outlines, holes, and islands. |
 | [Lab color classification](lab_color_classification/README.md) | Classify a measured image patch against a named Lab palette. |
+| [Stereo WLS confidence](stereo_confidence/README.md) | Gate disparity with a confidence image before reconstructing a partly occluded stereo pair. |
 | [Skeletonization and spur pruning](skeleton_pruning/README.md) | Extract a binary centerline and visualize the short branches removed from it. |
 | [Watershed separation](watershed/README.md) | Separate touching parts using distance-peak seeds or points placed on the image. |
 | [Data Matrix reading](datamatrix_reading/README.md) | Read the bundled synthetic Data Matrix and verify the decoded text. |

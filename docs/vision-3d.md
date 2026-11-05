@@ -77,7 +77,9 @@ Cloud transforms reject unit or frame mismatches instead of guessing conversions
 3. **Stereo BM / SGBM disparity** exposes the search range, block size, native
    penalties/filters and optional contrib WLS. Its float disparity is in pixels
    (native fixed-point values are divided by 16); invalid values are NaN. Use
-   the valid mask or the colored preview for inspection.
+   the valid mask or the colored preview for inspection. WLS also emits a
+   normalized confidence image. An optional cutoff excludes low-confidence
+   pixels from downstream reconstruction. [Stereo confidence example](../examples/stereo_confidence/README.md)
 4. **Disparity to 3D cloud** uses Q, accepts a mask/region and optional registered
    color, and emits a cloud in the first camera's rectified frame plus Z depth.
    Depth limits are in rig units. Use `input_scale=0.0625` for raw OpenCV int16

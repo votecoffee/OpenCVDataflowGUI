@@ -82,7 +82,10 @@
         "texture_threshold": 10,
         "wls": false,
         "wls_lambda": 8000.0,
-        "wls_sigma": 1.5
+        "wls_sigma": 1.5,
+        "wls_lr_threshold": 24,
+        "wls_depth_radius": -1,
+        "minimum_wls_confidence": 0.0
       },
       "position": [
         660,
@@ -95,7 +98,8 @@
       "exposed_outputs": [
         "disparity",
         "valid_mask",
-        "preview"
+        "preview",
+        "confidence"
       ],
       "thumbnail": true,
       "preview_output": "preview"
