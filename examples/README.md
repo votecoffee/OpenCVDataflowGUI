@@ -45,6 +45,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Domain transform filter](domain_transform_filter/README.md) | Compare three edge-preserving smoothing modes on the same noisy image. |
 | [Guided edge-preserving filter](guided_filter/README.md) | Smooth a noisy image while preserving its main intensity edge. |
 | [Subpixel template locations](subpixel_template/README.md) | Compare integer and refined template matches against two known fractional placements. |
+| [Contour profile tolerance](contour_profile/README.md) | Compare aligned outlines for missing and excess material. |
 | [Contour defect inspection](contour_defects/README.md) | Replay passing and failing parts with shallow and deep edge notches. |
 | [Contour approximation](contour_approximation/README.md) | Simplify the dense outline of a chamfered part into six polygon vertices. |
 | [Contour hierarchy](contour_hierarchy/README.md) | Follow parent and child links through nested outlines, holes, and islands. |

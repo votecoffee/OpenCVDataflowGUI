@@ -29,6 +29,63 @@ def test_compare_contours_accepts_detector_collections_and_shape_tolerance():
     assert not changed.passed
 
 
+@pytest.mark.parametrize("direction", [1, -1])
+def test_contour_profile_catches_notch_and_protrusion(direction):
+    reference = [[0, 0], [20, 0], [20, 20], [0, 20]]
+    sample = [[0, 0], [10, direction * 5], *reference[1:]]
+    block = builtin_registry().create(
+        "inspect.contour_profile", parameters={"tolerance": 4.0, "sample_spacing": 2.0}
+    )
+    result = block.execute({"reference": reference, "sample": sample})
+    assert result is not None, block.error
+    assert not result.passed
+    assert result.outputs["maximum_deviation"] == pytest.approx(5)
+    assert 0 < result.outputs["rms_deviation"] < 5
+    assert result.outputs["violation_count"] > 0
+    signed = result.outputs["profiles"]["sample_to_reference"]
+    assert [10, direction * 5, direction * 5] in signed
+    assert result.fail_reasons[0]["code"] == "contour_profile_out_of_tolerance"
+    assert "out of tolerance" in result.drawings
+
+    block.parameters["tolerance"] = 5.0
+    result = block.execute({"reference": reference, "sample": sample})
+    assert result is not None and result.passed, block.error
+    assert result.outputs["violation_count"] == 0
+
+
+def test_contour_profile_checks_alignment_and_bounds_sampling():
+    points = [[0, 0], [20, 0], [20, 20], [0, 20]]
+    reference = ValuePacket(points, {"spatial": frame([32, 32], "reference")})
+    sample = ValuePacket(points, {"spatial": frame([32, 32], "sample")})
+    block = builtin_registry().create("inspect.contour_profile")
+    assert block.execute({"reference": reference, "sample": sample}) is None
+    assert "same coordinate frame" in block.error
+    block.parameters["alignment"] = "pixel_grid"
+    block.exposed_outputs.append("result_graphics")
+    result = block.execute({"reference": reference, "sample": sample})
+    assert result is not None and result.passed, block.error
+    assert result.outputs["maximum_deviation"] == 0
+    assert result.payloads["profiles"]["spatial"]["root_id"] == "sample"
+    assert all(
+        layer.payload["spatial"]["root_id"] == "sample"
+        for layer in result.outputs["result_graphics"].layers
+    )
+    wrong_size = ValuePacket(points, {"spatial": frame([64, 32], "sample")})
+    assert block.execute({"reference": reference, "sample": wrong_size}) is None
+    assert "matching pixel dimensions" in block.error
+
+    too_large = [[0, 0], [20_000, 0], [20_000, 20_000], [0, 20_000]]
+    assert block.execute({"reference": points, "sample": too_large}) is None
+    assert "8192 samples" in block.error
+
+    x = np.arange(2000)
+    dense = np.vstack(
+        (np.column_stack((x, np.zeros_like(x))), np.column_stack((x[::-1], np.ones_like(x))))
+    ).tolist()
+    assert block.execute({"reference": dense, "sample": dense}) is None
+    assert "too dense" in block.error
+
+
 def test_hull_measures_concavity_in_pixels():
     block = builtin_registry().create("inspect.contour_hull")
     result = block.execute({"contour": [*CONTOUR, CONTOUR[0]]})

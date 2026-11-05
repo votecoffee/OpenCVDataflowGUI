@@ -96,6 +96,135 @@ class CompareContours(Block):
         )
 
 
+def profile_samples(points, step):
+    """Include contour vertices and subdivide each edge to the requested spacing."""
+    delta = np.roll(points, -1, axis=0) - points
+    steps = np.ceil(np.linalg.norm(delta, axis=1) / step).astype(np.int64)
+    count = int(steps.sum())
+    if count > 8192:
+        raise ValidationError("Contour profile exceeds 8192 samples per contour")
+    indices = np.repeat(np.arange(len(points)), steps)
+    offsets = steps.cumsum() - steps
+    fraction = (np.arange(count) - offsets[indices]) / steps[indices]
+    return points[indices] + delta[indices] * fraction[:, None]
+
+
+class ContourProfileTolerance(Block):
+    type_id, title = "inspect.contour_profile", "Contour profile tolerance"
+    category, block_type, subtype = "Inspection", "Inspection", "Measurements"
+    inputs = CompareContours.inputs
+    outputs = (
+        Port("maximum_deviation", "number"),
+        Port("rms_deviation", "number"),
+        Port("violation_count", "number"),
+        Port("profiles", "data"),
+    )
+    defaults = {
+        "reference_index": 0,
+        "sample_index": 0,
+        "alignment": "same_frame",
+        "sample_spacing": 2.0,
+        "tolerance": 2.0,
+    }
+    parameter_choices = {"alignment": ("same_frame", "pixel_grid")}
+    parameter_ranges = {
+        "reference_index": NumericRange(0, whole=True),
+        "sample_index": NumericRange(0, whole=True),
+        "sample_spacing": NumericRange(0.25),
+        "tolerance": NumericRange(0),
+    }
+    parameter_help = {
+        "reference_index": CompareContours.parameter_help["reference_index"],
+        "sample_index": CompareContours.parameter_help["sample_index"],
+        "alignment": "Pixel grid compares coordinates directly for already aligned images.",
+        "sample_spacing": "Maximum distance between boundary samples, in pixels.",
+        "tolerance": "Maximum absolute deviation in pixels for a passing profile.",
+    }
+
+    def process(self, inputs):
+        p = self.parameters
+        try:
+            reference, _, _, ref_payload = read_contour(
+                self, inputs, "reference", p["reference_index"]
+            )
+            sample, _, _, sample_payload = read_contour(self, inputs, "sample", p["sample_index"])
+        except (TypeError, ValueError) as exc:
+            raise ValidationError(str(exc)) from exc
+        ref_frame = ref_payload.get("spatial")
+        sample_frame = sample_payload.get("spatial")
+        if ref_frame and sample_frame and ref_frame["image_size"] != sample_frame["image_size"]:
+            raise ValidationError("Contour profile requires matching pixel dimensions")
+        if p["alignment"] == "same_frame":
+            require_same_frame(
+                (ValuePacket(None, ref_payload), ValuePacket(None, sample_payload)),
+                message="Use the same coordinate frame or an aligned pixel grid",
+            )
+
+        spacing = float(p["sample_spacing"])
+        ref_points = profile_samples(reference, spacing)
+        sample_points = profile_samples(sample, spacing)
+        if len(ref_points) * len(sample) + len(sample_points) * len(reference) > 16_000_000:
+            raise ValidationError("Contour profile is too dense. Simplify the contours first.")
+        tolerance = float(p["tolerance"])
+        origin = (reference[0] + sample[0]) / 2
+        profiles = {}
+        distances = []
+        violations = []
+        for name, points, target in (
+            ("reference_to_sample", ref_points, sample),
+            ("sample_to_reference", sample_points, reference),
+        ):
+            native = (target - origin).astype(np.float32)
+            signed = np.array(
+                [cv2.pointPolygonTest(native, point, True) for point in (points - origin).tolist()]
+            )
+            distances.append(signed)
+            violations.append(points[np.abs(signed) > tolerance])
+            profiles[name] = np.column_stack((points, signed)).tolist()
+        combined = np.concatenate(distances)
+        outliers = np.concatenate(violations)
+        maximum = float(np.max(np.abs(combined)))
+        passed = len(outliers) == 0
+        outputs = {
+            "maximum_deviation": maximum,
+            "rms_deviation": float(np.sqrt(np.mean(np.square(combined)))),
+            "violation_count": len(outliers),
+            "profiles": profiles,
+        }
+        drawing_source = "sample" if sample_frame or not ref_frame else "reference"
+        payload = dict(sample_payload)
+        if drawing_source == "reference":
+            for key in ("spatial", "pyramid"):
+                if key in ref_payload:
+                    payload[key] = ref_payload[key]
+        drawings = {}
+        if self.generate_graphics:
+            for name, contour, color in (
+                ("reference outline", reference, (0, 190, 240)),
+                ("sample outline", sample, ACCEPTED),
+            ):
+                outline = graphic_object("polyline", contour, color, closed=True)
+                drawings[name] = GraphicDrawing((outline,), drawing_source)
+            if len(outliers):
+                marks = tuple(graphic_object("marker", (point,), REJECTED) for point in outliers)
+                drawings["out of tolerance"] = GraphicDrawing(marks, drawing_source)
+        return Result(
+            outputs,
+            payloads=dict.fromkeys(outputs, payload),
+            drawings=drawings,
+            passed=passed,
+            message=f"Maximum deviation {maximum:.4g} px, {len(outliers)} violations",
+            fail_reasons=[]
+            if passed
+            else [
+                {
+                    "code": "contour_profile_out_of_tolerance",
+                    "message": f"Maximum deviation {maximum:.4g} px exceeds {tolerance:.4g} px",
+                }
+            ],
+        )
+
+
 class ContourHull(Block):
     type_id, title = "inspect.contour_hull", "Contour hull and convexity defects"
     category, block_type, subtype = "Inspection", "Inspection", "Measurements"
@@ -459,6 +588,7 @@ class ContourHierarchy(Block):
 
 CONTOUR_ANALYSIS_BLOCKS = (
     CompareContours,
+    ContourProfileTolerance,
     ContourHull,
     TestContourPoints,
     ApproximateContour,

@@ -2412,6 +2412,20 @@ Inputs: `contour` (data), `points` (data).
 | `mode` | `"signed_distance"` | `signed_distance`, `location` Return signed pixel distances or only classify points as inside, edge or outside. |
 | `minimum_distance` | `0.0` | Minimum signed distance in pixels. Outside distances are negative. |
 
+## Contour profile tolerance (`inspect.contour_profile`)
+
+Inspection / Measurements
+
+Inputs: `reference` (data), `sample` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_index` | `0` | Value must be a whole number at least 0. Zero-based reference collection item. Ignored for point-list inputs. |
+| `sample_index` | `0` | Value must be a whole number at least 0. Zero-based sample collection item. Ignored for point-list inputs. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid compares coordinates directly for already aligned images. |
+| `sample_spacing` | `2.0` | Value must be a finite number at least 0.25. Maximum distance between boundary samples, in pixels. |
+| `tolerance` | `2.0` | Value must be a finite number at least 0. Maximum absolute deviation in pixels for a passing profile. |
+
 ## Find contours (`inspect.contours`)
 
 Inspection / Shapes
