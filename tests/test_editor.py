@@ -29,6 +29,62 @@ def pump_until(app, predicate, seconds=8):
     raise AssertionError("Qt condition timed out")
 
 
+def test_live_results_debounce_use_captured_input_and_leave_configuration_untouched(
+    app, monkeypatch
+):
+    window = MainWindow()
+    window.show()
+    window.graph.run()
+    block = list(window.graph.blocks.values())[-1]
+    window.scene.nodes[block.id].setSelected(True)
+    inspector = window.inspector
+    inspector.live_delay_ms = 75
+    captured = block.last_inputs["image"].copy()
+    original_count = block.last_result.outputs["count"]
+    original_parameters = dict(block.parameters)
+    calls = []
+    original = type(block).process
+
+    def process(candidate, inputs):
+        calls.append((candidate.parameters["expected_count"], inputs["image"].copy()))
+        return original(candidate, inputs)
+
+    monkeypatch.setattr(type(block), "process", process)
+    try:
+        assert inspector.live_results.isEnabled()
+        assert not inspector.live_results.isChecked()
+        inspector.fields["expected_count"].setText("4")
+        QTest.qWait(150)
+        assert not calls
+        inspector.live_results.setChecked(True)
+        for value in ("5", "6", "7"):
+            inspector.fields["expected_count"].setText(value)
+        assert not calls
+        pump_until(app, lambda: inspector._live_result is not None)
+        assert [count for count, _ in calls] == [7]
+        assert (calls[0][1] == captured).all()
+        assert "LIVE PREVIEW" in inspector.details.toPlainText()
+        assert not inspector._live_result.last_result.passed
+        assert block.parameters == original_parameters
+        assert block.last_result.outputs["count"] == original_count
+        assert not window.dirty
+        inspector.fields["expected_count"].setText("8")
+        window.scene.clearSelection()
+        assert not inspector.live_results.isChecked()
+        QTest.qWait(150)
+        assert len(calls) == 1
+        window.scene.nodes[block.id].setSelected(True)
+        assert not inspector.live_results.isChecked()
+        inspector.live_results.setChecked(True)
+        inspector.fields["expected_count"].setText("9")
+        inspector.hide()
+        QTest.qWait(150)
+        assert not inspector.live_results.isChecked()
+        assert len(calls) == 1
+    finally:
+        window.close()
+
+
 @pytest.mark.parametrize("reverse", [False, True])
 def test_drag_ports_both_directions(app, reverse):
     registry = builtin_registry()
