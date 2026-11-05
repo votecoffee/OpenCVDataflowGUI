@@ -243,7 +243,7 @@ def finish_outputs(block, result):
     )
     if reference is None and first_image is not None and "spatial" not in base:
         base["spatial"] = frame([first_image.shape[1], first_image.shape[0]], f"{block.id}:image")
-    for port in block.outputs:
+    for port in block.execution_outputs:
         value = result.outputs[port.name]
         if value is NO_VALUE:
             continue

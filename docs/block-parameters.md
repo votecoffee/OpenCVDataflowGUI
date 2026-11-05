@@ -1196,6 +1196,16 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `norm_type` | `"minmax"` | `minmax`, `l1`, `l2`, `inf` |
 | `norm_value` | `1.0` |  |
 
+## Overlay result graphics (`cv.overlay_result_graphics`)
+
+Image processing / Compositing
+
+Inputs: `image` (image), `graphics_1` (graphics, optional), `graphics_2` (graphics, optional), `graphics_3` (graphics, optional), `graphics_4` (graphics, optional), `graphics_5` (graphics, optional), `graphics_6` (graphics, optional), `graphics_7` (graphics, optional), `graphics_8` (graphics, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `excluded_graphics` | `{}` |  |
+
 ## Gaussian pyramid up/down (`cv.pyramid`)
 
 Image processing / Geometry

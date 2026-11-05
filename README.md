@@ -96,6 +96,21 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
    In the **Debug** run profile, pattern matching, template instances, oriented
    edges, and collection filtering include review graphics with accepted items
    in green and rejected candidates in red.
+
+To combine annotations on a final image, expose **Result graphics** on each
+source block and connect those outputs to **Overlay result graphics**. Connect
+the final image to its **image** input, then run in **Debug**. Use **Choose
+graphics…** on the overlay block to check individual layers, then **Apply
+configuration** and run again. Image-aligned layers follow crop, resize, and
+other recorded transforms in the same coordinate frame. Result graphics are
+drawing objects. The overlay block draws them onto the final image to produce
+the result image. Standalone previews such as histograms remain available for
+inspection. [Try the overlay example](examples/overlay_result_graphics/README.md).
+
+The overlay block starts with two visible graphics inputs. Expose more in the
+inspector to connect up to eight sources. A ToolBlock's **Result graphics**
+collects drawings from its internal blocks. You can also map an internal block's
+exposed graphics to a separate public terminal.
 5. Save/load JSON projects from File. Select a wire or block and press Delete to
    remove it. Use the wheel to zoom, middle-drag to pan, and **Fit graph** to frame it.
 
@@ -236,6 +251,11 @@ Load trusted custom blocks via **File > Load Python plugin**. Start with
 [`examples/custom_invert/custom_invert.py`](examples/custom_invert/custom_invert.py). Plugins run arbitrary Python;
 project files never automatically import them. Load the same plugins before opening
 projects that use their types. No code is needed for built-in pipelines.
+
+Custom blocks can supply named `GraphicDrawing` objects through
+`Result.drawings`. Each drawing identifies its source image input and contains
+objects such as outlines, markers, and labels. The block's existing raster
+previews remain available separately.
 
 Built-in tools include demo/image/camera inputs; ordinary grayscale, Gaussian blur,
 and Canny; threshold; contour inspection with overlay and mask images; image saving;

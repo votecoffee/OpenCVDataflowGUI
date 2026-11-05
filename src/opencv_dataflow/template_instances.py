@@ -5,6 +5,7 @@ import numpy as np
 
 from .core import Port, Result
 from .features import overlay_image
+from .graphics_layers import GraphicDrawing, graphic_box
 from .payloads import NO_VALUE
 from .poses import POSE_HELP, POSE_OFFSETS, local_offset, make_pose
 from .processing import MatchTemplate, finite, integer
@@ -93,6 +94,7 @@ class FindTemplateInstances(MatchTemplate):
             candidates[y, x] = -1
         count = len(matches)
         graphics = {}
+        drawings = {}
         if self.generate_graphics and overlay is not NO_VALUE:
             graphic = overlay.copy()
             for x, y, score, reason in rejected:
@@ -104,6 +106,9 @@ class FindTemplateInstances(MatchTemplate):
                 review_label(graphic, f"{match['score']:.2f}", (x, y + height // 2), ACCEPTED)
             review_legend(graphic, count, len(rejected))
             graphics["template instances"] = graphic
+            objects = [graphic_box(x, y, width, height, REJECTED) for x, y, _, _ in rejected]
+            objects.extend(graphic_box(*match["bounds"], ACCEPTED) for match in matches)
+            drawings["template instances"] = GraphicDrawing(tuple(objects))
         return Result(
             {
                 "poses": poses,
@@ -113,6 +118,7 @@ class FindTemplateInstances(MatchTemplate):
                 "overlay": overlay,
             },
             graphics=graphics,
+            drawings=drawings,
             passed=count >= minimum,
             score=matches[0]["score"] if matches else 0.0,
             message=f"Found {count} template instances (minimum {minimum})",

@@ -51,7 +51,7 @@ class ResultImageWindow(QDialog):
     def refresh(self, block):
         result = block.last_result
         payload = {}
-        if self.kind == "Output":
+        if self.kind in ("Output", "Result"):
             image = block.last_output_images.get(self.name)
             if result is not None:
                 payload = result.payloads.get(self.name, {})

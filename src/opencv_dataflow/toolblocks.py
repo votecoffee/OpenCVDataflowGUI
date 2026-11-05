@@ -9,6 +9,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from .core import Block, Connection, Graph, Port, Result
+from .graphics_layers import RESULT_GRAPHICS
 from .outcomes import rejected_inputs
 from .payloads import NO_VALUE, ValuePacket, compatible
 
@@ -84,9 +85,10 @@ class ToolBlock(Block):
                 if not isinstance(name, str) or not name.strip() or name != name.strip():
                     raise ValueError("Public terminal names must be nonempty and trimmed")
                 block = self.graph.blocks.get(binding.block)
-                port = next(
-                    (p for p in getattr(block, direction, ()) if p.name == binding.port), None
+                internal_ports = () if block is None else (
+                    block.inputs if direction == "inputs" else block.execution_outputs
                 )
+                port = next((p for p in internal_ports if p.name == binding.port), None)
                 if port is None:
                     raise ValueError(
                         f"Public {direction[:-1]} '{name}' has a missing internal port"
@@ -196,12 +198,14 @@ class ToolBlock(Block):
         connections = []
         for c in parent.connections:
             output = (
-                mapped(c.output, self.output_bindings, outputs) if c.source == self.id else c.output
+                mapped(c.output, self.output_bindings, outputs)
+                if c.source == self.id and c.output in self.output_bindings
+                else c.output
             )
             input = mapped(c.input, self.input_bindings, inputs) if c.target == self.id else c.input
             source = candidate if c.source == self.id else parent.blocks[c.source]
             target = candidate if c.target == self.id else parent.blocks[c.target]
-            out = next(p for p in source.outputs if p.name == output)
+            out = next(p for p in source.output_ports if p.name == output)
             inp = next(p for p in target.inputs if p.name == input)
             if not compatible(out.kind, inp.kind):
                 raise ValueError("Updated interface would break a connected port type")
@@ -238,7 +242,10 @@ class ToolBlock(Block):
         self.input_bindings, self.output_bindings = dict(inputs), dict(outputs)
         self.inputs, self.outputs = candidate.inputs, candidate.outputs
         self.exposed_inputs = list(inputs)
+        exposed_graphics = RESULT_GRAPHICS in self.exposed_outputs
         self.exposed_outputs = list(outputs)
+        if exposed_graphics and RESULT_GRAPHICS not in self.exposed_outputs:
+            self.exposed_outputs.append(RESULT_GRAPHICS)
         if self.preview_output not in outputs:
             self.preview_output = ""
         parent.connections = connections
@@ -343,7 +350,7 @@ def encapsulate(graph, selected, name, registry, owner=None):
                 terminal = public_name(block, port.name, ins)
                 ins[terminal] = Binding(block.id, port.name)
                 input_names[block.id, port.name] = terminal
-        for port in block.outputs:
+        for port in block.execution_outputs:
             crosses = any(
                 c.source == block.id and c.output == port.name and c.target not in selected
                 for c in graph.connections

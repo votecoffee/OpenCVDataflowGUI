@@ -131,7 +131,7 @@ class Node(QGraphicsItem):
         self.setPos(*block.position)
         for output, ports, exposed in (
             (False, block.inputs, block.exposed_inputs),
-            (True, block.outputs, block.exposed_outputs),
+            (True, block.output_ports, block.exposed_outputs),
         ):
             row = 0
             for port in ports:

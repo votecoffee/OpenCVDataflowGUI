@@ -6,18 +6,29 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
+from .graphics_layers import GraphicDrawing, graphic_object
 from .images import preview_rgb
 from .selection import contains, rasterize, region_matrix, region_size, selection_mask
 
 
-def region_result(image, region):
+def region_result(image, region, generate_graphics=True):
     mask = rasterize(region, image.shape)
     overlay = cv2.cvtColor(preview_rgb(image), cv2.COLOR_RGB2BGR)
     tint = np.full_like(overlay, (50, 220, 100))
     overlay[mask != 0] = cv2.addWeighted(overlay, 0.65, tint, 0.35, 0)[mask != 0]
+    drawings = {}
+    if generate_graphics:
+        contours, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        drawings["region"] = GraphicDrawing(
+            tuple(
+                graphic_object("polyline", contour.reshape(-1, 2), (50, 220, 100), closed=True)
+                for contour in contours
+            )
+        )
     return Result(
         {"mask": mask, "region": region, "overlay": overlay},
         graphics={"region": overlay},
+        drawings=drawings,
         message=f"{np.count_nonzero(mask)} selected pixels",
     )
 
@@ -50,7 +61,7 @@ class ShapeRegion(Block):
             "image_size": [image.shape[1], image.shape[0]],
             **self.parameters,
         }
-        return region_result(image, region)
+        return region_result(image, region, self.generate_graphics)
 
 
 class CombineRegions(Block):
@@ -79,7 +90,7 @@ class CombineRegions(Block):
             "operation": operation,
             "children": children,
         }
-        return region_result(image, region)
+        return region_result(image, region, self.generate_graphics)
 
 
 class TransformRegion(Block):
@@ -149,7 +160,7 @@ class TransformRegion(Block):
             "interpolation": self.parameters["interpolation"],
             "threshold": self.parameters["threshold"],
         }
-        result = region_result(image, region)
+        result = region_result(image, region, self.generate_graphics)
         result.outputs["transform"] = {
             "model": "image_transform_v1",
             "source_to_target": matrix.tolist(),

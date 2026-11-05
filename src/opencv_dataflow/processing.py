@@ -8,6 +8,7 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
+from .graphics_layers import GraphicDrawing, graphic_box
 from .images import (
     DepthArray,
     ImageArray,
@@ -650,6 +651,11 @@ class ConnectedComponents(ImageTool):
                 "collection": collection("blobs", items, image, self.input_payloads["image"]),
             },
             graphics={"components": overlay},
+            drawings={
+                "components": GraphicDrawing(
+                    tuple(graphic_box(*item["bounds"], (70, 220, 140)) for item in components)
+                )
+            } if self.generate_graphics else {},
             passed=count == expected,
             score=max(0.0, 1 - abs(count - expected) / max(expected, 1)),
             message=f"{count} components / expected {expected}; coordinates in input image",
@@ -779,6 +785,14 @@ class MatchTemplate(Block):
                 "response": response,
             },
             graphics={"match": overlay, "response": heat},
+            drawings={
+                "match": GraphicDrawing((
+                    graphic_box(
+                        x, y, width, height,
+                        (70, 220, 140) if score >= threshold else (60, 90, 240),
+                    ),
+                ))
+            } if self.generate_graphics else {},
             passed=score >= threshold,
             score=score,
             message=f"Best match {score:.1%} at ({x}, {y})",

@@ -17,6 +17,7 @@ import numpy as np
 from .activity import ActivityLog, report
 from .diagnostics import BlockLogger
 from .fail_reasons import normalize_reasons
+from .graphics_layers import RESULT_GRAPHICS, GraphicDrawing, GraphicsBundle, graphics_bundle
 from .outcomes import (
     INPUT_FAILURE_POLICIES,
     TicketResults,
@@ -52,6 +53,7 @@ class Port:
 @dataclass
 class Result:
     outputs: dict[str, Any] = field(default_factory=dict)
+    # Standalone diagnostic previews, such as histograms and response maps.
     graphics: dict[str, np.ndarray] = field(default_factory=dict)
     passed: bool = True
     score: float | None = None
@@ -61,6 +63,8 @@ class Result:
     event_data: dict = field(default_factory=dict)
     final_judgment: bool | None = None
     fail_reasons: list = field(default_factory=list)
+    # Named objects composited onto an image only when rendered.
+    drawings: dict[str, GraphicDrawing] = field(default_factory=dict)
 
 
 class Block:
@@ -250,6 +254,16 @@ class Block:
         report(self, kind, data, values, invocation, at)
 
     @property
+    def output_ports(self):
+        if any(port.name == RESULT_GRAPHICS for port in self.outputs):
+            return self.outputs
+        return (*self.outputs, Port(RESULT_GRAPHICS, "graphics", required=False))
+
+    @property
+    def execution_outputs(self):
+        return self.output_ports if RESULT_GRAPHICS in self.exposed_outputs else self.outputs
+
+    @property
     def generate_graphics(self):
         """Custom tools can avoid constructing auxiliary graphics when this is false."""
         return self.run_profile.graphics
@@ -314,6 +328,18 @@ class Block:
                 result.outputs["ticket"] = (
                     self._source_ticket if self._source_ticket is not None else NO_VALUE
                 )
+            if not self.generate_graphics:
+                result.graphics = {}
+                result.drawings = {}
+            for name, value in result.graphics.items():
+                validate_value(Port(name), value)
+            if RESULT_GRAPHICS in self.exposed_outputs and RESULT_GRAPHICS not in result.outputs:
+                result.outputs[RESULT_GRAPHICS] = (
+                    graphics_bundle(self, result)
+                    if result.drawings or not self.outputs
+                    or any(v is not NO_VALUE for v in result.outputs.values())
+                    else NO_VALUE
+                )
             result = finish_outputs(self, result)
             if not isinstance(result.passed, (bool, np.bool_)) or (
                 result.final_judgment is not None
@@ -337,10 +363,10 @@ class Block:
                 raise ValueError("Score must be finite and between 0 and 1")
             if result.score is not None:
                 result.score = float(result.score)
-            expected = {p.name for p in self.outputs}
+            expected = {p.name for p in self.execution_outputs}
             if result.outputs.keys() != expected:
                 raise ValueError(f"Result outputs must match {sorted(expected)}")
-            for port in self.outputs:
+            for port in self.execution_outputs:
                 validate_value(port, result.outputs[port.name])
             if not result.emissions.keys() <= expected:
                 raise ValueError("Emissions must name declared outputs")
@@ -350,11 +376,8 @@ class Block:
                 for packet in packets:
                     if not isinstance(packet, ValuePacket):
                         raise ValueError("Emissions must be ValuePackets")
-                    validate_value(next(p for p in self.outputs if p.name == name), packet)
-            if not self.run_profile.graphics:
-                result.graphics = {}
-            for name, value in result.graphics.items():
-                validate_value(Port(name), value)
+                    port = next(p for p in self.execution_outputs if p.name == name)
+                    validate_value(port, packet)
             result = stamp_result(self, result)
             self.last_result = copy.deepcopy(result)
             self.current_emissions = self.last_result.emissions
@@ -366,9 +389,9 @@ class Block:
             }
             self.last_graphics = self.last_result.graphics
             self.state = "pass" if result.passed else "fail"
-            if result.outputs and all(
+            if self.outputs and all(
                 result.outputs[name] is NO_VALUE
-                for name in getattr(self, "flow_primary", tuple(result.outputs))
+                for name in getattr(self, "flow_primary", tuple(p.name for p in self.outputs))
             ):
                 self.state = "waiting"
             self._finish_work()
@@ -567,6 +590,9 @@ def validate_value(port, value):
     elif port.kind == "number":
         if isinstance(value, bool) or not isinstance(value, (int, float, np.number)):
             raise TypeError(f"{port.name} requires a number")
+    elif port.kind == "graphics":
+        if not isinstance(value, GraphicsBundle):
+            raise TypeError(f"{port.name} requires a result graphics bundle")
     elif port.kind == "data":
         json.dumps(value, allow_nan=False)
     elif port.kind != "any":
@@ -815,7 +841,7 @@ class Graph:
 
     @staticmethod
     def validate_connection_ports(src, output, dst, input):
-        out = next((p for p in src.outputs if p.name == output), None)
+        out = next((p for p in src.output_ports if p.name == output), None)
         inp = next((p for p in dst.inputs if p.name == input), None)
         if out is None or inp is None:
             raise ValueError("Unknown port")
@@ -955,7 +981,7 @@ class Graph:
         for key in provided:
             block = self.blocks[key]
             if block.last_result is not None:
-                for port in block.outputs:
+                for port in block.execution_outputs:
                     emitted[key, port.name] = block.current_emissions.get(port.name, [])
 
         def run_block(key):
@@ -975,7 +1001,7 @@ class Graph:
                 return
             streams = {c.input: emitted.get((c.source, c.output), []) for c in incoming}
             constants = {name: value for (target, name), value in injected.items() if target == key}
-            outputs = {p.name: [] for p in block.outputs}
+            outputs = {p.name: [] for p in block.execution_outputs}
             if getattr(block, "queue_inputs", {}):
                 queued_inputs = block.queue_inputs
                 block._queued_public_events = {
@@ -1131,7 +1157,7 @@ class Graph:
                 had_result = True
                 last_processed_state = block.state
                 failed |= block.state == "fail"
-                for port in block.outputs:
+                for port in block.execution_outputs:
                     if port.name in result.emissions:
                         outputs[port.name].extend(result.emissions[port.name])
                     elif result.outputs[port.name] is not NO_VALUE:
@@ -1150,7 +1176,7 @@ class Graph:
             if failed:
                 block.state = "fail"
             elif block.state == "waiting" and any(
-                outputs[n] for n in getattr(block, "flow_primary", outputs)
+                outputs[n] for n in getattr(block, "flow_primary", (p.name for p in block.outputs))
             ):
                 block.state = "pass"
             # Retain all emissions for ToolBlock boundaries, receipts and UI snapshots.
@@ -1309,7 +1335,8 @@ class Graph:
                     and exposed == ["value", "passed"]
                 ):
                     exposed = [*exposed, "reasons"]
-                allowed = {p.name for p in getattr(block, direction)}
+                ports = block.inputs if direction == "inputs" else block.output_ports
+                allowed = {p.name for p in ports}
                 if len(set(exposed)) != len(exposed) or not set(exposed) <= allowed:
                     raise ValueError("Invalid exposed ports")
                 setattr(block, f"exposed_{direction}", exposed)

@@ -14,6 +14,7 @@ PORT_COLORS = {
     "data": "#a8b4c7",
     "any": "#c2cbd5",
     "cloud": "#f09273",
+    "graphics": "#ef91c7",
 }
 
 PORT_LABELS = {
@@ -26,6 +27,7 @@ PORT_LABELS = {
     "data": "Other structured data / tickets · slate",
     "any": "Any / unresolved type · gray",
     "cloud": "3D point cloud · coral",
+    "graphics": "Result graphics · pink",
 }
 
 BLOCK_STATE_COLORS = {
@@ -72,7 +74,7 @@ def port_type(block, port, output=False, seen=None):
     if binding is not None:
         child = block.graph.blocks[binding.block]
         original = next(
-            p for p in (child.outputs if output else child.inputs) if p.name == binding.port
+            p for p in (child.output_ports if output else child.inputs) if p.name == binding.port
         )
         return port_type(child, original, output, seen)
     name = port.name.casefold()

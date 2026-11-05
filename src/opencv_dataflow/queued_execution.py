@@ -104,7 +104,7 @@ def snapshots_for_frame(graph, frame, keys=None):
         if result is not None:
             result.outputs, result.payloads = dict(result.outputs), dict(result.payloads)
             result.emissions = dict(block.current_emissions)
-            for port in block.outputs:
+            for port in block.execution_outputs:
                 packets = result.emissions.get(port.name, [])
                 if len(packets) > 1:
                     packets = [p for p in packets if same_ticket(p.payload, frame.payload)]
