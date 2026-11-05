@@ -1966,6 +1966,19 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
 | `check_count` | `false` |  |
 
+## BRISK keypoints and descriptors (`inspect.brisk`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `threshold` | `30` | Value must be a whole number between 1 and 255. AGAST response threshold. |
+| `octaves` | `3` | Value must be a whole number between 0 and 8. Number of detection octaves. Zero uses a single scale. |
+| `pattern_scale` | `1.0` | Value must be a finite number between 0.5 and 4. Scale the standard BRISK keypoint sampling pattern. |
+| `max_features` | `500` | Value must be a whole number between 1 and 10000. Keep up to this many of the strongest detected features. |
+
 ## Classify Lab color (`inspect.classify_lab`)
 
 Inspection / Color measurements
@@ -2365,6 +2378,18 @@ Inputs: `query` (data), `train` (data).
 | --- | --- | --- |
 | `ratio` | `0.75` | Value must be a finite number between 1e-06 and 0.999999. Reject a nearest neighbor too similar in distance to the runner-up. |
 | `max_distance` | `64.0` | Value must be a finite number at least 0. Maximum descriptor distance using the selected norm. |
+| `mode` | `"ratio"` | `ratio`, `cross_check` |
+
+## Match BRISK descriptors (`inspect.match_brisk`)
+
+Inspection / Matching
+
+Inputs: `query` (data), `train` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `ratio` | `0.75` | Value must be a finite number between 1e-06 and 0.999999. Reject a nearest neighbor too similar in distance to the runner-up. |
+| `max_distance` | `100.0` | Value must be a finite number at least 0. Maximum descriptor distance using the selected norm. |
 | `mode` | `"ratio"` | `ratio`, `cross_check` |
 
 ## Match descriptors with FLANN (`inspect.match_flann`)

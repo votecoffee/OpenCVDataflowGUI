@@ -423,13 +423,17 @@ class ORBFeatures(ImageTool):
         )
 
 
-def feature_result(inputs, gray, detector, algorithm, details):
+def feature_result(inputs, gray, detector, algorithm, details, *, limit=None):
     mask = optional_mask(inputs, gray)
     keypoints, descriptors = detector.detectAndCompute(gray, mask)
     if mask is not None and keypoints:
         keep = [index for index, point in enumerate(keypoints) if contains(mask, point.pt)]
         keypoints = [keypoints[index] for index in keep]
         descriptors = descriptors[keep] if descriptors is not None else None
+    if limit is not None and len(keypoints) > limit:
+        keep = sorted(range(len(keypoints)), key=lambda index: -keypoints[index].response)[:limit]
+        keypoints = [keypoints[index] for index in keep]
+        descriptors = descriptors[keep]
     points = [list(k.pt) for k in keypoints]
     features = {
         "algorithm": algorithm,
@@ -898,6 +902,89 @@ class MatchFLANN(Block):
         return paired_feature_result(inputs, qpoints, tpoints, selected)
 
 
+class BRISKFeatures(ImageTool):
+    type_id, title, subtype = "inspect.brisk", "BRISK keypoints and descriptors", "Features"
+    category, block_type = "Inspection", "Inspection"
+    inputs, outputs = SELECTION_INPUTS, ORBFeatures.outputs
+    defaults = {"threshold": 30, "octaves": 3, "pattern_scale": 1.0, "max_features": 500}
+    parameter_ranges = {
+        "threshold": NumericRange(1, 255, whole=True),
+        "octaves": NumericRange(0, 8, whole=True),
+        "pattern_scale": NumericRange(0.5, 4),
+        "max_features": NumericRange(1, 10000, whole=True),
+    }
+    parameter_help = {
+        "threshold": "AGAST response threshold.",
+        "octaves": "Number of detection octaves. Zero uses a single scale.",
+        "pattern_scale": "Scale the standard BRISK keypoint sampling pattern.",
+        "max_features": "Keep up to this many of the strongest detected features.",
+    }
+
+    def process(self, inputs):
+        gray = gray_image(inputs["image"], (np.uint8,), auto_depth=True)
+        p = self.parameters
+        scale = float(p["pattern_scale"])
+        detector = cv2.xfeatures2d.BRISK_create(int(p["threshold"]), int(p["octaves"]), scale)
+        result = feature_result(
+            inputs,
+            gray,
+            detector,
+            "BRISK",
+            {"descriptor_size": 64, "pattern_scale": scale},
+            limit=int(p["max_features"]),
+        )
+        if self.generate_graphics and result.outputs["points"]:
+            result.drawings["BRISK"] = GraphicDrawing(
+                tuple(
+                    graphic_object("marker", [point], (70, 220, 140))
+                    for point in result.outputs["points"]
+                )
+            )
+        return result
+
+
+def brisk_data(data):
+    if (
+        not isinstance(data, dict)
+        or data.get("algorithm") != "BRISK"
+        or data.get("descriptor_size") != 64
+    ):
+        raise ValidationError("Connect standard 64-byte BRISK descriptors")
+    scale = data.get("pattern_scale")
+    if type(scale) not in (int, float) or not 0.5 <= scale <= 4:
+        raise ValidationError("Invalid BRISK sampling pattern scale")
+    raw, points = descriptor_arrays(data, 64, 0, 255, True)
+    return raw.astype(np.uint8), points, scale
+
+
+class MatchBRISK(Block):
+    type_id, title, category = "inspect.match_brisk", "Match BRISK descriptors", "Inspection"
+    block_type, subtype = "Inspection", "Matching"
+    inputs, outputs = MatchSIFT.inputs, MatchSIFT.outputs
+    defaults = {"ratio": 0.75, "max_distance": 100.0, "mode": "ratio"}
+    parameter_choices = MatchAKAZE.parameter_choices
+    parameter_ranges = MatchSIFT.parameter_ranges
+    parameter_help = MatchSIFT.parameter_help
+
+    def process(self, inputs):
+        query, qpoints, query_scale = brisk_data(inputs["query"])
+        train, tpoints, train_scale = brisk_data(inputs["train"])
+        if query_scale != train_scale:
+            raise ValidationError("BRISK sampling pattern scales must match")
+        p = self.parameters
+        return descriptor_match_result(
+            inputs,
+            query,
+            train,
+            qpoints,
+            tpoints,
+            cv2.NORM_HAMMING,
+            p["mode"],
+            float(p["ratio"]),
+            float(p["max_distance"]),
+        )
+
+
 class EstimateHomography(Block):
     type_id, title, category = "inspect.homography", "Estimate image homography", "Inspection"
     block_type, subtype = "Inspection", "Registration"
@@ -1050,10 +1137,12 @@ REGISTRATION_BLOCKS = (
     ORBFeatures,
     SIFTFeatures,
     AKAZEFeatures,
+    BRISKFeatures,
     MatchORB,
     MatchSIFT,
     MatchAKAZE,
     MatchFLANN,
+    MatchBRISK,
     EstimateHomography,
     TransformPoints,
 )

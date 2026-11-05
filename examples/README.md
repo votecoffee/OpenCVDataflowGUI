@@ -30,6 +30,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [SIFT registration](sift_registration/README.md) | Match SIFT descriptors and recover a known image translation. |
 | [AKAZE registration](akaze_registration/README.md) | Match binary AKAZE descriptors and recover a known image translation. |
 | [FLANN feature registration](flann_registration/README.md) | Match SIFT descriptors through a KD-tree and recover a known translation. |
+| [BRISK registration](brisk_registration/README.md) | Detect and match BRISK keypoints before estimating a known image shift. |
 | [Skeletonization and spur pruning](skeleton_pruning/README.md) | Extract a binary centerline and visualize the short branches removed from it. |
 | [Watershed separation](watershed/README.md) | Separate touching parts using distance-peak seeds or points placed on the image. |
 | [Data Matrix reading](datamatrix_reading/README.md) | Read the bundled synthetic Data Matrix and verify the decoded text. |

@@ -1187,7 +1187,7 @@ P2	method	cv2.xfeatures2d.BRISK.getThreshold	no static reference	-
 P2	method	cv2.xfeatures2d.BRISK.setOctaves	no static reference	-
 P2	method	cv2.xfeatures2d.BRISK.setPatternScale	no static reference	-
 P2	method	cv2.xfeatures2d.BRISK.setThreshold	no static reference	-
-P2	function	cv2.xfeatures2d.BRISK_create	no static reference	-
+P2	function	cv2.xfeatures2d.BRISK_create	literal reference	-
 P2	class	cv2.xfeatures2d.DAISY	no static reference	-
 P2	method	cv2.xfeatures2d.DAISY.create	method name only	-
 P2	method	cv2.xfeatures2d.DAISY.getDefaultName	no static reference	-
