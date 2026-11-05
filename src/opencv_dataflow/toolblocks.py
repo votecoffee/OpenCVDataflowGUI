@@ -96,7 +96,7 @@ class ToolBlock(Block):
                     for c in self.graph.connections
                 ):
                     raise ValueError(f"Public input '{name}' is also connected internally")
-                declared.append(Port(name, port.kind, port.required))
+                declared.append(Port(name, port.kind, port.required, port.visual_type))
             if direction == "inputs" and len(set(bindings.values())) != len(bindings):
                 raise ValueError("An internal input can have only one public binding")
             ports.append(tuple(declared))

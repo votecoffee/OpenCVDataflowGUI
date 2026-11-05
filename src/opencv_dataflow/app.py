@@ -78,6 +78,7 @@ from .ticket_window import TicketResultsWindow
 from .tickets import TICKET_MODES
 from .toolblock_editor import InterfaceDialog
 from .toolblocks import ToolBlock, encapsulate
+from .visual_style import BLOCK_COLORS, PORT_COLORS, PORT_LABELS
 
 
 class Runner(QThread):
@@ -1004,6 +1005,7 @@ class MainWindow(QMainWindow):
         self.edit_actions.append(self.recipe_action)
         toolbar.addAction("Delete selected", self.scene.delete_selected)
         workspace = self.menuBar().addMenu("&Workspace")
+        workspace.addAction("Color legend…", self.show_color_legend)
         for title, shortcut, callback in (
             ("Group selected nodes…", "Ctrl+G", self.group_nodes),
             ("Ungroup selection", "Ctrl+Shift+G", self.scene.ungroup_selected),
@@ -1027,6 +1029,39 @@ class MainWindow(QMainWindow):
         self.breadcrumb = QLabel("Job")
         toolbar.addWidget(self.breadcrumb)
         self.update_navigation()
+
+    def show_color_legend(self):
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Canvas color legend")
+        dialog.resize(510, 650)
+        layout = QVBoxLayout(dialog)
+        explanation = QLabel(
+            "Sockets and wires: data type. Node borders: tool category.\n"
+            "Node headers: run status and score intensity.\n"
+            "A white outline highlights selection without replacing type colors."
+        )
+        explanation.setWordWrap(True)
+        layout.addWidget(explanation)
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        content = QWidget()
+        form = QFormLayout(content)
+        for heading, colors, labels in (
+            ("Connections", PORT_COLORS, PORT_LABELS),
+            ("Block borders", BLOCK_COLORS, {}),
+        ):
+            form.addRow(QLabel(f"<b>{heading}</b>"))
+            for kind, color in colors.items():
+                swatch = QLabel()
+                swatch.setFixedSize(28, 16)
+                swatch.setStyleSheet(f"background-color: {color}; border-radius: 3px;")
+                form.addRow(swatch, QLabel(labels.get(kind, kind)))
+        scroll.setWidget(content)
+        layout.addWidget(scroll)
+        close = QPushButton("Close")
+        close.clicked.connect(dialog.accept)
+        layout.addWidget(close)
+        dialog.exec()
 
     def group_nodes(self):
         if self.runner:

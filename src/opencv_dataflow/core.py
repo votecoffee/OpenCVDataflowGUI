@@ -45,6 +45,7 @@ class Port:
     name: str
     kind: str = "image"
     required: bool = True
+    visual_type: str = ""
 
 
 @dataclass

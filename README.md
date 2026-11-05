@@ -57,7 +57,8 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
 
 1. Expand a type and subtype in the left toolbox tree, then double-click a tool to add a block.
 2. Drag between an output socket and an input socket in either direction. Image
-   ports are cyan, pyramid sets green, numeric ports amber, and structured-data ports purple.
+   ports and wires are gold for images, purple for regions/masks, blue for poses/transforms,
+   pale gold for pyramids, turquoise for depth, green for numbers, and slate for other data.
 3. Select a block, edit parameters in the right inspector, and click **Apply
    configuration**. Choose exposed ports and the optional node thumbnail there.
    OpenCV enum controls use dropdowns; booleans use checkboxes. Hover over controls
@@ -73,6 +74,11 @@ Node rearrangements mark the project as modified. **Save/Ctrl+S remembers node
 positions even when connections are unchanged**, including layouts inside nested
 ToolBlocks. Layout-only moves retain existing results. Positions are saved in the
 project; there is no automatic save on movement.
+
+Node borders indicate tool category (including purple region tools and blue pose
+tools); node headers keep their pass/fail/error status colors and score intensity.
+Selection adds a white outline. **Workspace > Color legend…** explains the palette;
+see [canvas colors](docs/canvas-colors.md) for typing and custom-block details.
 
 For larger workspaces, select nodes and use **Workspace > Group selected nodes**
 (Ctrl+G). Drag the group's dashed header/border to move its members together;

@@ -24,6 +24,7 @@ from PySide6.QtWidgets import (
 )
 
 from .images import preview_rgb
+from .visual_style import BLOCK_COLORS, PORT_COLORS, block_type, connection_type, port_type
 
 
 def pixmap(image):
@@ -48,17 +49,13 @@ class Socket(QGraphicsEllipseItem):
         super().__init__(-7, -7, 14, 14, node)
         self.node, self.port, self.output = node, port, output
         self.setPos(220 if output else 0, 62 + row * 25)
-        colors = {
-            "image": "#51c7db",
-            "pyramid": "#63d1a7",
-            "number": "#dca65e",
-            "data": "#b497ea",
-            "any": "#c2cbd5",
-            "depth": "#e98fc7",
-        }
-        self.setBrush(QColor(colors.get(port.kind, "#c2cbd5")))
+        self.visual_type = port_type(node.block, port, output)
+        self.setBrush(QColor(PORT_COLORS[self.visual_type]))
         self.setPen(QPen(QColor("#17202c"), 2))
-        self.setToolTip(f"{port.name} · {port.kind} · {'output' if output else 'input'}")
+        self.setToolTip(
+            f"{port.name} · {port.kind} · {self.visual_type} color · "
+            f"{'output' if output else 'input'}"
+        )
         self.setAcceptedMouseButtons(Qt.MouseButton.LeftButton)
         self.setZValue(3)
 
@@ -89,6 +86,11 @@ class Node(QGraphicsItem):
     def __init__(self, block):
         super().__init__()
         self.block = block
+        self.category = block_type(block)
+        self.border_color = QColor(BLOCK_COLORS[self.category])
+        self.setToolTip(
+            f"{block.name} · {self.category}\nBorder: tool category · header: run status"
+        )
         self.sockets = {}
         self.setFlags(
             QGraphicsItem.GraphicsItemFlag.ItemIsMovable
@@ -137,11 +139,11 @@ class Node(QGraphicsItem):
         status = QColor(base)
         if b.last_result and b.last_result.score is not None:
             status = status.lighter(75 + int(50 * b.last_result.score))
-        painter.setPen(
-            QPen(
-                QColor("#67d1e1" if self.isSelected() else "#43536b"), 2 if self.isSelected() else 1
-            )
-        )
+        if self.isSelected():
+            painter.setPen(QPen(QColor("#f4f7fb"), 5))
+            painter.setBrush(Qt.BrushStyle.NoBrush)
+            painter.drawRoundedRect(QRectF(0, 0, 220, self.height), 9, 9)
+        painter.setPen(QPen(self.border_color, 2))
         painter.setBrush(QColor("#202c3d"))
         painter.drawRoundedRect(QRectF(0, 0, 220, self.height), 9, 9)
         painter.setPen(Qt.PenStyle.NoPen)
@@ -207,17 +209,30 @@ class Wire(QGraphicsPathItem):
     def __init__(self, connection, source, target):
         super().__init__()
         self.connection, self.source, self.target = connection, source, target
+        self.visual_type = connection_type(source.visual_type, target.visual_type)
+        self.color = QColor(PORT_COLORS[self.visual_type])
+        self.setToolTip(f"{source.port.name} → {target.port.name} · {self.visual_type}")
         self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable)
         self.setZValue(-1)
         self.refresh()
 
     def refresh(self):
         self.setPath(curve(self.source.scenePos(), self.target.scenePos()))
-        self.setPen(QPen(QColor("#eab76a" if self.isSelected() else "#4b9fb5"), 3))
+        pen = QPen(self.color, 3)
+        pen.setCosmetic(True)
+        self.setPen(pen)
 
     def paint(self, painter, option, widget=None):
-        self.setPen(QPen(QColor("#eab76a" if self.isSelected() else "#4b9fb5"), 3))
-        super().paint(painter, option, widget)
+        painter.save()
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        if self.isSelected():
+            halo = QPen(QColor("#f4f7fb"), 7)
+            halo.setCosmetic(True)
+            painter.setPen(halo)
+            painter.drawPath(self.path())
+        painter.setPen(self.pen())
+        painter.drawPath(self.path())
+        painter.restore()
 
 
 class CanvasScene(QGraphicsScene):
@@ -323,7 +338,9 @@ class CanvasScene(QGraphicsScene):
     def start_wire(self, socket):
         self.drag_socket = socket
         self.drag_path = QGraphicsPathItem()
-        self.drag_path.setPen(QPen(QColor("#86e5ee"), 2, Qt.PenStyle.DashLine))
+        pen = QPen(QColor(PORT_COLORS[socket.visual_type]), 2, Qt.PenStyle.DashLine)
+        pen.setCosmetic(True)
+        self.drag_path.setPen(pen)
         self.addItem(self.drag_path)
 
     def move_wire(self, position):
@@ -605,7 +622,7 @@ class Overview(QWidget):
         for group in self.view.scene().groups.values():
             painter.fillRect(group.sceneBoundingRect(), QColor("#31445c"))
         for node in self.view.scene().nodes.values():
-            painter.fillRect(node.sceneBoundingRect(), QColor("#70adbd"))
+            painter.fillRect(node.sceneBoundingRect(), node.border_color)
         painter.setPen(QPen(QColor("#f3c572"), 2 / self.ratio))
         painter.setBrush(QColor(243, 197, 114, 25))
         painter.drawRect(visible)
