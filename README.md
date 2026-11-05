@@ -412,7 +412,9 @@ neighborhoods to distinguish a flat patch from an equally bright textured patch.
 The [intensity transform example](examples/intensity_transform/README.md) clips
 a ramp and reconstructs it through log and exponential blocks. The
 [image arithmetic example](examples/image_arithmetic/README.md) subtracts
-a blurred background and scales the signed residual.
+a blurred background and scales the signed residual. The
+[intensity profile example](examples/intensity_profile/README.md) plots per-column
+mean intensity inside an inspection region.
 
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing

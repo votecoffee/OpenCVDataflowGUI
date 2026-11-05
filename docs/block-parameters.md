@@ -1253,6 +1253,18 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `interpolation` | `"linear"` | `linear`, `step` Linear blends points. Step holds the previous point's output. |
 | `preserve_alpha` | `true` | Copy alpha on four-channel images and ignore the fourth curve. |
 
+## Intensity profile (`cv.intensity_profile`)
+
+Image processing / Statistics
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `axis` | `"columns"` | `rows`, `columns` Each output entry summarizes one row or one column in the input pixel frame. |
+| `statistic` | `"mean"` | `sum`, `mean`, `minimum`, `maximum`, `sum_of_squares` Reduce selected samples in raw image units, separately for each channel. |
+| `include_alpha` | `false` | Include alpha as its own profile on four-channel images. |
+
 ## Intensity transform (`cv.intensity_transform`)
 
 Image processing / Image math
