@@ -256,6 +256,7 @@ class ToolBlock(Block):
             "subtype": self.subtype,
             "toolblock_version": 1,
             "name": self.name,
+            **({"description": self.description} if self.description else {}),
             "graph": self.graph.to_dict(include_recipes=include_recipes),
             "inputs": {n: asdict(b) for n, b in self.input_bindings.items()},
             "outputs": {n: asdict(b) for n, b in self.output_bindings.items()},
@@ -281,6 +282,7 @@ class ToolBlock(Block):
             **kwargs,
         )
         block.name = data["name"]
+        block.description = data.get("description", "")
         block.block_type = data.get("block_type", "ToolBlocks")
         block.subtype = data.get("subtype", "Reusable")
         block.input_failure_policies = copy.deepcopy(data.get("input_failure_policies", {}))

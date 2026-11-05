@@ -83,6 +83,7 @@ class Block:
     def __init__(self, *, block_id=None, parameters=None):
         self.id = block_id or uuid.uuid4().hex
         self.name = self.title
+        self._description = ""
         self.parameters = copy.deepcopy(self.defaults)
         if parameters:
             unknown = parameters.keys() - self.defaults.keys()
@@ -123,6 +124,16 @@ class Block:
         self._work_started = self._work_finished = None
         self.elapsed_ms = 0.0
         self.clear_result()
+
+    @property
+    def description(self):
+        return self._description
+
+    @description.setter
+    def description(self, value):
+        if not isinstance(value, str):
+            raise ValueError("Block description must be text")
+        self._description = value
 
     def clear_result(self, preserve_history=False):
         self.current_emissions = {}
@@ -1174,6 +1185,7 @@ class Graph:
                     "id": b.id,
                     "type": b.type_id,
                     "name": b.name,
+                    **({"description": b.description} if b.description else {}),
                     "parameters": b.parameters,
                     "position": b.position,
                     "exposed_inputs": b.exposed_inputs,
@@ -1249,6 +1261,7 @@ class Graph:
                     item["type"], block_id=item["id"], parameters=item["parameters"]
                 )
             block.name = item["name"]
+            block.description = item.get("description", block.description)
             if "ticket_settings" in item:
                 settings = item["ticket_settings"]
                 if (
