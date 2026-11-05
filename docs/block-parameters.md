@@ -1704,6 +1704,26 @@ Ticket mode and fixed value are common inspector controls.
 | `baseline_m` | `0.12` |  |
 | `seed` | `3` |  |
 
+## Video file (`input.video_file`)
+
+Input / Video
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
+| `backend` | `"auto"` | `auto`, `ffmpeg`, `gstreamer`, `msmf`, `avfoundation`, `opencv_mjpeg` |
+| `start_frame` | `0` | Zero-based first frame. |
+| `end_frame` | `-1` | Exclusive end frame. -1 reads until the decoder reaches end of file. |
+| `stride` | `1` | Emit every Nth frame, counting from the start frame. |
+| `repeat` | `"stop"` | `stop`, `loop` |
+| `frame_ticket` | `true` | Use filename and frame index as the default ticket value. |
+| `color_format` | `"bgr"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` |
+| `pixel_depth` | `"uint8"` | `unchanged`, `uint8`, `uint16`, `float32` |
+
 ## Estimate affine transform (`inspect.affine`)
 
 Inspection / Registration
@@ -2514,6 +2534,22 @@ Inputs: `data` (data).
 | --- | --- | --- |
 | `path` | `"results.csv"` |  |
 | `format` | `"csv"` | `csv`, `xml`, `sqlite` |
+
+## Write video file (`output.video`)
+
+Output / Video
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"output.avi"` | Use a new file. The container is finalized when execution closes. |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
+| `backend` | `"auto"` | `auto`, `ffmpeg`, `gstreamer`, `msmf`, `avfoundation`, `opencv_mjpeg` |
+| `codec` | `"MJPG"` | `MJPG`, `mp4v`, `XVID`, `FFV1`, `HFYU`, `custom` |
+| `custom_fourcc` | `""` | Four ASCII characters when codec is set to custom. |
+| `fps` | `30.0` | Constant output playback rate in frames per second. |
+| `color` | `"bgr"` | `bgr`, `gray` |
 
 ## Match shape pattern (`pattern.match_shape`)
 
