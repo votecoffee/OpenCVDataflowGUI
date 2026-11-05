@@ -1828,6 +1828,21 @@ Inputs: `reference` (data), `sample` (data).
 | `check_threshold` | `false` |  |
 | `threshold` | `0.1` | Minimum for correlation/intersection. Maximum for the distance metrics. |
 
+## Compare Lab colors (`inspect.compare_lab`)
+
+Inspection / Color measurements
+
+Inputs: `sample` (data), `reference` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_lab` | `[50.0, 0.0, 0.0]` | Reference [L, a, b]. A wired reference takes precedence. |
+| `metric` | `"ciede2000"` | `ciede2000`, `cie76` |
+| `maximum_delta_e` | `2.0` | Largest color difference that passes. |
+| `lightness_weight` | `1.0` | CIEDE2000 kL divisor. |
+| `chroma_weight` | `1.0` | CIEDE2000 kC divisor. |
+| `hue_weight` | `1.0` | CIEDE2000 kH divisor. |
+
 ## Connected components (`inspect.components`)
 
 Inspection / Shapes
@@ -2146,6 +2161,14 @@ Inputs: `image` (image), `template` (image), `mask` (image, optional), `search_m
 | --- | --- | --- |
 | `method` | `"ccoeff_normed"` | `ccoeff_normed`, `ccorr_normed`, `sqdiff_normed`, `ccoeff`, `ccorr`, `sqdiff` |
 | `min_score` | `0.8` |  |
+
+## Measure Lab color (`inspect.measure_lab`)
+
+Inspection / Color measurements
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+No configurable algorithm parameters.
 
 ## ORB keypoints and descriptors (`inspect.orb`)
 
