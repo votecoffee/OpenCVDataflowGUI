@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Clean reference",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample",
+      "type": "input.file",
+      "name": "Patch with two deviations",
+      "parameters": {
+        "path": "assets/sample.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        230
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mae",
+      "type": "inspect.image_quality",
+      "name": "Mean absolute error",
+      "parameters": {
+        "metric": "mae"
+      },
+      "position": [
+        375,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": "absolute error"
+    },
+    {
+      "id": "rmse",
+      "type": "inspect.image_quality",
+      "name": "Root mean square error",
+      "parameters": {
+        "metric": "rmse"
+      },
+      "position": [
+        375,
+        220
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": "absolute error"
+    },
+    {
+      "id": "max_absolute_error",
+      "type": "inspect.image_quality",
+      "name": "Maximum absolute error",
+      "parameters": {
+        "metric": "max_absolute_error"
+      },
+      "position": [
+        375,
+        440
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": "absolute error"
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "mae",
+      "input": "image_a"
+    },
+    {
+      "source": "sample",
+      "output": "image",
+      "target": "mae",
+      "input": "image_b"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "rmse",
+      "input": "image_a"
+    },
+    {
+      "source": "sample",
+      "output": "image",
+      "target": "rmse",
+      "input": "image_b"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "max_absolute_error",
+      "input": "image_a"
+    },
+    {
+      "source": "sample",
+      "output": "image",
+      "target": "max_absolute_error",
+      "input": "image_b"
+    }
+  ]
+}

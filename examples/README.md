@@ -21,6 +21,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Histogram thresholds](histogram_thresholds/README.md) | Visualize percentiles, mean, and median, and wire measured cutoffs into three threshold masks. |
 | [Flat-field illumination correction](flat_field/README.md) | Remove a lighting gradient using bright and dark references while retaining a synthetic defect. |
 | [Tilted window statistics](tilted_statistics/README.md) | Measure two diagonal patches using batched 45-degree windows. |
+| [Absolute image error](absolute_image_error/README.md) | Compare mean, RMS, and maximum absolute error on two known deviations. |
 | [Image summary statistics](image_statistics/README.md) | Measure a selected patch and mark the extrema in source pixel coordinates. |
 | [Intensity profile](intensity_profile/README.md) | Plot the mean and locate the maximum in each selected column. |
 | [Find nonzero pixels](nonzero_pixels/README.md) | Extract a bounded set of coordinates and full bounds from a texture mask. |
