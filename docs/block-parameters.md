@@ -3357,6 +3357,23 @@ Inputs: `data` (data).
 | `path` | `"results.csv"` |  |
 | `format` | `"csv"` | `csv`, `xml`, `sqlite` |
 
+## Write multipage TIFF (`output.tiff_file`)
+
+Output / Images
+
+Inputs: `pages` (any).
+
+Input `pages` — Ordered image group from Batch serial entries or a compatible block.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"output.tiff"` | Choose a new .tif or .tiff filename for this batch. |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
+| `compression` | `"lzw"` | `none`, `lzw`, `deflate`, `packbits` Lossless compression applied to every page. |
+| `predictor` | `"native"` | `native`, `none`, `horizontal` Horizontal prediction is available with LZW or Deflate. |
+| `x_dpi` | `0` | Value must be a whole number between 0 and 1e+06. Horizontal resolution. Set both DPI fields to zero to use the codec defaults. |
+| `y_dpi` | `0` | Value must be a whole number between 0 and 1e+06. Vertical resolution. Set both DPI fields to zero to use the codec defaults. |
+
 ## Write video file (`output.video`)
 
 Output / Video
