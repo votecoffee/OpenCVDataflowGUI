@@ -327,7 +327,9 @@ compares three edge-preserving smoothing modes. The
 [Bayer demosaicing example](examples/bayer_demosaicing/README.md) reconstructs
 RGB from a synthetic 16-bit sensor mosaic. The
 [in-memory codecs example](examples/in_memory_image_codecs/README.md) sends a
-lossless 16-bit RGBA PNG packet between blocks.
+lossless 16-bit RGBA PNG packet between blocks. The
+[TIFF page sequence example](examples/tiff_page_sequence/README.md) replays
+a multipage TIFF with separate tickets for each page.
 
 The [skeleton pruning example](examples/skeleton_pruning/README.md) extracts
 centerlines from a binary mask and removes short spurs. Install the optional

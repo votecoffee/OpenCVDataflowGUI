@@ -3026,7 +3026,7 @@ P3	function	cv2.illuminationChange	no static reference	-
 P3	function	cv2.imcount	no static reference	-
 P3	function	cv2.imdecode	literal reference	-
 P3	function	cv2.imdecodeanimation	no static reference	-
-P3	function	cv2.imdecodemulti	no static reference	-
+P3	function	cv2.imdecodemulti	literal reference	-
 P3	function	cv2.imdecodeWithMetadata	no static reference	-
 P3	function	cv2.imencode	literal reference	-
 P3	function	cv2.imencodeanimation	no static reference	-

@@ -2094,6 +2094,25 @@ Ticket mode and fixed value are common inspector controls.
 | `baseline_m` | `0.12` |  |
 | `seed` | `3` |  |
 
+## TIFF page sequence (`input.tiff_file`)
+
+Input / Files
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Path to a TIFF file, including a multipage TIFF. |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
+| `start_page` | `0` | Value must be a whole number between 0 and 2.14748e+09. Zero-based first page. |
+| `end_page` | `-1` | Value must be a whole number between -1 and 2.14748e+09. Exclusive end page. -1 reads until OpenCV cannot decode another page. |
+| `stride` | `1` | Value must be a whole number between 1 and 100000. Emit every Nth page starting at the first page. |
+| `repeat` | `"stop"` | `stop`, `loop` |
+| `page_ticket` | `true` | Use filename and page index for automatic tickets. |
+| `color_format` | `"unchanged"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` |
+| `pixel_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` |
+
 ## Video file (`input.video_file`)
 
 Input / Video
