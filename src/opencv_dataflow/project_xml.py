@@ -8,6 +8,7 @@ from tempfile import NamedTemporaryFile
 from xml.etree import ElementTree as ET
 
 ROOT = "opencv-dataflow-project"
+BLOCK_ROOT = "opencv-dataflow-block"
 XML_FILTER = "Project XML (*.xml)"
 SCALARS = {str: "string", bool: "boolean", int: "integer", float: "number", type(None): "null"}
 
@@ -15,7 +16,7 @@ SCALARS = {str: "string", bool: "boolean", int: "integer", float: "number", type
 def _encode(node, value):
     if isinstance(value, dict):
         node.set("type", "object")
-        for key, child in sorted(value.items()):
+        for key, child in value.items():
             # JSON escaping also preserves keys with XML-forbidden characters.
             _encode(ET.SubElement(node, "field", name=json.dumps(key)[1:-1]), child)
     elif isinstance(value, list):
@@ -29,8 +30,16 @@ def _encode(node, value):
 
 def export_project_xml(project, path):
     """Export the same persisted values as Graph.save, without changing the project."""
-    root = ET.Element(ROOT, version="1")
-    _encode(root, json.loads(json.dumps(project, allow_nan=False)))
+    _write_xml(ROOT, project, path)
+
+
+def export_block_xml(block, path):
+    _write_xml(BLOCK_ROOT, block.to_project_item(), path)
+
+
+def _write_xml(root_name, data, path):
+    root = ET.Element(root_name, version="1")
+    _encode(root, json.loads(json.dumps(data, allow_nan=False)))
     ET.indent(root)
     path = Path(path)
     temporary = None
@@ -79,10 +88,18 @@ def _decode(node):
 
 
 def read_project_xml(path):
+    return _read_xml(ROOT, path)
+
+
+def read_block_xml(path):
+    return _read_xml(BLOCK_ROOT, path)
+
+
+def _read_xml(root_name, path):
     parser = ET.XMLParser(target=_NoDTD())
     root = ET.parse(path, parser=parser).getroot()
-    if root.tag != ROOT or root.get("version") != "1" or root.get("type") != "object":
-        raise ValueError("Unsupported project XML format")
+    if root.tag != root_name or root.get("version") != "1" or root.get("type") != "object":
+        raise ValueError(f"Expected a version 1 {root_name} XML file")
     return _decode(root)
 
 

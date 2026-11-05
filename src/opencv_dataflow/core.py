@@ -439,6 +439,35 @@ class Block:
     def serialize_extra(self):
         return {}
 
+    def to_project_item(self):
+        return {
+            "id": self.id,
+            "type": self.type_id,
+            "name": self.name,
+            **({"description": self.description} if self.description else {}),
+            **({"documentation": self.documentation} if self.documentation else {}),
+            "parameters": self.parameters,
+            "position": self.position,
+            "exposed_inputs": self.exposed_inputs,
+            "exposed_outputs": self.exposed_outputs,
+            "thumbnail": self.thumbnail,
+            "preview_output": self.preview_output,
+            **({"recipe_bindings": self.recipe_bindings} if self.recipe_bindings else {}),
+            **({"recipe_model": self.recipe_model} if self.recipe_model else {}),
+            **({"input_levels": self.input_levels} if self.input_levels else {}),
+            **(
+                {"input_failure_policies": self.input_failure_policies}
+                if self.input_failure_policies
+                else {}
+            ),
+            **(
+                {"ticket_settings": self.ticket_settings}
+                if self.ticket_source and self.ticket_settings != DEFAULT_TICKET_SETTINGS
+                else {}
+            ),
+            **self.serialize_extra(),
+        }
+
     def restore_extra(self, data):
         """Restore optional JSON configuration beyond ordinary parameter controls."""
 
@@ -769,15 +798,7 @@ class Graph:
     def connect(self, source, output, target, input):
         if source == target:
             raise ValueError("A block cannot connect to itself")
-        src, dst = self.blocks[source], self.blocks[target]
-        out = next((p for p in src.outputs if p.name == output), None)
-        inp = next((p for p in dst.inputs if p.name == input), None)
-        if out is None or inp is None:
-            raise ValueError("Unknown port")
-        if output not in src.exposed_outputs or input not in dst.exposed_inputs:
-            raise ValueError("Expose both ports in the inspector before connecting")
-        if not compatible(out.kind, inp.kind):
-            raise ValueError(f"Cannot connect {out.kind} to {inp.kind}")
+        self.validate_connection_ports(self.blocks[source], output, self.blocks[target], input)
         if any(c.target == target and c.input == input for c in self.connections):
             raise ValueError("Input already connected; delete its wire first")
         connection = Connection(source, output, target, input)
@@ -788,6 +809,17 @@ class Graph:
             self.connections.remove(connection)
             raise
         self.invalidate()
+
+    @staticmethod
+    def validate_connection_ports(src, output, dst, input):
+        out = next((p for p in src.outputs if p.name == output), None)
+        inp = next((p for p in dst.inputs if p.name == input), None)
+        if out is None or inp is None:
+            raise ValueError("Unknown port")
+        if output not in src.exposed_outputs or input not in dst.exposed_inputs:
+            raise ValueError("Expose both ports in the inspector before connecting")
+        if not compatible(out.kind, inp.kind):
+            raise ValueError(f"Cannot connect {out.kind} to {inp.kind}")
 
     def ordered(self):
         pending = {key: set() for key in self.blocks}
@@ -1191,36 +1223,7 @@ class Graph:
                 else {}
             ),
             **({"recipes": catalog} if catalog and catalog["recipes"] else {}),
-            "blocks": [
-                {
-                    "id": b.id,
-                    "type": b.type_id,
-                    "name": b.name,
-                    **({"description": b.description} if b.description else {}),
-                    **({"documentation": b.documentation} if b.documentation else {}),
-                    "parameters": b.parameters,
-                    "position": b.position,
-                    "exposed_inputs": b.exposed_inputs,
-                    "exposed_outputs": b.exposed_outputs,
-                    "thumbnail": b.thumbnail,
-                    "preview_output": b.preview_output,
-                    **({"recipe_bindings": b.recipe_bindings} if b.recipe_bindings else {}),
-                    **({"recipe_model": b.recipe_model} if b.recipe_model else {}),
-                    **({"input_levels": b.input_levels} if b.input_levels else {}),
-                    **(
-                        {"input_failure_policies": b.input_failure_policies}
-                        if b.input_failure_policies
-                        else {}
-                    ),
-                    **(
-                        {"ticket_settings": b.ticket_settings}
-                        if b.ticket_source and b.ticket_settings != DEFAULT_TICKET_SETTINGS
-                        else {}
-                    ),
-                    **b.serialize_extra(),
-                }
-                for b in self.blocks.values()
-            ],
+            "blocks": [b.to_project_item() for b in self.blocks.values()],
             "connections": [asdict(c) for c in self.connections],
         }
 

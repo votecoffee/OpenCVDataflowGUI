@@ -102,6 +102,13 @@ to inspect added, removed, and changed values alongside changes to block order.
 The comparison matches blocks by their saved IDs and shows before and after
 values. JSON remains the editable project format.
 
+Select a block and use **Save block XML…** to export its applied configuration
+with a type-specific suffix such as `.cv.morphology.xml`. **Load block XML…**
+applies the file to a selected block of the same type, retaining the destination
+node's ID, position, and compatible connections. If loading would remove wires,
+the inspector lists them and asks before proceeding. The XML includes saved
+training data, documentation, port settings, and any nested block definitions.
+
 After **Run once** captures inputs, click **Run block** in the inspector to preview
 a supported block once with its current parameter edits. Enable **Live results**
 to preview automatically. Edits within 300 ms of one another produce a single

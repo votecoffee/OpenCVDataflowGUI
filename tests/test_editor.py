@@ -10,7 +10,14 @@ import pytest
 from PySide6.QtCore import QEvent, QPoint, Qt
 from PySide6.QtGui import QFont
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QDialog, QFileDialog, QGraphicsSceneHelpEvent, QInputDialog, QToolTip
+from PySide6.QtWidgets import (
+    QDialog,
+    QFileDialog,
+    QGraphicsSceneHelpEvent,
+    QInputDialog,
+    QMessageBox,
+    QToolTip,
+)
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
@@ -367,6 +374,49 @@ def test_file_menu_exports_current_project_and_compares_two_snapshots(app, monke
         assert len(changes) == 1
         assert changes[0].path == f"/blocks/{block.id}/parameters/expected_count"
         assert (old, new) == ("2", "3")
+    finally:
+        window.dirty = False
+        window.close()
+
+
+def test_inspector_block_xml_asks_before_disconnecting_wires(app, monkeypatch, tmp_path):
+    window = MainWindow()
+    graph = Graph()
+    source = graph.add(window.registry.create("input.demo"))
+    target = graph.add(window.registry.create("cv.morphology"))
+    preset = graph.add(window.registry.create("cv.morphology", parameters={"operation": "close"}))
+    preset.exposed_inputs.remove("image")
+    graph.connect(source.id, "image", target.id, "image")
+    window.replace_graph(graph)
+    window.show()
+    path = tmp_path / "saved.cv.morphology.xml"
+    errors, prompts = [], []
+    replies = iter((QMessageBox.StandardButton.No, QMessageBox.StandardButton.Yes))
+
+    def confirm(dialog):
+        prompts.append(dialog.detailedText())
+        assert dialog.defaultButton() == dialog.button(QMessageBox.StandardButton.No)
+        return next(replies)
+
+    monkeypatch.setattr(window, "warn", errors.append)
+    monkeypatch.setattr(QFileDialog, "exec", lambda _: QDialog.DialogCode.Accepted)
+    monkeypatch.setattr(QFileDialog, "selectedFiles", lambda _: [str(path)])
+    monkeypatch.setattr(QFileDialog, "getOpenFileName", lambda *args, **kwargs: (str(path), ""))
+    monkeypatch.setattr(QMessageBox, "exec", confirm)
+    try:
+        window.scene.nodes[preset.id].setSelected(True)
+        window.inspector.save_selected_block_xml()
+        assert path.is_file() and not window.dirty
+        window.scene.clearSelection()
+        window.scene.nodes[target.id].setSelected(True)
+        window.inspector.load_selected_block_xml()
+        assert graph.blocks[target.id] is target
+        assert len(graph.connections) == 1 and not window.dirty
+        window.inspector.load_selected_block_xml()
+        assert graph.blocks[target.id].parameters["operation"] == "close"
+        assert not graph.connections and window.dirty
+        assert prompts == [f"{source.name}.image → {target.name}.image"] * 2
+        assert not errors
     finally:
         window.dirty = False
         window.close()

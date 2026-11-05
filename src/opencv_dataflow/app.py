@@ -40,6 +40,7 @@ from PySide6.QtWidgets import (
 )
 
 from .activity_window import ActivityWindow
+from .block_xml import block_xml_suffix, load_block_xml, save_block_xml
 from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
 from .canvas import CanvasScene, CanvasView, Node, pixmap
@@ -279,6 +280,15 @@ class Inspector(QWidget):
         documentation = QPushButton("Edit documentation…")
         documentation.clicked.connect(self.edit_documentation)
         self.form.addRow(documentation)
+        xml_actions = QHBoxLayout()
+        for title, callback in (
+            ("Save block XML…", self.save_selected_block_xml),
+            ("Load block XML…", self.load_selected_block_xml),
+        ):
+            button = QPushButton(title)
+            button.clicked.connect(callback)
+            xml_actions.addWidget(button)
+        self.form.addRow(xml_actions)
         if block.ticket_source:
             self.ticket_mode = QComboBox()
             self.ticket_mode.addItems(TICKET_MODES)
@@ -490,6 +500,70 @@ class Inspector(QWidget):
                 block.documentation = updated
                 self.window.mark_dirty()
         dialog.deleteLater()
+
+    def save_selected_block_xml(self):
+        block = self.block
+        if block is None or self.window.runner:
+            return
+        suffix = block_xml_suffix(block.type_id)
+        dialog = QFileDialog(self, "Save block XML", "", f"Block XML (*{suffix})")
+        dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
+        dialog.setDefaultSuffix(suffix[1:])
+        dialog.selectFile(f"block{suffix}")
+        accepted = dialog.exec() == QDialog.DialogCode.Accepted
+        selected = dialog.selectedFiles() if accepted else []
+        dialog.deleteLater()
+        if selected:
+            try:
+                save_block_xml(block, selected[0])
+                self.window.statusBar().showMessage("Applied block configuration saved to XML")
+            except Exception as exc:
+                self.window.warn(str(exc))
+
+    def load_selected_block_xml(self):
+        block = self.block
+        if block is None or self.window.runner:
+            return
+        suffix = block_xml_suffix(block.type_id)
+        path, _ = QFileDialog.getOpenFileName(
+            self, "Load block XML", filter=f"Matching block XML (*{suffix});;Block XML (*.xml)"
+        )
+        if path:
+            try:
+                window = self.window
+                owner = window.graph_stack[-1][1] if window.graph_stack else None
+                loaded = load_block_xml(
+                    window.graph,
+                    block.id,
+                    path,
+                    window.registry,
+                    owner=owner,
+                    confirm_disconnect=self.confirm_block_xml_disconnect,
+                )
+                if loaded is not None:
+                    window.scene.rebuild(block.id)
+                    window.mark_dirty()
+                    window.statusBar().showMessage("Block configuration loaded from XML")
+            except Exception as exc:
+                self.window.warn(str(exc))
+
+    def confirm_block_xml_disconnect(self, wires):
+        blocks = self.window.graph.blocks
+        details = "\n".join(
+            f"{blocks[wire.source].name}.{wire.output} → {blocks[wire.target].name}.{wire.input}"
+            for wire in wires
+        )
+        dialog = QMessageBox(self)
+        dialog.setIcon(QMessageBox.Icon.Warning)
+        dialog.setWindowTitle("Disconnect wires and load block?")
+        dialog.setTextFormat(Qt.TextFormat.PlainText)
+        dialog.setText(f"Loading this block will remove {len(wires)} existing connection(s).")
+        dialog.setDetailedText(details)
+        dialog.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        dialog.setDefaultButton(QMessageBox.StandardButton.No)
+        confirmed = dialog.exec() == QMessageBox.StandardButton.Yes
+        dialog.deleteLater()
+        return confirmed
 
     def can_preview(self):
         b = self.block
