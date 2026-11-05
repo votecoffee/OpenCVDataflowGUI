@@ -1,5 +1,9 @@
 # Block activity events and timelines
 
+Debug and Balanced run profiles capture complete activity spans. Lean omits routine
+successful spans while retaining warning/error events and failed finishes. The view
+identifies the current capture profile; see [run profiles](run-profiles.md).
+
 Every running job has a common `graph.activity` collector. Root blocks, nested ToolBlocks,
 camera acquisition workers and parallel per-part jobs publish to the same thread-safe,
 bounded log. It is independent of ticket pass/fail history: an input arrival or exception

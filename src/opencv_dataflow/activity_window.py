@@ -294,6 +294,7 @@ class ActivityWindow(QDialog):
         self.summary.setText(
             f"{self.bar_count} activations · {len(paths)} block rows · {self.flag_count} flags · "
             f"{snapshot['evicted_events']} events evicted · "
+            f"Profile: {snapshot.get('capture_profile', 'debug')} · "
             f"{max(0, len(sources) - 400)} rows hidden by display limit. "
             f"{omitted_bars} bars and {max(0, len(flags) - 2000)} flags hidden by display limits. "
             "Blue bars are still active; finish colors show the tool's own result."

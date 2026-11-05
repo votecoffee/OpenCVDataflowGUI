@@ -93,6 +93,7 @@ class ActivityLog:
         self.lock = threading.RLock()
         self.events = deque()
         self.bytes = self.sequence = self.evicted = 0
+        self.capture_profile = "debug"
 
     def emit(self, event):
         from .diagnostics import enrich
@@ -133,6 +134,7 @@ class ActivityLog:
         with self.lock:
             snapshot = {
                 "model": "block_activity_v1",
+                "capture_profile": self.capture_profile,
                 "sequence": self.sequence,
                 "evicted_events": self.evicted,
                 "retained_bytes": self.bytes,
@@ -149,6 +151,15 @@ class ActivityLog:
 
 def report(block, kind, data=None, values=None, invocation=None, at=None, diagnostic=None):
     from .diagnostics import parameters_snapshot
+    from .run_profiles import captures, event_level
+
+    level = event_level(kind, getattr(block, "state", ""))
+    if diagnostic is not None:
+        from .diagnostics import LEVELS
+
+        level = LEVELS[diagnostic["severity"]]
+    if not captures(block, kind, level):
+        return
 
     log = getattr(block, "_activity", None)
     if log is None:
@@ -179,6 +190,19 @@ def report(block, kind, data=None, values=None, invocation=None, at=None, diagno
     source["logical_path"] = getattr(block, "_activity_logical_path", source["path"])
     if invocation is None and getattr(block, "_execution_owner", None) == threading.get_ident():
         invocation = getattr(block, "_activity_invocation", None)
+        if invocation is None:
+            invocation = uuid.uuid4().hex
+            block._activity_invocation = invocation
+    parameters = {}
+    if diagnostic is not None and "parameters" in diagnostic:
+        parameters = diagnostic["parameters"]
+    elif block.run_profile.parameter_snapshots or level >= 30:
+        parameters = parameters_snapshot(
+            {
+                **getattr(block, "parameters", {}),
+                **(getattr(block, "last_recipe_parameters", {}) if kind == "finish" else {}),
+            }
+        )
     event = {
         "kind": kind,
         "invocation": invocation,
@@ -189,12 +213,8 @@ def report(block, kind, data=None, values=None, invocation=None, at=None, diagno
         "time": at or mark(),
         "thread": threading.get_ident(),
         "data": data,
-        "parameters": parameters_snapshot(
-            {
-                **getattr(block, "parameters", {}),
-                **(getattr(block, "last_recipe_parameters", {}) if kind == "finish" else {}),
-            }
-        ),
+        "run_profile": block.run_profile.name,
+        "parameters": parameters,
     }
     if diagnostic is not None:
         event.update(diagnostic)

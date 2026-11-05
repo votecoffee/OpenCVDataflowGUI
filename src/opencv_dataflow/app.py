@@ -71,6 +71,7 @@ from .queued_execution import QueuedExecution, background_queue
 from .recipe_editor import RecipeManager
 from .recipes import validate_bindings
 from .region_editor import RegionEditor
+from .run_profiles import PROFILES
 from .ticket_window import TicketResultsWindow
 from .tickets import TICKET_MODES
 from .toolblock_editor import InterfaceDialog
@@ -95,6 +96,14 @@ class Runner(QThread):
 
     def run(self):
         queued = None
+        dirty = False
+        published_at = 0.0
+
+        def publish():
+            self.ack.clear()
+            self.frame.emit()
+            self.ack.wait()
+
         try:
             if self.continuous and background_queue(self.graph) is not None:
                 queued = QueuedExecution(self.graph, self.registry, self.stop_requested.is_set)
@@ -107,16 +116,26 @@ class Runner(QThread):
                 else:
                     self.graph.run(self.stop_requested.is_set)
                 self.duration = (time.perf_counter() - started) * 1000
-                self.ack.clear()
-                self.frame.emit()
-                # UI reads a stable result before allowing the next iteration.
-                self.ack.wait()
+                dirty = True
+                now = time.perf_counter()
+                if (
+                    not self.continuous
+                    or self.graph.run_profile.ui_interval_ms == 0
+                    or (now - published_at) * 1000 >= self.graph.run_profile.ui_interval_ms
+                    or self.stop_requested.is_set()
+                ):
+                    # UI reads a stable snapshot; processing continues between publications.
+                    publish()
+                    dirty = False
+                    published_at = time.perf_counter()
                 if not self.continuous:
                     break
-                self.stop_requested.wait(0.05)
+                self.stop_requested.wait(self.graph.run_profile.iteration_pause_ms / 1000)
         except Exception as exc:
             self.failed.emit(f"{type(exc).__name__}: {exc}")
         finally:
+            if dirty:
+                publish()
             if queued is not None:
                 queued.close()
             self.final_queue_states = {
@@ -921,6 +940,16 @@ class MainWindow(QMainWindow):
         self.continuous_action = toolbar.addAction("Continuous", lambda: self.start_run(True))
         self.stop_action = toolbar.addAction("Stop", self.stop_run)
         self.stop_action.setEnabled(False)
+        toolbar.addWidget(QLabel("Run profile"))
+        self.profile_choice = QComboBox()
+        self.profile_choice.addItems(PROFILES)
+        self.profile_choice.setToolTip(
+            "Debug: full diagnostics. Balanced: sampled previews. Lean: warnings/errors, "
+            "summary tickets, no image previews. "
+            "Processing outputs and input isolation are preserved."
+        )
+        self.profile_choice.currentTextChanged.connect(self.change_run_profile)
+        toolbar.addWidget(self.profile_choice)
         toolbar.addSeparator()
         toolbar.addAction("Fit graph", self.view.fit_graph)
         results_menu = self.menuBar().addMenu("&Results")
@@ -1160,6 +1189,9 @@ class MainWindow(QMainWindow):
         self.graph_stack = []
         self.show_graph(graph)
         self.path, self.dirty = path, False
+        self.profile_choice.blockSignals(True)
+        self.profile_choice.setCurrentText(graph.run_profile.name)
+        self.profile_choice.blockSignals(False)
         self.update_title()
         self.view.fit_graph()
         self.statusBar().showMessage(f"Job ready · {len(graph.blocks)} blocks")
@@ -1314,6 +1346,7 @@ class MainWindow(QMainWindow):
         for action in self.edit_actions + [self.run_action, self.continuous_action]:
             action.setEnabled(False)
         self.stop_action.setEnabled(True)
+        self.profile_choice.setEnabled(False)
         self.statusBar().showMessage("Running…")
         self.runner.start()
 
@@ -1370,6 +1403,7 @@ class MainWindow(QMainWindow):
         for action in self.edit_actions + [self.run_action, self.continuous_action]:
             action.setEnabled(True)
         self.stop_action.setEnabled(False)
+        self.profile_choice.setEnabled(True)
         self.update_navigation()
         if self.closing:
             self.close()
@@ -1408,6 +1442,16 @@ class MainWindow(QMainWindow):
             f"Total {stats['total']} · Pass {stats['pass']} · Fail {stats['fail']} · "
             f"Pass rate {rate} · Avg end-to-end {average}"
         )
+
+    def change_run_profile(self, name):
+        if not self.runner:
+            self.root_graph.set_run_profile(name)
+            self.mark_dirty()
+            self.scene.update()
+            self.inspector.refresh_result()
+            self.statusBar().showMessage(
+                f"Run profile: {name}. Run once to collect its current diagnostics."
+            )
 
     def reset_production(self):
         if not self.runner:

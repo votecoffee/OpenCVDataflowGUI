@@ -14,9 +14,11 @@ dock. It can be closed, moved or floated using the usual dock controls.
 - Pause to inspect a frozen snapshot; Resume includes newly captured events. Turn off
   **Follow latest** to retain your scroll position while messages arrive.
 
-The default filter is INFO. Severity colors distinguish trace (gray), debug (blue),
+The default display filter is INFO. Severity colors distinguish trace (gray), debug (blue),
 info (light), warning (amber), error (red) and critical (purple). Filtering affects the
-view only; DEBUG and TRACE remain captured. The dock shows at most the latest 2,000
+view only. The default Debug run profile captures DEBUG/TRACE; Balanced and Lean reduce
+capture at its source. See [run profiles](run-profiles.md). The dock shows the current
+capture profile and at most the latest 2,000
 matching rows and reports matching/retained/evicted counts.
 
 Selecting a ToolBlock shows that wrapper block's events. Enter it and select a child

@@ -107,6 +107,7 @@ class DiagnosticViewer(QWidget):
             self.severity.currentText(),
             self.search.text(),
             self.frozen is not None,
+            self.frozen.get("capture_profile", "debug") if self.frozen else log.capture_profile,
         )
         if revision == self.revision:
             return
@@ -161,6 +162,7 @@ class DiagnosticViewer(QWidget):
         self.summary.setText(
             f"{min(len(matching), 2000)} displayed / {len(matching)} matching · "
             f"{len(snapshot['events'])} events retained · {snapshot['evicted_events']} evicted. "
+            f"Capture profile: {snapshot.get('capture_profile', 'debug')}. "
             "Filters affect display only; retention limits still apply."
         )
 

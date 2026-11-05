@@ -17,6 +17,7 @@ ALGORITHM_HINTS = {
 
 
 class Grayscale(ImageTool):
+    process_inputs_readonly = True
     type_id, title, subtype = "cv.gray", "Grayscale", "Color and depth"
     defaults = {"algorithm_hint": "default"}
     parameter_choices = {"algorithm_hint": tuple(ALGORITHM_HINTS)}
@@ -32,6 +33,7 @@ class Grayscale(ImageTool):
 
 
 class GaussianBlur(RegionalOperation, ImageTool):
+    process_inputs_readonly = True
     type_id, title, subtype = "cv.gaussian_blur", "Gaussian blur", "Filtering"
     defaults = {
         "kernel": 5,
@@ -84,6 +86,7 @@ class GaussianBlur(RegionalOperation, ImageTool):
 
 
 class Canny(RegionalOperation, ImageTool):
+    process_inputs_readonly = True
     type_id, title, subtype = "cv.canny", "Canny edges", "Edges"
     region_background = "zero"
     defaults = {"low": 60.0, "high": 150.0, "aperture": "3", "l2_gradient": False}
