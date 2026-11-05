@@ -214,3 +214,79 @@ def test_sift_matcher_handles_empty_features_and_rejects_other_descriptors():
     assert block.execute({"query": blank, "train": orb}) is None
     assert block.error_kind == "invalid"
     assert "Connect SIFT" in block.error
+
+
+@pytest.mark.parametrize(
+    "descriptor_mode,bits,channels,width",
+    [
+        ("mldb", 0, "3", 61),
+        ("mldb", 64, "1", 8),
+        ("mldb_upright", 64, "3", 8),
+        ("kaze", 0, "3", 64),
+    ],
+)
+def test_akaze_registration_uses_matching_descriptor_settings(
+    descriptor_mode, bits, channels, width
+):
+    image = np.random.default_rng(27).integers(0, 256, (192, 240), dtype=np.uint8)
+    image = cv2.GaussianBlur(image, (3, 3), 0.8)
+    moved = cv2.warpAffine(image, np.float32([[1, 0, 7], [0, 1, 11]]), image.shape[::-1])
+    mask = np.zeros_like(image)
+    mask[20:170, 20:210] = 255
+    p = {
+        "descriptor_mode": descriptor_mode,
+        "descriptor_bits": bits,
+        "descriptor_channels": channels,
+    }
+    query = run("inspect.akaze", {"image": image, "mask": mask}, p).last_result
+    train = run("inspect.akaze", {"image": moved}, p).last_result
+    packet = query.outputs["features"]
+    assert packet["algorithm"] == "AKAZE"
+    assert packet["descriptor_size"] == width
+    assert np.asarray(packet["descriptors"]).shape == (query.outputs["count"], width)
+    for x, y in np.rint(query.outputs["points"]).astype(int):
+        assert mask[y, x]
+    matched = run(
+        "inspect.match_akaze", {"query": packet, "train": train.outputs["features"]}
+    ).last_result
+    assert matched.outputs["count"] > 10
+    homography = run("inspect.homography", {"matches": matched.outputs["matches"]})
+    assert homography.state == "pass"
+    transform = homography.last_result.outputs["transform"]["source_to_target"]
+    np.testing.assert_allclose(np.asarray(transform)[:2, 2], [7, 11], atol=0.8)
+
+
+@pytest.mark.parametrize("channels", ["1", "2"])
+@pytest.mark.parametrize("mode,bits", [("mldb", 0), ("mldb_upright", 0), ("mldb_upright", 64)])
+def test_akaze_rejects_unsafe_native_settings(channels, mode, bits):
+    block = builtin_registry().create(
+        "inspect.akaze",
+        parameters={
+            "descriptor_mode": mode,
+            "descriptor_bits": bits,
+            "descriptor_channels": channels,
+        },
+    )
+    image = np.zeros((80, 120), np.uint8)
+    assert block.execute({"image": image}) is None
+    assert block.error_kind == "invalid"
+    assert "MLDB requires three channels" in block.error
+
+
+def test_akaze_matcher_rejects_incompatible_layouts_of_the_same_byte_width():
+    image = np.zeros((80, 120), np.uint8)
+    first = run("inspect.akaze", {"image": image}, {"descriptor_bits": 64}).last_result.outputs[
+        "features"
+    ]
+    second = run("inspect.akaze", {"image": image}, {"descriptor_bits": 63}).last_result.outputs[
+        "features"
+    ]
+    assert first["descriptor_size"] == second["descriptor_size"] == 8
+    assert (
+        run("inspect.match_akaze", {"query": first, "train": first}).last_result.outputs["count"]
+        == 0
+    )
+    block = builtin_registry().create("inspect.match_akaze")
+    assert block.execute({"query": first, "train": second}) is None
+    assert block.error_kind == "invalid"
+    assert "settings" in block.error or "bit counts" in block.error
