@@ -861,9 +861,10 @@ class Inspector(QWidget):
             field.setStyleSheet("border: 1px solid #ffac70;" if invalid else "")
             help_text = self.block.parameter_help.get(key, "")
             limits = self.block.parameter_ranges.get(key)
-            range_text = f"Value must be {limits.describe()}." if limits else ""
-            detail = message if invalid else ""
-            field.setToolTip("\n".join(part for part in (help_text, range_text, detail) if part))
+            detail = f"Value must be {limits.describe()}." if limits else ""
+            if invalid:
+                detail = message
+            field.setToolTip("\n".join(part for part in (help_text, detail) if part))
         if self.kernel_parameters:
             invalid = any(key in self.kernel_parameters for key in keys)
             self.kernel_button.setStyleSheet("border: 1px solid #ffac70;" if invalid else "")

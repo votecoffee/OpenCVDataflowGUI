@@ -86,7 +86,7 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
    The **Debug** run profile captures input values.
 3. Select a block, edit parameters in the right inspector, and click **Apply
    configuration**. Choose exposed ports and the optional node thumbnail there.
-   The inspector highlights invalid entries and shows the applicable limit or rule.
+   Hover over a field for its limits. The inspector shows an inline message when an entry is invalid.
    **Run block** previews eligible tools with their last captured inputs, including text and
    other structured data. The [parameter reference](docs/block-parameters.md) lists declared limits.
    On the canvas, **!** marks invalid configuration or input and **×** marks an
@@ -255,9 +255,9 @@ the defaults; legacy G-API blocks remain under **Advanced > G-API**.
 Migration details and a possible browser/WebAssembly backend are covered in the
 [backend notes](docs/opencv-backend.md).
 
-Load trusted custom blocks via **File > Load Python plugin**. Start with
-[`examples/custom_invert/custom_invert.py`](examples/custom_invert/custom_invert.py). Plugins run arbitrary Python;
-project files never automatically import them. Load the same plugins before opening
+Load trusted custom blocks via **File > Load Python plugin**. The
+[custom invert project](examples/custom_invert/README.md) demonstrates custom
+fields and validation. Plugins run arbitrary Python. Load the same plugins before opening
 projects that use their types. No code is needed for built-in pipelines.
 
 If a block raises a Python exception during processing, the app records an error
