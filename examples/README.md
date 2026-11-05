@@ -20,6 +20,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [K-means clustering](kmeans/README.md) | Cluster image pixels and numeric samples, then inspect the color map, quantized image, and cluster plot. |
 | [Histogram thresholds](histogram_thresholds/README.md) | Visualize percentiles, mean, and median, and wire measured cutoffs into three threshold masks. |
 | [Flat-field illumination correction](flat_field/README.md) | Remove a lighting gradient using bright and dark references while retaining a synthetic defect. |
+| [Local window statistics](local_statistics/README.md) | Distinguish a flat patch from a checker texture using local standard deviation. |
 | [Intensity lookup table](intensity_lut/README.md) | Apply distinct intensity curves to an RGB ramp. |
 | [Fourier spectrum filtering](fourier_filter/README.md) | Reject a periodic stripe pattern with a band-stop filter and inverse DFT. |
 | [Discrete cosine transform](dct_round_trip/README.md) | Inspect DCT coefficients and verify the reconstructed image against the source. |

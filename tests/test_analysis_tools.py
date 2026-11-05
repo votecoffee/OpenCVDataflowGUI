@@ -150,3 +150,57 @@ def test_new_tools_reject_invalid_contracts_and_clear_results():
         block = registry.create(kind, parameters=parameters)
         block.execute(inputs)
         assert block.state == "error" and block.last_result is None, kind
+
+
+@pytest.mark.parametrize("selection_mode", ["samples_and_centers", "centers"])
+@pytest.mark.parametrize("border", ["crop", "valid"])
+def test_local_window_statistics_match_direct_masked_color_windows(selection_mode, border):
+    mono = np.arange(30, dtype=np.uint16).reshape(5, 6)
+    image = np.stack([mono, mono * 4, 1000 - mono], axis=2)
+    mask = np.full(mono.shape, 255, np.uint8)
+    mask[1, 3] = mask[3, 2] = 0
+    block = run(
+        "cv.local_statistics",
+        {"image": image, "mask": mask},
+        {
+            "width": 4,
+            "height": 3,
+            "anchor": [2, 0],
+            "border": border,
+            "selection_mode": selection_mode,
+        },
+    )
+    result = block.last_result
+    for y, x in np.ndindex(mono.shape):
+        x0, x1, y0, y1 = x - 2, x + 2, y, y + 3
+        complete = x0 >= 0 and x1 <= 6 and y1 <= 5
+        sample = image[y0:y1, max(0, x0) : x1]
+        if selection_mode == "samples_and_centers":
+            sample = sample[mask[y0:y1, max(0, x0) : x1] != 0]
+        if mask[y, x] == 0 or (border == "valid" and not complete):
+            sample = sample[:0]
+        sample = sample.reshape(-1, 3)
+        assert result.outputs["sample_count"][y, x] == len(sample)
+        np.testing.assert_allclose(
+            result.outputs["mean"][y, x],
+            sample.mean(axis=0) if len(sample) else 0,
+            atol=1e-12,
+        )
+        np.testing.assert_allclose(
+            result.outputs["standard_deviation"][y, x],
+            sample.std(axis=0) if len(sample) else 0,
+            atol=1e-10,
+        )
+    assert result.graphics["local contrast"].shape == mono.shape
+
+
+def test_local_window_statistics_preserve_low_contrast_at_large_float_offsets():
+    x = np.arange(36).reshape(6, 6) % 3
+    image = 1e12 + x * 0.25
+    block = run("cv.local_statistics", {"image": image}, {"width": 3, "height": 3})
+    result = block.last_result.outputs
+    assert result["mean"][3, 3] == 1e12 + 0.25
+    assert result["standard_deviation"][3, 3] == pytest.approx(np.std(x[2:5, 2:5] * 0.25))
+    empty = block.execute({"image": image, "mask": np.zeros(image.shape, np.uint8)})
+    assert empty is not None, block.error
+    assert all(np.count_nonzero(output) == 0 for output in empty.outputs.values())

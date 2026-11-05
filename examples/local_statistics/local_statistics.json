@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Flat patch and checker texture",
+      "parameters": {
+        "path": "assets/flat_and_texture.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "stats",
+      "type": "cv.local_statistics",
+      "name": "Local contrast (9 x 9)",
+      "parameters": {
+        "width": 9,
+        "height": 9
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mean",
+        "standard_deviation",
+        "sample_count"
+      ],
+      "thumbnail": true,
+      "preview_output": "local contrast"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "stats",
+      "input": "image"
+    }
+  ]
+}
