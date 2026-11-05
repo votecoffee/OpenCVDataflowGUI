@@ -174,6 +174,22 @@ def test_plugin_dataclass_import_and_atomic_registration(tmp_path, registry):
     assert registry.types == before
 
 
+def test_plugin_exit_is_a_load_error_and_discards_registrations(tmp_path, registry):
+    path = tmp_path / "extension.py"
+    path.write_text(
+        "from opencv_dataflow.core import Block\n"
+        "class Custom(Block):\n"
+        "    type_id = 'test.partial_exit'\n"
+        "def register(registry):\n"
+        "    registry.register(Custom)\n"
+        "    raise SystemExit('stop loading')\n"
+    )
+    before = dict(registry.types)
+    with pytest.raises(RuntimeError, match="SystemExit: stop loading"):
+        load_plugin(path, registry)
+    assert registry.types == before
+
+
 def test_image_writer_preserves_existing_file(tmp_path, registry):
     path = tmp_path / "capture.png"
     image = np.full((20, 30, 3), 123, np.uint8)

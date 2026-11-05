@@ -5,6 +5,7 @@ import sys
 import uuid
 
 from .core import Registry
+from .diagnostics import exception_message
 
 
 def load_plugin(path, registry):
@@ -25,6 +26,8 @@ def load_plugin(path, registry):
         staged.types.update(registry.types)
         module.register(staged)
         registry.types = staged.types
-    except BaseException:
+    except BaseException as exc:
         sys.modules.pop(spec.name, None)
+        if isinstance(exc, SystemExit):
+            raise RuntimeError(f"Plugin load failed: {exception_message(exc)}") from exc
         raise

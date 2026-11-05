@@ -11,6 +11,7 @@ import numpy as np
 
 from .blocks import builtin_registry
 from .core import Graph
+from .diagnostics import exception_message
 from .parallel_inspection import ParallelInspect
 from .payloads import ImagePyramid, describe_value
 from .plugins import load_plugin
@@ -159,8 +160,8 @@ def main(argv=None):
             with args.report.open("x", encoding="utf-8") as stream:
                 stream.write(content)
         return 0 if passed else 1
-    except Exception as exc:
-        print(f"{type(exc).__name__}: {exc}", file=sys.stderr)
+    except (Exception, SystemExit) as exc:
+        print(exception_message(exc), file=sys.stderr)
         return 2
     finally:
         if queued is not None:

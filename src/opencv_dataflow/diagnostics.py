@@ -31,11 +31,18 @@ def level_name(level):
 
 
 def bounded_text(value, size):
-    text = str(value)
+    try:
+        text = str(value)
+    except (Exception, SystemExit):
+        text = f"[unprintable {type(value).__name__}]"
     raw = text.encode("utf-8", errors="replace")
     if len(raw) > size:
         text = raw[:size].decode("utf-8", errors="ignore") + "\n[truncated]"
     return text
+
+
+def exception_message(exc):
+    return f"{type(exc).__name__}: {bounded_text(exc, 8192)}"
 
 
 def parameters_snapshot(value):

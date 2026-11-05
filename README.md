@@ -252,6 +252,12 @@ Load trusted custom blocks via **File > Load Python plugin**. Start with
 project files never automatically import them. Load the same plugins before opening
 projects that use their types. No code is needed for built-in pipelines.
 
+If a block raises a Python exception during processing, the app records an error
+and traceback in **Diagnostics**. The block emits no outputs, dependent blocks
+that require its output are skipped, and independent branches can finish. Plugins
+run in the app's process, so native crashes and forced process termination still
+end the app.
+
 Custom blocks can supply named `GraphicDrawing` objects through
 `Result.drawings`. Each drawing identifies its source image input and contains
 objects such as outlines, markers, and labels. The block's existing raster
