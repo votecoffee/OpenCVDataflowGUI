@@ -102,6 +102,9 @@ class SequenceBlock(Block):
     def estimate_state_bytes(self, image):
         return image.nbytes
 
+    def state_bytes(self, states):
+        return byte_size(states)
+
     def step(self, inputs, state, mask):
         raise NotImplementedError
 
@@ -188,7 +191,7 @@ class SequenceBlock(Block):
                 state["last_time"] = now
                 state["last_ticket"] = copy.deepcopy(payload.get("ticket"))
                 states.move_to_end(key)
-                while byte_size(states) > maximum:
+                while self.state_bytes(states) > maximum:
                     if p["overflow"] == "error" or len(states) == 1:
                         raise ValueError("Sequence memory byte limit exceeded")
                     states.popitem(last=False)

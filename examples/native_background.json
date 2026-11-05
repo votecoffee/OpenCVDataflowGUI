@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.sequence_demo",
+      "name": "Sequence demo frames",
+      "parameters": {
+        "stationary_frames": 22,
+        "step_pixels": 5
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mog2",
+      "type": "sequence.mog2",
+      "name": "MOG2 background subtraction",
+      "parameters": {
+        "warmup": 5,
+        "max_streams": 4,
+        "max_bytes_mb": 256.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "history": 500,
+        "learning_rate": -1.0,
+        "detect_shadows": false,
+        "shadow_threshold": 0.5,
+        "shadow_value": 127,
+        "include_shadows": false,
+        "variance_threshold": 16.0,
+        "new_mixture_threshold": 9.0,
+        "mixtures": 5,
+        "background_ratio": 0.9,
+        "initial_variance": 15.0,
+        "minimum_variance": 4.0,
+        "maximum_variance": 75.0,
+        "complexity_reduction": 0.05
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "known_foreground",
+        "learn"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "raw_mask",
+        "shadows",
+        "background",
+        "foreground",
+        "ready",
+        "activations",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "knn",
+      "type": "sequence.knn_background",
+      "name": "KNN background subtraction",
+      "parameters": {
+        "warmup": 20,
+        "max_streams": 4,
+        "max_bytes_mb": 256.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "history": 500,
+        "learning_rate": -1.0,
+        "detect_shadows": false,
+        "shadow_threshold": 0.5,
+        "shadow_value": 127,
+        "include_shadows": false,
+        "squared_distance_threshold": 400.0,
+        "samples": 7,
+        "neighbors": 2
+      },
+      "position": [
+        320,
+        240
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "known_foreground"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "raw_mask",
+        "shadows",
+        "background",
+        "foreground",
+        "ready",
+        "activations",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "mog2",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "knn",
+      "input": "image"
+    }
+  ]
+}
