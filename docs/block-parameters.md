@@ -1651,6 +1651,15 @@ Ticket mode and fixed value are common inspector controls.
 | `frame` | `"file"` |  |
 | `max_points` | `1000000` |  |
 
+## Conveyor demo frames (`input.conveyor_demo`)
+
+Input / Synthetic
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+No configurable algorithm parameters.
+
 ## Counter input (`input.counter`)
 
 Input / Synthetic
@@ -3114,6 +3123,32 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `minimum_variance` | `4.0` |  |
 | `maximum_variance` | `75.0` |  |
 | `complexity_reduction` | `0.05` | Evidence threshold for retaining a mixture. Zero disables it. |
+
+## Track conveyor parts (`sequence.track_conveyor`)
+
+Sequence / Object tracking
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `detections` (data, optional), `encoder` (any, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `1` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `motion` | `"stationary"` | `stationary`, `encoder` |
+| `pixels_per_count` | `[1.0, 0.0]` | Signed [dx, dy] displacement in image pixels per encoder count. |
+| `encoder_modulus` | `0` | Counter rollover value. Zero means an unwrapped absolute position. |
+| `maximum_step_pixels` | `2000.0` | Reject encoder displacement above this size. Zero disables. |
+| `association_distance` | `20.0` | Maximum predicted-to-detected center distance in image pixels. |
+| `maximum_missed_frames` | `10` | Consecutive missed frames for which predictions are retained. |
+| `offscreen_margin` | `1000.0` | Retain predictions up to this distance beyond the image edges. |
+| `maximum_tracks` | `64` |  |
+| `minimum_score` | `0.0` | Reject scored detections below this value. Unscored detections pass. |
+| `feature_angle` | `"fixed"` | `fixed`, `feature` |
+| `draw_overlay` | `true` |  |
 
 ## Track object box (CSRT) (`sequence.track_csrt`)
 

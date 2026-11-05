@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.conveyor_demo",
+      "name": "Conveyor demo frames",
+      "parameters": {},
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "reference",
+        "encoder",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect",
+      "type": "inspect.template_instances",
+      "name": "Find template instances",
+      "parameters": {
+        "method": "ccoeff_normed",
+        "min_score": 0.95,
+        "maximum_matches": 4,
+        "minimum_matches": 0,
+        "maximum_iou": 0.25,
+        "draw_overlay": false,
+        "pose_offset_x": 0.0,
+        "pose_offset_y": 0.0,
+        "pose_offset_angle": 0.0
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "template",
+        "mask",
+        "search_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "poses",
+        "matches",
+        "count",
+        "response",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "track",
+      "type": "sequence.track_conveyor",
+      "name": "Track conveyor parts",
+      "parameters": {
+        "warmup": 1,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "motion": "encoder",
+        "pixels_per_count": [
+          1.0,
+          0.0
+        ],
+        "encoder_modulus": 0,
+        "maximum_step_pixels": 2000.0,
+        "association_distance": 9,
+        "maximum_missed_frames": 10,
+        "offscreen_margin": 1000.0,
+        "maximum_tracks": 64,
+        "minimum_score": 0.0,
+        "feature_angle": "fixed",
+        "draw_overlay": true
+      },
+      "position": [
+        720,
+        140
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "detections",
+        "encoder"
+      ],
+      "exposed_outputs": [
+        "tracks",
+        "poses",
+        "count",
+        "overlay",
+        "ready",
+        "activations",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "detect",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "reference",
+      "target": "detect",
+      "input": "template"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "track",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "encoder",
+      "target": "track",
+      "input": "encoder"
+    },
+    {
+      "source": "detect",
+      "output": "matches",
+      "target": "track",
+      "input": "detections"
+    }
+  ]
+}
