@@ -36,6 +36,7 @@ from .visual_style import (
     connection_type,
     port_type,
 )
+from .workspace import arranged_positions
 
 
 def pixmap(image):
@@ -298,7 +299,7 @@ class CanvasScene(QGraphicsScene):
         self.nodes = {}
         self.wires = []
         self.groups = {}
-        self._moving_group = False
+        self._moving_nodes = False
         self.locked = False
         self.drag_socket = None
         self.drag_path = None
@@ -350,13 +351,37 @@ class CanvasScene(QGraphicsScene):
         self.setSceneRect(bounds.united(QRectF(-1500, -1200, 5000, 3200)))
 
     def geometry_changed(self):
-        if self._moving_group:
+        if self._moving_nodes:
             return
         self.update_wires()
         for group in self.groups.values():
             group.refresh()
         self.expand_workspace()
         self.layout_changed.emit()
+
+    def auto_arrange(self):
+        if self.locked or not self.nodes:
+            return False
+        sizes = {
+            key: (node.boundingRect().width(), node.boundingRect().height())
+            for key, node in self.nodes.items()
+        }
+        positions = arranged_positions(self.graph, sizes)
+        moved = [
+            (self.nodes[key], QPointF(*point))
+            for key, point in positions.items()
+            if self.nodes[key].pos() != QPointF(*point)
+        ]
+        if not moved:
+            return False
+        self._moving_nodes = True
+        try:
+            for node, point in moved:
+                node.setPos(point)
+        finally:
+            self._moving_nodes = False
+        self.geometry_changed()
+        return True
 
     def group_selected(self, name):
         from .workspace import add_group
@@ -640,13 +665,13 @@ class NodeGroup(QGraphicsItem):
         if change == QGraphicsItem.GraphicsItemChange.ItemPositionChange and self.scene():
             delta = value - self.pos()
             scene = self.scene()
-            scene._moving_group = True
+            scene._moving_nodes = True
             try:
                 for key in self.data["members"]:
                     node = scene.nodes[key]
                     node.setPos(node.pos() + delta)
             finally:
-                scene._moving_group = False
+                scene._moving_nodes = False
         result = super().itemChange(change, value)
         if change == QGraphicsItem.GraphicsItemChange.ItemPositionHasChanged and self.scene():
             self.scene().geometry_changed()

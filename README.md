@@ -131,6 +131,9 @@ Choose **Small**, **Medium**, or **Large** under **Block size** in the inspector
 The canvas applies the size immediately and keeps room for every exposed port.
 Small hides the thumbnail, and Large gives it more room. Save the project to keep
 the size, including for nodes inside ToolBlocks.
+Use **Workspace → Auto arrange blocks** to organize the current canvas from
+inputs on the left to outputs on the right. Groups and independent flows get
+separate lanes. Save the project to keep the new positions.
 
 Node borders indicate tool category (including purple region tools and blue pose
 tools); node headers keep their pass/fail/error status colors and score intensity.

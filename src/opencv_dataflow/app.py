@@ -1381,6 +1381,7 @@ class MainWindow(QMainWindow):
         toolbar.addAction("Delete selected", self.scene.delete_selected)
         workspace = self.menuBar().addMenu("&Workspace")
         workspace.addAction("Color legend…", self.show_color_legend)
+        self.edit_actions.append(workspace.addAction("Auto arrange blocks", self.arrange_workspace))
         for title, shortcut, callback in (
             ("Group selected nodes…", "Ctrl+G", self.group_nodes),
             ("Ungroup selection", "Ctrl+Shift+G", self.scene.ungroup_selected),
@@ -1437,6 +1438,11 @@ class MainWindow(QMainWindow):
         close.clicked.connect(dialog.accept)
         layout.addWidget(close)
         dialog.exec()
+
+    def arrange_workspace(self):
+        if self.scene.auto_arrange():
+            self.view.fit_graph()
+            self.statusBar().showMessage("Blocks arranged from inputs to outputs")
 
     def group_nodes(self):
         if self.runner:
