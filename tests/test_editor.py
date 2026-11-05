@@ -2,9 +2,11 @@
 
 import os
 import time
+from pathlib import Path
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
+import cv2
 import numpy as np
 import pytest
 from PySide6.QtCore import QEvent, QPoint, Qt
@@ -231,6 +233,54 @@ def test_cross_field_parameter_errors_highlight_both_controls(app):
         assert canny.parameters["low"] == 200.0 and canny.parameters["high"] == 250.0
     finally:
         window.dirty = False
+        window.close()
+
+
+def test_custom_invert_example_shows_validation_only_for_invalid_drafts(app):
+    from opencv_dataflow.plugins import load_plugin
+
+    folder = Path("examples/custom_invert")
+    window = MainWindow()
+    load_plugin(folder / "custom_invert.py", window.registry)
+    graph = Graph.load(folder / "custom_invert.json", window.registry)
+    window.replace_graph(graph)
+    graph.run()
+    source, invert = graph.blocks["source"], graph.blocks["invert"]
+    assert invert.state == "pass", invert.error
+    original = source.last_result.outputs["image"]
+    actual = invert.last_result.outputs["image"]
+    left = original.shape[1] * 20 // 100
+    right = (original.shape[1] * 80 + 99) // 100
+    np.testing.assert_array_equal(actual[:, :left], original[:, :left])
+    np.testing.assert_array_equal(actual[:, left:right], cv2.bitwise_not(original[:, left:right]))
+    np.testing.assert_array_equal(actual[:, right:], original[:, right:])
+
+    window.scene.nodes[invert.id].setSelected(True)
+    inspector = window.inspector
+    start, end = inspector.fields["start_percent"], inspector.fields["end_percent"]
+    try:
+        assert inspector.validation_label.isHidden()
+        assert "between 0 and 100" in start.toolTip()
+        start.setText("-1")
+        assert not inspector.validation_label.isHidden()
+        assert start.toolTip().count("between 0 and 100") == 1
+        assert not inspector.apply_button.isEnabled()
+        start.setText("90")
+        assert "must be less than" in start.toolTip() and "must be less than" in end.toolTip()
+        assert not inspector.run_block.isEnabled()
+        start.setText("30")
+        assert inspector.validation_label.isHidden()
+        assert "between 0 and 100" in end.toolTip()
+        assert inspector.run_block.isEnabled()
+        inspector.run_block.click()
+        pump_until(app, lambda: inspector._live_result is not None)
+        assert inspector._live_result.parameters["start_percent"] == 30
+        assert invert.parameters["start_percent"] == 20
+        invalid = window.registry.create("example.invert", parameters={"start_percent": 100})
+        assert invalid.execute({"image": original}) is None
+        assert invalid.error_kind == "invalid"
+        assert "Start percent must be less than end percent" in invalid.error
+    finally:
         window.close()
 
 
