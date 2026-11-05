@@ -204,3 +204,54 @@ def test_local_window_statistics_preserve_low_contrast_at_large_float_offsets():
     empty = block.execute({"image": image, "mask": np.zeros(image.shape, np.uint8)})
     assert empty is not None, block.error
     assert all(np.count_nonzero(output) == 0 for output in empty.outputs.values())
+
+
+@pytest.mark.parametrize(
+    "operation,values,parameters,expected",
+    [
+        ("log", [1, 2, 4, 8], {}, np.log([1, 2, 4, 8])),
+        ("exp", [-2, 0, 1, 2], {}, np.exp([-2, 0, 1, 2])),
+        ("sqrt", [0, 1, 4, 9], {}, [0, 1, 2, 3]),
+        ("power", [-4, -2, 2, 4], {"exponent": 3}, [-64, -8, 8, 64]),
+        ("power", [0, 1, 4, 9], {"exponent": 0.5}, [0, 1, 2, 3]),
+        ("clip", [-2, 2, 4, 6], {"minimum": 1, "maximum": 4}, [1, 2, 4, 4]),
+    ],
+)
+def test_intensity_transform_applies_raw_sample_math(operation, values, parameters, expected):
+    image = np.array([values], dtype=np.float32)
+    block = run("cv.intensity_transform", {"image": image}, {"operation": operation, **parameters})
+    result = block.last_result
+    assert result.outputs["image"].dtype == np.float64
+    np.testing.assert_allclose(result.outputs["image"], [expected], rtol=1e-9)
+    assert result.graphics["intensity"].shape == image.shape
+
+
+def test_intensity_transform_checks_only_selected_samples_and_preserves_alpha():
+    image = np.array([[[1, 2, 4, 0], [0, 4, 8, 16]]], dtype=np.uint16)
+    mask = np.array([[255, 0]], dtype=np.uint8)
+    block = run("cv.intensity_transform", {"image": image, "mask": mask}, {"operation": "log"})
+    np.testing.assert_allclose(
+        block.last_result.outputs["image"][0, 0], [0, np.log(2), np.log(4), 0]
+    )
+    np.testing.assert_array_equal(block.last_result.outputs["image"][0, 1], image[0, 1])
+    assert block.execute({"image": image}) is None
+    assert block.error_kind == "invalid" and "positive samples" in block.error
+
+
+def test_intensity_transform_saturates_integer_output_and_rejects_invalid_domains():
+    image = np.array([[2, 5, 20]], dtype=np.uint8)
+    block = run("cv.intensity_transform", {"image": image}, {"exponent": 2, "output_depth": "same"})
+    output = block.last_result.outputs["image"]
+    assert output.dtype == np.uint8
+    np.testing.assert_array_equal(output, [[4, 25, 255]])
+    block.parameters["exponent"] = -1
+    assert block.execute({"image": np.array([[0]], np.uint8)}) is None
+    assert block.error_kind == "invalid" and "nonzero samples" in block.error
+    block.parameters["exponent"] = 0.5
+    assert block.execute({"image": np.array([[-1]], np.int16)}) is None
+    assert block.error_kind == "invalid" and "whole exponent" in block.error
+    block.parameters.update(operation="exp", output_depth="float32")
+    assert block.execute({"image": np.array([[100]], np.uint8)}) is None
+    assert block.error_kind == "invalid" and "float32 range" in block.error
+    assert block.execute({"image": np.array([[1000]], np.uint16)}) is None
+    assert block.error_kind == "invalid" and "overflowed" in block.error
