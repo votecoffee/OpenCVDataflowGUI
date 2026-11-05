@@ -325,7 +325,9 @@ reference images to remove uneven illumination before inspection. The
 preserving a high-contrast edge. The [domain transform example](examples/domain_transform_filter/README.md)
 compares three edge-preserving smoothing modes. The
 [Bayer demosaicing example](examples/bayer_demosaicing/README.md) reconstructs
-RGB from a synthetic 16-bit sensor mosaic.
+RGB from a synthetic 16-bit sensor mosaic. The
+[in-memory codecs example](examples/in_memory_image_codecs/README.md) sends a
+lossless 16-bit RGBA PNG packet between blocks.
 
 The [skeleton pruning example](examples/skeleton_pruning/README.md) extracts
 centerlines from a binary mask and removes short spurs. Install the optional

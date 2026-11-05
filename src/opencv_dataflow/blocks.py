@@ -14,6 +14,7 @@ import numpy as np
 
 from .core import Block, Graph, Port, Registry, Result
 from .graphics_layers import GraphicDrawing, graphic_object
+from .image_codecs import CODEC_CHOICES, CODEC_DEFAULTS, CODEC_HELP, codec_options
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 from .objects import collection, contour_item
 from .parameter_validation import NumericRange, ValidationError
@@ -559,77 +560,15 @@ class SaveImage(Block):
     block_type, subtype = "Output", "Images"
     type_id, title, category = "output.image", "Save image", "Output"
     inputs = (Port("image"),)
-    defaults = {
-        "path": "output.png",
-        "jpeg_quality": -1,
-        "jpeg_progressive": False,
-        "jpeg_optimize": False,
-        "jpeg_restart_interval": 0,
-        "jpeg_luma_quality": -1,
-        "jpeg_chroma_quality": -1,
-        "png_compression": -1,
-        "png_strategy": "native",
-        "png_bilevel": False,
-        "webp_quality": -1,
-    }
-    parameter_choices = {
-        "png_strategy": ("native", "default", "filtered", "huffman", "rle", "fixed")
-    }
-    parameter_help = {
-        "jpeg_quality": "-1 preserves the codec default; otherwise 0..100. JPEG only.",
-        "png_compression": "-1 preserves the codec default; otherwise 0..9. PNG only.",
-        "webp_quality": "-1 preserves the codec default; otherwise 1..100. WebP only.",
-    }
+    defaults = {"path": "output.png", **CODEC_DEFAULTS}
+    parameter_choices = CODEC_CHOICES
+    parameter_help = CODEC_HELP
 
     def process(self, inputs):
         path = Path(self.parameters["path"])
         if path.exists():
             raise FileExistsError("Choose a new path; existing images are preserved")
-        from .processing import integer
-
-        options = []
-        ext = path.suffix.lower()
-        if ext in (".jpg", ".jpeg"):
-            for key, flag in (
-                ("jpeg_quality", cv2.IMWRITE_JPEG_QUALITY),
-                ("jpeg_luma_quality", cv2.IMWRITE_JPEG_LUMA_QUALITY),
-                ("jpeg_chroma_quality", cv2.IMWRITE_JPEG_CHROMA_QUALITY),
-            ):
-                value = integer(self.parameters[key], key, -1, 100)
-                if value >= 0:
-                    options.extend([flag, value])
-            options.extend(
-                [
-                    cv2.IMWRITE_JPEG_PROGRESSIVE,
-                    int(self.parameters["jpeg_progressive"]),
-                    cv2.IMWRITE_JPEG_OPTIMIZE,
-                    int(self.parameters["jpeg_optimize"]),
-                    cv2.IMWRITE_JPEG_RST_INTERVAL,
-                    integer(self.parameters["jpeg_restart_interval"], "Restart interval", 0, 65535),
-                ]
-            )
-        elif ext == ".png":
-            compression = integer(self.parameters["png_compression"], "PNG compression", -1, 9)
-            if compression >= 0:
-                options.extend([cv2.IMWRITE_PNG_COMPRESSION, compression])
-            strategy = self.parameters["png_strategy"]
-            if strategy != "native":
-                value = {
-                    "default": cv2.IMWRITE_PNG_STRATEGY_DEFAULT,
-                    "filtered": cv2.IMWRITE_PNG_STRATEGY_FILTERED,
-                    "huffman": cv2.IMWRITE_PNG_STRATEGY_HUFFMAN_ONLY,
-                    "rle": cv2.IMWRITE_PNG_STRATEGY_RLE,
-                    "fixed": cv2.IMWRITE_PNG_STRATEGY_FIXED,
-                }[strategy]
-                options.extend([cv2.IMWRITE_PNG_STRATEGY, value])
-            if self.parameters["png_bilevel"]:
-                options.extend([cv2.IMWRITE_PNG_BILEVEL, 1])
-        elif ext == ".webp":
-            quality = integer(self.parameters["webp_quality"], "WebP quality", -1, 100)
-            if quality >= 0:
-                if quality == 0:
-                    raise ValueError("WebP quality must be 1..100 or -1 for the native default")
-                options.extend([cv2.IMWRITE_WEBP_QUALITY, quality])
+        options = codec_options(path.suffix.lower(), self.parameters)
         ok, encoded = cv2.imencode(path.suffix, opencv_image(inputs["image"]), options)
         if not ok:
             raise ValueError("Image encoding failed")
@@ -712,6 +651,7 @@ def builtin_registry():
     from .histogram import Histogram
     from .histogram_comparison import CompareHistograms, HistogramBackProjection
     from .illumination import FlatFieldCorrection
+    from .image_codecs import DecodeImage, EncodeImage
     from .image_quality import CompareImageQuality
     from .image_queue import ImageQueue
     from .image_statistics import ImageSummaryStatistics
@@ -759,6 +699,8 @@ def builtin_registry():
         Blur,
         Canny,
         *BASIC_PROCESSING_BLOCKS,
+        EncodeImage,
+        DecodeImage,
         OverlayResultGraphics,
         Threshold,
         Contours,
