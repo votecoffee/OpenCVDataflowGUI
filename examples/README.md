@@ -31,6 +31,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [AKAZE registration](akaze_registration/README.md) | Match binary AKAZE descriptors and recover a known image translation. |
 | [FLANN feature registration](flann_registration/README.md) | Match SIFT descriptors through a KD-tree and recover a known translation. |
 | [KAZE registration](kaze_registration/README.md) | Match extended KAZE descriptors with FLANN and recover a known translation. |
+| [Descriptor radius matching](descriptor_radius/README.md) | Keep multiple BRISK candidates within a Hamming distance limit and estimate the image shift. |
 | [BRISK registration](brisk_registration/README.md) | Detect and match BRISK keypoints before estimating a known image shift. |
 | [MSER region detection](mser_regions/README.md) | Compare stable extremal regions detected with both polarities and bright-only detection. |
 | [Skeletonization and spur pruning](skeleton_pruning/README.md) | Extract a binary centerline and visualize the short branches removed from it. |

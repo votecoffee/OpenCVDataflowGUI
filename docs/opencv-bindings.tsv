@@ -2167,7 +2167,7 @@ P3	method	cv2.DescriptorMatcher.getTrainDescriptors	no static reference	-
 P3	method	cv2.DescriptorMatcher.isMaskSupported	no static reference	-
 P3	method	cv2.DescriptorMatcher.knnMatch	method name only	-
 P3	method	cv2.DescriptorMatcher.match	method name only	-
-P3	method	cv2.DescriptorMatcher.radiusMatch	no static reference	-
+P3	method	cv2.DescriptorMatcher.radiusMatch	method name only	-
 P3	method	cv2.DescriptorMatcher.read	method name only	-
 P3	method	cv2.DescriptorMatcher.train	method name only	-
 P3	method	cv2.DescriptorMatcher.write	method name only	-

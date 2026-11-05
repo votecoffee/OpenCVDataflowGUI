@@ -221,7 +221,9 @@ example](examples/flann_registration/README.md) uses approximate KD-tree matchin
 The [KAZE registration example](examples/kaze_registration/README.md) pairs
 extended KAZE descriptors with the same matcher.
 The [BRISK registration example](examples/brisk_registration/README.md) uses
-binary descriptors and Hamming distance. The [MSER example](examples/mser_regions/README.md)
+binary descriptors and Hamming distance. The [descriptor radius example](examples/descriptor_radius/README.md)
+retains multiple candidates per query keypoint within a distance limit.
+The [MSER example](examples/mser_regions/README.md)
 shows stable bright and dark regions in an image.
 
 Pattern matchers also return a configurable **pose**: set local x/y/angular offsets
