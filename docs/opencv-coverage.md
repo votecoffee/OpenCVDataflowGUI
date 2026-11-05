@@ -24,7 +24,7 @@ lists the tools that can be placed on a graph today.
 
 | Family | Outstanding capability |
 | --- | --- |
-| Image restoration | Temporal NLM, TV-L1 denoising, edge-preserving/guided/domain-transform filters, deconvolution/deblur, shadow and illumination correction. Single-frame non-local means and Telea/Navier–Stokes inpainting are available. |
+| Image restoration | Temporal NLM, TV-L1 denoising, domain-transform filters, deconvolution/deblur, and shadow correction. Single-frame non-local means, Telea/Navier–Stokes inpainting, and [guided edge-preserving filtering](../examples/guided_filter/README.md) are available. |
 | Registration and stitching | Camera motion stabilization, sparse alignment diagnostics, panorama and inspection mosaic stitching, seam/exposure correction and blending. Single-scale and multiscale ECC support intensity alignment with masks. |
 | Feature detection and correspondence | Standalone SIFT, AKAZE, BRISK, KAZE, MSER and descriptor adapters; selectable BF/FLANN KNN, radius matching, cross-check and geometric inlier scoring. ORB/FAST and SIFT-based match pipelines already exist. |
 | Shape and topology | Generalized Hough, contour approximation and hierarchy as separate operations, ellipse/arc and polygon models, rotated intersection, connected-component algorithm choices, shape context and Zernike-style descriptors where available. |

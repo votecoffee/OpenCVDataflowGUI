@@ -9,6 +9,7 @@ import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.images import ImageArray, image_format
+from opencv_dataflow.payloads import ValuePacket, frame
 from opencv_dataflow.toolblocks import ToolBlock
 
 
@@ -114,3 +115,45 @@ def test_registered_defect_toolblock_judges_translated_parts(with_defect):
         assert result.outputs["alignment_coefficient"] > 0.98
     finally:
         tool.close()
+
+
+@pytest.mark.parametrize("output_depth", ["unchanged", "float32"])
+def test_guided_filter_keeps_edge_alpha_and_unselected_pixels(output_depth):
+    noise = np.random.default_rng(15).integers(-900, 901, (40, 48))
+    guide = np.full((40, 48), 8000, np.uint16)
+    guide[:, 24:] = 48000
+    noisy = (guide.astype(int) + noise).astype(np.uint16)
+    image = np.stack([noisy, noisy, noisy, np.full_like(noisy, 29000)], axis=2)
+    mask = np.zeros(guide.shape, np.uint8)
+    mask[5:-5, 5:-5] = 255
+    block = builtin_registry().create(
+        "cv.guided_filter", parameters={"radius": 5, "scale": 0.5, "output_depth": output_depth}
+    )
+    result = block.execute({"image": ImageArray(image, "rgba"), "guide": guide, "mask": mask})
+    assert result is not None, block.error
+    output = result.outputs["image"]
+    multiplier = 65535 if output_depth == "float32" else 1
+    original = image.astype(float) / multiplier
+    assert output.dtype == (np.float32 if output_depth == "float32" else np.uint16)
+    assert image_format(output) == "rgba"
+    np.testing.assert_allclose(output[mask == 0], original[mask == 0], rtol=1e-7)
+    np.testing.assert_allclose(output[..., 3], original[..., 3], rtol=1e-7)
+    assert output[10:30, 8:18, 0].std() < original[10:30, 8:18, 0].std()
+    assert float(output[20, 27, 0]) * multiplier > 44000
+    assert float(output[20, 20, 0]) * multiplier < 12000
+
+
+def test_guided_filter_rejects_different_frames_and_tiny_scale():
+    block = builtin_registry().create("cv.guided_filter")
+    image = np.full((5, 5), 100, np.uint8)
+    result = block.execute(
+        {
+            "image": ValuePacket(image, {"spatial": frame([5, 5], "a")}),
+            "guide": ValuePacket(image, {"spatial": frame([5, 5], "b")}),
+        }
+    )
+    assert result is None and block.error_kind == "invalid"
+    assert "share the source pixel frame" in block.error
+    block.parameters["scale"] = 0.1
+    assert block.execute({"image": image}) is None and block.error_kind == "invalid"
+    assert "too small" in block.error

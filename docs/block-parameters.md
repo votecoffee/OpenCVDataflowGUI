@@ -1068,6 +1068,21 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `algorithm_hint` | `"default"` | `default`, `accurate`, `approximate` |
 
+## Guided filter (`cv.guided_filter`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `guide` (image, optional).
+
+Input `guide` — Optional aligned guide. Otherwise the block guides with the source.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `radius` | `8` | Value must be a whole number between 1 and 4095. Neighborhood radius in pixels. |
+| `epsilon` | `0.001` | Value must be a finite number between 1e-08 and 1e+08. Regularization in squared guide units. Integer guide samples are normalized. |
+| `scale` | `1.0` | Value must be a finite number between 0.01 and 1. Internal subsampling fraction. One filters at full resolution. |
+| `output_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` |
+
 ## Gaussian image pyramid set (`cv.image_pyramid`)
 
 Image processing / Pyramids
