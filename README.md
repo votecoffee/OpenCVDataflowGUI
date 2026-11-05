@@ -382,6 +382,13 @@ for block in graph.blocks.values():
 graph.close()
 ```
 
+**Sequence** blocks retain memory for running background subtraction, Farneback optical
+flow, Lucas-Kanade point tracking and first/latest/mean image references. They report
+readiness and activation counts, suppress primary outputs during warmup, and support
+bounded per-stream state, resets and trained references stored in projects or recipes.
+Try **File > Load sequence memory example**, then run continuously. See
+[sequence memory](docs/sequence-memory.md) for training, masks, ticket provenance and limits.
+
 ## Architecture
 
 - `core.py`: block/result contracts, typed ports, acyclic graph scheduling, JSON projects.

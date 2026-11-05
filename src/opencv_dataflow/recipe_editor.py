@@ -49,7 +49,7 @@ class RecipeManager(QDialog):
         )
         layout.addWidget(self.settings)
         self.assets = QTreeWidget()
-        self.assets.setHeaderLabels(["Model name", "Type", "Features", "Model checksum"])
+        self.assets.setHeaderLabels(["Model name", "Type", "Features / size", "Model checksum"])
         layout.addWidget(self.assets)
         self.default = QCheckBox("Use as project default when activating")
         self.default.setChecked(True)
@@ -105,7 +105,13 @@ class RecipeManager(QDialog):
         self.assets.clear()
         for name, model in self.models.items():
             item = QTreeWidgetItem(
-                self.assets, [name, model["model"], str(len(model["points"])), model["id"]]
+                self.assets,
+                [
+                    name,
+                    model["model"],
+                    str(model.get("shape", len(model.get("points", [])))),
+                    model["id"],
+                ],
             )
             item.setData(0, Qt.ItemDataRole.UserRole, name)
 
@@ -190,6 +196,8 @@ class RecipeManager(QDialog):
     def copy_model(self):
         block = self.window.inspector.block
         model = getattr(block, "trained_model", None)
+        if model is None:
+            model = getattr(block, "trained_image", None)
         if model is None and getattr(block, "last_result", None):
             model = block.last_result.outputs.get("model")
         if model is None and getattr(block, "recipe_model", ""):
@@ -199,7 +207,7 @@ class RecipeManager(QDialog):
                 self.window.warn(str(exc))
                 return
         if model is None:
-            self.window.warn("Select a trained pattern tool in the inspector first")
+            self.window.warn("Select a trained pattern or image memory in the inspector first")
             return
         try:
             self.add_model(model)

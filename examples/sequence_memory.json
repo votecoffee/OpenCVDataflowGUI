@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "sequence_source",
+      "type": "input.sequence_demo",
+      "name": "Sequence demo frames",
+      "parameters": {
+        "stationary_frames": 5,
+        "step_pixels": 2
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sequence_background",
+      "type": "sequence.background",
+      "name": "Running background subtraction",
+      "parameters": {
+        "warmup": 3,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "method": "absolute",
+        "learning_rate": 0.05,
+        "threshold": 20.0,
+        "deviations": 3.0,
+        "minimum_variance": 4.0,
+        "learn_foreground": false,
+        "stable_activations": 0,
+        "max_foreground_fraction": 0.05
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "learn"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "background",
+        "foreground",
+        "ready",
+        "activations",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sequence_farneback",
+      "type": "sequence.farneback",
+      "name": "Farneback optical flow",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 1000.0,
+        "pyramid_scale": 0.5,
+        "levels": 3,
+        "window": 15,
+        "iterations": 3,
+        "poly_n": "5",
+        "poly_sigma": 1.2,
+        "gaussian_window": false,
+        "initial_flow": "none",
+        "visual_max_motion": 10.0
+      },
+      "position": [
+        360,
+        430
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream"
+      ],
+      "exposed_outputs": [
+        "flow",
+        "magnitude",
+        "angle",
+        "visualization",
+        "ready",
+        "activations",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sequence_track_points",
+      "type": "sequence.track_points",
+      "name": "Track points (Lucas-Kanade)",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 1000.0,
+        "max_points": 200,
+        "quality": 0.01,
+        "min_distance": 7.0,
+        "block_size": 7,
+        "gradient_size": "3",
+        "harris": false,
+        "harris_k": 0.04,
+        "window": 21,
+        "max_level": 3,
+        "iterations": 30,
+        "epsilon": 0.01,
+        "min_eigenvalue": 0.0001,
+        "error_metric": "patch",
+        "max_error": 30.0,
+        "fb_tolerance": 1.0,
+        "reseed_below": 50,
+        "min_tracks": 3,
+        "min_track_age": 2
+      },
+      "position": [
+        360,
+        860
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream"
+      ],
+      "exposed_outputs": [
+        "tracks",
+        "overlay",
+        "ready",
+        "activations",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sequence_image_memory",
+      "type": "sequence.image_memory",
+      "name": "Image memory / trained reference",
+      "parameters": {
+        "warmup": 3,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "mode": "mean",
+        "freeze_after_warmup": true,
+        "reference_context": "strict"
+      },
+      "position": [
+        360,
+        1290
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "learn",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "reference",
+        "difference",
+        "image",
+        "ready",
+        "activations",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "sequence_source",
+      "output": "image",
+      "target": "sequence_background",
+      "input": "image"
+    },
+    {
+      "source": "sequence_source",
+      "output": "image",
+      "target": "sequence_farneback",
+      "input": "image"
+    },
+    {
+      "source": "sequence_source",
+      "output": "image",
+      "target": "sequence_track_points",
+      "input": "image"
+    },
+    {
+      "source": "sequence_source",
+      "output": "image",
+      "target": "sequence_image_memory",
+      "input": "image"
+    }
+  ]
+}

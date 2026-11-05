@@ -52,6 +52,7 @@ from .examples import (
     queued_input_graph,
     recipes_graph,
     regions_graph,
+    sequence_graph,
     starter_graph,
     template_graph,
     ticket_results_graph,
@@ -164,6 +165,7 @@ class Inspector(QWidget):
             self._region_source = None
             self._region_inputs = {}
         self.block = block
+        self.reference_capture = None
         while self.form.rowCount():
             self.form.removeRow(0)
         self.fields, self.port_checks, self.level_fields, self.failure_fields = {}, [], {}, {}
@@ -208,6 +210,33 @@ class Inspector(QWidget):
             ):
                 button = QPushButton(title)
                 button.clicked.connect(callback)
+                self.form.addRow(button)
+        if getattr(block, "sequence_memory", False):
+            button = QPushButton("Reset sequence memory")
+            button.clicked.connect(self.reset_sequence)
+            self.form.addRow(button)
+        if getattr(block, "supports_reference_training", False):
+            asset = block.trained_image
+            self.form.addRow(
+                QLabel(f"Trained reference: {asset['shape']}" if asset else "No stored reference")
+            )
+            for label, callback in (
+                ("Capture reference from last input", self.capture_reference),
+                ("Load trained reference…", self.load_reference),
+                ("Export trained reference…", self.export_reference),
+                ("Clear trained reference", self.clear_reference),
+            ):
+                button = QPushButton(label)
+                button.clicked.connect(callback)
+                if label.startswith("Capture"):
+                    self.reference_capture = button
+                button.setEnabled(
+                    bool(asset)
+                    if label.startswith(("Export", "Clear"))
+                    else "image" in block.last_inputs
+                    if label.startswith("Capture")
+                    else True
+                )
                 self.form.addRow(button)
         if getattr(block, "supports_training", False):
             model = block.trained_model
@@ -434,6 +463,62 @@ class Inspector(QWidget):
         except (ValueError, TypeError, KeyError) as exc:
             self.window.warn(str(exc))
 
+    def reset_sequence(self):
+        if self.block is not None and not self.window.runner:
+            self.block.reset_runtime()
+            self.block.clear_result()
+            self.window.scene.update()
+            self.refresh_result()
+
+    def reference_changed(self):
+        self.window.graph.invalidate()
+        self.window.mark_dirty()
+        self.window.scene.rebuild(self.block.id)
+        self.select(self.block)
+
+    def capture_reference(self):
+        if self.block is not None and not self.window.runner:
+            try:
+                self.block.train_reference(self.block.last_inputs["image"])
+                self.reference_changed()
+            except (ValueError, TypeError, KeyError) as exc:
+                self.window.warn(str(exc))
+
+    def load_reference(self):
+        if self.block is None or self.window.runner:
+            return
+        path, _ = QFileDialog.getOpenFileName(
+            self, "Load reference", filter="Reference JSON (*.json)"
+        )
+        if path:
+            try:
+                self.block.restore_extra(
+                    {"trained_image": json.loads(Path(path).read_text("utf-8"))}
+                )
+                self.reference_changed()
+            except (ValueError, TypeError, KeyError, OSError) as exc:
+                self.window.warn(str(exc))
+
+    def export_reference(self):
+        if self.block is None or self.window.runner or self.block.trained_image is None:
+            return
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Export reference", filter="Reference JSON (*.json)"
+        )
+        if path:
+            try:
+                with Path(path).open("x", encoding="utf-8") as stream:
+                    stream.write(
+                        json.dumps(self.block.trained_image, indent=2, allow_nan=False) + "\n"
+                    )
+            except (ValueError, OSError) as exc:
+                self.window.warn(str(exc))
+
+    def clear_reference(self):
+        if self.block is not None and not self.window.runner:
+            self.block.trained_image = None
+            self.reference_changed()
+
     def train_pattern(self):
         block = self.block
         if block is None or not getattr(block, "supports_training", False) or self.window.runner:
@@ -615,6 +700,8 @@ class Inspector(QWidget):
         self.preview_choice.clear()
         b = self.block
         if b:
+            if self.reference_capture is not None:
+                self.reference_capture.setEnabled("image" in b.last_inputs)
             for name in b.last_inputs:
                 if hasattr(b.last_inputs[name], "shape"):
                     self.preview_choice.addItem(f"Input / {name}")
@@ -764,6 +851,7 @@ class MainWindow(QMainWindow):
             ("Load ticket results example", None, self.load_ticket_results_example),
             ("Load input coordination example", None, self.load_input_coordination_example),
             ("Load recipes example", None, self.load_recipes_example),
+            ("Load sequence memory example", None, self.load_sequence_example),
             ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
@@ -1078,6 +1166,10 @@ class MainWindow(QMainWindow):
         if not self.runner and self.confirm_discard():
             self.replace_graph(recipes_graph(self.registry))
 
+    def load_sequence_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(sequence_graph(self.registry))
+
     def open_project(self):
         if self.runner or not self.confirm_discard():
             return
@@ -1163,7 +1255,9 @@ class MainWindow(QMainWindow):
             self.root_graph.invalidate()
             self.scene.update()
             self.inspector.refresh_result()
-            self.statusBar().showMessage("Flow buffers cleared; a new ticket session will start")
+            self.statusBar().showMessage(
+                "Flow and sequence memory cleared; a new ticket session will start"
+            )
 
     def on_frame(self):
         try:

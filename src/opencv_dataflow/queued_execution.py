@@ -61,6 +61,10 @@ def ancestors(graph, key):
 
 
 def check_upstream(block):
+    if getattr(block, "sequence_memory", False):
+        raise ValueError(
+            "Place sequence memory after the acquisition queue, on accepted FIFO frames"
+        )
     if (
         getattr(block, "queue_boundary", False)
         or getattr(block, "owns_workers", False)

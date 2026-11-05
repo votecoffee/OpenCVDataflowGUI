@@ -550,6 +550,7 @@ def builtin_registry():
     from .recipe_blocks import RecipeField, RecipeSelect
     from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
+    from .sequence_tools import SEQUENCE_BLOCKS
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
 
     registry = Registry()
@@ -598,6 +599,7 @@ def builtin_registry():
         ImageQueue,
         RecipeSelect,
         RecipeField,
+        *SEQUENCE_BLOCKS,
         FinalJudgment,
     ):
         registry.register(block)

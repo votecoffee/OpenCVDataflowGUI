@@ -50,6 +50,12 @@ def check_model(model):
     from .patterns import validate_model
     from .texture_patterns import check_texture_model
 
+    if isinstance(model, dict) and model.get("model") == "trained_image_v1":
+        from .image_assets import decode_image
+
+        decode_image(model)
+        return model
+
     if isinstance(model, dict) and model.get("model") == "shape_pattern_v1":
         return validate_model(model, "shape")
     return check_texture_model(model)
