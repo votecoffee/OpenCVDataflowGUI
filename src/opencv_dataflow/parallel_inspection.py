@@ -406,6 +406,11 @@ class ParallelInspect(Block):
                             value, result.payloads.get(p["image_output"], payload)
                         )
             except Exception as exc:
+                (tool or self).logger.exception(
+                    "Part inspection failed",
+                    exc_info=exc,
+                    values={"image": ValuePacket(image, payload)},
+                )
                 record.update(status="error", passed=False, error=f"{type(exc).__name__}: {exc}")
             finally:
                 record["elapsed_ms"] = (time.perf_counter() - started) * 1000
@@ -413,6 +418,11 @@ class ParallelInspect(Block):
                     try:
                         tool.close()
                     except Exception as exc:
+                        tool.logger.exception(
+                            "Part inspection cleanup failed",
+                            exc_info=exc,
+                            values={"image": ValuePacket(image, payload)},
+                        )
                         record.update(
                             status="error",
                             passed=False,

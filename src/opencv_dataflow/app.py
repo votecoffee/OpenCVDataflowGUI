@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
     QDialog,
+    QDockWidget,
     QFileDialog,
     QFormLayout,
     QGroupBox,
@@ -42,6 +43,7 @@ from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
 from .canvas import CanvasScene, CanvasView, Node, pixmap
 from .core import Graph
+from .diagnostic_viewer import DiagnosticViewer
 from .examples import (
     channel_pyramid_graph,
     combined_regions_graph,
@@ -173,6 +175,8 @@ class Inspector(QWidget):
             self._region_source = None
             self._region_inputs = {}
         self.block = block
+        if hasattr(self.window, "diagnostics_view"):
+            self.window.diagnostics_view.set_block(block)
         self.reference_capture = None
         while self.form.rowCount():
             self.form.removeRow(0)
@@ -849,6 +853,12 @@ class MainWindow(QMainWindow):
         split.setSizes([210, 940, 350])
         split.setStretchFactor(1, 1)
         self.setCentralWidget(split)
+        self.diagnostics_dock = QDockWidget("Block diagnostics", self)
+        self.diagnostics_dock.setObjectName("blockDiagnosticsDock")
+        self.diagnostics_view = DiagnosticViewer(lambda: self.root_graph.activity, self)
+        self.diagnostics_dock.setWidget(self.diagnostics_view)
+        self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, self.diagnostics_dock)
+        self.diagnostics_dock.hide()
         self.scene.selected_block.connect(self.inspector.select)
         self.scene.edited.connect(self.mark_dirty)
         self.scene.layout_changed.connect(self.mark_layout_dirty)
@@ -907,6 +917,10 @@ class MainWindow(QMainWindow):
         toolbar.addAction("Fit graph", self.view.fit_graph)
         results_menu = self.menuBar().addMenu("&Results")
         results_menu.addAction("Ticket results…", self.show_ticket_results)
+        self.diagnostics_action = self.diagnostics_dock.toggleViewAction()
+        self.diagnostics_action.setText("Block diagnostics")
+        self.diagnostics_action.setShortcut("Ctrl+Shift+D")
+        results_menu.addAction(self.diagnostics_action)
         results_menu.addAction("Ticket activity timeline…", lambda: self.show_activity("ticket"))
         results_menu.addAction("Block concurrency…", lambda: self.show_activity("concurrency"))
         recipes_menu = self.menuBar().addMenu("&Recipes")

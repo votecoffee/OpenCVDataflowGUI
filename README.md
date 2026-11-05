@@ -391,6 +391,12 @@ Try **File > Load sequence memory example**, then run continuously. See
 
 ## Architecture
 
+Open **Results > Block diagnostics** (**Ctrl+Shift+D**) for a bottom dock with
+severity-colored logs. Selecting a block isolates its logs; clearing the selection shows
+all blocks. Filter verbosity/severity, search messages, and inspect structured parameters
+and chained exception tracebacks. Every block exposes `block.logger` for custom
+diagnostics. See [block diagnostics](docs/diagnostics.md).
+
 **Results > Ticket activity timeline…** displays a ticket Gantt chart, while
 **Results > Block concurrency…** shows verdict-colored activity bars in a rolling
 time window. Both use a common block start/finish event log with ticket identities,

@@ -95,11 +95,27 @@ class ActivityLog:
         self.bytes = self.sequence = self.evicted = 0
 
     def emit(self, event):
+        from .diagnostics import enrich
+
         validate_event(event)
         event = copy.deepcopy(event)
+        enrich(event)
         event["model"] = "block_event_v1"
         event["id"] = uuid.uuid4().hex
         encoded = json.dumps(event, allow_nan=False).encode("utf-8")
+        if len(encoded) > 256 * 1024:
+            from .diagnostics import bounded_text
+
+            event["parameters"] = {"omitted": "event byte limit"}
+            event["message"] = bounded_text(event["message"], 2048)
+            if event["exception"]:
+                event["exception"]["traceback"] = bounded_text(
+                    event["exception"]["traceback"], 4096
+                )
+                event["exception"]["message"] = bounded_text(event["exception"]["message"], 2048)
+                event["exception"]["truncated"] = True
+            event["diagnostic_truncated"] = True
+            encoded = json.dumps(event, allow_nan=False).encode("utf-8")
         if len(encoded) > 256 * 1024:
             raise ValueError("Activity event exceeds 256 KiB")
         with self.lock:
@@ -126,9 +142,17 @@ class ActivityLog:
         # block processing threads while copying retained history.
         return copy.deepcopy(snapshot)
 
+    def revision(self):
+        with self.lock:
+            return self.sequence
 
-def report(block, kind, data=None, values=None, invocation=None, at=None):
+
+def report(block, kind, data=None, values=None, invocation=None, at=None, diagnostic=None):
+    from .diagnostics import parameters_snapshot
+
     log = getattr(block, "_activity", None)
+    if log is None:
+        log = getattr(getattr(block, "logger", None), "standalone", None)
     if log is None:
         return
     if not isinstance(kind, str) or not 1 <= len(kind) <= 80:
@@ -165,8 +189,18 @@ def report(block, kind, data=None, values=None, invocation=None, at=None):
         "time": at or mark(),
         "thread": threading.get_ident(),
         "data": data,
+        "parameters": parameters_snapshot(
+            {
+                **getattr(block, "parameters", {}),
+                **(getattr(block, "last_recipe_parameters", {}) if kind == "finish" else {}),
+            }
+        ),
     }
+    if diagnostic is not None:
+        event.update(diagnostic)
     if kind == "finish":
+        if block.state == "error":
+            event["exception"] = getattr(block, "_diagnostic_exception", None)
         event["started"] = block._work_started
         event["duration_ms"] = block.timing.last_ms
         event["judgment"] = block.state
