@@ -667,6 +667,7 @@ def builtin_registry():
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample
     from .dnn_blocks import DNN_BLOCKS
+    from .ecc_registration import AlignECC
     from .examples3d import StereoDemo
     from .features import FEATURE_BLOCKS
     from .geometry3d import GEOMETRY3D_BLOCKS
@@ -686,6 +687,7 @@ def builtin_registry():
     from .recipe_blocks import RecipeField, RecipeSelect
     from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
+    from .restoration import RESTORATION_BLOCKS
     from .segmentation import SEGMENTATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
     from .shape_fitting import FitShape
@@ -721,6 +723,8 @@ def builtin_registry():
         *PROCESSING_BLOCKS,
         *FEATURE_BLOCKS,
         *REGISTRATION_BLOCKS,
+        AlignECC,
+        *RESTORATION_BLOCKS,
         *ANALYSIS_BLOCKS,
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,

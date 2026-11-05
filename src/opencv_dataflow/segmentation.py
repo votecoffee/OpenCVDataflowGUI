@@ -187,4 +187,41 @@ class ThinMask(Block):
         return Result({"mask": result})
 
 
-SEGMENTATION_BLOCKS = (FloodFill, Watershed, GrabCut, ThinMask)
+class FillMaskHoles(Block):
+    type_id, title = "inspect.fill_mask_holes", "Fill holes in a binary mask"
+    category, block_type, subtype = "Inspection", "Inspection", "Segmentation"
+    inputs = (Port("image"),)
+    outputs = (Port("mask"), Port("holes"), Port("count", "number"))
+    defaults = {"background_connectivity": "4", "maximum_area": 0}
+    parameter_choices = {"background_connectivity": ("4", "8")}
+    parameter_help = {
+        "maximum_area": "Largest hole to fill, in pixels. Zero fills all enclosed holes.",
+        "background_connectivity": "Connectivity of background paths to the image edge.",
+    }
+
+    def process(self, inputs):
+        source = inputs["image"]
+        if source.ndim != 2 or source.dtype != np.uint8:
+            raise ValueError("Hole fill requires a uint8 monochrome mask")
+        background = cv2.compare(np.asarray(source), 0, cv2.CMP_EQ)
+        maximum = integer(self.parameters["maximum_area"], "Maximum area", 0, 2**31 - 1)
+        count, labels, stats, _ = cv2.connectedComponentsWithStatsWithAlgorithm(
+            background, int(self.parameters["background_connectivity"]), cv2.CV_32S, cv2.CCL_SAUF
+        )
+        enclosed = np.ones(count, dtype=bool)
+        enclosed[0] = False
+        for edge in (labels[0, :], labels[-1, :], labels[:, 0], labels[:, -1]):
+            enclosed[edge] = False
+        if maximum:
+            enclosed &= stats[:, cv2.CC_STAT_AREA] <= maximum
+        holes = enclosed[labels]
+        return Result(
+            {
+                "mask": ((background == 0) | holes).astype(np.uint8) * 255,
+                "holes": holes.astype(np.uint8) * 255,
+                "count": int(enclosed.sum()),
+            }
+        )
+
+
+SEGMENTATION_BLOCKS = (FloodFill, Watershed, GrabCut, ThinMask, FillMaskHoles)

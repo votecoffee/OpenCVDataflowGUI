@@ -10,8 +10,8 @@ lists the tools that can be placed on a graph today.
 
 | Rank | Outstanding capability | OpenCV primitives and graph work |
 | --- | --- | --- |
-| 1 | Separate touching parts and isolate foreground | Distance-peak seeds, hole fill and morphological reconstruction. Watershed, flood fill, GrabCut initialization, skeleton thinning, threshold, morphology, distance transform and components are available. |
-| 2 | Reference comparison and defect scoring | Histogram backprojection, registered reference subtraction and packaged residual-component inspection. Histogram comparison, SSIM with a local similarity map, PSNR/MSE and configurable fail thresholds are available. |
+| 1 | Separate touching parts and isolate foreground | Distance-peak seeds and morphological reconstruction. Watershed, flood fill, GrabCut initialization, hole fill, skeleton thinning, threshold, morphology, distance transform and components are available. |
+| 2 | Reference comparison and defect scoring | Histogram backprojection and packaged residual-component inspection. ECC alignment, absolute difference, histogram comparison, SSIM with a local similarity map, PSNR/MSE and configurable fail thresholds are available. |
 | 3 | Multi-result template search and pick selection | Subpixel template peaks, pose-relative clearance, distinct visible-feature coverage and depth occlusion evidence, and deterministic pick ranking. Fixed-scale multi-result template matching now supplies ranked peaks, overlap suppression and poses. Trainable matchers and collection filters cover other parts of this pipeline. |
 | 4 | Calipers, widths, contours and shape fitting | Intensity profiles along pose-relative calipers, paired edges, width/gap/discontinuity along a path, convex hull/defects, `pointPolygonTest` and contour-to-contour `matchShapes`. Dedicated line, ellipse and minimum enclosing circle fits now accept points or a collection item and report residuals. |
 | 5 | File video and replay | Video file/stream sources, decode timestamps, seek, frame ranges and extraction, codec/container selection, video writing and deterministic end-of-stream. Extend image-camera acquisition with timed replay and independent source readiness. |
@@ -24,8 +24,8 @@ lists the tools that can be placed on a graph today.
 
 | Family | Outstanding capability |
 | --- | --- |
-| Image restoration | Fast non-local means, temporal NLM, TV-L1 denoising, Telea/Navier–Stokes inpainting, edge-preserving/guided/domain-transform filters, deconvolution/deblur, shadow and illumination correction. |
-| Registration and stitching | ECC and multiscale ECC, masked intensity alignment, camera motion stabilization, sparse alignment diagnostics, panorama and inspection mosaic stitching, seam/exposure correction and blending. |
+| Image restoration | Temporal NLM, TV-L1 denoising, edge-preserving/guided/domain-transform filters, deconvolution/deblur, shadow and illumination correction. Single-frame non-local means and Telea/Navier–Stokes inpainting are available. |
+| Registration and stitching | Camera motion stabilization, sparse alignment diagnostics, panorama and inspection mosaic stitching, seam/exposure correction and blending. Single-scale and multiscale ECC support intensity alignment with masks. |
 | Feature detection and correspondence | Standalone SIFT, AKAZE, BRISK, KAZE, MSER and descriptor adapters; selectable BF/FLANN KNN, radius matching, cross-check and geometric inlier scoring. ORB/FAST and SIFT-based match pipelines already exist. |
 | Shape and topology | Generalized Hough, contour approximation and hierarchy as separate operations, ellipse/arc and polygon models, rotated intersection, connected-component algorithm choices, shape context and Zernike-style descriptors where available. |
 | Segmentation and texture | SLIC/SEEDS/LSC superpixels, meanshift, k-means, graph segmentation, selective search, ridge/Frangi-style response, local binary patterns, co-occurrence matrices and Gabor banks. |
@@ -103,6 +103,8 @@ mask and a mask for one selected label or all positive labels.
 **GrabCut foreground** accepts a rectangle, a binary probable-foreground mask
 or native four-state markers. It initializes a new model for each activation.
 **Thin binary mask** exposes Zhang–Suen and Guo–Hall skeletonization.
+**Fill holes in a binary mask** fills enclosed background components, with an
+optional maximum hole area and configurable background connectivity.
 
 **Compare image quality** compares two registered images using SSIM, PSNR or
 MSE and an optional pass threshold. A region or mask selects pixels for the
@@ -132,3 +134,18 @@ ranges in both source histograms.
 It reports image-space geometry and root mean squared distance to the fitted
 boundary, with an optional residual tolerance. Circle mode returns the
 smallest enclosing circle.
+
+
+## Available alignment and restoration
+
+**Align images (ECC)** registers a sample to a reference with single-scale or
+multiscale enhanced correlation. It exposes translation, rigid, affine and
+homography models, optional masks for both frames, an optional initial
+transform and a minimum coefficient. It emits the aligned image and the
+sample-to-reference transform. The inverse mapping is available on its
+geometry output.
+
+**Non-local means denoise** offers channel-based and luminance/chroma modes.
+A region or mask limits where denoised pixels are written. **Inpaint selected
+pixels** reconstructs a masked area from neighboring pixels with Telea or
+Navier–Stokes.

@@ -89,3 +89,18 @@ def test_thinning_removes_width_and_respects_selection(method):
     skeleton = result.outputs["mask"]
     assert 5 < np.count_nonzero(skeleton) < 20
     assert not skeleton[:, 20:].any()
+
+
+def test_fill_holes_leaves_edge_connected_background_and_large_holes():
+    image = np.zeros((30, 30), np.uint8)
+    image[2:28, 2:28] = 255
+    image[2:12, 10] = 0
+    image[6:9, 14:17] = 0
+    image[16:22, 16:22] = 0
+    block = builtin_registry().create("inspect.fill_mask_holes", parameters={"maximum_area": 10})
+    result = block.execute({"image": image})
+    assert result is not None, block.error
+    assert result.outputs["count"] == 1
+    assert np.count_nonzero(result.outputs["holes"]) == 9
+    assert result.outputs["mask"][7, 15] == 255
+    assert result.outputs["mask"][7, 10] == result.outputs["mask"][17, 17] == 0

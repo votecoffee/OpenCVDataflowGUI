@@ -615,8 +615,8 @@ P2	method	cv2.dnn.Tokenizer.encode	method name only	-
 P2	method	cv2.dnn.Tokenizer.load	method name only	-
 P2	function	cv2.dnn.Tokenizer_load	no static reference	-
 P2	function	cv2.dnn.writeTextGraph	no static reference	-
-P2	function	cv2.fastNlMeansDenoising	no static reference	-
-P2	function	cv2.fastNlMeansDenoisingColored	no static reference	-
+P2	function	cv2.fastNlMeansDenoising	literal reference	-
+P2	function	cv2.fastNlMeansDenoisingColored	literal reference	-
 P2	function	cv2.findTransformECC	no static reference	-
 P2	function	cv2.fisheye.calibrate	no static reference	-
 P2	function	cv2.fisheye.distortPoints	no static reference	-
@@ -665,7 +665,7 @@ P2	method	cv2.img_hash.RadialVarianceHash.getSigma	no static reference	-
 P2	method	cv2.img_hash.RadialVarianceHash.setNumOfAngleLine	no static reference	-
 P2	method	cv2.img_hash.RadialVarianceHash.setSigma	no static reference	-
 P2	function	cv2.img_hash.RadialVarianceHash_create	no static reference	-
-P2	function	cv2.inpaint	no static reference	-
+P2	function	cv2.inpaint	literal reference	-
 P2	class	cv2.ml.ANN_MLP	no static reference	-
 P2	method	cv2.ml.ANN_MLP.create	method name only	-
 P2	method	cv2.ml.ANN_MLP.getAnnealCoolingRatio	no static reference	-
@@ -2478,7 +2478,7 @@ P3	method	cv2.dynafu_DynaFu.getPoints	alias	cv2.dynafu.DynaFu.getPoints
 P3	method	cv2.dynafu_DynaFu.render	alias	cv2.dynafu.DynaFu.render
 P3	method	cv2.dynafu_DynaFu.reset	alias	cv2.dynafu.DynaFu.reset
 P3	method	cv2.dynafu_DynaFu.update	alias	cv2.dynafu.DynaFu.update
-P3	class	cv2.ECCParameters	no static reference	-
+P3	class	cv2.ECCParameters	literal reference	-
 P3	function	cv2.edgePreservingFilter	no static reference	-
 P3	function	cv2.eigen	no static reference	-
 P3	function	cv2.eigenNonSymmetric	no static reference	-
@@ -2754,8 +2754,8 @@ P3	function	cv2.findFundamentalMat	literal reference	-
 P3	function	cv2.findHomography	literal reference	-
 P3	function	cv2.findNonZero	no static reference	-
 P3	function	cv2.findPlanes	no static reference	-
-P3	function	cv2.findTransformECCMultiScale	no static reference	-
-P3	function	cv2.findTransformECCWithMask	no static reference	-
+P3	function	cv2.findTransformECCMultiScale	literal reference	-
+P3	function	cv2.findTransformECCWithMask	literal reference	-
 P3	function	cv2.finiteMask	no static reference	-
 P3	function	cv2.fitEllipseAMS	literal reference	-
 P3	function	cv2.fitEllipseDirect	literal reference	-

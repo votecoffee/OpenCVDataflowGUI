@@ -1020,6 +1020,17 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `lower` | `[0]` |  |
 | `upper` | `[255]` |  |
 
+## Inpaint selected pixels (`cv.inpaint`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"telea"` | `telea`, `navier_stokes` |
+| `radius` | `3.0` |  |
+
 ## Replace image channel (`cv.insert_channel`)
 
 Image processing / Channels
@@ -1083,6 +1094,24 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `shape_anchor` | `[-1, -1]` | Kernel construction anchor (cross shape); operation anchor is separate. |
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 | `border_value` | `[]` | Empty keeps the neutral native border; otherwise one to four values. |
+
+## Non-local means denoise (`cv.non_local_means`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"channels"` | `channels`, `luminance_chroma` |
+| `strength` | `3.0` | One value or a list per channel. Use one luminance value in color mode. |
+| `color_strength` | `10.0` | Chroma denoising strength in luminance/chroma mode. |
+| `norm` | `"l2"` | `l2`, `l1` Channel mode only. L1 supports uint16. |
+| `template_window` | `7` |  |
+| `search_window` | `21` |  |
 
 ## Normalize intensity (`cv.normalize`)
 
@@ -1680,6 +1709,25 @@ Inputs: `matches` (data).
 | `min_inliers` | `3` |  |
 | `min_inlier_ratio` | `0.5` |  |
 
+## Align images (ECC) (`inspect.align_ecc`)
+
+Inspection / Registration
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reference` (image), `reference_mask` (image, optional), `initial_transform` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `motion` | `"affine"` | `translation`, `euclidean`, `affine`, `homography` |
+| `pyramid_levels` | `1` | One for direct ECC, more for OpenCV's multiscale ECC. |
+| `max_iterations` | `50` | Maximum iterations per pyramid level. |
+| `iterations_per_level` | `[]` | Optional list with one iteration limit per multiscale level. |
+| `epsilon` | `1e-06` | Stop on coefficient convergence. Zero uses the iteration limit only. |
+| `gaussian_size` | `5` |  |
+| `min_coefficient` | `0.0` |  |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
+| `border_value` | `0.0` |  |
+
 ## Find blobs (`inspect.blobs`)
 
 Inspection / Shapes
@@ -1794,6 +1842,17 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `threshold` | `10` |  |
 | `nonmax_suppression` | `true` |  |
 | `pattern` | `"9_16"` | `5_8`, `7_12`, `9_16` |
+
+## Fill holes in a binary mask (`inspect.fill_mask_holes`)
+
+Inspection / Segmentation
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `background_connectivity` | `"4"` | `4`, `8` Connectivity of background paths to the image edge. |
+| `maximum_area` | `0` | Largest hole to fill, in pixels. Zero fills all enclosed holes. |
 
 ## Final ticket judgment (`inspect.final_judgment`)
 
