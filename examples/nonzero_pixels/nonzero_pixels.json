@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Flat patch and checker texture",
+      "parameters": {
+        "path": "assets/flat_and_texture.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "blur",
+      "type": "cv.gaussian_blur",
+      "name": "Estimate local background",
+      "parameters": {
+        "kernel": 9,
+        "sigma": 2
+      },
+      "position": [
+        315,
+        190
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "difference",
+      "type": "cv.image_arithmetic",
+      "name": "Absolute background difference",
+      "parameters": {
+        "operation": "absolute_difference"
+      },
+      "position": [
+        630,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "intensity"
+    },
+    {
+      "id": "compare",
+      "type": "cv.compare_pixels",
+      "name": "Select residuals at least 40",
+      "parameters": {
+        "operation": "greater_or_equal",
+        "scalar": 40
+      },
+      "position": [
+        945,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "scalar_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "count",
+        "fraction"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "points",
+      "type": "cv.find_nonzero_pixels",
+      "name": "Sample 24 pixel coordinates",
+      "parameters": {
+        "max_points": 24,
+        "draw_points": true
+      },
+      "position": [
+        1260,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "points",
+        "count",
+        "returned_count",
+        "bounds",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show sample points and bounds",
+      "parameters": {},
+      "position": [
+        1600,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "blur",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "difference",
+      "input": "image_a"
+    },
+    {
+      "source": "blur",
+      "output": "image",
+      "target": "difference",
+      "input": "image_b"
+    },
+    {
+      "source": "difference",
+      "output": "image",
+      "target": "compare",
+      "input": "image_a"
+    },
+    {
+      "source": "compare",
+      "output": "mask",
+      "target": "points",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "points",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}
