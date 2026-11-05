@@ -136,6 +136,13 @@ class ImageQueue(FlowBlock):
             raise ValueError("One capture exceeds the queue byte limit")
         policy = self.parameters["overflow"]
         with self.condition:
+            if self.lease is not None:
+                self.report_event(
+                    "queue_busy",
+                    {"reason": "frame arrived during downstream work"},
+                    {"image": capture.frame},
+                )
+            waited = False
             while (
                 len(self.runtime["pending"]) >= capacity or self.runtime["bytes"] + size > maximum
             ):
@@ -143,13 +150,20 @@ class ImageQueue(FlowBlock):
                     return False
                 if policy == "drop_newest":
                     self.runtime["dropped"] += 1
+                    self.report_event("dropped", {"policy": policy}, {"image": capture.frame})
                     return False
                 if policy == "drop_oldest":
                     old, old_size = self.runtime["pending"].pop(0)
                     self.runtime["bytes"] -= old_size
                     self.runtime["dropped"] += 1
+                    self.report_event("dropped", {"policy": policy}, {"image": old.frame})
                     del old
                 elif policy == "block" and background:
+                    if not waited:
+                        self.report_event(
+                            "queue_wait", {"reason": "queue capacity"}, {"image": capture.frame}
+                        )
+                        waited = True
                     self.condition.wait(0.05)
                 else:
                     self.runtime["rejected"] += 1
@@ -158,6 +172,8 @@ class ImageQueue(FlowBlock):
                     )
             if cancelled():
                 return False
+            if waited:
+                self.report_event("queue_resume", values={"image": capture.frame})
             self.runtime["pending"].append((copy.deepcopy(capture), size))
             if not background:
                 self.runtime["producer_error"] = ""
@@ -172,12 +188,18 @@ class ImageQueue(FlowBlock):
     def wait_for_capture_space(self, cancelled):
         capacity, maximum = self.limits()
         with self.condition:
+            waited = False
             while self.parameters["overflow"] == "block" and (
                 len(self.runtime["pending"]) >= capacity or self.runtime["bytes"] >= maximum
             ):
                 if cancelled():
                     return False
+                if not waited:
+                    self.report_event("queue_wait", {"reason": "capacity gate before capture"})
+                    waited = True
                 self.condition.wait(0.05)
+            if waited:
+                self.report_event("queue_resume", {"reason": "capacity gate released"})
             return not cancelled()
 
     def take(self, cancelled=lambda: False, wait_for_frame=False):
@@ -210,6 +232,7 @@ class ImageQueue(FlowBlock):
             self.condition.notify_all()
 
     def producer_failed(self, message):
+        self.report_event("exception", {"message": message})
         with self.condition:
             self.runtime["producer_error"] = message
             self.condition.notify_all()

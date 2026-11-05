@@ -391,6 +391,12 @@ Try **File > Load sequence memory example**, then run continuously. See
 
 ## Architecture
 
+**Results > Ticket activity timeline…** displays a ticket Gantt chart, while
+**Results > Block concurrency…** shows verdict-colored activity bars in a rolling
+time window. Both use a common block start/finish event log with ticket identities,
+exception/blocked-input/queue flags, filters, pause, zoom and JSON export. Nested and
+parallel inspections share the same collector. See [activity events and timelines](docs/activity-timelines.md).
+
 Every block retains current/last/average execution timing and an activation count.
 The inspector shows these statistics, and headless reports include them. Ticketed
 connections carry source-start/output-finish UTC timestamps and monotonic elapsed time,

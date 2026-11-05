@@ -150,6 +150,7 @@ class QueuedExecution:
             if c.source in self.upstream and c.target in self.upstream
         ]
         self.producer.bind_ticket_results(graph.ticket_results)
+        self.producer.bind_activity(graph.activity)
         self.producer.bind_recipes(graph.recipes)
         self.producer.copy_timing_from(graph)
         self.stop = threading.Event()

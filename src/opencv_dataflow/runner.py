@@ -119,6 +119,7 @@ def main(argv=None):
                         "passed": passed,
                         "runs": runs,
                         "ticket_results": graph.ticket_results.snapshot(),
+                        "activity": graph.activity.snapshot(),
                         "active_recipe": graph.recipes.active_ref(),
                     },
                     indent=2,

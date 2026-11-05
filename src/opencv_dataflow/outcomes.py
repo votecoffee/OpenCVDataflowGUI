@@ -194,7 +194,14 @@ def publish_result(block, values, result=None, kind="tool_result", message=""):
         timing = (
             packet.payload["processing_time"]
             if stamped
-            else advance_timing(packet.payload.get("processing_time"), start, end)
+            else advance_timing(
+                packet.payload.get("processing_time"),
+                start,
+                end,
+                source=handled
+                and block.ticket_source
+                and getattr(block, "_source_ticket", None) is not None,
+            )
         )
         consumer.consume(
             {

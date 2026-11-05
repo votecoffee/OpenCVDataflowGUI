@@ -37,6 +37,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from .activity_window import ActivityWindow
 from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
 from .canvas import CanvasScene, CanvasView, Node, pixmap
@@ -757,9 +758,7 @@ class Inspector(QWidget):
             )
             score = f"{result.score:.1%}" if result and result.score is not None else "—"
             timing = b.timing.snapshot()
-            average = (
-                f"{timing['average_ms']:.2f}" if timing["average_ms"] is not None else "—"
-            )
+            average = f"{timing['average_ms']:.2f}" if timing["average_ms"] is not None else "—"
             self.details.setPlainText(
                 f"{b.state.upper()}   ·   {b.elapsed_ms:.2f} ms   ·   score {score}\n"
                 + f"Average {average} ms · {timing['count']} activations\n"
@@ -908,6 +907,8 @@ class MainWindow(QMainWindow):
         toolbar.addAction("Fit graph", self.view.fit_graph)
         results_menu = self.menuBar().addMenu("&Results")
         results_menu.addAction("Ticket results…", self.show_ticket_results)
+        results_menu.addAction("Ticket activity timeline…", lambda: self.show_activity("ticket"))
+        results_menu.addAction("Block concurrency…", lambda: self.show_activity("concurrency"))
         recipes_menu = self.menuBar().addMenu("&Recipes")
         self.recipe_action = recipes_menu.addAction("Manage recipes…", self.manage_recipes)
         self.edit_actions.append(self.recipe_action)
@@ -1268,6 +1269,7 @@ class MainWindow(QMainWindow):
                 self.root_graph.to_dict(), self.registry, project_dir=self.root_graph.project_dir
             )
             execution_graph.copy_runtime_from(self.root_graph)
+            execution_graph.bind_activity(self.root_graph.activity)
             for key, block in self.root_graph.blocks.items():
                 execution_graph.blocks[key].copy_results_from(block)
         except Exception as exc:
@@ -1356,6 +1358,15 @@ class MainWindow(QMainWindow):
         self.ticket_results_window.show()
         self.ticket_results_window.raise_()
         self.ticket_results_window.activateWindow()
+
+    def show_activity(self, mode):
+        name = f"activity_{mode}_window"
+        if not hasattr(self, name):
+            setattr(self, name, ActivityWindow(lambda: self.root_graph.activity, mode, self))
+        window = getattr(self, name)
+        window.show()
+        window.raise_()
+        window.activateWindow()
 
     def manage_recipes(self):
         if not self.runner:
