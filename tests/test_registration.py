@@ -319,6 +319,47 @@ def test_flann_recovers_known_shift_for_numeric_descriptors(detector, mode):
     np.testing.assert_allclose(matrix[:2, 2], [8, 12], atol=0.5)
 
 
+@pytest.mark.parametrize("extended,upright,width", [(False, False, 64), (True, True, 128)])
+def test_kaze_features_register_a_known_shift_with_flann(extended, upright, width):
+    image = np.random.default_rng(37).integers(0, 256, (180, 224), dtype=np.uint8)
+    image = cv2.GaussianBlur(image, (3, 3), 0.8)
+    moved = cv2.warpAffine(image, np.float32([[1, 0, 8], [0, 1, 12]]), image.shape[::-1])
+    mask = np.zeros_like(image)
+    mask[:, :180] = 255
+    settings = {
+        "extended": extended,
+        "upright": upright,
+        "diffusivity": "weickert",
+        "max_features": 60,
+    }
+    query = run("inspect.kaze", {"image": image, "mask": mask}, settings).last_result
+    train = run("inspect.kaze", {"image": moved}, {**settings, "max_features": 500}).last_result
+    packet = query.outputs["features"]
+    assert packet["algorithm"] == "KAZE"
+    assert packet["descriptor_size"] == width
+    assert packet["extended"] is extended and packet["upright"] is upright
+    assert query.outputs["count"] == 60
+    assert np.asarray(packet["descriptors"]).shape == (60, width)
+    assert all(x < 180 for x, _ in query.outputs["points"])
+    assert len(query.drawings["KAZE"].objects) == 60
+    matched = run(
+        "inspect.match_flann", {"query": packet, "train": train.outputs["features"]}
+    ).last_result
+    assert matched.outputs["count"] > 15
+    estimate = run("inspect.homography", {"matches": matched.outputs["matches"]})
+    matrix = np.asarray(estimate.last_result.outputs["transform"]["source_to_target"])
+    np.testing.assert_allclose(matrix[:2, 2], [8, 12], atol=0.5)
+
+
+def test_flann_accepts_empty_kaze_but_rejects_mixed_modes():
+    image = np.zeros((64, 80), np.uint8)
+    packet = run("inspect.kaze", {"image": image}).last_result.outputs["features"]
+    block = run("inspect.match_flann", {"query": packet, "train": packet})
+    assert block.last_result.outputs["count"] == 0
+    assert block.execute({"query": packet, "train": {**packet, "upright": True}}) is None
+    assert "same FLANN descriptor family and mode" in block.error
+
+
 def test_flann_distance_and_single_neighbor_behavior():
     def packet(first_components):
         return {

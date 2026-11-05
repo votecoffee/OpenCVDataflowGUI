@@ -218,6 +218,8 @@ matches keypoints before estimating an image homography. The
 [AKAZE registration example](examples/akaze_registration/README.md) runs the
 same workflow with binary MLDB descriptors. The [FLANN registration
 example](examples/flann_registration/README.md) uses approximate KD-tree matching.
+The [KAZE registration example](examples/kaze_registration/README.md) pairs
+extended KAZE descriptors with the same matcher.
 The [BRISK registration example](examples/brisk_registration/README.md) uses
 binary descriptors and Hamming distance. The [MSER example](examples/mser_regions/README.md)
 shows stable bright and dark regions in an image.

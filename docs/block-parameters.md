@@ -2334,6 +2334,22 @@ Inputs: `image_a` (image), `image_b` (image), `mask` (image, optional), `region`
 | `threshold` | `0.95` | Minimum for SSIM/PSNR, maximum for MSE. |
 | `peak_value` | `255.0` | Maximum sample value for PSNR. Default is 255 for uint8 images. |
 
+## KAZE keypoints and descriptors (`inspect.kaze`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `extended` | `false` | Use 128 floating-point values per descriptor instead of 64. |
+| `upright` | `false` | Use a fixed descriptor orientation for scenes without rotation. |
+| `threshold` | `0.001` | Value must be a finite number between 1e-09 and 1. Minimum detector response for accepting a keypoint. |
+| `octaves` | `4` | Value must be a whole number between 1 and 8. Maximum number of scales in the nonlinear scale space. |
+| `octave_layers` | `4` | Value must be a whole number between 1 and 8. Number of sublevels within each scale. |
+| `diffusivity` | `"pm_g2"` | `pm_g1`, `pm_g2`, `weickert`, `charbonnier` Diffusion model used to build the nonlinear scale space. |
+| `max_features` | `500` | Value must be a whole number between 1 and 10000. Keep up to this many of the strongest selected keypoints. |
+
 ## K-means image pixels (`inspect.kmeans_image`)
 
 Inspection / Segmentation
