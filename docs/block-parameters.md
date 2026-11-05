@@ -1953,6 +1953,18 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `range_max` | `1.0` |  |
 | `include_alpha` | `false` |  |
 
+## Histogram backprojection (`inspect.histogram_backproject`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `histogram` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `channel` | `"auto"` | `auto`, `Gray`, `B`, `G`, `R`, `A`, `H`, `S`, `V`, `L`, `a`, `b` Select the modeled channel. Auto requires exactly one compatible channel. |
+| `normalization` | `"peak"` | `peak`, `probability`, `counts` Divide counts by their peak or sum, or keep the raw counts. |
+| `scale` | `1.0` | Multiplier applied to the resulting bin weights. |
+
 ## Estimate image homography (`inspect.homography`)
 
 Inspection / Registration

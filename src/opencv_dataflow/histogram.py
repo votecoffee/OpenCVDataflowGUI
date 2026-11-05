@@ -7,6 +7,16 @@ from .core import Block, Port, Result
 from .images import image_format
 from .selection import SELECTION_INPUTS, selection_mask
 
+HISTOGRAM_CHANNELS = {
+    "gray": ("Gray",),
+    "bgr": ("B", "G", "R"),
+    "rgb": ("R", "G", "B"),
+    "bgra": ("B", "G", "R", "A"),
+    "rgba": ("R", "G", "B", "A"),
+    "hsv": ("H", "S", "V"),
+    "lab": ("L", "a", "b"),
+}
+
 
 class Histogram(Block):
     type_id, title, category = "inspect.histogram", "Histogram", "Image processing"
@@ -30,15 +40,7 @@ class Histogram(Block):
             raise ValueError("Histogram bins must be between 2 and 4096")
         if image.ndim == 3 and image.shape[2] not in (3, 4):
             raise ValueError("Histogram requires grayscale, three or four channels")
-        labels = {
-            "gray": ["Gray"],
-            "bgr": ["B", "G", "R"],
-            "rgb": ["R", "G", "B"],
-            "bgra": ["B", "G", "R", "A"],
-            "rgba": ["R", "G", "B", "A"],
-            "hsv": ["H", "S", "V"],
-            "lab": ["L", "a", "b"],
-        }[encoding]
+        labels = HISTOGRAM_CHANNELS[encoding]
         planes = [image] if image.ndim == 2 else [image[..., i] for i in range(image.shape[2])]
         if len(planes) == 4 and not self.parameters["include_alpha"]:
             planes, labels = planes[:3], labels[:3]

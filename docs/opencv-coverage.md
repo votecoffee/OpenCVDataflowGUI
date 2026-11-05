@@ -11,7 +11,7 @@ lists the tools that can be placed on a graph today.
 | Rank | Outstanding capability | OpenCV primitives and graph work |
 | --- | --- | --- |
 | 1 | Separate touching parts and isolate foreground | The basic workflow is available, including distance-peak seed generation, watershed and morphological reconstruction. Add a reusable touching-parts job with calibration and validation fixtures. |
-| 2 | Reference comparison and defect scoring | Histogram backprojection and packaged residual-component inspection. ECC alignment, absolute difference, histogram comparison, SSIM with a local similarity map, PSNR/MSE and configurable fail thresholds are available. |
+| 2 | Reference comparison and defect scoring | The basic workflow is available, including histogram backprojection and a reusable registered defect inspection. Add validated defect-specific inspection recipes and lighting normalization. |
 | 3 | Multi-result template search and pick selection | Subpixel template peaks, pose-relative clearance, distinct visible-feature coverage and depth occlusion evidence, and deterministic pick ranking. Fixed-scale multi-result template matching now supplies ranked peaks, overlap suppression and poses. Trainable matchers and collection filters cover other parts of this pipeline. |
 | 4 | Calipers, widths, contours and shape fitting | Intensity profiles along pose-relative calipers, paired edges, width/gap/discontinuity along a path, convex hull/defects, `pointPolygonTest` and contour-to-contour `matchShapes`. Dedicated line, ellipse and minimum enclosing circle fits now accept points or a collection item and report residuals. |
 | 5 | File video and replay | Video file/stream sources, decode timestamps, seek, frame ranges and extraction, codec/container selection, video writing and deterministic end-of-stream. Extend image-camera acquisition with timed replay and independent source readiness. |
@@ -139,7 +139,12 @@ or run it with `opencv-dataflow-run examples/template_instances.json`.
 **Compare histograms** accepts matching Histogram outputs and offers all six
 OpenCV comparison metrics, optional count normalization, per-channel results
 and a threshold on the mean or worst channel. Use identical bin edges and
-ranges in both source histograms.
+ranges in both source histograms. **Histogram backprojection** maps one
+modeled channel to a float32 image of per-pixel weights. It supports an
+optional region or mask, uniform histogram bins, and peak, probability or
+raw-count weighting. Convert the reference and sample channels to the same
+numeric scale before comparing or backprojecting.
+See the [OpenCV backprojection tutorial](https://docs.opencv.org/5.0/tutorials/imgproc/histograms/back_projection/back_projection.html).
 
 **Fit line, ellipse or enclosing circle** fits points or one detected object.
 It reports image-space geometry and root mean squared distance to the fitted
@@ -155,6 +160,13 @@ homography models, optional masks for both frames, an optional initial
 transform and a minimum coefficient. It emits the aligned image and the
 sample-to-reference transform. The inverse mapping is available on its
 geometry output.
+
+Import the [Registered defect inspection ToolBlock](../examples/registered_defect_inspection.toolblock.json)
+to align a sample to a known-good reference, threshold the absolute
+difference and report connected defects. Its optional region is in reference
+coordinates. The included settings use translation, a residual threshold of
+35 intensity levels and a minimum defect area of 12 pixels. Tune these
+settings in the nested graph for your images.
 
 **Non-local means denoise** offers channel-based and luminance/chroma modes.
 A region or mask limits where denoised pixels are written. **Inpaint selected

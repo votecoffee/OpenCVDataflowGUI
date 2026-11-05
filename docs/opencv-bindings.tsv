@@ -8,6 +8,7 @@ P1	method	cv2.barcode.BarcodeDetector.getGradientThreshold	no static reference	-
 P1	method	cv2.barcode.BarcodeDetector.setDetectorScales	method name only	-
 P1	method	cv2.barcode.BarcodeDetector.setDownsamplingThreshold	method name only	-
 P1	method	cv2.barcode.BarcodeDetector.setGradientThreshold	method name only	-
+P1	function	cv2.calcBackProject	literal reference	-
 P1	function	cv2.compareHist	literal reference	-
 P1	function	cv2.createBackgroundSubtractorKNN	no static reference	-
 P1	function	cv2.createBackgroundSubtractorMOG2	no static reference	-
@@ -1966,7 +1967,6 @@ P3	function	cv2.boxPoints	no static reference	-
 P3	function	cv2.broadcast	no static reference	-
 P3	function	cv2.buildMST	no static reference	-
 P3	function	cv2.buildOpticalFlowPyramid	no static reference	-
-P3	function	cv2.calcBackProject	no static reference	-
 P3	function	cv2.calcCovarMatrix	no static reference	-
 P3	function	cv2.calcHist	no static reference	-
 P3	function	cv2.calcOpticalFlowFarneback	literal reference	-

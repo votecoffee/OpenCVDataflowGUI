@@ -1,10 +1,14 @@
-"""Verify native alignment direction and selected image restoration."""
+"""Verify native alignment, registered inspection, and selected image restoration."""
+
+import json
+from pathlib import Path
 
 import cv2
 import numpy as np
 import pytest
 
 from opencv_dataflow.blocks import builtin_registry
+from opencv_dataflow.toolblocks import ToolBlock
 
 
 @pytest.mark.parametrize("levels", [1, 3])
@@ -66,3 +70,28 @@ def test_inpaint_uses_mask(method):
     output = result.outputs["image"]
     np.testing.assert_array_equal(output[mask == 0], image[mask == 0])
     assert np.abs(output[mask != 0].astype(float) - 120).max() <= 5
+
+
+@pytest.mark.parametrize("with_defect", [False, True])
+def test_registered_defect_toolblock_judges_translated_parts(with_defect):
+    example = (
+        Path(__file__).resolve().parents[1] / "examples/registered_defect_inspection.toolblock.json"
+    )
+    tool = ToolBlock.from_definition(
+        json.loads(example.read_text(encoding="utf-8")), builtin_registry()
+    )
+    try:
+        reference = np.zeros((96, 96), np.uint8)
+        cv2.circle(reference, (27, 35), 11, 127, -1)
+        cv2.rectangle(reference, (51, 56), (74, 67), 213, -1)
+        sample = reference.copy()
+        if with_defect:
+            cv2.circle(sample, (27, 35), 3, 0, -1)
+        sample = cv2.warpAffine(sample, np.float32([[1, 0, 4], [0, 1, -3]]), (96, 96))
+        result = tool.execute({"sample": sample, "reference": reference})
+        assert result is not None, tool.error
+        assert result.passed is (not with_defect)
+        assert result.outputs["defect_count"] == int(with_defect)
+        assert result.outputs["alignment_coefficient"] > 0.98
+    finally:
+        tool.close()
