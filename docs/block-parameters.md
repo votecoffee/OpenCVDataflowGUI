@@ -1756,6 +1756,20 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
 | `check_count` | `false` |  |
 
+## Compare contours (Hu moments) (`inspect.compare_contours`)
+
+Inspection / Measurements
+
+Inputs: `reference` (data), `sample` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"i2"` | `i1`, `i2`, `i3` |
+| `reference_index` | `0` | Zero-based reference collection item. Ignored for point-list inputs. |
+| `sample_index` | `0` | Zero-based sample collection item. Ignored for point-list inputs. |
+| `check_distance` | `false` |  |
+| `maximum_distance` | `0.1` | Maximum Hu-moment distance. Smaller values indicate closer shapes. |
+
 ## Compare histograms (`inspect.compare_histograms`)
 
 Inspection / Measurements
@@ -1784,6 +1798,31 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `expected_count` | `2` |  |
 | `algorithm` | `"default"` | `default`, `sauf`, `bbdt`, `spaghetti` |
 | `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
+
+## Contour hull and convexity defects (`inspect.contour_hull`)
+
+Inspection / Measurements
+
+Inputs: `contour` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `item_index` | `0` | Zero-based collection item. A blob uses its largest boundary. |
+| `clockwise` | `false` | Hull winding in OpenCV Cartesian coordinates (positive Y up). |
+| `measure_defects` | `true` | Return concavity measurements for a simple whole-pixel contour. |
+| `minimum_depth` | `0.0` | Ignore convexity defects shallower than this many pixels. |
+
+## Test points against contour (`inspect.contour_points`)
+
+Inspection / Measurements
+
+Inputs: `contour` (data), `points` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `item_index` | `0` |  |
+| `mode` | `"signed_distance"` | `signed_distance`, `location` Return signed pixel distances or only classify points as inside, edge or outside. |
+| `minimum_distance` | `0.0` | Minimum signed distance in pixels. Outside distances are negative. |
 
 ## Find contours (`inspect.contours`)
 
