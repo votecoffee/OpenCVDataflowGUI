@@ -438,6 +438,9 @@ sizes, extent, solidity, circularity, distance and all seven raw/signed-log Hu m
 Chain filters for multiple criteria, inspect rejected objects, and use stable
 two-key sorting with explicit policies for undefined measurements.
 
+Use **Approximate contour** to simplify a detected boundary or open path.
+[Contour approximation example](examples/contour_approximation/README.md)
+
 Try [object collections](examples/object_collections/object_collections.json).
 This 16-block project orders two parts left-to-right, selects the round contour and
 isolates two long vertical lines. See [collection tools and measurement conventions](docs/object-collections.md).

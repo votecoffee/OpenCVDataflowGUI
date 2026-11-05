@@ -5,7 +5,10 @@ import numpy as np
 
 from .collection_tools import read_collection
 from .core import Block, Port, Result
-from .payloads import ValuePacket, require_same_frame
+from .features import overlay_image
+from .graphics_layers import GraphicDrawing, draw_object, graphic_object
+from .parameter_validation import NumericRange, ValidationError
+from .payloads import NO_VALUE, ValuePacket, require_same_frame
 from .processing import finite, integer
 
 MATCH_METHODS = {
@@ -15,7 +18,7 @@ MATCH_METHODS = {
 }
 
 
-def read_contour(block, inputs, name, item_index):
+def read_ordered_points(block, inputs, name, item_index, minimum=3):
     source = inputs[name]
     payload = block.input_payloads.get(name, {})
     if isinstance(source, dict):
@@ -33,11 +36,16 @@ def read_contour(block, inputs, name, item_index):
     if (
         contour.ndim != 2
         or contour.shape[1] != 2
-        or not 3 <= len(contour) <= 100_000
+        or not minimum <= len(contour) <= 100_000
         or not np.isfinite(contour).all()
         or np.max(np.abs(contour)) > 1_000_000
     ):
-        raise ValueError("Contour requires 3–100,000 ordered finite [x,y] points")
+        raise ValueError(f"Contour requires {minimum}–100,000 ordered finite [x,y] points")
+    return contour, payload
+
+
+def read_contour(block, inputs, name, item_index):
+    contour, payload = read_ordered_points(block, inputs, name, item_index)
     if np.array_equal(contour[0], contour[-1]):
         contour = contour[:-1]
     native = contour.astype(np.float32)
@@ -189,4 +197,108 @@ class TestContourPoints(Block):
         return Result(outputs, payloads={name: context for name in outputs})
 
 
-CONTOUR_ANALYSIS_BLOCKS = (CompareContours, ContourHull, TestContourPoints)
+class ApproximateContour(Block):
+    type_id, title = "inspect.approximate_contour", "Approximate contour"
+    category, block_type, subtype = "Inspection", "Inspection", "Measurements"
+    inputs = (Port("contour", "data"), Port("image", required=False))
+    outputs = (
+        Port("points", "data"),
+        Port("vertex_count", "number"),
+        Port("measurements", "data"),
+        Port("overlay", required=False),
+    )
+    defaults = {
+        "item_index": 0,
+        "closed": True,
+        "epsilon_mode": "pixels",
+        "epsilon_pixels": 2.0,
+        "length_fraction": 0.01,
+    }
+    parameter_choices = {"epsilon_mode": ("pixels", "length_fraction")}
+    parameter_ranges = {
+        "item_index": NumericRange(0, whole=True),
+        "epsilon_pixels": NumericRange(0, 1_000_000),
+        "length_fraction": NumericRange(0, 1),
+    }
+    parameter_help = {
+        "item_index": "Zero-based contour collection item. A blob uses its largest boundary.",
+        "closed": "Connect the last vertex to the first. Disable for an open path.",
+        "epsilon_pixels": "Maximum approximation tolerance when Epsilon Mode is pixels.",
+        "length_fraction": "Tolerance as a fraction of the original perimeter or path length.",
+    }
+    input_help = {"image": "Optional aligned background for viewing the simplified contour."}
+
+    def process(self, inputs):
+        p = self.parameters
+        closed = p["closed"]
+        try:
+            if closed:
+                _, native, _, payload = read_contour(self, inputs, "contour", p["item_index"])
+            else:
+                points, payload = read_ordered_points(self, inputs, "contour", p["item_index"], 2)
+                native = points.astype(np.float32)
+                if np.array_equal(native[0], native[-1]):
+                    raise ValueError("An open contour requires distinct first and last points")
+        except (TypeError, ValueError) as exc:
+            raise ValidationError(str(exc)) from exc
+        original_length = cv2.arcLength(native, closed)
+        epsilon = (
+            float(p["epsilon_pixels"])
+            if p["epsilon_mode"] == "pixels"
+            else original_length * float(p["length_fraction"])
+        )
+        simplified = cv2.approxPolyDP(native, epsilon, closed).reshape(-1, 2)
+        count = len(simplified)
+        area = float(cv2.contourArea(simplified)) if closed and count >= 3 else 0.0
+        passed = area > 0 if closed else count >= 2
+        overlay = NO_VALUE
+        drawings = {}
+        image = inputs.get("image")
+        drawing_source = "contour"
+        if image is not None:
+            size = [image.shape[1], image.shape[0]]
+            if payload.get("spatial", {}).get("image_size", size) != size:
+                raise ValidationError("Overlay image dimensions must match the contour frame")
+            try:
+                require_same_frame((image, ValuePacket(None, payload)))
+            except ValueError as exc:
+                raise ValidationError("Overlay image must share the contour frame") from exc
+            overlay = overlay_image(image)
+            drawing_source = "image"
+        if passed and (image is not None or self.generate_graphics):
+            graphic = graphic_object("polyline", simplified, (70, 220, 140), closed=closed)
+            if image is not None:
+                draw_object(overlay, graphic, np.eye(3))
+            if self.generate_graphics:
+                drawings["simplified contour"] = GraphicDrawing((graphic,), source=drawing_source)
+        outputs = {
+            "points": simplified.tolist(),
+            "vertex_count": count,
+            "measurements": {
+                "closed": closed,
+                "source_vertices": len(native),
+                "source_length": original_length,
+                "length": cv2.arcLength(simplified, closed),
+                "area": area if closed else None,
+                "epsilon_pixels": epsilon,
+            },
+            "overlay": overlay,
+        }
+        return Result(
+            outputs,
+            payloads={name: payload for name in outputs if name != "overlay" and payload},
+            drawings=drawings,
+            passed=passed,
+            fail_reasons=[]
+            if passed
+            else [
+                {
+                    "code": "contour_approximation_degenerate",
+                    "message": "The simplified contour is degenerate at this tolerance",
+                }
+            ],
+            message=f"Simplified {len(native)} vertices to {count} at {epsilon:.3g} px tolerance",
+        )
+
+
+CONTOUR_ANALYSIS_BLOCKS = (CompareContours, ContourHull, TestContourPoints, ApproximateContour)

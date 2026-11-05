@@ -1704,7 +1704,7 @@ P3	method	cv2.ANNIndex.setOnDiskBuild	no static reference	-
 P3	method	cv2.ANNIndex.setSeed	no static reference	-
 P3	function	cv2.ANNIndex_create	no static reference	-
 P3	function	cv2.applyColorMap	literal reference	-
-P3	function	cv2.approxPolyDP	no static reference	-
+P3	function	cv2.approxPolyDP	literal reference	-
 P3	function	cv2.approxPolyN	no static reference	-
 P3	function	cv2.arcLength	literal reference	-
 P3	function	cv2.arrowedLine	literal reference	-
