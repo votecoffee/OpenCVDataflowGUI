@@ -11,6 +11,7 @@ from pathlib import Path
 from .core import Block, Connection, Graph, Port, Result
 from .graphics_layers import RESULT_GRAPHICS
 from .outcomes import rejected_inputs
+from .parameter_validation import ValidationError
 from .payloads import NO_VALUE, ValuePacket, compatible
 
 
@@ -137,7 +138,11 @@ class ToolBlock(Block):
         children = list(self.graph.blocks.values())
         unavailable = [b for b in children if b.state in ("error", "skipped")]
         if unavailable:
-            raise RuntimeError("; ".join(f"{b.name}: {b.error}" for b in unavailable))
+            message = "; ".join(f"{b.name}: {b.error}" for b in unavailable)
+            errors = [b for b in unavailable if b.state == "error"]
+            if errors and all(b.error_kind == "invalid" for b in errors):
+                raise ValidationError(message)
+            raise RuntimeError(message)
         outputs = {
             name: self.graph.blocks[b.block].last_result.outputs[b.port]
             if self.graph.blocks[b.block].current_emissions.get(b.port)

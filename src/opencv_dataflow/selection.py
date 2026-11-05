@@ -5,6 +5,7 @@ import numpy as np
 
 from .core import Port
 from .images import image_format, opencv_image
+from .parameter_validation import ValidationError
 
 SELECTION_INPUTS = (
     Port("image"),
@@ -151,20 +152,25 @@ def selection_mask(inputs, image):
                 or not np.allclose(context["to_root"], other["to_root"], atol=1e-9, rtol=0)
             )
         ):
-            raise ValueError(
+            raise ValidationError(
                 "Selection coordinate frame differs from image; transform the region/mask first"
             )
 
     mask = inputs.get("mask")
     if mask is not None:
         if mask.dtype != np.uint8 or mask.ndim != 2 or mask.shape != image.shape[:2]:
-            raise ValueError("Mask must be uint8 monochrome with matching image dimensions")
+            raise ValidationError("Mask must be uint8 monochrome with matching image dimensions")
         check_context(metadata(mask).get("spatial"))
         mask = np.where(mask != 0, 255, 0).astype(np.uint8)
     region = inputs.get("region")
     if region is not None:
+        if not isinstance(region, dict):
+            raise ValidationError("Region must be a region object")
         check_context(region.get("coordinate_context"))
-        area = rasterize(region, image.shape)
+        try:
+            area = rasterize(region, image.shape)
+        except (ValueError, TypeError, KeyError) as exc:
+            raise ValidationError(f"Invalid region: {exc}") from exc
         mask = area if mask is None else cv2.bitwise_and(mask, area)
     return mask
 

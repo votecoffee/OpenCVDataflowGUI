@@ -85,6 +85,7 @@ from .image_queue import ImageQueue
 from .kernel_editor import KERNEL_PARAMETERS, SHAPE_LABELS, KernelEditor
 from .outcomes import INPUT_FAILURE_POLICIES
 from .parallel_inspection import ParallelInspect
+from .parameter_validation import ValidationError
 from .payloads import ValuePacket, describe_value, packet_for, prepare_inputs
 from .plugins import load_plugin
 from .project_compare import ProjectCompare
@@ -207,6 +208,7 @@ class Inspector(QWidget):
         self._live_worker = None
         self._live_result = None
         self.image_popouts = {}
+        self.draft_error = ""
         self.live_timer = QTimer(self)
         self.live_timer.setSingleShot(True)
         self.live_timer.timeout.connect(self.start_preview)
@@ -234,6 +236,12 @@ class Inspector(QWidget):
         self.run_block.clicked.connect(self.run_block_preview)
         preview_controls.addWidget(self.run_block)
         layout.addLayout(preview_controls)
+        self.validation_label = QLabel()
+        self.validation_label.setWordWrap(True)
+        self.validation_label.setTextFormat(Qt.TextFormat.PlainText)
+        self.validation_label.setStyleSheet("color: #ffcb78;")
+        self.validation_label.hide()
+        layout.addWidget(self.validation_label)
         self.timing_timer = QTimer(self)
         self.timing_timer.setInterval(200)
         self.timing_timer.timeout.connect(self.refresh_timing)
@@ -265,6 +273,7 @@ class Inspector(QWidget):
         self.setMinimumWidth(310)
 
     def select(self, block):
+        self.show_draft_error()
         if block is not self.block:
             self.stop_previews()
             self._region_image = None
@@ -524,10 +533,11 @@ class Inspector(QWidget):
                     )
                     self.failure_fields[port.name] = policy
                     self.form.addRow(f"{port.name} failure policy", policy)
-        apply_button = QPushButton("Apply configuration")
-        apply_button.clicked.connect(self.apply)
-        self.form.addRow(apply_button)
+        self.apply_button = QPushButton("Apply configuration")
+        self.apply_button.clicked.connect(self.apply)
+        self.form.addRow(self.apply_button)
         self.editor.setEnabled(self.window.runner is None)
+        self.validate_draft()
         self.refresh_result()
 
     def resize_selected_node(self):
@@ -655,6 +665,10 @@ class Inspector(QWidget):
         super().hideEvent(event)
 
     def schedule_live_preview(self, *_):
+        if self.validate_draft() is None:
+            self.cancel_live_preview()
+            self.refresh_result()
+            return
         if self.live_results.isChecked() and self.can_preview():
             self._live_revision += 1
             self._live_due = False
@@ -708,7 +722,7 @@ class Inspector(QWidget):
                 self._live_result = worker.block
                 self.refresh_result()
         worker.deleteLater()
-        self.run_block.setEnabled(self.can_preview())
+        self.run_block.setEnabled(self.can_preview() and not self.draft_error)
         if self._live_due:
             self._live_due = False
             self.start_preview()
@@ -792,24 +806,64 @@ class Inspector(QWidget):
         parameters = dict(self.kernel_parameters)
         for key, field in self.fields.items():
             initial = b.defaults[key]
-            if isinstance(field, QComboBox):
-                value = field.currentText()
-            elif isinstance(initial, bool):
-                value = field.isChecked()
-            elif isinstance(initial, int):
-                value = int(field.text())
-            elif isinstance(initial, float):
-                value = float(field.text())
-            elif isinstance(initial, (list, dict)):
-                value = json.loads(field.text())
-                if not isinstance(value, type(initial)):
-                    raise ValueError(f"{key} requires a JSON {type(initial).__name__}")
-            else:
-                value = field.text()
+            try:
+                if isinstance(field, QComboBox):
+                    value = field.currentText()
+                elif isinstance(initial, bool):
+                    value = field.isChecked()
+                elif isinstance(initial, int):
+                    value = int(field.text())
+                elif isinstance(initial, float):
+                    value = float(field.text())
+                elif isinstance(initial, (list, dict)):
+                    value = json.loads(field.text())
+                    if not isinstance(value, type(initial)):
+                        raise ValueError(f"requires a JSON {type(initial).__name__}")
+                else:
+                    value = field.text()
+                json.dumps(value, allow_nan=False)
+            except (ValueError, TypeError) as exc:
+                label = key.replace("_", " ").capitalize()
+                raise ValidationError(f"{label}: {exc}", key) from exc
             parameters[key] = value
         json.dumps(parameters, allow_nan=False)
         b.validate_parameters(parameters)
         return parameters
+
+    def validate_draft(self):
+        if self.block is None:
+            return None
+        try:
+            parameters = self.read_parameters()
+        except (Exception, SystemExit) as exc:
+            message = str(exc) if isinstance(exc, ValidationError) else exception_message(exc)
+            self.show_draft_error(message, exc.fields if isinstance(exc, ValidationError) else ())
+            return None
+        self.show_draft_error()
+        return parameters
+
+    def show_draft_error(self, message="", keys=()):
+        self.draft_error = message
+        self.validation_label.setText(f"Invalid configuration · {message}" if message else "")
+        self.validation_label.setVisible(bool(message))
+        if self.block is None:
+            return
+        for key, field in self.fields.items():
+            invalid = key in keys
+            field.setStyleSheet("border: 1px solid #ffac70;" if invalid else "")
+            help_text = self.block.parameter_help.get(key, "")
+            detail = message if invalid else ""
+            field.setToolTip("\n".join(part for part in (help_text, detail) if part))
+        if self.kernel_parameters:
+            invalid = any(key in self.kernel_parameters for key in keys)
+            self.kernel_button.setStyleSheet("border: 1px solid #ffac70;" if invalid else "")
+            self.kernel_button.setToolTip(message if invalid else "")
+        if hasattr(self, "apply_button"):
+            self.apply_button.setEnabled(not message)
+        self.run_block.setEnabled(not message and self.can_preview() and self._live_worker is None)
+        node = self.window.scene.nodes.get(self.block.id)
+        if node is not None and node.block is self.block:
+            node.set_draft_issue(message)
 
     def update_kernel_label(self):
         shape = self.kernel_parameters["shape"]
@@ -1063,8 +1117,10 @@ class Inspector(QWidget):
         b = self.block
         if b is None or self.window.runner:
             return False
+        parameters = self.validate_draft()
+        if parameters is None:
+            return False
         try:
-            parameters = self.read_parameters()
             exposed = {
                 d: [
                     n
@@ -1177,7 +1233,7 @@ class Inspector(QWidget):
         available = self.can_preview()
         automatic = available and bool(self.fields or self.kernel_parameters)
         self.live_results.setEnabled(automatic)
-        self.run_block.setEnabled(available and self._live_worker is None)
+        self.run_block.setEnabled(available and not self.draft_error and self._live_worker is None)
         if not automatic and self.live_results.isChecked():
             self.stop_previews()
             return
@@ -1552,6 +1608,7 @@ class MainWindow(QMainWindow):
         explanation = QLabel(
             "Sockets and wires: data type. Node borders: tool category.\n"
             "Node headers: run status and score intensity.\n"
+            "! Invalid configuration or input. × Execution exception.\n"
             "A white outline highlights selection without replacing type colors."
         )
         explanation.setWordWrap(True)

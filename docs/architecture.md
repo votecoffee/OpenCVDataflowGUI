@@ -12,6 +12,17 @@ Nested/parallel graphs share the catalog, with parallel recipe activation disabl
 `inputs`, `outputs`, and JSON-compatible `defaults`. The registry rejects duplicate
 identifiers. Parameters configure a block; ports carry values between blocks.
 
+Declare static numeric limits in `parameter_ranges` using `NumericRange` from
+`opencv_dataflow.parameter_validation`. Supported constraints include minimum,
+maximum, whole values, odd values, and a zero sentinel. Override
+`validate_parameters(parameters=None)` and call the base method for cross-field
+rules. Raise `ValidationError(message, *field_names)` to highlight those controls.
+The inspector validates drafts without executing the tool and keeps the entered
+value visible for correction. Execution checks the same rules for saved parameters
+and recipe overrides. Use `ValidationError` for expected invalid input discovered
+during processing. Checks that depend on an image or other live data run when
+that data is available.
+
 `process(inputs)` returns a `Result` containing exactly the declared outputs. Image
 ports accept nonempty NumPy arrays, numeric ports accept numbers, and data ports
 accept JSON-compatible values. Plugins can declare narrower ports with `integer`,

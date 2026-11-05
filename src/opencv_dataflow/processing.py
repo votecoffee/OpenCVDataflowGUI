@@ -19,23 +19,24 @@ from .images import (
     preview_rgb,
 )
 from .objects import blob_item, collection
+from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS, OUTPUT_DEPTHS, anchor_value, optional_mask, scalar_value
 from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
 
 
 def integer(value, name, low=1, high=4095, odd=False):
     if isinstance(value, bool) or not np.isfinite(value) or int(value) != value:
-        raise ValueError(f"{name} must be a whole number")
+        raise ValidationError(f"{name} must be a whole number")
     value = int(value)
     if not low <= value <= high or (odd and value % 2 == 0):
-        raise ValueError(f"{name} must be {'odd and ' if odd else ''}between {low} and {high}")
+        raise ValidationError(f"{name} must be {'odd and ' if odd else ''}between {low} and {high}")
     return value
 
 
 def finite(value, name, low=None):
     value = float(value)
     if not np.isfinite(value) or (low is not None and value < low):
-        raise ValueError(
+        raise ValidationError(
             f"{name} must be finite" + (f" and at least {low}" if low is not None else "")
         )
     return value
@@ -45,15 +46,15 @@ def image_value(
     image, depths=(np.uint8, np.uint16, np.int16, np.float32, np.float64), canonical=False
 ):
     if isinstance(image, DepthArray):
-        raise ValueError("Use depth tools for physical depth planes")
+        raise ValidationError("Use depth tools for physical depth planes")
     if (
         image.dtype not in depths
         or image.ndim not in (2, 3)
         or (image.ndim == 3 and image.shape[2] not in (3, 4))
     ):
-        raise ValueError("Unsupported image depth or channel layout for this operation")
+        raise ValidationError("Unsupported image depth or channel layout for this operation")
     if not np.isfinite(image).all():
-        raise ValueError("Image samples must be finite")
+        raise ValidationError("Image samples must be finite")
     return opencv_image(image) if canonical else np.asarray(image)
 
 
@@ -123,6 +124,7 @@ class Crop(ImageTool):
     type_id, title, subtype = "cv.crop", "Crop ROI", "Geometry"
     outputs = (Port("image"), Port("geometry", "data"))
     defaults = {"x": 0, "y": 0, "width": 0, "height": 0}
+    parameter_ranges = {key: NumericRange(0, whole=True) for key in defaults}
 
     def process(self, inputs):
         source = inputs["image"]
@@ -134,7 +136,7 @@ class Crop(ImageTool):
             integer(self.parameters["height"], "Height", 0, image.shape[0]) or image.shape[0] - y
         )
         if x + width > image.shape[1] or y + height > image.shape[0]:
-            raise ValueError("Crop ROI extends outside the image")
+            raise ValidationError("Crop ROI extends outside the image")
         return geometry_result(
             image[y : y + height, x : x + width].copy(), source, [[1, 0, x], [0, 1, y], [0, 0, 1]]
         )
@@ -151,6 +153,7 @@ class Resize(ImageTool):
         "scale_x": 1.0,
         "scale_y": 1.0,
     }
+    parameter_ranges = {key: NumericRange(1, 16384, whole=True) for key in ("width", "height")}
     parameter_choices = {
         "interpolation": (
             "nearest",
@@ -167,15 +170,14 @@ class Resize(ImageTool):
     def process(self, inputs):
         source = inputs["image"]
         image = image_value(source)
-        width = integer(self.parameters["width"], "Width", high=16384)
-        height = integer(self.parameters["height"], "Height", high=16384)
+        width, height = (int(self.parameters[key]) for key in ("width", "height"))
         if self.parameters["size_mode"] == "scale":
             fx, fy = (finite(self.parameters[k], k, 0) for k in ("scale_x", "scale_y"))
             width, height = round(image.shape[1] * fx), round(image.shape[0] * fy)
             if width < 1 or height < 1:
-                raise ValueError("Resize scales must produce nonempty dimensions")
+                raise ValidationError("Resize scales must produce nonempty dimensions")
         if width * height > 64_000_000:
-            raise ValueError("Resize output is limited to 64 million pixels")
+            raise ValidationError("Resize output is limited to 64 million pixels")
         method = {
             "nearest": cv2.INTER_NEAREST,
             "linear": cv2.INTER_LINEAR,
@@ -245,11 +247,15 @@ class BoxBlur(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.box_blur", "Box blur", "Filtering"
     defaults = {"kernel": 5, "kernel_y": 0, "anchor": [-1, -1], "border": "reflect"}
     parameter_choices = {"border": tuple(BORDERS)}
+    parameter_ranges = {
+        "kernel": NumericRange(1, 255, whole=True, odd=True),
+        "kernel_y": NumericRange(0, 255, whole=True),
+    }
 
     def process(self, inputs):
         image = image_value(inputs["image"])
-        kernel = integer(self.parameters["kernel"], "Kernel", high=255, odd=True)
-        ky = integer(self.parameters["kernel_y"], "Kernel Y", 0, 255) or kernel
+        kernel = int(self.parameters["kernel"])
+        ky = int(self.parameters["kernel_y"]) or kernel
         anchor = anchor_value(self.parameters["anchor"], kernel, ky)
         return encoded_result(
             cv2.blur(
@@ -262,12 +268,13 @@ class BoxBlur(RegionalOperation, ImageTool):
 class MedianBlur(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.median_blur", "Median blur", "Filtering"
     defaults = {"kernel": 3}
+    parameter_ranges = {"kernel": NumericRange(3, 255, whole=True, odd=True)}
 
     def process(self, inputs):
         image = image_value(inputs["image"], (np.uint8, np.uint16, np.float32))
-        kernel = integer(self.parameters["kernel"], "Kernel", low=3, high=255, odd=True)
+        kernel = int(self.parameters["kernel"])
         if image.dtype != np.uint8 and kernel > 5:
-            raise ValueError("Median kernels above 5 require uint8")
+            raise ValidationError("Median kernels above 5 require uint8")
         return encoded_result(cv2.medianBlur(image, kernel), inputs["image"])
 
 
@@ -275,14 +282,18 @@ class BilateralFilter(RegionalOperation, ImageTool):
     type_id, title, subtype = "cv.bilateral", "Bilateral filter", "Filtering"
     defaults = {"diameter": 5, "sigma_color": 50.0, "sigma_space": 5.0, "border": "reflect"}
     parameter_choices = {"border": tuple(BORDERS)}
+    parameter_ranges = {
+        "diameter": NumericRange(0, 255, whole=True),
+        "sigma_color": NumericRange(0),
+        "sigma_space": NumericRange(0),
+    }
 
     def process(self, inputs):
         image = image_value(inputs["image"], (np.uint8, np.float32))
         if image.ndim == 3 and image.shape[2] != 3:
-            raise ValueError("Bilateral filter accepts one or three channels")
-        diameter = integer(self.parameters["diameter"], "Diameter", low=0, high=255)
-        color = finite(self.parameters["sigma_color"], "Sigma color", 0)
-        space = finite(self.parameters["sigma_space"], "Sigma space", 0)
+            raise ValidationError("Bilateral filter accepts one or three channels")
+        diameter = int(self.parameters["diameter"])
+        color, space = (float(self.parameters[key]) for key in ("sigma_color", "sigma_space"))
         return encoded_result(
             cv2.bilateralFilter(
                 image, diameter, color, space, borderType=BORDERS[self.parameters["border"]]
@@ -332,21 +343,26 @@ class AdaptiveThreshold(RegionalOperation, ImageTool):
         "max_value": 255.0,
     }
     parameter_choices = {"method": ("mean", "gaussian")}
+    parameter_ranges = {
+        "block_size": NumericRange(3, 255, whole=True, odd=True),
+        "max_value": NumericRange(0),
+        "constant": NumericRange(),
+    }
 
     def process(self, inputs):
         image = gray_image(inputs["image"], (np.uint8,), auto_depth=True)
-        size = integer(self.parameters["block_size"], "Block size", low=3, high=255, odd=True)
+        size = int(self.parameters["block_size"])
         method = {"mean": cv2.ADAPTIVE_THRESH_MEAN_C, "gaussian": cv2.ADAPTIVE_THRESH_GAUSSIAN_C}[
             self.parameters["method"]
         ]
         mode = cv2.THRESH_BINARY_INV if self.parameters["invert"] else cv2.THRESH_BINARY
         output = cv2.adaptiveThreshold(
             image,
-            finite(self.parameters["max_value"], "Maximum value", 0),
+            float(self.parameters["max_value"]),
             method,
             mode,
             size,
-            finite(self.parameters["constant"], "Constant"),
+            float(self.parameters["constant"]),
         )
         return Result({"image": output})
 
@@ -374,6 +390,7 @@ class InRange(RegionalOperation, ImageTool):
 class Morphology(RegionalOperation, ImageTool):
     region_background = "zero"
     supports_kernel_editor = True
+    parameter_ranges = {"iterations": NumericRange(1, 100, whole=True)}
     type_id, title, subtype = "cv.morphology", "Morphology", "Morphology"
     defaults = {
         "operation": "open",
@@ -429,7 +446,7 @@ class Morphology(RegionalOperation, ImageTool):
         image = image_value(inputs["image"])
         kernel = self.kernel_matrix(self.parameters)
         height, width = kernel.shape
-        iterations = integer(self.parameters["iterations"], "Iterations", high=100)
+        iterations = int(self.parameters["iterations"])
         op = {
             "erode": cv2.MORPH_ERODE,
             "dilate": cv2.MORPH_DILATE,
@@ -594,17 +611,28 @@ class ConnectedComponents(ImageTool):
         "algorithm": ("default", "sauf", "bbdt", "spaghetti"),
         "region_mode": ("center", "clip"),
     }
+    parameter_ranges = {
+        "min_area": NumericRange(1, 2**31 - 1, whole=True),
+        "max_area": NumericRange(0, 2**31 - 1, whole=True),
+        "expected_count": NumericRange(0, 2**31 - 1, whole=True),
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["max_area"] and p["max_area"] < p["min_area"]:
+            raise ValidationError(
+                "Maximum area must be zero (unlimited) or at least minimum area",
+                "min_area",
+                "max_area",
+            )
 
     def process(self, inputs):
         image = gray_image(inputs["image"], (np.uint8,))
-        connectivity = integer(float(self.parameters["connectivity"]), "Connectivity", 4, 8)
-        if connectivity not in (4, 8):
-            raise ValueError("Connectivity must be 4 or 8")
-        minimum = integer(self.parameters["min_area"], "Minimum area", 1, 2**31 - 1)
-        maximum = integer(self.parameters["max_area"], "Maximum area", 0, 2**31 - 1)
-        expected = integer(self.parameters["expected_count"], "Expected count", 0, 2**31 - 1)
-        if maximum and maximum < minimum:
-            raise ValueError("Maximum area must be zero (unlimited) or at least minimum area")
+        connectivity = int(self.parameters["connectivity"])
+        minimum, maximum, expected = (
+            int(self.parameters[key]) for key in ("min_area", "max_area", "expected_count")
+        )
         algorithm = {
             "default": cv2.CCL_DEFAULT,
             "sauf": cv2.CCL_SAUF,

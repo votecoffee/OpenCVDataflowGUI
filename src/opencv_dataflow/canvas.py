@@ -120,9 +120,10 @@ class Node(QGraphicsItem):
         heading = escape(f"{block.name} · {self.category}")
         description = "<br>".join(escape(line) for line in block.description.split("\n"))
         detail = f"<br><br>{description}" if description else ""
-        self.setToolTip(
-            f"<qt>{heading}{detail}<br>Border: tool category · header: run status</qt>"
-        )
+        self._tooltip = f"{heading}{detail}<br>Border: tool category · header: run status"
+        self._draft_issue = ""
+        self.setToolTip(f"<qt>{self._tooltip}</qt>")
+        self.setAcceptHoverEvents(True)
         self.sockets = {}
         self.setFlags(
             QGraphicsItem.GraphicsItemFlag.ItemIsMovable
@@ -179,6 +180,37 @@ class Node(QGraphicsItem):
             self.scene().open_block.emit(self.block)
         event.accept()
 
+    def issue_badges(self):
+        badges = []
+        invalid = f"Invalid configuration · {self._draft_issue}" if self._draft_issue else ""
+        if self.block.state == "error" and self.block.error_kind == "invalid":
+            runtime = f"Invalid data · {self.block.error}"
+            invalid = f"{invalid}\n{runtime}" if invalid else runtime
+        if invalid:
+            badges.append(("!", "#ffc575", invalid))
+        if self.block.state == "error" and self.block.error_kind == "exception":
+            badges.append(("×", "#ff999b", f"Exception · {self.block.error}"))
+        return badges
+
+    def refresh_issue_tooltip(self):
+        details = "".join(
+            "<br>" + escape(detail).replace("\n", "<br>")
+            for _, _, detail in self.issue_badges()
+        )
+        tooltip = f"<qt>{self._tooltip}{details}</qt>"
+        if self.toolTip() != tooltip:
+            self.setToolTip(tooltip)
+
+    def set_draft_issue(self, message):
+        if message != self._draft_issue:
+            self._draft_issue = message
+            self.refresh_issue_tooltip()
+            self.update()
+
+    def hoverEnterEvent(self, event):
+        self.refresh_issue_tooltip()
+        super().hoverEnterEvent(event)
+
     def paint(self, painter, option, widget=None):
         b = self.block
         status = QColor(BLOCK_STATE_COLORS[b.state])
@@ -199,13 +231,22 @@ class Node(QGraphicsItem):
         font.setBold(True)
         painter.setFont(font)
         content_width = self.width - 24
+        badges = self.issue_badges()
+        title_width = content_width - 22 * len(badges)
         painter.drawText(
-            QRectF(12, 0, content_width, 39),
+            QRectF(12, 0, title_width, 39),
             Qt.AlignmentFlag.AlignVCenter,
             painter.fontMetrics().elidedText(
-                b.name, Qt.TextElideMode.ElideRight, content_width - 3
+                b.name, Qt.TextElideMode.ElideRight, title_width - 3
             ),
         )
+        for index, (symbol, color, _) in enumerate(badges):
+            badge = QRectF(12 + title_width + index * 22, 10, 18, 18)
+            painter.setPen(Qt.PenStyle.NoPen)
+            painter.setBrush(QColor(color))
+            painter.drawEllipse(badge)
+            painter.setPen(QColor("#202c3d"))
+            painter.drawText(badge, Qt.AlignmentFlag.AlignCenter, symbol)
         font.setBold(False)
         painter.setFont(font)
         port_width = content_width // 2

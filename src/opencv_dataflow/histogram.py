@@ -5,6 +5,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .images import image_format
+from .parameter_validation import NumericRange, ValidationError
 from .selection import SELECTION_INPUTS, selection_mask
 
 HISTOGRAM_CHANNELS = {
@@ -31,15 +32,25 @@ class Histogram(Block):
         "include_alpha": False,
     }
     parameter_choices = {"range_mode": ("automatic", "manual")}
+    parameter_ranges = {"bins": NumericRange(2, 4096, whole=True)}
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["range_mode"] == "manual":
+            low = NumericRange().check(p["range_min"], "Range minimum", "range_min")
+            high = NumericRange().check(p["range_max"], "Range maximum", "range_max")
+            if high <= low:
+                raise ValidationError(
+                    "Histogram range must have max > min", "range_min", "range_max"
+                )
 
     def process(self, inputs):
         image = inputs["image"]
         encoding = image_format(image)
         bins = int(self.parameters["bins"])
-        if not 2 <= bins <= 4096:
-            raise ValueError("Histogram bins must be between 2 and 4096")
         if image.ndim == 3 and image.shape[2] not in (3, 4):
-            raise ValueError("Histogram requires grayscale, three or four channels")
+            raise ValidationError("Histogram requires grayscale, three or four channels")
         labels = HISTOGRAM_CHANNELS[encoding]
         planes = [image] if image.ndim == 2 else [image[..., i] for i in range(image.shape[2])]
         if len(planes) == 4 and not self.parameters["include_alpha"]:

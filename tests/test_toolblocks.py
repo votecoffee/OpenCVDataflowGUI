@@ -87,6 +87,7 @@ def test_inner_errors_propagate_and_clear_stale_records():
     block.graph.blocks[nodes[2].id].parameters["kernel"] = 2
     graph.run()
     assert block.state == "error"
+    assert block.error_kind == "invalid"
     assert "positive odd" in block.error
     assert block.last_result is None
     assert block.graph.blocks[nodes[-1].id].state == "skipped"
