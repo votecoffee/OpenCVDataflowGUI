@@ -7,6 +7,8 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .images import DepthArray, preview_rgb
+from .parameter_validation import NumericRange
+from .selection import selection_mask
 
 
 class DepthFile(Block):
@@ -125,4 +127,88 @@ class DepthSample(Block):
             )
         return Result(
             {"samples": {"units": getattr(depth, "units", "unknown"), "samples": samples}}
+        )
+
+
+class FillDepthHoles(Block):
+    type_id, title = "3d.fill_depth_holes", "Fill small depth holes"
+    category, block_type, subtype = "3D vision", "3D vision", "Depth"
+    inputs = (
+        Port("depth", "depth"),
+        Port("mask", required=False),
+        Port("region", "data", required=False),
+    )
+    outputs = (
+        Port("depth", "depth"),
+        Port("filled_mask", visual_type="region"),
+        Port("remaining_mask", visual_type="region"),
+        Port("filled_count", "number"),
+    )
+    defaults = {
+        "maximum_hole_area": 64,
+        "maximum_distance": 4,
+        "hole_connectivity": "8",
+        "distance_metric": "manhattan",
+        "include_border": False,
+    }
+    parameter_choices = {
+        "hole_connectivity": ("4", "8"),
+        "distance_metric": ("manhattan", "chessboard"),
+    }
+    parameter_ranges = {
+        "maximum_hole_area": NumericRange(1, 1_000_000, whole=True),
+        "maximum_distance": NumericRange(1, 4096, whole=True),
+    }
+    parameter_help = {
+        "maximum_hole_area": "Largest connected group of invalid samples eligible for filling.",
+        "maximum_distance": "Maximum pixel distance to an original valid sample.",
+        "include_border": "Allow filling gaps that touch an image edge.",
+    }
+
+    def process(self, inputs):
+        source = inputs["depth"]
+        values = np.asarray(source)
+        valid = np.isfinite(values) & (values > 0)
+        invalid = ~valid
+        selected = selection_mask(inputs, source)
+        output = source.copy()
+        filled = np.zeros(valid.shape, bool)
+        p = self.parameters
+        targets = invalid if selected is None else invalid & (selected != 0)
+        has_valid = bool(valid.any())
+        if targets.any() and has_valid:
+            holes = invalid.astype(np.uint8)
+            _, components, stats, _ = cv2.connectedComponentsWithStats(
+                holes, connectivity=int(p["hole_connectivity"])
+            )
+            eligible = stats[:, cv2.CC_STAT_AREA] <= int(p["maximum_hole_area"])
+            eligible[0] = False
+            if not p["include_border"]:
+                border_ids = np.concatenate(
+                    (components[0], components[-1], components[:, 0], components[:, -1])
+                )
+                eligible[border_ids] = False
+            targets = targets & eligible[components]
+            if targets.any():
+                metric = cv2.DIST_L1 if p["distance_metric"] == "manhattan" else cv2.DIST_C
+                distance, labels = cv2.distanceTransformWithLabels(
+                    holes, metric, cv2.DIST_MASK_3, labelType=cv2.DIST_LABEL_PIXEL
+                )
+                filled = targets & (distance <= int(p["maximum_distance"]))
+                donors = np.empty(int(labels.max()) + 1, values.dtype)
+                donors[labels[valid]] = values[valid]
+                output[filled] = donors[labels[filled]]
+        count = int(np.count_nonzero(filled))
+        remaining = invalid & ~filled
+        missing = int(np.count_nonzero(remaining))
+        return Result(
+            {
+                "depth": output,
+                "filled_mask": filled.astype(np.uint8) * 255,
+                "remaining_mask": remaining.astype(np.uint8) * 255,
+                "filled_count": count,
+            },
+            passed=has_valid,
+            fail_reasons=[] if has_valid else ["depth_has_no_valid_samples"],
+            message=f"Filled {count} depth pixels · {missing} remain invalid",
         )

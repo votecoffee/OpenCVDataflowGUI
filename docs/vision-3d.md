@@ -85,6 +85,10 @@ Cloud transforms reject unit or frame mismatches instead of guessing conversions
    Depth limits are in rig units. Use `input_scale=0.0625` for raw OpenCV int16
    disparity and `1` for this app's already-scaled disparity.
 
+**Fill small depth holes** copies nearby valid samples into small invalid
+regions and emits a mask identifying the estimates. Its default settings
+preserve border-connected gaps. [Depth hole filling example](../examples/depth_hole_filling/README.md)
+
 **Depth to point cloud** calls OpenCV's RGB-D projection using undistorted
 pinhole intrinsics. `DepthArray` supplies its declared m/mm units. Untagged
 integer depths use the configured units-per-sample; untagged floats use the

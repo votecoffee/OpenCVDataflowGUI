@@ -48,7 +48,9 @@ disparity, RGB-D projection and registration, point clouds, ICP/PPF, ArUco,
 structured light, odometry, and posed TSDF fusion. Try [stereo cloud](examples/stereo_cloud/stereo_cloud.json), press **Run once**, and open **Results > 3D point-cloud viewer…**.
 The example reconstructs a synthetic 3 m plane; no hardware or extra packages
 are needed. The [stereo confidence example](examples/stereo_confidence/README.md)
-uses a WLS confidence cutoff before reconstruction.
+uses a WLS confidence cutoff before reconstruction. The
+[depth hole filling example](examples/depth_hole_filling/README.md) restores
+small enclosed gaps and marks the estimated samples.
 See [3D workflows and conventions](docs/vision-3d.md).
 
 **DNN/ML tools** are available under **ML** in the toolbox (model writers under **Output**): ONNX inference,

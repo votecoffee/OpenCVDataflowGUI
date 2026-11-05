@@ -218,6 +218,20 @@ Inputs: `points_left` (data), `points_right` (data), `camera` (data).
 | `right_frame` | `"right_camera"` |  |
 | `minimum_inliers` | `8` |  |
 
+## Fill small depth holes (`3d.fill_depth_holes`)
+
+3D vision / Depth
+
+Inputs: `depth` (depth), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `maximum_hole_area` | `64` | Value must be a whole number between 1 and 1e+06. Largest connected group of invalid samples eligible for filling. |
+| `maximum_distance` | `4` | Value must be a whole number between 1 and 4096. Maximum pixel distance to an original valid sample. |
+| `hole_connectivity` | `"8"` | `4`, `8` |
+| `distance_metric` | `"manhattan"` | `manhattan`, `chessboard` |
+| `include_border` | `false` | Allow filling gaps that touch an image edge. |
+
 ## Fundamental matrix (`3d.fundamental`)
 
 3D vision / Reconstruction

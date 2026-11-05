@@ -702,7 +702,7 @@ def builtin_registry():
     from .control_flow import CONTROL_BLOCKS
     from .conveyor_tracking import ConveyorDemo, TrackConveyorParts
     from .coordination import CoordinateInputs, CounterInput
-    from .depth import RGBD, DepthFile, DepthSample
+    from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
     from .dnn_blocks import DNN_BLOCKS
     from .ecc_registration import AlignECC
     from .examples3d import StereoDemo
@@ -770,6 +770,7 @@ def builtin_registry():
         DepthFile,
         RGBD,
         DepthSample,
+        FillDepthHoles,
         LoadCalibration,
         SaveCalibration,
         *PROCESSING_BLOCKS,

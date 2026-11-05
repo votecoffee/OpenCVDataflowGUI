@@ -2314,7 +2314,7 @@ P3	function	cv2.DISK_createFromMemory	no static reference	-
 P3	function	cv2.displayOverlay	no static reference	-
 P3	function	cv2.displayStatusBar	no static reference	-
 P3	function	cv2.distanceTransform	literal reference	-
-P3	function	cv2.distanceTransformWithLabels	no static reference	-
+P3	function	cv2.distanceTransformWithLabels	literal reference	-
 P3	function	cv2.divide	literal reference	-
 P3	function	cv2.divSpectrums	no static reference	-
 P3	class	cv2.DMatch	no static reference	-
