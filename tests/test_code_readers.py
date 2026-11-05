@@ -121,7 +121,9 @@ def test_zxing_example_verifies_ticketed_lot_code():
     pytest.importorskip("zxingcpp")
     from pathlib import Path
 
-    project = Path(__file__).resolve().parents[1] / "examples/datamatrix_reading.json"
+    project = (
+        Path(__file__).resolve().parents[1] / "examples/datamatrix_reading/datamatrix_reading.json"
+    )
     graph = Graph.load(project, builtin_registry())
     try:
         graph.run()

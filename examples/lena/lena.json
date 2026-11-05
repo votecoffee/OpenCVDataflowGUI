@@ -6,7 +6,7 @@
       "type": "input.file",
       "name": "Lena - source",
       "parameters": {
-        "path": "assets/lena.jpg",
+        "path": "../assets/lena.jpg",
         "color_format": "bgr",
         "pixel_depth": "uint8",
         "path_base": "project"

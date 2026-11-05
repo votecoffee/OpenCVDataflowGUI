@@ -83,10 +83,10 @@ invalidate a fitted homography despite an apparently plausible image overlay.
 ## Lena registration example
 
 Run `python scripts/prepare_lena.py` once, then open
-`examples/lena_registration.json` in the editor, or run:
+`examples/lena_registration/lena_registration.json` in the editor, or run:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/lena_registration.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/lena_registration/lena_registration.json --repeat 3
 ```
 
 The eight-block project creates an 8-degree rotated copy of Lena, extracts ORB

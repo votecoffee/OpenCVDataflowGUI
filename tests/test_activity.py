@@ -509,7 +509,18 @@ def test_headless_receipt_contains_paired_activity_events(tmp_path):
     from opencv_dataflow.runner import main
 
     path = tmp_path / "receipt.json"
-    assert main(["examples/sequence_memory.json", "--repeat", "2", "--report", str(path)]) == 0
+    assert (
+        main(
+            [
+                "examples/sequence_memory/sequence_memory.json",
+                "--repeat",
+                "2",
+                "--report",
+                str(path),
+            ]
+        )
+        == 0
+    )
     receipt = json.loads(path.read_text("utf-8"))
     calls = spans(receipt["activity"])
     assert len(calls) == 10 and all(s["finish"] is not None for s in calls)

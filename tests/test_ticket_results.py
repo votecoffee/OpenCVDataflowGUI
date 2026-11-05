@@ -454,7 +454,7 @@ def test_saved_example_final_status_and_headless_receipt(tmp_path, app):
     from opencv_dataflow.runner import main
 
     registry = builtin_registry()
-    graph = Graph.load("examples/ticket_results.json", registry)
+    graph = Graph.load("examples/ticket_results/ticket_results.json", registry)
     assert graph.to_dict() == ticket_results_graph(registry).to_dict()
     graph.run()
     gate = graph.blocks["ticket_accepted_preview"]
@@ -464,7 +464,18 @@ def test_saved_example_final_status_and_headless_receipt(tmp_path, app):
     assert graph.ticket_results.snapshot()["tickets"][-1]["status"] == "final_fail"
     assert gate.last_result is previous and gate.input_rejected and gate.current_emissions == {}
     report = tmp_path / "report.json"
-    assert main(["examples/ticket_results.json", "--repeat", "3", "--report", str(report)]) == 0
+    assert (
+        main(
+            [
+                "examples/ticket_results/ticket_results.json",
+                "--repeat",
+                "3",
+                "--report",
+                str(report),
+            ]
+        )
+        == 0
+    )
     receipt = json.loads(report.read_text(encoding="utf-8"))
     assert len(receipt["ticket_results"]["tickets"]) == 3
     assert all(row["status"] == "final_pass" for row in receipt["ticket_results"]["tickets"])

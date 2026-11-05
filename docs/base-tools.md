@@ -12,7 +12,7 @@ They are not silently fused into a shared graph.
 
 Trainable geometric and ORB/SIFT patterns, plus oriented gradient-band edge
 measurements, are documented in [pattern training and edges](patterns-edges.md).
-The portable `examples/trained_patterns.json` job exercises all three tools.
+The portable `examples/trained_patterns/trained_patterns.json` job exercises all three tools.
 
 | Toolbox subtype | Block | OpenCV operation / behavior |
 | --- | --- | --- |
@@ -99,7 +99,7 @@ measurements downstream. These are standard native operations, not all of OpenCV
 ## Starter inspection
 
 Use **File > Load starter inspection** or run `opencv-dataflow --starter`.
-The saved portable graph is `examples/starter_inspection.json`. It contains no
+The saved portable graph is `examples/starter_inspection/starter_inspection.json`. It contains no
 device paths or output writers; repeat execution needs no camera and writes no
 files. It is suitable for testing wiring, inspector edits, previews, save/load and
 encapsulation into a reusable ToolBlock.
@@ -119,7 +119,7 @@ Expected result: two filtered components, score 1.0. Centroids in ROI pixels are
 identity or a tracking contract. Set expected count to 3 to exercise a valid failure;
 set the median kernel to an even number to exercise an error and descendant skips.
 
-`examples/template_matching.json` uses a synthetic reference crop and must locate
+`examples/template_matching/template_matching.json` uses a synthetic reference crop and must locate
 the exact patch at top-left `(250,85)`, with a score above 0.999. It is a wiring and
 execution smoke example; the independent wrapper tests use a separately generated
 reference at a known offset. Real matching performance needs representative images.
@@ -127,8 +127,8 @@ reference at a known offset. Real matching performance needs representative imag
 ## Headless verification
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/starter_inspection.json --repeat 3
-.\.venv\Scripts\opencv-dataflow-run examples/template_matching.json
+.\.venv\Scripts\opencv-dataflow-run examples/starter_inspection/starter_inspection.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/template_matching/template_matching.json
 ```
 
 Use `--report` with a new path to retain a JSON receipt, including nested child

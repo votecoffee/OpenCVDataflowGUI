@@ -366,7 +366,7 @@ def test_saved_queued_example_headless_receipt_and_gui_load(app, tmp_path):
     from opencv_dataflow.runner import main
 
     registry = builtin_registry()
-    project = Path(__file__).parents[1] / "examples/queued_input.json"
+    project = Path(__file__).parents[1] / "examples/queued_input/queued_input.json"
     graph = Graph.load(project, registry)
     assert graph.to_dict() == queued_input_graph(registry).to_dict()
     report = tmp_path / "receipt.json"

@@ -186,7 +186,7 @@ def test_nested_grouping_and_renaming_preserve_owner_terminals():
 
 def test_shipped_inspection_pattern():
     registry = builtin_registry()
-    block = ToolBlock.read("examples/inspect_shapes.toolblock.json", registry)
+    block = ToolBlock.read("examples/inspect_shapes/inspect_shapes.toolblock.json", registry)
     source = registry.create("input.demo")
     source.execute({})
     block.execute({"image": source.last_output_images["image"]})

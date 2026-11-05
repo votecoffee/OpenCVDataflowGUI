@@ -58,7 +58,7 @@ available, but image previews are disabled in Lean.
 ## Headless operation
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/validation_images.json --profile lean --repeat 100
+.\.venv\Scripts\opencv-dataflow-run examples/validation_images/validation_images.json --profile lean --repeat 100
 ```
 
 `--profile debug|balanced|lean` overrides the saved choice for that invocation without

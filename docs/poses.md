@@ -114,7 +114,7 @@ transform** to map local points into the target frame.
 ## Example
 
 Open **File > Load pose-relative inspection example** or
-`examples/pose_inspection.json`, then press F5:
+`examples/pose_inspection/pose_inspection.json`, then press F5:
 
 1. Train the synthetic geometric reference and find it rotated +10 degrees.
 2. Set the matcher's pose origin on its circle with offsets `(20.5,-17.5)` from
@@ -128,5 +128,5 @@ Open **File > Load pose-relative inspection example** or
 No camera, asset download or output writer is needed. Headless verification:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/pose_inspection.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/pose_inspection/pose_inspection.json --repeat 3
 ```

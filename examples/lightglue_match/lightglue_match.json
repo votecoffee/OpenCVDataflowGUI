@@ -60,7 +60,7 @@
         "contrast_threshold": 0.0066667,
         "edge_threshold": 10.0,
         "sigma": 1.6,
-        "weights_path": "../.local/models/sift_lightglue.pth",
+        "weights_path": "../../.local/models/sift_lightglue.pth",
         "device": "cpu",
         "layers": 9,
         "filter_threshold": 0.1,

@@ -105,13 +105,13 @@ area and coverage control pass/fail; maximum area zero means unlimited. Failed
 inspections retain their measurements for downstream reporting. This block does
 not convert area or coordinates into calibrated physical units.
 
-Open **File > Load combined regions example** or `examples/combined_regions.json`
+Open **File > Load combined regions example** or `examples/combined_regions/combined_regions.json`
 for a ring selection unioned with a separate rectangle, then measured and used by
 histogram, threshold and component tools. The component tool uses `clip` mode:
 center filtering would reject a ring whose centroid lies in its excluded hole.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/combined_regions.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/combined_regions/combined_regions.json --repeat 3
 ```
 
 ## Transform regions between image coordinate systems
@@ -160,13 +160,13 @@ Transformed source and target frames are limited to 16384 pixels per axis and
 and connects directly to **Transform points** for associated annotations.
 
 Open **File > Load transformed regions example** or
-`examples/transformed_regions.json` for a 12-block project carrying a circular
+`examples/transformed_regions/transformed_regions.json` for a 12-block project carrying a circular
 inspection region through crop, resize and arbitrary rotation. It measures the
 selection, computes its color histogram and inspects the same part in the final
 image. The project needs no external images or camera.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/transformed_regions.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/transformed_regions/transformed_regions.json --repeat 3
 ```
 
 This is image-space affine/projective mapping. Lens-distortion/nonlinear remapping
@@ -214,13 +214,13 @@ public terminals; hide unused ports with the inspector's exposure controls.
 
 ## Example
 
-Use **File > Load regions example** or open `examples/regions.json`. It contains
+Use **File > Load regions example** or open `examples/regions/regions.json`. It contains
 circle, rectangle and polygon overlays, a one-part component measurement, a
 one-part contour inspection, a selected histogram and a circular blur. It runs
 without a camera or external assets:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/regions.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/regions/regions.json --repeat 3
 ```
 
 For Lena, open an existing Lena example, add Shape region, connect the source image

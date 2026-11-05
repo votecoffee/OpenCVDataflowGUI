@@ -102,9 +102,9 @@ def test_capture_filter_runs_before_formatting_or_parameter_snapshot():
 
 
 def test_lean_keeps_fail_reasons_errors_and_final_decisions():
-    graph = Graph.load("examples/validation_images.json", builtin_registry())
+    graph = Graph.load("examples/validation_images/validation_images.json", builtin_registry())
     graph.set_run_profile("lean")
-    graph.blocks["validation_source"].parameters["path"] = "validation_assets/fail.png"
+    graph.blocks["validation_source"].parameters["path"] = "../assets/validation/fail.png"
     graph.run()
     final = graph.blocks["validation_final"]
     assert final.last_result.final_judgment is False
@@ -135,7 +135,7 @@ def test_balanced_keeps_activity_spans_but_skips_routine_parameter_dumps():
 @pytest.mark.parametrize("name", PROFILES)
 def test_profile_roundtrip_and_validation_scoring(name, tmp_path):
     registry = builtin_registry()
-    graph = Graph.load("examples/validation_images.json", registry)
+    graph = Graph.load("examples/validation_images/validation_images.json", registry)
     graph.set_run_profile(name)
     definition = copy.deepcopy(graph.to_dict())
     loaded = Graph.from_dict(definition, registry, project_dir=graph.project_dir)

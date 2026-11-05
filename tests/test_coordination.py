@@ -320,10 +320,21 @@ def test_saved_example_receipt_and_gui_repeated_runs(app, tmp_path):
     from opencv_dataflow.runner import main
 
     registry = builtin_registry()
-    graph = Graph.load("examples/input_coordination.json", registry)
+    graph = Graph.load("examples/input_coordination/input_coordination.json", registry)
     assert graph.to_dict() == input_coordination_graph(registry).to_dict()
     report = tmp_path / "receipt.json"
-    assert main(["examples/input_coordination.json", "--repeat", "3", "--report", str(report)]) == 0
+    assert (
+        main(
+            [
+                "examples/input_coordination/input_coordination.json",
+                "--repeat",
+                "3",
+                "--report",
+                str(report),
+            ]
+        )
+        == 0
+    )
     receipt = json.loads(report.read_text(encoding="utf-8"))
     for row in receipt["ticket_results"]["tickets"]:
         if row["ticket"]["session"] == "external":

@@ -28,29 +28,29 @@
       "cases": [
         {
           "id": "known_pass",
-          "path": "validation_assets/pass.png",
+          "path": "../assets/validation/pass.png",
           "expectation": "must_pass"
         },
         {
           "id": "known_fail",
-          "path": "validation_assets/fail.png",
+          "path": "../assets/validation/fail.png",
           "expectation": "must_fail",
           "preferred_fail_reason": "part_count"
         },
         {
           "id": "likely_pass",
-          "path": "validation_assets/pass.png",
+          "path": "../assets/validation/pass.png",
           "expectation": "should_pass"
         },
         {
           "id": "likely_fail",
-          "path": "validation_assets/fail.png",
+          "path": "../assets/validation/fail.png",
           "expectation": "should_fail",
           "preferred_fail_reason": "part_count"
         },
         {
           "id": "unclassified",
-          "path": "validation_assets/unknown.png",
+          "path": "../assets/validation/unknown.png",
           "expectation": "unknown"
         }
       ]
@@ -62,12 +62,12 @@
       "type": "input.file",
       "name": "Image file",
       "parameters": {
-        "path": "validation_assets/pass.png",
+        "path": "../assets/validation/pass.png",
         "source_mode": "files",
         "paths": [
-          "validation_assets/pass.png",
-          "validation_assets/fail.png",
-          "validation_assets/unknown.png"
+          "../assets/validation/pass.png",
+          "../assets/validation/fail.png",
+          "../assets/validation/unknown.png"
         ],
         "directory": "",
         "recursive": false,

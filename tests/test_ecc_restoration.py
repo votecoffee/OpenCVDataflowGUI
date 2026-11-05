@@ -93,7 +93,8 @@ def test_inpaint_preserves_high_depth_color_and_alpha():
 @pytest.mark.parametrize("with_defect", [False, True])
 def test_registered_defect_toolblock_judges_translated_parts(with_defect):
     example = (
-        Path(__file__).resolve().parents[1] / "examples/registered_defect_inspection.toolblock.json"
+        Path(__file__).resolve().parents[1]
+        / "examples/registered_defect_inspection/registered_defect_inspection.toolblock.json"
     )
     tool = ToolBlock.from_definition(
         json.loads(example.read_text(encoding="utf-8")), builtin_registry()

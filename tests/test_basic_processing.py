@@ -157,7 +157,7 @@ def test_default_graph_runs_without_gapi_and_legacy_projects_remain_loadable(mon
     graph.run()
     assert all(b.state == "pass" for b in graph.blocks.values())
     assert list(graph.blocks.values())[-1].last_result.outputs["count"] == 2
-    for path in Path("examples").glob("*.json"):
+    for path in Path("examples").glob("*/*.json"):
 
         def check(value):
             if isinstance(value, dict):
@@ -169,7 +169,7 @@ def test_default_graph_runs_without_gapi_and_legacy_projects_remain_loadable(mon
                     check(child)
 
         check(json.loads(path.read_text(encoding="utf-8")))
-    definition = ToolBlock.read("examples/inspect_shapes.toolblock.json", registry)
+    definition = ToolBlock.read("examples/inspect_shapes/inspect_shapes.toolblock.json", registry)
     assert definition is not None
 
 

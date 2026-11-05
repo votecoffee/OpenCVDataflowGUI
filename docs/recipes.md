@@ -177,5 +177,5 @@ Automated tests cover both recipes, model swaps, queued/background work, paralle
 inspection, catalog persistence and GUI activation; no camera is required.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/recipes.json --repeat 3 --report .local/recipe-receipt.json
+.\.venv\Scripts\opencv-dataflow-run examples/recipes/recipes.json --repeat 3 --report .local/recipe-receipt.json
 ```

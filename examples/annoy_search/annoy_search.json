@@ -25,7 +25,7 @@
       "type": "ml.dnn",
       "name": "DNN ONNX inference",
       "parameters": {
-        "model_path": "assets/rgb_average.onnx",
+        "model_path": "../assets/rgb_average.onnx",
         "width": 32,
         "height": 32,
         "color_format": "rgb",
@@ -120,6 +120,97 @@
       ],
       "thumbnail": true,
       "preview_output": ""
+    },
+    {
+      "id": "ml_samples",
+      "type": "ml.vector_data",
+      "name": "Vector data",
+      "parameters": {
+        "values": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "position": [
+        330,
+        760
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "vectors"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ml_index",
+      "type": "ml.annoy_build",
+      "name": "Build Annoy index",
+      "parameters": {
+        "metric": "angular",
+        "trees": 10,
+        "seed": 0,
+        "normalize": "none",
+        "labels": [
+          "red",
+          "green",
+          "blue"
+        ]
+      },
+      "position": [
+        660,
+        760
+      ],
+      "exposed_inputs": [
+        "vectors",
+        "labels"
+      ],
+      "exposed_outputs": [
+        "model",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ml_search",
+      "type": "ml.annoy_search",
+      "name": "Annoy nearest neighbors",
+      "parameters": {
+        "neighbors": 3,
+        "search_k": -1,
+        "max_distance": -1.0,
+        "min_similarity": -1.0,
+        "minimum_results": 1
+      },
+      "position": [
+        1000,
+        390
+      ],
+      "exposed_inputs": [
+        "model",
+        "vector"
+      ],
+      "exposed_outputs": [
+        "neighbors",
+        "label",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
     }
   ],
   "connections": [
@@ -140,6 +231,24 @@
       "output": "tensors",
       "target": "ml_vector",
       "input": "tensors"
+    },
+    {
+      "source": "ml_samples",
+      "output": "vectors",
+      "target": "ml_index",
+      "input": "vectors"
+    },
+    {
+      "source": "ml_index",
+      "output": "model",
+      "target": "ml_search",
+      "input": "model"
+    },
+    {
+      "source": "ml_vector",
+      "output": "vector",
+      "target": "ml_search",
+      "input": "vector"
     }
   ]
 }

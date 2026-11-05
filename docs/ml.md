@@ -89,7 +89,7 @@ optional L2 normalization. A zero vector cannot be L2 normalized.
 Try **File > Load DNN embedding example**, or:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/dnn_embeddings.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/dnn_embeddings/dnn_embeddings.json --repeat 3
 ```
 
 The synthetic network averages RGB channels. Its labels are channel names, not
@@ -131,7 +131,7 @@ multi-instance discovery.
 Try **File > Load LightGlue matcher example** after preparing its weights, or:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/lightglue_match.json
+.\.venv\Scripts\opencv-dataflow-run examples/lightglue_match/lightglue_match.json
 ```
 
 The example captures a synthetic textured reference and locates it in a larger
@@ -172,7 +172,7 @@ Opening a project does not load/map the index until it is run.
 Try **File > Load Annoy search example**, or:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/annoy_search.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/annoy_search/annoy_search.json --repeat 3
 ```
 
 This connects the synthetic DNN's RGB embedding to labeled reference vectors.

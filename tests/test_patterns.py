@@ -252,7 +252,9 @@ def test_saved_trained_patterns_example(tmp_path):
     from opencv_dataflow.examples import trained_patterns_graph
 
     registry = builtin_registry()
-    graph = Graph.load(Path(__file__).parents[1] / "examples/trained_patterns.json", registry)
+    graph = Graph.load(
+        Path(__file__).parents[1] / "examples/trained_patterns/trained_patterns.json", registry
+    )
     assert graph.to_dict() == trained_patterns_graph(registry).to_dict()
     for _ in range(3):
         graph.run()
