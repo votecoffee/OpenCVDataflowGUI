@@ -198,6 +198,9 @@ Inputs: `left` (image), `right` (image).
 | `wls` | `false` |  |
 | `wls_lambda` | `8000.0` |  |
 | `wls_sigma` | `1.5` |  |
+| `wls_lr_threshold` | `24` | Value must be a whole number between 0 and 4096. WLS left-right consistency tolerance in sixteenths of a pixel. |
+| `wls_depth_radius` | `-1` | Value must be a whole number between -1 and 255. Radius near depth jumps. -1 uses the native default. |
+| `minimum_wls_confidence` | `0.0` | Value must be a finite number between 0 and 1. Reject WLS estimates below this value. Zero disables gating. |
 
 ## Essential matrix / relative pose (`3d.essential_pose`)
 
