@@ -69,7 +69,8 @@ class InterfaceDialog(QDialog):
         self.table.setItem(row, 1, QTableWidgetItem(name))
         choices = QComboBox()
         for block in self.toolblock.graph.blocks.values():
-            for port in getattr(block, direction):
+            ports = block.inputs if direction == "inputs" else block.execution_outputs
+            for port in ports:
                 connected = any(
                     c.target == block.id and c.input == port.name
                     for c in self.toolblock.graph.connections

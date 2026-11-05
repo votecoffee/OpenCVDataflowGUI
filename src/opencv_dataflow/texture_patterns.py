@@ -8,6 +8,7 @@ import numpy as np
 
 from .core import Block, Port
 from .features import overlay_image
+from .graphics_layers import GraphicDrawing, graphic_object
 from .patterns import (
     MATCH_INPUTS,
     PATTERN_OUTPUTS,
@@ -244,12 +245,15 @@ class MatchTexturePattern(TrainableMatcher, Block):
                 good = {m.trainIdx for m, keep in zip(matches, inliers) if keep}
                 proposed = {pair[0].trainIdx for pair in pairs if pair}
                 graphic = overlay_image(inputs["image"])
+                objects = []
                 for indices, color in ((proposed - good, REJECTED), (good, ACCEPTED)):
                     for index in sorted(indices):
                         center = tuple(np.rint(target_points[index]).astype(int))
                         cv2.circle(graphic, center, 3, color, 1)
+                        objects.append(graphic_object("marker", [target_points[index]], color))
                 review_legend(graphic, len(good), len(proposed - good))
                 result.graphics["texture correspondences"] = graphic
+                result.drawings["texture correspondences"] = GraphicDrawing(tuple(objects))
             return result
 
         if len(matches) < required:

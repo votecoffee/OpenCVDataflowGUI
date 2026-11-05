@@ -10,6 +10,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .features import overlay_image
+from .graphics_layers import GraphicDrawing, graphic_object
 from .payloads import frame, metadata
 from .poses import POSE_HELP, POSE_OFFSETS, draw_pose, local_offset, make_pose, offset_pose
 from .processing import finite, gray_image, integer
@@ -378,6 +379,14 @@ def pattern_result(image, model, matches, rejected=()):
             draw_pattern_candidate(graphic, match, ACCEPTED, f"{index}: {match['score']:.2f}")
         review_legend(graphic, len(matches), len(rejected))
     score = matches[0]["score"] if matches else 0.0
+    objects = []
+    for items, color in (([match for match, _ in rejected], REJECTED), (matches, ACCEPTED)):
+        for match in items:
+            objects.extend((
+                graphic_object("polyline", match["corners"], color, closed=True),
+                graphic_object("marker", [match["center"]], color),
+                graphic_object("text", [match["center"]], color, text=f"{match['score']:.2f}"),
+            ))
     return Result(
         {
             "matches": {
@@ -396,6 +405,7 @@ def pattern_result(image, model, matches, rejected=()):
         passed=bool(matches),
         score=score,
         graphics={"pattern matches": graphic},
+        drawings={"pattern matches": GraphicDrawing(tuple(objects))} if objects else {},
         message=f"{len(matches)} pattern matches, best score {score:.3f}",
     )
 

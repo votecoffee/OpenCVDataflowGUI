@@ -13,6 +13,7 @@ import cv2
 import numpy as np
 
 from .core import Block, Graph, Port, Registry, Result
+from .graphics_layers import GraphicDrawing, graphic_object
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 from .objects import collection, contour_item
 from .parameters import BORDERS, scalar_value
@@ -518,6 +519,16 @@ class Contours(Block):
             },
             payloads={"collection": payload, "data": payload},
             graphics={"contours": overlay},
+            drawings={
+                "contours": GraphicDrawing(
+                    tuple(
+                        graphic_object(
+                            "polyline", contour.reshape(-1, 2), (80, 230, 140), closed=True
+                        )
+                        for contour in local
+                    )
+                )
+            } if self.generate_graphics else {},
             passed=count == expected,
             score=score,
             message=f"{count} contours / expected {expected}",
@@ -686,6 +697,7 @@ def builtin_registry():
     from .native_trackers import NATIVE_TRACKER_BLOCKS
     from .ocr import OCR_BLOCKS
     from .oriented_edges import FindOrientedEdges
+    from .overlay_graphics import OverlayResultGraphics
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .pick_selection import SelectPickCandidate
@@ -718,6 +730,7 @@ def builtin_registry():
         Blur,
         Canny,
         *BASIC_PROCESSING_BLOCKS,
+        OverlayResultGraphics,
         Threshold,
         Contours,
         SaveImage,

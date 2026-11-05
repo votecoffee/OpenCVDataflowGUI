@@ -8,6 +8,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .features import overlay_image
+from .graphics_layers import GraphicDrawing, graphic_object
 from .objects import collection, line_item
 from .parameters import BORDERS
 from .processing import finite, gray_image, integer
@@ -311,6 +312,7 @@ class FindOrientedEdges(Block):
                 a, b = np.rint(endpoints).astype(int)
                 cv2.line(overlay, tuple(a), tuple(b), ACCEPTED, 2)
         graphic = overlay
+        drawings = {}
         if self.generate_graphics:
             graphic = overlay.copy()
             for endpoints in rejected:
@@ -320,6 +322,12 @@ class FindOrientedEdges(Block):
                 a, b = np.rint(np.reshape(segment, (2, 2))).astype(int)
                 cv2.line(graphic, tuple(a), tuple(b), ACCEPTED, 2)
             review_legend(graphic, len(items), len(rejected))
+            objects = [graphic_object("polyline", line, REJECTED) for line in rejected]
+            objects.extend(
+                graphic_object("polyline", np.reshape(segment, (2, 2)), ACCEPTED)
+                for segment in segments
+            )
+            drawings["oriented edges"] = GraphicDrawing(tuple(objects))
         return Result(
             {
                 "collection": collection("lines", items, image, self.input_payloads["image"]),
@@ -330,5 +338,6 @@ class FindOrientedEdges(Block):
                 "overlay": overlay,
             },
             graphics={"oriented edges": graphic} if self.generate_graphics else {},
+            drawings=drawings,
             message=f"{len(items)} oriented edges near {angle:g} degrees",
         )

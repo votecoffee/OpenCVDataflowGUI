@@ -36,7 +36,7 @@ def describe(graph):
             "message": block.error or (result.message if result else ""),
             "outputs": {
                 p.name: describe_value(result.outputs[p.name])
-                for p in block.outputs
+                for p in block.execution_outputs
                 if p.kind not in ("image", "depth", "pyramid")
                 and not isinstance(result.outputs[p.name], (np.ndarray, ImagePyramid))
             }

@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
     QDialog,
+    QDialogButtonBox,
     QDockWidget,
     QFileDialog,
     QFormLayout,
@@ -78,6 +79,7 @@ from .examples3d import (
     tsdf_graph,
 )
 from .filmstrip_viewer import FilmstripViewer
+from .graphics_layers import RESULT_GRAPHICS, GraphicsBundle
 from .image_queue import ImageQueue
 from .kernel_editor import KERNEL_PARAMETERS, SHAPE_LABELS, KernelEditor
 from .outcomes import INPUT_FAILURE_POLICIES
@@ -417,7 +419,13 @@ class Inspector(QWidget):
             else:
                 field.textChanged.connect(self.schedule_live_preview)
             field.setToolTip(block.parameter_help.get(key, ""))
-            if key in ("path", "model_path", "weights_path", "vocabulary_path"):
+            if key == "excluded_graphics" and getattr(block, "supports_graphics_selector", False):
+                button = QPushButton("Choose graphics…")
+                field.setParent(button)
+                field.hide()
+                button.clicked.connect(self.choose_result_graphics)
+                self.form.addRow("Graphic layers", button)
+            elif key in ("path", "model_path", "weights_path", "vocabulary_path"):
                 row = QWidget()
                 row_layout = QHBoxLayout(row)
                 row_layout.setContentsMargins(0, 0, 0, 0)
@@ -486,8 +494,10 @@ class Inspector(QWidget):
         self.node_image.setCurrentIndex(max(0, index))
         self.form.addRow("Node image", self.node_image)
         for direction in ("inputs", "outputs"):
-            for port in getattr(block, direction):
-                check = QCheckBox(f"{port.name} ({port.kind})")
+            ports = block.inputs if direction == "inputs" else block.output_ports
+            for port in ports:
+                label = "Result graphics" if port.name == RESULT_GRAPHICS else port.name
+                check = QCheckBox(f"{label} ({port.kind})")
                 check.setChecked(port.name in getattr(block, f"exposed_{direction}"))
                 self.form.addRow(f"Expose {direction[:-1]}", check)
                 self.port_checks.append((direction, port.name, check))
@@ -715,6 +725,53 @@ class Inspector(QWidget):
             path, _ = QFileDialog.getSaveFileName(self, "Select output path")
         if path:
             field.setText(path)
+
+    def choose_result_graphics(self):
+        field = self.fields["excluded_graphics"]
+        excluded = {key: set(value) for key, value in json.loads(field.text()).items()}
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Choose result graphics")
+        dialog.resize(640, 400)
+        layout = QVBoxLayout(dialog)
+        layout.addWidget(QLabel("Run in Debug to discover named layers from connected blocks."))
+        layers = QTreeWidget()
+        layers.setHeaderLabels(["Graphic", "Source", "Input"])
+        layout.addWidget(layers)
+        choices = []
+        for wire in self.window.graph.connections:
+            if wire.target != self.block.id:
+                continue
+            source = self.window.graph.blocks[wire.source]
+            result = source.last_result
+            bundle = result.outputs.get(wire.output) if result is not None else None
+            if not isinstance(bundle, GraphicsBundle):
+                continue
+            for layer in bundle.layers:
+                item = QTreeWidgetItem([layer.name, source.name, wire.input])
+                layers.addTopLevelItem(item)
+                if "spatial" not in layer.payload:
+                    item.setDisabled(True)
+                    item.setToolTip(0, "This graphic is a preview without an aligned overlay.")
+                    continue
+                checked = layer.name not in excluded.get(wire.input, set())
+                item.setCheckState(0, Qt.CheckState.Checked if checked else Qt.CheckState.Unchecked)
+                choices.append((wire.input, layer.name, item))
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
+        buttons.accepted.connect(dialog.accept)
+        buttons.rejected.connect(dialog.reject)
+        layout.addWidget(buttons)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            for slot, name, item in choices:
+                names = excluded.setdefault(slot, set())
+                if item.checkState(0) == Qt.CheckState.Checked:
+                    names.discard(name)
+                else:
+                    names.add(name)
+            choices = {key: sorted(value) for key, value in excluded.items() if value}
+            field.setText(json.dumps(choices))
+        dialog.deleteLater()
 
     def read_parameters(self):
         b = self.block
@@ -1007,6 +1064,13 @@ class Inspector(QWidget):
                     c.target == b.id and c.input not in exposed["inputs"]
                 ):
                     raise ValueError("Delete the wire before hiding a connected port")
+            if self.window.graph_stack and RESULT_GRAPHICS not in exposed["outputs"]:
+                owner = self.window.graph_stack[-1][1]
+                if any(
+                    binding.block == b.id and binding.port == RESULT_GRAPHICS
+                    for binding in owner.output_bindings.values()
+                ):
+                    raise ValueError("Remove the public terminal before hiding Result graphics")
             name = self.name_field.text().strip()
             ticket_settings = None
             if b.ticket_source:
@@ -1106,7 +1170,9 @@ class Inspector(QWidget):
             for name in b.last_inputs:
                 if hasattr(b.last_inputs[name], "shape"):
                     self.preview_choice.addItem(f"Input / {name}")
-            for prefix, images in (("Output", b.last_output_images), ("Graphic", b.last_graphics)):
+            output_label = "Result" if getattr(b, "composes_result_image", False) else "Output"
+            image_groups = (output_label, b.last_output_images), ("Graphic", b.last_graphics)
+            for prefix, images in image_groups:
                 for name in images:
                     self.preview_choice.addItem(f"{prefix} / {name}")
         index = self.preview_choice.findText(previous)
@@ -1151,7 +1217,7 @@ class Inspector(QWidget):
             )
 
     def show_preview(self, choice):
-        self.pop_out_image.setEnabled(choice.startswith(("Output / ", "Graphic / ")))
+        self.pop_out_image.setEnabled(choice.startswith(("Output / ", "Result / ", "Graphic / ")))
         self.image.clear()
         block = self._live_result or self.block
         if block and " / " in choice:
@@ -1159,6 +1225,7 @@ class Inspector(QWidget):
             images = {
                 "Input": block.last_inputs,
                 "Output": block.last_output_images,
+                "Result": block.last_output_images,
                 "Graphic": block.last_graphics,
             }[prefix]
             if name in images:
@@ -1175,7 +1242,7 @@ class Inspector(QWidget):
 
     def open_image_popout(self):
         choice = self.preview_choice.currentText()
-        if self.block is None or not choice.startswith(("Output / ", "Graphic / ")):
+        if self.block is None or not choice.startswith(("Output / ", "Result / ", "Graphic / ")):
             return
         kind, name = choice.split(" / ", 1)
         path = tuple(

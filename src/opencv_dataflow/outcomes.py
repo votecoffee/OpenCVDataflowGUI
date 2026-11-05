@@ -161,7 +161,7 @@ def stamp_result(block, result):
             )
         return ValuePacket(value, payload)
 
-    for port in block.outputs:
+    for port in block.execution_outputs:
         name = port.name
         packets = result.emissions.get(name)
         if packets is None:

@@ -30,6 +30,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Native background subtraction](native_background/README.md) | Compare OpenCV MOG2 and KNN foreground masks on a synthetic sequence. |
 | [Native box tracking](native_box_tracking/README.md) | Compare CSRT and KCF tracking of a box in a synthetic image sequence. |
 | [Object collections](object_collections/README.md) | Detect blobs, contours, and lines, then filter, sort, and render the collections. |
+| [Overlay result graphics](overlay_result_graphics/README.md) | Combine selected region and contour graphics on the final color image. |
 | [Parallel inspection of 25 parts](parallel_parts/README.md) | Find 25 synthetic parts and run a reusable inspection around each part pose. |
 | [Pose-relative inspection](pose_inspection/README.md) | Train a geometric pattern and use its detected pose to position a circular inspection region. |
 | [Quick-start demo](demo/README.md) | Run the editor's default two-part inspection and inspect its contour output. |
