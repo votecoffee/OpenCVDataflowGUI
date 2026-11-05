@@ -659,12 +659,16 @@ def builtin_registry():
         SaveCalibration,
         Undistort,
     )
+    from .cloud_io import CLOUD_IO_BLOCKS
+    from .cloud_tools import CLOUD_BLOCKS
     from .collection_tools import COLLECTION_BLOCKS
     from .control_flow import CONTROL_BLOCKS
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample
     from .dnn_blocks import DNN_BLOCKS
+    from .examples3d import StereoDemo
     from .features import FEATURE_BLOCKS
+    from .geometry3d import GEOMETRY3D_BLOCKS
     from .histogram import Histogram
     from .image_queue import ImageQueue
     from .judgments import FinalJudgment
@@ -674,12 +678,15 @@ def builtin_registry():
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .poses import POSE_BLOCKS
     from .processing import PROCESSING_BLOCKS
+    from .ptcloud3d import PTCLOUD3D_BLOCKS
     from .pyramids import PYRAMID_BLOCKS
     from .recipe_blocks import RecipeField, RecipeSelect
     from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
+    from .stereo3d import STEREO3D_BLOCKS
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
+    from .vision3d_modules import VISION3D_MODULE_BLOCKS
 
     registry = Registry()
     for block in (
@@ -732,6 +739,13 @@ def builtin_registry():
         *DNN_BLOCKS,
         *ANNOY_BLOCKS,
         *LIGHTGLUE_BLOCKS,
+        *GEOMETRY3D_BLOCKS,
+        *STEREO3D_BLOCKS,
+        *CLOUD_BLOCKS,
+        *CLOUD_IO_BLOCKS,
+        *VISION3D_MODULE_BLOCKS,
+        *PTCLOUD3D_BLOCKS,
+        StereoDemo,
     ):
         registry.register(block)
     return registry

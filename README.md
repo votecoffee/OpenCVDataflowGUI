@@ -43,6 +43,13 @@ the `cv2` namespace and must not coexist:
 
 ## Usage
 
+**3D vision** includes camera and pose geometry, stereo calibration/rectification,
+disparity, RGB-D projection and registration, point clouds, ICP/PPF, ArUco,
+structured light, odometry, and posed TSDF fusion. Try **File > Load stereo cloud
+example**, press **Run once**, and open **Results > 3D point-cloud viewer…**.
+The example reconstructs a synthetic 3 m plane; no hardware or extra packages
+are needed. See [3D workflows and conventions](docs/vision-3d.md).
+
 **DNN/ML tools** are available under **ML** in the toolbox (model writers under **Output**): ONNX inference,
 classification, embedding conversion, SIFT + LightGlue matching, and Annoy vector
 index building/search/save/load. Try **File > Load DNN embedding example** with the
@@ -458,6 +465,8 @@ boundaries, parallel work and explicit final-decision timestamps.
 - `processing.py`: base OpenCV geometry, filtering, segmentation, math and inspection wrappers.
 - `features.py`, `registration.py`, `analysis_tools.py`: contrast, features, registration and numerical image tools.
 - `dnn_blocks.py`, `lightglue_blocks.py`, `annoy_blocks.py`: inference, learned matching and vector search.
+- `geometry3d.py`, `stereo3d.py`, `ptcloud3d.py`: calibrated geometry, depth, motion and fusion.
+- `pointclouds.py`, `cloud_tools.py`, `cloud_io.py`, `cloud_viewer.py`: typed clouds, surface matching, files and viewing.
 - `regions.py`, `selection.py`: reusable shape regions, mask intersections and selection policies.
 - `region_editor.py`: interactive image-space drawing and editing of region shapes.
 - `payloads.py`, `pyramids.py`: optional wire payloads, image coordinate provenance and bundled pyramids.

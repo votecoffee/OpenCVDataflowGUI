@@ -14,6 +14,488 @@ See [ticket results](ticket-results.md) for outcomes and final judgments.
 Processing/acquisition parameters can use inspector Recipe overrides paths; trainable
 matchers can bind a recipe model. See [recipes](recipes.md) for scope and revision rules.
 
+## ArUco 3D marker poses (`3d.aruco_pose`)
+
+3D vision / Fiducials
+
+Inputs: `image` (image), `camera` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original` |
+| `marker_length` | `0.04` |  |
+| `minimum_markers` | `1` |  |
+| `corner_refinement` | `"subpixel"` | `none`, `subpixel`, `contour`, `apriltag` |
+| `adaptive_min` | `3` |  |
+| `adaptive_max` | `23` |  |
+| `adaptive_step` | `10` |  |
+| `adaptive_constant` | `7.0` |  |
+| `min_perimeter_rate` | `0.03` |  |
+| `max_perimeter_rate` | `4.0` |  |
+| `min_border_distance` | `3` |  |
+| `border_bits` | `1` |  |
+| `error_correction_rate` | `0.6` |  |
+| `axis_length` | `0.02` |  |
+| `max_reprojection_error` | `3.0` |  |
+
+## Camera intrinsic model (`3d.camera`)
+
+3D vision / Camera models
+
+Inputs: `calibration` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `fx` | `500.0` |  |
+| `fy` | `500.0` |  |
+| `cx` | `320.0` |  |
+| `cy` | `240.0` |  |
+| `width` | `640` |  |
+| `height` | `480` |  |
+| `distortion` | `[]` |  |
+| `lens` | `"pinhole"` | `pinhole`, `fisheye`, `omnidir` |
+| `xi` | `1.0` |  |
+| `units` | `"m"` | `m`, `mm`, `unitless` |
+| `frame` | `"camera"` |  |
+
+## OpenCV 3D capabilities (`3d.capabilities`)
+
+3D vision / Diagnostics
+
+No configurable algorithm parameters.
+
+## Filter point cloud (`3d.cloud_filter`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum` | `[-1000000.0, -1000000.0, -1000000.0]` |  |
+| `maximum` | `[1000000.0, 1000000.0, 1000000.0]` |  |
+| `invert` | `false` |  |
+| `sample_step` | `1` |  |
+| `minimum_points` | `1` |  |
+
+## Measure point cloud (`3d.cloud_measure`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud).
+
+No configurable algorithm parameters.
+
+## Estimate point-cloud normals (`3d.cloud_normals`)
+
+3D vision / Surface matching
+
+Inputs: `cloud` (cloud).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `neighbors` | `20` |  |
+| `flip_viewpoint` | `true` |  |
+| `viewpoint` | `[0.0, 0.0, 0.0]` |  |
+
+## Render point cloud (`3d.cloud_render`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `640` |  |
+| `height` | `480` |  |
+| `yaw_degrees` | `25.0` |  |
+| `pitch_degrees` | `-20.0` |  |
+| `max_drawn_points` | `20000` |  |
+| `point_size` | `2` |  |
+
+## Transform point cloud (`3d.cloud_transform`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud), `transform` (data).
+
+No configurable algorithm parameters.
+
+## Voxel-sample point cloud (`3d.cloud_voxel`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `voxel_size` | `0.01` |  |
+| `mode` | `"first"` | `first`, `centroid` |
+
+## Compose / invert 3D poses (`3d.compose`)
+
+3D vision / Geometry
+
+Inputs: `first` (data), `second` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `operation` | `"compose"` | `compose`, `inverse` |
+
+## Depth to point cloud (`3d.depth_cloud`)
+
+3D vision / RGB-D
+
+Inputs: `depth` (depth), `camera` (data), `image` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `input_units` | `"m"` | `m`, `mm` |
+| `units_per_sample` | `0.001` |  |
+| `output_units` | `"m"` | `m`, `mm` |
+| `sample_step` | `2` |  |
+| `max_points` | `200000` |  |
+
+## Organized RGB-D normals (`3d.depth_normals`)
+
+3D vision / RGB-D
+
+Inputs: `depth` (depth), `camera` (data), `image` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `input_units` | `"m"` | `m`, `mm` |
+| `units_per_sample` | `0.001` |  |
+| `method` | `"fals"` | `fals`, `sri`, `cross_product` |
+| `window_size` | `"5"` | `1`, `3`, `5`, `7` |
+| `sample_step` | `2` |  |
+| `max_points` | `200000` |  |
+
+## Stereo BM / SGBM disparity (`3d.disparity`)
+
+3D vision / Stereo
+
+Inputs: `left` (image), `right` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `algorithm` | `"sgbm"` | `bm`, `sgbm` |
+| `min_disparity` | `0` |  |
+| `num_disparities` | `64` |  |
+| `block_size` | `5` |  |
+| `p1` | `0` |  |
+| `p2` | `0` |  |
+| `mode` | `"sgbm_3way"` | `sgbm`, `sgbm_3way`, `hh`, `hh4` |
+| `uniqueness_ratio` | `10` |  |
+| `speckle_window` | `0` |  |
+| `speckle_range` | `2` |  |
+| `disp12_max_diff` | `1` |  |
+| `prefilter_cap` | `31` |  |
+| `prefilter_size` | `9` |  |
+| `prefilter_type` | `"xsobel"` | `xsobel`, `normalized` |
+| `texture_threshold` | `10` |  |
+| `wls` | `false` |  |
+| `wls_lambda` | `8000.0` |  |
+| `wls_sigma` | `1.5` |  |
+
+## Essential matrix / relative pose (`3d.essential_pose`)
+
+3D vision / Reconstruction
+
+Inputs: `points_left` (data), `points_right` (data), `camera` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"ransac"` | `ransac`, `lmeds` |
+| `threshold` | `1.0` |  |
+| `confidence` | `0.999` |  |
+| `iterations` | `2000` |  |
+| `left_frame` | `"left_camera"` |  |
+| `right_frame` | `"right_camera"` |  |
+| `minimum_inliers` | `8` |  |
+
+## Fundamental matrix (`3d.fundamental`)
+
+3D vision / Reconstruction
+
+Inputs: `points_left` (data), `points_right` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"ransac"` | `ransac`, `lmeds`, `eight_point`, `usac_magsac` |
+| `threshold` | `1.0` |  |
+| `confidence` | `0.99` |  |
+| `iterations` | `2000` |  |
+
+## Generate Gray-code patterns (`3d.graycode`)
+
+3D vision / Structured light
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `640` |  |
+| `height` | `480` |  |
+
+## Decode Gray-code correspondences (`3d.graycode_decode`)
+
+3D vision / Structured light
+
+Inputs: `patterns` (any), `points` (data, optional), `white` (image, optional), `black` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `640` |  |
+| `height` | `480` |  |
+| `sample_step` | `16` |  |
+| `white_threshold` | `5` |  |
+| `black_threshold` | `40` |  |
+
+## Point-to-plane ICP registration (`3d.icp`)
+
+3D vision / Surface matching
+
+Inputs: `source` (cloud), `target` (cloud), `initial_pose` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `iterations` | `100` |  |
+| `tolerance` | `0.005` |  |
+| `rejection_scale` | `2.5` |  |
+| `pyramid_levels` | `4` |  |
+| `max_residual` | `0.05` |  |
+
+## RGB-D frame odometry (`3d.odometry`)
+
+3D vision / RGB-D motion
+
+Inputs: `source_depth` (depth), `target_depth` (depth), `camera` (data), `source_image` (image, optional), `target_image` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"depth"` | `depth`, `rgb`, `rgbd` |
+| `algorithm` | `"common"` | `common`, `fast` |
+| `source_frame` | `"previous_camera"` |  |
+| `target_frame` | `"current_camera"` |  |
+| `input_units` | `"m"` | `m`, `mm` |
+| `units_per_sample` | `0.001` |  |
+| `iteration_counts` | `[7, 7, 7, 10]` |  |
+| `min_gradient_magnitudes` | `[10.0, 10.0, 10.0, 10.0]` |  |
+| `min_depth` | `0.1` |  |
+| `max_depth` | `4.0` |  |
+| `max_depth_difference` | `0.07` |  |
+| `max_points_fraction` | `0.07` |  |
+| `max_translation_m` | `0.15` |  |
+| `max_rotation_degrees` | `15.0` |  |
+| `normal_window` | `"5"` | `1`, `3`, `5`, `7` |
+
+## 3D object pose (PnP) (`3d.pnp`)
+
+3D vision / Geometry
+
+Inputs: `object_points` (data), `image_points` (data), `camera` (data), `initial_pose` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"iterative"` | `iterative`, `epnp`, `sqpnp`, `ippe` |
+| `ransac` | `true` |  |
+| `iterations` | `100` |  |
+| `reprojection_error` | `3.0` |  |
+| `confidence` | `0.99` |  |
+| `refinement` | `"lm"` | `none`, `lm`, `vvs` |
+| `refine_iterations` | `20` |  |
+| `refine_epsilon` | `1e-06` |  |
+| `source_frame` | `"object"` |  |
+| `minimum_inliers` | `4` |  |
+| `max_rms` | `3.0` |  |
+
+## 3D point data (`3d.points`)
+
+3D vision / Geometry
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `points` | `[[0.0, 0.0, 1.0], [1.0, 0.0, 1.0], [0.0, 1.0, 1.0]]` |  |
+| `units` | `"m"` | `m`, `mm`, `unitless` |
+| `frame` | `"object"` |  |
+
+## Define rigid 3D pose (`3d.pose`)
+
+3D vision / Geometry
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `rvec` | `[0.0, 0.0, 0.0]` | Rodrigues axis-angle rotation vector, in radians. |
+| `translation` | `[0.0, 0.0, 0.0]` | XYZ translation, expressed in the selected length units. |
+| `source_frame` | `"object"` |  |
+| `target_frame` | `"camera"` |  |
+| `units` | `"m"` | `m`, `mm`, `unitless` |
+
+## Match 3D PPF surface model (`3d.ppf_match`)
+
+3D vision / Surface matching
+
+Inputs: `model` (data), `scene` (cloud).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `scene_sample_step` | `0.2` |  |
+| `scene_distance` | `0.05` |  |
+| `max_matches` | `5` |  |
+| `minimum_votes` | `1` |  |
+
+## Train 3D PPF surface model (`3d.ppf_train`)
+
+3D vision / Surface matching
+
+Inputs: `cloud` (cloud).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `relative_sampling_step` | `0.05` |  |
+| `relative_distance_step` | `0.05` |  |
+| `angle_bins` | `30` |  |
+
+## Project 3D points (`3d.project`)
+
+3D vision / Geometry
+
+Inputs: `points` (data), `camera` (data), `transform` (data).
+
+No configurable algorithm parameters.
+
+## Rectify pinhole / fisheye / omnidir (`3d.rectify_camera`)
+
+3D vision / Camera models
+
+Inputs: `image` (image), `camera` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `0` |  |
+| `height` | `0` |  |
+| `focal_scale` | `1.0` |  |
+| `rotation_vector` | `[0.0, 0.0, 0.0]` |  |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
+| `border_value` | `0.0` |  |
+
+## Register depth to camera (`3d.register_depth`)
+
+3D vision / RGB-D
+
+Inputs: `depth` (depth), `depth_camera` (data), `target_camera` (data), `transform` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `input_units` | `"m"` | `m`, `mm` |
+| `units_per_sample` | `0.001` |  |
+| `dilate` | `false` |  |
+| `display_min` | `0.0` |  |
+| `display_max` | `5.0` |  |
+
+## Disparity to 3D cloud (`3d.reproject`)
+
+3D vision / Reconstruction
+
+Inputs: `disparity` (image), `rectification` (data), `image` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `input_scale` | `1.0` |  |
+| `sample_step` | `2` |  |
+| `max_points` | `200000` |  |
+| `min_depth` | `0.001` |  |
+| `max_depth` | `100.0` |  |
+
+## Calibrate stereo cameras (`3d.stereo_calibrate`)
+
+3D vision / Calibration
+
+Inputs: `object_views` (data), `left_views` (data), `right_views` (data), `left_camera` (data), `right_camera` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `fix_intrinsics` | `true` |  |
+| `same_focal_length` | `false` |  |
+| `zero_tangent` | `false` |  |
+| `fix_principal_point` | `false` |  |
+| `fix_aspect_ratio` | `false` |  |
+| `rational_model` | `false` |  |
+| `fix_k1` | `false` |  |
+| `fix_k2` | `false` |  |
+| `fix_k3` | `false` |  |
+| `fix_k4` | `false` |  |
+| `fix_k5` | `false` |  |
+| `fix_k6` | `false` |  |
+| `iterations` | `100` |  |
+| `epsilon` | `1e-06` |  |
+| `max_rms` | `2.0` |  |
+
+## Rectify stereo images (`3d.stereo_rectify`)
+
+3D vision / Stereo
+
+Inputs: `left` (image), `right` (image), `rig` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alpha` | `0.0` |  |
+| `zero_disparity` | `true` |  |
+| `width` | `0` |  |
+| `height` | `0` |  |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
+| `border_value` | `0.0` |  |
+
+## Define stereo rig (`3d.stereo_rig`)
+
+3D vision / Stereo
+
+Inputs: `left_camera` (data), `right_camera` (data), `transform` (data).
+
+No configurable algorithm parameters.
+
+## Triangulate 3D points (`3d.triangulate`)
+
+3D vision / Reconstruction
+
+Inputs: `points_left` (data), `points_right` (data), `projection_left` (data), `projection_right` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `units` | `"m"` | `m`, `mm`, `unitless` |
+| `frame` | `"left_camera"` |  |
+| `max_reprojection_error` | `3.0` |  |
+| `positive_depth` | `true` |  |
+
+## Fuse posed depth frames (TSDF) (`3d.tsdf_fuse`)
+
+3D vision / Volumetric reconstruction
+
+Inputs: `depth` (depth, optional), `frames` (any, optional), `poses` (data), `camera` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `resolution` | `[64, 64, 64]` |  |
+| `voxel_size_m` | `0.02` |  |
+| `volume_origin_m` | `[-0.64, -0.64, 0.5]` |  |
+| `truncation_m` | `0.06` |  |
+| `max_weight` | `64` |  |
+| `max_depth_m` | `5.0` |  |
+| `raycast_step_factor` | `0.25` |  |
+| `input_units` | `"m"` | `m`, `mm` |
+| `units_per_sample` | `0.001` |  |
+| `sample_step` | `1` |  |
+| `max_points` | `200000` |  |
+
+## Undistort camera points (`3d.undistort_points`)
+
+3D vision / Camera models
+
+Inputs: `points` (data), `camera` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output` | `"normalized"` | `normalized`, `pixels` |
+
 ## White / color balance (`calibration.color_balance`)
 
 Calibration / Color balance
@@ -1061,6 +1543,20 @@ Ticket mode and fixed value are common inspector controls.
 | `fps` | `0.0` |  |
 | `buffer_size` | `0` |  |
 
+## Load PLY / PCD point cloud (`input.cloud`)
+
+Input / Point clouds
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+| `units` | `"m"` | `m`, `mm`, `unitless` |
+| `frame` | `"file"` |  |
+| `max_points` | `1000000` |  |
+
 ## Counter input (`input.counter`)
 
 Input / Synthetic
@@ -1150,6 +1646,22 @@ Ticket mode and fixed value are common inspector controls.
 | --- | --- | --- |
 | `stationary_frames` | `5` |  |
 | `step_pixels` | `2` |  |
+
+## Synthetic stereo / RGB-D (`input.stereo_demo`)
+
+Input / Depth and RGB-D
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `320` |  |
+| `height` | `180` |  |
+| `disparity` | `8` |  |
+| `focal_length` | `200.0` |  |
+| `baseline_m` | `0.12` |  |
+| `seed` | `3` |  |
 
 ## Estimate affine transform (`inspect.affine`)
 
@@ -1635,6 +2147,17 @@ Inputs: `profile` (data).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `path` | `"calibration.json"` |  |
+
+## Save PLY / PCD point cloud (`output.cloud`)
+
+Output / Point clouds
+
+Inputs: `cloud` (cloud).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"cloud.ply"` |  |
+| `binary_ply` | `true` |  |
 
 ## Save image (`output.image`)
 

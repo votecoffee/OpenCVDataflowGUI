@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "pair",
+      "type": "input.stereo_demo",
+      "name": "Synthetic stereo / RGB-D",
+      "parameters": {
+        "width": 320,
+        "height": 180,
+        "disparity": 8,
+        "focal_length": 200.0,
+        "baseline_m": 0.12,
+        "seed": 3
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "left",
+        "right",
+        "depth",
+        "camera",
+        "rig",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rectify",
+      "type": "3d.stereo_rectify",
+      "name": "Rectify stereo images",
+      "parameters": {
+        "alpha": 0.0,
+        "zero_disparity": true,
+        "width": 0,
+        "height": 0,
+        "interpolation": "linear",
+        "border_value": 0.0
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "left",
+        "right",
+        "rig"
+      ],
+      "exposed_outputs": [
+        "left",
+        "right",
+        "rectification"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "disparity",
+      "type": "3d.disparity",
+      "name": "Stereo BM / SGBM disparity",
+      "parameters": {
+        "algorithm": "sgbm",
+        "min_disparity": 0,
+        "num_disparities": 32,
+        "block_size": 5,
+        "p1": 0,
+        "p2": 0,
+        "mode": "sgbm_3way",
+        "uniqueness_ratio": 10,
+        "speckle_window": 0,
+        "speckle_range": 2,
+        "disp12_max_diff": 1,
+        "prefilter_cap": 31,
+        "prefilter_size": 9,
+        "prefilter_type": "xsobel",
+        "texture_threshold": 10,
+        "wls": false,
+        "wls_lambda": 8000.0,
+        "wls_sigma": 1.5
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "left",
+        "right"
+      ],
+      "exposed_outputs": [
+        "disparity",
+        "valid_mask",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": "preview"
+    },
+    {
+      "id": "cloud",
+      "type": "3d.reproject",
+      "name": "Disparity to 3D cloud",
+      "parameters": {
+        "input_scale": 1.0,
+        "sample_step": 3,
+        "max_points": 200000,
+        "min_depth": 0.001,
+        "max_depth": 5.0
+      },
+      "position": [
+        990,
+        0
+      ],
+      "exposed_inputs": [
+        "disparity",
+        "rectification",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "depth",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "point cloud"
+    },
+    {
+      "id": "measure",
+      "type": "3d.cloud_measure",
+      "name": "Measure point cloud",
+      "parameters": {},
+      "position": [
+        1320,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "view",
+      "type": "3d.cloud_render",
+      "name": "Render point cloud",
+      "parameters": {
+        "width": 640,
+        "height": 480,
+        "yaw_degrees": 25.0,
+        "pitch_degrees": -20.0,
+        "max_drawn_points": 20000,
+        "point_size": 2
+      },
+      "position": [
+        1320,
+        360
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "pair",
+      "output": "left",
+      "target": "rectify",
+      "input": "left"
+    },
+    {
+      "source": "pair",
+      "output": "right",
+      "target": "rectify",
+      "input": "right"
+    },
+    {
+      "source": "pair",
+      "output": "rig",
+      "target": "rectify",
+      "input": "rig"
+    },
+    {
+      "source": "rectify",
+      "output": "left",
+      "target": "disparity",
+      "input": "left"
+    },
+    {
+      "source": "rectify",
+      "output": "right",
+      "target": "disparity",
+      "input": "right"
+    },
+    {
+      "source": "disparity",
+      "output": "disparity",
+      "target": "cloud",
+      "input": "disparity"
+    },
+    {
+      "source": "rectify",
+      "output": "rectification",
+      "target": "cloud",
+      "input": "rectification"
+    },
+    {
+      "source": "rectify",
+      "output": "left",
+      "target": "cloud",
+      "input": "image"
+    },
+    {
+      "source": "cloud",
+      "output": "cloud",
+      "target": "measure",
+      "input": "cloud"
+    },
+    {
+      "source": "cloud",
+      "output": "cloud",
+      "target": "view",
+      "input": "cloud"
+    }
+  ]
+}

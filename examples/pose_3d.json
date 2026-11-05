@@ -1,0 +1,490 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "xyz",
+      "type": "3d.points",
+      "name": "3D point data",
+      "parameters": {
+        "points": [
+          [
+            -0.256852,
+            0.083948,
+            2.934537
+          ],
+          [
+            -0.1036,
+            -0.08705,
+            3.581036
+          ],
+          [
+            0.324115,
+            -0.193588,
+            3.30557
+          ],
+          [
+            -0.161358,
+            0.280177,
+            3.8397
+          ],
+          [
+            0.108697,
+            0.151639,
+            3.030307
+          ],
+          [
+            0.260716,
+            -0.030972,
+            2.677625
+          ],
+          [
+            -0.177681,
+            -0.1642,
+            3.051634
+          ],
+          [
+            -0.05527,
+            0.097908,
+            2.025681
+          ],
+          [
+            -0.041838,
+            -0.080892,
+            2.390795
+          ],
+          [
+            0.075893,
+            -0.038812,
+            2.599983
+          ],
+          [
+            -0.232467,
+            0.224774,
+            3.594925
+          ],
+          [
+            0.085368,
+            -0.09294,
+            3.89364
+          ],
+          [
+            0.050702,
+            -0.040342,
+            3.800899
+          ],
+          [
+            -0.144527,
+            0.117597,
+            2.627641
+          ],
+          [
+            -0.190758,
+            0.120505,
+            2.455784
+          ],
+          [
+            -0.005512,
+            0.048017,
+            2.377813
+          ],
+          [
+            0.184993,
+            0.02909,
+            3.243007
+          ],
+          [
+            -0.102285,
+            -0.047884,
+            2.989659
+          ],
+          [
+            -0.024023,
+            0.105384,
+            3.154355
+          ],
+          [
+            -0.066983,
+            -0.298919,
+            3.588062
+          ],
+          [
+            0.015507,
+            -0.104073,
+            2.99991
+          ],
+          [
+            -0.325243,
+            0.242822,
+            3.979472
+          ],
+          [
+            -0.353012,
+            -0.085061,
+            3.460129
+          ],
+          [
+            -0.148609,
+            0.04023,
+            2.833142
+          ],
+          [
+            0.21937,
+            0.275079,
+            3.776791
+          ]
+        ],
+        "units": "m",
+        "frame": "object"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "points",
+        "cloud"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left_cam",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 500.0,
+        "fy": 500.0,
+        "cx": 320.0,
+        "cy": 240.0,
+        "width": 640,
+        "height": 480,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "left_camera"
+      },
+      "position": [
+        0,
+        360
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right_cam",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 500.0,
+        "fy": 500.0,
+        "cx": 320.0,
+        "cy": 240.0,
+        "width": 640,
+        "height": 480,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "right_camera"
+      },
+      "position": [
+        0,
+        720
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left_pose",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "source_frame": "object",
+        "target_frame": "left_camera",
+        "units": "m"
+      },
+      "position": [
+        330,
+        360
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right_pose",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "translation": [
+          -0.15,
+          0,
+          0
+        ],
+        "source_frame": "object",
+        "target_frame": "right_camera",
+        "units": "m"
+      },
+      "position": [
+        330,
+        720
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left_pixels",
+      "type": "3d.project",
+      "name": "Project 3D points",
+      "parameters": {},
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "points",
+        "camera",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "points",
+        "visible",
+        "projection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right_pixels",
+      "type": "3d.project",
+      "name": "Project 3D points",
+      "parameters": {},
+      "position": [
+        660,
+        420
+      ],
+      "exposed_inputs": [
+        "points",
+        "camera",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "points",
+        "visible",
+        "projection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pnp",
+      "type": "3d.pnp",
+      "name": "3D object pose (PnP)",
+      "parameters": {
+        "method": "iterative",
+        "ransac": true,
+        "iterations": 100,
+        "reprojection_error": 3.0,
+        "confidence": 0.99,
+        "refinement": "lm",
+        "refine_iterations": 20,
+        "refine_epsilon": 1e-06,
+        "source_frame": "object",
+        "minimum_inliers": 4,
+        "max_rms": 3.0
+      },
+      "position": [
+        990,
+        0
+      ],
+      "exposed_inputs": [
+        "object_points",
+        "image_points",
+        "camera",
+        "initial_pose"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "inliers",
+        "rms"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "triangulate",
+      "type": "3d.triangulate",
+      "name": "Triangulate 3D points",
+      "parameters": {
+        "units": "m",
+        "frame": "object",
+        "max_reprojection_error": 3.0,
+        "positive_depth": true
+      },
+      "position": [
+        990,
+        420
+      ],
+      "exposed_inputs": [
+        "points_left",
+        "points_right",
+        "projection_left",
+        "projection_right"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "valid",
+        "rms"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "view",
+      "type": "3d.cloud_render",
+      "name": "Render point cloud",
+      "parameters": {
+        "width": 640,
+        "height": 480,
+        "yaw_degrees": 25.0,
+        "pitch_degrees": -20.0,
+        "max_drawn_points": 20000,
+        "point_size": 2
+      },
+      "position": [
+        1320,
+        420
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "xyz",
+      "output": "points",
+      "target": "left_pixels",
+      "input": "points"
+    },
+    {
+      "source": "xyz",
+      "output": "points",
+      "target": "right_pixels",
+      "input": "points"
+    },
+    {
+      "source": "left_cam",
+      "output": "camera",
+      "target": "left_pixels",
+      "input": "camera"
+    },
+    {
+      "source": "right_cam",
+      "output": "camera",
+      "target": "right_pixels",
+      "input": "camera"
+    },
+    {
+      "source": "left_pose",
+      "output": "transform",
+      "target": "left_pixels",
+      "input": "transform"
+    },
+    {
+      "source": "right_pose",
+      "output": "transform",
+      "target": "right_pixels",
+      "input": "transform"
+    },
+    {
+      "source": "xyz",
+      "output": "points",
+      "target": "pnp",
+      "input": "object_points"
+    },
+    {
+      "source": "right_pixels",
+      "output": "points",
+      "target": "pnp",
+      "input": "image_points"
+    },
+    {
+      "source": "right_cam",
+      "output": "camera",
+      "target": "pnp",
+      "input": "camera"
+    },
+    {
+      "source": "left_pixels",
+      "output": "points",
+      "target": "triangulate",
+      "input": "points_left"
+    },
+    {
+      "source": "right_pixels",
+      "output": "points",
+      "target": "triangulate",
+      "input": "points_right"
+    },
+    {
+      "source": "left_pixels",
+      "output": "projection",
+      "target": "triangulate",
+      "input": "projection_left"
+    },
+    {
+      "source": "right_pixels",
+      "output": "projection",
+      "target": "triangulate",
+      "input": "projection_right"
+    },
+    {
+      "source": "triangulate",
+      "output": "cloud",
+      "target": "view",
+      "input": "cloud"
+    }
+  ]
+}

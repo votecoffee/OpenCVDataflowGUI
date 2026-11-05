@@ -9,6 +9,7 @@ PORT_COLORS = {
     "number": "#9ed27a",
     "data": "#a8b4c7",
     "any": "#c2cbd5",
+    "cloud": "#f09273",
 }
 
 PORT_LABELS = {
@@ -20,6 +21,7 @@ PORT_LABELS = {
     "number": "Number · light green",
     "data": "Other structured data / tickets · slate",
     "any": "Any / unresolved type · gray",
+    "cloud": "3D point cloud · coral",
 }
 
 BLOCK_COLORS = {
@@ -37,6 +39,7 @@ BLOCK_COLORS = {
     "Advanced": "#c29571",
     "ToolBlocks": "#9399ed",
     "ML": "#e18cc8",
+    "3D vision": "#63c5b7",
     "Custom": "#c2cbd5",
 }
 

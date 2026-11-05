@@ -42,6 +42,7 @@ from .activity_window import ActivityWindow
 from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
 from .canvas import CanvasScene, CanvasView, Node, pixmap
+from .cloud_viewer import CloudViewer
 from .core import Graph
 from .diagnostic_viewer import DiagnosticViewer
 from .examples import (
@@ -65,6 +66,13 @@ from .examples import (
     ticket_results_graph,
     trained_patterns_graph,
     transformed_regions_graph,
+)
+from .examples3d import (
+    pose_3d_graph,
+    rgbd_cloud_graph,
+    stereo_cloud_graph,
+    structured_light_graph,
+    tsdf_graph,
 )
 from .filmstrip_viewer import FilmstripViewer
 from .image_queue import ImageQueue
@@ -967,6 +975,15 @@ class MainWindow(QMainWindow):
             ("Load DNN embedding example", None, lambda: self.load_ml_example(dnn_graph)),
             ("Load Annoy search example", None, lambda: self.load_ml_example(annoy_graph)),
             ("Load LightGlue matcher example", None, lambda: self.load_ml_example(lightglue_graph)),
+            ("Load stereo cloud example", None, lambda: self.load_ml_example(stereo_cloud_graph)),
+            ("Load RGB-D cloud example", None, lambda: self.load_ml_example(rgbd_cloud_graph)),
+            ("Load 3D pose example", None, lambda: self.load_ml_example(pose_3d_graph)),
+            (
+                "Load structured light example",
+                None,
+                lambda: self.load_ml_example(structured_light_graph),
+            ),
+            ("Load TSDF fusion example", None, lambda: self.load_ml_example(tsdf_graph)),
             ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
@@ -997,6 +1014,7 @@ class MainWindow(QMainWindow):
         toolbar.addAction("Fit graph", lambda: self.view.fit_graph())
         results_menu = self.menuBar().addMenu("&Results")
         results_menu.addAction("Ticket results…", self.show_ticket_results)
+        results_menu.addAction("3D point-cloud viewer…", self.show_cloud_viewer)
         results_menu.addAction(self.filmstrip_dock.toggleViewAction())
         self.diagnostics_action = self.diagnostics_dock.toggleViewAction()
         self.diagnostics_action.setText("Block diagnostics")
@@ -1537,6 +1555,13 @@ class MainWindow(QMainWindow):
         self.ticket_results_window.show()
         self.ticket_results_window.raise_()
         self.ticket_results_window.activateWindow()
+
+    def show_cloud_viewer(self):
+        if not hasattr(self, "cloud_viewer"):
+            self.cloud_viewer = CloudViewer(lambda: self.graph, self)
+        self.cloud_viewer.refresh()
+        self.cloud_viewer.show()
+        self.cloud_viewer.raise_()
 
     def show_activity(self, mode):
         name = f"activity_{mode}_window"

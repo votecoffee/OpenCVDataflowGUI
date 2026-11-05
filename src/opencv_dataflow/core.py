@@ -493,7 +493,13 @@ def validate_value(port, value):
             raise TypeError(f"{port.name} requires an image pyramid")
         value.__post_init__()
         return
-    if port.kind == "depth":
+    if port.kind == "cloud":
+        from .pointclouds import PointCloud
+
+        if not isinstance(value, PointCloud):
+            raise TypeError(f"{port.name} requires a PointCloud, not XYZ image pixels")
+        value.__post_init__()
+    elif port.kind == "depth":
         if (
             not isinstance(value, np.ndarray)
             or value.size == 0

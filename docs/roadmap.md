@@ -9,6 +9,10 @@
 - Toolbox tree grouped by block type and subtype; monochrome and per-channel histograms.
 - Grid-derived planar mapping, lens calibration/undistortion, white/color balance and profile files.
 - Typed depth planes, depth-file input, RGB-D pairing and sampling with physical units.
+- OpenCV 5 camera/pose geometry, stereo, RGB-D registration and organized normals,
+  typed point clouds, PLY/PCD files, CPU viewer, ICP/PPF, ArUco and Gray-code tools.
+- Two-frame RGB-D odometry and bounded posed TSDF fusion using OpenCV 5 ptcloud.
+  See [3D workflows](vision-3d.md) for tested scope and build limits.
 - Base OpenCV conversion, geometry, filters, segmentation, morphology, image math and gradients.
 - Component measurements, template matching, portable sample jobs and a headless repeat/report runner.
 - Additional contrast/channel/mask tools, corners, Hough lines/circles and distance transform.
@@ -40,15 +44,19 @@
 
 ## Point clouds and 3D vision
 
-[Milestone 1](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/1): point-cloud
-types, PLY/PCD files, viewing, calibrated RGB-D projection and filtering.
-Acceptance scope is tracked in [issue 1](https://github.com/votecoffee/OpenCVDataflowGUI/issues/1).
+[Milestone 1](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/1) covers the
+implemented point-cloud baseline: typed XYZ/color/normals, retained pixel correspondence,
+calibrated projection, filtering, PLY/PCD interchange and viewing. See
+[issue 1](https://github.com/votecoffee/OpenCVDataflowGUI/issues/1).
+Future work includes binary/compressed PCD, meshing, hardware acquisition and larger
+streaming reconstructions. The tested wheel does not provide SFM/viz or runnable KinFu.
 
 ## Camera frames and robot integration
 
-[Milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2): managed
-intrinsic/extrinsic models, identifiable grid origins, offline hand-eye calibration,
-frame transforms and robot pose/measurement adapters. See
+[Milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2): the 3D baseline
+now has explicit intrinsic models and named rigid frame transforms. Managed calibration
+revisions, identifiable grid origins, offline hand-eye calibration and robot
+pose/measurement adapters remain future work. See
 [issue 2](https://github.com/votecoffee/OpenCVDataflowGUI/issues/2) and
 [issue 3](https://github.com/votecoffee/OpenCVDataflowGUI/issues/3).
 
