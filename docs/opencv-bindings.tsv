@@ -4023,7 +4023,7 @@ P3	method	cv2.plot_Plot2d.setPlotTextColor	alias	cv2.plot.Plot2d.setPlotTextColo
 P3	method	cv2.plot_Plot2d.setPointIdxToPrint	alias	cv2.plot.Plot2d.setPointIdxToPrint
 P3	method	cv2.plot_Plot2d.setShowGrid	alias	cv2.plot.Plot2d.setShowGrid
 P3	method	cv2.plot_Plot2d.setShowText	alias	cv2.plot.Plot2d.setShowText
-P3	function	cv2.polarToCart	no static reference	-
+P3	function	cv2.polarToCart	literal reference	-
 P3	function	cv2.pollKey	no static reference	-
 P3	function	cv2.polylines	literal reference	-
 P3	function	cv2.pow	literal reference	-

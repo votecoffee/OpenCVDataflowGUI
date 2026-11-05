@@ -888,7 +888,7 @@ Inputs: `x` (image), `y` (image).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `angle_units` | `"radians"` | `radians`, `degrees` |
+| `angle_units` | `"radians"` | `radians`, `degrees` Tag the output angle field with radians or degrees. |
 
 ## CLAHE local contrast (`cv.clahe`)
 
@@ -1556,6 +1556,18 @@ Input `path` — Ordered [x, y] point list in the image's pixel coordinate frame
 | `sample_spacing` | `1.0` | Value must be a finite number at least 0.25. Maximum arc-length spacing between samples, in pixels. |
 | `interpolation` | `"linear"` | `nearest`, `linear` |
 | `include_alpha` | `false` | Include alpha as its own profile on four-channel images. |
+
+## Polar to Cartesian fields (`cv.polar_to_cart`)
+
+Image processing / Image math
+
+Inputs: `angle` (image), `magnitude` (image, optional).
+
+Input `magnitude` — Nonnegative magnitude. Leave disconnected to use unit vectors.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `angle_units` | `"auto"` | `auto`, `radians`, `degrees` Auto reads the angle payload and defaults to radians. |
 
 ## Gaussian pyramid up/down (`cv.pyramid`)
 

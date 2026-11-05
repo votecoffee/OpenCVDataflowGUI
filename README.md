@@ -451,6 +451,10 @@ area, intersection-over-union and the fraction of each footprint covered.
 along an open or closed path and preserves gaps outside the selection.
 [Path intensity profile example](examples/path_intensity_profile/README.md)
 
+Convert between Cartesian vector components and magnitude/angle fields.
+The angle output carries its units through compatible graph blocks.
+[Polar field rotation example](examples/polar_fields/README.md)
+
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing
 wrappers also expose kernel dimensions, anchors, borders, output depths, masks,

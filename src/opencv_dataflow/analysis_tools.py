@@ -318,24 +318,78 @@ class Remap(Block):
         return encoded_result(result, inputs["image"])
 
 
+_ANGLE_UNITS = ("radians", "degrees")
+
+
+def read_vector_fields(block, inputs, primary, secondary):
+    names = (primary, secondary) if secondary in inputs else (primary,)
+    arrays = [image_value(inputs[name], (np.float32, np.float64)) for name in names]
+    first = arrays[0]
+    if first.ndim != 2 or any(a.shape != first.shape or a.dtype != first.dtype for a in arrays):
+        raise ValidationError("Vector fields must be matching monochrome floating arrays")
+    require_same_frame(
+        [inputs[name] for name in names],
+        message="Vector fields must share the same coordinate frame",
+    )
+    payload = dict(block.input_payloads[primary])
+    if len(names) == 2 and payload.get("spatial", {}).get("root_id") is None:
+        other = block.input_payloads[secondary]
+        if other.get("spatial", {}).get("root_id") is not None:
+            payload.pop("pyramid", None)
+            payload.update({key: other[key] for key in ("spatial", "pyramid") if key in other})
+    payload.pop("angle_units", None)
+    return first, arrays[1] if len(arrays) == 2 else None, payload
+
+
 class CartesianToPolar(Block):
     type_id, title, category = "cv.cart_to_polar", "Cartesian to polar fields", "Image processing"
     block_type, subtype = "Image processing", "Image math"
     inputs = (Port("x"), Port("y"))
     outputs = (Port("magnitude"), Port("angle"))
     defaults = {"angle_units": "radians"}
-    parameter_choices = {"angle_units": ("radians", "degrees")}
+    parameter_choices = {"angle_units": _ANGLE_UNITS}
+    parameter_help = {"angle_units": "Tag the output angle field with radians or degrees."}
 
     def process(self, inputs):
-        x, y = (image_value(inputs[k], (np.float32, np.float64)) for k in ("x", "y"))
-        if x.ndim != 2 or x.shape != y.shape or x.dtype != y.dtype:
-            raise ValueError("Cartesian fields must be matching monochrome floating arrays")
-        magnitude, angle = cv2.cartToPolar(
-            x, y, angleInDegrees=self.parameters["angle_units"] == "degrees"
-        )
+        x, y, payload = read_vector_fields(self, inputs, "x", "y")
+        units = self.parameters["angle_units"]
+        magnitude, angle = cv2.cartToPolar(x, y, angleInDegrees=units == "degrees")
         if not np.isfinite(magnitude).all() or not np.isfinite(angle).all():
-            raise ValueError("Polar conversion overflowed")
-        return Result({"magnitude": magnitude, "angle": angle})
+            raise ValidationError("Polar conversion overflowed")
+        return Result(
+            {"magnitude": magnitude, "angle": angle},
+            payloads={"magnitude": payload, "angle": {**payload, "angle_units": units}},
+        )
+
+
+class PolarToCartesian(Block):
+    type_id, title, category = "cv.polar_to_cart", "Polar to Cartesian fields", "Image processing"
+    block_type, subtype = "Image processing", "Image math"
+    inputs = (Port("angle"), Port("magnitude", required=False, required_when_connected=True))
+    outputs = (Port("x"), Port("y"))
+    defaults = {"angle_units": "auto"}
+    parameter_choices = {"angle_units": ("auto", *_ANGLE_UNITS)}
+    parameter_help = {"angle_units": "Auto reads the angle payload and defaults to radians."}
+    input_help = {"magnitude": "Nonnegative magnitude. Leave disconnected to use unit vectors."}
+
+    def process(self, inputs):
+        angle, magnitude, payload = read_vector_fields(self, inputs, "angle", "magnitude")
+        units = self.parameters["angle_units"]
+        if units == "auto":
+            units = self.input_payloads["angle"].get("angle_units", "radians")
+        if units not in _ANGLE_UNITS:
+            raise ValidationError("Angle payload must declare radians or degrees", "angle_units")
+        if magnitude is not None and np.any(magnitude < 0):
+            raise ValidationError("Magnitude values must be nonnegative")
+        degrees = units == "degrees"
+        turn = 360.0 if degrees else 2 * np.pi
+        # Reduce large angles before native conversion to stay within its lookup range.
+        if angle.min() < -turn or angle.max() > turn:
+            angle = np.fmod(angle, turn, dtype=np.float64).astype(angle.dtype, copy=False)
+        x, y = cv2.polarToCart(magnitude, angle, angleInDegrees=degrees)
+        if not np.isfinite(x).all() or not np.isfinite(y).all():
+            raise ValidationError("Cartesian conversion overflowed")
+        return Result({"x": x, "y": y}, payloads={"x": payload, "y": payload})
 
 
 class IntensityTransform(ImageTool):
@@ -781,4 +835,5 @@ ANALYSIS_BLOCKS = (
     EstimateAffine,
     Remap,
     CartesianToPolar,
+    PolarToCartesian,
 )

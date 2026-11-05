@@ -43,6 +43,7 @@ within those stages.
 | Media and image formats | [Bayer demosaicing](../examples/bayer_demosaicing/README.md) supports four tile patterns, three interpolation modes, and crop parity. [In-memory PNG and JPEG](../examples/in_memory_image_codecs/README.md) provide typed packets and explicit compression settings. [TIFF page replay](../examples/tiff_page_sequence/README.md) emits ticketed pages from a multipage file. [Multipage TIFF output](../examples/multipage_tiff_output/README.md) writes ordered lossless image batches. [Raw YUV decoding](../examples/raw_yuv/README.md) handles seven packed 8-bit 4:2:0 and 4:2:2 layouts. [Image metadata and EXIF orientation](../examples/exif_orientation/README.md) report decoded chunk types and selected EXIF fields and can orient JPEG/PNG inputs. Metadata writing, other sensor formats, and additional codecs and numerical formats remain open. |
 
 [Feature covariance and Mahalanobis distance](../examples/feature_covariance/README.md) cover joint variation and numeric outlier checks.
+[Cartesian and polar fields](../examples/polar_fields/README.md) convert in both directions and preserve angle units.
 [Principal components](../examples/principal_components/README.md) supports fitted dimensionality reduction and reconstruction.
 
 ## P3 — Specialized families
