@@ -158,7 +158,11 @@ class PoseFromFeature(Block):
     }
 
     def process(self, inputs):
-        image, features, p = inputs["image"], inputs["features"], self.parameters
+        image = inputs["image"]
+        return pose_result(self.feature_pose(image, inputs["features"]), image)
+
+    def feature_pose(self, image, features):
+        p = self.parameters
         index = integer(p["index"], "Feature index", 0, 99999)
         if not isinstance(features, dict):
             raise ValueError("Features must be a measured collection or pattern matches")
@@ -186,8 +190,7 @@ class PoseFromFeature(Block):
             context = moved_payload(context, local_offset(*origin, 0), features["image_size"])
             pose = make_pose(matrix, features["image_size"], context)
             pose = pose_for_image(pose, image)
-        pose = offset_pose(pose, *(p[k] for k in POSE_OFFSETS))
-        return pose_result(pose, image)
+        return offset_pose(pose, *(p[k] for k in POSE_OFFSETS))
 
 
 class PoseRegion(Block):

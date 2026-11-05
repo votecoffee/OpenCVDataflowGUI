@@ -668,6 +668,7 @@ def builtin_registry():
     from .color_measurement import COLOR_MEASUREMENT_BLOCKS
     from .contour_analysis import CONTOUR_ANALYSIS_BLOCKS
     from .control_flow import CONTROL_BLOCKS
+    from .conveyor_tracking import ConveyorDemo, TrackConveyorParts
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample
     from .dnn_blocks import DNN_BLOCKS
@@ -774,6 +775,8 @@ def builtin_registry():
         *SEQUENCE_BLOCKS,
         *NATIVE_BACKGROUND_BLOCKS,
         *NATIVE_TRACKER_BLOCKS,
+        TrackConveyorParts,
+        ConveyorDemo,
         FinalJudgment,
         *DNN_BLOCKS,
         *OCR_BLOCKS,

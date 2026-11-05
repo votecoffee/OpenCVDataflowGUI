@@ -158,6 +158,35 @@ with `opencv-dataflow-run examples/native_box_tracking.json --repeat 8`.
 Both blocks follow the same moving synthetic target.
 See the [OpenCV tracking tutorial](https://docs.opencv.org/5.0/tutorials_contrib/tracking/tutorial_introduction_to_tracker.html).
 
+## Associate conveyor parts across frames
+
+**Track conveyor parts** associates template or pattern matches, measured
+object collections, or pose lists. A distance gate limits associations.
+The assignment first maximizes the number of accepted pairs and then
+minimizes their total center distance. Each part keeps a track ID across
+frames, and a missed detection can remain as a bounded prediction.
+
+Set motion to **encoder** and provide an absolute encoder value sampled
+at acquisition, over the encoder port or as an `encoder` field in the
+image payload. Ticketed inputs must share the image ticket. Set the signed
+image-space displacement per count, optional counter modulus and maximum
+step. The rollover mode uses the shortest signed difference and rejects
+half-turn ambiguity. Missing values, ticket mismatches and implausible
+steps withhold track outputs for that activation and preserve the last
+accepted positions and encoder value.
+
+The `tracks` output marks observed, predicted and offscreen positions.
+The `poses` output contains only current observations inside the image for
+downstream image inspection. The missed-frame limit and offscreen margin
+bound retention. Encoder prediction assumes constant displacement per count
+in the working image grid. Physical encoder capture, timestamp pairing and
+world-space calibration are separate workflow steps.
+
+Run the [conveyor tracking example](../examples/conveyor_tracking.json)
+with `opencv-dataflow-run examples/conveyor_tracking.json --repeat 15`.
+The synthetic source emits two parts and an encoder value on the same
+ticket. One detection drops out briefly and one part leaves the camera view.
+
 ## Custom sequence blocks and future work
 
 Subclass `SequenceBlock`, declare `data_outputs`, defaults and choices, and implement
@@ -167,5 +196,5 @@ and fit the memory budget; override `estimate_state_bytes` for large models. Do 
 retain native handles, external resources or workers in this state. Register it through
 the existing trusted Python plugin system.
 
-Multi-object association, encoder-correlated tracking, explicit learning of
-accumulated references and timestamp-aware sequence resampling remain future work.
+Hardware encoder acquisition, timestamp-aware resampling and explicit
+learning of accumulated references remain future work.
