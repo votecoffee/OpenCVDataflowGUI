@@ -277,29 +277,29 @@ P2	function	cv2.bgsegm.createBackgroundSubtractorMOG	no static reference	-
 P2	function	cv2.bgsegm.createSyntheticSequenceGenerator	no static reference	-
 P2	class	cv2.bgsegm.SyntheticSequenceGenerator	no static reference	-
 P2	method	cv2.bgsegm.SyntheticSequenceGenerator.getNextFrame	no static reference	-
-P2	class	cv2.ccm.ColorCorrectionModel	no static reference	-
+P2	class	cv2.ccm.ColorCorrectionModel	literal reference	-
 P2	method	cv2.ccm.ColorCorrectionModel.compute	method name only	-
-P2	method	cv2.ccm.ColorCorrectionModel.correctImage	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.getColorCorrectionMatrix	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.getLoss	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.getMask	no static reference	-
+P2	method	cv2.ccm.ColorCorrectionModel.correctImage	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.getColorCorrectionMatrix	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.getLoss	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.getMask	method name only	-
 P2	method	cv2.ccm.ColorCorrectionModel.getRefLinearRGB	no static reference	-
 P2	method	cv2.ccm.ColorCorrectionModel.getSrcLinearRGB	no static reference	-
 P2	method	cv2.ccm.ColorCorrectionModel.getWeights	no static reference	-
 P2	method	cv2.ccm.ColorCorrectionModel.read	method name only	-
-P2	method	cv2.ccm.ColorCorrectionModel.setCcmType	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.setColorSpace	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.setDistance	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.setEpsilon	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.setInitialMethod	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.setLinearization	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.setLinearizationDegree	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.setLinearizationGamma	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.setMaxCount	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.setRGB	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.setSaturatedThreshold	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.setWeightCoeff	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.setWeightsList	no static reference	-
+P2	method	cv2.ccm.ColorCorrectionModel.setCcmType	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.setColorSpace	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.setDistance	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.setEpsilon	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.setInitialMethod	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.setLinearization	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.setLinearizationDegree	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.setLinearizationGamma	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.setMaxCount	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.setRGB	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.setSaturatedThreshold	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.setWeightCoeff	method name only	-
+P2	method	cv2.ccm.ColorCorrectionModel.setWeightsList	method name only	-
 P2	method	cv2.ccm.ColorCorrectionModel.write	method name only	-
 P2	function	cv2.ccm.gammaCorrection	no static reference	-
 P2	function	cv2.convexHull	literal reference	-
@@ -1000,7 +1000,7 @@ P2	method	cv2.optflow.DualTVL1OpticalFlow.getTau	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.getTheta	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.getUseInitialFlow	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.getWarpingsNumber	no static reference	-
-P2	method	cv2.optflow.DualTVL1OpticalFlow.setEpsilon	no static reference	-
+P2	method	cv2.optflow.DualTVL1OpticalFlow.setEpsilon	method name only	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setGamma	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setInnerIterations	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setLambda	method name only	-
@@ -2708,7 +2708,7 @@ P3	method	cv2.Feature2D.write	method name only	-
 P3	class	cv2.FileNode	no static reference	-
 P3	method	cv2.FileNode.at	no static reference	-
 P3	method	cv2.FileNode.empty	method name only	-
-P3	method	cv2.FileNode.getNode	no static reference	-
+P3	method	cv2.FileNode.getNode	method name only	-
 P3	method	cv2.FileNode.isInt	no static reference	-
 P3	method	cv2.FileNode.isMap	no static reference	-
 P3	method	cv2.FileNode.isNamed	no static reference	-
@@ -2724,15 +2724,15 @@ P3	method	cv2.FileNode.real	no static reference	-
 P3	method	cv2.FileNode.size	method name only	-
 P3	method	cv2.FileNode.string	no static reference	-
 P3	method	cv2.FileNode.type	no static reference	-
-P3	class	cv2.FileStorage	no static reference	-
+P3	class	cv2.FileStorage	literal reference	-
 P3	method	cv2.FileStorage.endWriteStruct	no static reference	-
 P3	method	cv2.FileStorage.getFirstTopLevelNode	no static reference	-
 P3	method	cv2.FileStorage.getFormat	no static reference	-
-P3	method	cv2.FileStorage.getNode	no static reference	-
+P3	method	cv2.FileStorage.getNode	method name only	-
 P3	method	cv2.FileStorage.isOpened	method name only	-
 P3	method	cv2.FileStorage.open	method name only	-
 P3	method	cv2.FileStorage.release	method name only	-
-P3	method	cv2.FileStorage.releaseAndGetString	no static reference	-
+P3	method	cv2.FileStorage.releaseAndGetString	method name only	-
 P3	method	cv2.FileStorage.root	no static reference	-
 P3	method	cv2.FileStorage.startWriteStruct	no static reference	-
 P3	method	cv2.FileStorage.write	method name only	-
@@ -3381,12 +3381,12 @@ P3	method	cv2.MatShape.toLayout	no static reference	-
 P3	function	cv2.max	literal reference	-
 P3	class	cv2.mcc.CChecker	no static reference	-
 P3	method	cv2.mcc.CChecker.create	method name only	-
-P3	method	cv2.mcc.CChecker.getBox	no static reference	-
+P3	method	cv2.mcc.CChecker.getBox	method name only	-
 P3	method	cv2.mcc.CChecker.getCenter	no static reference	-
-P3	method	cv2.mcc.CChecker.getChartsRGB	no static reference	-
+P3	method	cv2.mcc.CChecker.getChartsRGB	method name only	-
 P3	method	cv2.mcc.CChecker.getChartsYCbCr	no static reference	-
-P3	method	cv2.mcc.CChecker.getColorCharts	no static reference	-
-P3	method	cv2.mcc.CChecker.getCost	no static reference	-
+P3	method	cv2.mcc.CChecker.getColorCharts	method name only	-
+P3	method	cv2.mcc.CChecker.getCost	method name only	-
 P3	method	cv2.mcc.CChecker.getTarget	no static reference	-
 P3	method	cv2.mcc.CChecker.setBox	no static reference	-
 P3	method	cv2.mcc.CChecker.setCenter	no static reference	-
@@ -3395,22 +3395,22 @@ P3	method	cv2.mcc.CChecker.setChartsYCbCr	no static reference	-
 P3	method	cv2.mcc.CChecker.setCost	no static reference	-
 P3	method	cv2.mcc.CChecker.setTarget	no static reference	-
 P3	function	cv2.mcc.CChecker_create	no static reference	-
-P3	class	cv2.mcc.CCheckerDetector	no static reference	-
-P3	method	cv2.mcc.CCheckerDetector.create	method name only	-
+P3	class	cv2.mcc.CCheckerDetector	literal reference	-
+P3	method	cv2.mcc.CCheckerDetector.create	literal reference	-
 P3	method	cv2.mcc.CCheckerDetector.draw	no static reference	-
 P3	method	cv2.mcc.CCheckerDetector.getBestColorChecker	no static reference	-
 P3	method	cv2.mcc.CCheckerDetector.getColorChartType	no static reference	-
 P3	method	cv2.mcc.CCheckerDetector.getDetectionParams	no static reference	-
-P3	method	cv2.mcc.CCheckerDetector.getListColorChecker	no static reference	-
+P3	method	cv2.mcc.CCheckerDetector.getListColorChecker	method name only	-
 P3	method	cv2.mcc.CCheckerDetector.getRefColors	no static reference	-
 P3	method	cv2.mcc.CCheckerDetector.getUseDnnModel	no static reference	-
 P3	method	cv2.mcc.CCheckerDetector.process	method name only	-
 P3	method	cv2.mcc.CCheckerDetector.processWithROI	no static reference	-
-P3	method	cv2.mcc.CCheckerDetector.setColorChartType	no static reference	-
-P3	method	cv2.mcc.CCheckerDetector.setDetectionParams	no static reference	-
+P3	method	cv2.mcc.CCheckerDetector.setColorChartType	method name only	-
+P3	method	cv2.mcc.CCheckerDetector.setDetectionParams	method name only	-
 P3	method	cv2.mcc.CCheckerDetector.setUseDnnModel	no static reference	-
 P3	function	cv2.mcc.CCheckerDetector_create	no static reference	-
-P3	class	cv2.mcc.DetectorParametersMCC	no static reference	-
+P3	class	cv2.mcc.DetectorParametersMCC	literal reference	-
 P3	class	cv2.mcc_CChecker	alias	cv2.mcc.CChecker
 P3	method	cv2.mcc_CChecker.create	alias	cv2.mcc.CChecker.create
 P3	method	cv2.mcc_CChecker.getBox	alias	cv2.mcc.CChecker.getBox
@@ -3799,7 +3799,7 @@ P3	class	cv2.OdometryFrame	no static reference	-
 P3	method	cv2.OdometryFrame.getDepth	no static reference	-
 P3	method	cv2.OdometryFrame.getGrayImage	no static reference	-
 P3	method	cv2.OdometryFrame.getImage	no static reference	-
-P3	method	cv2.OdometryFrame.getMask	no static reference	-
+P3	method	cv2.OdometryFrame.getMask	method name only	-
 P3	method	cv2.OdometryFrame.getNormals	no static reference	-
 P3	method	cv2.OdometryFrame.getProcessedDepth	no static reference	-
 P3	method	cv2.OdometryFrame.getPyramidAt	no static reference	-
@@ -4749,7 +4749,7 @@ P3	method	cv2.VariationalRefinement.getOmega	no static reference	-
 P3	method	cv2.VariationalRefinement.getSorIterations	no static reference	-
 P3	method	cv2.VariationalRefinement.setAlpha	no static reference	-
 P3	method	cv2.VariationalRefinement.setDelta	no static reference	-
-P3	method	cv2.VariationalRefinement.setEpsilon	no static reference	-
+P3	method	cv2.VariationalRefinement.setEpsilon	method name only	-
 P3	method	cv2.VariationalRefinement.setFixedPointIterations	no static reference	-
 P3	method	cv2.VariationalRefinement.setGamma	no static reference	-
 P3	method	cv2.VariationalRefinement.setOmega	no static reference	-

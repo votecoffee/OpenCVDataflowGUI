@@ -664,6 +664,7 @@ def builtin_registry():
     from .cloud_tools import CLOUD_BLOCKS
     from .code_readers import CODE_READER_BLOCKS
     from .collection_tools import COLLECTION_BLOCKS
+    from .color_calibration import COLOR_CALIBRATION_BLOCKS
     from .color_measurement import COLOR_MEASUREMENT_BLOCKS
     from .contour_analysis import CONTOUR_ANALYSIS_BLOCKS
     from .control_flow import CONTROL_BLOCKS
@@ -724,6 +725,7 @@ def builtin_registry():
         LensCalibration,
         Undistort,
         ColorBalance,
+        *COLOR_CALIBRATION_BLOCKS,
         PixelToPhysical,
         DepthFile,
         RGBD,

@@ -13,3 +13,7 @@ and is not bundled into the Python package or committed in this repository.
 
 `datamatrix_lot.png` is a synthetic Data Matrix generated with ZXing-C++
 from `LOT-0042` at scale 8 and padded with a white border for the barcode example.
+
+`synthetic_color_chart.png` draws the OpenCV MCC24 reference colors with a
+synthetic channel cast. It exercises the chart-detection and correction
+workflow without requiring a photographed target.
