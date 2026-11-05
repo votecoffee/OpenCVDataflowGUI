@@ -18,6 +18,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Coordinated camera inputs](input_coordination/README.md) | Join two synthetic camera images to a simulated PLC part counter by ticket. |
 | [Custom Python invert block](custom_invert/README.md) | Run a custom block that inverts a band of the image and demonstrates numeric and cross-field validation. |
 | [K-means clustering](kmeans/README.md) | Cluster image pixels and numeric samples, then inspect the color map, quantized image, and cluster plot. |
+| [Histogram thresholds](histogram_thresholds/README.md) | Visualize percentiles, mean, and median, and wire measured cutoffs into three threshold masks. |
 | [Watershed separation](watershed/README.md) | Separate touching parts using distance-peak seeds or points placed on the image. |
 | [Data Matrix reading](datamatrix_reading/README.md) | Read the bundled synthetic Data Matrix and verify the decoded text. |
 | [DNN color embeddings](dnn_embeddings/README.md) | Use a bundled ONNX model that averages RGB channels, then expose classification and vector outputs. |

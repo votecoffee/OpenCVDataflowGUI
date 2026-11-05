@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Grayscale intensity ramp",
+      "parameters": {
+        "path": "assets/intensity_ramp.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        170
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "histogram",
+      "type": "inspect.histogram",
+      "name": "Measure percentile cutoffs",
+      "parameters": {
+        "bins": 256,
+        "range_mode": "automatic",
+        "range_min": 0.0,
+        "range_max": 1.0,
+        "include_alpha": false,
+        "lower_percentile": 20.0,
+        "upper_percentile": 80.0,
+        "statistics_channel": "auto",
+        "threshold_statistic": "upper_threshold",
+        "show_statistics": true
+      },
+      "position": [
+        310,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot",
+        "threshold",
+        "lower_threshold",
+        "upper_threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": "plot"
+    },
+    {
+      "id": "lower_tail",
+      "type": "cv.threshold",
+      "name": "Lower tail",
+      "parameters": {
+        "value": 127.0,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary_inv"
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "value"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "middle",
+      "type": "cv.in_range",
+      "name": "Middle percentile band",
+      "parameters": {
+        "lower": [
+          0
+        ],
+        "upper": [
+          255
+        ]
+      },
+      "position": [
+        660,
+        275
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "lower",
+        "upper"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "upper_tail",
+      "type": "cv.threshold",
+      "name": "Upper tail",
+      "parameters": {
+        "value": 127.0,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        660,
+        575
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "value"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "histogram",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "lower_tail",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "middle",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "upper_tail",
+      "input": "image"
+    },
+    {
+      "source": "histogram",
+      "output": "lower_threshold",
+      "target": "lower_tail",
+      "input": "value"
+    },
+    {
+      "source": "histogram",
+      "output": "lower_threshold",
+      "target": "middle",
+      "input": "lower"
+    },
+    {
+      "source": "histogram",
+      "output": "upper_threshold",
+      "target": "middle",
+      "input": "upper"
+    },
+    {
+      "source": "histogram",
+      "output": "threshold",
+      "target": "upper_tail",
+      "input": "value"
+    }
+  ]
+}

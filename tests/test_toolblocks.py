@@ -20,7 +20,9 @@ def test_encapsulation_preserves_pipeline_and_records():
     registry, graph, nodes, block = inspection_toolblock()
     assert len(graph.blocks) == 2
     assert sum(port.required for port in block.inputs) == 1
-    assert len(block.inputs) == 7  # Image plus optional mask/region terminals.
+    assert len(block.inputs) == 8  # Image, optional masks/regions, and the threshold override.
+    adaptive = next(port for port in block.inputs if port.name == "Threshold_value")
+    assert not adaptive.required and adaptive.required_when_connected
     assert {p.kind for p in block.outputs} == {"image", "number", "data"}
     graph.run()
     assert block.state == "pass", block.error

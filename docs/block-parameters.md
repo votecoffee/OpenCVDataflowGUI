@@ -1067,7 +1067,11 @@ Inputs: `image` (image).
 
 Image processing / Segmentation
 
-Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `lower` (data, optional), `upper` (data, optional).
+
+Input `lower` — Inclusive lower bound. Wire one number or a list of values in channel order.
+
+Input `upper` — Inclusive upper bound. Wire one number or a list of values in channel order.
 
 Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
 Neighborhood operations retain full-image context. See [regions](regions.md).
@@ -1347,7 +1351,9 @@ No configurable algorithm parameters.
 
 Image processing / Segmentation
 
-Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `value` (number, optional).
+
+Input `value` — Overrides the saved threshold, in grayscale pixel units.
 
 Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
 Neighborhood operations retain full-image context. See [regions](regions.md).
@@ -2129,6 +2135,11 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `range_min` | `0.0` |  |
 | `range_max` | `1.0` |  |
 | `include_alpha` | `false` |  |
+| `lower_percentile` | `5.0` | Value must be a finite number between 0 and 100. Lower-tail cutoff. Pair with upper percentile for a middle range. |
+| `upper_percentile` | `95.0` | Value must be a finite number between 0 and 100. Cutoff for the upper tail, expressed as a percentile from the bottom. |
+| `statistics_channel` | `"auto"` | `auto`, `Gray`, `B`, `G`, `R`, `A`, `H`, `S`, `V`, `L`, `a`, `b` Channel for numeric outputs and plot markers. Auto uses the first. |
+| `threshold_statistic` | `"median"` | `lower_threshold`, `upper_threshold`, `mean`, `median` Value sent on the threshold output. |
+| `show_statistics` | `true` | Shade the middle range and mark cutoffs, mean and median on the plot. |
 
 ## Histogram backprojection (`inspect.histogram_backproject`)
 

@@ -5,10 +5,10 @@ from __future__ import annotations
 import copy
 import json
 import re
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 
-from .core import Block, Connection, Graph, Port, Result
+from .core import Block, Connection, Graph, Result
 from .graphics_layers import RESULT_GRAPHICS
 from .outcomes import rejected_inputs
 from .parameter_validation import ValidationError
@@ -99,7 +99,7 @@ class ToolBlock(Block):
                     for c in self.graph.connections
                 ):
                     raise ValueError(f"Public input '{name}' is also connected internally")
-                declared.append(Port(name, port.kind, port.required, port.visual_type))
+                declared.append(replace(port, name=name))
             if direction == "inputs" and len(set(bindings.values())) != len(bindings):
                 raise ValueError("An internal input can have only one public binding")
             ports.append(tuple(declared))

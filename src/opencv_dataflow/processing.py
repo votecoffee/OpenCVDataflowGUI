@@ -370,7 +370,20 @@ class AdaptiveThreshold(RegionalOperation, ImageTool):
 class InRange(RegionalOperation, ImageTool):
     region_background = "zero"
     type_id, title, subtype = "cv.in_range", "In range mask", "Segmentation"
+    inputs = (
+        *SELECTION_INPUTS,
+        Port("lower", "data", required=False, required_when_connected=True),
+        Port("upper", "data", required=False, required_when_connected=True),
+    )
     defaults = {"lower": [0], "upper": [255]}
+    input_help = {
+        "lower": "Inclusive lower bound. Wire one number or a list of values in channel order.",
+        "upper": "Inclusive upper bound. Wire one number or a list of values in channel order.",
+    }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.exposed_inputs = [port.name for port in SELECTION_INPUTS]
 
     def process(self, inputs):
         # Deliberately retain the actual encoding: HSV masks must test HSV samples.
@@ -378,12 +391,23 @@ class InRange(RegionalOperation, ImageTool):
         count = 1 if image.ndim == 2 else image.shape[2]
         bounds = []
         for name in ("lower", "upper"):
-            values = np.asarray(self.parameters[name], float)
+            try:
+                values = np.asarray(inputs.get(name, self.parameters[name]), float)
+            except (TypeError, ValueError, OverflowError) as exc:
+                raise ValidationError(f"{name} needs finite numeric bounds") from exc
+            if values.ndim == 0:
+                values = values.reshape(1)
             if values.ndim != 1 or values.size not in (1, count) or not np.isfinite(values).all():
-                raise ValueError(f"{name} needs one finite value or one value per channel")
+                raise ValidationError(f"{name} needs one finite value or one value per channel")
             bounds.append(np.repeat(values, count) if values.size == 1 else values)
         if np.any(bounds[0] > bounds[1]):
-            raise ValueError("Lower bounds must not exceed upper bounds")
+            raise ValidationError("Lower bounds must not exceed upper bounds")
+        if image.dtype.kind == "u" and ("lower" in inputs or "upper" in inputs):
+            lower = np.maximum(np.ceil(bounds[0]), 0)
+            upper = np.minimum(np.floor(bounds[1]), np.iinfo(image.dtype).max)
+            if np.any(lower > upper):
+                return Result({"image": np.zeros(image.shape[:2], dtype=np.uint8)})
+            bounds = (lower, upper)
         return Result({"image": cv2.inRange(image, tuple(bounds[0]), tuple(bounds[1]))})
 
 
