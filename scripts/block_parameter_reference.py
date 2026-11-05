@@ -22,6 +22,8 @@ def render():
         "controls. See [tickets and control flow](control-flow.md) for their shared configuration.",
         "Every input has a failure-policy dropdown: continue (default) or reject_failed.",
         "See [ticket results](ticket-results.md) for outcomes and final judgments.",
+        "Processing/acquisition parameters can use inspector Recipe overrides paths; trainable",
+        "matchers can bind a recipe model. See [recipes](recipes.md) for scope and revision rules.",
         "",
     ]
     for kind, cls in sorted(builtin_registry().types.items()):

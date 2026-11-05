@@ -75,6 +75,10 @@ class ImagePyramid:
 
 
 def validate_payload(payload):
+    from .recipes import validate_reference
+
+    if isinstance(payload, dict) and "recipe_ref" in payload:
+        validate_reference(payload["recipe_ref"])
     from .outcomes import validate_outcome
 
     if isinstance(payload, dict) and "outcome" in payload:
@@ -222,6 +226,8 @@ def finish_outputs(block, result):
         base = copy.deepcopy(next((p for p in block.input_payloads.values() if "ticket" in p), {}))
     if reference is None and len(block.input_payloads) == 1:
         base = copy.deepcopy(next(iter(block.input_payloads.values())))
+    if block.last_recipe_ref is not None:
+        base["recipe_ref"] = copy.deepcopy(block.last_recipe_ref)
     if getattr(block, "_source_ticket", None) is not None:
         base["ticket"] = block._source_ticket
     geometry = result.outputs.get("geometry")
@@ -254,6 +260,8 @@ def finish_outputs(block, result):
         payload = copy.deepcopy(explicit if explicit is not None else (inherited or base))
         if "ticket" in base and "ticket" not in payload:
             payload["ticket"] = copy.deepcopy(base["ticket"])
+        if "recipe_ref" in base and "recipe_ref" not in payload:
+            payload["recipe_ref"] = copy.deepcopy(base["recipe_ref"])
         if isinstance(value, np.ndarray):
             size = [value.shape[1], value.shape[0]]
             if payload.get("spatial", {}).get("image_size") != size:

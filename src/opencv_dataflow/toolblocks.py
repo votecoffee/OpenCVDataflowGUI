@@ -245,14 +245,14 @@ class ToolBlock(Block):
         for key, block in self.graph.blocks.items():
             block.copy_results_from(other.graph.blocks[key])
 
-    def definition(self):
+    def definition(self, include_recipes=True):
         self.validate_interface()
         return {
             "block_type": self.block_type,
             "subtype": self.subtype,
             "toolblock_version": 1,
             "name": self.name,
-            "graph": self.graph.to_dict(),
+            "graph": self.graph.to_dict(include_recipes=include_recipes),
             "inputs": {n: asdict(b) for n, b in self.input_bindings.items()},
             "outputs": {n: asdict(b) for n, b in self.output_bindings.items()},
             **(
@@ -263,7 +263,7 @@ class ToolBlock(Block):
         }
 
     def serialize_extra(self):
-        return {"toolblock": self.definition()}
+        return {"toolblock": self.definition(include_recipes=False)}
 
     @classmethod
     def from_definition(cls, data, registry, depth=0, **kwargs):

@@ -123,6 +123,12 @@ class CoordinateInputs(BufferedFlow):
     def snapshot(self, row, names, now, reason, trigger=None):
         selected = [name for name in names if name in row]
         entries = tuple(row[name][0] for name in selected)
+        from .recipes import unique_ref, value_refs
+
+        recipe_refs = [ref for entry in entries for ref in value_refs(entry)]
+        mixed_recipes = bool(recipe_refs and any(ref != recipe_refs[0] for ref in recipe_refs))
+        if self.parameters["mode"] == "ticket_all":
+            unique_ref(entries)
         group = FlowGroup(entries, tuple(selected))
         primary = self.parameters["primary"]
         chosen = primary if primary in row else (trigger if trigger in row else selected[0])
@@ -142,6 +148,7 @@ class CoordinateInputs(BufferedFlow):
             "trigger": trigger,
             "primary": chosen,
             "mixed_tickets": mixed,
+            "mixed_recipes": mixed_recipes,
             "tickets": {n: row[n][0].payload["ticket"] for n in selected},
             "age_ms": {n: max(0.0, (now - row[n][1]) * 1000) for n in selected},
         }

@@ -60,6 +60,9 @@ groups a separate runtime ticket. They do not relabel cached images as the new
 workpiece. Use these modes deliberately; finalizing a mixed group applies that
 decision to its members, including reused tickets, and can create conflicting
 final judgments. Prefer ticket_all for actual multi-camera workpiece decisions.
+Managed recipe revisions are also reported as `mixed_recipes`. Strict ticket_all
+and Join reject differing managed revisions; ordinary processing requires a
+consistent recipe context. See [recipes](recipes.md).
 
 `max_age_ms` defaults to 1000 and bounds cache age at coordinator ingress. Zero
 explicitly allows unlimited reuse. Expired entries are removed on subsequent

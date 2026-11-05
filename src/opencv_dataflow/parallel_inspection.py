@@ -200,7 +200,7 @@ class ParallelInspect(Block):
             )
 
     def serialize_extra(self):
-        return {"inspection": self.inspection.definition()}
+        return {"inspection": self.inspection.definition(include_recipes=False)}
 
     @classmethod
     def from_definition(cls, data, registry, depth=0, **kwargs):
@@ -294,7 +294,7 @@ class ParallelInspect(Block):
             raise ValueError(
                 "Input image times workers exceeds budget; reduce image size or workers"
             )
-        template = self.inspection.definition()
+        template = self.inspection.definition(include_recipes=False)
         context_name = p["context_terminal"]
         if (
             any(port.name == context_name and port.required for port in self.inspection.inputs)
@@ -353,6 +353,9 @@ class ParallelInspect(Block):
             try:
                 tool = ToolBlock.from_definition(template, self.registry)
                 tool._ticket_results = self._ticket_results
+                tool._recipes = self._recipes
+                tool._allow_recipe_activation = False
+                tool.graph.bind_recipes(self._recipes, allow_activation=False)
                 tool._event_path = f"{getattr(self, '_event_path', self.id)}/part-{index}"
                 tool.graph.bind_ticket_results(self._ticket_results, tool._event_path)
                 tool.graph.bind_project_dir(self.project_dir)

@@ -11,6 +11,8 @@ Input sources also expose ticket input/output ports and inspector ticket mode/fi
 controls. See [tickets and control flow](control-flow.md) for their shared configuration.
 Every input has a failure-policy dropdown: continue (default) or reject_failed.
 See [ticket results](ticket-results.md) for outcomes and final judgments.
+Processing/acquisition parameters can use inspector Recipe overrides paths; trainable
+matchers can bind a recipe model. See [recipes](recipes.md) for scope and revision rules.
 
 ## White / color balance (`calibration.color_balance`)
 
@@ -1687,6 +1689,29 @@ Inputs: `pose` (data).
 | `pose_offset_x` | `0.0` | Local x offset in feature/model pixels; follows rotation and scale. |
 | `pose_offset_y` | `0.0` | Local y offset in feature/model pixels; follows rotation and scale. |
 | `pose_offset_angle` | `0.0` | Local counterclockwise rotation in degrees (OpenCV convention). |
+
+## Recipe value or model (`recipe.field`)
+
+Recipes / Outputs
+
+Inputs: `recipe` (data, optional), `value` (any, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"settings.threshold"` | Dotted path such as settings.threshold or models.part; value pins the revision. |
+| `missing` | `"error"` | `error`, `inactive` |
+
+## Select recipe (`recipe.select`)
+
+Recipes / Selection
+
+Inputs: `recipe` (data, optional), `value` (any, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `recipe_id` | `""` | Empty uses the image's pinned revision or active recipe. |
+| `activate_global` | `false` | Activate requests for future captures; pinned reads stay local. |
+| `rebind` | `false` | Explicitly allow assigning a different recipe to an already versioned value. |
 
 ## Combine regions (`region.combine`)
 

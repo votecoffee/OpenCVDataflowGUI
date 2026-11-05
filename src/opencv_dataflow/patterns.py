@@ -278,6 +278,16 @@ class TrainableMatcher:
             self.trained_model = copy.deepcopy(data["trained_model"])
 
     def get_model(self, inputs):
+        from .payloads import ValuePacket
+        from .recipes import unique_ref
+
+        unique_ref(
+            [
+                ValuePacket(inputs[name], self.input_payloads.get(name, {}))
+                for name in ("image", "model")
+                if name in inputs
+            ]
+        )
         model = inputs.get("model", self.trained_model)
         if model is None:
             raise ValueError("Train this pattern from its input or connect a trained model")

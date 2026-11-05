@@ -34,7 +34,9 @@ class TicketResultsWindow(QDialog):
         layout.addWidget(self.summary)
         split = QSplitter()
         self.table = QTreeWidget()
-        self.table.setHeaderLabels(["Ticket", "Kind", "Session", "Status", "Events", "Sources"])
+        self.table.setHeaderLabels(
+            ["Ticket", "Kind", "Session", "Status", "Events", "Sources", "Recipes"]
+        )
         self.details = QTextEdit()
         self.details.setReadOnly(True)
         self.events = QTreeWidget()
@@ -77,6 +79,7 @@ class TicketResultsWindow(QDialog):
                 row["status"],
                 str(row["event_count"]),
                 ", ".join(row["sources"]),
+                ", ".join(f"{r['id']} r{r['revision']}" for r in row.get("recipes", [])),
             ]
             if query and query not in " ".join(fields).casefold():
                 continue
