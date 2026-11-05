@@ -215,3 +215,56 @@ def test_algorithm_hints_match_native_execution(hint_name, hint):
     np.testing.assert_array_equal(gray, cv2.cvtColor(image, cv2.COLOR_BGR2GRAY, hint=hint))
     blur = execute("cv.gaussian_blur", image, {"algorithm_hint": hint_name})
     np.testing.assert_array_equal(blur, cv2.GaussianBlur(image, (5, 5), 1.2, hint=hint))
+
+
+@pytest.mark.parametrize("pattern", ["RGGB", "BGGR", "GRBG", "GBRG"])
+@pytest.mark.parametrize(
+    "algorithm,dtype,maximum",
+    [("bilinear", np.uint16, 65535), ("edge_aware", np.uint16, 65535), ("vng", np.uint8, 255)],
+)
+def test_bayer_demosaicing_recovers_logical_color_channels(pattern, algorithm, dtype, maximum):
+    values = {"R": maximum * 3 // 4, "G": maximum // 2, "B": maximum // 8}
+    tile = np.array([values[color] for color in pattern], dtype=dtype).reshape(2, 2)
+    raw = np.tile(tile, (8, 9))
+    output = execute(
+        "cv.demosaic_bayer",
+        raw,
+        {"pattern": pattern, "algorithm": algorithm, "color_format": "rgb"},
+    )
+    assert output.dtype == dtype and output.shape == (*raw.shape, 3)
+    assert image_format(output) == "rgb"
+    assert output[8, 9].tolist() == [values["R"], values["G"], values["B"]]
+
+
+@pytest.mark.parametrize("row,column", [(0, 1), (1, 0), (1, 1)])
+def test_bayer_demosaicing_uses_sensor_offset_and_opaque_alpha(row, column):
+    raw = np.tile(np.array([[50000, 20000], [20000, 9000]], np.uint16), (8, 8))
+    output = execute(
+        "cv.demosaic_bayer",
+        raw[row:, column:],
+        {
+            "color_format": "bgra",
+            "row_offset": "odd" if row else "even",
+            "column_offset": "odd" if column else "even",
+        },
+    )
+    assert image_format(output) == "bgra"
+    assert output[7, 7].tolist() == [9000, 20000, 50000, 65535]
+
+
+def test_bayer_demosaicing_validates_layout_algorithm_and_output_format():
+    block = builtin_registry().create("cv.demosaic_bayer", parameters={"algorithm": "vng"})
+    for raw in (np.zeros((8, 8), np.uint16), np.zeros((7, 8), np.uint8)):
+        assert block.execute({"image": raw}) is None
+        assert block.error_kind == "invalid" and "VNG requires" in block.error
+    block.parameters.update(algorithm="edge_aware", color_format="gray")
+    raw = np.tile(np.array([[200, 100], [100, 20]], np.uint8), (4, 4))
+    assert block.execute({"image": raw}) is None
+    assert block.error_kind == "invalid" and "require bilinear" in block.error
+    block.parameters["algorithm"] = "bilinear"
+    result = block.execute({"image": raw})
+    assert result is not None, block.error
+    assert result.outputs["image"].ndim == 2
+    assert image_format(result.outputs["image"]) == "gray"
+    assert block.execute({"image": np.zeros((8, 8, 3), np.uint8)}) is None
+    assert "single-channel" in block.error

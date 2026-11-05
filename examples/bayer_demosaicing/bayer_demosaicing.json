@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "16-bit RGGB sensor mosaic",
+      "parameters": {
+        "path": "assets/rggb.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint16",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "bilinear",
+      "type": "cv.demosaic_bayer",
+      "name": "Bilinear RGB",
+      "parameters": {
+        "algorithm": "bilinear",
+        "color_format": "rgb"
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "edge_aware",
+      "type": "cv.demosaic_bayer",
+      "name": "Edge-aware RGB",
+      "parameters": {
+        "algorithm": "edge_aware",
+        "color_format": "rgb"
+      },
+      "position": [
+        330,
+        240
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "bilinear",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "edge_aware",
+      "input": "image"
+    }
+  ]
+}

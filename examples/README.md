@@ -35,6 +35,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Fourier gain mask](fourier_gain/README.md) | Apply a custom notch at a specific frequency pair and reconstruct the image. |
 | [Fourier spectrum filtering](fourier_filter/README.md) | Reject a periodic stripe pattern with a band-stop filter and inverse DFT. |
 | [Discrete cosine transform](dct_round_trip/README.md) | Inspect DCT coefficients and verify the reconstructed image against the source. |
+| [Bayer demosaicing](bayer_demosaicing/README.md) | Decode a synthetic 16-bit camera mosaic with bilinear and edge-aware interpolation. |
 | [Domain transform filter](domain_transform_filter/README.md) | Compare three edge-preserving smoothing modes on the same noisy image. |
 | [Guided edge-preserving filter](guided_filter/README.md) | Smooth a noisy image while preserving its main intensity edge. |
 | [Subpixel template locations](subpixel_template/README.md) | Compare integer and refined template matches against two known fractional placements. |

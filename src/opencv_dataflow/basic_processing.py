@@ -119,4 +119,60 @@ class Canny(RegionalOperation, ImageTool):
         return Result({"image": ImageArray(output, "gray")})
 
 
-BASIC_PROCESSING_BLOCKS = (Grayscale, GaussianBlur, Canny)
+BAYER_ALGORITHMS = {"bilinear": "", "edge_aware": "_EA", "vng": "_VNG"}
+
+
+class DemosaicBayer(ImageTool):
+    process_inputs_readonly = True
+    type_id, title, subtype = "cv.demosaic_bayer", "Demosaic Bayer image", "Color and depth"
+    defaults = {
+        "pattern": "RGGB",
+        "algorithm": "bilinear",
+        "color_format": "bgr",
+        "column_offset": "even",
+        "row_offset": "even",
+    }
+    parameter_choices = {
+        "pattern": ("RGGB", "BGGR", "GRBG", "GBRG"),
+        "algorithm": tuple(BAYER_ALGORITHMS),
+        "color_format": ("bgr", "rgb", "bgra", "rgba", "gray"),
+        "column_offset": ("even", "odd"),
+        "row_offset": ("even", "odd"),
+    }
+    parameter_help = {
+        "pattern": "Sensor's 2 by 2 tile in row order, starting at its original top-left pixel.",
+        "algorithm": "VNG requires uint8 and at least eight pixels on both axes.",
+        "color_format": "Grayscale and opaque alpha outputs use bilinear interpolation.",
+        "column_offset": "Parity of the first input column relative to the sensor origin.",
+        "row_offset": "Parity of the first input row relative to the sensor origin.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["algorithm"] != "bilinear" and p["color_format"] not in ("bgr", "rgb"):
+            raise ValidationError("Grayscale and alpha formats require bilinear", "color_format")
+
+    def process(self, inputs):
+        image = image_value(inputs["image"], (np.uint8, np.uint16))
+        p = self.parameters
+        if image.ndim != 2:
+            raise ValidationError("Demosaicing requires a single-channel Bayer mosaic")
+        if min(image.shape) < 3:
+            raise ValidationError("Demosaicing requires at least three rows and columns")
+        if p["algorithm"] == "vng" and (image.dtype != np.uint8 or min(image.shape) < 8):
+            raise ValidationError("VNG requires uint8 and at least eight rows and columns")
+
+        tile = p["pattern"]
+        ox = int(p["column_offset"] == "odd")
+        oy = int(p["row_offset"] == "odd")
+        pattern = "".join(
+            tile[2 * ((y + oy) % 2) + (x + ox) % 2] for y in range(2) for x in range(2)
+        )
+        encoding = p["color_format"]
+        suffix = BAYER_ALGORITHMS[p["algorithm"]]
+        code = getattr(cv2, f"COLOR_Bayer{pattern}2{encoding.upper()}{suffix}")
+        return Result({"image": ImageArray(cv2.demosaicing(image, code), encoding)})
+
+
+BASIC_PROCESSING_BLOCKS = (Grayscale, GaussianBlur, Canny, DemosaicBayer)
