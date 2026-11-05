@@ -9,6 +9,7 @@ Connections and sockets share a display-type palette:
 | Poses, transforms and coordinate frames | Blue |
 | Image pyramids | Pale gold |
 | Depth images | Turquoise |
+| 3D point clouds | Coral |
 | Numbers | Light green |
 | Other structured data, including tickets | Slate |
 | Generic `any` / unresolved | Gray |
@@ -41,7 +42,8 @@ loaded, just as it supplies the port's ordinary kind.
 Block borders indicate the toolbox category, with specific purple **Regions** and
 blue **Poses** subtypes. Input tools use teal, outputs coral, image processing gold,
 inspection mauve, calibration mint, control flow blue-gray, sequence memory indigo,
-data slate, recipes pink, ML rose, advanced tools tan and reusable ToolBlocks violet-blue.
+data slate, recipes pink, ML rose, 3D vision sea green, advanced tools tan and reusable
+ToolBlocks violet-blue.
 Unrecognized custom categories use neutral gray. The minimap uses these same block
 category colors.
 

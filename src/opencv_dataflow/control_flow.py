@@ -7,6 +7,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .payloads import NO_VALUE, FlowGroup, ValuePacket
+from .pointclouds import PointCloud
 from .processing import finite, integer
 from .tickets import DIRECT_CLOCK, TICKET_MODES, ticket_key
 
@@ -25,6 +26,8 @@ def identity(value):
 
 
 def byte_size(value):
+    if isinstance(value, PointCloud):
+        return value.nbytes + len(json.dumps(value.metadata).encode())
     if isinstance(value, np.ndarray):
         return value.nbytes
     if isinstance(value, ValuePacket):
