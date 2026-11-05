@@ -77,6 +77,11 @@ class ImagePyramid:
 def validate_payload(payload):
     from .recipes import validate_reference
 
+    if isinstance(payload, dict) and "processing_time" in payload:
+        from .timing import validate_timing
+
+        validate_timing(payload["processing_time"])
+
     if isinstance(payload, dict) and "recipe_ref" in payload:
         validate_reference(payload["recipe_ref"])
     from .outcomes import validate_outcome

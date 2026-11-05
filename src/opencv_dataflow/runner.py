@@ -29,6 +29,7 @@ def describe(graph):
             "recipe": block.last_recipe_ref,
             "recipe_parameters": block.last_recipe_parameters,
             "elapsed_ms": block.elapsed_ms,
+            "timing": block.timing.snapshot(),
             "score": result.score if result else None,
             "message": block.error or (result.message if result else ""),
             "outputs": {

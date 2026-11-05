@@ -1,5 +1,10 @@
 # Ticket outcomes, input gates and final judgments
 
+Ticketed connections carry source-start/output-finish UTC timestamps and monotonic
+elapsed time. The results window shows these spans and per-tool durations; each block
+retains current/last/average statistics. See [execution and ticket timing](timing.md)
+for queue waits, parallel spans and explicit decision boundaries.
+
 Tools processing ticketed data publish a compact result event to the job's shared
 `graph.ticket_results` consumer. All emitted connections carry a `tool_outcome_v1`
 record in their payload's `outcome` field. This works for image, depth, pyramid,
