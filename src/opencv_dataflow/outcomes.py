@@ -478,6 +478,22 @@ class TicketResults:
                 conflict=bool(row and len(row["judgments"]) > 1),
             )
 
+    def verdict(self, ticket):
+        """Compact filmstrip status without copying event histories."""
+        with self.lock:
+            row = self.rows.get(ticket_key(ticket))
+            if row is None:
+                return None
+            if row["had_error"] or len(row["judgments"]) > 1:
+                state = "error"
+            elif row["judgments"]:
+                state = "pass" if row["judgments"][0] else "fail"
+            elif "completion" in row:
+                state = "pass" if row["completion"]["passed"] else "fail"
+            else:
+                state = "pending"
+            return state, copy.deepcopy(row.get("final_fail_reasons", row.get("fail_reasons", [])))
+
     def find(self, ticket):
         with self.lock:
             return copy.deepcopy(self.rows.get(ticket_key(ticket)))

@@ -140,6 +140,18 @@ class Block:
         self.state = "idle"
         self.error = ""
 
+    def issue_source_ticket(self):
+        settings = self.ticket_settings
+        if settings.get("mode") not in TICKET_MODES:
+            raise ValueError("Unknown source ticket mode")
+        external = self.last_inputs.get(
+            "ticket", settings.get("value") if settings["mode"] == "fixed" else None
+        )
+        if settings["mode"] == "external" and "ticket" not in self.last_inputs:
+            raise ValueError("External ticket mode requires the ticket input")
+        ticket = getattr(self, "_clock", DIRECT_CLOCK).issue(self.id, settings["mode"], external)
+        return ticket
+
     def process(self, inputs: dict[str, Any]) -> Result:
         raise NotImplementedError
 
@@ -257,20 +269,10 @@ class Block:
                 if port.name in values:
                     validate_value(port, values[port.name])
             if self.ticket_source:
-                settings = self.ticket_settings
-                if settings.get("mode") not in TICKET_MODES:
-                    raise ValueError("Unknown source ticket mode")
-                external = self.last_inputs.get(
-                    "ticket", settings.get("value") if settings["mode"] == "fixed" else None
-                )
-                if settings["mode"] == "external" and "ticket" not in self.last_inputs:
-                    raise ValueError("External ticket mode requires the ticket input")
-                ticket = getattr(self, "_clock", DIRECT_CLOCK).issue(
-                    self.id, settings["mode"], external
-                )
-                self._source_ticket = ticket
-                self._report_activity_start(values)
-                self.report_event("ticket_assigned", values={"ticket": ticket})
+                self._source_ticket = self.issue_source_ticket()
+                if self._source_ticket is not None:
+                    self._report_activity_start(values)
+                    self.report_event("ticket_assigned", values={"ticket": self._source_ticket})
             work_inputs = (
                 self.last_inputs
                 if (
@@ -284,7 +286,9 @@ class Block:
                 raise TypeError("process() must return Result")
             result = self.finalize_result(result, self.last_inputs)
             if self.ticket_source:
-                result.outputs["ticket"] = self._source_ticket
+                result.outputs["ticket"] = (
+                    self._source_ticket if self._source_ticket is not None else NO_VALUE
+                )
             result = finish_outputs(self, result)
             if not isinstance(result.passed, (bool, np.bool_)) or (
                 result.final_judgment is not None
@@ -546,6 +550,12 @@ class Graph:
         self._activity_logical_prefix = ""
         self.production_completion = True
         self.validation_sets = []
+        from .filmstrip import Filmstrip
+
+        self.filmstrip = Filmstrip()
+        self.filmstrip_enabled = False
+        self.groups = []
+        self.viewport = {}
         self.run_profile = PROFILES["debug"]
         self._event_prefix = ""
         self.recipes = RecipeCatalog()
@@ -644,6 +654,11 @@ class Graph:
     def remove(self, block_id):
         self.connections = [c for c in self.connections if block_id not in (c.source, c.target)]
         del self.blocks[block_id]
+        self.groups = [
+            {**g, "members": [m for m in g["members"] if m != block_id]}
+            for g in self.groups
+            if any(m != block_id for m in g["members"])
+        ]
         self.invalidate()
 
     def invalidate(self):
@@ -666,6 +681,32 @@ class Graph:
             block.copy_runtime_from(other.blocks[key])
         self.copy_timing_from(other)
 
+    def copy_source_runtime_from(self, other):
+        for key, block in self.blocks.items():
+            source = other.blocks.get(key)
+            if source is None:
+                continue
+            if getattr(block, "file_source", False):
+                block.copy_runtime_from(source)
+            if hasattr(block, "graph") and hasattr(source, "graph"):
+                block.graph.copy_source_runtime_from(source.graph)
+
+    def sources_exhausted(self):
+        sources = []
+        for block in self.blocks.values():
+            if getattr(block, "file_source", False) and block.finite_source:
+                sources.append(block.exhausted)
+            if hasattr(block, "graph") and block.graph.has_finite_sources():
+                sources.append(block.graph.sources_exhausted())
+        return bool(sources) and all(sources)
+
+    def has_finite_sources(self):
+        return any(
+            (getattr(b, "file_source", False) and b.finite_source)
+            or (hasattr(b, "graph") and b.graph.has_finite_sources())
+            for b in self.blocks.values()
+        )
+
     def copy_timing_from(self, other):
         for key, block in self.blocks.items():
             if key not in other.blocks:
@@ -681,7 +722,9 @@ class Graph:
                 raise ValueError("Captured upstream graph changed; reset flow state")
             block = self.blocks[key]
             for name, value in snapshot.items():
-                if name == "_captured_graph":
+                if name == "_source_runtime":
+                    block.restore_runtime(value)
+                elif name == "_captured_graph":
                     block.graph.restore_captured(value)
                 else:
                     setattr(block, name, copy.deepcopy(value))
@@ -765,6 +808,8 @@ class Graph:
                 and not self._event_prefix
             ):
                 self._complete_tickets()
+                if self.filmstrip_enabled:
+                    self.filmstrip.capture(self)
 
     def _complete_tickets(self):
         from .outcomes import failed_input, packets_in
@@ -1108,6 +1153,8 @@ class Graph:
         catalog = self.recipes.definition() if include_recipes else None
         return {
             "schema_version": 1,
+            **({"groups": copy.deepcopy(self.groups)} if self.groups else {}),
+            **({"viewport": copy.deepcopy(self.viewport)} if self.viewport else {}),
             **({"run_profile": self.run_profile.name} if self.run_profile.name != "debug" else {}),
             **(
                 {"validation_sets": copy.deepcopy(self.validation_sets)}
@@ -1248,5 +1295,10 @@ class Graph:
             graph.add(block)
         for c in data["connections"]:
             graph.connect(**c)
+        from .workspace import validate_layout
+
+        graph.groups, graph.viewport = validate_layout(
+            data.get("groups", []), data.get("viewport", {}), graph.blocks
+        )
         graph.bind_project_dir(project_dir)
         return graph

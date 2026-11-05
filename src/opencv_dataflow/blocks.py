@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import csv
 import json
 import sqlite3
@@ -15,7 +16,7 @@ from .core import Block, Graph, Port, Registry, Result
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 from .objects import collection, contour_item
 from .parameters import BORDERS, scalar_value
-from .payloads import moved_payload
+from .payloads import NO_VALUE, moved_payload
 from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
 
 
@@ -36,20 +37,81 @@ class ImageFile(Block):
     block_type, subtype = "Input", "Files"
     type_id, title, category = "input.file", "Image file", "Input"
     outputs = (Port("image"), Port("info", "data"))
+    file_source = True
     defaults = {
         "path": "",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": False,
+        "repeat": "stop",
+        "filename_ticket": True,
         "color_format": "bgr",
         "pixel_depth": "uint8",
         "path_base": "working_directory",
     }
     parameter_choices = {
+        "source_mode": ("single", "files", "directory"),
+        "repeat": ("stop", "loop"),
         "color_format": COLOR_FORMATS,
         "pixel_depth": PIXEL_DEPTHS,
         "path_base": ("working_directory", "project"),
     }
+    parameter_help = {
+        "paths": "Ordered image paths; one image per activation in files mode.",
+        "directory": "Snapshot supported image filenames in sorted order.",
+        "repeat": "Stop at end, or loop. Reset flow state to restart.",
+        "filename_ticket": "Use filename tickets unless an explicit ticket mode is selected.",
+    }
+    extensions = {
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".bmp",
+        ".tif",
+        ".tiff",
+        ".webp",
+        ".jp2",
+        ".pbm",
+        ".pgm",
+        ".ppm",
+        ".exr",
+        ".hdr",
+        ".pic",
+    }
 
-    def process(self, inputs):
-        path = Path(self.parameters["path"])
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.reset_runtime()
+
+    def reset_runtime(self):
+        self._sequence = {
+            "signature": None,
+            "files": [],
+            "cursor": 0,
+            "finished": False,
+            "selected": None,
+        }
+
+    def snapshot_runtime(self):
+        return copy.deepcopy(self._sequence)
+
+    def restore_runtime(self, snapshot):
+        self._sequence = copy.deepcopy(snapshot)
+
+    def copy_runtime_from(self, other):
+        self.restore_runtime(other.snapshot_runtime())
+
+    @property
+    def finite_source(self):
+        return self.parameters["source_mode"] != "single" and self.parameters["repeat"] == "stop"
+
+    @property
+    def exhausted(self):
+        return self.finite_source and self._sequence["finished"]
+
+    def resolve_path(self, value):
+        path = Path(value)
         base = self.parameters["path_base"]
         if base not in ("working_directory", "project"):
             raise ValueError("Path base must be working_directory or project")
@@ -59,6 +121,64 @@ class ImageFile(Block):
                     "Save or open the project before using a project-relative image path"
                 )
             path = self.project_dir / path
+        return path
+
+    def issue_source_ticket(self):
+        mode = self.parameters["source_mode"]
+        state = self._sequence
+        signature = json.dumps(self.parameters, sort_keys=True)
+        if signature != state["signature"]:
+            self.reset_runtime()
+            state = self._sequence
+            state["signature"] = signature
+            state["finished"] = True
+            if mode == "single":
+                files = [self.resolve_path(self.parameters["path"])]
+            elif mode == "files":
+                paths = self.parameters["paths"]
+                if not isinstance(paths, list) or any(
+                    not isinstance(p, str) or not p for p in paths
+                ):
+                    raise ValueError("Image paths must be a list of nonempty strings")
+                files = [self.resolve_path(p) for p in paths]
+            elif mode == "directory":
+                directory = self.resolve_path(self.parameters["directory"])
+                if not directory.is_dir():
+                    raise ValueError(f"Image directory does not exist: {directory}")
+                candidates = (
+                    directory.rglob("*") if self.parameters["recursive"] else directory.iterdir()
+                )
+                files = sorted(
+                    (p for p in candidates if p.is_file() and p.suffix.lower() in self.extensions),
+                    key=lambda p: (str(p).casefold(), str(p)),
+                )
+            else:
+                raise ValueError("Unknown image source mode")
+            state["files"] = [str(p) for p in files]
+            if not files:
+                raise ValueError("No images selected or found")
+            state["finished"] = False
+        if state["finished"] and mode != "single":
+            state["selected"] = None
+            return None
+        index = state["cursor"] % len(state["files"])
+        state["selected"] = state["files"][index]
+        state["cursor"] += 1
+        state["finished"] = self.finite_source and state["cursor"] >= len(state["files"])
+        ticket = super().issue_source_ticket()
+        if self.parameters["filename_ticket"] and self.ticket_settings["mode"] == "auto_number":
+            ticket.update(
+                kind="string",
+                value=Path(state["selected"]).name,
+                session=f"{ticket['session']}:file:{ticket['sequence']}",
+            )
+        return ticket
+
+    def process(self, inputs):
+        selected = self._sequence["selected"]
+        if selected is None:
+            return Result({"image": NO_VALUE, "info": NO_VALUE}, message="Image sequence complete")
+        path = Path(selected)
         image = cv2.imdecode(np.frombuffer(self.read_bytes(path), np.uint8), cv2.IMREAD_UNCHANGED)
         if image is None:
             raise ValueError(f"Unable to decode image: {path}")
@@ -66,6 +186,8 @@ class ImageFile(Block):
             image, self.parameters["color_format"], self.parameters["pixel_depth"]
         )
         info = {
+            "filename": path.name,
+            "path": str(path),
             "width": int(output.shape[1]),
             "height": int(output.shape[0]),
             "channels": 1 if output.ndim == 2 else int(output.shape[2]),

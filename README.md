@@ -74,6 +74,21 @@ positions even when connections are unchanged**, including layouts inside nested
 ToolBlocks. Layout-only moves retain existing results. Positions are saved in the
 project; there is no automatic save on movement.
 
+For larger workspaces, select nodes and use **Workspace > Group selected nodes**
+(Ctrl+G). Drag the group's dashed header/border to move its members together;
+**Ungroup selection** (Ctrl+Shift+G) removes the container. The upper-right overview
+shows the visible region; click or drag there to navigate. Save remembers groups,
+zoom and viewport position, including inside ToolBlocks.
+
+**File > Load image-set workspace example** opens a grouped, three-image inspection.
+Press **Continuous** to run the complete set and see filename tickets and verdict
+borders in **Results > Image results filmstrip**. In an **Image file** block, use
+**Select images…** or **Select directory…**, then **Apply configuration**. Run once
+advances one image; Continuous stops at the end unless `repeat=loop`.
+**File > Reset flow state** restarts the sequence. Filmstrips also appear in the
+validation-set window. [Workspace and image-set details](docs/workspaces-image-sets.md)
+cover ordering, queue behavior, filename identity, retention and Lean mode.
+
 Train geometric and texture patterns with **Match shape pattern** and **Match
 texture pattern**. Select a matcher, run once to capture its input, then click
 **Train from input** in the inspector. Models are retained in saved projects and

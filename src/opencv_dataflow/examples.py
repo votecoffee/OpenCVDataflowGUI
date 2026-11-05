@@ -1091,3 +1091,26 @@ def queued_input_graph(registry):
     graph.connect(queue.id, "image", "parts_match", "image")
     graph.connect(queue.id, "image", "parts_inspect", "image")
     return graph
+
+
+def image_set_workspace_graph(registry):
+    """A finite, grouped inspection with pass/fail filename tickets and filmstrip results."""
+    graph = validation_graph(registry)
+    source = graph.blocks["validation_source"]
+    source.parameters.update(
+        source_mode="files",
+        paths=[
+            "validation_assets/pass.png",
+            "validation_assets/fail.png",
+            "validation_assets/unknown.png",
+        ],
+    )
+    graph.groups = [
+        {"id": "image_input", "name": "Image sequence", "members": [source.id]},
+        {
+            "id": "inspection",
+            "name": "One part inspection",
+            "members": ["validation_inspect", "validation_final"],
+        },
+    ]
+    return graph

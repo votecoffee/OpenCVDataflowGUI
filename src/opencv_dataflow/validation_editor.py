@@ -25,22 +25,28 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from .filmstrip import Filmstrip
+from .filmstrip_viewer import FilmstripViewer
 from .validation import EXPECTATIONS, run_set, validate_sets
 
 
 class ValidationWorker(QThread):
     progress = Signal(object)
 
-    def __init__(self, definition, manifest, registry, project_dir):
+    def __init__(self, definition, manifest, registry, project_dir, filmstrip=None):
         super().__init__()
         self.arguments = definition, manifest, registry, project_dir
+        self.filmstrip = filmstrip
         self.stop = threading.Event()
         self.report, self.error = None, ""
 
     def run(self):
         try:
             self.report = run_set(
-                *self.arguments, cancelled=self.stop.is_set, progress=self.progress.emit
+                *self.arguments,
+                cancelled=self.stop.is_set,
+                progress=self.progress.emit,
+                filmstrip=self.filmstrip,
             )
         except Exception as exc:
             self.error = f"{type(exc).__name__}: {exc}"
@@ -58,6 +64,10 @@ class ValidationManager(QDialog):
         self.setWindowTitle("Validation image sets")
         self.resize(1150, 800)
         layout = QVBoxLayout(self)
+        self.filmstrip = Filmstrip()
+        self.filmstrip_view = FilmstripViewer(lambda: self.filmstrip, self)
+        self.filmstrip_view.capture.setChecked(window.root_graph.run_profile.name != "lean")
+        layout.addWidget(self.filmstrip_view)
         self.editor = QWidget()
         edit = QVBoxLayout(self.editor)
         row = QHBoxLayout()
@@ -323,11 +333,13 @@ class ValidationManager(QDialog):
             return
         self.report = None
         self.results.clear()
+        self.filmstrip.clear()
         self.worker = ValidationWorker(
             self.window.root_graph.to_dict(),
             copy.deepcopy(item),
             self.window.registry,
             self.window.root_graph.project_dir,
+            self.filmstrip if self.filmstrip_view.capture.isChecked() else None,
         )
         self.worker.progress.connect(self.on_case)
         self.worker.finished.connect(self.finished_run)
