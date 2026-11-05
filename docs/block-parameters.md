@@ -1218,6 +1218,25 @@ Inputs: `image` (image), `channel` (image).
 | --- | --- | --- |
 | `channel` | `"0"` | `0`, `1`, `2`, `3` |
 
+## Intensity lookup table (`cv.intensity_lut`)
+
+Image processing / Contrast
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `curve` | `[[0.0, 0.0], [1.0, 1.0]]` | Shared [input, output] points in [0, 1]. Values beyond endpoints are clamped. |
+| `channel_0_curve` | `[]` | Optional override in stored channel order. Empty uses the shared curve. |
+| `channel_1_curve` | `[]` | Optional override in stored channel order. Empty uses the shared curve. |
+| `channel_2_curve` | `[]` | Optional override in stored channel order. Empty uses the shared curve. |
+| `channel_3_curve` | `[]` | Optional override in stored channel order. Empty uses the shared curve. |
+| `interpolation` | `"linear"` | `linear`, `step` Linear blends points. Step holds the previous point's output. |
+| `preserve_alpha` | `true` | Copy alpha on four-channel images and ignore the fourth curve. |
+
 ## Median blur (`cv.median_blur`)
 
 Image processing / Filtering

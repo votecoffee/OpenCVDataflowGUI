@@ -183,3 +183,41 @@ def test_channel_mask_and_distance_contract_errors():
         block = registry.create(type_id)
         block.execute(inputs)
         assert block.state == "error", type_id
+
+
+@pytest.mark.parametrize("dtype", [np.uint8, np.uint16])
+def test_intensity_lut_uses_channel_order_preserves_alpha_and_respects_mask(dtype):
+    maximum = np.iinfo(dtype).max
+    pixels = np.array([[[1, 2, 3, 7], [4, 5, 6, 8]]], dtype=dtype)
+    image = ImageArray(pixels, "rgba")
+    mask = np.array([[255, 0]], np.uint8)
+    block = run(
+        "cv.intensity_lut",
+        {"image": image, "mask": mask},
+        {
+            "curve": [[0, 0], [1, 0]],
+            "channel_0_curve": [[0, 1], [1, 0]],
+            "channel_1_curve": [[0, 0], [1, 1]],
+            "channel_3_curve": [[0, 1], [1, 1]],
+        },
+    )
+    output = block.last_output_images["image"]
+    assert output.dtype == dtype and image_format(output) == "rgba"
+    np.testing.assert_array_equal(output, [[[maximum - 1, 2, 0, 7], [4, 5, 6, 8]]])
+    block.parameters["preserve_alpha"] = False
+    result = block.execute({"image": image})
+    assert result is not None, block.error
+    assert (result.outputs["image"][..., 3] == maximum).all()
+
+
+def test_intensity_lut_step_includes_exact_knot_and_rejects_invalid_curve():
+    image = np.array([[0, 63, 64, 100, 255]], dtype=np.uint8)
+    block = run(
+        "cv.intensity_lut",
+        {"image": image},
+        {"curve": [[0, 0], [64 / 255, 0.6], [1, 1]], "interpolation": "step"},
+    )
+    np.testing.assert_array_equal(block.last_output_images["image"], [[0, 0, 153, 153, 255]])
+    block.parameters["channel_0_curve"] = [[0.5, 0], [0.5, 1]]
+    assert block.execute({"image": image}) is None
+    assert block.error_kind == "invalid"
