@@ -35,6 +35,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Fourier gain mask](fourier_gain/README.md) | Apply a custom notch at a specific frequency pair and reconstruct the image. |
 | [Fourier spectrum filtering](fourier_filter/README.md) | Reject a periodic stripe pattern with a band-stop filter and inverse DFT. |
 | [Discrete cosine transform](dct_round_trip/README.md) | Inspect DCT coefficients and verify the reconstructed image against the source. |
+| [EXIF orientation](exif_orientation/README.md) | Read a JPEG's metadata and compare the original and oriented pixel grids. |
 | [Raw YUV decoding](raw_yuv/README.md) | Decode the same NV12 frame from raw bytes and a packed matrix. |
 | [Multipage TIFF output](multipage_tiff_output/README.md) | Batch three pages and write a new lossless TIFF. |
 | [TIFF page sequence](tiff_page_sequence/README.md) | Replay a three-page 16-bit TIFF as separately ticketed images. |

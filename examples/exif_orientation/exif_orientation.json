@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "stored",
+      "type": "input.file",
+      "name": "Read EXIF and keep stored orientation",
+      "parameters": {
+        "path": "assets/rotated_tag.jpg",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "rgb",
+        "pixel_depth": "uint8",
+        "path_base": "project",
+        "metadata_mode": "read"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "oriented",
+      "type": "input.file",
+      "name": "Apply EXIF orientation",
+      "parameters": {
+        "path": "assets/rotated_tag.jpg",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "rgb",
+        "pixel_depth": "uint8",
+        "path_base": "project",
+        "metadata_mode": "apply_orientation"
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}
