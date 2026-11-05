@@ -206,6 +206,8 @@ Open [trained patterns and edges](examples/trained_patterns/trained_patterns.jso
 It needs no external assets: expected results are one geometric match, one texture
 match and two vertical edges. See [training and edge workflows](docs/patterns-edges.md)
 for training regions, pose coordinates, controls and current algorithm limits.
+Use **Subpixel** on template match blocks to refine centers and poses.
+[Compare pixel-grid and subpixel matches](examples/subpixel_template/README.md).
 
 Pattern matchers also return a configurable **pose**: set local x/y/angular offsets
 to locate an inspection origin on the part. **Pose from feature** creates a frame

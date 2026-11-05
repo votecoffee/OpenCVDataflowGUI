@@ -2299,6 +2299,7 @@ Inputs: `image` (image), `template` (image), `mask` (image, optional), `search_m
 | --- | --- | --- |
 | `method` | `"ccoeff_normed"` | `ccoeff_normed`, `ccorr_normed`, `sqdiff_normed`, `ccoeff`, `ccorr`, `sqdiff` |
 | `min_score` | `0.8` |  |
+| `subpixel` | `false` | Fit a local quadratic to refine centers when the response has a clear peak. |
 
 ## Measure Lab color (`inspect.measure_lab`)
 
@@ -2491,6 +2492,7 @@ Inputs: `image` (image), `template` (image), `mask` (image, optional), `search_m
 | --- | --- | --- |
 | `method` | `"ccoeff_normed"` | `ccoeff_normed`, `ccorr_normed`, `sqdiff_normed` |
 | `min_score` | `0.8` |  |
+| `subpixel` | `false` | Fit a local quadratic to refine centers when the response has a clear peak. |
 | `maximum_matches` | `25` |  |
 | `minimum_matches` | `1` |  |
 | `maximum_iou` | `0.25` | Suppress candidates that overlap an accepted match above this IoU. |

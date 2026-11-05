@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.file",
+      "name": "Scene",
+      "parameters": {
+        "path": "assets/scene.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "template",
+      "type": "input.file",
+      "name": "Template",
+      "parameters": {
+        "path": "assets/template.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        275
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "integer",
+      "type": "inspect.template_instances",
+      "name": "Pixel-grid matches",
+      "parameters": {
+        "method": "sqdiff_normed",
+        "min_score": 0.95,
+        "subpixel": false,
+        "maximum_matches": 2,
+        "minimum_matches": 2,
+        "maximum_iou": 0.25,
+        "draw_overlay": true,
+        "pose_offset_x": 0.0,
+        "pose_offset_y": 0.0,
+        "pose_offset_angle": 0.0
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "template",
+        "mask",
+        "search_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "poses",
+        "matches",
+        "count",
+        "response",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "refined",
+      "type": "inspect.template_instances",
+      "name": "Subpixel matches",
+      "parameters": {
+        "method": "sqdiff_normed",
+        "min_score": 0.95,
+        "subpixel": true,
+        "maximum_matches": 2,
+        "minimum_matches": 2,
+        "maximum_iou": 0.25,
+        "draw_overlay": true,
+        "pose_offset_x": 0.0,
+        "pose_offset_y": 0.0,
+        "pose_offset_angle": 0.0
+      },
+      "position": [
+        400,
+        280
+      ],
+      "exposed_inputs": [
+        "image",
+        "template",
+        "mask",
+        "search_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "poses",
+        "matches",
+        "count",
+        "response",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "integer",
+      "input": "image"
+    },
+    {
+      "source": "template",
+      "output": "image",
+      "target": "integer",
+      "input": "template"
+    },
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "refined",
+      "input": "image"
+    },
+    {
+      "source": "template",
+      "output": "image",
+      "target": "refined",
+      "input": "template"
+    }
+  ]
+}
