@@ -90,6 +90,12 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
 5. Save/load JSON projects from File. Select a wire or block and press Delete to
    remove it. Use the wheel to zoom, middle-drag to pan, and **Fit graph** to frame it.
 
+After **Run once**, enable **Live results** in the inspector to preview parameter
+edits on a supported block using its last captured inputs. Edits within 300 ms of
+one another produce a single preview. The checkbox starts off and resets when you
+leave the block. Previews stay in the inspector. Use **Apply configuration** to
+save the edits to the graph.
+
 Node rearrangements mark the project as modified. **Save/Ctrl+S remembers node
 positions even when connections are unchanged**, including layouts inside nested
 ToolBlocks. Layout-only moves retain existing results. Positions are saved in the

@@ -78,7 +78,7 @@ from .filmstrip_viewer import FilmstripViewer
 from .image_queue import ImageQueue
 from .outcomes import INPUT_FAILURE_POLICIES
 from .parallel_inspection import ParallelInspect
-from .payloads import describe_value, packet_for, prepare_inputs
+from .payloads import ValuePacket, describe_value, packet_for, prepare_inputs
 from .plugins import load_plugin
 from .queued_execution import QueuedExecution, background_queue
 from .recipe_editor import RecipeManager
@@ -161,7 +161,25 @@ class Runner(QThread):
             self.graph.close()
 
 
+class LivePreview(QThread):
+    def __init__(self, block, inputs, revision, parent):
+        super().__init__(parent)
+        self.block, self.inputs, self.revision = block, inputs, revision
+        self.error = ""
+
+    def run(self):
+        try:
+            try:
+                self.block.execute(self.inputs, self.isInterruptionRequested)
+            finally:
+                self.block.close()
+        except Exception as exc:
+            self.error = f"{type(exc).__name__}: {exc}"
+
+
 class Inspector(QWidget):
+    live_delay_ms = 300
+
     def __init__(self, window):
         super().__init__()
         self.window = window
@@ -170,6 +188,13 @@ class Inspector(QWidget):
         self._region_source = None
         self._region_inputs = {}
         self.fields, self.port_checks, self.level_fields, self.failure_fields = {}, [], {}, {}
+        self._live_revision = 0
+        self._live_due = False
+        self._live_worker = None
+        self._live_result = None
+        self.live_timer = QTimer(self)
+        self.live_timer.setSingleShot(True)
+        self.live_timer.timeout.connect(self.start_live_preview)
         layout = QVBoxLayout(self)
         title = QLabel("BLOCK INSPECTOR")
         title.setObjectName("sectionTitle")
@@ -180,6 +205,13 @@ class Inspector(QWidget):
         self.timing_label = QLabel()
         self.timing_label.setWordWrap(True)
         layout.addWidget(self.timing_label)
+        self.live_results = QCheckBox("Live results")
+        self.live_results.setEnabled(False)
+        self.live_results.setToolTip(
+            "Preview edited parameters on the last captured image. Apply configuration to save."
+        )
+        self.live_results.toggled.connect(self.toggle_live_results)
+        layout.addWidget(self.live_results)
         self.timing_timer = QTimer(self)
         self.timing_timer.setInterval(200)
         self.timing_timer.timeout.connect(self.refresh_timing)
@@ -205,6 +237,7 @@ class Inspector(QWidget):
 
     def select(self, block):
         if block is not self.block:
+            self.stop_live_results()
             self._region_image = None
             self._region_source = None
             self._region_inputs = {}
@@ -327,6 +360,12 @@ class Inspector(QWidget):
                     json.dumps(value) if isinstance(value, (list, dict)) else str(value)
                 )
             self.fields[key] = field
+            if isinstance(field, QComboBox):
+                field.currentTextChanged.connect(self.schedule_live_preview)
+            elif isinstance(field, QCheckBox):
+                field.toggled.connect(self.schedule_live_preview)
+            else:
+                field.textChanged.connect(self.schedule_live_preview)
             field.setToolTip(block.parameter_help.get(key, ""))
             if key in ("path", "model_path", "weights_path", "vocabulary_path"):
                 row = QWidget()
@@ -410,6 +449,92 @@ class Inspector(QWidget):
         self.form.addRow(apply_button)
         self.editor.setEnabled(self.window.runner is None)
         self.refresh_result()
+
+    def can_preview(self):
+        b = self.block
+        return bool(
+            b is not None
+            and self.window.runner is None
+            and self.fields
+            and type(b).__module__.startswith("opencv_dataflow.")
+            and b.category != "Output"
+            and b.block_type != "Output"
+            and not b.type_id.startswith(("input.", "output.", "flow.", "recipe.", "core."))
+            and not getattr(b, "sequence_memory", False)
+            and any(port.kind == "image" and port.name in b.last_inputs for port in b.inputs)
+        )
+
+    def toggle_live_results(self, enabled):
+        if not enabled:
+            self.cancel_live_preview()
+            self.refresh_result()
+
+    def cancel_live_preview(self):
+        self.live_timer.stop()
+        self._live_revision += 1
+        self._live_due = False
+        self._live_result = None
+        if self._live_worker is not None:
+            self._live_worker.requestInterruption()
+
+    def stop_live_results(self, wait=False):
+        self.live_results.setChecked(False)
+        if wait and self._live_worker is not None:
+            worker, self._live_worker = self._live_worker, None
+            worker.wait()
+            worker.deleteLater()
+
+    def hideEvent(self, event):
+        self.stop_live_results()
+        super().hideEvent(event)
+
+    def schedule_live_preview(self, *_):
+        if self.live_results.isChecked() and self.can_preview():
+            self._live_revision += 1
+            self._live_due = False
+            self.live_timer.start(self.live_delay_ms)
+
+    def start_live_preview(self):
+        if not self.live_results.isChecked() or not self.can_preview():
+            return
+        if self._live_worker is not None:
+            self._live_due = True
+            return
+        b = self.block
+        try:
+            candidate = self.window.registry.create(b.type_id, parameters=self.read_parameters())
+            candidate.restore_extra(b.serialize_extra())
+            candidate.project_dir = b.project_dir
+            candidate.recipe_bindings = dict(b.recipe_bindings)
+            candidate.recipe_model = b.recipe_model
+            candidate._recipes = b._recipes
+            candidate._allow_recipe_activation = False
+            inputs = {
+                name: ValuePacket(value, b.input_payloads.get(name, {}))
+                for name, value in b.last_inputs.items()
+            }
+        except (ValueError, TypeError) as exc:
+            self.window.statusBar().showMessage(f"Live preview · {exc}")
+            return
+        worker = LivePreview(candidate, inputs, self._live_revision, self)
+        self._live_worker = worker
+        worker.finished.connect(self.finish_live_preview)
+        worker.start()
+
+    def finish_live_preview(self):
+        worker, self._live_worker = self._live_worker, None
+        if worker is None:
+            return
+        if worker.revision == self._live_revision and self.live_results.isChecked():
+            if worker.error:
+                self.window.statusBar().showMessage(f"Live preview · {worker.error}")
+            else:
+                self._live_result = worker.block
+                self.refresh_result()
+        worker.deleteLater()
+        if self._live_due:
+            self._live_due = False
+            self.start_live_preview()
 
     def browse_images(self):
         paths, _ = QFileDialog.getOpenFileNames(self, "Select images", "", "Images (*.*)")
@@ -791,10 +916,15 @@ class Inspector(QWidget):
 
     def refresh_result(self):
         self.refresh_timing()
+        available = self.can_preview()
+        self.live_results.setEnabled(available)
+        if not available and self.live_results.isChecked():
+            self.stop_live_results()
+            return
         previous = self.preview_choice.currentText()
         self.preview_choice.blockSignals(True)
         self.preview_choice.clear()
-        b = self.block
+        b = self._live_result or self.block
         if b:
             if self.reference_capture is not None:
                 self.reference_capture.setEnabled("image" in b.last_inputs)
@@ -825,7 +955,8 @@ class Inspector(QWidget):
             timing = b.timing.snapshot()
             average = f"{timing['average_ms']:.2f}" if timing["average_ms"] is not None else "—"
             self.details.setPlainText(
-                f"{b.state.upper()}   ·   {b.elapsed_ms:.2f} ms   ·   score {score}\n"
+                ("LIVE PREVIEW · " if self._live_result is not None else "")
+                + f"{b.state.upper()}   ·   {b.elapsed_ms:.2f} ms   ·   score {score}\n"
                 + f"Average {average} ms · {timing['count']} activations\n"
                 + (b.last_rejection or b.error or (result.message if result else "Not executed"))
                 + "\n\n"
@@ -846,12 +977,13 @@ class Inspector(QWidget):
 
     def show_preview(self, choice):
         self.image.clear()
-        if self.block and " / " in choice:
+        block = self._live_result or self.block
+        if block and " / " in choice:
             prefix, name = choice.split(" / ", 1)
             images = {
-                "Input": self.block.last_inputs,
-                "Output": self.block.last_output_images,
-                "Graphic": self.block.last_graphics,
+                "Input": block.last_inputs,
+                "Output": block.last_output_images,
+                "Graphic": block.last_graphics,
             }[prefix]
             if name in images:
                 self.image.setPixmap(
@@ -1440,6 +1572,7 @@ class MainWindow(QMainWindow):
     def start_run(self, continuous):
         if self.runner:
             return
+        self.inspector.stop_live_results()
         # Worker owns a separate runtime graph. Qt paints stable display snapshots.
         try:
             execution_graph = Graph.from_dict(
@@ -1627,6 +1760,7 @@ class MainWindow(QMainWindow):
             self.stop_run()
             event.ignore()
         elif self.confirm_discard():
+            self.inspector.stop_live_results(wait=True)
             self.root_graph.close()
             event.accept()
         else:
