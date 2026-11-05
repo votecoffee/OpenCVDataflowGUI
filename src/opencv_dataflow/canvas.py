@@ -30,6 +30,7 @@ from .images import preview_rgb
 from .visual_style import (
     BLOCK_COLORS,
     BLOCK_STATE_COLORS,
+    NODE_SIZES,
     PORT_COLORS,
     block_type,
     connection_type,
@@ -58,7 +59,7 @@ class Socket(QGraphicsEllipseItem):
     def __init__(self, node, port, output, row):
         super().__init__(-7, -7, 14, 14, node)
         self.node, self.port, self.output = node, port, output
-        self.setPos(220 if output else 0, 62 + row * 25)
+        self.row = row
         self.visual_type = port_type(node.block, port, output)
         self.setBrush(QColor(PORT_COLORS[self.visual_type]))
         self.setPen(QPen(QColor("#17202c"), 2))
@@ -137,10 +138,32 @@ class Node(QGraphicsItem):
                     self.sockets[output, port.name] = Socket(self, port, output, row)
                     row += 1
         self.rows = max(len(block.exposed_inputs), len(block.exposed_outputs), 1)
-        self.height = 100 + self.rows * 25 + (100 if block.thumbnail else 0)
+        self.update_size()
+
+    def update_size(self):
+        self.width, spacing, thumbnail_height = NODE_SIZES[self.block.node_size]
+        for socket in self.sockets.values():
+            socket.setPos(self.width if socket.output else 0, 62 + socket.row * spacing)
+        bottom = 72 + self.rows * spacing
+        thumbnail_height = thumbnail_height if self.block.thumbnail else 0
+        self.thumbnail_rect = QRectF(12, bottom, self.width - 24, thumbnail_height)
+        self.status_y = bottom + (thumbnail_height + 9 if thumbnail_height else 0)
+        self.height = self.status_y + 28
+
+    def set_size(self, size):
+        if size == self.block.node_size:
+            return
+        if size not in NODE_SIZES:
+            raise ValueError("Invalid block size")
+        self.prepareGeometryChange()
+        self.block.node_size = size
+        self.update_size()
+        if self.scene():
+            self.scene().geometry_changed()
+        self.update()
 
     def boundingRect(self):
-        return QRectF(-9, -2, 238, self.height + 5)
+        return QRectF(-9, -2, self.width + 18, self.height + 5)
 
     def mousePressEvent(self, event):
         # Rubber-band selection can include both a visual container and its nodes.
@@ -162,60 +185,67 @@ class Node(QGraphicsItem):
         if self.isSelected():
             painter.setPen(QPen(QColor("#f4f7fb"), 5))
             painter.setBrush(Qt.BrushStyle.NoBrush)
-            painter.drawRoundedRect(QRectF(0, 0, 220, self.height), 9, 9)
+            painter.drawRoundedRect(QRectF(0, 0, self.width, self.height), 9, 9)
         painter.setPen(QPen(self.border_color, 2))
         painter.setBrush(QColor("#202c3d"))
-        painter.drawRoundedRect(QRectF(0, 0, 220, self.height), 9, 9)
+        painter.drawRoundedRect(QRectF(0, 0, self.width, self.height), 9, 9)
         painter.setPen(Qt.PenStyle.NoPen)
         painter.setBrush(status)
-        painter.drawRoundedRect(QRectF(1, 1, 218, 39), 8, 8)
+        painter.drawRoundedRect(QRectF(1, 1, self.width - 2, 39), 8, 8)
         painter.setPen(QColor("#f4f7fb"))
         font = painter.font()
         font.setBold(True)
         painter.setFont(font)
+        content_width = self.width - 24
         painter.drawText(
-            QRectF(12, 0, 196, 39),
+            QRectF(12, 0, content_width, 39),
             Qt.AlignmentFlag.AlignVCenter,
-            painter.fontMetrics().elidedText(b.name, Qt.TextElideMode.ElideRight, 193),
+            painter.fontMetrics().elidedText(
+                b.name, Qt.TextElideMode.ElideRight, content_width - 3
+            ),
         )
         font.setBold(False)
         painter.setFont(font)
+        port_width = content_width // 2
         for (output, name), socket in self.sockets.items():
-            rect = QRectF(12 if not output else 110, socket.pos().y() - 10, 98, 20)
+            rect = QRectF(self.width / 2 if output else 12, socket.pos().y() - 10, port_width, 20)
             painter.setPen(QColor("#c4cfdd"))
             painter.drawText(
                 rect,
                 Qt.AlignmentFlag.AlignRight if output else Qt.AlignmentFlag.AlignLeft,
-                painter.fontMetrics().elidedText(name, Qt.TextElideMode.ElideRight, 94),
+                painter.fontMetrics().elidedText(name, Qt.TextElideMode.ElideRight, port_width - 4),
             )
-        y = 72 + self.rows * 25
-        if b.thumbnail:
+        thumbnail = self.thumbnail_rect
+        if not thumbnail.isEmpty():
             images = {**b.last_output_images, **b.last_graphics}
             image = images.get(b.preview_output, next(iter(images.values()), None))
             painter.setBrush(QColor("#152030"))
             painter.setPen(Qt.PenStyle.NoPen)
-            painter.drawRoundedRect(QRectF(12, y, 196, 90), 5, 5)
+            painter.drawRoundedRect(thumbnail, 5, 5)
             if image is not None:
                 thumb = pixmap(image).scaled(
-                    196,
-                    90,
+                    thumbnail.size().toSize(),
                     Qt.AspectRatioMode.KeepAspectRatio,
                     Qt.TransformationMode.SmoothTransformation,
                 )
-                painter.drawPixmap(int(110 - thumb.width() / 2), int(y), thumb)
+                center = thumbnail.center()
+                painter.drawPixmap(
+                    int(center.x() - thumb.width() / 2), int(center.y() - thumb.height() / 2), thumb
+                )
             else:
                 painter.setPen(QColor("#74859b"))
                 painter.drawText(
-                    QRectF(12, y, 196, 90), Qt.AlignmentFlag.AlignCenter, "Run to preview"
+                    thumbnail, Qt.AlignmentFlag.AlignCenter, "Run to preview"
                 )
-            y += 99
         painter.setPen(QColor("#a6b6cb"))
         label = b.state.upper()
         if b.last_result and b.last_result.score is not None:
             label += f"  {b.last_result.score:.0%}"
         if b.state != "idle":
             label += f"  ·  {b.elapsed_ms:.1f} ms"
-        painter.drawText(QRectF(12, y - 3, 196, 22), Qt.AlignmentFlag.AlignLeft, label)
+        painter.drawText(
+            QRectF(12, self.status_y - 3, content_width, 22), Qt.AlignmentFlag.AlignLeft, label
+        )
 
     def itemChange(self, change, value):
         if change == QGraphicsItem.GraphicsItemChange.ItemPositionHasChanged:

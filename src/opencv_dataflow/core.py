@@ -38,6 +38,7 @@ from .recipes import RecipeCatalog, apply_recipe, validate_bindings
 from .run_profiles import PROFILES, captures, profile
 from .tickets import DEFAULT_TICKET_SETTINGS, DIRECT_CLOCK, TICKET_MODES, TicketClock
 from .timing import WorkTiming
+from .visual_style import DEFAULT_NODE_SIZE, NODE_SIZES
 
 
 @dataclass(frozen=True)
@@ -94,6 +95,7 @@ class Block:
         self.exposed_inputs = [p.name for p in self.inputs]
         self.exposed_outputs = [p.name for p in self.outputs]
         self.position = [0.0, 0.0]
+        self.node_size = DEFAULT_NODE_SIZE
         self.project_dir = None
         self.thumbnail = True
         self.preview_output = ""
@@ -448,6 +450,7 @@ class Block:
             **({"documentation": self.documentation} if self.documentation else {}),
             "parameters": self.parameters,
             "position": self.position,
+            **({"node_size": self.node_size} if self.node_size != DEFAULT_NODE_SIZE else {}),
             "exposed_inputs": self.exposed_inputs,
             "exposed_outputs": self.exposed_outputs,
             "thumbnail": self.thumbnail,
@@ -1294,6 +1297,10 @@ class Graph:
             if len(position) != 2 or not all(math.isfinite(v) for v in position):
                 raise ValueError("Invalid node position")
             block.position = position
+            size = item.get("node_size", DEFAULT_NODE_SIZE)
+            if not isinstance(size, str) or size not in NODE_SIZES:
+                raise ValueError("Invalid block size")
+            block.node_size = size
             for direction in ("inputs", "outputs"):
                 exposed = item[f"exposed_{direction}"]
                 if (

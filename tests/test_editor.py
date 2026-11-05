@@ -834,7 +834,48 @@ def test_project_relative_image_works_in_editor_worker(app, tmp_path, monkeypatc
     window.close()
 
 
-def test_layout_only_moves_persist_root_and_nested_without_rewiring_or_result_loss(app, tmp_path):
+def test_block_sizes_space_every_socket_and_scale_the_thumbnail(app):
+    class ManyPorts(Block):
+        inputs = tuple(Port(f"input_{index}") for index in range(12))
+        outputs = tuple(Port(f"output_{index}") for index in range(9))
+
+    graph = Graph()
+    block = graph.add(ManyPorts())
+    target = graph.add(ManyPorts())
+    target.position = [500, 0]
+    graph.connect(block.id, "output_8", target.id, "input_11")
+    scene = CanvasScene(graph)
+    node = scene.nodes[block.id]
+    assert block.node_size == "medium"
+    medium_thumbnail = node.thumbnail_rect.size()
+    medium_width = node.width
+    for size in ("small", "large"):
+        node.set_size(size)
+        for output in (False, True):
+            sockets = [
+                socket for (is_output, _), socket in node.sockets.items() if is_output == output
+            ]
+            assert all(
+                node.sceneBoundingRect().contains(socket.sceneBoundingRect()) for socket in sockets
+            )
+            assert all(
+                a.sceneBoundingRect().bottom() < b.sceneBoundingRect().top()
+                for a, b in zip(sockets, sockets[1:])
+            )
+        wire = scene.wires[0]
+        assert wire.path().pointAtPercent(0) == node.sockets[True, "output_8"].scenePos()
+        if size == "small":
+            assert node.width < medium_width
+            assert node.thumbnail_rect.isEmpty()
+        else:
+            assert node.width > medium_width
+            assert node.thumbnail_rect.width() > medium_thumbnail.width()
+            assert node.thumbnail_rect.height() > medium_thumbnail.height()
+
+
+def test_layout_moves_and_sizes_persist_root_and_nested_without_rewiring_or_result_loss(
+    app, tmp_path
+):
     window = MainWindow()
     graph = window.graph
     original = list(graph.blocks.values())
@@ -844,12 +885,19 @@ def test_layout_only_moves_persist_root_and_nested_without_rewiring_or_result_lo
     pump_until(app, lambda: window.runner is None)
     root_wires = list(graph.connections)
     nested_wires = list(toolblock.graph.connections)
-    window.scene.nodes[toolblock.id].setPos(235.5, -128.25)
+    root_node = window.scene.nodes[toolblock.id]
+    root_node.setSelected(True)
+    window.inspector.node_size.setCurrentText("Large")
+    assert window.dirty and toolblock.state == "pass"
+    root_node.setPos(235.5, -128.25)
     assert window.dirty and toolblock.state == "pass"
     assert graph.connections == root_wires
     window.enter_toolblock(toolblock)
     child = next(iter(toolblock.graph.blocks.values()))
-    window.scene.nodes[child.id].setPos(-61.25, 290.75)
+    child_node = window.scene.nodes[child.id]
+    child_node.setSelected(True)
+    window.inspector.node_size.setCurrentText("Small")
+    child_node.setPos(-61.25, 290.75)
     assert toolblock.state == "pass" and child.state == "pass"
     assert toolblock.graph.connections == nested_wires
     # Running copies results, without replacing either saved layout.
@@ -861,10 +909,14 @@ def test_layout_only_moves_persist_root_and_nested_without_rewiring_or_result_lo
     restored = Graph.load(window.path, window.registry)
     assert restored.blocks[toolblock.id].position == [235.5, -128.25]
     assert restored.blocks[toolblock.id].graph.blocks[child.id].position == [-61.25, 290.75]
+    assert restored.blocks[toolblock.id].node_size == "large"
+    assert restored.blocks[toolblock.id].graph.blocks[child.id].node_size == "small"
     assert restored.connections == root_wires
     assert restored.blocks[toolblock.id].graph.connections == nested_wires
     window.replace_graph(restored, window.path)
     assert window.scene.nodes[toolblock.id].pos().x() == 235.5
+    window.scene.nodes[toolblock.id].setSelected(True)
+    assert window.inspector.node_size.currentText() == "Large"
     window.close()
 
 
