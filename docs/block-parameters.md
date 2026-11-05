@@ -1133,6 +1133,18 @@ Ticket mode and fixed value are common inspector controls.
 
 No configurable algorithm parameters.
 
+## Sequence demo frames (`input.sequence_demo`)
+
+Input / Synthetic
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `stationary_frames` | `5` |  |
+| `step_pixels` | `2` |  |
+
 ## Estimate affine transform (`inspect.affine`)
 
 Inspection / Registration
@@ -1786,3 +1798,101 @@ Inputs: `image` (image), `region` (data), `transform` (data, optional).
 | `direction` | `"forward"` | `forward`, `inverse` Forward follows image geometry or source_to_target; inverse goes back. |
 | `interpolation` | `"nearest"` | `nearest`, `linear` Nearest preserves discrete masks; linear thresholds resampled coverage. |
 | `threshold` | `0.5` | Linear sampling cutoff in (0,1]; nearest is binary at any valid cutoff. |
+
+## Running background subtraction (`sequence.background`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `learn` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `5` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `method` | `"absolute"` | `absolute`, `variance` |
+| `learning_rate` | `0.05` | (0,1]; full-frame learning during warmup. |
+| `threshold` | `20.0` |  |
+| `deviations` | `3.0` |  |
+| `minimum_variance` | `4.0` |  |
+| `learn_foreground` | `false` | After warmup, allow foreground pixels into the background model. |
+| `stable_activations` | `0` | Optional consecutive low-foreground frames before readiness. |
+| `max_foreground_fraction` | `0.05` |  |
+
+## Farneback optical flow (`sequence.farneback`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `1000.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `pyramid_scale` | `0.5` |  |
+| `levels` | `3` |  |
+| `window` | `15` |  |
+| `iterations` | `3` |  |
+| `poly_n` | `"5"` | `5`, `7` |
+| `poly_sigma` | `1.2` |  |
+| `gaussian_window` | `false` |  |
+| `initial_flow` | `"none"` | `none`, `previous` |
+| `visual_max_motion` | `10.0` | Pixels mapped to full brightness; raw vectors are unchanged. |
+
+## Image memory / trained reference (`sequence.image_memory`)
+
+Sequence / Image memory
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `learn` (data, optional), `reference` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `3` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `mode` | `"mean"` | `first`, `latest`, `mean` |
+| `freeze_after_warmup` | `true` | Keep learned image after readiness; disable to keep learning. |
+| `reference_context` | `"strict"` | `strict`, `shape_only` Strict checks grid/recipe; shape_only permits reuse. |
+
+## Track points (Lucas-Kanade) (`sequence.track_points`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `1000.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `max_points` | `200` |  |
+| `quality` | `0.01` |  |
+| `min_distance` | `7.0` |  |
+| `block_size` | `7` |  |
+| `gradient_size` | `"3"` | `3`, `5`, `7` |
+| `harris` | `false` |  |
+| `harris_k` | `0.04` |  |
+| `window` | `21` |  |
+| `max_level` | `3` |  |
+| `iterations` | `30` |  |
+| `epsilon` | `0.01` |  |
+| `min_eigenvalue` | `0.0001` |  |
+| `error_metric` | `"patch"` | `patch`, `min_eigenvalue` |
+| `max_error` | `30.0` | Patch-error limit; not applied when requesting minimum eigenvalues. |
+| `fb_tolerance` | `1.0` | Forward/backward pixel tolerance; 0 disables the backward check. |
+| `reseed_below` | `50` |  |
+| `min_tracks` | `3` |  |
+| `min_track_age` | `2` |  |

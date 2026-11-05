@@ -198,6 +198,10 @@ class ParallelInspect(Block):
             raise ValueError(
                 "Nested parallel per-pose blocks are not supported inside an inspection"
             )
+        if any(getattr(b, "sequence_memory", False) for b in walk(tool.graph)):
+            raise ValueError(
+                "Sequence memory needs a stable stream outside fresh per-part inspection jobs"
+            )
 
     def serialize_extra(self):
         return {"inspection": self.inspection.definition(include_recipes=False)}

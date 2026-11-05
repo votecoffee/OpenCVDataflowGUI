@@ -294,6 +294,8 @@ def packet_for(result, name):
 
 
 def describe_value(value):
+    if callable(getattr(value, "describe", None)):
+        return describe_value(value.describe())
     """Bounded JSON descriptions for receipts and inspectors, never image pixels."""
     if value is NO_VALUE:
         return {"emitted": False}

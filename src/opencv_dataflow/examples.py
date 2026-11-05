@@ -3,6 +3,20 @@
 from .core import Graph
 
 
+def sequence_graph(registry):
+    """Stationary warmup followed by motion, with no camera or external files."""
+    graph = Graph()
+    source = graph.add(registry.create("input.sequence_demo", block_id="sequence_source"))
+    source.position = [0, 350]
+    for index, kind in enumerate(("background", "farneback", "track_points", "image_memory")):
+        block = graph.add(registry.create(f"sequence.{kind}", block_id=f"sequence_{kind}"))
+        block.position = [360, index * 430]
+        if kind == "background":
+            block.parameters["warmup"] = 3
+        graph.connect(source.id, "image", block.id, "image")
+    return graph
+
+
 def recipes_graph(registry):
     """Switch inspection settings and geometric/ORB/SIFT models by recipe revision."""
     import numpy as np

@@ -54,6 +54,11 @@ frame transforms and robot pose/measurement adapters. See
 
 ## Vision development
 
+- Additional sequence algorithms: MOG2/KNN subtraction and CSRT/KCF object trackers,
+  with explicit ownership/snapshot support for opaque native state. Persisted reference
+  images and copyable running-background, Farneback and LK sequence blocks are available;
+  see [sequence memory](sequence-memory.md).
+
 - Calibrated region overlays, physical measurements and nonlinear region remapping for lens distortion.
 - More OpenCV tools: multiple template matches, additional descriptors/robust matching and advanced calibration.
 - General dynamic bindings beyond recipe paths, richer types, promoted parameters and versioned ToolBlock libraries.

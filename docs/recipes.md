@@ -6,7 +6,7 @@ job-wide system stored with the project, not a separate cross-process recipe
 server or PLC driver.
 
 A recipe contains an ID, revision, checksum, a `settings` JSON object and named
-trained pattern `models`. Numeric recipe requests are normalized to text IDs;
+trained pattern/reference-image `models`. Numeric recipe requests are normalized to text IDs;
 numeric `1` selects recipe `"1"`. Every saved revision is immutable. Updating
 settings or training data creates another revision; older revisions remain
 available for queued/in-flight work.
@@ -16,7 +16,7 @@ available for queued/in-flight work.
 Open **Recipes > Manage recipes…** while stopped:
 
 1. Enter a recipe ID and settings such as `{"threshold": 110, "min_score": 0.7}`.
-2. Import sealed shape/texture model JSON, or select a trained pattern tool and
+2. Import sealed shape/texture/reference-image JSON, or select a trained pattern or Image memory tool and
    choose **Copy selected tool model…** (including a training block's last model output). Give each model an identifier such as
    `part`, `geometry` or `surface`. Model names cannot contain dots/spaces.
 3. Click **Save new revision**. The first installed recipe becomes active and the
@@ -33,6 +33,11 @@ selected asset for copying if it has no separately trained local model.
 Manager edits and activation keep accepted queue data. They do not invalidate the
 graph or rewrite existing recipe revisions. Use a unique part ticket for each
 physical workpiece; recipe identity is separate from work/ticket identity.
+
+Reference images use `trained_image_v1` assets. Extract a recipe slot such as
+`models.reference` with **Recipe field** and wire it to Image memory's `reference`
+input, alongside the same recipe-tagged image. See [sequence memory](sequence-memory.md)
+for strict grid checks, readiness, asset limits and reference training controls.
 
 ## Recipe blocks
 

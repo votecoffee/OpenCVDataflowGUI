@@ -279,7 +279,7 @@ class Block:
                 kind="error",
                 message=self.error,
             )
-            if getattr(self, "accept_events", False):
+            if getattr(self, "accept_events", False) or getattr(self, "sequence_memory", False):
                 self.reset_runtime()
         finally:
             self.parameters = configured_parameters
