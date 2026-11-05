@@ -661,6 +661,7 @@ def builtin_registry():
     )
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_tools import CLOUD_BLOCKS
+    from .code_readers import CODE_READER_BLOCKS
     from .collection_tools import COLLECTION_BLOCKS
     from .control_flow import CONTROL_BLOCKS
     from .coordination import CoordinateInputs, CounterInput
@@ -719,6 +720,7 @@ def builtin_registry():
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,
         *COLLECTION_BLOCKS,
+        *CODE_READER_BLOCKS,
         TrainShapePattern,
         MatchShapePattern,
         TrainTexturePattern,

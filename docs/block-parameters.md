@@ -1957,6 +1957,37 @@ Inputs: `image_a` (image), `image_b` (image), `window` (image, optional).
 | `hanning_window` | `false` |  |
 | `min_response` | `0.0` |  |
 
+## Read linear barcodes (`inspect.read_barcode`)
+
+Inspection / Code reading
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_reads` | `1` |  |
+| `draw_overlay` | `true` |  |
+| `detector_scales` | `[0.01, 0.03, 0.06, 0.08]` |  |
+| `downsampling_threshold` | `512.0` |  |
+| `gradient_threshold` | `64.0` |  |
+| `super_resolution_model` | `""` |  |
+| `super_resolution_weights` | `""` |  |
+
+## Read QR codes (`inspect.read_qr`)
+
+Inspection / Code reading
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_reads` | `1` |  |
+| `draw_overlay` | `true` |  |
+| `mode` | `"multi"` | `multi`, `single`, `curved` |
+| `eps_x` | `0.2` |  |
+| `eps_y` | `0.1` |  |
+| `use_alignment_markers` | `true` |  |
+
 ## Refine corners to subpixel (`inspect.refine_corners`)
 
 Inspection / Features
