@@ -697,12 +697,14 @@ def builtin_registry():
     from .stereo3d import STEREO3D_BLOCKS
     from .template_instances import FindTemplateInstances
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
+    from .video_files import VideoFile, WriteVideo
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
 
     registry = Registry()
     for block in (
         DemoImage,
         ImageFile,
+        VideoFile,
         Camera,
         Grayscale,
         Blur,
@@ -711,6 +713,7 @@ def builtin_registry():
         Threshold,
         Contours,
         SaveImage,
+        WriteVideo,
         WriteResults,
         Histogram,
         CalibrationGrid,

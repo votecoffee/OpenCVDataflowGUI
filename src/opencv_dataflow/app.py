@@ -339,7 +339,7 @@ class Inspector(QWidget):
                 self.form.addRow(key.replace("_", " ").title(), row)
             else:
                 self.form.addRow(key.replace("_", " ").title(), field)
-        if getattr(block, "file_source", False):
+        if getattr(block, "file_source", False) and "source_mode" in block.defaults:
             for title, callback in (
                 ("Select images…", self.browse_images),
                 ("Select directory…", self.browse_directory),
@@ -429,7 +429,7 @@ class Inspector(QWidget):
             title = (
                 "Select model or index file"
                 if self.block.category == "ML"
-                else "Select input image"
+                else "Select input file"
             )
             path, _ = QFileDialog.getOpenFileName(self, title)
         else:

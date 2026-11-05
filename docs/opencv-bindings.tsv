@@ -126,28 +126,28 @@ P1	method	cv2.text.TextDetectorCNN.detect	method name only	-
 P1	function	cv2.text.TextDetectorCNN_create	no static reference	-
 P1	class	cv2.VideoCapture	literal reference	-
 P1	method	cv2.VideoCapture.get	method name only	-
-P1	method	cv2.VideoCapture.getBackendName	no static reference	-
+P1	method	cv2.VideoCapture.getBackendName	method name only	-
 P1	method	cv2.VideoCapture.getExceptionMode	no static reference	-
-P1	method	cv2.VideoCapture.grab	no static reference	-
+P1	method	cv2.VideoCapture.grab	method name only	-
 P1	method	cv2.VideoCapture.isOpened	method name only	-
 P1	method	cv2.VideoCapture.open	method name only	-
 P1	method	cv2.VideoCapture.read	method name only	-
 P1	method	cv2.VideoCapture.release	method name only	-
-P1	method	cv2.VideoCapture.retrieve	no static reference	-
+P1	method	cv2.VideoCapture.retrieve	method name only	-
 P1	method	cv2.VideoCapture.set	method name only	-
 P1	method	cv2.VideoCapture.setExceptionMode	no static reference	-
 P1	method	cv2.VideoCapture.waitAny	no static reference	-
 P1	function	cv2.VideoCapture_waitAny	no static reference	-
-P1	class	cv2.VideoWriter	no static reference	-
+P1	class	cv2.VideoWriter	literal reference	-
 P1	method	cv2.VideoWriter.fourcc	no static reference	-
 P1	method	cv2.VideoWriter.get	method name only	-
-P1	method	cv2.VideoWriter.getBackendName	no static reference	-
+P1	method	cv2.VideoWriter.getBackendName	method name only	-
 P1	method	cv2.VideoWriter.isOpened	method name only	-
 P1	method	cv2.VideoWriter.open	method name only	-
 P1	method	cv2.VideoWriter.release	method name only	-
 P1	method	cv2.VideoWriter.set	method name only	-
 P1	method	cv2.VideoWriter.write	method name only	-
-P1	function	cv2.VideoWriter_fourcc	no static reference	-
+P1	function	cv2.VideoWriter_fourcc	literal reference	-
 P1	function	cv2.watershed	literal reference	-
 P2	class	cv2.aruco.ArucoDetector	literal reference	-
 P2	method	cv2.aruco.ArucoDetector.detectMarkers	method name only	-

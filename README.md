@@ -378,6 +378,19 @@ ordinary Grayscale supports uint8/uint16/float32; Canny requires uint8 grayscale
 Legacy G-API Grayscale also requires uint8. For explicit conversion, choose the
 color format and pixel depth in the file input or a Convert image block.
 
+### Video file replay and recording
+
+**Video file** emits one decoded frame per graph activation. Set a zero-based
+start frame, optional exclusive end frame, stride and stop or loop mode.
+The frame ticket and metadata include its filename and index. The metadata
+also gives decoder time or an explicitly labeled frame-rate estimate.
+
+Connect the result to **Write video file** to encode processed frames at a
+configured playback rate. Choose a new output path and a codec supported by
+the selected backend. A continuous run or a headless run with `--all-images`
+writes one clip, which is finalized when execution closes.
+See [video file workflows](docs/video-files.md).
+
 ### Reusable ToolBlocks
 
 Select nodes and use **ToolBlocks > Create from selected nodes** to encapsulate

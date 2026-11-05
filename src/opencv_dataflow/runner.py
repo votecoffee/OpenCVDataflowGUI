@@ -61,7 +61,7 @@ def main(argv=None):
     parser.add_argument(
         "--all-images",
         action="store_true",
-        help="Run a finite file/directory sequence to completion",
+        help="Run a finite image or video file sequence to completion",
     )
     parser.add_argument("--profile", choices=PROFILES, help="Override the saved run profile")
     parser.add_argument(
@@ -89,7 +89,7 @@ def main(argv=None):
         if args.profile:
             graph.set_run_profile(args.profile)
         if args.all_images and not graph.has_finite_sources():
-            raise ValueError("--all-images requires a finite file/directory source (repeat=stop)")
+            raise ValueError("--all-images requires a finite image or video source (repeat=stop)")
         if background_queue(graph) is not None:
             queued = QueuedExecution(graph, registry)
             queued.start()
