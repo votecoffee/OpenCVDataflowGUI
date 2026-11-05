@@ -2692,8 +2692,8 @@ P3	method	cv2.FastFeatureDetector.setNonmaxSuppression	no static reference	-
 P3	method	cv2.FastFeatureDetector.setThreshold	no static reference	-
 P3	method	cv2.FastFeatureDetector.setType	no static reference	-
 P3	function	cv2.FastFeatureDetector_create	literal reference	-
-P3	function	cv2.fastNlMeansDenoisingColoredMulti	no static reference	-
-P3	function	cv2.fastNlMeansDenoisingMulti	no static reference	-
+P3	function	cv2.fastNlMeansDenoisingColoredMulti	literal reference	-
+P3	function	cv2.fastNlMeansDenoisingMulti	literal reference	-
 P3	class	cv2.Feature2D	no static reference	-
 P3	method	cv2.Feature2D.compute	method name only	-
 P3	method	cv2.Feature2D.defaultNorm	no static reference	-
