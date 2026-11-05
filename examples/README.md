@@ -22,7 +22,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Flat-field illumination correction](flat_field/README.md) | Remove a lighting gradient using bright and dark references while retaining a synthetic defect. |
 | [Tilted window statistics](tilted_statistics/README.md) | Measure two diagonal patches using batched 45-degree windows. |
 | [Image summary statistics](image_statistics/README.md) | Measure a selected patch and mark the extrema in source pixel coordinates. |
-| [Intensity profile](intensity_profile/README.md) | Reduce each column in an inspection region and plot the intensity peaks. |
+| [Intensity profile](intensity_profile/README.md) | Plot the mean and locate the maximum in each selected column. |
 | [Find nonzero pixels](nonzero_pixels/README.md) | Extract a bounded set of coordinates and full bounds from a texture mask. |
 | [Pixel comparison](pixel_comparison/README.md) | Compare a background difference with a scalar to build a texture mask. |
 | [Image arithmetic](image_arithmetic/README.md) | Subtract a blurred background and apply scalar gain to the signed residual. |

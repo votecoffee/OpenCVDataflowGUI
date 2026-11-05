@@ -80,6 +80,31 @@
       ],
       "thumbnail": true,
       "preview_output": "profile"
+    },
+    {
+      "id": "maxima",
+      "type": "cv.intensity_profile",
+      "name": "Last maximum per column",
+      "parameters": {
+        "axis": "columns",
+        "statistic": "maximum",
+        "extrema_tie": "last"
+      },
+      "position": [
+        660,
+        270
+      ],
+      "exposed_inputs": [
+        "image",
+        "region"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "selected_count",
+        "points"
+      ],
+      "thumbnail": true,
+      "preview_output": "profile"
     }
   ],
   "connections": [
@@ -99,6 +124,18 @@
       "source": "region",
       "output": "region",
       "target": "profile",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "maxima",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "maxima",
       "input": "region"
     }
   ]

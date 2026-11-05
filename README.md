@@ -420,7 +420,7 @@ a blurred background and scales the signed residual. The
 background difference into a binary texture mask. The [nonzero pixels example](examples/nonzero_pixels/README.md)
 extracts coordinates from that mask and outlines its full bounds. The
 [intensity profile example](examples/intensity_profile/README.md) plots per-column
-mean intensity inside an inspection region. The
+mean intensity inside an inspection region and locates the maximum in each column. The
 [image statistics example](examples/image_statistics/README.md) reports
 selected-region measurements and marks the darkest and brightest pixels. The
 [tilted statistics example](examples/tilted_statistics/README.md) measures
