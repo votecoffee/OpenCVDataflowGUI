@@ -18,11 +18,11 @@ P1	function	cv2.fitEllipse	literal reference	-
 P1	function	cv2.fitLine	literal reference	-
 P1	function	cv2.floodFill	literal reference	-
 P1	function	cv2.grabCut	literal reference	-
-P1	function	cv2.matchShapes	no static reference	-
+P1	function	cv2.matchShapes	literal reference	-
 P1	function	cv2.matchTemplate	literal reference	-
 P1	function	cv2.minAreaRect	literal reference	-
 P1	function	cv2.minEnclosingCircle	literal reference	-
-P1	function	cv2.pointPolygonTest	no static reference	-
+P1	function	cv2.pointPolygonTest	literal reference	-
 P1	function	cv2.PSNR	literal reference	-
 P1	class	cv2.QRCodeDetector	literal reference	-
 P1	method	cv2.QRCodeDetector.decodeCurved	no static reference	-
@@ -303,7 +303,7 @@ P2	method	cv2.ccm.ColorCorrectionModel.setWeightsList	no static reference	-
 P2	method	cv2.ccm.ColorCorrectionModel.write	method name only	-
 P2	function	cv2.ccm.gammaCorrection	no static reference	-
 P2	function	cv2.convexHull	literal reference	-
-P2	function	cv2.convexityDefects	no static reference	-
+P2	function	cv2.convexityDefects	literal reference	-
 P2	function	cv2.createGeneralizedHoughBallard	no static reference	-
 P2	function	cv2.createGeneralizedHoughGuil	no static reference	-
 P2	function	cv2.dct	no static reference	-

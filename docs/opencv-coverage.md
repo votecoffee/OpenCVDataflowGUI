@@ -13,7 +13,7 @@ lists the tools that can be placed on a graph today.
 | 1 | Separate touching parts and isolate foreground | The basic workflow is available, including distance-peak seed generation, watershed and morphological reconstruction. Add a reusable touching-parts job with calibration and validation fixtures. |
 | 2 | Reference comparison and defect scoring | The basic workflow is available, including histogram backprojection and a reusable registered defect inspection. Add validated defect-specific inspection recipes and lighting normalization. |
 | 3 | Multi-result template search and pick selection | Subpixel template peaks, pose-relative clearance, distinct visible-feature coverage and depth occlusion evidence, and deterministic pick ranking. Fixed-scale multi-result template matching now supplies ranked peaks, overlap suppression and poses. Trainable matchers and collection filters cover other parts of this pipeline. |
-| 4 | Calipers, widths, contours and shape fitting | Intensity profiles along pose-relative calipers, paired edges, width/gap/discontinuity along a path, convex hull/defects, `pointPolygonTest` and contour-to-contour `matchShapes`. Dedicated line, ellipse and minimum enclosing circle fits now accept points or a collection item and report residuals. |
+| 4 | Calipers, widths, contours and shape fitting | Intensity profiles along pose-relative calipers, paired edges, width/gap/discontinuity along a path and contour-profile tolerances. Hull and convexity defects, point-to-contour distance, contour similarity and dedicated line, ellipse and minimum enclosing circle fits are available. |
 | 5 | File video and replay | Video file/stream sources, decode timestamps, seek, frame ranges and extraction, codec/container selection, video writing and deterministic end-of-stream. Extend image-camera acquisition with timed replay and independent source readiness. |
 | 6 | Industrial text and code workflows | OCR text detection, recognition, character rules and training/recipe assets. Add verified Data Matrix and other required symbologies through a suitable backend, and a separate grading workflow. Basic QR and OpenCV linear-code decoding are available. |
 | 7 | Color tolerance and coating checks | ROI color statistics, Lab color difference including ΔE00, color-chart calibration, correction matrix and color-class decisions. Existing histogram and color balance remain useful inputs. |
@@ -150,6 +150,13 @@ See the [OpenCV backprojection tutorial](https://docs.opencv.org/5.0/tutorials/i
 It reports image-space geometry and root mean squared distance to the fitted
 boundary, with an optional residual tolerance. Circle mode returns the
 smallest enclosing circle.
+
+**Compare contours (Hu moments)** measures similarity between ordered point
+lists or selected contour/blob collection items. **Contour hull and convexity
+defects** reports hull vertices, solidity and concavity depths from a
+whole-pixel contour. **Test points against contour** classifies points as
+inside, on the edge or outside, and can filter them by signed distance to the
+boundary. See the [OpenCV shape-analysis reference](https://docs.opencv.org/5.0/main_modules/geometry_shape.html).
 
 
 ## Available alignment and restoration

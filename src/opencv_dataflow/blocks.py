@@ -663,6 +663,7 @@ def builtin_registry():
     from .cloud_tools import CLOUD_BLOCKS
     from .code_readers import CODE_READER_BLOCKS
     from .collection_tools import COLLECTION_BLOCKS
+    from .contour_analysis import CONTOUR_ANALYSIS_BLOCKS
     from .control_flow import CONTROL_BLOCKS
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample
@@ -729,6 +730,7 @@ def builtin_registry():
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,
         *COLLECTION_BLOCKS,
+        *CONTOUR_ANALYSIS_BLOCKS,
         *CODE_READER_BLOCKS,
         *SEGMENTATION_BLOCKS,
         CompareImageQuality,

@@ -20,9 +20,9 @@ from .processing import ConnectedComponents, finite, gray_image, integer
 from .selection import SELECTION_INPUTS, contains, selection_mask
 
 
-def read_collection(block, inputs):
-    data = copy.deepcopy(validate_collection(inputs["collection"]))
-    payload = {**data.get("context", {}), **block.input_payloads.get("collection", {})}
+def read_collection(block, inputs, port="collection"):
+    data = copy.deepcopy(validate_collection(inputs[port]))
+    payload = {**data.get("context", {}), **block.input_payloads.get(port, {})}
     validate_payload(payload)
     if payload.get("spatial", {}).get("image_size", data["image_size"]) != data["image_size"]:
         raise ValueError("Collection spatial dimensions do not match its image_size")
