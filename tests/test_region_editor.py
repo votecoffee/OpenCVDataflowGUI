@@ -138,12 +138,12 @@ def test_dialog_drafts_are_private_and_incomplete_polygon_cannot_accept(app):
         dialog.close()
 
 
-def test_inspector_accept_cancel_cache_and_saved_project(app, monkeypatch, tmp_path):
+def test_inspector_accept_cancel_cache_and_saved_project(app, load_example, monkeypatch, tmp_path):
     from opencv_dataflow.app import MainWindow
     from opencv_dataflow.core import Graph
 
     window = MainWindow()
-    window.load_regions_example()
+    load_example(window, "regions")
     window.graph.run()
     block = window.graph.blocks["roi_circle"]
     window.scene.nodes[block.id].setSelected(True)
@@ -187,11 +187,11 @@ def test_inspector_accept_cancel_cache_and_saved_project(app, monkeypatch, tmp_p
     window.close()
 
 
-def test_inspector_missing_frame_and_active_run_do_not_change_graph(app, monkeypatch):
+def test_inspector_missing_frame_and_active_run_do_not_change_graph(app, load_example, monkeypatch):
     from opencv_dataflow.app import MainWindow
 
     window = MainWindow()
-    window.load_regions_example()
+    load_example(window, "regions")
     window.scene.nodes["roi_circle"].setSelected(True)
     original = window.graph.to_dict()
     warnings = []

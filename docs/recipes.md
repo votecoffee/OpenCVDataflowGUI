@@ -165,7 +165,7 @@ stopped; runtime selector blocks activate already installed revisions.
 
 ## Example
 
-Open **File > Load recipes example**. Widget A uses an edge model and ORB; Widget B
+Open [recipes](../examples/recipes/recipes.json). Widget A uses an edge model and ORB; Widget B
 uses a corner model and SIFT, with different threshold/search settings. Both are
 synthetic positive examples, not production acceptance thresholds. The geometric
 model uses the inspector binding; the texture model comes from a Recipe value or

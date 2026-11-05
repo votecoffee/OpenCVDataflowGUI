@@ -482,7 +482,7 @@ def test_recipe_parameter_types_are_checked_before_processing(kind, name, value)
     assert block.parameters == configured and block.current_emissions == {}
 
 
-def test_saved_recipe_example_and_gui_version_activation(app, tmp_path):
+def test_saved_recipe_example_and_gui_version_activation(app, load_example, tmp_path):
     from PySide6.QtTest import QTest
 
     from opencv_dataflow.examples import recipes_graph
@@ -502,7 +502,7 @@ def test_saved_recipe_example_and_gui_version_activation(app, tmp_path):
     assert main(["examples/recipes/recipes.json", "--repeat", "2", "--report", str(report)]) == 0
     assert json.loads(report.read_text())["active_recipe"]["id"] == "Widget A"
     window = MainWindow()
-    window.load_recipes_example()
+    load_example(window, "recipes")
     window.root_graph.recipes.activate("Widget B", project_default=True)
     window.start_run(False)
     for _ in range(1000):

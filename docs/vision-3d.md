@@ -8,13 +8,15 @@ tested OpenCV 5.0.0 contrib build.
 
 ## Try the included jobs
 
-| File menu example | What it demonstrates |
+Open these projects with **File → Open…**.
+
+| Project | What it demonstrates |
 | --- | --- |
-| Load stereo cloud example | Rectified 8 px disparity from a known baseline reconstructs a 3 m plane. |
-| Load RGB-D cloud example | Metric depth, RGB color, pixel correspondence, XYZ filtering, voxel sampling and normals. |
-| Load 3D pose example | Project known XYZ, recover a camera-relative pose, and triangulate the points. |
-| Load structured light example | Generate Gray-code patterns and decode an identity camera/projector mapping. |
-| Load TSDF fusion example | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
+| [stereo cloud](../examples/stereo_cloud/stereo_cloud.json) | Rectified 8 px disparity from a known baseline reconstructs a 3 m plane. |
+| [RGB-D cloud](../examples/rgbd_cloud/rgbd_cloud.json) | Metric depth, RGB color, pixel correspondence, XYZ filtering, voxel sampling and normals. |
+| [3D pose](../examples/pose_3d/pose_3d.json) | Project known XYZ, recover a camera-relative pose, and triangulate the points. |
+| [structured light](../examples/structured_light/structured_light.json) | Generate Gray-code patterns and decode an identity camera/projector mapping. |
+| [TSDF fusion](../examples/tsdf_fusion/tsdf_fusion.json) | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
 
 Run once, then use **Results > 3D point-cloud viewer…**. Choose a retained cloud
 output and adjust yaw, pitch and point size. Debug/Balanced retain actual cloud

@@ -86,7 +86,7 @@ the generic inference block does not guess a YOLO/SSD/segmentation schema.
 all axes except a configured channel axis. It accepts one-image batches, with
 optional L2 normalization. A zero vector cannot be L2 normalized.
 
-Try **File > Load DNN embedding example**, or:
+Try [DNN embedding](../examples/dnn_embeddings/dnn_embeddings.json), or:
 
 ```powershell
 .\.venv\Scripts\opencv-dataflow-run examples/dnn_embeddings/dnn_embeddings.json --repeat 3
@@ -128,7 +128,7 @@ reference/query coordinate contexts. Use the pose with existing pose-relative
 region/inspection blocks. This is one planar registration, not repeated-part
 multi-instance discovery.
 
-Try **File > Load LightGlue matcher example** after preparing its weights, or:
+Try [LightGlue matcher](../examples/lightglue_match/lightglue_match.json) after preparing its weights, or:
 
 ```powershell
 .\.venv\Scripts\opencv-dataflow-run examples/lightglue_match/lightglue_match.json
@@ -169,7 +169,7 @@ and unloads it on close/reset. Optional prefault requests eager page loading.
 Training data does not have to travel through the graph after loading a file index.
 Opening a project does not load/map the index until it is run.
 
-Try **File > Load Annoy search example**, or:
+Try [Annoy search](../examples/annoy_search/annoy_search.json), or:
 
 ```powershell
 .\.venv\Scripts\opencv-dataflow-run examples/annoy_search/annoy_search.json --repeat 3

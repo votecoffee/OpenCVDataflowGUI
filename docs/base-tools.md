@@ -98,8 +98,8 @@ measurements downstream. These are standard native operations, not all of OpenCV
 
 ## Starter inspection
 
-Use **File > Load starter inspection** or run `opencv-dataflow --starter`.
-The saved portable graph is `examples/starter_inspection/starter_inspection.json`. It contains no
+Open [starter inspection](../examples/starter_inspection/starter_inspection.json)
+or run `opencv-dataflow --starter`. The project contains no
 device paths or output writers; repeat execution needs no camera and writes no
 files. It is suitable for testing wiring, inspector edits, previews, save/load and
 encapsulation into a reusable ToolBlock.

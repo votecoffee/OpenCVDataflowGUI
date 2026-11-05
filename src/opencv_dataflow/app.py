@@ -51,35 +51,7 @@ from .core import Graph
 from .diagnostic_viewer import DiagnosticViewer
 from .diagnostics import exception_message
 from .documentation_editor import DocumentationEditor
-from .examples import (
-    annoy_graph,
-    channel_pyramid_graph,
-    combined_regions_graph,
-    control_flow_graph,
-    dnn_graph,
-    image_set_workspace_graph,
-    input_coordination_graph,
-    lightglue_graph,
-    object_collections_graph,
-    parallel_parts_graph,
-    pose_inspection_graph,
-    queued_input_graph,
-    recipes_graph,
-    regions_graph,
-    sequence_graph,
-    starter_graph,
-    template_graph,
-    ticket_results_graph,
-    trained_patterns_graph,
-    transformed_regions_graph,
-)
-from .examples3d import (
-    pose_3d_graph,
-    rgbd_cloud_graph,
-    stereo_cloud_graph,
-    structured_light_graph,
-    tsdf_graph,
-)
+from .examples import starter_graph
 from .filmstrip_viewer import FilmstripViewer
 from .graphics_layers import RESULT_GRAPHICS, GraphicsBundle
 from .image_queue import ImageQueue
@@ -106,8 +78,6 @@ from .tickets import TICKET_MODES
 from .toolblock_editor import InterfaceDialog
 from .toolblocks import ToolBlock, encapsulate
 from .visual_style import BLOCK_COLORS, NODE_SIZES, PORT_COLORS, PORT_LABELS
-
-EXAMPLES_ROOT = Path(__file__).resolve().parents[2] / "examples"
 
 
 class Runner(QThread):
@@ -210,6 +180,8 @@ class Inspector(QWidget):
         self._live_due = False
         self._live_worker = None
         self._live_result = None
+        self._preview_selection = None
+        self.show_advanced = None
         self.image_popouts = {}
         self.draft_error = ""
         self.live_timer = QTimer(self)
@@ -257,6 +229,7 @@ class Inspector(QWidget):
         layout.addWidget(scroll, 3)
         self.preview_choice = QComboBox()
         self.preview_choice.currentTextChanged.connect(self.show_preview)
+        self.preview_choice.textActivated.connect(self.remember_preview_selection)
         image_controls = QHBoxLayout()
         image_controls.addWidget(self.preview_choice, 1)
         self.pop_out_image = QPushButton("Pop out…")
@@ -277,7 +250,14 @@ class Inspector(QWidget):
 
     def select(self, block):
         self.show_draft_error()
+        advanced_open = (
+            block is self.block
+            and self.show_advanced is not None
+            and self.show_advanced.isChecked()
+        )
+        self.show_advanced = None
         if block is not self.block:
+            self._preview_selection = None
             self.stop_previews()
             self._region_image = None
             self._region_source = None
@@ -468,6 +448,17 @@ class Inspector(QWidget):
             edit_seeds = QPushButton("Edit watershed seeds…")
             edit_seeds.clicked.connect(self.edit_seeds)
             self.form.addRow(edit_seeds)
+        self.show_advanced = QCheckBox("Show advanced")
+        self.show_advanced.setToolTip("Show recipe, port, and node display settings.")
+        advanced_panel = QWidget()
+        advanced_form = QFormLayout(advanced_panel)
+        advanced_form.setContentsMargins(0, 0, 0, 0)
+        self.form.addRow(self.show_advanced)
+        self.form.addRow(advanced_panel)
+        self.show_advanced.setChecked(advanced_open)
+        advanced_panel.setVisible(advanced_open)
+        self.show_advanced.toggled.connect(advanced_panel.setVisible)
+
         self.recipe_group = QGroupBox("Recipe overrides")
         self.recipe_group.setCheckable(True)
         self.recipe_group.setChecked(bool(block.recipe_bindings or block.recipe_model))
@@ -483,7 +474,7 @@ class Inspector(QWidget):
             self.recipe_model_field = QLineEdit(block.recipe_model)
             self.recipe_model_field.setPlaceholderText("models.part")
             recipe_form.addRow("Trained model", self.recipe_model_field)
-        self.form.addRow(self.recipe_group)
+        advanced_form.addRow(self.recipe_group)
         if not getattr(block, "preserve_image_sets", False):
             for port in block.inputs:
                 if port.kind == "image":
@@ -492,17 +483,17 @@ class Inspector(QWidget):
                     level.setCurrentText(block.input_levels.get(port.name, "largest"))
                     level.setToolTip("Used when this input receives an image pyramid set.")
                     self.level_fields[port.name] = level
-                    self.form.addRow(f"Pyramid level: {port.name}", level)
+                    advanced_form.addRow(f"Pyramid level: {port.name}", level)
         self.node_size = QComboBox()
         for size in NODE_SIZES:
             self.node_size.addItem(size.capitalize(), size)
         self.node_size.setCurrentIndex(self.node_size.findData(block.node_size))
         self.node_size.setToolTip("Change the layout immediately. Small hides the node image.")
         self.node_size.currentIndexChanged.connect(self.resize_selected_node)
-        self.form.addRow("Block size", self.node_size)
+        advanced_form.addRow("Block size", self.node_size)
         self.thumb = QCheckBox("Show image on node")
         self.thumb.setChecked(block.thumbnail)
-        self.form.addRow(self.thumb)
+        advanced_form.addRow(self.thumb)
         self.node_image = QComboBox()
         self.node_image.addItem("Automatic", "")
         for port in block.outputs:
@@ -510,7 +501,7 @@ class Inspector(QWidget):
                 self.node_image.addItem(port.name, port.name)
         index = self.node_image.findData(block.preview_output)
         self.node_image.setCurrentIndex(max(0, index))
-        self.form.addRow("Node image", self.node_image)
+        advanced_form.addRow("Node image", self.node_image)
         self.graphics_choice = QComboBox()
         self.graphics_choice.addItem("Use project default", "inherit")
         self.graphics_choice.addItem("On", "on")
@@ -521,14 +512,14 @@ class Inspector(QWidget):
             "exposed graphics enabled by the current run profile."
         )
         self.graphics_choice.currentIndexChanged.connect(self.change_graphics_mode)
-        self.form.addRow("Result graphics", self.graphics_choice)
+        advanced_form.addRow("Result graphics", self.graphics_choice)
         for direction in ("inputs", "outputs"):
             ports = block.inputs if direction == "inputs" else block.output_ports
             for port in ports:
                 label = "Result graphics" if port.name == RESULT_GRAPHICS else port.name
                 check = QCheckBox(f"{label} ({port.kind})")
                 check.setChecked(port.name in getattr(block, f"exposed_{direction}"))
-                self.form.addRow(f"Expose {direction[:-1]}", check)
+                advanced_form.addRow(f"Expose {direction[:-1]}", check)
                 self.port_checks.append((direction, port.name, check))
                 if direction == "inputs":
                     policy = QComboBox()
@@ -539,7 +530,7 @@ class Inspector(QWidget):
                         "accumulated failure. Retain the last processed inputs/results."
                     )
                     self.failure_fields[port.name] = policy
-                    self.form.addRow(f"{port.name} failure policy", policy)
+                    advanced_form.addRow(f"{port.name} failure policy", policy)
         self.apply_button = QPushButton("Apply configuration")
         self.apply_button.clicked.connect(self.apply)
         self.form.addRow(self.apply_button)
@@ -1294,22 +1285,30 @@ class Inspector(QWidget):
             self.stop_previews()
             return
         self.refresh_image_popouts()
-        previous = self.preview_choice.currentText()
         self.preview_choice.blockSignals(True)
         self.preview_choice.clear()
         b = self._live_result or self.block
         if b:
             if self.reference_capture is not None:
                 self.reference_capture.setEnabled("image" in b.last_inputs)
-            for name in b.last_inputs:
-                if hasattr(b.last_inputs[name], "shape"):
-                    self.preview_choice.addItem(f"Input / {name}")
-            output_label = "Result" if getattr(b, "composes_result_image", False) else "Output"
-            image_groups = (output_label, b.last_output_images), ("Graphic", b.last_graphics)
-            for prefix, images in image_groups:
-                for name in images:
-                    self.preview_choice.addItem(f"{prefix} / {name}")
-        index = self.preview_choice.findText(previous)
+            composed = getattr(b, "composes_result_image", False)
+            drawings = b.last_result.drawings if b.last_result is not None else {}
+            annotated = [name for name in b.last_graphics if name in drawings]
+            output_label = "Result" if composed else "Output"
+            outputs = [f"{output_label} / {name}" for name in b.last_output_images]
+            graphics = [f"Graphic / {name}" for name in annotated]
+            self.preview_choice.addItems(outputs + graphics if composed else graphics + outputs)
+            self.preview_choice.addItems(
+                [f"Graphic / {name}" for name in b.last_graphics if name not in drawings]
+            )
+            self.preview_choice.addItems(
+                [
+                    f"Input / {name}"
+                    for name, image in b.last_inputs.items()
+                    if hasattr(image, "shape")
+                ]
+            )
+        index = self.preview_choice.findText(self._preview_selection or "")
         self.preview_choice.setCurrentIndex(index if index >= 0 else 0)
         self.preview_choice.blockSignals(False)
         self.show_preview(self.preview_choice.currentText())
@@ -1349,6 +1348,9 @@ class Inspector(QWidget):
                     default=str,
                 )
             )
+
+    def remember_preview_selection(self, choice):
+        self._preview_selection = choice
 
     def show_preview(self, choice):
         self.pop_out_image.setEnabled(choice.startswith(("Output / ", "Result / ", "Graphic / ")))
@@ -1509,65 +1511,6 @@ class MainWindow(QMainWindow):
             ("Export project XML…", None, self.export_project_snapshot),
             ("Compare project XML…", None, self.compare_project_snapshots),
             ("Load Python plugin…", None, self.open_plugin),
-            ("Load demo", None, self.load_demo),
-            ("Load starter inspection", None, self.load_starter),
-            ("Load template matching example", None, self.load_template_example),
-            ("Load regions example", None, self.load_regions_example),
-            ("Load combined regions example", None, self.load_combined_regions_example),
-            ("Load transformed regions example", None, self.load_transformed_regions_example),
-            ("Load channels and pyramids example", None, self.load_channel_pyramid_example),
-            ("Load object collections example", None, self.load_object_collections_example),
-            ("Load trained patterns and edges example", None, self.load_trained_patterns_example),
-            ("Load pose-relative inspection example", None, self.load_pose_inspection_example),
-            ("Load ticketed control flow example", None, self.load_control_flow_example),
-            ("Load parallel part inspection example", None, self.load_parallel_parts_example),
-            ("Load queued input example", None, self.load_queued_input_example),
-            ("Load ticket results example", None, self.load_ticket_results_example),
-            ("Load input coordination example", None, self.load_input_coordination_example),
-            ("Load recipes example", None, self.load_recipes_example),
-            ("Load sequence memory example", None, self.load_sequence_example),
-            ("Load validation image set example", None, self.load_validation_example),
-            ("Load image-set workspace example", None, self.load_image_set_workspace),
-            (
-                "Load DNN embedding example",
-                None,
-                lambda: self.load_ml_example(dnn_graph, "dnn_embeddings"),
-            ),
-            (
-                "Load Annoy search example",
-                None,
-                lambda: self.load_ml_example(annoy_graph, "annoy_search"),
-            ),
-            (
-                "Load LightGlue matcher example",
-                None,
-                lambda: self.load_ml_example(lightglue_graph, "lightglue_match"),
-            ),
-            (
-                "Load stereo cloud example",
-                None,
-                lambda: self.load_ml_example(stereo_cloud_graph, "stereo_cloud"),
-            ),
-            (
-                "Load RGB-D cloud example",
-                None,
-                lambda: self.load_ml_example(rgbd_cloud_graph, "rgbd_cloud"),
-            ),
-            (
-                "Load 3D pose example",
-                None,
-                lambda: self.load_ml_example(pose_3d_graph, "pose_3d"),
-            ),
-            (
-                "Load structured light example",
-                None,
-                lambda: self.load_ml_example(structured_light_graph, "structured_light"),
-            ),
-            (
-                "Load TSDF fusion example",
-                None,
-                lambda: self.load_ml_example(tsdf_graph, "tsdf_fusion"),
-            ),
             ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
@@ -1941,74 +1884,6 @@ class MainWindow(QMainWindow):
         if not self.runner and self.confirm_discard():
             self.replace_graph(Graph())
 
-    def load_demo(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(demo_graph(self.registry))
-
-    def load_starter(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(starter_graph(self.registry))
-
-    def load_template_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(template_graph(self.registry))
-
-    def load_regions_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(regions_graph(self.registry))
-
-    def load_combined_regions_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(combined_regions_graph(self.registry))
-
-    def load_transformed_regions_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(transformed_regions_graph(self.registry))
-
-    def load_channel_pyramid_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(channel_pyramid_graph(self.registry))
-
-    def load_object_collections_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(object_collections_graph(self.registry))
-
-    def load_trained_patterns_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(trained_patterns_graph(self.registry))
-
-    def load_pose_inspection_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(pose_inspection_graph(self.registry))
-
-    def load_control_flow_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(control_flow_graph(self.registry))
-
-    def load_parallel_parts_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(parallel_parts_graph(self.registry))
-
-    def load_queued_input_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(queued_input_graph(self.registry))
-
-    def load_ticket_results_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(ticket_results_graph(self.registry))
-
-    def load_input_coordination_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(input_coordination_graph(self.registry))
-
-    def load_recipes_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(recipes_graph(self.registry))
-
-    def load_sequence_example(self):
-        if not self.runner and self.confirm_discard():
-            self.replace_graph(sequence_graph(self.registry))
-
     def open_project(self):
         if self.runner or not self.confirm_discard():
             return
@@ -2154,18 +2029,6 @@ class MainWindow(QMainWindow):
         self.branch_workers_choice.setEnabled(False)
         self.statusBar().showMessage("Running…")
         self.runner.start()
-
-    def load_image_set_workspace(self):
-        if self.confirm_discard():
-            graph = image_set_workspace_graph(self.registry)
-            graph.bind_project_dir(EXAMPLES_ROOT / "image_set_workspace")
-            self.replace_graph(graph)
-
-    def load_ml_example(self, factory, folder):
-        if self.confirm_discard():
-            graph = factory(self.registry)
-            graph.bind_project_dir(EXAMPLES_ROOT / folder)
-            self.replace_graph(graph)
 
     def reset_flow_state(self):
         if not self.runner:
@@ -2318,17 +2181,6 @@ class MainWindow(QMainWindow):
 
         if not self.runner:
             ValidationManager(self).exec()
-
-    def load_validation_example(self):
-        if not self.runner and self.confirm_discard():
-            project = EXAMPLES_ROOT / "validation_images" / "validation_images.json"
-            if project.exists():
-                self.replace_graph(Graph.load(project, self.registry), project)
-            else:
-                self.warn(
-                    "Open examples/validation_images/validation_images.json "
-                    "from the repository checkout"
-                )
 
     def manage_recipes(self):
         if not self.runner:

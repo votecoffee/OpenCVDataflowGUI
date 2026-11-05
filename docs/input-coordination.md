@@ -139,7 +139,7 @@ acquisition service.
 
 ## Example
 
-Open **File > Load input coordination example**. A **Counter input** stands in for
+Open [input coordination](../examples/input_coordination/input_coordination.json). A **Counter input** stands in for
 a PLC part ID and supplies each synthetic camera's external ticket input. Run once
 or continuously, inspect `info`, and open **Results > Ticket results…**. Both cameras
 agree on one part ticket and the group receives an explicit final judgment. No

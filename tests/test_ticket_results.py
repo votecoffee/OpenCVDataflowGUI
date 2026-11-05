@@ -449,7 +449,7 @@ def test_toolblock_public_policy_survives_export_and_terminal_rename(tmp_path):
     assert restored.input_failure_policies == {"renamed": "reject_failed"}
 
 
-def test_saved_example_final_status_and_headless_receipt(tmp_path, app):
+def test_saved_example_final_status_and_headless_receipt(tmp_path, app, load_example):
     from opencv_dataflow.examples import ticket_results_graph
     from opencv_dataflow.runner import main
 
@@ -480,7 +480,7 @@ def test_saved_example_final_status_and_headless_receipt(tmp_path, app):
     assert len(receipt["ticket_results"]["tickets"]) == 3
     assert all(row["status"] == "final_pass" for row in receipt["ticket_results"]["tickets"])
     window = MainWindow()
-    window.load_ticket_results_example()
+    load_example(window, "ticket_results")
     assert "ticket_final" in window.graph.blocks
     window.dirty = False
     window.close()

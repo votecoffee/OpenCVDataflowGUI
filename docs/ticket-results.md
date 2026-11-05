@@ -142,7 +142,7 @@ not required for the example or automated validation.
 
 ## Example
 
-Open **File > Load ticket results example**, run once, then open **Results > Ticket
+Open [ticket results](../examples/ticket_results/ticket_results.json), run once, then open **Results > Ticket
 results…**. Two synthetic parts produce a `final_pass` ticket. The grayscale
 diagnostic branch accepts only passing inspection images. Change **Find contours >
 expected_count** from 2 to 3, apply, and run again: the new ticket is `final_fail`,

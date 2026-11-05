@@ -280,7 +280,9 @@ def test_input_memory_guard_and_ticket_mismatch_reject_before_submission():
     assert block.state == "error" and "tickets differ" in block.error and not tool.started
 
 
-def test_editor_nested_inspection_region_save_reload_and_template_files(app, tmp_path, monkeypatch):
+def test_editor_nested_inspection_region_save_reload_and_template_files(
+    app, load_example, tmp_path, monkeypatch
+):
     from PySide6.QtWidgets import QDialog, QFileDialog
     from test_pattern_editor import run as run_window
 
@@ -288,7 +290,7 @@ def test_editor_nested_inspection_region_save_reload_and_template_files(app, tmp
     from opencv_dataflow.region_editor import RegionEditor
 
     window = MainWindow()
-    window.load_parallel_parts_example()
+    load_example(window, "parallel_parts")
     run_window(window, app)
     block = window.graph.blocks["parts_inspect"]
     assert block.state == "pass", block.error

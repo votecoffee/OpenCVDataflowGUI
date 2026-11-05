@@ -2,8 +2,8 @@
 
 ## Example
 
-Open **File > Load trained patterns and edges example** and press F5, or open
-`examples/trained_patterns/trained_patterns.json`. Synthetic reference images train two patterns,
+Open [trained patterns and edges](../examples/trained_patterns/trained_patterns.json) and press F5.
+Synthetic reference images train two patterns,
 which are located in a larger scene. A rectangular region isolates a vertical bar.
 Expected results are:
 

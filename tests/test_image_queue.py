@@ -357,7 +357,7 @@ def test_background_nested_acquisition_preserves_internal_preview_snapshots():
             )
 
 
-def test_saved_queued_example_headless_receipt_and_gui_load(app, tmp_path):
+def test_saved_queued_example_headless_receipt_and_gui_load(app, load_example, tmp_path):
     import json
     from pathlib import Path
 
@@ -378,7 +378,7 @@ def test_saved_queued_example_headless_receipt_and_gui_load(app, tmp_path):
         assert queue["emitted"]["image"] == 1 and queue["outputs"]["busy"] == 0
         assert inspect["outputs"]["results"]["pass_count"] == 25
     window = MainWindow()
-    window.load_queued_input_example()
+    load_example(window, "queued_input")
     assert window.graph.blocks["input_queue"].parameters["mode"] == "background_acquisition"
     window.dirty = False
     window.close()

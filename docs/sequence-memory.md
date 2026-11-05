@@ -4,7 +4,7 @@ Sequence blocks retain bounded, private state between accepted image activations
 Use them for temporal operations or learning a reference image. They appear under
 **Sequence > Temporal processing / Image memory** in the toolbox.
 
-Open **File > Load sequence memory example** (`examples/sequence_memory/sequence_memory.json`).
+Open [sequence memory](../examples/sequence_memory/sequence_memory.json).
 Run continuously, or press F5 several times. The source initially holds a textured
 patch still and then moves it. The example compares background subtraction,
 Farneback flow, point tracking and a learned reference. No camera or download is needed.
