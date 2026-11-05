@@ -45,11 +45,14 @@ from .canvas import CanvasScene, CanvasView, Node, pixmap
 from .core import Graph
 from .diagnostic_viewer import DiagnosticViewer
 from .examples import (
+    annoy_graph,
     channel_pyramid_graph,
     combined_regions_graph,
     control_flow_graph,
+    dnn_graph,
     image_set_workspace_graph,
     input_coordination_graph,
+    lightglue_graph,
     object_collections_graph,
     parallel_parts_graph,
     pose_inspection_graph,
@@ -316,7 +319,7 @@ class Inspector(QWidget):
                 )
             self.fields[key] = field
             field.setToolTip(block.parameter_help.get(key, ""))
-            if key == "path":
+            if key in ("path", "model_path", "weights_path"):
                 row = QWidget()
                 row_layout = QHBoxLayout(row)
                 row_layout.setContentsMargins(0, 0, 0, 0)
@@ -414,8 +417,13 @@ class Inspector(QWidget):
             self.fields["path_base"].setCurrentText("working_directory")
 
     def browse_path(self, field):
-        if self.block.category == "Input":
-            path, _ = QFileDialog.getOpenFileName(self, "Select input image")
+        if self.block.category in ("Input", "ML"):
+            title = (
+                "Select model or index file"
+                if self.block.category == "ML"
+                else "Select input image"
+            )
+            path, _ = QFileDialog.getOpenFileName(self, title)
         else:
             path, _ = QFileDialog.getSaveFileName(self, "Select output path")
         if path:
@@ -956,6 +964,9 @@ class MainWindow(QMainWindow):
             ("Load sequence memory example", None, self.load_sequence_example),
             ("Load validation image set example", None, self.load_validation_example),
             ("Load image-set workspace example", None, self.load_image_set_workspace),
+            ("Load DNN embedding example", None, lambda: self.load_ml_example(dnn_graph)),
+            ("Load Annoy search example", None, lambda: self.load_ml_example(annoy_graph)),
+            ("Load LightGlue matcher example", None, lambda: self.load_ml_example(lightglue_graph)),
             ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
@@ -1445,6 +1456,12 @@ class MainWindow(QMainWindow):
             examples = Path(__file__).resolve().parents[2] / "examples"
             graph = image_set_workspace_graph(self.registry)
             graph.bind_project_dir(examples)
+            self.replace_graph(graph)
+
+    def load_ml_example(self, factory):
+        if self.confirm_discard():
+            graph = factory(self.registry)
+            graph.bind_project_dir(Path(__file__).resolve().parents[2] / "examples")
             self.replace_graph(graph)
 
     def reset_flow_state(self):

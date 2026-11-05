@@ -43,6 +43,14 @@ the `cv2` namespace and must not coexist:
 
 ## Usage
 
+**DNN/ML tools** are available under **ML** in the toolbox (model writers under **Output**): ONNX inference,
+classification, embedding conversion, SIFT + LightGlue matching, and Annoy vector
+index building/search/save/load. Try **File > Load DNN embedding example** with the
+included tiny synthetic ONNX model. **Load Annoy search example** and **Load
+LightGlue matcher example** use optional libraries. See [ML setup and workflows](docs/ml.md)
+for installation, local weights and runnable examples. Graph execution never downloads
+learned weights or imports optional ML libraries until their blocks need them.
+
 Start the editor from the repository's virtual environment:
 
 ```powershell
@@ -449,6 +457,7 @@ boundaries, parallel work and explicit final-decision timestamps.
 - `basic_processing.py`: ordinary Grayscale, Gaussian blur and Canny defaults.
 - `processing.py`: base OpenCV geometry, filtering, segmentation, math and inspection wrappers.
 - `features.py`, `registration.py`, `analysis_tools.py`: contrast, features, registration and numerical image tools.
+- `dnn_blocks.py`, `lightglue_blocks.py`, `annoy_blocks.py`: inference, learned matching and vector search.
 - `regions.py`, `selection.py`: reusable shape regions, mask intersections and selection policies.
 - `region_editor.py`: interactive image-space drawing and editing of region shapes.
 - `payloads.py`, `pyramids.py`: optional wire payloads, image coordinate provenance and bundled pyramids.

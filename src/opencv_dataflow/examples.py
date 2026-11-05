@@ -1114,3 +1114,77 @@ def image_set_workspace_graph(registry):
         },
     ]
     return graph
+
+
+def dnn_graph(registry):
+    """Locally generated RGB-average ONNX network; no pretrained downloads required."""
+    graph = Graph()
+    specs = [
+        ("ml_image", "input.demo", [0, 0], {}),
+        (
+            "ml_net",
+            "ml.dnn",
+            [330, 0],
+            {"model_path": "assets/rgb_average.onnx", "width": 32, "height": 32},
+        ),
+        (
+            "ml_class",
+            "ml.classify",
+            [660, 0],
+            {"labels": ["red", "green", "blue"], "softmax": False, "top_k": 3},
+        ),
+        ("ml_vector", "ml.tensor_vector", [660, 390], {}),
+    ]
+    for key, kind, position, parameters in specs:
+        block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
+        block.position = position
+    graph.connect("ml_image", "image", "ml_net", "image")
+    graph.connect("ml_net", "tensors", "ml_class", "tensors")
+    graph.connect("ml_net", "tensors", "ml_vector", "tensors")
+    return graph
+
+
+def annoy_graph(registry):
+    """DNN embedding queried against three labeled reference color vectors."""
+    graph = dnn_graph(registry)
+    specs = [
+        (
+            "ml_samples",
+            "ml.vector_data",
+            [330, 760],
+            {"values": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]},
+        ),
+        ("ml_index", "ml.annoy_build", [660, 760], {"labels": ["red", "green", "blue"]}),
+        ("ml_search", "ml.annoy_search", [1000, 390], {"neighbors": 3}),
+    ]
+    for key, kind, position, parameters in specs:
+        block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
+        block.position = position
+    graph.connect("ml_samples", "vectors", "ml_index", "vectors")
+    graph.connect("ml_index", "model", "ml_search", "model")
+    graph.connect("ml_vector", "vector", "ml_search", "vector")
+    return graph
+
+
+def lightglue_graph(registry):
+    """Learned matching of a repeatable texture patch into the synthetic scene."""
+    graph = Graph()
+    source = graph.add(registry.create("input.pattern_demo", block_id="lg_images"))
+    reference = graph.add(
+        registry.create(
+            "ml.lightglue_features", block_id="lg_reference", parameters={"max_features": 128}
+        )
+    )
+    matcher = graph.add(
+        registry.create(
+            "ml.lightglue",
+            block_id="lg_match",
+            parameters={"weights_path": "../.local/models/sift_lightglue.pth", "max_features": 256},
+        )
+    )
+    source.position, reference.position, matcher.position = [0, 0], [330, 0], [660, 0]
+    graph.connect(source.id, "texture_reference", reference.id, "image")
+    graph.connect(source.id, "image", matcher.id, "image")
+    graph.connect(reference.id, "features", matcher.id, "reference_features")
+    matcher.preview_output = "overlay"
+    return graph
