@@ -906,6 +906,21 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `tiles_x` | `8` |  |
 | `tiles_y` | `8` |  |
 
+## Compare pixels (`cv.compare_pixels`)
+
+Image processing / Image math
+
+Inputs: `image_a` (image), `image_b` (image, optional), `scalar_b` (number, optional), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `operation` | `"greater"` | `equal`, `not_equal`, `less`, `less_or_equal`, `greater`, `greater_or_equal` |
+| `scalar` | `0.0` | Value must be a finite number. Right operand when neither Image B nor Scalar B is connected. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid pairs equal-size images by index, even with different frame IDs. |
+| `tolerance` | `0.0` | Value must be a finite number at least 0. For equal/not equal only, treat differences up to this amount as equal. |
+| `channel_rule` | `"all"` | `all`, `any` Match a color pixel when all or any active channels match. |
+| `include_alpha` | `false` | Compare alpha as an active channel when present. |
+
 ## Convert image (`cv.convert`)
 
 Image processing / Color and depth
