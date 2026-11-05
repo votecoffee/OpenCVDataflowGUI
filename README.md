@@ -406,7 +406,9 @@ acquisition and deployment work separately. The [DCT example](examples/dct_round
 displays cosine coefficients and verifies image reconstruction. The
 [Fourier filter example](examples/fourier_filter/README.md) removes a periodic
 stripe pattern with a band-stop filter. The [intensity lookup example](examples/intensity_lut/README.md)
-applies separate intensity curves to the red and blue channels.
+applies separate intensity curves to the red and blue channels. The
+[local statistics example](examples/local_statistics/README.md) uses rectangular
+neighborhoods to distinguish a flat patch from an equally bright textured patch.
 
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing

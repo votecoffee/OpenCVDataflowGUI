@@ -3070,8 +3070,8 @@ P3	function	cv2.initInverseRectificationMap	no static reference	-
 P3	function	cv2.initUndistortRectifyMap	literal reference	-
 P3	function	cv2.inRange	literal reference	-
 P3	function	cv2.insertChannel	literal reference	-
-P3	function	cv2.integral	no static reference	-
-P3	function	cv2.integral2	no static reference	-
+P3	function	cv2.integral	literal reference	-
+P3	function	cv2.integral2	literal reference	-
 P3	function	cv2.integral3	no static reference	-
 P3	function	cv2.intensity_transform.autoscaling	no static reference	-
 P3	function	cv2.intensity_transform.BIMEF	no static reference	-

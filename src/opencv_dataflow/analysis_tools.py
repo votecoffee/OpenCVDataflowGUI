@@ -4,11 +4,13 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
+from .images import ImageArray, image_format
+from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS, OUTPUT_DEPTHS, anchor_value
 from .processing import ImageTool, encoded_result, finite, gray_image, image_value, integer
 from .registration import BORDERS as WARP_BORDERS
 from .registration import INTERPOLATION
-from .selection import RegionalOperation
+from .selection import SELECTION_INPUTS, RegionalOperation, selection_mask
 
 
 def kernel_vector(value, name):
@@ -335,8 +337,124 @@ class CartesianToPolar(Block):
         return Result({"magnitude": magnitude, "angle": angle})
 
 
+def rectangular_sums(integral, y0, y1, x0, x1):
+    return (
+        integral[np.ix_(y1, x1)]
+        - integral[np.ix_(y0, x1)]
+        - integral[np.ix_(y1, x0)]
+        + integral[np.ix_(y0, x0)]
+    )
+
+
+class LocalWindowStatistics(ImageTool):
+    type_id, title, subtype = "cv.local_statistics", "Local window statistics", "Intensity"
+    inputs = SELECTION_INPUTS
+    outputs = (Port("mean"), Port("standard_deviation"), Port("sample_count"))
+    defaults = {
+        "width": 15,
+        "height": 15,
+        "anchor": [-1, -1],
+        "border": "crop",
+        "selection_mode": "samples_and_centers",
+    }
+    parameter_choices = {
+        "border": ("crop", "valid"),
+        "selection_mode": ("samples_and_centers", "centers"),
+    }
+    parameter_ranges = {key: NumericRange(1, 4095, whole=True) for key in ("width", "height")}
+    parameter_help = {
+        "anchor": "Pixel within the window placed at the output coordinate. [-1, -1] centers it.",
+        "border": "Crop uses in-image samples. Valid suppresses windows crossing the image border.",
+        "selection_mode": "Limit both contributing samples and output centers, or only centers.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        try:
+            anchor_value(p["anchor"], int(p["width"]), int(p["height"]))
+        except (TypeError, ValueError) as exc:
+            raise ValidationError(str(exc), "anchor") from exc
+
+    def process(self, inputs):
+        source = inputs["image"]
+        image = image_value(source)
+        encoding = image_format(source)
+        if encoding in ("hsv", "lab"):
+            raise ValidationError("Local statistics need monochrome, RGB, or BGR intensity samples")
+        p = self.parameters
+        width, height = int(p["width"]), int(p["height"])
+        anchor_x, anchor_y = anchor_value(p["anchor"], width, height)
+        image_height, image_width = image.shape[:2]
+        if anchor_x == -1:
+            anchor_x = width // 2
+        if anchor_y == -1:
+            anchor_y = height // 2
+        x = np.arange(image_width) - anchor_x
+        y = np.arange(image_height) - anchor_y
+        x0, x1 = x.clip(0, image_width), (x + width).clip(0, image_width)
+        y0, y1 = y.clip(0, image_height), (y + height).clip(0, image_height)
+        bounds = (y0, y1, x0, x1)
+
+        selection = selection_mask(inputs, image)
+        centers = None if selection is None else selection != 0
+        sample_mask = centers if p["selection_mode"] == "samples_and_centers" else None
+        if sample_mask is None:
+            count = (y1 - y0)[:, None] * (x1 - x0)
+        else:
+            mask_sum = cv2.integral(sample_mask.astype(np.uint8), sdepth=cv2.CV_64F)
+            count = rectangular_sums(mask_sum, *bounds)
+        if p["border"] == "valid":
+            within_x = (x >= 0) & (x + width <= image_width)
+            within_y = (y >= 0) & (y + height <= image_height)
+            count[~(within_y[:, None] & within_x)] = 0
+        if centers is not None:
+            count[~centers] = 0
+        valid = count > 0
+        divisor = np.maximum(count, 1)
+        planes = image[..., None] if image.ndim == 2 else image
+        mean = np.zeros(planes.shape, dtype=np.float64)
+        deviation = np.zeros_like(mean)
+        if valid.any():
+            index = 0 if sample_mask is None else int(np.argmax(sample_mask))
+            for channel in range(planes.shape[2]):
+                plane = planes[..., channel]
+                offset = float(plane.flat[index])
+                with np.errstate(over="ignore", invalid="ignore"):
+                    shifted = np.subtract(plane, offset, dtype=np.float64)
+                if sample_mask is not None:
+                    shifted[~sample_mask] = 0
+                sums, squares = cv2.integral2(shifted, sdepth=cv2.CV_64F, sqdepth=cv2.CV_64F)
+                if not np.isfinite(sums).all() or not np.isfinite(squares).all():
+                    raise ValidationError("Local statistics overflowed. Reduce the sample range")
+                centered_mean = rectangular_sums(sums, *bounds) / divisor
+                centered_mean[~valid] = 0
+                variance = rectangular_sums(squares, *bounds) / divisor - centered_mean**2
+                mean[..., channel] = np.where(valid, centered_mean + offset, 0)
+                deviation[..., channel] = np.where(valid, np.sqrt(np.maximum(variance, 0)), 0)
+        if not np.isfinite(mean).all() or not np.isfinite(deviation).all():
+            raise ValidationError("Local statistics produced nonfinite samples")
+        graphics = {}
+        if self.generate_graphics:
+            contrast = np.max(deviation, axis=2)
+            graphics["local contrast"] = cv2.normalize(
+                contrast, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U
+            )
+        if image.ndim == 2:
+            mean, deviation = mean[..., 0], deviation[..., 0]
+        return Result(
+            {
+                "mean": ImageArray(mean, encoding),
+                "standard_deviation": ImageArray(deviation, encoding),
+                "sample_count": ImageArray(count.astype(np.float32), "gray"),
+            },
+            graphics=graphics,
+        )
+
+
 ANALYSIS_BLOCKS = (
     BoxFilter,
+    LocalWindowStatistics,
     SeparableFilter,
     CornerResponse,
     RefineCorners,

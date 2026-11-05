@@ -1237,6 +1237,20 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `interpolation` | `"linear"` | `linear`, `step` Linear blends points. Step holds the previous point's output. |
 | `preserve_alpha` | `true` | Copy alpha on four-channel images and ignore the fourth curve. |
 
+## Local window statistics (`cv.local_statistics`)
+
+Image processing / Intensity
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `15` | Value must be a whole number between 1 and 4095. |
+| `height` | `15` | Value must be a whole number between 1 and 4095. |
+| `anchor` | `[-1, -1]` | Pixel within the window placed at the output coordinate. [-1, -1] centers it. |
+| `border` | `"crop"` | `crop`, `valid` Crop uses in-image samples. Valid suppresses windows crossing the image border. |
+| `selection_mode` | `"samples_and_centers"` | `samples_and_centers`, `centers` Limit both contributing samples and output centers, or only centers. |
+
 ## Median blur (`cv.median_blur`)
 
 Image processing / Filtering
