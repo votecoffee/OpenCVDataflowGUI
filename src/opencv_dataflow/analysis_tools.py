@@ -7,6 +7,7 @@ from .core import Block, Port, Result
 from .images import ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS, OUTPUT_DEPTHS, anchor_value
+from .payloads import require_same_frame
 from .processing import ImageTool, encoded_result, finite, gray_image, image_value, integer
 from .registration import BORDERS as WARP_BORDERS
 from .registration import INTERPOLATION
@@ -417,23 +418,149 @@ class IntensityTransform(ImageTool):
             else:
                 signal[selection] = mapped
 
-        depth = image.dtype if p["output_depth"] == "same" else np.dtype(p["output_depth"])
-        if depth.kind in "iu":
-            limits = np.iinfo(depth)
-            output = np.clip(np.rint(output), limits.min, limits.max)
-        elif depth == np.float32 and np.any(np.abs(output) > np.finfo(depth).max):
-            raise ValidationError(
-                "Result exceeds the float32 range. Choose float64", "output_depth"
-            )
-        output = output.astype(depth, copy=False)
-        graphics = {}
-        if self.generate_graphics and depth.kind == "f":
-            display = output[..., :3] if has_alpha else output
-            display = cv2.normalize(display, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-            graphics["intensity"] = ImageArray(
-                display, encoding.removesuffix("a") if has_alpha else encoding
-            )
-        return encoded_result(output, source, graphics=graphics)
+        return intensity_result(output, source, p["output_depth"], self.generate_graphics)
+
+
+def intensity_result(output, source, output_depth, generate_graphics):
+    depth = source.dtype if output_depth == "same" else np.dtype(output_depth)
+    if depth.kind in "iu":
+        limits = np.iinfo(depth)
+        output = np.clip(np.rint(output), limits.min, limits.max)
+    elif depth == np.float32 and np.any(np.abs(output) > np.finfo(depth).max):
+        raise ValidationError("Result exceeds the float32 range. Choose float64", "output_depth")
+    output = output.astype(depth, copy=False)
+    graphics = {}
+    if generate_graphics and depth.kind == "f":
+        encoding = image_format(source)
+        has_alpha = output.ndim == 3 and output.shape[2] == 4
+        display = output[..., :3] if has_alpha else output
+        display = cv2.normalize(display, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+        graphics["intensity"] = ImageArray(
+            display, encoding.removesuffix("a") if has_alpha else encoding
+        )
+    return encoded_result(output, source, graphics=graphics)
+
+
+ARITHMETIC_OPERATIONS = {
+    "add": cv2.add,
+    "subtract": cv2.subtract,
+    "multiply": cv2.multiply,
+    "divide": cv2.divide,
+    "minimum": cv2.min,
+    "maximum": cv2.max,
+    "absolute_difference": cv2.absdiff,
+}
+
+
+class ImageArithmetic(ImageTool):
+    type_id, title, subtype = "cv.image_arithmetic", "Image arithmetic", "Image math"
+    inputs = (
+        Port("image_a"),
+        Port("image_b", required=False, required_when_connected=True),
+        Port("scalar_b", "number", required=False, required_when_connected=True),
+        *SELECTION_INPUTS[1:],
+    )
+    defaults = {
+        "operation": "add",
+        "scalar": 0.0,
+        "scale": 1.0,
+        "zero_divisor": "error",
+        "alignment": "same_frame",
+        "output_depth": "float64",
+        "preserve_alpha": True,
+    }
+    parameter_choices = {
+        "operation": tuple(ARITHMETIC_OPERATIONS),
+        "zero_divisor": ("error", "zero", "keep_a"),
+        "alignment": ("same_frame", "pixel_grid"),
+        "output_depth": IntensityTransform.parameter_choices["output_depth"],
+    }
+    parameter_ranges = {"scalar": NumericRange(), "scale": NumericRange()}
+    parameter_help = {
+        "scalar": "Right operand when neither Image B nor Scalar B is connected.",
+        "scale": "Multiplier applied to the product or quotient.",
+        "zero_divisor": "For division only. Reject, output zero, or keep the sample from Image A.",
+        "alignment": "Pixel grid pairs equal-size images by index, even with different frame IDs.",
+        "output_depth": IntensityTransform.parameter_help["output_depth"],
+        "preserve_alpha": IntensityTransform.parameter_help["preserve_alpha"],
+    }
+
+    def right_image(self, source, image_b, signal):
+        right = image_value(image_b)
+        if right.shape[:2] != source.shape[:2]:
+            raise ValidationError("Image A and Image B must have the same pixel dimensions")
+        if self.parameters["alignment"] == "same_frame":
+            try:
+                require_same_frame((source, image_b))
+            except ValueError as exc:
+                raise ValidationError("Image B must share Image A's pixel frame") from exc
+        encoding_b = image_format(image_b)
+        if encoding_b in ("hsv", "lab"):
+            raise ValidationError("Image B needs monochrome or RGB/BGR samples")
+        if right.ndim == 2:
+            return right if signal.ndim == 2 else np.broadcast_to(right[..., None], signal.shape)
+        if signal.ndim == 3 and signal.shape[2] == 3:
+            right = right[..., :3]
+        if right.shape != signal.shape:
+            raise ValidationError("Image B must match Image A's channels or be monochrome")
+        if image_format(source).removesuffix("a") != encoding_b.removesuffix("a"):
+            order = (2, 1, 0, 3) if right.shape[2] == 4 else (2, 1, 0)
+            right = right[..., order]
+        return right
+
+    def process(self, inputs):
+        source = inputs["image_a"]
+        image = image_value(source)
+        if image_format(source) in ("hsv", "lab"):
+            raise ValidationError("Image A needs monochrome or RGB/BGR samples")
+        image_b, scalar_b = inputs.get("image_b"), inputs.get("scalar_b")
+        if image_b is not None and scalar_b is not None:
+            raise ValidationError("Connect either Image B or Scalar B")
+        p = self.parameters
+        output = image.astype(np.float64)
+        has_alpha = output.ndim == 3 and output.shape[2] == 4
+        signal = output[..., :3] if has_alpha and p["preserve_alpha"] else output
+        right = (
+            self.right_image(source, image_b, signal)
+            if image_b is not None
+            else finite(p["scalar"] if scalar_b is None else scalar_b, "Scalar B")
+        )
+        mask = selection_mask(inputs, image)
+        selected = None if mask is None else mask != 0
+        left_samples = signal if selected is None else signal[selected]
+        if left_samples.size:
+            left = left_samples.reshape(-1, 1)
+            if image_b is None:
+                right = np.full_like(left, right)
+            else:
+                right = right if selected is None else right[selected]
+                right = np.asarray(right, dtype=np.float64).reshape(-1, 1)
+            mapped = self.apply_operation(left, right).reshape(left_samples.shape)
+            if not np.isfinite(mapped).all():
+                raise ValidationError("Image arithmetic overflowed. Reduce the input range")
+            if selected is None:
+                signal[...] = mapped
+            else:
+                signal[selected] = mapped
+        return intensity_result(output, source, p["output_depth"], self.generate_graphics)
+
+    def apply_operation(self, left, right):
+        p = self.parameters
+        mode = p["operation"]
+        operation = ARITHMETIC_OPERATIONS[mode]
+        if mode == "multiply":
+            return operation(left, right, scale=float(p["scale"]))
+        if mode != "divide":
+            return operation(left, right)
+        zeros = right == 0
+        if not zeros.any():
+            return operation(left, right, scale=float(p["scale"]))
+        policy = p["zero_divisor"]
+        if policy == "error":
+            raise ValidationError("Division requires nonzero divisors in the selection")
+        mapped = operation(left, np.where(zeros, 1, right), scale=float(p["scale"]))
+        mapped[zeros] = 0 if policy == "zero" else left[zeros]
+        return mapped
 
 
 def rectangular_sums(integral, y0, y1, x0, x1):
@@ -555,6 +682,7 @@ ANALYSIS_BLOCKS = (
     BoxFilter,
     LocalWindowStatistics,
     IntensityTransform,
+    ImageArithmetic,
     SeparableFilter,
     CornerResponse,
     RefineCorners,

@@ -1653,7 +1653,7 @@ P3	function	cv2.accumulateProduct	no static reference	-
 P3	function	cv2.accumulateSquare	no static reference	-
 P3	function	cv2.accumulateWeighted	literal reference	-
 P3	function	cv2.adaptiveThreshold	literal reference	-
-P3	function	cv2.add	no static reference	-
+P3	function	cv2.add	literal reference	-
 P3	function	cv2.addText	no static reference	-
 P3	function	cv2.addWeighted	literal reference	-
 P3	class	cv2.AffineFeature	no static reference	-
@@ -3694,7 +3694,7 @@ P3	function	cv2.motempl.updateMotionHistory	no static reference	-
 P3	function	cv2.moveWindow	no static reference	-
 P3	class	cv2.MSTEdge	no static reference	-
 P3	function	cv2.mulSpectrums	no static reference	-
-P3	function	cv2.multiply	no static reference	-
+P3	function	cv2.multiply	literal reference	-
 P3	function	cv2.mulTransposed	no static reference	-
 P3	function	cv2.namedWindow	no static reference	-
 P3	function	cv2.norm	no static reference	-
@@ -4597,7 +4597,7 @@ P3	method	cv2.Subdiv2D.locate	no static reference	-
 P3	method	cv2.Subdiv2D.nextEdge	no static reference	-
 P3	method	cv2.Subdiv2D.rotateEdge	no static reference	-
 P3	method	cv2.Subdiv2D.symEdge	no static reference	-
-P3	function	cv2.subtract	no static reference	-
+P3	function	cv2.subtract	literal reference	-
 P3	function	cv2.sumElems	no static reference	-
 P3	function	cv2.SVBackSubst	no static reference	-
 P3	function	cv2.SVDecomp	no static reference	-
