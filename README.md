@@ -467,6 +467,9 @@ Compare two responses to map the dominant texture direction.
 the strongest response, winning angle, confidence, and valid-pixel mask.
 [Gabor orientation bank example](examples/gabor_orientation_bank/README.md)
 
+**Pyramid mean-shift filter** flattens fine color texture before segmentation.
+[Mean-shift filtering example](examples/mean_shift_filter/README.md)
+
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing
 wrappers also expose kernel dimensions, anchors, borders, output depths, masks,

@@ -1497,6 +1497,25 @@ Input `gain` — Monochrome gain image at the full spectrum size, including any 
 | `layout` | `"centered"` | `centered`, `native` Centered matches the spectrum preview. Native has zero frequency at index 0. |
 | `symmetry` | `"require"` | `require`, `average`, `minimum`, `maximum` Require matching paired gains, or combine each pair by average, min, or max. |
 
+## Pyramid mean-shift filter (`cv.mean_shift_filter`)
+
+Image processing / Filtering
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — 8-bit grayscale, RGB, BGR, RGBA or BGRA. Alpha is preserved.
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `spatial_radius` | `10.0` | Value must be a finite number between 1 and 64. Search radius in source pixels. |
+| `color_radius` | `20.0` | Value must be a finite number between 0 and 442. Euclidean distance in the three 8-bit color channels. |
+| `pyramid_level` | `1` | Value must be a whole number between 0 and 8. Highest pyramid level. Zero processes the original resolution directly. |
+| `max_iterations` | `5` | Value must be a whole number between 1 and 100. Maximum mean-shift iterations per evaluated pixel. |
+| `epsilon` | `1.0` | Value must be a finite number at least 0. Stop when the change is small enough, using OpenCV's convergence criterion. |
+
 ## Median blur (`cv.median_blur`)
 
 Image processing / Filtering
