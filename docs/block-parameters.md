@@ -496,6 +496,19 @@ Inputs: `points` (data), `camera` (data).
 | --- | --- | --- |
 | `output` | `"normalized"` | `normalized`, `pixels` |
 
+## Apply color correction model (`calibration.apply_ccm`)
+
+Calibration / Color
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `model` (data, optional).
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model` | `{}` | Stored color correction JSON. A wired model takes precedence. |
+
 ## White / color balance (`calibration.color_balance`)
 
 Calibration / Color balance
@@ -509,6 +522,46 @@ Inputs: `image` (image).
 | `red_gain` | `1.0` |  |
 | `green_gain` | `1.0` |  |
 | `blue_gain` | `1.0` |  |
+
+## Detect color chart (`calibration.detect_color_chart`)
+
+Calibration / Color
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `chart` | `"macbeth"` | `macbeth`, `digital_sg`, `vinyl` |
+| `maximum_charts` | `1` |  |
+| `minimum_charts` | `1` |  |
+| `maximum_detection_error` | `0.1` | Maximum matching error accepted by the OpenCV chart detector. |
+| `minimum_image_size` | `1000` | Small inputs are enlarged to this minimum size for detection. |
+| `draw_overlay` | `true` |  |
+
+## Fit color correction model (`calibration.fit_ccm`)
+
+Calibration / Color
+
+Inputs: `patches` (data), `reference` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `chart_index` | `0` | Zero-based index of a detected chart, ordered by detection cost. |
+| `reference_chart` | `"auto"` | `auto`, `macbeth`, `digital_sg`, `vinyl`, `custom` Auto uses the detected chart type, or Macbeth for raw patches. |
+| `reference_rgb` | `[]` | Custom [R,G,B] values in [0, 1], in the same order as the samples. |
+| `reference_encoding` | `"srgb"` | `srgb`, `linear_srgb` |
+| `matrix_type` | `"linear"` | `linear`, `affine` |
+| `distance` | `"ciede2000"` | `ciede2000`, `cie76`, `cie94_graphic_arts`, `cie94_textiles`, `cmc_1_to_1`, `cmc_2_to_1`, `rgb`, `linear_rgb` |
+| `linearization` | `"gamma"` | `identity`, `gamma`, `color_polynomial` |
+| `gamma` | `2.2` |  |
+| `polynomial_degree` | `3` |  |
+| `initial` | `"least_squares"` | `least_squares`, `white_balance` |
+| `saturation_low` | `0.0` | Ignore patches with an RGB channel below this value. |
+| `saturation_high` | `0.98` | Ignore patches with an RGB channel above this value. |
+| `weights` | `[]` | Optional weights, one per patch. Zero excludes a patch. |
+| `lightness_weight_exponent` | `0.0` | Native weighting by reference Lab lightness. |
+| `maximum_iterations` | `500` |  |
+| `epsilon` | `0.0001` |  |
 
 ## Calibration grid (`calibration.grid`)
 
