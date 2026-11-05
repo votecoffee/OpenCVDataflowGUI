@@ -725,6 +725,7 @@ def builtin_registry():
     from .pick_selection import SelectPickCandidate
     from .poses import POSE_BLOCKS
     from .processing import PROCESSING_BLOCKS
+    from .projection import IntensityProfile
     from .ptcloud3d import PTCLOUD3D_BLOCKS
     from .pyramids import PYRAMID_BLOCKS
     from .recipe_blocks import RecipeField, RecipeSelect
@@ -781,6 +782,7 @@ def builtin_registry():
         *RESTORATION_BLOCKS,
         *SPECTRAL_BLOCKS,
         *ANALYSIS_BLOCKS,
+        IntensityProfile,
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,
         *COLLECTION_BLOCKS,

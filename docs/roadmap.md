@@ -17,8 +17,9 @@ completion evidence.
 
 Stage 1 is in progress. Cosine and Fourier transforms, inverse reconstruction,
 radial Fourier filtering, per-channel intensity LUTs, local window statistics,
-unary intensity transforms, and binary image arithmetic are available.
-The OpenCV `core` module still has gaps in array reductions and specialized operations. The
+unary intensity transforms, binary image arithmetic, and row/column intensity
+profiles are available. Whole-image summary statistics and specialized array
+operations remain open. The
 [coverage backlog](opencv-coverage.md) tracks the missing workflows and the
 [binding inventory](opencv-bindings.tsv) maps static references to the pinned
 build. Coverage is measured by runnable graph use cases. Aliases, alternate
