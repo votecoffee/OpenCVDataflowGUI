@@ -177,9 +177,9 @@ see [canvas colors](docs/canvas-colors.md) for typing and custom-block details.
 
 For larger workspaces, select nodes and use **Workspace > Group selected nodes**
 (Ctrl+G). Drag the group's dashed header/border to move its members together;
-**Ungroup selection** (Ctrl+Shift+G) removes the container. The upper-right overview
-shows the visible region; click or drag there to navigate. Save remembers groups,
-zoom and viewport position, including inside ToolBlocks.
+**Ungroup selection** (Ctrl+Shift+G) removes the container. The overview above the
+inspector in the upper-right corner shows the visible region. Click or drag it to
+navigate. Save remembers groups, zoom, and viewport position, including inside ToolBlocks.
 
 **File > Load image-set workspace example** opens a grouped, three-image inspection.
 Press **Continuous** to run the complete set and see filename tickets and verdict

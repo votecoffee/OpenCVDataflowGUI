@@ -222,9 +222,22 @@ def test_viewport_overview_navigation_and_initial_view_is_clean(app):
     window.view.fit_graph()
     app.processEvents()
     assert window.view.transform().m11() < 0.2
-    assert not window.view.overview.isHidden()
-    QTest.mouseClick(window.view.overview, Qt.MouseButton.LeftButton, pos=QPoint(160, 50))
-    assert graph.viewport and window.dirty
+    overview = window.view.overview
+    assert overview.isVisible()
+    workspace = window.centralWidget()
+    for width, sizes in ((1500, [210, 940, 350]), (1200, [180, 540, 480])):
+        window.resize(width, 920)
+        workspace.setSizes(sizes)
+        app.processEvents()
+        corner = overview.mapTo(workspace, QPoint(overview.width(), 0))
+        assert 0 <= workspace.width() - corner.x() <= 4
+        assert 0 <= corner.y() <= 4
+        assert overview.mapTo(window, QPoint(0, overview.height())).y() <= (
+            window.inspector.mapTo(window, QPoint()).y()
+        )
+    before_navigation = copy.deepcopy(graph.viewport)
+    QTest.mouseClick(overview, Qt.MouseButton.LeftButton, pos=QPoint(160, 50))
+    assert graph.viewport != before_navigation and window.dirty
     saved = copy.deepcopy(graph.viewport)
     window.view.centerOn(0, 0)
     window.view.restore_view()
