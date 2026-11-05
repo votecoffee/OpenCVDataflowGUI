@@ -664,6 +664,11 @@ def validate_value(port, value):
 
         if not isinstance(value, DFTSpectrum):
             raise TypeError(f"{port.name} requires a Fourier spectrum")
+    elif port.kind == "encoded_image":
+        from .image_codecs import EncodedImage
+
+        if not isinstance(value, EncodedImage):
+            raise TypeError(f"{port.name} requires an encoded image packet")
     elif port.kind == "depth":
         if (
             not isinstance(value, np.ndarray)

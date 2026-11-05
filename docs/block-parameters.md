@@ -971,6 +971,17 @@ Inputs: `image` (image).
 | `mode` | `"2d"` | `2d`, `rows` Transform the entire image or transform each row independently. |
 | `odd_size` | `"pad_even"` | `pad_even`, `reject` Extend odd transformed axes by repeating the last pixel, or reject them. |
 
+## Decode image from memory (`cv.decode_image`)
+
+Image processing / Codecs
+
+Inputs: `encoded` (encoded_image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `color_format` | `"unchanged"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` Unchanged restores the encoder's logical channel order. |
+| `pixel_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` Unchanged preserves the bit depth stored by the codec. |
+
 ## Demosaic Bayer image (`cv.demosaic_bayer`)
 
 Image processing / Color and depth
@@ -1023,6 +1034,25 @@ Input `guide` — Optional aligned guide. Otherwise the block guides with the so
 | `mode` | `"normalized_convolution"` | `normalized_convolution`, `interpolated_convolution`, `recursive_filtering` |
 | `iterations` | `3` | Value must be a whole number between 1 and 16. Number of horizontal and vertical filtering passes. |
 | `output_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` |
+
+## Encode image in memory (`cv.encode_image`)
+
+Image processing / Codecs
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `codec` | `"png"` | `png`, `jpeg` |
+| `jpeg_quality` | `-1` | Value must be a whole number between -1 and 100. -1 preserves the codec default; otherwise 0..100. JPEG only. |
+| `jpeg_progressive` | `false` |  |
+| `jpeg_optimize` | `false` |  |
+| `jpeg_restart_interval` | `0` | Value must be a whole number between 0 and 65535. |
+| `jpeg_luma_quality` | `-1` | Value must be a whole number between -1 and 100. |
+| `jpeg_chroma_quality` | `-1` | Value must be a whole number between -1 and 100. |
+| `png_compression` | `-1` | Value must be a whole number between -1 and 9. -1 preserves the codec default; otherwise 0..9. PNG only. |
+| `png_strategy` | `"native"` | `native`, `default`, `filtered`, `huffman`, `rle`, `fixed` |
+| `png_bilevel` | `false` |  |
 
 ## Equalize histogram (`cv.equalize`)
 
