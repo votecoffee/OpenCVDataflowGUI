@@ -1,5 +1,7 @@
 """Native denoising and repair operations with image-space selection."""
 
+from abc import ABC, abstractmethod
+
 import cv2
 import numpy as np
 
@@ -94,21 +96,10 @@ class Inpaint(ImageTool):
         return encoded_result(output, source)
 
 
-class GuidedFilter(ImageTool):
-    type_id, title, subtype = "cv.guided_filter", "Guided filter", "Filters"
+class AlignedGuideFilter(ImageTool, ABC):
+    subtype = "Filters"
     inputs = (*SELECTION_INPUTS, Port("guide", required=False))
-    defaults = {"radius": 8, "epsilon": 0.001, "scale": 1.0, "output_depth": "unchanged"}
     parameter_choices = {"output_depth": ("unchanged", "uint8", "uint16", "float32")}
-    parameter_ranges = {
-        "radius": NumericRange(1, 4095, whole=True),
-        "epsilon": NumericRange(1e-8, 1e8),
-        "scale": NumericRange(0.01, 1),
-    }
-    parameter_help = {
-        "radius": "Neighborhood radius in pixels.",
-        "epsilon": "Regularization in squared guide units. Integer guide samples are normalized.",
-        "scale": "Internal subsampling fraction. One filters at full resolution.",
-    }
     input_help = {"guide": "Optional aligned guide. Otherwise the block guides with the source."}
 
     def process(self, inputs):
@@ -123,30 +114,92 @@ class GuidedFilter(ImageTool):
         except ValueError as exc:
             raise ValidationError("Guide must share the source pixel frame") from exc
         if image_format(source) in ("hsv", "lab") or image_format(guide) in ("hsv", "lab"):
-            raise ValidationError("Use grayscale or RGB/BGR intensity data for guided filtering")
+            raise ValidationError("Use grayscale or RGB/BGR intensity data for filtering")
 
-        p = self.parameters
-        scale = float(p["scale"])
-        if scale * min(source.shape[:2]) < 1:
-            raise ValidationError("Scale is too small for the image dimensions")
         work = convert_depth(source, "float32")
         reference = work if guide is source else convert_depth(guide, "float32")
         has_alpha = work.ndim == 3 and work.shape[2] == 4
         signal = work[..., :3] if has_alpha else work
         if reference.ndim == 3:
             reference = reference[..., :3]
-        result = cv2.ximgproc.guidedFilter(
-            reference, signal, int(p["radius"]), float(p["epsilon"]), scale=scale
-        )
+        result = self.filter_image(reference, signal)
         if not np.isfinite(result).all():
-            raise ValidationError("Guided filter produced nonfinite samples. Check the input range")
+            raise ValidationError(f"{self.title} produced nonfinite samples. Check the input range")
         if has_alpha:
             result = np.concatenate((result, work[..., 3:]), axis=2)
         mask = selection_mask(inputs, source)
         if mask is not None:
             result[mask == 0] = work[mask == 0]
-        depth = source.dtype.name if p["output_depth"] == "unchanged" else p["output_depth"]
+        depth = self.parameters["output_depth"]
+        if depth == "unchanged":
+            depth = source.dtype.name
         return encoded_result(convert_depth(result, depth), source)
 
+    @abstractmethod
+    def filter_image(self, reference, signal):
+        """Filter the float32 signal using the aligned reference."""
 
-RESTORATION_BLOCKS = (NonLocalMeans, Inpaint, GuidedFilter)
+
+class GuidedFilter(AlignedGuideFilter):
+    type_id, title = "cv.guided_filter", "Guided filter"
+    defaults = {"radius": 8, "epsilon": 0.001, "scale": 1.0, "output_depth": "unchanged"}
+    parameter_ranges = {
+        "radius": NumericRange(1, 4095, whole=True),
+        "epsilon": NumericRange(1e-8, 1e8),
+        "scale": NumericRange(0.01, 1),
+    }
+    parameter_help = {
+        "radius": "Neighborhood radius in pixels.",
+        "epsilon": "Regularization in squared guide units. Integer guide samples are normalized.",
+        "scale": "Internal subsampling fraction. One filters at full resolution.",
+    }
+
+    def filter_image(self, reference, signal):
+        p = self.parameters
+        scale = float(p["scale"])
+        if scale * min(signal.shape[:2]) < 1:
+            raise ValidationError("Scale is too small for the image dimensions")
+        return cv2.ximgproc.guidedFilter(
+            reference, signal, int(p["radius"]), float(p["epsilon"]), scale=scale
+        )
+
+
+class DomainTransformFilter(AlignedGuideFilter):
+    type_id, title = "cv.domain_transform_filter", "Domain transform filter"
+    defaults = {
+        "sigma_spatial": 8.0,
+        "sigma_color": 0.08,
+        "mode": "normalized_convolution",
+        "iterations": 3,
+        "output_depth": "unchanged",
+    }
+    modes = {
+        "normalized_convolution": cv2.ximgproc.DTF_NC,
+        "interpolated_convolution": cv2.ximgproc.DTF_IC,
+        "recursive_filtering": cv2.ximgproc.DTF_RF,
+    }
+    parameter_choices = {**AlignedGuideFilter.parameter_choices, "mode": tuple(modes)}
+    parameter_ranges = {
+        "sigma_spatial": NumericRange(0.01, 4096),
+        "sigma_color": NumericRange(1e-6, 1e4),
+        "iterations": NumericRange(1, 16, whole=True),
+    }
+    parameter_help = {
+        "sigma_spatial": "Spatial smoothing scale in pixels.",
+        "sigma_color": "Edge sensitivity in guide units. Integer guides are normalized to [0, 1].",
+        "iterations": "Number of horizontal and vertical filtering passes.",
+    }
+
+    def filter_image(self, reference, signal):
+        p = self.parameters
+        return cv2.ximgproc.dtFilter(
+            reference,
+            signal,
+            float(p["sigma_spatial"]),
+            float(p["sigma_color"]),
+            mode=self.modes[p["mode"]],
+            numIters=int(p["iterations"]),
+        )
+
+
+RESTORATION_BLOCKS = (NonLocalMeans, Inpaint, GuidedFilter, DomainTransformFilter)

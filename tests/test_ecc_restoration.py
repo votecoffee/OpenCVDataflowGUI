@@ -157,3 +157,53 @@ def test_guided_filter_rejects_different_frames_and_tiny_scale():
     block.parameters["scale"] = 0.1
     assert block.execute({"image": image}) is None and block.error_kind == "invalid"
     assert "too small" in block.error
+
+
+@pytest.mark.parametrize(
+    "mode", ["normalized_convolution", "interpolated_convolution", "recursive_filtering"]
+)
+def test_domain_transform_filter_keeps_edges_alpha_and_mask(mode):
+    guide = np.full((48, 64), 8000, np.uint16)
+    guide[:, 32:] = 48000
+    noise = np.random.default_rng(18).integers(-1600, 1601, guide.shape)
+    noisy = (guide.astype(int) + noise).astype(np.uint16)
+    alpha = np.arange(guide.size, dtype=np.uint16).reshape(guide.shape)
+    source = ImageArray(np.stack((noisy, noisy, noisy, alpha), axis=2), "rgba")
+    mask = np.zeros(guide.shape, np.uint8)
+    mask[5:-5, 5:-5] = 255
+    block = builtin_registry().create(
+        "cv.domain_transform_filter",
+        parameters={"mode": mode, "iterations": 2, "sigma_spatial": 7, "sigma_color": 0.06},
+    )
+    result = block.execute({"image": source, "guide": guide, "mask": mask})
+    assert result is not None, block.error
+    output = result.outputs["image"]
+    assert output.dtype == np.uint16 and image_format(output) == "rgba"
+    np.testing.assert_array_equal(output[mask == 0], source[mask == 0])
+    np.testing.assert_array_equal(output[..., 3], alpha)
+    assert output[10:38, 8:24, 0].std() < noisy[10:38, 8:24].std() / 2
+    assert output[24, 31, 0] < 10000
+    assert output[24, 32, 0] > 46000
+
+
+def test_domain_transform_filter_uses_self_guide_and_preserves_pixel_frame():
+    image = np.full((5, 5), 100, np.uint8)
+    block = builtin_registry().create(
+        "cv.domain_transform_filter", parameters={"output_depth": "float32"}
+    )
+    context = frame([5, 5], "source")
+    source = ValuePacket(image, {"spatial": context})
+    result = block.execute({"image": source})
+    assert result is not None, block.error
+    output = result.outputs["image"]
+    assert output.dtype == np.float32
+    np.testing.assert_allclose(output, 100 / 255, rtol=1e-6)
+    assert result.payloads["image"]["spatial"] == context
+    assert (
+        block.execute(
+            {"image": source, "guide": ValuePacket(image, {"spatial": frame([5, 5], "other")})}
+        )
+        is None
+    )
+    assert block.error_kind == "invalid"
+    assert "share the source pixel frame" in block.error
