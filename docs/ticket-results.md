@@ -1,5 +1,9 @@
 # Ticket outcomes, input gates and final judgments
 
+Final judgments support stable fail codes/messages, and the status bar reports cumulative
+ticket counts and end-to-end timing. See [production counts and validation](production-validation.md)
+for reason propagation, counting boundaries and scored validation image sets.
+
 Ticketed connections carry source-start/output-finish UTC timestamps and monotonic
 elapsed time. The results window shows these spans and per-tool durations; each block
 retains current/last/average statistics. See [execution and ticket timing](timing.md)

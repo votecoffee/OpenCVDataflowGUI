@@ -1267,12 +1267,14 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 Inspection / Ticket results
 
-Inputs: `value` (any), `passed` (data, optional).
+Inputs: `value` (any), `passed` (data, optional), `reasons` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `mode` | `"upstream"` | `upstream`, `boolean_input`, `pass`, `fail` Upstream uses accumulated status. Other modes assign an explicit final decision. |
 | `data` | `{}` | Compact JSON record attached to the final ticket event. |
+| `fail_reason` | `""` | Stable code assigned when the final decision is FAIL. |
+| `reason_message` | `""` | Human-readable explanation; defaults to the reason code. |
 
 ## Histogram (`inspect.histogram`)
 

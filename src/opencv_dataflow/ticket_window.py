@@ -46,6 +46,7 @@ class TicketResultsWindow(QDialog):
                 "Start UTC",
                 "Last finish UTC",
                 "Elapsed ms",
+                "Fail reasons",
             ]
         )
         self.details = QTextEdit()
@@ -97,6 +98,9 @@ class TicketResultsWindow(QDialog):
                 timing.get("started_at", ""),
                 timing.get("finished_at", ""),
                 f"{timing['elapsed_ms']:.3f}" if timing.get("elapsed_ms") is not None else "",
+                ", ".join(
+                    r["code"] for r in row.get("final_fail_reasons", row.get("fail_reasons", []))
+                ),
             ]
             if query and query not in " ".join(fields).casefold():
                 continue

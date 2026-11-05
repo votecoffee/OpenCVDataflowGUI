@@ -59,7 +59,7 @@ class ImageFile(Block):
                     "Save or open the project before using a project-relative image path"
                 )
             path = self.project_dir / path
-        image = cv2.imdecode(np.frombuffer(path.read_bytes(), np.uint8), cv2.IMREAD_UNCHANGED)
+        image = cv2.imdecode(np.frombuffer(self.read_bytes(path), np.uint8), cv2.IMREAD_UNCHANGED)
         if image is None:
             raise ValueError(f"Unable to decode image: {path}")
         output = format_image(
@@ -80,6 +80,9 @@ class ImageFile(Block):
             graphics={"decoded source": image},
             message=f"{path.name} · {info['color_format']} / {output.dtype}",
         )
+
+    def read_bytes(self, path):
+        return path.read_bytes()
 
 
 class Camera(Block):

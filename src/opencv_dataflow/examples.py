@@ -3,6 +3,85 @@
 from .core import Graph
 
 
+def validation_graph(registry):
+    """One expected part, with pass/fail fixtures and stable reason codes."""
+    graph = Graph()
+    source = graph.add(
+        registry.create(
+            "input.file",
+            block_id="validation_source",
+            parameters={
+                "path": "validation_assets/pass.png",
+                "path_base": "project",
+            },
+        )
+    )
+    inspection = graph.add(
+        registry.create(
+            "inspect.contours",
+            block_id="validation_inspect",
+            parameters={
+                "expected_count": 1,
+                "min_area": 20.0,
+            },
+        )
+    )
+    final = graph.add(
+        registry.create(
+            "inspect.final_judgment",
+            block_id="validation_final",
+            parameters={
+                "fail_reason": "part_count",
+                "reason_message": "Expected exactly one part",
+            },
+        )
+    )
+    for index, block in enumerate((source, inspection, final)):
+        block.position = [index * 340, 0]
+    graph.connect(source.id, "image", inspection.id, "image")
+    graph.connect(inspection.id, "overlay", final.id, "value")
+    graph.validation_sets = [
+        {
+            "id": "validation_smoke",
+            "name": "One-part regression",
+            "source": source.id,
+            "judgment": final.id,
+            "state_mode": "isolated",
+            "allow_outputs": False,
+            "cases": [
+                {
+                    "id": "known_pass",
+                    "path": "validation_assets/pass.png",
+                    "expectation": "must_pass",
+                },
+                {
+                    "id": "known_fail",
+                    "path": "validation_assets/fail.png",
+                    "expectation": "must_fail",
+                    "preferred_fail_reason": "part_count",
+                },
+                {
+                    "id": "likely_pass",
+                    "path": "validation_assets/pass.png",
+                    "expectation": "should_pass",
+                },
+                {
+                    "id": "likely_fail",
+                    "path": "validation_assets/fail.png",
+                    "expectation": "should_fail",
+                    "preferred_fail_reason": "part_count",
+                },
+                {
+                    "id": "unclassified",
+                    "path": "validation_assets/unknown.png",
+                    "expectation": "unknown",
+                },
+            ],
+        }
+    ]
+    return graph
+
+
 def sequence_graph(registry):
     """Stationary warmup followed by motion, with no camera or external files."""
     graph = Graph()

@@ -391,6 +391,13 @@ Try **File > Load sequence memory example**, then run continuously. See
 
 ## Architecture
 
+The bottom status bar shows running ticket totals, pass/fail counts, pass rate and
+average end-to-end time. Final judgments can attach stable failure codes and explanations.
+Use **Results > Validation image sets…** to grade saved images as must/should pass,
+unknown or must/should fail, optionally matching a preferred failure code. Runs produce
+a score and per-image report without affecting production counts. Try **File > Load
+validation image set example**; see [production counts and validation](docs/production-validation.md).
+
 Open **Results > Block diagnostics** (**Ctrl+Shift+D**) for a bottom dock with
 severity-colored logs. Selecting a block isolates its logs; clearing the selection shows
 all blocks. Filter verbosity/severity, search messages, and inspect structured parameters

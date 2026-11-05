@@ -363,6 +363,7 @@ class ParallelInspect(Block):
                 tool.graph.bind_recipes(self._recipes, allow_activation=False)
                 tool._event_path = f"{getattr(self, '_event_path', self.id)}/part-{index}"
                 tool._activity = self._activity
+                tool._production_excluded = True
                 tool._activity_path = tool._event_path
                 logical = getattr(self, "_activity_logical_path", self.id)
                 tool._activity_logical_path = f"{logical}/[inspection]"
@@ -371,6 +372,7 @@ class ParallelInspect(Block):
                 tool.graph.bind_project_dir(self.project_dir)
                 # Per-item graphs run serially; the outer pool owns part concurrency.
                 for block in walk(tool.graph):
+                    block._production_excluded = True
                     if block.type_id == "flow.split":
                         block.parameters["workers"] = 1
                 values = {
