@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Grayscale intensity ramp",
+      "parameters": {
+        "path": "assets/ramp.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "clip",
+      "type": "cv.intensity_transform",
+      "name": "Clip to [1, 128]",
+      "parameters": {
+        "operation": "clip",
+        "minimum": 1,
+        "maximum": 128,
+        "output_depth": "same"
+      },
+      "position": [
+        315,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "log",
+      "type": "cv.intensity_transform",
+      "name": "Natural logarithm",
+      "parameters": {
+        "operation": "log"
+      },
+      "position": [
+        630,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "intensity"
+    },
+    {
+      "id": "exp",
+      "type": "cv.intensity_transform",
+      "name": "Reconstruct with exp",
+      "parameters": {
+        "operation": "exp"
+      },
+      "position": [
+        945,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "intensity"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "clip",
+      "input": "image"
+    },
+    {
+      "source": "clip",
+      "output": "image",
+      "target": "log",
+      "input": "image"
+    },
+    {
+      "source": "log",
+      "output": "image",
+      "target": "exp",
+      "input": "image"
+    }
+  ]
+}

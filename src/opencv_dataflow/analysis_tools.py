@@ -337,6 +337,105 @@ class CartesianToPolar(Block):
         return Result({"magnitude": magnitude, "angle": angle})
 
 
+class IntensityTransform(ImageTool):
+    type_id, title, subtype = "cv.intensity_transform", "Intensity transform", "Image math"
+    inputs = SELECTION_INPUTS
+    defaults = {
+        "operation": "power",
+        "exponent": 1.0,
+        "minimum": 0.0,
+        "maximum": 255.0,
+        "output_depth": "float64",
+        "preserve_alpha": True,
+    }
+    parameter_choices = {
+        "operation": ("log", "exp", "sqrt", "power", "clip"),
+        "output_depth": ("float64", "float32", "same"),
+    }
+    parameter_ranges = {
+        "exponent": NumericRange(-100, 100),
+        "minimum": NumericRange(),
+        "maximum": NumericRange(),
+    }
+    parameter_help = {
+        "operation": "Operate in raw sample units. Log is natural and requires positive input.",
+        "exponent": "Power only. Negative bases require a whole exponent.",
+        "minimum": "Clip only. Values below this lower bound are raised to it.",
+        "maximum": "Clip only. Values above this upper bound are lowered to it.",
+        "output_depth": "Same keeps the source depth, rounding and saturating integer results.",
+        "preserve_alpha": "Copy the alpha channel through unchanged in the chosen output depth.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["operation"] == "clip" and float(p["minimum"]) > float(p["maximum"]):
+            raise ValidationError("Minimum must not exceed maximum", "minimum", "maximum")
+
+    def transform_samples(self, values):
+        p = self.parameters
+        operation = p["operation"]
+        if operation == "log":
+            if np.any(values <= 0):
+                raise ValidationError("Log requires positive samples in the selection")
+            return cv2.log(values)
+        if operation == "exp":
+            return cv2.exp(values)
+        if operation == "sqrt":
+            if np.any(values < 0):
+                raise ValidationError("Square root requires nonnegative samples in the selection")
+            return cv2.sqrt(values)
+        if operation == "power":
+            exponent = float(p["exponent"])
+            if not exponent.is_integer() and np.any(values < 0):
+                raise ValidationError("Negative samples require a whole exponent", "exponent")
+            if exponent < 0 and np.any(values == 0):
+                raise ValidationError("A negative exponent requires nonzero samples", "exponent")
+            return cv2.pow(values, exponent)
+        return np.clip(values, float(p["minimum"]), float(p["maximum"]))
+
+    def process(self, inputs):
+        source = inputs["image"]
+        image = image_value(source)
+        encoding = image_format(source)
+        if encoding in ("hsv", "lab"):
+            raise ValidationError("Intensity transform needs monochrome or RGB/BGR samples")
+
+        p = self.parameters
+        output = image.astype(np.float64)
+        has_alpha = output.ndim == 3 and output.shape[2] == 4
+        signal = output[..., :3] if has_alpha and p["preserve_alpha"] else output
+        mask = selection_mask(inputs, image)
+        selection = None if mask is None else mask != 0
+        samples = signal if selection is None else signal[selection]
+        if samples.size:
+            mapped = self.transform_samples(samples.reshape(-1, 1)).reshape(samples.shape)
+            if not np.isfinite(mapped).all():
+                raise ValidationError("Intensity transform overflowed. Reduce the input range")
+            if selection is None:
+                signal[...] = mapped
+            else:
+                signal[selection] = mapped
+
+        depth = image.dtype if p["output_depth"] == "same" else np.dtype(p["output_depth"])
+        if depth.kind in "iu":
+            limits = np.iinfo(depth)
+            output = np.clip(np.rint(output), limits.min, limits.max)
+        elif depth == np.float32 and np.any(np.abs(output) > np.finfo(depth).max):
+            raise ValidationError(
+                "Result exceeds the float32 range. Choose float64", "output_depth"
+            )
+        output = output.astype(depth, copy=False)
+        graphics = {}
+        if self.generate_graphics and depth.kind == "f":
+            display = output[..., :3] if has_alpha else output
+            display = cv2.normalize(display, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            graphics["intensity"] = ImageArray(
+                display, encoding.removesuffix("a") if has_alpha else encoding
+            )
+        return encoded_result(output, source, graphics=graphics)
+
+
 def rectangular_sums(integral, y0, y1, x0, x1):
     return (
         integral[np.ix_(y1, x1)]
@@ -455,6 +554,7 @@ class LocalWindowStatistics(ImageTool):
 ANALYSIS_BLOCKS = (
     BoxFilter,
     LocalWindowStatistics,
+    IntensityTransform,
     SeparableFilter,
     CornerResponse,
     RefineCorners,

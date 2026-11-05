@@ -1237,6 +1237,21 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `interpolation` | `"linear"` | `linear`, `step` Linear blends points. Step holds the previous point's output. |
 | `preserve_alpha` | `true` | Copy alpha on four-channel images and ignore the fourth curve. |
 
+## Intensity transform (`cv.intensity_transform`)
+
+Image processing / Image math
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `operation` | `"power"` | `log`, `exp`, `sqrt`, `power`, `clip` Operate in raw sample units. Log is natural and requires positive input. |
+| `exponent` | `1.0` | Value must be a finite number between -100 and 100. Power only. Negative bases require a whole exponent. |
+| `minimum` | `0.0` | Value must be a finite number. Clip only. Values below this lower bound are raised to it. |
+| `maximum` | `255.0` | Value must be a finite number. Clip only. Values above this upper bound are lowered to it. |
+| `output_depth` | `"float64"` | `float64`, `float32`, `same` Same keeps the source depth, rounding and saturating integer results. |
+| `preserve_alpha` | `true` | Copy the alpha channel through unchanged in the chosen output depth. |
+
 ## Local window statistics (`cv.local_statistics`)
 
 Image processing / Intensity

@@ -2501,7 +2501,7 @@ P3	function	cv2.estimateAffinePartial2D	literal reference	-
 P3	function	cv2.estimateChessboardSharpness	no static reference	-
 P3	function	cv2.estimateTranslation2D	no static reference	-
 P3	function	cv2.estimateTranslation3D	no static reference	-
-P3	function	cv2.exp	no static reference	-
+P3	function	cv2.exp	literal reference	-
 P3	function	cv2.extractChannel	literal reference	-
 P3	class	cv2.face.BasicFaceRecognizer	no static reference	-
 P3	method	cv2.face.BasicFaceRecognizer.getEigenValues	no static reference	-
@@ -3361,7 +3361,7 @@ P3	method	cv2.LineSegmentDetector.drawSegments	no static reference	-
 P3	function	cv2.loadChromaticAberrationParams	no static reference	-
 P3	function	cv2.loadMesh	no static reference	-
 P3	function	cv2.loadPointCloud	no static reference	-
-P3	function	cv2.log	no static reference	-
+P3	function	cv2.log	literal reference	-
 P3	function	cv2.LUT	literal reference	-
 P3	function	cv2.magnitude	literal reference	-
 P3	function	cv2.Mahalanobis	no static reference	-
@@ -4026,7 +4026,7 @@ P3	method	cv2.plot_Plot2d.setShowText	alias	cv2.plot.Plot2d.setShowText
 P3	function	cv2.polarToCart	no static reference	-
 P3	function	cv2.pollKey	no static reference	-
 P3	function	cv2.polylines	literal reference	-
-P3	function	cv2.pow	no static reference	-
+P3	function	cv2.pow	literal reference	-
 P3	function	cv2.ppf_match_3d.addNoisePC	no static reference	-
 P3	function	cv2.ppf_match_3d.computeNormalsPC3d	no static reference	-
 P3	function	cv2.ppf_match_3d.getRandomPose	no static reference	-
@@ -4477,7 +4477,7 @@ P3	function	cv2.SparsePyrLKOpticalFlow_create	no static reference	-
 P3	function	cv2.spatialGradient	no static reference	-
 P3	function	cv2.split	literal reference	-
 P3	function	cv2.sqrBoxFilter	no static reference	-
-P3	function	cv2.sqrt	no static reference	-
+P3	function	cv2.sqrt	literal reference	-
 P3	function	cv2.stackBlur	no static reference	-
 P3	function	cv2.startWindowThread	no static reference	-
 P3	class	cv2.stereo_MatchQuasiDense	alias	cv2.stereo.MatchQuasiDense
