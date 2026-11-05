@@ -3443,7 +3443,7 @@ P3	method	cv2.mcc_CCheckerDetector.setUseDnnModel	alias	cv2.mcc.CCheckerDetector
 P3	class	cv2.mcc_DetectorParametersMCC	alias	cv2.mcc.DetectorParametersMCC
 P3	function	cv2.mean	literal reference	-
 P3	function	cv2.meanShift	no static reference	-
-P3	function	cv2.meanStdDev	no static reference	-
+P3	function	cv2.meanStdDev	literal reference	-
 P3	function	cv2.medianBlur	literal reference	-
 P3	function	cv2.merge	literal reference	-
 P3	class	cv2.MergeDebevec	no static reference	-
