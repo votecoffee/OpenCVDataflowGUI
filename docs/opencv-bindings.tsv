@@ -4062,7 +4062,7 @@ P3	function	cv2.projectPoints	literal reference	-
 P3	function	cv2.projectPointsSepJ	no static reference	-
 P3	function	cv2.putText	literal reference	-
 P3	function	cv2.pyrDown	literal reference	-
-P3	function	cv2.pyrMeanShiftFiltering	no static reference	-
+P3	function	cv2.pyrMeanShiftFiltering	literal reference	-
 P3	class	cv2.PyRotationWarper	no static reference	-
 P3	method	cv2.PyRotationWarper.buildMaps	no static reference	-
 P3	method	cv2.PyRotationWarper.getScale	no static reference	-

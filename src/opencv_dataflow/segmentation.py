@@ -1,14 +1,14 @@
-"""Seeded segmentation in the input image's coordinate frame."""
+"""Segmentation and region preparation in the input image's coordinate frame."""
 
 import cv2
 import numpy as np
 
 from .core import Block, Port, Result
-from .images import label_color_map
+from .images import image_format, label_color_map
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, require_same_frame
-from .processing import image_value, integer
-from .selection import SELECTION_INPUTS, selection_mask
+from .processing import ImageTool, encoded_result, image_value, integer
+from .selection import SELECTION_INPUTS, RegionalOperation, selection_mask
 
 
 def bgr8(source):
@@ -18,6 +18,59 @@ def bgr8(source):
     if image.shape[2] == 4:
         return cv2.cvtColor(image, cv2.COLOR_BGRA2BGR)
     return image
+
+
+class MeanShiftFilter(RegionalOperation, ImageTool):
+    type_id, title, subtype = "cv.mean_shift_filter", "Pyramid mean-shift filter", "Filtering"
+    defaults = {
+        "spatial_radius": 10.0,
+        "color_radius": 20.0,
+        "pyramid_level": 1,
+        "max_iterations": 5,
+        "epsilon": 1.0,
+    }
+    parameter_ranges = {
+        "spatial_radius": NumericRange(1, 64),
+        "color_radius": NumericRange(0, 442),
+        "pyramid_level": NumericRange(0, 8, whole=True),
+        "max_iterations": NumericRange(1, 100, whole=True),
+        "epsilon": NumericRange(0),
+    }
+    parameter_help = {
+        "spatial_radius": "Search radius in source pixels.",
+        "color_radius": "Euclidean distance in the three 8-bit color channels.",
+        "pyramid_level": "Highest pyramid level. Zero processes the original resolution directly.",
+        "max_iterations": "Maximum mean-shift iterations per evaluated pixel.",
+        "epsilon": "Stop when the change is small enough, using OpenCV's convergence criterion.",
+    }
+    input_help = {"image": "8-bit grayscale, RGB, BGR, RGBA or BGRA. Alpha is preserved."}
+
+    def process(self, inputs):
+        source = inputs["image"]
+        image = image_value(source, (np.uint8,))
+        if image_format(source) not in ("gray", "rgb", "bgr", "rgba", "bgra"):
+            raise ValidationError("Mean shift requires grayscale or RGB/BGR channel encoding")
+        if image.ndim == 2:
+            colors = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+        else:
+            colors = np.ascontiguousarray(image[..., :3])
+        p = self.parameters
+        filtered = cv2.pyrMeanShiftFiltering(
+            colors,
+            float(p["spatial_radius"]),
+            float(p["color_radius"]),
+            maxLevel=int(p["pyramid_level"]),
+            termcrit=(
+                cv2.TERM_CRITERIA_MAX_ITER | cv2.TERM_CRITERIA_EPS,
+                int(p["max_iterations"]),
+                float(p["epsilon"]),
+            ),
+        )
+        if image.ndim == 2:
+            filtered = filtered[..., 0].copy()
+        elif image.shape[2] == 4:
+            filtered = np.concatenate((filtered, image[..., 3:]), axis=2)
+        return encoded_result(filtered, source)
 
 
 class FloodFill(Block):
@@ -370,6 +423,7 @@ class MorphologicalReconstruction(Block):
 
 
 SEGMENTATION_BLOCKS = (
+    MeanShiftFilter,
     FloodFill,
     Watershed,
     GrabCut,
