@@ -3115,6 +3115,87 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `maximum_variance` | `75.0` |  |
 | `complexity_reduction` | `0.05` | Evidence threshold for retaining a mixture. Zero disables it. |
 
+## Track object box (CSRT) (`sequence.track_csrt`)
+
+Sequence / Object tracking
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `seed` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `1` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Budget for estimated tracker state. Temporary buffers are extra. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `initial_bounds` | `[]` | First [x,y,width,height] box. A wired seed overrides it. |
+| `max_misses` | `3` | Consecutive missed updates before discarding the model and waiting for a seed. |
+| `minimum_contrast` | `2.0` | Minimum grayscale standard deviation inside the box. Zero disables. |
+| `maximum_center_jump` | `0.0` | Maximum motion since the last accepted update. Zero disables. |
+| `draw_overlay` | `true` |  |
+| `use_channel_weights` | `true` |  |
+| `use_color_names` | `true` |  |
+| `use_gray` | `true` |  |
+| `use_hog` | `true` |  |
+| `use_rgb` | `false` |  |
+| `use_segmentation` | `true` |  |
+| `window_function` | `"hann"` | `hann`, `cheb`, `kaiser` |
+| `admm_iterations` | `4` |  |
+| `background_ratio` | `2` |  |
+| `histogram_bins` | `16` |  |
+| `num_hog_channels_used` | `18` |  |
+| `number_of_scales` | `33` |  |
+| `cheb_attenuation` | `45.0` |  |
+| `filter_lr` | `0.02` |  |
+| `gsl_sigma` | `1.0` |  |
+| `histogram_lr` | `0.04` |  |
+| `hog_clip` | `0.2` |  |
+| `hog_orientations` | `9.0` |  |
+| `kaiser_alpha` | `3.75` |  |
+| `padding` | `3.0` |  |
+| `psr_threshold` | `0.035` |  |
+| `scale_lr` | `0.025` |  |
+| `scale_model_max_area` | `512.0` |  |
+| `scale_sigma_factor` | `0.25` |  |
+| `scale_step` | `1.02` |  |
+| `template_size` | `200.0` |  |
+| `weights_lr` | `0.02` |  |
+
+## Track object box (KCF) (`sequence.track_kcf`)
+
+Sequence / Object tracking
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `seed` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `1` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Budget for estimated tracker state. Temporary buffers are extra. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `initial_bounds` | `[]` | First [x,y,width,height] box. A wired seed overrides it. |
+| `max_misses` | `3` | Consecutive missed updates before discarding the model and waiting for a seed. |
+| `minimum_contrast` | `2.0` | Minimum grayscale standard deviation inside the box. Zero disables. |
+| `maximum_center_jump` | `0.0` | Maximum motion since the last accepted update. Zero disables. |
+| `draw_overlay` | `true` |  |
+| `compress_feature` | `true` |  |
+| `resize` | `true` |  |
+| `split_coeff` | `true` |  |
+| `wrap_kernel` | `false` |  |
+| `desc_npca` | `"gray"` | `none`, `gray`, `color_names`, `gray_and_color_names` |
+| `desc_pca` | `"color_names"` | `none`, `gray`, `color_names`, `gray_and_color_names` |
+| `compressed_size` | `2` |  |
+| `max_patch_size` | `6400` |  |
+| `detect_thresh` | `0.5` |  |
+| `interp_factor` | `0.075` |  |
+| `lambda_` | `0.0001` |  |
+| `output_sigma_factor` | `0.0625` |  |
+| `pca_learning_rate` | `0.15` |  |
+| `sigma` | `0.2` |  |
+
 ## Track points (Lucas-Kanade) (`sequence.track_points`)
 
 Sequence / Temporal processing

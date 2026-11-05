@@ -7,8 +7,8 @@ import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
-from opencv_dataflow.native_background import share_native_sequence_runtime
 from opencv_dataflow.payloads import NO_VALUE
+from opencv_dataflow.sequence import share_native_sequence_runtime
 
 
 @pytest.mark.parametrize("kind", ["sequence.mog2", "sequence.knn_background"])

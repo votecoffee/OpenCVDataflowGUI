@@ -76,7 +76,6 @@ from .examples3d import (
 )
 from .filmstrip_viewer import FilmstripViewer
 from .image_queue import ImageQueue
-from .native_background import share_native_sequence_runtime
 from .outcomes import INPUT_FAILURE_POLICIES
 from .parallel_inspection import ParallelInspect
 from .payloads import describe_value, packet_for, prepare_inputs
@@ -86,6 +85,7 @@ from .recipe_editor import RecipeManager
 from .recipes import validate_bindings
 from .region_editor import RegionEditor
 from .run_profiles import PROFILES
+from .sequence import share_native_sequence_runtime
 from .ticket_window import TicketResultsWindow
 from .tickets import TICKET_MODES
 from .toolblock_editor import InterfaceDialog
