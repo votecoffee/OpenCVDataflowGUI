@@ -231,8 +231,11 @@ class ImageQueue(FlowBlock):
             self.use_lease = False
             self.condition.notify_all()
 
-    def producer_failed(self, message):
-        self.report_event("exception", {"message": message})
+    def producer_failed(self, message, exception=None):
+        if exception is not None:
+            self.logger.exception(message, exc_info=exception)
+        else:
+            self.logger.error(message)
         with self.condition:
             self.runtime["producer_error"] = message
             self.condition.notify_all()

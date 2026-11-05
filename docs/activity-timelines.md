@@ -70,6 +70,10 @@ observed software conditions, not hardware trigger collisions or camera-driver i
 
 ## Custom block diagnostics
 
+Every block also provides `block.logger` with severity, structured parameter snapshots
+and exception tracebacks. **Results > Block diagnostics** opens the selection-aware
+bottom dock with verbosity filters. See [block diagnostics](diagnostics.md).
+
 Inside `process`, use the common reporting method:
 
 ```python

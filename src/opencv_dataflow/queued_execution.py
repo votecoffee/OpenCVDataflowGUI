@@ -193,7 +193,7 @@ class QueuedExecution:
                 if self.stop.wait(max(delay, 0.01 if not packets else 0)):
                     break
         except Exception as exc:
-            self.queue.producer_failed(f"Acquisition failed: {type(exc).__name__}: {exc}")
+            self.queue.producer_failed(f"Acquisition failed: {type(exc).__name__}: {exc}", exc)
         finally:
             self.producer.close()
 

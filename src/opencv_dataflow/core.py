@@ -15,6 +15,7 @@ from typing import Any, ClassVar
 import numpy as np
 
 from .activity import ActivityLog, report
+from .diagnostics import BlockLogger
 from .outcomes import (
     INPUT_FAILURE_POLICIES,
     TicketResults,
@@ -111,6 +112,7 @@ class Block:
             self.exposed_outputs = [p.name for p in self.outputs]
         self.timing = WorkTiming()
         self._activity = None
+        self.logger = BlockLogger(self)
         self._execution_lock = threading.Lock()
         self._execution_owner = None
         self._work_started = self._work_finished = None
@@ -226,6 +228,7 @@ class Block:
         self._cancelled = cancelled
         self._work_started = self.timing.begin()
         self._work_finished = None
+        self._diagnostic_exception = None
         self._activity_started = True
         self._activity_start_reported = False
         if not self.ticket_source:
@@ -331,7 +334,7 @@ class Block:
                 self._report_activity_start(values)
             self.state = "error"
             self.error = f"{type(exc).__name__}: {exc}"
-            self.report_event("exception", {"message": self.error}, values)
+            self.logger.exception(self.error, exc_info=exc, values=values)
             self.last_result = None
             self.last_output_images, self.last_graphics, self.current_emissions = {}, {}, {}
             failure_values = {
@@ -513,6 +516,7 @@ class Graph:
             binding = (id(self.activity), block._activity_path, block._activity_logical_path)
             if getattr(block, "_activity_binding", None) != binding:
                 block._activity_binding = binding
+                block.logger.bind(self.activity)
                 block.report_event("registered")
             if hasattr(block, "graph"):
                 block.graph.bind_activity(
