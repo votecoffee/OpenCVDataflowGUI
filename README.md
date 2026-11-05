@@ -218,6 +218,8 @@ matches keypoints before estimating an image homography. The
 [AKAZE registration example](examples/akaze_registration/README.md) runs the
 same workflow with binary MLDB descriptors. The [FLANN registration
 example](examples/flann_registration/README.md) uses approximate KD-tree matching.
+The [BRISK registration example](examples/brisk_registration/README.md) uses
+binary descriptors and Hamming distance.
 
 Pattern matchers also return a configurable **pose**: set local x/y/angular offsets
 to locate an inspection origin on the part. **Pose from feature** creates a frame

@@ -350,3 +350,45 @@ def test_flann_rejects_binary_akaze():
     assert block.execute({"query": binary, "train": binary}) is None
     assert block.error_kind == "invalid"
     assert "float AKAZE" in block.error
+
+
+@pytest.mark.parametrize("mode,octaves", [("ratio", 3), ("cross_check", 0)])
+def test_brisk_matches_a_known_shift_with_capped_features(mode, octaves):
+    image = np.random.default_rng(28).integers(0, 256, (192, 240), dtype=np.uint8)
+    image = cv2.GaussianBlur(image, (3, 3), 0.6)
+    moved = cv2.warpAffine(image, np.float32([[1, 0, 6], [0, 1, 10]]), image.shape[::-1])
+    mask = np.zeros_like(image)
+    mask[18:172, 18:220] = 255
+    p = {"octaves": octaves, "max_features": 200}
+    query = run("inspect.brisk", {"image": image, "mask": mask}, p).last_result
+    train = run("inspect.brisk", {"image": moved}, p).last_result
+    packet = query.outputs["features"]
+    assert packet["algorithm"] == "BRISK" and packet["descriptor_size"] == 64
+    assert query.outputs["count"] == 200
+    assert np.asarray(packet["descriptors"]).shape == (200, 64)
+    for x, y in np.rint(query.outputs["points"]).astype(int):
+        assert mask[y, x]
+    assert len(query.drawings["BRISK"].objects) == 200
+    matched = run(
+        "inspect.match_brisk",
+        {"query": packet, "train": train.outputs["features"]},
+        {"mode": mode},
+    ).last_result
+    assert matched.outputs["count"] > 40
+    estimate = run("inspect.homography", {"matches": matched.outputs["matches"]})
+    assert estimate.state == "pass"
+    matrix = np.asarray(estimate.last_result.outputs["transform"]["source_to_target"])
+    np.testing.assert_allclose(matrix[:2, 2], [6, 10], atol=0.5)
+
+
+def test_brisk_matcher_validates_pattern_and_empty_inputs():
+    image = np.zeros((80, 120), np.uint8)
+    first = run("inspect.brisk", {"image": image}).last_result.outputs["features"]
+    other = run("inspect.brisk", {"image": image}, {"pattern_scale": 1.25}).last_result.outputs[
+        "features"
+    ]
+    block = run("inspect.match_brisk", {"query": first, "train": first})
+    assert block.last_result.outputs["count"] == 0
+    assert block.execute({"query": first, "train": other}) is None
+    assert block.error_kind == "invalid"
+    assert "pattern scales must match" in block.error
