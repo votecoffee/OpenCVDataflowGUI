@@ -16,8 +16,8 @@ completion evidence.
 | 5 | Application-specific ToolBlocks | Package reusable tray orientation, conveyor pick selection, depth-assisted bin picking, surface and bead inspection, OCR/code grading, color checks and robot-frame measurements. | Each package has documented ports and calibration assumptions, known-good and known-bad validation sets, and repeatable ticket verdicts and reasons. Hardware-dependent acceptance is tracked separately. |
 
 Stage 1 is in progress. Cosine and Fourier transforms, inverse reconstruction,
-radial Fourier filtering, custom spectrum masks, per-channel intensity LUTs,
-local window statistics,
+radial Fourier filtering, custom spectrum masks, Fourier correlation,
+per-channel intensity LUTs, local window statistics,
 unary intensity transforms, binary image arithmetic, and row/column intensity
 profiles are available, along with selected image summary statistics.
 Specialized array operations remain open. The

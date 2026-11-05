@@ -2405,6 +2405,24 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `connectivity` | `"4"` | `4`, `8` |
 | `range_mode` | `"fixed"` | `fixed`, `floating` Compare with the seed (fixed) or an accepted adjacent pixel (floating). |
 
+## Fourier correlation (`inspect.fourier_correlation`)
+
+Inspection / Registration
+
+Inputs: `image` (image), `reference` (image), `mask` (image, optional), `region` (data, optional), `reference_mask` (image, optional).
+
+Input `image` — Monochrome sample image in which to locate the reference displacement.
+
+Input `reference` — Monochrome reference. Linear mode accepts a different image size.
+
+Input `reference_mask` — Optional uint8 selection in the reference image frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `boundary` | `"linear"` | `linear`, `circular` Linear zero-pads to avoid wrapping. Circular compares equal-size images. |
+| `normalization` | `"energy"` | `energy`, `none` Energy scales each whole signal to unit L2 norm before correlation. |
+| `subtract_mean` | `false` | Remove each input's mean over its selected samples before correlation. |
+
 ## GrabCut foreground (`inspect.grabcut`)
 
 Inspection / Segmentation
