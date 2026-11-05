@@ -84,6 +84,7 @@ class Block:
         self.id = block_id or uuid.uuid4().hex
         self.name = self.title
         self._description = ""
+        self._documentation = ""
         self.parameters = copy.deepcopy(self.defaults)
         if parameters:
             unknown = parameters.keys() - self.defaults.keys()
@@ -134,6 +135,16 @@ class Block:
         if not isinstance(value, str):
             raise ValueError("Block description must be text")
         self._description = value
+
+    @property
+    def documentation(self):
+        return self._documentation
+
+    @documentation.setter
+    def documentation(self, value):
+        if not isinstance(value, str):
+            raise ValueError("Block documentation must be rich-text HTML")
+        self._documentation = value
 
     def clear_result(self, preserve_history=False):
         self.current_emissions = {}
@@ -1186,6 +1197,7 @@ class Graph:
                     "type": b.type_id,
                     "name": b.name,
                     **({"description": b.description} if b.description else {}),
+                    **({"documentation": b.documentation} if b.documentation else {}),
                     "parameters": b.parameters,
                     "position": b.position,
                     "exposed_inputs": b.exposed_inputs,
@@ -1262,6 +1274,7 @@ class Graph:
                 )
             block.name = item["name"]
             block.description = item.get("description", block.description)
+            block.documentation = item.get("documentation", block.documentation)
             if "ticket_settings" in item:
                 settings = item["ticket_settings"]
                 if (

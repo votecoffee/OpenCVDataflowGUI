@@ -8,6 +8,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 import numpy as np
 import pytest
 from PySide6.QtCore import QEvent, QPoint, Qt
+from PySide6.QtGui import QFont
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QDialog, QGraphicsSceneHelpEvent, QInputDialog, QToolTip
 
@@ -15,6 +16,7 @@ from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.canvas import CanvasScene, CanvasView
 from opencv_dataflow.core import Block, Graph, Port, Result
+from opencv_dataflow.documentation_editor import DocumentationEditor
 from opencv_dataflow.images import ImageArray
 from opencv_dataflow.kernel_editor import KernelEditor
 from opencv_dataflow.toolblock_editor import InterfaceDialog
@@ -272,6 +274,55 @@ def test_block_description_appears_as_plain_text_and_survives_project_save(app, 
         window.scene.nodes[block.id].setSelected(True)
         assert window.inspector.description_field.toPlainText() == description
         assert window.scene.nodes[block.id].toolTip() == tooltip
+    finally:
+        window.dirty = False
+        window.close()
+
+
+def test_block_documentation_keeps_formatting_and_does_not_invalidate_results(
+    app, monkeypatch, tmp_path
+):
+    window = MainWindow()
+    window.show()
+    window.graph.run()
+    block = next(iter(window.graph.blocks.values()))
+    window.scene.nodes[block.id].setSelected(True)
+    result = block.last_result
+    tooltip = window.scene.nodes[block.id].toolTip()
+    assert not block.documentation
+
+    def edit(dialog):
+        dialog.editor.insertPlainText("Inspect the reference surface.")
+        dialog.editor.selectAll()
+        dialog.bold.trigger()
+        return QDialog.DialogCode.Accepted
+
+    def cancel(dialog):
+        dialog.editor.insertPlainText("Discard this edit.")
+        return QDialog.DialogCode.Rejected
+
+    try:
+        monkeypatch.setattr(DocumentationEditor, "exec", edit)
+        window.inspector.edit_documentation()
+        assert window.dirty
+        assert block.last_result is result
+        assert window.scene.nodes[block.id].toolTip() == tooltip
+        saved = block.documentation
+
+        monkeypatch.setattr(DocumentationEditor, "exec", cancel)
+        window.inspector.edit_documentation()
+        assert block.documentation == saved
+
+        window.path = tmp_path / "documentation.json"
+        assert window.save_project()
+        graph = Graph.load(window.path, window.registry)
+        restored = graph.blocks[block.id]
+        assert restored.documentation == saved
+        dialog = DocumentationEditor(restored, window)
+        assert dialog.editor.toPlainText() == "Inspect the reference surface."
+        first_fragment = dialog.editor.document().begin().begin().fragment()
+        assert first_fragment.charFormat().fontWeight() == QFont.Weight.Bold
+        dialog.deleteLater()
     finally:
         window.dirty = False
         window.close()

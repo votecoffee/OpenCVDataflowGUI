@@ -46,6 +46,7 @@ from .canvas import CanvasScene, CanvasView, Node, pixmap
 from .cloud_viewer import CloudViewer
 from .core import Graph
 from .diagnostic_viewer import DiagnosticViewer
+from .documentation_editor import DocumentationEditor
 from .examples import (
     annoy_graph,
     channel_pyramid_graph,
@@ -273,6 +274,9 @@ class Inspector(QWidget):
         self.description_field.setPlaceholderText("Shown when hovering over this block")
         self.description_field.setMaximumHeight(76)
         self.form.addRow("Description", self.description_field)
+        documentation = QPushButton("Edit documentation…")
+        documentation.clicked.connect(self.edit_documentation)
+        self.form.addRow(documentation)
         if block.ticket_source:
             self.ticket_mode = QComboBox()
             self.ticket_mode.addItems(TICKET_MODES)
@@ -472,6 +476,18 @@ class Inspector(QWidget):
         self.form.addRow(apply_button)
         self.editor.setEnabled(self.window.runner is None)
         self.refresh_result()
+
+    def edit_documentation(self):
+        block = self.block
+        if block is None or self.window.runner:
+            return
+        dialog = DocumentationEditor(block, self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            updated = dialog.documentation()
+            if updated != block.documentation:
+                block.documentation = updated
+                self.window.mark_dirty()
+        dialog.deleteLater()
 
     def can_preview(self):
         b = self.block
