@@ -75,6 +75,10 @@ class ImagePyramid:
 
 
 def validate_payload(payload):
+    from .outcomes import validate_outcome
+
+    if isinstance(payload, dict) and "outcome" in payload:
+        validate_outcome(payload["outcome"])
     if not isinstance(payload, dict):
         raise ValueError("Port payload must be a JSON object")
     json.dumps(payload, allow_nan=False)

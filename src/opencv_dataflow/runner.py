@@ -38,9 +38,7 @@ def describe(graph):
             if result
             else {},
             "payloads": result.payloads if result else {},
-            "emitted": {name: len(packets) for name, packets in result.emissions.items()}
-            if result
-            else {},
+            "emitted": {name: len(packets) for name, packets in block.current_emissions.items()},
         }
         if isinstance(block, ToolBlock):
             record["children"] = describe(block.graph)
@@ -106,11 +104,19 @@ def main(argv=None):
                         block.last_result.message if block.last_result else ""
                     )
                     print(f"  {block.name}: {block.state} · {message}")
+        if queued is not None:
+            queued.close()
+            queued = None
         if args.report:
             # Ports of kind number may contain NumPy scalar objects.
             content = (
                 json.dumps(
-                    {"project": str(args.project), "passed": passed, "runs": runs},
+                    {
+                        "project": str(args.project),
+                        "passed": passed,
+                        "runs": runs,
+                        "ticket_results": graph.ticket_results.snapshot(),
+                    },
                     indent=2,
                     allow_nan=False,
                     default=lambda value: value.item(),

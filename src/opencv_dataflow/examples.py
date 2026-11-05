@@ -3,6 +3,35 @@
 from .core import Graph
 
 
+def ticket_results_graph(registry):
+    """Inspection, failure-gated diagnostics and an independent final judgment."""
+    graph = Graph()
+    ids = ("ticket_source", "ticket_gray", "ticket_blur", "ticket_threshold", "ticket_inspect")
+    types = ("input.demo", "cv.gray", "cv.gaussian_blur", "cv.threshold", "inspect.contours")
+    blocks = [graph.add(registry.create(kind, block_id=key)) for key, kind in zip(ids, types)]
+    blocks[3].parameters["value"] = 100
+    blocks[4].parameters["min_area"] = 1000.0
+    for index, block in enumerate(blocks):
+        block.position = [index * 265.0, (index % 2) * 45.0]
+    for previous, following in zip(blocks, blocks[1:]):
+        graph.connect(previous.id, "image", following.id, "image")
+    inspect = blocks[-1]
+    judgment = graph.add(
+        registry.create(
+            "inspect.final_judgment",
+            block_id="ticket_final",
+            parameters={"data": {"station": "synthetic inspection"}},
+        )
+    )
+    judgment.position = [1325, 0]
+    gate = graph.add(registry.create("cv.gray", block_id="ticket_accepted_preview"))
+    gate.name, gate.position = "Only inspect passing images", [1325, 340]
+    gate.input_failure_policies = {"image": "reject_failed"}
+    graph.connect(inspect.id, "data", judgment.id, "value")
+    graph.connect(inspect.id, "overlay", gate.id, "image")
+    return graph
+
+
 def starter_graph(registry):
     graph = Graph()
 

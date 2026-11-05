@@ -14,6 +14,13 @@ from typing import Any, ClassVar
 
 import numpy as np
 
+from .outcomes import (
+    INPUT_FAILURE_POLICIES,
+    TicketResults,
+    publish_result,
+    rejected_inputs,
+    stamp_result,
+)
 from .payloads import (
     NO_VALUE,
     FlowGroup,
@@ -43,6 +50,8 @@ class Result:
     message: str = ""
     payloads: dict[str, dict] = field(default_factory=dict)
     emissions: dict[str, list[ValuePacket]] = field(default_factory=dict)
+    event_data: dict = field(default_factory=dict)
+    final_judgment: bool | None = None
 
 
 class Block:
@@ -79,6 +88,11 @@ class Block:
         self.thumbnail = True
         self.preview_output = ""
         self.input_levels = {}
+        self.input_failure_policies = {}
+        self.current_emissions = {}
+        self.input_rejected = False
+        self.last_rejection = ""
+        self._ticket_results = None
         self.ticket_source = self.type_id.startswith("input.")
         self.ticket_settings = copy.deepcopy(DEFAULT_TICKET_SETTINGS)
         if self.ticket_source:
@@ -90,7 +104,13 @@ class Block:
             self.exposed_outputs = [p.name for p in self.outputs]
         self.clear_result()
 
-    def clear_result(self):
+    def clear_result(self, preserve_history=False):
+        self.current_emissions = {}
+        self.input_rejected = False
+        self.last_rejection = ""
+        if preserve_history and "reject_failed" in self.input_failure_policies.values():
+            self.state, self.error, self.elapsed_ms = "idle", "", 0.0
+            return
         self.last_inputs: dict[str, Any] = {}
         self.input_payloads = {}
         self.last_result: Result | None = None
@@ -108,6 +128,12 @@ class Block:
         return result
 
     def validate_parameters(self, parameters=None):
+        if (
+            not isinstance(self.input_failure_policies, dict)
+            or not self.input_failure_policies.keys() <= {p.name for p in self.inputs}
+            or any(v not in INPUT_FAILURE_POLICIES for v in self.input_failure_policies.values())
+        ):
+            raise ValueError("Invalid input failure policy")
         allowed = {p.name for p in self.inputs if p.kind == "image"}
         if not self.input_levels.keys() <= allowed or any(
             level not in ("largest", *map(str, range(9))) for level in self.input_levels.values()
@@ -120,7 +146,21 @@ class Block:
                 raise ValueError(f"{label} must be one of: {', '.join(map(str, choices))}")
 
     def execute(self, values, cancelled=lambda: False):
-        self.clear_result()
+        try:
+            rejected = rejected_inputs(self, values)
+        except (ValueError, TypeError):
+            rejected = []
+        if rejected:
+            self.state, self.error = "inactive", ""
+            self.current_emissions = {}
+            self.input_rejected = True
+            self.last_rejection = (
+                f"Rejected failed input: {', '.join(rejected)}; retained last processed result"
+            )
+            publish_result(self, values, kind="input_rejected", message=self.last_rejection)
+            return None
+        self.clear_result(preserve_history=True)
+        Block.clear_result(self)
         self._source_ticket = None
         self._cancelled = cancelled
         started = time.perf_counter()
@@ -152,10 +192,25 @@ class Block:
                 result.outputs["ticket"] = ticket
                 self._source_ticket = ticket
             result = finish_outputs(self, result)
+            if not isinstance(result.passed, (bool, np.bool_)) or (
+                result.final_judgment is not None
+                and not isinstance(result.final_judgment, (bool, np.bool_))
+            ):
+                raise ValueError("Tool result and final judgment must be boolean")
+            result.passed = bool(result.passed)
+            if result.final_judgment is not None:
+                result.final_judgment = bool(result.final_judgment)
+            if (
+                not isinstance(result.event_data, dict)
+                or len(json.dumps(result.event_data, allow_nan=False).encode("utf-8")) > 8192
+            ):
+                raise ValueError("Result event_data must be a JSON object of at most 8 KiB")
             if result.score is not None and (
                 not math.isfinite(result.score) or not 0 <= result.score <= 1
             ):
                 raise ValueError("Score must be finite and between 0 and 1")
+            if result.score is not None:
+                result.score = float(result.score)
             expected = {p.name for p in self.outputs}
             if result.outputs.keys() != expected:
                 raise ValueError(f"Result outputs must match {sorted(expected)}")
@@ -172,7 +227,9 @@ class Block:
                     validate_value(next(p for p in self.outputs if p.name == name), packet)
             for name, value in result.graphics.items():
                 validate_value(Port(name), value)
+            result = stamp_result(self, result)
             self.last_result = copy.deepcopy(result)
+            self.current_emissions = self.last_result.emissions
             self.last_output_images = {
                 p.name: self.last_result.outputs[p.name]
                 for p in self.outputs
@@ -185,9 +242,31 @@ class Block:
                 for name in getattr(self, "flow_primary", tuple(result.outputs))
             ):
                 self.state = "waiting"
+            publish_result(
+                self,
+                {
+                    name: ValuePacket(value, self.input_payloads.get(name, {}))
+                    for name, value in self.last_inputs.items()
+                },
+                self.last_result,
+                kind="final_judgment" if result.final_judgment is not None else "tool_result",
+            )
         except Exception as exc:
             self.state = "error"
             self.error = f"{type(exc).__name__}: {exc}"
+            self.last_result = None
+            self.last_output_images, self.last_graphics, self.current_emissions = {}, {}, {}
+            publish_result(
+                self,
+                {
+                    name: value
+                    if isinstance(value, ValuePacket)
+                    else ValuePacket(value, self.input_payloads.get(name, {}))
+                    for name, value in values.items()
+                },
+                kind="error",
+                message=self.error,
+            )
             if getattr(self, "accept_events", False):
                 self.reset_runtime()
         finally:
@@ -220,6 +299,9 @@ class Block:
             "state",
             "error",
             "elapsed_ms",
+            "current_emissions",
+            "input_rejected",
+            "last_rejection",
         ):
             setattr(self, name, copy.deepcopy(getattr(other, name)))
 
@@ -292,6 +374,20 @@ class Graph:
         self.connections: list[Connection] = []
         self.project_dir = None
         self.clock = TicketClock()
+        self.ticket_results = TicketResults()
+        self._event_prefix = ""
+
+    def bind_ticket_results(self, consumer=None, prefix=None):
+        if consumer is not None:
+            self.ticket_results = consumer
+        if prefix is not None:
+            self._event_prefix = prefix
+        prefix = self._event_prefix
+        for block in self.blocks.values():
+            block._ticket_results = self.ticket_results
+            block._event_path = f"{prefix}/{block.id}" if prefix else block.id
+            if hasattr(block, "graph"):
+                block.graph.bind_ticket_results(self.ticket_results, block._event_path)
 
     def bind_project_dir(self, directory):
         self.project_dir = Path(directory).resolve() if directory is not None else None
@@ -324,12 +420,14 @@ class Graph:
         for block in self.blocks.values():
             block.reset_runtime()
 
-    def clear_results(self):
+    def clear_results(self, preserve_history=False):
         for block in self.blocks.values():
-            block.clear_result()
+            block.clear_result(preserve_history=preserve_history)
 
     def copy_runtime_from(self, other):
         self.clock = other.clock.clone()
+        if self.ticket_results is not other.ticket_results:
+            self.ticket_results.restore(other.ticket_results.snapshot())
         for key, block in self.blocks.items():
             block.copy_runtime_from(other.blocks[key])
 
@@ -434,7 +532,8 @@ class Graph:
                     if capture is not None:
                         block.use_lease = True
                         provided.update(capture.snapshots)
-        self.clear_results()
+        self.bind_ticket_results()
+        self.clear_results(preserve_history=True)
         injected = injected or {}
         for (target, name), value in injected.items():
             block = self.blocks[target]
@@ -452,7 +551,7 @@ class Graph:
             block = self.blocks[key]
             if block.last_result is not None:
                 for port in block.outputs:
-                    emitted[key, port.name] = block.last_result.emissions.get(port.name, [])
+                    emitted[key, port.name] = block.current_emissions.get(port.name, [])
 
         def run_block(key):
             block = self.blocks[key]
@@ -495,11 +594,42 @@ class Graph:
                         **{name: values[0] for name, values in remaining.items() if values},
                     }
                 ]
+                rejected_calls = []
+                for name, packets in block._queued_public_events.items():
+                    rejected_calls.extend(
+                        {name: p} for p in packets if rejected_inputs(block, {name: p})
+                    )
+                    block._queued_public_events[name] = [
+                        p for p in packets if not rejected_inputs(block, {name: p})
+                    ]
+                if rejected_calls:
+                    if not any(block._queued_public_events.values()) and not any(
+                        queue.stats()["queued"] or queue.stats()["busy"]
+                        for queue in queued_inputs.values()
+                    ):
+                        calls = rejected_calls
+                    else:
+                        for rejected_call in rejected_calls:
+                            publish_result(
+                                block,
+                                rejected_call,
+                                kind="input_rejected",
+                                message="Rejected failed public queue input",
+                            )
             elif getattr(block, "queue_boundary", False):
+                rejected_packets = []
                 if not block.use_lease:
                     from .image_queue import QueuedCapture
                     from .queued_execution import ancestors, snapshots_for_frame
 
+                    source_packets = streams.get("image", [])
+                    preloaded = block.preloaded_events
+                    block.preloaded_events = []
+                    rejected_packets = [
+                        p
+                        for p in [*source_packets, *preloaded]
+                        if rejected_inputs(block, {"image": p})
+                    ]
                     block.pending_events = [
                         QueuedCapture(
                             block.normalize(packet),
@@ -507,9 +637,30 @@ class Graph:
                                 self, block.normalize(packet), ancestors(self, key)
                             ),
                         )
-                        for packet in streams.get("image", [])
+                        for packet in source_packets
+                        if not rejected_inputs(block, {"image": packet})
                     ]
+                    block.pending_events.extend(
+                        QueuedCapture(block.normalize(p))
+                        for p in preloaded
+                        if not rejected_inputs(block, {"image": p})
+                    )
                 calls = [constants]
+                if (
+                    rejected_packets
+                    and not block.pending_events
+                    and not block.runtime["pending"]
+                    and block.lease is None
+                ):
+                    calls = [{"image": p} for p in rejected_packets]
+                else:
+                    for packet in rejected_packets:
+                        publish_result(
+                            block,
+                            {"image": packet},
+                            kind="input_rejected",
+                            message="Rejected failed queue input",
+                        )
             elif getattr(block, "accept_events", False):
                 calls = [
                     {name: values[index]}
@@ -558,13 +709,19 @@ class Graph:
                 block.state = "inactive"
                 return
             failed = False
+            had_result = False
+            last_processed_state = "inactive"
             for values in calls:
                 if cancelled():
                     block.state, block.error = "skipped", "Run stopped"
                     return
                 result = block.execute(values, cancelled)
                 if result is None:
+                    if block.input_rejected:
+                        continue
                     return
+                had_result = True
+                last_processed_state = block.state
                 failed |= block.state == "fail"
                 for port in block.outputs:
                     if port.name in result.emissions:
@@ -578,6 +735,10 @@ class Graph:
                     if len(outputs[port.name]) > 1024:
                         block.state, block.error = "error", "Output exceeds 1024 events per run"
                         return
+            if not had_result:
+                block.state = "inactive"
+                return
+            block.state = last_processed_state
             if failed:
                 block.state = "fail"
             elif block.state == "waiting" and any(
@@ -586,6 +747,7 @@ class Graph:
                 block.state = "pass"
             # Retain all emissions for ToolBlock boundaries, receipts and UI snapshots.
             block.last_result.emissions = outputs
+            block.current_emissions = outputs
             for name, packets in outputs.items():
                 if packets:
                     block.last_result.outputs[name] = packets[-1].value
@@ -655,6 +817,11 @@ class Graph:
                     "thumbnail": b.thumbnail,
                     "preview_output": b.preview_output,
                     **({"input_levels": b.input_levels} if b.input_levels else {}),
+                    **(
+                        {"input_failure_policies": b.input_failure_policies}
+                        if b.input_failure_policies
+                        else {}
+                    ),
                     **(
                         {"ticket_settings": b.ticket_settings}
                         if b.ticket_source and b.ticket_settings != DEFAULT_TICKET_SETTINGS
@@ -742,6 +909,14 @@ class Graph:
             ):
                 raise ValueError("Invalid image input pyramid level selections")
             block.input_levels = dict(levels)
+            policies = item.get("input_failure_policies", {})
+            if (
+                not isinstance(policies, dict)
+                or not policies.keys() <= {p.name for p in block.inputs}
+                or any(v not in INPUT_FAILURE_POLICIES for v in policies.values())
+            ):
+                raise ValueError("Invalid input failure policy")
+            block.input_failure_policies = dict(policies)
             graph.add(block)
         for c in data["connections"]:
             graph.connect(**c)

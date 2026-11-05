@@ -26,11 +26,12 @@ valid negative result, distinct from execution error. The node header indicates
 state; score adjusts its brightness. Text provides the same state information.
 
 The base executor captures `last_inputs`, `last_result`, `last_output_images`,
-`last_graphics`, `state`, `error`, and `elapsed_ms`. Every run clears display results;
+`last_graphics`, `state`, `error`, and `elapsed_ms`. Runs reset scheduling state;
+failure-gated inputs retain their last processed previews when an event is rejected.
 ticket counters and bounded control-flow buffers survive until reset/configuration changes.
 Input snapshots and output copies isolate sibling branches and retained histories
 from mutation in another block. This favors debugging clarity over throughput;
-only the latest run is retained. Multiple stream emissions from that run are retained
+only the latest processed invocation's images are retained. Multiple stream emissions from that run are retained
 for downstream execution and nested boundaries. Implement `close()` to release optional resources.
 
 Sources with `input.*` IDs receive runtime-managed ticket terminals/settings. Tickets
@@ -122,7 +123,7 @@ one JSON payload column and appends records under a fixed `payload` header. SQLi
 uses a local `results` table with an integer primary key and JSON payload text;
 inserts are parameterized. XML creates a `results/payload` document containing JSON.
 These are intentionally basic sinks rather than a user-defined reporting schema.
-Each connected output block executes every iteration; configure it accordingly.
+Each output block executes for accepted input events; configure it accordingly.
 Graph runs are not transactions: earlier external writes remain if a later block fails.
 
 ## Workflow references
@@ -135,6 +136,12 @@ Graph runs are not transactions: earlier external writes remain if a later block
   native operation graphs and execution backends.
 - [Qt Graphics View](https://doc.qt.io/qtforpython-6.8/overviews/qtwidgets-graphicsview.html):
   desktop scene, item, and view model.
+
+See [ticket results](ticket-results.md) for per-connection outcomes, per-input
+failure gates, the shared thread-safe event consumer and explicit final judgments.
+`current_emissions` describes this iteration separately from retained preview data.
+Only a gate's accepted invocations update its retained inputs/results; an inactive
+gate's retained `last_result` must never be used to infer new stream events.
 
 These inform workflow expectations; this independent prototype does not implement
 Cognex, HALCON, or MERLIC compatibility or their commercial tool catalogs.

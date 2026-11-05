@@ -7,6 +7,7 @@ import numpy as np
 
 from .core import Graph
 from .image_queue import ImageQueue, QueuedCapture
+from .outcomes import publish_result, rejected_inputs
 from .payloads import NO_VALUE
 from .tickets import ticket_key
 from .toolblocks import ToolBlock
@@ -20,6 +21,9 @@ SNAPSHOT_FIELDS = (
     "state",
     "error",
     "elapsed_ms",
+    "current_emissions",
+    "input_rejected",
+    "last_rejection",
 )
 
 
@@ -90,7 +94,7 @@ def snapshots_for_frame(graph, frame, keys=None):
         snapshot["last_result"] = result
         if result is not None:
             result.outputs, result.payloads = dict(result.outputs), dict(result.payloads)
-            result.emissions = dict(result.emissions)
+            result.emissions = dict(block.current_emissions)
             for port in block.outputs:
                 packets = result.emissions.get(port.name, [])
                 if len(packets) > 1:
@@ -118,6 +122,7 @@ class QueuedExecution:
 
     def __init__(self, graph, registry, cancelled=lambda: False):
         self.graph, self.registry, self.cancelled = graph, registry, cancelled
+        graph.bind_ticket_results()
         self.queue = background_queue(graph)
         if self.queue is None:
             raise ValueError("No background acquisition queue configured")
@@ -137,6 +142,7 @@ class QueuedExecution:
             for c in self.producer.connections
             if c.source in self.upstream and c.target in self.upstream
         ]
+        self.producer.bind_ticket_results(graph.ticket_results)
         self.stop = threading.Event()
         self.thread = None
 
@@ -158,10 +164,19 @@ class QueuedExecution:
                 ]
                 if errors:
                     raise RuntimeError("; ".join(errors))
-                result = self.producer.blocks[self.edge.source].last_result
-                packets = result.emissions.get(self.edge.output, []) if result else []
+                packets = self.producer.blocks[self.edge.source].current_emissions.get(
+                    self.edge.output, []
+                )
                 for packet in packets:
                     frame = self.queue.normalize(packet)
+                    if rejected_inputs(self.queue, {"image": frame}):
+                        publish_result(
+                            self.queue,
+                            {"image": frame},
+                            kind="input_rejected",
+                            message="Rejected failed acquisition",
+                        )
+                        continue
                     capture = QueuedCapture(frame, snapshots_for_frame(self.producer, frame))
                     self.queue.enqueue(capture, self.stopped, background=True)
                 delay = self.queue.parameters["capture_interval_ms"] / 1000

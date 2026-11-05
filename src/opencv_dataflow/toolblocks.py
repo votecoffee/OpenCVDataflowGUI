@@ -9,6 +9,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from .core import Block, Connection, Graph, Port, Result
+from .outcomes import rejected_inputs
 from .payloads import NO_VALUE, ValuePacket, compatible
 
 
@@ -19,6 +20,8 @@ class Binding:
 
 
 class ToolBlock(Block):
+    outcome_passthrough = True
+    per_packet_outcomes = True
     preserve_image_sets = True
     type_id, title, category = "core.toolblock", "ToolBlock", "ToolBlocks"
     block_type, subtype = "ToolBlocks", "Reusable"
@@ -94,9 +97,11 @@ class ToolBlock(Block):
         self.graph.ordered()
         return tuple(ports)
 
-    def clear_result(self):
-        super().clear_result()
-        self.graph.clear_results()
+    def clear_result(self, preserve_history=False):
+        super().clear_result(preserve_history=preserve_history)
+        if preserve_history and "reject_failed" in self.input_failure_policies.values():
+            return
+        self.graph.clear_results(preserve_history=preserve_history)
 
     def reset_runtime(self):
         self._queued_public_events = {}
@@ -116,7 +121,9 @@ class ToolBlock(Block):
         events = getattr(self, "_queued_public_events", {})
         self._queued_public_events = {}
         for name, packets in events.items():
-            self.queue_inputs[name].preloaded_events.extend(packets)
+            self.queue_inputs[name].preloaded_events.extend(
+                packet for packet in packets if not rejected_inputs(self, {name: packet})
+            )
         self.graph.run(self._cancelled, injected)
         children = list(self.graph.blocks.values())
         unavailable = [b for b in children if b.state in ("error", "skipped")]
@@ -124,18 +131,19 @@ class ToolBlock(Block):
             raise RuntimeError("; ".join(f"{b.name}: {b.error}" for b in unavailable))
         outputs = {
             name: self.graph.blocks[b.block].last_result.outputs[b.port]
-            if self.graph.blocks[b.block].last_result
+            if self.graph.blocks[b.block].current_emissions.get(b.port)
             else NO_VALUE
             for name, b in self.output_bindings.items()
         }
         scores = [
             b.last_result.score
             for b in children
-            if b.last_result and b.last_result.score is not None
+            if b.state != "inactive" and b.last_result and b.last_result.score is not None
         ]
         graphics = {
             f"{b.name} [{b.id[:8]}] / {key}": image
             for b in children
+            if b.state != "inactive"
             for key, image in b.last_graphics.items()
         }
         return Result(
@@ -146,13 +154,13 @@ class ToolBlock(Block):
             message=f"{len(children)} tools · {sum(b.state == 'fail' for b in children)} fail",
             payloads={
                 name: self.graph.blocks[b.block].last_result.payloads.get(b.port, {})
-                if self.graph.blocks[b.block].last_result
+                if self.graph.blocks[b.block].current_emissions.get(b.port)
                 else {}
                 for name, b in self.output_bindings.items()
             },
             emissions={
                 name: self.graph.blocks[b.block].last_result.emissions.get(b.port, [])
-                if self.graph.blocks[b.block].last_result
+                if self.graph.blocks[b.block].current_emissions.get(b.port)
                 else []
                 for name, b in self.output_bindings.items()
             },
@@ -211,6 +219,12 @@ class ToolBlock(Block):
             owner_copy.input_bindings, owner_copy.output_bindings = owner_inputs, owner_outputs
             owner_copy.validate_interface()
             owner.input_bindings, owner.output_bindings = owner_inputs, owner_outputs
+        self.input_failure_policies = {
+            new_name: self.input_failure_policies[old_name]
+            for new_name, binding in inputs.items()
+            for old_name, old_binding in self.input_bindings.items()
+            if binding == old_binding and old_name in self.input_failure_policies
+        }
         self.input_bindings, self.output_bindings = dict(inputs), dict(outputs)
         self.inputs, self.outputs = candidate.inputs, candidate.outputs
         self.exposed_inputs = list(inputs)
@@ -235,6 +249,11 @@ class ToolBlock(Block):
             "graph": self.graph.to_dict(),
             "inputs": {n: asdict(b) for n, b in self.input_bindings.items()},
             "outputs": {n: asdict(b) for n, b in self.output_bindings.items()},
+            **(
+                {"input_failure_policies": self.input_failure_policies}
+                if self.input_failure_policies
+                else {}
+            ),
         }
 
     def serialize_extra(self):
@@ -254,6 +273,8 @@ class ToolBlock(Block):
         block.name = data["name"]
         block.block_type = data.get("block_type", "ToolBlocks")
         block.subtype = data.get("subtype", "Reusable")
+        block.input_failure_policies = copy.deepcopy(data.get("input_failure_policies", {}))
+        block.validate_parameters()
         return block
 
     def export(self, path):

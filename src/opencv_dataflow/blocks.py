@@ -539,6 +539,7 @@ def builtin_registry():
     from .features import FEATURE_BLOCKS
     from .histogram import Histogram
     from .image_queue import ImageQueue
+    from .judgments import FinalJudgment
     from .oriented_edges import FindOrientedEdges
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
@@ -591,6 +592,7 @@ def builtin_registry():
         ParallelInspect,
         RepeatedPartsDemo,
         ImageQueue,
+        FinalJudgment,
     ):
         registry.register(block)
     return registry

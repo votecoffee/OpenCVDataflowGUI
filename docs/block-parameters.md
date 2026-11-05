@@ -9,6 +9,8 @@ Image inputs also have an inspector pyramid-level dropdown (largest by default).
 See [payloads, channels and pyramids](payloads-pyramids.md) for coordinate provenance.
 Input sources also expose ticket input/output ports and inspector ticket mode/fixed value
 controls. See [tickets and control flow](control-flow.md) for their shared configuration.
+Every input has a failure-policy dropdown: continue (default) or reject_failed.
+See [ticket results](ticket-results.md) for outcomes and final judgments.
 
 ## White / color balance (`calibration.color_balance`)
 
@@ -1213,6 +1215,17 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `threshold` | `10` |  |
 | `nonmax_suppression` | `true` |  |
 | `pattern` | `"9_16"` | `5_8`, `7_12`, `9_16` |
+
+## Final ticket judgment (`inspect.final_judgment`)
+
+Inspection / Ticket results
+
+Inputs: `value` (any), `passed` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"upstream"` | `upstream`, `boolean_input`, `pass`, `fail` Upstream uses accumulated status. Other modes assign an explicit final decision. |
+| `data` | `{}` | Compact JSON record attached to the final ticket event. |
 
 ## Histogram (`inspect.histogram`)
 

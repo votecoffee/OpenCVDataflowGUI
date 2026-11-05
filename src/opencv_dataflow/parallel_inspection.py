@@ -208,9 +208,11 @@ class ParallelInspect(Block):
             inspection=ToolBlock.from_definition(data, registry, depth), registry=registry, **kwargs
         )
 
-    def clear_result(self):
-        super().clear_result()
-        self.inspection.graph.clear_results()
+    def clear_result(self, preserve_history=False):
+        super().clear_result(preserve_history=preserve_history)
+        if preserve_history and "reject_failed" in self.input_failure_policies.values():
+            return
+        self.inspection.graph.clear_results(preserve_history=preserve_history)
         self.last_preview_index = None
 
     def reset_runtime(self):
@@ -350,6 +352,9 @@ class ParallelInspect(Block):
             }
             try:
                 tool = ToolBlock.from_definition(template, self.registry)
+                tool._ticket_results = self._ticket_results
+                tool._event_path = f"{getattr(self, '_event_path', self.id)}/part-{index}"
+                tool.graph.bind_ticket_results(self._ticket_results, tool._event_path)
                 tool.graph.bind_project_dir(self.project_dir)
                 # Per-item graphs run serially; the outer pool owns part concurrency.
                 for block in walk(tool.graph):
