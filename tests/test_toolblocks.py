@@ -62,9 +62,11 @@ def test_toolblock_export_import_has_independent_instances(tmp_path):
     registry, graph, nodes, block = inspection_toolblock()
     path = tmp_path / "inspect.toolblock.json"
     block.description = "Count parts before picking."
+    block.documentation = "<p><strong>Picking:</strong> verify the part count first.</p>"
     block.export(path)
     a, b = ToolBlock.read(path, registry), ToolBlock.read(path, registry)
     assert a.description == b.description == block.description
+    assert a.documentation == b.documentation == block.documentation
     assert a.id != b.id
     a.graph.blocks[nodes[-1].id].parameters["expected_count"] = 3
     assert b.graph.blocks[nodes[-1].id].parameters["expected_count"] == 2

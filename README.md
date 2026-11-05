@@ -84,6 +84,7 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
 3. Select a block, edit parameters in the right inspector, and click **Apply
    configuration**. Choose exposed ports and the optional node thumbnail there.
    Add a plain-text **Description** to explain the block in its hover tooltip.
+   Use **Edit documentation…** for longer, formatted notes stored with the block.
    OpenCV enum controls use dropdowns; booleans use checkboxes. Hover over controls
    with help text for method-specific guidance.
 4. Run once or continuously. Inspect retained input, output, and graphic images
