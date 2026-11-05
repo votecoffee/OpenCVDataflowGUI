@@ -249,6 +249,34 @@ def test_run_inspector_delete_and_continuous_stop(app):
     window.close()
 
 
+def test_block_description_appears_as_plain_text_and_survives_project_save(app, tmp_path):
+    window = MainWindow()
+    window.show()
+    block = next(iter(window.graph.blocks.values()))
+    window.scene.nodes[block.id].setSelected(True)
+    description = "Locate <reference> & verify contrast.\nCheck the upper-left corner."
+    try:
+        assert window.inspector.description_field.toPlainText() == ""
+        assert "description" not in window.graph.to_dict()["blocks"][0]
+        window.inspector.description_field.setPlainText(description)
+        assert window.inspector.apply()
+        tooltip = window.scene.nodes[block.id].toolTip()
+        assert "Locate &lt;reference&gt; &amp; verify contrast.<br>Check" in tooltip
+        assert "Border: tool category" in tooltip
+        window.path = tmp_path / "description.json"
+        assert window.save_project()
+
+        graph = Graph.load(window.path, window.registry)
+        assert graph.blocks[block.id].description == description
+        window.replace_graph(graph, window.path)
+        window.scene.nodes[block.id].setSelected(True)
+        assert window.inspector.description_field.toPlainText() == description
+        assert window.scene.nodes[block.id].toolTip() == tooltip
+    finally:
+        window.dirty = False
+        window.close()
+
+
 def test_socket_tooltips_show_full_names_and_latest_scalar_values(app):
     name = "a_long_input_name_that_is_truncated_on_the_node"
 

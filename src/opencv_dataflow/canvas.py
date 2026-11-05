@@ -107,8 +107,11 @@ class Node(QGraphicsItem):
         self.block = block
         self.category = block_type(block)
         self.border_color = QColor(BLOCK_COLORS[self.category])
+        heading = escape(f"{block.name} · {self.category}")
+        description = "<br>".join(escape(line) for line in block.description.split("\n"))
+        detail = f"<br><br>{description}" if description else ""
         self.setToolTip(
-            f"{block.name} · {self.category}\nBorder: tool category · header: run status"
+            f"<qt>{heading}{detail}<br>Border: tool category · header: run status</qt>"
         )
         self.sockets = {}
         self.setFlags(

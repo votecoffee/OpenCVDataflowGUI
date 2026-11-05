@@ -27,6 +27,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QMainWindow,
     QMessageBox,
+    QPlainTextEdit,
     QPushButton,
     QScrollArea,
     QSplitter,
@@ -268,6 +269,10 @@ class Inspector(QWidget):
         )
         self.name_field = QLineEdit(block.name)
         self.form.addRow("Name", self.name_field)
+        self.description_field = QPlainTextEdit(block.description)
+        self.description_field.setPlaceholderText("Shown when hovering over this block")
+        self.description_field.setMaximumHeight(76)
+        self.form.addRow("Description", self.description_field)
         if block.ticket_source:
             self.ticket_mode = QComboBox()
             self.ticket_mode.addItems(TICKET_MODES)
@@ -915,6 +920,7 @@ class Inspector(QWidget):
                     raise ValueError("ToolBlock type and subtype cannot be empty")
                 b.block_type, b.subtype = kind, subtype
             b.name, b.parameters = name, parameters
+            b.description = self.description_field.toPlainText()
             b.recipe_bindings, b.recipe_model = recipe_bindings, recipe_model
             if ticket_settings is not None:
                 b.ticket_settings = ticket_settings
