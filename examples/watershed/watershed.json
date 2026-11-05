@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/touching_parts.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        170
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "foreground_mask",
+      "type": "cv.threshold",
+      "name": "Threshold",
+      "parameters": {
+        "value": 100.0,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        310,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "automatic_seeds",
+      "type": "inspect.distance_markers",
+      "name": "Watershed seeds from distance peaks",
+      "parameters": {
+        "distance_type": "l2",
+        "l2_mask_size": "precise",
+        "minimum_distance": 2.0,
+        "peak_radius": 3,
+        "background_gap": 1,
+        "connectivity": "8"
+      },
+      "position": [
+        620,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "markers",
+        "seeds",
+        "distance",
+        "count",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": "preview"
+    },
+    {
+      "id": "point_seeds",
+      "type": "inspect.watershed_point_seeds",
+      "name": "Watershed seeds from points",
+      "parameters": {
+        "foreground_points": [
+          [
+            61,
+            64
+          ],
+          [
+            119,
+            64
+          ]
+        ],
+        "background_points": [],
+        "radius": 4,
+        "background_mode": "border"
+      },
+      "position": [
+        620,
+        390
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "foreground_points",
+        "background_points"
+      ],
+      "exposed_outputs": [
+        "markers",
+        "seeds",
+        "preview",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "preview"
+    },
+    {
+      "id": "automatic_result",
+      "type": "inspect.watershed",
+      "name": "Watershed \u00b7 distance peaks",
+      "parameters": {
+        "marker_mode": "labels",
+        "connectivity": "8",
+        "output_label": 0,
+        "background_label": 1
+      },
+      "position": [
+        930,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "markers"
+      ],
+      "exposed_outputs": [
+        "labels",
+        "boundaries",
+        "mask",
+        "count",
+        "preview",
+        "regions"
+      ],
+      "thumbnail": true,
+      "preview_output": "preview"
+    },
+    {
+      "id": "point_result",
+      "type": "inspect.watershed",
+      "name": "Watershed \u00b7 point seeds",
+      "parameters": {
+        "marker_mode": "labels",
+        "connectivity": "8",
+        "output_label": 0,
+        "background_label": 1
+      },
+      "position": [
+        930,
+        390
+      ],
+      "exposed_inputs": [
+        "image",
+        "markers"
+      ],
+      "exposed_outputs": [
+        "labels",
+        "boundaries",
+        "mask",
+        "count",
+        "preview",
+        "regions"
+      ],
+      "thumbnail": true,
+      "preview_output": "preview"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "foreground_mask",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "point_seeds",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "automatic_result",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "point_result",
+      "input": "image"
+    },
+    {
+      "source": "foreground_mask",
+      "output": "image",
+      "target": "automatic_seeds",
+      "input": "image"
+    },
+    {
+      "source": "automatic_seeds",
+      "output": "markers",
+      "target": "automatic_result",
+      "input": "markers"
+    },
+    {
+      "source": "point_seeds",
+      "output": "markers",
+      "target": "point_result",
+      "input": "markers"
+    }
+  ]
+}

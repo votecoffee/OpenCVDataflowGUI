@@ -736,6 +736,7 @@ def builtin_registry():
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
     from .video_files import VideoFile, WriteVideo
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
+    from .watershed_seeds import WatershedMaskSeeds, WatershedPointSeeds
     from .zxing_reader import ReadZXingBarcode
 
     registry = Registry()
@@ -780,6 +781,8 @@ def builtin_registry():
         ReadZXingBarcode,
         VerifyText,
         *SEGMENTATION_BLOCKS,
+        WatershedPointSeeds,
+        WatershedMaskSeeds,
         CompareImageQuality,
         CompareHistograms,
         *COLOR_MEASUREMENT_BLOCKS,

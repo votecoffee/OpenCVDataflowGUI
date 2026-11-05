@@ -289,6 +289,9 @@ working directory; use absolute paths for portable local execution expectations.
 
 The [K-means example](examples/kmeans/README.md) shows color-coded pixel clusters,
 an image quantized to the cluster centers, and a scatter plot of clustered numeric samples.
+The [watershed example](examples/watershed/README.md) separates touching parts
+using automatic distance peaks or editable point seeds. A separate block accepts
+foreground and background seed masks.
 
 Additional tools include monochrome/per-channel color histograms, grid-based planar
 pixel-to-physical mapping, offline multi-view lens calibration, undistortion, white/
