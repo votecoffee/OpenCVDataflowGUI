@@ -2452,6 +2452,28 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 No configurable algorithm parameters.
 
+## Detect MSER regions (`inspect.mser`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"grayscale"` | `grayscale`, `color` |
+| `polarity` | `"both"` | `both`, `bright`, `dark` Grayscale only. Detect bright, dark, or both kinds of extremal region. |
+| `delta` | `5` | Value must be a whole number between 1 and 255. Intensity interval used to measure region stability. |
+| `min_area` | `60` | Value must be a whole number between 1 and 1e+06. |
+| `max_area` | `14400` | Value must be a whole number between 1 and 1e+06. |
+| `max_variation` | `0.25` | Value must be a finite number between 0 and 10. |
+| `min_diversity` | `0.2` | Value must be a finite number between 0 and 1. Color mode minimum diversity between nested regions. |
+| `max_evolution` | `200` | Value must be a whole number between 1 and 10000. Color mode maximum evolution steps. |
+| `area_threshold` | `1.01` | Value must be a finite number between 1 and 100. Color mode reinitialization area ratio. |
+| `min_margin` | `0.003` | Value must be a finite number between 0 and 1. Color mode minimum stability margin. |
+| `edge_blur_size` | `5` | Value must be zero or a positive odd integer between 1 and 31. Color mode edge blur aperture. Zero disables it. |
+| `max_regions` | `1000` | Value must be a whole number between 1 and 10000. Maximum number of retained regions in native detector order. |
+| `draw_overlay` | `true` |  |
+
 ## ORB keypoints and descriptors (`inspect.orb`)
 
 Inspection / Features

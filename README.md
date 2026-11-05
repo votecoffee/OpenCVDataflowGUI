@@ -219,7 +219,8 @@ matches keypoints before estimating an image homography. The
 same workflow with binary MLDB descriptors. The [FLANN registration
 example](examples/flann_registration/README.md) uses approximate KD-tree matching.
 The [BRISK registration example](examples/brisk_registration/README.md) uses
-binary descriptors and Hamming distance.
+binary descriptors and Hamming distance. The [MSER example](examples/mser_regions/README.md)
+shows stable bright and dark regions in an image.
 
 Pattern matchers also return a configurable **pose**: set local x/y/angular offsets
 to locate an inspection origin on the part. **Pose from feature** creates a frame

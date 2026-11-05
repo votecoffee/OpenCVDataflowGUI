@@ -914,7 +914,7 @@ P2	function	cv2.ml.TrainData_getSubMatrix	no static reference	-
 P2	function	cv2.ml.TrainData_getSubVector	no static reference	-
 P2	class	cv2.MSER	no static reference	-
 P2	method	cv2.MSER.create	method name only	-
-P2	method	cv2.MSER.detectRegions	no static reference	-
+P2	method	cv2.MSER.detectRegions	method name only	-
 P2	method	cv2.MSER.getAreaThreshold	no static reference	-
 P2	method	cv2.MSER.getDefaultName	no static reference	-
 P2	method	cv2.MSER.getDelta	no static reference	-
@@ -935,8 +935,8 @@ P2	method	cv2.MSER.setMaxVariation	no static reference	-
 P2	method	cv2.MSER.setMinArea	no static reference	-
 P2	method	cv2.MSER.setMinDiversity	no static reference	-
 P2	method	cv2.MSER.setMinMargin	no static reference	-
-P2	method	cv2.MSER.setPass2Only	no static reference	-
-P2	function	cv2.MSER_create	no static reference	-
+P2	method	cv2.MSER.setPass2Only	method name only	-
+P2	function	cv2.MSER_create	literal reference	-
 P2	function	cv2.omnidir.calibrate	no static reference	-
 P2	function	cv2.omnidir.initUndistortRectifyMap	literal reference	-
 P2	function	cv2.omnidir.projectPoints	literal reference	-

@@ -6,12 +6,12 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
-from .graphics_layers import GraphicDrawing, graphic_circle, graphic_object
+from .graphics_layers import GraphicDrawing, graphic_box, graphic_circle, graphic_object
 from .images import ImageArray, convert_depth, format_image, image_format, preview_rgb
 from .objects import collection, line_item
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import optional_mask
-from .payloads import require_same_frame
+from .payloads import NO_VALUE, require_same_frame
 from .processing import (
     ImageTool,
     encoded_result,
@@ -571,6 +571,128 @@ class DistanceTransform(ImageTool):
         )
 
 
+class MSERRegions(Block):
+    type_id, title = "inspect.mser", "Detect MSER regions"
+    category, block_type, subtype = "Inspection", "Inspection", "Features"
+    inputs = SELECTION_INPUTS
+    outputs = (
+        Port("regions", "data"),
+        Port("count", "number"),
+        Port("mask", visual_type="region"),
+        Port("overlay", required=False),
+    )
+    defaults = {
+        "mode": "grayscale",
+        "polarity": "both",
+        "delta": 5,
+        "min_area": 60,
+        "max_area": 14400,
+        "max_variation": 0.25,
+        "min_diversity": 0.2,
+        "max_evolution": 200,
+        "area_threshold": 1.01,
+        "min_margin": 0.003,
+        "edge_blur_size": 5,
+        "max_regions": 1000,
+        "draw_overlay": True,
+    }
+    parameter_choices = {"mode": ("grayscale", "color"), "polarity": ("both", "bright", "dark")}
+    parameter_ranges = {
+        "delta": NumericRange(1, 255, whole=True),
+        "min_area": NumericRange(1, 1_000_000, whole=True),
+        "max_area": NumericRange(1, 1_000_000, whole=True),
+        "max_variation": NumericRange(0, 10),
+        "min_diversity": NumericRange(0, 1),
+        "max_evolution": NumericRange(1, 10000, whole=True),
+        "area_threshold": NumericRange(1, 100),
+        "min_margin": NumericRange(0, 1),
+        "edge_blur_size": NumericRange(1, 31, whole=True, odd=True, zero_allowed=True),
+        "max_regions": NumericRange(1, 10000, whole=True),
+    }
+    parameter_help = {
+        "polarity": "Grayscale only. Detect bright, dark, or both kinds of extremal region.",
+        "delta": "Intensity interval used to measure region stability.",
+        "min_diversity": "Color mode minimum diversity between nested regions.",
+        "max_evolution": "Color mode maximum evolution steps.",
+        "area_threshold": "Color mode reinitialization area ratio.",
+        "min_margin": "Color mode minimum stability margin.",
+        "edge_blur_size": "Color mode edge blur aperture. Zero disables it.",
+        "max_regions": "Maximum number of retained regions in native detector order.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["min_area"] > p["max_area"]:
+            raise ValidationError("Minimum area cannot exceed maximum area", "min_area", "max_area")
+
+    def process(self, inputs):
+        source = inputs["image"]
+        if min(source.shape[:2]) < 3:
+            raise ValidationError("MSER needs an image at least 3 × 3 pixels")
+        p = self.parameters
+        if p["mode"] == "color":
+            canonical = image_value(source, (np.uint8, np.uint16, np.float32), canonical=True)
+            search = format_image(canonical, "bgr", "uint8")
+        else:
+            search = gray_image(source, (np.uint8,), auto_depth=True)
+            if p["polarity"] == "dark":
+                search = cv2.bitwise_not(search)
+        detector = cv2.MSER_create(
+            int(p["delta"]),
+            int(p["min_area"]),
+            int(p["max_area"]),
+            float(p["max_variation"]),
+            float(p["min_diversity"]),
+            int(p["max_evolution"]),
+            float(p["area_threshold"]),
+            float(p["min_margin"]),
+            int(p["edge_blur_size"]),
+        )
+        detector.setPass2Only(p["mode"] == "grayscale" and p["polarity"] != "both")
+        selection = selection_mask(inputs, source)
+        regions, boxes = detector.detectRegions(search)
+        mask = np.zeros(source.shape[:2], np.uint8)
+        overlay = overlay_image(source) if p["draw_overlay"] else NO_VALUE
+        draw = self.generate_graphics
+        items, objects = [], []
+        truncated = False
+        for index, (region, box) in enumerate(zip(regions, boxes, strict=True)):
+            xs, ys = region.T
+            if selection is not None and not selection[ys, xs].all():
+                continue
+            if len(items) >= int(p["max_regions"]):
+                truncated = True
+                break
+            x, y, width, height = map(int, box)
+            items.append(
+                {
+                    "id": index,
+                    "bounds": [x, y, width, height],
+                    "area": len(region),
+                    "center": region.mean(axis=0).tolist(),
+                }
+            )
+            mask[ys, xs] = 255
+            color = (70, 220, 140)
+            if overlay is not NO_VALUE:
+                cv2.rectangle(overlay, (x, y), (x + width - 1, y + height - 1), color, 2)
+            if draw:
+                objects.append(graphic_box(x, y, width, height, color))
+        count = len(items)
+        return Result(
+            {
+                "regions": {"model": "mser_regions_v1", "items": items, "truncated": truncated},
+                "count": count,
+                "mask": mask,
+                "overlay": overlay,
+            },
+            graphics={"MSER regions": overlay} if draw and overlay is not NO_VALUE else {},
+            drawings={"MSER regions": GraphicDrawing(tuple(objects))} if objects else {},
+            message=f"{count} MSER regions" + (" · region limit reached" if truncated else ""),
+        )
+
+
 FEATURE_BLOCKS = (
     EqualizeHistogram,
     CLAHE,
@@ -585,6 +707,7 @@ FEATURE_BLOCKS = (
     ApplyMask,
     AbsoluteDifference,
     GoodFeatures,
+    MSERRegions,
     HoughLines,
     HoughCircles,
     DistanceTransform,
