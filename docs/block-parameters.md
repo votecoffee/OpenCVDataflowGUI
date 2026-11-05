@@ -1142,6 +1142,19 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `max_points` | `500` | Value must be a whole number between 1 and 10000. Cap coordinates by sampling larger selections in pixel scan order. |
 | `draw_points` | `false` | Draw markers at the returned coordinates in addition to the full bounds. |
 
+## Fit principal components (`cv.fit_pca`)
+
+Image processing / Statistics
+
+Inputs: `samples` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `samples` | `[]` | One numeric vector per row. The Samples input overrides this table. |
+| `selection` | `"variance"` | `variance`, `count` Choose a fixed count or the smallest basis meeting a variance target. |
+| `component_count` | `2` | Value must be a whole number between 1 and 128. Number of components in Count mode, up to the fitted rank. |
+| `minimum_variance` | `0.95` | Value must be a finite number between 1e-06 and 1. Fraction of total variance to retain in Variance mode. |
+
 ## Flat-field correction (`cv.flat_field`)
 
 Image processing / Color and depth
@@ -1710,6 +1723,17 @@ Input `windows` — Optional list of tilted windows that replaces the configured
 | --- | --- | --- |
 | `windows` | `[[32, 0, 16, 16]]` | Each [x, y, width, height] starts at the top integral-grid vertex. Width extends down-right and height extends down-left at 45 degrees. |
 | `include_alpha` | `false` | Measure alpha as its own channel on four-channel input. |
+
+## Transform principal components (`cv.transform_pca`)
+
+Image processing / Statistics
+
+Inputs: `model` (data), `samples` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `samples` | `[]` | One numeric vector per row. The Samples input overrides this table. |
+| `direction` | `"project"` | `project`, `reconstruct` Project original features or reconstruct from component scores. |
 
 ## Transform image points (`cv.transform_points`)
 

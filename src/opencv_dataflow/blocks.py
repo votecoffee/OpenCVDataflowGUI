@@ -679,6 +679,7 @@ def builtin_registry():
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .pick_selection import SelectPickCandidate
     from .poses import POSE_BLOCKS
+    from .principal_components import FitPrincipalComponents, TransformPrincipalComponents
     from .processing import PROCESSING_BLOCKS
     from .projection import IntensityProfile, PathIntensityProfile
     from .ptcloud3d import PTCLOUD3D_BLOCKS
@@ -797,6 +798,8 @@ def builtin_registry():
         FinalJudgment,
         *DNN_BLOCKS,
         FitFeatureCovariance,
+        FitPrincipalComponents,
+        TransformPrincipalComponents,
         MahalanobisDistance,
         KMeansSamples,
         KMeansImage,

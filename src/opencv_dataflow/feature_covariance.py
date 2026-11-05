@@ -6,19 +6,12 @@ import numpy as np
 from .core import Block, Port, Result
 from .parameter_validation import NumericRange, ValidationError
 from .projection import profile_plot
-from .sample_tables import read_sample_table
+from .sample_tables import finite_features
 
 _MODEL = "feature_covariance_v1"
 _SAMPLE_LIMIT = 1e12
 _COVARIANCE_LIMIT = 1e26
 _SAMPLES_HELP = "One feature vector per row. The Samples input overrides this table."
-
-
-def finite_features(value):
-    samples = np.ascontiguousarray(read_sample_table(value), dtype=np.float64)
-    if not np.isfinite(samples).all() or np.max(np.abs(samples)) > _SAMPLE_LIMIT:
-        raise ValidationError("Features must be finite and within ±1e12")
-    return samples
 
 
 class FitFeatureCovariance(Block):

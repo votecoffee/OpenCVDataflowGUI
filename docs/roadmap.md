@@ -21,7 +21,8 @@ per-channel intensity LUTs, local and tilted window statistics,
 unary intensity transforms, binary image arithmetic, pixel comparison, and
 nonzero pixel coordinates are available alongside intensity profiles and
 selected image summary statistics. Feature covariance fitting and Mahalanobis
-scoring cover joint variation and numeric outlier checks.
+scoring cover joint variation and numeric outlier checks. Principal component
+fitting, projection, and reconstruction are available for numeric tables.
 Specialized array operations remain open. The
 [coverage backlog](opencv-coverage.md) tracks the missing workflows and the
 [binding inventory](opencv-bindings.tsv) maps static references to the pinned
