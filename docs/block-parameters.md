@@ -2275,6 +2275,16 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
 | `check_count` | `false` |  |
 
+## Minimum-area rotated rectangle (`inspect.bounding_rotated_rectangle`)
+
+Inspection / Measurements
+
+Inputs: `points` (data, optional), `collection` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `item_index` | `0` | Value must be a whole number at least 0. Zero-based position in the collection, after filtering or sorting. |
+
 ## BRISK keypoints and descriptors (`inspect.brisk`)
 
 Inspection / Features
@@ -2968,6 +2978,27 @@ Inputs: `image` (image), `points` (data).
 | `termination` | `"both"` | `count`, `epsilon`, `both` |
 | `max_iterations` | `30` |  |
 | `epsilon` | `0.01` |  |
+
+## Rotated rectangle overlap (`inspect.rotated_rectangle_overlap`)
+
+Inspection / Measurements
+
+Inputs: `rectangle_a` (data, optional), `rectangle_b` (data, optional), `image` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `a_center_x` | `50.0` | Value must be a finite number between -1e+07 and 1e+07. |
+| `a_center_y` | `50.0` | Value must be a finite number between -1e+07 and 1e+07. |
+| `a_width` | `40.0` | Value must be a finite number between 0.001 and 3e+07. |
+| `a_height` | `24.0` | Value must be a finite number between 0.001 and 3e+07. |
+| `a_angle_degrees` | `0.0` | Value must be a finite number. Width-axis angle measured clockwise in image coordinates. |
+| `b_center_x` | `60.0` | Value must be a finite number between -1e+07 and 1e+07. |
+| `b_center_y` | `50.0` | Value must be a finite number between -1e+07 and 1e+07. |
+| `b_width` | `40.0` | Value must be a finite number between 0.001 and 3e+07. |
+| `b_height` | `24.0` | Value must be a finite number between 0.001 and 3e+07. |
+| `b_angle_degrees` | `0.0` | Value must be a finite number. Width-axis angle measured clockwise in image coordinates. |
+| `check_iou` | `false` | Judge overlap using intersection area divided by union area. |
+| `minimum_iou` | `0.5` | Value must be a finite number between 0 and 1. Minimum intersection-over-union ratio for a passing result. |
 
 ## Select pick candidate (`inspect.select_pick`)
 

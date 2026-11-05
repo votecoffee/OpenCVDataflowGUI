@@ -23,6 +23,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Tilted window statistics](tilted_statistics/README.md) | Measure two diagonal patches using batched 45-degree windows. |
 | [Earth Mover's Distance](earth_movers_distance/README.md) | Measure a known shift between histograms with different sample counts. |
 | [Absolute image error](absolute_image_error/README.md) | Compare mean, RMS, and maximum absolute error on two known deviations. |
+| [Rotated rectangle overlap](rotated_rectangle_overlap/README.md) | Fit a part footprint and measure overlap against a reference. |
 | [Image summary statistics](image_statistics/README.md) | Measure a selected patch and mark the extrema in source pixel coordinates. |
 | [Intensity profile](intensity_profile/README.md) | Plot the mean and locate the maximum in each selected column. |
 | [Find nonzero pixels](nonzero_pixels/README.md) | Extract a bounded set of coordinates and full bounds from a texture mask. |

@@ -337,7 +337,7 @@ def describe_value(value):
     return value
 
 
-def require_same_frame(values):
+def require_same_frame(values, *, message="Channel images use different coordinate frames"):
     contexts = [metadata(value).get("spatial") for value in values]
     known = [c for c in contexts if c and c.get("root_id") is not None]
     if known and any(
@@ -346,4 +346,4 @@ def require_same_frame(values):
         or not np.allclose(c["to_root"], known[0]["to_root"], atol=1e-9, rtol=0)
         for c in known[1:]
     ):
-        raise ValueError("Channel images use different coordinate frames")
+        raise ValueError(message)

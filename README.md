@@ -442,6 +442,11 @@ measures a seven-level intensity shift between histograms. The
 [tilted statistics example](examples/tilted_statistics/README.md) measures
 diagonal patches with 45-degree integral-image windows.
 
+The rotated rectangle overlap example fits a part footprint from a contour
+and compares it against a reference. The measurement includes intersection
+area, intersection-over-union and the fraction of each footprint covered.
+[Rotated rectangle overlap example](examples/rotated_rectangle_overlap/README.md)
+
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing
 wrappers also expose kernel dimensions, anchors, borders, output depths, masks,

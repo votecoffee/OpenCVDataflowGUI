@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Synthetic part silhouette",
+      "parameters": {
+        "path": "assets/rotated_part.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "contours",
+      "type": "inspect.contours",
+      "name": "Locate the part contour",
+      "parameters": {
+        "expected_count": 1
+      },
+      "position": [
+        320,
+        230
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "bounds",
+      "type": "inspect.bounding_rotated_rectangle",
+      "name": "Fit the measured footprint",
+      "parameters": {},
+      "position": [
+        640,
+        230
+      ],
+      "exposed_inputs": [
+        "collection"
+      ],
+      "exposed_outputs": [
+        "rectangle",
+        "area"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlap",
+      "type": "inspect.rotated_rectangle_overlap",
+      "name": "Compare to the reference footprint",
+      "parameters": {
+        "b_center_x": 82,
+        "b_center_y": 60,
+        "b_width": 50,
+        "b_height": 20,
+        "b_angle_degrees": 36.86989764584402,
+        "check_iou": true,
+        "minimum_iou": 0.6
+      },
+      "position": [
+        960,
+        0
+      ],
+      "exposed_inputs": [
+        "rectangle_a",
+        "image"
+      ],
+      "exposed_outputs": [
+        "iou",
+        "area",
+        "classification",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show footprints and intersection",
+      "parameters": {},
+      "position": [
+        1280,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "contours",
+      "input": "image"
+    },
+    {
+      "source": "contours",
+      "output": "collection",
+      "target": "bounds",
+      "input": "collection"
+    },
+    {
+      "source": "bounds",
+      "output": "rectangle",
+      "target": "overlap",
+      "input": "rectangle_a"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlap",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "overlap",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}
