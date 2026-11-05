@@ -1029,6 +1029,21 @@ Inputs: `image` (image).
 | `column_offset` | `"even"` | `even`, `odd` Parity of the first input column relative to the sensor origin. |
 | `row_offset` | `"even"` | `even`, `odd` Parity of the first input row relative to the sensor origin. |
 
+## TV-L1 denoise (`cv.denoise_tvl1`)
+
+Image processing / Filters
+
+Inputs: `image` (image, optional), `observations` (any, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — One 8-bit monochrome observation. Connect Image or Observations.
+
+Input `observations` — Ordered batch of aligned 8-bit monochrome views of the same scene.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `lambda_weight` | `1.0` | Value must be a finite number between 1e-06 and 1e+06. Weight of the L1 observation error relative to total variation. |
+| `iterations` | `30` | Value must be a whole number between 1 and 200. Number of primal-dual solver iterations. |
+
 ## Discrete Fourier transform (DFT) (`cv.dft`)
 
 Image processing / Spectral

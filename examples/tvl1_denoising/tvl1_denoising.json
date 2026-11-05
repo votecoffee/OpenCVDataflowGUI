@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Replay three noisy observations",
+      "parameters": {
+        "source_mode": "files",
+        "paths": [
+          "assets/observation_01.png",
+          "assets/observation_02.png",
+          "assets/observation_03.png"
+        ],
+        "repeat": "stop",
+        "filename_ticket": true,
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Collect aligned observations",
+      "parameters": {
+        "size": 3
+      },
+      "position": [
+        340,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "denoise",
+      "type": "cv.denoise_tvl1",
+      "name": "Fuse the noisy observations",
+      "parameters": {
+        "lambda_weight": 0.5,
+        "iterations": 40
+      },
+      "position": [
+        680,
+        0
+      ],
+      "exposed_inputs": [
+        "observations"
+      ],
+      "exposed_outputs": [
+        "image",
+        "observation_count"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "denoise",
+      "input": "observations"
+    }
+  ]
+}
