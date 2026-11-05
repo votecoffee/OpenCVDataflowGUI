@@ -9,13 +9,12 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 import cv2
 import numpy as np
 import pytest
-from PySide6.QtCore import QEvent, QPoint, Qt
-from PySide6.QtGui import QFont
+from PySide6.QtCore import QEvent, QPoint, QPointF, Qt
+from PySide6.QtGui import QFont, QHelpEvent
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (
     QDialog,
     QFileDialog,
-    QGraphicsSceneHelpEvent,
     QInputDialog,
     QMessageBox,
     QToolTip,
@@ -652,17 +651,21 @@ def test_socket_tooltips_show_full_names_and_latest_scalar_values(app):
     graph = Graph()
     block = graph.add(Echo())
     scene = CanvasScene(graph)
-    sockets = scene.nodes[block.id].sockets
+    view = CanvasView(scene)
+    view.resize(800, 500)
+    view.show()
+    view.fit_graph()
+    app.processEvents()
+    node = scene.nodes[block.id]
+    sockets = node.sockets
 
     def hover(output, port_name):
         socket = sockets[output, port_name]
-        event = QGraphicsSceneHelpEvent(QEvent.Type.GraphicsSceneHelp)
-        event.setScenePos(socket.scenePos())
-        event.setScreenPos(QPoint(100, 100))
-        app.sendEvent(scene, event)
-        tooltip = QToolTip.text()
-        assert port_name in tooltip
-        assert ("output" if output else "input") in tooltip
+        label_x = node.width - 30 if output else 30
+        for point in (socket.pos(), QPointF(label_x, socket.y())):
+            tooltip = canvas_tooltip(app, view, node.mapToScene(point))
+            assert port_name in tooltip
+            assert ("output" if output else "input") in tooltip
         return tooltip
 
     try:
@@ -678,6 +681,43 @@ def test_socket_tooltips_show_full_names_and_latest_scalar_values(app):
         assert "Value:" not in hover(True, "echoed_value")
     finally:
         QToolTip.hideText()
+        view.close()
+
+
+def canvas_tooltip(app, view, scene_point):
+    viewport = view.viewport()
+    point = view.mapFromScene(scene_point)
+    event = QHelpEvent(QEvent.Type.ToolTip, point, viewport.mapToGlobal(point))
+    app.sendEvent(viewport, event)
+    return QToolTip.text()
+
+
+def test_block_tooltip_reads_current_description_and_issue(app):
+    graph = Graph()
+    block = graph.add(builtin_registry().create("cv.threshold"))
+    block.description = "Original description"
+    scene = CanvasScene(graph)
+    node = scene.nodes[block.id]
+    view = CanvasView(scene)
+    view.resize(800, 500)
+    view.show()
+    view.fit_graph()
+    app.processEvents()
+    header = node.mapToScene(QPointF(30, 18))
+    try:
+        assert "Original description" in canvas_tooltip(app, view, header)
+        block.name = "New block name"
+        block.description = "New <description>\nSecond line"
+        block.state, block.error_kind, block.error = "error", "exception", "Run failed"
+        tooltip = canvas_tooltip(app, view, header)
+        assert "New block name" in tooltip
+        assert "New &lt;description&gt;<br>Second line" in tooltip
+        assert "Run failed" in tooltip
+        block.state = "pass"
+        assert "Run failed" not in canvas_tooltip(app, view, header)
+    finally:
+        QToolTip.hideText()
+        view.close()
 
 
 def test_canvas_node_movement_updates_wires(app):
