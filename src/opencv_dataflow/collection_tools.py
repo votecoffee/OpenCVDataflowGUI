@@ -8,6 +8,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .features import overlay_image
+from .graphics_layers import GraphicDrawing, graphic_box, graphic_object
 from .objects import METRICS, collection, line_item, validate_collection
 from .payloads import (
     ValuePacket,
@@ -187,6 +188,10 @@ class FindLineSegments(Block):
                 "overlay": overlay,
             },
             graphics={"lines": overlay},
+            drawings={"lines": GraphicDrawing(tuple(
+                graphic_object("polyline", (s[:2], s[2:]), (80, 230, 140), thickness=1)
+                for s in segments
+            ))} if self.generate_graphics and segments else {},
             message=f"{len(items)} line segments",
         )
 
@@ -376,12 +381,22 @@ class DrawCollection(Block):
         color = tuple(map(int, color))
         thickness = integer(self.parameters["thickness"], "Thickness", 1, 20)
         overlay, mask = overlay_image(image), np.zeros(image.shape[:2], np.uint8)
+        draw_objects = self.generate_graphics
+        objects = []
         for rank, item in enumerate(data["items"], 1):
             geometry, metrics = item["geometry"], item["metrics"]
             if data["kind"] == "blobs":
                 contours = [draw_points(c, origin).reshape(-1, 1, 2) for c in geometry["contours"]]
                 cv2.drawContours(mask, contours, -1, 255, -1)
                 cv2.drawContours(overlay, contours, -1, color, thickness)
+                if draw_objects:
+                    objects.extend(
+                        graphic_object(
+                            "polyline", contour.reshape(-1, 2), color,
+                            closed=True, thickness=thickness,
+                        )
+                        for contour in contours
+                    )
             else:
                 points = draw_points(geometry["points"], origin)
                 if data["kind"] == "lines":
@@ -393,27 +408,40 @@ class DrawCollection(Block):
                     contours = [points.reshape(-1, 1, 2)]
                     cv2.drawContours(mask, contours, -1, 255, -1)
                     cv2.drawContours(overlay, contours, -1, color, thickness)
+                if draw_objects:
+                    objects.append(graphic_object(
+                        "polyline", points, color,
+                        closed=data["kind"] != "lines", thickness=thickness,
+                    ))
             x, y = np.rint([metrics["x"], metrics["y"]]).astype(int) - origin
             if self.parameters["draw_bounds"]:
                 w, h = round(metrics["width"]), round(metrics["height"])
                 cv2.rectangle(overlay, (x, y), (x + w - 1, y + h - 1), color, 1)
+                if draw_objects:
+                    objects.append(graphic_box(x, y, w, h, color))
             if self.parameters["draw_centers"]:
                 center = np.rint([metrics["center_x"], metrics["center_y"]]).astype(int) - origin
                 cv2.drawMarker(overlay, tuple(center), color, cv2.MARKER_CROSS, 8, 1)
+                if draw_objects:
+                    objects.append(graphic_object("marker", [center], color))
             if self.parameters["labels"] != "none":
                 label = str(rank if self.parameters["labels"] == "rank" else item["id"])
+                position = (int(x), max(12, int(y)))
                 cv2.putText(
                     overlay,
                     label,
-                    (int(x), max(12, int(y))),
+                    position,
                     cv2.FONT_HERSHEY_SIMPLEX,
                     0.45,
                     color,
                     1,
                 )
+                if draw_objects:
+                    objects.append(graphic_object("text", [position], color, text=label))
         return Result(
             {"overlay": overlay, "mask": mask, "count": data["count"]},
             graphics={"objects": overlay},
+            drawings={"objects": GraphicDrawing(tuple(objects))} if objects else {},
             message=f"{data['count']} drawn {data['kind']}",
         )
 

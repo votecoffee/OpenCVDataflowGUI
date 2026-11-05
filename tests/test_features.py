@@ -96,6 +96,7 @@ def test_corners_find_known_rectangle_and_empty_image():
     image[20:71, 30:91] = 255
     block = run("inspect.corners", {"image": image})
     assert block.last_result.outputs["count"] == 4
+    assert len(block.last_result.drawings["corners"].objects) == 4
     actual = sorted(block.last_result.outputs["points"])
     np.testing.assert_allclose(actual, [[30, 20], [30, 70], [90, 20], [90, 70]], atol=1)
     block.execute({"image": np.zeros_like(image)})
@@ -107,6 +108,7 @@ def test_hough_lines_known_edge_and_empty_result():
     cv2.line(edges, (10, 30), (100, 30), 255, 1)
     block = run("inspect.hough_lines", {"image": edges}, {"votes": 20, "min_length": 40.0})
     assert block.last_result.outputs["count"] >= 1
+    assert len(block.last_result.drawings["lines"].objects) == block.last_result.outputs["count"]
     assert any(
         abs(y1 - 30) <= 1 and abs(y2 - 30) <= 1 and abs(x2 - x1) >= 40
         for x1, y1, x2, y2 in block.last_result.outputs["segments"]
@@ -128,6 +130,7 @@ def test_hough_circle_known_center_and_radius():
         np.linalg.norm(np.array(c[:2]) - [64, 64]) < 3 and abs(c[2] - 25) < 3
         for c in block.last_result.outputs["circles"]
     )
+    assert all(item.closed for item in block.last_result.drawings["circles"].objects)
 
 
 def test_precise_distance_transform_is_pixel_metric_not_preview():

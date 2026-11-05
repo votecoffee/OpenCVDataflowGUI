@@ -6,8 +6,10 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
+from .graphics_layers import GraphicDrawing, graphic_circle, graphic_object
 from .images import ImageArray, convert_depth, format_image, image_format, preview_rgb
 from .objects import collection, line_item
+from .parameter_validation import NumericRange, ValidationError
 from .parameters import optional_mask
 from .payloads import require_same_frame
 from .processing import (
@@ -340,16 +342,25 @@ class GoodFeatures(ImageTool):
         "gradient_size": "3",
     }
     parameter_choices = {"gradient_size": ("3", "5", "7")}
+    parameter_ranges = {
+        "max_corners": NumericRange(0, 10000, whole=True),
+        "quality": NumericRange(0, 1),
+        "min_distance": NumericRange(0),
+        "block_size": NumericRange(3, 255, whole=True, odd=True),
+        "harris_k": NumericRange(0),
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if float(p["quality"]) <= 0:
+            raise ValidationError("Quality must be greater than zero and at most one", "quality")
 
     def process(self, inputs):
         image = gray_image(inputs["image"], (np.uint8, np.float32))
-        count = integer(self.parameters["max_corners"], "Maximum corners", 0, 10000)
-        quality = finite(self.parameters["quality"], "Quality", 0)
-        if not 0 < quality <= 1:
-            raise ValueError("Quality must be greater than zero and at most one")
-        distance = finite(self.parameters["min_distance"], "Minimum distance", 0)
-        size = integer(self.parameters["block_size"], "Block size", 3, 255, odd=True)
-        k = finite(self.parameters["harris_k"], "Harris K", 0)
+        p = self.parameters
+        count, size = int(p["max_corners"]), int(p["block_size"])
+        quality, distance, k = (float(p[key]) for key in ("quality", "min_distance", "harris_k"))
         found = cv2.goodFeaturesToTrack(
             image,
             count,
@@ -370,6 +381,9 @@ class GoodFeatures(ImageTool):
         return Result(
             {"points": points, "count": len(points), "overlay": overlay},
             graphics={"corners": overlay},
+            drawings={"corners": GraphicDrawing(tuple(
+                graphic_object("marker", [point], (0, 220, 120)) for point in points
+            ))} if self.generate_graphics and points else {},
             message=f"{len(points)} corners in input pixels",
         )
 
@@ -385,21 +399,33 @@ class HoughLines(ImageTool):
         Port("collection", "data"),
     )
     defaults = {"votes": 50, "min_length": 30.0, "max_gap": 10.0, "rho": 1.0, "theta_degrees": 1.0}
+    parameter_ranges = {
+        "votes": NumericRange(1, 100000, whole=True),
+        "min_length": NumericRange(0),
+        "max_gap": NumericRange(0),
+        "rho": NumericRange(0),
+        "theta_degrees": NumericRange(0, 180),
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        for name in ("rho", "theta_degrees"):
+            if float(p[name]) <= 0:
+                label = name.replace("_", " ").capitalize()
+                raise ValidationError(f"{label} must be positive", name)
 
     def process(self, inputs):
         image = gray_image(inputs["image"], (np.uint8,))
-        votes = integer(self.parameters["votes"], "Votes", 1, 100000)
-        rho = finite(self.parameters["rho"], "Rho", 0)
-        theta = finite(self.parameters["theta_degrees"], "Theta", 0)
-        if rho <= 0 or not 0 < theta <= 180:
-            raise ValueError("Rho must be positive and theta in (0,180] degrees")
+        p = self.parameters
+        votes, rho, theta = int(p["votes"]), float(p["rho"]), float(p["theta_degrees"])
         found = cv2.HoughLinesP(
             image,
             rho,
             np.deg2rad(theta),
             votes,
-            minLineLength=finite(self.parameters["min_length"], "Minimum length", 0),
-            maxLineGap=finite(self.parameters["max_gap"], "Maximum gap", 0),
+            minLineLength=float(p["min_length"]),
+            maxLineGap=float(p["max_gap"]),
         )
         segments = found.reshape(-1, 4).tolist() if found is not None else []
         selection = selection_mask(inputs, image)
@@ -422,6 +448,10 @@ class HoughLines(ImageTool):
                 ),
             },
             graphics={"lines": overlay},
+            drawings={"lines": GraphicDrawing(tuple(
+                graphic_object("polyline", (s[:2], s[2:]), (0, 220, 120), thickness=1)
+                for s in segments
+            ))} if self.generate_graphics and segments else {},
             message=f"{len(segments)} line segments",
         )
 
@@ -449,21 +479,37 @@ class HoughCircles(ImageTool):
     parameter_help = {
         "center_threshold": "For gradient_alt use a perfectness threshold below 1 (e.g. 0.9)."
     }
+    parameter_ranges = {
+        "dp": NumericRange(1),
+        "min_distance": NumericRange(0),
+        "edge_threshold": NumericRange(0),
+        "center_threshold": NumericRange(0),
+        "min_radius": NumericRange(0, 100000, whole=True),
+        "max_radius": NumericRange(-1, 100000, whole=True),
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        for key in ("min_distance", "edge_threshold", "center_threshold"):
+            if float(p[key]) <= 0:
+                raise ValidationError(f"{key.replace('_', ' ').capitalize()} must be positive", key)
+        if 0 < p["max_radius"] < p["min_radius"]:
+            raise ValidationError("Radius range must be ordered", "min_radius", "max_radius")
+        if p["method"] == "gradient_alt":
+            if float(p["center_threshold"]) >= 1:
+                raise ValidationError("Gradient ALT needs center threshold <1", "center_threshold")
+            if p["max_radius"] < 0:
+                raise ValidationError("Gradient ALT needs nonnegative max radius", "max_radius")
 
     def process(self, inputs):
         image = gray_image(inputs["image"], (np.uint8,))
         p = self.parameters
-        dp = finite(p["dp"], "DP", 1)
-        distance = finite(p["min_distance"], "Minimum distance", 0)
-        edge = finite(p["edge_threshold"], "Edge threshold", 0)
-        center = finite(p["center_threshold"], "Center threshold", 0)
-        minimum = integer(p["min_radius"], "Minimum radius", 0, 100000)
-        maximum = integer(p["max_radius"], "Maximum radius", -1, 100000)
-        if min(distance, edge, center) <= 0 or (maximum > 0 and maximum < minimum):
-            raise ValueError("Distances/thresholds must be positive and radius range ordered")
+        dp, distance, edge, center = (
+            float(p[key]) for key in ("dp", "min_distance", "edge_threshold", "center_threshold")
+        )
+        minimum, maximum = int(p["min_radius"]), int(p["max_radius"])
         mode = {"gradient": cv2.HOUGH_GRADIENT, "gradient_alt": cv2.HOUGH_GRADIENT_ALT}[p["method"]]
-        if p["method"] == "gradient_alt" and (center >= 1 or maximum < 0):
-            raise ValueError("Gradient ALT needs center threshold <1 and nonnegative max radius")
         found = cv2.HoughCircles(
             image,
             mode,
@@ -488,6 +534,9 @@ class HoughCircles(ImageTool):
                 "overlay": overlay,
             },
             graphics={"circles": overlay},
+            drawings={"circles": GraphicDrawing(tuple(
+                graphic_circle(x, y, radius, (0, 220, 120)) for x, y, radius in circles
+            ))} if self.generate_graphics and circles else {},
             message=f"{len(circles)} circles; coordinates and radii in pixels",
         )
 

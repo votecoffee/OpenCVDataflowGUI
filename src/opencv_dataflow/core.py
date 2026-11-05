@@ -87,6 +87,8 @@ class Block:
     defaults: ClassVar[dict[str, Any]] = {}
     parameter_choices: ClassVar[dict[str, tuple]] = {}
     parameter_help: ClassVar[dict[str, str]] = {}
+    input_help: ClassVar[dict[str, str]] = {}
+    preview_safe: ClassVar[bool | None] = None
     parameter_ranges: ClassVar[dict[str, NumericRange]] = {}
 
     def __init__(self, *, block_id=None, parameters=None):

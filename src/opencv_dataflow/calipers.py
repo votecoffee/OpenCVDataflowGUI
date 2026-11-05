@@ -5,6 +5,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .features import overlay_image
+from .graphics_layers import GraphicDrawing, graphic_object
 from .payloads import NO_VALUE
 from .poses import pose_for_image
 from .processing import finite, gray_image, integer
@@ -129,6 +130,8 @@ class BeadCalipers(Block):
                 profiles, (window, 1), sigmaX=sigma, borderType=cv2.BORDER_REPLICATE
             )
         overlay = overlay_image(source) if p["draw_overlay"] else NO_VALUE
+        draw_objects = self.generate_graphics
+        objects = []
         polarity = 1 if p["polarity"] == "bright" else -1
         rows, centers, measured = [], [], []
         passing, gap, longest_gap = 0, 0, 0
@@ -166,8 +169,16 @@ class BeadCalipers(Block):
                 )
             row["reason"] = reason
             rows.append(row)
-            if overlay is not NO_VALUE and in_image[index]:
-                color = (60, 80, 240) if reason else (70, 220, 140)
+            if not in_image[index]:
+                continue
+            color = (60, 80, 240) if reason else (70, 220, 140)
+            if draw_objects:
+                objects.append(
+                    graphic_object("polyline", locations[index, [0, -1]], color, thickness=1)
+                )
+                if edges is not None:
+                    objects.append(graphic_object("polyline", (a, b), color))
+            if overlay is not NO_VALUE:
                 start, end = np.rint(locations[index, [0, -1]]).astype(np.int32)
                 cv2.line(overlay, tuple(start), tuple(end), color, 1)
                 if edges is not None:
@@ -194,6 +205,7 @@ class BeadCalipers(Block):
                 "overlay": overlay,
             },
             graphics={"bead calipers": overlay} if overlay is not NO_VALUE else {},
+            drawings={"bead calipers": GraphicDrawing(tuple(objects))} if objects else {},
             passed=not reasons,
             score=fraction,
             message=f"{passing} of {scans} caliper scans pass, longest gap {longest_gap}",

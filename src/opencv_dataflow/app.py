@@ -626,15 +626,23 @@ class Inspector(QWidget):
 
     def can_preview(self):
         b = self.block
+        if b is None:
+            return False
+        eligible = b.preview_safe
+        if eligible is None:
+            eligible = type(b).__module__.startswith("opencv_dataflow.")
         return bool(
-            b is not None
+            eligible
             and self.window.runner is None
-            and type(b).__module__.startswith("opencv_dataflow.")
             and b.category != "Output"
             and b.block_type != "Output"
+            and not b.ticket_source
             and not b.type_id.startswith(("input.", "output.", "flow.", "recipe.", "core."))
             and not getattr(b, "sequence_memory", False)
-            and any(port.kind == "image" and port.name in b.last_inputs for port in b.inputs)
+            and not getattr(b, "accept_events", False)
+            and not getattr(b, "owns_workers", False)
+            and not getattr(b, "queue_boundary", False)
+            and any(port.name in b.last_inputs for port in b.inputs)
         )
 
     def toggle_live_results(self, enabled):
@@ -852,8 +860,10 @@ class Inspector(QWidget):
             invalid = key in keys
             field.setStyleSheet("border: 1px solid #ffac70;" if invalid else "")
             help_text = self.block.parameter_help.get(key, "")
+            limits = self.block.parameter_ranges.get(key)
+            range_text = f"Value must be {limits.describe()}." if limits else ""
             detail = message if invalid else ""
-            field.setToolTip("\n".join(part for part in (help_text, detail) if part))
+            field.setToolTip("\n".join(part for part in (help_text, range_text, detail) if part))
         if self.kernel_parameters:
             invalid = any(key in self.kernel_parameters for key in keys)
             self.kernel_button.setStyleSheet("border: 1px solid #ffac70;" if invalid else "")

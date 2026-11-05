@@ -6,6 +6,7 @@ import numpy as np
 from .core import Block, Port, Result
 from .dnn_blocks import ENGINES
 from .features import overlay_image
+from .graphics_layers import GraphicDrawing, graphic_object
 from .ml_common import file_key, local_path, selected_tensor
 from .payloads import NO_VALUE, ValuePacket, require_same_frame
 from .processing import finite, gray_image, image_value, integer
@@ -140,6 +141,10 @@ class TextRegions(Block):
                 "overlay": overlay,
             },
             graphics={"text regions": overlay} if overlay is not NO_VALUE else {},
+            drawings={"text regions": GraphicDrawing(tuple(
+                graphic_object("polyline", region["corners"], (70, 220, 140), closed=True)
+                for region in regions
+            ))} if self.generate_graphics and regions else {},
             message=f"{len(regions)} text regions",
         )
 

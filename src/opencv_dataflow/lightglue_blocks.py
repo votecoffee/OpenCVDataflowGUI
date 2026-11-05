@@ -144,6 +144,8 @@ class LightGlueMatch(Block):
         "layers": "1..9 pretrained layers; fewer layers trade accuracy for latency.",
         "depth_confidence": "Early stopping confidence, or -1 to disable.",
         "width_confidence": "Point pruning confidence, or -1 to disable.",
+    }
+    input_help = {
         "reference_features": "Use cached SIFT reference features instead of a reference image.",
     }
 
