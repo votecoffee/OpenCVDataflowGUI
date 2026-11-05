@@ -1141,7 +1141,7 @@ P2	method	cv2.xfeatures2d.AKAZE.setMaxPoints	no static reference	-
 P2	method	cv2.xfeatures2d.AKAZE.setNOctaveLayers	no static reference	-
 P2	method	cv2.xfeatures2d.AKAZE.setNOctaves	no static reference	-
 P2	method	cv2.xfeatures2d.AKAZE.setThreshold	no static reference	-
-P2	function	cv2.xfeatures2d.AKAZE_create	no static reference	-
+P2	function	cv2.xfeatures2d.AKAZE_create	literal reference	-
 P2	class	cv2.xfeatures2d.BEBLID	no static reference	-
 P2	method	cv2.xfeatures2d.BEBLID.create	method name only	-
 P2	method	cv2.xfeatures2d.BEBLID.getDefaultName	no static reference	-
@@ -1158,7 +1158,7 @@ P2	method	cv2.xfeatures2d.BoostDesc.setUseScaleOrientation	no static reference	-
 P2	function	cv2.xfeatures2d.BoostDesc_create	no static reference	-
 P2	class	cv2.xfeatures2d.BOWImgDescriptorExtractor	no static reference	-
 P2	method	cv2.xfeatures2d.BOWImgDescriptorExtractor.compute	method name only	-
-P2	method	cv2.xfeatures2d.BOWImgDescriptorExtractor.descriptorSize	no static reference	-
+P2	method	cv2.xfeatures2d.BOWImgDescriptorExtractor.descriptorSize	method name only	-
 P2	method	cv2.xfeatures2d.BOWImgDescriptorExtractor.descriptorType	no static reference	-
 P2	method	cv2.xfeatures2d.BOWImgDescriptorExtractor.getVocabulary	no static reference	-
 P2	method	cv2.xfeatures2d.BOWImgDescriptorExtractor.setVocabulary	method name only	-
@@ -2697,7 +2697,7 @@ P3	function	cv2.fastNlMeansDenoisingMulti	no static reference	-
 P3	class	cv2.Feature2D	no static reference	-
 P3	method	cv2.Feature2D.compute	method name only	-
 P3	method	cv2.Feature2D.defaultNorm	no static reference	-
-P3	method	cv2.Feature2D.descriptorSize	no static reference	-
+P3	method	cv2.Feature2D.descriptorSize	method name only	-
 P3	method	cv2.Feature2D.descriptorType	no static reference	-
 P3	method	cv2.Feature2D.detect	method name only	-
 P3	method	cv2.Feature2D.detectAndCompute	method name only	-
@@ -5486,7 +5486,7 @@ P4	function	cv2.cuda.Stream_Null	no static reference	-
 P4	class	cv2.cuda.SURF_CUDA	no static reference	-
 P4	method	cv2.cuda.SURF_CUDA.create	method name only	-
 P4	method	cv2.cuda.SURF_CUDA.defaultNorm	no static reference	-
-P4	method	cv2.cuda.SURF_CUDA.descriptorSize	no static reference	-
+P4	method	cv2.cuda.SURF_CUDA.descriptorSize	method name only	-
 P4	method	cv2.cuda.SURF_CUDA.detect	method name only	-
 P4	method	cv2.cuda.SURF_CUDA.detectWithDescriptors	no static reference	-
 P4	method	cv2.cuda.SURF_CUDA.downloadKeypoints	no static reference	-

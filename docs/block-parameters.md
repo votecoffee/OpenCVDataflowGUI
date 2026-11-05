@@ -1874,6 +1874,23 @@ Inputs: `matches` (data).
 | `min_inliers` | `3` |  |
 | `min_inlier_ratio` | `0.5` |  |
 
+## AKAZE keypoints and descriptors (`inspect.akaze`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `descriptor_mode` | `"mldb"` | `mldb`, `mldb_upright`, `kaze`, `kaze_upright` Upright modes keep a fixed orientation. KAZE descriptors are floats. |
+| `descriptor_bits` | `0` | Value must be a whole number between 0 and 486. MLDB only. Zero selects full length with three channels. |
+| `descriptor_channels` | `"3"` | `1`, `2`, `3` Rotating MLDB can use fewer channels with an explicit bit count. |
+| `threshold` | `0.001` | Value must be a finite number between 1e-09 and 1. |
+| `octaves` | `4` | Value must be a whole number between 1 and 8. |
+| `octave_layers` | `4` | Value must be a whole number between 1 and 8. |
+| `diffusivity` | `"pm_g2"` | `pm_g1`, `pm_g2`, `weickert`, `charbonnier` |
+| `max_features` | `500` | Value must be a whole number between 1 and 10000. |
+
 ## Align images (ECC) (`inspect.align_ecc`)
 
 Inspection / Registration
@@ -2337,6 +2354,18 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `log_epsilon` | `0.0` | -log10(NFA) threshold; used only with advanced refinement. |
 | `density_threshold` | `0.7` |  |
 | `bins` | `1024` |  |
+
+## Match AKAZE descriptors (`inspect.match_akaze`)
+
+Inspection / Matching
+
+Inputs: `query` (data), `train` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `ratio` | `0.75` | Value must be a finite number between 1e-06 and 0.999999. Reject a nearest neighbor too similar in distance to the runner-up. |
+| `max_distance` | `64.0` | Value must be a finite number at least 0. Maximum descriptor distance using the selected norm. |
+| `mode` | `"ratio"` | `ratio`, `cross_check` |
 
 ## Match ORB descriptors (`inspect.match_orb`)
 

@@ -609,6 +609,12 @@ def sift_data(data):
         or data.get("descriptor_depth") not in ("uint8", "float32")
     ):
         raise ValidationError("Connect SIFT keypoints and descriptors")
+    byte_storage = data["descriptor_depth"] == "uint8"
+    raw, points = descriptor_arrays(data, 128, 0, 255 if byte_storage else 512, byte_storage)
+    return raw.astype(np.float32), points
+
+
+def descriptor_arrays(data, width, minimum, maximum, integer_only):
     try:
         size = data["image_size"]
         keypoints = data["keypoints"]
@@ -620,24 +626,23 @@ def sift_data(data):
             or not isinstance(keypoints, list)
             or raw.dtype.kind not in "uif"
         ):
-            raise ValueError("Invalid SIFT image size, keypoints or descriptor type")
+            raise ValueError("Invalid image size, keypoints or descriptor type")
         if not keypoints and raw.size == 0:
-            return np.empty((0, 128), np.float32), np.empty((0, 2), np.float64)
+            return np.empty((0, width)), np.empty((0, 2))
         points = np.asarray([key["point"] for key in keypoints], np.float64)
-        upper = 255 if data["descriptor_depth"] == "uint8" else 512
         if (
-            raw.shape != (len(keypoints), 128)
+            raw.shape != (len(keypoints), width)
             or not np.isfinite(raw).all()
-            or (raw < 0).any()
-            or (raw > upper).any()
-            or (upper == 255 and np.any(raw != np.rint(raw)))
+            or (raw < minimum).any()
+            or (raw > maximum).any()
+            or (integer_only and np.any(raw != np.rint(raw)))
             or points.shape != (len(keypoints), 2)
             or not np.isfinite(points).all()
         ):
-            raise ValueError("Invalid SIFT descriptor values or keypoint coordinates")
+            raise ValueError("Invalid descriptor values or keypoint coordinates")
     except (KeyError, TypeError, ValueError, OverflowError) as exc:
-        raise ValidationError(f"Invalid SIFT features: {exc}") from exc
-    return raw.astype(np.float32), points
+        raise ValidationError(f"Invalid feature data: {exc}") from exc
+    return raw, points
 
 
 class MatchSIFT(Block):
@@ -660,6 +665,153 @@ class MatchSIFT(Block):
         train, tpoints = sift_data(inputs["train"])
         p = self.parameters
         norm = cv2.NORM_L2 if p["norm"] == "l2" else cv2.NORM_L1
+        return descriptor_match_result(
+            inputs,
+            query,
+            train,
+            qpoints,
+            tpoints,
+            norm,
+            p["mode"],
+            float(p["ratio"]),
+            float(p["max_distance"]),
+        )
+
+
+AKAZE_MODES = ("mldb", "mldb_upright", "kaze", "kaze_upright")
+AKAZE_DIFFUSIVITY = ("pm_g1", "pm_g2", "weickert", "charbonnier")
+
+
+def akaze_descriptor_width(mode, bits, channels):
+    if not mode.startswith("mldb"):
+        return 64
+    # The OpenCV 5.0 Windows upright kernel can overwrite memory below three channels.
+    if mode == "mldb_upright" and channels != 3:
+        raise ValidationError("Upright MLDB requires three channels", "descriptor_channels")
+    if bits == 0 and channels != 3:
+        raise ValidationError("Full-length MLDB requires three channels", "descriptor_channels")
+    if bits > 162 * channels:
+        raise ValidationError("MLDB supports at most 162 bits per channel", "descriptor_bits")
+    return ((bits or 486) + 7) // 8
+
+
+class AKAZEFeatures(ImageTool):
+    type_id, title, subtype = "inspect.akaze", "AKAZE keypoints and descriptors", "Features"
+    category, block_type = "Inspection", "Inspection"
+    inputs, outputs = SELECTION_INPUTS, ORBFeatures.outputs
+    defaults = {
+        "descriptor_mode": "mldb",
+        "descriptor_bits": 0,
+        "descriptor_channels": "3",
+        "threshold": 0.001,
+        "octaves": 4,
+        "octave_layers": 4,
+        "diffusivity": "pm_g2",
+        "max_features": 500,
+    }
+    parameter_choices = {
+        "descriptor_mode": AKAZE_MODES,
+        "descriptor_channels": ("1", "2", "3"),
+        "diffusivity": AKAZE_DIFFUSIVITY,
+    }
+    parameter_ranges = {
+        "descriptor_bits": NumericRange(0, 486, whole=True),
+        "threshold": NumericRange(1e-9, 1),
+        "octaves": NumericRange(1, 8, whole=True),
+        "octave_layers": NumericRange(1, 8, whole=True),
+        "max_features": NumericRange(1, 10000, whole=True),
+    }
+    parameter_help = {
+        "descriptor_bits": "MLDB only. Zero selects full length with three channels.",
+        "descriptor_channels": "Rotating MLDB can use fewer channels with an explicit bit count.",
+        "descriptor_mode": "Upright modes keep a fixed orientation. KAZE descriptors are floats.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        akaze_descriptor_width(
+            p["descriptor_mode"], int(p["descriptor_bits"]), int(p["descriptor_channels"])
+        )
+
+    def process(self, inputs):
+        gray = gray_image(inputs["image"], (np.uint8,), auto_depth=True)
+        p = self.parameters
+        mode = p["descriptor_mode"]
+        binary = mode.startswith("mldb")
+        bits = int(p["descriptor_bits"]) if binary else 0
+        channels = int(p["descriptor_channels"]) if binary else 3
+        native = cv2.xfeatures2d
+        detector = cv2.xfeatures2d.AKAZE_create(
+            getattr(native, f"AKAZE_DESCRIPTOR_{mode.upper()}"),
+            bits,
+            channels,
+            float(p["threshold"]),
+            int(p["octaves"]),
+            int(p["octave_layers"]),
+            getattr(native, f"KAZE_DIFF_{p['diffusivity'].upper()}"),
+            int(p["max_features"]),
+        )
+        result = feature_result(
+            inputs,
+            gray,
+            detector,
+            "AKAZE",
+            {
+                "descriptor_size": detector.descriptorSize(),
+                "descriptor_mode": mode,
+                "descriptor_bits": bits,
+                "descriptor_channels": channels,
+            },
+        )
+        if self.generate_graphics and result.outputs["points"]:
+            result.drawings["AKAZE"] = GraphicDrawing(
+                tuple(
+                    graphic_object("marker", [point], (70, 220, 140))
+                    for point in result.outputs["points"]
+                )
+            )
+        return result
+
+
+def akaze_data(data):
+    if not isinstance(data, dict) or data.get("algorithm") != "AKAZE":
+        raise ValidationError("Connect AKAZE keypoints and descriptors")
+    mode = data.get("descriptor_mode")
+    bits, channels = data.get("descriptor_bits"), data.get("descriptor_channels")
+    if (
+        mode not in AKAZE_MODES
+        or type(bits) is not int
+        or not 0 <= bits <= 486
+        or type(channels) is not int
+        or channels not in (1, 2, 3)
+    ):
+        raise ValidationError("Invalid AKAZE descriptor settings")
+    binary = mode.startswith("mldb")
+    width = akaze_descriptor_width(mode, bits, channels)
+    if width != data.get("descriptor_size"):
+        raise ValidationError("AKAZE descriptor width does not match its settings")
+    minimum, maximum = (0, 255) if binary else (-2, 2)
+    raw, points = descriptor_arrays(data, width, minimum, maximum, binary)
+    return raw.astype(np.uint8 if binary else np.float32), points, (mode, bits, channels)
+
+
+class MatchAKAZE(Block):
+    type_id, title, category = "inspect.match_akaze", "Match AKAZE descriptors", "Inspection"
+    block_type, subtype = "Inspection", "Matching"
+    inputs, outputs = MatchSIFT.inputs, MatchSIFT.outputs
+    defaults = {"ratio": 0.75, "max_distance": 64.0, "mode": "ratio"}
+    parameter_choices = {"mode": ("ratio", "cross_check")}
+    parameter_ranges = MatchSIFT.parameter_ranges
+    parameter_help = MatchSIFT.parameter_help
+
+    def process(self, inputs):
+        query, qpoints, settings = akaze_data(inputs["query"])
+        train, tpoints, train_settings = akaze_data(inputs["train"])
+        if settings != train_settings:
+            raise ValidationError("AKAZE descriptor modes, bit counts and channels must match")
+        p = self.parameters
+        norm = cv2.NORM_HAMMING if query.dtype == np.uint8 else cv2.NORM_L2
         return descriptor_match_result(
             inputs,
             query,
@@ -824,8 +976,10 @@ REGISTRATION_BLOCKS = (
     FASTFeatures,
     ORBFeatures,
     SIFTFeatures,
+    AKAZEFeatures,
     MatchORB,
     MatchSIFT,
+    MatchAKAZE,
     EstimateHomography,
     TransformPoints,
 )
