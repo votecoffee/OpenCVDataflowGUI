@@ -1876,6 +1876,22 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
 | `border_value` | `0.0` |  |
 
+## Approximate contour (`inspect.approximate_contour`)
+
+Inspection / Measurements
+
+Inputs: `contour` (data), `image` (image, optional).
+
+Input `image` — Optional aligned background for viewing the simplified contour.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `item_index` | `0` | Value must be a whole number at least 0. Zero-based contour collection item. A blob uses its largest boundary. |
+| `closed` | `true` | Connect the last vertex to the first. Disable for an open path. |
+| `epsilon_mode` | `"pixels"` | `pixels`, `length_fraction` |
+| `epsilon_pixels` | `2.0` | Value must be a finite number between 0 and 1e+06. Maximum approximation tolerance when Epsilon Mode is pixels. |
+| `length_fraction` | `0.01` | Value must be a finite number between 0 and 1. Tolerance as a fraction of the original perimeter or path length. |
+
 ## Paired-edge bead calipers (`inspect.bead_calipers`)
 
 Inspection / Measurements
