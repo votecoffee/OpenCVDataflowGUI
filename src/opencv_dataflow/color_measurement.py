@@ -7,6 +7,8 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .images import convert_depth, image_format
+from .parameter_validation import NumericRange, ValidationError
+from .payloads import NO_VALUE
 from .processing import finite, image_value
 from .selection import SELECTION_INPUTS, selection_mask
 
@@ -123,6 +125,21 @@ class MeasureLabColor(Block):
         )
 
 
+def lab_weights(parameters):
+    if parameters["metric"] == "cie76":
+        return ()
+    return tuple(
+        finite(parameters[key], key.replace("_", " ").capitalize(), 1e-6)
+        for key in ("lightness_weight", "chroma_weight", "hue_weight")
+    )
+
+
+def lab_distance(reference, sample, metric, weights):
+    if metric == "cie76":
+        return float(np.linalg.norm(sample - reference))
+    return delta_e_2000(reference, sample, weights)
+
+
 class CompareLabColor(Block):
     type_id, title = "inspect.compare_lab", "Compare Lab colors"
     category, block_type, subtype = "Inspection", "Inspection", "Color measurements"
@@ -150,14 +167,7 @@ class CompareLabColor(Block):
         sample = lab_value(inputs["sample"])
         reference = lab_value(inputs.get("reference", p["reference_lab"]))
         difference = sample - reference
-        if p["metric"] == "ciede2000":
-            weights = tuple(
-                finite(p[key], key.replace("_", " ").capitalize(), 1e-6)
-                for key in ("lightness_weight", "chroma_weight", "hue_weight")
-            )
-            distance = delta_e_2000(reference, sample, weights)
-        else:
-            distance = float(np.linalg.norm(difference))
+        distance = lab_distance(reference, sample, p["metric"], lab_weights(p))
         passed = distance <= finite(p["maximum_delta_e"], "Maximum delta E", 0)
         measurements = {
             "metric": p["metric"],
@@ -174,4 +184,116 @@ class CompareLabColor(Block):
         )
 
 
-COLOR_MEASUREMENT_BLOCKS = (MeasureLabColor, CompareLabColor)
+def lab_palette(value):
+    if not isinstance(value, dict) or not 1 <= len(value) <= 256:
+        raise ValidationError(
+            "References must map 1–256 unique labels to Lab triplets", "references"
+        )
+    palette = []
+    for name, lab in value.items():
+        if not isinstance(name, str) or not name.strip() or len(name) > 128:
+            raise ValidationError(
+                "Color labels must be nonblank and at most 128 characters", "references"
+            )
+        try:
+            palette.append((name, lab_value(lab)))
+        except (TypeError, ValueError, OverflowError) as exc:
+            raise ValidationError(f"Invalid Lab value for {name!r}: {exc}", "references") from exc
+    return palette
+
+
+class ClassifyLabColor(Block):
+    type_id, title = "inspect.classify_lab", "Classify Lab color"
+    category, block_type, subtype = "Inspection", "Inspection", "Color measurements"
+    inputs = (Port("sample", "data"), Port("references", "data", required=False))
+    outputs = (
+        Port("label", "data", required=False),
+        Port("delta_e", "number"),
+        Port("classification", "data"),
+        Port("swatches"),
+    )
+    defaults = {
+        **{key: value for key, value in CompareLabColor.defaults.items() if key != "reference_lab"},
+        "references": {"dark gray": [30, 0, 0], "light gray": [70, 0, 0]},
+        "minimum_margin": 0.5,
+    }
+    parameter_choices = CompareLabColor.parameter_choices
+    parameter_ranges = {
+        "maximum_delta_e": NumericRange(0),
+        "minimum_margin": NumericRange(0),
+        "lightness_weight": NumericRange(1e-6),
+        "chroma_weight": NumericRange(1e-6),
+        "hue_weight": NumericRange(1e-6),
+    }
+    parameter_help = {
+        **{
+            key: value
+            for key, value in CompareLabColor.parameter_help.items()
+            if key != "reference_lab"
+        },
+        "references": 'JSON object such as {"red": [53, 80, 67]}. Wired values take precedence.',
+        "minimum_margin": "Minimum ΔE gap to the runner-up. Zero allows ties in label order.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        values = self.parameters if parameters is None else parameters
+        lab_palette(values["references"])
+
+    def process(self, inputs):
+        p = self.parameters
+        try:
+            sample = lab_value(inputs["sample"])
+        except (TypeError, ValueError, OverflowError) as exc:
+            raise ValidationError(str(exc)) from exc
+        palette = lab_palette(inputs.get("references", p["references"]))
+        metric, weights = p["metric"], lab_weights(p)
+        ranked = sorted(
+            (
+                {
+                    "label": label,
+                    "lab": lab.tolist(),
+                    "delta_e": lab_distance(lab, sample, metric, weights),
+                }
+                for label, lab in palette
+            ),
+            key=lambda item: (item["delta_e"], item["label"]),
+        )
+        best = ranked[0]
+        distance = best["delta_e"]
+        margin = ranked[1]["delta_e"] - distance if len(ranked) > 1 else None
+        if distance > float(p["maximum_delta_e"]):
+            reason = "color_class_distance_above_maximum"
+            status = "outside tolerance"
+        elif margin is not None and margin < float(p["minimum_margin"]):
+            reason = "color_class_ambiguous"
+            status = "ambiguous"
+        else:
+            reason = None
+            status = "accepted"
+        bgr = cv2.cvtColor(np.float32([[sample.tolist(), best["lab"]]]), cv2.COLOR_Lab2BGR)
+        swatches = np.repeat(
+            np.repeat(np.rint(np.clip(bgr, 0, 1) * 255).astype(np.uint8), 24, axis=0), 64, axis=1
+        )
+        return Result(
+            {
+                "label": best["label"] if reason is None else NO_VALUE,
+                "delta_e": distance,
+                "classification": {
+                    "status": status,
+                    "metric": metric,
+                    "sample": sample.tolist(),
+                    "candidate_label": best["label"],
+                    "margin": margin,
+                    "ranking": ranked,
+                },
+                "swatches": swatches,
+            },
+            payloads={"swatches": {}},
+            passed=reason is None,
+            message=f"{best['label']} · ΔE {distance:.4f} · {status}",
+            fail_reasons=[reason] if reason else [],
+        )
+
+
+COLOR_MEASUREMENT_BLOCKS = (MeasureLabColor, CompareLabColor, ClassifyLabColor)

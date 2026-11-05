@@ -1932,6 +1932,22 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
 | `check_count` | `false` |  |
 
+## Classify Lab color (`inspect.classify_lab`)
+
+Inspection / Color measurements
+
+Inputs: `sample` (data), `references` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `metric` | `"ciede2000"` | `ciede2000`, `cie76` |
+| `maximum_delta_e` | `2.0` | Value must be a finite number at least 0. Largest color difference that passes. |
+| `lightness_weight` | `1.0` | Value must be a finite number at least 1e-06. CIEDE2000 kL divisor. |
+| `chroma_weight` | `1.0` | Value must be a finite number at least 1e-06. CIEDE2000 kC divisor. |
+| `hue_weight` | `1.0` | Value must be a finite number at least 1e-06. CIEDE2000 kH divisor. |
+| `references` | `{"dark gray": [30, 0, 0], "light gray": [70, 0, 0]}` | JSON object such as {"red": [53, 80, 67]}. Wired values take precedence. |
+| `minimum_margin` | `0.5` | Value must be a finite number at least 0. Minimum ΔE gap to the runner-up. Zero allows ties in label order. |
+
 ## Compare contours (Hu moments) (`inspect.compare_contours`)
 
 Inspection / Measurements

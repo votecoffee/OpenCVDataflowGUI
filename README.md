@@ -299,6 +299,9 @@ The [histogram thresholds example](examples/histogram_thresholds/README.md) wire
 measured cutoffs into lower-tail, middle-range, and upper-tail masks. Histograms
 also report per-channel mean, median, standard deviation, and extrema.
 
+The [Lab color classification example](examples/lab_color_classification/README.md)
+compares a measured patch with named references and reports the closest color.
+
 The [flat-field correction example](examples/flat_field/README.md) uses bright and dark
 reference images to remove uneven illumination before inspection. The
 [guided filter example](examples/guided_filter/README.md) reduces noise while

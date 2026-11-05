@@ -28,6 +28,13 @@ Sample and reference Lab values should use consistent illumination,
 camera settings and reference-white assumptions.
 
 
+## Classify against a palette
+
+**Classify Lab color** ranks named references by CIE76 or CIEDE2000.
+Set a maximum distance and, when multiple references exist, a minimum gap
+to the second-closest reference. Rejected samples retain their ranking
+and swatches for review. [Classification example](../examples/lab_color_classification/README.md)
+
 ## Fit and apply a color-chart correction
 
 Open the [color-chart calibration example](../examples/color_chart_calibration/color_chart_calibration.json)

@@ -9,6 +9,7 @@ import pytest
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 from opencv_dataflow.images import ImageArray
+from opencv_dataflow.payloads import NO_VALUE
 
 
 def test_lab_measurement_selects_pixels_and_preserves_color_order():
@@ -78,3 +79,57 @@ def test_color_match_example_measures_and_compares_two_regions():
         assert compare.last_result.outputs["delta_e"] == 0
     finally:
         graph.close()
+
+
+def test_lab_classifier_ranks_a_wired_palette_and_reports_a_margin():
+    registry = builtin_registry()
+    block = registry.create(
+        "inspect.classify_lab",
+        parameters={"metric": "cie76", "maximum_delta_e": 2, "minimum_margin": 1},
+    )
+    result = block.execute(
+        {
+            "sample": [50, 1, 0],
+            "references": {"other": [50, -4, 0], "target": [50, 0, 0], "third": [50, 20, 0]},
+        }
+    )
+    assert result is not None and result.passed, block.error
+    assert result.outputs["label"] == "target"
+    assert result.outputs["delta_e"] == 1
+    detail = result.outputs["classification"]
+    assert detail["margin"] == 4 and detail["status"] == "accepted"
+    assert [item["label"] for item in detail["ranking"]] == ["target", "other", "third"]
+    assert result.outputs["swatches"].shape == (24, 128, 3)
+
+
+@pytest.mark.parametrize(
+    "sample,reason",
+    [
+        ([50, 0, 0], "color_class_ambiguous"),
+        ([50, 20, 0], "color_class_distance_above_maximum"),
+    ],
+)
+def test_lab_classifier_rejects_without_emitting_a_label(sample, reason):
+    block = builtin_registry().create(
+        "inspect.classify_lab",
+        parameters={"metric": "cie76", "references": {"a": [50, -1, 0], "b": [50, 1, 0]}},
+    )
+    result = block.execute({"sample": sample})
+    assert result is not None and not result.passed, block.error
+    assert result.outputs["label"] is NO_VALUE
+    assert result.fail_reasons[0]["code"] == reason
+    assert result.outputs["classification"]["candidate_label"]
+
+
+def test_lab_classifier_handles_single_reference_and_rejects_bad_palette():
+    block = builtin_registry().create(
+        "inspect.classify_lab",
+        parameters={"maximum_delta_e": 3, "references": {"blue": [50, 2.6772, -79.7751]}},
+    )
+    result = block.execute({"sample": [50, 0, -82.7485]})
+    assert result is not None and result.passed, block.error
+    assert result.outputs["delta_e"] == pytest.approx(2.0425, abs=5e-5)
+    assert result.outputs["classification"]["margin"] is None
+    assert block.execute({"sample": [50, 0, 0], "references": {"bad": [101, 0, 0]}}) is None
+    assert block.error_kind == "invalid"
+    assert "Invalid Lab value" in block.error
