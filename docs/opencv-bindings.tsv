@@ -520,11 +520,11 @@ P2	method	cv2.dnn.Model.enableWinograd	no static reference	-
 P2	method	cv2.dnn.Model.predict	no static reference	-
 P2	method	cv2.dnn.Model.setInputCrop	no static reference	-
 P2	method	cv2.dnn.Model.setInputMean	no static reference	-
-P2	method	cv2.dnn.Model.setInputParams	no static reference	-
+P2	method	cv2.dnn.Model.setInputParams	method name only	-
 P2	method	cv2.dnn.Model.setInputScale	no static reference	-
 P2	method	cv2.dnn.Model.setInputSize	no static reference	-
 P2	method	cv2.dnn.Model.setInputSwapRB	no static reference	-
-P2	method	cv2.dnn.Model.setOutputNames	no static reference	-
+P2	method	cv2.dnn.Model.setOutputNames	method name only	-
 P2	method	cv2.dnn.Model.setPreferableBackend	method name only	-
 P2	method	cv2.dnn.Model.setPreferableTarget	method name only	-
 P2	class	cv2.dnn.Net	no static reference	-
@@ -603,13 +603,13 @@ P2	method	cv2.dnn.TextDetectionModel_EAST.getConfidenceThreshold	no static refer
 P2	method	cv2.dnn.TextDetectionModel_EAST.getNMSThreshold	no static reference	-
 P2	method	cv2.dnn.TextDetectionModel_EAST.setConfidenceThreshold	no static reference	-
 P2	method	cv2.dnn.TextDetectionModel_EAST.setNMSThreshold	no static reference	-
-P2	class	cv2.dnn.TextRecognitionModel	no static reference	-
+P2	class	cv2.dnn.TextRecognitionModel	literal reference	-
 P2	method	cv2.dnn.TextRecognitionModel.getDecodeType	no static reference	-
 P2	method	cv2.dnn.TextRecognitionModel.getVocabulary	no static reference	-
-P2	method	cv2.dnn.TextRecognitionModel.recognize	no static reference	-
-P2	method	cv2.dnn.TextRecognitionModel.setDecodeOptsCTCPrefixBeamSearch	no static reference	-
-P2	method	cv2.dnn.TextRecognitionModel.setDecodeType	no static reference	-
-P2	method	cv2.dnn.TextRecognitionModel.setVocabulary	no static reference	-
+P2	method	cv2.dnn.TextRecognitionModel.recognize	method name only	-
+P2	method	cv2.dnn.TextRecognitionModel.setDecodeOptsCTCPrefixBeamSearch	method name only	-
+P2	method	cv2.dnn.TextRecognitionModel.setDecodeType	method name only	-
+P2	method	cv2.dnn.TextRecognitionModel.setVocabulary	method name only	-
 P2	class	cv2.dnn.Tokenizer	no static reference	-
 P2	method	cv2.dnn.Tokenizer.decode	method name only	-
 P2	method	cv2.dnn.Tokenizer.encode	method name only	-
@@ -1161,7 +1161,7 @@ P2	method	cv2.xfeatures2d.BOWImgDescriptorExtractor.compute	method name only	-
 P2	method	cv2.xfeatures2d.BOWImgDescriptorExtractor.descriptorSize	no static reference	-
 P2	method	cv2.xfeatures2d.BOWImgDescriptorExtractor.descriptorType	no static reference	-
 P2	method	cv2.xfeatures2d.BOWImgDescriptorExtractor.getVocabulary	no static reference	-
-P2	method	cv2.xfeatures2d.BOWImgDescriptorExtractor.setVocabulary	no static reference	-
+P2	method	cv2.xfeatures2d.BOWImgDescriptorExtractor.setVocabulary	method name only	-
 P2	class	cv2.xfeatures2d.BOWKMeansTrainer	no static reference	-
 P2	method	cv2.xfeatures2d.BOWKMeansTrainer.cluster	no static reference	-
 P2	class	cv2.xfeatures2d.BOWTrainer	no static reference	-
@@ -1963,7 +1963,7 @@ P3	function	cv2.bootstrap	no static reference	-
 P3	function	cv2.borderInterpolate	no static reference	-
 P3	function	cv2.boundingRect	literal reference	-
 P3	function	cv2.boxFilter	literal reference	-
-P3	function	cv2.boxPoints	no static reference	-
+P3	function	cv2.boxPoints	literal reference	-
 P3	function	cv2.broadcast	no static reference	-
 P3	function	cv2.buildMST	no static reference	-
 P3	function	cv2.buildOpticalFlowPyramid	no static reference	-
@@ -2869,7 +2869,7 @@ P3	function	cv2.getHardwareFeatureName	no static reference	-
 P3	function	cv2.getNumberOfCPUs	no static reference	-
 P3	function	cv2.getOptimalDFTSize	no static reference	-
 P3	function	cv2.getOptimalNewCameraMatrix	no static reference	-
-P3	function	cv2.getPerspectiveTransform	no static reference	-
+P3	function	cv2.getPerspectiveTransform	literal reference	-
 P3	function	cv2.getRectSubPix	no static reference	-
 P3	function	cv2.getRotationMatrix2D	literal reference	-
 P3	function	cv2.getStructuringElement	literal reference	-
@@ -3441,7 +3441,7 @@ P3	method	cv2.mcc_CCheckerDetector.setColorChartType	alias	cv2.mcc.CCheckerDetec
 P3	method	cv2.mcc_CCheckerDetector.setDetectionParams	alias	cv2.mcc.CCheckerDetector.setDetectionParams
 P3	method	cv2.mcc_CCheckerDetector.setUseDnnModel	alias	cv2.mcc.CCheckerDetector.setUseDnnModel
 P3	class	cv2.mcc_DetectorParametersMCC	alias	cv2.mcc.DetectorParametersMCC
-P3	function	cv2.mean	no static reference	-
+P3	function	cv2.mean	literal reference	-
 P3	function	cv2.meanShift	no static reference	-
 P3	function	cv2.meanStdDev	no static reference	-
 P3	function	cv2.medianBlur	literal reference	-
@@ -4703,7 +4703,7 @@ P3	method	cv2.TrackerVit.create	method name only	-
 P3	method	cv2.TrackerVit.Params	no static reference	-
 P3	function	cv2.TrackerVit_create	no static reference	-
 P3	class	cv2.TrackerVit_Params	no static reference	-
-P3	function	cv2.transform	no static reference	-
+P3	function	cv2.transform	literal reference	-
 P3	function	cv2.transpose	no static reference	-
 P3	function	cv2.transposeND	no static reference	-
 P3	function	cv2.triangleRasterize	no static reference	-
