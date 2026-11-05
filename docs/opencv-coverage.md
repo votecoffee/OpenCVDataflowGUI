@@ -10,7 +10,7 @@ lists the tools that can be placed on a graph today.
 
 | Rank | Outstanding capability | OpenCV primitives and graph work |
 | --- | --- | --- |
-| 1 | Separate touching parts and isolate foreground | Distance-peak seeds and morphological reconstruction. Watershed, flood fill, GrabCut initialization, hole fill, skeleton thinning, threshold, morphology, distance transform and components are available. |
+| 1 | Separate touching parts and isolate foreground | The basic workflow is available, including distance-peak seed generation, watershed and morphological reconstruction. Add a reusable touching-parts job with calibration and validation fixtures. |
 | 2 | Reference comparison and defect scoring | Histogram backprojection and packaged residual-component inspection. ECC alignment, absolute difference, histogram comparison, SSIM with a local similarity map, PSNR/MSE and configurable fail thresholds are available. |
 | 3 | Multi-result template search and pick selection | Subpixel template peaks, pose-relative clearance, distinct visible-feature coverage and depth occlusion evidence, and deterministic pick ranking. Fixed-scale multi-result template matching now supplies ranked peaks, overlap suppression and poses. Trainable matchers and collection filters cover other parts of this pipeline. |
 | 4 | Calipers, widths, contours and shape fitting | Intensity profiles along pose-relative calipers, paired edges, width/gap/discontinuity along a path, convex hull/defects, `pointPolygonTest` and contour-to-contour `matchShapes`. Dedicated line, ellipse and minimum enclosing circle fits now accept points or a collection item and report residuals. |
@@ -99,7 +99,18 @@ See the [OpenCV barcode documentation](https://docs.opencv.org/5.0/main_modules/
 or floating intensity tolerances, 4/8-connectivity and a mask or region
 that acts as a barrier. **Marker-controlled watershed** accepts a uint8
 seed mask or a nonnegative int32 label image. It returns labels, a boundary
-mask and a mask for one selected label or all positive labels.
+mask and a mask for one selected label or all foreground labels.
+**Watershed seeds from distance peaks** converts a binary foreground mask
+into int32 markers. It uses label 1 for known background, label 0 for
+unassigned pixels and labels 2 and up for foreground peaks. Connect
+`markers` to **Marker-controlled watershed**, select `labels` as the
+marker mode and set the background label to 1. Connect the original
+grayscale or color image to the watershed image input.
+See the [OpenCV distance-transform watershed tutorial](https://docs.opencv.org/5.0/tutorials/imgproc/imgtrans/distance_transformation/distance_transform.html).
+**Morphological reconstruction** propagates a monochrome marker under
+an upper image bound by dilation or above a lower bound by erosion.
+It reports the number of geodesic steps and withholds the image when
+the iteration limit is reached before convergence.
 **GrabCut foreground** accepts a rectangle, a binary probable-foreground mask
 or native four-state markers. It initializes a new model for each activation.
 **Thin binary mask** exposes Zhang–Suen and Guo–Hall skeletonization.

@@ -1074,6 +1074,18 @@ Inputs: `channel_0` (image), `channel_1` (image), `channel_2` (image).
 | --- | --- | --- |
 | `color_format` | `"bgr"` | `bgr`, `rgb`, `hsv`, `lab` |
 
+## Morphological reconstruction (`cv.morph_reconstruct`)
+
+Image processing / Morphology
+
+Inputs: `image` (image), `marker` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"dilation"` | `dilation`, `erosion` Dilation requires marker <= image; erosion requires marker >= image. |
+| `connectivity` | `"8"` | `4`, `8` |
+| `maximum_iterations` | `1024` | Maximum geodesic steps. The image is emitted only on convergence. |
+
 ## Morphology (`cv.morphology`)
 
 Image processing / Morphology
@@ -1831,6 +1843,21 @@ Inputs: `depth` (depth), `points` (data, optional).
 | --- | --- | --- |
 | `pixel_points` | `[[0, 0]]` |  |
 
+## Watershed seeds from distance peaks (`inspect.distance_markers`)
+
+Inspection / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `distance_type` | `"l2"` | `l2`, `l1`, `chessboard` |
+| `l2_mask_size` | `"precise"` | `precise`, `3`, `5` |
+| `minimum_distance` | `2.0` | Minimum distance from a peak to the background, in pixels. |
+| `peak_radius` | `3` | Compare each peak with neighbors in a square of this radius. |
+| `background_gap` | `1` | Number of pixel layers to leave unlabeled outside the foreground. |
+| `connectivity` | `"8"` | `4`, `8` Connectivity used to group adjacent peak pixels into one seed. |
+
 ## FAST corners (`inspect.fast`)
 
 Inspection / Features
@@ -2172,7 +2199,8 @@ Inputs: `image` (image), `markers` (image).
 | --- | --- | --- |
 | `marker_mode` | `"binary_components"` | `binary_components`, `labels` Label connected uint8 seeds or use an int32 map with 0 for unknown. |
 | `connectivity` | `"8"` | `4`, `8` Connectivity used to label binary seeds. |
-| `output_label` | `0` | Label to output as a mask. Zero includes every positive label. |
+| `output_label` | `0` | Label to output as a mask. Zero includes all foreground labels. |
+| `background_label` | `0` | Label excluded from the count and default mask. Zero disables this. |
 
 ## Shape mask (`mask.shape`)
 

@@ -4,8 +4,8 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
-from .payloads import require_same_frame
-from .processing import image_value, integer
+from .payloads import NO_VALUE, require_same_frame
+from .processing import finite, image_value, integer
 from .selection import SELECTION_INPUTS, selection_mask
 
 
@@ -75,12 +75,18 @@ class Watershed(Block):
     category, block_type, subtype = "Inspection", "Inspection", "Segmentation"
     inputs = (Port("image"), Port("markers"))
     outputs = (Port("labels"), Port("boundaries"), Port("mask"), Port("count", "number"))
-    defaults = {"marker_mode": "binary_components", "connectivity": "8", "output_label": 0}
+    defaults = {
+        "marker_mode": "binary_components",
+        "connectivity": "8",
+        "output_label": 0,
+        "background_label": 0,
+    }
     parameter_choices = {"marker_mode": ("binary_components", "labels"), "connectivity": ("4", "8")}
     parameter_help = {
         "marker_mode": "Label connected uint8 seeds or use an int32 map with 0 for unknown.",
         "connectivity": "Connectivity used to label binary seeds.",
-        "output_label": "Label to output as a mask. Zero includes every positive label.",
+        "output_label": "Label to output as a mask. Zero includes all foreground labels.",
+        "background_label": "Label excluded from the count and default mask. Zero disables this.",
     }
 
     def process(self, inputs):
@@ -106,9 +112,13 @@ class Watershed(Block):
             raise ValueError("Watershed requires at least one positive seed")
         labels = cv2.watershed(image, labels)
         boundaries = cv2.compare(labels, -1, cv2.CMP_EQ)
-        count = int(np.count_nonzero(np.unique(labels) > 0))
+        background = integer(self.parameters["background_label"], "Background label", 0, 2**31 - 1)
+        unique = np.unique(labels)
+        count = int(np.count_nonzero((unique > 0) & (unique != background)))
         output_label = integer(self.parameters["output_label"], "Output label", 0, 2**31 - 1)
         mask = cv2.compare(labels, output_label, cv2.CMP_EQ if output_label else cv2.CMP_GT)
+        if background and not output_label:
+            mask[labels == background] = 0
         return Result({"labels": labels, "boundaries": boundaries, "mask": mask, "count": count})
 
 
@@ -224,4 +234,118 @@ class FillMaskHoles(Block):
         )
 
 
-SEGMENTATION_BLOCKS = (FloodFill, Watershed, GrabCut, ThinMask, FillMaskHoles)
+class DistancePeakMarkers(Block):
+    type_id, title = "inspect.distance_markers", "Watershed seeds from distance peaks"
+    category, block_type, subtype = "Inspection", "Inspection", "Segmentation"
+    inputs = SELECTION_INPUTS
+    outputs = (Port("markers"), Port("seeds"), Port("distance"), Port("count", "number"))
+    defaults = {
+        "distance_type": "l2",
+        "l2_mask_size": "precise",
+        "minimum_distance": 2.0,
+        "peak_radius": 3,
+        "background_gap": 1,
+        "connectivity": "8",
+    }
+    parameter_choices = {
+        "distance_type": ("l2", "l1", "chessboard"),
+        "l2_mask_size": ("precise", "3", "5"),
+        "connectivity": ("4", "8"),
+    }
+    parameter_help = {
+        "minimum_distance": "Minimum distance from a peak to the background, in pixels.",
+        "peak_radius": "Compare each peak with neighbors in a square of this radius.",
+        "background_gap": "Number of pixel layers to leave unlabeled outside the foreground.",
+        "connectivity": "Connectivity used to group adjacent peak pixels into one seed.",
+    }
+
+    def process(self, inputs):
+        source = inputs["image"]
+        if source.ndim != 2 or source.dtype != np.uint8:
+            raise ValueError("Distance seeds require a uint8 monochrome foreground mask")
+        foreground = cv2.compare(np.asarray(source), 0, cv2.CMP_NE)
+        selection = selection_mask(inputs, foreground)
+        if selection is not None:
+            foreground = cv2.bitwise_and(foreground, selection)
+        distance_type = self.parameters["distance_type"]
+        mode = {"l1": cv2.DIST_L1, "l2": cv2.DIST_L2, "chessboard": cv2.DIST_C}[distance_type]
+        mask_size = (
+            {"3": 3, "5": 5, "precise": cv2.DIST_MASK_PRECISE}[self.parameters["l2_mask_size"]]
+            if distance_type == "l2"
+            else 3
+        )
+        padded = cv2.copyMakeBorder(foreground, 1, 1, 1, 1, cv2.BORDER_CONSTANT, value=0)
+        distance = cv2.distanceTransform(padded, mode, mask_size)[1:-1, 1:-1].copy()
+        radius = integer(self.parameters["peak_radius"], "Peak radius", 1, 63)
+        threshold = finite(self.parameters["minimum_distance"], "Minimum distance", 0)
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (2 * radius + 1,) * 2)
+        local_maximum = cv2.dilate(distance, kernel)
+        peaks = (foreground != 0) & (distance >= threshold) & (distance == local_maximum)
+        seeds = peaks.astype(np.uint8) * 255
+        count, labels = cv2.connectedComponentsWithAlgorithm(
+            seeds, int(self.parameters["connectivity"]), cv2.CV_32S, cv2.CCL_SAUF
+        )
+        gap = integer(self.parameters["background_gap"], "Background gap", 0, 255)
+        expanded = cv2.dilate(foreground, None, iterations=gap) if gap else foreground
+        markers = np.where(peaks, labels + 1, expanded == 0).astype(np.int32)
+        return Result(
+            {"markers": markers, "seeds": seeds, "distance": distance, "count": count - 1}
+        )
+
+
+class MorphologicalReconstruction(Block):
+    type_id, title = "cv.morph_reconstruct", "Morphological reconstruction"
+    category, block_type, subtype = "Image processing", "Image processing", "Morphology"
+    inputs = (Port("image"), Port("marker"))
+    outputs = (Port("image"), Port("iterations", "number"), Port("info", "data"))
+    defaults = {"method": "dilation", "connectivity": "8", "maximum_iterations": 1024}
+    parameter_choices = {"method": ("dilation", "erosion"), "connectivity": ("4", "8")}
+    parameter_help = {
+        "method": "Dilation requires marker <= image; erosion requires marker >= image.",
+        "maximum_iterations": "Maximum geodesic steps. The image is emitted only on convergence.",
+    }
+
+    def process(self, inputs):
+        source, marker = inputs["image"], inputs["marker"]
+        require_same_frame((source, marker))
+        mask = image_value(source)
+        current = image_value(marker)
+        if mask.ndim != 2 or current.shape != mask.shape or current.dtype != mask.dtype:
+            raise ValueError("Reconstruction requires matching monochrome image and marker planes")
+        dilation = self.parameters["method"] == "dilation"
+        if np.any(current > mask if dilation else current < mask):
+            raise ValueError("Marker values must respect the reconstruction image bounds")
+        operation = cv2.dilate if dilation else cv2.erode
+        constrain = cv2.min if dilation else cv2.max
+        shape = cv2.MORPH_CROSS if self.parameters["connectivity"] == "4" else cv2.MORPH_RECT
+        kernel = cv2.getStructuringElement(shape, (3, 3))
+        maximum = integer(self.parameters["maximum_iterations"], "Maximum iterations", 1, 100_000)
+        steps, reason = 0, "reconstruction_iteration_limit"
+        while steps <= maximum:
+            if self._cancelled():
+                reason = "reconstruction_cancelled"
+                break
+            following = constrain(operation(current, kernel), mask)
+            if np.array_equal(current, following):
+                return Result({"image": current, "iterations": steps, "info": {"converged": True}})
+            if steps == maximum:
+                break
+            current = following
+            steps += 1
+        return Result(
+            {"image": NO_VALUE, "iterations": steps, "info": {"converged": False}},
+            passed=False,
+            message=reason.replace("_", " "),
+            fail_reasons=[reason],
+        )
+
+
+SEGMENTATION_BLOCKS = (
+    FloodFill,
+    Watershed,
+    GrabCut,
+    ThinMask,
+    FillMaskHoles,
+    DistancePeakMarkers,
+    MorphologicalReconstruction,
+)
