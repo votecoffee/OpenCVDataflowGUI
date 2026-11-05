@@ -3027,7 +3027,7 @@ P3	function	cv2.imcount	no static reference	-
 P3	function	cv2.imdecode	literal reference	-
 P3	function	cv2.imdecodeanimation	no static reference	-
 P3	function	cv2.imdecodemulti	literal reference	-
-P3	function	cv2.imdecodeWithMetadata	no static reference	-
+P3	function	cv2.imdecodeWithMetadata	literal reference	-
 P3	function	cv2.imencode	literal reference	-
 P3	function	cv2.imencodeanimation	no static reference	-
 P3	function	cv2.imencodemulti	literal reference	-
@@ -4704,7 +4704,7 @@ P3	method	cv2.TrackerVit.Params	method name only	-
 P3	function	cv2.TrackerVit_create	no static reference	-
 P3	class	cv2.TrackerVit_Params	no static reference	-
 P3	function	cv2.transform	literal reference	-
-P3	function	cv2.transpose	no static reference	-
+P3	function	cv2.transpose	literal reference	-
 P3	function	cv2.transposeND	no static reference	-
 P3	function	cv2.triangleRasterize	no static reference	-
 P3	function	cv2.triangleRasterizeColor	no static reference	-

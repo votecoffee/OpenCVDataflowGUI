@@ -15,6 +15,7 @@ import numpy as np
 from .core import Block, Graph, Port, Registry, Result
 from .graphics_layers import GraphicDrawing, graphic_object
 from .image_codecs import CODEC_CHOICES, CODEC_DEFAULTS, CODEC_HELP, codec_options
+from .image_metadata import decode_image_metadata
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 from .objects import collection, contour_item
 from .parameter_validation import NumericRange, ValidationError
@@ -49,6 +50,7 @@ class ImageFile(Block):
         "recursive": False,
         "repeat": "stop",
         "filename_ticket": True,
+        "metadata_mode": "off",
         "color_format": "bgr",
         "pixel_depth": "uint8",
         "path_base": "working_directory",
@@ -56,6 +58,7 @@ class ImageFile(Block):
     parameter_choices = {
         "source_mode": ("single", "files", "directory"),
         "repeat": ("stop", "loop"),
+        "metadata_mode": ("off", "read", "apply_orientation"),
         "color_format": COLOR_FORMATS,
         "pixel_depth": PIXEL_DEPTHS,
         "path_base": ("working_directory", "project"),
@@ -65,6 +68,7 @@ class ImageFile(Block):
         "directory": "Snapshot supported image filenames in sorted order.",
         "repeat": "Stop at end, or loop. Reset flow state to restart.",
         "filename_ticket": "Use filename tickets unless an explicit ticket mode is selected.",
+        "metadata_mode": "Report metadata, or also apply EXIF orientation to JPEG/PNG images.",
     }
     extensions = {
         ".png",
@@ -182,7 +186,13 @@ class ImageFile(Block):
         if selected is None:
             return Result({"image": NO_VALUE, "info": NO_VALUE}, message="Image sequence complete")
         path = Path(selected)
-        image = cv2.imdecode(np.frombuffer(self.read_bytes(path), np.uint8), cv2.IMREAD_UNCHANGED)
+        buffer = self.read_bytes(path)
+        mode = self.parameters["metadata_mode"]
+        metadata = None
+        if mode == "off":
+            image = cv2.imdecode(np.frombuffer(buffer, np.uint8), cv2.IMREAD_UNCHANGED)
+        else:
+            image, metadata = decode_image_metadata(buffer, mode == "apply_orientation")
         if image is None:
             raise ValueError(f"Unable to decode image: {path}")
         output = format_image(
@@ -200,6 +210,8 @@ class ImageFile(Block):
             "source_color_format": image_format(image),
             "source_pixel_depth": str(image.dtype),
         }
+        if metadata is not None:
+            info["metadata"] = metadata
         return Result(
             {"image": output, "info": info},
             graphics={"decoded source": image},

@@ -2054,6 +2054,7 @@ Ticket mode and fixed value are common inspector controls.
 | `recursive` | `false` |  |
 | `repeat` | `"stop"` | `stop`, `loop` Stop at end, or loop. Reset flow state to restart. |
 | `filename_ticket` | `true` | Use filename tickets unless an explicit ticket mode is selected. |
+| `metadata_mode` | `"off"` | `off`, `read`, `apply_orientation` Report metadata, or also apply EXIF orientation to JPEG/PNG images. |
 | `color_format` | `"bgr"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` |
 | `pixel_depth` | `"uint8"` | `unchanged`, `uint8`, `uint16`, `float32` |
 | `path_base` | `"working_directory"` | `working_directory`, `project` |
