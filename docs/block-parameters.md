@@ -2241,6 +2241,26 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `eps_y` | `0.1` |  |
 | `use_alignment_markers` | `true` |  |
 
+## Read barcodes (ZXing) (`inspect.read_zxing`)
+
+Inspection / Code reading
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_reads` | `1` |  |
+| `draw_overlay` | `true` |  |
+| `format` | `"DataMatrix"` | `AllReadable`, `AllLinear`, `AllMatrix`, `AllIndustrial`, `AllRetail`, `AllGS1`, `DataMatrix`, `Code128`, `Code39`, `Code93`, `ITF`, `ITF14`, `Codabar`, `EANUPC`, `EAN13`, `EAN8`, `UPCA`, `UPCE`, `DataBar`, `QRCode`, `MicroQRCode`, `RMQRCode`, `PDF417`, `MicroPDF417`, `Aztec`, `MaxiCode` Limit decoding to a specific symbology or a group of formats. |
+| `try_rotate` | `true` |  |
+| `try_downscale` | `true` | Also search at reduced image resolutions. |
+| `try_invert` | `true` |  |
+| `text_mode` | `"HRI"` | `HRI`, `Plain`, `ECI`, `Escaped`, `Hex`, `HexECI` Choose how decoded bytes are formatted as text. HRI formats GS1 data. |
+| `binarizer` | `"LocalAverage"` | `LocalAverage`, `GlobalHistogram`, `FixedThreshold`, `BoolCast` |
+| `is_pure` | `false` | Use only for an aligned image containing one isolated barcode. |
+| `ean_add_on` | `"Ignore"` | `Ignore`, `Read`, `Require` Control reading EAN/UPC supplementary codes. |
+| `report_decode_errors` | `false` | Emit invalid detections on the errors port. |
+
 ## Refine corners to subpixel (`inspect.refine_corners`)
 
 Inspection / Features

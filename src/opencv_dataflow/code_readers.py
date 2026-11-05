@@ -10,6 +10,24 @@ from .processing import finite, gray_image, integer
 from .selection import SELECTION_INPUTS, selection_mask
 
 
+def barcode_image(inputs):
+    gray = gray_image(inputs["image"], (np.uint8,))
+    mask = selection_mask(inputs, gray)
+    if mask is None:
+        return gray, None
+    return (np.where(mask, gray, np.uint8(255)) if mask.any() else None), mask
+
+
+def code_record(value, symbology, corners):
+    corners = np.asarray(corners)
+    return {
+        "text": value,
+        "symbology": symbology,
+        "corners": corners.tolist(),
+        "center": corners.mean(axis=0).tolist(),
+    }
+
+
 class CodeReader(Block):
     category, block_type, subtype = "Inspection", "Inspection", "Code reading"
     inputs = SELECTION_INPUTS
@@ -17,33 +35,25 @@ class CodeReader(Block):
     defaults = {"minimum_reads": 1, "draw_overlay": True}
 
     def process(self, inputs):
-        source = inputs["image"]
-        gray = gray_image(source, (np.uint8,))
-        mask = selection_mask(inputs, gray)
-        minimum = integer(self.parameters["minimum_reads"], "Minimum reads", 0)
+        search, _ = barcode_image(inputs)
         codes = []
-        overlay = overlay_image(source) if self.parameters["draw_overlay"] else None
-        if mask is None or mask.any():
-            search = gray if mask is None else np.where(mask, gray, np.uint8(255))
+        if search is not None:
             decoded, symbologies, points = self.decode(search)
             if points is not None:
                 for value, symbology, corners in zip(
                     decoded, symbologies, np.asarray(points).reshape(-1, 4, 2), strict=True
                 ):
-                    if not value:
-                        continue
-                    codes.append(
-                        {
-                            "text": value,
-                            "symbology": symbology,
-                            "corners": corners.tolist(),
-                            "center": corners.mean(axis=0).tolist(),
-                        }
-                    )
-                    if overlay is not None:
-                        cv2.polylines(
-                            overlay, [np.rint(corners).astype(np.int32)], True, (60, 230, 120), 2
-                        )
+                    if value:
+                        codes.append(code_record(value, symbology, corners))
+        return self.code_result(inputs["image"], codes)
+
+    def code_result(self, source, codes, **extra):
+        minimum = integer(self.parameters["minimum_reads"], "Minimum reads", 0)
+        overlay = overlay_image(source) if self.parameters["draw_overlay"] else None
+        if overlay is not None:
+            for code in codes:
+                corners = np.rint(code["corners"]).astype(np.int32)
+                cv2.polylines(overlay, [corners], True, (60, 230, 120), 2)
         count = len(codes)
         outputs = {
             "codes": codes,
@@ -53,6 +63,7 @@ class CodeReader(Block):
                 if overlay is not None
                 else NO_VALUE
             ),
+            **extra,
         }
         payloads = {name: self.input_payloads.get("image", {}) for name in outputs}
         return Result(
