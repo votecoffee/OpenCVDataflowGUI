@@ -411,3 +411,46 @@ def test_directory_picker_and_validation_filmstrip_worker(app, monkeypatch):
     manager.close()
     window.dirty = False
     window.close()
+
+
+@pytest.mark.parametrize("zoom", [0.005, 0.05, 1.0])
+def test_sparse_large_workspace_restores_distant_viewport(app, zoom):
+    graph = demo_graph(builtin_registry())
+    graph.viewport = {"center": [75000.0, -100000.0], "zoom": zoom}
+    scene = CanvasScene(graph)
+    view = CanvasView(scene)
+    view.resize(1000, 600)
+    view.show()
+    app.processEvents()
+    view.restore_view()
+    center = view.mapToScene(view.viewport().rect().center())
+    assert abs(center.x() - 75000) < 2 / zoom
+    assert abs(center.y() + 100000) < 2 / zoom
+    view.close()
+
+
+def test_group_and_members_selected_do_not_double_move(app):
+    graph = demo_graph(builtin_registry())
+    scene = CanvasScene(graph)
+    keys = list(graph.blocks)[:2]
+    for key in keys:
+        scene.nodes[key].setSelected(True)
+    group = scene.group_selected("Group")
+    item = scene.groups[group["id"]]
+    view = CanvasView(scene)
+    view.resize(1100, 650)
+    view.show()
+    view.fit_graph()
+    app.processEvents()
+    # A full-area rubber band can select the dashed border and its members.
+    for node in scene.nodes.values():
+        node.setSelected(True)
+    before = {k: n.pos() for k, n in scene.nodes.items()}
+    start = view.mapFromScene(item.sceneBoundingRect().topLeft() + QPointF(50, 20))
+    QTest.mousePress(view.viewport(), Qt.MouseButton.LeftButton, pos=start)
+    QTest.mouseMove(view.viewport(), start + QPoint(80, 40))
+    QTest.mouseRelease(view.viewport(), Qt.MouseButton.LeftButton, pos=start + QPoint(80, 40))
+    deltas = [n.pos() - before[k] for k, n in scene.nodes.items()]
+    assert deltas[0].manhattanLength() > 50
+    assert all(d == deltas[0] for d in deltas)
+    view.close()
