@@ -3959,10 +3959,10 @@ P3	method	cv2.ORB.setWTA_K	no static reference	-
 P3	function	cv2.ORB_create	literal reference	-
 P3	function	cv2.parallel.setParallelForBackend	no static reference	-
 P3	function	cv2.patchNaNs	no static reference	-
-P3	function	cv2.PCABackProject	no static reference	-
+P3	function	cv2.PCABackProject	literal reference	-
 P3	function	cv2.PCACompute	no static reference	-
 P3	function	cv2.PCACompute2	literal reference	-
-P3	function	cv2.PCAProject	no static reference	-
+P3	function	cv2.PCAProject	literal reference	-
 P3	function	cv2.pencilSketch	no static reference	-
 P3	function	cv2.perspectiveTransform	literal reference	-
 P3	function	cv2.phase	no static reference	-

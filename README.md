@@ -636,6 +636,11 @@ Try [sequence memory](examples/sequence_memory/sequence_memory.json), then run c
 **Mahalanobis distance** scores new rows and can fail on an outlier.
 [Feature covariance example](examples/feature_covariance/README.md)
 
+**Fit principal components** reduces numeric feature tables by count or
+retained variance. **Transform principal components** projects rows or
+reconstructs them with the same fitted model.
+[Principal components example](examples/principal_components/README.md)
+
 ## Architecture
 
 Choose **Run profile: debug / balanced / lean** in the toolbar to control observation
