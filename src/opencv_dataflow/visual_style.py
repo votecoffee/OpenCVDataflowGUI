@@ -36,6 +36,7 @@ BLOCK_COLORS = {
     "Recipes": "#d391ca",
     "Advanced": "#c29571",
     "ToolBlocks": "#9399ed",
+    "ML": "#e18cc8",
     "Custom": "#c2cbd5",
 }
 

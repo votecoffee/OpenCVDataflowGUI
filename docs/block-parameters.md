@@ -1475,6 +1475,157 @@ Inputs: `image` (image), `pose` (data, optional).
 | `vertices` | `[[0, 0], [100, 0], [50, 100]]` | Image-space vertices, or local coordinates when pose is connected. |
 | `invert` | `false` | Select everything outside the shape. |
 
+## Build Annoy index (`ml.annoy_build`)
+
+ML / Vector search
+
+Inputs: `vectors` (data), `labels` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `metric` | `"angular"` | `angular`, `euclidean`, `manhattan`, `hamming`, `dot` |
+| `trees` | `10` | Build-time recall/storage tradeoff; search_k controls query effort. |
+| `seed` | `0` |  |
+| `normalize` | `"none"` | `none`, `l2` |
+| `labels` | `[]` | One string label per vector; empty generates sequential IDs. |
+
+## Load Annoy index (`ml.annoy_load`)
+
+ML / Vector search
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+| `prefault` | `false` |  |
+
+## Save Annoy index (`ml.annoy_save`)
+
+Output / ML models
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"neighbors.json"` |  |
+
+## Annoy nearest neighbors (`ml.annoy_search`)
+
+ML / Vector search
+
+Inputs: `model` (data), `vector` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `neighbors` | `5` |  |
+| `search_k` | `-1` | -1 uses Annoy's default; larger values favor recall over latency. |
+| `max_distance` | `-1.0` | Negative disables filtering; not used for dot metric. |
+| `min_similarity` | `-1.0` | Dot metric only: minimum inner product; -1 disables. |
+| `minimum_results` | `1` |  |
+
+## Classify DNN tensor (`ml.classify`)
+
+ML / Classification
+
+Inputs: `tensors` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_name` | `""` |  |
+| `labels` | `[]` |  |
+| `softmax` | `true` |  |
+| `top_k` | `5` |  |
+| `minimum_confidence` | `0.0` |  |
+| `accepted_labels` | `[]` |  |
+
+## DNN ONNX inference (`ml.dnn`)
+
+ML / DNN inference
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model_path` | `""` | Local ONNX model; relative paths resolve beside the project. |
+| `width` | `224` |  |
+| `height` | `224` |  |
+| `color_format` | `"rgb"` | `rgb`, `bgr`, `gray` |
+| `resize_mode` | `"stretch"` | `stretch`, `letterbox` |
+| `padding_value` | `0.0` |  |
+| `scale` | `0.00392156862745098` |  |
+| `mean` | `[0.0, 0.0, 0.0]` | Per-channel values in source intensity units, before scaling. |
+| `std` | `[1.0, 1.0, 1.0]` | Per-channel divisors after mean subtraction and scaling. |
+| `input_name` | `""` |  |
+| `output_names` | `[]` | JSON list; empty selects all unconnected output layers. |
+| `engine` | `"auto"` | `auto`, `classic`, `new`, `ort` OpenCV 5 engine. Non-CPU targets require classic. |
+| `backend` | `"opencv"` | `opencv`, `cuda`, `default` |
+| `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` |
+| `fusion` | `true` |  |
+| `max_output_elements` | `1000000` | Total tensor values retained per activation (bounded). |
+
+## LightGlue feature matcher (`ml.lightglue`)
+
+ML / Feature matching
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reference` (image, optional), `reference_features` (data, optional), `reference_mask` (image, optional), `reference_region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_features` | `1024` |  |
+| `octave_layers` | `3` |  |
+| `contrast_threshold` | `0.0066667` |  |
+| `edge_threshold` | `10.0` |  |
+| `sigma` | `1.6` |  |
+| `weights_path` | `""` | Local official sift_lightglue.pth; no automatic download. |
+| `device` | `"cpu"` | `cpu`, `cuda`, `auto` |
+| `layers` | `9` | 1..9 pretrained layers; fewer layers trade accuracy for latency. |
+| `filter_threshold` | `0.1` |  |
+| `depth_confidence` | `0.95` | Early stopping confidence, or -1 to disable. |
+| `width_confidence` | `0.99` | Point pruning confidence, or -1 to disable. |
+| `flash` | `true` |  |
+| `mixed_precision` | `false` |  |
+| `minimum_matches` | `8` |  |
+| `minimum_inliers` | `6` |  |
+| `minimum_inlier_ratio` | `0.5` |  |
+| `geometry` | `"ransac"` | `ransac`, `lmeds`, `rho` |
+| `ransac_threshold` | `3.0` |  |
+| `ransac_confidence` | `0.995` |  |
+| `ransac_iterations` | `2000` |  |
+
+## LightGlue SIFT features (`ml.lightglue_features`)
+
+ML / Feature matching
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_features` | `1024` |  |
+| `octave_layers` | `3` |  |
+| `contrast_threshold` | `0.0066667` |  |
+| `edge_threshold` | `10.0` |  |
+| `sigma` | `1.6` |  |
+
+## Tensor to embedding vector (`ml.tensor_vector`)
+
+ML / Embeddings
+
+Inputs: `tensors` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_name` | `""` |  |
+| `pooling` | `"flatten"` | `flatten`, `global_average` |
+| `channel_axis` | `1` |  |
+| `normalize` | `"l2"` | `none`, `l2` |
+
+## Vector data (`ml.vector_data`)
+
+ML / Embeddings
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `values` | `[[1.0, 0.0], [0.0, 1.0]]` |  |
+
 ## Save calibration profile (`output.calibration`)
 
 Output / Calibration profiles

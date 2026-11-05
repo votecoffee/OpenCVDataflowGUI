@@ -648,6 +648,7 @@ class WriteResults(Block):
 
 def builtin_registry():
     from .analysis_tools import ANALYSIS_BLOCKS
+    from .annoy_blocks import ANNOY_BLOCKS
     from .basic_processing import BASIC_PROCESSING_BLOCKS
     from .calibration import (
         CalibrationGrid,
@@ -662,10 +663,12 @@ def builtin_registry():
     from .control_flow import CONTROL_BLOCKS
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample
+    from .dnn_blocks import DNN_BLOCKS
     from .features import FEATURE_BLOCKS
     from .histogram import Histogram
     from .image_queue import ImageQueue
     from .judgments import FinalJudgment
+    from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .oriented_edges import FindOrientedEdges
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
@@ -726,6 +729,9 @@ def builtin_registry():
         RecipeField,
         *SEQUENCE_BLOCKS,
         FinalJudgment,
+        *DNN_BLOCKS,
+        *ANNOY_BLOCKS,
+        *LIGHTGLUE_BLOCKS,
     ):
         registry.register(block)
     return registry
