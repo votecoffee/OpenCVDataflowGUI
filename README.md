@@ -447,6 +447,10 @@ and compares it against a reference. The measurement includes intersection
 area, intersection-over-union and the fraction of each footprint covered.
 [Rotated rectangle overlap example](examples/rotated_rectangle_overlap/README.md)
 
+**Path intensity profile** samples each image channel at regular distances
+along an open or closed path and preserves gaps outside the selection.
+[Path intensity profile example](examples/path_intensity_profile/README.md)
+
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing
 wrappers also expose kernel dimensions, anchors, borders, output depths, masks,

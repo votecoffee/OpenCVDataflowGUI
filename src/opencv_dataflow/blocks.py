@@ -679,7 +679,7 @@ def builtin_registry():
     from .pick_selection import SelectPickCandidate
     from .poses import POSE_BLOCKS
     from .processing import PROCESSING_BLOCKS
-    from .projection import IntensityProfile
+    from .projection import IntensityProfile, PathIntensityProfile
     from .ptcloud3d import PTCLOUD3D_BLOCKS
     from .pyramids import PYRAMID_BLOCKS
     from .recipe_blocks import RecipeField, RecipeSelect
@@ -747,6 +747,7 @@ def builtin_registry():
         FourierCorrelation,
         *ANALYSIS_BLOCKS,
         IntensityProfile,
+        PathIntensityProfile,
         ImageSummaryStatistics,
         TiltedWindowStatistics,
         *REGION_BLOCKS,

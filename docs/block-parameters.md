@@ -1517,6 +1517,22 @@ Inputs: `image` (image), `graphics_1` (graphics, optional), `graphics_2` (graphi
 | --- | --- | --- |
 | `excluded_graphics` | `{}` |  |
 
+## Path intensity profile (`cv.path_intensity_profile`)
+
+Image processing / Statistics
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `path` (data, optional).
+
+Input `path` — Ordered [x, y] point list in the image's pixel coordinate frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `vertices` | `[[8, 8], [48, 8], [48, 32]]` | Ordered [x, y] pixel vertices. A connected path overrides these vertices. |
+| `closed` | `false` | Sample the closing segment. The first sample is emitted once. |
+| `sample_spacing` | `1.0` | Value must be a finite number at least 0.25. Maximum arc-length spacing between samples, in pixels. |
+| `interpolation` | `"linear"` | `nearest`, `linear` |
+| `include_alpha` | `false` | Include alpha as its own profile on four-channel images. |
+
 ## Gaussian pyramid up/down (`cv.pyramid`)
 
 Image processing / Geometry
