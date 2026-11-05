@@ -5,10 +5,10 @@ from abc import ABC, abstractmethod
 import cv2
 import numpy as np
 
-from .core import Port
-from .images import convert_depth, image_format
+from .core import Port, Result
+from .images import ImageArray, convert_depth, image_format
 from .parameter_validation import NumericRange, ValidationError
-from .payloads import require_same_frame
+from .payloads import FlowGroup, check_spatial, image_with_payload, metadata, require_same_frame
 from .processing import ImageTool, encoded_result, finite, image_value, integer
 from .selection import SELECTION_INPUTS, RegionalOperation, selection_mask
 
@@ -60,6 +60,137 @@ class NonLocalMeans(RegionalOperation, ImageTool):
             if encoding == "rgb":
                 output = cv2.cvtColor(output, cv2.COLOR_BGR2RGB)
         return encoded_result(output, source)
+
+
+class TemporalNonLocalMeans(ImageTool):
+    type_id, title, subtype = "cv.temporal_nlm", "Temporal non-local means", "Filters"
+    inputs = (Port("frames", "any"), *SELECTION_INPUTS[1:])
+    outputs = (Port("image"), Port("info", "data"))
+    defaults = {**NonLocalMeans.defaults, "target_index": -1, "temporal_window": 3}
+    parameter_choices = NonLocalMeans.parameter_choices
+    parameter_ranges = {
+        "color_strength": NumericRange(0, 255),
+        "template_window": NumericRange(1, 63, whole=True, odd=True),
+        "search_window": NumericRange(1, 127, whole=True, odd=True),
+        "target_index": NumericRange(-1, 63, whole=True),
+        "temporal_window": NumericRange(1, 31, whole=True, odd=True),
+    }
+    parameter_help = {
+        **NonLocalMeans.parameter_help,
+        "target_index": "Zero-based frame to denoise. −1 chooses the earlier middle frame.",
+        "temporal_window": "Odd number of frames centered on the target.",
+    }
+    input_help = {"frames": "Ordered batch of aligned frames of the same scene."}
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["search_window"] < p["template_window"]:
+            raise ValidationError(
+                "Search window must be at least the template size",
+                "search_window",
+                "template_window",
+            )
+
+    def process(self, inputs):
+        group = inputs["frames"]
+        if not isinstance(group, FlowGroup):
+            raise ValidationError("Connect an ordered image batch to Frames")
+        p = self.parameters
+        size = int(p["temporal_window"])
+        half = size // 2
+        target = int(p["target_index"])
+        if target == -1:
+            target = (len(group.items) - 1) // 2
+        if target - half < 0 or target + half >= len(group.items):
+            raise ValidationError("The temporal window does not fit around the target frame")
+        entries = group.items[target - half : target + half + 1]
+        if any(
+            not isinstance(entry.value, np.ndarray) or not entry.value.size for entry in entries
+        ):
+            raise ValidationError("Every entry in the temporal window must be an image")
+        originals = [entry.value for entry in entries]
+        center = originals[half]
+        encoding = image_format(center)
+        if encoding not in ("gray", "rgb", "bgr", "rgba", "bgra"):
+            raise ValidationError("Temporal denoising requires gray or RGB/BGR channel encoding")
+        if any(
+            frame.shape != center.shape
+            or frame.dtype != center.dtype
+            or image_format(frame) != encoding
+            for frame in originals
+        ):
+            raise ValidationError(
+                "Temporal frames must have matching size, depth and channel order"
+            )
+        if sum(frame.nbytes for frame in originals) > 128 * 1024**2:
+            raise ValidationError("Temporal window exceeds the 128 MiB source limit")
+        frames = [image_value(frame, (np.uint8, np.uint16)) for frame in originals]
+        roots = {}
+        for entry in entries:
+            context = metadata(entry)
+            check_spatial(context, [center.shape[1], center.shape[0]])
+            root = context.get("spatial", {}).get("root_id")
+            if root is not None:
+                require_same_frame(
+                    (roots.setdefault(root, entry), entry),
+                    message="Frames sharing a source root must use the same pixel grid",
+                )
+        payload = metadata(entries[half])
+        mask = selection_mask(inputs, image_with_payload(center, payload))
+        alpha = encoding in ("rgba", "bgra")
+        if alpha:
+            frames = [np.ascontiguousarray(frame[..., :3]) for frame in frames]
+        channels = 1 if center.ndim == 2 else 3
+        try:
+            strengths = np.asarray(p["strength"], dtype=np.float64).reshape(-1)
+        except (TypeError, ValueError, OverflowError) as exc:
+            raise ValidationError("Strength must be numeric", "strength") from exc
+        if (
+            len(strengths) not in (1, channels)
+            or not np.isfinite(strengths).all()
+            or np.any((strengths < 0) | (strengths > np.iinfo(center.dtype).max))
+        ):
+            raise ValidationError(
+                "Strength needs one value or one per filtered channel within the pixel range",
+                "strength",
+            )
+        patch, search = int(p["template_window"]), int(p["search_window"])
+        if p["mode"] == "luminance_chroma":
+            if channels != 3 or center.dtype != np.uint8 or len(strengths) != 1:
+                raise ValidationError("Luminance/chroma mode requires 8-bit color and one strength")
+            rgb = encoding in ("rgb", "rgba")
+            if rgb:
+                frames = [cv2.cvtColor(frame, cv2.COLOR_RGB2BGR) for frame in frames]
+            output = cv2.fastNlMeansDenoisingColoredMulti(
+                frames,
+                half,
+                size,
+                None,
+                float(strengths[0]),
+                float(p["color_strength"]),
+                patch,
+                search,
+            )
+            if rgb:
+                output = cv2.cvtColor(output, cv2.COLOR_BGR2RGB)
+        else:
+            norm = cv2.NORM_L1 if p["norm"] == "l1" else cv2.NORM_L2
+            if center.dtype == np.uint16 and norm != cv2.NORM_L1:
+                raise ValidationError("16-bit temporal denoising requires the L1 norm")
+            output = cv2.fastNlMeansDenoisingMulti(
+                frames, half, size, strengths.tolist(), None, patch, search, norm
+            )
+        if alpha:
+            output = np.concatenate((output, np.asarray(center)[..., 3:]), axis=2)
+        if mask is not None:
+            output[mask == 0] = np.asarray(center)[mask == 0]
+        info = {"target_index": target, "first_index": target - half, "window_size": size}
+        return Result(
+            {"image": ImageArray(output, encoding), "info": info},
+            payloads={"image": payload, "info": payload},
+            message=f"Denoised frame {target} using {size} frames",
+        )
 
 
 class Inpaint(ImageTool):
@@ -202,4 +333,10 @@ class DomainTransformFilter(AlignedGuideFilter):
         )
 
 
-RESTORATION_BLOCKS = (NonLocalMeans, Inpaint, GuidedFilter, DomainTransformFilter)
+RESTORATION_BLOCKS = (
+    NonLocalMeans,
+    TemporalNonLocalMeans,
+    Inpaint,
+    GuidedFilter,
+    DomainTransformFilter,
+)

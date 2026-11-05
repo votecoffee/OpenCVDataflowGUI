@@ -1804,6 +1804,25 @@ Inputs: `image` (image).
 
 No configurable algorithm parameters.
 
+## Temporal non-local means (`cv.temporal_nlm`)
+
+Image processing / Filters
+
+Inputs: `frames` (any), `mask` (image, optional), `region` (data, optional).
+
+Input `frames` — Ordered batch of aligned frames of the same scene.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"channels"` | `channels`, `luminance_chroma` |
+| `strength` | `3.0` | One value or a list per channel. Use one luminance value in color mode. |
+| `color_strength` | `10.0` | Value must be a finite number between 0 and 255. Chroma denoising strength in luminance/chroma mode. |
+| `norm` | `"l2"` | `l2`, `l1` Channel mode only. L1 supports uint16. |
+| `template_window` | `7` | Value must be a positive odd integer between 1 and 63. |
+| `search_window` | `21` | Value must be a positive odd integer between 1 and 127. |
+| `target_index` | `-1` | Value must be a whole number between -1 and 63. Zero-based frame to denoise. −1 chooses the earlier middle frame. |
+| `temporal_window` | `3` | Value must be a positive odd integer between 1 and 31. Odd number of frames centered on the target. |
+
 ## Threshold (`cv.threshold`)
 
 Image processing / Segmentation
