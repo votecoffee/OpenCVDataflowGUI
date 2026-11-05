@@ -162,3 +162,63 @@ def test_reconstruction_respects_barriers_and_reports_limit(method):
     assert not limited.passed
     assert limited.outputs["image"] is NO_VALUE
     assert limited.fail_reasons[0]["code"] == "reconstruction_iteration_limit"
+
+
+@pytest.mark.parametrize(
+    "metric,full_value,selected_value",
+    [
+        ("mae", 22.5, 20),
+        ("rmse", np.sqrt(875), np.sqrt(500)),
+        ("max_absolute_error", 50, 30),
+    ],
+)
+def test_absolute_quality_metrics_reduce_only_selected_pixels(metric, full_value, selected_value):
+    a = np.array([[100, 100], [100, 100]], dtype=np.uint16)
+    b = np.array([[90, 50], [130, 100]], dtype=np.uint16)
+    mask = np.array([[255, 0], [255, 0]], np.uint8)
+    block = builtin_registry().create(
+        "inspect.image_quality",
+        parameters={
+            "metric": metric,
+            "check_threshold": True,
+            "threshold": (full_value + selected_value) / 2,
+        },
+    )
+    full = block.execute({"image_a": a, "image_b": b})
+    assert full is not None, block.error
+    assert full.outputs["value"] == pytest.approx(full_value)
+    assert full.outputs["measurements"]["units"] == "sample"
+    assert not full.passed
+    masked = block.execute({"image_a": a, "image_b": b, "mask": mask})
+    assert masked is not None, block.error
+    assert masked.outputs["value"] == pytest.approx(selected_value)
+    assert masked.passed
+    np.testing.assert_array_equal(masked.outputs["map"], [[10, 50], [30, 0]])
+    assert masked.outputs["map"].dtype == np.float64
+    assert masked.graphics["absolute error"][0, 1] == 255
+
+
+@pytest.mark.parametrize("metric", ["mae", "rmse"])
+def test_absolute_quality_reductions_handle_high_range_float_images(metric):
+    image = np.full((2, 3), 1e308)
+    block = builtin_registry().create("inspect.image_quality", parameters={"metric": metric})
+    result = block.execute({"image_a": image, "image_b": np.zeros_like(image)})
+    assert result is not None, block.error
+    assert result.outputs["value"] == pytest.approx(1e308)
+    assert block.execute({"image_a": image, "image_b": -image}) is None
+    assert block.error_kind == "invalid" and "float64 range" in block.error
+
+
+def test_mean_absolute_error_passes_at_the_exact_threshold():
+    clean = np.zeros((96, 160), np.uint8)
+    sample = clean.copy()
+    sample[20:44, 24:56] = 40
+    sample[50:66, 96:112] = 60
+    block = builtin_registry().create(
+        "inspect.image_quality",
+        parameters={"metric": "mae", "check_threshold": True, "threshold": 3},
+    )
+    result = block.execute({"image_a": clean, "image_b": sample})
+    assert result is not None, block.error
+    assert result.outputs["value"] == 3
+    assert result.passed

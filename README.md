@@ -423,6 +423,8 @@ extracts coordinates from that mask and outlines its full bounds. The
 mean intensity inside an inspection region and locates the maximum in each column. The
 [image statistics example](examples/image_statistics/README.md) reports
 selected-region measurements and marks the darkest and brightest pixels. The
+[absolute image error example](examples/absolute_image_error/README.md) compares
+average, RMS, and worst-case deviations from a reference image. The
 [tilted statistics example](examples/tilted_statistics/README.md) measures
 diagonal patches with 45-degree integral-image windows.
 

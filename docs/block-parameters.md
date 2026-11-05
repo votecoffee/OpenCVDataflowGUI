@@ -2560,9 +2560,9 @@ Inputs: `image_a` (image), `image_b` (image), `mask` (image, optional), `region`
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `metric` | `"ssim"` | `ssim`, `psnr`, `mse` |
+| `metric` | `"ssim"` | `ssim`, `psnr`, `mse`, `mae`, `rmse`, `max_absolute_error` |
 | `check_threshold` | `false` |  |
-| `threshold` | `0.95` | Minimum for SSIM/PSNR, maximum for MSE. |
+| `threshold` | `0.95` | Minimum for SSIM/PSNR, maximum for error metrics. |
 | `peak_value` | `255.0` | Maximum sample value for PSNR. Default is 255 for uint8 images. |
 
 ## KAZE keypoints and descriptors (`inspect.kaze`)
