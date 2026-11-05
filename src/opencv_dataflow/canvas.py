@@ -23,6 +23,7 @@ from PySide6.QtWidgets import (
     QGraphicsPathItem,
     QGraphicsScene,
     QGraphicsView,
+    QToolTip,
     QWidget,
 )
 
@@ -119,13 +120,8 @@ class Node(QGraphicsItem):
         self.block = block
         self.category = block_type(block)
         self.border_color = QColor(BLOCK_COLORS[self.category])
-        heading = escape(f"{block.name} · {self.category}")
-        description = "<br>".join(escape(line) for line in block.description.split("\n"))
-        detail = f"<br><br>{description}" if description else ""
-        self._tooltip = f"{heading}{detail}<br>Border: tool category · header: run status"
         self._draft_issue = ""
-        self.setToolTip(f"<qt>{self._tooltip}</qt>")
-        self.setAcceptHoverEvents(True)
+        self.refresh_issue_tooltip()
         self.sockets = {}
         self.setFlags(
             QGraphicsItem.GraphicsItemFlag.ItemIsMovable
@@ -195,11 +191,16 @@ class Node(QGraphicsItem):
         return badges
 
     def refresh_issue_tooltip(self):
+        heading = escape(f"{self.block.name} · {self.category}")
+        description = escape(self.block.description).replace("\n", "<br>")
+        description = f"<br><br>{description}" if description else ""
         details = "".join(
-            "<br>" + escape(detail).replace("\n", "<br>")
-            for _, _, detail in self.issue_badges()
+            "<br>" + escape(detail).replace("\n", "<br>") for _, _, detail in self.issue_badges()
         )
-        tooltip = f"<qt>{self._tooltip}{details}</qt>"
+        tooltip = (
+            f"<qt>{heading}{description}<br>Border: tool category · header: run status"
+            f"{details}</qt>"
+        )
         if self.toolTip() != tooltip:
             self.setToolTip(tooltip)
 
@@ -209,9 +210,9 @@ class Node(QGraphicsItem):
             self.refresh_issue_tooltip()
             self.update()
 
-    def hoverEnterEvent(self, event):
-        self.refresh_issue_tooltip()
-        super().hoverEnterEvent(event)
+    def socket_label_rect(self, socket):
+        x = self.width / 2 if socket.output else 12
+        return QRectF(x, socket.y() - 10, (self.width - 24) // 2, 20)
 
     def paint(self, painter, option, widget=None):
         b = self.block
@@ -251,14 +252,15 @@ class Node(QGraphicsItem):
             painter.drawText(badge, Qt.AlignmentFlag.AlignCenter, symbol)
         font.setBold(False)
         painter.setFont(font)
-        port_width = content_width // 2
         for (output, name), socket in self.sockets.items():
-            rect = QRectF(self.width / 2 if output else 12, socket.pos().y() - 10, port_width, 20)
+            rect = self.socket_label_rect(socket)
             painter.setPen(QColor("#c4cfdd"))
             painter.drawText(
                 rect,
                 Qt.AlignmentFlag.AlignRight if output else Qt.AlignmentFlag.AlignLeft,
-                painter.fontMetrics().elidedText(name, Qt.TextElideMode.ElideRight, port_width - 4),
+                painter.fontMetrics().elidedText(
+                    name, Qt.TextElideMode.ElideRight, int(rect.width()) - 4
+                ),
             )
         thumbnail = self.thumbnail_rect
         if not thumbnail.isEmpty():
@@ -356,12 +358,26 @@ class CanvasScene(QGraphicsScene):
         self.rebuild()
 
     def helpEvent(self, event):
-        for item in self.items(event.scenePos()):
+        position = event.scenePos()
+        for item in self.items(position):
+            if isinstance(item, Node):
+                point = item.mapFromScene(position)
+                item = next(
+                    (
+                        socket
+                        for socket in item.sockets.values()
+                        if item.socket_label_rect(socket).contains(point)
+                    ),
+                    item,
+                )
             if isinstance(item, Socket):
                 item.refresh_tooltip()
-                break
+            elif isinstance(item, Node):
+                item.refresh_issue_tooltip()
             if item.toolTip():
-                break
+                QToolTip.showText(event.screenPos(), item.toolTip(), event.widget())
+                event.accept()
+                return
         super().helpEvent(event)
 
     def rebuild(self, selected=None):

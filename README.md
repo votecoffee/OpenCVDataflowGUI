@@ -82,7 +82,8 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
    The editor checks the declared kinds and accepts supported conversions. For example,
    a numeric count can feed a structured writer, and a pyramid can feed an image input.
    Hover over a converted wire to see its rule. See [connection compatibility](docs/architecture.md#connection-compatibility).
-   Hover over a socket to see its full port name and any captured number, boolean, or text value.
+   Hover over a connector dot or its label to see the full port name and any captured
+   number, boolean, or text value.
    The **Debug** run profile captures input values.
 3. Select a block, edit parameters in the right inspector, and click **Apply
    configuration**. Choose exposed ports and the optional node thumbnail there.
