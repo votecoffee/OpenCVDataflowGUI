@@ -287,6 +287,9 @@ SQLite append; XML and image writers reject existing files. Output blocks write
 on every run, including continuous runs. Relative paths resolve from the process's
 working directory; use absolute paths for portable local execution expectations.
 
+The [K-means example](examples/kmeans/README.md) shows color-coded pixel clusters,
+an image quantized to the cluster centers, and a scatter plot of clustered numeric samples.
+
 Additional tools include monochrome/per-channel color histograms, grid-based planar
 pixel-to-physical mapping, offline multi-view lens calibration, undistortion, white/
 color balance, reusable calibration ToolBlocks, and typed depth-image loading,

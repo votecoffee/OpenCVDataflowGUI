@@ -690,6 +690,7 @@ def builtin_registry():
     from .calipers import BeadCalipers
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_tools import CLOUD_BLOCKS
+    from .clustering import KMeansImage, KMeansSamples
     from .code_readers import CODE_READER_BLOCKS
     from .collection_tools import COLLECTION_BLOCKS
     from .color_calibration import COLOR_CALIBRATION_BLOCKS
@@ -809,6 +810,8 @@ def builtin_registry():
         ConveyorDemo,
         FinalJudgment,
         *DNN_BLOCKS,
+        KMeansSamples,
+        KMeansImage,
         *OCR_BLOCKS,
         *ANNOY_BLOCKS,
         *LIGHTGLUE_BLOCKS,

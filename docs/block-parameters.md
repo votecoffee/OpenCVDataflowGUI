@@ -2200,6 +2200,23 @@ Inputs: `image_a` (image), `image_b` (image), `mask` (image, optional), `region`
 | `threshold` | `0.95` | Minimum for SSIM/PSNR, maximum for MSE. |
 | `peak_value` | `255.0` | Maximum sample value for PSNR. Default is 255 for uint8 images. |
 
+## K-means image pixels (`inspect.kmeans_image`)
+
+Inspection / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `initial_labels` (image, optional).
+
+Input `initial_labels` — Optional single-channel integer label image for the first attempt.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `clusters` | `3` | Value must be a whole number between 1 and 32. Must be no greater than the number of samples used in this run. |
+| `initialization` | `"kmeans_plus_plus"` | `kmeans_plus_plus`, `random` |
+| `attempts` | `3` | Value must be a whole number between 1 and 20. Returns the fit with the lowest sum of squared distances. |
+| `termination` | `"both"` | `both`, `iterations`, `epsilon` |
+| `max_iterations` | `50` | Value must be a whole number between 2 and 100. Used by the both and iterations modes. |
+| `epsilon` | `0.01` | Value must be a finite number at least 0. Center movement tolerance in feature units, used by both and epsilon modes. |
+
 ## Find line segments (LSD) (`inspect.line_segments`)
 
 Inspection / Features
@@ -2558,6 +2575,27 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` |
 | `fusion` | `true` |  |
 | `max_output_elements` | `1000000` | Total tensor values retained per activation (bounded). |
+
+## K-means samples (`ml.kmeans`)
+
+ML / Clustering
+
+Inputs: `samples` (data, optional), `initial_labels` (data, optional).
+
+Input `initial_labels` — Optional list of zero-based labels for the first attempt.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `clusters` | `3` | Value must be a whole number between 1 and 32. Must be no greater than the number of samples used in this run. |
+| `initialization` | `"kmeans_plus_plus"` | `kmeans_plus_plus`, `random` |
+| `attempts` | `3` | Value must be a whole number between 1 and 20. Returns the fit with the lowest sum of squared distances. |
+| `termination` | `"both"` | `both`, `iterations`, `epsilon` |
+| `max_iterations` | `50` | Value must be a whole number between 2 and 100. Used by the both and iterations modes. |
+| `epsilon` | `0.01` | Value must be a finite number at least 0. Center movement tolerance in feature units, used by both and epsilon modes. |
+| `samples` | `[]` | One feature vector per row. The samples input overrides this table. |
+| `plot_x` | `0` | Value must be a whole number between 0 and 127. Zero-based feature index for the plot's horizontal axis. |
+| `plot_y` | `-1` | Value must be a whole number between -1 and 127. -1 chooses the first other feature or a one-dimensional strip. |
+| `draw_plot` | `true` |  |
 
 ## LightGlue feature matcher (`ml.lightglue`)
 
