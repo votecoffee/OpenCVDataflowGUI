@@ -267,6 +267,9 @@ responses, subpixel corner refinement, phase correlation, full/partial affine
 estimation, coordinate remapping, and Cartesian-to-polar image fields. See
 [analysis tools and parameter conventions](docs/analysis-tools.md).
 
+The [OpenCV coverage backlog](docs/opencv-coverage.md) ranks missing tools and
+links to the full Python binding inventory for the pinned contrib build.
+
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing
 wrappers also expose kernel dimensions, anchors, borders, output depths, masks,
