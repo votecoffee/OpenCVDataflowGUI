@@ -170,3 +170,47 @@ def test_degenerate_homography_and_points_at_infinity():
     )
     points.execute({"points": [[0.0, 1.0]]})
     assert points.state == "error" and "infinity" in points.error
+
+
+@pytest.mark.parametrize("descriptor_depth,mode", [("float32", "ratio"), ("uint8", "cross_check")])
+def test_sift_features_match_a_known_translation_and_respect_roi(descriptor_depth, mode):
+    image = np.random.default_rng(42).integers(0, 256, (192, 240), dtype=np.uint8)
+    image = cv2.GaussianBlur(image, (3, 3), 0.7)
+    transform = np.float32([[1, 0, 7], [0, 1, 11]])
+    shifted = cv2.warpAffine(image, transform, image.shape[::-1])
+    mask = np.zeros_like(image)
+    mask[20:172, 20:220] = 255
+    query = run(
+        "inspect.sift",
+        {"image": image, "mask": mask},
+        {"descriptor_depth": descriptor_depth, "precise_upscale": True},
+    ).last_result
+    train = run("inspect.sift", {"image": shifted}).last_result
+    packet = query.outputs["features"]
+    assert packet["algorithm"] == "SIFT" and packet["descriptor_depth"] == descriptor_depth
+    assert np.asarray(packet["descriptors"]).shape == (query.outputs["count"], 128)
+    for x, y in np.rint(query.outputs["points"]).astype(int):
+        assert mask[y, x]
+    assert len(query.drawings["SIFT"].objects) == query.outputs["count"]
+    result = run(
+        "inspect.match_sift",
+        {"query": packet, "train": train.outputs["features"]},
+        {"mode": mode},
+    ).last_result
+    assert result.outputs["count"] > 20
+    estimate = run("inspect.homography", {"matches": result.outputs["matches"]})
+    assert estimate.state == "pass"
+    matrix = estimate.last_result.outputs["transform"]["source_to_target"]
+    np.testing.assert_allclose(np.asarray(matrix)[:2, 2], [7, 11], atol=0.5)
+
+
+def test_sift_matcher_handles_empty_features_and_rejects_other_descriptors():
+    image = np.zeros((64, 80), np.uint8)
+    blank = run("inspect.sift", {"image": image}).last_result.outputs["features"]
+    result = run("inspect.match_sift", {"query": blank, "train": blank}).last_result
+    assert result.outputs["count"] == 0
+    orb = run("inspect.orb", {"image": image}).last_result.outputs["features"]
+    block = builtin_registry().create("inspect.match_sift")
+    assert block.execute({"query": blank, "train": orb}) is None
+    assert block.error_kind == "invalid"
+    assert "Connect SIFT" in block.error

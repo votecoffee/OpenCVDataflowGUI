@@ -2351,6 +2351,19 @@ Inputs: `query` (data), `train` (data).
 | `mode` | `"ratio"` | `ratio`, `cross_check` |
 | `norm` | `"auto"` | `auto`, `hamming`, `hamming2` |
 
+## Match SIFT descriptors (`inspect.match_sift`)
+
+Inspection / Matching
+
+Inputs: `query` (data), `train` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `ratio` | `0.75` | Value must be a finite number between 1e-06 and 0.999999. Reject a nearest neighbor too similar in distance to the runner-up. |
+| `max_distance` | `250.0` | Value must be a finite number at least 0. Maximum descriptor distance using the selected norm. |
+| `mode` | `"ratio"` | `ratio`, `cross_check` |
+| `norm` | `"l2"` | `l1`, `l2` |
+
 ## Match template (`inspect.match_template`)
 
 Inspection / Matching
@@ -2531,6 +2544,22 @@ Inputs: `image` (image), `matches` (data), `occupancy` (image, optional), `regio
 | `maximum_occupied_pixels` | `0` | Maximum nonzero occupancy pixels outside the part footprint. |
 | `require_occupancy` | `false` | Require an obstacle mask in addition to match footprints. |
 | `draw_overlay` | `true` |  |
+
+## SIFT keypoints and descriptors (`inspect.sift`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_features` | `500` | Value must be a whole number between 1 and 10000. |
+| `octave_layers` | `3` | Value must be a whole number between 1 and 16. |
+| `contrast_threshold` | `0.04` | Value must be a finite number between 0 and 1. Larger values reject more low-contrast keypoints. |
+| `edge_threshold` | `10.0` | Value must be a finite number between 0.01 and 1000. Larger values keep more edge-like keypoints. |
+| `sigma` | `1.6` | Value must be a finite number between 0.01 and 100. |
+| `descriptor_depth` | `"float32"` | `float32`, `uint8` |
+| `precise_upscale` | `false` | Use OpenCV's precise initial upscale to reduce localization bias. |
 
 ## Skeletonize mask (scikit-image) (`inspect.skeletonize`)
 

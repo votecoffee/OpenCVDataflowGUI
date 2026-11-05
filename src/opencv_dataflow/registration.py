@@ -5,6 +5,8 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .features import overlay_image
+from .graphics_layers import GraphicDrawing, graphic_object
+from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS as FILTER_BORDERS
 from .parameters import OUTPUT_DEPTHS, anchor_value, optional_mask
 from .payloads import metadata, moved_payload
@@ -416,41 +418,102 @@ class ORBFeatures(ImageTool):
             scoreType={"harris": cv2.ORB_HARRIS_SCORE, "fast": cv2.ORB_FAST_SCORE}[p["score_type"]],
             patchSize=integer(p["patch_size"], "Patch size", 3, 255, odd=True),
         )
-        mask = optional_mask(inputs, gray)
-        keypoints, descriptors = detector.detectAndCompute(gray, mask)
-        if mask is not None and keypoints:
-            keep = [index for index, point in enumerate(keypoints) if contains(mask, point.pt)]
-            keypoints = [keypoints[index] for index in keep]
-            descriptors = descriptors[keep] if descriptors is not None else None
-        points = [list(k.pt) for k in keypoints]
-        features = {
-            "algorithm": "ORB",
-            "descriptor_size": 32,
-            "wta_k": int(p["wta_k"]),
-            "image_size": [gray.shape[1], gray.shape[0]],
-            "keypoints": [
-                {
-                    "point": list(k.pt),
-                    "size": k.size,
-                    "angle": k.angle,
-                    "response": k.response,
-                    "octave": k.octave,
-                }
-                for k in keypoints
-            ],
-            "descriptors": descriptors.tolist() if descriptors is not None else [],
-        }
-        overlay = cv2.drawKeypoints(
-            overlay_image(inputs["image"]),
-            keypoints,
-            None,
-            color=(70, 220, 140),
-            flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS,
+        return feature_result(
+            inputs, gray, detector, "ORB", {"descriptor_size": 32, "wta_k": int(p["wta_k"])}
         )
-        return Result(
-            {"features": features, "points": points, "count": len(points), "overlay": overlay},
-            graphics={"ORB": overlay},
+
+
+def feature_result(inputs, gray, detector, algorithm, details):
+    mask = optional_mask(inputs, gray)
+    keypoints, descriptors = detector.detectAndCompute(gray, mask)
+    if mask is not None and keypoints:
+        keep = [index for index, point in enumerate(keypoints) if contains(mask, point.pt)]
+        keypoints = [keypoints[index] for index in keep]
+        descriptors = descriptors[keep] if descriptors is not None else None
+    points = [list(k.pt) for k in keypoints]
+    features = {
+        "algorithm": algorithm,
+        **details,
+        "image_size": [gray.shape[1], gray.shape[0]],
+        "keypoints": [
+            {
+                "point": point,
+                "size": k.size,
+                "angle": k.angle,
+                "response": k.response,
+                "octave": k.octave,
+            }
+            for k, point in zip(keypoints, points, strict=True)
+        ],
+        "descriptors": descriptors.tolist() if descriptors is not None else [],
+    }
+    overlay = cv2.drawKeypoints(
+        overlay_image(inputs["image"]),
+        keypoints,
+        None,
+        color=(70, 220, 140),
+        flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS,
+    )
+    return Result(
+        {"features": features, "points": points, "count": len(points), "overlay": overlay},
+        graphics={algorithm: overlay},
+    )
+
+
+class SIFTFeatures(ImageTool):
+    type_id, title, subtype = "inspect.sift", "SIFT keypoints and descriptors", "Features"
+    category, block_type = "Inspection", "Inspection"
+    inputs, outputs = SELECTION_INPUTS, ORBFeatures.outputs
+    defaults = {
+        "max_features": 500,
+        "octave_layers": 3,
+        "contrast_threshold": 0.04,
+        "edge_threshold": 10.0,
+        "sigma": 1.6,
+        "descriptor_depth": "float32",
+        "precise_upscale": False,
+    }
+    parameter_choices = {"descriptor_depth": ("float32", "uint8")}
+    parameter_ranges = {
+        "max_features": NumericRange(1, 10000, whole=True),
+        "octave_layers": NumericRange(1, 16, whole=True),
+        "contrast_threshold": NumericRange(0, 1),
+        "edge_threshold": NumericRange(0.01, 1000),
+        "sigma": NumericRange(0.01, 100),
+    }
+    parameter_help = {
+        "contrast_threshold": "Larger values reject more low-contrast keypoints.",
+        "edge_threshold": "Larger values keep more edge-like keypoints.",
+        "precise_upscale": "Use OpenCV's precise initial upscale to reduce localization bias.",
+    }
+
+    def process(self, inputs):
+        gray = gray_image(inputs["image"], (np.uint8,), auto_depth=True)
+        p = self.parameters
+        detector = cv2.SIFT_create(
+            int(p["max_features"]),
+            int(p["octave_layers"]),
+            float(p["contrast_threshold"]),
+            float(p["edge_threshold"]),
+            float(p["sigma"]),
+            cv2.CV_8U if p["descriptor_depth"] == "uint8" else cv2.CV_32F,
+            p["precise_upscale"],
         )
+        result = feature_result(
+            inputs,
+            gray,
+            detector,
+            "SIFT",
+            {"descriptor_size": 128, "descriptor_depth": p["descriptor_depth"]},
+        )
+        if self.generate_graphics and result.outputs["points"]:
+            result.drawings["SIFT"] = GraphicDrawing(
+                tuple(
+                    graphic_object("marker", [point], (70, 220, 140))
+                    for point in result.outputs["points"]
+                )
+            )
+        return result
 
 
 def orb_data(data):
@@ -492,7 +555,6 @@ class MatchORB(Block):
         maximum = finite(self.parameters["max_distance"], "Maximum distance", 0)
         if not 0 < ratio < 1:
             raise ValueError("Ratio must be strictly between zero and one")
-        selected = []
         wta = inputs["query"].get("wta_k", 2)
         if inputs["train"].get("wta_k", 2) != wta:
             raise ValueError("ORB descriptor WTA_K values must match")
@@ -501,34 +563,113 @@ class MatchORB(Block):
         if norm_name != expected_norm:
             raise ValueError("Matcher norm is incompatible with ORB WTA_K")
         norm = cv2.NORM_HAMMING if norm_name == "hamming" else cv2.NORM_HAMMING2
-        if self.parameters["mode"] == "cross_check" and len(query) and len(train):
-            selected = [
-                m
-                for m in cv2.BFMatcher(norm, crossCheck=True).match(query, train)
-                if m.distance <= maximum
-            ]
-        elif len(query) and len(train) >= 2:
-            pairs = cv2.BFMatcher(norm).knnMatch(query, train, k=2)
-            selected = [
-                pair[0]
-                for pair in pairs
-                if len(pair) == 2
-                and pair[0].distance < ratio * pair[1].distance
-                and pair[0].distance <= maximum
-            ]
-        data = {
-            "query_points": [qpoints[m.queryIdx].tolist() for m in selected],
-            "train_points": [tpoints[m.trainIdx].tolist() for m in selected],
-            "matches": [
-                {"query_index": m.queryIdx, "train_index": m.trainIdx, "distance": m.distance}
-                for m in selected
-            ],
-            "query_size": inputs["query"]["image_size"],
-            "train_size": inputs["train"]["image_size"],
-        }
-        return Result(
-            {"matches": data, "count": len(selected)},
-            message=f"{len(selected)} ratio-filtered matches",
+        return descriptor_match_result(
+            inputs, query, train, qpoints, tpoints, norm, self.parameters["mode"], ratio, maximum
+        )
+
+
+def descriptor_match_result(inputs, query, train, qpoints, tpoints, norm, mode, ratio, maximum):
+    selected = []
+    if mode == "cross_check" and len(query) and len(train):
+        selected = [
+            m
+            for m in cv2.BFMatcher(norm, crossCheck=True).match(query, train)
+            if m.distance <= maximum
+        ]
+    elif len(query) and len(train) >= 2:
+        pairs = cv2.BFMatcher(norm).knnMatch(query, train, k=2)
+        selected = [
+            pair[0]
+            for pair in pairs
+            if len(pair) == 2
+            and pair[0].distance < ratio * pair[1].distance
+            and pair[0].distance <= maximum
+        ]
+    data = {
+        "query_points": [qpoints[m.queryIdx].tolist() for m in selected],
+        "train_points": [tpoints[m.trainIdx].tolist() for m in selected],
+        "matches": [
+            {"query_index": m.queryIdx, "train_index": m.trainIdx, "distance": m.distance}
+            for m in selected
+        ],
+        "query_size": inputs["query"]["image_size"],
+        "train_size": inputs["train"]["image_size"],
+    }
+    return Result(
+        {"matches": data, "count": len(selected)},
+        message=f"{len(selected)} descriptor matches",
+    )
+
+
+def sift_data(data):
+    if (
+        not isinstance(data, dict)
+        or data.get("algorithm") != "SIFT"
+        or data.get("descriptor_size") != 128
+        or data.get("descriptor_depth") not in ("uint8", "float32")
+    ):
+        raise ValidationError("Connect SIFT keypoints and descriptors")
+    try:
+        size = data["image_size"]
+        keypoints = data["keypoints"]
+        raw = np.asarray(data["descriptors"])
+        if (
+            not isinstance(size, list)
+            or len(size) != 2
+            or any(type(value) is not int or value <= 0 for value in size)
+            or not isinstance(keypoints, list)
+            or raw.dtype.kind not in "uif"
+        ):
+            raise ValueError("Invalid SIFT image size, keypoints or descriptor type")
+        if not keypoints and raw.size == 0:
+            return np.empty((0, 128), np.float32), np.empty((0, 2), np.float64)
+        points = np.asarray([key["point"] for key in keypoints], np.float64)
+        upper = 255 if data["descriptor_depth"] == "uint8" else 512
+        if (
+            raw.shape != (len(keypoints), 128)
+            or not np.isfinite(raw).all()
+            or (raw < 0).any()
+            or (raw > upper).any()
+            or (upper == 255 and np.any(raw != np.rint(raw)))
+            or points.shape != (len(keypoints), 2)
+            or not np.isfinite(points).all()
+        ):
+            raise ValueError("Invalid SIFT descriptor values or keypoint coordinates")
+    except (KeyError, TypeError, ValueError, OverflowError) as exc:
+        raise ValidationError(f"Invalid SIFT features: {exc}") from exc
+    return raw.astype(np.float32), points
+
+
+class MatchSIFT(Block):
+    type_id, title, category = "inspect.match_sift", "Match SIFT descriptors", "Inspection"
+    block_type, subtype = "Inspection", "Matching"
+    inputs, outputs = MatchORB.inputs, MatchORB.outputs
+    defaults = {"ratio": 0.75, "max_distance": 250.0, "mode": "ratio", "norm": "l2"}
+    parameter_choices = {"mode": ("ratio", "cross_check"), "norm": ("l1", "l2")}
+    parameter_ranges = {
+        "ratio": NumericRange(0.000001, 0.999999),
+        "max_distance": NumericRange(0),
+    }
+    parameter_help = {
+        "ratio": "Reject a nearest neighbor too similar in distance to the runner-up.",
+        "max_distance": "Maximum descriptor distance using the selected norm.",
+    }
+
+    def process(self, inputs):
+        query, qpoints = sift_data(inputs["query"])
+        train, tpoints = sift_data(inputs["train"])
+        p = self.parameters
+        norm = cv2.NORM_L2 if p["norm"] == "l2" else cv2.NORM_L1
+        return descriptor_match_result(
+            inputs,
+            query,
+            train,
+            qpoints,
+            tpoints,
+            norm,
+            p["mode"],
+            float(p["ratio"]),
+            float(p["max_distance"]),
         )
 
 
@@ -682,7 +823,9 @@ REGISTRATION_BLOCKS = (
     UnsharpMask,
     FASTFeatures,
     ORBFeatures,
+    SIFTFeatures,
     MatchORB,
+    MatchSIFT,
     EstimateHomography,
     TransformPoints,
 )
