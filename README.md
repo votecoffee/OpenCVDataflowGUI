@@ -410,7 +410,9 @@ applies separate intensity curves to the red and blue channels. The
 [local statistics example](examples/local_statistics/README.md) uses rectangular
 neighborhoods to distinguish a flat patch from an equally bright textured patch.
 The [intensity transform example](examples/intensity_transform/README.md) clips
-a ramp and reconstructs it through log and exponential blocks.
+a ramp and reconstructs it through log and exponential blocks. The
+[image arithmetic example](examples/image_arithmetic/README.md) subtracts
+a blurred background and scales the signed residual.
 
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing

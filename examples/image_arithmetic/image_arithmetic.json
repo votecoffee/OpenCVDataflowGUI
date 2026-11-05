@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Flat patch and checker texture",
+      "parameters": {
+        "path": "assets/flat_and_texture.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "blur",
+      "type": "cv.gaussian_blur",
+      "name": "Estimate local background",
+      "parameters": {
+        "kernel": 9,
+        "sigma": 2
+      },
+      "position": [
+        315,
+        190
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "subtract",
+      "type": "cv.image_arithmetic",
+      "name": "Signed residual",
+      "parameters": {
+        "operation": "subtract"
+      },
+      "position": [
+        630,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "intensity"
+    },
+    {
+      "id": "gain",
+      "type": "cv.image_arithmetic",
+      "name": "Double residual",
+      "parameters": {
+        "operation": "multiply",
+        "scalar": 2
+      },
+      "position": [
+        945,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "scalar_b"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "intensity"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "blur",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "subtract",
+      "input": "image_a"
+    },
+    {
+      "source": "blur",
+      "output": "image",
+      "target": "subtract",
+      "input": "image_b"
+    },
+    {
+      "source": "subtract",
+      "output": "image",
+      "target": "gain",
+      "input": "image_a"
+    }
+  ]
+}

@@ -1168,6 +1168,22 @@ Inputs: `spectrum` (dft).
 | --- | --- | --- |
 | `output_depth` | `"unchanged"` | `unchanged`, `float32`, `float64` Use floating point to retain signed or out-of-range filtered samples. |
 
+## Image arithmetic (`cv.image_arithmetic`)
+
+Image processing / Image math
+
+Inputs: `image_a` (image), `image_b` (image, optional), `scalar_b` (number, optional), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `operation` | `"add"` | `add`, `subtract`, `multiply`, `divide`, `minimum`, `maximum`, `absolute_difference` |
+| `scalar` | `0.0` | Value must be a finite number. Right operand when neither Image B nor Scalar B is connected. |
+| `scale` | `1.0` | Value must be a finite number. Multiplier applied to the product or quotient. |
+| `zero_divisor` | `"error"` | `error`, `zero`, `keep_a` For division only. Reject, output zero, or keep the sample from Image A. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid pairs equal-size images by index, even with different frame IDs. |
+| `output_depth` | `"float64"` | `float64`, `float32`, `same` Same keeps the source depth, rounding and saturating integer results. |
+| `preserve_alpha` | `true` | Copy the alpha channel through unchanged in the chosen output depth. |
+
 ## Gaussian image pyramid set (`cv.image_pyramid`)
 
 Image processing / Pyramids

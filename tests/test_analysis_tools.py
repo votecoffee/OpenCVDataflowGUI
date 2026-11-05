@@ -3,6 +3,8 @@ import numpy as np
 import pytest
 
 from opencv_dataflow.blocks import builtin_registry
+from opencv_dataflow.images import ImageArray, image_format
+from opencv_dataflow.payloads import ValuePacket, frame
 
 
 def run(kind, inputs, parameters=None):
@@ -255,3 +257,73 @@ def test_intensity_transform_saturates_integer_output_and_rejects_invalid_domain
     assert block.error_kind == "invalid" and "float32 range" in block.error
     assert block.execute({"image": np.array([[1000]], np.uint16)}) is None
     assert block.error_kind == "invalid" and "overflowed" in block.error
+
+
+@pytest.mark.parametrize(
+    "operation,expected",
+    [
+        ("add", [6, 6, 6, 6]),
+        ("subtract", [-2, 2, 6, -6]),
+        ("multiply", [16, 16, 0, 0]),
+        ("divide", [1, 4, 0, 0]),
+        ("minimum", [2, 2, 0, 0]),
+        ("maximum", [4, 4, 6, 6]),
+        ("absolute_difference", [2, 2, 6, 6]),
+    ],
+)
+def test_image_arithmetic_applies_two_images_in_raw_sample_units(operation, expected):
+    a = np.array([[2, 4, 6, 0]], dtype=np.uint8)
+    b = np.array([[4, 2, 0, 6]], dtype=np.uint16)
+    block = run(
+        "cv.image_arithmetic",
+        {"image_a": a, "image_b": b},
+        {"operation": operation, "scale": 2, "zero_divisor": "zero"},
+    )
+    assert block.last_result.outputs["image"].dtype == np.float64
+    np.testing.assert_allclose(block.last_result.outputs["image"], [expected])
+
+
+def test_image_arithmetic_preserves_alpha_selection_and_channel_encoding():
+    a = ImageArray(np.array([[[100, 80, 60, 32], [4, 3, 2, 1]]], np.uint8), "rgba")
+    b = ImageArray(np.array([[[5, 10, 20], [20, 50, 100]]], np.uint16), "bgr")
+    mask = np.array([[255, 0]], np.uint8)
+    block = run(
+        "cv.image_arithmetic",
+        {"image_a": a, "image_b": b, "mask": mask},
+        {"operation": "add", "output_depth": "same"},
+    )
+    output = block.last_result.outputs["image"]
+    assert output.dtype == np.uint8 and image_format(output) == "rgba"
+    np.testing.assert_array_equal(output, [[[120, 90, 65, 32], [4, 3, 2, 1]]])
+    mono = np.array([[200, 0]], dtype=np.uint16)
+    result = block.execute({"image_a": a, "image_b": mono})
+    assert result is not None, block.error
+    np.testing.assert_array_equal(result.outputs["image"], [[[255, 255, 255, 32], [4, 3, 2, 1]]])
+
+
+def test_image_arithmetic_checks_frames_zero_divisors_and_operand_conflicts():
+    a, b = (np.array([values], np.uint8) for values in ([12, 36], [2, 0]))
+    ctx = frame([2, 1], "a")
+    inputs = {
+        "image_a": ValuePacket(a, {"spatial": ctx}),
+        "image_b": ValuePacket(b, {"spatial": frame([2, 1], "b")}),
+    }
+    block = builtin_registry().create("cv.image_arithmetic", parameters={"operation": "divide"})
+    assert block.execute(inputs) is None
+    assert block.error_kind == "invalid" and "pixel frame" in block.error
+    block.parameters["alignment"] = "pixel_grid"
+    assert block.execute(inputs) is None
+    assert block.error_kind == "invalid" and "nonzero divisors" in block.error
+    selected = block.execute({**inputs, "mask": np.array([[255, 0]], np.uint8)})
+    assert selected is not None, block.error
+    np.testing.assert_array_equal(selected.outputs["image"], [[6, 36]])
+    block.parameters["zero_divisor"] = "keep_a"
+    result = block.execute(inputs)
+    assert result is not None, block.error
+    assert result.payloads["image"]["spatial"] == ctx
+    np.testing.assert_array_equal(result.outputs["image"], [[6, 36]])
+    result = block.execute({"image_a": a, "scalar_b": 4})
+    assert result is not None, block.error
+    np.testing.assert_array_equal(result.outputs["image"], [[3, 9]])
+    assert block.execute({**inputs, "scalar_b": 4}) is None
+    assert "either Image B or Scalar B" in block.error
