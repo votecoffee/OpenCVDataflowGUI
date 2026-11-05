@@ -35,7 +35,7 @@ from .payloads import (
     validate_payload,
 )
 from .recipes import RecipeCatalog, apply_recipe, validate_bindings
-from .run_profiles import PROFILES, captures, profile
+from .run_profiles import PROFILES, captures, graphics_mode, profile
 from .scheduling import MAX_BRANCH_WORKERS, DependencyPlan, automatic_workers
 from .tickets import DEFAULT_TICKET_SETTINGS, DIRECT_CLOCK, TICKET_MODES, TicketClock
 from .timing import WorkTiming
@@ -125,6 +125,9 @@ class Block:
             self.exposed_outputs = [p.name for p in self.outputs]
         self.timing = WorkTiming()
         self.run_profile = PROFILES["debug"]
+        self.graphics_mode = "inherit"
+        self._job_graphics_mode = "inherit"
+        self._graphics_for_parent = False
         self._activity = None
         self.logger = BlockLogger(self)
         self._execution_lock = threading.Lock()
@@ -269,9 +272,38 @@ class Block:
         return self.output_ports if RESULT_GRAPHICS in self.exposed_outputs else self.outputs
 
     @property
+    def capture_graphics(self):
+        """Whether to keep optional graphics for inspection."""
+        mode = self.graphics_mode if self.graphics_mode != "inherit" else self._job_graphics_mode
+        return self.run_profile.graphics if mode == "inherit" else mode == "on"
+
+    @property
+    def _graphics_required(self):
+        return self._graphics_for_parent or RESULT_GRAPHICS in self.exposed_outputs
+
+    @property
     def generate_graphics(self):
-        """Custom tools can avoid constructing auxiliary graphics when this is false."""
-        return self.run_profile.graphics
+        """Custom tools can skip optional work when neither the UI nor a port needs it."""
+        return self.capture_graphics or (
+            self._graphics_required
+            and (
+                self._graphics_for_parent
+                or self.run_profile.graphics
+                or self._job_graphics_mode == "on"
+            )
+        )
+
+    def set_graphics_mode(self, value):
+        self.graphics_mode = graphics_mode(value)
+        self._trim_graphics()
+
+    def _trim_graphics(self):
+        if not self.capture_graphics:
+            self.last_graphics = {}
+            if self.last_result is not None:
+                self.last_result.graphics = {}
+        if not self.generate_graphics and self.last_result is not None:
+            self.last_result.drawings = {}
 
     def _execute(self, values, cancelled=lambda: False):
         try:
@@ -333,8 +365,9 @@ class Block:
                 result.outputs["ticket"] = (
                     self._source_ticket if self._source_ticket is not None else NO_VALUE
                 )
-            if not self.generate_graphics:
+            if not self.capture_graphics:
                 result.graphics = {}
+            if not self.generate_graphics:
                 result.drawings = {}
             for name, value in result.graphics.items():
                 validate_value(Port(name), value)
@@ -505,6 +538,7 @@ class Block:
             "exposed_outputs": self.exposed_outputs,
             "thumbnail": self.thumbnail,
             "preview_output": self.preview_output,
+            **({"graphics_mode": self.graphics_mode} if self.graphics_mode != "inherit" else {}),
             **({"recipe_bindings": self.recipe_bindings} if self.recipe_bindings else {}),
             **({"recipe_model": self.recipe_model} if self.recipe_model else {}),
             **({"input_levels": self.input_levels} if self.input_levels else {}),
@@ -542,7 +576,8 @@ class Block:
                 "last_recipe_parameters",
             ):
                 setattr(self, name, copy.deepcopy(getattr(other, name)))
-            self.last_inputs, self.last_output_images, self.last_graphics = {}, {}, {}
+            self.last_inputs, self.last_output_images = {}, {}
+            self.last_graphics = copy.deepcopy(other.last_graphics)
             self.current_emissions = {}
             result = other.last_result
             self.last_result = (
@@ -675,6 +710,9 @@ class Graph:
         self.viewport = {}
         self.run_profile = PROFILES["debug"]
         self.branch_workers = "auto"
+        self.graphics_mode = "inherit"
+        self._parent_graphics_mode = None
+        self._graphics_for_parent = False
         self._event_prefix = ""
         self.recipes = RecipeCatalog()
         self._allow_recipe_activation = True
@@ -705,6 +743,7 @@ class Graph:
         logical = self._activity_logical_prefix
         for block in self.blocks.values():
             block.run_profile = self.run_profile
+            self._bind_block_graphics(block)
             block._activity = self.activity
             block._activity_path = f"{prefix}/{block.id}" if prefix else block.id
             block._activity_logical_path = f"{logical}/{block.id}" if logical else block.id
@@ -724,14 +763,34 @@ class Graph:
         self.activity.capture_profile = self.run_profile.name
         for block in self.blocks.values():
             block.run_profile = self.run_profile
+            self._bind_block_graphics(block)
             if not self.run_profile.input_previews:
                 block.last_inputs = {}
             if not self.run_profile.output_previews:
                 block.last_output_images = {}
-            if not self.run_profile.graphics:
-                block.last_graphics = {}
             if hasattr(block, "graph"):
                 block.graph.set_run_profile(self.run_profile)
+
+    def set_graphics_mode(self, value):
+        self.graphics_mode = graphics_mode(value)
+        self.set_run_profile(self.run_profile)
+
+    def _inherit_graphics_from(self, owner):
+        self._parent_graphics_mode = owner._job_graphics_mode
+        self._graphics_for_parent = (
+            owner.type_id == "core.toolblock"
+            and owner._graphics_required
+            and owner.generate_graphics
+        )
+
+    def _bind_block_graphics(self, block):
+        block._job_graphics_mode = (
+            self.graphics_mode if self._parent_graphics_mode is None else self._parent_graphics_mode
+        )
+        block._graphics_for_parent = self._graphics_for_parent
+        block._trim_graphics()
+        if hasattr(block, "graph"):
+            block.graph._inherit_graphics_from(block)
 
     def bind_ticket_results(self, consumer=None, prefix=None):
         if consumer is not None:
@@ -856,10 +915,7 @@ class Graph:
                 block.last_inputs = {}
             if not self.run_profile.output_previews:
                 block.last_output_images = {}
-            if not self.run_profile.graphics:
-                block.last_graphics = {}
-                if block.last_result is not None:
-                    block.last_result.graphics = {}
+            block._trim_graphics()
 
     def connect(self, source, output, target, input):
         if source == target:
@@ -1288,6 +1344,7 @@ class Graph:
             **({"viewport": copy.deepcopy(self.viewport)} if self.viewport else {}),
             **({"run_profile": self.run_profile.name} if self.run_profile.name != "debug" else {}),
             **({"branch_workers": self.branch_workers} if self.branch_workers != "auto" else {}),
+            **({"graphics_mode": self.graphics_mode} if self.graphics_mode != "inherit" else {}),
             **(
                 {"validation_sets": copy.deepcopy(self.validation_sets)}
                 if self.validation_sets
@@ -1320,6 +1377,7 @@ class Graph:
         graph = cls()
         graph.set_run_profile(data.get("run_profile", "debug"))
         graph.set_branch_workers(data.get("branch_workers", "auto"))
+        graph.set_graphics_mode(data.get("graphics_mode", "inherit"))
         if "validation_sets" in data:
             from .validation import validate_sets
 
@@ -1385,6 +1443,7 @@ class Graph:
                 setattr(block, f"exposed_{direction}", exposed)
             block.thumbnail = item.get("thumbnail", True)
             block.preview_output = item.get("preview_output", "")
+            block.set_graphics_mode(item.get("graphics_mode", "inherit"))
             levels = item.get("input_levels", {})
             allowed_inputs = {p.name for p in block.inputs if p.kind == "image"}
             if (

@@ -215,6 +215,48 @@ def test_custom_graphic_factory_can_avoid_work_without_changing_declared_outputs
     assert not block.generated and block.last_result.outputs["image"].shape == (12, 16)
 
 
+def test_graphics_defaults_and_block_overrides_round_trip_in_editor(app, tmp_path):
+    window = MainWindow()
+    registry = window.registry
+    graph = Graph()
+    source = graph.add(registry.create("input.demo"))
+    region = graph.add(registry.create("region.shape"))
+    graph.connect(source.id, "image", region.id, "image")
+    window.replace_graph(graph)
+    window.inspector.select(region)
+    graph.run()
+    assert region.last_result.drawings
+    overlay = region.last_result.outputs["overlay"].copy()
+    timing = region.timing.snapshot()
+
+    window.project_graphics_choice.setCurrentText("Off")
+    assert not region.last_graphics and not region.last_result.drawings
+    assert region.timing.snapshot() == timing
+    window.inspector.graphics_choice.setCurrentText("On")
+    graph.run()
+    assert region.last_result.drawings
+    assert not source.last_graphics
+    np.testing.assert_array_equal(region.last_result.outputs["overlay"], overlay)
+    assert window.dirty
+    path = tmp_path / "job.json"
+    graph.save(path)
+    restored = Graph.load(path, registry)
+    window.replace_graph(restored, path)
+    window.inspector.select(restored.blocks[region.id])
+    assert window.project_graphics_choice.currentText() == "Off"
+    assert window.inspector.graphics_choice.currentText() == "On"
+    assert not window.dirty
+    window.inspector.graphics_choice.setCurrentText("Off")
+    window.project_graphics_choice.setCurrentText("On")
+    restored.run()
+    assert not restored.blocks[region.id].last_result.drawings
+    np.testing.assert_array_equal(
+        restored.blocks[region.id].last_result.outputs["overlay"], overlay
+    )
+    window.dirty = False
+    window.close()
+
+
 def test_lean_background_acquisition_keeps_fifo_data_without_restoring_previews():
     registry, graph = builtin_registry(), Graph()
     source = graph.add(registry.create("input.demo"))

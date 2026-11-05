@@ -525,6 +525,10 @@ updates, and removes the development pacing delay while preserving processing ou
 failure reasons, counters and private input isolation. The headless runner accepts
 `--profile lean`. See [run profiles and measured performance](docs/run-profiles.md).
 
+Use **Graphics default** in the toolbar to turn optional result graphics on or off
+across the project, or set **Result graphics** on a block to override the default.
+Declared image outputs remain available. Both choices are saved with the project.
+
 Independent graph branches can run concurrently as soon as their inputs are ready.
 Use **Branch workers** in the toolbar to save **Auto**, **Serial**, or a worker
 limit for the current graph. The headless runner accepts `--branch-workers 1` to

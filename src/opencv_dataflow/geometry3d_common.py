@@ -133,7 +133,7 @@ def require_pinhole(model):
 
 
 def cloud_graphics(block, cloud):
-    if not block.run_profile.graphics:
+    if not block.capture_graphics:
         return {}
     from .pointclouds import render_cloud
 

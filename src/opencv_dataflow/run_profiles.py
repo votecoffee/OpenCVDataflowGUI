@@ -24,6 +24,14 @@ PROFILES = {
     "lean": RunProfile("lean", 30, False, False, False, False, False, True, False, 500, 0),
 }
 
+GRAPHICS_MODES = ("inherit", "on", "off")
+
+
+def graphics_mode(value):
+    if not isinstance(value, str) or value not in GRAPHICS_MODES:
+        raise ValueError("Result graphics mode must be inherit, on or off")
+    return value
+
 
 def profile(value="debug"):
     if isinstance(value, RunProfile):

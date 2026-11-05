@@ -223,7 +223,9 @@ class MatchTexturePattern(TrainableMatcher, Block):
                 "Invalid texture matching ratio, confidence, thresholds or scale range"
             )
         if len(target_desc) < 2:
-            return pattern_result(inputs["image"], model, [])
+            return pattern_result(
+                inputs["image"], model, [], generate_graphics=self.generate_graphics
+            )
         matcher = cv2.BFMatcher(norm)
         pairs = matcher.knnMatch(descriptors, target_desc, k=2)
         matches = [
@@ -240,7 +242,13 @@ class MatchTexturePattern(TrainableMatcher, Block):
         matches = list(unique.values())
 
         def finish(accepted=(), rejected=(), inliers=()):
-            result = pattern_result(inputs["image"], model, list(accepted), rejected)
+            result = pattern_result(
+                inputs["image"],
+                model,
+                list(accepted),
+                rejected,
+                generate_graphics=self.generate_graphics,
+            )
             if self.generate_graphics:
                 good = {m.trainIdx for m, keep in zip(matches, inliers) if keep}
                 proposed = {pair[0].trainIdx for pair in pairs if pair}
