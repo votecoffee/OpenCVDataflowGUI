@@ -4,7 +4,7 @@ import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.images import ImageArray, image_format
-from opencv_dataflow.payloads import ValuePacket, frame
+from opencv_dataflow.payloads import NO_VALUE, ValuePacket, frame
 
 
 def run(kind, inputs, parameters=None):
@@ -327,3 +327,53 @@ def test_image_arithmetic_checks_frames_zero_divisors_and_operand_conflicts():
     np.testing.assert_array_equal(result.outputs["image"], [[3, 9]])
     assert block.execute({**inputs, "scalar_b": 4}) is None
     assert "either Image B or Scalar B" in block.error
+
+
+@pytest.mark.parametrize(
+    "operation,expected",
+    [
+        ("equal", [0, 255, 0]),
+        ("not_equal", [255, 0, 255]),
+        ("less", [255, 0, 0]),
+        ("less_or_equal", [255, 255, 0]),
+        ("greater", [0, 0, 255]),
+        ("greater_or_equal", [0, 255, 255]),
+    ],
+)
+def test_compare_pixels_supports_each_relation(operation, expected):
+    a = np.array([[1, 2, 3]], dtype=np.uint16)
+    block = run("cv.compare_pixels", {"image_a": a, "scalar_b": 2}, {"operation": operation})
+    result = block.last_result.outputs
+    np.testing.assert_array_equal(result["mask"], [expected])
+    assert result["mask"].dtype == np.uint8
+    assert result["count"] == np.count_nonzero(expected)
+    assert result["fraction"] == pytest.approx(result["count"] / 3)
+
+
+def test_compare_pixels_combines_channels_and_limits_tolerance_to_selected_pixels():
+    a = ImageArray(np.array([[[3, 4, 3, 0], [4, 6, 2, 0], [2, 2, 2, 0]]], np.uint8), "rgba")
+    b = np.full((1, 3), 3, dtype=np.float32)
+    context = frame([3, 1], "source")
+    inputs = {
+        "image_a": ValuePacket(a, {"spatial": context}),
+        "image_b": b,
+        "mask": np.array([[255, 255, 0]], np.uint8),
+    }
+    block = run(
+        "cv.compare_pixels", inputs, {"operation": "equal", "tolerance": 1, "channel_rule": "all"}
+    )
+    np.testing.assert_array_equal(block.last_result.outputs["mask"], [[255, 0, 0]])
+    assert block.last_result.outputs["fraction"] == 0.5
+    assert block.last_result.payloads["mask"]["spatial"] == context
+    block.parameters["channel_rule"] = "any"
+    result = block.execute(inputs)
+    assert result is not None, block.error
+    np.testing.assert_array_equal(result.outputs["mask"], [[255, 255, 0]])
+    assert result.outputs["fraction"] == 1.0
+    block.parameters.update(channel_rule="all", include_alpha=True)
+    result = block.execute(inputs)
+    assert result is not None, block.error
+    assert result.outputs["count"] == 0
+    result = block.execute({**inputs, "mask": np.zeros((1, 3), np.uint8)})
+    assert result is not None, block.error
+    assert result.outputs["fraction"] is NO_VALUE

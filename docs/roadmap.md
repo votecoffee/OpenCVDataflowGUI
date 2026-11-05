@@ -18,8 +18,8 @@ completion evidence.
 Stage 1 is in progress. Cosine and Fourier transforms, inverse reconstruction,
 radial Fourier filtering, custom spectrum masks, Fourier correlation,
 per-channel intensity LUTs, local and tilted window statistics,
-unary intensity transforms, binary image arithmetic, and row/column intensity
-profiles are available, along with selected image summary statistics.
+unary intensity transforms, binary image arithmetic, pixel comparison, and
+row/column intensity profiles are available, along with selected image summary statistics.
 Specialized array operations remain open. The
 [coverage backlog](opencv-coverage.md) tracks the missing workflows and the
 [binding inventory](opencv-bindings.tsv) maps static references to the pinned

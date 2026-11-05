@@ -23,6 +23,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Tilted window statistics](tilted_statistics/README.md) | Measure two diagonal patches using batched 45-degree windows. |
 | [Image summary statistics](image_statistics/README.md) | Measure a selected patch and mark the extrema in source pixel coordinates. |
 | [Intensity profile](intensity_profile/README.md) | Reduce each column in an inspection region and plot the intensity peaks. |
+| [Pixel comparison](pixel_comparison/README.md) | Compare a background difference with a scalar to build a texture mask. |
 | [Image arithmetic](image_arithmetic/README.md) | Subtract a blurred background and apply scalar gain to the signed residual. |
 | [Intensity transform](intensity_transform/README.md) | Clip a ramp, apply a natural logarithm, and recover the clipped values with exponentiation. |
 | [Local window statistics](local_statistics/README.md) | Distinguish a flat patch from a checker texture using local standard deviation. |

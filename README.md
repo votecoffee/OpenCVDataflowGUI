@@ -416,6 +416,8 @@ The [intensity transform example](examples/intensity_transform/README.md) clips
 a ramp and reconstructs it through log and exponential blocks. The
 [image arithmetic example](examples/image_arithmetic/README.md) subtracts
 a blurred background and scales the signed residual. The
+[pixel comparison example](examples/pixel_comparison/README.md) turns the
+background difference into a binary texture mask. The
 [intensity profile example](examples/intensity_profile/README.md) plots per-column
 mean intensity inside an inspection region. The
 [image statistics example](examples/image_statistics/README.md) reports

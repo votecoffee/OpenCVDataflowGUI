@@ -7,7 +7,7 @@ from .core import Block, Port, Result
 from .images import ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS, OUTPUT_DEPTHS, anchor_value
-from .payloads import require_same_frame
+from .payloads import NO_VALUE, require_same_frame
 from .processing import ImageTool, encoded_result, finite, gray_image, image_value, integer
 from .registration import BORDERS as WARP_BORDERS
 from .registration import INTERPOLATION
@@ -441,6 +441,59 @@ def intensity_result(output, source, output_depth, generate_graphics):
     return encoded_result(output, source, graphics=graphics)
 
 
+def aligned_operand(source, image_b, signal, alignment):
+    right = image_value(image_b)
+    if right.shape[:2] != source.shape[:2]:
+        raise ValidationError("Image A and Image B must have the same pixel dimensions")
+    if alignment == "same_frame":
+        try:
+            require_same_frame((source, image_b))
+        except ValueError as exc:
+            raise ValidationError("Image B must share Image A's pixel frame") from exc
+    encoding_b = image_format(image_b)
+    if encoding_b in ("hsv", "lab"):
+        raise ValidationError("Image B needs monochrome or RGB/BGR samples")
+    if right.ndim == 2:
+        return right if signal.ndim == 2 else np.broadcast_to(right[..., None], signal.shape)
+    if signal.ndim == 3 and signal.shape[2] == 3:
+        right = right[..., :3]
+    if right.shape != signal.shape:
+        raise ValidationError("Image B must match Image A's channels or be monochrome")
+    if image_format(source).removesuffix("a") != encoding_b.removesuffix("a"):
+        order = (2, 1, 0, 3) if right.shape[2] == 4 else (2, 1, 0)
+        right = right[..., order]
+    return right
+
+
+def binary_image_operands(inputs, parameters, include_alpha):
+    source = inputs["image_a"]
+    left = image_value(source)
+    if image_format(source) in ("hsv", "lab"):
+        raise ValidationError("Image A needs monochrome or RGB/BGR samples")
+    image_b, scalar_b = inputs.get("image_b"), inputs.get("scalar_b")
+    if image_b is not None and scalar_b is not None:
+        raise ValidationError("Connect either Image B or Scalar B")
+    if left.ndim == 3 and left.shape[2] == 4 and not include_alpha:
+        left = left[..., :3]
+    right = (
+        aligned_operand(source, image_b, left, parameters["alignment"])
+        if image_b is not None
+        else finite(parameters["scalar"] if scalar_b is None else scalar_b, "Scalar B")
+    )
+    return left, right
+
+
+def operand_matrices(left, right, selection):
+    samples = left if selection is None else left[selection]
+    left_values = np.asarray(samples, dtype=np.float64).reshape(-1, 1)
+    if isinstance(right, np.ndarray):
+        right = right if selection is None else right[selection]
+        right_values = np.asarray(right, dtype=np.float64).reshape(-1, 1)
+    else:
+        right_values = np.full_like(left_values, right)
+    return left_values, right_values, samples.shape
+
+
 ARITHMETIC_OPERATIONS = {
     "add": cv2.add,
     "subtract": cv2.subtract,
@@ -485,57 +538,17 @@ class ImageArithmetic(ImageTool):
         "preserve_alpha": IntensityTransform.parameter_help["preserve_alpha"],
     }
 
-    def right_image(self, source, image_b, signal):
-        right = image_value(image_b)
-        if right.shape[:2] != source.shape[:2]:
-            raise ValidationError("Image A and Image B must have the same pixel dimensions")
-        if self.parameters["alignment"] == "same_frame":
-            try:
-                require_same_frame((source, image_b))
-            except ValueError as exc:
-                raise ValidationError("Image B must share Image A's pixel frame") from exc
-        encoding_b = image_format(image_b)
-        if encoding_b in ("hsv", "lab"):
-            raise ValidationError("Image B needs monochrome or RGB/BGR samples")
-        if right.ndim == 2:
-            return right if signal.ndim == 2 else np.broadcast_to(right[..., None], signal.shape)
-        if signal.ndim == 3 and signal.shape[2] == 3:
-            right = right[..., :3]
-        if right.shape != signal.shape:
-            raise ValidationError("Image B must match Image A's channels or be monochrome")
-        if image_format(source).removesuffix("a") != encoding_b.removesuffix("a"):
-            order = (2, 1, 0, 3) if right.shape[2] == 4 else (2, 1, 0)
-            right = right[..., order]
-        return right
-
     def process(self, inputs):
         source = inputs["image_a"]
-        image = image_value(source)
-        if image_format(source) in ("hsv", "lab"):
-            raise ValidationError("Image A needs monochrome or RGB/BGR samples")
-        image_b, scalar_b = inputs.get("image_b"), inputs.get("scalar_b")
-        if image_b is not None and scalar_b is not None:
-            raise ValidationError("Connect either Image B or Scalar B")
         p = self.parameters
-        output = image.astype(np.float64)
-        has_alpha = output.ndim == 3 and output.shape[2] == 4
-        signal = output[..., :3] if has_alpha and p["preserve_alpha"] else output
-        right = (
-            self.right_image(source, image_b, signal)
-            if image_b is not None
-            else finite(p["scalar"] if scalar_b is None else scalar_b, "Scalar B")
-        )
-        mask = selection_mask(inputs, image)
+        left, right = binary_image_operands(inputs, p, include_alpha=not p["preserve_alpha"])
+        output = np.asarray(source).astype(np.float64)
+        signal = output if output.shape == left.shape else output[..., :3]
+        mask = selection_mask(inputs, source)
         selected = None if mask is None else mask != 0
-        left_samples = signal if selected is None else signal[selected]
-        if left_samples.size:
-            left = left_samples.reshape(-1, 1)
-            if image_b is None:
-                right = np.full_like(left, right)
-            else:
-                right = right if selected is None else right[selected]
-                right = np.asarray(right, dtype=np.float64).reshape(-1, 1)
-            mapped = self.apply_operation(left, right).reshape(left_samples.shape)
+        a, b, shape = operand_matrices(left, right, selected)
+        if a.size:
+            mapped = self.apply_operation(a, b).reshape(shape)
             if not np.isfinite(mapped).all():
                 raise ValidationError("Image arithmetic overflowed. Reduce the input range")
             if selected is None:
@@ -561,6 +574,83 @@ class ImageArithmetic(ImageTool):
         mapped = operation(left, np.where(zeros, 1, right), scale=float(p["scale"]))
         mapped[zeros] = 0 if policy == "zero" else left[zeros]
         return mapped
+
+
+COMPARISONS = {
+    "equal": cv2.CMP_EQ,
+    "not_equal": cv2.CMP_NE,
+    "less": cv2.CMP_LT,
+    "less_or_equal": cv2.CMP_LE,
+    "greater": cv2.CMP_GT,
+    "greater_or_equal": cv2.CMP_GE,
+}
+
+
+class ComparePixels(Block):
+    type_id, title, category = "cv.compare_pixels", "Compare pixels", "Image processing"
+    block_type, subtype = "Image processing", "Image math"
+    inputs = ImageArithmetic.inputs
+    outputs = (
+        Port("mask"),
+        Port("count", "number"),
+        Port("fraction", "number", required=False),
+    )
+    defaults = {
+        "operation": "greater",
+        "scalar": 0.0,
+        "alignment": "same_frame",
+        "tolerance": 0.0,
+        "channel_rule": "all",
+        "include_alpha": False,
+    }
+    parameter_choices = {
+        "operation": tuple(COMPARISONS),
+        "alignment": ImageArithmetic.parameter_choices["alignment"],
+        "channel_rule": ("all", "any"),
+    }
+    parameter_ranges = {"scalar": NumericRange(), "tolerance": NumericRange(0)}
+    parameter_help = {
+        "scalar": ImageArithmetic.parameter_help["scalar"],
+        "alignment": ImageArithmetic.parameter_help["alignment"],
+        "tolerance": "For equal/not equal only, treat differences up to this amount as equal.",
+        "channel_rule": "Match a color pixel when all or any active channels match.",
+        "include_alpha": "Compare alpha as an active channel when present.",
+    }
+
+    def process(self, inputs):
+        source = inputs["image_a"]
+        p = self.parameters
+        left, right = binary_image_operands(inputs, p, include_alpha=p["include_alpha"])
+        selection = selection_mask(inputs, source)
+        selected = None if selection is None else selection != 0
+        a, b, shape = operand_matrices(left, right, selected)
+        output = np.zeros(source.shape[:2], dtype=np.uint8)
+        eligible = output.size if selected is None else int(np.count_nonzero(selected))
+        if eligible:
+            operation = p["operation"]
+            tolerance = float(p["tolerance"])
+            if tolerance and operation in ("equal", "not_equal"):
+                cmp = cv2.CMP_LE if operation == "equal" else cv2.CMP_GT
+                matches = cv2.compare(cv2.absdiff(a, b), np.full_like(a, tolerance), cmp)
+            else:
+                matches = cv2.compare(a, b, COMPARISONS[operation])
+            matches = matches.reshape(shape)
+            if left.ndim == 3:
+                reduce_channels = np.all if p["channel_rule"] == "all" else np.any
+                matches = reduce_channels(matches, axis=-1).astype(np.uint8) * 255
+            if selected is None:
+                output = matches
+            else:
+                output[selected] = matches
+        count = int(np.count_nonzero(output))
+        return Result(
+            {
+                "mask": output,
+                "count": count,
+                "fraction": count / eligible if eligible else NO_VALUE,
+            },
+            message=f"{count} of {eligible} selected pixels matched",
+        )
 
 
 def rectangular_sums(integral, y0, y1, x0, x1):
@@ -683,6 +773,7 @@ ANALYSIS_BLOCKS = (
     LocalWindowStatistics,
     IntensityTransform,
     ImageArithmetic,
+    ComparePixels,
     SeparableFilter,
     CornerResponse,
     RefineCorners,
