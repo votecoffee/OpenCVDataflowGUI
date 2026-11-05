@@ -659,6 +659,7 @@ def builtin_registry():
         SaveCalibration,
         Undistort,
     )
+    from .calipers import BeadCalipers
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_tools import CLOUD_BLOCKS
     from .code_readers import CODE_READER_BLOCKS
@@ -740,6 +741,7 @@ def builtin_registry():
         FitShape,
         FindTemplateInstances,
         SelectPickCandidate,
+        BeadCalipers,
         TrainShapePattern,
         MatchShapePattern,
         TrainTexturePattern,

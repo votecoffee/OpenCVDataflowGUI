@@ -13,7 +13,7 @@ lists the tools that can be placed on a graph today.
 | 1 | Separate touching parts and isolate foreground | The basic workflow is available, including distance-peak seed generation, watershed and morphological reconstruction. Add a reusable touching-parts job with calibration and validation fixtures. |
 | 2 | Reference comparison and defect scoring | The basic workflow is available, including histogram backprojection and a reusable registered defect inspection. Add validated defect-specific inspection recipes and lighting normalization. |
 | 3 | Multi-result template search and pick selection | Subpixel template peaks, explicit visible-feature evidence and depth-based occlusion checks. Multi-result matching and image-plane pick selection now support score, pose angle, clearance and deterministic downstream ranking. |
-| 4 | Calipers, widths, contours and shape fitting | Intensity profiles along pose-relative calipers, paired edges, width/gap/discontinuity along a path and contour-profile tolerances. Hull and convexity defects, point-to-contour distance, contour similarity and dedicated line, ellipse and minimum enclosing circle fits are available. |
+| 4 | Calipers, widths, contours and shape fitting | Curved path sampling, contour-profile tolerances and physical-unit tolerance recipes. Pose-relative paired-edge calipers now measure width, center offset and gaps across straight parallel scans. Hull, contour similarity, point-to-contour distance and dedicated shape fits are available. |
 | 5 | File video and replay | Video file/stream sources, decode timestamps, seek, frame ranges and extraction, codec/container selection, video writing and deterministic end-of-stream. Extend image-camera acquisition with timed replay and independent source readiness. |
 | 6 | Industrial text and code workflows | OCR text detection, recognition, character rules and training/recipe assets. Add verified Data Matrix and other required symbologies through a suitable backend, and a separate grading workflow. Basic QR and OpenCV linear-code decoding are available. |
 | 7 | Color tolerance and coating checks | ROI color statistics, Lab color difference including ΔE00, color-chart calibration, correction matrix and color-class decisions. Existing histogram and color balance remain useful inputs. |
@@ -200,3 +200,21 @@ synthetic obstacle mask and runs with
 `opencv-dataflow-run examples/conveyor_pick.json`. The check measures visible
 image-plane clearance. Depth, gripper reachability and swept-volume collision
 checks remain separate work.
+
+
+## Available bead calipers
+
+**Paired-edge bead calipers** samples parallel intensity scans and finds
+opposing edges around a bright or dark bead. Set the scan endpoints across
+the expected bead and the span along it. An optional pose makes the scans
+follow the part. Width and center offset are measured in image pixels
+without a pose and in local pose pixels with a pose. Edge coordinates are
+always reported in the working image.
+
+The block checks minimum edge gradient, width, center offset, passing-scan
+fraction and the longest run of missing scans. A mask or region must cover
+the full scan, including any interpolation neighbors that contribute.
+Missing scans, including scans outside the image or selection, count
+toward the gap. The [caliper example](../examples/bead_calipers.json) measures
+a 126-pixel synthetic strip and runs with
+`opencv-dataflow-run examples/bead_calipers.json`.
