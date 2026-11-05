@@ -2150,7 +2150,7 @@ P3	function	cv2.decolor	no static reference	-
 P3	function	cv2.decomposeEssentialMat	no static reference	-
 P3	function	cv2.decomposeHomographyMat	no static reference	-
 P3	function	cv2.decomposeProjectionMatrix	no static reference	-
-P3	function	cv2.demosaicing	no static reference	-
+P3	function	cv2.demosaicing	literal reference	-
 P3	function	cv2.denoise_TVL1	no static reference	-
 P3	class	cv2.DenseOpticalFlow	no static reference	-
 P3	method	cv2.DenseOpticalFlow.calc	no static reference	-

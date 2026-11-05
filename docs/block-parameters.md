@@ -971,6 +971,20 @@ Inputs: `image` (image).
 | `mode` | `"2d"` | `2d`, `rows` Transform the entire image or transform each row independently. |
 | `odd_size` | `"pad_even"` | `pad_even`, `reject` Extend odd transformed axes by repeating the last pixel, or reject them. |
 
+## Demosaic Bayer image (`cv.demosaic_bayer`)
+
+Image processing / Color and depth
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `pattern` | `"RGGB"` | `RGGB`, `BGGR`, `GRBG`, `GBRG` Sensor's 2 by 2 tile in row order, starting at its original top-left pixel. |
+| `algorithm` | `"bilinear"` | `bilinear`, `edge_aware`, `vng` VNG requires uint8 and at least eight pixels on both axes. |
+| `color_format` | `"bgr"` | `bgr`, `rgb`, `bgra`, `rgba`, `gray` Grayscale and opaque alpha outputs use bilinear interpolation. |
+| `column_offset` | `"even"` | `even`, `odd` Parity of the first input column relative to the sensor origin. |
+| `row_offset` | `"even"` | `even`, `odd` Parity of the first input row relative to the sensor origin. |
+
 ## Discrete Fourier transform (DFT) (`cv.dft`)
 
 Image processing / Spectral

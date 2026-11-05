@@ -323,7 +323,9 @@ The [flat-field correction example](examples/flat_field/README.md) uses bright a
 reference images to remove uneven illumination before inspection. The
 [guided filter example](examples/guided_filter/README.md) reduces noise while
 preserving a high-contrast edge. The [domain transform example](examples/domain_transform_filter/README.md)
-compares three edge-preserving smoothing modes.
+compares three edge-preserving smoothing modes. The
+[Bayer demosaicing example](examples/bayer_demosaicing/README.md) reconstructs
+RGB from a synthetic 16-bit sensor mosaic.
 
 The [skeleton pruning example](examples/skeleton_pruning/README.md) extracts
 centerlines from a binary mask and removes short spurs. Install the optional
