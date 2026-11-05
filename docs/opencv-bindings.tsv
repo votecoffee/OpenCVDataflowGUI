@@ -4474,7 +4474,7 @@ P3	method	cv2.SparsePyrLKOpticalFlow.setMinEigThreshold	no static reference	-
 P3	method	cv2.SparsePyrLKOpticalFlow.setTermCriteria	no static reference	-
 P3	method	cv2.SparsePyrLKOpticalFlow.setWinSize	no static reference	-
 P3	function	cv2.SparsePyrLKOpticalFlow_create	no static reference	-
-P3	function	cv2.spatialGradient	no static reference	-
+P3	function	cv2.spatialGradient	literal reference	-
 P3	function	cv2.split	literal reference	-
 P3	function	cv2.sqrBoxFilter	no static reference	-
 P3	function	cv2.sqrt	literal reference	-
