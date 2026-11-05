@@ -27,6 +27,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Lab color classification](lab_color_classification/README.md) | Classify a measured image patch against a named Lab palette. |
 | [Stereo WLS confidence](stereo_confidence/README.md) | Gate disparity with a confidence image before reconstructing a partly occluded stereo pair. |
 | [Depth hole filling](depth_hole_filling/README.md) | Fill small enclosed depth gaps and mark estimated samples before point-cloud reconstruction. |
+| [SIFT registration](sift_registration/README.md) | Match SIFT descriptors and recover a known image translation. |
 | [Skeletonization and spur pruning](skeleton_pruning/README.md) | Extract a binary centerline and visualize the short branches removed from it. |
 | [Watershed separation](watershed/README.md) | Separate touching parts using distance-peak seeds or points placed on the image. |
 | [Data Matrix reading](datamatrix_reading/README.md) | Read the bundled synthetic Data Matrix and verify the decoded text. |

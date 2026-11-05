@@ -213,6 +213,9 @@ for training regions, pose coordinates, controls and current algorithm limits.
 Use **Subpixel** on template match blocks to refine centers and poses.
 [Compare pixel-grid and subpixel matches](examples/subpixel_template/README.md).
 
+The [SIFT registration example](examples/sift_registration/README.md) detects and
+matches keypoints before estimating an image homography.
+
 Pattern matchers also return a configurable **pose**: set local x/y/angular offsets
 to locate an inspection origin on the part. **Pose from feature** creates a frame
 from a ranked blob, line, contour or pattern match, and **Offset pose** composes
