@@ -164,6 +164,87 @@ class GammaCorrection(RegionalOperation, ImageTool):
         return encoded_result(output, source)
 
 
+LUT_CHANNELS = tuple(f"channel_{index}_curve" for index in range(4))
+
+
+def lut_points(value, field):
+    try:
+        points = np.asarray(value)
+    except (TypeError, ValueError) as exc:
+        raise ValidationError("Use a list of [input, output] points", field) from exc
+    if (
+        points.ndim != 2
+        or points.shape[1] != 2
+        or not 2 <= len(points) <= 1024
+        or points.dtype.kind not in "uif"
+        or not np.isfinite(points).all()
+        or np.any((points < 0) | (points > 1))
+        or not np.all(points[1:, 0] > points[:-1, 0])
+    ):
+        raise ValidationError(
+            "Use 2 to 1024 [input, output] points in [0, 1] with increasing input values", field
+        )
+    return points
+
+
+class IntensityLookupTable(RegionalOperation, ImageTool):
+    type_id, title, subtype = "cv.intensity_lut", "Intensity lookup table", "Contrast"
+    defaults = {
+        "curve": [[0.0, 0.0], [1.0, 1.0]],
+        **{key: [] for key in LUT_CHANNELS},
+        "interpolation": "linear",
+        "preserve_alpha": True,
+    }
+    parameter_choices = {"interpolation": ("linear", "step")}
+    parameter_help = {
+        "curve": "Shared [input, output] points in [0, 1]. Values beyond endpoints are clamped.",
+        **{
+            key: "Optional override in stored channel order. Empty uses the shared curve."
+            for key in LUT_CHANNELS
+        },
+        "interpolation": "Linear blends points. Step holds the previous point's output.",
+        "preserve_alpha": "Copy alpha on four-channel images and ignore the fourth curve.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        lut_points(p["curve"], "curve")
+        for key in LUT_CHANNELS:
+            value = p[key]
+            if not isinstance(value, list) or value:
+                lut_points(value, key)
+        if type(p["preserve_alpha"]) is not bool:
+            raise ValidationError("Preserve alpha must be a boolean", "preserve_alpha")
+
+    def process(self, inputs):
+        source = inputs["image"]
+        image = image_value(source, (np.uint8, np.uint16))
+        p = self.parameters
+        maximum = np.iinfo(image.dtype).max
+        indices = np.arange(maximum + 1, dtype=np.float64) / maximum
+
+        def table(curve):
+            x, y = np.asarray(curve, dtype=np.float64).T
+            if p["interpolation"] == "linear":
+                values = np.interp(indices, x, y)
+            else:
+                values = y[np.maximum(0, np.searchsorted(x, indices, side="right") - 1)]
+            return np.rint(values * maximum).astype(image.dtype)
+
+        shared = table(p["curve"])
+        count = 1 if image.ndim == 2 else image.shape[2]
+        if any(len(p[key]) for key in LUT_CHANNELS[:count]):
+            tables = [table(p[key]) if len(p[key]) else shared for key in LUT_CHANNELS[:count]]
+            lookup = np.stack(tables, axis=-1).reshape(1, -1, count)
+        else:
+            lookup = shared
+        output = cv2.LUT(image, lookup)
+        if count == 4 and p["preserve_alpha"]:
+            output[..., 3] = image[..., 3]
+        return encoded_result(output, source)
+
+
 class SplitChannels(ImageTool):
     type_id, title, subtype = "cv.split_channels", "Split three channels", "Channels"
     outputs = (Port("channel_0"), Port("channel_1"), Port("channel_2"))
@@ -698,6 +779,7 @@ FEATURE_BLOCKS = (
     CLAHE,
     Normalize,
     GammaCorrection,
+    IntensityLookupTable,
     SplitChannels,
     MergeChannels,
     SplitAlphaChannels,
