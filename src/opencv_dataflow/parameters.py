@@ -10,6 +10,12 @@ BORDERS = {
     "reflect_101": cv2.BORDER_REFLECT_101,
     "reflect_edge": cv2.BORDER_REFLECT,
 }
+CONTOUR_APPROXIMATIONS = {
+    "none": cv2.CHAIN_APPROX_NONE,
+    "simple": cv2.CHAIN_APPROX_SIMPLE,
+    "tc89_l1": cv2.CHAIN_APPROX_TC89_L1,
+    "tc89_kcos": cv2.CHAIN_APPROX_TC89_KCOS,
+}
 OUTPUT_DEPTHS = {
     "same": -1,
     "uint8": cv2.CV_8U,
