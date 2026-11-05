@@ -2405,7 +2405,7 @@ P3	method	cv2.dnn_superres.DnnSuperResImpl.create	method name only	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.getAlgorithm	no static reference	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.getScale	no static reference	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.readModel	no static reference	-
-P3	method	cv2.dnn_superres.DnnSuperResImpl.setModel	no static reference	-
+P3	method	cv2.dnn_superres.DnnSuperResImpl.setModel	method name only	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.setPreferableBackend	method name only	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.setPreferableTarget	method name only	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.upsample	no static reference	-

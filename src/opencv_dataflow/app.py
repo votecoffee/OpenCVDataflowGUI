@@ -76,6 +76,7 @@ from .examples3d import (
 )
 from .filmstrip_viewer import FilmstripViewer
 from .image_queue import ImageQueue
+from .kernel_editor import KERNEL_PARAMETERS, SHAPE_LABELS, KernelEditor
 from .outcomes import INPUT_FAILURE_POLICIES
 from .parallel_inspection import ParallelInspect
 from .payloads import ValuePacket, describe_value, packet_for, prepare_inputs
@@ -188,6 +189,7 @@ class Inspector(QWidget):
         self._region_source = None
         self._region_inputs = {}
         self.fields, self.port_checks, self.level_fields, self.failure_fields = {}, [], {}, {}
+        self.kernel_parameters = {}
         self._live_revision = 0
         self._live_due = False
         self._live_worker = None
@@ -248,6 +250,7 @@ class Inspector(QWidget):
         while self.form.rowCount():
             self.form.removeRow(0)
         self.fields, self.port_checks, self.level_fields, self.failure_fields = {}, [], {}, {}
+        self.kernel_parameters = {}
         if block is None:
             self.caption.setText("Select a block to configure its tools and ports.")
             self.refresh_result()
@@ -345,7 +348,15 @@ class Inspector(QWidget):
                     and (model is not None or label in ("Train from input", "Load trained model…"))
                 )
                 self.form.addRow(button)
+        if getattr(block, "supports_kernel_editor", False):
+            self.kernel_parameters = {key: block.parameters[key] for key in KERNEL_PARAMETERS}
+            self.kernel_button = QPushButton()
+            self.update_kernel_label()
+            self.kernel_button.clicked.connect(self.edit_kernel)
+            self.form.addRow(self.kernel_button)
         for key, value in block.parameters.items():
+            if key in self.kernel_parameters:
+                continue
             if key in block.parameter_choices:
                 field = QComboBox()
                 field.addItems(block.parameter_choices[key])
@@ -565,7 +576,7 @@ class Inspector(QWidget):
 
     def read_parameters(self):
         b = self.block
-        parameters = {}
+        parameters = dict(self.kernel_parameters)
         for key, field in self.fields.items():
             initial = b.defaults[key]
             if isinstance(field, QComboBox):
@@ -586,6 +597,24 @@ class Inspector(QWidget):
         json.dumps(parameters, allow_nan=False)
         b.validate_parameters(parameters)
         return parameters
+
+    def update_kernel_label(self):
+        shape = self.kernel_parameters["shape"]
+        self.kernel_button.setText(f"Edit kernel… ({SHAPE_LABELS.get(shape, shape)})")
+
+    def edit_kernel(self):
+        try:
+            dialog = KernelEditor(self.block, self.kernel_parameters, self)
+        except (ValueError, TypeError, KeyError) as exc:
+            self.window.warn(str(exc))
+            return
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            updated = dialog.parameters
+            if updated != self.kernel_parameters:
+                self.kernel_parameters = updated
+                self.update_kernel_label()
+                self.schedule_live_preview()
+        dialog.deleteLater()
 
     def edit_region(self):
         block = self.block

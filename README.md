@@ -96,6 +96,11 @@ one another produce a single preview. The checkbox starts off and resets when yo
 leave the block. Previews stay in the inspector. Use **Apply configuration** to
 save the edits to the graph.
 
+In a **Morphology** block, choose **Edit kernel…** to preview a rectangle,
+ellipse, cross, or diamond, or toggle individual cells in a custom kernel.
+**Use kernel** stages the edit for live preview and **Apply configuration**
+keeps it in the graph.
+
 Node rearrangements mark the project as modified. **Save/Ctrl+S remembers node
 positions even when connections are unchanged**, including layouts inside nested
 ToolBlocks. Layout-only moves retain existing results. Positions are saved in the

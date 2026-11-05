@@ -1,8 +1,11 @@
+import json
+
 import cv2
 import numpy as np
 import pytest
 
 from opencv_dataflow.blocks import builtin_registry
+from opencv_dataflow.core import Graph
 from opencv_dataflow.images import ImageArray, image_format, preview_rgb
 
 
@@ -248,3 +251,32 @@ def test_template_rejects_constant_or_oversize_reference(registry):
     assert "nonconstant" in block.error
     block.execute({"image": np.zeros((10, 10), np.uint8), "template": np.ones((13, 13), np.uint8)})
     assert "fit inside" in block.error
+
+
+def test_morphology_custom_kernel_survives_serialization_and_uses_operation_anchor(registry):
+    graph = Graph()
+    kernel = [[1, 0, 1, 0], [0, 0, 1, 1]]
+    block = graph.add(
+        registry.create(
+            "cv.morphology",
+            parameters={
+                "shape": "custom",
+                "custom_kernel": kernel,
+                "operation": "dilate",
+                "anchor": [3, 0],
+            },
+        )
+    )
+    restored = Graph.from_dict(json.loads(json.dumps(graph.to_dict())), registry).blocks[block.id]
+    image = np.zeros((13, 15), np.uint8)
+    image[5, 6] = 255
+    restored.execute({"image": image})
+    assert restored.state == "pass", restored.error
+    np.testing.assert_array_equal(
+        restored.last_output_images["image"],
+        cv2.dilate(image, np.array(kernel, np.uint8), anchor=(3, 0)),
+    )
+    for invalid in ([[0, 0]], [[1], [0, 1]], [[1, 2]]):
+        restored.parameters["custom_kernel"] = invalid
+        restored.execute({"image": image})
+        assert restored.state == "error"
