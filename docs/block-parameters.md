@@ -1151,10 +1151,11 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `operation` | `"open"` | `erode`, `dilate`, `open`, `close`, `gradient`, `tophat`, `blackhat` |
-| `shape` | `"ellipse"` | `rect`, `ellipse`, `cross` |
+| `shape` | `"ellipse"` | `rect`, `ellipse`, `cross`, `diamond`, `custom` |
 | `kernel` | `3` |  |
 | `iterations` | `1` |  |
 | `kernel_y` | `0` |  |
+| `custom_kernel` | `[]` | Rectangular grid of 0s and 1s used when Shape is custom. |
 | `anchor` | `[-1, -1]` |  |
 | `shape_anchor` | `[-1, -1]` | Kernel construction anchor (cross shape); operation anchor is separate. |
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |

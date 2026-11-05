@@ -30,7 +30,7 @@ The portable `examples/trained_patterns.json` job exercises all three tools.
 | Segmentation | Automatic threshold | `threshold` with Otsu or Triangle; image and selected threshold outputs |
 | Segmentation | Adaptive threshold | `adaptiveThreshold`; mean/Gaussian local threshold, neighborhood, offset and inverse option |
 | Segmentation | In range mask | `inRange`; scalar or per-channel inclusive lower/upper bounds |
-| Morphology | Morphology | `morphologyEx`; erode, dilate, open, close, gradient, top-hat or black-hat; rectangle/ellipse/cross kernel |
+| Morphology | Morphology | `morphologyEx`; erode, dilate, open, close, gradient, top-hat or black-hat; visual editor for rectangle, ellipse, cross, diamond, and custom binary kernels |
 | Image math | Bitwise image operation | `bitwise_and/or/xor/not`; second input required except for NOT |
 | Image math | Weighted blend | `addWeighted`; explicit alpha, beta and gamma |
 | Edges | Sobel / Scharr / Laplacian | Signed float32 derivative and a separate uint8 absolute-magnitude preview |

@@ -357,6 +357,7 @@ class InRange(RegionalOperation, ImageTool):
 
 class Morphology(RegionalOperation, ImageTool):
     region_background = "zero"
+    supports_kernel_editor = True
     type_id, title, subtype = "cv.morphology", "Morphology", "Morphology"
     defaults = {
         "operation": "open",
@@ -364,6 +365,7 @@ class Morphology(RegionalOperation, ImageTool):
         "kernel": 3,
         "iterations": 1,
         "kernel_y": 0,
+        "custom_kernel": [],
         "anchor": [-1, -1],
         "shape_anchor": [-1, -1],
         "border": "constant",
@@ -371,21 +373,47 @@ class Morphology(RegionalOperation, ImageTool):
     }
     parameter_choices = {
         "operation": ("erode", "dilate", "open", "close", "gradient", "tophat", "blackhat"),
-        "shape": ("rect", "ellipse", "cross"),
+        "shape": ("rect", "ellipse", "cross", "diamond", "custom"),
         "border": tuple(BORDERS),
     }
     parameter_help = {
         "border_value": "Empty keeps the neutral native border; otherwise one to four values.",
         "shape_anchor": "Kernel construction anchor (cross shape); operation anchor is separate.",
+        "custom_kernel": "Rectangular grid of 0s and 1s used when Shape is custom.",
     }
+
+    @staticmethod
+    def kernel_matrix(parameters):
+        if parameters["shape"] == "custom":
+            kernel = np.asarray(parameters["custom_kernel"])
+            if (
+                kernel.ndim != 2
+                or not all(1 <= size <= 255 for size in kernel.shape)
+                or not np.isin(kernel, (0, 1)).all()
+                or not np.any(kernel)
+            ):
+                raise ValueError(
+                    "Custom kernel needs a rectangular grid of 0s and 1s, "
+                    "up to 255 × 255, with at least one active cell"
+                )
+            return kernel.astype(np.uint8)
+        width = integer(parameters["kernel"], "Kernel width", high=255)
+        height = integer(parameters["kernel_y"], "Kernel height", 0, 255) or width
+        shape = {
+            "rect": cv2.MORPH_RECT,
+            "ellipse": cv2.MORPH_ELLIPSE,
+            "cross": cv2.MORPH_CROSS,
+            "diamond": cv2.MORPH_DIAMOND,
+        }[parameters["shape"]]
+        return cv2.getStructuringElement(
+            shape, (width, height), anchor_value(parameters["shape_anchor"], width, height)
+        )
 
     def process(self, inputs):
         image = image_value(inputs["image"])
-        size = integer(self.parameters["kernel"], "Kernel", high=255, odd=True)
+        kernel = self.kernel_matrix(self.parameters)
+        height, width = kernel.shape
         iterations = integer(self.parameters["iterations"], "Iterations", high=100)
-        shape = {"rect": cv2.MORPH_RECT, "ellipse": cv2.MORPH_ELLIPSE, "cross": cv2.MORPH_CROSS}[
-            self.parameters["shape"]
-        ]
         op = {
             "erode": cv2.MORPH_ERODE,
             "dilate": cv2.MORPH_DILATE,
@@ -395,19 +423,14 @@ class Morphology(RegionalOperation, ImageTool):
             "tophat": cv2.MORPH_TOPHAT,
             "blackhat": cv2.MORPH_BLACKHAT,
         }[self.parameters["operation"]]
-        ky = integer(self.parameters["kernel_y"], "Kernel Y", 0, 255) or size
-        anchor = anchor_value(self.parameters["anchor"], size, ky)
-        shape_anchor = anchor_value(self.parameters["shape_anchor"], size, ky)
         options = {
             "iterations": iterations,
-            "anchor": anchor,
+            "anchor": anchor_value(self.parameters["anchor"], width, height),
             "borderType": BORDERS[self.parameters["border"]],
         }
         if self.parameters["border_value"]:
             options["borderValue"] = scalar_value(self.parameters["border_value"])
-        output = cv2.morphologyEx(
-            image, op, cv2.getStructuringElement(shape, (size, ky), shape_anchor), **options
-        )
+        output = cv2.morphologyEx(image, op, kernel, **options)
         return encoded_result(output, inputs["image"])
 
 

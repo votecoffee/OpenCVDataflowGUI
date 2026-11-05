@@ -5,6 +5,7 @@ import time
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
+import numpy as np
 import pytest
 from PySide6.QtCore import QPoint, Qt
 from PySide6.QtTest import QTest
@@ -15,6 +16,7 @@ from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.canvas import CanvasScene, CanvasView
 from opencv_dataflow.core import Graph
 from opencv_dataflow.images import ImageArray
+from opencv_dataflow.kernel_editor import KernelEditor
 from opencv_dataflow.toolblock_editor import InterfaceDialog
 from opencv_dataflow.toolblocks import encapsulate
 
@@ -82,6 +84,51 @@ def test_live_results_debounce_use_captured_input_and_leave_configuration_untouc
         assert not inspector.live_results.isChecked()
         assert len(calls) == 1
     finally:
+        window.close()
+
+
+def test_morphology_kernel_editor_stages_a_custom_grid_for_live_preview(app, monkeypatch):
+    window = MainWindow()
+    graph = Graph()
+    block = graph.add(window.registry.create("cv.morphology"))
+    window.replace_graph(graph)
+    window.show()
+    block.execute({"image": np.zeros((12, 16), np.uint8)})
+    window.scene.nodes[block.id].setSelected(True)
+    inspector = window.inspector
+    inspector.live_results.setChecked(True)
+    inspector.live_delay_ms = 50
+
+    def edit(dialog):
+        dialog.show()
+        dialog.shape.setCurrentIndex(dialog.shape.findData("diamond"))
+        dialog.width.setValue(5)
+        dialog.height.setValue(5)
+        assert dialog.grid.cells[1].tolist() == [0, 1, 1, 1, 0]
+        dialog.shape.setCurrentIndex(dialog.shape.findData("custom"))
+        app.processEvents()
+        cell = dialog.grid.index(0, 0)
+        QTest.mouseClick(
+            dialog.table.viewport(),
+            Qt.MouseButton.LeftButton,
+            pos=dialog.table.visualRect(cell).center(),
+        )
+        assert dialog.parameters["custom_kernel"][0] == [1, 0, 1, 0, 0]
+        return QDialog.DialogCode.Accepted
+
+    try:
+        monkeypatch.setattr(KernelEditor, "exec", edit)
+        inspector.edit_kernel()
+        pump_until(app, lambda: inspector._live_result is not None)
+        assert inspector._live_result.state == "pass"
+        assert inspector._live_result.parameters["custom_kernel"][0] == [1, 0, 1, 0, 0]
+        assert block.parameters["shape"] == "ellipse"
+        assert not window.dirty
+        assert inspector.apply()
+        assert block.parameters["shape"] == "custom"
+        assert block.parameters["custom_kernel"][0] == [1, 0, 1, 0, 0]
+    finally:
+        window.dirty = False
         window.close()
 
 
@@ -477,6 +524,12 @@ def test_enum_fields_are_dropdowns_and_unknown_values_are_not_silently_replaced(
         block = window.registry.create(kind)
         window.inspector.select(block)
         for key in cls.parameter_choices:
+            if key in window.inspector.kernel_parameters:
+                dialog = KernelEditor(block, window.inspector.kernel_parameters)
+                assert isinstance(dialog.shape, QComboBox)
+                assert dialog.shape.currentData() == block.parameters[key]
+                dialog.deleteLater()
+                continue
             field = window.inspector.fields[key]
             assert isinstance(field, QComboBox)
             assert field.currentText() == str(block.parameters[key])
