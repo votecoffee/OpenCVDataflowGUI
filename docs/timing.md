@@ -1,5 +1,8 @@
 # Execution and ticket timing
 
+For start/finish events, ticket Gantt charts and rolling block concurrency views, see
+[block activity events and timelines](activity-timelines.md).
+
 Every block has runtime `block.timing` statistics, also included in headless JSON
 reports and the inspector:
 

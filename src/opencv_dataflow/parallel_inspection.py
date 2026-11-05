@@ -362,6 +362,11 @@ class ParallelInspect(Block):
                 tool._allow_recipe_activation = False
                 tool.graph.bind_recipes(self._recipes, allow_activation=False)
                 tool._event_path = f"{getattr(self, '_event_path', self.id)}/part-{index}"
+                tool._activity = self._activity
+                tool._activity_path = tool._event_path
+                logical = getattr(self, "_activity_logical_path", self.id)
+                tool._activity_logical_path = f"{logical}/[inspection]"
+                tool.graph.bind_activity(self._activity, tool._event_path, logical)
                 tool.graph.bind_ticket_results(self._ticket_results, tool._event_path)
                 tool.graph.bind_project_dir(self.project_dir)
                 # Per-item graphs run serially; the outer pool owns part concurrency.

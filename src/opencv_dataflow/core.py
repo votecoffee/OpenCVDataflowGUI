@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import json
 import math
+import threading
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass, field
@@ -13,6 +14,7 @@ from typing import Any, ClassVar
 
 import numpy as np
 
+from .activity import ActivityLog, report
 from .outcomes import (
     INPUT_FAILURE_POLICIES,
     TicketResults,
@@ -108,6 +110,9 @@ class Block:
             self.exposed_inputs = [p.name for p in self.inputs]
             self.exposed_outputs = [p.name for p in self.outputs]
         self.timing = WorkTiming()
+        self._activity = None
+        self._execution_lock = threading.Lock()
+        self._execution_owner = None
         self._work_started = self._work_finished = None
         self.elapsed_ms = 0.0
         self.clear_result()
@@ -156,6 +161,51 @@ class Block:
                 raise ValueError(f"{label} must be one of: {', '.join(map(str, choices))}")
 
     def execute(self, values, cancelled=lambda: False):
+        invocation = uuid.uuid4().hex
+        self.report_event("input", values=values, invocation=invocation)
+        acquired = self._execution_lock.acquire(blocking=False)
+        if not acquired:
+            self.report_event(
+                "blocked", {"reason": "input arrived while block active"}, values, invocation
+            )
+            if self._execution_owner == threading.get_ident():
+                raise RuntimeError("A block cannot recursively execute itself")
+            while not self._execution_lock.acquire(timeout=0.05):
+                if cancelled():
+                    self.report_event("cancelled_wait", values=values, invocation=invocation)
+                    return None
+            self.report_event("unblocked", values=values, invocation=invocation)
+        self._execution_owner = threading.get_ident()
+        self._activity_invocation = invocation
+        self._activity_started = False
+        try:
+            return self._execute(values, cancelled)
+        finally:
+            try:
+                if self._activity_started:
+                    observed = dict(values)
+                    if self.last_result is not None:
+                        observed.update(
+                            {
+                                f"output:{name}:{index}": packet
+                                for name, packets in self.current_emissions.items()
+                                for index, packet in enumerate(packets)
+                            }
+                        )
+                    if self._source_ticket is not None:
+                        observed["source_ticket"] = self._source_ticket
+                    self.report_event(
+                        "finish", values=observed, invocation=invocation, at=self._work_finished
+                    )
+            finally:
+                self._execution_owner = None
+                self._execution_lock.release()
+
+    def report_event(self, kind, data=None, values=None, invocation=None, at=None):
+        """Publish a compact diagnostic marker to the shared job activity log."""
+        report(self, kind, data, values, invocation, at)
+
+    def _execute(self, values, cancelled=lambda: False):
         try:
             rejected = rejected_inputs(self, values)
         except (ValueError, TypeError):
@@ -168,6 +218,7 @@ class Block:
                 f"Rejected failed input: {', '.join(rejected)}; retained last processed result"
             )
             publish_result(self, values, kind="input_rejected", message=self.last_rejection)
+            self.report_event("rejected", {"message": self.last_rejection}, values)
             return None
         self.clear_result(preserve_history=True)
         Block.clear_result(self)
@@ -175,6 +226,10 @@ class Block:
         self._cancelled = cancelled
         self._work_started = self.timing.begin()
         self._work_finished = None
+        self._activity_started = True
+        self._activity_start_reported = False
+        if not self.ticket_source:
+            self._report_activity_start(values)
         configured_parameters = self.parameters
         configured_model = getattr(self, "trained_model", None)
         try:
@@ -188,10 +243,6 @@ class Block:
                     raise ValueError(f"Missing input: {port.name}")
                 if port.name in values:
                     validate_value(port, values[port.name])
-            result = self.process(copy.deepcopy(self.last_inputs))
-            if not isinstance(result, Result):
-                raise TypeError("process() must return Result")
-            result = self.finalize_result(result, self.last_inputs)
             if self.ticket_source:
                 settings = self.ticket_settings
                 if settings.get("mode") not in TICKET_MODES:
@@ -204,8 +255,15 @@ class Block:
                 ticket = getattr(self, "_clock", DIRECT_CLOCK).issue(
                     self.id, settings["mode"], external
                 )
-                result.outputs["ticket"] = ticket
                 self._source_ticket = ticket
+                self._report_activity_start(values)
+                self.report_event("ticket_assigned", values={"ticket": ticket})
+            result = self.process(copy.deepcopy(self.last_inputs))
+            if not isinstance(result, Result):
+                raise TypeError("process() must return Result")
+            result = self.finalize_result(result, self.last_inputs)
+            if self.ticket_source:
+                result.outputs["ticket"] = self._source_ticket
             result = finish_outputs(self, result)
             if not isinstance(result.passed, (bool, np.bool_)) or (
                 result.final_judgment is not None
@@ -269,18 +327,26 @@ class Block:
             )
         except Exception as exc:
             self._finish_work()
+            if not self._activity_start_reported:
+                self._report_activity_start(values)
             self.state = "error"
             self.error = f"{type(exc).__name__}: {exc}"
+            self.report_event("exception", {"message": self.error}, values)
             self.last_result = None
             self.last_output_images, self.last_graphics, self.current_emissions = {}, {}, {}
+            failure_values = {
+                name: value
+                if isinstance(value, ValuePacket)
+                else ValuePacket(value, self.input_payloads.get(name, {}))
+                for name, value in values.items()
+            }
+            if self._source_ticket is not None:
+                failure_values["source_ticket"] = ValuePacket(
+                    self._source_ticket, {"ticket": self._source_ticket}
+                )
             publish_result(
                 self,
-                {
-                    name: value
-                    if isinstance(value, ValuePacket)
-                    else ValuePacket(value, self.input_payloads.get(name, {}))
-                    for name, value in values.items()
-                },
+                failure_values,
                 kind="error",
                 message=self.error,
             )
@@ -292,6 +358,13 @@ class Block:
                 self.trained_model = configured_model
             self._finish_work()
         return self.last_result
+
+    def _report_activity_start(self, values):
+        observed = dict(values)
+        if self._source_ticket is not None:
+            observed["source_ticket"] = self._source_ticket
+        self.report_event("start", values=observed, at=self._work_started)
+        self._activity_start_reported = True
 
     def _finish_work(self):
         if self._work_finished is None:
@@ -403,6 +476,9 @@ class Graph:
         self.project_dir = None
         self.clock = TicketClock()
         self.ticket_results = TicketResults()
+        self.activity = ActivityLog()
+        self._activity_prefix = ""
+        self._activity_logical_prefix = ""
         self._event_prefix = ""
         self.recipes = RecipeCatalog()
         self._allow_recipe_activation = True
@@ -420,6 +496,27 @@ class Graph:
                 block.graph.bind_recipes(
                     self.recipes,
                     self._allow_recipe_activation and not getattr(block, "owns_workers", False),
+                )
+
+    def bind_activity(self, log=None, prefix=None, logical_prefix=None):
+        if log is not None:
+            self.activity = log
+        if prefix is not None:
+            self._activity_prefix = prefix
+            self._activity_logical_prefix = prefix if logical_prefix is None else logical_prefix
+        prefix = self._activity_prefix
+        logical = self._activity_logical_prefix
+        for block in self.blocks.values():
+            block._activity = self.activity
+            block._activity_path = f"{prefix}/{block.id}" if prefix else block.id
+            block._activity_logical_path = f"{logical}/{block.id}" if logical else block.id
+            binding = (id(self.activity), block._activity_path, block._activity_logical_path)
+            if getattr(block, "_activity_binding", None) != binding:
+                block._activity_binding = binding
+                block.report_event("registered")
+            if hasattr(block, "graph"):
+                block.graph.bind_activity(
+                    self.activity, block._activity_path, block._activity_logical_path
                 )
 
     def bind_ticket_results(self, consumer=None, prefix=None):
@@ -450,6 +547,7 @@ class Graph:
             self.recipes.merge(block.graph.recipes)
         self.blocks[block.id] = block
         self.bind_recipes()
+        self.bind_activity()
         block.project_dir = self.project_dir
         from .toolblocks import ToolBlock
 
@@ -593,6 +691,7 @@ class Graph:
                         block.use_lease = True
                         provided.update(capture.snapshots)
         self.bind_ticket_results()
+        self.bind_activity()
         self.bind_recipes()
         self.clear_results(preserve_history=True)
         injected = injected or {}
