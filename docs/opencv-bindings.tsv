@@ -4279,7 +4279,7 @@ P3	class	cv2.RotatedRect	no static reference	-
 P3	method	cv2.RotatedRect.boundingRect	method name only	-
 P3	method	cv2.RotatedRect.boundingRect2f	no static reference	-
 P3	method	cv2.RotatedRect.points	method name only	-
-P3	function	cv2.rotatedRectangleIntersection	no static reference	-
+P3	function	cv2.rotatedRectangleIntersection	literal reference	-
 P3	function	cv2.RQDecomp3x3	no static reference	-
 P3	class	cv2.saliency.MotionSaliency	no static reference	-
 P3	class	cv2.saliency.MotionSaliencyBinWangApr2014	no static reference	-
