@@ -4142,8 +4142,8 @@ P3	function	cv2.rectangle	literal reference	-
 P3	function	cv2.rectangleIntersectionArea	no static reference	-
 P3	function	cv2.redirectError	no static reference	-
 P3	function	cv2.reduce	literal reference	-
-P3	function	cv2.reduceArgMax	no static reference	-
-P3	function	cv2.reduceArgMin	no static reference	-
+P3	function	cv2.reduceArgMax	literal reference	-
+P3	function	cv2.reduceArgMin	literal reference	-
 P3	class	cv2.reg.Map	no static reference	-
 P3	method	cv2.reg.Map.compose	no static reference	-
 P3	method	cv2.reg.Map.inverseMap	no static reference	-

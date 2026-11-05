@@ -1305,6 +1305,8 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `axis` | `"columns"` | `rows`, `columns` Each output entry summarizes one row or one column in the input pixel frame. |
 | `statistic` | `"mean"` | `sum`, `mean`, `minimum`, `maximum`, `sum_of_squares` Reduce selected samples in raw image units, separately for each channel. |
 | `include_alpha` | `false` | Include alpha as its own profile on four-channel images. |
+| `extrema_tie` | `"first"` | `first`, `last` For minimum or maximum, choose the first or last matching pixel. |
+| `points_channel` | `"auto"` | `auto`, `Gray`, `B`, `G`, `R`, `A`, `H`, `S`, `V`, `L`, `a`, `b` Channel for Points in minimum or maximum mode. Auto uses the first. |
 
 ## Intensity transform (`cv.intensity_transform`)
 

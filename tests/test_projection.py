@@ -5,6 +5,7 @@ import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.images import ImageArray
+from opencv_dataflow.payloads import NO_VALUE
 
 
 @pytest.mark.parametrize("axis", ["rows", "columns"])
@@ -42,8 +43,20 @@ def test_masked_profiles_preserve_pixel_indices_and_channels(axis, statistic):
             if selected.any():
                 expected = reduction(np.asarray(line[selected, channel], dtype=np.float64))
                 assert data["values"][index] == pytest.approx(expected)
+                if statistic in ("minimum", "maximum"):
+                    pixel = int(np.flatnonzero(selected & (line[:, channel] == expected))[0])
+                    point = [pixel, index] if axis == "rows" else [index, pixel]
+                    assert data["locations"][index] == point
             else:
                 assert data["values"][index] is None
+                if statistic in ("minimum", "maximum"):
+                    assert data["locations"][index] is None
+    if statistic in ("minimum", "maximum"):
+        locations = profile["channels"][0]["locations"]
+        assert result.outputs["points"] == [point for point in locations if point is not None]
+    else:
+        assert result.outputs["points"] is NO_VALUE
+        assert all("locations" not in channel for channel in profile["channels"])
 
 
 def test_profile_includes_optional_alpha_and_handles_empty_selection():
@@ -64,3 +77,21 @@ def test_profile_reports_nonfinite_reduction_as_invalid():
     assert block.execute({"image": np.full((2, 1), np.finfo(np.float64).max)}) is None
     assert block.error_kind == "invalid"
     assert "overflowed" in block.error
+
+
+@pytest.mark.parametrize("tie,expected", [("first", [[0, 0], [2, 0]]), ("last", [[0, 2], [2, 1]])])
+def test_extrema_ties_use_selected_channel_and_ignore_empty_columns(tie, expected):
+    red = np.array([[9, 5, 0], [1, 9, 3], [2, 2, 8]], np.float64)
+    blue = np.array([[4, 4, 8], [4, 4, 8], [4, 4, 1]], np.float64)
+    image = ImageArray(np.stack((red, red, blue), axis=2), "rgb")
+    mask = np.array([[1, 0, 1], [0, 0, 1], [1, 0, 1]], np.uint8)
+    block = builtin_registry().create(
+        "cv.intensity_profile",
+        parameters={"statistic": "maximum", "extrema_tie": tie, "points_channel": "B"},
+    )
+    result = block.execute({"image": image, "mask": mask})
+    assert result is not None, block.error
+    assert result.outputs["points"] == expected
+    channels = result.outputs["profile"]["channels"]
+    assert channels[0]["locations"] == [[0, 0], None, [2, 2]]
+    assert channels[-1]["locations"] == [expected[0], None, expected[1]]

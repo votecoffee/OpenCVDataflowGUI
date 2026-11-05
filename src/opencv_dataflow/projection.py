@@ -4,9 +4,10 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
-from .histogram import HISTOGRAM_CHANNELS
+from .histogram import CHANNEL_CHOICES, HISTOGRAM_CHANNELS
 from .images import image_format
 from .parameter_validation import ValidationError
+from .payloads import NO_VALUE
 from .processing import image_value
 from .selection import SELECTION_INPUTS, selection_mask
 
@@ -68,13 +69,30 @@ class IntensityProfile(Block):
     type_id, title, category = "cv.intensity_profile", "Intensity profile", "Image processing"
     block_type, subtype = "Image processing", "Statistics"
     inputs = SELECTION_INPUTS
-    outputs = (Port("profile", "data"), Port("selected_count", "number"))
-    defaults = {"axis": "columns", "statistic": "mean", "include_alpha": False}
-    parameter_choices = {"axis": ("rows", "columns"), "statistic": tuple(REDUCTIONS)}
+    outputs = (
+        Port("profile", "data"),
+        Port("selected_count", "number"),
+        Port("points", "data", required=False),
+    )
+    defaults = {
+        "axis": "columns",
+        "statistic": "mean",
+        "include_alpha": False,
+        "extrema_tie": "first",
+        "points_channel": "auto",
+    }
+    parameter_choices = {
+        "axis": ("rows", "columns"),
+        "statistic": tuple(REDUCTIONS),
+        "extrema_tie": ("first", "last"),
+        "points_channel": ("auto", *CHANNEL_CHOICES),
+    }
     parameter_help = {
         "axis": "Each output entry summarizes one row or one column in the input pixel frame.",
         "statistic": "Reduce selected samples in raw image units, separately for each channel.",
         "include_alpha": "Include alpha as its own profile on four-channel images.",
+        "extrema_tie": "For minimum or maximum, choose the first or last matching pixel.",
+        "points_channel": "Channel for Points in minimum or maximum mode. Auto uses the first.",
     }
 
     def process(self, inputs):
@@ -121,10 +139,29 @@ class IntensityProfile(Block):
                 for channel, label in enumerate(labels)
             ],
         }
+        points = NO_VALUE
+        if statistic in ("minimum", "maximum"):
+            requested = labels[0] if p["points_channel"] == "auto" else p["points_channel"]
+            if requested not in labels:
+                raise ValidationError(
+                    "Points channel is unavailable in the image", "points_channel"
+                )
+            arg_reduce = cv2.reduceArgMin if statistic == "minimum" else cv2.reduceArgMax
+            planes = signal[..., None] if signal.ndim == 2 else signal
+            last = p["extrema_tie"] == "last"
+            for channel, record in enumerate(profile["channels"]):
+                indices = arg_reduce(planes[..., channel], dim, lastIndex=last).ravel().tolist()
+                locations = [
+                    ([i, index] if dim == 0 else [index, i]) if keep else None
+                    for i, (index, keep) in enumerate(zip(indices, valid, strict=True))
+                ]
+                record["locations"] = locations
+                if record["channel"] == requested:
+                    points = [point for point in locations if point is not None]
         graphics = {}
         if self.generate_graphics:
             graphics["profile"] = profile_plot(values, valid, labels, p["axis"], statistic)
         return Result(
-            {"profile": profile, "selected_count": int(count.sum())},
+            {"profile": profile, "selected_count": int(count.sum()), "points": points},
             graphics=graphics,
         )
