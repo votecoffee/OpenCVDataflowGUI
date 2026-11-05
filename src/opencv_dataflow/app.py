@@ -196,7 +196,7 @@ class Inspector(QWidget):
         self._live_result = None
         self.live_timer = QTimer(self)
         self.live_timer.setSingleShot(True)
-        self.live_timer.timeout.connect(self.start_live_preview)
+        self.live_timer.timeout.connect(self.start_preview)
         layout = QVBoxLayout(self)
         title = QLabel("BLOCK INSPECTOR")
         title.setObjectName("sectionTitle")
@@ -213,7 +213,14 @@ class Inspector(QWidget):
             "Preview edited parameters on the last captured image. Apply configuration to save."
         )
         self.live_results.toggled.connect(self.toggle_live_results)
-        layout.addWidget(self.live_results)
+        preview_controls = QHBoxLayout()
+        preview_controls.addWidget(self.live_results)
+        self.run_block = QPushButton("Run block")
+        self.run_block.setEnabled(False)
+        self.run_block.setToolTip("Preview this block once using its last captured inputs.")
+        self.run_block.clicked.connect(self.run_block_preview)
+        preview_controls.addWidget(self.run_block)
+        layout.addLayout(preview_controls)
         self.timing_timer = QTimer(self)
         self.timing_timer.setInterval(200)
         self.timing_timer.timeout.connect(self.refresh_timing)
@@ -239,7 +246,7 @@ class Inspector(QWidget):
 
     def select(self, block):
         if block is not self.block:
-            self.stop_live_results()
+            self.stop_previews()
             self._region_image = None
             self._region_source = None
             self._region_inputs = {}
@@ -466,7 +473,6 @@ class Inspector(QWidget):
         return bool(
             b is not None
             and self.window.runner is None
-            and self.fields
             and type(b).__module__.startswith("opencv_dataflow.")
             and b.category != "Output"
             and b.block_type != "Output"
@@ -488,15 +494,18 @@ class Inspector(QWidget):
         if self._live_worker is not None:
             self._live_worker.requestInterruption()
 
-    def stop_live_results(self, wait=False):
-        self.live_results.setChecked(False)
+    def stop_previews(self, wait=False):
+        if self.live_results.isChecked():
+            self.live_results.setChecked(False)
+        else:
+            self.toggle_live_results(False)
         if wait and self._live_worker is not None:
             worker, self._live_worker = self._live_worker, None
             worker.wait()
             worker.deleteLater()
 
     def hideEvent(self, event):
-        self.stop_live_results()
+        self.stop_previews()
         super().hideEvent(event)
 
     def schedule_live_preview(self, *_):
@@ -505,8 +514,16 @@ class Inspector(QWidget):
             self._live_due = False
             self.live_timer.start(self.live_delay_ms)
 
-    def start_live_preview(self):
-        if not self.live_results.isChecked() or not self.can_preview():
+    def run_block_preview(self):
+        if self._live_worker is not None or not self.can_preview():
+            return
+        self.live_timer.stop()
+        self._live_due = False
+        self._live_revision += 1
+        self.start_preview()
+
+    def start_preview(self):
+        if not self.can_preview():
             return
         if self._live_worker is not None:
             self._live_due = True
@@ -525,10 +542,11 @@ class Inspector(QWidget):
                 for name, value in b.last_inputs.items()
             }
         except (ValueError, TypeError) as exc:
-            self.window.statusBar().showMessage(f"Live preview · {exc}")
+            self.window.statusBar().showMessage(f"Block preview · {exc}")
             return
         worker = LivePreview(candidate, inputs, self._live_revision, self)
         self._live_worker = worker
+        self.run_block.setEnabled(False)
         worker.finished.connect(self.finish_live_preview)
         worker.start()
 
@@ -536,16 +554,17 @@ class Inspector(QWidget):
         worker, self._live_worker = self._live_worker, None
         if worker is None:
             return
-        if worker.revision == self._live_revision and self.live_results.isChecked():
+        if worker.revision == self._live_revision:
             if worker.error:
-                self.window.statusBar().showMessage(f"Live preview · {worker.error}")
+                self.window.statusBar().showMessage(f"Block preview · {worker.error}")
             else:
                 self._live_result = worker.block
                 self.refresh_result()
         worker.deleteLater()
+        self.run_block.setEnabled(self.can_preview())
         if self._live_due:
             self._live_due = False
-            self.start_live_preview()
+            self.start_preview()
 
     def browse_images(self):
         paths, _ = QFileDialog.getOpenFileNames(self, "Select images", "", "Images (*.*)")
@@ -946,9 +965,11 @@ class Inspector(QWidget):
     def refresh_result(self):
         self.refresh_timing()
         available = self.can_preview()
-        self.live_results.setEnabled(available)
-        if not available and self.live_results.isChecked():
-            self.stop_live_results()
+        automatic = available and bool(self.fields or self.kernel_parameters)
+        self.live_results.setEnabled(automatic)
+        self.run_block.setEnabled(available and self._live_worker is None)
+        if not automatic and self.live_results.isChecked():
+            self.stop_previews()
             return
         previous = self.preview_choice.currentText()
         self.preview_choice.blockSignals(True)
@@ -984,7 +1005,7 @@ class Inspector(QWidget):
             timing = b.timing.snapshot()
             average = f"{timing['average_ms']:.2f}" if timing["average_ms"] is not None else "—"
             self.details.setPlainText(
-                ("LIVE PREVIEW · " if self._live_result is not None else "")
+                ("BLOCK PREVIEW · " if self._live_result is not None else "")
                 + f"{b.state.upper()}   ·   {b.elapsed_ms:.2f} ms   ·   score {score}\n"
                 + f"Average {average} ms · {timing['count']} activations\n"
                 + (b.last_rejection or b.error or (result.message if result else "Not executed"))
@@ -1601,7 +1622,7 @@ class MainWindow(QMainWindow):
     def start_run(self, continuous):
         if self.runner:
             return
-        self.inspector.stop_live_results()
+        self.inspector.stop_previews()
         # Worker owns a separate runtime graph. Qt paints stable display snapshots.
         try:
             execution_graph = Graph.from_dict(
@@ -1626,6 +1647,7 @@ class MainWindow(QMainWindow):
         self.scene.set_locked(True)
         self.library.setEnabled(False)
         self.inspector.editor.setEnabled(False)
+        self.inspector.refresh_result()
         for action in self.edit_actions + [self.run_action, self.continuous_action]:
             action.setEnabled(False)
         self.stop_action.setEnabled(True)
@@ -1789,7 +1811,7 @@ class MainWindow(QMainWindow):
             self.stop_run()
             event.ignore()
         elif self.confirm_discard():
-            self.inspector.stop_live_results(wait=True)
+            self.inspector.stop_previews(wait=True)
             self.root_graph.close()
             event.accept()
         else:

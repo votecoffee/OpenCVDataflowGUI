@@ -65,7 +65,7 @@ def test_live_results_debounce_use_captured_input_and_leave_configuration_untouc
         pump_until(app, lambda: inspector._live_result is not None)
         assert [count for count, _ in calls] == [7]
         assert (calls[0][1] == captured).all()
-        assert "LIVE PREVIEW" in inspector.details.toPlainText()
+        assert "BLOCK PREVIEW" in inspector.details.toPlainText()
         assert not inspector._live_result.last_result.passed
         assert block.parameters == original_parameters
         assert block.last_result.outputs["count"] == original_count
@@ -83,6 +83,59 @@ def test_live_results_debounce_use_captured_input_and_leave_configuration_untouc
         QTest.qWait(150)
         assert not inspector.live_results.isChecked()
         assert len(calls) == 1
+    finally:
+        window.close()
+
+
+def test_run_block_works_without_live_results_and_consumes_pending_live_edit(app, monkeypatch):
+    window = MainWindow()
+    window.show()
+    block = list(window.graph.blocks.values())[-1]
+    window.scene.nodes[block.id].setSelected(True)
+    inspector = window.inspector
+    assert not inspector.run_block.isEnabled()
+    window.graph.run()
+    inspector.refresh_result()
+    saved_result = block.last_result
+    calls = []
+    original = type(block).process
+
+    def process(candidate, inputs):
+        calls.append(candidate.parameters["expected_count"])
+        np.testing.assert_array_equal(inputs["image"], block.last_inputs["image"])
+        return original(candidate, inputs)
+
+    monkeypatch.setattr(type(block), "process", process)
+    try:
+        assert inspector.run_block.isEnabled()
+        assert not inspector.live_results.isChecked()
+        inspector.fields["expected_count"].setText("4")
+        inspector.run_block.click()
+        assert not inspector.run_block.isEnabled()
+        pump_until(app, lambda: inspector.run_block.isEnabled())
+        assert calls == [4]
+        assert inspector._live_result.state == "fail"
+        assert "BLOCK PREVIEW" in inspector.details.toPlainText()
+        assert not inspector.live_results.isChecked()
+        assert block.last_result is saved_result
+        assert not window.dirty
+
+        inspector.live_delay_ms = 150
+        inspector.live_results.setChecked(True)
+        inspector.fields["expected_count"].setText("5")
+        assert inspector.live_timer.isActive()
+        inspector.run_block.click()
+        assert not inspector.live_timer.isActive()
+        pump_until(app, lambda: inspector.run_block.isEnabled())
+        QTest.qWait(200)
+        assert calls == [4, 5]
+
+        inspector.live_results.setChecked(False)
+        inspector.run_block.click()
+        window.scene.clearSelection()
+        pump_until(app, lambda: inspector._live_worker is None)
+        assert inspector._live_result is None
+        assert not inspector.run_block.isEnabled()
     finally:
         window.close()
 
