@@ -72,3 +72,60 @@ def test_gabor_rejects_even_size_and_unsafe_float32_conversion():
     block.parameters["width"] = 7
     assert block.execute({"image": np.full((8, 8), 1e100)}) is None
     assert "exceeds float32 range" in block.error
+
+
+def test_gabor_bank_matches_individual_responses_and_preserves_selection():
+    registry = builtin_registry()
+    y, x = np.indices((72, 144))
+    coordinate = np.where(x < 72, x, y)
+    source = (128 + 60 * np.cos(2 * np.pi * coordinate / 8)).astype(np.float32)
+    mask = np.full(source.shape, 255, np.uint8)
+    mask[:10] = 0
+    context = {"spatial": frame([144, 72], "stripes")}
+    packet = ValuePacket(source, context)
+    bank = registry.create("cv.gabor_bank", parameters={"orientations_degrees": [0, 90]})
+    result = bank.execute({"image": packet, "mask": mask})
+    assert result is not None, bank.error
+    vertical, horizontal = [
+        registry.create("cv.gabor_response", parameters={"orientation_degrees": angle})
+        .execute({"image": packet})
+        .outputs["response"]
+        for angle in (0, 90)
+    ]
+    np.testing.assert_allclose(
+        result.outputs["response"], np.where(mask, np.maximum(vertical, horizontal), 0)
+    )
+    left = np.s_[16:-16, 16:56]
+    right = np.s_[16:-16, 88:-16]
+    assert np.all(result.outputs["orientation"][left] == 0)
+    assert np.all(result.outputs["orientation"][right] == 90)
+    assert np.all(result.outputs["valid_mask"][left] == 255)
+    assert np.all(result.outputs["valid_mask"][right] == 255)
+    expected_confidence = 1 - horizontal[left] / vertical[left]
+    np.testing.assert_allclose(result.outputs["confidence"][left], expected_confidence)
+    assert all(np.count_nonzero(result.outputs[name][:10]) == 0 for name in result.outputs)
+    assert result.payloads["orientation"]["spatial"] == context["spatial"]
+    assert result.payloads["orientation"]["angle_units"] == "degrees"
+
+
+def test_gabor_bank_flags_flat_and_weak_patches_and_validates_angles():
+    registry = builtin_registry()
+    bank = registry.create("cv.gabor_bank")
+    image = np.full((48, 48), 128, np.uint8)
+    flat = bank.execute({"image": image})
+    assert flat is not None, bank.error
+    assert np.count_nonzero(flat.outputs["valid_mask"]) == 0
+    assert np.count_nonzero(flat.outputs["confidence"]) == 0
+
+    bank.parameters["minimum_response"] = 1e6
+    image[10:30, 10:30] = 32
+    weak = bank.execute({"image": image})
+    assert weak is not None, bank.error
+    assert np.max(weak.outputs["response"]) > 0
+    assert not np.any(weak.outputs["valid_mask"])
+
+    for angles in ([0], [0, 0], [0, 180], [0, float("nan")], [False, 90]):
+        bank.parameters["orientations_degrees"] = angles
+        assert bank.execute({"image": image}) is None
+        assert bank.error_kind == "invalid"
+        assert "distinct finite orientation angles" in bank.error

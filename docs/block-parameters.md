@@ -1200,6 +1200,29 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `direction` | `"horizontal"` | `horizontal`, `vertical`, `both` |
 
+## Gabor orientation bank (`cv.gabor_bank`)
+
+Image processing / Filtering
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Selection writes: `response`, `orientation`, `confidence`, `valid_mask`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `25` | Value must be a positive odd integer between 3 and 127. |
+| `height` | `25` | Value must be a positive odd integer between 3 and 127. |
+| `sigma` | `4.0` | Value must be a finite number between 0.05 and 1000. Gaussian envelope width in pixels along the stripe normal. |
+| `wavelength` | `8.0` | Value must be a finite number between 2 and 10000. Distance between consecutive stripes in pixels. |
+| `aspect_ratio` | `0.5` | Value must be a finite number between 0.001 and 1000. Spatial aspect ratio of the Gaussian envelope. |
+| `phase_degrees` | `0.0` | Value must be a finite number. Phase of the first sinusoid in degrees. |
+| `normalization` | `"zero_mean_unit_l2"` | `none`, `zero_mean_unit_l2` Subtract each kernel mean and scale it to unit L2 norm. |
+| `output_depth` | `"float32"` | `float32`, `float64` Floating precision for both the filtered image and kernel coefficients. |
+| `border` | `"reflect_101"` | `constant`, `replicate`, `reflect_101`, `reflect_edge` The constant mode uses zero outside the image. |
+| `orientations_degrees` | `[0, 45, 90, 135]` | Two to sixteen distinct stripe-normal angles in [0, 180). |
+| `minimum_response` | `0.01` | Value must be a finite number at least 0. Minimum winning energy for a valid orientation. |
+
 ## Gabor texture response (`cv.gabor_response`)
 
 Image processing / Filtering
@@ -1214,14 +1237,14 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `width` | `25` | Value must be a positive odd integer between 3 and 127. |
 | `height` | `25` | Value must be a positive odd integer between 3 and 127. |
 | `sigma` | `4.0` | Value must be a finite number between 0.05 and 1000. Gaussian envelope width in pixels along the stripe normal. |
-| `orientation_degrees` | `0.0` | Value must be a finite number. Direction of the stripe normal. Zero detects vertical stripes. |
 | `wavelength` | `8.0` | Value must be a finite number between 2 and 10000. Distance between consecutive stripes in pixels. |
 | `aspect_ratio` | `0.5` | Value must be a finite number between 0.001 and 1000. Spatial aspect ratio of the Gaussian envelope. |
 | `phase_degrees` | `0.0` | Value must be a finite number. Phase of the first sinusoid in degrees. |
-| `mode` | `"energy"` | `signed`, `energy` Energy combines two responses whose phases are 90 degrees apart. |
 | `normalization` | `"zero_mean_unit_l2"` | `none`, `zero_mean_unit_l2` Subtract each kernel mean and scale it to unit L2 norm. |
 | `output_depth` | `"float32"` | `float32`, `float64` Floating precision for both the filtered image and kernel coefficients. |
 | `border` | `"reflect_101"` | `constant`, `replicate`, `reflect_101`, `reflect_edge` The constant mode uses zero outside the image. |
+| `orientation_degrees` | `0.0` | Value must be a finite number. Direction of the stripe normal. Zero detects vertical stripes. |
+| `mode` | `"energy"` | `signed`, `energy` Energy combines two responses whose phases are 90 degrees apart. |
 
 ## Gamma correction (`cv.gamma`)
 
