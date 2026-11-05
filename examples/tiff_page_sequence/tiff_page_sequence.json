@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.tiff_file",
+      "name": "Replay pages in order",
+      "parameters": {
+        "path": "assets/pages.tiff",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "summary",
+      "type": "cv.image_statistics",
+      "name": "Measure each page's mean",
+      "parameters": {
+        "statistic": "mean"
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "value",
+        "summary",
+        "selected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "summary",
+      "input": "image"
+    }
+  ]
+}
