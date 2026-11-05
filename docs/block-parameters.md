@@ -2462,6 +2462,31 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `edge_threshold` | `10.0` |  |
 | `sigma` | `1.6` |  |
 
+## Recognize text (CTC ONNX) (`ml.recognize_text`)
+
+ML / Text inspection
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `regions` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model_path` | `""` |  |
+| `vocabulary_path` | `""` | UTF-8 token file, one token per line in model order, excluding blank. |
+| `vocabulary` | `[]` | Inline alternative to the token file. CTC blank is implicit at index 0. |
+| `width` | `100` |  |
+| `height` | `32` |  |
+| `color_format` | `"gray"` | `gray`, `bgr`, `rgb` |
+| `scale` | `0.00392156862745098` |  |
+| `mean` | `[0.0]` |  |
+| `crop` | `false` |  |
+| `engine` | `"auto"` | `auto`, `classic`, `new`, `ort` |
+| `output_name` | `""` | Optional explicit CTC tensor output name. |
+| `decoder` | `"CTC-greedy"` | `CTC-greedy`, `CTC-prefix-beam-search` |
+| `beam_size` | `10` |  |
+| `vocabulary_prune` | `0` | Maximum tokens per beam step. Zero disables pruning. |
+| `background` | `255` | Fill masked or out-of-image pixels with this uint8 intensity. |
+| `minimum_reads` | `1` | Minimum number of regions that produce nonempty text. |
+
 ## Tensor to embedding vector (`ml.tensor_vector`)
 
 ML / Embeddings
@@ -2474,6 +2499,22 @@ Inputs: `tensors` (data).
 | `pooling` | `"flatten"` | `flatten`, `global_average` |
 | `channel_axis` | `1` |  |
 | `normalize` | `"l2"` | `none`, `l2` |
+
+## Text regions from probability map (`ml.text_regions`)
+
+ML / Text inspection
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `tensors` (data), `preprocessing` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_name` | `""` | Probability-map tensor name. Empty selects the first output. |
+| `pixel_threshold` | `0.3` |  |
+| `minimum_confidence` | `0.5` | Minimum mean probability inside each detected contour. |
+| `minimum_area` | `8.0` | Minimum contour area in probability-map pixels. |
+| `padding_ratio` | `1.1` | Multiply the detected rectangle dimensions by this ratio. |
+| `maximum_regions` | `64` |  |
+| `draw_overlay` | `true` |  |
 
 ## Vector data (`ml.vector_data`)
 

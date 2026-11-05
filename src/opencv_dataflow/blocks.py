@@ -679,6 +679,7 @@ def builtin_registry():
     from .image_queue import ImageQueue
     from .judgments import FinalJudgment
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
+    from .ocr import OCR_BLOCKS
     from .oriented_edges import FindOrientedEdges
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
@@ -763,6 +764,7 @@ def builtin_registry():
         *SEQUENCE_BLOCKS,
         FinalJudgment,
         *DNN_BLOCKS,
+        *OCR_BLOCKS,
         *ANNOY_BLOCKS,
         *LIGHTGLUE_BLOCKS,
         *GEOMETRY3D_BLOCKS,

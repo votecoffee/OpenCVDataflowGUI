@@ -327,7 +327,7 @@ class Inspector(QWidget):
                 )
             self.fields[key] = field
             field.setToolTip(block.parameter_help.get(key, ""))
-            if key in ("path", "model_path", "weights_path"):
+            if key in ("path", "model_path", "weights_path", "vocabulary_path"):
                 row = QWidget()
                 row_layout = QHBoxLayout(row)
                 row_layout.setContentsMargins(0, 0, 0, 0)
