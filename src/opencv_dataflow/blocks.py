@@ -713,6 +713,7 @@ def builtin_registry():
     from .illumination import FlatFieldCorrection
     from .image_quality import CompareImageQuality
     from .image_queue import ImageQueue
+    from .image_statistics import ImageSummaryStatistics
     from .judgments import FinalJudgment
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .native_background import NATIVE_BACKGROUND_BLOCKS
@@ -783,6 +784,7 @@ def builtin_registry():
         *SPECTRAL_BLOCKS,
         *ANALYSIS_BLOCKS,
         IntensityProfile,
+        ImageSummaryStatistics,
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,
         *COLLECTION_BLOCKS,

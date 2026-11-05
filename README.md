@@ -414,7 +414,9 @@ a ramp and reconstructs it through log and exponential blocks. The
 [image arithmetic example](examples/image_arithmetic/README.md) subtracts
 a blurred background and scales the signed residual. The
 [intensity profile example](examples/intensity_profile/README.md) plots per-column
-mean intensity inside an inspection region.
+mean intensity inside an inspection region. The
+[image statistics example](examples/image_statistics/README.md) reports
+selected-region measurements and marks the darkest and brightest pixels.
 
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing
