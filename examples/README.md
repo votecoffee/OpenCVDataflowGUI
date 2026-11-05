@@ -23,6 +23,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Guided edge-preserving filter](guided_filter/README.md) | Smooth a noisy image while preserving its main intensity edge. |
 | [Subpixel template locations](subpixel_template/README.md) | Compare integer and refined template matches against two known fractional placements. |
 | [Contour approximation](contour_approximation/README.md) | Simplify the dense outline of a chamfered part into six polygon vertices. |
+| [Contour hierarchy](contour_hierarchy/README.md) | Follow parent and child links through nested outlines, holes, and islands. |
 | [Skeletonization and spur pruning](skeleton_pruning/README.md) | Extract a binary centerline and visualize the short branches removed from it. |
 | [Watershed separation](watershed/README.md) | Separate touching parts using distance-peak seeds or points placed on the image. |
 | [Data Matrix reading](datamatrix_reading/README.md) | Read the bundled synthetic Data Matrix and verify the decoded text. |

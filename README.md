@@ -440,6 +440,8 @@ two-key sorting with explicit policies for undefined measurements.
 
 Use **Approximate contour** to simplify a detected boundary or open path.
 [Contour approximation example](examples/contour_approximation/README.md)
+Use **Contour hierarchy** to inspect nested boundaries, holes, and islands.
+[Contour hierarchy example](examples/contour_hierarchy/README.md)
 
 Try [object collections](examples/object_collections/object_collections.json).
 This 16-block project orders two parts left-to-right, selects the round contour and

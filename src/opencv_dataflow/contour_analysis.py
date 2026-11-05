@@ -7,9 +7,12 @@ from .collection_tools import read_collection
 from .core import Block, Port, Result
 from .features import overlay_image
 from .graphics_layers import GraphicDrawing, draw_object, graphic_object
+from .objects import collection, contour_item
 from .parameter_validation import NumericRange, ValidationError
+from .parameters import CONTOUR_APPROXIMATIONS
 from .payloads import NO_VALUE, ValuePacket, require_same_frame
 from .processing import finite, integer
+from .selection import SELECTION_INPUTS, selection_mask
 
 MATCH_METHODS = {
     "i1": cv2.CONTOURS_MATCH_I1,
@@ -301,4 +304,100 @@ class ApproximateContour(Block):
         )
 
 
-CONTOUR_ANALYSIS_BLOCKS = (CompareContours, ContourHull, TestContourPoints, ApproximateContour)
+class ContourHierarchy(Block):
+    type_id, title = "inspect.contour_hierarchy", "Contour hierarchy"
+    category, block_type, subtype = "Inspection", "Inspection", "Shapes"
+    inputs = SELECTION_INPUTS
+    outputs = (
+        Port("hierarchy", "data"),
+        Port("collection", "data"),
+        Port("count", "number"),
+        Port("hole_count", "number"),
+        Port("overlay", required=False),
+    )
+    defaults = {"approximation": "simple", "draw_overlay": True}
+    parameter_choices = {"approximation": tuple(CONTOUR_APPROXIMATIONS)}
+    input_help = {"image": "Monochrome binary image. Every nonzero pixel is foreground."}
+
+    def process(self, inputs):
+        source = inputs["image"]
+        if source.ndim != 2 or source.dtype not in (np.uint8, np.bool_):
+            raise ValidationError("Contour hierarchy requires a monochrome uint8 or boolean mask")
+        if max(source.shape) > 16384 or source.size > 64_000_000:
+            raise ValidationError("Contour hierarchy is limited to 64M pixels and 16384 per axis")
+        binary = source != 0
+        mask = selection_mask(inputs, source)
+        if mask is not None:
+            binary &= mask != 0
+        binary = binary.astype(np.uint8) * 255
+        contours, links = cv2.findContours(
+            binary, cv2.RETR_TREE, CONTOUR_APPROXIMATIONS[self.parameters["approximation"]]
+        )
+        if len(contours) > 100_000:
+            raise ValidationError("Contour hierarchy supports up to 100,000 contours")
+
+        rows, roots = [], []
+        for index, link in enumerate(links[0] if links is not None else ()):
+            next_id, previous, first_child, parent = (int(i) if i >= 0 else None for i in link)
+            rows.append(
+                {
+                    "id": index,
+                    "next_id": next_id,
+                    "previous_id": previous,
+                    "first_child_id": first_child,
+                    "parent_id": parent,
+                    "child_ids": [],
+                }
+            )
+            if parent is None:
+                roots.append(index)
+        for row in rows:
+            if row["parent_id"] is not None:
+                rows[row["parent_id"]]["child_ids"].append(row["id"])
+
+        holes = 0
+        pending = [(index, 0) for index in roots]
+        while pending:
+            index, depth = pending.pop()
+            row = rows[index]
+            row["depth"] = depth
+            row["kind"] = "hole" if depth % 2 else "island" if depth else "outer"
+            holes += int(row["kind"] == "hole")
+            pending.extend((child, depth + 1) for child in row["child_ids"])
+
+        overlay = overlay_image(binary) if self.parameters["draw_overlay"] else NO_VALUE
+        draw = self.generate_graphics
+        objects = []
+        if overlay is not NO_VALUE or draw:
+            colors = {"outer": (80, 230, 140), "hole": (80, 145, 255), "island": (240, 225, 60)}
+            for contour, row in zip(contours, rows, strict=True):
+                color = colors[row["kind"]]
+                if overlay is not NO_VALUE:
+                    cv2.drawContours(overlay, [contour], -1, color, 2)
+                if draw:
+                    objects.append(
+                        graphic_object("polyline", contour.reshape(-1, 2), color, closed=True)
+                    )
+
+        payload = self.input_payloads["image"]
+        items = [contour_item(contour, i, links[0][i]) for i, contour in enumerate(contours)]
+        return Result(
+            {
+                "hierarchy": {"model": "contour_hierarchy_v1", "root_ids": roots, "nodes": rows},
+                "collection": collection("contours", items, source, payload),
+                "count": len(rows),
+                "hole_count": holes,
+                "overlay": overlay,
+            },
+            drawings={"contour hierarchy": GraphicDrawing(tuple(objects))} if objects else {},
+            message=f"{len(rows)} contours across {len(roots)} outer boundaries · {holes} holes",
+        )
+
+
+CONTOUR_ANALYSIS_BLOCKS = (
+    CompareContours,
+    ContourHull,
+    TestContourPoints,
+    ApproximateContour,
+    ContourHierarchy,
+)

@@ -110,3 +110,58 @@ def test_contour_approximation_reports_collapsed_polygon():
     assert not result.passed
     assert result.fail_reasons[0]["code"] == "contour_approximation_degenerate"
     assert result.outputs["vertex_count"] < 3
+
+
+def test_contour_hierarchy_keeps_nested_holes_islands_and_sibling_links():
+    image = np.zeros((90, 130), np.uint8)
+    image[5:80, 5:80] = 255
+    image[15:48, 15:48] = 0
+    image[24:41, 24:41] = 255
+    image[29:35, 29:35] = 0
+    image[54:70, 54:70] = 0
+    image[8:30, 90:112] = 255
+    spatial = frame([130, 90], "source")
+    block = builtin_registry().create("inspect.contour_hierarchy")
+    result = block.execute({"image": ValuePacket(image, {"spatial": spatial})})
+    assert result is not None and result.passed, block.error
+    hierarchy = result.outputs["hierarchy"]
+    rows = hierarchy["nodes"]
+    assert result.outputs["count"] == 6 and result.outputs["hole_count"] == 3
+    assert sorted(row["depth"] for row in rows) == [0, 0, 1, 1, 2, 3]
+    assert {rows[index]["kind"] for index in hierarchy["root_ids"]} == {"outer"}
+    assert len(hierarchy["root_ids"]) == 2
+    for row in rows:
+        if row["next_id"] is not None:
+            assert rows[row["next_id"]]["previous_id"] == row["id"]
+            assert rows[row["next_id"]]["parent_id"] == row["parent_id"]
+        if row["child_ids"]:
+            assert row["first_child_id"] in row["child_ids"]
+        for child in row["child_ids"]:
+            assert rows[child]["parent_id"] == row["id"]
+            assert rows[child]["depth"] == row["depth"] + 1
+    island = next(row for row in rows if row["kind"] == "island")
+    assert [rows[child]["kind"] for child in island["child_ids"]] == ["hole"]
+    assert [item["id"] for item in result.outputs["collection"]["items"]] == list(range(6))
+    assert result.payloads["collection"]["spatial"] == spatial
+    assert result.payloads["overlay"]["spatial"] == spatial
+    assert len(result.drawings["contour hierarchy"].objects) == 6
+    assert tuple(result.outputs["overlay"][5, 5]) == (80, 230, 140)
+
+    selection = np.full_like(image, 255)
+    selection[:, 85:] = 0
+    result = block.execute({"image": image, "mask": selection})
+    assert result is not None, block.error
+    assert result.outputs["count"] == 5 and result.outputs["hole_count"] == 3
+    assert len(result.outputs["hierarchy"]["root_ids"]) == 1
+
+
+def test_contour_hierarchy_handles_empty_masks_and_optional_overlay():
+    block = builtin_registry().create(
+        "inspect.contour_hierarchy", parameters={"draw_overlay": False}
+    )
+    result = block.execute({"image": np.zeros((12, 16), bool)})
+    assert result is not None and result.passed, block.error
+    assert result.outputs["hierarchy"]["nodes"] == []
+    assert result.outputs["collection"]["items"] == []
+    assert result.outputs["count"] == result.outputs["hole_count"] == 0
+    assert result.outputs["overlay"] is NO_VALUE

@@ -1990,6 +1990,19 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `algorithm` | `"default"` | `default`, `sauf`, `bbdt`, `spaghetti` |
 | `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
 
+## Contour hierarchy (`inspect.contour_hierarchy`)
+
+Inspection / Shapes
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Monochrome binary image. Every nonzero pixel is foreground.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `approximation` | `"simple"` | `none`, `simple`, `tc89_l1`, `tc89_kcos` |
+| `draw_overlay` | `true` |  |
+
 ## Contour hull and convexity defects (`inspect.contour_hull`)
 
 Inspection / Measurements

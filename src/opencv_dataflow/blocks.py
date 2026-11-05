@@ -17,7 +17,7 @@ from .graphics_layers import GraphicDrawing, graphic_object
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 from .objects import collection, contour_item
 from .parameter_validation import NumericRange, ValidationError
-from .parameters import BORDERS, scalar_value
+from .parameters import BORDERS, CONTOUR_APPROXIMATIONS, scalar_value
 from .payloads import NO_VALUE, moved_payload
 from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
 
@@ -449,7 +449,7 @@ class Contours(Block):
     }
     parameter_choices = {
         "retrieval": ("external", "list", "ccomp", "tree"),
-        "approximation": ("none", "simple", "tc89_l1", "tc89_kcos"),
+        "approximation": tuple(CONTOUR_APPROXIMATIONS),
         "region_mode": ("center", "clip"),
     }
     parameter_ranges = {
@@ -481,12 +481,6 @@ class Contours(Block):
             "ccomp": cv2.RETR_CCOMP,
             "tree": cv2.RETR_TREE,
         }
-        approximation = {
-            "none": cv2.CHAIN_APPROX_NONE,
-            "simple": cv2.CHAIN_APPROX_SIMPLE,
-            "tc89_l1": cv2.CHAIN_APPROX_TC89_L1,
-            "tc89_kcos": cv2.CHAIN_APPROX_TC89_KCOS,
-        }
         offset = np.asarray(self.parameters["offset"], float)
         selection = selection_mask(inputs, gray)
         search = gray
@@ -495,7 +489,7 @@ class Contours(Block):
         contours, hierarchy = cv2.findContours(
             search,
             retrieval[self.parameters["retrieval"]],
-            approximation[self.parameters["approximation"]],
+            CONTOUR_APPROXIMATIONS[self.parameters["approximation"]],
             offset=tuple(offset.astype(int)),
         )
         minimum = float(self.parameters["min_area"])
