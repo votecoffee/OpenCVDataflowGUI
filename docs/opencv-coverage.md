@@ -10,8 +10,8 @@ lists the tools that can be placed on a graph today.
 
 | Rank | Outstanding capability | OpenCV primitives and graph work |
 | --- | --- | --- |
-| 1 | Separate touching parts and isolate foreground | Marker-controlled watershed, distance-peak seeds, GrabCut from rectangle or mask, flood fill, hole fill, morphological reconstruction and skeleton thinning. Existing threshold, morphology, distance transform and components are building blocks. |
-| 2 | Reference comparison and defect scoring | SSIM and local similarity map, PSNR/MSE, histogram comparison and backprojection, registered reference subtraction, residual components and fail thresholds. Absolute difference and histograms already exist. |
+| 1 | Separate touching parts and isolate foreground | Distance-peak seeds, GrabCut from rectangle or mask, hole fill, morphological reconstruction and skeleton thinning. Watershed, flood fill, threshold, morphology, distance transform and components are available. |
+| 2 | Reference comparison and defect scoring | Histogram comparison and backprojection, registered reference subtraction and packaged residual-component inspection. SSIM with a local similarity map, PSNR/MSE and configurable fail thresholds are available. |
 | 3 | Multi-result template search and pick selection | Response-map peaks from `matchTemplate`, score thresholds, non-maximum suppression, subpixel peaks and pose-relative clearance. Add distinct visible-feature coverage, overlap and depth occlusion evidence, and deterministic pick ranking. Existing trainable matchers and collection filters cover parts of this pipeline. |
 | 4 | Calipers, widths, contours and shape fitting | Intensity profiles along pose-relative calipers, paired edges, width/gap/discontinuity along a path, `fitLine`, `fitEllipse*`, `minEnclosingCircle`, convex hull/defects, `pointPolygonTest` and contour-to-contour `matchShapes`. Several descriptors are computed inside existing detectors. Dedicated fitting blocks should accept points or collections and report residuals. |
 | 5 | File video and replay | Video file/stream sources, decode timestamps, seek, frame ranges and extraction, codec/container selection, video writing and deterministic end-of-stream. Extend image-camera acquisition with timed replay and independent source readiness. |
@@ -30,7 +30,7 @@ lists the tools that can be placed on a graph today.
 | Shape and topology | Generalized Hough, contour approximation and hierarchy as separate operations, ellipse/arc and polygon models, rotated intersection, connected-component algorithm choices, shape context and Zernike-style descriptors where available. |
 | Segmentation and texture | SLIC/SEEDS/LSC superpixels, meanshift, k-means, graph segmentation, selective search, ridge/Frangi-style response, local binary patterns, co-occurrence matrices and Gabor banks. |
 | Spectral and intensity processing | DFT/IDFT, DCT/IDCT, spectrum/filter masks, frequency-domain correlation, per-channel LUTs, log/exp/power, clipping, generalized percentile/statistics, integral images and tilt-aware background removal. |
-| Image metrics | Full-reference SSIM/PSNR/MAE/MSE, quality maps and reductions, BRISQUE/other no-reference scores, perceptual image hashes, Earth Mover’s Distance and defect score calibration. See P1 for the first comparison tools. |
+| Image metrics | MAE and additional map reductions, BRISQUE and other no-reference scores, perceptual image hashes, Earth Mover’s Distance and defect score calibration. |
 | Motion and background | DIS, Dual TV-L1, DeepFlow and RLOF where bound, foreground masking and adaptation, optical-flow consistency and visualization, Kalman filtering and tracking across missing detections. |
 | Calibration models and target tooling | Fisheye/omnidir, circle-grid options, distortion visualization, undistort/rectify map export, calibration uncertainty, multi-camera extrinsics and sparse bundle adjustment where supported. |
 | Depth and stereo | Disparity WLS and left–right consistency, depth filling/edge-aware filtering, confidence planes, time-of-flight depth cleanup, alternative stereo algorithms and dense calibration evaluation. |
@@ -91,3 +91,18 @@ center, count and an optional overlay. A minimum read count can fail the block
 and report a reason. The automated fixtures decode QR and EAN-13. Supported
 linear symbologies and decode behavior depend on the OpenCV implementation.
 See the [OpenCV barcode documentation](https://docs.opencv.org/5.0/main_modules/objdetect_barcode.html).
+
+
+## Available segmentation and comparison tools
+
+**Seeded flood fill** returns a mask, area and bounds. It supports fixed
+or floating intensity tolerances, 4/8-connectivity and a mask or region
+that acts as a barrier. **Marker-controlled watershed** accepts a uint8
+seed mask or a nonnegative int32 label image. It returns labels, a boundary
+mask and a mask for one selected label or all positive labels.
+
+**Compare image quality** compares two registered images using SSIM, PSNR or
+MSE and an optional pass threshold. A region or mask selects pixels for the
+score. SSIM uses neighborhoods from the full images, so nearby unselected
+pixels can affect a selected pixel's similarity. SSIM and MSE return full
+maps. The score uses equal weighting across selected pixels and channels.

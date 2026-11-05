@@ -671,6 +671,7 @@ def builtin_registry():
     from .features import FEATURE_BLOCKS
     from .geometry3d import GEOMETRY3D_BLOCKS
     from .histogram import Histogram
+    from .image_quality import CompareImageQuality
     from .image_queue import ImageQueue
     from .judgments import FinalJudgment
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
@@ -684,6 +685,7 @@ def builtin_registry():
     from .recipe_blocks import RecipeField, RecipeSelect
     from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
+    from .segmentation import SEGMENTATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
     from .stereo3d import STEREO3D_BLOCKS
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
@@ -721,6 +723,8 @@ def builtin_registry():
         *PYRAMID_BLOCKS,
         *COLLECTION_BLOCKS,
         *CODE_READER_BLOCKS,
+        *SEGMENTATION_BLOCKS,
+        CompareImageQuality,
         TrainShapePattern,
         MatchShapePattern,
         TrainTexturePattern,
