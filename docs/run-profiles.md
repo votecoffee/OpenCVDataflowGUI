@@ -29,6 +29,22 @@ its actual output blocks and final decisions, with fault diagnostics available. 
 back to Debug and run once to collect full previews again. Profile changes preserve live
 processing state rather than resetting queues or learned temporal models.
 
+## Result graphics overrides
+
+Use **Graphics default** in the toolbar to follow the run profile or set optional
+result graphics **On** or **Off** for the project. Set **Result graphics** in a
+block's inspector to inherit the project default or override it. For example, turn
+graphics off for the project and enable them on the pattern matcher you are tuning.
+Both settings are saved. Changes clear disabled graphics from the display and take
+effect on the next run without resetting flow or sequence state.
+
+Optional graphics are separate from declared image outputs such as a histogram plot
+or an annotated overlay. The **Off** override also preserves exposed **Result
+graphics** outputs that the run profile would produce, including layers exported
+through ToolBlocks. With the default policy, Balanced and Lean continue to omit
+those layers. Use **On** to enable them under either profile. Output image preview
+retention still follows the selected profile.
+
 ## Processing contract
 
 Profiles preserve every declared output, parameter, mask/region operation, ticket identity,
@@ -62,7 +78,9 @@ available, but image previews are disabled in Lean.
 ```
 
 `--profile debug|balanced|lean` overrides the saved choice for that invocation without
-rewriting the project. JSON receipts identify the effective profile. Without `--report`,
+rewriting the project. Use `--result-graphics inherit|on|off` to override the
+project graphics default for the invocation. Block overrides still apply. JSON
+receipts identify the effective profile and graphics default. Without `--report`,
 the CLI avoids building/retaining per-iteration structured receipts. A requested report
 still incurs the cost of describing the outputs it contains.
 
@@ -72,13 +90,15 @@ Avoid constructing auxiliary images when they are not requested:
 
 ```python
 graphics = {}
-if self.generate_graphics:
+if self.capture_graphics:
     graphics["diagnostic overlay"] = draw_overlay(image, measurements)
 return Result({"measurements": measurements}, graphics=graphics)
 ```
 
-Returning a graphic that was already computed cannot recover the drawing time; the runtime
-can only skip its validation, retention and display copies. Declared image outputs remain
+Use `self.generate_graphics` for drawable objects that can feed the **Result graphics**
+port as well as the inspector. Returning a graphic that was already computed cannot
+recover the drawing time. The runtime can skip its validation, retention and display
+copies. Declared image outputs remain
 part of the processing contract. For expensive diagnostic arguments, guard their creation
 with `self.logger.isEnabledFor("DEBUG")`; Python evaluates call arguments before invoking
 the logger. A custom class can explicitly declare `process_inputs_readonly = True` after

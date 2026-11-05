@@ -43,11 +43,20 @@ def test_graphics_ports_are_opt_in_and_compose_without_copying_the_backdrop():
     graph = Graph.from_dict(graph.to_dict(), registry)
     graph.run()
     assert "Overlaid 2 layers" in graph.blocks["composite"].last_result.message
+    expected = graph.blocks["composite"].last_result.outputs["image"].copy()
+    graph.set_graphics_mode("off")
+    graph.run()
+    assert all(not block.last_graphics for block in graph.blocks.values())
+    np.testing.assert_array_equal(graph.blocks["composite"].last_result.outputs["image"], expected)
+    graph.set_graphics_mode("inherit")
     graph.set_run_profile("lean")
     graph.run()
     result = graph.blocks["composite"].last_result
     assert "Overlaid 0 layers" in result.message
     np.testing.assert_array_equal(result.outputs["image"], source)
+    graph.set_graphics_mode("on")
+    graph.run()
+    np.testing.assert_array_equal(graph.blocks["composite"].last_result.outputs["image"], expected)
 
 
 def test_composite_maps_drawing_objects_to_the_final_grid_and_skips_other_tickets():

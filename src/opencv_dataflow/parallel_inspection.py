@@ -364,6 +364,8 @@ class ParallelInspect(Block):
                 tool._event_path = f"{getattr(self, '_event_path', self.id)}/part-{index}"
                 tool._activity = self._activity
                 tool.run_profile = self.run_profile
+                tool._job_graphics_mode = self._job_graphics_mode
+                tool.graph._inherit_graphics_from(tool)
                 tool.graph.set_run_profile(self.run_profile)
                 tool._production_excluded = True
                 tool._activity_path = tool._event_path

@@ -132,6 +132,7 @@ class ToolBlock(Block):
             self.queue_inputs[name].preloaded_events.extend(
                 packet for packet in packets if not rejected_inputs(self, {name: packet})
             )
+        self.graph._inherit_graphics_from(self)
         self.graph.run(self._cancelled, injected)
         children = list(self.graph.blocks.values())
         unavailable = [b for b in children if b.state in ("error", "skipped")]
@@ -155,7 +156,7 @@ class ToolBlock(Block):
                 if b.state != "inactive"
                 for key, image in b.last_graphics.items()
             }
-            if self.generate_graphics
+            if self.capture_graphics
             else {}
         )
         return Result(

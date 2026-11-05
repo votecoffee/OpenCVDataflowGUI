@@ -495,6 +495,17 @@ class Inspector(QWidget):
         index = self.node_image.findData(block.preview_output)
         self.node_image.setCurrentIndex(max(0, index))
         self.form.addRow("Node image", self.node_image)
+        self.graphics_choice = QComboBox()
+        self.graphics_choice.addItem("Use project default", "inherit")
+        self.graphics_choice.addItem("On", "on")
+        self.graphics_choice.addItem("Off", "off")
+        self.graphics_choice.setCurrentIndex(self.graphics_choice.findData(block.graphics_mode))
+        self.graphics_choice.setToolTip(
+            "Control optional result graphics. Declared outputs are preserved, along with "
+            "exposed graphics enabled by the current run profile."
+        )
+        self.graphics_choice.currentIndexChanged.connect(self.change_graphics_mode)
+        self.form.addRow("Result graphics", self.graphics_choice)
         for direction in ("inputs", "outputs"):
             ports = block.inputs if direction == "inputs" else block.output_ports
             for port in ports:
@@ -667,6 +678,7 @@ class Inspector(QWidget):
         try:
             candidate = self.window.registry.create(b.type_id, parameters=self.read_parameters())
             candidate.restore_extra(b.serialize_extra())
+            candidate.set_graphics_mode("on" if b.capture_graphics else "off")
             candidate.project_dir = b.project_dir
             candidate.recipe_bindings = dict(b.recipe_bindings)
             candidate.recipe_model = b.recipe_model
@@ -1130,6 +1142,14 @@ class Inspector(QWidget):
             self.window.warn(str(exc))
             return False
 
+    def change_graphics_mode(self, index):
+        if self.block is not None and not self.window.runner:
+            self.stop_previews()
+            self.block.set_graphics_mode(self.graphics_choice.itemData(index))
+            self.window.scene.update()
+            self.window.mark_dirty()
+            self.refresh_result()
+
     def refresh_timing(self):
         block = self.block
         runner = self.window.runner
@@ -1455,6 +1475,16 @@ class MainWindow(QMainWindow):
         )
         self.profile_choice.currentTextChanged.connect(self.change_run_profile)
         toolbar.addWidget(self.profile_choice)
+        toolbar.addWidget(QLabel("Graphics default"))
+        self.project_graphics_choice = QComboBox()
+        self.project_graphics_choice.addItem("Run profile", "inherit")
+        self.project_graphics_choice.addItem("On", "on")
+        self.project_graphics_choice.addItem("Off", "off")
+        self.project_graphics_choice.setToolTip(
+            "Set the default for optional result graphics across this project."
+        )
+        self.project_graphics_choice.currentIndexChanged.connect(self.change_project_graphics)
+        toolbar.addWidget(self.project_graphics_choice)
         toolbar.addWidget(QLabel("Branch workers"))
         self.branch_workers_choice = QComboBox()
         self.branch_workers_choice.addItem("Auto", "auto")
@@ -1777,6 +1807,11 @@ class MainWindow(QMainWindow):
         self.profile_choice.blockSignals(True)
         self.profile_choice.setCurrentText(graph.run_profile.name)
         self.profile_choice.blockSignals(False)
+        self.project_graphics_choice.blockSignals(True)
+        self.project_graphics_choice.setCurrentIndex(
+            self.project_graphics_choice.findData(graph.graphics_mode)
+        )
+        self.project_graphics_choice.blockSignals(False)
         self.filmstrip_view.capture.setChecked(graph.run_profile.name != "lean")
         self.update_title()
         self.view.restore_view()
@@ -1970,6 +2005,7 @@ class MainWindow(QMainWindow):
             action.setEnabled(False)
         self.stop_action.setEnabled(True)
         self.profile_choice.setEnabled(False)
+        self.project_graphics_choice.setEnabled(False)
         self.branch_workers_choice.setEnabled(False)
         self.statusBar().showMessage("Running…")
         self.runner.start()
@@ -2053,6 +2089,7 @@ class MainWindow(QMainWindow):
             action.setEnabled(True)
         self.stop_action.setEnabled(False)
         self.profile_choice.setEnabled(True)
+        self.project_graphics_choice.setEnabled(True)
         self.branch_workers_choice.setEnabled(True)
         self.update_navigation()
         if error is not None:
@@ -2112,6 +2149,14 @@ class MainWindow(QMainWindow):
             self.statusBar().showMessage(
                 f"Run profile: {name}. Run once to collect its current diagnostics."
             )
+
+    def change_project_graphics(self, index):
+        if not self.runner:
+            self.inspector.stop_previews()
+            self.root_graph.set_graphics_mode(self.project_graphics_choice.itemData(index))
+            self.scene.update()
+            self.mark_dirty()
+            self.inspector.refresh_result()
 
     def change_branch_workers(self, index):
         if not self.runner:

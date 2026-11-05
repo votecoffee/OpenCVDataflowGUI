@@ -366,12 +366,12 @@ def draw_pattern_candidate(overlay, match, color, label):
     cv2.putText(overlay, label, center, cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 1)
 
 
-def pattern_result(image, model, matches, rejected=()):
+def pattern_result(image, model, matches, rejected=(), *, generate_graphics=True):
     overlay = overlay_image(image)
     for index, match in enumerate(matches, 1):
         draw_pattern_candidate(overlay, match, ACCEPTED, f"{index}: {match['score']:.2f}")
     graphic = overlay
-    if rejected:
+    if generate_graphics and rejected:
         graphic = overlay_image(image)
         for match, reason in rejected:
             draw_pattern_candidate(graphic, match, REJECTED, f"{match['score']:.2f} {reason}")
@@ -380,13 +380,14 @@ def pattern_result(image, model, matches, rejected=()):
         review_legend(graphic, len(matches), len(rejected))
     score = matches[0]["score"] if matches else 0.0
     objects = []
-    for items, color in (([match for match, _ in rejected], REJECTED), (matches, ACCEPTED)):
-        for match in items:
-            objects.extend((
-                graphic_object("polyline", match["corners"], color, closed=True),
-                graphic_object("marker", [match["center"]], color),
-                graphic_object("text", [match["center"]], color, text=f"{match['score']:.2f}"),
-            ))
+    if generate_graphics:
+        for items, color in (([match for match, _ in rejected], REJECTED), (matches, ACCEPTED)):
+            for match in items:
+                objects.extend((
+                    graphic_object("polyline", match["corners"], color, closed=True),
+                    graphic_object("marker", [match["center"]], color),
+                    graphic_object("text", [match["center"]], color, text=f"{match['score']:.2f}"),
+                ))
     return Result(
         {
             "matches": {
@@ -404,7 +405,7 @@ def pattern_result(image, model, matches, rejected=()):
         },
         passed=bool(matches),
         score=score,
-        graphics={"pattern matches": graphic},
+        graphics={"pattern matches": graphic} if generate_graphics else {},
         drawings={"pattern matches": GraphicDrawing(tuple(objects))} if objects else {},
         message=f"{len(matches)} pattern matches, best score {score:.3f}",
     )
@@ -487,7 +488,9 @@ class MatchShapePattern(TrainableMatcher, Block):
             raise ValueError("Invalid shape score, coverage, overlap or distance tolerance")
         required = integer(p["max_matches"], "Maximum matches", 1, 256)
         if not features.any():
-            return pattern_result(inputs["image"], model, [])
+            return pattern_result(
+                inputs["image"], model, [], generate_graphics=self.generate_graphics
+            )
         distance = cv2.distanceTransform(255 - features, cv2.DIST_L2, 3)
         points = np.asarray(model["points"], np.float64)
         center = ((model["size"][0] - 1) / 2, (model["size"][1] - 1) / 2)
@@ -595,7 +598,9 @@ class MatchShapePattern(TrainableMatcher, Block):
             visible.append((candidate, reason))
             if len(visible) == 32:
                 break
-        return pattern_result(inputs["image"], model, matches, visible)
+        return pattern_result(
+            inputs["image"], model, matches, visible, generate_graphics=self.generate_graphics
+        )
 
 
 class PatternDemoImages(Block):
