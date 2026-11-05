@@ -51,6 +51,23 @@ def pixmap(image):
     )
 
 
+def block_preview_images(block):
+    composed = getattr(block, "composes_result_image", False)
+    drawings = block.last_result.drawings if block.last_result is not None else {}
+    if composed:
+        for name, image in block.last_output_images.items():
+            yield "Result", name, image
+    for name, image in block.last_graphics.items():
+        if name in drawings:
+            yield "Graphic", name, image
+    if not composed:
+        for name, image in block.last_output_images.items():
+            yield "Output", name, image
+    for name, image in block.last_graphics.items():
+        if name not in drawings:
+            yield "Graphic", name, image
+
+
 def curve(start, end):
     path = QPainterPath(start)
     distance = max(70, abs(end.x() - start.x()) * 0.5)
@@ -264,8 +281,13 @@ class Node(QGraphicsItem):
             )
         thumbnail = self.thumbnail_rect
         if not thumbnail.isEmpty():
-            images = {**b.last_output_images, **b.last_graphics}
-            image = images.get(b.preview_output, next(iter(images.values()), None))
+            image = None
+            if b.preview_output:
+                image = b.last_graphics.get(b.preview_output)
+                if image is None:
+                    image = b.last_output_images.get(b.preview_output)
+            if image is None:
+                image = next((value for _, _, value in block_preview_images(b)), None)
             painter.setBrush(QColor("#152030"))
             painter.setPen(Qt.PenStyle.NoPen)
             painter.drawRoundedRect(thumbnail, 5, 5)

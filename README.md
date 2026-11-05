@@ -100,7 +100,7 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
    with the preview selector. Nodes show pass/fail/error state, timing, and score
    intensity where provided. A failed inspection still supplies results downstream;
    execution errors skip dependent blocks.
-   The inspector opens on the result image when available, then an output image.
+   The inspector and automatic node thumbnails prefer the result image, then an output image.
    Choose an output or graphic and click **Pop out…** to watch it in a separate
    window with a status-colored border and the ticket in its title.
    In the **Debug** run profile, pattern matching, template instances, oriented
