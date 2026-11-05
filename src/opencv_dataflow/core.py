@@ -659,6 +659,11 @@ def validate_value(port, value):
 
         if not isinstance(value, DCTCoefficients):
             raise TypeError(f"{port.name} requires DCT coefficients")
+    elif port.kind == "dft":
+        from .spectral import DFTSpectrum
+
+        if not isinstance(value, DFTSpectrum):
+            raise TypeError(f"{port.name} requires a Fourier spectrum")
     elif port.kind == "depth":
         if (
             not isinstance(value, np.ndarray)

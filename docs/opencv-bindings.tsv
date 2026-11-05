@@ -454,7 +454,7 @@ P2	class	cv2.detail.TimelapserCrop	no static reference	-
 P2	class	cv2.detail.VoronoiSeamFinder	no static reference	-
 P2	method	cv2.detail.VoronoiSeamFinder.find	method name only	-
 P2	function	cv2.detail.waveCorrect	no static reference	-
-P2	function	cv2.dft	no static reference	-
+P2	function	cv2.dft	literal reference	-
 P2	class	cv2.DISOpticalFlow	no static reference	-
 P2	method	cv2.DISOpticalFlow.create	method name only	-
 P2	method	cv2.DISOpticalFlow.getCoarsestScale	no static reference	-
@@ -2867,7 +2867,7 @@ P3	function	cv2.getGaborKernel	no static reference	-
 P3	function	cv2.getGaussianKernel	no static reference	-
 P3	function	cv2.getHardwareFeatureName	no static reference	-
 P3	function	cv2.getNumberOfCPUs	no static reference	-
-P3	function	cv2.getOptimalDFTSize	no static reference	-
+P3	function	cv2.getOptimalDFTSize	literal reference	-
 P3	function	cv2.getOptimalNewCameraMatrix	no static reference	-
 P3	function	cv2.getPerspectiveTransform	literal reference	-
 P3	function	cv2.getRectSubPix	no static reference	-
@@ -3021,7 +3021,7 @@ P3	function	cv2.HoughLinesPointSet	no static reference	-
 P3	function	cv2.HoughLinesWithAccumulator	no static reference	-
 P3	function	cv2.HuMoments	literal reference	-
 P3	function	cv2.idct	literal reference	-
-P3	function	cv2.idft	no static reference	-
+P3	function	cv2.idft	literal reference	-
 P3	function	cv2.illuminationChange	no static reference	-
 P3	function	cv2.imcount	no static reference	-
 P3	function	cv2.imdecode	literal reference	-

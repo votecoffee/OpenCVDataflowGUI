@@ -403,7 +403,9 @@ The [OpenCV coverage backlog](docs/opencv-coverage.md) ranks missing tools and
 links to the full Python binding inventory for the pinned contrib build. The
 [roadmap](docs/roadmap.md) puts core vision coverage first and tracks editor,
 acquisition and deployment work separately. The [DCT example](examples/dct_round_trip/README.md)
-displays cosine coefficients and verifies image reconstruction.
+displays cosine coefficients and verifies image reconstruction. The
+[Fourier filter example](examples/fourier_filter/README.md) removes a periodic
+stripe pattern with a band-stop filter.
 
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing

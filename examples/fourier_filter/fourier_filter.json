@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image with periodic stripes",
+      "parameters": {
+        "path": "assets/periodic_stripes.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dft",
+      "type": "cv.dft",
+      "name": "Centered Fourier magnitude",
+      "parameters": {},
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "spectrum"
+      ],
+      "thumbnail": true,
+      "preview_output": "magnitude"
+    },
+    {
+      "id": "filter",
+      "type": "cv.filter_fourier_spectrum",
+      "name": "Reject 0.20\u20130.30 cycles/pixel",
+      "parameters": {
+        "mode": "band_stop",
+        "cutoff": 0.2,
+        "upper_cutoff": 0.3
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "spectrum"
+      ],
+      "exposed_outputs": [
+        "spectrum"
+      ],
+      "thumbnail": true,
+      "preview_output": "magnitude"
+    },
+    {
+      "id": "idft",
+      "type": "cv.idft",
+      "name": "Reconstruct without stripes",
+      "parameters": {},
+      "position": [
+        990,
+        0
+      ],
+      "exposed_inputs": [
+        "spectrum"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "dft",
+      "input": "image"
+    },
+    {
+      "source": "dft",
+      "output": "spectrum",
+      "target": "filter",
+      "input": "spectrum"
+    },
+    {
+      "source": "filter",
+      "output": "spectrum",
+      "target": "idft",
+      "input": "spectrum"
+    }
+  ]
+}

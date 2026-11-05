@@ -1,17 +1,42 @@
 """Spectral coefficient packets and reversible image transforms."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 import cv2
 import numpy as np
 
 from .core import Block, Port, Result
 from .images import ImageArray, convert_depth
-from .parameter_validation import ValidationError
+from .parameter_validation import NumericRange, ValidationError
 from .processing import image_value
 
 DCT_FLAGS = {"2d": 0, "rows": cv2.DCT_ROWS}
-DCT_DEPTHS = (np.uint8, np.uint16, np.float32, np.float64)
+DFT_FLAGS = {"2d": 0, "rows": cv2.DFT_ROWS}
+IMAGE_DEPTHS = (np.uint8, np.uint16, np.float32, np.float64)
+
+
+def magnitude_graphics(magnitude):
+    display = cv2.normalize(np.log1p(magnitude), None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+    return {"magnitude": display}
+
+
+def transform_input(image, operation):
+    image = image_value(image, IMAGE_DEPTHS)
+    if image.ndim != 2 or image.size == 0:
+        raise ValidationError(f"{operation} needs a nonempty monochrome image")
+    return convert_depth(image, "float32") if image.dtype.kind == "u" else image
+
+
+def restore_image(output, depth, operation):
+    if not np.isfinite(output).all():
+        raise ValidationError(f"{operation} produced nonfinite pixels. Check the coefficient range")
+    if depth in ("uint8", "uint16"):
+        output = convert_depth(output, depth)
+    elif output.dtype.name != depth:
+        if np.max(np.abs(output)) > np.finfo(depth).max:
+            raise ValidationError(f"{operation} pixels exceed the requested floating-point depth")
+        output = output.astype(depth)
+    return Result({"image": ImageArray(output, "gray")})
 
 
 def dct_shape(shape, mode):
@@ -51,25 +76,19 @@ class DiscreteCosineTransform(Block):
     }
 
     def process(self, inputs):
-        image = image_value(inputs["image"], DCT_DEPTHS)
-        if image.ndim != 2 or image.size == 0:
-            raise ValidationError("DCT needs a nonempty monochrome image")
+        image = inputs["image"]
+        working = transform_input(image, "DCT")
         mode = self.parameters["mode"]
         height, width = image.shape
         rows, columns = dct_shape(image.shape, mode)
         if (rows, columns) != image.shape and self.parameters["odd_size"] == "reject":
             raise ValidationError("DCT needs even transformed dimensions or Pad even", "odd_size")
-        working = convert_depth(image, "float32") if image.dtype.kind == "u" else image
         if (rows, columns) != image.shape:
             working = np.pad(working, ((0, rows - height), (0, columns - width)), mode="edge")
         coefficients = cv2.dct(working, flags=DCT_FLAGS[mode])
         if not np.isfinite(coefficients).all():
             raise ValidationError("DCT produced nonfinite coefficients. Check the image range")
-        graphics = {}
-        if self.generate_graphics:
-            graphics["magnitude"] = cv2.normalize(
-                np.log1p(np.abs(coefficients)), None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U
-            )
+        graphics = magnitude_graphics(np.abs(coefficients)) if self.generate_graphics else {}
         return Result(
             {"coefficients": DCTCoefficients(coefficients, mode, image.shape, image.dtype.name)},
             graphics=graphics,
@@ -101,15 +120,157 @@ class InverseDiscreteCosineTransform(Block):
             raise ValidationError("Invalid DCT coefficient values or metadata")
         height, width = shape
         output = cv2.idct(coefficients, flags=DCT_FLAGS[mode])[:height, :width]
-        if not np.isfinite(output).all():
-            raise ValidationError("IDCT produced nonfinite pixels. Check the coefficient range")
-        if depth in ("uint8", "uint16"):
-            output = convert_depth(output, depth)
+        return restore_image(output, depth, "IDCT")
+
+
+@dataclass(frozen=True)
+class DFTSpectrum:
+    values: np.ndarray
+    mode: str
+    image_shape: tuple[int, int]
+    image_depth: str
+
+    def describe(self):
+        return {
+            "model": "image_dft_v1",
+            "mode": self.mode,
+            "image_shape": list(self.image_shape),
+            "image_depth": self.image_depth,
+            "values": self.values,
+        }
+
+    def validated_values(self):
+        values = self.values
+        shape = self.image_shape
+        if (
+            not isinstance(self.mode, str)
+            or self.mode not in DFT_FLAGS
+            or self.image_depth not in ("uint8", "uint16", "float32", "float64")
+            or not isinstance(shape, tuple)
+            or len(shape) != 2
+            or any(type(size) is not int or size < 1 for size in shape)
+            or not isinstance(values, np.ndarray)
+            or values.ndim != 3
+            or values.shape[2] != 2
+            or values.shape[0] < shape[0]
+            or values.shape[1] < shape[1]
+            or (self.mode == "rows" and values.shape[0] != shape[0])
+            or values.dtype not in (np.float32, np.float64)
+            or not np.isfinite(values).all()
+        ):
+            raise ValidationError("Invalid Fourier spectrum values or metadata")
+        return values
+
+    def preview(self):
+        magnitude = np.hypot(self.values[..., 0], self.values[..., 1], dtype=np.float64)
+        axes = 1 if self.mode == "rows" else (0, 1)
+        return magnitude_graphics(np.fft.fftshift(magnitude, axes=axes))
+
+
+class DiscreteFourierTransform(Block):
+    type_id, title = "cv.dft", "Discrete Fourier transform (DFT)"
+    category, block_type, subtype = "Image processing", "Image processing", "Spectral"
+    inputs = DiscreteCosineTransform.inputs
+    outputs = (Port("spectrum", "dft", visual_type="data"),)
+    defaults = {"mode": "2d", "size": "exact"}
+    parameter_choices = {"mode": tuple(DFT_FLAGS), "size": ("exact", "optimal")}
+    parameter_help = {
+        "mode": "Transform the entire image or transform each row independently.",
+        "size": "Optimal zero-pads transformed axes to OpenCV's next efficient size.",
+    }
+
+    def process(self, inputs):
+        image = inputs["image"]
+        working = transform_input(image, "DFT")
+        mode = self.parameters["mode"]
+        height, width = image.shape
+        if self.parameters["size"] == "optimal":
+            rows = cv2.getOptimalDFTSize(height) if mode == "2d" else height
+            columns = cv2.getOptimalDFTSize(width)
+            if rows < height or columns < width:
+                raise ValidationError("OpenCV could not choose a padded Fourier transform size")
+            if (rows, columns) != image.shape:
+                working = np.pad(working, ((0, rows - height), (0, columns - width)))
+        values = cv2.dft(working, flags=DFT_FLAGS[mode] | cv2.DFT_COMPLEX_OUTPUT)
+        if not np.isfinite(values).all():
+            raise ValidationError("DFT produced nonfinite coefficients. Check the image range")
+        spectrum = DFTSpectrum(values, mode, image.shape, image.dtype.name)
+        return Result(
+            {"spectrum": spectrum}, graphics=spectrum.preview() if self.generate_graphics else {}
+        )
+
+
+class FilterFourierSpectrum(Block):
+    type_id, title = "cv.filter_fourier_spectrum", "Filter Fourier spectrum"
+    category, block_type, subtype = "Image processing", "Image processing", "Spectral"
+    inputs = outputs = DiscreteFourierTransform.outputs
+    defaults = {"mode": "low_pass", "cutoff": 0.1, "upper_cutoff": 0.3}
+    parameter_choices = {"mode": ("low_pass", "high_pass", "band_pass", "band_stop")}
+    parameter_ranges = {
+        "cutoff": NumericRange(0, 2**-0.5),
+        "upper_cutoff": NumericRange(0, 2**-0.5),
+    }
+    parameter_help = {
+        "cutoff": "Cutoff in cycles per pixel. For a band, this is the lower edge.",
+        "upper_cutoff": "Upper edge in cycles per pixel. Used by the band modes.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["mode"] in ("band_pass", "band_stop") and p["upper_cutoff"] <= p["cutoff"]:
+            raise ValidationError("Upper cutoff must exceed cutoff", "cutoff", "upper_cutoff")
+
+    def process(self, inputs):
+        spectrum = inputs["spectrum"]
+        values = spectrum.validated_values()
+        height, width = values.shape[:2]
+        x = np.fft.fftfreq(width)
+        frequencies = (
+            np.abs(x) if spectrum.mode == "rows" else np.hypot(np.fft.fftfreq(height)[:, None], x)
+        )
+        cutoff = float(self.parameters["cutoff"])
+        mode = self.parameters["mode"]
+        if mode == "low_pass":
+            keep = frequencies <= cutoff
+        elif mode == "high_pass":
+            keep = frequencies >= cutoff
         else:
-            output = output.astype(depth, copy=False)
-            if not np.isfinite(output).all():
-                raise ValidationError("IDCT pixels exceed the requested floating-point depth")
-        return Result({"image": ImageArray(output, "gray")})
+            keep = (frequencies >= cutoff) & (frequencies <= float(self.parameters["upper_cutoff"]))
+            if mode == "band_stop":
+                keep = ~keep
+        filtered = replace(spectrum, values=values * keep[..., None])
+        return Result(
+            {"spectrum": filtered}, graphics=filtered.preview() if self.generate_graphics else {}
+        )
 
 
-SPECTRAL_BLOCKS = (DiscreteCosineTransform, InverseDiscreteCosineTransform)
+class InverseDiscreteFourierTransform(Block):
+    type_id, title = "cv.idft", "Inverse discrete Fourier transform (IDFT)"
+    category, block_type, subtype = "Image processing", "Image processing", "Spectral"
+    inputs, outputs = DiscreteFourierTransform.outputs, InverseDiscreteCosineTransform.outputs
+    defaults = {"output_depth": "unchanged"}
+    parameter_choices = {"output_depth": ("unchanged", "float32", "float64")}
+    parameter_help = {
+        "output_depth": "Use floating point to retain signed or out-of-range filtered samples.",
+    }
+
+    def process(self, inputs):
+        spectrum = inputs["spectrum"]
+        values = spectrum.validated_values()
+        flags = DFT_FLAGS[spectrum.mode] | cv2.DFT_SCALE | cv2.DFT_REAL_OUTPUT
+        height, width = spectrum.image_shape
+        output = cv2.idft(values, flags=flags)[:height, :width]
+        depth = self.parameters["output_depth"]
+        if depth == "unchanged":
+            depth = spectrum.image_depth
+        return restore_image(output, depth, "IDFT")
+
+
+SPECTRAL_BLOCKS = (
+    DiscreteCosineTransform,
+    InverseDiscreteCosineTransform,
+    DiscreteFourierTransform,
+    FilterFourierSpectrum,
+    InverseDiscreteFourierTransform,
+)
