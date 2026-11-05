@@ -44,6 +44,12 @@ FIFO expectations and fan-in policies.
 
 ## Scheduling and G-API
 
+[Coordinate inputs](input-coordination.md) is an explicit buffered arrival policy.
+Its idle polls check ingress-time deadlines without blocking the graph, including
+inside ToolBlocks. Ordinary nodes retain positional/broadcast stream scheduling;
+sources remain serial and a blocked source prevents deadline service until it
+returns. This is not independent acquisition or a hard real-time timer service.
+
 The graph rejects cycles, self-connections, multiple producers for one input,
 unknown ports, hidden ports, and incompatible types. Fan-out is supported. Runtime
 execution follows topological order. Missing required inputs fail that block;

@@ -33,6 +33,8 @@
 - Ordinary Grayscale/Gaussian blur/Canny defaults and examples; legacy blocks under Advanced > G-API.
 - Per-connection outcomes, per-input failure gates, bounded shared ticket history,
   explicit final judgments and a live searchable ticket-results window.
+- Explicit ticket/deadline, latest, trigger-latest and first-arrival input coordination,
+  freshness guards and a synthetic shared part-counter example.
 
 ## Point clouds and 3D vision
 
@@ -60,6 +62,8 @@ frame transforms and robot pose/measurement adapters. See
   [benchmark gate](opencv-backend.md#compiled-toolblocks-future).
 - Consider OpenCV.js/WebAssembly for a future browser viewer/editor; retain the native Python/Qt runtime today.
 - Camera enumeration, trigger controls, bounded acquisition and recorded test sets.
+- [Independent source workers and timestamp-window matching](https://github.com/votecoffee/OpenCVDataflowGUI/issues/5),
+  with clock-domain, watermark, ownership and cancellation contracts.
 
 ## Application runtime
 

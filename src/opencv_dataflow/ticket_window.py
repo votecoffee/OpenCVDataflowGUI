@@ -104,9 +104,17 @@ class TicketResultsWindow(QDialog):
         self.events.blockSignals(True)
         self.events.clear()
         for event in row["events"] if row else []:
-            verdict = "Pass" if event["passed"] else "Fail"
+            verdict = (
+                "Pass"
+                if event["passed"] is True
+                else "Fail"
+                if event["passed"] is False
+                else "Event"
+            )
             if event["kind"] == "input_rejected":
                 verdict = "Rejected"
+            elif event["kind"] == "coordination_late":
+                verdict = "Ignored late input"
             elif event["kind"] == "error":
                 verdict = "Error"
             elif event["final_judgment"] is not None:

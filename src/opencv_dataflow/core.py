@@ -563,6 +563,7 @@ class Graph:
             if any(
                 self.blocks[c.source].state in ("error", "skipped")
                 and not (getattr(block, "queue_boundary", False) and c.input == "image")
+                and not getattr(block, "tolerates_unavailable_inputs", False)
                 for c in incoming
             ):
                 block.state, block.error = "skipped", "Upstream block unavailable"
@@ -670,6 +671,8 @@ class Graph:
                 ]
                 if constants:
                     calls[0:0] = [{name: value} for name, value in constants.items()]
+                if getattr(block, "poll_without_input", False):
+                    calls.append({})
             elif any(
                 not values and next(p for p in block.inputs if p.name == name).required
                 for name, values in streams.items()

@@ -45,6 +45,12 @@ class ToolBlock(Block):
         return mappings
 
     @property
+    def tolerates_unavailable_inputs(self):
+        return any(
+            getattr(b, "tolerates_unavailable_inputs", False) for b in self.graph.blocks.values()
+        )
+
+    @property
     def accept_events(self):
         return bool(self.input_bindings) and all(
             getattr(self.graph.blocks[b.block], "accept_events", False)
