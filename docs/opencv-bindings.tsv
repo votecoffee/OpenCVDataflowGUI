@@ -1772,7 +1772,7 @@ P3	method	cv2.aruco_RefineParameters.writeRefineParameters	alias	cv2.aruco.Refin
 P3	class	cv2.AsyncArray	no static reference	-
 P3	method	cv2.AsyncArray.get	method name only	-
 P3	method	cv2.AsyncArray.release	method name only	-
-P3	method	cv2.AsyncArray.valid	no static reference	-
+P3	method	cv2.AsyncArray.valid	method name only	-
 P3	method	cv2.AsyncArray.wait_for	no static reference	-
 P3	class	cv2.BackgroundSubtractor	no static reference	-
 P3	method	cv2.BackgroundSubtractor.apply	method name only	-

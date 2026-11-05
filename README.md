@@ -61,6 +61,8 @@ learned weights or imports optional ML libraries until their blocks need them.
 Use [OCR and text verification](docs/ocr.md) to detect text regions, read
 cropped lines with a local CTC model, and check OCR or barcode results.
 
+The optional `barcodes` extra adds [Data Matrix and multi-format barcode reading](docs/barcode-reading.md).
+
 Start the editor from the repository's virtual environment:
 
 ```powershell

@@ -10,3 +10,6 @@ SHA-256: `7de7ed51a1594fff247f4cae2301eceacf5313d6011e37b4a4c8733f7bb72c07`.
 This is a third-party test image, not an original project asset. The repository's
 MIT license does not grant rights to the image. It is fetched only when requested
 and is not bundled into the Python package or committed in this repository.
+
+`datamatrix_lot.png` is a synthetic Data Matrix generated with ZXing-C++
+from `LOT-0042` at scale 8 and padded with a white border for the barcode example.

@@ -701,6 +701,7 @@ def builtin_registry():
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
     from .video_files import VideoFile, WriteVideo
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
+    from .zxing_reader import ReadZXingBarcode
 
     registry = Registry()
     for block in (
@@ -739,6 +740,7 @@ def builtin_registry():
         *COLLECTION_BLOCKS,
         *CONTOUR_ANALYSIS_BLOCKS,
         *CODE_READER_BLOCKS,
+        ReadZXingBarcode,
         VerifyText,
         *SEGMENTATION_BLOCKS,
         CompareImageQuality,
