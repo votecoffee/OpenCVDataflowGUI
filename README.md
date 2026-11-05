@@ -405,7 +405,8 @@ links to the full Python binding inventory for the pinned contrib build. The
 acquisition and deployment work separately. The [DCT example](examples/dct_round_trip/README.md)
 displays cosine coefficients and verifies image reconstruction. The
 [Fourier filter example](examples/fourier_filter/README.md) removes a periodic
-stripe pattern with a band-stop filter. The [intensity lookup example](examples/intensity_lut/README.md)
+stripe pattern with a band-stop filter. The [Fourier gain example](examples/fourier_gain/README.md)
+suppresses only a chosen pair of frequency bins. The [intensity lookup example](examples/intensity_lut/README.md)
 applies separate intensity curves to the red and blue channels. The
 [local statistics example](examples/local_statistics/README.md) uses rectangular
 neighborhoods to distinguish a flat patch from an equally bright textured patch.

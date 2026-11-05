@@ -1309,6 +1309,19 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `border` | `"crop"` | `crop`, `valid` Crop uses in-image samples. Valid suppresses windows crossing the image border. |
 | `selection_mode` | `"samples_and_centers"` | `samples_and_centers`, `centers` Limit both contributing samples and output centers, or only centers. |
 
+## Mask Fourier spectrum (`cv.mask_fourier_spectrum`)
+
+Image processing / Spectral
+
+Inputs: `spectrum` (dft), `gain` (image).
+
+Input `gain` — Monochrome gain image at the full spectrum size, including any DFT padding.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `layout` | `"centered"` | `centered`, `native` Centered matches the spectrum preview. Native has zero frequency at index 0. |
+| `symmetry` | `"require"` | `require`, `average`, `minimum`, `maximum` Require matching paired gains, or combine each pair by average, min, or max. |
+
 ## Median blur (`cv.median_blur`)
 
 Image processing / Filtering

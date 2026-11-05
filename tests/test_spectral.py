@@ -112,3 +112,79 @@ def test_fourier_filter_selects_known_frequencies_and_preserves_frame(
     np.testing.assert_allclose(
         result.outputs["image"], slow if expected == "slow" else stripes, atol=2e-7
     )
+
+
+@pytest.mark.parametrize("shape,mode", [((11, 17), "2d"), ((12, 18), "rows")])
+def test_fourier_gain_notch_preserves_source_frame_and_discards_gain_ticket(shape, mode):
+    height, width = shape
+    x = np.arange(width)
+    pattern = np.broadcast_to(np.cos(2 * np.pi * 3 * x / width), shape)
+    image = (0.5 + 0.2 * pattern).astype(np.float32)
+    registry = builtin_registry()
+    source_context = frame([width, height], "source")
+    source = ValuePacket(image, {"spatial": source_context})
+    forward = registry.create("cv.dft", parameters={"mode": mode})
+    transformed = forward.execute({"image": source})
+    assert transformed is not None, forward.error
+    gain = np.full(shape, 65535, np.uint16)
+    if mode == "rows":
+        gain[:, width // 2 + 3] = 0
+    else:
+        gain[height // 2, width // 2 + 3] = 0
+    mask = ValuePacket(
+        gain, {"spatial": frame([width, height], "gain"), "ticket": TicketClock().issue("gain")}
+    )
+    inputs = {"spectrum": packet_for(transformed, "spectrum"), "gain": mask}
+    tool = registry.create("cv.mask_fourier_spectrum")
+    assert tool.execute(inputs) is None
+    assert tool.error_kind == "invalid" and "paired frequencies" in tool.error
+    tool.parameters["symmetry"] = "minimum"
+    filtered = tool.execute(inputs)
+    assert filtered is not None, tool.error
+    assert filtered.payloads["spectrum"]["spatial"] == source_context
+    assert "ticket" not in filtered.payloads["spectrum"]
+    assert filtered.graphics["magnitude"].shape == shape
+    inverse = registry.create("cv.idft")
+    restored = inverse.execute({"spectrum": packet_for(filtered, "spectrum")})
+    assert restored is not None, inverse.error
+    np.testing.assert_allclose(restored.outputs["image"], 0.5, atol=2e-7)
+
+
+@pytest.mark.parametrize("policy,gain_value", [("average", 0.5), ("maximum", 0.75)])
+def test_fourier_gain_native_pairs_support_fractional_gains(policy, gain_value):
+    image = np.cos(2 * np.pi * np.arange(10) / 10)[None, :]
+    registry = builtin_registry()
+    forward = registry.create("cv.dft")
+    transformed = forward.execute({"image": image})
+    assert transformed is not None, forward.error
+    gain = np.ones(image.shape, np.float64)
+    gain[0, 1], gain[0, -1] = 0.25, 0.75
+    tool = registry.create(
+        "cv.mask_fourier_spectrum", parameters={"layout": "native", "symmetry": policy}
+    )
+    filtered = tool.execute({"spectrum": packet_for(transformed, "spectrum"), "gain": gain})
+    assert filtered is not None, tool.error
+    inverse = registry.create("cv.idft")
+    result = inverse.execute({"spectrum": packet_for(filtered, "spectrum")})
+    assert result is not None, inverse.error
+    np.testing.assert_allclose(result.outputs["image"], image * gain_value, atol=1e-12)
+
+
+def test_fourier_gain_requires_padded_dimensions_and_nonnegative_values():
+    image = np.ones((11, 17), np.uint8)
+    registry = builtin_registry()
+    forward = registry.create("cv.dft", parameters={"size": "optimal"})
+    transformed = forward.execute({"image": image})
+    assert transformed is not None, forward.error
+    tool = registry.create("cv.mask_fourier_spectrum")
+    spectrum = packet_for(transformed, "spectrum")
+    assert tool.execute({"spectrum": spectrum, "gain": image}) is None
+    assert "full spectrum dimensions" in tool.error
+    gain = np.ones((12, 18), np.float32)
+    gain[0, 0] = -1
+    assert tool.execute({"spectrum": spectrum, "gain": gain}) is None
+    assert "nonnegative" in tool.error
+    gain.fill(2)
+    filtered = tool.execute({"spectrum": spectrum, "gain": gain})
+    assert filtered is not None, tool.error
+    assert filtered.outputs["spectrum"].image_shape == image.shape

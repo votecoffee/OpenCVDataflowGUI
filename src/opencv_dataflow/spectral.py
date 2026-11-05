@@ -245,6 +245,64 @@ class FilterFourierSpectrum(Block):
         )
 
 
+class MaskFourierSpectrum(Block):
+    type_id, title = "cv.mask_fourier_spectrum", "Mask Fourier spectrum"
+    category, block_type, subtype = "Image processing", "Image processing", "Spectral"
+    inputs = (*DiscreteFourierTransform.outputs, Port("gain"))
+    outputs = DiscreteFourierTransform.outputs
+    payload_reference = "spectrum"
+    defaults = {"layout": "centered", "symmetry": "require"}
+    parameter_choices = {
+        "layout": ("centered", "native"),
+        "symmetry": ("require", "average", "minimum", "maximum"),
+    }
+    parameter_help = {
+        "layout": "Centered matches the spectrum preview. Native has zero frequency at index 0.",
+        "symmetry": "Require matching paired gains, or combine each pair by average, min, or max.",
+    }
+    input_help = {
+        "gain": "Monochrome gain image at the full spectrum size, including any DFT padding.",
+    }
+
+    def process(self, inputs):
+        spectrum = inputs["spectrum"]
+        values = spectrum.validated_values()
+        gain = image_value(inputs["gain"], IMAGE_DEPTHS)
+        if gain.ndim != 2 or gain.shape != values.shape[:2]:
+            raise ValidationError("Gain must be monochrome and match the full spectrum dimensions")
+        if gain.dtype.kind == "u":
+            gain = convert_depth(gain, "float32")
+        elif np.any(gain < 0):
+            raise ValidationError("Fourier gains must be nonnegative")
+
+        rows_only = spectrum.mode == "rows"
+        if self.parameters["layout"] == "centered":
+            gain = np.fft.ifftshift(gain, axes=1 if rows_only else (0, 1))
+        height, width = gain.shape
+        paired_x = -np.arange(width) % width
+        paired = (
+            gain[:, paired_x] if rows_only else gain[np.ix_(-np.arange(height) % height, paired_x)]
+        )
+        mode = self.parameters["symmetry"]
+        if mode == "require":
+            if not np.array_equal(gain, paired):
+                raise ValidationError("Fourier gains must match at paired frequencies", "symmetry")
+        elif mode == "average":
+            gain = gain * 0.5 + paired * 0.5
+        elif mode == "minimum":
+            gain = np.minimum(gain, paired)
+        else:
+            gain = np.maximum(gain, paired)
+        with np.errstate(over="ignore", invalid="ignore"):
+            filtered_values = values * gain[..., None]
+        if not np.isfinite(filtered_values).all():
+            raise ValidationError("Fourier gains overflowed the spectrum")
+        filtered = replace(spectrum, values=filtered_values)
+        return Result(
+            {"spectrum": filtered}, graphics=filtered.preview() if self.generate_graphics else {}
+        )
+
+
 class InverseDiscreteFourierTransform(Block):
     type_id, title = "cv.idft", "Inverse discrete Fourier transform (IDFT)"
     category, block_type, subtype = "Image processing", "Image processing", "Spectral"
@@ -272,5 +330,6 @@ SPECTRAL_BLOCKS = (
     InverseDiscreteCosineTransform,
     DiscreteFourierTransform,
     FilterFourierSpectrum,
+    MaskFourierSpectrum,
     InverseDiscreteFourierTransform,
 )

@@ -223,19 +223,26 @@ def moved_payload(payload, matrix, size):
 def finish_outputs(block, result):
     if not isinstance(result.payloads, dict) or not result.payloads.keys() <= result.outputs.keys():
         raise ValueError("Result payloads must name declared output ports")
-    reference = next(
-        (
-            key
-            for key, value in block.last_inputs.items()
-            if isinstance(value, np.ndarray) and key not in ("mask", "window", "template")
-        ),
-        None,
-    )
-    base = copy.deepcopy(block.input_payloads.get(reference, {}))
-    if not base:
-        base = copy.deepcopy(next((p for p in block.input_payloads.values() if "ticket" in p), {}))
-    if reference is None and len(block.input_payloads) == 1:
-        base = copy.deepcopy(next(iter(block.input_payloads.values())))
+    # A typed primary input may own the frame and ticket when an auxiliary input is an image.
+    reference = getattr(block, "payload_reference", None)
+    if reference is not None:
+        base = copy.deepcopy(block.input_payloads.get(reference, {}))
+    else:
+        reference = next(
+            (
+                key
+                for key, value in block.last_inputs.items()
+                if isinstance(value, np.ndarray) and key not in ("mask", "window", "template")
+            ),
+            None,
+        )
+        base = copy.deepcopy(block.input_payloads.get(reference, {}))
+        if not base:
+            base = copy.deepcopy(
+                next((p for p in block.input_payloads.values() if "ticket" in p), {})
+            )
+        if reference is None and len(block.input_payloads) == 1:
+            base = copy.deepcopy(next(iter(block.input_payloads.values())))
     if block.last_recipe_ref is not None:
         base["recipe_ref"] = copy.deepcopy(block.last_recipe_ref)
     if getattr(block, "_source_ticket", None) is not None:
