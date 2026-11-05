@@ -8,19 +8,19 @@ P1	method	cv2.barcode.BarcodeDetector.getGradientThreshold	no static reference	-
 P1	method	cv2.barcode.BarcodeDetector.setDetectorScales	method name only	-
 P1	method	cv2.barcode.BarcodeDetector.setDownsamplingThreshold	method name only	-
 P1	method	cv2.barcode.BarcodeDetector.setGradientThreshold	method name only	-
-P1	function	cv2.compareHist	no static reference	-
+P1	function	cv2.compareHist	literal reference	-
 P1	function	cv2.createBackgroundSubtractorKNN	no static reference	-
 P1	function	cv2.createBackgroundSubtractorMOG2	no static reference	-
 P1	function	cv2.drawContours	literal reference	-
 P1	function	cv2.findContours	literal reference	-
-P1	function	cv2.fitEllipse	no static reference	-
-P1	function	cv2.fitLine	no static reference	-
+P1	function	cv2.fitEllipse	literal reference	-
+P1	function	cv2.fitLine	literal reference	-
 P1	function	cv2.floodFill	literal reference	-
 P1	function	cv2.grabCut	literal reference	-
 P1	function	cv2.matchShapes	no static reference	-
 P1	function	cv2.matchTemplate	literal reference	-
 P1	function	cv2.minAreaRect	literal reference	-
-P1	function	cv2.minEnclosingCircle	no static reference	-
+P1	function	cv2.minEnclosingCircle	literal reference	-
 P1	function	cv2.pointPolygonTest	no static reference	-
 P1	function	cv2.PSNR	literal reference	-
 P1	class	cv2.QRCodeDetector	literal reference	-
@@ -2757,8 +2757,8 @@ P3	function	cv2.findPlanes	no static reference	-
 P3	function	cv2.findTransformECCMultiScale	no static reference	-
 P3	function	cv2.findTransformECCWithMask	no static reference	-
 P3	function	cv2.finiteMask	no static reference	-
-P3	function	cv2.fitEllipseAMS	no static reference	-
-P3	function	cv2.fitEllipseDirect	no static reference	-
+P3	function	cv2.fitEllipseAMS	literal reference	-
+P3	function	cv2.fitEllipseDirect	literal reference	-
 P3	class	cv2.flann.Index	no static reference	-
 P3	method	cv2.flann.Index.build	method name only	-
 P3	method	cv2.flann.Index.getAlgorithm	no static reference	-
@@ -2856,7 +2856,7 @@ P3	method	cv2.GeneralizedHoughGuil.setScaleStep	no static reference	-
 P3	method	cv2.GeneralizedHoughGuil.setScaleThresh	no static reference	-
 P3	method	cv2.GeneralizedHoughGuil.setXi	no static reference	-
 P3	function	cv2.getAffineTransform	no static reference	-
-P3	function	cv2.getClosestEllipsePoints	no static reference	-
+P3	function	cv2.getClosestEllipsePoints	literal reference	-
 P3	function	cv2.getCPUFeaturesLine	no static reference	-
 P3	function	cv2.getCPUTickCount	no static reference	-
 P3	function	cv2.getDefaultAlgorithmHint	no static reference	-
