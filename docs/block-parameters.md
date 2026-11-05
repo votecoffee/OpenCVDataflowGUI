@@ -2340,6 +2340,18 @@ Inputs: `image_a` (image), `image_b` (image), `window` (image, optional).
 | `hanning_window` | `false` |  |
 | `min_response` | `0.0` |  |
 
+## Prune skeleton spurs (`inspect.prune_skeleton`)
+
+Inspection / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_length` | `5.0` | Value must be a finite number between 0 and 4096. Endpoint-to-junction length in pixels. Zero keeps all branches. |
+| `max_passes` | `4` | Value must be a whole number between 1 and 32. Recompute branches after each pass. Stops early when no spurs qualify. |
+| `connectivity` | `"8"` | `4`, `8` Eight includes diagonals that have no equivalent cardinal path. |
+
 ## Read linear barcodes (`inspect.read_barcode`)
 
 Inspection / Code reading
@@ -2425,6 +2437,18 @@ Inputs: `image` (image), `matches` (data), `occupancy` (image, optional), `regio
 | `maximum_occupied_pixels` | `0` | Maximum nonzero occupancy pixels outside the part footprint. |
 | `require_occupancy` | `false` | Require an obstacle mask in addition to match footprints. |
 | `draw_overlay` | `true` |  |
+
+## Skeletonize mask (scikit-image) (`inspect.skeletonize`)
+
+Inspection / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"zhang"` | `zhang`, `lee`, `guo_hall`, `medial_axis` |
+| `max_iterations` | `0` | Value must be a whole number between 0 and 10000. Guo–Hall only. Zero runs until stable. |
+| `medial_axis_seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Local random seed for breaking medial-axis ties. |
 
 ## Find template instances (`inspect.template_instances`)
 

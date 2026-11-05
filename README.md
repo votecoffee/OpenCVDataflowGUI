@@ -297,6 +297,10 @@ The [histogram thresholds example](examples/histogram_thresholds/README.md) wire
 measured cutoffs into lower-tail, middle-range, and upper-tail masks. Histograms
 also report per-channel mean, median, standard deviation, and extrema.
 
+The [skeleton pruning example](examples/skeleton_pruning/README.md) extracts
+centerlines from a binary mask and removes short spurs. Install the optional
+dependency with `python -m pip install -e ".[morphology]"`.
+
 Additional tools include monochrome/per-channel color histograms, grid-based planar
 pixel-to-physical mapping, offline multi-view lens calibration, undistortion, white/
 color balance, reusable calibration ToolBlocks, and typed depth-image loading,
