@@ -94,6 +94,7 @@ from .recipes import validate_bindings
 from .region_editor import RegionEditor
 from .result_image import ResultImageWindow
 from .run_profiles import PROFILES
+from .scheduling import MAX_BRANCH_WORKERS
 from .sequence import share_native_sequence_runtime
 from .ticket_window import TicketResultsWindow
 from .tickets import TICKET_MODES
@@ -1453,6 +1454,15 @@ class MainWindow(QMainWindow):
         )
         self.profile_choice.currentTextChanged.connect(self.change_run_profile)
         toolbar.addWidget(self.profile_choice)
+        toolbar.addWidget(QLabel("Branch workers"))
+        self.branch_workers_choice = QComboBox()
+        self.branch_workers_choice.addItem("Auto", "auto")
+        self.branch_workers_choice.addItem("Serial", 1)
+        for count in range(2, MAX_BRANCH_WORKERS + 1):
+            self.branch_workers_choice.addItem(str(count), count)
+        self.branch_workers_choice.setToolTip("Parallel worker limit for the current graph.")
+        self.branch_workers_choice.currentIndexChanged.connect(self.change_branch_workers)
+        toolbar.addWidget(self.branch_workers_choice)
         toolbar.addSeparator()
         toolbar.addAction("Fit graph", lambda: self.view.fit_graph())
         results_menu = self.menuBar().addMenu("&Results")
@@ -1655,6 +1665,11 @@ class MainWindow(QMainWindow):
 
     def show_graph(self, graph, selected=None):
         self.graph = graph
+        self.branch_workers_choice.blockSignals(True)
+        self.branch_workers_choice.setCurrentIndex(
+            self.branch_workers_choice.findData(graph.branch_workers)
+        )
+        self.branch_workers_choice.blockSignals(False)
         self.scene.graph = graph
         self.inspector.select(None)
         self.scene.rebuild(selected)
@@ -1950,6 +1965,7 @@ class MainWindow(QMainWindow):
             action.setEnabled(False)
         self.stop_action.setEnabled(True)
         self.profile_choice.setEnabled(False)
+        self.branch_workers_choice.setEnabled(False)
         self.statusBar().showMessage("Running…")
         self.runner.start()
 
@@ -2022,6 +2038,7 @@ class MainWindow(QMainWindow):
             action.setEnabled(True)
         self.stop_action.setEnabled(False)
         self.profile_choice.setEnabled(True)
+        self.branch_workers_choice.setEnabled(True)
         self.update_navigation()
         if self.closing:
             self.close()
@@ -2078,6 +2095,11 @@ class MainWindow(QMainWindow):
             self.statusBar().showMessage(
                 f"Run profile: {name}. Run once to collect its current diagnostics."
             )
+
+    def change_branch_workers(self, index):
+        if not self.runner:
+            self.graph.set_branch_workers(self.branch_workers_choice.itemData(index))
+            self.mark_dirty()
 
     def reset_production(self):
         if not self.runner:

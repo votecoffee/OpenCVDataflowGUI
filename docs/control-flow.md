@@ -77,15 +77,30 @@ All new operators appear under **Control flow** in the toolbox.
 | Case select | Route to the first matching case output, or default; unselected outputs emit nothing |
 | FIFO reorder by ticket | Hold completed results until the expected head ticket arrives |
 
-Split has four output sockets; `branches` enables the first 2–4. Its `workers`
-setting (1–8, default 2) enables concurrent execution of independent ready nodes in
-that graph. Graphs without Split execute serially. Acquisition sources remain on
-the owning execution thread, as do ToolBlock boundaries; a ToolBlock can enable
-parallelism inside its own graph. Each node processes its own serial entries in order;
-this is graph-level branch concurrency, not concurrent calls into one block or an
-independent camera-trigger service. Python plugins must be safe to run on worker
-threads, or use `workers=1`. Source/branch values are private snapshots so sibling
-mutations do not change each other. OpenCV may also use its own internal threads.
+Independent branches can run concurrently wherever a graph fans out. A block becomes
+ready once its own upstream blocks finish. Among ready worker blocks, the scheduler
+starts those with longer downstream chains first and uses graph order to break ties.
+Every block consumes its own stream in order, and a join waits for its connected
+predecessors. Source and branch values remain private snapshots.
+
+The toolbar's **Branch workers** setting is saved for the current graph, including
+inside a ToolBlock. **Auto** uses up to four workers based on the machine's logical
+CPU count. If the graph contains a Split block, Auto uses the highest configured
+Split `workers` value, preserving existing projects. Select **Serial** for one
+execution thread or choose **2–8** for an explicit branch worker limit. The headless
+runner accepts `--branch-workers auto|1|…|8` as an override for the root graph.
+
+Acquisition, ticket assignment, writers, recipe-bound blocks, and ToolBlock
+boundaries run in graph order on the graph's owning thread. Each nested ToolBlock
+has its own scheduler. Parallel Inspect runs each individual inspection graph
+serially because its outer pool already runs multiple parts concurrently.
+
+Plugin authors can declare `parallel_safe = True` on a block class to allow
+worker execution. Graphs with Split retain their existing plugin opt-in. Use
+`requires_serial_execution = True` on any block that must stay on the owning
+thread. OpenCV can also use its own internal threads.
+
+Split has four output sockets. The `branches` setting enables the first 2–4.
 
 Join buffers unmatched tickets and reports a group plus individual `branch_1`…
 outputs when all configured branches agree. Duplicate arrivals on one branch are

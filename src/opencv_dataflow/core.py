@@ -7,7 +7,6 @@ import json
 import math
 import threading
 import uuid
-from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, ClassVar
@@ -37,6 +36,7 @@ from .payloads import (
 )
 from .recipes import RecipeCatalog, apply_recipe, validate_bindings
 from .run_profiles import PROFILES, captures, profile
+from .scheduling import MAX_BRANCH_WORKERS, DependencyPlan, automatic_workers
 from .tickets import DEFAULT_TICKET_SETTINGS, DIRECT_CLOCK, TICKET_MODES, TicketClock
 from .timing import WorkTiming
 from .visual_style import DEFAULT_NODE_SIZE, NODE_SIZES
@@ -78,6 +78,7 @@ class Block:
     title: ClassVar[str] = "Block"
     category: ClassVar[str] = "Custom"
     block_type: ClassVar[str] = ""
+    parallel_safe: ClassVar[bool] = False
     subtype: ClassVar[str] = "General"
     inputs: ClassVar[tuple[Port, ...]] = ()
     outputs: ClassVar[tuple[Port, ...]] = ()
@@ -644,6 +645,7 @@ class Graph:
         self.groups = []
         self.viewport = {}
         self.run_profile = PROFILES["debug"]
+        self.branch_workers = "auto"
         self._event_prefix = ""
         self.recipes = RecipeCatalog()
         self._allow_recipe_activation = True
@@ -851,20 +853,14 @@ class Graph:
             raise ValueError(f"Cannot connect {out.kind} to {inp.kind}")
 
     def ordered(self):
-        pending = {key: set() for key in self.blocks}
-        for c in self.connections:
-            pending[c.target].add(c.source)
-        order = []
-        while pending:
-            ready = [key for key, deps in pending.items() if not deps]
-            if not ready:
-                raise ValueError("Cycles are not supported")
-            order.extend(ready)
-            for key in ready:
-                del pending[key]
-            for deps in pending.values():
-                deps.difference_update(ready)
-        return order
+        return DependencyPlan(self.blocks, self.connections).order
+
+    def set_branch_workers(self, value):
+        if value != "auto" and (type(value) is not int or not 1 <= value <= MAX_BRANCH_WORKERS):
+            raise ValueError(
+                f"Branch workers must be 'auto' or an integer from 1 to {MAX_BRANCH_WORKERS}"
+            )
+        self.branch_workers = value
 
     def run(self, cancelled=lambda: False, injected=None, provided=None):
         failed = False
@@ -974,7 +970,16 @@ class Graph:
             ):
                 raise ValueError("Invalid or internally connected public input")
             validate_value(port, value)
-        self.ordered()  # Reject cycles before acquiring sources.
+        plan = DependencyPlan(self.blocks, self.connections)
+        splits = [block for block in self.blocks.values() if block.type_id == "flow.split"]
+        workers = self.branch_workers
+        if workers == "auto":
+            if splits:
+                workers = max(int(block.parameters.get("workers", 1)) for block in splits)
+                if not 1 <= workers <= MAX_BRANCH_WORKERS:
+                    raise ValueError(f"Parallel worker count must be 1..{MAX_BRANCH_WORKERS}")
+            else:
+                workers = automatic_workers()
         emitted = {}
         provided = provided or {}
         self.restore_captured(provided)
@@ -987,7 +992,7 @@ class Graph:
         def run_block(key):
             block = self.blocks[key]
             block._clock = self.clock
-            incoming = [c for c in self.connections if c.target == key]
+            incoming = plan.incoming[key]
             if cancelled():
                 block.state, block.error = "skipped", "Run stopped"
                 return
@@ -1190,50 +1195,38 @@ class Graph:
                         packets[-1].value, (np.ndarray, ImagePyramid)
                     ):
                         block.last_output_images[name] = packets[-1].value
-                emitted[key, name] = packets
+            return outputs
 
-        pending = set(self.blocks) - provided.keys()
-        workers = max(
-            (
-                int(b.parameters.get("workers", 1))
-                for b in self.blocks.values()
-                if b.type_id == "flow.split"
-            ),
-            default=1,
-        )
-        if not 1 <= workers <= 8:
-            raise ValueError("Parallel worker count must be 1..8")
-        executor = ThreadPoolExecutor(max_workers=workers) if workers > 1 else None
-        try:
-            while pending:
-                ready = [
-                    key
-                    for key in self.blocks
-                    if key in pending
-                    and not any(c.target == key and c.source in pending for c in self.connections)
-                ]
-                # Source acquisition remains deterministic and on the owning execution thread.
-                parallel = [
-                    key
-                    for key in ready
-                    if executor is not None
-                    and not self.blocks[key].ticket_source
-                    and not isinstance(self.blocks[key], ToolBlock)
-                    and not getattr(self.blocks[key], "owns_workers", False)
-                    and not getattr(self.blocks[key], "queue_boundary", False)
-                    and not getattr(self.blocks[key], "accept_events", False)
-                    and not getattr(self.blocks[key], "requires_serial_execution", False)
-                ]
-                futures = [executor.submit(run_block, key) for key in parallel] if executor else []
-                for key in ready:
-                    if key not in parallel:
-                        run_block(key)
-                for future in futures:
-                    future.result()
-                pending.difference_update(ready)
-        finally:
-            if executor:
-                executor.shutdown(wait=True)
+        def publish(key, outputs):
+            if outputs is not None:
+                for name, packets in outputs.items():
+                    emitted[key, name] = packets
+
+        def skip(key):
+            self.blocks[key].state, self.blocks[key].error = "skipped", "Run stopped"
+
+        parallel = {
+            key
+            for key, block in self.blocks.items()
+            if workers > 1
+            and key not in provided
+            and (
+                splits
+                or block.parallel_safe
+                or type(block).__module__.startswith("opencv_dataflow.")
+            )
+            and not block.ticket_source
+            and block.category not in ("Input", "Output")
+            and block.block_type not in ("Input", "Output")
+            and not block.recipe_bindings
+            and not block.recipe_model
+            and not isinstance(block, ToolBlock)
+            and not getattr(block, "owns_workers", False)
+            and not getattr(block, "queue_boundary", False)
+            and not getattr(block, "accept_events", False)
+            and not getattr(block, "requires_serial_execution", False)
+        }
+        plan.run(run_block, publish, provided, parallel, workers, cancelled, skip)
 
     def close(self):
         for block in self.blocks.values():
@@ -1246,6 +1239,7 @@ class Graph:
             **({"groups": copy.deepcopy(self.groups)} if self.groups else {}),
             **({"viewport": copy.deepcopy(self.viewport)} if self.viewport else {}),
             **({"run_profile": self.run_profile.name} if self.run_profile.name != "debug" else {}),
+            **({"branch_workers": self.branch_workers} if self.branch_workers != "auto" else {}),
             **(
                 {"validation_sets": copy.deepcopy(self.validation_sets)}
                 if self.validation_sets
@@ -1277,6 +1271,7 @@ class Graph:
             raise ValueError("Unsupported project schema version")
         graph = cls()
         graph.set_run_profile(data.get("run_profile", "debug"))
+        graph.set_branch_workers(data.get("branch_workers", "auto"))
         if "validation_sets" in data:
             from .validation import validate_sets
 

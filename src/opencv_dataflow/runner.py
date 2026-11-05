@@ -16,6 +16,7 @@ from .payloads import ImagePyramid, describe_value
 from .plugins import load_plugin
 from .queued_execution import QueuedExecution, background_queue
 from .run_profiles import PROFILES
+from .scheduling import MAX_BRANCH_WORKERS
 from .toolblocks import ToolBlock
 
 
@@ -65,6 +66,11 @@ def main(argv=None):
     )
     parser.add_argument("--profile", choices=PROFILES, help="Override the saved run profile")
     parser.add_argument(
+        "--branch-workers",
+        choices=["auto", *(str(n) for n in range(1, MAX_BRANCH_WORKERS + 1))],
+        help="Override the root graph's saved branch worker setting",
+    )
+    parser.add_argument(
         "--plugin",
         type=Path,
         action="append",
@@ -88,6 +94,10 @@ def main(argv=None):
         graph = Graph.load(args.project, registry)
         if args.profile:
             graph.set_run_profile(args.profile)
+        if args.branch_workers is not None:
+            graph.set_branch_workers(
+                "auto" if args.branch_workers == "auto" else int(args.branch_workers)
+            )
         if args.all_images and not graph.has_finite_sources():
             raise ValueError("--all-images requires a finite image or video source (repeat=stop)")
         if background_queue(graph) is not None:
@@ -133,6 +143,7 @@ def main(argv=None):
                     {
                         "project": str(args.project),
                         "run_profile": graph.run_profile.name,
+                        "branch_workers": graph.branch_workers,
                         "passed": passed,
                         "runs": runs,
                         "ticket_results": graph.ticket_results.snapshot(),
