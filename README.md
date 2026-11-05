@@ -117,6 +117,12 @@ Ticket results…** to search tickets and inspect their status and event timelin
 Try **File > Load ticket results example**. See [ticket results](docs/ticket-results.md)
 for status propagation, final decisions, retention limits and plugin event data.
 
+**Coordinate inputs** offers ticket-matched waiting with timeouts, latest snapshots,
+triggered latest snapshots, and first-arrival-per-ticket selection. Freshness,
+duplicate and late-arrival controls make reuse explicit. Try **File > Load input
+coordination example**. See [input coordination](docs/input-coordination.md) for
+recommended policies and cooperative timing limits.
+
 **Inspect each pose in parallel** runs a reusable inspection ToolBlock for every
 pattern match, measured feature or supplied pose, then returns one aggregate. Set
 worker count and optional N-pass/N-failure stop thresholds; results explicitly

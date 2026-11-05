@@ -535,6 +535,7 @@ def builtin_registry():
     )
     from .collection_tools import COLLECTION_BLOCKS
     from .control_flow import CONTROL_BLOCKS
+    from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample
     from .features import FEATURE_BLOCKS
     from .histogram import Histogram
@@ -589,6 +590,8 @@ def builtin_registry():
         PatternDemoImages,
         *POSE_BLOCKS,
         *CONTROL_BLOCKS,
+        CoordinateInputs,
+        CounterInput,
         ParallelInspect,
         RepeatedPartsDemo,
         ImageQueue,

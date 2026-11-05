@@ -45,6 +45,7 @@ from .examples import (
     channel_pyramid_graph,
     combined_regions_graph,
     control_flow_graph,
+    input_coordination_graph,
     object_collections_graph,
     parallel_parts_graph,
     pose_inspection_graph,
@@ -717,6 +718,7 @@ class MainWindow(QMainWindow):
             ("Load parallel part inspection example", None, self.load_parallel_parts_example),
             ("Load queued input example", None, self.load_queued_input_example),
             ("Load ticket results example", None, self.load_ticket_results_example),
+            ("Load input coordination example", None, self.load_input_coordination_example),
             ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
@@ -1019,6 +1021,10 @@ class MainWindow(QMainWindow):
     def load_ticket_results_example(self):
         if not self.runner and self.confirm_discard():
             self.replace_graph(ticket_results_graph(self.registry))
+
+    def load_input_coordination_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(input_coordination_graph(self.registry))
 
     def open_project(self):
         if self.runner or not self.confirm_discard():

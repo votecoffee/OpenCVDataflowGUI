@@ -51,6 +51,11 @@ ticketing; `ticket` is a runtime-managed reserved terminal name.
 
 ## Blocks
 
+[Coordinate inputs](input-coordination.md) adds ticket-matched deadlines, greedy
+latest snapshots, trigger-driven latest snapshots and first-arrival races. It is
+an explicit alternative to the indefinite Join; ordinary OpenCV inputs keep their
+existing scheduling behavior.
+
 For one inspection repeated across many detected parts, use
 [Inspect each pose in parallel](parallel-inspection.md). It has an editable
 per-part ToolBlock, bounded workers, aggregate results and optional early stopping.
@@ -122,7 +127,7 @@ manifest instead. Neither mode silently skips a missing expected ticket.
 Join, Batch and Reorder expose `max_pending` and `max_bytes_mb` limits (default 64
 entries/128 MiB). Overflow or duplicate synchronization input fails the block and
 clears its transient buffer. Join/Reorder remember the last 4096 completed keys to
-detect replay. Waiting has no automatic timeout or drop policy. Resolve missing
+detect replay. These Join/Batch/Reorder operators have no automatic timeout or drop policy. Resolve missing
 results or explicitly use **File > Reset flow state**. Per-node input/output event
 expansion is limited to 1024 per graph iteration.
 

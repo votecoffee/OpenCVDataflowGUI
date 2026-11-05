@@ -854,6 +854,27 @@ Inputs: `value` (any), `selector` (data, optional).
 | `comparison` | `"equals"` | `equals`, `less_than`, `greater_than`, `range` |
 | `modulo` | `0` |  |
 
+## Coordinate inputs (`flow.coordinate`)
+
+Control flow / Synchronization
+
+Inputs: `input_1` (any, optional), `input_2` (any, optional), `input_3` (any, optional), `input_4` (any, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `inputs` | `2` |  |
+| `mode` | `"ticket_all"` | `ticket_all`, `latest`, `trigger_latest`, `first_arrival` |
+| `max_wait_ms` | `1000.0` | Ticket-all deadline from the first received member. 0 disables expiry. |
+| `timeout` | `"discard"` | `discard`, `emit_partial`, `error` |
+| `warmup` | `"all"` | `all`, `any` Latest modes require all fresh inputs, or explicitly allow partial snapshots. |
+| `max_age_ms` | `1000.0` | Latest modes: maximum cache age measured at this block; 0 disables expiry. |
+| `primary` | `"input_1"` | `input_1`, `input_2`, `input_3`, `input_4` Preferred value output; trigger_latest emits only on this input. |
+| `duplicates` | `"error"` | `error`, `replace` |
+| `late` | `"ignore"` | `ignore`, `error` |
+| `history_size` | `4096` | Closed ticket keys remembered for late suppression; oldest keys age out. |
+| `max_pending` | `64` |  |
+| `max_bytes_mb` | `128.0` |  |
+
 ## Queue input images (`flow.image_queue`)
 
 Control flow / Acquisition queues
@@ -1037,6 +1058,18 @@ Ticket mode and fixed value are common inspector controls.
 | `height` | `0` |  |
 | `fps` | `0.0` |  |
 | `buffer_size` | `0` |  |
+
+## Counter input (`input.counter`)
+
+Input / Synthetic
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `start` | `1` |  |
+| `step` | `1` |  |
 
 ## Demo image (`input.demo`)
 

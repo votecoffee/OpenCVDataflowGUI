@@ -3,6 +3,29 @@
 from .core import Graph
 
 
+def input_coordination_graph(registry):
+    """Two synthetic cameras share a simulated PLC part counter."""
+    graph = Graph()
+    counter = graph.add(registry.create("input.counter", block_id="coord_counter"))
+    counter.name, counter.position = "Simulated PLC part counter", [0, 160]
+    for index, side in enumerate(("left", "right")):
+        source = graph.add(registry.create("input.demo", block_id=f"coord_{side}"))
+        source.name, source.position = f"Synthetic {side} camera", [285, index * 380]
+        source.ticket_settings = {"mode": "external", "value": 1}
+        graph.connect(counter.id, "value", source.id, "ticket")
+    coordinator = graph.add(registry.create("flow.coordinate", block_id="coord_inputs"))
+    coordinator.position = [600, 160]
+    for index, side in enumerate(("left", "right"), 1):
+        graph.connect(f"coord_{side}", "image", coordinator.id, f"input_{index}")
+    histogram = graph.add(registry.create("inspect.histogram", block_id="coord_histogram"))
+    histogram.name, histogram.position = "Primary camera histogram", [915, 0]
+    final = graph.add(registry.create("inspect.final_judgment", block_id="coord_final"))
+    final.position = [915, 380]
+    graph.connect(coordinator.id, "value", histogram.id, "image")
+    graph.connect(coordinator.id, "group", final.id, "value")
+    return graph
+
+
 def ticket_results_graph(registry):
     """Inspection, failure-gated diagnostics and an independent final judgment."""
     graph = Graph()

@@ -150,6 +150,8 @@ def stamp_result(block, result):
 
 
 def publish_result(block, values, result=None, kind="tool_result", message=""):
+    from .payloads import metadata
+
     consumer = getattr(block, "_ticket_results", None)
     if consumer is None:
         return
@@ -166,11 +168,12 @@ def publish_result(block, values, result=None, kind="tool_result", message=""):
     )
     tickets = {}
     for value, stamped in candidates:
+        context = metadata(value).get("coordination")
         for packet in packets_in(value):
             ticket = packet.payload.get("ticket")
             if ticket is not None:
-                tickets.setdefault(ticket_key(ticket), (packet, stamped))
-    for packet, stamped in tickets.values():
+                tickets.setdefault(ticket_key(ticket), (packet, stamped, context))
+    for packet, stamped, context in tickets.values():
         ticket = packet.payload["ticket"]
         outcome = packet.payload.get("outcome", {})
         consumer.consume(
@@ -195,6 +198,7 @@ def publish_result(block, values, result=None, kind="tool_result", message=""):
                 "data": result.event_data if result else {},
                 "final_judgment": result.final_judgment if result else None,
                 "parent_ticket": packet.payload.get("inspection", {}).get("parent_ticket"),
+                "coordination": packet.payload.get("coordination", context),
             }
         )
 
