@@ -306,7 +306,7 @@ P2	function	cv2.convexHull	literal reference	-
 P2	function	cv2.convexityDefects	literal reference	-
 P2	function	cv2.createGeneralizedHoughBallard	no static reference	-
 P2	function	cv2.createGeneralizedHoughGuil	no static reference	-
-P2	function	cv2.dct	no static reference	-
+P2	function	cv2.dct	literal reference	-
 P2	class	cv2.detail.AffineBasedEstimator	no static reference	-
 P2	class	cv2.detail.AffineBestOf2NearestMatcher	no static reference	-
 P2	class	cv2.detail.BestOf2NearestMatcher	no static reference	-
@@ -3020,7 +3020,7 @@ P3	function	cv2.HoughLinesP	literal reference	-
 P3	function	cv2.HoughLinesPointSet	no static reference	-
 P3	function	cv2.HoughLinesWithAccumulator	no static reference	-
 P3	function	cv2.HuMoments	literal reference	-
-P3	function	cv2.idct	no static reference	-
+P3	function	cv2.idct	literal reference	-
 P3	function	cv2.idft	no static reference	-
 P3	function	cv2.illuminationChange	no static reference	-
 P3	function	cv2.imcount	no static reference	-

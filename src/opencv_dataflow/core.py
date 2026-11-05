@@ -654,6 +654,11 @@ def validate_value(port, value):
         if not isinstance(value, PointCloud):
             raise TypeError(f"{port.name} requires a PointCloud, not XYZ image pixels")
         value.__post_init__()
+    elif port.kind == "dct":
+        from .spectral import DCTCoefficients
+
+        if not isinstance(value, DCTCoefficients):
+            raise TypeError(f"{port.name} requires DCT coefficients")
     elif port.kind == "depth":
         if (
             not isinstance(value, np.ndarray)

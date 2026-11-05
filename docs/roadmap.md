@@ -1,13 +1,27 @@
 # Roadmap
 
-Start with acquisition/replay and editor reliability in parallel. Use the replay
-fixtures to qualify the production runtime, then run a pilot before expanding
-deployment. Offline calibration can proceed alongside those tracks. Robot pose
-capture depends on validated calibration and timestamp alignment.
+Use the vision tool priorities to choose the next block or workflow. Editor
+reliability, acquisition and production runtime have their own milestones and can
+advance alongside the tool work. GitHub issues track acceptance criteria and
+completion evidence.
 
-Milestones are ordered by dependency and have exit criteria. Calendar dates and
-owners can be assigned once implementation capacity and hardware access are known.
-GitHub holds the work items and their current status.
+## Vision tool priorities
+
+| Order | Milestone | Next work | Exit criteria |
+| --- | --- | --- | --- |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Start with OpenCV's literal `core` array operations, including spectral transforms, arithmetic and reductions. Continue with commonly used baseline image processing, geometry, video and image I/O. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common 2D workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Classify the remaining public bindings by workflow, alias, low-level API or build availability. |
+| 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and reusable classical ML train/predict blocks. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
+| 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo, point-cloud interchange, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
+| 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool is available on the pinned contrib build and ships with a CPU fixture, example and any capability limits. |
+| 5 | Application-specific ToolBlocks | Package reusable tray orientation, conveyor pick selection, depth-assisted bin picking, surface and bead inspection, OCR/code grading, color checks and robot-frame measurements. | Each package has documented ports and calibration assumptions, known-good and known-bad validation sets, and repeatable ticket verdicts and reasons. Hardware-dependent acceptance is tracked separately. |
+
+Stage 1 is in progress. The current catalog already covers common 2D workflows,
+but there are still gaps in the OpenCV `core` module itself. The
+[coverage backlog](opencv-coverage.md) tracks the missing workflows and the
+[binding inventory](opencv-bindings.tsv) maps static references to the pinned
+build. Coverage is measured by runnable graph use cases. Aliases, alternate
+overloads and low-level infrastructure may be covered through an existing block
+or have no graph-facing use case.
 
 ## Implemented prototype
 
@@ -61,20 +75,18 @@ pixel correspondence, calibrated projection, filtering, PLY/PCD interchange and
 the viewer. [Completed milestone](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/1),
 [acceptance issue](https://github.com/votecoffee/OpenCVDataflowGUI/issues/1).
 
-## Remaining milestones
+## Application milestones
 
 | Milestone | Work | Exit criteria and dependencies |
 | --- | --- | --- |
 | [Reliable acquisition and replay](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/3) | Independent camera workers, bounded queues, timestamp-window matching, backend enumeration and triggers, multi-source recordings and validation bundles. [#5](https://github.com/votecoffee/OpenCVDataflowGUI/issues/5), [#6](https://github.com/votecoffee/OpenCVDataflowGUI/issues/6) | A stalled source cannot stall another source or coordination deadlines. Replay reproduces ticket outcomes and failure reasons. Physical synchronization needs separate backend and trigger evidence. |
 | [Editor and reusable jobs](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/4) | Undo/redo, autosave recovery, schema migrations, promoted parameters, dynamic bindings and versioned ToolBlock/plugin contracts. [#7](https://github.com/votecoffee/OpenCVDataflowGUI/issues/7), [#8](https://github.com/votecoffee/OpenCVDataflowGUI/issues/8) | Existing and nested jobs round-trip with their layout and interfaces. Interrupted saves can be recovered. Start alongside acquisition. |
 | [Production runtime and validation](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/5) | Operator view, deployable jobs, recipe and asset revisions, durable ticket history, result routing and retention. [#9](https://github.com/votecoffee/OpenCVDataflowGUI/issues/9), [#10](https://github.com/votecoffee/OpenCVDataflowGUI/issues/10), [#11](https://github.com/votecoffee/OpenCVDataflowGUI/issues/11) | Operator and headless runs agree on the same package. An unattended replay pilot survives restart and sink failures, preserves decision provenance, and reports latency, throughput and memory. Depends on replay and compatible job files. |
-| [Camera frames and robot integration](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2) | Managed intrinsic/extrinsic revisions, identifiable calibration board origins, offline hand-eye calibration and read-only robot pose adapters. [#2](https://github.com/votecoffee/OpenCVDataflowGUI/issues/2), [#3](https://github.com/votecoffee/OpenCVDataflowGUI/issues/3) | Held-out geometry meets declared residual tolerances, and incorrect frames, units and degenerate poses are rejected. Robot pose exchange follows offline calibration and depends on acquisition timestamp alignment. Controller motion is outside this milestone. |
-| [3D reconstruction and interchange](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6) | Binary/compressed PCD, mesh output and longer bounded posed fusion. Evaluate additional backends where runnable. [#12](https://github.com/votecoffee/OpenCVDataflowGUI/issues/12), [#13](https://github.com/votecoffee/OpenCVDataflowGUI/issues/13) | Third-party interchange fixtures round-trip expected geometry and attributes. Reconstruction stays within memory bounds and meets surface tolerances on recorded, calibrated sequences. |
-| [Inspection and ML expansion](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/7) | More sequence, pattern and measurement tools, model-specific ONNX decoders, multi-input inference and additional LightGlue feature adapters. [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14), [#15](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Each tool ships with a runnable example and tested parameter, coordinate and failure contracts. ML outputs have a reproducible CPU baseline. Accelerator claims are build-specific. |
 | [Measured execution and browser feasibility](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/8) | Opt-in compiled ToolBlocks and a scoped OpenCV.js/WebAssembly viewer study. [#4](https://github.com/votecoffee/OpenCVDataflowGUI/issues/4), [#16](https://github.com/votecoffee/OpenCVDataflowGUI/issues/16) | Compilation preserves output semantics and selected diagnostics and shows a repeatable end-to-end benefit after amortization. The browser study ends in a go/no-go decision based on module coverage, transport, latency and memory. [Benchmark criteria](opencv-backend.md#compiled-toolblocks-future). |
 
-Start with issues #5 and #6 as one acquisition workstream, and #7 as a separate
-editor workstream. Define the replay format with the source contract so both
-workstreams can use the same fixtures. Tool catalog and 3D interchange changes
-can land independently when they meet their own fixture checks. Keep physical
-commissioning results separate from automated fixture acceptance.
+Start with editor undo/recovery ([#7](https://github.com/votecoffee/OpenCVDataflowGUI/issues/7))
+and the shared acquisition/replay contract ([#5](https://github.com/votecoffee/OpenCVDataflowGUI/issues/5)
+and [#6](https://github.com/votecoffee/OpenCVDataflowGUI/issues/6)). Current
+graph save/load, per-ticket diagnostics, local replay and the headless runner
+provide the baseline for these milestones. Operator packaging and durable
+ticket history follow the compatible project and replay contracts.

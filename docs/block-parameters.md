@@ -945,6 +945,17 @@ Inputs: `image` (image).
 | `width` | `0` | Value must be a whole number at least 0. |
 | `height` | `0` | Value must be a whole number at least 0. |
 
+## Discrete cosine transform (DCT) (`cv.dct`)
+
+Image processing / Spectral
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"2d"` | `2d`, `rows` Transform the entire image or transform each row independently. |
+| `odd_size` | `"pad_even"` | `pad_even`, `reject` Extend odd transformed axes by repeating the last pixel, or reject them. |
+
 ## Distance transform (`cv.distance_transform`)
 
 Image processing / Morphology
@@ -1115,6 +1126,14 @@ Input `guide` — Optional aligned guide. Otherwise the block guides with the so
 | `epsilon` | `0.001` | Value must be a finite number between 1e-08 and 1e+08. Regularization in squared guide units. Integer guide samples are normalized. |
 | `scale` | `1.0` | Value must be a finite number between 0.01 and 1. Internal subsampling fraction. One filters at full resolution. |
 | `output_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` |
+
+## Inverse discrete cosine transform (IDCT) (`cv.idct`)
+
+Image processing / Spectral
+
+Inputs: `coefficients` (dct).
+
+No configurable algorithm parameters.
 
 ## Gaussian image pyramid set (`cv.image_pyramid`)
 

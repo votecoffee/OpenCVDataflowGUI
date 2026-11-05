@@ -735,6 +735,7 @@ def builtin_registry():
     from .sequence_tools import SEQUENCE_BLOCKS
     from .shape_fitting import FitShape
     from .skeleton import PruneSkeleton, Skeletonize
+    from .spectral import SPECTRAL_BLOCKS
     from .stereo3d import STEREO3D_BLOCKS
     from .template_instances import FindTemplateInstances
     from .text_rules import VerifyText
@@ -778,6 +779,7 @@ def builtin_registry():
         *REGISTRATION_BLOCKS,
         AlignECC,
         *RESTORATION_BLOCKS,
+        *SPECTRAL_BLOCKS,
         *ANALYSIS_BLOCKS,
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,
