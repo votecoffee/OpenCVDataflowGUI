@@ -14,11 +14,10 @@ identifiers. Parameters configure a block; ports carry values between blocks.
 
 `process(inputs)` returns a `Result` containing exactly the declared outputs. Image
 ports accept nonempty NumPy arrays, numeric ports accept numbers, and data ports
-accept JSON-compatible structures. An `any` input accepts any upstream port kind.
-Built-in processing expects OpenCV-compatible images. Ordinary Grayscale interprets
-tagged color formats and supports uint8/uint16/float32; Canny requires uint8
-grayscale. Invalid native inputs become
-visible block errors rather than implicit color conversions.
+accept JSON-compatible values. Plugins can declare narrower ports with `integer`,
+`float`, `boolean`, or `text`. A `float` port uses finite values representable
+as Python floats. Built-in Grayscale interprets tagged color formats and supports
+uint8, uint16, and float32. Canny prepares a uint8 grayscale working image.
 
 Image-file inputs additionally support explicit color encodings and pixel depths.
 Tagged `ImageArray` values preserve encoding through snapshots; built-in image
@@ -47,6 +46,29 @@ ValuePackets. Ordinary plugins still return one value per declared port. Buffere
 operators implement `reset_runtime` and `copy_runtime_from`; queues never enter
 project serialization. See [control flow](control-flow.md) for identities, bounds,
 FIFO expectations and fan-in policies.
+
+## Connection compatibility
+
+The editor checks declared port kinds on drop. Project loading and ToolBlock
+interface edits use the same compatibility rules. Hover over a converted wire
+to see what the receiver will check or convert.
+
+| Connection | Receiving behavior |
+| --- | --- |
+| Matching kinds or any value into `any` | Preserve the value. |
+| `any` into a concrete kind | Check the actual value when it arrives. |
+| Numeric kinds | `number` accepts integer and floating values. A narrower conversion must be exact. For example, 7.0 can feed an `integer` input. A fractional value cannot. |
+| Scalar kinds and `data` | Numbers, booleans and text can flow into JSON-compatible inputs. A `data` output feeding a scalar input must carry the requested scalar. |
+| `pyramid` into `image` | Select the configured level, defaulting to the largest, unless the receiver consumes the whole pyramid. |
+| `depth` into `image` | Pass the samples, units and payload through. |
+| `image` into `depth` | Require a single 2D plane of uint16, float32, or float64. The receiving tool interprets units as it would for a directly supplied depth input. |
+
+Scalar conversions preserve ticket and other payload data and leave the upstream
+value intact. They require exact numeric values and keep text as text. Image conversions
+such as channel layout and pixel-depth scaling use the receiving tool's own rules
+or an explicit **Convert image** block. Port colors identify semantic roles.
+For example, a pose and a region can both have a declared `data` kind, with their
+individual schemas checked by the receiving tools.
 
 ## Scheduling and G-API
 
