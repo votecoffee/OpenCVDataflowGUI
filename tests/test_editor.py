@@ -10,7 +10,7 @@ import pytest
 from PySide6.QtCore import QEvent, QPoint, Qt
 from PySide6.QtGui import QFont
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QDialog, QGraphicsSceneHelpEvent, QInputDialog, QToolTip
+from PySide6.QtWidgets import QDialog, QFileDialog, QGraphicsSceneHelpEvent, QInputDialog, QToolTip
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
@@ -19,6 +19,8 @@ from opencv_dataflow.core import Block, Graph, Port, Result
 from opencv_dataflow.documentation_editor import DocumentationEditor
 from opencv_dataflow.images import ImageArray
 from opencv_dataflow.kernel_editor import KernelEditor
+from opencv_dataflow.project_compare import ProjectCompare
+from opencv_dataflow.project_xml import read_project_xml
 from opencv_dataflow.toolblock_editor import InterfaceDialog
 from opencv_dataflow.toolblocks import encapsulate
 
@@ -323,6 +325,48 @@ def test_block_documentation_keeps_formatting_and_does_not_invalidate_results(
         first_fragment = dialog.editor.document().begin().begin().fragment()
         assert first_fragment.charFormat().fontWeight() == QFont.Weight.Bold
         dialog.deleteLater()
+    finally:
+        window.dirty = False
+        window.close()
+
+
+def test_file_menu_exports_current_project_and_compares_two_snapshots(app, monkeypatch, tmp_path):
+    window = MainWindow()
+    window.show()
+    block = list(window.graph.blocks.values())[-1]
+    before, after = tmp_path / "before.xml", tmp_path / "after.xml"
+    actions = {action.text(): action for action in window.menuBar().actions()[0].menu().actions()}
+    selected = iter((before, after))
+    monkeypatch.setattr(QFileDialog, "exec", lambda _: QDialog.DialogCode.Accepted)
+    monkeypatch.setattr(QFileDialog, "selectedFiles", lambda _: [str(next(selected))])
+    compared = []
+
+    def compare(dialog):
+        dialog.before_path.setText(str(before))
+        dialog.after_path.setText(str(after))
+        dialog.compare()
+        compared.append(
+            (
+                dialog.model.changes,
+                dialog.before_value.toPlainText(),
+                dialog.after_value.toPlainText(),
+            )
+        )
+        return QDialog.DialogCode.Accepted
+
+    try:
+        actions["Export project XML…"].trigger()
+        block.parameters["expected_count"] = 3
+        window.mark_dirty()
+        actions["Export project XML…"].trigger()
+        assert window.path is None and window.dirty
+        assert read_project_xml(after)["blocks"][-1]["parameters"]["expected_count"] == 3
+        monkeypatch.setattr(ProjectCompare, "exec", compare)
+        actions["Compare project XML…"].trigger()
+        [(changes, old, new)] = compared
+        assert len(changes) == 1
+        assert changes[0].path == f"/blocks/{block.id}/parameters/expected_count"
+        assert (old, new) == ("2", "3")
     finally:
         window.dirty = False
         window.close()
