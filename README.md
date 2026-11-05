@@ -293,6 +293,10 @@ The [watershed example](examples/watershed/README.md) separates touching parts
 using automatic distance peaks or editable point seeds. A separate block accepts
 foreground and background seed masks.
 
+The [histogram thresholds example](examples/histogram_thresholds/README.md) wires
+measured cutoffs into lower-tail, middle-range, and upper-tail masks. Histograms
+also report per-channel mean, median, standard deviation, and extrema.
+
 Additional tools include monochrome/per-channel color histograms, grid-based planar
 pixel-to-physical mapping, offline multi-view lens calibration, undistortion, white/
 color balance, reusable calibration ToolBlocks, and typed depth-image loading,

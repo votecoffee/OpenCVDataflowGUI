@@ -378,14 +378,22 @@ class Canny(RegionalOperation, GAPIBlock):
 
 
 class Threshold(RegionalOperation, Block):
-    inputs = SELECTION_INPUTS
     region_background = "zero"
     block_type, subtype = "Image processing", "Segmentation"
     type_id, title, category = "cv.threshold", "Threshold", "Processing"
-    inputs, outputs = SELECTION_INPUTS, (Port("image"), Port("threshold", "number"))
+    inputs = (
+        *SELECTION_INPUTS,
+        Port("value", "number", required=False, required_when_connected=True),
+    )
+    outputs = (Port("image"), Port("threshold", "number"))
+    input_help = {"value": "Overrides the saved threshold, in grayscale pixel units."}
     defaults = {"value": 127.0, "invert": False, "max_value": 255.0, "mode": "binary"}
     parameter_choices = {"mode": ("binary", "binary_inv", "trunc", "tozero", "tozero_inv")}
     parameter_ranges = {"value": NumericRange(), "max_value": NumericRange(0)}
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.exposed_inputs.remove("value")
 
     def validate_parameters(self, parameters=None):
         super().validate_parameters(parameters)
@@ -401,7 +409,8 @@ class Threshold(RegionalOperation, Block):
         image = opencv_image(inputs["image"])
         if image.ndim == 3:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        value, maximum = float(self.parameters["value"]), float(self.parameters["max_value"])
+        value = NumericRange().check(inputs.get("value", self.parameters["value"]), "Threshold")
+        maximum = float(self.parameters["max_value"])
         name = self.parameters["mode"]
         if self.parameters["invert"]:
             name = "binary_inv"

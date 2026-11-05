@@ -50,6 +50,7 @@ class Port:
     kind: str = "image"
     required: bool = True
     visual_type: str = ""
+    required_when_connected: bool = False
 
 
 @dataclass
@@ -1224,8 +1225,9 @@ class Graph:
                 if getattr(block, "poll_without_input", False):
                     calls.append({})
             elif any(
-                not values and next(p for p in block.inputs if p.name == name).required
-                for name, values in streams.items()
+                not streams[port.name] and (port.required or port.required_when_connected)
+                for port in block.inputs
+                if port.name in streams
             ):
                 calls = []
             else:
@@ -1239,7 +1241,14 @@ class Graph:
                     and not getattr(block, "poll_without_input", False)
                 ):
                     length = 0
-                if any(len(v) not in (1, length) for v in streams.values()):
+                # A ticketed measurement cannot stand in for missing per-frame values.
+                if any(len(v) not in (1, length) for v in streams.values()) or any(
+                    port.required_when_connected
+                    and port.name in streams
+                    and len(streams[port.name]) == 1 < length
+                    and "ticket" in streams[port.name][0].payload
+                    for port in block.inputs
+                ):
                     block.error_kind = "invalid"
                     block.state, block.error = (
                         "error",

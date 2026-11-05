@@ -5,8 +5,10 @@ import numpy as np
 import pytest
 
 from opencv_dataflow.blocks import builtin_registry
-from opencv_dataflow.core import Graph
+from opencv_dataflow.core import Block, Graph, Port, Result
 from opencv_dataflow.images import DepthArray, ImageArray, preview_rgb
+from opencv_dataflow.payloads import NO_VALUE, ValuePacket
+from opencv_dataflow.tickets import TicketClock
 from opencv_dataflow.toolblocks import encapsulate
 
 
@@ -42,6 +44,109 @@ def test_histogram_float_nan_manual_range_and_alpha():
     block.parameters.update(range_mode="automatic", include_alpha=True)
     block.execute({"image": np.zeros((2, 2, 4), np.uint16)})
     assert len(block.last_result.outputs["histogram"]["channels"]) == 4
+
+
+def test_percentiles_and_summary_use_selected_samples_independent_of_bin_range():
+    block = builtin_registry().create(
+        "inspect.histogram",
+        parameters={
+            "bins": 2, "range_mode": "manual", "range_max": 5.0,
+            "lower_percentile": 25, "upper_percentile": 75, "threshold_statistic": "mean",
+        },
+    )
+    image = np.array([[0, 2, 10, 14, np.nan, 500]], np.float32)
+    mask = np.array([[255, 255, 255, 255, 255, 0]], np.uint8)
+    result = block.execute({"image": image, "mask": mask})
+    assert result is not None, block.error
+    channel = result.outputs["histogram"]["channels"][0]
+    assert channel["finite_samples"] == 4 and channel["outside_range"] == 2
+    assert channel["statistics"] == pytest.approx({
+        "minimum": 0, "maximum": 14, "mean": 6.5, "median": 6,
+        "standard_deviation": np.std([0, 2, 10, 14]),
+        "lower_threshold": 1.5, "upper_threshold": 11,
+    })
+    assert result.outputs["threshold"] == 6.5
+    marked = result.outputs["plot"]
+    block.parameters["show_statistics"] = False
+    plain = block.execute({"image": image, "mask": mask})
+    assert plain.outputs["threshold"] == 6.5
+    assert np.any(marked != plain.outputs["plot"])
+
+
+def test_numeric_threshold_uses_selected_color_channel():
+    block = builtin_registry().create(
+        "inspect.histogram", parameters={"statistics_channel": "G", "threshold_statistic": "median"}
+    )
+    image = ImageArray(np.array([[[1, 20, 150], [3, 40, 210]]], np.uint8), "rgb")
+    result = block.execute({"image": image})
+    assert result is not None, block.error
+    assert result.outputs["mean"] == result.outputs["median"] == result.outputs["threshold"] == 30
+    channels = result.outputs["histogram"]["channels"]
+    assert [channel["statistics"]["mean"] for channel in channels] == [2, 30, 180]
+    block.parameters["statistics_channel"] = "A"
+    assert block.execute({"image": image}) is None
+    assert block.error_kind == "invalid" and "unavailable" in block.error
+
+
+def test_wired_thresholds_use_exact_bounds_and_wait_for_a_measurement():
+    registry = builtin_registry()
+    graph = Graph()
+    histogram = graph.add(registry.create(
+        "inspect.histogram", parameters={"lower_percentile": 20, "upper_percentile": 80}
+    ))
+    tail = graph.add(registry.create("cv.threshold"))
+    middle = graph.add(registry.create("cv.in_range"))
+    histogram.exposed_outputs.extend(("lower_threshold", "upper_threshold"))
+    tail.exposed_inputs.append("value")
+    middle.exposed_inputs.extend(("lower", "upper"))
+    graph.connect(histogram.id, "upper_threshold", tail.id, "value")
+    graph.connect(histogram.id, "lower_threshold", middle.id, "lower")
+    graph.connect(histogram.id, "upper_threshold", middle.id, "upper")
+    image = np.arange(7, dtype=np.uint8)[None]
+    inputs = {(block.id, "image"): image for block in (histogram, tail, middle)}
+    graph.run(injected=inputs)
+    assert histogram.last_result.outputs["lower_threshold"] == pytest.approx(1.2)
+    assert histogram.last_result.outputs["upper_threshold"] == pytest.approx(4.8)
+    np.testing.assert_array_equal(tail.last_result.outputs["image"], [[0, 0, 0, 0, 0, 255, 255]])
+    np.testing.assert_array_equal(
+        middle.last_result.outputs["image"], [[0, 0, 255, 255, 255, 0, 0]]
+    )
+
+    inputs[histogram.id, "mask"] = np.zeros_like(image)
+    graph.run(injected=inputs)
+    assert histogram.last_result.outputs["threshold"] is NO_VALUE
+    assert histogram.last_result.outputs["histogram"]["channels"][0]["statistics"]["mean"] is None
+    assert tail.state == middle.state == "inactive"
+    assert tail.current_emissions == middle.current_emissions == {}
+
+
+def test_ticketed_threshold_does_not_broadcast_over_images_with_missing_statistics():
+    class Burst(Block):
+        outputs = (Port("image"),)
+
+        def process(self, inputs):
+            clock = TicketClock()
+            image = np.arange(6, dtype=np.float32)[None]
+            packets = [
+                ValuePacket(frame, {"ticket": clock.issue(self.id)})
+                for frame in (image, np.full_like(image, np.nan))
+            ]
+            return Result({"image": image}, emissions={"image": packets})
+
+    registry = builtin_registry()
+    graph = Graph()
+    source = graph.add(Burst())
+    histogram = graph.add(registry.create("inspect.histogram"))
+    threshold = graph.add(registry.create("cv.threshold"))
+    histogram.exposed_outputs.append("threshold")
+    threshold.exposed_inputs.append("value")
+    for block in (histogram, threshold):
+        graph.connect(source.id, "image", block.id, "image")
+    graph.connect(histogram.id, "threshold", threshold.id, "value")
+    graph.run()
+    assert len(histogram.current_emissions["threshold"]) == 1
+    assert threshold.state == "error" and "Stream lengths differ" in threshold.error
+    assert threshold.current_emissions == {}
 
 
 def test_depth_units_pairing_sampling_and_nested_snapshots(tmp_path):
