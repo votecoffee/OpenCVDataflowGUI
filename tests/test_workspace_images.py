@@ -3,6 +3,7 @@
 import copy
 import json
 import time
+from itertools import combinations
 from pathlib import Path
 
 import cv2
@@ -51,6 +52,83 @@ def file_graph(selected_paths, **parameters):
     )
     graph.filmstrip_enabled = True
     return graph, source
+
+
+def test_auto_arrange_places_branches_and_groups_without_rewiring(app):
+    registry = builtin_registry()
+    graph = Graph()
+    merge = graph.add(registry.create("cv.blend"))
+    branch_a = graph.add(registry.create("cv.gray"))
+    branch_b = graph.add(registry.create("cv.gray"))
+    source = graph.add(registry.create("input.demo"))
+    independent = graph.add(registry.create("input.demo"))
+    branch_a.node_size = "large"
+    branch_b.node_size = "small"
+    for block in (branch_a, branch_b):
+        graph.connect(source.id, "image", block.id, "image")
+    graph.connect(branch_a.id, "image", merge.id, "image_a")
+    graph.connect(branch_b.id, "image", merge.id, "image_b")
+    group = add_group(graph, [source.id, branch_a.id], "Acquisition")
+    graph.run()
+    results = {key: block.last_result for key, block in graph.blocks.items()}
+    connections = list(graph.connections)
+    scene = CanvasScene(graph)
+    updates = []
+    scene.layout_changed.connect(lambda: updates.append(True))
+    scene.set_locked(True)
+    assert not scene.auto_arrange()
+    scene.set_locked(False)
+    assert scene.auto_arrange()
+    assert not scene.auto_arrange()
+    assert updates == [True]
+
+    bounds = {key: node.sceneBoundingRect() for key, node in scene.nodes.items()}
+    for left, right in combinations(bounds.values(), 2):
+        assert not left.intersects(right)
+    for wire in scene.wires:
+        assert bounds[wire.connection.source].right() < bounds[wire.connection.target].left()
+        assert wire.path().pointAtPercent(0) == wire.source.scenePos()
+        assert wire.path().pointAtPercent(1) == wire.target.scenePos()
+    assert branch_a.position[0] == branch_b.position[0]
+    group_bounds = scene.groups[group["id"]].sceneBoundingRect()
+    assert group_bounds.contains(bounds[source.id])
+    assert group_bounds.contains(bounds[branch_a.id])
+    assert not group_bounds.intersects(bounds[branch_b.id])
+    assert bounds[independent.id].top() > max(
+        bounds[key].bottom() for key in bounds if key != independent.id
+    )
+    assert graph.connections == connections and graph.groups == [group]
+    assert all(block.last_result is results[key] for key, block in graph.blocks.items())
+
+
+def test_workspace_auto_arrange_menu_saves_only_the_open_toolblock_layout(app, tmp_path):
+    window = MainWindow()
+    graph = window.graph
+    ids = list(graph.blocks)
+    tool = encapsulate(graph, ids[1:3], "Preprocess", window.registry)
+    root_positions = {key: list(block.position) for key, block in graph.blocks.items()}
+    window.enter_toolblock(tool)
+    window.show()
+    try:
+        workspace = next(
+            action.menu() for action in window.menuBar().actions()
+            if action.text() == "&Workspace"
+        )
+        action = next(
+            action for action in workspace.actions() if action.text() == "Auto arrange blocks"
+        )
+        action.trigger()
+        assert window.dirty
+        assert {key: block.position for key, block in graph.blocks.items()} == root_positions
+        assert tool.graph.blocks[ids[1]].position[0] == 0
+        assert tool.graph.blocks[ids[2]].position[0] > 0
+        window.path = tmp_path / "arranged.json"
+        assert window.save_project()
+        restored = Graph.load(window.path, window.registry)
+        assert restored.to_dict() == graph.to_dict()
+    finally:
+        window.dirty = False
+        window.close()
 
 
 def test_group_moves_members_wires_without_invalidating_and_roundtrips(app, tmp_path):
