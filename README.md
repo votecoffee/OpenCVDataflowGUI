@@ -297,6 +297,9 @@ The [histogram thresholds example](examples/histogram_thresholds/README.md) wire
 measured cutoffs into lower-tail, middle-range, and upper-tail masks. Histograms
 also report per-channel mean, median, standard deviation, and extrema.
 
+The [flat-field correction example](examples/flat_field/README.md) uses bright and dark
+reference images to remove uneven illumination before inspection.
+
 The [skeleton pruning example](examples/skeleton_pruning/README.md) extracts
 centerlines from a binary mask and removes short spurs. Install the optional
 dependency with `python -m pip install -e ".[morphology]"`.
