@@ -1091,6 +1091,17 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `channel` | `"0"` | `0`, `1`, `2`, `3` |
 
+## Fit feature covariance (`cv.feature_covariance`)
+
+Image processing / Statistics
+
+Inputs: `samples` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `samples` | `[]` | One feature vector per row. The Samples input overrides this table. |
+| `normalization` | `"sample"` | `sample`, `population` Sample divides by N − 1. Population divides by N. |
+
 ## Custom 2D filter (`cv.filter2d`)
 
 Image processing / Filtering
@@ -2752,6 +2763,19 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `log_epsilon` | `0.0` | -log10(NFA) threshold; used only with advanced refinement. |
 | `density_threshold` | `0.7` |  |
 | `bins` | `1024` |  |
+
+## Mahalanobis distance (`inspect.mahalanobis_distance`)
+
+Inspection / Measurements
+
+Inputs: `model` (data), `samples` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `samples` | `[]` | One feature vector per row. The Samples input overrides this table. |
+| `ridge` | `0.0` | Value must be a finite number between 0 and 1e+26. Add this value to each covariance diagonal entry before inversion. |
+| `check_distance` | `false` | Fail when any row exceeds the distance limit. |
+| `distance_limit` | `3.0` | Value must be a finite number at least 0. Maximum Mahalanobis distance for an accepted row. |
 
 ## Match AKAZE descriptors (`inspect.match_akaze`)
 

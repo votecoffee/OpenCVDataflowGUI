@@ -20,7 +20,8 @@ radial Fourier filtering, custom spectrum masks, Fourier correlation,
 per-channel intensity LUTs, local and tilted window statistics,
 unary intensity transforms, binary image arithmetic, pixel comparison, and
 nonzero pixel coordinates are available alongside intensity profiles and
-selected image summary statistics.
+selected image summary statistics. Feature covariance fitting and Mahalanobis
+scoring cover joint variation and numeric outlier checks.
 Specialized array operations remain open. The
 [coverage backlog](opencv-coverage.md) tracks the missing workflows and the
 [binding inventory](opencv-bindings.tsv) maps static references to the pinned

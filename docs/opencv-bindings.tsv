@@ -1967,7 +1967,7 @@ P3	function	cv2.boxPoints	literal reference	-
 P3	function	cv2.broadcast	no static reference	-
 P3	function	cv2.buildMST	no static reference	-
 P3	function	cv2.buildOpticalFlowPyramid	no static reference	-
-P3	function	cv2.calcCovarMatrix	no static reference	-
+P3	function	cv2.calcCovarMatrix	literal reference	-
 P3	function	cv2.calcHist	no static reference	-
 P3	function	cv2.calcOpticalFlowFarneback	literal reference	-
 P3	function	cv2.calcOpticalFlowPyrLK	literal reference	-
@@ -2480,7 +2480,7 @@ P3	method	cv2.dynafu_DynaFu.reset	alias	cv2.dynafu.DynaFu.reset
 P3	method	cv2.dynafu_DynaFu.update	alias	cv2.dynafu.DynaFu.update
 P3	class	cv2.ECCParameters	literal reference	-
 P3	function	cv2.edgePreservingFilter	no static reference	-
-P3	function	cv2.eigen	no static reference	-
+P3	function	cv2.eigen	literal reference	-
 P3	function	cv2.eigenNonSymmetric	no static reference	-
 P3	function	cv2.ellipse	no static reference	-
 P3	function	cv2.ellipse2Poly	no static reference	-
@@ -3080,7 +3080,7 @@ P3	function	cv2.intensity_transform.contrastStretching	no static reference	-
 P3	function	cv2.intensity_transform.gammaCorrection	no static reference	-
 P3	function	cv2.intensity_transform.logTransform	no static reference	-
 P3	function	cv2.intersectConvexConvex	literal reference	-
-P3	function	cv2.invert	no static reference	-
+P3	function	cv2.invert	literal reference	-
 P3	function	cv2.invertAffineTransform	no static reference	-
 P3	function	cv2.isContourConvex	literal reference	-
 P3	class	cv2.IStreamReader	no static reference	-
@@ -3364,7 +3364,7 @@ P3	function	cv2.loadPointCloud	no static reference	-
 P3	function	cv2.log	literal reference	-
 P3	function	cv2.LUT	literal reference	-
 P3	function	cv2.magnitude	literal reference	-
-P3	function	cv2.Mahalanobis	no static reference	-
+P3	function	cv2.Mahalanobis	literal reference	-
 P3	class	cv2.Mat	alias	cv2.mat_wrapper.Mat
 P3	class	cv2.mat_wrapper.Any	no static reference	-
 P3	class	cv2.mat_wrapper.Mat	no static reference	-

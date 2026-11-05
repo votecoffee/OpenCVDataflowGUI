@@ -657,6 +657,7 @@ def builtin_registry():
     from .dnn_blocks import DNN_BLOCKS
     from .ecc_registration import AlignECC
     from .examples3d import StereoDemo
+    from .feature_covariance import FitFeatureCovariance, MahalanobisDistance
     from .features import FEATURE_BLOCKS
     from .fourier_correlation import FourierCorrelation
     from .geometry3d import GEOMETRY3D_BLOCKS
@@ -795,6 +796,8 @@ def builtin_registry():
         ConveyorDemo,
         FinalJudgment,
         *DNN_BLOCKS,
+        FitFeatureCovariance,
+        MahalanobisDistance,
         KMeansSamples,
         KMeansImage,
         *OCR_BLOCKS,

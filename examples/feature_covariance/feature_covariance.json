@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fit",
+      "type": "cv.feature_covariance",
+      "name": "Fit the expected feature relationship",
+      "parameters": {
+        "samples": [
+          [
+            -2,
+            -1
+          ],
+          [
+            -1,
+            -2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "normalization": "population"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "samples"
+      ],
+      "exposed_outputs": [
+        "model",
+        "mean",
+        "covariance",
+        "sample_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "score",
+      "type": "inspect.mahalanobis_distance",
+      "name": "Check joint feature deviation",
+      "parameters": {
+        "samples": [
+          [
+            0,
+            0
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            -2
+          ]
+        ],
+        "check_distance": true,
+        "distance_limit": 4.5
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "model",
+        "samples"
+      ],
+      "exposed_outputs": [
+        "distances",
+        "maximum_distance",
+        "outlier_indices",
+        "outlier_count"
+      ],
+      "thumbnail": true,
+      "preview_output": "distances"
+    }
+  ],
+  "connections": [
+    {
+      "source": "fit",
+      "output": "model",
+      "target": "score",
+      "input": "model"
+    }
+  ]
+}

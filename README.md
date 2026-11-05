@@ -632,6 +632,10 @@ bounded per-stream state, resets and trained references stored in projects or re
 Try [sequence memory](examples/sequence_memory/sequence_memory.json), then run continuously. See
 [sequence memory](docs/sequence-memory.md) for training, masks, ticket provenance and limits.
 
+**Fit feature covariance** models how numeric measurements vary together.
+**Mahalanobis distance** scores new rows and can fail on an outlier.
+[Feature covariance example](examples/feature_covariance/README.md)
+
 ## Architecture
 
 Choose **Run profile: debug / balanced / lean** in the toolbar to control observation
