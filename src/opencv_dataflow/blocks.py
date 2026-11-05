@@ -697,6 +697,7 @@ def builtin_registry():
     from .shape_fitting import FitShape
     from .stereo3d import STEREO3D_BLOCKS
     from .template_instances import FindTemplateInstances
+    from .text_rules import VerifyText
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
     from .video_files import VideoFile, WriteVideo
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
@@ -738,6 +739,7 @@ def builtin_registry():
         *COLLECTION_BLOCKS,
         *CONTOUR_ANALYSIS_BLOCKS,
         *CODE_READER_BLOCKS,
+        VerifyText,
         *SEGMENTATION_BLOCKS,
         CompareImageQuality,
         CompareHistograms,

@@ -2304,6 +2304,24 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | --- | --- | --- |
 | `method` | `"zhang_suen"` | `zhang_suen`, `guo_hall` |
 
+## Verify decoded text (`inspect.verify_text`)
+
+Inspection / Code reading
+
+Inputs: `text` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `comparison` | `"none"` | `none`, `exact`, `prefix`, `suffix`, `contains` |
+| `expected` | `""` |  |
+| `case_sensitive` | `true` |  |
+| `trim` | `true` | Remove leading and trailing whitespace before checking. |
+| `minimum_length` | `1` |  |
+| `maximum_length` | `0` | Zero disables the maximum. Length counts Unicode code points. |
+| `character_set` | `"any"` | `any`, `ascii_digits`, `ascii_letters`, `ascii_alphanumeric`, `custom` |
+| `custom_characters` | `""` | Literal allowed characters for the custom character set. |
+| `aggregate` | `"all"` | `all`, `any` Require every input string or at least one. An empty list always fails. |
+
 ## Marker-controlled watershed (`inspect.watershed`)
 
 Inspection / Segmentation
