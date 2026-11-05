@@ -1461,7 +1461,7 @@ P2	method	cv2.ximgproc.DisparityWLSFilter.setLambda	method name only	-
 P2	method	cv2.ximgproc.DisparityWLSFilter.setLRCthresh	method name only	-
 P2	method	cv2.ximgproc.DisparityWLSFilter.setSigmaColor	method name only	-
 P2	class	cv2.ximgproc.DTFilter	no static reference	-
-P2	function	cv2.ximgproc.dtFilter	no static reference	-
+P2	function	cv2.ximgproc.dtFilter	literal reference	-
 P2	method	cv2.ximgproc.DTFilter.filter	method name only	-
 P2	class	cv2.ximgproc.EdgeAwareInterpolator	no static reference	-
 P2	method	cv2.ximgproc.EdgeAwareInterpolator.getFGSLambda	no static reference	-

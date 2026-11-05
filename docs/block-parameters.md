@@ -957,6 +957,22 @@ Inputs: `image` (image).
 | `distance_type` | `"l2"` | `l1`, `l2`, `chessboard` |
 | `output_depth` | `"float32"` | `float32`, `uint8` |
 
+## Domain transform filter (`cv.domain_transform_filter`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `guide` (image, optional).
+
+Input `guide` — Optional aligned guide. Otherwise the block guides with the source.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sigma_spatial` | `8.0` | Value must be a finite number between 0.01 and 4096. Spatial smoothing scale in pixels. |
+| `sigma_color` | `0.08` | Value must be a finite number between 1e-06 and 10000. Edge sensitivity in guide units. Integer guides are normalized to [0, 1]. |
+| `mode` | `"normalized_convolution"` | `normalized_convolution`, `interpolated_convolution`, `recursive_filtering` |
+| `iterations` | `3` | Value must be a whole number between 1 and 16. Number of horizontal and vertical filtering passes. |
+| `output_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` |
+
 ## Equalize histogram (`cv.equalize`)
 
 Image processing / Contrast

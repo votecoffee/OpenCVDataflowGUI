@@ -20,6 +20,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [K-means clustering](kmeans/README.md) | Cluster image pixels and numeric samples, then inspect the color map, quantized image, and cluster plot. |
 | [Histogram thresholds](histogram_thresholds/README.md) | Visualize percentiles, mean, and median, and wire measured cutoffs into three threshold masks. |
 | [Flat-field illumination correction](flat_field/README.md) | Remove a lighting gradient using bright and dark references while retaining a synthetic defect. |
+| [Domain transform filter](domain_transform_filter/README.md) | Compare three edge-preserving smoothing modes on the same noisy image. |
 | [Guided edge-preserving filter](guided_filter/README.md) | Smooth a noisy image while preserving its main intensity edge. |
 | [Subpixel template locations](subpixel_template/README.md) | Compare integer and refined template matches against two known fractional placements. |
 | [Contour approximation](contour_approximation/README.md) | Simplify the dense outline of a chamfered part into six polygon vertices. |
