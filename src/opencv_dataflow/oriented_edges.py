@@ -11,6 +11,7 @@ from .features import overlay_image
 from .objects import collection, line_item
 from .parameters import BORDERS
 from .processing import finite, gray_image, integer
+from .result_graphics import ACCEPTED, REJECTED, review_legend
 from .selection import SELECTION_INPUTS, selection_mask
 
 
@@ -199,7 +200,7 @@ class FindOrientedEdges(Block):
         signs = (
             (1, -1) if p["polarity"] == "either" else ((1,) if p["polarity"] == "rising" else (-1,))
         )
-        items, segments = [], []
+        items, segments, rejected = [], [], []
         intensity_float = image.astype(np.float32)
         accepted_mask = np.zeros_like(image)
         overlay = overlay_image(inputs["image"])
@@ -287,6 +288,10 @@ class FindOrientedEdges(Block):
                     or (contrast_min and (contrast is None or contrast < contrast_min))
                     or (contrast_max and (contrast is None or contrast > contrast_max))
                 ):
+                    if self.generate_graphics and len(rejected) < 256:
+                        rejected.append(
+                            np.array([center + direction * t.min(), center + direction * t.max()])
+                        )
                     continue
                 endpoints = np.array([center + direction * t.min(), center + direction * t.max()])
                 item = line_item(endpoints, len(items), width=thickness)
@@ -304,7 +309,17 @@ class FindOrientedEdges(Block):
                 segments.append(endpoints.reshape(-1).tolist())
                 accepted_mask[points[:, 1], points[:, 0]] = 255
                 a, b = np.rint(endpoints).astype(int)
-                cv2.line(overlay, tuple(a), tuple(b), (60, 230, 120), 2)
+                cv2.line(overlay, tuple(a), tuple(b), ACCEPTED, 2)
+        graphic = overlay
+        if self.generate_graphics:
+            graphic = overlay.copy()
+            for endpoints in rejected:
+                a, b = np.rint(endpoints).astype(int)
+                cv2.line(graphic, tuple(a), tuple(b), REJECTED, 2)
+            for segment in segments:
+                a, b = np.rint(np.reshape(segment, (2, 2))).astype(int)
+                cv2.line(graphic, tuple(a), tuple(b), ACCEPTED, 2)
+            review_legend(graphic, len(items), len(rejected))
         return Result(
             {
                 "collection": collection("lines", items, image, self.input_payloads["image"]),
@@ -314,6 +329,6 @@ class FindOrientedEdges(Block):
                 "response": response,
                 "overlay": overlay,
             },
-            graphics={"oriented edges": overlay},
+            graphics={"oriented edges": graphic} if self.generate_graphics else {},
             message=f"{len(items)} oriented edges near {angle:g} degrees",
         )

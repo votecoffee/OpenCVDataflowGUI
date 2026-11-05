@@ -17,6 +17,7 @@ from .payloads import (
     validate_payload,
 )
 from .processing import ConnectedComponents, finite, gray_image, integer
+from .result_graphics import ACCEPTED, REJECTED, review_legend
 from .selection import SELECTION_INPUTS, contains, selection_mask
 
 
@@ -258,12 +259,28 @@ class FilterCollection(Block):
                     keep and None not in center and contains(selection, np.asarray(center) - origin)
                 )
             (accepted if keep else rejected).append(item)
-        return collection_result(
+        result = collection_result(
             subset(data, accepted),
             payload,
             rejected=subset(data, rejected),
             rejected_count=len(rejected),
         )
+        if self.generate_graphics:
+            scale = min(1.0, 1200 / max(width, height))
+            shape = (max(1, round(height * scale)), max(1, round(width * scale)), 3)
+            graphic = np.full(shape, 24, np.uint8)
+            for items, color in ((rejected, REJECTED), (accepted, ACCEPTED)):
+                for item in items:
+                    metrics = item["metrics"]
+                    x, y, w, h = (metrics.get(name) for name in ("x", "y", "width", "height"))
+                    if None in (x, y, w, h):
+                        continue
+                    bounds = (np.array([[x, y], [x + w - 1, y + h - 1]]) - origin) * scale
+                    start, end = np.rint(np.clip(bounds, -10000, 10000)).astype(int)
+                    cv2.rectangle(graphic, tuple(start), tuple(end), color, 1)
+            review_legend(graphic, len(accepted), len(rejected))
+            result.graphics["collection filter"] = graphic
+        return result
 
 
 class SortCollection(Block):

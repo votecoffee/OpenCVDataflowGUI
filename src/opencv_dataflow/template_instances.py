@@ -8,6 +8,7 @@ from .features import overlay_image
 from .payloads import NO_VALUE
 from .poses import POSE_HELP, POSE_OFFSETS, local_offset, make_pose
 from .processing import MatchTemplate, finite, integer
+from .result_graphics import ACCEPTED, REJECTED, review_label, review_legend
 
 
 class FindTemplateInstances(MatchTemplate):
@@ -54,26 +55,34 @@ class FindTemplateInstances(MatchTemplate):
         offset = local_offset(*(self.parameters[key] for key in POSE_OFFSETS))
         overlay = overlay_image(source) if self.parameters["draw_overlay"] else NO_VALUE
         height, width = template.shape
-        matches, poses = [], []
-        for _ in range(maximum):
+        matches, poses, rejected = [], [], []
+        review = min(maximum, 32) if self.generate_graphics and overlay is not NO_VALUE else 0
+        for _ in range(maximum + review):
             _, score, _, (x, y) = cv2.minMaxLoc(candidates)
-            if score < threshold:
+            if score < 0:
                 break
-            center = [x + (width - 1) / 2, y + (height - 1) / 2]
-            pose_matrix = np.eye(3)
-            pose_matrix[:2, 2] = center
-            pose = make_pose(pose_matrix @ offset, size, payload)
-            matches.append(
-                {
-                    "bounds": [x, y, width, height],
-                    "center": center,
-                    "score": float(score),
-                    "pose": pose,
-                }
-            )
-            poses.append(pose)
-            if overlay is not NO_VALUE:
-                cv2.rectangle(overlay, (x, y), (x + width - 1, y + height - 1), (70, 220, 140), 2)
+            if score >= threshold and len(matches) < maximum:
+                center = [x + (width - 1) / 2, y + (height - 1) / 2]
+                pose_matrix = np.eye(3)
+                pose_matrix[:2, 2] = center
+                pose = make_pose(pose_matrix @ offset, size, payload)
+                matches.append(
+                    {
+                        "bounds": [x, y, width, height],
+                        "center": center,
+                        "score": float(score),
+                        "pose": pose,
+                    }
+                )
+                poses.append(pose)
+                if overlay is not NO_VALUE:
+                    cv2.rectangle(
+                        overlay, (x, y), (x + width - 1, y + height - 1), (70, 220, 140), 2
+                    )
+            elif score > 0 and len(rejected) < review:
+                rejected.append((x, y, score, "score" if score < threshold else "limit"))
+            else:
+                break
             x0, x1 = max(0, x - width + 1), min(candidates.shape[1], x + width)
             y0, y1 = max(0, y - height + 1), min(candidates.shape[0], y + height)
             intersection = (width - np.abs(np.arange(x0, x1) - x))[None, :] * (
@@ -83,6 +92,18 @@ class FindTemplateInstances(MatchTemplate):
             candidates[y0:y1, x0:x1][overlap > iou] = -1
             candidates[y, x] = -1
         count = len(matches)
+        graphics = {}
+        if self.generate_graphics and overlay is not NO_VALUE:
+            graphic = overlay.copy()
+            for x, y, score, reason in rejected:
+                cv2.rectangle(graphic, (x, y), (x + width - 1, y + height - 1), REJECTED, 2)
+                review_label(graphic, f"{score:.2f} {reason}", (x, y + height // 2), REJECTED)
+            for match in matches:
+                x, y, _, _ = match["bounds"]
+                cv2.rectangle(graphic, (x, y), (x + width - 1, y + height - 1), ACCEPTED, 2)
+                review_label(graphic, f"{match['score']:.2f}", (x, y + height // 2), ACCEPTED)
+            review_legend(graphic, count, len(rejected))
+            graphics["template instances"] = graphic
         return Result(
             {
                 "poses": poses,
@@ -91,7 +112,7 @@ class FindTemplateInstances(MatchTemplate):
                 "response": response,
                 "overlay": overlay,
             },
-            graphics={"template instances": overlay} if overlay is not NO_VALUE else {},
+            graphics=graphics,
             passed=count >= minimum,
             score=matches[0]["score"] if matches else 0.0,
             message=f"Found {count} template instances (minimum {minimum})",

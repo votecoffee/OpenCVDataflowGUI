@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from opencv_dataflow.blocks import builtin_registry
+from opencv_dataflow.result_graphics import ACCEPTED, REJECTED
 
 
 def run(image, **parameters):
@@ -71,6 +72,9 @@ def test_weak_gradient_filtering_and_continuity_are_independent_of_gap_joining()
     image[:, 130:180] = 255
     detected = run(image, response_threshold=5.0, min_strength=30.0)
     assert detected.last_result.outputs["count"] == 2
+    graphic = detected.last_graphics["oriented edges"][40:]
+    assert np.any(np.all(graphic[:, :100] == REJECTED, axis=-1))
+    assert np.any(np.all(graphic[:, 100:] == ACCEPTED, axis=-1))
     # A discontinuous line has two real 50-pixel runs; joining must not invent continuity.
     broken = np.zeros((140, 140), np.uint8)
     broken[10:60, 70:] = 255
