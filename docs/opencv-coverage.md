@@ -11,9 +11,9 @@ lists the tools that can be placed on a graph today.
 | Rank | Outstanding capability | OpenCV primitives and graph work |
 | --- | --- | --- |
 | 1 | Separate touching parts and isolate foreground | Distance-peak seeds, hole fill and morphological reconstruction. Watershed, flood fill, GrabCut initialization, skeleton thinning, threshold, morphology, distance transform and components are available. |
-| 2 | Reference comparison and defect scoring | Histogram comparison and backprojection, registered reference subtraction and packaged residual-component inspection. SSIM with a local similarity map, PSNR/MSE and configurable fail thresholds are available. |
+| 2 | Reference comparison and defect scoring | Histogram backprojection, registered reference subtraction and packaged residual-component inspection. Histogram comparison, SSIM with a local similarity map, PSNR/MSE and configurable fail thresholds are available. |
 | 3 | Multi-result template search and pick selection | Subpixel template peaks, pose-relative clearance, distinct visible-feature coverage and depth occlusion evidence, and deterministic pick ranking. Fixed-scale multi-result template matching now supplies ranked peaks, overlap suppression and poses. Trainable matchers and collection filters cover other parts of this pipeline. |
-| 4 | Calipers, widths, contours and shape fitting | Intensity profiles along pose-relative calipers, paired edges, width/gap/discontinuity along a path, `fitLine`, `fitEllipse*`, `minEnclosingCircle`, convex hull/defects, `pointPolygonTest` and contour-to-contour `matchShapes`. Several descriptors are computed inside existing detectors. Dedicated fitting blocks should accept points or collections and report residuals. |
+| 4 | Calipers, widths, contours and shape fitting | Intensity profiles along pose-relative calipers, paired edges, width/gap/discontinuity along a path, convex hull/defects, `pointPolygonTest` and contour-to-contour `matchShapes`. Dedicated line, ellipse and minimum enclosing circle fits now accept points or a collection item and report residuals. |
 | 5 | File video and replay | Video file/stream sources, decode timestamps, seek, frame ranges and extraction, codec/container selection, video writing and deterministic end-of-stream. Extend image-camera acquisition with timed replay and independent source readiness. |
 | 6 | Industrial text and code workflows | OCR text detection, recognition, character rules and training/recipe assets. Add verified Data Matrix and other required symbologies through a suitable backend, and a separate grading workflow. Basic QR and OpenCV linear-code decoding are available. |
 | 7 | Color tolerance and coating checks | ROI color statistics, Lab color difference including ΔE00, color-chart calibration, correction matrix and color-class decisions. Existing histogram and color balance remain useful inputs. |
@@ -119,3 +119,16 @@ overlap suppression and optional mask/region inputs. It returns ranked
 bounds, centers, scores and a list of center poses. The pose list connects
 directly to **Inspect each pose in parallel**. Open the [25-part example](../examples/template_instances.json)
 or run it with `opencv-dataflow-run examples/template_instances.json`.
+
+
+## Available histogram and shape measurements
+
+**Compare histograms** accepts matching Histogram outputs and offers all six
+OpenCV comparison metrics, optional count normalization, per-channel results
+and a threshold on the mean or worst channel. Use identical bin edges and
+ranges in both source histograms.
+
+**Fit line, ellipse or enclosing circle** fits points or one detected object.
+It reports image-space geometry and root mean squared distance to the fitted
+boundary, with an optional residual tolerance. Circle mode returns the
+smallest enclosing circle.

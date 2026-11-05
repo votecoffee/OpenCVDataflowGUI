@@ -1696,6 +1696,20 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
 | `check_count` | `false` |  |
 
+## Compare histograms (`inspect.compare_histograms`)
+
+Inspection / Measurements
+
+Inputs: `reference` (data), `sample` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"bhattacharyya"` | `correlation`, `chi_square`, `intersection`, `bhattacharyya`, `chi_square_alt`, `kl_divergence` |
+| `normalize` | `true` | Divide each histogram by its sample count before comparison. |
+| `reduction` | `"mean"` | `mean`, `worst` |
+| `check_threshold` | `false` |  |
+| `threshold` | `0.1` | Minimum for correlation/intersection. Maximum for the distance metrics. |
+
 ## Connected components (`inspect.components`)
 
 Inspection / Shapes
@@ -1793,6 +1807,24 @@ Inputs: `value` (any), `passed` (data, optional), `reasons` (data, optional).
 | `data` | `{}` | Compact JSON record attached to the final ticket event. |
 | `fail_reason` | `""` | Stable code assigned when the final decision is FAIL. |
 | `reason_message` | `""` | Human-readable explanation; defaults to the reason code. |
+
+## Fit line, ellipse or enclosing circle (`inspect.fit_shape`)
+
+Inspection / Measurements
+
+Inputs: `points` (data, optional), `collection` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `shape` | `"line"` | `line`, `ellipse`, `enclosing_circle` |
+| `item_index` | `0` | Zero-based position in the collection, after filtering or sorting. |
+| `line_distance` | `"l2"` | `l2`, `l1`, `l12`, `fair`, `welsch`, `huber` |
+| `line_distance_parameter` | `0.0` | Robust loss constant. Zero selects the OpenCV default. |
+| `line_radius_epsilon` | `0.01` | Position convergence tolerance in pixels. |
+| `line_angle_epsilon` | `0.01` | Angle convergence tolerance in radians. |
+| `ellipse_method` | `"standard"` | `standard`, `ams`, `direct` |
+| `check_rmse` | `false` |  |
+| `maximum_rmse` | `1.0` | Maximum root mean squared distance to the fitted boundary, in pixels. |
 
 ## Seeded flood fill (`inspect.flood_fill`)
 
