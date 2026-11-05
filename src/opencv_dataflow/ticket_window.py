@@ -35,12 +35,25 @@ class TicketResultsWindow(QDialog):
         split = QSplitter()
         self.table = QTreeWidget()
         self.table.setHeaderLabels(
-            ["Ticket", "Kind", "Session", "Status", "Events", "Sources", "Recipes"]
+            [
+                "Ticket",
+                "Kind",
+                "Session",
+                "Status",
+                "Events",
+                "Sources",
+                "Recipes",
+                "Start UTC",
+                "Last finish UTC",
+                "Elapsed ms",
+            ]
         )
         self.details = QTextEdit()
         self.details.setReadOnly(True)
         self.events = QTreeWidget()
-        self.events.setHeaderLabels(["UTC time", "Tool", "Result", "Score", "Event", "Message"])
+        self.events.setHeaderLabels(
+            ["UTC time", "Tool", "Result", "Score", "Event", "Message", "Work ms"]
+        )
         event_panel = QSplitter(Qt.Orientation.Vertical)
         event_panel.addWidget(self.events)
         event_panel.addWidget(self.details)
@@ -72,6 +85,7 @@ class TicketResultsWindow(QDialog):
         query = self.search.text().casefold()
         for row in reversed(snapshot["tickets"]):
             ticket = row["ticket"]
+            timing = row.get("processing_time", {})
             fields = [
                 str(ticket["value"]),
                 ticket["kind"],
@@ -80,6 +94,9 @@ class TicketResultsWindow(QDialog):
                 str(row["event_count"]),
                 ", ".join(row["sources"]),
                 ", ".join(f"{r['id']} r{r['revision']}" for r in row.get("recipes", [])),
+                timing.get("started_at", ""),
+                timing.get("finished_at", ""),
+                f"{timing['elapsed_ms']:.3f}" if timing.get("elapsed_ms") is not None else "",
             ]
             if query and query not in " ".join(fields).casefold():
                 continue
@@ -131,6 +148,7 @@ class TicketResultsWindow(QDialog):
                 f"{event['score']:.1%}" if event["score"] is not None else "",
                 event["kind"],
                 event["message"],
+                f"{event['work_ms']:.3f}" if event.get("work_ms") is not None else "",
             ]
             entry = QTreeWidgetItem(self.events, fields)
             entry.setData(0, Qt.ItemDataRole.UserRole, event)

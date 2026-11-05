@@ -5,7 +5,6 @@ from __future__ import annotations
 import copy
 import json
 import math
-import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass, field
@@ -33,6 +32,7 @@ from .payloads import (
 )
 from .recipes import RecipeCatalog, apply_recipe, validate_bindings
 from .tickets import DEFAULT_TICKET_SETTINGS, DIRECT_CLOCK, TICKET_MODES, TicketClock
+from .timing import WorkTiming
 
 
 @dataclass(frozen=True)
@@ -107,6 +107,9 @@ class Block:
                 self.outputs = (*self.outputs, Port("ticket", "data"))
             self.exposed_inputs = [p.name for p in self.inputs]
             self.exposed_outputs = [p.name for p in self.outputs]
+        self.timing = WorkTiming()
+        self._work_started = self._work_finished = None
+        self.elapsed_ms = 0.0
         self.clear_result()
 
     def clear_result(self, preserve_history=False):
@@ -114,7 +117,7 @@ class Block:
         self.input_rejected = False
         self.last_rejection = ""
         if preserve_history and "reject_failed" in self.input_failure_policies.values():
-            self.state, self.error, self.elapsed_ms = "idle", "", 0.0
+            self.state, self.error = "idle", ""
             return
         self.last_inputs: dict[str, Any] = {}
         self.input_payloads = {}
@@ -125,7 +128,6 @@ class Block:
         self.last_recipe_parameters = {}
         self.state = "idle"
         self.error = ""
-        self.elapsed_ms = 0.0
 
     def process(self, inputs: dict[str, Any]) -> Result:
         raise NotImplementedError
@@ -171,7 +173,8 @@ class Block:
         Block.clear_result(self)
         self._source_ticket = None
         self._cancelled = cancelled
-        started = time.perf_counter()
+        self._work_started = self.timing.begin()
+        self._work_finished = None
         configured_parameters = self.parameters
         configured_model = getattr(self, "trained_model", None)
         try:
@@ -254,6 +257,7 @@ class Block:
                 for name in getattr(self, "flow_primary", tuple(result.outputs))
             ):
                 self.state = "waiting"
+            self._finish_work()
             publish_result(
                 self,
                 {
@@ -264,6 +268,7 @@ class Block:
                 kind="final_judgment" if result.final_judgment is not None else "tool_result",
             )
         except Exception as exc:
+            self._finish_work()
             self.state = "error"
             self.error = f"{type(exc).__name__}: {exc}"
             self.last_result = None
@@ -285,8 +290,13 @@ class Block:
             self.parameters = configured_parameters
             if getattr(self, "supports_training", False):
                 self.trained_model = configured_model
-            self.elapsed_ms = (time.perf_counter() - started) * 1000
+            self._finish_work()
         return self.last_result
+
+    def _finish_work(self):
+        if self._work_finished is None:
+            self._work_finished = self.timing.finish()
+            self.elapsed_ms = self.timing.last_ms
 
     def close(self):
         """Release optional native resources, on the execution thread."""
@@ -314,6 +324,7 @@ class Block:
             "state",
             "error",
             "elapsed_ms",
+            "timing",
             "current_emissions",
             "input_rejected",
             "last_rejection",
@@ -469,6 +480,16 @@ class Graph:
             self.ticket_results.restore(other.ticket_results.snapshot())
         for key, block in self.blocks.items():
             block.copy_runtime_from(other.blocks[key])
+        self.copy_timing_from(other)
+
+    def copy_timing_from(self, other):
+        for key, block in self.blocks.items():
+            if key not in other.blocks:
+                continue
+            block.timing = copy.deepcopy(other.blocks[key].timing)
+            block.elapsed_ms = other.blocks[key].elapsed_ms
+            if hasattr(block, "graph") and hasattr(other.blocks[key], "graph"):
+                block.graph.copy_timing_from(other.blocks[key].graph)
 
     def restore_captured(self, provided):
         for key, snapshot in provided.items():

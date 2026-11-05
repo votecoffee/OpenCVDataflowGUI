@@ -391,6 +391,13 @@ Try **File > Load sequence memory example**, then run continuously. See
 
 ## Architecture
 
+Every block retains current/last/average execution timing and an activation count.
+The inspector shows these statistics, and headless reports include them. Ticketed
+connections carry source-start/output-finish UTC timestamps and monotonic elapsed time,
+including queue waits. **Results > Ticket results…** shows the overall observed span
+and per-tool durations. See [execution and ticket timing](docs/timing.md) for measurement
+boundaries, parallel work and explicit final-decision timestamps.
+
 - `core.py`: block/result contracts, typed ports, acyclic graph scheduling, JSON projects.
 - `blocks.py`: acquisition, legacy G-API processing, inspection, and output sinks.
 - `basic_processing.py`: ordinary Grayscale, Gaussian blur and Canny defaults.

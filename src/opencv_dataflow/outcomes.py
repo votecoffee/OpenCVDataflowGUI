@@ -76,6 +76,9 @@ def source_info(block):
 def stamp_result(block, result):
     """Stamp each emitted packet, including members of groups, without an event log on wires."""
     from .payloads import NO_VALUE, FlowGroup, ImagePyramid, ValuePacket, image_with_payload
+    from .timing import advance_timing, mark
+
+    output_finished = mark()
 
     incoming_failed = any(
         failed_input(ValuePacket(value, block.input_payloads.get(name, {})))
@@ -105,6 +108,12 @@ def stamp_result(block, result):
         if not getattr(block, "outcome_passthrough", False):
             chain_passed = chain_passed and not incoming_failed
         if "ticket" in payload:
+            payload["processing_time"] = advance_timing(
+                payload.get("processing_time"),
+                block._work_started,
+                output_finished,
+                source=block.ticket_source,
+            )
             payload["outcome"] = {
                 "model": "tool_outcome_v1",
                 "passed": passed,
@@ -151,6 +160,7 @@ def stamp_result(block, result):
 
 def publish_result(block, values, result=None, kind="tool_result", message=""):
     from .payloads import metadata
+    from .timing import advance_timing, mark
 
     consumer = getattr(block, "_ticket_results", None)
     if consumer is None:
@@ -177,6 +187,15 @@ def publish_result(block, values, result=None, kind="tool_result", message=""):
     for packet, stamped, context, recipe_context in tickets.values():
         ticket = packet.payload["ticket"]
         outcome = packet.payload.get("outcome", {})
+        handled = kind in ("tool_result", "final_judgment", "error")
+        end = getattr(block, "_work_finished", None) if handled else None
+        end = end or mark()
+        start = (getattr(block, "_work_started", None) or end) if handled else end
+        timing = (
+            packet.payload["processing_time"]
+            if stamped
+            else advance_timing(packet.payload.get("processing_time"), start, end)
+        )
         consumer.consume(
             {
                 "ticket": ticket,
@@ -201,6 +220,8 @@ def publish_result(block, values, result=None, kind="tool_result", message=""):
                 "parent_ticket": packet.payload.get("inspection", {}).get("parent_ticket"),
                 "coordination": packet.payload.get("coordination", context),
                 "recipe": packet.payload.get("recipe_ref", recipe_context),
+                "processing_time": timing,
+                "work_ms": block.timing.last_ms if handled and block._work_finished else None,
             }
         )
 
@@ -220,8 +241,12 @@ class TicketResults:
         self.evicted_tickets = 0
 
     def consume(self, event):
+        from .timing import merge_timing, validate_timing
+
         event = copy.deepcopy(event)
         validate_ticket(event["ticket"])
+        if event.get("processing_time") is not None:
+            validate_timing(event["processing_time"])
         encoded = json.dumps(event, allow_nan=False)
         if len(encoded.encode("utf-8")) > 16384:
             raise ValueError("Ticket event exceeds 16 KiB; publish a compact summary")
@@ -248,6 +273,15 @@ class TicketResults:
                     "recipes": [],
                 }
             row = self.rows[key]
+            if event.get("processing_time") is not None:
+                row["processing_time"] = merge_timing(
+                    row.get("processing_time"), event["processing_time"]
+                )
+            if event["final_judgment"] is not None:
+                row.setdefault(
+                    "finalized_at",
+                    (event.get("processing_time") or {}).get("finished_at", event["timestamp"]),
+                )
             recipe = event.get("recipe")
             if recipe and recipe not in row["recipes"] and len(row["recipes"]) < 128:
                 row["recipes"].append(copy.deepcopy(recipe))

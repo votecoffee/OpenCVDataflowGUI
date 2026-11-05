@@ -224,7 +224,8 @@ class ParallelInspect(Block):
 
     def copy_runtime_from(self, other):
         # Every part invocation starts a fresh graph; buffers never cross part boundaries.
-        pass
+        self.inspection.timing = copy.deepcopy(other.inspection.timing)
+        self.graph.copy_timing_from(other.graph)
 
     def copy_results_from(self, other):
         super().copy_results_from(other)
@@ -458,6 +459,10 @@ class ParallelInspect(Block):
                     else:
                         result_bytes += size
                     records[index] = record
+                    timing_history = [
+                        (b, copy.deepcopy(b.timing), b.elapsed_ms)
+                        for b in (self.inspection, *walk(self.graph))
+                    ]
                     if record["status"] in counts:
                         counts[record["status"]] += 1
                         packets[index] = packet
@@ -468,6 +473,15 @@ class ParallelInspect(Block):
                         ):
                             self.inspection.copy_results_from(tool)
                             self.last_preview_index = index
+                    for b, timing, elapsed in timing_history:
+                        b.timing, b.elapsed_ms = timing, elapsed
+                    if tool is not None:
+                        for b, completed_block in zip(
+                            (self.inspection, *walk(self.graph)),
+                            (tool, *walk(tool.graph)),
+                        ):
+                            b.timing.absorb(completed_block.timing)
+                            b.elapsed_ms = b.timing.last_ms or 0.0
                     if not stop.is_set():
                         if pass_limit and counts["pass"] >= pass_limit:
                             reason = "pass_limit"

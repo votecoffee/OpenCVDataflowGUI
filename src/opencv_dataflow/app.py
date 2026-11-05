@@ -140,6 +140,13 @@ class Inspector(QWidget):
         self.caption = QLabel("Select a block to configure its tools and ports.")
         self.caption.setWordWrap(True)
         layout.addWidget(self.caption)
+        self.timing_label = QLabel()
+        self.timing_label.setWordWrap(True)
+        layout.addWidget(self.timing_label)
+        self.timing_timer = QTimer(self)
+        self.timing_timer.setInterval(200)
+        self.timing_timer.timeout.connect(self.refresh_timing)
+        self.timing_timer.start()
         self.editor = QGroupBox("Configuration")
         self.form = QFormLayout(self.editor)
         scroll = QScrollArea()
@@ -694,7 +701,30 @@ class Inspector(QWidget):
             self.window.warn(str(exc))
             return False
 
+    def refresh_timing(self):
+        block = self.block
+        runner = self.window.runner
+        if block is not None and runner is not None:
+            graph = runner.graph
+            for _, owner in self.window.graph_stack:
+                graph = graph.blocks[owner.id].graph
+            block = graph.blocks.get(block.id, block)
+        if block is None:
+            self.timing_label.clear()
+            return
+        timing = block.timing.snapshot()
+        fields = [
+            f"{title}: {timing[key]:.2f} ms" if timing[key] is not None else f"{title}: —"
+            for title, key in (
+                ("Current", "current_ms"),
+                ("Last", "last_ms"),
+                ("Average", "average_ms"),
+            )
+        ]
+        self.timing_label.setText(" · ".join(fields) + f" · {timing['count']} activations")
+
     def refresh_result(self):
+        self.refresh_timing()
         previous = self.preview_choice.currentText()
         self.preview_choice.blockSignals(True)
         self.preview_choice.clear()
@@ -726,8 +756,13 @@ class Inspector(QWidget):
                 else {}
             )
             score = f"{result.score:.1%}" if result and result.score is not None else "—"
+            timing = b.timing.snapshot()
+            average = (
+                f"{timing['average_ms']:.2f}" if timing["average_ms"] is not None else "—"
+            )
             self.details.setPlainText(
                 f"{b.state.upper()}   ·   {b.elapsed_ms:.2f} ms   ·   score {score}\n"
+                + f"Average {average} ms · {timing['count']} activations\n"
                 + (b.last_rejection or b.error or (result.message if result else "Not executed"))
                 + "\n\n"
                 + json.dumps(
@@ -736,9 +771,10 @@ class Inspector(QWidget):
                         "payloads": result.payloads,
                         "recipe": b.last_recipe_ref,
                         "recipe_parameters": b.last_recipe_parameters,
+                        "timing": b.timing.snapshot(),
                     }
                     if result
-                    else outputs,
+                    else {"timing": timing},
                     indent=2,
                     default=str,
                 )
@@ -1287,6 +1323,7 @@ class MainWindow(QMainWindow):
         worker.wait()
         self.root_graph.ticket_results.restore(worker.graph.ticket_results.snapshot())
         self.root_graph.recipes.copy_runtime_from(worker.graph.recipes)
+        self.root_graph.copy_timing_from(worker.graph)
         for key, snapshot in worker.final_queue_states.items():
             block = self.root_graph.blocks.get(key)
             if isinstance(block, ImageQueue):
