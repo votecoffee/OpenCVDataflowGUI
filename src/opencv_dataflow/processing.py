@@ -732,10 +732,39 @@ class MatchTemplate(Block):
         Port("raw_score", "number"),
         Port("response"),
     )
-    defaults = {"method": "ccoeff_normed", "min_score": 0.8}
+    defaults = {"method": "ccoeff_normed", "min_score": 0.8, "subpixel": False}
     parameter_choices = {
         "method": ("ccoeff_normed", "ccorr_normed", "sqdiff_normed", "ccoeff", "ccorr", "sqdiff")
     }
+
+    parameter_help = {
+        "subpixel": "Fit a local quadratic to refine centers when the response has a clear peak.",
+    }
+
+    def refined_top_left(self, response, allowed, method, x, y):
+        if not self.parameters["subpixel"]:
+            return None
+        if not (0 < x < response.shape[1] - 1 and 0 < y < response.shape[0] - 1):
+            return None
+        window = np.s_[y - 1:y + 2, x - 1:x + 2]
+        if allowed is not None and not allowed[window].all():
+            return None
+        peak = response[window].astype(np.float64)
+        if method.startswith("sqdiff"):
+            peak = -peak
+        center = peak[1, 1]
+        neighbors = np.delete(peak.ravel(), 4)
+        if center <= neighbors.max():
+            return None
+        left, right, above, below = peak[1, 0], peak[1, 2], peak[0, 1], peak[2, 1]
+        xx, yy = left + right - 2 * center, above + below - 2 * center
+        xy = (peak[2, 2] - peak[2, 0] - peak[0, 2] + peak[0, 0]) / 4
+        if xx >= 0 or yy >= 0 or xx * yy <= xy * xy:
+            return None
+        dx, dy = np.linalg.solve([[xx, xy], [xy, yy]], [(left - right) / 2, (above - below) / 2])
+        if abs(dx) > 1 or abs(dy) > 1:
+            return None
+        return [x + float(dx), y + float(dy)]
 
     def response_maps(self, inputs):
         image = gray_image(inputs["image"], (np.uint8, np.float32))
@@ -823,6 +852,11 @@ class MatchTemplate(Block):
             (70, 220, 140) if score >= threshold else (60, 90, 240),
             2,
         )
+        top_left = self.refined_top_left(response, candidate_mask, method, x, y)
+        details = {"top_left": [x, y], "bounds": [x, y, width, height], "method": method}
+        if top_left is not None:
+            details["subpixel_top_left"] = top_left
+        cx, cy = top_left if top_left is not None else (x, y)
         heat = 1 - quality if method in ("sqdiff_normed", "sqdiff") else quality
         heat = cv2.applyColorMap(
             np.rint(np.clip(heat, 0, 1) * 255).astype(np.uint8), cv2.COLORMAP_TURBO
@@ -831,8 +865,8 @@ class MatchTemplate(Block):
             {
                 "overlay": overlay,
                 "score": score,
-                "location": {"top_left": [x, y], "bounds": [x, y, width, height], "method": method},
-                "center": [[x + (width - 1) / 2, y + (height - 1) / 2]],
+                "location": details,
+                "center": [[cx + (width - 1) / 2, cy + (height - 1) / 2]],
                 "raw_score": float(response[y, x]),
                 "response": response,
             },

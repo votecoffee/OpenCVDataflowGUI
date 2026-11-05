@@ -31,6 +31,7 @@ class FindTemplateInstances(MatchTemplate):
     }
     parameter_choices = {"method": ("ccoeff_normed", "ccorr_normed", "sqdiff_normed")}
     parameter_help = {
+        **MatchTemplate.parameter_help,
         "maximum_iou": "Suppress candidates that overlap an accepted match above this IoU.",
         **POSE_HELP,
     }
@@ -63,13 +64,16 @@ class FindTemplateInstances(MatchTemplate):
             if score < 0:
                 break
             if score >= threshold and len(matches) < maximum:
-                center = [x + (width - 1) / 2, y + (height - 1) / 2]
+                top_left = self.refined_top_left(response, allowed, method, x, y)
+                cx, cy = top_left if top_left is not None else (x, y)
+                center = [cx + (width - 1) / 2, cy + (height - 1) / 2]
                 pose_matrix = np.eye(3)
                 pose_matrix[:2, 2] = center
                 pose = make_pose(pose_matrix @ offset, size, payload)
                 matches.append(
                     {
                         "bounds": [x, y, width, height],
+                        **({"subpixel_top_left": top_left} if top_left is not None else {}),
                         "center": center,
                         "score": float(score),
                         "pose": pose,
