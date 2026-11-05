@@ -91,6 +91,104 @@ class SeparableFilter(RegionalOperation, ImageTool):
         return encoded_result(output, source)
 
 
+class GaborTextureResponse(RegionalOperation, ImageTool):
+    type_id, title, subtype = "cv.gabor_response", "Gabor texture response", "Filtering"
+    outputs = (Port("response"), Port("kernels", "data"))
+    region_outputs = ("response",)
+    region_background = "zero"
+    defaults = {
+        "width": 25,
+        "height": 25,
+        "sigma": 4.0,
+        "orientation_degrees": 0.0,
+        "wavelength": 8.0,
+        "aspect_ratio": 0.5,
+        "phase_degrees": 0.0,
+        "mode": "energy",
+        "normalization": "zero_mean_unit_l2",
+        "output_depth": "float32",
+        "border": "reflect_101",
+    }
+    parameter_choices = {
+        "mode": ("signed", "energy"),
+        "normalization": ("none", "zero_mean_unit_l2"),
+        "output_depth": ("float32", "float64"),
+        "border": ("constant", "replicate", "reflect_101", "reflect_edge"),
+    }
+    parameter_ranges = {
+        "width": NumericRange(3, 127, whole=True, odd=True),
+        "height": NumericRange(3, 127, whole=True, odd=True),
+        "sigma": NumericRange(0.05, 1000),
+        "orientation_degrees": NumericRange(),
+        "wavelength": NumericRange(2, 10000),
+        "aspect_ratio": NumericRange(0.001, 1000),
+        "phase_degrees": NumericRange(),
+    }
+    parameter_help = {
+        "sigma": "Gaussian envelope width in pixels along the stripe normal.",
+        "orientation_degrees": "Direction of the stripe normal. Zero detects vertical stripes.",
+        "wavelength": "Distance between consecutive stripes in pixels.",
+        "aspect_ratio": "Spatial aspect ratio of the Gaussian envelope.",
+        "phase_degrees": "Phase of the first sinusoid in degrees.",
+        "mode": "Energy combines two responses whose phases are 90 degrees apart.",
+        "normalization": "Subtract each kernel mean and scale it to unit L2 norm.",
+        "output_depth": "Floating precision for both the filtered image and kernel coefficients.",
+        "border": "The constant mode uses zero outside the image.",
+    }
+
+    def kernel(self, phase, dtype):
+        p = self.parameters
+        coefficients = cv2.getGaborKernel(
+            (int(p["width"]), int(p["height"])),
+            float(p["sigma"]),
+            np.deg2rad(float(p["orientation_degrees"]) % 360),
+            float(p["wavelength"]),
+            float(p["aspect_ratio"]),
+            np.deg2rad(phase),
+            ktype=cv2.CV_64F,
+        )
+        if p["normalization"] == "zero_mean_unit_l2":
+            coefficients -= coefficients.mean()
+            norm = np.linalg.norm(coefficients)
+            if norm <= np.finfo(np.float64).eps * np.sqrt(coefficients.size):
+                raise ValidationError("Gabor kernel has too little variation to normalize")
+            coefficients /= norm
+        return coefficients.astype(dtype)
+
+    def process(self, inputs):
+        p = self.parameters
+        source = inputs["image"]
+        image = image_value(source)
+        dtype = np.dtype(p["output_depth"])
+        if (
+            image.dtype == np.float64
+            and (dtype == np.float32 or image.ndim == 3)
+            and np.max(np.abs(image)) > np.finfo(np.float32).max
+        ):
+            raise ValidationError("Image exceeds float32 range. Use monochrome float64.")
+        if image.ndim == 3:
+            image = gray_image(
+                source, (np.uint8, np.uint16, np.float32, np.float64), auto_depth=True
+            )
+        image = image.astype(dtype, copy=False)
+        phase = float(p["phase_degrees"]) % 360
+        border = BORDERS[p["border"]]
+        primary = self.kernel(phase, dtype)
+        response = cv2.filter2D(image, -1, primary, borderType=border)
+        kernels = {"primary": primary.tolist()}
+        if p["mode"] == "energy":
+            secondary = self.kernel((phase + 90) % 360, dtype)
+            other = cv2.filter2D(image, -1, secondary, borderType=border)
+            response = np.hypot(response, other)
+            kernels["quadrature"] = secondary.tolist()
+        if not np.isfinite(response).all():
+            raise ValidationError("Gabor response overflowed. Reduce the image sample range.")
+        return Result(
+            {"response": ImageArray(response, "gray"), "kernels": kernels},
+            payloads={"kernels": {}},
+        )
+
+
 class CornerResponse(RegionalOperation, ImageTool):
     region_outputs = ("response", "preview")
     region_background = "zero"
@@ -829,6 +927,7 @@ ANALYSIS_BLOCKS = (
     ImageArithmetic,
     ComparePixels,
     SeparableFilter,
+    GaborTextureResponse,
     CornerResponse,
     RefineCorners,
     PhaseCorrelation,

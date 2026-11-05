@@ -459,6 +459,10 @@ The angle output carries its units through compatible graph blocks.
 by **Canny from derivatives**.
 [Derivative-fed Canny example](examples/canny_derivatives/README.md)
 
+**Gabor texture response** isolates stripes by orientation and wavelength.
+Compare two responses to map the dominant texture direction.
+[Gabor texture example](examples/gabor_texture/README.md)
+
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing
 wrappers also expose kernel dimensions, anchors, borders, output depths, masks,
