@@ -1,15 +1,18 @@
 """Ticketed replay of pages in a multipage TIFF file."""
 
 import copy
+import os
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 import cv2
 import numpy as np
 
 from .core import Block, Port, Result
-from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format
+from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 from .parameter_validation import NumericRange, ValidationError
-from .payloads import NO_VALUE, frame
+from .payloads import NO_VALUE, FlowGroup, frame
+from .processing import image_value
 
 TIFF_SIGNATURES = (b"II*\0", b"MM\0*", b"II+\0", b"MM\0+")
 MAX_FILE_BYTES = 128 * 1024 * 1024
@@ -206,5 +209,128 @@ class TiffFile(Block):
                     "spatial": frame([image.shape[1], image.shape[0]], f"{self.id}:page:{index}"),
                 }
             },
-            message=f"{path.name} Â· page {index}",
+            message=f"{path.name} Ã‚Â· page {index}",
+        )
+
+
+TIFF_COMPRESSIONS = {
+    "none": cv2.IMWRITE_TIFF_COMPRESSION_NONE,
+    "lzw": cv2.IMWRITE_TIFF_COMPRESSION_LZW,
+    "deflate": cv2.IMWRITE_TIFF_COMPRESSION_ADOBE_DEFLATE,
+    "packbits": cv2.IMWRITE_TIFF_COMPRESSION_PACKBITS,
+}
+TIFF_PREDICTORS = {
+    "none": cv2.IMWRITE_TIFF_PREDICTOR_NONE,
+    "horizontal": cv2.IMWRITE_TIFF_PREDICTOR_HORIZONTAL,
+}
+
+
+class WriteTiffFile(Block):
+    type_id, title, category = "output.tiff_file", "Write multipage TIFF", "Output"
+    block_type, subtype = "Output", "Images"
+    inputs = (Port("pages", "any"),)
+    outputs = (Port("info", "data"), Port("page_count", "number"), Port("byte_count", "number"))
+    defaults = {
+        "path": "output.tiff",
+        "path_base": "working_directory",
+        "compression": "lzw",
+        "predictor": "native",
+        "x_dpi": 0,
+        "y_dpi": 0,
+    }
+    parameter_choices = {
+        "path_base": ("working_directory", "project"),
+        "compression": tuple(TIFF_COMPRESSIONS),
+        "predictor": ("native", *TIFF_PREDICTORS),
+    }
+    parameter_ranges = {axis: NumericRange(0, 1_000_000, whole=True) for axis in ("x_dpi", "y_dpi")}
+    parameter_help = {
+        "path": "Choose a new .tif or .tiff filename for this batch.",
+        "compression": "Lossless compression applied to every page.",
+        "predictor": "Horizontal prediction is available with LZW or Deflate.",
+        "x_dpi": "Horizontal resolution. Set both DPI fields to zero to use the codec defaults.",
+        "y_dpi": "Vertical resolution. Set both DPI fields to zero to use the codec defaults.",
+    }
+    input_help = {"pages": "Ordered image group from Batch serial entries or a compatible block."}
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["predictor"] == "horizontal" and p["compression"] not in ("lzw", "deflate"):
+            raise ValidationError("Horizontal prediction requires LZW or Deflate", "predictor")
+        if bool(p["x_dpi"]) != bool(p["y_dpi"]):
+            raise ValidationError("Set both DPI values, or leave both at zero", "x_dpi", "y_dpi")
+
+    def process(self, inputs):
+        group = inputs["pages"]
+        if not isinstance(group, FlowGroup):
+            raise ValidationError("Connect an ordered group of images to Pages")
+        p = self.parameters
+        value = p["path"]
+        if not isinstance(value, str) or not value.strip():
+            raise ValidationError("Choose a TIFF output path", "path")
+        path = Path(value)
+        if path.suffix.lower() not in (".tif", ".tiff"):
+            raise ValidationError("Use a .tif or .tiff output extension", "path")
+        if p["path_base"] == "project" and not path.is_absolute():
+            if self.project_dir is None:
+                raise ValidationError("Save or open the project before using a relative TIFF path")
+            path = self.project_dir / path
+        path = path.parent.resolve() / path.name
+        if path.exists():
+            raise FileExistsError("Choose a new path; existing TIFF files are preserved")
+
+        images = []
+        for index, packet in enumerate(group.items, 1):
+            page = packet.value
+            if not isinstance(page, np.ndarray):
+                raise ValidationError(f"Page {index} is not an image")
+            image = image_value(page, (np.uint8, np.uint16))
+            if image.size == 0 or image_format(page) not in ("gray", "bgr", "rgb", "bgra", "rgba"):
+                raise ValidationError(f"Page {index} needs a nonempty grayscale or RGB/BGR image")
+            images.append(page)
+        if sum(image.nbytes for image in images) > MAX_FILE_BYTES:
+            raise ValidationError("Uncompressed TIFF pages exceed the 128 MiB batch limit")
+
+        options = [cv2.IMWRITE_TIFF_COMPRESSION, TIFF_COMPRESSIONS[p["compression"]]]
+        if p["predictor"] != "native" and p["compression"] in ("lzw", "deflate"):
+            options.extend([cv2.IMWRITE_TIFF_PREDICTOR, TIFF_PREDICTORS[p["predictor"]]])
+        if p["x_dpi"]:
+            options.extend(
+                [
+                    cv2.IMWRITE_TIFF_RESUNIT,
+                    cv2.IMWRITE_TIFF_RESOLUTION_UNIT_INCH,
+                    cv2.IMWRITE_TIFF_XDPI,
+                    int(p["x_dpi"]),
+                    cv2.IMWRITE_TIFF_YDPI,
+                    int(p["y_dpi"]),
+                ]
+            )
+        ok, encoded = cv2.imencodemulti(".tiff", [opencv_image(page) for page in images], options)
+        if not ok or encoded.size == 0:
+            raise ValidationError("OpenCV could not encode the TIFF pages")
+        if encoded.nbytes > MAX_FILE_BYTES:
+            raise ValidationError("Encoded TIFF exceeds the 128 MiB replay limit")
+
+        # Publish only a complete file, with an atomic guard against replacing another writer.
+        stream = NamedTemporaryFile(prefix=".tiff-", suffix=".tmp", dir=path.parent, delete=False)
+        temporary = Path(stream.name)
+        try:
+            with stream:
+                stream.write(memoryview(encoded).cast("B"))
+            if os.name == "nt":
+                temporary.rename(path)
+            else:
+                os.link(temporary, path)
+        finally:
+            temporary.unlink(missing_ok=True)
+        info = {
+            "path": str(path),
+            "page_count": len(images),
+            "byte_count": encoded.nbytes,
+            "compression": p["compression"],
+        }
+        return Result(
+            {"info": info, "page_count": len(images), "byte_count": encoded.nbytes},
+            message=f"Saved {len(images)} pages to {path.name}",
         )

@@ -329,7 +329,9 @@ RGB from a synthetic 16-bit sensor mosaic. The
 [in-memory codecs example](examples/in_memory_image_codecs/README.md) sends a
 lossless 16-bit RGBA PNG packet between blocks. The
 [TIFF page sequence example](examples/tiff_page_sequence/README.md) replays
-a multipage TIFF with separate tickets for each page.
+a multipage TIFF with separate tickets for each page. The
+[multipage TIFF output example](examples/multipage_tiff_output/README.md) batches
+the pages and writes them to a new TIFF file.
 
 The [skeleton pruning example](examples/skeleton_pruning/README.md) extracts
 centerlines from a binary mask and removes short spurs. Install the optional

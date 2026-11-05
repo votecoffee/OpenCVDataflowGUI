@@ -3030,7 +3030,7 @@ P3	function	cv2.imdecodemulti	literal reference	-
 P3	function	cv2.imdecodeWithMetadata	no static reference	-
 P3	function	cv2.imencode	literal reference	-
 P3	function	cv2.imencodeanimation	no static reference	-
-P3	function	cv2.imencodemulti	no static reference	-
+P3	function	cv2.imencodemulti	literal reference	-
 P3	function	cv2.imencodeWithMetadata	no static reference	-
 P3	class	cv2.img_hash_AverageHash	alias	cv2.img_hash.AverageHash
 P3	method	cv2.img_hash_AverageHash.create	alias	cv2.img_hash.AverageHash.create
