@@ -58,6 +58,9 @@ LightGlue matcher example** use optional libraries. See [ML setup and workflows]
 for installation, local weights and runnable examples. Graph execution never downloads
 learned weights or imports optional ML libraries until their blocks need them.
 
+Use [OCR and text verification](docs/ocr.md) to detect text regions, read
+cropped lines with a local CTC model, and check OCR or barcode results.
+
 Start the editor from the repository's virtual environment:
 
 ```powershell

@@ -1,5 +1,6 @@
 """Exercise OpenCV OCR with deterministic ONNX fixtures and real graph wiring."""
 
+import cv2
 import numpy as np
 import pytest
 
@@ -115,3 +116,50 @@ def test_ocr_decodes_repeat_blank_and_rectified_region(tmp_path, decoder):
     no_read = block.execute({"image": tile, "mask": np.zeros_like(tile)})
     assert not no_read.passed
     assert no_read.fail_reasons[0]["code"] == "ocr_read_count_below_minimum"
+
+
+def test_verify_text_reads_qr_output_and_rejects_unexpected_serial():
+    registry = builtin_registry()
+    graph = Graph()
+    reader = graph.add(registry.create("inspect.read_qr", parameters={"mode": "single"}))
+    verifier = graph.add(
+        registry.create(
+            "inspect.verify_text",
+            parameters={
+                "comparison": "exact",
+                "expected": "lot123",
+                "character_set": "ascii_alphanumeric",
+                "case_sensitive": False,
+                "minimum_length": 6,
+                "maximum_length": 6,
+            },
+        )
+    )
+    graph.connect(reader.id, "codes", verifier.id, "text")
+    try:
+        for expected, text in [(True, "LOT123"), (False, "LOT12Z")]:
+            qr = cv2.QRCodeEncoder_create().encode(text)
+            image = np.pad(np.repeat(np.repeat(qr, 8, axis=0), 8, axis=1), 24, constant_values=255)
+            graph.run(injected={(reader.id, "image"): image})
+            result = verifier.last_result
+            assert result is not None, verifier.error
+            assert result.passed is expected
+            if not expected:
+                assert result.outputs["checks"][0]["reasons"] == ["text_expectation_mismatch"]
+    finally:
+        graph.close()
+
+
+def test_verify_text_character_rules_and_aggregate_policy():
+    block = builtin_registry().create(
+        "inspect.verify_text", parameters={"character_set": "ascii_digits", "aggregate": "any"}
+    )
+    inputs = {"text": [{"text": " 0012 "}, {"text": "٠١"}, {"text": ""}]}
+    result = block.execute(inputs)
+    assert result.passed
+    assert result.outputs["matches"] == ["0012"]
+    assert result.outputs["checks"][1]["reasons"] == ["text_disallowed_character"]
+    assert result.outputs["checks"][2]["reasons"] == ["text_too_short"]
+    block.parameters["aggregate"] = "all"
+    assert not block.execute(inputs).passed
+    assert block.execute({"text": []}).fail_reasons[0]["code"] == "no_text_reads"
