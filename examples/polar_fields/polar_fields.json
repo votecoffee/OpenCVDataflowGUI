@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Load a diagonal intensity ramp",
+      "parameters": {
+        "path": "assets/gradient.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dx",
+      "type": "cv.gradient",
+      "name": "Measure X derivative",
+      "parameters": {
+        "dx": 1,
+        "dy": 0
+      },
+      "position": [
+        290,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "gradient"
+      ],
+      "thumbnail": true,
+      "preview_output": "gradient"
+    },
+    {
+      "id": "dy",
+      "type": "cv.gradient",
+      "name": "Measure Y derivative",
+      "parameters": {
+        "dx": 0,
+        "dy": 1
+      },
+      "position": [
+        290,
+        205
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "gradient"
+      ],
+      "thumbnail": true,
+      "preview_output": "gradient"
+    },
+    {
+      "id": "polar",
+      "type": "cv.cart_to_polar",
+      "name": "Find magnitude and angle",
+      "parameters": {
+        "angle_units": "degrees"
+      },
+      "position": [
+        580,
+        0
+      ],
+      "exposed_inputs": [
+        "x",
+        "y"
+      ],
+      "exposed_outputs": [
+        "magnitude",
+        "angle"
+      ],
+      "thumbnail": true,
+      "preview_output": "magnitude"
+    },
+    {
+      "id": "rotate",
+      "type": "cv.image_arithmetic",
+      "name": "Add 90 degrees",
+      "parameters": {
+        "operation": "add",
+        "scalar": 90,
+        "output_depth": "same"
+      },
+      "position": [
+        870,
+        205
+      ],
+      "exposed_inputs": [
+        "image_a"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "cartesian",
+      "type": "cv.polar_to_cart",
+      "name": "Return rotated X and Y",
+      "parameters": {},
+      "position": [
+        1160,
+        0
+      ],
+      "exposed_inputs": [
+        "angle",
+        "magnitude"
+      ],
+      "exposed_outputs": [
+        "x",
+        "y"
+      ],
+      "thumbnail": true,
+      "preview_output": "x"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "dx",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "dy",
+      "input": "image"
+    },
+    {
+      "source": "dx",
+      "output": "gradient",
+      "target": "polar",
+      "input": "x"
+    },
+    {
+      "source": "dy",
+      "output": "gradient",
+      "target": "polar",
+      "input": "y"
+    },
+    {
+      "source": "polar",
+      "output": "angle",
+      "target": "rotate",
+      "input": "image_a"
+    },
+    {
+      "source": "polar",
+      "output": "magnitude",
+      "target": "cartesian",
+      "input": "magnitude"
+    },
+    {
+      "source": "rotate",
+      "output": "image",
+      "target": "cartesian",
+      "input": "angle"
+    }
+  ]
+}
