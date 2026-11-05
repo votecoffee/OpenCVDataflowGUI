@@ -1,5 +1,11 @@
 # Tickets and control flow
 
+Ticketed connections also carry tool outcomes. Input failure policies can suppress
+failed entries before buffering, and a shared collector tracks intermediate events
+and explicit final judgments. See [ticket results](ticket-results.md) and
+**Results > Ticket results…**. A rejection emits no downstream data; configure
+matching branch gates consistently to avoid leaving a Join without one side.
+
 Input sources now attach a ticket to each acquisition. Tickets travel in wire
 payloads alongside primary images/results; ordinary processing preserves the
 primary input's ticket. This is separate from spatial transforms and pyramid

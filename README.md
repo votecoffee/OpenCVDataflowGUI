@@ -109,6 +109,14 @@ Try **File > Load ticketed control flow example**. See
 [tickets and control flow](docs/control-flow.md) for external/PLC ticket inputs,
 buffer limits and stream execution semantics.
 
+Ticketed connections carry each tool's pass/fail, score and accumulated failure
+status. Every input has a **continue / reject_failed** policy; rejection emits no
+data and retains the last processed previews. **Final ticket judgment** assigns an
+explicit decision separately from intermediate tool results. Open **Results >
+Ticket results…** to search tickets and inspect their status and event timelines.
+Try **File > Load ticket results example**. See [ticket results](docs/ticket-results.md)
+for status propagation, final decisions, retention limits and plugin event data.
+
 **Inspect each pose in parallel** runs a reusable inspection ToolBlock for every
 pattern match, measured feature or supplied pose, then returns one aggregate. Set
 worker count and optional N-pass/N-failure stop thresholds; results explicitly

@@ -20,6 +20,8 @@ def render():
         "See [payloads, channels and pyramids](payloads-pyramids.md) for coordinate provenance.",
         "Input sources also expose ticket input/output ports and inspector ticket mode/fixed value",
         "controls. See [tickets and control flow](control-flow.md) for their shared configuration.",
+        "Every input has a failure-policy dropdown: continue (default) or reject_failed.",
+        "See [ticket results](ticket-results.md) for outcomes and final judgments.",
         "",
     ]
     for kind, cls in sorted(builtin_registry().types.items()):

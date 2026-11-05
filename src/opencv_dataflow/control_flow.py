@@ -39,6 +39,7 @@ def byte_size(value):
 
 
 class FlowBlock(Block):
+    outcome_passthrough = True
     category, block_type, subtype = "Control flow", "Control flow", "Routing"
     preserve_image_sets = True
 

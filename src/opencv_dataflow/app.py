@@ -52,15 +52,18 @@ from .examples import (
     regions_graph,
     starter_graph,
     template_graph,
+    ticket_results_graph,
     trained_patterns_graph,
     transformed_regions_graph,
 )
 from .image_queue import ImageQueue
+from .outcomes import INPUT_FAILURE_POLICIES
 from .parallel_inspection import ParallelInspect
 from .payloads import describe_value, packet_for, prepare_inputs
 from .plugins import load_plugin
 from .queued_execution import QueuedExecution, background_queue
 from .region_editor import RegionEditor
+from .ticket_window import TicketResultsWindow
 from .tickets import TICKET_MODES
 from .toolblock_editor import InterfaceDialog
 from .toolblocks import ToolBlock, encapsulate
@@ -124,7 +127,7 @@ class Inspector(QWidget):
         self._region_image = None
         self._region_source = None
         self._region_inputs = {}
-        self.fields, self.port_checks, self.level_fields = {}, [], {}
+        self.fields, self.port_checks, self.level_fields, self.failure_fields = {}, [], {}, {}
         layout = QVBoxLayout(self)
         title = QLabel("BLOCK INSPECTOR")
         title.setObjectName("sectionTitle")
@@ -159,7 +162,7 @@ class Inspector(QWidget):
         self.block = block
         while self.form.rowCount():
             self.form.removeRow(0)
-        self.fields, self.port_checks, self.level_fields = {}, [], {}
+        self.fields, self.port_checks, self.level_fields, self.failure_fields = {}, [], {}, {}
         if block is None:
             self.caption.setText("Select a block to configure its tools and ports.")
             self.refresh_result()
@@ -287,6 +290,16 @@ class Inspector(QWidget):
                 check.setChecked(port.name in getattr(block, f"exposed_{direction}"))
                 self.form.addRow(f"Expose {direction[:-1]}", check)
                 self.port_checks.append((direction, port.name, check))
+                if direction == "inputs":
+                    policy = QComboBox()
+                    policy.addItems(INPUT_FAILURE_POLICIES)
+                    policy.setCurrentText(block.input_failure_policies.get(port.name, "continue"))
+                    policy.setToolTip(
+                        "reject_failed: suppress this invocation if the connection carries an "
+                        "accumulated failure. Retain the last processed inputs/results."
+                    )
+                    self.failure_fields[port.name] = policy
+                    self.form.addRow(f"{port.name} failure policy", policy)
         apply_button = QPushButton("Apply configuration")
         apply_button.clicked.connect(self.apply)
         self.form.addRow(apply_button)
@@ -541,6 +554,11 @@ class Inspector(QWidget):
                 for name, field in self.level_fields.items()
                 if field.currentText() != "largest"
             }
+            b.input_failure_policies = {
+                name: field.currentText()
+                for name, field in self.failure_fields.items()
+                if field.currentText() != "continue"
+            }
             b.exposed_inputs, b.exposed_outputs = exposed["inputs"], exposed["outputs"]
             b.thumbnail = self.thumb.isChecked()
             b.preview_output = self.node_image.currentData()
@@ -585,7 +603,7 @@ class Inspector(QWidget):
             score = f"{result.score:.1%}" if result and result.score is not None else "—"
             self.details.setPlainText(
                 f"{b.state.upper()}   ·   {b.elapsed_ms:.2f} ms   ·   score {score}\n"
-                + (b.error or (result.message if result else "Not executed"))
+                + (b.last_rejection or b.error or (result.message if result else "Not executed"))
                 + "\n\n"
                 + json.dumps(
                     {"outputs": outputs, "payloads": result.payloads} if result else outputs,
@@ -698,6 +716,7 @@ class MainWindow(QMainWindow):
             ("Load ticketed control flow example", None, self.load_control_flow_example),
             ("Load parallel part inspection example", None, self.load_parallel_parts_example),
             ("Load queued input example", None, self.load_queued_input_example),
+            ("Load ticket results example", None, self.load_ticket_results_example),
             ("Reset flow state", None, self.reset_flow_state),
         ):
             action = QAction(title, self)
@@ -716,6 +735,8 @@ class MainWindow(QMainWindow):
         self.stop_action.setEnabled(False)
         toolbar.addSeparator()
         toolbar.addAction("Fit graph", self.view.fit_graph)
+        results_menu = self.menuBar().addMenu("&Results")
+        results_menu.addAction("Ticket results…", self.show_ticket_results)
         toolbar.addAction("Delete selected", self.scene.delete_selected)
         tools = self.menuBar().addMenu("&ToolBlocks")
         for title, callback in (
@@ -995,6 +1016,10 @@ class MainWindow(QMainWindow):
         if not self.runner and self.confirm_discard():
             self.replace_graph(queued_input_graph(self.registry))
 
+    def load_ticket_results_example(self):
+        if not self.runner and self.confirm_discard():
+            self.replace_graph(ticket_results_graph(self.registry))
+
     def open_project(self):
         if self.runner or not self.confirm_discard():
             return
@@ -1057,6 +1082,8 @@ class MainWindow(QMainWindow):
                 self.root_graph.to_dict(), self.registry, project_dir=self.root_graph.project_dir
             )
             execution_graph.copy_runtime_from(self.root_graph)
+            for key, block in self.root_graph.blocks.items():
+                execution_graph.blocks[key].copy_results_from(block)
         except Exception as exc:
             self.warn(str(exc))
             return
@@ -1106,6 +1133,7 @@ class MainWindow(QMainWindow):
         worker = self.runner
         # finished() can precede native thread-local cleanup; join before release.
         worker.wait()
+        self.root_graph.ticket_results.restore(worker.graph.ticket_results.snapshot())
         for key, snapshot in worker.final_queue_states.items():
             block = self.root_graph.blocks.get(key)
             if isinstance(block, ImageQueue):
@@ -1124,6 +1152,20 @@ class MainWindow(QMainWindow):
         self.update_navigation()
         if self.closing:
             self.close()
+
+    def show_ticket_results(self):
+        if not hasattr(self, "ticket_results_window"):
+            self.ticket_results_window = TicketResultsWindow(
+                lambda: (
+                    self.runner.graph.ticket_results
+                    if self.runner
+                    else self.root_graph.ticket_results
+                ),
+                self,
+            )
+        self.ticket_results_window.show()
+        self.ticket_results_window.raise_()
+        self.ticket_results_window.activateWindow()
 
     def closeEvent(self, event):
         if self.runner:
