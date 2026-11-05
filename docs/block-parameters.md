@@ -1585,6 +1585,19 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `max_value` | `255.0` | Value must be a finite number at least 0. |
 | `mode` | `"binary"` | `binary`, `binary_inv`, `trunc`, `tozero`, `tozero_inv` |
 
+## Tilted window statistics (`cv.tilted_statistics`)
+
+Image processing / Statistics
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `windows` (data, optional).
+
+Input `windows` — Optional list of tilted windows that replaces the configured list.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `windows` | `[[32, 0, 16, 16]]` | Each [x, y, width, height] starts at the top integral-grid vertex. Width extends down-right and height extends down-left at 45 degrees. |
+| `include_alpha` | `false` | Measure alpha as its own channel on four-channel input. |
+
 ## Transform image points (`cv.transform_points`)
 
 Image processing / Geometry

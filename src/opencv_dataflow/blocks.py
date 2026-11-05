@@ -743,6 +743,7 @@ def builtin_registry():
     from .template_instances import FindTemplateInstances
     from .text_rules import VerifyText
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
+    from .tilted_statistics import TiltedWindowStatistics
     from .video_files import VideoFile, WriteVideo
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
     from .watershed_seeds import WatershedMaskSeeds, WatershedPointSeeds
@@ -787,6 +788,7 @@ def builtin_registry():
         *ANALYSIS_BLOCKS,
         IntensityProfile,
         ImageSummaryStatistics,
+        TiltedWindowStatistics,
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,
         *COLLECTION_BLOCKS,
