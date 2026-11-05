@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Demo image",
+      "parameters": {},
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Sample inside the blue disk",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          112,
+          169,
+          16,
+          16
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "inspect.measure_lab",
+      "name": "Measure Lab color",
+      "parameters": {},
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "lab",
+        "statistics",
+        "swatch"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "classify",
+      "type": "inspect.classify_lab",
+      "name": "Classify Lab color",
+      "parameters": {
+        "metric": "ciede2000",
+        "maximum_delta_e": 3,
+        "lightness_weight": 1.0,
+        "chroma_weight": 1.0,
+        "hue_weight": 1.0,
+        "references": {
+          "blue disk": [
+            71.319580078125,
+            -26.859375,
+            -19.796875
+          ],
+          "green rectangle": [
+            77.11181640625,
+            -32.765625,
+            51.640625
+          ],
+          "gray background": [
+            10.260009765625,
+            0.125,
+            0.0625
+          ]
+        },
+        "minimum_margin": 2
+      },
+      "position": [
+        990,
+        0
+      ],
+      "exposed_inputs": [
+        "sample",
+        "references"
+      ],
+      "exposed_outputs": [
+        "label",
+        "delta_e",
+        "classification",
+        "swatches"
+      ],
+      "thumbnail": true,
+      "preview_output": "swatches"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "measure",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "measure",
+      "input": "region"
+    },
+    {
+      "source": "measure",
+      "output": "lab",
+      "target": "classify",
+      "input": "sample"
+    }
+  ]
+}
