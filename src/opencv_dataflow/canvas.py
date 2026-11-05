@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import json
+from html import escape
+
 import numpy as np
 from PySide6.QtCore import QPointF, QRectF, Qt, QTimer, Signal
 from PySide6.QtGui import (
@@ -52,12 +55,28 @@ class Socket(QGraphicsEllipseItem):
         self.visual_type = port_type(node.block, port, output)
         self.setBrush(QColor(PORT_COLORS[self.visual_type]))
         self.setPen(QPen(QColor("#17202c"), 2))
-        self.setToolTip(
-            f"{port.name} · {port.kind} · {self.visual_type} color · "
-            f"{'output' if output else 'input'}"
-        )
+        self.refresh_tooltip()
         self.setAcceptedMouseButtons(Qt.MouseButton.LeftButton)
         self.setZValue(3)
+
+    def refresh_tooltip(self):
+        block, port = self.node.block, self.port
+        direction = "output" if self.output else "input"
+        heading = escape(f"{port.name} · {port.kind} · {self.visual_type} color · {direction}")
+        values = block.last_inputs
+        if self.output:
+            values = block.last_result.outputs if block.last_result is not None else {}
+        detail = ""
+        if port.name in values:
+            value = values[port.name]
+            if isinstance(value, str):
+                text = value[:160] + ("…" if len(value) > 160 else "")
+                detail = f"<br>Value: {escape(json.dumps(text, ensure_ascii=False))}"
+            elif value is None or isinstance(
+                value, (bool, int, float, np.bool_, np.integer, np.floating)
+            ):
+                detail = f"<br>Value: {escape(str(value))}"
+        self.setToolTip(f"<qt>{heading}{detail}</qt>")
 
     def mousePressEvent(self, event):
         if not self.scene().locked:
@@ -255,6 +274,15 @@ class CanvasScene(QGraphicsScene):
         self.setSceneRect(-1500, -1200, 5000, 3200)
         self.selectionChanged.connect(self.on_selection)
         self.rebuild()
+
+    def helpEvent(self, event):
+        for item in self.items(event.scenePos()):
+            if isinstance(item, Socket):
+                item.refresh_tooltip()
+                break
+            if item.toolTip():
+                break
+        super().helpEvent(event)
 
     def rebuild(self, selected=None):
         self.drag_socket = None

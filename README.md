@@ -79,6 +79,8 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
 2. Drag between an output socket and an input socket in either direction. Image
    ports and wires are gold for images, purple for regions/masks, blue for poses/transforms,
    pale gold for pyramids, turquoise for depth, green for numbers, and slate for other data.
+   Hover over a socket to see its full port name and any captured number, boolean, or text value.
+   The **Debug** run profile captures input values.
 3. Select a block, edit parameters in the right inspector, and click **Apply
    configuration**. Choose exposed ports and the optional node thumbnail there.
    OpenCV enum controls use dropdowns; booleans use checkboxes. Hover over controls
