@@ -425,6 +425,8 @@ mean intensity inside an inspection region and locates the maximum in each colum
 selected-region measurements and marks the darkest and brightest pixels. The
 [absolute image error example](examples/absolute_image_error/README.md) compares
 average, RMS, and worst-case deviations from a reference image. The
+[Earth Mover's Distance example](examples/earth_movers_distance/README.md)
+measures a seven-level intensity shift between histograms. The
 [tilted statistics example](examples/tilted_statistics/README.md) measures
 diagonal patches with 45-degree integral-image windows.
 

@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Reference tones",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_histogram",
+      "type": "inspect.histogram",
+      "name": "Reference tones histogram",
+      "parameters": {},
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": "plot"
+    },
+    {
+      "id": "sample",
+      "type": "input.file",
+      "name": "Tones shifted by 7",
+      "parameters": {
+        "path": "assets/sample.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample_histogram",
+      "type": "inspect.histogram",
+      "name": "Tones shifted by 7 histogram",
+      "parameters": {},
+      "position": [
+        330,
+        240
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": "plot"
+    },
+    {
+      "id": "compare",
+      "type": "inspect.compare_histograms",
+      "name": "Earth Mover's Distance",
+      "parameters": {
+        "method": "earth_movers_distance",
+        "check_threshold": true,
+        "threshold": 7
+      },
+      "position": [
+        660,
+        120
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_histogram",
+      "input": "image"
+    },
+    {
+      "source": "reference_histogram",
+      "output": "histogram",
+      "target": "compare",
+      "input": "reference"
+    },
+    {
+      "source": "sample",
+      "output": "image",
+      "target": "sample_histogram",
+      "input": "image"
+    },
+    {
+      "source": "sample_histogram",
+      "output": "histogram",
+      "target": "compare",
+      "input": "sample"
+    }
+  ]
+}

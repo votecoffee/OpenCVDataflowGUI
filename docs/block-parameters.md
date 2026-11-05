@@ -2230,8 +2230,8 @@ Inputs: `reference` (data), `sample` (data).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `method` | `"bhattacharyya"` | `correlation`, `chi_square`, `intersection`, `bhattacharyya`, `chi_square_alt`, `kl_divergence` |
-| `normalize` | `true` | Divide each histogram by its sample count before comparison. |
+| `method` | `"bhattacharyya"` | `correlation`, `chi_square`, `intersection`, `bhattacharyya`, `chi_square_alt`, `kl_divergence`, `earth_movers_distance` |
+| `normalize` | `true` | Compare relative counts. EMD requires equal counts when disabled. |
 | `reduction` | `"mean"` | `mean`, `worst` |
 | `check_threshold` | `false` |  |
 | `threshold` | `0.1` | Minimum for correlation/intersection. Maximum for the distance metrics. |

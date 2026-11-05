@@ -2484,7 +2484,7 @@ P3	function	cv2.eigen	no static reference	-
 P3	function	cv2.eigenNonSymmetric	no static reference	-
 P3	function	cv2.ellipse	no static reference	-
 P3	function	cv2.ellipse2Poly	no static reference	-
-P3	function	cv2.EMD	no static reference	-
+P3	function	cv2.EMD	literal reference	-
 P3	class	cv2.EMDHistogramCostExtractor	no static reference	-
 P3	method	cv2.EMDHistogramCostExtractor.getNormFlag	no static reference	-
 P3	method	cv2.EMDHistogramCostExtractor.setNormFlag	no static reference	-
