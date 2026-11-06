@@ -14,6 +14,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Circle grid calibration](circle_grid_calibration/README.md) | Detect a staggered dot target and map its centers to physical coordinates. |
 | [Lens correction maps](lens_correction_maps/README.md) | Load a lens profile, build reusable coordinate maps, and straighten a synthetic distorted grid. |
 | [Lens fit report](lens_fit_report/README.md) | Fit six circle-grid views, identify the largest reprojection error, and inspect parameter uncertainty. |
+| [Validate lens calibration](validate_lens_calibration/README.md) | Check a saved profile on a separate circle-grid view and overlay the reprojection residuals. |
 | [Lens map displacement](lens_map_displacement/README.md) | Measure correction strength and source coverage, and overlay directions on a heatmap. |
 | [Lens map files](lens_map_files/README.md) | Reload a saved map pair and straighten a synthetic grid using the restored maps. |
 | [Color chart calibration](color_chart_calibration/README.md) | Detect a bundled synthetic color chart, fit a correction model, and apply it to the image. |

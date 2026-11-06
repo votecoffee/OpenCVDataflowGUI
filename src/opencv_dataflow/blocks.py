@@ -641,6 +641,7 @@ def builtin_registry():
         SaveCalibration,
         Undistort,
     )
+    from .calibration_validation import ValidateLensCalibration
     from .calipers import BeadCalipers
     from .channel_transform import ChannelTransform
     from .cloud_io import CLOUD_IO_BLOCKS
@@ -751,6 +752,7 @@ def builtin_registry():
         Histogram,
         CalibrationGrid,
         LensCalibration,
+        ValidateLensCalibration,
         BuildLensMaps,
         LensMapDisplacement,
         LoadLensMaps,

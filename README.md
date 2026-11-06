@@ -368,6 +368,10 @@ and estimated parameter uncertainty. A worst-view limit can catch a poor
 view even when the overall fit passes.
 [Lens fit report example](examples/lens_fit_report/README.md)
 
+**Validate lens calibration** checks a fixed profile on a separate grid
+image and shows the measured reprojection residuals.
+[Lens validation example](examples/validate_lens_calibration/README.md)
+
 ### Build and test a starter project
 
 For the real-image Lena review example, run `python scripts/prepare_lena.py` once,
