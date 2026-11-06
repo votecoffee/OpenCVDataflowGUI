@@ -45,6 +45,9 @@ For example, wire Crop ROI's `geometry` to Transform image points' `transform`
 and Connected components' `centroids` to its `points`. The resulting source-frame
 points can then feed Pixel to physical using a calibration of that source frame.
 Transforms are never silently chained into calibration metadata.
+**Transform image points** waits for an emitted matrix when its transform port
+is wired. The [subpixel crop example](../examples/subpixel_crop/README.md) shows
+this with a fractional patch center.
 
 Pyramids use OpenCV's Gaussian resampling, not a plain nearest resize. Their
 coordinate transforms follow the level's sample origin with a factor of 2 per

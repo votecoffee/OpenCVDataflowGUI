@@ -1226,6 +1226,26 @@ Inputs: `image` (image).
 | `width` | `0` | Value must be a whole number at least 0. |
 | `height` | `0` | Value must be a whole number at least 0. |
 
+## Crop subpixel patch (`cv.crop_subpixel`)
+
+Image processing / Geometry
+
+Inputs: `image` (image), `center` (data, optional), `pose` (data, optional).
+
+Input `center` — A single [x, y] point or one-point list in input image coordinates.
+
+Input `pose` — Use the image pose origin as the center. Patch axes stay aligned with the image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `32` | Value must be a whole number between 1 and 16384. Number of patch columns. |
+| `height` | `32` | Value must be a whole number between 1 and 16384. Number of patch rows. |
+| `center_mode` | `"image_center"` | `image_center`, `custom` Use the image center or custom pixel coordinates when unwired. |
+| `center_x` | `0.0` | Value must be a finite number at least 0. Custom center column, including fractional pixels. |
+| `center_y` | `0.0` | Value must be a finite number at least 0. Custom center row, including fractional pixels. |
+| `bounds_policy` | `"strict"` | `strict`, `replicate` Strict requires full coverage. Replicate extends the nearest edge pixel. |
+| `output_depth` | `"same"` | `same`, `float32` Preserve the source depth or emit float32 in stored sample units. |
+
 ## Discrete cosine transform (DCT) (`cv.dct`)
 
 Image processing / Spectral
