@@ -6,6 +6,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from .charuco import calibration_observations
 from .circle_grid import (
     CIRCLE_FLAGS,
     CIRCLE_HELP,
@@ -306,8 +307,8 @@ def _deviations(values):
     return [float(value) if np.isfinite(value) and value >= 0 else None for value in values]
 
 
-def _lens_fit_report(paths, calibration, rotations, translations, intrinsic_sd, pose_sd, errors):
-    count = len(paths)
+def _lens_fit_report(views, calibration, rotations, translations, intrinsic_sd, pose_sd, errors):
+    count = len(views)
     errors = np.asarray(errors).reshape(-1)
     rotations = np.asarray(rotations).reshape(-1, 3)
     translations = np.asarray(translations).reshape(-1, 3)
@@ -325,17 +326,18 @@ def _lens_fit_report(paths, calibration, rotations, translations, intrinsic_sd, 
         or not np.isfinite(translations).all()
     ):
         raise ValueError("OpenCV returned invalid calibration view diagnostics")
-    views = [
+    details = [
         {
             "view_index": index,
-            "image_name": path.name,
+            "image_name": name,
+            "point_count": point_count,
             "rms_pixels": float(errors[index]),
             "rotation_vector_radians": rotations[index].tolist(),
             "translation_vector": translations[index].tolist(),
             "rotation_stddev_radians": _deviations(pose_sd[index, :3]),
             "translation_stddev": _deviations(pose_sd[index, 3:]),
         }
-        for index, path in enumerate(paths)
+        for index, (name, point_count) in enumerate(views)
     ]
     worst = int(np.argmax(errors))
     return {
@@ -346,13 +348,15 @@ def _lens_fit_report(paths, calibration, rotations, translations, intrinsic_sd, 
         "translation_units": calibration["units"],
         "pose_direction": "board_to_camera",
         "intrinsic_stddev": dict(zip(_INTRINSIC_TERMS, _deviations(intrinsic_sd))),
-        "views": views,
+        "views": details,
     }
 
 
 class LensCalibration(GridCalibrationBlock):
     type_id, title, category = "calibration.lens", "Calibrate lens", "Calibration"
     block_type, subtype = "Calibration", "Lens distortion"
+    inputs = (Port("observations", "any", required=False, required_when_connected=True),)
+    input_help = {"observations": "A batch or list of identified ChArUco observations."}
     outputs = (
         Port("calibration", "data"),
         Port("rms", "number"),
@@ -391,11 +395,10 @@ class LensCalibration(GridCalibrationBlock):
         "max_view_rms_pixels": "Maximum RMS of any fitted view in pixels. Zero skips this check.",
     }
 
-    def process(self, inputs):
+    def _grid_views(self):
         p = self.parameters
         size, world = grid_settings(p)
         paths = p["image_paths"]
-        maximum = float(p["max_rms_pixels"])
         if (
             not isinstance(paths, list)
             or len(paths) < 3
@@ -403,8 +406,6 @@ class LensCalibration(GridCalibrationBlock):
             or len(set(paths)) != len(paths)
         ):
             raise ValueError("Provide at least three distinct grid image paths at varied poses")
-        if not np.isfinite(maximum) or maximum <= 0:
-            raise ValueError("Maximum RMS must be positive")
         paths = [Path(path) for path in paths]
         if p["path_base"] == "project" and any(not path.is_absolute() for path in paths):
             if self.project_dir is None:
@@ -425,6 +426,27 @@ class LensCalibration(GridCalibrationBlock):
             if any(np.sqrt(np.mean((corners - previous) ** 2)) < 0.5 for previous in points):
                 raise ValueError("Calibration views are duplicates; use varied board poses")
             points.append(corners)
+        return (
+            [world.copy() for _ in points],
+            points,
+            image_size,
+            [path.name for path in paths],
+            p["units"],
+        )
+
+    def process(self, inputs):
+        p = self.parameters
+        maximum = float(p["max_rms_pixels"])
+        if not np.isfinite(maximum) or maximum <= 0:
+            raise ValueError("Maximum RMS must be positive")
+        if "observations" in inputs:
+            if p["image_paths"]:
+                raise ValueError("Use image paths or ChArUco observations for one calibration")
+            object_views, image_views, image_size, names, units = calibration_observations(
+                inputs["observations"]
+            )
+        else:
+            object_views, image_views, image_size, names, units = self._grid_views()
         matrix = (
             np.asarray(p["initial_camera_matrix"], np.float64)
             if p["initial_camera_matrix"]
@@ -452,8 +474,8 @@ class LensCalibration(GridCalibrationBlock):
         )
         rms, matrix, distortion, rotations, translations, intrinsic_sd, pose_sd, errors = (
             cv2.calibrateCameraExtended(
-                [world.copy() for _ in points],
-                points,
+                object_views,
+                image_views,
                 image_size,
                 matrix,
                 distortion,
@@ -467,14 +489,20 @@ class LensCalibration(GridCalibrationBlock):
             "distortion": distortion.reshape(-1).tolist(),
             "image_size": list(image_size),
             "rms_pixels": float(rms),
-            "views": len(points),
-            "units": self.parameters["units"],
+            "views": len(image_views),
+            "units": units,
         }
         camera_parameters(calibration)
         if not np.isfinite(rms) or rms < 0:
             raise ValueError("Calibration failed to produce a finite reprojection error")
         report = _lens_fit_report(
-            paths, calibration, rotations, translations, intrinsic_sd, pose_sd, errors
+            list(zip(names, map(len, image_views))),
+            calibration,
+            rotations,
+            translations,
+            intrinsic_sd,
+            pose_sd,
+            errors,
         )
         worst = report["worst_view_rms_pixels"]
         view_limit = float(p["max_view_rms_pixels"])
@@ -492,7 +520,7 @@ class LensCalibration(GridCalibrationBlock):
                 {
                     "code": "calibration_view_rms_exceeds_limit",
                     "message": (
-                        f"View {index + 1} ({paths[index].name}) RMS {worst:.4g} px "
+                        f"View {index + 1} ({names[index]}) RMS {worst:.4g} px "
                         f"exceeds {view_limit:.4g} px"
                     ),
                 }
@@ -508,7 +536,7 @@ class LensCalibration(GridCalibrationBlock):
             passed=not reasons,
             fail_reasons=reasons,
             score=max(0.0, 1 - error_ratio),
-            message=f"{len(points)} views · RMS {rms:.4g} px · worst view {worst:.4g} px",
+            message=f"{len(image_views)} views · RMS {rms:.4g} px · worst view {worst:.4g} px",
         )
 
 
