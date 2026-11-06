@@ -42,6 +42,7 @@ class SequenceStep:
     learned: bool = True
     details: dict = field(default_factory=dict)
     graphics: dict = field(default_factory=dict)
+    output_frames: dict = field(default_factory=dict)
 
 
 class SequenceBlock(Block):
@@ -186,6 +187,8 @@ class SequenceBlock(Block):
                     self.flow_primary
                 ):
                     raise ValueError("Sequence step must declare every primary output")
+                if not step.output_frames.keys() <= step.outputs.keys():
+                    raise ValueError("Sequence output frames must name primary outputs")
                 state["activations"] += 1
                 state["learning"] += int(step.learned)
                 state["last_time"] = now
@@ -220,19 +223,23 @@ class SequenceBlock(Block):
                     name: value if ready else NO_VALUE for name, value in step.outputs.items()
                 }
                 outputs.update(ready=ready, activations=state["activations"], status=status)
-                for value in outputs.values():
+                payloads = {}
+                for name, value in outputs.items():
+                    if value is NO_VALUE:
+                        continue
+                    context = copy.deepcopy(output_payload)
+                    if name in step.output_frames:
+                        context["spatial"] = copy.deepcopy(step.output_frames[name])
+                        context.pop("pyramid", None)
                     if hasattr(value, "metadata") and not isinstance(value, np.ndarray):
-                        value.metadata = copy.deepcopy(output_payload)
+                        value.metadata = copy.deepcopy(context)
+                    payloads[name] = context
                 phase = (
                     "Ready" if ready else "Warming" if state["learning"] < needed else "Not ready"
                 )
                 return Result(
                     outputs,
-                    payloads={
-                        name: copy.deepcopy(output_payload)
-                        for name in outputs
-                        if outputs[name] is not NO_VALUE
-                    },
+                    payloads=payloads,
                     graphics=step.graphics,
                     event_data={"sequence": status},
                     message=f"{phase} · {state['learning']}/{needed} activations · {stream}",

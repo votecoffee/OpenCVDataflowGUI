@@ -891,6 +891,11 @@ Try the [matrix structure example](examples/numerical/matrix_structure/README.md
 or with a wired registration. It reports coverage, overlap, and the mappings
 from both inputs. Try the [stitching example](examples/image_processing/stitch_image_pair/README.md).
 
+**Stabilize camera motion** tracks stable background features to reduce
+translation or similarity jitter before measuring a frame. It publishes
+corrected pixels, a coverage mask, and the mapping back to the raw image.
+Try the [camera stabilization example](examples/flow_control/camera_stabilization/README.md).
+
 ## Architecture
 
 Choose **Run profile: debug / balanced / lean** in the toolbar to control observation

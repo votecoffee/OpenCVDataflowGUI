@@ -5141,6 +5141,44 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `maximum_variance` | `75.0` |  |
 | `complexity_reduction` | `0.05` | Evidence threshold for retaining a mixture. Zero disables it. |
 
+## Stabilize camera motion (`sequence.stabilize_camera`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Camera sequence in one consistent pixel grid.
+
+Input `mask` — Optional static-background selection for feature centers.
+
+Input `region` — Optional static-background region for motion estimation.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `motion_model` | `"similarity"` | `translation`, `similarity` Translation shifts the view. Similarity also tracks rotation and scale. |
+| `follow` | `0.0` | Value must be a finite number between 0 and 1. Zero locks to the anchor. Intermediate values smooth the observed trajectory. |
+| `max_features` | `240` | Value must be a whole number between 3 and 5000. |
+| `feature_quality` | `0.01` | Value must be a finite number between 1e-06 and 1. |
+| `feature_spacing` | `8.0` | Value must be a finite number between 0 and 512. |
+| `tracking_window` | `21` | Value must be a positive odd integer between 3 and 255. |
+| `max_pyramid_level` | `3` | Value must be a whole number between 0 and 8. |
+| `forward_backward_pixels` | `1.0` | Value must be a finite number between 1e-06 and 100. Maximum error when a tracked point is mapped back. |
+| `max_patch_error` | `30.0` | Value must be a finite number between 0 and 255. Maximum mean patch error on the 8-bit tracking image. |
+| `inlier_pixels` | `2.0` | Value must be a finite number between 1e-06 and 100. Reprojection tolerance for a track to support the motion estimate. |
+| `min_inliers` | `12` | Value must be a whole number between 3 and 5000. |
+| `min_inlier_ratio` | `0.5` | Value must be a finite number between 0 and 1. |
+| `max_step_pixels` | `40.0` | Value must be a finite number between 1e-06 and 16384. Largest accepted center displacement between consecutive frames. |
+| `max_step_degrees` | `12.0` | Value must be a finite number between 0 and 180. Largest accepted rotation between consecutive frames. |
+| `max_step_scale_ratio` | `1.15` | Value must be a finite number between 1 and 2. Allowed scale range is the reciprocal of this ratio to the ratio. |
+| `min_coverage_fraction` | `0.65` | Value must be a finite number between 0 and 1. Re-anchor when too little of the corrected canvas is covered. |
+| `interpolation` | `"linear"` | `nearest`, `linear` |
+
 ## Track conveyor parts (`sequence.track_conveyor`)
 
 Sequence / Object tracking
