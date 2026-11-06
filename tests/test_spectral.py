@@ -1,12 +1,14 @@
 """Check native spectral transforms through the graph block contracts."""
 
 from dataclasses import replace
+from pathlib import Path
 
 import cv2
 import numpy as np
 import pytest
 
 from opencv_dataflow.blocks import builtin_registry
+from opencv_dataflow.core import Graph
 from opencv_dataflow.payloads import ValuePacket, frame, packet_for
 from opencv_dataflow.tickets import TicketClock
 
@@ -188,3 +190,83 @@ def test_fourier_gain_requires_padded_dimensions_and_nonnegative_values():
     filtered = tool.execute({"spectrum": spectrum, "gain": gain})
     assert filtered is not None, tool.error
     assert filtered.outputs["spectrum"].image_shape == image.shape
+
+
+@pytest.mark.parametrize("mode", ("2d", "rows"))
+@pytest.mark.parametrize("operation", ("multiply", "multiply_conjugate", "conjugate"))
+def test_combine_fourier_spectra_round_trips_in_the_expected_coordinates(mode, operation):
+    registry = builtin_registry()
+    a = np.zeros((4, 9), np.float32)
+    b = np.zeros_like(a, dtype=np.float64)
+    a[1, 2] = 3
+    b[1, 4] = 2
+    source_frame = frame([9, 4], "camera")
+    first = registry.create("cv.dft", parameters={"mode": mode}).execute(
+        {"image": ValuePacket(a, {"spatial": source_frame})}
+    )
+    second = registry.create("cv.dft", parameters={"mode": mode}).execute({"image": b})
+    combine = registry.create(
+        "cv.combine_fourier_spectra", block_id="combine", parameters={"operation": operation}
+    )
+    inputs = {"spectrum": packet_for(first, "spectrum")}
+    axes = (-1,) if mode == "rows" else (-2, -1)
+    expected = np.fft.fftn(a, axes=axes)
+    if operation == "conjugate":
+        expected = expected.conj()
+    else:
+        inputs["spectrum_b"] = second.outputs["spectrum"]
+        other = np.fft.fftn(b, axes=axes)
+        expected *= other.conj() if operation == "multiply_conjugate" else other
+    result = combine.execute(inputs)
+    assert result is not None, combine.error
+    values = result.outputs["spectrum"].values
+    assert values.dtype == (np.float32 if operation == "conjugate" else np.float64)
+    assert result.graphics["magnitude"].shape == a.shape
+
+    inverse = registry.create("cv.idft", parameters={"output_depth": "float64"})
+    restored = inverse.execute({"spectrum": packet_for(result, "spectrum")})
+    assert restored is not None, inverse.error
+    np.testing.assert_allclose(
+        restored.outputs["image"], np.fft.ifftn(expected, axes=axes).real, atol=1e-6
+    )
+    payload = restored.payloads["image"]
+    if operation == "multiply":
+        assert payload["spatial"] == source_frame
+    else:
+        assert payload["spatial"] == frame([9, 4], "combine:spectrum")
+        assert payload.get("lag_origin") == ([0, 0] if operation == "multiply_conjugate" else None)
+
+
+def test_combine_fourier_spectra_rejects_incompatible_grids_and_overflow():
+    registry = builtin_registry()
+    image = np.ones((7, 11), np.float32)
+    spectrum = registry.create("cv.dft").execute({"image": image}).outputs["spectrum"]
+    rows = registry.create("cv.dft", parameters={"mode": "rows"})
+    padded = registry.create("cv.dft", parameters={"size": "optimal"})
+    block = registry.create("cv.combine_fourier_spectra")
+    assert block.execute({"spectrum": spectrum}) is None
+    assert block.error_kind == "invalid" and "Connect Spectrum B" in block.error
+    for forward in (rows, padded):
+        other = forward.execute({"image": image}).outputs["spectrum"]
+        assert block.execute({"spectrum": spectrum, "spectrum_b": other}) is None
+        assert block.error_kind == "invalid" and "bin grid" in block.error
+
+    huge = replace(spectrum, values=np.full_like(spectrum.values, 1e30))
+    assert block.execute({"spectrum": huge, "spectrum_b": huge}) is None
+    assert block.error_kind == "invalid" and "overflowed" in block.error
+
+
+def test_spectrum_product_example_finds_a_wrapped_displacement():
+    path = (
+        Path(__file__).parents[1]
+        / "examples/image_processing/spectrum_product/spectrum_product.json"
+    )
+    graph = Graph.load(path, builtin_registry())
+    try:
+        graph.set_run_profile("lean")
+        graph.run()
+        assert all(block.state == "pass" for block in graph.blocks.values())
+        result = graph.blocks["peak"].last_result
+        assert result.outputs["maximum_location"] == [17, 351]
+    finally:
+        graph.close()

@@ -1182,6 +1182,20 @@ Input `palette` — Optional 1 × 256 or 256 × 1 uint8 strip in gray, BGR or RG
 | `minimum` | `0.0` | Value must be a finite number. Fixed mode maps this sample value and lower values to palette index 0. |
 | `maximum` | `255.0` | Value must be a finite number. Fixed mode maps this sample value and higher values to palette index 255. |
 
+## Combine Fourier spectra (`cv.combine_fourier_spectra`)
+
+Image processing / Spectral
+
+Inputs: `spectrum` (dft), `spectrum_b` (dft, optional).
+
+Input `spectrum` — First DFT. Supplies the output size after inverse reconstruction.
+
+Input `spectrum_b` — Second DFT with the same full bin grid and transform mode.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `operation` | `"multiply"` | `multiply`, `multiply_conjugate`, `conjugate` Multiply applies a filter or circular convolution. Multiply conjugate gives circular correlation. Conjugate uses only Spectrum. |
+
 ## Compare pixels (`cv.compare_pixels`)
 
 Image processing / Image math
