@@ -7,7 +7,8 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .graphics_layers import GraphicDrawing, graphic_object
-from .objects import collection, line_item
+from .hough_geometry import supported_lines
+from .objects import collection
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import ValuePacket, require_same_frame
 from .result_graphics import ACCEPTED
@@ -140,30 +141,7 @@ class HoughPointSetLines(Block):
         p = self.parameters
         found = self._search(points) if len(points) >= int(p["minimum_votes"]) else []
         support_distance = float(p["support_distance"]) or float(p["rho_step"]) / 2
-        # The native polar coordinates are float32. Allow a small rounding margin at the bin edge.
-        tolerance = support_distance + 4 * np.finfo(np.float32).eps * max(width, height)
-        items, polar_lines = [], []
-        for index, (votes, rho, theta) in enumerate(found):
-            nx, ny = math.cos(theta), math.sin(theta)
-            supported = points[np.abs(points[:, 0] * nx + points[:, 1] * ny - rho) <= tolerance]
-            polar = {
-                "votes": int(votes),
-                "rho_pixels": float(rho),
-                "normal_angle_degrees": math.degrees(theta),
-                "support_count": len(supported),
-            }
-            polar_lines.append(polar)
-            if not len(supported):
-                continue
-            tangent = (-ny, nx)
-            positions = supported @ tangent
-            endpoints = rho * np.array([nx, ny]) + np.outer(
-                [positions.min(), positions.max()], tangent
-            )
-            item = line_item(endpoints, index)
-            item["metrics"]["strength"] = int(votes)
-            item["geometry"]["polar"] = polar
-            items.append(item)
+        items, polar_lines = supported_lines(found, points, support_distance, (width, height))
 
         passed = len(items) >= int(p["minimum_lines"])
         result = Result(

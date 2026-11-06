@@ -707,6 +707,7 @@ def builtin_registry():
     from .projection import IntensityProfile, PathIntensityProfile
     from .ptcloud3d import PTCLOUD3D_BLOCKS
     from .pyramids import PYRAMID_BLOCKS
+    from .raster_hough_lines import HoughPolarLines
     from .recipe_blocks import RecipeField, RecipeSelect
     from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
@@ -813,6 +814,7 @@ def builtin_registry():
         *PYRAMID_BLOCKS,
         *COLLECTION_BLOCKS,
         HoughPointSetLines,
+        HoughPolarLines,
         *CONTOUR_ANALYSIS_BLOCKS,
         *CODE_READER_BLOCKS,
         ReadZXingBarcode,

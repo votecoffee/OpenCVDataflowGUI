@@ -638,13 +638,16 @@ outside-pixel policies, neighborhood behavior and coordinate rules.
 ### Blob, line and contour collections
 
 **Find blobs**, **Connected components**, **Find contours**, **Hough line segments**,
-**Hough lines from points**, and **Find line segments (LSD)** expose a `collection`
+**Hough lines from points**, **Hough polar lines**, and **Find line segments (LSD)** expose a `collection`
 output. Connect it to
 **Filter object collection**, **Sort object collection**, and **Draw object
 collection** to select and visualize measured objects without code.
 
 **Hough lines from points** detects lines in sparse coordinates and exposes
 the vote count as **Strength**. [Sparse line example](examples/point_set_lines/README.md)
+**Hough polar lines** detects lines in an 8-bit edge map. Vote by pixel count
+or intensity and restrict voting with a mask or region.
+[Binary and weighted voting example](examples/hough_polar_lines/README.md)
 
 Filter/sort criteria use dropdowns: area, bounding width/height and position,
 centroid, aspect ratio, principal-axis angle, line length, perimeter, fitted box

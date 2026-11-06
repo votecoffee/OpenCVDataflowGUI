@@ -3606,6 +3606,30 @@ Input `region` — Keep voting points whose nearest pixel is inside this region.
 | `theta_step_degrees` | `1.0` | Value must be a finite number between 0.01 and 180. Angle bin spacing. A 90-degree normal describes a horizontal line. |
 | `support_distance` | `0.0` | Value must be a finite number between 0 and 32768. Distance to the peak line for endpoint support. Zero uses half a bin. |
 
+## Hough polar lines (`inspect.hough_polar_lines`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — 8-bit monochrome edge map. Zero-valued pixels never vote.
+
+Input `mask` — Only selected edge pixels contribute to the accumulator.
+
+Input `region` — Only edge pixels inside the region contribute to the accumulator.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `vote_mode` | `"binary"` | `binary`, `weighted` Binary gives each nonzero pixel one vote. Weighted uses its intensity. |
+| `minimum_votes` | `50` | Value must be a whole number between 1 and 2.55e+08. Inclusive accumulator minimum. Weighted mode uses intensity sums. |
+| `maximum_lines` | `32` | Value must be a whole number between 1 and 512. Maximum native peaks reported, ordered by accumulator value. |
+| `minimum_lines` | `1` | Value must be a whole number between 0 and 512. Fewest finite segments required to pass. Zero permits an empty result. |
+| `rho_step` | `1.0` | Value must be a finite number between 0.01 and 32768. Spacing between normal-distance bins, in pixels. |
+| `theta_min_degrees` | `0.0` | Value must be a finite number between 0 and 180. First line-normal angle. Zero searches vertical lines. |
+| `theta_max_degrees` | `180.0` | Value must be a finite number between 0 and 180. Upper angle bound for the line normal, in degrees. |
+| `theta_step_degrees` | `1.0` | Value must be a finite number between 0.01 and 180. Angle bin spacing. A 90-degree normal describes a horizontal line. |
+| `support_distance` | `0.0` | Value must be a finite number between 0 and 32768. Distance to the peak line for endpoint support. Zero uses half a bin. |
+
 ## Find Hough template (`inspect.hough_template`)
 
 Inspection / Matching
