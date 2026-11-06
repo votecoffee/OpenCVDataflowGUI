@@ -45,6 +45,8 @@ within those stages.
 [Feature covariance and Mahalanobis distance](../examples/feature_covariance/README.md) cover joint variation and numeric outlier checks.
 [Solve linear system](../examples/linear_system/README.md) provides exact and least-squares
 solutions with multiple observation columns, numerical rank, and residuals.
+[Solve polynomial roots](../examples/polynomial_roots/README.md) supports analytic real
+roots through degree three, iterative complex roots, and relative residual judgments.
 [Multiply matrices](../examples/matrix_multiply/README.md) applies weighted real matrix
 products with an optional addend and independent transposition controls.
 [Find nearest rows](../examples/nearest_rows/README.md) adds exact top-K feature-table

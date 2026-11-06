@@ -682,6 +682,7 @@ def builtin_registry():
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .pick_selection import SelectPickCandidate
+    from .polynomial_roots import SolvePolynomialRoots
     from .poses import POSE_BLOCKS
     from .principal_components import FitPrincipalComponents, TransformPrincipalComponents
     from .processing import PROCESSING_BLOCKS
@@ -806,6 +807,7 @@ def builtin_registry():
         *DNN_BLOCKS,
         FitFeatureCovariance,
         SolveLinearSystem,
+        SolvePolynomialRoots,
         MultiplyMatrices,
         FindNearestRows,
         SortNumericTable,

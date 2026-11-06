@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fit",
+      "type": "cv.solve_linear_system",
+      "name": "Fit a quadratic to measured offsets",
+      "parameters": {
+        "coefficients": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            4,
+            2,
+            1
+          ]
+        ],
+        "observations": [
+          3,
+          0,
+          -1
+        ],
+        "method": "qr"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "solution"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "crossings",
+      "type": "cv.polynomial_roots",
+      "name": "Find positions where the fitted offset is zero",
+      "parameters": {
+        "method": "analytic_real"
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "coefficients"
+      ],
+      "exposed_outputs": [
+        "real_roots",
+        "max_relative_residual"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "quartic",
+      "type": "cv.polynomial_roots",
+      "name": "Solve a quartic with real and complex roots",
+      "parameters": {
+        "coefficients": [
+          1,
+          0,
+          0,
+          0,
+          -1
+        ]
+      },
+      "position": [
+        380,
+        180
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "roots",
+        "real_roots",
+        "relative_residuals"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "fit",
+      "output": "solution",
+      "target": "crossings",
+      "input": "coefficients"
+    }
+  ]
+}

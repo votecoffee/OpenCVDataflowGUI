@@ -1743,6 +1743,21 @@ Input `magnitude` — Nonnegative magnitude. Leave disconnected to use unit vect
 | --- | --- | --- |
 | `angle_units` | `"auto"` | `auto`, `radians`, `degrees` Auto reads the angle payload and defaults to radians. |
 
+## Solve polynomial roots (`cv.polynomial_roots`)
+
+Image processing / Statistics
+
+Inputs: `coefficients` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `coefficients` | `[]` | Editable vector, row, or column. A wired value takes precedence. |
+| `coefficient_order` | `"highest_first"` | `highest_first`, `constant_first` |
+| `method` | `"all_roots"` | `all_roots`, `analytic_real` All roots returns complex pairs. Analytic real returns distinct real roots. |
+| `max_iterations` | `300` | Value must be a whole number between 1 and 10000. Iteration limit for the all-roots method. |
+| `imaginary_tolerance` | `1e-08` | Value must be a finite number at least 0. Maximum imaginary magnitude for inclusion in Real roots. |
+| `residual_limit` | `1e-08` | Value must be a finite number between 0 and 1. Fail the result if a relative residual exceeds this limit. |
+
 ## Gaussian pyramid up/down (`cv.pyramid`)
 
 Image processing / Geometry
