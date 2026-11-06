@@ -672,6 +672,7 @@ def builtin_registry():
     from .image_statistics import ImageSummaryStatistics
     from .judgments import FinalJudgment
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
+    from .linear_program import SolveLinearProgram
     from .linear_system import SolveLinearSystem
     from .matrix_multiply import MultiplyMatrices
     from .native_background import NATIVE_BACKGROUND_BLOCKS
@@ -808,6 +809,7 @@ def builtin_registry():
         *DNN_BLOCKS,
         FitFeatureCovariance,
         SolveLinearSystem,
+        SolveLinearProgram,
         SolvePolynomialRoots,
         MultiplyMatrices,
         GramMatrix,

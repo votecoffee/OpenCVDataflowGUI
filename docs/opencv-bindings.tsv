@@ -4449,7 +4449,7 @@ P3	class	cv2.SimpleBlobDetector_Params	no static reference	-
 P3	function	cv2.Sobel	literal reference	-
 P3	function	cv2.solve	literal reference	-
 P3	function	cv2.solveCubic	literal reference	-
-P3	function	cv2.solveLP	no static reference	-
+P3	function	cv2.solveLP	literal reference	-
 P3	function	cv2.solveP3P	no static reference	-
 P3	function	cv2.solvePnP	literal reference	-
 P3	function	cv2.solvePnPGeneric	no static reference	-
