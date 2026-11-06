@@ -18,6 +18,7 @@ from .circle_grid import (
 from .core import Block, Graph, Port, Result
 from .graphics_layers import GraphicDrawing, graphic_object
 from .images import opencv_image, preview_rgb
+from .parameter_validation import NumericRange
 from .processing import finite, integer
 from .toolblocks import Binding, ToolBlock
 
@@ -273,10 +274,85 @@ def camera_parameters(calibration):
     return matrix, distortion
 
 
+_INTRINSIC_TERMS = (
+    "fx",
+    "fy",
+    "cx",
+    "cy",
+    "k1",
+    "k2",
+    "p1",
+    "p2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "tau_x",
+    "tau_y",
+)
+
+
+def _deviations(values):
+    return [float(value) if np.isfinite(value) and value >= 0 else None for value in values]
+
+
+def _lens_fit_report(paths, calibration, rotations, translations, intrinsic_sd, pose_sd, errors):
+    count = len(paths)
+    errors = np.asarray(errors).reshape(-1)
+    rotations = np.asarray(rotations).reshape(-1, 3)
+    translations = np.asarray(translations).reshape(-1, 3)
+    intrinsic_sd = np.asarray(intrinsic_sd).reshape(-1)
+    pose_sd = np.asarray(pose_sd).reshape(-1, 6)
+    if (
+        len(errors) != count
+        or len(rotations) != count
+        or len(translations) != count
+        or len(pose_sd) != count
+        or len(intrinsic_sd) != len(_INTRINSIC_TERMS)
+        or not np.isfinite(errors).all()
+        or np.any(errors < 0)
+        or not np.isfinite(rotations).all()
+        or not np.isfinite(translations).all()
+    ):
+        raise ValueError("OpenCV returned invalid calibration view diagnostics")
+    views = [
+        {
+            "view_index": index,
+            "image_name": path.name,
+            "rms_pixels": float(errors[index]),
+            "rotation_vector_radians": rotations[index].tolist(),
+            "translation_vector": translations[index].tolist(),
+            "rotation_stddev_radians": _deviations(pose_sd[index, :3]),
+            "translation_stddev": _deviations(pose_sd[index, 3:]),
+        }
+        for index, path in enumerate(paths)
+    ]
+    worst = int(np.argmax(errors))
+    return {
+        "model": "pinhole_fit_report_v1",
+        "rms_pixels": calibration["rms_pixels"],
+        "worst_view_index": worst,
+        "worst_view_rms_pixels": float(errors[worst]),
+        "translation_units": calibration["units"],
+        "pose_direction": "board_to_camera",
+        "intrinsic_stddev": dict(zip(_INTRINSIC_TERMS, _deviations(intrinsic_sd))),
+        "views": views,
+    }
+
+
 class LensCalibration(_GridCalibration):
     type_id, title, category = "calibration.lens", "Calibrate lens", "Calibration"
     block_type, subtype = "Calibration", "Lens distortion"
-    outputs = (Port("calibration", "data"), Port("rms", "number"))
+    outputs = (
+        Port("calibration", "data"),
+        Port("rms", "number"),
+        Port("fit_report", "data"),
+        Port("worst_view_rms", "number"),
+    )
     defaults = {
         **GRID_OPTIONS,
         **dict.fromkeys(CALIB_FLAGS, False),
@@ -286,27 +362,53 @@ class LensCalibration(_GridCalibration):
         "max_iterations": 30,
         "epsilon": float(np.finfo(float).eps),
         "image_paths": [],
+        "path_base": "working_directory",
         "columns": 9,
         "rows": 6,
         "spacing": 10.0,
         "units": "mm",
         "max_rms_pixels": 1.0,
+        "max_view_rms_pixels": 0.0,
     }
-    parameter_choices = {**_GridCalibration.parameter_choices, "solver": ("svd", "lu", "qr")}
+    parameter_choices = {
+        **_GridCalibration.parameter_choices,
+        "solver": ("svd", "lu", "qr"),
+        "path_base": ("working_directory", "project"),
+    }
+    parameter_ranges = {
+        **_GridCalibration.parameter_ranges,
+        "max_view_rms_pixels": NumericRange(0),
+    }
+    parameter_help = {
+        **_GridCalibration.parameter_help,
+        "path_base": "Base folder for relative calibration image paths.",
+        "max_view_rms_pixels": "Maximum RMS of any fitted view in pixels. Zero skips this check.",
+    }
 
     def process(self, inputs):
-        size, world = grid_settings(self.parameters)
-        paths = self.parameters["image_paths"]
-        maximum = float(self.parameters["max_rms_pixels"])
-        if not isinstance(paths, list) or len(paths) < 3 or len(set(paths)) != len(paths):
+        p = self.parameters
+        size, world = grid_settings(p)
+        paths = p["image_paths"]
+        maximum = float(p["max_rms_pixels"])
+        if (
+            not isinstance(paths, list)
+            or len(paths) < 3
+            or any(not isinstance(path, (str, Path)) or not str(path).strip() for path in paths)
+            or len(set(paths)) != len(paths)
+        ):
             raise ValueError("Provide at least three distinct grid image paths at varied poses")
         if not np.isfinite(maximum) or maximum <= 0:
             raise ValueError("Maximum RMS must be positive")
+        paths = [Path(path) for path in paths]
+        if p["path_base"] == "project" and any(not path.is_absolute() for path in paths):
+            if self.project_dir is None:
+                raise ValueError(
+                    "Save or open the project before using relative calibration images"
+                )
+            paths = [self.project_dir / path for path in paths]
         points, image_size = [], None
         for path in paths:
-            image = cv2.imdecode(
-                np.frombuffer(Path(path).read_bytes(), np.uint8), cv2.IMREAD_UNCHANGED
-            )
+            image = cv2.imdecode(np.frombuffer(path.read_bytes(), np.uint8), cv2.IMREAD_UNCHANGED)
             if image is None:
                 raise ValueError(f"Cannot decode calibration image: {path}")
             current_size = (image.shape[1], image.shape[0])
@@ -317,7 +419,6 @@ class LensCalibration(_GridCalibration):
             if any(np.sqrt(np.mean((corners - previous) ** 2)) < 0.5 for previous in points):
                 raise ValueError("Calibration views are duplicates; use varied board poses")
             points.append(corners)
-        p = self.parameters
         matrix = (
             np.asarray(p["initial_camera_matrix"], np.float64)
             if p["initial_camera_matrix"]
@@ -343,14 +444,16 @@ class LensCalibration(_GridCalibration):
             integer(p["max_iterations"], "Maximum iterations", 1, 10000),
             finite(p["epsilon"], "Epsilon", 0),
         )
-        rms, matrix, distortion, rotations, translations = cv2.calibrateCamera(
-            [world.copy() for _ in points],
-            points,
-            image_size,
-            matrix,
-            distortion,
-            flags=flags,
-            criteria=criteria,
+        rms, matrix, distortion, rotations, translations, intrinsic_sd, pose_sd, errors = (
+            cv2.calibrateCameraExtended(
+                [world.copy() for _ in points],
+                points,
+                image_size,
+                matrix,
+                distortion,
+                flags=flags,
+                criteria=criteria,
+            )
         )
         calibration = {
             "model": "opencv_pinhole_v1",
@@ -362,13 +465,44 @@ class LensCalibration(_GridCalibration):
             "units": self.parameters["units"],
         }
         camera_parameters(calibration)
-        if not np.isfinite(rms):
+        if not np.isfinite(rms) or rms < 0:
             raise ValueError("Calibration failed to produce a finite reprojection error")
+        report = _lens_fit_report(
+            paths, calibration, rotations, translations, intrinsic_sd, pose_sd, errors
+        )
+        worst = report["worst_view_rms_pixels"]
+        view_limit = float(p["max_view_rms_pixels"])
+        reasons = []
+        if rms > maximum:
+            reasons.append(
+                {
+                    "code": "calibration_rms_exceeds_limit",
+                    "message": f"Overall RMS {rms:.4g} px exceeds {maximum:.4g} px",
+                }
+            )
+        if view_limit and worst > view_limit:
+            index = report["worst_view_index"]
+            reasons.append(
+                {
+                    "code": "calibration_view_rms_exceeds_limit",
+                    "message": (
+                        f"View {index + 1} ({paths[index].name}) RMS {worst:.4g} px "
+                        f"exceeds {view_limit:.4g} px"
+                    ),
+                }
+            )
+        error_ratio = max(rms / maximum, worst / view_limit if view_limit else 0)
         return Result(
-            {"calibration": calibration, "rms": float(rms)},
-            passed=rms <= maximum,
-            score=max(0.0, 1 - rms / maximum),
-            message=f"{len(points)} views · reprojection RMS {rms:.4g} px",
+            {
+                "calibration": calibration,
+                "rms": float(rms),
+                "fit_report": report,
+                "worst_view_rms": worst,
+            },
+            passed=not reasons,
+            fail_reasons=reasons,
+            score=max(0.0, 1 - error_ratio),
+            message=f"{len(points)} views · RMS {rms:.4g} px · worst view {worst:.4g} px",
         )
 
 

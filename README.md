@@ -363,6 +363,11 @@ and reports how much of the output samples inside the source image.
 the map pair, output intrinsics, and pixel-grid metadata in one file.
 [Lens map files example](examples/lens_map_files/README.md)
 
+**Calibrate lens** reports per-view reprojection errors, board poses,
+and estimated parameter uncertainty. A worst-view limit can catch a poor
+view even when the overall fit passes.
+[Lens fit report example](examples/lens_fit_report/README.md)
+
 ### Build and test a starter project
 
 For the real-image Lena review example, run `python scripts/prepare_lena.py` once,
