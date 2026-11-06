@@ -3586,6 +3586,16 @@ Inputs: `text` (data).
 | `custom_characters` | `""` | Literal allowed characters for the custom character set. |
 | `aggregate` | `"all"` | `all`, `any` Require every input string or at least one. An empty list always fails. |
 
+## Voronoi cells (`inspect.voronoi_cells`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `points` (data, optional), `collection` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `cell_index` | `0` | Value must be a whole number between 0 and 9999. Zero-based index in the unique site order, used for the mask and highlight. |
+
 ## Marker-controlled watershed (`inspect.watershed`)
 
 Inspection / Segmentation

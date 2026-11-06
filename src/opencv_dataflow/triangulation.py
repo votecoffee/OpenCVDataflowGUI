@@ -12,6 +12,44 @@ from .graphics_layers import GraphicDrawing, graphic_object
 from .parameter_validation import ValidationError
 from .result_graphics import ACCEPTED
 
+SITE_INPUTS = (
+    Port("points", "data", required=False, required_when_connected=True),
+    Port("collection", "data", required=False, required_when_connected=True),
+)
+
+
+def read_sites(block, inputs, *, minimum, image_size=None):
+    sources = [port.name for port in SITE_INPUTS if port.name in inputs]
+    if len(sources) != 1:
+        raise ValidationError("Connect either points or a detected collection")
+    source = sources[0]
+    if source == "collection":
+        data, payload = read_collection(block, inputs)
+        if image_size is not None and data["image_size"] != image_size:
+            raise ValidationError("Collection dimensions must match the reference image")
+        points = [
+            [item["metrics"].get("center_x"), item["metrics"].get("center_y")]
+            for item in data["items"]
+        ]
+    else:
+        points = inputs["points"]
+        payload = block.input_payloads.get("points", {})
+    try:
+        points = np.asarray(points, dtype=np.float64)
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise ValidationError("Sites must be numeric [x, y] pairs") from exc
+    if (
+        points.ndim != 2
+        or points.shape[1] != 2
+        or not minimum <= len(points) <= 10_000
+        or not np.isfinite(points).all()
+        or np.max(np.abs(points)) > 10_000_000
+    ):
+        raise ValidationError(f"Provide {minimum} to 10,000 finite [x, y] sites within ±10 million")
+    _, first = np.unique(points, axis=0, return_index=True)
+    first.sort()
+    return points[first], first, source, payload
+
 
 def _triangulate(sites):
     low, high = sites.min(axis=0), sites.max(axis=0)
@@ -56,10 +94,7 @@ def _triangulate(sites):
 class DelaunayTriangulation(Block):
     type_id, title = "inspect.delaunay_triangulation", "Delaunay triangulation"
     category, block_type, subtype = "Inspection", "Inspection", "Measurements"
-    inputs = (
-        Port("points", "data", required=False, required_when_connected=True),
-        Port("collection", "data", required=False, required_when_connected=True),
-    )
+    inputs = SITE_INPUTS
     outputs = (
         Port("points", "data"),
         Port("source_indices", "data"),
@@ -71,33 +106,7 @@ class DelaunayTriangulation(Block):
     process_inputs_readonly = True
 
     def process(self, inputs):
-        if len(inputs) != 1:
-            raise ValidationError("Connect either points or a detected collection")
-        source = next(iter(inputs))
-        if source == "collection":
-            data, payload = read_collection(self, inputs)
-            points = [
-                [item["metrics"].get("center_x"), item["metrics"].get("center_y")]
-                for item in data["items"]
-            ]
-        else:
-            points = inputs["points"]
-            payload = self.input_payloads.get("points", {})
-        try:
-            points = np.asarray(points, dtype=np.float64)
-        except (TypeError, ValueError, OverflowError) as exc:
-            raise ValidationError("Sites must be numeric [x, y] pairs") from exc
-        if (
-            points.ndim != 2
-            or points.shape[1] != 2
-            or not 3 <= len(points) <= 10_000
-            or not np.isfinite(points).all()
-            or np.max(np.abs(points)) > 10_000_000
-        ):
-            raise ValidationError("Provide 3 to 10,000 finite [x, y] sites within ±10 million")
-        _, first = np.unique(points, axis=0, return_index=True)
-        first.sort()
-        sites = points[first]
+        sites, first, source, payload = read_sites(self, inputs, minimum=3)
         if len(sites) < 3:
             raise ValidationError("Provide at least three distinct sites")
 

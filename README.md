@@ -471,6 +471,10 @@ a triangle and a quadrilateral fitted to the same part.
 and reports indexed triangles, unique edges, and edge lengths.
 [Delaunay triangulation example](examples/delaunay_triangulation/README.md)
 
+**Voronoi cells** divides an image into zones around detected centers or
+wired points. It returns bounded polygons, areas, and a mask for a selected zone.
+[Voronoi cells example](examples/voronoi_cells/README.md)
+
 **Path intensity profile** samples each image channel at regular distances
 along an open or closed path and preserves gaps outside the selection.
 [Path intensity profile example](examples/path_intensity_profile/README.md)

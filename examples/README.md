@@ -37,6 +37,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Convex polygon overlap](convex_overlap/README.md) | Compare a detected part hull with an editable polygon and display the intersection. |
 | [Enclosing convex polygon](enclosing_polygon/README.md) | Fit and compare a triangle and quadrilateral around a detected contour. |
 | [Delaunay triangulation](delaunay_triangulation/README.md) | Connect five detected dot centers and overlay their four triangles and eight edges. |
+| [Voronoi cells](voronoi_cells/README.md) | Divide an image around five detected centers and measure intensities inside the selected cell. |
 | [Generalized Hough matching](generalized_hough/README.md) | Locate two copies of a template shape, then restrict the search results to a region. |
 | [Rotated and scaled Hough matching](generalized_hough_guil/README.md) | Find a template with a different rotation and scale, and inspect its oriented outline. |
 | [Image summary statistics](image_statistics/README.md) | Measure a selected patch and mark the extrema in source pixel coordinates. |

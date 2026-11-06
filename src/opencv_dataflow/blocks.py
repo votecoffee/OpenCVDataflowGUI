@@ -718,6 +718,7 @@ def builtin_registry():
     from .triangulation import DelaunayTriangulation
     from .video_files import VideoFile, WriteVideo
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
+    from .voronoi import VoronoiCells
     from .watershed_seeds import WatershedMaskSeeds, WatershedPointSeeds
     from .yuv_formats import DecodePackedYuv, RawYuvFile
     from .zxing_reader import ReadZXingBarcode
@@ -794,6 +795,7 @@ def builtin_registry():
         BoundingRotatedRectangle,
         BoundingConvexPolygon,
         DelaunayTriangulation,
+        VoronoiCells,
         RotatedRectangleOverlap,
         ConvexPolygonOverlap,
         FindTemplateInstances,
