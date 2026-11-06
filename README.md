@@ -287,6 +287,10 @@ Load trusted custom blocks via **File > Load Python plugin**. The
 fields, validation, and a popup editor. Plugins run arbitrary Python. Load the same plugins before opening
 projects that use their types. No code is needed for built-in pipelines.
 
+The [geometric inspection applications](applications/README.md) bundle a tray grid,
+a needle row, and weighted part discrimination with pinned plugin recipes and
+expected counts for headless replay.
+
 Plugin blocks can add their own inspector button and open a Qt dialog for
 configuration or review. The dialog can use copies of cached images with their
 coordinate metadata. Plugins can opt into a modeless popup to capture new

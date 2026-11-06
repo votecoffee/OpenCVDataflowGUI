@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/scene-01.png",
+          "assets/scene-02.png",
+          "assets/scene-03.png",
+          "assets/scene-04.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "matcher",
+      "type": "pattern.ogpm_recipe",
+      "name": "Locate parts in a crowded tray",
+      "parameters": {
+        "recipe_path": "assets/inspection.npz",
+        "recipe_sha256": "f42974e95327a7540e8c522f3b56eae2380dd7dc90d3d74aae534f737753dc9a",
+        "review_rejections": true,
+        "render_overlay": true,
+        "match_workers": 1
+      },
+      "position": [
+        380.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count",
+        "score",
+        "transform",
+        "pose",
+        "points",
+        "review",
+        "overlay",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "matcher",
+      "input": "image"
+    }
+  ]
+}

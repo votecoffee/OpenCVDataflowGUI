@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/scene-01.png",
+          "assets/scene-02.png",
+          "assets/scene-03.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "matcher",
+      "type": "pattern.ogpm_recipe",
+      "name": "Distinguish weighted block geometry",
+      "parameters": {
+        "recipe_path": "assets/inspection.npz",
+        "recipe_sha256": "479e47c2affa39d13b2d389766b6623fbc0b224f71187e43605aafd115c7ec0c",
+        "review_rejections": true,
+        "render_overlay": true,
+        "match_workers": 1
+      },
+      "position": [
+        380.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count",
+        "score",
+        "transform",
+        "pose",
+        "points",
+        "review",
+        "overlay",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "matcher",
+      "input": "image"
+    }
+  ]
+}

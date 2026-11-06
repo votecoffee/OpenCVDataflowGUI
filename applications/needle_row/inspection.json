@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/scene-01.png",
+          "assets/scene-02.png",
+          "assets/scene-03.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "matcher",
+      "type": "pattern.ogpm_recipe",
+      "name": "Inspect a needle row",
+      "parameters": {
+        "recipe_path": "assets/inspection.npz",
+        "recipe_sha256": "69f9ca6c6e01e4537b02f3b1c34e94e9b6f60f49cec123104d670f1f0a6a7af4",
+        "review_rejections": true,
+        "render_overlay": true,
+        "match_workers": 1
+      },
+      "position": [
+        380.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count",
+        "score",
+        "transform",
+        "pose",
+        "points",
+        "review",
+        "overlay",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "matcher",
+      "input": "image"
+    }
+  ]
+}
