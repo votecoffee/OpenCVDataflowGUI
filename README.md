@@ -780,6 +780,9 @@ infinity and emits a mask of changed pixels. See the
 **Join images** assembles a side-by-side or stacked view without resampling.
 Its layout output records each panel's source frame. See the
 [image join example](examples/join_images/README.md).
+**Tile image** repeats an image in a row-and-column grid. The
+[tiling example](examples/tile_image/README.md) uses the grid as a synthetic
+fixture for template matching.
 
 **Gram matrix** compares rows or columns by dot product and can reuse the same
 centering offset across batches. See the [Gram matrix example](examples/gram_matrix/README.md).
