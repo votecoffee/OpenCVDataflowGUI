@@ -4580,14 +4580,14 @@ P3	class	cv2.structured_light_StructuredLightPattern	alias	cv2.structured_light.
 P3	method	cv2.structured_light_StructuredLightPattern.decode	alias	cv2.structured_light.StructuredLightPattern.decode
 P3	method	cv2.structured_light_StructuredLightPattern.generate	alias	cv2.structured_light.StructuredLightPattern.generate
 P3	function	cv2.stylization	no static reference	-
-P3	class	cv2.Subdiv2D	no static reference	-
+P3	class	cv2.Subdiv2D	literal reference	-
 P3	method	cv2.Subdiv2D.edgeDst	no static reference	-
 P3	method	cv2.Subdiv2D.edgeOrg	no static reference	-
 P3	method	cv2.Subdiv2D.findNearest	no static reference	-
 P3	method	cv2.Subdiv2D.getEdge	no static reference	-
 P3	method	cv2.Subdiv2D.getEdgeList	no static reference	-
 P3	method	cv2.Subdiv2D.getLeadingEdgeList	no static reference	-
-P3	method	cv2.Subdiv2D.getTriangleList	no static reference	-
+P3	method	cv2.Subdiv2D.getTriangleList	method name only	-
 P3	method	cv2.Subdiv2D.getVertex	no static reference	-
 P3	method	cv2.Subdiv2D.getVoronoiFacetList	no static reference	-
 P3	method	cv2.Subdiv2D.initDelaunay	no static reference	-

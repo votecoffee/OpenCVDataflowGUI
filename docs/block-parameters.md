@@ -2879,6 +2879,14 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `harris_k` | `0.04` | Value must be a finite number at least 0. |
 | `gradient_size` | `"3"` | `3`, `5`, `7` |
 
+## Delaunay triangulation (`inspect.delaunay_triangulation`)
+
+Inspection / Measurements
+
+Inputs: `points` (data, optional), `collection` (data, optional).
+
+No configurable algorithm parameters.
+
 ## Sample depth (`inspect.depth_sample`)
 
 Inspection / Depth

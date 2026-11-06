@@ -36,6 +36,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Rotated rectangle overlap](rotated_rectangle_overlap/README.md) | Fit a part footprint and measure overlap against a reference. |
 | [Convex polygon overlap](convex_overlap/README.md) | Compare a detected part hull with an editable polygon and display the intersection. |
 | [Enclosing convex polygon](enclosing_polygon/README.md) | Fit and compare a triangle and quadrilateral around a detected contour. |
+| [Delaunay triangulation](delaunay_triangulation/README.md) | Connect five detected dot centers and overlay their four triangles and eight edges. |
 | [Generalized Hough matching](generalized_hough/README.md) | Locate two copies of a template shape, then restrict the search results to a region. |
 | [Rotated and scaled Hough matching](generalized_hough_guil/README.md) | Find a template with a different rotation and scale, and inspect its oriented outline. |
 | [Image summary statistics](image_statistics/README.md) | Measure a selected patch and mark the extrema in source pixel coordinates. |

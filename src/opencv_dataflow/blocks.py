@@ -715,6 +715,7 @@ def builtin_registry():
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
     from .tiff_files import TiffFile, WriteTiffFile
     from .tilted_statistics import TiltedWindowStatistics
+    from .triangulation import DelaunayTriangulation
     from .video_files import VideoFile, WriteVideo
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
     from .watershed_seeds import WatershedMaskSeeds, WatershedPointSeeds
@@ -792,6 +793,7 @@ def builtin_registry():
         FitShape,
         BoundingRotatedRectangle,
         BoundingConvexPolygon,
+        DelaunayTriangulation,
         RotatedRectangleOverlap,
         ConvexPolygonOverlap,
         FindTemplateInstances,
