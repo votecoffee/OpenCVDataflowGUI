@@ -2047,7 +2047,7 @@ P3	method	cv2.CLAHE.getTilesGridSize	no static reference	-
 P3	method	cv2.CLAHE.setBitShift	no static reference	-
 P3	method	cv2.CLAHE.setClipLimit	no static reference	-
 P3	method	cv2.CLAHE.setTilesGridSize	no static reference	-
-P3	function	cv2.clipLine	no static reference	-
+P3	function	cv2.clipLine	literal reference	-
 P3	function	cv2.colorChange	no static reference	-
 P3	class	cv2.colored_kinfu.ColoredKinFu	no static reference	-
 P3	method	cv2.colored_kinfu.ColoredKinFu.create	method name only	-

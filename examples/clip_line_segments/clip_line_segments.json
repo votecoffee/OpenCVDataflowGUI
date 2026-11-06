@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Two synthetic edges",
+      "parameters": {"path": "assets/edges.png", "path_base": "project", "color_format": "gray"},
+      "position": [0, 200],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "lines",
+      "type": "inspect.hough_polar_lines",
+      "name": "Detect both edges",
+      "parameters": {"minimum_votes": 75, "minimum_lines": 2, "maximum_lines": 2},
+      "position": [340, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["collection"],
+      "thumbnail": true
+    },
+    {
+      "id": "roi",
+      "type": "region.shape",
+      "name": "Inspection rectangle",
+      "parameters": {"shape": "rectangle", "rectangle": [40, 22, 52, 32]},
+      "position": [340, 400],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["region", "overlay"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "clip",
+      "type": "collection.clip_lines",
+      "name": "Measure visible line segments",
+      "parameters": {"minimum_length": 10.0},
+      "position": [680, 200],
+      "exposed_inputs": ["collection", "region"],
+      "exposed_outputs": ["collection", "clipped_count", "rejected", "rejected_count"]
+    },
+    {
+      "id": "draw",
+      "type": "collection.draw",
+      "name": "Draw the 51-pixel span",
+      "parameters": {"draw_bounds": false, "draw_centers": false, "labels": "none", "thickness": 1},
+      "position": [1040, 200],
+      "exposed_inputs": ["image", "collection"],
+      "exposed_outputs": ["overlay", "mask", "count"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "lines", "input": "image"},
+    {"source": "source", "output": "image", "target": "roi", "input": "image"},
+    {"source": "lines", "output": "collection", "target": "clip", "input": "collection"},
+    {"source": "roi", "output": "region", "target": "clip", "input": "region"},
+    {"source": "source", "output": "image", "target": "draw", "input": "image"},
+    {"source": "clip", "output": "collection", "target": "draw", "input": "collection"}
+  ]
+}

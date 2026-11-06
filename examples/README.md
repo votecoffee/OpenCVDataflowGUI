@@ -62,6 +62,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Delaunay triangulation](delaunay_triangulation/README.md) | Connect five detected dot centers and overlay their four triangles and eight edges. |
 | [Hough lines from sparse points](point_set_lines/README.md) | Find two gapped lines amid outliers, then sort and draw their supported spans. |
 | [Hough polar lines](hough_polar_lines/README.md) | Compare the strongest lines under binary and intensity-weighted edge voting. |
+| [Clip line segments](clip_line_segments/README.md) | Measure the portion of a long detected edge inside a rectangular inspection window. |
 | [Hough circle collections](hough_circle_collections/README.md) | Rank circles by native detection strength and draw only those within the desired radius range. |
 | [Fitted ellipse inspection band](fitted_shape_region/README.md) | Fit a rotated ellipse, subtract a smaller fitted region from a larger one, and measure the selected edge band. |
 | [Voronoi cells](voronoi_cells/README.md) | Divide an image around five detected centers and measure intensities inside the selected cell. |
