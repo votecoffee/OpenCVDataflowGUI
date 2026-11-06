@@ -14,6 +14,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [ChArUco board](charuco_board/README.md) | Identify corners on a cropped target and recover the board pose. |
 | [ChArUco lens calibration](charuco_lens_calibration/README.md) | Batch eight target views and fit a lens profile from their visible corners. |
 | [ChArUco calibration validation](validate_charuco_calibration/README.md) | Check the fitted profile on a separate cropped board and identify the worst corner. |
+| [Hand–eye calibration](hand_eye_calibration/README.md) | Fit a robot-mounted camera from paired poses and compose its pose in the robot base frame. |
 | [Circle grid calibration](circle_grid_calibration/README.md) | Detect a staggered dot target and map its centers to physical coordinates. |
 | [Lens correction maps](lens_correction_maps/README.md) | Load a lens profile, build reusable coordinate maps, and straighten a synthetic distorted grid. |
 | [Lens fit report](lens_fit_report/README.md) | Fit six circle-grid views, identify the largest reprojection error, and inspect parameter uncertainty. |

@@ -161,6 +161,22 @@ The fit uses the length units and identified points in the observations.
 **Fit report** includes each view's point count and reprojection RMS.
 [ChArUco lens calibration example](../examples/charuco_lens_calibration/README.md)
 
+## Calibrate a camera mounted on a robot
+
+**Calibrate hand–eye** fits a camera-to-gripper transform from paired
+gripper-to-base and target-to-camera poses. The target stays stationary
+in the base frame. Use 3 to 64 captures, with rotation about multiple
+axes. All poses use named frames and a common length unit, either meters
+or millimeters. The block pairs two lists by position or two groups by
+ticket. Capture the robot and target poses at the same acquisition.
+
+The report measures translation and rotation spread of the reconstructed
+target in the base frame. The block emits camera-to-gripper and mean
+target-to-base poses when the configured RMS checks pass. Compose
+camera-to-gripper with the current gripper-to-base pose to locate
+the camera in base coordinates.
+[Hand–eye example](../examples/hand_eye_calibration/README.md)
+
 ## White and color balance
 
 White / color balance supports gray-world gains from the whole image or a JSON
