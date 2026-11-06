@@ -3017,7 +3017,7 @@ P3	function	cv2.HoughCircles	literal reference	-
 P3	function	cv2.HoughCirclesWithAccumulator	no static reference	-
 P3	function	cv2.HoughLines	no static reference	-
 P3	function	cv2.HoughLinesP	literal reference	-
-P3	function	cv2.HoughLinesPointSet	no static reference	-
+P3	function	cv2.HoughLinesPointSet	literal reference	-
 P3	function	cv2.HoughLinesWithAccumulator	no static reference	-
 P3	function	cv2.HuMoments	literal reference	-
 P3	function	cv2.idct	literal reference	-

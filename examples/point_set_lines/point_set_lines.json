@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Sparse line samples and outliers",
+      "parameters": {
+        "path": "assets/sparse_points.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "points",
+      "type": "cv.find_nonzero_pixels",
+      "name": "Read marked pixel coordinates",
+      "parameters": {"max_points": 100},
+      "position": [330, 200],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["points", "returned_count"]
+    },
+    {
+      "id": "lines",
+      "type": "inspect.hough_point_lines",
+      "name": "Find two lines in the sparse points",
+      "parameters": {"minimum_votes": 16, "minimum_lines": 2, "maximum_lines": 2},
+      "position": [660, 0],
+      "exposed_inputs": ["image", "points"],
+      "exposed_outputs": ["collection", "polar_lines", "count", "point_count"],
+      "thumbnail": true
+    },
+    {
+      "id": "sort",
+      "type": "collection.sort",
+      "name": "Rank by voting strength",
+      "parameters": {"metric": "strength"},
+      "position": [990, 0],
+      "exposed_inputs": ["collection"],
+      "exposed_outputs": ["collection"]
+    },
+    {
+      "id": "draw",
+      "type": "collection.draw",
+      "name": "Show ranked line spans",
+      "parameters": {"draw_bounds": false, "draw_centers": false, "thickness": 1},
+      "position": [1320, 0],
+      "exposed_inputs": ["image", "collection"],
+      "exposed_outputs": ["overlay", "count"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "points", "input": "image"},
+    {"source": "source", "output": "image", "target": "lines", "input": "image"},
+    {"source": "points", "output": "points", "target": "lines", "input": "points"},
+    {"source": "lines", "output": "collection", "target": "sort", "input": "collection"},
+    {"source": "source", "output": "image", "target": "draw", "input": "image"},
+    {"source": "sort", "output": "collection", "target": "draw", "input": "collection"}
+  ]
+}

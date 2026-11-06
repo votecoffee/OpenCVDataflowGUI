@@ -60,6 +60,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Convex polygon overlap](convex_overlap/README.md) | Compare a detected part hull with an editable polygon and display the intersection. |
 | [Enclosing convex polygon](enclosing_polygon/README.md) | Fit and compare a triangle and quadrilateral around a detected contour. |
 | [Delaunay triangulation](delaunay_triangulation/README.md) | Connect five detected dot centers and overlay their four triangles and eight edges. |
+| [Hough lines from sparse points](point_set_lines/README.md) | Find two gapped lines amid outliers, then sort and draw their supported spans. |
 | [Voronoi cells](voronoi_cells/README.md) | Divide an image around five detected centers and measure intensities inside the selected cell. |
 | [Minimum spanning tree](minimum_spanning_tree/README.md) | Find and overlay the shortest network connecting five detected centers using Delaunay edges. |
 | [Generalized Hough matching](generalized_hough/README.md) | Locate two copies of a template shape, then restrict the search results to a region. |
