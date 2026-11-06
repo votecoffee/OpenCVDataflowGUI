@@ -17,6 +17,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Hand–eye calibration](hand_eye_calibration/README.md) | Fit a robot-mounted camera from paired poses and compose its pose in the robot base frame. |
 | [Circle grid calibration](circle_grid_calibration/README.md) | Detect a staggered dot target and map its centers to physical coordinates. |
 | [Lens correction maps](lens_correction_maps/README.md) | Load a lens profile, build reusable coordinate maps, and straighten a synthetic distorted grid. |
+| [Packed remap coordinates](packed_remap/README.md) | Straighten a grid with floating and fixed-point maps, then compare pixel differences. |
 | [Lens fit report](lens_fit_report/README.md) | Fit six circle-grid views, identify the largest reprojection error, and inspect parameter uncertainty. |
 | [Validate lens calibration](validate_lens_calibration/README.md) | Check a saved profile on a separate circle-grid view and overlay the reprojection residuals. |
 | [Lens map displacement](lens_map_displacement/README.md) | Measure correction strength and source coverage, and overlay directions on a heatmap. |

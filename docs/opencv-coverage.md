@@ -90,6 +90,8 @@ individual columns and rows, preserving input order for ties and returning sourc
 [Cartesian and polar fields](../examples/polar_fields/README.md) convert in both directions and preserve angle units.
 [Iterative phase correlation](../examples/iterative_phase_correlation/README.md)
 estimates subpixel translation and emits a correction for the moving image.
+[Packed remap coordinates](../examples/packed_remap/README.md) supports nearest
+and subpixel fixed-point maps and retains lens correction provenance.
 [Paired Sobel and derivative-fed Canny](../examples/canny_derivatives/README.md) expose signed gradients and accept custom derivative fields.
 [Scale absolute to 8-bit](../examples/scale_absolute/README.md) applies gain
 and offset in stored units, saturates large magnitudes, and supports mask and

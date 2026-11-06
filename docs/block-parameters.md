@@ -2003,6 +2003,16 @@ Inputs: `image` (image), `graphics_1` (graphics, optional), `graphics_2` (graphi
 | --- | --- | --- |
 | `excluded_graphics` | `{}` |  |
 
+## Pack remap coordinates (`cv.pack_remap_map`)
+
+Image processing / Geometry
+
+Inputs: `map_x` (image), `map_y` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sampling` | `"subpixel"` | `subpixel`, `nearest` Subpixel retains fractional indices. Nearest stores rounded coordinates only. |
+
 ## Paste image patch (`cv.paste_patch`)
 
 Image processing / Geometry
@@ -2121,6 +2131,20 @@ Inputs: `image` (image).
 Image processing / Geometry
 
 Inputs: `image` (image), `map_x` (image), `map_y` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
+| `border_value` | `0.0` |  |
+
+## Remap with packed coordinates (`cv.remap_packed`)
+
+Image processing / Geometry
+
+Inputs: `image` (image), `packed_map` (remap_map).
+
+Input `packed_map` — Map from Pack remap coordinates. Match Nearest or Subpixel sampling.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |

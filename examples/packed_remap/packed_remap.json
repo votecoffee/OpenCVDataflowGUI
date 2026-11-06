@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "profile",
+      "type": "input.calibration",
+      "name": "Load the synthetic lens profile",
+      "parameters": {
+        "path": "../lens_correction_maps/assets/synthetic_lens.json",
+        "path_base": "project"
+      },
+      "position": [0, 260],
+      "exposed_inputs": [],
+      "exposed_outputs": ["profile"]
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Distorted grid",
+      "parameters": {
+        "path": "../lens_correction_maps/assets/distorted_grid.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "maps",
+      "type": "calibration.lens_maps",
+      "name": "Build floating correction maps",
+      "parameters": {},
+      "position": [330, 260],
+      "exposed_inputs": ["calibration"],
+      "exposed_outputs": ["map_x", "map_y"]
+    },
+    {
+      "id": "pack",
+      "type": "cv.pack_remap_map",
+      "name": "Pack the subpixel maps",
+      "parameters": {"sampling": "subpixel"},
+      "position": [660, 300],
+      "exposed_inputs": ["map_x", "map_y"],
+      "exposed_outputs": ["packed_map"]
+    },
+    {
+      "id": "float",
+      "type": "cv.remap",
+      "name": "Correct with float maps",
+      "parameters": {"interpolation": "linear"},
+      "position": [990, 0],
+      "exposed_inputs": ["image", "map_x", "map_y"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "fixed",
+      "type": "cv.remap_packed",
+      "name": "Correct with the packed map",
+      "parameters": {"interpolation": "linear"},
+      "position": [990, 290],
+      "exposed_inputs": ["image", "packed_map"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "compare",
+      "type": "inspect.image_quality",
+      "name": "Measure fixed-point sampling differences",
+      "parameters": {"metric": "mae"},
+      "position": [1320, 140],
+      "exposed_inputs": ["image_a", "image_b"],
+      "exposed_outputs": ["value", "map"],
+      "thumbnail": true,
+      "preview_output": "absolute error"
+    }
+  ],
+  "connections": [
+    {"source": "profile", "output": "profile", "target": "maps", "input": "calibration"},
+    {"source": "maps", "output": "map_x", "target": "pack", "input": "map_x"},
+    {"source": "maps", "output": "map_y", "target": "pack", "input": "map_y"},
+    {"source": "maps", "output": "map_x", "target": "float", "input": "map_x"},
+    {"source": "maps", "output": "map_y", "target": "float", "input": "map_y"},
+    {"source": "source", "output": "image", "target": "float", "input": "image"},
+    {"source": "source", "output": "image", "target": "fixed", "input": "image"},
+    {"source": "pack", "output": "packed_map", "target": "fixed", "input": "packed_map"},
+    {"source": "float", "output": "image", "target": "compare", "input": "image_a"},
+    {"source": "fixed", "output": "image", "target": "compare", "input": "image_b"}
+  ]
+}

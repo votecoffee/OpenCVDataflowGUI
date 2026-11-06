@@ -1,8 +1,9 @@
-"""Build reusable destination-to-source maps for pinhole lens correction."""
+"""Reusable destination-to-source maps and pinhole lens correction."""
 
 import hashlib
 import json
 import math
+from dataclasses import dataclass, field
 
 import cv2
 import numpy as np
@@ -13,11 +14,62 @@ from .graphics_layers import GraphicDrawing, graphic_object
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import COLORMAPS
 from .payloads import NO_VALUE, frame
-from .processing import finite
+from .processing import finite, image_value
 
 _MAX_AXIS = 16_384
+_REMAP_MAX_AXIS = 32_766
 MAX_MAP_PIXELS = 64_000_000
 _TAG = "lens_remap_map"
+
+
+@dataclass(frozen=True)
+class PackedRemapMap:
+    """Immutable runtime packet for OpenCV's fixed-point remap planes."""
+
+    size: tuple[int, int]
+    coordinates: bytes = field(repr=False)
+    fractions: bytes | None = field(default=None, repr=False)
+
+    def __post_init__(self):
+        if (
+            not isinstance(self.size, tuple)
+            or len(self.size) != 2
+            or any(type(axis) is not int or not 1 <= axis <= _REMAP_MAX_AXIS for axis in self.size)
+            or math.prod(self.size) > MAX_MAP_PIXELS
+        ):
+            raise ValueError("Invalid packed remap dimensions")
+        pixels = math.prod(self.size)
+        if not isinstance(self.coordinates, bytes) or len(self.coordinates) != pixels * 4:
+            raise ValueError("Packed remap requires two int16 coordinates per pixel")
+        if self.fractions is not None and (
+            not isinstance(self.fractions, bytes)
+            or len(self.fractions) != pixels * 2
+            or np.frombuffer(self.fractions, np.uint16).max() >= cv2.INTER_TAB_SIZE2
+        ):
+            raise ValueError("Invalid packed remap interpolation indices")
+
+    def native_maps(self):
+        width, height = self.size
+        coordinates = np.frombuffer(self.coordinates, np.int16).reshape(height, width, 2)
+        fractions = None
+        if self.fractions is not None:
+            fractions = np.frombuffer(self.fractions, np.uint16).reshape(height, width)
+        return coordinates, fractions
+
+    def describe(self):
+        return {
+            "model": "fixed_remap_map_v1",
+            "size": list(self.size),
+            "sampling": "nearest" if self.fractions is None else "subpixel",
+            "bytes": len(self.coordinates) + (len(self.fractions) if self.fractions else 0),
+        }
+
+
+def split_remap_fields(inputs):
+    x, y = (image_value(inputs[key], (np.float32,)) for key in ("map_x", "map_y"))
+    if x.ndim != 2 or y.shape != x.shape or x.size > MAX_MAP_PIXELS:
+        raise ValueError("Remap needs matching 2D float32 coordinate maps")
+    return x, y
 
 
 def valid_lens_size(size):
@@ -43,6 +95,16 @@ def lens_map_payloads(info):
     }
 
 
+def _check_lens_map_grid(info, output_size, *spatials):
+    if (
+        not valid_lens_size(info.get("source_size"))
+        or not valid_lens_size(output_size)
+        or info.get("output_size") != output_size
+        or any(spatial != _map_frame(info) for spatial in spatials)
+    ):
+        raise ValidationError("Lens maps must retain their original pixel grid")
+
+
 def lens_map_pair(block, output_size):
     x, y = (block.input_payloads[name] for name in ("map_x", "map_y"))
     if _TAG not in x and _TAG not in y:
@@ -55,19 +117,25 @@ def lens_map_pair(block, output_size):
         or {**info, "axis": "y"} != other
     ):
         raise ValidationError("Connect matching X and Y lens maps from the same correction")
-    if (
-        not valid_lens_size(info.get("source_size"))
-        or not valid_lens_size(output_size)
-        or info.get("output_size") != output_size
-        or x.get("spatial") != _map_frame(info)
-        or y.get("spatial") != _map_frame(info)
-    ):
-        raise ValidationError("Lens maps must retain their original pixel grid")
+    _check_lens_map_grid(info, output_size, x.get("spatial"), y.get("spatial"))
     return info
 
 
-def lens_remap_payload(block, source_size, output_size):
-    info = lens_map_pair(block, output_size)
+def packed_lens_info(payload, output_size):
+    info = payload.get(_TAG)
+    if info is None:
+        return None
+    if (
+        not isinstance(info, dict)
+        or info.get("axis") != "packed"
+        or not isinstance(info.get("id"), str)
+    ):
+        raise ValidationError("Invalid packed lens map metadata")
+    _check_lens_map_grid(info, output_size, payload.get("spatial"))
+    return info
+
+
+def lens_remap_payload(block, source_size, output_size, info):
     if info is None:
         return {}
     if info["source_size"] != source_size:
@@ -80,6 +148,45 @@ def lens_remap_payload(block, source_size, output_size):
     payload.pop("pyramid", None)
     payload.pop(_TAG, None)
     return {"image": payload}
+
+
+class PackRemapMap(Block):
+    type_id, title = "cv.pack_remap_map", "Pack remap coordinates"
+    category, block_type, subtype = "Image processing", "Image processing", "Geometry"
+    inputs = (Port("map_x"), Port("map_y"))
+    outputs = (Port("packed_map", "remap_map", visual_type="data"),)
+    payload_reference = "map_x"
+    process_inputs_readonly = True
+    defaults = {"sampling": "subpixel"}
+    parameter_choices = {"sampling": ("subpixel", "nearest")}
+    parameter_help = {
+        "sampling": "Subpixel retains fractional indices. Nearest stores rounded coordinates only."
+    }
+
+    def process(self, inputs):
+        x, y = split_remap_fields(inputs)
+        size = x.shape[::-1]
+        if max(size) > _REMAP_MAX_AXIS:
+            raise ValidationError(f"Remap axes are limited to {_REMAP_MAX_AXIS:,} pixels")
+        nearest = self.parameters["sampling"] == "nearest"
+        maximum = 32767 if nearest else 32768 - 1 / cv2.INTER_TAB_SIZE
+        for plane in (x, y):
+            low, high, _, _ = cv2.minMaxLoc(plane)
+            if low < -32768 or high > maximum:
+                raise ValidationError("Remap coordinates exceed the fixed-point range")
+        info = lens_map_pair(self, list(size))
+        coordinates, fractions = cv2.convertMaps(x, y, cv2.CV_16SC2, nninterpolation=nearest)
+        packed = PackedRemapMap(
+            size, coordinates.tobytes(), None if fractions is None else fractions.tobytes()
+        )
+        payload = dict(self.input_payloads["map_x"])
+        if info is not None:
+            payload[_TAG] = {**info, "axis": "packed"}
+        return Result(
+            {"packed_map": packed},
+            payloads={"packed_map": payload},
+            message=f"Packed {size[0]} × {size[1]} {self.parameters['sampling']} map",
+        )
 
 
 class BuildLensMaps(Block):

@@ -38,6 +38,8 @@ Polar image warping straightens circular inspection features and can rewrap
 an intact polar grid to its original Cartesian frame.
 Iterative phase correlation estimates fractional-pixel motion between two
 images and supplies an inverse translation for alignment.
+Fixed-point coordinate maps reduce map storage for reusable remapping and
+carry the lens correction frame through the packed path.
 Scaled absolute conversion maps signed responses to an 8-bit magnitude image
 for display and thresholding.
 Channel routing assembles selected channels from one or two images without

@@ -2092,7 +2092,7 @@ P3	function	cv2.connectedComponentsWithAlgorithm	literal reference	-
 P3	function	cv2.connectedComponentsWithStats	literal reference	-
 P3	function	cv2.connectedComponentsWithStatsWithAlgorithm	literal reference	-
 P3	function	cv2.contourArea	literal reference	-
-P3	function	cv2.convertMaps	no static reference	-
+P3	function	cv2.convertMaps	literal reference	-
 P3	function	cv2.convertPointsFromHomogeneous	no static reference	-
 P3	function	cv2.convertPointsToHomogeneous	no static reference	-
 P3	function	cv2.convertScaleAbs	literal reference	-
