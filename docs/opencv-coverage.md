@@ -68,6 +68,8 @@ comparison views with padding and per-panel coordinate context.
 copy at a canvas offset and reports both rectangles and the copied pixels.
 [Subpixel patch extraction](../examples/subpixel_crop/README.md) samples a
 rectangular patch at a fractional center and preserves coordinate provenance.
+[Hough lines from points](../examples/point_set_lines/README.md) finds lines
+from sparse coordinates and exposes vote counts for collection sorting.
 [Polar image warp](../examples/polar_image_warp/README.md) unwraps circular
 features onto linear or semilog grids, tracks source coverage, and can rewrap
 an intact grid into its original frame.

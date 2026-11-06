@@ -698,6 +698,7 @@ def builtin_registry():
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .pick_selection import SelectPickCandidate
+    from .point_set_lines import HoughPointSetLines
     from .polar_image import PolarImageWarp
     from .polynomial_roots import SolvePolynomialRoots
     from .poses import POSE_BLOCKS
@@ -811,6 +812,7 @@ def builtin_registry():
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,
         *COLLECTION_BLOCKS,
+        HoughPointSetLines,
         *CONTOUR_ANALYSIS_BLOCKS,
         *CODE_READER_BLOCKS,
         ReadZXingBarcode,

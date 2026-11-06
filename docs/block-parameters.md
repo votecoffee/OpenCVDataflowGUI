@@ -3578,6 +3578,34 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `rho` | `1.0` | Value must be a finite number at least 0. |
 | `theta_degrees` | `1.0` | Value must be a finite number between 0 and 180. |
 
+## Hough lines from points (`inspect.hough_point_lines`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `points` (data).
+
+Input `image` — Coordinate frame and overlay background for the sparse points.
+
+Input `points` — Finite [x, y] rows in input image coordinates. Image pixels do not vote.
+
+Input `mask` — Keep voting points whose nearest pixel is inside this mask.
+
+Input `region` — Keep voting points whose nearest pixel is inside this region.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_votes` | `12` | Value must be a whole number between 1 and 100000. Fewest point votes required in a Hough bin, inclusive. |
+| `maximum_lines` | `32` | Value must be a whole number between 1 and 512. Maximum native peaks returned in vote order. |
+| `minimum_lines` | `1` | Value must be a whole number between 0 and 512. Fewest finite segments required to pass. Zero permits an empty result. |
+| `rho_mode` | `"auto"` | `auto`, `custom` Fit a symmetric distance search to the points, or set the native range. |
+| `rho_min` | `-512.0` | Value must be a finite number between -32768 and 32768. Lower signed normal-distance limit in Custom mode, in pixels. |
+| `rho_max` | `512.0` | Value must be a finite number between -32768 and 32768. Upper signed normal-distance limit in Custom mode, in pixels. |
+| `rho_step` | `1.0` | Value must be a finite number between 0.01 and 32768. Spacing between normal-distance bins, in pixels. |
+| `theta_min_degrees` | `0.0` | Value must be a finite number between 0 and 180. First line-normal angle. Zero searches vertical lines. |
+| `theta_max_degrees` | `180.0` | Value must be a finite number between 0 and 180. Upper angle bound for the line normal, in degrees. |
+| `theta_step_degrees` | `1.0` | Value must be a finite number between 0.01 and 180. Angle bin spacing. A 90-degree normal describes a horizontal line. |
+| `support_distance` | `0.0` | Value must be a finite number between 0 and 32768. Distance to the peak line for endpoint support. Zero uses half a bin. |
+
 ## Find Hough template (`inspect.hough_template`)
 
 Inspection / Matching
