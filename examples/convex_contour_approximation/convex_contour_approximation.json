@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Chamfered part silhouette",
+      "parameters": {"path": "assets/chamfered.png", "path_base": "project", "color_format": "gray"},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "contour",
+      "type": "inspect.contours",
+      "name": "Find part outline",
+      "parameters": {"min_area": 100, "expected_count": 1},
+      "position": [360, 220],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["collection"],
+      "thumbnail": true
+    },
+    {
+      "id": "four",
+      "type": "inspect.approximate_convex_contour",
+      "name": "Fit four sides",
+      "parameters": {"target_sides": 4},
+      "position": [760, 0],
+      "exposed_inputs": ["image", "contour"],
+      "exposed_outputs": ["points", "vertex_count", "measurements", "overlay"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "six",
+      "type": "inspect.approximate_convex_contour",
+      "name": "Fit six sides within 2% area growth",
+      "parameters": {"target_sides": 6, "max_added_area_percent": 2},
+      "position": [760, 380],
+      "exposed_inputs": ["image", "contour"],
+      "exposed_outputs": ["points", "vertex_count", "measurements", "overlay"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "contour", "input": "image"},
+    {"source": "source", "output": "image", "target": "four", "input": "image"},
+    {"source": "contour", "output": "collection", "target": "four", "input": "contour"},
+    {"source": "source", "output": "image", "target": "six", "input": "image"},
+    {"source": "contour", "output": "collection", "target": "six", "input": "contour"}
+  ]
+}

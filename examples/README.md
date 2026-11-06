@@ -113,6 +113,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Contour profile tolerance](contour_profile/README.md) | Compare aligned outlines for missing and excess material. |
 | [Contour defect inspection](contour_defects/README.md) | Replay passing and failing parts with shallow and deep edge notches. |
 | [Contour approximation](contour_approximation/README.md) | Simplify the dense outline of a chamfered part into six polygon vertices. |
+| [Convex contour approximation](convex_contour_approximation/README.md) | Compare a four-sided footprint with a six-sided approximation under an area budget. |
 | [Contour hierarchy](contour_hierarchy/README.md) | Follow parent and child links through nested outlines, holes, and islands. |
 | [Lab color classification](lab_color_classification/README.md) | Classify a measured image patch against a named Lab palette. |
 | [Stereo WLS confidence](stereo_confidence/README.md) | Gate disparity with a confidence image before reconstructing a partly occluded stereo pair. |

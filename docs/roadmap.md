@@ -43,6 +43,8 @@ Hough circle detection emits fitted radii and native strengths for collection
 filtering, ranking, and filled disk masks.
 Fitted ellipse and enclosing-circle selections follow measured geometry for
 interior and perimeter inspections.
+Fixed-side convex contour approximation reports the polygon and area added
+over the source hull, including when a configured budget stops reduction early.
 Polar image warping straightens circular inspection features and can rewrap
 an intact polar grid to its original Cartesian frame.
 Iterative phase correlation estimates fractional-pixel motion between two

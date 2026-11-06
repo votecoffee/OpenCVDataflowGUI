@@ -20,6 +20,11 @@ Optional selections keep lines whose endpoints both lie in the selection, matchi
 the existing Hough selection policy. This does not guarantee an entire segment
 lies within a concave region.
 
+**Approximate convex contour** accepts an ordered outline or a contour/blob
+collection item. It reduces a convex boundary toward a requested side count
+and reports the resulting area. An optional budget limits the area added
+over the convex hull. [Convex contour example](../examples/convex_contour_approximation/README.md)
+
 ## Measurements and conventions
 
 | Criteria | Meaning |

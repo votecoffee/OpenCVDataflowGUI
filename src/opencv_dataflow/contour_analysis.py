@@ -392,6 +392,29 @@ class TestContourPoints(Block):
         return Result(outputs, payloads={name: context for name in outputs})
 
 
+def _contour_preview(block, image, payload, points, *, closed, label, color):
+    overlay = NO_VALUE
+    drawings = {}
+    source = "contour"
+    if image is not None:
+        size = [image.shape[1], image.shape[0]]
+        if payload.get("spatial", {}).get("image_size", size) != size:
+            raise ValidationError("Overlay image dimensions must match the contour frame")
+        try:
+            require_same_frame((image, ValuePacket(None, payload)))
+        except ValueError as exc:
+            raise ValidationError("Overlay image must share the contour frame") from exc
+        overlay = overlay_image(image)
+        source = "image"
+    if points is not None and (image is not None or block.generate_graphics):
+        graphic = graphic_object("polyline", points, color, closed=closed)
+        if image is not None:
+            draw_object(overlay, graphic, np.eye(3))
+        if block.generate_graphics:
+            drawings[label] = GraphicDrawing((graphic,), source=source)
+    return overlay, drawings
+
+
 class ApproximateContour(Block):
     type_id, title = "inspect.approximate_contour", "Approximate contour"
     category, block_type, subtype = "Inspection", "Inspection", "Measurements"
@@ -446,26 +469,15 @@ class ApproximateContour(Block):
         count = len(simplified)
         area = float(cv2.contourArea(simplified)) if closed and count >= 3 else 0.0
         passed = area > 0 if closed else count >= 2
-        overlay = NO_VALUE
-        drawings = {}
-        image = inputs.get("image")
-        drawing_source = "contour"
-        if image is not None:
-            size = [image.shape[1], image.shape[0]]
-            if payload.get("spatial", {}).get("image_size", size) != size:
-                raise ValidationError("Overlay image dimensions must match the contour frame")
-            try:
-                require_same_frame((image, ValuePacket(None, payload)))
-            except ValueError as exc:
-                raise ValidationError("Overlay image must share the contour frame") from exc
-            overlay = overlay_image(image)
-            drawing_source = "image"
-        if passed and (image is not None or self.generate_graphics):
-            graphic = graphic_object("polyline", simplified, (70, 220, 140), closed=closed)
-            if image is not None:
-                draw_object(overlay, graphic, np.eye(3))
-            if self.generate_graphics:
-                drawings["simplified contour"] = GraphicDrawing((graphic,), source=drawing_source)
+        overlay, drawings = _contour_preview(
+            self,
+            inputs.get("image"),
+            payload,
+            simplified if passed else None,
+            closed=closed,
+            label="simplified contour",
+            color=(70, 220, 140),
+        )
         outputs = {
             "points": simplified.tolist(),
             "vertex_count": count,
@@ -493,6 +505,145 @@ class ApproximateContour(Block):
                 }
             ],
             message=f"Simplified {len(native)} vertices to {count} at {epsilon:.3g} px tolerance",
+        )
+
+
+def _strictly_convex(points):
+    # The native convexity predicate assumes a simple contour. Check the actual hull order.
+    indices = cv2.convexHull(points, returnPoints=False).ravel()
+    count = len(points)
+    if len(indices) != count:
+        return False
+    steps = (np.roll(indices, -1) - indices) % count
+    return np.all(steps == 1) or np.all(steps == count - 1)
+
+
+class ApproximateConvexContour(Block):
+    type_id, title = "inspect.approximate_convex_contour", "Approximate convex contour"
+    category, block_type, subtype = "Inspection", "Inspection", "Measurements"
+    inputs, outputs = ApproximateContour.inputs, ApproximateContour.outputs
+    defaults = {
+        "item_index": 0,
+        "target_sides": 4,
+        "convexity": "convex_hull",
+        "max_added_area_percent": -1.0,
+    }
+    parameter_choices = {"convexity": ("convex_hull", "require_convex")}
+    parameter_ranges = {
+        "item_index": ApproximateContour.parameter_ranges["item_index"],
+        "target_sides": NumericRange(3, 1024, whole=True),
+        "max_added_area_percent": NumericRange(-1, 10000),
+    }
+    parameter_help = {
+        "item_index": ApproximateContour.parameter_help["item_index"],
+        "target_sides": "Exact side count requested. A valid polygon with a different count fails.",
+        "convexity": "Start from the convex hull or require a strictly convex input contour.",
+        "max_added_area_percent": "Area added beyond the hull as a percentage of source contour "
+        "area. Use a positive percentage or -1 for no limit.",
+    }
+    input_help = ApproximateContour.input_help
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        budget = float(p["max_added_area_percent"])
+        if budget != -1 and np.float32(budget / 100) <= 0:
+            raise ValidationError("Use a positive percentage or -1", "max_added_area_percent")
+
+    def _approximation(self, native, hull, center, source_area, hull_area):
+        p = self.parameters
+        target = int(p["target_sides"])
+        if len(hull) <= target:
+            return hull, "target_exceeds_hull" if len(hull) < target else ""
+        percentage = float(p["max_added_area_percent"])
+        limited = percentage > 0
+        fraction = percentage / 100 if limited else -1.0
+        candidate = cv2.approxPolyN(
+            native.reshape(-1, 1, 2),
+            target,
+            epsilon_percentage=fraction,
+            ensure_convex=p["convexity"] == "convex_hull",
+        ).reshape(-1, 2)
+        distance_tolerance = 8 * np.finfo(np.float32).eps * max(1, np.abs(hull).max())
+        area_tolerance = 1e-5 * max(1, hull_area)
+        if (
+            not target <= len(candidate) <= len(hull)
+            or not np.isfinite(candidate).all()
+            or np.max(np.abs(candidate + center)) > 1_000_000
+        ):
+            return hull, "invalid_native_enclosure"
+        area = cv2.contourArea(candidate)
+        if (
+            area <= 0
+            or area < hull_area - area_tolerance
+            or (limited and area - hull_area > fraction * source_area + area_tolerance)
+            or not _strictly_convex(candidate)
+            or any(
+                cv2.pointPolygonTest(candidate, tuple(point), True) < -distance_tolerance
+                for point in hull.tolist()
+            )
+        ):
+            return hull, "invalid_native_enclosure"
+        return candidate, "target_not_reached" if len(candidate) != target else ""
+
+    def process(self, inputs):
+        p = self.parameters
+        try:
+            points, _, _, payload = read_contour(self, inputs, "contour", p["item_index"])
+        except (TypeError, ValueError) as exc:
+            raise ValidationError(str(exc)) from exc
+        center = points.mean(axis=0)
+        native = (points - center).astype(np.float32)
+        source_area = cv2.contourArea(native)
+        if p["convexity"] == "require_convex":
+            if not _strictly_convex(native):
+                raise ValidationError("Require convex needs a strictly convex input contour")
+            hull = native
+        else:
+            hull = cv2.convexHull(native).reshape(-1, 2)
+        if not 3 <= len(hull) <= 1024:
+            raise ValidationError("Convex approximation requires 3 to 1,024 hull vertices")
+        hull_area = cv2.contourArea(hull)
+        if source_area <= 0 or hull_area <= 0:
+            raise ValidationError("Contour and hull must enclose positive areas")
+        polygon, reason = self._approximation(native, hull, center, source_area, hull_area)
+        area = cv2.contourArea(polygon)
+        target = int(p["target_sides"])
+        vertices = polygon.astype(np.float64) + center
+        overlay, drawings = _contour_preview(
+            self,
+            inputs.get("image"),
+            payload,
+            vertices,
+            closed=True,
+            label="convex approximation",
+            color=REJECTED if reason else ACCEPTED,
+        )
+        outputs = {
+            "points": vertices.tolist(),
+            "vertex_count": len(vertices),
+            "measurements": {
+                "target_sides": target,
+                "source_area": source_area,
+                "hull_area": hull_area,
+                "area": area,
+                "added_area_percent": 100 * max(0.0, area - hull_area) / source_area,
+                "status": reason or "target_reached",
+            },
+            "overlay": overlay,
+        }
+        messages = {
+            "target_exceeds_hull": "The target has more vertices than the source hull",
+            "invalid_native_enclosure": "OpenCV returned an invalid enclosure. Showing the hull.",
+            "target_not_reached": "The approximation stopped before reaching the requested sides",
+        }
+        return Result(
+            outputs,
+            payloads={name: payload for name in outputs if name != "overlay" and payload},
+            drawings=drawings,
+            passed=not reason,
+            fail_reasons=[{"code": reason, "message": messages[reason]}] if reason else [],
+            message=f"{len(vertices)} sides / {target} requested",
         )
 
 
@@ -592,5 +743,6 @@ CONTOUR_ANALYSIS_BLOCKS = (
     ContourHull,
     TestContourPoints,
     ApproximateContour,
+    ApproximateConvexContour,
     ContourHierarchy,
 )

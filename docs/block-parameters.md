@@ -3073,6 +3073,21 @@ Input `image` — Optional aligned background for viewing the simplified contour
 | `epsilon_pixels` | `2.0` | Value must be a finite number between 0 and 1e+06. Maximum approximation tolerance when Epsilon Mode is pixels. |
 | `length_fraction` | `0.01` | Value must be a finite number between 0 and 1. Tolerance as a fraction of the original perimeter or path length. |
 
+## Approximate convex contour (`inspect.approximate_convex_contour`)
+
+Inspection / Measurements
+
+Inputs: `contour` (data), `image` (image, optional).
+
+Input `image` — Optional aligned background for viewing the simplified contour.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `item_index` | `0` | Value must be a whole number at least 0. Zero-based contour collection item. A blob uses its largest boundary. |
+| `target_sides` | `4` | Value must be a whole number between 3 and 1024. Exact side count requested. A valid polygon with a different count fails. |
+| `convexity` | `"convex_hull"` | `convex_hull`, `require_convex` Start from the convex hull or require a strictly convex input contour. |
+| `max_added_area_percent` | `-1.0` | Value must be a finite number between -1 and 10000. Area added beyond the hull as a percentage of source contour area. Use a positive percentage or -1 for no limit. |
+
 ## Paired-edge bead calipers (`inspect.bead_calipers`)
 
 Inspection / Measurements
