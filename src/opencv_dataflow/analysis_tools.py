@@ -13,7 +13,13 @@ from .payloads import NO_VALUE, require_same_frame
 from .processing import ImageTool, encoded_result, finite, gray_image, image_value, integer
 from .registration import BORDERS as WARP_BORDERS
 from .registration import INTERPOLATION
-from .remap_maps import lens_remap_payload
+from .remap_maps import (
+    PackRemapMap,
+    lens_map_pair,
+    lens_remap_payload,
+    packed_lens_info,
+    split_remap_fields,
+)
 from .selection import SELECTION_INPUTS, RegionalOperation, selection_mask
 
 
@@ -565,23 +571,46 @@ class Remap(Block):
     defaults = {"interpolation": "linear", "border": "constant", "border_value": 0.0}
     parameter_choices = {"interpolation": tuple(INTERPOLATION), "border": tuple(WARP_BORDERS)}
 
+    def coordinate_maps(self, inputs):
+        x, y = split_remap_fields(inputs)
+        return x, y, lens_map_pair(self, list(x.shape[::-1]))
+
     def process(self, inputs):
         image = image_value(inputs["image"])
-        x, y = (image_value(inputs[k], (np.float32,)) for k in ("map_x", "map_y"))
-        if x.ndim != 2 or y.shape != x.shape or x.size > 64_000_000:
-            raise ValueError("Remap needs matching 2D float32 coordinate maps")
-        payloads = lens_remap_payload(self, list(image.shape[1::-1]), list(x.shape[::-1]))
+        map1, map2, lens = self.coordinate_maps(inputs)
+        payloads = lens_remap_payload(self, list(image.shape[1::-1]), list(map1.shape[1::-1]), lens)
         value = finite(self.parameters["border_value"], "Border value")
         fill = tuple([value] * image.shape[2]) if image.ndim == 3 else value
         result = cv2.remap(
             image,
-            x,
-            y,
+            map1,
+            map2,
             INTERPOLATION[self.parameters["interpolation"]],
             borderMode=WARP_BORDERS[self.parameters["border"]],
             borderValue=fill,
         )
         return encoded_result(result, inputs["image"], payloads=payloads)
+
+
+class RemapPacked(Remap):
+    type_id, title = "cv.remap_packed", "Remap with packed coordinates"
+    inputs = (Port("image"), Port("packed_map", "remap_map", visual_type="data"))
+    process_inputs_readonly = True
+    input_help = {
+        "packed_map": "Map from Pack remap coordinates. Match Nearest or Subpixel sampling."
+    }
+
+    def coordinate_maps(self, inputs):
+        packed = inputs["packed_map"]
+        coordinates, fractions = packed.native_maps()
+        if (self.parameters["interpolation"] == "nearest") != (fractions is None):
+            raise ValidationError(
+                "Use nearest interpolation with Nearest maps and interpolated modes with "
+                "Subpixel maps",
+                "interpolation",
+            )
+        lens = packed_lens_info(self.input_payloads["packed_map"], list(packed.size))
+        return coordinates, fractions, lens
 
 
 _ANGLE_UNITS = ("radians", "degrees")
@@ -1147,6 +1176,8 @@ ANALYSIS_BLOCKS = (
     IterativePhaseCorrelation,
     EstimateAffine,
     Remap,
+    PackRemapMap,
+    RemapPacked,
     CartesianToPolar,
     PolarToCartesian,
 )

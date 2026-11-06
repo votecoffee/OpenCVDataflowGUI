@@ -355,6 +355,10 @@ for **Remap image coordinates**, with output intrinsics and a separate
 coordinate frame for the corrected image.
 [Lens correction maps example](examples/lens_correction_maps/README.md)
 
+**Pack remap coordinates** prepares a compact map for **Remap with packed
+coordinates**. Lens maps retain their rectified frame. The
+[packed remap example](examples/packed_remap/README.md) compares both paths.
+
 **Inspect lens map displacement** shows correction strength and direction
 and reports how much of the output samples inside the source image.
 [Lens map displacement example](examples/lens_map_displacement/README.md)

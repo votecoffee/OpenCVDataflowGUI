@@ -669,6 +669,11 @@ def validate_value(port, value):
 
         if not isinstance(value, EncodedImage):
             raise TypeError(f"{port.name} requires an encoded image packet")
+    elif port.kind == "remap_map":
+        from .remap_maps import PackedRemapMap
+
+        if not isinstance(value, PackedRemapMap):
+            raise TypeError(f"{port.name} requires packed remap coordinates")
     elif port.kind == "depth":
         if (
             not isinstance(value, np.ndarray)

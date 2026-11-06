@@ -24,6 +24,8 @@ parameter names and default behavior are retained.
 | Iterative phase correlation | Reference and moving images → subpixel shift, inverse warp, and status | Float precision, odd refinement neighborhood, iteration limit |
 | Estimate affine transform | MatchORB correspondences → transform and inlier count | Full/partial model, RANSAC/LMedS, reprojection threshold, iterations, confidence, refinement and acceptance limits |
 | Remap image coordinates | Image and float32 X/Y maps → image | Interpolation, border and constant fill |
+| Pack remap coordinates | Float32 X/Y maps → fixed-point packet | Subpixel fractions or rounded nearest coordinates |
+| Remap with packed coordinates | Image and fixed-point packet → image | Compatible interpolation, border and constant fill |
 | Cartesian to polar fields | Matching monochrome float X/Y fields → magnitude and angle | Radians/degrees |
 
 Connect **Good features to track > points** to **Refine corners > points**, with
@@ -49,9 +51,12 @@ and independent axis scaling. These are image-space transforms, separate from
 grid-based physical calibration.
 
 Remap accepts two single-channel float32 coordinate images. Each output pixel
-samples the source at `(map_x, map_y)`. It currently accepts split floating maps;
-packed fixed-point maps are not implemented. Cartesian-to-polar inputs must share
-dimensions and floating depth; units describe the angle output only.
+samples the source at `(map_x, map_y)`. **Pack remap coordinates** converts
+the pair for **Remap with packed coordinates**. Both paths preserve the
+rectified frame when given lens correction maps. The
+[packed remap example](../examples/packed_remap/README.md) compares their
+pixel values. Cartesian-to-polar inputs must share dimensions and floating
+depth. The units describe the angle output only.
 
 ## Expanded existing controls
 
