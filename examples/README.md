@@ -91,6 +91,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Masks from signed labels](label_masks/README.md) | Select watershed boundaries and interiors directly from the label image. |
 | [Fourier correlation](fourier_correlation/README.md) | Recover a known signed shift and inspect the lag map. |
 | [Iterative phase correlation](iterative_phase_correlation/README.md) | Estimate a fractional-pixel shift and apply the inverse warp. |
+| [Matched-feature translation](translation_registration/README.md) | Fit a translation from SIFT matches and reproduce a known shifted view. |
 | [Fourier gain mask](fourier_gain/README.md) | Apply a custom notch at a specific frequency pair and reconstruct the image. |
 | [Fourier spectrum filtering](fourier_filter/README.md) | Reject a periodic stripe pattern with a band-stop filter and inverse DFT. |
 | [Discrete cosine transform](dct_round_trip/README.md) | Inspect DCT coefficients and verify the reconstructed image against the source. |

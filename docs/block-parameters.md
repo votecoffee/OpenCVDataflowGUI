@@ -4030,6 +4030,26 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | --- | --- | --- |
 | `method` | `"zhang_suen"` | `zhang_suen`, `guo_hall` |
 
+## Estimate image translation (`inspect.translation`)
+
+Inspection / Registration
+
+Inputs: `matches` (data), `train_image` (image, optional).
+
+Input `matches` — Matched query and train point lists, paired in their original order.
+
+Input `train_image` — Optional image from the train branch for green and red match markers.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"ransac"` | `ransac`, `lmeds` RANSAC uses a pixel tolerance. LMeDS assumes a majority of correct pairs. |
+| `reprojection_pixels` | `3.0` | Value must be a finite number between 1e-09 and 1e+12. RANSAC inlier distance in pixels. LMeDS uses its own cutoff. |
+| `max_iterations` | `2000` | Value must be a whole number between 1 and 100000. Maximum iterations for robust consensus. |
+| `confidence` | `0.99` | Value must be a finite number between 1e-09 and 1. Requested confidence for robust consensus. |
+| `refine_iterations` | `0` | Value must be a whole number between 0 and 10000. Optional native refinement. Zero uses the closed-form inlier fit. |
+| `min_inliers` | `3` | Value must be a whole number between 1 and 100000. Minimum number of inliers required to emit the transform. |
+| `min_inlier_ratio` | `0.5` | Value must be a finite number between 0 and 1. Minimum fraction of inliers required to emit the transform. |
+
 ## Verify decoded text (`inspect.verify_text`)
 
 Inspection / Code reading

@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Reference texture",
+      "parameters": {
+        "path": "../sift_registration/assets/texture.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "shift",
+      "type": "cv.warp_affine",
+      "name": "Move right 9 px and down 13 px",
+      "parameters": {"matrix": [[1, 0, 9], [0, 1, 13]]},
+      "position": [300, 270],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "query",
+      "type": "inspect.sift",
+      "name": "SIFT on the reference",
+      "parameters": {"max_features": 500},
+      "position": [600, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["features"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "train",
+      "type": "inspect.sift",
+      "name": "SIFT on the shifted image",
+      "parameters": {"max_features": 500},
+      "position": [600, 270],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["features"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "match",
+      "type": "inspect.match_sift",
+      "name": "Pair descriptors across views",
+      "parameters": {},
+      "position": [900, 0],
+      "exposed_inputs": ["query", "train"],
+      "exposed_outputs": ["matches", "count"]
+    },
+    {
+      "id": "estimate",
+      "type": "inspect.translation",
+      "name": "Fit the common translation",
+      "parameters": {"reprojection_pixels": 1.0, "min_inliers": 8},
+      "position": [1200, 0],
+      "exposed_inputs": ["matches", "train_image"],
+      "exposed_outputs": ["transform", "inliers", "fit"],
+      "thumbnail": true
+    },
+    {
+      "id": "warp",
+      "type": "cv.warp_affine",
+      "name": "Recreate the shifted view",
+      "parameters": {},
+      "position": [1500, 270],
+      "exposed_inputs": ["image", "transform"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "shift", "input": "image"},
+    {"source": "source", "output": "image", "target": "query", "input": "image"},
+    {"source": "shift", "output": "image", "target": "train", "input": "image"},
+    {"source": "query", "output": "features", "target": "match", "input": "query"},
+    {"source": "train", "output": "features", "target": "match", "input": "train"},
+    {"source": "match", "output": "matches", "target": "estimate", "input": "matches"},
+    {"source": "shift", "output": "image", "target": "estimate", "input": "train_image"},
+    {"source": "estimate", "output": "transform", "target": "warp", "input": "transform"},
+    {"source": "source", "output": "image", "target": "warp", "input": "image"}
+  ]
+}

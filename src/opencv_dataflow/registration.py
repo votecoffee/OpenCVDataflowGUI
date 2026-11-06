@@ -78,7 +78,10 @@ def warped(source, matrix, size, interpolation, border, value, inverse_map=False
 
 class WarpAffine(ImageTool):
     type_id, title, subtype = "cv.warp_affine", "Warp affine", "Geometry"
-    inputs = (Port("image"), Port("transform", "data", required=False))
+    inputs = (
+        Port("image"),
+        Port("transform", "data", required=False, required_when_connected=True),
+    )
     outputs = (Port("image"), Port("geometry", "data"))
     defaults = {
         "matrix": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]],
