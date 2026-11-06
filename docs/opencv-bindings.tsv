@@ -1965,7 +1965,7 @@ P3	function	cv2.boundingRect	literal reference	-
 P3	function	cv2.boxFilter	literal reference	-
 P3	function	cv2.boxPoints	literal reference	-
 P3	function	cv2.broadcast	no static reference	-
-P3	function	cv2.buildMST	no static reference	-
+P3	function	cv2.buildMST	literal reference	-
 P3	function	cv2.buildOpticalFlowPyramid	no static reference	-
 P3	function	cv2.calcCovarMatrix	literal reference	-
 P3	function	cv2.calcHist	no static reference	-
@@ -3692,7 +3692,7 @@ P3	function	cv2.motempl.calcMotionGradient	no static reference	-
 P3	function	cv2.motempl.segmentMotion	no static reference	-
 P3	function	cv2.motempl.updateMotionHistory	no static reference	-
 P3	function	cv2.moveWindow	no static reference	-
-P3	class	cv2.MSTEdge	no static reference	-
+P3	class	cv2.MSTEdge	literal reference	-
 P3	function	cv2.mulSpectrums	literal reference	-
 P3	function	cv2.multiply	literal reference	-
 P3	function	cv2.mulTransposed	literal reference	-
