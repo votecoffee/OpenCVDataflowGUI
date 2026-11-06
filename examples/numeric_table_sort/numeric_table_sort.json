@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "rank",
+      "type": "cv.sort_numeric_table",
+      "name": "Rank complete part records by score",
+      "parameters": {
+        "table": [
+          [
+            101,
+            0.83,
+            52
+          ],
+          [
+            102,
+            0.94,
+            8
+          ],
+          [
+            103,
+            0.94,
+            73
+          ],
+          [
+            104,
+            0.71,
+            32
+          ]
+        ],
+        "mode": "rows_by_column",
+        "key_index": 1,
+        "order": "descending"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "table",
+        "indices"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "columns",
+      "type": "cv.sort_numeric_table",
+      "name": "Sort each column for distribution analysis",
+      "parameters": {
+        "mode": "within_columns",
+        "order": "ascending"
+      },
+      "position": [
+        410,
+        0
+      ],
+      "exposed_inputs": [
+        "table"
+      ],
+      "exposed_outputs": [
+        "table",
+        "indices"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "rank",
+      "output": "table",
+      "target": "columns",
+      "input": "table"
+    }
+  ]
+}
