@@ -381,6 +381,10 @@ different visible corners in each view. It reports the point count and
 reprojection RMS for each image.
 [ChArUco lens calibration example](examples/charuco_lens_calibration/README.md)
 
+**Validate lens calibration** also accepts identified ChArUco points from
+a separate partial view and reports residuals by board corner ID.
+[ChArUco validation example](examples/validate_charuco_calibration/README.md)
+
 ### Build and test a starter project
 
 For the real-image Lena review example, run `python scripts/prepare_lena.py` once,

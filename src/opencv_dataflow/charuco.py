@@ -243,6 +243,60 @@ class DetectCharucoBoard(Block):
         )
 
 
+def observation_board(observation):
+    """Recover the board definition and corner coordinates from an observation."""
+    if not isinstance(observation, dict) or observation.get("model") != "charuco_observation_v1":
+        raise ValidationError("Expected a ChArUco observation")
+    spec = observation.get("board")
+    size = image_size(observation.get("image_size"))
+    if not isinstance(spec, dict):
+        raise ValidationError("Invalid ChArUco board definition")
+    for field in ("columns", "rows", "square_length", "marker_length"):
+        DetectCharucoBoard.parameter_ranges[field].check(spec.get(field), field, field)
+    if (
+        spec.get("dictionary") not in MARKER_CHOICES["dictionary"]
+        or spec.get("units") not in DetectCharucoBoard.parameter_choices["units"]
+        or type(spec.get("legacy_pattern")) is not bool
+        or not spec.get("marker_ids")
+    ):
+        raise ValidationError("Invalid ChArUco board definition")
+    board = _make_board(spec)
+    board_points = board.getChessboardCorners().reshape(-1, 3)
+    return spec, size, board, board_points
+
+
+def observation_points(observation, board, board_points, size, label="ChArUco observation"):
+    """Validate image points and recover exact board coordinates by corner ID."""
+    ids = observation.get("corner_ids")
+    if (
+        not isinstance(ids, list)
+        or not 4 <= len(ids) <= len(board_points)
+        or any(type(i) is not int or not 0 <= i < len(board_points) for i in ids)
+        or len(set(ids)) != len(ids)
+    ):
+        raise ValidationError(f"{label} needs at least four unique corner IDs")
+    xy = np.asarray(observation.get("image_points"), dtype=np.float32)
+    xyz = np.asarray(observation.get("object_points"), dtype=np.float32)
+    expected = board_points[ids]
+    if (
+        xy.shape != (len(ids), 2)
+        or xyz.shape != expected.shape
+        or not np.isfinite(xy).all()
+        or np.any(xy < -0.5)
+        or np.any(xy > np.asarray(size) - 0.5)
+        or not np.allclose(xyz, expected, atol=board.getSquareLength() * 1e-6, rtol=1e-6)
+    ):
+        raise ValidationError(f"{label} contains invalid matched points")
+    ids = np.asarray(ids, dtype=np.int32)
+    if (
+        board.checkCharucoCornersCollinear(ids)
+        or len(np.unique(xy, axis=0)) != len(xy)
+        or np.linalg.matrix_rank(xy - xy[0]) < 2
+    ):
+        raise ValidationError(f"{label} needs distinct, noncollinear points")
+    return ids, xy, expected
+
+
 def calibration_observations(value):
     """Read a batch of observations of one board in one camera pixel grid."""
     if isinstance(value, FlowGroup):
@@ -261,25 +315,11 @@ def calibration_observations(value):
         for item in observations
     ):
         raise ValidationError("Each view must contain a ChArUco observation")
-    first = observations[0]
-    spec = first.get("board")
-    size = image_size(first.get("image_size"))
-    if not isinstance(spec, dict) or any(item.get("board") != spec for item in observations):
+    spec, size, board, board_points = observation_board(observations[0])
+    if any(item.get("board") != spec for item in observations):
         raise ValidationError("All ChArUco observations must describe the same board")
-    if any(item.get("image_size") != first["image_size"] for item in observations):
+    if any(item.get("image_size") != observations[0]["image_size"] for item in observations):
         raise ValidationError("All ChArUco observations must use the same image dimensions")
-    for field in ("columns", "rows", "square_length", "marker_length"):
-        DetectCharucoBoard.parameter_ranges[field].check(spec.get(field), field, field)
-    if (
-        spec.get("dictionary") not in MARKER_CHOICES["dictionary"]
-        or spec.get("units") not in DetectCharucoBoard.parameter_choices["units"]
-        or type(spec.get("legacy_pattern")) is not bool
-        or not spec.get("marker_ids")
-    ):
-        raise ValidationError("Invalid ChArUco board definition")
-    board = _make_board(spec)
-    board_points = board.getChessboardCorners().reshape(-1, 3)
-    tolerance = float(spec["square_length"]) * 1e-6
     object_views, image_views, id_views, names = [], [], [], []
     reference_frame = None
     for index, (entry, observation) in enumerate(zip(entries, observations), start=1):
@@ -297,32 +337,9 @@ def calibration_observations(value):
                 raise ValidationError("ChArUco observations must use the same camera pixel grid")
             if reference_frame is None:
                 reference_frame = spatial
-        ids = observation.get("corner_ids")
-        if (
-            not isinstance(ids, list)
-            or not 4 <= len(ids) <= len(board_points)
-            or any(type(i) is not int or not 0 <= i < len(board_points) for i in ids)
-            or len(set(ids)) != len(ids)
-        ):
-            raise ValidationError(f"ChArUco view {index} needs at least four unique corner IDs")
-        xy = np.asarray(observation.get("image_points"), dtype=np.float32)
-        xyz = np.asarray(observation.get("object_points"), dtype=np.float32)
-        if (
-            xy.shape != (len(ids), 2)
-            or xyz.shape != (len(ids), 3)
-            or not np.isfinite(xy).all()
-            or np.any(xy < -0.5)
-            or np.any(xy > np.asarray(size) - 0.5)
-            or not np.allclose(xyz, board_points[ids], atol=tolerance, rtol=1e-6)
-        ):
-            raise ValidationError(f"ChArUco view {index} contains invalid matched points")
-        ids = np.asarray(ids, dtype=np.int32)
-        if (
-            board.checkCharucoCornersCollinear(ids)
-            or len(np.unique(xy, axis=0)) != len(xy)
-            or np.linalg.matrix_rank(xy - xy[0]) < 2
-        ):
-            raise ValidationError(f"ChArUco view {index} needs distinct, noncollinear points")
+        ids, xy, xyz = observation_points(
+            observation, board, board_points, size, label=f"ChArUco view {index}"
+        )
         for previous_ids, previous_xy in zip(id_views, image_views):
             shared, a, b = np.intersect1d(
                 ids, previous_ids, assume_unique=True, return_indices=True
@@ -331,7 +348,7 @@ def calibration_observations(value):
                 raise ValidationError("ChArUco views are duplicates; use varied board poses")
         id_views.append(ids)
         image_views.append(xy)
-        object_views.append(board_points[ids])
+        object_views.append(xyz)
         ticket = entry.payload.get("ticket", {}).get("value")
         label = Path(ticket).name if isinstance(ticket, str) else ""
         names.append(label or f"view-{index}")

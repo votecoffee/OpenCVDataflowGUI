@@ -11,12 +11,15 @@ from .calibration import (
     find_grid,
     grid_settings,
 )
+from .charuco import observation_board, observation_points
 from .core import Port, Result
 from .geometry3d import PNP
 from .graphics_layers import GraphicDrawing, graphic_object
+from .outcomes import failed_input
 from .parameter_validation import NumericRange, ValidationError
-from .payloads import NO_VALUE
+from .payloads import NO_VALUE, ValuePacket, require_same_frame
 from .result_graphics import ACCEPTED, REJECTED
+from .tickets import ticket_key
 
 _MODEL = "pinhole_validation_v1"
 
@@ -34,6 +37,10 @@ def _unmeasured(code, message):
     )
 
 
+def _capture_key(ticket):
+    return ticket_key(ticket), ticket["source"], ticket["sequence"]
+
+
 class ValidateLensCalibration(GridCalibrationBlock):
     type_id, title, category = (
         "calibration.validate_lens",
@@ -41,7 +48,12 @@ class ValidateLensCalibration(GridCalibrationBlock):
         "Calibration",
     )
     block_type, subtype = "Calibration", "Lens distortion"
-    inputs = (Port("image"), Port("calibration", "data"))
+    inputs = (
+        Port("image"),
+        Port("calibration", "data"),
+        Port("observation", "data", required=False, required_when_connected=True),
+    )
+    input_help = {"observation": "Optional identified ChArUco points from the validation image."}
     outputs = (Port("report", "data"), Port("rms", "number"), Port("max_error", "number"))
     defaults = {
         **GRID_OPTIONS,
@@ -70,6 +82,39 @@ class ValidateLensCalibration(GridCalibrationBlock):
     }
     process_inputs_readonly = True
 
+    def _require_observation_alignment(self, image, observation):
+        image_payload = self.input_payloads["image"]
+        observation_payload = self.input_payloads["observation"]
+        message = "ChArUco observation and validation image must share the same coordinate frame"
+        require_same_frame(
+            (ValuePacket(image, image_payload), ValuePacket(observation, observation_payload)),
+            message=message,
+        )
+        image_spatial = image_payload.get("spatial")
+        observation_spatial = observation_payload.get("spatial")
+        if (
+            image_spatial
+            and observation_spatial
+            and (
+                image_spatial["root_size"] != observation_spatial["root_size"]
+                or image_spatial["image_size"] != observation_spatial["image_size"]
+                or not np.allclose(
+                    image_spatial["to_root"], observation_spatial["to_root"], atol=1e-9, rtol=0
+                )
+            )
+        ):
+            raise ValidationError(message)
+        image_ticket, observation_ticket = (
+            image_payload.get("ticket"),
+            observation_payload.get("ticket"),
+        )
+        if (
+            image_ticket is not None
+            and observation_ticket is not None
+            and _capture_key(image_ticket) != _capture_key(observation_ticket)
+        ):
+            raise ValidationError("ChArUco observation must come from the same captured image")
+
     def process(self, inputs):
         p = self.parameters
         image, profile = inputs["image"], inputs["calibration"]
@@ -77,11 +122,31 @@ class ValidateLensCalibration(GridCalibrationBlock):
         image_size = list(image.shape[:2][::-1])
         if profile.get("image_size") != image_size:
             raise ValidationError("Validation image dimensions must match the lens calibration")
-        grid, world = grid_settings(p)
-        try:
-            observed, _ = find_grid(image, grid, p)
-        except GridNotFoundError as exc:
-            return _unmeasured("calibration_validation_grid_not_found", str(exc))
+        board = None
+        if "observation" in inputs:
+            observation = inputs["observation"]
+            self._require_observation_alignment(image, observation)
+            if failed_input(ValuePacket(observation, self.input_payloads["observation"])):
+                return _unmeasured(
+                    "calibration_validation_observation_failed",
+                    "ChArUco detection failed for the validation image",
+                )
+            board, size, native_board, board_points = observation_board(observation)
+            if list(size) != image_size:
+                raise ValidationError(
+                    "ChArUco observation dimensions must match the validation image"
+                )
+            ids, observed, world = observation_points(observation, native_board, board_points, size)
+            corner_ids = ids.tolist()
+            columns, units = int(board["columns"]) - 1, board["units"]
+        else:
+            grid, world = grid_settings(p)
+            try:
+                observed, _ = find_grid(image, grid, p)
+            except GridNotFoundError as exc:
+                return _unmeasured("calibration_validation_grid_not_found", str(exc))
+            columns, units = grid[0], p["units"]
+            corner_ids = list(range(len(observed)))
         if observed.shape != (len(world), 2) or not np.isfinite(observed).all():
             raise ValidationError("Grid detection returned invalid image coordinates")
         world = world.astype(np.float64)
@@ -123,10 +188,11 @@ class ValidateLensCalibration(GridCalibrationBlock):
                 }
             )
         if point_limit and maximum > point_limit:
+            label = f"Corner ID {corner_ids[worst]}" if board else f"Point {worst}"
             reasons.append(
                 {
                     "code": "calibration_validation_point_exceeds_limit",
-                    "message": f"Point {worst} error {maximum:.4g} px exceeds {point_limit:.4g} px",
+                    "message": f"{label} error {maximum:.4g} px exceeds {point_limit:.4g} px",
                 }
             )
         report = {
@@ -137,23 +203,28 @@ class ValidateLensCalibration(GridCalibrationBlock):
             "pose_direction": "board_to_camera",
             "rotation_vector_radians": rotation.tolist(),
             "translation_vector": translation.tolist(),
-            "translation_units": p["units"],
+            "translation_units": units,
             "rms_pixels": rms,
             "max_error_pixels": maximum,
             "worst_point_index": worst,
             "point_limit_pixels": point_limit,
             "points": [
                 {
-                    "grid": [index % grid[0], index // grid[0]],
+                    "grid": [identifier % columns, identifier // columns],
                     "observed": measured.tolist(),
                     "projected": predicted.tolist(),
                     "error_pixels": float(error),
                 }
-                for index, (measured, predicted, error) in enumerate(
-                    zip(observed, projected, errors)
+                for identifier, measured, predicted, error in zip(
+                    corner_ids, observed, projected, errors
                 )
             ],
         }
+        if board is not None:
+            report["board"] = board
+            report["worst_corner_id"] = corner_ids[worst]
+            for point, identifier in zip(report["points"], corner_ids):
+                point["corner_id"] = identifier
         drawings = {}
         if self.generate_graphics:
             colors = [ACCEPTED if passed else REJECTED for passed in accepted]
