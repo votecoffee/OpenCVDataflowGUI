@@ -1700,6 +1700,25 @@ Inputs: `image_a` (image), `image_b` (image, optional), `scalar_b` (number, opti
 | `output_depth` | `"float64"` | `float64`, `float32`, `same` Same keeps the source depth, rounding and saturating integer results. |
 | `preserve_alpha` | `true` | Copy the alpha channel through unchanged in the chosen output depth. |
 
+## Measure image norm (`cv.image_norm`)
+
+Image processing / Statistics
+
+Inputs: `image` (image), `reference` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Image whose selected samples are measured.
+
+Input `reference` — Optional reference with the same dimensions, depth and channel encoding.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `metric` | `"l2"` | `infinity`, `l1`, `l2`, `l2_squared`, `hamming`, `hamming2` Infinity is the maximum absolute sample. L1 sums absolute samples. L2 is Euclidean. Hamming counts differing bits. Hamming2 counts differing bit pairs. |
+| `mode` | `"absolute"` | `absolute`, `relative` Relative divides the difference norm by the norm of the selected reference. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid compares equal-size images by index across frame IDs. |
+| `include_alpha` | `false` | Include the alpha channel for four-channel input. |
+| `check_threshold` | `false` | Fail when the measured norm exceeds Maximum. |
+| `maximum` | `1.0` | Value must be a finite number at least 0. Inclusive upper limit when Check threshold is enabled. |
+
 ## Gaussian image pyramid set (`cv.image_pyramid`)
 
 Image processing / Pyramids

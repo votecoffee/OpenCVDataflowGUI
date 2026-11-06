@@ -676,6 +676,7 @@ def builtin_registry():
     from .image_codecs import DecodeImage, EncodeImage
     from .image_colorize import ColorizeScalar
     from .image_layout import JoinImages, PasteImagePatch, TileImage
+    from .image_norm import MeasureImageNorm
     from .image_quality import CompareImageQuality
     from .image_queue import ImageQueue
     from .image_statistics import ImageSummaryStatistics
@@ -806,6 +807,7 @@ def builtin_registry():
         IntensityProfile,
         PathIntensityProfile,
         ImageSummaryStatistics,
+        MeasureImageNorm,
         CheckImageValidity,
         ReplaceNonfiniteSamples,
         TiltedWindowStatistics,
