@@ -922,12 +922,11 @@ class Inspector(QWidget):
 
     def open_plugin_dialog(self):
         block = self.block
-        if (
-            block is None
-            or not block.plugin_dialog_label
-            or self.window.runner
-            or self._plugin_dialog is not None
-        ):
+        if block is None or not block.plugin_dialog_label or self.window.runner:
+            return
+        if self._plugin_dialog is not None:
+            self._plugin_dialog.raise_()
+            self._plugin_dialog.activateWindow()
             return
         try:
             original = self.read_parameters(validate=False)
@@ -937,24 +936,41 @@ class Inspector(QWidget):
             return
         fields = self.fields
         draft = copy.deepcopy(original)
+        context = None
         try:
             context = PluginDialogContext(self.window.graph, block)
             widget = block.create_plugin_dialog(self, draft, context)
             if not isinstance(widget, QDialog):
                 raise TypeError("create_plugin_dialog must return a PySide6 QDialog")
             if self.fields is not fields or self.window.runner:
+                context._close()
                 widget.deleteLater()
                 return
             self._plugin_dialog = widget
             if widget.parentWidget() is not self:
                 widget.setParent(self, widget.windowFlags())
             widget.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, False)
-            widget.finished.connect(
-                lambda status: self.finish_plugin_dialog(widget, block, original, draft, status)
-            )
-            widget.open()
+
+            def finish(status):
+                context._close()
+                self.finish_plugin_dialog(widget, block, original, draft, status)
+
+            def destroyed():
+                context._close()
+                if self._plugin_dialog is widget:
+                    self._plugin_dialog = None
+
+            widget.finished.connect(finish)
+            widget.destroyed.connect(destroyed)
+            if block.plugin_dialog_modeless:
+                widget.setWindowModality(Qt.WindowModality.NonModal)
+                widget.show()
+            else:
+                widget.open()
         except (Exception, SystemExit) as exc:
             self.close_plugin_dialog()
+            if context is not None:
+                context._close()
             block.logger.exception("Plugin dialog could not open")
             self.window.warn(f"{block.title} dialog · {exception_message(exc)}")
 
@@ -971,7 +987,7 @@ class Inspector(QWidget):
             return
         self._plugin_dialog = None
         dialog.deleteLater()
-        if status != QDialog.DialogCode.Accepted or self.block is not block or self.window.runner:
+        if status != QDialog.DialogCode.Accepted or self.block is not block:
             return
         try:
             parameters = json.loads(json.dumps(draft, allow_nan=False))
@@ -983,12 +999,24 @@ class Inspector(QWidget):
                     parameters[name] = float(value)
                 elif type(value) is not expected:
                     raise ValueError(f"{name} must have type {expected.__name__}")
+            updates = {name: value for name, value in parameters.items() if value != original[name]}
+            if not updates:
+                return
+            current = self.read_parameters(validate=False)
+            conflicts = [
+                name
+                for name, value in updates.items()
+                if current[name] not in (original[name], value)
+            ]
+            if conflicts:
+                raise ValueError(f"Inspector and dialog both changed {', '.join(conflicts)}")
+            parameters = {**current, **updates}
             block.validate_parameters(parameters)
-            if parameters == original:
+            if parameters == current:
                 return
             for name, field in self.fields.items():
                 value = parameters[name]
-                if value == original[name]:
+                if value == current[name]:
                     continue
                 with QSignalBlocker(field):
                     if isinstance(field, QComboBox):
@@ -2029,8 +2057,11 @@ class MainWindow(QMainWindow):
                 return False
             path = Path(selected)
         try:
+            previous_directory = self.root_graph.project_dir
             self.root_graph.save(path)
             self.path, self.dirty = path, False
+            if self.root_graph.project_dir != previous_directory:
+                self.inspector.close_plugin_dialog()
             self.update_title()
             return True
         except Exception as exc:
@@ -2117,7 +2148,9 @@ class MainWindow(QMainWindow):
     def start_run(self, continuous):
         if self.runner:
             return
-        self.inspector.close_plugin_dialog()
+        block = self.inspector.block
+        if block is None or not block.plugin_dialog_modeless:
+            self.inspector.close_plugin_dialog()
         self.inspector.stop_previews()
         # Worker owns a separate runtime graph. Qt paints stable display snapshots.
         try:
