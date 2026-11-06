@@ -99,6 +99,10 @@ Remap validates the map pair and assigns the corrected image a separate
 coordinate frame. The map builder also returns the output camera matrix
 in a zero-distortion profile. [Lens correction maps example](../examples/lens_correction_maps/README.md)
 
+Wire the map pair to **Inspect lens map displacement** to see correction
+strength and direction, measure displacement in source pixels, and identify
+samples outside the source. [Lens map displacement example](../examples/lens_map_displacement/README.md)
+
 Fisheye models, uncertainty estimates, dataset management and independent validation
 are future work. Current checks use offline synthetic geometry; they do not prove
 accuracy for a particular physical camera.

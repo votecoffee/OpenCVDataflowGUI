@@ -355,6 +355,10 @@ for **Remap image coordinates**, with output intrinsics and a separate
 coordinate frame for the corrected image.
 [Lens correction maps example](examples/lens_correction_maps/README.md)
 
+**Inspect lens map displacement** shows correction strength and direction
+and reports how much of the output samples inside the source image.
+[Lens map displacement example](examples/lens_map_displacement/README.md)
+
 ### Build and test a starter project
 
 For the real-image Lena review example, run `python scripts/prepare_lena.py` once,
