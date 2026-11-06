@@ -684,6 +684,9 @@ Try [sequence memory](examples/sequence_memory/sequence_memory.json), then run c
 **Solve linear system** fits one or more observation columns and reports residuals
 and numerical rank. See the [linear system example](examples/linear_system/README.md).
 
+**Solve polynomial roots** finds curve crossings or complex roots and checks each
+candidate's relative residual. See the [polynomial roots example](examples/polynomial_roots/README.md).
+
 **Multiply matrices** applies weighted matrix products and optional offsets.
 The [matrix multiplication example](examples/matrix_multiply/README.md) uses
 fitted coefficients to predict new readings.
