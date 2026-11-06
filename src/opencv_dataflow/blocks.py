@@ -721,6 +721,7 @@ def builtin_registry():
     from .registration import REGISTRATION_BLOCKS
     from .remap_maps import BuildLensMaps, LensMapDisplacement
     from .restoration import RESTORATION_BLOCKS
+    from .scan_stitching import StitchScanSequence
     from .segmentation import SEGMENTATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
     from .shape_fitting import (
@@ -797,6 +798,7 @@ def builtin_registry():
         *PROCESSING_BLOCKS,
         JoinImages,
         StitchImagePair,
+        StitchScanSequence,
         PasteImagePatch,
         CropSubpixel,
         PolarImageWarp,
