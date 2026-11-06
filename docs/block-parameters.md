@@ -927,6 +927,16 @@ Inputs: `x` (image), `y` (image).
 | --- | --- | --- |
 | `angle_units` | `"radians"` | `radians`, `degrees` Tag the output angle field with radians or degrees. |
 
+## Linear channel transform (`cv.channel_transform`)
+
+Image processing / Color and depth
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `matrix` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `matrix` | `[]` | One row for gray or three for color, using stored channel order without alpha. Append an optional offset. Empty uses identity. A wired matrix takes precedence. |
+
 ## CLAHE local contrast (`cv.clahe`)
 
 Image processing / Contrast
