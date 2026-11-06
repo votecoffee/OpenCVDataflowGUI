@@ -77,9 +77,13 @@ def encoded_result(image, original, **kwargs):
 
 
 def geometry_result(output, original, matrix):
+    if isinstance(original, DepthArray):
+        image = DepthArray(output, original.units, original.display_min, original.display_max)
+    else:
+        image = ImageArray(output, image_format(original))
     return Result(
         {
-            "image": ImageArray(output, image_format(original)),
+            "image": image,
             "geometry": {
                 "output_to_input": np.asarray(matrix, float).tolist(),
                 "input_size": [original.shape[1], original.shape[0]],
@@ -241,6 +245,32 @@ class Rotate90(ImageTool):
             ),
         }[self.parameters["rotation"]]
         return geometry_result(cv2.rotate(image, code), source, matrix)
+
+
+class TransposeImage(ImageTool):
+    type_id, title, subtype = "cv.transpose_image", "Transpose image", "Geometry"
+    outputs = (Port("image"), Port("geometry", "data"))
+    defaults = {"diagonal": "main"}
+    parameter_choices = {"diagonal": ("main", "anti")}
+    parameter_help = {
+        "diagonal": "Main swaps X and Y. Anti swaps axes and reverses both output directions.",
+    }
+    process_inputs_readonly = True
+
+    def process(self, inputs):
+        source = inputs["image"]
+        if source.ndim == 2 and (isinstance(source, DepthArray) or source.dtype == np.int32):
+            image = np.asarray(source)
+        else:
+            image = image_value(source)
+        output = cv2.transpose(image)
+        if self.parameters["diagonal"] == "anti":
+            height, width = image.shape[:2]
+            matrix = [[0, -1, width - 1], [-1, 0, height - 1], [0, 0, 1]]
+            output = cv2.flip(output, -1)
+        else:
+            matrix = [[0, 1, 0], [1, 0, 0], [0, 0, 1]]
+        return geometry_result(output, source, matrix)
 
 
 class BoxBlur(RegionalOperation, ImageTool):
@@ -891,6 +921,7 @@ PROCESSING_BLOCKS = (
     Resize,
     Flip,
     Rotate90,
+    TransposeImage,
     BoxBlur,
     MedianBlur,
     BilateralFilter,

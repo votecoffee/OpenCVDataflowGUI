@@ -2350,6 +2350,16 @@ Inputs: `transform` (data, optional), `points` (data, optional).
 | `pixel_points` | `[[0.0, 0.0]]` |  |
 | `invert` | `false` |  |
 
+## Transpose image (`cv.transpose_image`)
+
+Image processing / Geometry
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `diagonal` | `"main"` | `main`, `anti` Main swaps X and Y. Anti swaps axes and reverses both output directions. |
+
 ## Unsharp mask (`cv.unsharp`)
 
 Image processing / Filtering

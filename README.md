@@ -794,6 +794,9 @@ Its layout output records each panel's source frame. See the
 **Tile image** repeats an image in a row-and-column grid. The
 [tiling example](examples/tile_image/README.md) uses the grid as a synthetic
 fixture for template matching.
+**Transpose image** swaps rows and columns without interpolation. The
+[transpose example](examples/transpose_image/README.md) maps points from
+the transposed crop back to the original image.
 
 **Gram matrix** compares rows or columns by dot product and can reuse the same
 centering offset across batches. See the [Gram matrix example](examples/gram_matrix/README.md).

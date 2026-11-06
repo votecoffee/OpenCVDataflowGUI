@@ -66,6 +66,8 @@ and emits a mask of changed pixels.
 comparison views with padding and per-panel coordinate context.
 [Tile image](../examples/tile_image/README.md) repeats full images in a grid
 with compact layout data and source-frame provenance.
+[Transpose image](../examples/transpose_image/README.md) swaps image axes
+with exact main- or anti-diagonal reflection and coordinate mapping.
 [Route image channels](../examples/route_channels/README.md) copies, reorders,
 and duplicates channels across matching input images, with optional zero fill.
 [Blend with weight maps](../examples/blend_weight_maps/README.md) blends aligned
