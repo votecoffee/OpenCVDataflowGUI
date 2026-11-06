@@ -15,6 +15,7 @@ from .payloads import NO_VALUE, frame
 from .processing import finite
 
 _MAX_AXIS = 16_384
+MAX_MAP_PIXELS = 64_000_000
 _TAG = "lens_remap_map"
 _COLORMAPS = {
     name.removeprefix("COLORMAP_").lower(): getattr(cv2, name)
@@ -23,7 +24,7 @@ _COLORMAPS = {
 }
 
 
-def _valid_size(size):
+def valid_lens_size(size):
     return (
         isinstance(size, list)
         and len(size) == 2
@@ -39,7 +40,14 @@ def _map_frame(info):
     return frame(info["output_size"], f"lens-map:{info['id']}")
 
 
-def _lens_map_pair(block, output_size):
+def lens_map_payloads(info):
+    spatial = _map_frame(info)
+    return {
+        f"map_{axis}": {"spatial": spatial, _TAG: {**info, "axis": axis}} for axis in ("x", "y")
+    }
+
+
+def lens_map_pair(block, output_size):
     x, y = (block.input_payloads[name] for name in ("map_x", "map_y"))
     if _TAG not in x and _TAG not in y:
         return None
@@ -52,8 +60,8 @@ def _lens_map_pair(block, output_size):
     ):
         raise ValidationError("Connect matching X and Y lens maps from the same correction")
     if (
-        not _valid_size(info.get("source_size"))
-        or not _valid_size(output_size)
+        not valid_lens_size(info.get("source_size"))
+        or not valid_lens_size(output_size)
         or info.get("output_size") != output_size
         or x.get("spatial") != _map_frame(info)
         or y.get("spatial") != _map_frame(info)
@@ -63,7 +71,7 @@ def _lens_map_pair(block, output_size):
 
 
 def lens_remap_payload(block, source_size, output_size):
-    info = _lens_map_pair(block, output_size)
+    info = lens_map_pair(block, output_size)
     if info is None:
         return {}
     if info["source_size"] != source_size:
@@ -120,10 +128,10 @@ class BuildLensMaps(Block):
         p, profile = self.parameters, inputs["calibration"]
         matrix, distortion = camera_parameters(profile)
         source = profile["image_size"]
-        if not _valid_size(source):
+        if not valid_lens_size(source):
             raise ValidationError("Lens calibration needs valid [width, height] dimensions")
         size = [int(p["width"]) or source[0], int(p["height"]) or source[1]]
-        if size[0] * size[1] > 64_000_000:
+        if size[0] * size[1] > MAX_MAP_PIXELS:
             raise ValidationError("Lens maps are limited to 64 million output pixels")
         rms = finite(profile["rms_pixels"], "Lens calibration RMS", 0)
         if rms > float(p["max_rms_pixels"]):
@@ -182,14 +190,16 @@ class BuildLensMaps(Block):
                 rectified["rectification_rotation"],
             ]
         )
-        info = {"id": identity, "source_size": source, "output_size": size}
-        spatial = _map_frame(info)
+        info = {
+            "id": identity,
+            "source_size": source,
+            "output_size": size,
+            "rectified_calibration": rectified,
+            "valid_roi": None if roi is NO_VALUE else roi,
+        }
         return Result(
             {"map_x": map_x, "map_y": map_y, "rectified_calibration": rectified, "valid_roi": roi},
-            payloads={
-                f"map_{axis}": {"spatial": spatial, _TAG: {**info, "axis": axis}}
-                for axis in ("x", "y")
-            },
+            payloads=lens_map_payloads(info),
             message=f"{size[0]} × {size[1]} lens correction maps",
         )
 
@@ -256,13 +266,13 @@ class LensMapDisplacement(Block):
             or y.shape != x.shape
             or x.dtype != np.float32
             or y.dtype != np.float32
-            or x.size > 64_000_000
+            or x.size > MAX_MAP_PIXELS
             or not np.isfinite(x).all()
             or not np.isfinite(y).all()
         ):
             raise ValidationError("Use matching, finite float32 lens map planes")
         height, width = x.shape
-        info = _lens_map_pair(self, [width, height])
+        info = lens_map_pair(self, [width, height])
         if info is None:
             raise ValidationError("Connect X and Y maps from Build lens correction maps")
         source_width, source_height = info["source_size"]
