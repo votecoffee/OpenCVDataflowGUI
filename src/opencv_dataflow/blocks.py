@@ -675,6 +675,7 @@ def builtin_registry():
     from .image_quality import CompareImageQuality
     from .image_queue import ImageQueue
     from .image_statistics import ImageSummaryStatistics
+    from .image_validity import CheckImageValidity
     from .judgments import FinalJudgment
     from .lens_map_files import LoadLensMaps, SaveLensMaps
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
@@ -787,6 +788,7 @@ def builtin_registry():
         IntensityProfile,
         PathIntensityProfile,
         ImageSummaryStatistics,
+        CheckImageValidity,
         TiltedWindowStatistics,
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,

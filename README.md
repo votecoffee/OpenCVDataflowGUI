@@ -770,6 +770,10 @@ rank, and an optional low-rank reconstruction. See the [SVD example](examples/ma
 **Eigendecomposition** extracts real eigenpairs from square matrices and
 checks their residuals. See the [eigendecomposition example](examples/matrix_eigen/README.md).
 
+**Check image samples** detects nonfinite and optionally out-of-range pixels.
+It emits aligned validity masks for downstream analysis. See the
+[image validity example](examples/image_validity/README.md).
+
 **Gram matrix** compares rows or columns by dot product and can reuse the same
 centering offset across batches. See the [Gram matrix example](examples/gram_matrix/README.md).
 

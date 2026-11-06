@@ -36,6 +36,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Invert matrix](matrix_inverse/README.md) | Recover signals from a square calibration matrix and compare a rank-deficient pseudoinverse. |
 | [Singular value decomposition](matrix_svd/README.md) | Keep the dominant measurement mode, inspect its retained energy, and apply the reconstructed matrix. |
 | [Eigendecomposition](matrix_eigen/README.md) | Project a measurement onto covariance axes and check the spectrum of a nonsymmetric mixing matrix. |
+| [Check image samples](image_validity/README.md) | Detect a missing depth patch and use the valid-pixel mask to measure the corresponding intensity pixels. |
 | [Gram matrix](gram_matrix/README.md) | Compute feature covariance and reuse the learned offset for a new batch. |
 | [Find nearest rows](nearest_rows/README.md) | Compare scaled measurements with masked candidates and mutual nearest-neighbor matching. |
 | [Sort numeric table](numeric_table_sort/README.md) | Rank complete part records by score and compare that with independent column sorting. |

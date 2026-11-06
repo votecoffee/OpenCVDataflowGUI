@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "stereo",
+      "type": "input.stereo_demo",
+      "name": "Depth with a missing corner",
+      "parameters": {"width": 64, "height": 64},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["left", "depth"],
+      "preview_output": "depth"
+    },
+    {
+      "id": "check",
+      "type": "inspect.image_validity",
+      "name": "Check depth from 2.9 to 3.1 m",
+      "parameters": {
+        "check_range": true,
+        "minimum": 2.9,
+        "maximum": 3.1,
+        "max_invalid_fraction": 0.03
+      },
+      "position": [370, 150],
+      "exposed_inputs": ["image", "mask", "region"],
+      "exposed_outputs": ["valid_mask", "invalid_mask", "invalid_count", "invalid_fraction", "report"],
+      "preview_output": "invalid_mask"
+    },
+    {
+      "id": "statistics",
+      "type": "cv.image_statistics",
+      "name": "Measure intensity where depth is valid",
+      "parameters": {},
+      "position": [760, 0],
+      "exposed_inputs": ["image", "mask"],
+      "exposed_outputs": ["selected_count", "value", "summary"],
+      "thumbnail": false
+    }
+  ],
+  "connections": [
+    {"source": "stereo", "output": "depth", "target": "check", "input": "image"},
+    {"source": "stereo", "output": "left", "target": "statistics", "input": "image"},
+    {"source": "check", "output": "valid_mask", "target": "statistics", "input": "mask"}
+  ]
+}
