@@ -65,6 +65,12 @@ class Invert(Block):
             field.valueChanged.connect(lambda value, name=key: update(name, value))
             form.addRow(label, field)
         captures = []
+        output_notice = QLabel("Run the graph to publish outputs.")
+        output_notice.setObjectName("output_notice")
+        context.subscribe_outputs(
+            lambda revision: output_notice.setText(f"Graph output {revision} ready to capture.")
+        )
+        form.addRow(output_notice)
         summary = QLabel("Run once, then capture the source image.")
         summary.setObjectName("capture_summary")
         summary.setTextFormat(Qt.TextFormat.PlainText)

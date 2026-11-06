@@ -290,8 +290,9 @@ projects that use their types. No code is needed for built-in pipelines.
 Plugin blocks can add their own inspector button and open a Qt dialog for
 configuration or review. The dialog can use copies of cached images with their
 coordinate metadata. Plugins can opt into a modeless popup to capture new
-outputs while the graph runs. Accepted edits appear in the inspector draft for preview
-and **Apply configuration**. [Plugin dialog API](docs/plugin-dialogs.md)
+outputs while the graph runs and subscribe to completed output notices.
+Accepted edits appear in the inspector draft for preview and **Apply
+configuration**. [Plugin dialog API](docs/plugin-dialogs.md)
 
 If a block raises a Python exception during processing, the app records an error
 and traceback in **Diagnostics**. The block emits no outputs, dependent blocks

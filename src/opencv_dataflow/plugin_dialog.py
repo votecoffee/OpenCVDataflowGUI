@@ -1,6 +1,7 @@
 """Context for plugin dialogs, independent of Qt and the execution loop."""
 
 import copy
+from collections.abc import Callable
 from dataclasses import dataclass
 from operator import index
 
@@ -24,7 +25,51 @@ class PluginDialogContext:
         self.block_id = block.id
         self.project_dir = graph.project_dir
         self._graph = graph
+        self._output_revision = 0
+        self._output_callbacks = {}
+        self._dispatching_outputs = False
         self.refresh_images()
+
+    @property
+    def output_revision(self):
+        """Number of editor output publications since this dialog opened."""
+        return self._output_revision
+
+    def subscribe_outputs(self, callback: Callable[[int], None]) -> Callable[[], None]:
+        """Call back on the GUI thread with the newest published output revision."""
+        if self._graph is None:
+            raise RuntimeError("The plugin dialog has closed")
+        if not callable(callback):
+            raise TypeError("The output subscriber must be callable")
+        token = object()
+        self._output_callbacks[token] = callback
+
+        def unsubscribe():
+            self._output_callbacks.pop(token, None)
+
+        return unsubscribe
+
+    def _outputs_published(self):
+        self._output_revision += 1
+        return bool(self._output_callbacks) and not self._dispatching_outputs
+
+    def _notify_outputs(self, report_error):
+        revision = self.output_revision
+        self._dispatching_outputs = True
+        try:
+            for token, callback in tuple(self._output_callbacks.items()):
+                if revision != self.output_revision:
+                    break
+                if token not in self._output_callbacks:
+                    continue
+                try:
+                    callback(revision)
+                except (Exception, SystemExit):
+                    self._output_callbacks.pop(token, None)
+                    report_error("Plugin output subscriber failed and was removed")
+        finally:
+            self._dispatching_outputs = False
+        return bool(self._output_callbacks) and revision != self.output_revision
 
     def refresh_images(self):
         """Refresh the catalog on the GUI thread and return the available outputs."""
@@ -52,6 +97,7 @@ class PluginDialogContext:
 
     def _close(self):
         self._graph = None
+        self._output_callbacks.clear()
         self._images.clear()
         self.image_outputs = ()
 
