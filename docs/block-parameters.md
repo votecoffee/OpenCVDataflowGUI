@@ -658,6 +658,10 @@ Inputs: `image` (image).
 
 Calibration / Lens distortion
 
+Inputs: `observations` (any, optional).
+
+Input `observations` — A batch or list of identified ChArUco observations.
+
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `detector` | `"sb"` | `sb`, `classic`, `circles_symmetric`, `circles_asymmetric` |

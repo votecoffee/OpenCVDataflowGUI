@@ -173,7 +173,7 @@ P2	method	cv2.aruco.Board.getRightBottomCorner	no static reference	-
 P2	method	cv2.aruco.Board.matchImagePoints	method name only	-
 P2	class	cv2.aruco.CharucoBoard	literal reference	-
 P2	method	cv2.aruco.CharucoBoard.checkCharucoCornersCollinear	method name only	-
-P2	method	cv2.aruco.CharucoBoard.getChessboardCorners	no static reference	-
+P2	method	cv2.aruco.CharucoBoard.getChessboardCorners	method name only	-
 P2	method	cv2.aruco.CharucoBoard.getChessboardSize	no static reference	-
 P2	method	cv2.aruco.CharucoBoard.getLegacyPattern	no static reference	-
 P2	method	cv2.aruco.CharucoBoard.getMarkerLength	no static reference	-

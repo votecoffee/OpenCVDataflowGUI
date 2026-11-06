@@ -376,6 +376,11 @@ image and shows the measured reprojection residuals.
 board coordinates. A partial view can feed the existing PnP pose block.
 [ChArUco board example](examples/charuco_board/README.md)
 
+**Calibrate lens** can also fit a batch of ChArUco observations with
+different visible corners in each view. It reports the point count and
+reprojection RMS for each image.
+[ChArUco lens calibration example](examples/charuco_lens_calibration/README.md)
+
 ### Build and test a starter project
 
 For the real-image Lena review example, run `python scripts/prepare_lena.py` once,

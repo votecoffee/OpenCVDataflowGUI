@@ -146,6 +146,14 @@ with a matching camera model and board units. The board's coordinate
 origin follows the target layout even when it is outside the image.
 [ChArUco board example](../examples/charuco_board/README.md)
 
+To fit a pinhole lens profile, send **Observation** from each successful
+detection to **Batch serial entries**. Connect its group to **Observations**
+on **Calibrate lens** and leave **Image paths** empty. Use 3 to 64 views
+of the same target at varied poses with a consistent camera pixel grid.
+The fit uses the length units and identified points in the observations.
+**Fit report** includes each view's point count and reprojection RMS.
+[ChArUco lens calibration example](../examples/charuco_lens_calibration/README.md)
+
 ## White and color balance
 
 White / color balance supports gray-world gains from the whole image or a JSON
