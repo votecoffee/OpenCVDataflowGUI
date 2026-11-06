@@ -36,6 +36,8 @@ Scaled absolute conversion maps signed responses to an 8-bit magnitude image
 for display and thresholding.
 Channel routing assembles selected channels from one or two images without
 changing their sample values.
+Weight-map blending combines aligned images with a separate contribution at
+each pixel.
 Specialized array operations remain open. The
 [coverage backlog](opencv-coverage.md) tracks the missing workflows and the
 [binding inventory](opencv-bindings.tsv) maps static references to the pinned

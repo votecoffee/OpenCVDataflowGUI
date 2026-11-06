@@ -68,6 +68,8 @@ comparison views with padding and per-panel coordinate context.
 with compact layout data and source-frame provenance.
 [Route image channels](../examples/route_channels/README.md) copies, reorders,
 and duplicates channels across matching input images, with optional zero fill.
+[Blend with weight maps](../examples/blend_weight_maps/README.md) blends aligned
+images using pixel weights and optional mask and region selection.
 [Gram matrix](../examples/gram_matrix/README.md) computes row or column dot products
 with optional centering, reusable offsets, and sample or population normalization.
 [Find nearest rows](../examples/nearest_rows/README.md) adds exact top-K feature-table

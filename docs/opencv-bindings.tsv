@@ -1957,7 +1957,7 @@ P3	function	cv2.bitwise_and	literal reference	-
 P3	function	cv2.bitwise_not	literal reference	-
 P3	function	cv2.bitwise_or	literal reference	-
 P3	function	cv2.bitwise_xor	literal reference	-
-P3	function	cv2.blendLinear	no static reference	-
+P3	function	cv2.blendLinear	literal reference	-
 P3	function	cv2.blur	literal reference	-
 P3	function	cv2.bootstrap	no static reference	-
 P3	function	cv2.borderInterpolate	no static reference	-
