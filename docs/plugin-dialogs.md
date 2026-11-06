@@ -105,6 +105,28 @@ before showing a worker result. The host removes subscriptions on close.
 Call the returned function to unsubscribe earlier. A callback that raises is
 removed and logged in **Diagnostics**. Other subscribers continue.
 
+## Add an image picker
+
+Use `PluginImagePicker` from `opencv_dataflow.plugin_image_picker` inside a
+Qt dialog. It refreshes its choices when the editor publishes results and
+preserves the selected output and level across refreshes. If an output or
+level becomes unavailable, choose another or wait for it to return.
+
+```python
+from opencv_dataflow.plugin_image_picker import PluginImagePicker
+
+picker = PluginImagePicker(context, dialog, input_port="image")
+picker.captured.connect(receive_image)
+layout.addWidget(picker)
+```
+
+The optional `input_port` adds wired and last processed input shortcuts.
+Those shortcuts use the input's normal level. Choose a graph output to
+select its pyramid level explicitly. **Capture image** emits a private
+`ValuePacket` through `captured`. Call `picker.snapshot()` to request the
+same capture from your own controls. Each picker keeps its own selection, so
+a dialog can use separate pickers for reference and inspection images.
+
 See the [custom invert plugin](../examples/custom_invert/custom_invert.py)
 for a working factory and [its project](../examples/custom_invert/README.md)
 for the desktop and headless workflows.

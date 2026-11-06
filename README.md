@@ -292,6 +292,7 @@ configuration or review. The dialog can use copies of cached images with their
 coordinate metadata. Plugins can opt into a modeless popup to capture new
 outputs while the graph runs and subscribe to completed output notices.
 Dialogs can also capture the selected block's wired or last processed input.
+The reusable image picker gives plugins a source and pyramid-level selector.
 Accepted edits appear in the inspector draft for preview and **Apply
 configuration**. [Plugin dialog API](docs/plugin-dialogs.md)
 

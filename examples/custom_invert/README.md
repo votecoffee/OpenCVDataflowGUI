@@ -15,11 +15,12 @@ image. It exposes both the edited image and the original.
 6. Click **Edit inversion band…** to edit both percentages with the plugin's own
    controls. **OK** stages the values in the inspector. **Cancel** discards the
    popup edits. Click **Apply configuration** to keep accepted edits.
-7. Keep the popup open and click **Capture latest input image**. Click **Run
+7. Keep the popup open and click **Capture image**. Click **Run
    once** in the main window. The popup reports when the next output is ready.
    Capture again to see the previous and latest captures with their tickets.
-   The button follows the wire into **Invert** and uses the selected pyramid
-   level if the wire carries a pyramid.
+   The picker starts on the wire into **Invert**, using its configured input
+   level. You can also choose the last processed input or another graph
+   output and its pyramid level.
 
 The plugin declares the limits with `NumericRange` and raises `ValidationError`
 with both field names for the cross-field rule. The inspector and runtime use

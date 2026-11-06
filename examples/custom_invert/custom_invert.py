@@ -40,9 +40,10 @@ class Invert(Block):
             QDialogButtonBox,
             QFormLayout,
             QLabel,
-            QPushButton,
             QSpinBox,
         )
+
+        from opencv_dataflow.plugin_image_picker import PluginImagePicker
 
         dialog = QDialog(parent)
         dialog.setWindowTitle("Inversion band")
@@ -75,13 +76,7 @@ class Invert(Block):
         summary.setObjectName("capture_summary")
         summary.setTextFormat(Qt.TextFormat.PlainText)
 
-        def capture():
-            context.refresh_images()
-            try:
-                packet = context.snapshot_input_image("image")
-            except (TypeError, ValueError) as exc:
-                summary.setText(str(exc))
-                return
+        def capture(packet):
             captures.append(packet)
             del captures[:-2]
             rows = []
@@ -92,9 +87,9 @@ class Invert(Block):
                 rows.append(f"{label} · {width} × {height} · ticket {ticket}")
             summary.setText("\n".join(rows))
 
-        capture_button = QPushButton("Capture latest input image")
-        capture_button.clicked.connect(capture)
-        form.addRow(capture_button)
+        picker = PluginImagePicker(context, dialog, input_port="image")
+        picker.captured.connect(capture)
+        form.addRow(picker)
         form.addRow(summary)
         buttons.accepted.connect(dialog.accept)
         buttons.rejected.connect(dialog.reject)
