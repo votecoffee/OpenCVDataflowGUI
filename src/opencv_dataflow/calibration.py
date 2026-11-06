@@ -60,6 +60,10 @@ CALIB_FLAGS = {
 }
 
 
+class GridNotFoundError(ValueError):
+    """The selected target could not be detected in the image."""
+
+
 def find_grid(image, size, parameters=None):
     # Detection copy only: numeric source pixels remain unchanged.
     display = cv2.cvtColor(preview_rgb(image), cv2.COLOR_RGB2BGR)
@@ -87,11 +91,13 @@ def find_grid(image, size, parameters=None):
             corners = cv2.cornerSubPix(gray, corners, (window, window), (-1, -1), criteria)
     if not found:
         feature = "circle centers" if is_circle_grid else "inner corners"
-        raise ValueError(f"Calibration grid not found: expected {size[0]} by {size[1]} {feature}")
+        raise GridNotFoundError(
+            f"Calibration grid not found: expected {size[0]} by {size[1]} {feature}"
+        )
     return corners.reshape(-1, 2).astype(np.float32), display
 
 
-class _GridCalibration(Block):
+class GridCalibrationBlock(Block):
     parameter_choices = {
         "detector": ("sb", "classic", *CIRCLE_FLAGS),
         "circle_polarity": ("dark", "light"),
@@ -111,7 +117,7 @@ class _GridCalibration(Block):
             validate_circle_options(p)
 
 
-class CalibrationGrid(_GridCalibration):
+class CalibrationGrid(GridCalibrationBlock):
     type_id, title, category = "calibration.grid", "Calibration grid", "Calibration"
     block_type, subtype = "Calibration", "Grid and coordinates"
     inputs = (Port("image"),)
@@ -344,7 +350,7 @@ def _lens_fit_report(paths, calibration, rotations, translations, intrinsic_sd, 
     }
 
 
-class LensCalibration(_GridCalibration):
+class LensCalibration(GridCalibrationBlock):
     type_id, title, category = "calibration.lens", "Calibrate lens", "Calibration"
     block_type, subtype = "Calibration", "Lens distortion"
     outputs = (
@@ -371,16 +377,16 @@ class LensCalibration(_GridCalibration):
         "max_view_rms_pixels": 0.0,
     }
     parameter_choices = {
-        **_GridCalibration.parameter_choices,
+        **GridCalibrationBlock.parameter_choices,
         "solver": ("svd", "lu", "qr"),
         "path_base": ("working_directory", "project"),
     }
     parameter_ranges = {
-        **_GridCalibration.parameter_ranges,
+        **GridCalibrationBlock.parameter_ranges,
         "max_view_rms_pixels": NumericRange(0),
     }
     parameter_help = {
-        **_GridCalibration.parameter_help,
+        **GridCalibrationBlock.parameter_help,
         "path_base": "Base folder for relative calibration image paths.",
         "max_view_rms_pixels": "Maximum RMS of any fitted view in pixels. Zero skips this check.",
     }

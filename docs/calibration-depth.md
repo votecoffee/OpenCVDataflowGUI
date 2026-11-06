@@ -115,9 +115,21 @@ metadata, the rectified profile and any valid ROI. Use **Project** path base
 for a portable saved graph. Saving requires a new file name.
 [Lens map files example](../examples/lens_map_files/README.md)
 
-Fisheye fitting, dataset management and independent validation remain open.
-The example and automated checks use rendered targets. Use separate views
-to measure the accuracy of a physical setup.
+Fisheye fitting and calibration dataset management remain open.
+
+## Validate a lens profile on another view
+
+Connect the fixed pinhole profile and a separate image to **Validate lens
+calibration**. Use the original image dimensions and camera pixel grid.
+Choose the board pattern, count and spacing for the validation target.
+The block fits the board pose and measures reprojection error across
+every detected point. It reports overall RMS, maximum point error,
+and the observed and projected coordinates in image pixels.
+
+Set the overall and optional worst-point limits for the job. Wire
+**Result graphics** to **Overlay result graphics** along with the
+validation image to see the measured points and residual directions.
+The bundled example uses rendered targets. [Lens validation example](../examples/validate_lens_calibration/README.md)
 
 ## White and color balance
 
