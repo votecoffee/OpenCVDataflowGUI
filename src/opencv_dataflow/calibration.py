@@ -6,7 +6,17 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from .circle_grid import (
+    CIRCLE_FLAGS,
+    CIRCLE_HELP,
+    CIRCLE_OPTIONS,
+    CIRCLE_RANGES,
+    board_xy,
+    find_circle_grid,
+    validate_circle_options,
+)
 from .core import Block, Graph, Port, Result
+from .graphics_layers import GraphicDrawing, graphic_object
 from .images import opencv_image, preview_rgb
 from .processing import finite, integer
 from .toolblocks import Binding, ToolBlock
@@ -16,11 +26,12 @@ def grid_settings(parameters):
     columns, rows = int(parameters["columns"]), int(parameters["rows"])
     spacing = float(parameters["spacing"])
     if columns < 3 or rows < 3 or columns * rows > 10000:
-        raise ValueError("Grid requires at least 3 by 3 inner corners and at most 10000 corners")
+        raise ValueError("Grid requires at least 3 by 3 features and at most 10000 features")
     if not np.isfinite(spacing) or spacing <= 0 or not parameters["units"].strip():
         raise ValueError("Grid spacing must be positive and units must be specified")
     world = np.zeros((columns * rows, 3), np.float32)
-    world[:, :2] = np.mgrid[0:columns, 0:rows].T.reshape(-1, 2) * spacing
+    asymmetric = parameters.get("detector") == "circles_asymmetric"
+    world[:, :2] = board_xy(columns, rows, asymmetric) * spacing
     return (columns, rows), world
 
 
@@ -34,6 +45,7 @@ GRID_OPTIONS = {
     "subpixel_window": 11,
     "subpixel_iterations": 30,
     "subpixel_epsilon": 0.001,
+    **CIRCLE_OPTIONS,
 }
 CALIB_FLAGS = {
     "use_intrinsic_guess": cv2.CALIB_USE_INTRINSIC_GUESS,
@@ -53,7 +65,10 @@ def find_grid(image, size, parameters=None):
     gray = cv2.cvtColor(display, cv2.COLOR_BGR2GRAY)
     p = GRID_OPTIONS if parameters is None else parameters
     flags = cv2.CALIB_CB_NORMALIZE_IMAGE if p["normalize"] else 0
-    if p["detector"] == "sb":
+    is_circle_grid = p["detector"] in CIRCLE_FLAGS
+    if is_circle_grid:
+        found, corners = find_circle_grid(gray, size, p)
+    elif p["detector"] == "sb":
         flags |= cv2.CALIB_CB_EXHAUSTIVE if p["exhaustive"] else 0
         flags |= cv2.CALIB_CB_ACCURACY if p["accuracy"] else 0
         found, corners = cv2.findChessboardCornersSB(gray, size, flags=flags)
@@ -70,13 +85,32 @@ def find_grid(image, size, parameters=None):
             )
             corners = cv2.cornerSubPix(gray, corners, (window, window), (-1, -1), criteria)
     if not found:
-        raise ValueError(
-            f"Calibration grid not found: expected {size[0]} by {size[1]} inner corners"
-        )
+        feature = "circle centers" if is_circle_grid else "inner corners"
+        raise ValueError(f"Calibration grid not found: expected {size[0]} by {size[1]} {feature}")
     return corners.reshape(-1, 2).astype(np.float32), display
 
 
-class CalibrationGrid(Block):
+class _GridCalibration(Block):
+    parameter_choices = {
+        "detector": ("sb", "classic", *CIRCLE_FLAGS),
+        "circle_polarity": ("dark", "light"),
+    }
+    parameter_ranges = CIRCLE_RANGES
+    parameter_help = {
+        **CIRCLE_HELP,
+        "columns": "Number of inner chessboard corners or circle centers in each row.",
+        "rows": "Number of rows of inner chessboard corners or circle centers.",
+        "spacing": "Feature pitch. For asymmetric circles, same-row pitch is twice this value.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["detector"] in CIRCLE_FLAGS:
+            validate_circle_options(p)
+
+
+class CalibrationGrid(_GridCalibration):
     type_id, title, category = "calibration.grid", "Calibration grid", "Calibration"
     block_type, subtype = "Calibration", "Grid and coordinates"
     inputs = (Port("image"),)
@@ -92,7 +126,6 @@ class CalibrationGrid(Block):
         "reverse_order": False,
         "max_error": 1.0,
     }
-    parameter_choices = {"detector": ("sb", "classic")}
 
     def process(self, inputs):
         size, world = grid_settings(self.parameters)
@@ -107,6 +140,8 @@ class CalibrationGrid(Block):
         corners, overlay = find_grid(inputs["image"], size, self.parameters)
         if self.parameters["reverse_order"]:
             corners = corners[::-1].copy()
+            if self.parameters["detector"] == "circles_asymmetric":
+                world[:, :2] = -world[::-1, :2]
         origin_index = row * size[0] + column
         world[:, :2] -= world[origin_index, :2].copy()
         matrix, _ = cv2.findHomography(corners, world[:, :2], 0)
@@ -141,13 +176,29 @@ class CalibrationGrid(Block):
             np.float64([[[self.parameters["spacing"], 0], [0, self.parameters["spacing"]]]]),
             np.linalg.inv(matrix),
         ).reshape(-1, 2)
-        for endpoint, label, color in zip(axes, ("+X", "+Y"), ((0, 0, 255), (0, 180, 0))):
+        labels = ("+X", "+Y")
+        colors = ((0, 0, 255), (0, 180, 0))
+        for endpoint, label, color in zip(axes, labels, colors):
             end = tuple(np.rint(endpoint).astype(int))
             cv2.arrowedLine(overlay, origin, end, color, 2, tipLength=0.2)
             cv2.putText(overlay, label, end, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
+        drawings = {}
+        if self.generate_graphics:
+            origin_pixel = corners[origin_index]
+            axis_objects = [graphic_object("marker", [origin_pixel], colors[0])]
+            for endpoint, label, color in zip(axes, labels, colors):
+                axis_objects.append(graphic_object("polyline", [origin_pixel, endpoint], color))
+                axis_objects.append(graphic_object("text", [endpoint], color, text=label))
+            drawings = {
+                "Grid features": GraphicDrawing(
+                    tuple(graphic_object("marker", [point], (255, 180, 0)) for point in corners)
+                ),
+                "Grid origin and axes": GraphicDrawing(tuple(axis_objects)),
+            }
         return Result(
             {"mapping": mapping, "corners": corners.tolist(), "overlay": overlay},
             graphics={"grid origin": overlay},
+            drawings=drawings,
             passed=error <= maximum,
             score=max(0.0, 1 - error / maximum),
             message=f"Planar fit RMS {error:.4g} {self.parameters['units']}",
@@ -222,7 +273,7 @@ def camera_parameters(calibration):
     return matrix, distortion
 
 
-class LensCalibration(Block):
+class LensCalibration(_GridCalibration):
     type_id, title, category = "calibration.lens", "Calibrate lens", "Calibration"
     block_type, subtype = "Calibration", "Lens distortion"
     outputs = (Port("calibration", "data"), Port("rms", "number"))
@@ -241,7 +292,7 @@ class LensCalibration(Block):
         "units": "mm",
         "max_rms_pixels": 1.0,
     }
-    parameter_choices = {"detector": ("sb", "classic"), "solver": ("svd", "lu", "qr")}
+    parameter_choices = {**_GridCalibration.parameter_choices, "solver": ("svd", "lu", "qr")}
 
     def process(self, inputs):
         size, world = grid_settings(self.parameters)

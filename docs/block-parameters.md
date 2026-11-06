@@ -589,7 +589,7 @@ Inputs: `image` (image).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `detector` | `"sb"` | `sb`, `classic` |
+| `detector` | `"sb"` | `sb`, `classic`, `circles_symmetric`, `circles_asymmetric` |
 | `normalize` | `true` |  |
 | `exhaustive` | `true` |  |
 | `accuracy` | `false` |  |
@@ -598,9 +598,22 @@ Inputs: `image` (image).
 | `subpixel_window` | `11` |  |
 | `subpixel_iterations` | `30` |  |
 | `subpixel_epsilon` | `0.001` |  |
-| `columns` | `9` |  |
-| `rows` | `6` |  |
-| `spacing` | `10.0` |  |
+| `circle_polarity` | `"dark"` | `dark`, `light` Dark dots on a light field or light dots on a dark field. |
+| `circle_clustering` | `false` | Use clustering for perspective distortion on an uncluttered target. |
+| `circle_max_rectified_distance` | `0.5` | Value must be a finite number between 1e-06 and 10. Clustering tolerance in normalized board spacing units. |
+| `circle_min_area` | `25.0` | Value must be a finite number between 1e-06 and 6.4e+07. Minimum candidate area in image pixels squared. |
+| `circle_max_area` | `5000.0` | Value must be a finite number between 1e-06 and 6.4e+07. Exclusive upper candidate area in image pixels squared. |
+| `circle_min_distance` | `10.0` | Value must be a finite number between 1e-06 and 16384. Minimum separation of distinct blobs in image pixels. |
+| `circle_min_threshold` | `50.0` | Value must be a finite number between 0 and 255. Start of the 8-bit candidate threshold sweep. |
+| `circle_max_threshold` | `220.0` | Value must be a finite number between 0 and 255. Exclusive end of the 8-bit candidate threshold sweep. |
+| `circle_threshold_step` | `10.0` | Value must be a finite number between 1 and 255. Increment for the candidate threshold sweep. |
+| `circle_min_repeatability` | `2` | Value must be a whole number between 1 and 255. Minimum number of thresholds that must detect a candidate. |
+| `circle_min_circularity` | `0.0` | Value must be a finite number between 0 and 1. Minimum contour circularity. Zero disables the filter. |
+| `circle_min_convexity` | `0.95` | Value must be a finite number between 0 and 1. Minimum contour convexity. Zero disables the filter. |
+| `circle_min_inertia_ratio` | `0.1` | Value must be a finite number between 0 and 1. Minimum minor-to-major inertia ratio. Zero disables the filter. |
+| `columns` | `9` | Number of inner chessboard corners or circle centers in each row. |
+| `rows` | `6` | Number of rows of inner chessboard corners or circle centers. |
+| `spacing` | `10.0` | Feature pitch. For asymmetric circles, same-row pitch is twice this value. |
 | `units` | `"mm"` |  |
 | `origin_column` | `0` |  |
 | `origin_row` | `0` |  |
@@ -613,7 +626,7 @@ Calibration / Lens distortion
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `detector` | `"sb"` | `sb`, `classic` |
+| `detector` | `"sb"` | `sb`, `classic`, `circles_symmetric`, `circles_asymmetric` |
 | `normalize` | `true` |  |
 | `exhaustive` | `true` |  |
 | `accuracy` | `false` |  |
@@ -622,6 +635,19 @@ Calibration / Lens distortion
 | `subpixel_window` | `11` |  |
 | `subpixel_iterations` | `30` |  |
 | `subpixel_epsilon` | `0.001` |  |
+| `circle_polarity` | `"dark"` | `dark`, `light` Dark dots on a light field or light dots on a dark field. |
+| `circle_clustering` | `false` | Use clustering for perspective distortion on an uncluttered target. |
+| `circle_max_rectified_distance` | `0.5` | Value must be a finite number between 1e-06 and 10. Clustering tolerance in normalized board spacing units. |
+| `circle_min_area` | `25.0` | Value must be a finite number between 1e-06 and 6.4e+07. Minimum candidate area in image pixels squared. |
+| `circle_max_area` | `5000.0` | Value must be a finite number between 1e-06 and 6.4e+07. Exclusive upper candidate area in image pixels squared. |
+| `circle_min_distance` | `10.0` | Value must be a finite number between 1e-06 and 16384. Minimum separation of distinct blobs in image pixels. |
+| `circle_min_threshold` | `50.0` | Value must be a finite number between 0 and 255. Start of the 8-bit candidate threshold sweep. |
+| `circle_max_threshold` | `220.0` | Value must be a finite number between 0 and 255. Exclusive end of the 8-bit candidate threshold sweep. |
+| `circle_threshold_step` | `10.0` | Value must be a finite number between 1 and 255. Increment for the candidate threshold sweep. |
+| `circle_min_repeatability` | `2` | Value must be a whole number between 1 and 255. Minimum number of thresholds that must detect a candidate. |
+| `circle_min_circularity` | `0.0` | Value must be a finite number between 0 and 1. Minimum contour circularity. Zero disables the filter. |
+| `circle_min_convexity` | `0.95` | Value must be a finite number between 0 and 1. Minimum contour convexity. Zero disables the filter. |
+| `circle_min_inertia_ratio` | `0.1` | Value must be a finite number between 0 and 1. Minimum minor-to-major inertia ratio. Zero disables the filter. |
 | `use_intrinsic_guess` | `false` |  |
 | `fix_principal_point` | `false` |  |
 | `fix_aspect_ratio` | `false` |  |
@@ -641,9 +667,9 @@ Calibration / Lens distortion
 | `max_iterations` | `30` |  |
 | `epsilon` | `2.220446049250313e-16` |  |
 | `image_paths` | `[]` |  |
-| `columns` | `9` |  |
-| `rows` | `6` |  |
-| `spacing` | `10.0` |  |
+| `columns` | `9` | Number of inner chessboard corners or circle centers in each row. |
+| `rows` | `6` | Number of rows of inner chessboard corners or circle centers. |
+| `spacing` | `10.0` | Feature pitch. For asymmetric circles, same-row pitch is twice this value. |
 | `units` | `"mm"` |  |
 | `max_rms_pixels` | `1.0` |  |
 

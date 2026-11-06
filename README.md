@@ -341,14 +341,14 @@ The [skeleton pruning example](examples/skeleton_pruning/README.md) extracts
 centerlines from a binary mask and removes short spurs. Install the optional
 dependency with `python -m pip install -e ".[morphology]"`.
 
-Additional tools include monochrome/per-channel color histograms, grid-based planar
-pixel-to-physical mapping, offline multi-view lens calibration, undistortion, white/
-color balance, reusable calibration ToolBlocks, and typed depth-image loading,
-RGB-D pairing and depth sampling. Calibration profiles can be saved and loaded as
-JSON for subsequent measurement jobs without a grid in every image. See
-[calibration and depth workflows](docs/calibration-depth.md) for units, origin and
-coordinate-space contracts. These are offline tools; no live robot calibration or
-point-cloud processing is implemented.
+Additional tools include monochrome/per-channel color histograms, planar
+pixel-to-physical mapping, offline multi-view lens calibration, undistortion,
+white/color balance, reusable calibration ToolBlocks, and typed depth-image
+loading, RGB-D pairing and depth sampling. Calibration grid and Calibrate lens
+accept chessboards and symmetric or staggered circle targets. Save and load
+calibration profiles as JSON for subsequent measurement jobs.
+[Calibration and depth workflows](docs/calibration-depth.md) ·
+[Circle grid example](examples/circle_grid_calibration/README.md)
 
 ### Build and test a starter project
 

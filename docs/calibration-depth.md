@@ -32,14 +32,15 @@ scaled to their peak; compare numeric counts rather than line height across chan
 
 ## Grid origin and physical coordinates
 
-1. Load/capture a chessboard image. Set **columns and rows of inner corners**,
-   measured grid spacing and units (for example 10 mm). A 10×7 square board has
-   9×6 inner corners.
+1. Load a calibration target image. For chessboards, set **columns and rows of
+   inner corners**. A 10×7 square board has 9×6 inner corners. For circle grids,
+   set the number of **circle centers** per row and the number of rows.
+   Configure the measured spacing and units for the selected target.
 2. If necessary, undistort the image first using a matching lens profile.
-3. Run Calibration grid. It detects corners, fits a planar homography, and anchors
-   the selected `(origin_column, origin_row)` corner at physical `(0,0)`. +X follows
-   increasing detected columns; +Y follows increasing detected rows. The overlay
-   marks the origin. `reverse_order` reverses both corner axes.
+3. Run Calibration grid. It detects features, fits a planar homography, and anchors
+   the selected `(origin_column, origin_row)` feature at physical `(0,0)`. +X follows
+   increasing detected columns and +Y follows increasing detected rows. The overlay
+   marks the origin. `reverse_order` reverses both axes.
 4. Connect `mapping` to Pixel to physical. Supply a list of pixel `[x,y]` points
    through its optional `points` port or the JSON `pixel_points` parameter.
    Outputs include input pixels, physical coordinates, units and `plane_only`.
@@ -57,17 +58,31 @@ observed board needs independent verification. Pixel data alone does not identif
 the source image resolution: the caller must use the mapping in its recorded
 `image_size` coordinate space. A low fitting residual is not a held-out accuracy test.
 
-An unmarked symmetric chessboard cannot uniquely identify a fixed physical corner
-after arbitrary board rotation. The current origin is detector-relative and must
-be checked using the overlay and configured orientation. A marked, uniquely
-identifiable target is planned under the camera/robot milestone. No undistortion
-is silently applied by the grid tool: calibrate and measure in the same image space.
+On an unmarked target with rotational symmetry, the origin is detector-relative.
+Use the overlay and orientation setting to identify the physical origin.
+A marked, uniquely identifiable target is planned under the camera/robot milestone.
+
+### Circle targets
+
+Select `circles_symmetric` for a regular array or `circles_asymmetric` for
+staggered rows. For a symmetric target, spacing is the center pitch on both
+axes. For a staggered target, spacing is the vertical row pitch and half
+the horizontal center pitch. The `corners` port carries the detected centers
+in circle modes, so it can connect directly to Pixel to physical.
+
+Set **Circle polarity** to match the dots. The circle controls tune candidate
+size, separation, thresholds, and shape filters. Clustering is intended
+for uncluttered scenes with perspective distortion. If it misses an
+even-row staggered board, try detection with clustering disabled.
+[Circle grid example](../examples/circle_grid_calibration/README.md) ·
+[OpenCV calibration patterns](https://github.com/opencv/opencv/blob/5.x/doc/tutorials/calib3d/camera_calibration_pattern/camera_calibration_pattern.markdown)
 
 ## Lens distortion
 
 Calibrate lens accepts a JSON `image_paths` list with at least three distinct grid
 views of identical dimensions. Use substantially varied board orientations and
-positions. It detects the grid in every image and solves a standard OpenCV pinhole
+positions. It uses the same detector and target spacing settings as Calibration grid
+and solves a standard OpenCV pinhole
 model. Outputs include camera matrix, distortion coefficients, image dimensions,
 units, view count and reprojection RMS in pixels. Duplicated detected views and
 failed detections are rejected; excessive RMS produces an inspection failure.

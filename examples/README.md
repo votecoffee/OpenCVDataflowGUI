@@ -11,6 +11,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Annoy nearest neighbors](annoy_search/README.md) | Turn synthetic image colors into an ONNX embedding and rank three labeled reference vectors with an Annoy index. |
 | [Bead width calipers](bead_calipers/README.md) | Measure paired edges and bead width with a synthetic image. |
 | [Channels and image pyramids](channels_pyramids/README.md) | Split and reassemble BGR channels, then carry payloads and coordinate transforms through a four-level image pyramid. |
+| [Circle grid calibration](circle_grid_calibration/README.md) | Detect a staggered dot target and map its centers to physical coordinates. |
 | [Color chart calibration](color_chart_calibration/README.md) | Detect a bundled synthetic color chart, fit a correction model, and apply it to the image. |
 | [Combined inspection regions](combined_regions/README.md) | Subtract the center of a circle and union the resulting ring with a second part region. |
 | [Conveyor pick selection](conveyor_pick/README.md) | Find 25 fixed-scale parts and select a candidate using clearance and downstream position. |

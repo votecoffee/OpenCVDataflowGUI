@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Staggered calibration target",
+      "parameters": {
+        "path": "assets/staggered_dots.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "grid",
+      "type": "calibration.grid",
+      "name": "Calibrate the target plane",
+      "parameters": {
+        "detector": "circles_asymmetric",
+        "columns": 4,
+        "rows": 6,
+        "spacing": 12.5,
+        "origin_column": 1,
+        "origin_row": 1,
+        "max_error": 0.05
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mapping",
+        "corners",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "physical",
+      "type": "calibration.pixel_to_physical",
+      "name": "Measure the centers in millimeters",
+      "parameters": {
+        "max_mapping_error": 0.05
+      },
+      "position": [
+        650,
+        0
+      ],
+      "exposed_inputs": [
+        "mapping",
+        "points"
+      ],
+      "exposed_outputs": [
+        "points"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "grid",
+      "input": "image"
+    },
+    {
+      "source": "grid",
+      "output": "mapping",
+      "target": "physical",
+      "input": "mapping"
+    },
+    {
+      "source": "grid",
+      "output": "corners",
+      "target": "physical",
+      "input": "points"
+    }
+  ]
+}
