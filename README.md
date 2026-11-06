@@ -887,6 +887,10 @@ Try the [seeded noise example](examples/image_processing/seeded_noise/README.md)
 prepare and inspect numeric tables for fitting, regularization, and inversion.
 Try the [matrix structure example](examples/numerical/matrix_structure/README.md).
 
+**Stitch image pair** combines overlapping inspection views in a shared frame
+or with a wired registration. It reports coverage, overlap, and the mappings
+from both inputs. Try the [stitching example](examples/image_processing/stitch_image_pair/README.md).
+
 ## Architecture
 
 Choose **Run profile: debug / balanced / lean** in the toolbar to control observation

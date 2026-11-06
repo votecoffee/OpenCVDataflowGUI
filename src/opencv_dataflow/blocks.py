@@ -681,6 +681,7 @@ def builtin_registry():
     from .image_quality import CompareImageQuality
     from .image_queue import ImageQueue
     from .image_statistics import ImageSummaryStatistics
+    from .image_stitching import StitchImagePair
     from .image_validity import CheckImageValidity, ReplaceNonfiniteSamples
     from .judgments import FinalJudgment
     from .lens_map_files import LoadLensMaps, SaveLensMaps
@@ -794,6 +795,7 @@ def builtin_registry():
         SaveCalibration,
         *PROCESSING_BLOCKS,
         JoinImages,
+        StitchImagePair,
         PasteImagePatch,
         CropSubpixel,
         PolarImageWarp,

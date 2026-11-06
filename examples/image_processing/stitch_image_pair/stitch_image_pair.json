@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Full inspection field",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left",
+      "type": "cv.crop",
+      "name": "Left scan tile",
+      "parameters": {
+        "x": 0,
+        "y": 0,
+        "width": 300,
+        "height": 0
+      },
+      "position": [
+        285,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "cv.crop",
+      "name": "Right scan tile",
+      "parameters": {
+        "x": 180,
+        "y": 0,
+        "width": 300,
+        "height": 0
+      },
+      "position": [
+        285,
+        195
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "stitch",
+      "type": "cv.stitch_image_pair",
+      "name": "Reconstruct scan mosaic",
+      "parameters": {
+        "transform_source": "shared_frame",
+        "matrix": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "interpolation": "linear",
+        "blend": "prefer_a",
+        "min_overlap_pixels": 1,
+        "ticket_policy": "same_ticket"
+      },
+      "position": [
+        600,
+        70
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "layout"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "compare",
+      "type": "cv.image_norm",
+      "name": "Verify exact reconstruction",
+      "parameters": {
+        "metric": "infinity",
+        "mode": "absolute",
+        "alignment": "same_frame",
+        "include_alpha": false,
+        "check_threshold": true,
+        "maximum": 0.0
+      },
+      "position": [
+        925,
+        70
+      ],
+      "exposed_inputs": [
+        "image",
+        "reference",
+        "mask"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "left",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "right",
+      "input": "image"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "stitch",
+      "input": "image_a"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "stitch",
+      "input": "image_b"
+    },
+    {
+      "source": "stitch",
+      "output": "image",
+      "target": "compare",
+      "input": "image"
+    },
+    {
+      "source": "stitch",
+      "output": "coverage",
+      "target": "compare",
+      "input": "mask"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "compare",
+      "input": "reference"
+    }
+  ]
+}
