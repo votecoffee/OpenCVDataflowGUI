@@ -2478,6 +2478,35 @@ Inputs: `image` (image).
 
 No configurable algorithm parameters.
 
+## Stitch image pair (`cv.stitch_image_pair`)
+
+Image processing / Geometry
+
+Inputs: `image_a` (image), `image_b` (image), `transform` (data, optional), `mask_a` (image, optional), `region_a` (data, optional), `mask_b` (image, optional), `region_b` (data, optional).
+
+Input `image_a` — Anchor view. Its pixel grid defines the mosaic scale and orientation.
+
+Input `image_b` — Second view with matching pixel depth and channel encoding.
+
+Input `transform` — Optional Image B to Image A transform. Overrides Transform source.
+
+Input `mask_a` — Select valid pixels in Image A coordinates.
+
+Input `mask_b` — Select valid pixels in Image B coordinates.
+
+Input `region_a` — Optional region in Image A coordinates.
+
+Input `region_b` — Optional region in Image B coordinates.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `transform_source` | `"shared_frame"` | `shared_frame`, `matrix` Use a common recorded image frame or the editable matrix. |
+| `matrix` | `[[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]` | Affine or projective matrix mapping Image B pixels into Image A coordinates. |
+| `interpolation` | `"linear"` | `nearest`, `linear` Resample Image B. Linear requires all contributing pixels to be valid. |
+| `blend` | `"prefer_a"` | `prefer_a`, `prefer_b`, `average` Choose which image to use in the overlap or average their samples. |
+| `min_overlap_pixels` | `1` | Value must be a whole number between 0 and 2.68435e+08. Withhold the mosaic below this count. Zero permits disjoint tiles. |
+| `ticket_policy` | `"same_ticket"` | `same_ticket`, `anchor_a` Anchor A allows distinct tickets for offline stitching and reports both. |
+
 ## Temporal non-local means (`cv.temporal_nlm`)
 
 Image processing / Filters
