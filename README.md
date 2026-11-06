@@ -400,6 +400,10 @@ circles and distance transform. See [additional tools](docs/additional-tools.md)
 After preparing the optional Lena asset, open `examples/lena_features/lena_features.json` to try
 CLAHE → corners, edges → line segments, and a histogram in one project.
 
+The [color normalization example](examples/normalize_color/README.md) compares
+shared and independent channel scaling in a selected patch while preserving the
+pixels outside it.
+
 The [registration and transform tools](docs/registration-tools.md) add arbitrary
 rotation, affine/perspective warps, borders, pyramids, custom filtering, unsharp
 masking, FAST/ORB features, descriptor matching, homography estimation and point

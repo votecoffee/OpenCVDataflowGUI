@@ -46,6 +46,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Intensity transform](intensity_transform/README.md) | Clip a ramp, apply a natural logarithm, and recover the clipped values with exponentiation. |
 | [Local window statistics](local_statistics/README.md) | Distinguish a flat patch from a checker texture using local standard deviation. |
 | [Intensity lookup table](intensity_lut/README.md) | Apply distinct intensity curves to an RGB ramp. |
+| [Color normalization](normalize_color/README.md) | Compare shared and independent channel scaling inside a region while preserving outside pixels. |
 | [Fourier correlation](fourier_correlation/README.md) | Recover a known signed shift and inspect the lag map. |
 | [Fourier gain mask](fourier_gain/README.md) | Apply a custom notch at a specific frequency pair and reconstruct the image. |
 | [Fourier spectrum filtering](fourier_filter/README.md) | Reject a periodic stripe pattern with a band-stop filter and inverse DFT. |
