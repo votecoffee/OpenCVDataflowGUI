@@ -697,6 +697,7 @@ def builtin_registry():
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .pick_selection import SelectPickCandidate
+    from .polar_image import PolarImageWarp
     from .polynomial_roots import SolvePolynomialRoots
     from .poses import POSE_BLOCKS
     from .principal_components import FitPrincipalComponents, TransformPrincipalComponents
@@ -780,6 +781,7 @@ def builtin_registry():
         *PROCESSING_BLOCKS,
         JoinImages,
         PasteImagePatch,
+        PolarImageWarp,
         TileImage,
         *FEATURE_BLOCKS,
         *REGISTRATION_BLOCKS,

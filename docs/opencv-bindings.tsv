@@ -4809,7 +4809,7 @@ P3	function	cv2.warpAffine	literal reference	-
 P3	class	cv2.WarperCreator	no static reference	-
 P3	function	cv2.warpFrame	no static reference	-
 P3	function	cv2.warpPerspective	literal reference	-
-P3	function	cv2.warpPolar	no static reference	-
+P3	function	cv2.warpPolar	literal reference	-
 P3	class	cv2.wechat_qrcode_WeChatQRCode	alias	cv2.wechat_qrcode.WeChatQRCode
 P3	method	cv2.wechat_qrcode_WeChatQRCode.detectAndDecode	alias	cv2.wechat_qrcode.WeChatQRCode.detectAndDecode
 P3	method	cv2.wechat_qrcode_WeChatQRCode.getScaleFactor	alias	cv2.wechat_qrcode.WeChatQRCode.getScaleFactor

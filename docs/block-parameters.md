@@ -2455,6 +2455,30 @@ Inputs: `image` (image), `transform` (data, optional).
 | `border_value` | `0.0` |  |
 | `inverse_map` | `false` |  |
 
+## Polar image warp (`cv.warp_polar`)
+
+Image processing / Geometry
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `center_x` (number, optional), `center_y` (number, optional), `radius` (number, optional).
+
+Input `image` — Cartesian or polar image. Rewrap reuses a Polar image warp's attached mapping.
+
+Input `mask` — Optional input-grid mask. Filters the validity output.
+
+Input `region` — Optional input-grid region. Filters the validity output.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `direction` | `"unwrap"` | `unwrap`, `rewrap` Unwrap to a radius-by-angle image or rewrap to a Cartesian image. |
+| `radial_scale` | `"linear"` | `linear`, `semilog` Linear uses equal radius steps. Semilog samples densely near the center. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Resampling for image pixels. The validity mask always uses nearest. |
+| `width` | `0` | Value must be a whole number between 0 and 32764. Radius columns in Unwrap. Zero chooses the rounded radial extent. |
+| `height` | `0` | Value must be a whole number between 0 and 32764. Angle rows in Unwrap. Zero chooses approximately π times the width. |
+| `center_mode` | `"image_center"` | `image_center`, `custom` Use the Cartesian image center or custom pixel coordinates. |
+| `center_x` | `0.0` | Value must be a finite number between -32764 and 32764. Custom Cartesian X coordinate. A wired value takes precedence. |
+| `center_y` | `0.0` | Value must be a finite number between -32764 and 32764. Custom Cartesian Y coordinate. A wired value takes precedence. |
+| `radius` | `0.0` | Value must be a finite number between 0 and 32764. Cartesian radial extent. Zero fits the largest circle around the chosen center. |
+
 ## Wiener deblur (`cv.wiener_deblur`)
 
 Image processing / Filters

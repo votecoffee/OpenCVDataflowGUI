@@ -40,6 +40,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Replace nonfinite samples](nonfinite_replacement/README.md) | Fill a known synthetic depth patch with a configured value, track the changed pixels, and verify the result. |
 | [Join images](join_images/README.md) | Compare a full inspection image with a filtered crop, separated by a gap. |
 | [Paste image patch](paste_patch/README.md) | Copy a masked crop onto the inspection image, clipping at the canvas edge. |
+| [Polar image warp](polar_image_warp/README.md) | Unwrap a circular edge with a simulated defect and rewrap it into the source frame. |
 | [Tile image](tile_image/README.md) | Repeat a reference in a 2 × 3 grid and find all six copies with template matching. |
 | [Transpose image](transpose_image/README.md) | Reflect a crop across its anti-diagonal and map points back to the original image. |
 | [Scale absolute to 8-bit](scale_absolute/README.md) | Convert signed Sobel responses to magnitudes and threshold both edge polarities. |
