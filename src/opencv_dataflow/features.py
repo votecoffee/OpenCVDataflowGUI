@@ -8,7 +8,7 @@ import numpy as np
 from .core import Block, Port, Result
 from .graphics_layers import GraphicDrawing, graphic_box, graphic_circle, graphic_object
 from .images import ImageArray, convert_depth, format_image, image_format, preview_rgb
-from .objects import collection, line_item
+from .objects import circle_item, collection, line_item
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import OUTPUT_DEPTHS, optional_mask
 from .payloads import NO_VALUE, require_same_frame
@@ -688,6 +688,8 @@ class HoughCircles(ImageTool):
         Port("centers", "data"),
         Port("count", "number"),
         Port("overlay"),
+        Port("votes", "data"),
+        Port("collection", "data"),
     )
     defaults = {
         "dp": 1.2,
@@ -700,7 +702,19 @@ class HoughCircles(ImageTool):
     }
     parameter_choices = {"method": ("gradient", "gradient_alt")}
     parameter_help = {
-        "center_threshold": "For gradient_alt use a perfectness threshold below 1 (e.g. 0.9)."
+        "dp": "Inverse accumulator resolution. Use 1 for the same resolution as the image.",
+        "min_distance": "Minimum distance between detected centers in image pixels.",
+        "edge_threshold": "Upper Canny threshold. Gradient ALT uses Scharr derivatives.",
+        "center_threshold": "Gradient uses an accumulator cutoff. Gradient ALT uses a "
+        "perfectness threshold below 1 (e.g. 0.9).",
+        "min_radius": "Smallest searched radius in pixels.",
+        "max_radius": "Largest searched radius in pixels. Zero uses the largest image dimension. "
+        "Use -1 in Gradient mode to locate centers without fitting radii.",
+    }
+    input_help = {
+        "image": "8-bit monochrome or color image. Color is converted to grayscale.",
+        "mask": "Keep detections whose center lies in this mask.",
+        "region": "Keep detections whose center lies in this region.",
     }
     parameter_ranges = {
         "dp": NumericRange(1),
@@ -733,7 +747,10 @@ class HoughCircles(ImageTool):
         )
         minimum, maximum = int(p["min_radius"]), int(p["max_radius"])
         mode = {"gradient": cv2.HOUGH_GRADIENT, "gradient_alt": cv2.HOUGH_GRADIENT_ALT}[p["method"]]
-        found = cv2.HoughCircles(
+        centers_only = maximum < 0
+        # The native fourth field is a bin index in center-only mode.
+        detect = cv2.HoughCircles if centers_only else cv2.HoughCirclesWithAccumulator
+        found = detect(
             image,
             mode,
             dp,
@@ -743,9 +760,15 @@ class HoughCircles(ImageTool):
             minRadius=minimum,
             maxRadius=maximum,
         )
-        circles = found.reshape(-1, 3).tolist() if found is not None else []
+        detections = [] if found is None else found.reshape(-1, 3 if centers_only else 4).tolist()
         selection = selection_mask(inputs, image)
-        circles = [c for c in circles if contains(selection, c[:2])]
+        detections = [row for row in detections if contains(selection, row[:2])]
+        circles = [row[:3] for row in detections]
+        votes = [None if centers_only else int(row[3]) for row in detections]
+        items = [
+            circle_item(circle, strength, index)
+            for index, (circle, strength) in enumerate(zip(circles, votes, strict=True))
+        ]
         overlay = overlay_image(inputs["image"])
         for x, y, radius in circles:
             cv2.circle(overlay, (round(x), round(y)), round(radius), (0, 220, 120), 1)
@@ -755,6 +778,8 @@ class HoughCircles(ImageTool):
                 "centers": [c[:2] for c in circles],
                 "count": len(circles),
                 "overlay": overlay,
+                "votes": votes,
+                "collection": collection("circles", items, image, self.input_payloads["image"]),
             },
             graphics={"circles": overlay},
             drawings={"circles": GraphicDrawing(tuple(

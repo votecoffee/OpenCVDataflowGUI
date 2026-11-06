@@ -8,7 +8,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .features import overlay_image
-from .graphics_layers import GraphicDrawing, graphic_box, graphic_object
+from .graphics_layers import GraphicDrawing, graphic_box, graphic_circle, graphic_object
 from .objects import METRICS, collection, line_item, validate_collection
 from .payloads import (
     ValuePacket,
@@ -397,6 +397,16 @@ class DrawCollection(Block):
                         )
                         for contour in contours
                     )
+            elif data["kind"] == "circles":
+                center = tuple(draw_points([geometry["center"]], origin)[0])
+                radius = geometry["radius"]
+                radius = 0.0 if radius is None else finite(radius, "Circle radius", 0)
+                if radius > 100_000:
+                    raise ValueError("Circle radius exceeds the 100,000 pixel drawing limit")
+                cv2.circle(mask, center, round(radius), 255, -1)
+                cv2.circle(overlay, center, round(radius), color, thickness)
+                if draw_objects:
+                    objects.append(graphic_circle(*center, radius, color, thickness=thickness))
             else:
                 points = draw_points(geometry["points"], origin)
                 if data["kind"] == "lines":
