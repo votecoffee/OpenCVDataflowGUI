@@ -171,8 +171,19 @@ def preview_rgb(image):
             np.asarray(image), None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U
         )
         image = ImageArray(normalized, image_format(image))
+    invalid = None
+    if image.dtype in (np.float32, np.float64):
+        nonfinite = cv2.finiteMask(np.asarray(image)) == 0
+        if nonfinite.any():
+            invalid = nonfinite
+            image = image.copy()
+            image[invalid] = 0
     image = opencv_image(image)
     image = convert_depth(image, "uint8")
     if image.ndim == 2:
-        return cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
-    return cv2.cvtColor(image, cv2.COLOR_BGRA2RGB if image.shape[2] == 4 else cv2.COLOR_BGR2RGB)
+        rgb = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+    else:
+        rgb = cv2.cvtColor(image, cv2.COLOR_BGRA2RGB if image.shape[2] == 4 else cv2.COLOR_BGR2RGB)
+    if invalid is not None:
+        rgb[invalid] = (255, 0, 255)
+    return rgb

@@ -2756,7 +2756,7 @@ P3	function	cv2.findNonZero	literal reference	-
 P3	function	cv2.findPlanes	no static reference	-
 P3	function	cv2.findTransformECCMultiScale	literal reference	-
 P3	function	cv2.findTransformECCWithMask	literal reference	-
-P3	function	cv2.finiteMask	no static reference	-
+P3	function	cv2.finiteMask	literal reference	-
 P3	function	cv2.fitEllipseAMS	literal reference	-
 P3	function	cv2.fitEllipseDirect	literal reference	-
 P3	class	cv2.flann.Index	no static reference	-

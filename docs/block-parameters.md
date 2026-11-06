@@ -3341,6 +3341,21 @@ Inputs: `image_a` (image), `image_b` (image), `mask` (image, optional), `region`
 | `threshold` | `0.95` | Minimum for SSIM/PSNR, maximum for error metrics. |
 | `peak_value` | `255.0` | Maximum sample value for PSNR. Default is 255 for uint8 images. |
 
+## Check image samples (`inspect.image_validity`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale, color or physical depth. Tests the stored sample values.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `check_range` | `false` | Also test the stored sample values against the lower and upper bounds. |
+| `minimum` | `0.0` | Value must be a finite number. Inclusive lower bound, applied to every stored channel. |
+| `maximum` | `1.0` | Value must be a finite number. Exclusive upper bound, applied to every stored channel. |
+| `max_invalid_fraction` | `0.0` | Value must be a finite number between 0 and 1. Maximum fraction of selected pixels allowed to be invalid. |
+
 ## KAZE keypoints and descriptors (`inspect.kaze`)
 
 Inspection / Features
