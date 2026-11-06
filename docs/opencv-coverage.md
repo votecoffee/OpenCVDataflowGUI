@@ -70,6 +70,8 @@ copy at a canvas offset and reports both rectangles and the copied pixels.
 rectangular patch at a fractional center and preserves coordinate provenance.
 [Hough lines from points](../examples/point_set_lines/README.md) finds lines
 from sparse coordinates and exposes vote counts for collection sorting.
+[Hough polar lines](../examples/hough_polar_lines/README.md) supports binary
+and intensity-weighted raster voting with masks and regions.
 [Polar image warp](../examples/polar_image_warp/README.md) unwraps circular
 features onto linear or semilog grids, tracks source coverage, and can rewrap
 an intact grid into its original frame.
