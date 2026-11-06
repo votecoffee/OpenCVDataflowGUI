@@ -177,7 +177,7 @@ P2	method	cv2.aruco.CharucoBoard.getChessboardCorners	method name only	-
 P2	method	cv2.aruco.CharucoBoard.getChessboardSize	no static reference	-
 P2	method	cv2.aruco.CharucoBoard.getLegacyPattern	no static reference	-
 P2	method	cv2.aruco.CharucoBoard.getMarkerLength	no static reference	-
-P2	method	cv2.aruco.CharucoBoard.getSquareLength	no static reference	-
+P2	method	cv2.aruco.CharucoBoard.getSquareLength	method name only	-
 P2	method	cv2.aruco.CharucoBoard.setLegacyPattern	method name only	-
 P2	class	cv2.aruco.CharucoDetector	literal reference	-
 P2	method	cv2.aruco.CharucoDetector.detectBoard	method name only	-

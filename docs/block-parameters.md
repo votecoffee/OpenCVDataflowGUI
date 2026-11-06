@@ -769,7 +769,9 @@ Inputs: `image` (image), `calibration` (data).
 
 Calibration / Lens distortion
 
-Inputs: `image` (image), `calibration` (data).
+Inputs: `image` (image), `calibration` (data), `observation` (data, optional).
+
+Input `observation` — Optional identified ChArUco points from the validation image.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |

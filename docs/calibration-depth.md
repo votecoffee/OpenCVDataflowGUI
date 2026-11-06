@@ -131,6 +131,13 @@ Set the overall and optional worst-point limits for the job. Wire
 validation image to see the measured points and residual directions.
 The bundled example uses rendered targets. [Lens validation example](../examples/validate_lens_calibration/README.md)
 
+For a partial ChArUco board, feed the same image to **Detect ChArUco board**
+and **Validate lens calibration**. Wire the detected **Observation** to
+the validator. It uses the board definition and visible corner IDs in the
+observation. It checks capture and frame metadata when supplied and keeps
+the lens profile fixed while estimating the board pose.
+[ChArUco validation example](../examples/validate_charuco_calibration/README.md)
+
 ## Observe a ChArUco board
 
 **Detect ChArUco board** returns corner IDs, image coordinates, and
