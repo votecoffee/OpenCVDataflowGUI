@@ -1831,6 +1831,18 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `output_depth` | `"same"` | `same`, `uint8`, `uint16`, `int16`, `float32`, `float64` |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 
+## Solve linear system (`cv.solve_linear_system`)
+
+Image processing / Statistics
+
+Inputs: `coefficients` (data, optional), `observations` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `coefficients` | `[]` | Rows are equations and columns are unknowns. Wired data takes precedence. |
+| `observations` | `[]` | Enter a vector or a table with one right-hand side per column. |
+| `method` | `"svd"` | `svd`, `qr`, `lu`, `cholesky`, `eigen` SVD allows any shape and rank. QR needs at least as many equations as unknowns. LU needs a square matrix. Eigen needs symmetry, and Cholesky also needs positive definiteness. |
+
 ## Paired Sobel derivatives (`cv.spatial_gradient`)
 
 Image processing / Edges

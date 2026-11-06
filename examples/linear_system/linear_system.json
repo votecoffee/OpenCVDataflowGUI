@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fit",
+      "type": "cv.solve_linear_system",
+      "name": "Fit two calibration curves",
+      "parameters": {
+        "coefficients": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        "observations": [
+          [
+            3,
+            10
+          ],
+          [
+            4,
+            8
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            12,
+            4
+          ]
+        ],
+        "method": "qr"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "solution",
+        "fitted",
+        "rmse",
+        "rank"
+      ],
+      "thumbnail": true,
+      "preview_output": "residuals"
+    },
+    {
+      "id": "verify",
+      "type": "cv.solve_linear_system",
+      "name": "Re-solve using the fitted observations",
+      "parameters": {
+        "coefficients": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        "method": "svd"
+      },
+      "position": [
+        410,
+        0
+      ],
+      "exposed_inputs": [
+        "observations"
+      ],
+      "exposed_outputs": [
+        "solution",
+        "rmse",
+        "rank"
+      ],
+      "thumbnail": true,
+      "preview_output": "residuals"
+    }
+  ],
+  "connections": [
+    {
+      "source": "fit",
+      "output": "fitted",
+      "target": "verify",
+      "input": "observations"
+    }
+  ]
+}

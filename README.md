@@ -681,6 +681,9 @@ Try [sequence memory](examples/sequence_memory/sequence_memory.json), then run c
 **Mahalanobis distance** scores new rows and can fail on an outlier.
 [Feature covariance example](examples/feature_covariance/README.md)
 
+**Solve linear system** fits one or more observation columns and reports residuals
+and numerical rank. See the [linear system example](examples/linear_system/README.md).
+
 **Fit principal components** reduces numeric feature tables by count or
 retained variance. **Transform principal components** projects rows or
 reconstructs them with the same fitted model.
