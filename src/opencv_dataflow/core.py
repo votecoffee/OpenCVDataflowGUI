@@ -43,6 +43,22 @@ from .tickets import DEFAULT_TICKET_SETTINGS, DIRECT_CLOCK, TICKET_MODES, Ticket
 from .timing import WorkTiming
 from .visual_style import DEFAULT_NODE_SIZE, NODE_SIZES
 
+DISPLAY_RESULT_FIELDS = (
+    "last_inputs",
+    "input_payloads",
+    "last_result",
+    "last_output_images",
+    "last_graphics",
+    "state",
+    "error",
+    "error_kind",
+    "current_emissions",
+    "input_rejected",
+    "last_rejection",
+    "last_recipe_ref",
+    "last_recipe_parameters",
+)
+
 
 @dataclass(frozen=True)
 class Port:
@@ -612,23 +628,7 @@ class Block:
                 else None
             )
             return
-        for name in (
-            "last_inputs",
-            "input_payloads",
-            "last_result",
-            "last_output_images",
-            "last_graphics",
-            "state",
-            "error",
-            "error_kind",
-            "elapsed_ms",
-            "timing",
-            "current_emissions",
-            "input_rejected",
-            "last_rejection",
-            "last_recipe_ref",
-            "last_recipe_parameters",
-        ):
+        for name in (*DISPLAY_RESULT_FIELDS, "elapsed_ms", "timing"):
             setattr(self, name, copy.deepcopy(getattr(other, name)))
 
 

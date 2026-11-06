@@ -60,9 +60,10 @@ subclass does not accidentally inherit the optimization.
 
 Lean avoids image transfers into the display graph and exposes a lightweight result summary
 there. The worker still owns the real port values, runtime state and processing buffers.
-Continuous processing proceeds between stable UI publications and always publishes its final
-state before Stop completes. Stop/Resume carries queues, ticket counters and temporal state
-forward. Actual camera pacing remains under its source/driver settings. Faster execution can
+Continuous processing proceeds between stable UI publications. On Stop, the editor shows the
+most recent completed iteration, including a result held for a throttled update. Resume carries
+queues, ticket counters and temporal state forward. Actual camera pacing remains under its
+source/driver settings. Faster execution can
 change queue fill/drop behavior under the configured overflow policy.
 
 Lean ticket history summarizes successful work while retaining failed chains and final

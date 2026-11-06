@@ -274,7 +274,7 @@ for editing the inspection, acceptance policies and cancellation behavior.
 Insert **Queue input images** after a source to retain frames and release them
 one at a time. It supports bounded FIFO storage, explicit overflow policies and
 optional background acquisition during inspection. Try [queued input](examples/queued_input/queued_input.json), then Continuous. See [input queues](docs/input-queues.md) for capacity,
-metadata pairing and Stop/Resume behavior.
+metadata pairing and Stop/Resume behavior. Stop keeps the last completed result visible.
 
 The supported dependency is OpenCV 5 contrib (development checks use 5.0.0.93).
 This desktop application uses native Python bindings. Ordinary OpenCV blocks are

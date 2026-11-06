@@ -219,13 +219,14 @@ class QueuedExecution:
         )
         self.thread.start()
 
-    def run_one(self):
-        capture = self.queue.take(self.cancelled, wait_for_frame=True)
+    def run_one(self, cancelled=None):
+        cancelled = self.cancelled if cancelled is None else cancelled
+        capture = self.queue.take(cancelled, wait_for_frame=True)
         if capture is None:
             return False
         self.queue.use_lease = True
         try:
-            self.graph.run(self.cancelled, provided=capture.snapshots)
+            self.graph.run(cancelled, provided=capture.snapshots)
         except Exception:
             self.queue.complete(failed=True)
             self.queue.update_metrics()
