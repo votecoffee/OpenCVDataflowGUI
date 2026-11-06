@@ -1276,6 +1276,25 @@ Inputs: `image` (image).
 | `mode` | `"2d"` | `2d`, `rows` Transform the entire image or transform each row independently. |
 | `size` | `"exact"` | `exact`, `optimal` Optimal zero-pads transformed axes to OpenCV's next efficient size. |
 
+## Labeled distance transform (`cv.distance_labels`)
+
+Image processing / Morphology
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Monochrome uint8 seed image.
+
+Input `mask` — Restricts eligible seeds. Distances and labels still cover the full image.
+
+Input `region` — Restricts eligible seeds. Distances and labels still cover the full image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `seed_polarity` | `"nonzero"` | `nonzero`, `zero` Choose nonzero or zero pixels as seeds. |
+| `label_mode` | `"components"` | `components`, `pixels` Assign a label to each 8-connected seed group or to each seed pixel. |
+| `distance_type` | `"l2"` | `l1`, `l2`, `chessboard` L1 and chessboard are exact. L2 uses OpenCV's 5 × 5 approximation. |
+| `selected_label` | `0` | Value must be a whole number between 0 and 1.67772e+07. Emit a mask of this nearest-seed label. Zero disables the mask. |
+
 ## Distance transform (`cv.distance_transform`)
 
 Image processing / Morphology

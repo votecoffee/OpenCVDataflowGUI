@@ -42,6 +42,7 @@ Scalar colorization turns distance, response and depth maps into display
 images with reusable palette and range controls.
 Image transposition swaps axes without interpolation and tracks the
 coordinate transform through crops and pyramids.
+Labeled distance transforms divide an image into zones by its nearest seeds.
 Specialized array operations remain open. The
 [coverage backlog](opencv-coverage.md) tracks the missing workflows and the
 [binding inventory](opencv-bindings.tsv) maps static references to the pinned

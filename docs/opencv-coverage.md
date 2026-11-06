@@ -70,6 +70,8 @@ with compact layout data and source-frame provenance.
 with exact main- or anti-diagonal reflection and coordinate mapping.
 [Route image channels](../examples/route_channels/README.md) copies, reorders,
 and duplicates channels across matching input images, with optional zero fill.
+[Labeled distance transform](../examples/labeled_distance/README.md) computes
+pixel distances, nearest-seed labels, and a mask for one selected zone.
 [Blend with weight maps](../examples/blend_weight_maps/README.md) blends aligned
 images using pixel weights and optional mask and region selection.
 [Gram matrix](../examples/gram_matrix/README.md) computes row or column dot products
