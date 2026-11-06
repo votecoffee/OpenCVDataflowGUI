@@ -350,6 +350,11 @@ calibration profiles as JSON for subsequent measurement jobs.
 [Calibration and depth workflows](docs/calibration-depth.md) ·
 [Circle grid example](examples/circle_grid_calibration/README.md)
 
+**Build lens correction maps** creates reusable pinhole correction maps
+for **Remap image coordinates**, with output intrinsics and a separate
+coordinate frame for the corrected image.
+[Lens correction maps example](examples/lens_correction_maps/README.md)
+
 ### Build and test a starter project
 
 For the real-image Lena review example, run `python scripts/prepare_lena.py` once,
