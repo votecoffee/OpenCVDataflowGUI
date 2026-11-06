@@ -94,7 +94,12 @@ def test_empty_seed_set_and_unavailable_label_emit_distinct_failures():
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_partitions_every_pixel_between_two_seed_regions(profile):
-    project = Path(__file__).parents[1] / "examples" / "labeled_distance" / "labeled_distance.json"
+    project = (
+        Path(__file__).parents[1]
+        / "examples/image_processing"
+        / "labeled_distance"
+        / "labeled_distance.json"
+    )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
     graph.run()

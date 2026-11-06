@@ -13,7 +13,9 @@ from opencv_dataflow.objects import collection, line_item
 from opencv_dataflow.payloads import frame, metadata, moved_payload
 
 TYPE_ID = "collection.clip_lines"
-_PROJECT = Path(__file__).parents[1] / "examples/clip_line_segments/clip_line_segments.json"
+_PROJECT = (
+    Path(__file__).parents[1] / "examples/geometry/clip_line_segments/clip_line_segments.json"
+)
 
 
 def _rectangle(size, rectangle, spatial):

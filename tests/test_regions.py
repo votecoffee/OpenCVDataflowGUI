@@ -178,7 +178,7 @@ def test_saved_region_project_runs_and_roundtrips_nested(tmp_path):
     from opencv_dataflow.toolblocks import encapsulate
 
     registry = builtin_registry()
-    graph = Graph.load("examples/regions/regions.json", registry)
+    graph = Graph.load("examples/geometry/regions/regions.json", registry)
     assert graph.to_dict() == regions_graph(registry).to_dict()
     for _ in range(3):
         graph.run()

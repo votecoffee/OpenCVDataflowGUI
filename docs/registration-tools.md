@@ -46,7 +46,7 @@ and Connected components' `centroids` to its `points`. The resulting source-fram
 points can then feed Pixel to physical using a calibration of that source frame.
 Transforms are never silently chained into calibration metadata.
 **Transform image points** waits for an emitted matrix when its transform port
-is wired. The [subpixel crop example](../examples/subpixel_crop/README.md) shows
+is wired. The [subpixel crop example](../examples/pattern_matching/subpixel_crop/README.md) shows
 this with a fractional patch center.
 
 Pyramids use OpenCV's Gaussian resampling, not a plain nearest resize. Their
@@ -86,10 +86,10 @@ invalidate a fitted homography despite an apparently plausible image overlay.
 ## Lena registration example
 
 Run `python scripts/prepare_lena.py` once, then open
-`examples/lena_registration/lena_registration.json` in the editor, or run:
+`examples/pattern_matching/lena_registration/lena_registration.json` in the editor, or run:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/lena_registration/lena_registration.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/pattern_matching/lena_registration/lena_registration.json --repeat 3
 ```
 
 The eight-block project creates an 8-degree rotated copy of Lena, extracts ORB

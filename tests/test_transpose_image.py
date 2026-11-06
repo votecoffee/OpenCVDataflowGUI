@@ -81,7 +81,12 @@ def test_transposing_twice_restores_source_and_pyramid_coordinates():
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_maps_transposed_crop_points_back_to_full_source(profile):
-    project = Path(__file__).parents[1] / "examples" / "transpose_image" / "transpose_image.json"
+    project = (
+        Path(__file__).parents[1]
+        / "examples/image_processing"
+        / "transpose_image"
+        / "transpose_image.json"
+    )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
     graph.run()

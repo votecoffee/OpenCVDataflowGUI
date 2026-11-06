@@ -176,7 +176,8 @@ def test_projective_pose_keeps_full_mapping_and_rejects_crossing_horizon():
 def test_saved_pose_inspection_runs_repeatedly_and_reloads(tmp_path):
     registry = builtin_registry()
     graph = Graph.load(
-        Path(__file__).parents[1] / "examples/pose_inspection/pose_inspection.json", registry
+        Path(__file__).parents[1] / "examples/inspection/pose_inspection/pose_inspection.json",
+        registry,
     )
     assert graph.to_dict() == pose_inspection_graph(registry).to_dict()
     for _ in range(3):

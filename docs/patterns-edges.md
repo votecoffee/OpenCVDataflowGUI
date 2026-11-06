@@ -2,7 +2,7 @@
 
 ## Example
 
-Open [trained patterns and edges](../examples/trained_patterns/trained_patterns.json) and press F5.
+Open [trained patterns and edges](../examples/pattern_matching/trained_patterns/trained_patterns.json) and press F5.
 Synthetic reference images train two patterns,
 which are located in a larger scene. A rectangular region isolates a vertical bar.
 Expected results are:
@@ -16,7 +16,7 @@ Expected results are:
 The project has no camera, external asset or output writer. Verify repeated runs:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/trained_patterns/trained_patterns.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/pattern_matching/trained_patterns/trained_patterns.json --repeat 3
 ```
 
 ## Train once and reuse

@@ -61,7 +61,7 @@ Invalid/empty source selections stop with a source diagnostic.
 Run the included set without Qt:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/image_set_workspace/image_set_workspace.json --all-images
+.\.venv\Scripts\opencv-dataflow-run examples/inputs/image_set_workspace/image_set_workspace.json --all-images
 ```
 
 It intentionally produces one pass and two failures, so the CLI returns inspection

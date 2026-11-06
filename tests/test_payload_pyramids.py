@@ -235,7 +235,9 @@ def test_saved_channel_pyramid_example_preserves_payload_and_maps_centroids():
     from opencv_dataflow.runner import describe
 
     registry = builtin_registry()
-    graph = Graph.load("examples/channels_pyramids/channels_pyramids.json", registry)
+    graph = Graph.load(
+        "examples/image_processing/channels_pyramids/channels_pyramids.json", registry
+    )
     assert graph.to_dict() == channel_pyramid_graph(registry).to_dict()
     for _ in range(3):
         graph.run()
@@ -330,7 +332,7 @@ def test_headless_pyramid_receipt_serializes_frames_and_json_primary_values(tmp_
     assert (
         main(
             [
-                "examples/channels_pyramids/channels_pyramids.json",
+                "examples/image_processing/channels_pyramids/channels_pyramids.json",
                 "--repeat",
                 "2",
                 "--report",

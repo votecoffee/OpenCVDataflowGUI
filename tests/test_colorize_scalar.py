@@ -108,7 +108,12 @@ def test_invalid_fixed_range_and_palette_are_rejected():
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_maps_distance_only_inside_the_circular_part(profile):
-    project = Path(__file__).parents[1] / "examples" / "colorize_scalar" / "colorize_scalar.json"
+    project = (
+        Path(__file__).parents[1]
+        / "examples/image_processing"
+        / "colorize_scalar"
+        / "colorize_scalar.json"
+    )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
     graph.run()

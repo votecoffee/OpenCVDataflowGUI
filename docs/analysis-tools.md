@@ -38,13 +38,13 @@ Its response output retains the native number, while the node's score is clamped
 to [0,1] for display. A connected window takes precedence over the generated
 Hanning window and must match the chosen float precision and image dimensions.
 
-[Iterative phase correlation](../examples/iterative_phase_correlation/README.md)
+[Iterative phase correlation](../examples/pattern_matching/iterative_phase_correlation/README.md)
 uses OpenCV's built-in Hann window and returns an inverse translation for
 **Warp affine**. Use matching even-sized inputs with distinctive detail. The
 block withholds the shift and transform for flat interiors and invalid or
 half-period shifts.
 
-[Estimate image translation](../examples/translation_registration/README.md)
+[Estimate image translation](../examples/pattern_matching/translation_registration/README.md)
 fits only X/Y displacement from matched feature points. The accepted transform
 maps query to train. The fit preserves each pair's inlier label and residual.
 Connected affine and perspective warp transform inputs require an emitted value.
@@ -61,7 +61,7 @@ Remap accepts two single-channel float32 coordinate images. Each output pixel
 samples the source at `(map_x, map_y)`. **Pack remap coordinates** converts
 the pair for **Remap with packed coordinates**. Both paths preserve the
 rectified frame when given lens correction maps. The
-[packed remap example](../examples/packed_remap/README.md) compares their
+[packed remap example](../examples/calibration/packed_remap/README.md) compares their
 pixel values. Cartesian-to-polar inputs must share dimensions and floating
 depth. The units describe the angle output only.
 

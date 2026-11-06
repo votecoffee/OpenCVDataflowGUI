@@ -86,10 +86,10 @@ the generic inference block does not guess a YOLO/SSD/segmentation schema.
 all axes except a configured channel axis. It accepts one-image batches, with
 optional L2 normalization. A zero vector cannot be L2 normalized.
 
-Try [DNN embedding](../examples/dnn_embeddings/dnn_embeddings.json), or:
+Try [DNN embedding](../examples/ml/dnn_embeddings/dnn_embeddings.json), or:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/dnn_embeddings/dnn_embeddings.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/ml/dnn_embeddings/dnn_embeddings.json --repeat 3
 ```
 
 The synthetic network averages RGB channels. Its labels are channel names, not
@@ -128,10 +128,10 @@ reference/query coordinate contexts. Use the pose with existing pose-relative
 region/inspection blocks. This is one planar registration, not repeated-part
 multi-instance discovery.
 
-Try [LightGlue matcher](../examples/lightglue_match/lightglue_match.json) after preparing its weights, or:
+Try [LightGlue matcher](../examples/ml/lightglue_match/lightglue_match.json) after preparing its weights, or:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/lightglue_match/lightglue_match.json
+.\.venv\Scripts\opencv-dataflow-run examples/ml/lightglue_match/lightglue_match.json
 ```
 
 The example captures a synthetic textured reference and locates it in a larger
@@ -169,10 +169,10 @@ and unloads it on close/reset. Optional prefault requests eager page loading.
 Training data does not have to travel through the graph after loading a file index.
 Opening a project does not load/map the index until it is run.
 
-Try [Annoy search](../examples/annoy_search/annoy_search.json), or:
+Try [Annoy search](../examples/ml/annoy_search/annoy_search.json), or:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/annoy_search/annoy_search.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/ml/annoy_search/annoy_search.json --repeat 3
 ```
 
 This connects the synthetic DNN's RGB embedding to labeled reference vectors.

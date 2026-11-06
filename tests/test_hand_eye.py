@@ -13,7 +13,10 @@ from opencv_dataflow.geometry3d_common import pose_matrix, pose_record, rigid
 from opencv_dataflow.payloads import NO_VALUE, FlowGroup, ValuePacket
 from opencv_dataflow.tickets import TicketClock
 
-_PROJECT = Path(__file__).parents[1] / "examples/hand_eye_calibration/hand_eye_calibration.json"
+_PROJECT = (
+    Path(__file__).parents[1]
+    / "examples/calibration/hand_eye_calibration/hand_eye_calibration.json"
+)
 
 
 def _expected(rvec, translation):

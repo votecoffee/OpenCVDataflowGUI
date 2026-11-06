@@ -14,7 +14,7 @@ from opencv_dataflow.payloads import ValuePacket, frame, metadata
 TYPE_ID = "inspect.approximate_convex_contour"
 _PROJECT = (
     Path(__file__).parents[1]
-    / "examples/convex_contour_approximation/convex_contour_approximation.json"
+    / "examples/geometry/convex_contour_approximation/convex_contour_approximation.json"
 )
 _CHAMFER = [[15, 25], [25, 15], [115, 15], [125, 25], [125, 85], [115, 95], [25, 95], [15, 85]]
 

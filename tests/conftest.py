@@ -32,7 +32,8 @@ def load_example():
     examples = Path(__file__).resolve().parents[1] / "examples"
 
     def load(window, folder):
-        path = examples / folder / f"{folder}.json"
-        window.replace_graph(Graph.load(path, window.registry))
+        paths = list(examples.glob(f"*/{folder}/{folder}.json"))
+        assert len(paths) == 1, (folder, paths)
+        window.replace_graph(Graph.load(paths[0], window.registry))
 
     return load

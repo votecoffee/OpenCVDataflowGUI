@@ -15,10 +15,10 @@ sample-minus-reference channel differences. CIEDE2000 uses configurable
 lightness, chroma and hue divisors.
 See the [CIEDE2000 reference data and implementation notes](https://hajim.rochester.edu/ece/sites/gsharma/ciede2000/).
 
-Open the [Lab color match example](../examples/lab_color_match/lab_color_match.json), or run:
+Open the [Lab color match example](../examples/inspection/lab_color_match/lab_color_match.json), or run:
 
 ```powershell
-opencv-dataflow-run examples/lab_color_match/lab_color_match.json
+opencv-dataflow-run examples/inspection/lab_color_match/lab_color_match.json
 ```
 
 Both sample regions in the example measure the same synthetic patch and
@@ -33,12 +33,12 @@ camera settings and reference-white assumptions.
 **Classify Lab color** ranks named references by CIE76 or CIEDE2000.
 Set a maximum distance and, when multiple references exist, a minimum gap
 to the second-closest reference. Rejected samples retain their ranking
-and swatches for review. [Classification example](../examples/lab_color_classification/README.md)
+and swatches for review. [Classification example](../examples/inspection/lab_color_classification/README.md)
 
 ## Fit and apply a color-chart correction
 
-Open the [color-chart calibration example](../examples/color_chart_calibration/color_chart_calibration.json)
-or run `opencv-dataflow-run examples/color_chart_calibration/color_chart_calibration.json`.
+Open the [color-chart calibration example](../examples/calibration/color_chart_calibration/color_chart_calibration.json)
+or run `opencv-dataflow-run examples/calibration/color_chart_calibration/color_chart_calibration.json`.
 
 1. **Detect color chart** finds a Macbeth, Digital SG or Vinyl chart and
    emits ordered RGB patches, chart geometry and detection cost. The

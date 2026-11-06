@@ -10,7 +10,7 @@ from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.calibration import find_grid, grid_settings
 from opencv_dataflow.core import Graph
 
-_PROJECT = Path(__file__).parents[1] / "examples/lens_fit_report/lens_fit_report.json"
+_PROJECT = Path(__file__).parents[1] / "examples/calibration/lens_fit_report/lens_fit_report.json"
 
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))

@@ -85,7 +85,7 @@ def test_geometry_and_refinement_limits(shape, parameters, error):
 def test_example_applies_measured_correction_to_color_image(profile):
     project = (
         Path(__file__).parents[1]
-        / "examples"
+        / "examples/pattern_matching"
         / "iterative_phase_correlation"
         / "iterative_phase_correlation.json"
     )

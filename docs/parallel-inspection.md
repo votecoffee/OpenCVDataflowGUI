@@ -114,7 +114,7 @@ the configured budget as appropriate.
 
 ## Try 25 matched parts
 
-Open [parallel part inspection](../examples/parallel_parts/parallel_parts.json), then press F5. The graph trains on fixed geometry,
+Open [parallel part inspection](../examples/flow_control/parallel_parts/parallel_parts.json), then press F5. The graph trains on fixed geometry,
 locates 25 repetitions, and inspects the small central spot independently at each
 matched pose. Expected result: 25 completed inspections, 25 passes and no failures.
 The geometric matcher now supports up to 256 matches; this operator accepts up to
@@ -126,5 +126,5 @@ inspections. Restore zero for the all-pass sample. No camera, downloaded asset o
 output writer is required. These behaviors are also covered by automated tests.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/parallel_parts/parallel_parts.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/flow_control/parallel_parts/parallel_parts.json --repeat 3
 ```

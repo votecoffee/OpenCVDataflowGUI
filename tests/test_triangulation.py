@@ -63,7 +63,8 @@ def test_delaunay_rejects_invalid_or_unresolved_geometry(points, error):
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_delaunay_example_connects_detected_centers_and_overlays_edges(profile):
     project = (
-        Path(__file__).parents[1] / "examples/delaunay_triangulation/delaunay_triangulation.json"
+        Path(__file__).parents[1]
+        / "examples/geometry/delaunay_triangulation/delaunay_triangulation.json"
     )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)

@@ -95,7 +95,7 @@ def test_replacement_outside_float32_range_fails_with_no_image_event():
 def test_example_retains_depth_and_revalidates_all_pixels(profile):
     project = (
         Path(__file__).parents[1]
-        / "examples"
+        / "examples/image_processing"
         / "nonfinite_replacement"
         / "nonfinite_replacement.json"
     )

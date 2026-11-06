@@ -252,7 +252,7 @@ def test_real_lightglue_local_weights_geometry_cache_and_no_download(monkeypatch
 )
 def test_ml_examples_roundtrip_and_registry(filename, factory):
     r = builtin_registry()
-    graph = Graph.load(Path("examples") / Path(filename).stem / filename, r)
+    graph = Graph.load(Path("examples/ml") / Path(filename).stem / filename, r)
     assert graph.to_dict() == factory(r).to_dict()
     json.dumps(graph.to_dict(), allow_nan=False)
 

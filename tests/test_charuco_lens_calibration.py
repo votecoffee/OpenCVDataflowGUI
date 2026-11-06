@@ -12,7 +12,8 @@ from opencv_dataflow.core import Graph
 from opencv_dataflow.payloads import FlowGroup, packet_for
 
 _PROJECT = (
-    Path(__file__).parents[1] / "examples/charuco_lens_calibration/charuco_lens_calibration.json"
+    Path(__file__).parents[1]
+    / "examples/calibration/charuco_lens_calibration/charuco_lens_calibration.json"
 )
 
 

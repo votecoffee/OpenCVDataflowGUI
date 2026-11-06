@@ -70,7 +70,12 @@ def test_nonfinite_wire_override_fails_without_emitting_an_image():
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_thresholds_both_gradient_polarities(profile):
-    project = Path(__file__).parents[1] / "examples" / "scale_absolute" / "scale_absolute.json"
+    project = (
+        Path(__file__).parents[1]
+        / "examples/image_processing"
+        / "scale_absolute"
+        / "scale_absolute.json"
+    )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
     graph.run()

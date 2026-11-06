@@ -11,7 +11,7 @@ from opencv_dataflow.images import ImageArray
 from opencv_dataflow.payloads import ValuePacket, frame, metadata
 
 TYPE_ID = "inspect.hough_point_lines"
-_PROJECT = Path(__file__).parents[1] / "examples/point_set_lines/point_set_lines.json"
+_PROJECT = Path(__file__).parents[1] / "examples/geometry/point_set_lines/point_set_lines.json"
 
 
 def _samples():

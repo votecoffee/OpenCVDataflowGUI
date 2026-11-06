@@ -14,7 +14,9 @@ from opencv_dataflow.toolblocks import encapsulate
 
 def test_saved_starter_matches_builder_and_runs_repeatedly():
     registry = builtin_registry()
-    graph = Graph.load("examples/starter_inspection/starter_inspection.json", registry)
+    graph = Graph.load(
+        "examples/getting_started/starter_inspection/starter_inspection.json", registry
+    )
     assert graph.to_dict() == starter_graph(registry).to_dict()
     previous = None
     for _ in range(3):
@@ -57,7 +59,9 @@ def test_starter_can_be_encapsulated_and_reopened(tmp_path):
 
 def test_template_project_matches_builder_and_known_patch():
     registry = builtin_registry()
-    graph = Graph.load("examples/template_matching/template_matching.json", registry)
+    graph = Graph.load(
+        "examples/pattern_matching/template_matching/template_matching.json", registry
+    )
     assert graph.to_dict() == template_graph(registry).to_dict()
     graph.run()
     match = graph.blocks["match_result"]
@@ -71,7 +75,7 @@ def test_headless_report_repeats_and_preserves_existing_receipt(tmp_path):
     assert (
         main(
             [
-                "examples/starter_inspection/starter_inspection.json",
+                "examples/getting_started/starter_inspection/starter_inspection.json",
                 "--repeat",
                 "3",
                 "--report",
@@ -88,7 +92,14 @@ def test_headless_report_repeats_and_preserves_existing_receipt(tmp_path):
     assert "overlay" not in components["outputs"]
     original = report.read_bytes()
     assert (
-        main(["examples/starter_inspection/starter_inspection.json", "--report", str(report)]) == 2
+        main(
+            [
+                "examples/getting_started/starter_inspection/starter_inspection.json",
+                "--report",
+                str(report),
+            ]
+        )
+        == 2
     )
     assert report.read_bytes() == original
 
@@ -115,7 +126,8 @@ def test_actual_headless_entry_does_not_import_qt():
     code = (
         "import sys; from opencv_dataflow.runner import main; "
         "assert not any(k.startswith('PySide6') for k in sys.modules); "
-        "raise SystemExit(main(['examples/template_matching/template_matching.json']))"
+        "raise SystemExit(main(['examples/pattern_matching/"
+        "template_matching/template_matching.json']))"
     )
     process = subprocess.run(
         [sys.executable, "-c", code], capture_output=True, text=True, timeout=20

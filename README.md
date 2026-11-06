@@ -45,18 +45,18 @@ the `cv2` namespace and must not coexist:
 
 **3D vision** includes camera and pose geometry, stereo calibration/rectification,
 disparity, RGB-D projection and registration, point clouds, ICP/PPF, ArUco,
-structured light, odometry, and posed TSDF fusion. Try [stereo cloud](examples/stereo_cloud/stereo_cloud.json), press **Run once**, and open **Results > 3D point-cloud viewer…**.
+structured light, odometry, and posed TSDF fusion. Try [stereo cloud](examples/3d/stereo_cloud/stereo_cloud.json), press **Run once**, and open **Results > 3D point-cloud viewer…**.
 The example reconstructs a synthetic 3 m plane; no hardware or extra packages
-are needed. The [stereo confidence example](examples/stereo_confidence/README.md)
+are needed. The [stereo confidence example](examples/3d/stereo_confidence/README.md)
 uses a WLS confidence cutoff before reconstruction. The
-[depth hole filling example](examples/depth_hole_filling/README.md) restores
+[depth hole filling example](examples/3d/depth_hole_filling/README.md) restores
 small enclosed gaps and marks the estimated samples.
 See [3D workflows and conventions](docs/vision-3d.md).
 
 **DNN/ML tools** are available under **ML** in the toolbox (model writers under **Output**): ONNX inference,
 classification, embedding conversion, SIFT + LightGlue matching, and Annoy vector
-index building/search/save/load. Try [DNN embedding](examples/dnn_embeddings/dnn_embeddings.json) with the
-included tiny synthetic ONNX model. [Annoy search](examples/annoy_search/annoy_search.json) and [LightGlue matcher](examples/lightglue_match/lightglue_match.json) use optional libraries. See [ML setup and workflows](docs/ml.md)
+index building/search/save/load. Try [DNN embedding](examples/ml/dnn_embeddings/dnn_embeddings.json) with the
+included tiny synthetic ONNX model. [Annoy search](examples/ml/annoy_search/annoy_search.json) and [LightGlue matcher](examples/ml/lightglue_match/lightglue_match.json) use optional libraries. See [ML setup and workflows](docs/ml.md)
 for installation, local weights and runnable examples. Graph execution never downloads
 learned weights or imports optional ML libraries until their blocks need them.
 
@@ -119,13 +119,13 @@ configuration** and run again. Image-aligned layers follow crop, resize, and
 other recorded transforms in the same coordinate frame. Result graphics are
 drawing objects. The overlay block draws them onto the final image to produce
 the result image. Standalone previews such as histograms remain available for
-inspection. [Try the overlay example](examples/overlay_result_graphics/README.md).
+inspection. [Try the overlay example](examples/inspection/overlay_result_graphics/README.md).
 
 The overlay block starts with two visible graphics inputs. Expose more in the
 inspector to connect up to eight sources. A ToolBlock's **Result graphics**
 collects drawings from its internal blocks. You can also map an internal block's
 exposed graphics to a separate public terminal.
-5. Use **File → Open…** for saved projects and the [bundled examples](examples/README.md).
+5. Use **File → Open…** for saved projects and the [bundled examples grouped by workflow](examples/README.md).
    Select a wire or block and press Delete to remove it. Use the wheel to zoom,
    middle-drag to pan, and **Fit graph** to frame the graph.
 
@@ -187,7 +187,7 @@ For larger workspaces, select nodes and use **Workspace > Group selected nodes**
 inspector in the upper-right corner shows the visible region. Click or drag it to
 navigate. Save remembers groups, zoom, and viewport position, including inside ToolBlocks.
 
-Open the [image-set workspace](examples/image_set_workspace/image_set_workspace.json)
+Open the [image-set workspace](examples/inputs/image_set_workspace/image_set_workspace.json)
 for a grouped, three-image inspection.
 Press **Continuous** to run the complete set and see filename tickets and verdict
 borders in **Results > Image results filmstrip**. In an **Image file** block, use
@@ -206,31 +206,31 @@ include edges, corners, lines and circles; texture detection supports ORB and SI
 **Find oriented edges** selects vertical, horizontal or angled edges and filters
 thickness, continuous length, strength, intensity, contrast and coverage.
 
-Open [trained patterns and edges](examples/trained_patterns/trained_patterns.json) and press F5.
+Open [trained patterns and edges](examples/pattern_matching/trained_patterns/trained_patterns.json) and press F5.
 It needs no external assets: expected results are one geometric match, one texture
 match and two vertical edges. See [training and edge workflows](docs/patterns-edges.md)
 for training regions, pose coordinates, controls and current algorithm limits.
 Use **Subpixel** on template match blocks to refine centers and poses.
-[Compare pixel-grid and subpixel matches](examples/subpixel_template/README.md).
+[Compare pixel-grid and subpixel matches](examples/pattern_matching/subpixel_template/README.md).
 
-The [SIFT registration example](examples/sift_registration/README.md) detects and
+The [SIFT registration example](examples/pattern_matching/sift_registration/README.md) detects and
 matches keypoints before estimating an image homography. The
-[AKAZE registration example](examples/akaze_registration/README.md) runs the
+[AKAZE registration example](examples/pattern_matching/akaze_registration/README.md) runs the
 same workflow with binary MLDB descriptors. The [FLANN registration
-example](examples/flann_registration/README.md) uses approximate KD-tree matching.
-The [KAZE registration example](examples/kaze_registration/README.md) pairs
+example](examples/pattern_matching/flann_registration/README.md) uses approximate KD-tree matching.
+The [KAZE registration example](examples/pattern_matching/kaze_registration/README.md) pairs
 extended KAZE descriptors with the same matcher.
-The [BRISK registration example](examples/brisk_registration/README.md) uses
-binary descriptors and Hamming distance. The [descriptor radius example](examples/descriptor_radius/README.md)
+The [BRISK registration example](examples/pattern_matching/brisk_registration/README.md) uses
+binary descriptors and Hamming distance. The [descriptor radius example](examples/pattern_matching/descriptor_radius/README.md)
 retains multiple candidates per query keypoint within a distance limit.
-The [MSER example](examples/mser_regions/README.md)
+The [MSER example](examples/image_processing/mser_regions/README.md)
 shows stable bright and dark regions in an image.
 
 Pattern matchers also return a configurable **pose**: set local x/y/angular offsets
 to locate an inspection origin on the part. **Pose from feature** creates a frame
 from a ranked blob, line, contour or pattern match, and **Offset pose** composes
 another local offset. Connect a pose to **Region relative to pose** to position a
-rectangle, circle or polygon for downstream masked inspections. Try [pose-relative inspection](examples/pose_inspection/pose_inspection.json); see
+rectangle, circle or polygon for downstream masked inspections. Try [pose-relative inspection](examples/inspection/pose_inspection/pose_inspection.json); see
 [pose-relative inspection](docs/poses.md) for coordinates and a complete workflow.
 
 **Shape region**, **Region relative to pose** and **Shape mask** have visual
@@ -241,7 +241,7 @@ Shape mask can also operate in ordinary image pixels with its pose disconnected.
 Input sources carry numeric, string or timestamp tickets, generated automatically
 or supplied through an external data input. **Control flow** tools split/join
 parallel branches, batch/unbatch entries, select cases and restore FIFO by ticket.
-Try [ticketed control flow](examples/control_flow/control_flow.json). See
+Try [ticketed control flow](examples/flow_control/control_flow/control_flow.json). See
 [tickets and control flow](docs/control-flow.md) for external/PLC ticket inputs,
 buffer limits and stream execution semantics.
 
@@ -250,30 +250,30 @@ status. Every input has a **continue / reject_failed** policy; rejection emits n
 data and retains the last processed previews. **Final ticket judgment** assigns an
 explicit decision separately from intermediate tool results. Open **Results >
 Ticket results…** to search tickets and inspect their status and event timelines.
-Try [ticket results](examples/ticket_results/ticket_results.json). See [ticket results](docs/ticket-results.md)
+Try [ticket results](examples/flow_control/ticket_results/ticket_results.json). See [ticket results](docs/ticket-results.md)
 for status propagation, final decisions, retention limits and plugin event data.
 
 **Coordinate inputs** offers ticket-matched waiting with timeouts, latest snapshots,
 triggered latest snapshots, and first-arrival-per-ticket selection. Freshness,
-duplicate and late-arrival controls make reuse explicit. Try [input coordination](examples/input_coordination/input_coordination.json). See [input coordination](docs/input-coordination.md) for
+duplicate and late-arrival controls make reuse explicit. Try [input coordination](examples/flow_control/input_coordination/input_coordination.json). See [input coordination](docs/input-coordination.md) for
 recommended policies and cooperative timing limits.
 
 **Recipes > Manage recipes…** stores versioned settings and trained pattern models.
 Use **Select recipe** / **Recipe value or model** blocks, or bind tool parameters
 and matcher models in **Recipe overrides**. Images retain their recipe revision
-across queues and global changes. Try [recipes](examples/recipes/recipes.json); see
+across queues and global changes. Try [recipes](examples/flow_control/recipes/recipes.json); see
 [recipes and model swaps](docs/recipes.md) for activation and persistence rules.
 
 **Inspect each pose in parallel** runs a reusable inspection ToolBlock for every
 pattern match, measured feature or supplied pose, then returns one aggregate. Set
 worker count and optional N-pass/N-failure stop thresholds; results explicitly
-identify uninspected parts. The [parallel inspection example](examples/parallel_parts/parallel_parts.json) finds
+identify uninspected parts. The [parallel inspection example](examples/flow_control/parallel_parts/parallel_parts.json) finds
 and inspects 25 parts. See [parallel part inspection](docs/parallel-inspection.md)
 for editing the inspection, acceptance policies and cancellation behavior.
 
 Insert **Queue input images** after a source to retain frames and release them
 one at a time. It supports bounded FIFO storage, explicit overflow policies and
-optional background acquisition during inspection. Try [queued input](examples/queued_input/queued_input.json), then Continuous. See [input queues](docs/input-queues.md) for capacity,
+optional background acquisition during inspection. Try [queued input](examples/flow_control/queued_input/queued_input.json), then Continuous. See [input queues](docs/input-queues.md) for capacity,
 metadata pairing and Stop/Resume behavior. Stop keeps the last completed result visible.
 
 The supported dependency is OpenCV 5 contrib (development checks use 5.0.0.93).
@@ -283,7 +283,7 @@ Migration details and a possible browser/WebAssembly backend are covered in the
 [backend notes](docs/opencv-backend.md).
 
 Load trusted custom blocks via **File > Load Python plugin**. The
-[custom invert project](examples/custom_invert/README.md) demonstrates custom
+[custom invert project](examples/user_tools/custom_invert/README.md) demonstrates custom
 fields, validation, and a popup editor. Plugins run arbitrary Python. Load the same plugins before opening
 projects that use their types. No code is needed for built-in pipelines.
 
@@ -315,38 +315,38 @@ SQLite append; XML and image writers reject existing files. Output blocks write
 on every run, including continuous runs. Relative paths resolve from the process's
 working directory; use absolute paths for portable local execution expectations.
 
-The [K-means example](examples/kmeans/README.md) shows color-coded pixel clusters,
+The [K-means example](examples/ml/kmeans/README.md) shows color-coded pixel clusters,
 an image quantized to the cluster centers, and a scatter plot of clustered numeric samples.
-The [watershed example](examples/watershed/README.md) separates touching parts
+The [watershed example](examples/image_processing/watershed/README.md) separates touching parts
 using automatic distance peaks or editable point seeds. A separate block accepts
 foreground and background seed masks.
 
-The [histogram thresholds example](examples/histogram_thresholds/README.md) wires
+The [histogram thresholds example](examples/inspection/histogram_thresholds/README.md) wires
 measured cutoffs into lower-tail, middle-range, and upper-tail masks. Histograms
 also report per-channel mean, median, standard deviation, and extrema.
 
-The [Lab color classification example](examples/lab_color_classification/README.md)
+The [Lab color classification example](examples/inspection/lab_color_classification/README.md)
 compares a measured patch with named references and reports the closest color.
 
-The [flat-field correction example](examples/flat_field/README.md) uses bright and dark
+The [flat-field correction example](examples/image_processing/flat_field/README.md) uses bright and dark
 reference images to remove uneven illumination before inspection. The
-[guided filter example](examples/guided_filter/README.md) reduces noise while
-preserving a high-contrast edge. The [domain transform example](examples/domain_transform_filter/README.md)
+[guided filter example](examples/image_processing/guided_filter/README.md) reduces noise while
+preserving a high-contrast edge. The [domain transform example](examples/image_processing/domain_transform_filter/README.md)
 compares three edge-preserving smoothing modes. The
-[Bayer demosaicing example](examples/bayer_demosaicing/README.md) reconstructs
+[Bayer demosaicing example](examples/inputs/bayer_demosaicing/README.md) reconstructs
 RGB from a synthetic 16-bit sensor mosaic. The
-[in-memory codecs example](examples/in_memory_image_codecs/README.md) sends a
+[in-memory codecs example](examples/outputs/in_memory_image_codecs/README.md) sends a
 lossless 16-bit RGBA PNG packet between blocks. The
-[TIFF page sequence example](examples/tiff_page_sequence/README.md) replays
+[TIFF page sequence example](examples/inputs/tiff_page_sequence/README.md) replays
 a multipage TIFF with separate tickets for each page. The
-[multipage TIFF output example](examples/multipage_tiff_output/README.md) batches
+[multipage TIFF output example](examples/outputs/multipage_tiff_output/README.md) batches
 the pages and writes them to a new TIFF file. The
-[raw YUV example](examples/raw_yuv/README.md) decodes an NV12 frame from a file
+[raw YUV example](examples/inputs/raw_yuv/README.md) decodes an NV12 frame from a file
 and from a packed buffer in the graph. The
-[EXIF orientation example](examples/exif_orientation/README.md) compares
+[EXIF orientation example](examples/inputs/exif_orientation/README.md) compares
 metadata-only loading with an explicitly oriented JPEG.
 
-The [skeleton pruning example](examples/skeleton_pruning/README.md) extracts
+The [skeleton pruning example](examples/image_processing/skeleton_pruning/README.md) extracts
 centerlines from a binary mask and removes short spurs. Install the optional
 dependency with `python -m pip install -e ".[morphology]"`.
 
@@ -357,66 +357,66 @@ loading, RGB-D pairing and depth sampling. Calibration grid and Calibrate lens
 accept chessboards and symmetric or staggered circle targets. Save and load
 calibration profiles as JSON for subsequent measurement jobs.
 [Calibration and depth workflows](docs/calibration-depth.md) ·
-[Circle grid example](examples/circle_grid_calibration/README.md)
+[Circle grid example](examples/calibration/circle_grid_calibration/README.md)
 
 **Check chessboard quality** measures edge width, contrast, and brightness
 before forwarding accepted calibration images.
-[Checkerboard quality example](examples/chessboard_quality/README.md)
+[Checkerboard quality example](examples/calibration/chessboard_quality/README.md)
 
 **Build lens correction maps** creates reusable pinhole correction maps
 for **Remap image coordinates**, with output intrinsics and a separate
 coordinate frame for the corrected image.
-[Lens correction maps example](examples/lens_correction_maps/README.md)
+[Lens correction maps example](examples/calibration/lens_correction_maps/README.md)
 
 **Pack remap coordinates** prepares a compact map for **Remap with packed
 coordinates**. Lens maps retain their rectified frame. The
-[packed remap example](examples/packed_remap/README.md) compares both paths.
+[packed remap example](examples/calibration/packed_remap/README.md) compares both paths.
 
 **Inspect lens map displacement** shows correction strength and direction
 and reports how much of the output samples inside the source image.
-[Lens map displacement example](examples/lens_map_displacement/README.md)
+[Lens map displacement example](examples/calibration/lens_map_displacement/README.md)
 
 **Save lens correction maps** and **Load lens correction maps** preserve
 the map pair, output intrinsics, and pixel-grid metadata in one file.
-[Lens map files example](examples/lens_map_files/README.md)
+[Lens map files example](examples/calibration/lens_map_files/README.md)
 
 **Calibrate lens** reports per-view reprojection errors, board poses,
 and estimated parameter uncertainty. A worst-view limit can catch a poor
 view even when the overall fit passes.
-[Lens fit report example](examples/lens_fit_report/README.md)
+[Lens fit report example](examples/calibration/lens_fit_report/README.md)
 
 **Validate lens calibration** checks a fixed profile on a separate grid
 image and shows the measured reprojection residuals.
-[Lens validation example](examples/validate_lens_calibration/README.md)
+[Lens validation example](examples/calibration/validate_lens_calibration/README.md)
 
 **Detect ChArUco board** pairs identified image corners with physical
 board coordinates. A partial view can feed the existing PnP pose block.
-[ChArUco board example](examples/charuco_board/README.md)
+[ChArUco board example](examples/calibration/charuco_board/README.md)
 
 **Calibrate lens** can also fit a batch of ChArUco observations with
 different visible corners in each view. It reports the point count and
 reprojection RMS for each image.
-[ChArUco lens calibration example](examples/charuco_lens_calibration/README.md)
+[ChArUco lens calibration example](examples/calibration/charuco_lens_calibration/README.md)
 
 **Validate lens calibration** also accepts identified ChArUco points from
 a separate partial view and reports residuals by board corner ID.
-[ChArUco validation example](examples/validate_charuco_calibration/README.md)
+[ChArUco validation example](examples/calibration/validate_charuco_calibration/README.md)
 
 **Calibrate hand–eye** fits a camera-to-gripper transform from paired
 robot and target poses. The output composes with the current gripper
 pose to place the camera in the robot base frame.
-[Hand–eye example](examples/hand_eye_calibration/README.md)
+[Hand–eye example](examples/calibration/hand_eye_calibration/README.md)
 
 ### Build and test a starter project
 
 For the real-image Lena review example, run `python scripts/prepare_lena.py` once,
-then open `examples/lena/lena.json`. The optional, hash-checked image is not committed
+then open `examples/getting_started/lena/lena.json`. The optional, hash-checked image is not committed
 or included under this project's MIT license; see [asset provenance](examples/assets/README.md).
 This example includes grayscale/blur, Canny, color/grayscale histograms and template
 matching, including an editable nested ToolBlock. Its image input uses a
 project-relative path, so move its `assets` folder together with its JSON file.
 
-Open [starter inspection](examples/starter_inspection/starter_inspection.json), or launch it directly:
+Open [starter inspection](examples/getting_started/starter_inspection/starter_inspection.json), or launch it directly:
 
 ```powershell
 .\.venv\Scripts\opencv-dataflow --starter
@@ -428,15 +428,15 @@ histogram and Canny branches. Run once to detect two parts at a 100% inspection
 score. Change **Measure two parts > Expected count** to 3 and apply it to exercise
 an inspection failure, then restore 2. Save the graph as your own project.
 
-The same project is saved in [`examples/starter_inspection/starter_inspection.json`](examples/starter_inspection/starter_inspection.json).
+The same project is saved in [`examples/getting_started/starter_inspection/starter_inspection.json`](examples/getting_started/starter_inspection/starter_inspection.json).
 Open it through File > Open or pass its path to `opencv-dataflow`. A second project,
-[`examples/template_matching/template_matching.json`](examples/template_matching/template_matching.json), locates a
+[`examples/pattern_matching/template_matching/template_matching.json`](examples/pattern_matching/template_matching/template_matching.json), locates a
 reference patch at pixel `(250, 85)`; it is also available from File.
 
 To verify a saved graph without the editor:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/starter_inspection/starter_inspection.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/getting_started/starter_inspection/starter_inspection.json --repeat 3
 ```
 
 Add `--report <new-file.json>` for a JSON receipt of each run, including states,
@@ -454,25 +454,25 @@ new wrappers use eager OpenCV calls; legacy native G-API tools live under Advanc
 Additional wrappers include histogram equalization, CLAHE, normalization, gamma,
 channel split/merge, masking, absolute difference, corner detection, Hough lines/
 circles and distance transform. See [additional tools](docs/additional-tools.md).
-After preparing the optional Lena asset, open `examples/lena_features/lena_features.json` to try
+After preparing the optional Lena asset, open `examples/image_processing/lena_features/lena_features.json` to try
 CLAHE → corners, edges → line segments, and a histogram in one project.
 
 **Find Hough template** locates translated copies of a shape from its edges.
-The [generalized Hough example](examples/generalized_hough/README.md) compares
+The [generalized Hough example](examples/pattern_matching/generalized_hough/README.md) compares
 full-image and region-limited searches.
-The [Guil example](examples/generalized_hough_guil/README.md) finds the same
+The [Guil example](examples/pattern_matching/generalized_hough_guil/README.md) finds the same
 template after rotation and scaling.
 
-The [color normalization example](examples/normalize_color/README.md) compares
+The [color normalization example](examples/image_processing/normalize_color/README.md) compares
 shared and independent channel scaling in a selected patch while preserving the
 pixels outside it.
-The [linear channel transform example](examples/channel_transform/README.md)
+The [linear channel transform example](examples/image_processing/channel_transform/README.md)
 mixes color channels using a matrix and derives a grayscale difference image.
 
 The [registration and transform tools](docs/registration-tools.md) add arbitrary
 rotation, affine/perspective warps, borders, pyramids, custom filtering, unsharp
 masking, FAST/ORB features, descriptor matching, homography estimation and point
-transforms. Open `examples/lena_registration/lena_registration.json` after preparing the Lena asset
+transforms. Open `examples/pattern_matching/lena_registration/lena_registration.json` after preparing the Lena asset
 to match the image to a known rotated copy and compare the estimated warp.
 
 Further tools include box and separable filtering, Harris/minimum-eigenvalue
@@ -480,125 +480,125 @@ responses, subpixel corner refinement, phase correlation, full/partial affine
 estimation, coordinate remapping, and Cartesian-to-polar image fields. See
 [analysis tools and parameter conventions](docs/analysis-tools.md).
 **Iterative phase correlation** estimates fractional-pixel translation and
-emits an inverse warp. See the [subpixel alignment example](examples/iterative_phase_correlation/README.md).
+emits an inverse warp. See the [subpixel alignment example](examples/pattern_matching/iterative_phase_correlation/README.md).
 **Estimate image translation** fits a shift from paired features and
 reports inliers and residuals. See the
-[matched-feature translation example](examples/translation_registration/README.md).
+[matched-feature translation example](examples/pattern_matching/translation_registration/README.md).
 
 The [OpenCV coverage backlog](docs/opencv-coverage.md) ranks missing tools and
 links to the full Python binding inventory for the pinned contrib build. The
 [roadmap](docs/roadmap.md) puts core vision coverage first and tracks editor,
-acquisition and deployment work separately. The [DCT example](examples/dct_round_trip/README.md)
+acquisition and deployment work separately. The [DCT example](examples/image_processing/dct_round_trip/README.md)
 displays cosine coefficients and verifies image reconstruction. The
-[Fourier filter example](examples/fourier_filter/README.md) removes a periodic
-stripe pattern with a band-stop filter. The [Fourier gain example](examples/fourier_gain/README.md)
+[Fourier filter example](examples/image_processing/fourier_filter/README.md) removes a periodic
+stripe pattern with a band-stop filter. The [Fourier gain example](examples/image_processing/fourier_gain/README.md)
 suppresses only a chosen pair of frequency bins. The
-[Fourier correlation example](examples/fourier_correlation/README.md)
-finds the signed displacement between two images. The [intensity lookup example](examples/intensity_lut/README.md)
+[Fourier correlation example](examples/pattern_matching/fourier_correlation/README.md)
+finds the signed displacement between two images. The [intensity lookup example](examples/image_processing/intensity_lut/README.md)
 applies separate intensity curves to the red and blue channels. The
-[local statistics example](examples/local_statistics/README.md) uses rectangular
+[local statistics example](examples/image_processing/local_statistics/README.md) uses rectangular
 neighborhoods to distinguish a flat patch from an equally bright textured patch.
-The [intensity transform example](examples/intensity_transform/README.md) clips
+The [intensity transform example](examples/image_processing/intensity_transform/README.md) clips
 a ramp and reconstructs it through log and exponential blocks. The
-[image arithmetic example](examples/image_arithmetic/README.md) subtracts
+[image arithmetic example](examples/image_processing/image_arithmetic/README.md) subtracts
 a blurred background and scales the signed residual. The
-[weight-map blend example](examples/blend_weight_maps/README.md) feathers
+[weight-map blend example](examples/image_processing/blend_weight_maps/README.md) feathers
 between two aligned images using a per-pixel weight. The
-[pixel comparison example](examples/pixel_comparison/README.md) turns the
-background difference into a binary texture mask. The [nonzero pixels example](examples/nonzero_pixels/README.md)
+[pixel comparison example](examples/image_processing/pixel_comparison/README.md) turns the
+background difference into a binary texture mask. The [nonzero pixels example](examples/image_processing/nonzero_pixels/README.md)
 extracts coordinates from that mask and outlines its full bounds. The
-[intensity profile example](examples/intensity_profile/README.md) plots per-column
+[intensity profile example](examples/inspection/intensity_profile/README.md) plots per-column
 mean intensity inside an inspection region and locates the maximum in each column. The
-[image statistics example](examples/image_statistics/README.md) reports
+[image statistics example](examples/inspection/image_statistics/README.md) reports
 selected-region measurements and marks the darkest and brightest pixels. The
-[absolute image error example](examples/absolute_image_error/README.md) compares
+[absolute image error example](examples/inspection/absolute_image_error/README.md) compares
 average, RMS, and worst-case deviations from a reference image. The
-[Earth Mover's Distance example](examples/earth_movers_distance/README.md)
+[Earth Mover's Distance example](examples/inspection/earth_movers_distance/README.md)
 measures a seven-level intensity shift between histograms. The
-[tilted statistics example](examples/tilted_statistics/README.md) measures
+[tilted statistics example](examples/image_processing/tilted_statistics/README.md) measures
 diagonal patches with 45-degree integral-image windows.
 
 The rotated rectangle overlap example fits a part footprint from a contour
 and compares it against a reference. The measurement includes intersection
 area, intersection-over-union and the fraction of each footprint covered.
-[Rotated rectangle overlap example](examples/rotated_rectangle_overlap/README.md)
+[Rotated rectangle overlap example](examples/geometry/rotated_rectangle_overlap/README.md)
 
 **Convex polygon overlap** measures intersection area and IoU for polygon
-footprints. The [example](examples/convex_overlap/README.md) wires a detected
+footprints. The [example](examples/geometry/convex_overlap/README.md) wires a detected
 contour into the block and compares its convex hull with a reference.
 
 **Enclosing convex polygon** fits a footprint under a side-count limit.
-The [enclosing polygon example](examples/enclosing_polygon/README.md) compares
+The [enclosing polygon example](examples/geometry/enclosing_polygon/README.md) compares
 a triangle and a quadrilateral fitted to the same part.
 
 **Delaunay triangulation** connects point sites or measured object centers
 and reports indexed triangles, unique edges, and edge lengths.
-[Delaunay triangulation example](examples/delaunay_triangulation/README.md)
+[Delaunay triangulation example](examples/geometry/delaunay_triangulation/README.md)
 
 **Voronoi cells** divides an image into zones around detected centers or
 wired points. It returns bounded polygons, areas, and a mask for a selected zone.
-[Voronoi cells example](examples/voronoi_cells/README.md)
+[Voronoi cells example](examples/geometry/voronoi_cells/README.md)
 
 **Minimum spanning tree** finds the lowest total cost to connect nodes
 using supplied weights or Euclidean distances from point coordinates.
-[Minimum spanning tree example](examples/minimum_spanning_tree/README.md)
+[Minimum spanning tree example](examples/geometry/minimum_spanning_tree/README.md)
 
 **Path intensity profile** samples each image channel at regular distances
 along an open or closed path and preserves gaps outside the selection.
-[Path intensity profile example](examples/path_intensity_profile/README.md)
+[Path intensity profile example](examples/inspection/path_intensity_profile/README.md)
 
 Convert between Cartesian vector components and magnitude/angle fields.
 The angle output carries its units through compatible graph blocks.
-[Polar field rotation example](examples/polar_fields/README.md)
+[Polar field rotation example](examples/image_processing/polar_fields/README.md)
 
 **Paired Sobel derivatives** exposes signed X and Y gradients for reuse
 by **Canny from derivatives**.
-[Derivative-fed Canny example](examples/canny_derivatives/README.md)
+[Derivative-fed Canny example](examples/image_processing/canny_derivatives/README.md)
 
 **Scale absolute to 8-bit** applies a gain and offset to signed or high-depth
 samples, then produces a clipped magnitude image for display or thresholding.
-[Signed-gradient example](examples/scale_absolute/README.md)
+[Signed-gradient example](examples/image_processing/scale_absolute/README.md)
 
 **Colorize scalar image** maps grayscale, response, or depth values to a
-built-in or wired palette. See the [distance-map example](examples/colorize_scalar/README.md).
+built-in or wired palette. See the [distance-map example](examples/image_processing/colorize_scalar/README.md).
 
 **Labeled distance transform** computes distance to the nearest seed and
-returns its region or pixel label. See the [nearest-seed example](examples/labeled_distance/README.md).
+returns its region or pixel label. See the [nearest-seed example](examples/image_processing/labeled_distance/README.md).
 
 **Compare pixels** and **In range mask** accept signed label planes. The
-[label-mask example](examples/label_masks/README.md) selects watershed
+[label-mask example](examples/image_processing/label_masks/README.md) selects watershed
 boundaries and region interiors.
 
 **Gabor texture response** isolates stripes by orientation and wavelength.
 Compare two responses to map the dominant texture direction.
-[Gabor texture example](examples/gabor_texture/README.md)
+[Gabor texture example](examples/image_processing/gabor_texture/README.md)
 
 **Gabor orientation bank** compares several angles in one block and outputs
 the strongest response, winning angle, confidence, and valid-pixel mask.
-[Gabor orientation bank example](examples/gabor_orientation_bank/README.md)
+[Gabor orientation bank example](examples/image_processing/gabor_orientation_bank/README.md)
 
 **Pyramid mean-shift filter** flattens fine color texture before segmentation.
-[Mean-shift filtering example](examples/mean_shift_filter/README.md)
+[Mean-shift filtering example](examples/image_processing/mean_shift_filter/README.md)
 
 **Temporal non-local means** uses an ordered group of aligned frames to
 denoise a selected frame while retaining its ticket and pixel frame.
-[Temporal denoising example](examples/temporal_nlm/README.md)
+[Temporal denoising example](examples/image_processing/temporal_nlm/README.md)
 
 **TV-L1 denoise** restores a monochrome image from one view or a batch of
 aligned views with impulse noise.
-[TV-L1 denoising example](examples/tvl1_denoising/README.md)
+[TV-L1 denoising example](examples/image_processing/tvl1_denoising/README.md)
 
 **Wiener deblur** restores detail using Gaussian, linear motion, circular
 defocus, or custom blur kernels and a configurable noise-to-signal ratio.
-[Gaussian example](examples/wiener_deblur/README.md) · [Motion example](examples/motion_deblur/README.md)
+[Gaussian example](examples/image_processing/wiener_deblur/README.md) · [Motion example](examples/image_processing/motion_deblur/README.md)
 
 **Adaptive background correction** estimates lighting from a single image
 and subtracts or divides out the estimated background.
-[Adaptive background example](examples/adaptive_background/README.md)
+[Adaptive background example](examples/image_processing/adaptive_background/README.md)
 
 **Hann window** tapers image edges or rows before a Fourier transform and
 exposes the coefficients and coherent gain.
-[Hann window example](examples/hann_window/README.md)
+[Hann window example](examples/image_processing/hann_window/README.md)
 
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing
@@ -624,23 +624,23 @@ The editor uses a captured frame, with correctly scaled pixel coordinates.
 Use **Combine regions** to union, intersect, subtract, XOR or invert shapes;
 its output is another reusable region, so combinations can be nested. **Measure
 selected region** reports pixel area, image coverage, bounds and centroid, with
-configurable inspection limits. The [combined regions example](examples/combined_regions/combined_regions.json) is
+configurable inspection limits. The [combined regions example](examples/geometry/combined_regions/combined_regions.json) is
 an 11-block project that excludes a circle's center and adds a second part region.
 
 **Region from fitted shape** follows a detected ellipse or enclosing circle.
 Use its margin to grow or shrink the selection around the fit.
-[Fitted ellipse inspection band](examples/fitted_shape_region/README.md)
+[Fitted ellipse inspection band](examples/geometry/fitted_shape_region/README.md)
 
 **Transform region** carries a selection into another image's coordinates. Connect
 the target image, source region and the image operation's `geometry` output, or a
 registration `transform`. Forward/inverse direction and mask sampling use dropdowns.
-Try [transformed regions](examples/transformed_regions/transformed_regions.json) for a 12-block crop → resize →
+Try [transformed regions](examples/geometry/transformed_regions/transformed_regions.json) for a 12-block crop → resize →
 rotation pipeline whose inspection region follows each image operation.
 
-Open [regions](examples/regions/regions.json) for a working
+Open [regions](examples/geometry/regions/regions.json) for a working
 10-block project that inspects each synthetic part separately, computes a polygon
 histogram and blurs only the circular selection. No image download is required.
-Run it headlessly with `opencv-dataflow-run examples/regions/regions.json --repeat 3`.
+Run it headlessly with `opencv-dataflow-run examples/geometry/regions/regions.json --repeat 3`.
 
 Selections support filters, segmentation, gradients, image math, histogram and
 contrast tools, corner/ORB detectors, contours/components and template search.
@@ -658,15 +658,15 @@ output. Connect it to
 collection** to select and visualize measured objects without code.
 
 **Hough lines from points** detects lines in sparse coordinates and exposes
-the vote count as **Strength**. [Sparse line example](examples/point_set_lines/README.md)
+the vote count as **Strength**. [Sparse line example](examples/geometry/point_set_lines/README.md)
 **Hough polar lines** detects lines in an 8-bit edge map. Vote by pixel count
 or intensity and restrict voting with a mask or region.
-[Binary and weighted voting example](examples/hough_polar_lines/README.md)
+[Binary and weighted voting example](examples/geometry/hough_polar_lines/README.md)
 **Hough circles** exposes fitted radius and native detection strength for sorting
-and filtering. [Circle collection example](examples/hough_circle_collections/README.md)
+and filtering. [Circle collection example](examples/geometry/hough_circle_collections/README.md)
 
 Use **Clip line segments** to measure only the part of each detected line inside
-the image or a rectangular region. [Line clipping example](examples/clip_line_segments/README.md)
+the image or a rectangular region. [Line clipping example](examples/geometry/clip_line_segments/README.md)
 
 Filter/sort criteria use dropdowns: area, bounding width/height and position,
 centroid, aspect ratio, principal-axis angle, line length, perimeter, fitted box
@@ -675,18 +675,18 @@ Chain filters for multiple criteria, inspect rejected objects, and use stable
 two-key sorting with explicit policies for undefined measurements.
 
 Use **Approximate contour** to simplify a detected boundary or open path.
-[Contour approximation example](examples/contour_approximation/README.md)
+[Contour approximation example](examples/geometry/contour_approximation/README.md)
 **Approximate convex contour** reduces a closed boundary to a target number
 of sides with an optional added-area budget.
-[Convex contour example](examples/convex_contour_approximation/README.md)
+[Convex contour example](examples/geometry/convex_contour_approximation/README.md)
 Use **Contour hierarchy** to inspect nested boundaries, holes, and islands.
-[Contour hierarchy example](examples/contour_hierarchy/README.md)
+[Contour hierarchy example](examples/geometry/contour_hierarchy/README.md)
 Use **Contour hull and convexity defects** to measure edge notches and judge their count.
-[Contour defect inspection example](examples/contour_defects/README.md)
+[Contour defect inspection example](examples/inspection/contour_defects/README.md)
 Use **Contour profile tolerance** to check a measured outline against an aligned reference.
-[Contour profile example](examples/contour_profile/README.md)
+[Contour profile example](examples/inspection/contour_profile/README.md)
 
-Try [object collections](examples/object_collections/object_collections.json).
+Try [object collections](examples/geometry/object_collections/object_collections.json).
 This 16-block project orders two parts left-to-right, selects the round contour and
 isolates two long vertical lines. See [collection tools and measurement conventions](docs/object-collections.md).
 
@@ -696,7 +696,7 @@ Use **Split three channels / Merge three channels**, or the four-channel alpha
 variants, to process planes independently. **Extract image channel** and **Replace
 image channel** use channel-index dropdowns and preserve coordinate payloads.
 **Route image channels** assembles channels from one or two images with a
-configurable or wired index map. See the [false-color example](examples/route_channels/README.md).
+configurable or wired index map. See the [false-color example](examples/image_processing/route_channels/README.md).
 
 **Gaussian image pyramid set** sends all levels together on its `images` port.
 Connect it to an ordinary image input: the largest level is used by default.
@@ -711,7 +711,7 @@ level in the inspector and headless receipts. **Read port payload / coordinates*
 exposes a mapping to the largest or original image for **Transform points** and
 **Transform region**. **Attach port payload** adds recipe or custom data.
 
-Try [channels and pyramids](examples/channels_pyramids/channels_pyramids.json): it splits/merges channels, carries a recipe
+Try [channels and pyramids](examples/image_processing/channels_pyramids/channels_pyramids.json): it splits/merges channels, carries a recipe
 payload through a four-level pyramid, detects blobs at level 2, and maps their
 centroids back to the largest image. See [payload and pyramid contracts](docs/payloads-pyramids.md).
 
@@ -777,7 +777,7 @@ so they do not depend on the original definition file. Required Python plugins m
 still be loaded explicitly.
 
 For a ready-made nested pattern, import
-[`examples/inspect_shapes/inspect_shapes.toolblock.json`](examples/inspect_shapes/inspect_shapes.toolblock.json)
+[`examples/user_tools/inspect_shapes/inspect_shapes.toolblock.json`](examples/user_tools/inspect_shapes/inspect_shapes.toolblock.json)
 and connect a Demo image or Image file output to its `image` input.
 
 Run controls always execute the entire root job, including when viewing a nested
@@ -800,74 +800,74 @@ graph.close()
 flow, Lucas-Kanade point tracking and first/latest/mean image references. They report
 readiness and activation counts, suppress primary outputs during warmup, and support
 bounded per-stream state, resets and trained references stored in projects or recipes.
-Try [sequence memory](examples/sequence_memory/sequence_memory.json), then run continuously. See
+Try [sequence memory](examples/flow_control/sequence_memory/sequence_memory.json), then run continuously. See
 [sequence memory](docs/sequence-memory.md) for training, masks, ticket provenance and limits.
 
 **Fit feature covariance** models how numeric measurements vary together.
 **Mahalanobis distance** scores new rows and can fail on an outlier.
-[Feature covariance example](examples/feature_covariance/README.md)
+[Feature covariance example](examples/numerical/feature_covariance/README.md)
 
 **Solve linear system** fits one or more observation columns and reports residuals
-and numerical rank. See the [linear system example](examples/linear_system/README.md).
+and numerical rank. See the [linear system example](examples/numerical/linear_system/README.md).
 
 **Solve linear program** optimizes continuous allocations under linear limits.
-The [linear program example](examples/linear_program/README.md) shows capacity
+The [linear program example](examples/numerical/linear_program/README.md) shows capacity
 allocation and minimum-cost demand fulfillment.
 
 **Solve polynomial roots** finds curve crossings or complex roots and checks each
-candidate's relative residual. See the [polynomial roots example](examples/polynomial_roots/README.md).
+candidate's relative residual. See the [polynomial roots example](examples/numerical/polynomial_roots/README.md).
 
 **Multiply matrices** applies weighted matrix products and optional offsets.
-The [matrix multiplication example](examples/matrix_multiply/README.md) uses
+The [matrix multiplication example](examples/numerical/matrix_multiply/README.md) uses
 fitted coefficients to predict new readings.
 
 **Invert matrix** computes inverses or SVD pseudoinverses and reports rank,
-conditioning, and square-matrix determinants. See the [matrix inverse example](examples/matrix_inverse/README.md).
+conditioning, and square-matrix determinants. See the [matrix inverse example](examples/numerical/matrix_inverse/README.md).
 
 **Singular value decomposition** exposes the spectrum, vector bases, numerical
-rank, and an optional low-rank reconstruction. See the [SVD example](examples/matrix_svd/README.md).
+rank, and an optional low-rank reconstruction. See the [SVD example](examples/numerical/matrix_svd/README.md).
 
 **Eigendecomposition** extracts real eigenpairs from square matrices and
-checks their residuals. See the [eigendecomposition example](examples/matrix_eigen/README.md).
+checks their residuals. See the [eigendecomposition example](examples/numerical/matrix_eigen/README.md).
 
 **Check image samples** detects nonfinite and optionally out-of-range pixels.
 It emits aligned validity masks for downstream analysis. See the
-[image validity example](examples/image_validity/README.md).
+[image validity example](examples/image_processing/image_validity/README.md).
 **Replace nonfinite samples** substitutes configured values for NaN and
 infinity and emits a mask of changed pixels. See the
-[nonfinite replacement example](examples/nonfinite_replacement/README.md).
+[nonfinite replacement example](examples/image_processing/nonfinite_replacement/README.md).
 
 **Join images** assembles a side-by-side or stacked view without resampling.
 Its layout output records each panel's source frame. See the
-[image join example](examples/join_images/README.md).
+[image join example](examples/image_processing/join_images/README.md).
 **Paste image patch** copies selected pixels onto a canvas and reports
-their placement. See the [masked paste example](examples/paste_patch/README.md).
+their placement. See the [masked paste example](examples/image_processing/paste_patch/README.md).
 **Crop subpixel patch** samples around a fractional point or pose origin
 and carries the patch-to-source transform. See the
-[subpixel crop example](examples/subpixel_crop/README.md).
+[subpixel crop example](examples/pattern_matching/subpixel_crop/README.md).
 **Polar image warp** straightens circular features into a radius-by-angle grid
 and carries a mapping for rewrapping the result. See the
-[circular inspection example](examples/polar_image_warp/README.md).
+[circular inspection example](examples/image_processing/polar_image_warp/README.md).
 **Tile image** repeats an image in a row-and-column grid. The
-[tiling example](examples/tile_image/README.md) uses the grid as a synthetic
+[tiling example](examples/image_processing/tile_image/README.md) uses the grid as a synthetic
 fixture for template matching.
 **Transpose image** swaps rows and columns without interpolation. The
-[transpose example](examples/transpose_image/README.md) maps points from
+[transpose example](examples/image_processing/transpose_image/README.md) maps points from
 the transposed crop back to the original image.
 
 **Gram matrix** compares rows or columns by dot product and can reuse the same
-centering offset across batches. See the [Gram matrix example](examples/gram_matrix/README.md).
+centering offset across batches. See the [Gram matrix example](examples/numerical/gram_matrix/README.md).
 
 **Find nearest rows** compares numeric feature tables and returns exact nearest
-reference indices and distances. See the [nearest rows example](examples/nearest_rows/README.md).
+reference indices and distances. See the [nearest rows example](examples/numerical/nearest_rows/README.md).
 
 **Sort numeric table** ranks records or sorts values within each row or column
-and returns their source indices. See the [numeric table sort example](examples/numeric_table_sort/README.md).
+and returns their source indices. See the [numeric table sort example](examples/numerical/numeric_table_sort/README.md).
 
 **Fit principal components** reduces numeric feature tables by count or
 retained variance. **Transform principal components** projects rows or
 reconstructs them with the same fitted model.
-[Principal components example](examples/principal_components/README.md)
+[Principal components example](examples/ml/principal_components/README.md)
 
 ## Architecture
 
@@ -890,7 +890,7 @@ The bottom status bar shows running ticket totals, pass/fail counts, pass rate a
 average end-to-end time. Final judgments can attach stable failure codes and explanations.
 Use **Results > Validation image sets…** to grade saved images as must/should pass,
 unknown or must/should fail, optionally matching a preferred failure code. Runs produce
-a score and per-image report without affecting production counts. Try [validation image set](examples/validation_images/validation_images.json); see [production counts and validation](docs/production-validation.md).
+a score and per-image report without affecting production counts. Try [validation image set](examples/inspection/validation_images/validation_images.json); see [production counts and validation](docs/production-validation.md).
 
 Open **Results > Block diagnostics** (**Ctrl+Shift+D**) for a bottom dock with
 severity-colored logs. Selecting a block isolates its logs; clearing the selection shows

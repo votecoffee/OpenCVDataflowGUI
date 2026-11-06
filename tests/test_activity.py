@@ -512,7 +512,7 @@ def test_headless_receipt_contains_paired_activity_events(tmp_path):
     assert (
         main(
             [
-                "examples/sequence_memory/sequence_memory.json",
+                "examples/flow_control/sequence_memory/sequence_memory.json",
                 "--repeat",
                 "2",
                 "--report",

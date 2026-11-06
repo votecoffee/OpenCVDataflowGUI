@@ -122,7 +122,9 @@ def test_matches_tickets_across_sources_and_keeps_the_only_input_ticket():
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_contains_original_and_filtered_crop(profile):
-    project = Path(__file__).parents[1] / "examples" / "join_images" / "join_images.json"
+    project = (
+        Path(__file__).parents[1] / "examples/image_processing" / "join_images" / "join_images.json"
+    )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
     graph.run()

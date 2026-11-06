@@ -70,7 +70,10 @@ def test_ciede2000_reference_pairs(reference, sample, expected):
 
 
 def test_color_match_example_measures_and_compares_two_regions():
-    path = Path(__file__).resolve().parents[1] / "examples/lab_color_match/lab_color_match.json"
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "examples/inspection/lab_color_match/lab_color_match.json"
+    )
     graph = Graph.load(path, builtin_registry())
     try:
         graph.run()
