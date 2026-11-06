@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import sys
 import threading
@@ -47,7 +48,7 @@ from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
 from .canvas import CanvasScene, CanvasView, Node, block_preview_images, pixmap
 from .cloud_viewer import CloudViewer
-from .core import Graph
+from .core import DISPLAY_RESULT_FIELDS, Graph
 from .diagnostic_viewer import DiagnosticViewer
 from .diagnostics import exception_message
 from .documentation_editor import DocumentationEditor
@@ -80,6 +81,21 @@ from .toolblocks import ToolBlock, encapsulate
 from .visual_style import BLOCK_COLORS, NODE_SIZES, PORT_COLORS, PORT_LABELS
 
 
+def capture_display_results(blocks):
+    """Hold one completed frame's result references while the worker keeps running."""
+    for block in blocks:
+        state = {name: getattr(block, name) for name in DISPLAY_RESULT_FIELDS}
+        # Graphics policies may reassign fields on the retained Result object.
+        state["last_result"] = copy.copy(state["last_result"])
+        if isinstance(block, ParallelInspect):
+            state["last_preview_index"] = block.last_preview_index
+        yield block, state
+        if isinstance(block, ParallelInspect):
+            yield from capture_display_results((block.inspection,))
+        elif hasattr(block, "graph"):
+            yield from capture_display_results(block.graph.blocks.values())
+
+
 class Runner(QThread):
     frame = Signal()
     failed = Signal(str)
@@ -92,16 +108,25 @@ class Runner(QThread):
         self.duration = 0.0
         self.registry = registry or builtin_registry()
         self.final_queue_states = {}
+        self.frame_has_results = True
 
     def stop(self):
         self.stop_requested.set()
 
     def run(self):
         queued = None
-        dirty = False
-        published_at = 0.0
+        pending = None
+        interrupted = False
+        published_at = None
 
-        def publish():
+        def cancelled():
+            nonlocal interrupted
+            if self.stop_requested.is_set():
+                interrupted = True
+            return interrupted
+
+        def publish(has_results=True):
+            self.frame_has_results = has_results
             self.ack.clear()
             self.frame.emit()
             self.ack.wait()
@@ -113,31 +138,39 @@ class Runner(QThread):
             while not self.stop_requested.is_set():
                 started = time.perf_counter()
                 if queued is not None:
-                    if not queued.run_one():
+                    if not queued.run_one(cancelled):
                         break
                 else:
-                    self.graph.run(self.stop_requested.is_set)
+                    self.graph.run(cancelled)
+                if interrupted:
+                    break
                 self.duration = (time.perf_counter() - started) * 1000
-                dirty = True
                 now = time.perf_counter()
                 if (
                     not self.continuous
-                    or self.graph.run_profile.ui_interval_ms == 0
+                    or published_at is None
                     or (now - published_at) * 1000 >= self.graph.run_profile.ui_interval_ms
                     or self.stop_requested.is_set()
                 ):
                     # UI reads a stable snapshot; processing continues between publications.
                     publish()
-                    dirty = False
+                    pending = None
                     published_at = time.perf_counter()
+                else:
+                    pending = list(capture_display_results(self.graph.blocks.values()))
                 if not self.continuous or (queued is None and self.graph.sources_exhausted()):
                     break
                 self.stop_requested.wait(self.graph.run_profile.iteration_pause_ms / 1000)
         except (Exception, SystemExit) as exc:
             self.failed.emit(exception_message(exc))
         finally:
-            if dirty:
+            if pending is not None:
+                for block, state in pending:
+                    for name, value in state.items():
+                        setattr(block, name, value)
                 publish()
+            elif interrupted:
+                publish(has_results=False)
             if queued is not None:
                 queued.close()
             self.final_queue_states = {
@@ -2037,6 +2070,8 @@ class MainWindow(QMainWindow):
         try:
             self.root_graph.copy_runtime_from(self.runner.graph)
             share_native_sequence_runtime(self.root_graph, self.runner.graph)
+            if not self.runner.frame_has_results:
+                return
             for key, executed in self.runner.graph.blocks.items():
                 self.root_graph.blocks[key].copy_results_from(executed)
             self.scene.update()
