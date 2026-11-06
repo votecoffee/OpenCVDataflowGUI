@@ -695,6 +695,9 @@ candidate's relative residual. See the [polynomial roots example](examples/polyn
 The [matrix multiplication example](examples/matrix_multiply/README.md) uses
 fitted coefficients to predict new readings.
 
+**Invert matrix** computes inverses or SVD pseudoinverses and reports rank,
+conditioning, and square-matrix determinants. See the [matrix inverse example](examples/matrix_inverse/README.md).
+
 **Gram matrix** compares rows or columns by dot product and can reuse the same
 centering offset across batches. See the [Gram matrix example](examples/gram_matrix/README.md).
 

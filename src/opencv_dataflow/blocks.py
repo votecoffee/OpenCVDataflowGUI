@@ -674,6 +674,7 @@ def builtin_registry():
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .linear_program import SolveLinearProgram
     from .linear_system import SolveLinearSystem
+    from .matrix_inverse import InvertMatrix
     from .matrix_multiply import MultiplyMatrices
     from .native_background import NATIVE_BACKGROUND_BLOCKS
     from .native_trackers import NATIVE_TRACKER_BLOCKS
@@ -812,6 +813,7 @@ def builtin_registry():
         SolveLinearProgram,
         SolvePolynomialRoots,
         MultiplyMatrices,
+        InvertMatrix,
         GramMatrix,
         FindNearestRows,
         SortNumericTable,
