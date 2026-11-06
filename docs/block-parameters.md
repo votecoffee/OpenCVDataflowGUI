@@ -1706,6 +1706,24 @@ Inputs: `matrix` (data, optional).
 | `matrix` | `[]` | Rectangular table of real numbers. A wired table takes precedence. |
 | `method` | `"svd"` | `svd`, `lu`, `cholesky` SVD handles rectangular and rank-deficient matrices. LU needs a full-rank square matrix. Cholesky also needs symmetry and positive definiteness. |
 
+## Join images (`cv.join_images`)
+
+Image processing / Geometry
+
+Inputs: `image_a` (image), `image_b` (image).
+
+Input `image_a` — Left or top image. Use the same dtype and color encoding on both inputs.
+
+Input `image_b` — Right or bottom image. When both inputs have tickets, they must match.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `direction` | `"horizontal"` | `horizontal`, `vertical` Join left to right or top to bottom, with Image A first. |
+| `size_policy` | `"strict"` | `strict`, `pad` Require a common height or width, or pad the smaller image to match. |
+| `alignment` | `"center"` | `start`, `center`, `end` Where to place the shorter image across the join in Pad mode. |
+| `gap` | `0` | Value must be a whole number between 0 and 16384. Number of fill pixels between images along the join. |
+| `fill_value` | `0.0` | Value must be a finite number. Use this value for all channels in the gap and padding, in stored units. |
+
 ## Local window statistics (`cv.local_statistics`)
 
 Image processing / Intensity

@@ -2954,7 +2954,7 @@ P3	method	cv2.HausdorffDistanceExtractor.setDistanceFlag	no static reference	-
 P3	method	cv2.HausdorffDistanceExtractor.setRankProportion	no static reference	-
 P3	function	cv2.haveImageReader	no static reference	-
 P3	function	cv2.haveImageWriter	no static reference	-
-P3	function	cv2.hconcat	no static reference	-
+P3	function	cv2.hconcat	literal reference	-
 P3	class	cv2.hfs.HfsSegment	no static reference	-
 P3	method	cv2.hfs.HfsSegment.create	method name only	-
 P3	method	cv2.hfs.HfsSegment.getMinRegionSizeI	no static reference	-
@@ -4755,7 +4755,7 @@ P3	method	cv2.VariationalRefinement.setGamma	no static reference	-
 P3	method	cv2.VariationalRefinement.setOmega	no static reference	-
 P3	method	cv2.VariationalRefinement.setSorIterations	no static reference	-
 P3	function	cv2.VariationalRefinement_create	no static reference	-
-P3	function	cv2.vconcat	no static reference	-
+P3	function	cv2.vconcat	literal reference	-
 P3	class	cv2.Volume	literal reference	-
 P3	method	cv2.Volume.fetchNormals	no static reference	-
 P3	method	cv2.Volume.fetchPointsNormals	method name only	-

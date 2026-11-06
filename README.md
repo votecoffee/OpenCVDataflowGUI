@@ -777,6 +777,10 @@ It emits aligned validity masks for downstream analysis. See the
 infinity and emits a mask of changed pixels. See the
 [nonfinite replacement example](examples/nonfinite_replacement/README.md).
 
+**Join images** assembles a side-by-side or stacked view without resampling.
+Its layout output records each panel's source frame. See the
+[image join example](examples/join_images/README.md).
+
 **Gram matrix** compares rows or columns by dot product and can reuse the same
 centering offset across batches. See the [Gram matrix example](examples/gram_matrix/README.md).
 

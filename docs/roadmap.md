@@ -29,6 +29,8 @@ eigenpairs and checks their residuals.
 Image validity checks locate nonfinite and out-of-range samples and emit masks
 for downstream measurement. NaN and infinity can be replaced by channel with
 configured values inside a mask or region.
+Image joins build horizontal or vertical comparison views with per-panel
+coordinates and source frames.
 Specialized array operations remain open. The
 [coverage backlog](opencv-coverage.md) tracks the missing workflows and the
 [binding inventory](opencv-bindings.tsv) maps static references to the pinned
