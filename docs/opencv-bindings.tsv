@@ -167,20 +167,20 @@ P2	method	cv2.aruco.ArucoDetector.write	method name only	-
 P2	class	cv2.aruco.Board	no static reference	-
 P2	method	cv2.aruco.Board.generateImage	no static reference	-
 P2	method	cv2.aruco.Board.getDictionary	no static reference	-
-P2	method	cv2.aruco.Board.getIds	no static reference	-
+P2	method	cv2.aruco.Board.getIds	method name only	-
 P2	method	cv2.aruco.Board.getObjPoints	no static reference	-
 P2	method	cv2.aruco.Board.getRightBottomCorner	no static reference	-
-P2	method	cv2.aruco.Board.matchImagePoints	no static reference	-
-P2	class	cv2.aruco.CharucoBoard	no static reference	-
-P2	method	cv2.aruco.CharucoBoard.checkCharucoCornersCollinear	no static reference	-
+P2	method	cv2.aruco.Board.matchImagePoints	method name only	-
+P2	class	cv2.aruco.CharucoBoard	literal reference	-
+P2	method	cv2.aruco.CharucoBoard.checkCharucoCornersCollinear	method name only	-
 P2	method	cv2.aruco.CharucoBoard.getChessboardCorners	no static reference	-
 P2	method	cv2.aruco.CharucoBoard.getChessboardSize	no static reference	-
 P2	method	cv2.aruco.CharucoBoard.getLegacyPattern	no static reference	-
 P2	method	cv2.aruco.CharucoBoard.getMarkerLength	no static reference	-
 P2	method	cv2.aruco.CharucoBoard.getSquareLength	no static reference	-
-P2	method	cv2.aruco.CharucoBoard.setLegacyPattern	no static reference	-
-P2	class	cv2.aruco.CharucoDetector	no static reference	-
-P2	method	cv2.aruco.CharucoDetector.detectBoard	no static reference	-
+P2	method	cv2.aruco.CharucoBoard.setLegacyPattern	method name only	-
+P2	class	cv2.aruco.CharucoDetector	literal reference	-
+P2	method	cv2.aruco.CharucoDetector.detectBoard	method name only	-
 P2	method	cv2.aruco.CharucoDetector.detectDiamonds	no static reference	-
 P2	method	cv2.aruco.CharucoDetector.getBoard	no static reference	-
 P2	method	cv2.aruco.CharucoDetector.getCharucoParameters	no static reference	-
@@ -190,7 +190,7 @@ P2	method	cv2.aruco.CharucoDetector.setBoard	no static reference	-
 P2	method	cv2.aruco.CharucoDetector.setCharucoParameters	no static reference	-
 P2	method	cv2.aruco.CharucoDetector.setDetectorParameters	no static reference	-
 P2	method	cv2.aruco.CharucoDetector.setRefineParameters	no static reference	-
-P2	class	cv2.aruco.CharucoParameters	no static reference	-
+P2	class	cv2.aruco.CharucoParameters	literal reference	-
 P2	class	cv2.aruco.DetectorParameters	literal reference	-
 P2	method	cv2.aruco.DetectorParameters.readDetectorParameters	no static reference	-
 P2	method	cv2.aruco.DetectorParameters.writeDetectorParameters	no static reference	-
@@ -215,7 +215,7 @@ P2	class	cv2.aruco.GridBoard	no static reference	-
 P2	method	cv2.aruco.GridBoard.getGridSize	no static reference	-
 P2	method	cv2.aruco.GridBoard.getMarkerLength	no static reference	-
 P2	method	cv2.aruco.GridBoard.getMarkerSeparation	no static reference	-
-P2	class	cv2.aruco.RefineParameters	no static reference	-
+P2	class	cv2.aruco.RefineParameters	literal reference	-
 P2	method	cv2.aruco.RefineParameters.readRefineParameters	no static reference	-
 P2	method	cv2.aruco.RefineParameters.writeRefineParameters	no static reference	-
 P2	class	cv2.bgsegm.BackgroundSubtractorCNT	no static reference	-

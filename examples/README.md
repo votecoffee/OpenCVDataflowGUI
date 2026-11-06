@@ -11,6 +11,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Annoy nearest neighbors](annoy_search/README.md) | Turn synthetic image colors into an ONNX embedding and rank three labeled reference vectors with an Annoy index. |
 | [Bead width calipers](bead_calipers/README.md) | Measure paired edges and bead width with a synthetic image. |
 | [Channels and image pyramids](channels_pyramids/README.md) | Split and reassemble BGR channels, then carry payloads and coordinate transforms through a four-level image pyramid. |
+| [ChArUco board](charuco_board/README.md) | Identify corners on a cropped target and recover the board pose. |
 | [Circle grid calibration](circle_grid_calibration/README.md) | Detect a staggered dot target and map its centers to physical coordinates. |
 | [Lens correction maps](lens_correction_maps/README.md) | Load a lens profile, build reusable coordinate maps, and straighten a synthetic distorted grid. |
 | [Lens fit report](lens_fit_report/README.md) | Fit six circle-grid views, identify the largest reprojection error, and inspect parameter uncertainty. |
