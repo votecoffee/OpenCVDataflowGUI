@@ -4589,7 +4589,7 @@ P3	method	cv2.Subdiv2D.getEdgeList	no static reference	-
 P3	method	cv2.Subdiv2D.getLeadingEdgeList	no static reference	-
 P3	method	cv2.Subdiv2D.getTriangleList	method name only	-
 P3	method	cv2.Subdiv2D.getVertex	no static reference	-
-P3	method	cv2.Subdiv2D.getVoronoiFacetList	no static reference	-
+P3	method	cv2.Subdiv2D.getVoronoiFacetList	method name only	-
 P3	method	cv2.Subdiv2D.initDelaunay	no static reference	-
 P3	method	cv2.Subdiv2D.initDelaunay2f	no static reference	-
 P3	method	cv2.Subdiv2D.insert	method name only	-
