@@ -2037,7 +2037,7 @@ P3	function	cv2.checkHardwareSupport	no static reference	-
 P3	function	cv2.checkRange	no static reference	-
 P3	class	cv2.ChiHistogramCostExtractor	no static reference	-
 P3	function	cv2.circle	literal reference	-
-P3	class	cv2.CirclesGridFinderParameters	no static reference	-
+P3	class	cv2.CirclesGridFinderParameters	literal reference	-
 P3	class	cv2.CLAHE	no static reference	-
 P3	method	cv2.CLAHE.apply	method name only	-
 P3	method	cv2.CLAHE.collectGarbage	no static reference	-
@@ -2747,7 +2747,7 @@ P3	function	cv2.find4QuadCornerSubpix	no static reference	-
 P3	function	cv2.findChessboardCorners	literal reference	-
 P3	function	cv2.findChessboardCornersSB	literal reference	-
 P3	function	cv2.findChessboardCornersSBWithMeta	no static reference	-
-P3	function	cv2.findCirclesGrid	no static reference	-
+P3	function	cv2.findCirclesGrid	literal reference	-
 P3	function	cv2.findContoursLinkRuns	no static reference	-
 P3	function	cv2.findEssentialMat	literal reference	-
 P3	function	cv2.findFundamentalMat	literal reference	-
@@ -4444,8 +4444,8 @@ P3	method	cv2.SimpleBlobDetector.getDefaultName	no static reference	-
 P3	method	cv2.SimpleBlobDetector.getParams	no static reference	-
 P3	method	cv2.SimpleBlobDetector.Params	method name only	-
 P3	method	cv2.SimpleBlobDetector.setParams	no static reference	-
-P3	function	cv2.SimpleBlobDetector_create	no static reference	-
-P3	class	cv2.SimpleBlobDetector_Params	no static reference	-
+P3	function	cv2.SimpleBlobDetector_create	literal reference	-
+P3	class	cv2.SimpleBlobDetector_Params	literal reference	-
 P3	function	cv2.Sobel	literal reference	-
 P3	function	cv2.solve	literal reference	-
 P3	function	cv2.solveCubic	literal reference	-
