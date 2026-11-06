@@ -482,6 +482,10 @@ aligned views with impulse noise.
 defocus, or custom blur kernels and a configurable noise-to-signal ratio.
 [Gaussian example](examples/wiener_deblur/README.md) · [Motion example](examples/motion_deblur/README.md)
 
+**Adaptive background correction** estimates lighting from a single image
+and subtracts or divides out the estimated background.
+[Adaptive background example](examples/adaptive_background/README.md)
+
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing
 wrappers also expose kernel dimensions, anchors, borders, output depths, masks,
