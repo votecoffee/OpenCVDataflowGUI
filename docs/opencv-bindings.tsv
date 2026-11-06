@@ -2482,7 +2482,7 @@ P3	class	cv2.ECCParameters	literal reference	-
 P3	function	cv2.edgePreservingFilter	no static reference	-
 P3	function	cv2.eigen	literal reference	-
 P3	function	cv2.eigenNonSymmetric	literal reference	-
-P3	function	cv2.ellipse	no static reference	-
+P3	function	cv2.ellipse	literal reference	-
 P3	function	cv2.ellipse2Poly	no static reference	-
 P3	function	cv2.EMD	literal reference	-
 P3	class	cv2.EMDHistogramCostExtractor	no static reference	-

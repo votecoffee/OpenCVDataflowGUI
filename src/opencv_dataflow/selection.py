@@ -106,6 +106,8 @@ def rasterize(region, shape, *, _depth=0, _budget=None):
                     "xor": cv2.bitwise_xor,
                 }[operation](a, b)
         return cv2.bitwise_not(mask) if region.get("invert", False) else mask
+    if kind == "ellipse":
+        region_size(region)
     mask = np.zeros((height, width), np.uint8)
     if kind == "rectangle":
         x, y, w, h = [whole(v, "Rectangle") for v in region["rectangle"]]
@@ -116,6 +118,24 @@ def rasterize(region, shape, *, _depth=0, _budget=None):
         x, y = [whole(v, "Circle center") for v in region["center"]]
         radius = whole(region["radius"], "Radius", 1)
         cv2.circle(mask, (x, y), radius, 255, -1)
+    elif kind == "ellipse":
+        center = np.asarray(region.get("center"), float)
+        axes = np.asarray(region.get("axis_lengths"), float)
+        angle = float(region.get("angle_degrees", 0.0))
+        if (
+            center.shape != (2,)
+            or not np.isfinite(center).all()
+            or np.any(np.abs(center) > 1_000_000)
+            or axes.shape != (2,)
+            or not np.isfinite(axes).all()
+            or np.any(axes <= 0)
+            or np.any(axes > 2_000_000)
+            or not np.isfinite(angle)
+        ):
+            raise ValueError(
+                "Ellipse needs a center within ±1M pixels, axes in (0, 2M], and a finite angle"
+            )
+        cv2.ellipse(mask, (tuple(center), tuple(axes), angle % 360), 255, -1, cv2.LINE_8)
     elif kind == "polygon":
         vertices = np.asarray(region["vertices"], float)
         if (
@@ -131,7 +151,7 @@ def rasterize(region, shape, *, _depth=0, _budget=None):
             raise ValueError("Polygon must have nonzero area")
         cv2.fillPoly(mask, [vertices.astype(np.int32)], 255)
     else:
-        raise ValueError("Region shape must be rectangle, circle or polygon")
+        raise ValueError("Region shape must be rectangle, circle, ellipse or polygon")
     return cv2.bitwise_not(mask) if region.get("invert", False) else mask
 
 

@@ -618,6 +618,10 @@ selected region** reports pixel area, image coverage, bounds and centroid, with
 configurable inspection limits. The [combined regions example](examples/combined_regions/combined_regions.json) is
 an 11-block project that excludes a circle's center and adds a second part region.
 
+**Region from fitted shape** follows a detected ellipse or enclosing circle.
+Use its margin to grow or shrink the selection around the fit.
+[Fitted ellipse inspection band](examples/fitted_shape_region/README.md)
+
 **Transform region** carries a selection into another image's coordinates. Connect
 the target image, source region and the image operation's `geometry` output, or a
 registration `transform`. Forward/inverse direction and mask sampling use dropdowns.

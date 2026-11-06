@@ -8,6 +8,8 @@ import numpy as np
 from .core import Block, Port, Result
 from .graphics_layers import GraphicDrawing, graphic_object
 from .images import preview_rgb
+from .parameter_validation import NumericRange, ValidationError
+from .payloads import ValuePacket, require_same_frame
 from .selection import contains, rasterize, region_matrix, region_size, selection_mask
 
 
@@ -89,6 +91,59 @@ class CombineRegions(Block):
             "shape": "composite",
             "operation": operation,
             "children": children,
+        }
+        return region_result(image, region, self.generate_graphics)
+
+
+class FittedShapeRegion(Block):
+    type_id, title = "region.fitted_shape", "Region from fitted shape"
+    category, block_type, subtype = "Image processing", "Image processing", "Regions"
+    inputs = (Port("image"), Port("fit", "data"))
+    outputs = ShapeRegion.outputs
+    payload_reference = "image"
+    process_inputs_readonly = True
+    defaults = {"margin": 0.0, "invert": False}
+    parameter_ranges = {"margin": NumericRange(-1_000_000, 1_000_000)}
+    parameter_help = {
+        "margin": "Add this many pixels to each semi-axis. Negative values shrink the selection.",
+        "invert": "Select everything outside the fitted shape.",
+    }
+    input_help = {
+        "image": "Image in the same coordinate frame as the fitted shape.",
+        "fit": "Ellipse or enclosing circle geometry from Fit line, ellipse or enclosing circle.",
+    }
+
+    def process(self, inputs):
+        image, fit = inputs["image"], inputs["fit"]
+        if not isinstance(fit, dict) or fit.get("shape") not in ("ellipse", "enclosing_circle"):
+            raise ValidationError("Fit must contain an ellipse or enclosing circle")
+        size = [image.shape[1], image.shape[0]]
+        fit_payload = self.input_payloads["fit"]
+        frame_error = "Fitted shape must use the target image coordinate frame"
+        if fit_payload.get("spatial", {}).get("image_size", size) != size:
+            raise ValidationError(frame_error)
+        require_same_frame((image, ValuePacket(fit, fit_payload)), message=frame_error)
+
+        if fit["shape"] == "ellipse":
+            axes = np.asarray(fit.get("axis_lengths"), float)
+            angle = NumericRange().check(fit.get("angle_degrees"), "Ellipse angle")
+        else:
+            diameter = 2 * NumericRange().check(fit.get("radius"), "Circle radius")
+            axes = np.array([diameter, diameter])
+            angle = 0.0
+        if axes.shape != (2,) or not np.isfinite(axes).all() or np.any(axes <= 0):
+            raise ValidationError("Fitted shape must have two positive finite axis lengths")
+        padded_axes = axes + 2 * float(self.parameters["margin"])
+        if np.any(padded_axes <= 0):
+            raise ValidationError("Margin collapses the fitted shape", "margin")
+        region = {
+            "model": "image_region_v1",
+            "shape": "ellipse",
+            "image_size": size,
+            "center": np.asarray(fit.get("center"), float).tolist(),
+            "axis_lengths": padded_axes.tolist(),
+            "angle_degrees": angle,
+            "invert": self.parameters["invert"],
         }
         return region_result(image, region, self.generate_graphics)
 
@@ -253,4 +308,11 @@ class FilterPoints(Block):
         return Result({"points": selected, "count": len(selected)})
 
 
-REGION_BLOCKS = (ShapeRegion, CombineRegions, TransformRegion, MeasureRegion, FilterPoints)
+REGION_BLOCKS = (
+    ShapeRegion,
+    FittedShapeRegion,
+    CombineRegions,
+    TransformRegion,
+    MeasureRegion,
+    FilterPoints,
+)

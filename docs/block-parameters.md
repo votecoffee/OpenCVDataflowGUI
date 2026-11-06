@@ -4783,6 +4783,21 @@ Inputs: `image` (image), `points` (data), `mask` (image, optional), `region` (da
 
 No configurable algorithm parameters.
 
+## Region from fitted shape (`region.fitted_shape`)
+
+Image processing / Regions
+
+Inputs: `image` (image), `fit` (data).
+
+Input `image` — Image in the same coordinate frame as the fitted shape.
+
+Input `fit` — Ellipse or enclosing circle geometry from Fit line, ellipse or enclosing circle.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `margin` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Add this many pixels to each semi-axis. Negative values shrink the selection. |
+| `invert` | `false` | Select everything outside the fitted shape. |
+
 ## Measure selected region (`region.measure`)
 
 Inspection / Regions
