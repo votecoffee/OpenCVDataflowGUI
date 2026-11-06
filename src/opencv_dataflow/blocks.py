@@ -690,6 +690,11 @@ def builtin_registry():
     from .matrix_eigen import MatrixEigen
     from .matrix_inverse import InvertMatrix
     from .matrix_multiply import MultiplyMatrices
+    from .matrix_structure import (
+        CompleteSymmetricMatrix,
+        CreateDiagonalMatrix,
+        MeasureMatrixDiagonal,
+    )
     from .matrix_svd import MatrixSVD
     from .native_background import NATIVE_BACKGROUND_BLOCKS
     from .native_trackers import NATIVE_TRACKER_BLOCKS
@@ -872,6 +877,9 @@ def builtin_registry():
         SolveLinearSystem,
         SolveLinearProgram,
         SolvePolynomialRoots,
+        CreateDiagonalMatrix,
+        CompleteSymmetricMatrix,
+        MeasureMatrixDiagonal,
         MultiplyMatrices,
         InvertMatrix,
         MatrixSVD,
