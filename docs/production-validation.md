@@ -108,12 +108,12 @@ decision downstream of such a port will be unresolved. Trusted custom plugin cod
 executes as part of the program. The initial workflow substitutes one root image source;
 multi-camera validation bundles require a future extension.
 
-Try [validation image set](../examples/validation_images/validation_images.json). Its five synthetic cases cover all
+Try [validation image set](../examples/inspection/validation_images/validation_images.json). Its five synthetic cases cover all
 expectations and should score **100%** with required checks passing; the must-fail image
 reports `part_count`. No camera/download is needed.
 
 ```powershell
-.\.venv\Scripts\python -m opencv_dataflow.validation examples/validation_images/validation_images.json --set validation_smoke --report .local/validation-report.json
+.\.venv\Scripts\python -m opencv_dataflow.validation examples/inspection/validation_images/validation_images.json --set validation_smoke --report .local/validation-report.json
 ```
 
 Choose a new report filename on each invocation. `--plugin path/to/trusted_plugin.py` loads

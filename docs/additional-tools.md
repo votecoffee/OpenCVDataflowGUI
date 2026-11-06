@@ -42,7 +42,7 @@ reference. Its normalized preview must not be used for distance measurement.
 ## Lena feature project
 
 First fetch the optional image with `python scripts/prepare_lena.py`. Open
-`examples/lena_features/lena_features.json`, then press F5. The graph contains:
+`examples/image_processing/lena_features/lena_features.json`, then press F5. The graph contains:
 
 ```text
 Lena -> Grayscale -> CLAHE -> Corners
@@ -59,7 +59,7 @@ assert valid results and nonempty default detections instead of arbitrary exact 
 Headless check:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/lena_features/lena_features.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run examples/image_processing/lena_features/lena_features.json --repeat 3
 ```
 
 Node positions are stored separately from connections in every saved graph and

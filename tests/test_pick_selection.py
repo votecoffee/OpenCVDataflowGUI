@@ -73,7 +73,9 @@ def test_pick_selection_ranking_symmetry_and_no_pick():
 
 
 def test_pick_project_runs_with_masked_downstream_part():
-    path = Path(__file__).resolve().parents[1] / "examples/conveyor_pick/conveyor_pick.json"
+    path = (
+        Path(__file__).resolve().parents[1] / "examples/inspection/conveyor_pick/conveyor_pick.json"
+    )
     graph = Graph.load(path, builtin_registry())
     try:
         graph.run()

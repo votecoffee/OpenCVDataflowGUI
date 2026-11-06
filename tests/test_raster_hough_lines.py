@@ -10,7 +10,7 @@ from opencv_dataflow.core import Graph
 from opencv_dataflow.payloads import metadata
 
 TYPE_ID = "inspect.hough_polar_lines"
-_PROJECT = Path(__file__).parents[1] / "examples/hough_polar_lines/hough_polar_lines.json"
+_PROJECT = Path(__file__).parents[1] / "examples/geometry/hough_polar_lines/hough_polar_lines.json"
 
 
 def _edges():

@@ -14,7 +14,7 @@ from opencv_dataflow.result_graphics import ACCEPTED, REJECTED
 from opencv_dataflow.tickets import TicketClock
 
 TYPE_ID = "calibration.chessboard_quality"
-_EXAMPLE = Path(__file__).parents[1] / "examples/chessboard_quality"
+_EXAMPLE = Path(__file__).parents[1] / "examples/calibration/chessboard_quality"
 
 
 def _fixture():

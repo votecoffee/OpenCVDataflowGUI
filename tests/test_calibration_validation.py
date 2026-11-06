@@ -14,7 +14,8 @@ from opencv_dataflow.payloads import NO_VALUE
 from opencv_dataflow.result_graphics import ACCEPTED, REJECTED
 
 _PROJECT = (
-    Path(__file__).parents[1] / "examples/validate_lens_calibration/validate_lens_calibration.json"
+    Path(__file__).parents[1]
+    / "examples/calibration/validate_lens_calibration/validate_lens_calibration.json"
 )
 
 

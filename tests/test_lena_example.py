@@ -20,8 +20,8 @@ def make_bundle(directory):
     ok, encoded = cv2.imencode(".jpg", image)
     assert ok
     (assets / "lena.jpg").write_bytes(encoded.tobytes())
-    project = directory / "lena" / "lena.json"
-    project.parent.mkdir()
+    project = directory / "getting_started" / "lena" / "lena.json"
+    project.parent.mkdir(parents=True)
     lena_graph(builtin_registry()).save(project)
     return project
 
@@ -34,7 +34,7 @@ def test_project_relative_image_survives_move_clone_and_nested_graph(tmp_path, m
     graph.run()
     assert all(b.state == "pass" for b in graph.blocks.values())
     assert graph.blocks["lena_match"].last_result.outputs["location"]["top_left"] == [220, 200]
-    assert graph.blocks["lena_source"].parameters["path"] == "../assets/lena.jpg"
+    assert graph.blocks["lena_source"].parameters["path"] == "../../assets/lena.jpg"
     clone = Graph.from_dict(graph.to_dict(), registry, project_dir=graph.project_dir)
     clone.run()
     assert clone.blocks["lena_source"].state == "pass"
@@ -67,7 +67,7 @@ def test_real_lena_matches_expected_asset_and_repeated_results():
         == "7de7ed51a1594fff247f4cae2301eceacf5313d6011e37b4a4c8733f7bb72c07"
     )
     registry = builtin_registry()
-    graph = Graph.load("examples/lena/lena.json", registry)
+    graph = Graph.load("examples/getting_started/lena/lena.json", registry)
     assert graph.to_dict() == lena_graph(registry).to_dict()
     for _ in range(3):
         graph.run()
@@ -97,7 +97,7 @@ def test_lena_downloader_preserves_mismatched_existing_asset(tmp_path):
 )
 def test_lena_feature_pipeline_and_saved_graph():
     registry = builtin_registry()
-    graph = Graph.load("examples/lena_features/lena_features.json", registry)
+    graph = Graph.load("examples/image_processing/lena_features/lena_features.json", registry)
     assert graph.to_dict() == lena_features_graph(registry).to_dict()
     graph.run()
     assert all(b.state == "pass" for b in graph.blocks.values())
@@ -112,7 +112,9 @@ def test_lena_feature_pipeline_and_saved_graph():
 )
 def test_lena_registration_matches_known_rotation():
     registry = builtin_registry()
-    graph = Graph.load("examples/lena_registration/lena_registration.json", registry)
+    graph = Graph.load(
+        "examples/pattern_matching/lena_registration/lena_registration.json", registry
+    )
     assert graph.to_dict() == lena_registration_graph(registry).to_dict()
     graph.run()
     assert all(b.state == "pass" for b in graph.blocks.values()), [

@@ -103,7 +103,12 @@ def test_second_source_must_match_dimensions_and_depth(second):
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_creates_rgb_from_two_sources(profile):
-    project = Path(__file__).parents[1] / "examples" / "route_channels" / "route_channels.json"
+    project = (
+        Path(__file__).parents[1]
+        / "examples/image_processing"
+        / "route_channels"
+        / "route_channels.json"
+    )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
     graph.run()

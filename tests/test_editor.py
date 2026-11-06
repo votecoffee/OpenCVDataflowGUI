@@ -238,7 +238,7 @@ def test_cross_field_parameter_errors_highlight_both_controls(app):
 def test_custom_invert_example_shows_validation_only_for_invalid_drafts(app):
     from opencv_dataflow.plugins import load_plugin
 
-    folder = Path("examples/custom_invert")
+    folder = Path("examples/user_tools/custom_invert")
     window = MainWindow()
     load_plugin(folder / "custom_invert.py", window.registry)
     graph = Graph.load(folder / "custom_invert.json", window.registry)
@@ -1005,7 +1005,7 @@ def test_project_relative_image_works_in_editor_worker(app, tmp_path, monkeypatc
     pump_until(app, lambda: window.runner is None)
     assert all(b.state == "pass" for b in window.graph.blocks.values())
     source = window.graph.blocks["lena_source"]
-    assert source.parameters["path"] == "../assets/lena.jpg"
+    assert source.parameters["path"] == "../../assets/lena.jpg"
     window.dirty = False
     window.close()
 
@@ -1212,7 +1212,7 @@ def test_inspector_advanced_visibility_and_unapplied_drafts(app):
 
 def test_file_menu_opens_example_from_disk(app, monkeypatch):
     window = MainWindow()
-    project = Path(__file__).resolve().parents[1] / "examples" / "regions" / "regions.json"
+    project = Path(__file__).resolve().parents[1] / "examples/geometry" / "regions" / "regions.json"
     file_menu = window.menuBar().actions()[0].menu()
     entries = {action.text(): action for action in file_menu.actions()}
     try:

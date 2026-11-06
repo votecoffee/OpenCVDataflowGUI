@@ -12,7 +12,7 @@ from opencv_dataflow.payloads import ValuePacket, frame, metadata
 from opencv_dataflow.tickets import TicketClock
 
 TYPE_ID = "cv.crop_subpixel"
-_PROJECT = Path(__file__).parents[1] / "examples/subpixel_crop/subpixel_crop.json"
+_PROJECT = Path(__file__).parents[1] / "examples/pattern_matching/subpixel_crop/subpixel_crop.json"
 
 
 def test_bilinear_ramp_and_transform_for_even_width_and_odd_height():

@@ -253,7 +253,9 @@ def test_saved_trained_patterns_example(tmp_path):
 
     registry = builtin_registry()
     graph = Graph.load(
-        Path(__file__).parents[1] / "examples/trained_patterns/trained_patterns.json", registry
+        Path(__file__).parents[1]
+        / "examples/pattern_matching/trained_patterns/trained_patterns.json",
+        registry,
     )
     assert graph.to_dict() == trained_patterns_graph(registry).to_dict()
     for _ in range(3):

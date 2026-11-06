@@ -10,7 +10,7 @@ from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 from opencv_dataflow.payloads import NO_VALUE, packet_for
 
-_PROJECT = Path(__file__).parents[1] / "examples/charuco_board/charuco_board.json"
+_PROJECT = Path(__file__).parents[1] / "examples/calibration/charuco_board/charuco_board.json"
 
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))

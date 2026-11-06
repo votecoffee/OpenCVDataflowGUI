@@ -3,8 +3,8 @@
 ## Optional Lena test image
 
 Run `python scripts/prepare_lena.py` from the repository to fetch the image needed
-by the [Lena inspection](../lena/README.md), [features](../lena_features/README.md),
-and [registration](../lena_registration/README.md) examples. The download is
+by the [Lena inspection](../getting_started/lena/README.md), [features](../image_processing/lena_features/README.md),
+and [registration](../pattern_matching/lena_registration/README.md) examples. The download is
 explicit and the image is ignored by Git.
 
 Source: [OpenCV samples/data/lena.jpg at commit 1007c06](https://github.com/opencv/opencv/blob/1007c06d44a118566bbc0200577942423b38911d/samples/data/lena.jpg).

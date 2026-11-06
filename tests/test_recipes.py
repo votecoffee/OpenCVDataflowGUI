@@ -304,7 +304,9 @@ def test_manager_import_copy_revision_and_inspector_bindings(app, monkeypatch, a
 
 def test_legacy_arbitrary_recipe_metadata_remains_valid_and_unknown_revision_fails():
     registry = builtin_registry()
-    graph = Graph.load("examples/channels_pyramids/channels_pyramids.json", registry)
+    graph = Graph.load(
+        "examples/image_processing/channels_pyramids/channels_pyramids.json", registry
+    )
     graph.run()
     assert all(b.state == "pass" for b in graph.blocks.values())
     a, _ = add_recipes(graph)
@@ -489,7 +491,7 @@ def test_saved_recipe_example_and_gui_version_activation(app, load_example, tmp_
     from opencv_dataflow.runner import main
 
     registry = builtin_registry()
-    graph = Graph.load("examples/recipes/recipes.json", registry)
+    graph = Graph.load("examples/flow_control/recipes/recipes.json", registry)
     assert graph.to_dict() == recipes_graph(registry).to_dict()
     for name, threshold in (("Widget A", 110), ("Widget B", 150)):
         graph.recipes.activate(name)
@@ -499,7 +501,12 @@ def test_saved_recipe_example_and_gui_version_activation(app, load_example, tmp_
         ]
         assert graph.blocks["recipe_threshold"].last_result.outputs["threshold"] == threshold
     report = tmp_path / "report.json"
-    assert main(["examples/recipes/recipes.json", "--repeat", "2", "--report", str(report)]) == 0
+    assert (
+        main(
+            ["examples/flow_control/recipes/recipes.json", "--repeat", "2", "--report", str(report)]
+        )
+        == 0
+    )
     assert json.loads(report.read_text())["active_recipe"]["id"] == "Widget A"
     window = MainWindow()
     load_example(window, "recipes")

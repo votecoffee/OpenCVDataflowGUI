@@ -118,7 +118,10 @@ def test_frame_policy_and_ticket_identity_cover_weight_maps():
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_keeps_both_endpoints_and_feathers_the_transition(profile):
     project = (
-        Path(__file__).parents[1] / "examples" / "blend_weight_maps" / "blend_weight_maps.json"
+        Path(__file__).parents[1]
+        / "examples/image_processing"
+        / "blend_weight_maps"
+        / "blend_weight_maps.json"
     )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)

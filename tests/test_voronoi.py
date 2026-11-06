@@ -73,7 +73,7 @@ def test_invalid_site_coordinates_or_selection_fail_as_a_block_error(points, par
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_voronoi_example_measures_selected_cell_and_overlays_geometry(profile):
-    project = Path(__file__).parents[1] / "examples/voronoi_cells/voronoi_cells.json"
+    project = Path(__file__).parents[1] / "examples/geometry/voronoi_cells/voronoi_cells.json"
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
     graph.run()

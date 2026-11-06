@@ -32,7 +32,7 @@ scaled to their peak; compare numeric counts rather than line height across chan
 
 ## Grid origin and physical coordinates
 
-Use [Check chessboard quality](../examples/chessboard_quality/README.md) to
+Use [Check chessboard quality](../examples/calibration/chessboard_quality/README.md) to
 measure blur and exposure and forward only accepted checkerboard images.
 
 1. Load a calibration target image. For chessboards, set **columns and rows of
@@ -77,7 +77,7 @@ Set **Circle polarity** to match the dots. The circle controls tune candidate
 size, separation, thresholds, and shape filters. Clustering is intended
 for uncluttered scenes with perspective distortion. If it misses an
 even-row staggered board, try detection with clustering disabled.
-[Circle grid example](../examples/circle_grid_calibration/README.md) ·
+[Circle grid example](../examples/calibration/circle_grid_calibration/README.md) ·
 [OpenCV calibration patterns](https://github.com/opencv/opencv/blob/5.x/doc/tutorials/calib3d/camera_calibration_pattern/camera_calibration_pattern.markdown)
 
 ## Lens distortion
@@ -95,7 +95,7 @@ Pose diversity beyond exact-duplicate rejection remains the user's responsibilit
 estimated standard deviations. The report names each image and retains
 the input order. Set **Max view RMS pixels** to apply a separate limit
 to the worst view. Zero leaves that check off. The overall and worst-view
-checks emit distinct failure reasons. [Lens fit report example](../examples/lens_fit_report/README.md)
+checks emit distinct failure reasons. [Lens fit report example](../examples/calibration/lens_fit_report/README.md)
 
 Connect the calibration output to Undistort lens along with the image. The tool
 checks matrix validity, image dimensions and its reprojection-error limit. Save
@@ -106,17 +106,17 @@ correction maps** and wire both map outputs to **Remap image coordinates**.
 Use a source image from the camera and input pixel grid used for calibration.
 Remap validates the map pair and assigns the corrected image a separate
 coordinate frame. The map builder also returns the output camera matrix
-in a zero-distortion profile. [Lens correction maps example](../examples/lens_correction_maps/README.md)
+in a zero-distortion profile. [Lens correction maps example](../examples/calibration/lens_correction_maps/README.md)
 
 Wire the map pair to **Inspect lens map displacement** to see correction
 strength and direction, measure displacement in source pixels, and identify
-samples outside the source. [Lens map displacement example](../examples/lens_map_displacement/README.md)
+samples outside the source. [Lens map displacement example](../examples/calibration/lens_map_displacement/README.md)
 
 Connect both maps to **Save lens correction maps** to publish a versioned
 `.npz` file. **Load lens correction maps** restores the pair, its coordinate
 metadata, the rectified profile and any valid ROI. Use **Project** path base
 for a portable saved graph. Saving requires a new file name.
-[Lens map files example](../examples/lens_map_files/README.md)
+[Lens map files example](../examples/calibration/lens_map_files/README.md)
 
 Fisheye fitting and calibration dataset management remain open.
 
@@ -132,14 +132,14 @@ and the observed and projected coordinates in image pixels.
 Set the overall and optional worst-point limits for the job. Wire
 **Result graphics** to **Overlay result graphics** along with the
 validation image to see the measured points and residual directions.
-The bundled example uses rendered targets. [Lens validation example](../examples/validate_lens_calibration/README.md)
+The bundled example uses rendered targets. [Lens validation example](../examples/calibration/validate_lens_calibration/README.md)
 
 For a partial ChArUco board, feed the same image to **Detect ChArUco board**
 and **Validate lens calibration**. Wire the detected **Observation** to
 the validator. It uses the board definition and visible corner IDs in the
 observation. It checks capture and frame metadata when supplied and keeps
 the lens profile fixed while estimating the board pose.
-[ChArUco validation example](../examples/validate_charuco_calibration/README.md)
+[ChArUco validation example](../examples/calibration/validate_charuco_calibration/README.md)
 
 ## Observe a ChArUco board
 
@@ -154,7 +154,7 @@ The optional pinhole camera input improves interpolation of corners.
 Wire **Image points** and **Object points** to **3D object pose (PnP)**
 with a matching camera model and board units. The board's coordinate
 origin follows the target layout even when it is outside the image.
-[ChArUco board example](../examples/charuco_board/README.md)
+[ChArUco board example](../examples/calibration/charuco_board/README.md)
 
 To fit a pinhole lens profile, send **Observation** from each successful
 detection to **Batch serial entries**. Connect its group to **Observations**
@@ -162,7 +162,7 @@ on **Calibrate lens** and leave **Image paths** empty. Use 3 to 64 views
 of the same target at varied poses with a consistent camera pixel grid.
 The fit uses the length units and identified points in the observations.
 **Fit report** includes each view's point count and reprojection RMS.
-[ChArUco lens calibration example](../examples/charuco_lens_calibration/README.md)
+[ChArUco lens calibration example](../examples/calibration/charuco_lens_calibration/README.md)
 
 ## Calibrate a camera mounted on a robot
 
@@ -178,7 +178,7 @@ target in the base frame. The block emits camera-to-gripper and mean
 target-to-base poses when the configured RMS checks pass. Compose
 camera-to-gripper with the current gripper-to-base pose to locate
 the camera in base coordinates.
-[Hand–eye example](../examples/hand_eye_calibration/README.md)
+[Hand–eye example](../examples/calibration/hand_eye_calibration/README.md)
 
 ## White and color balance
 

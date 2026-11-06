@@ -84,7 +84,10 @@ def test_encoder_rollover_mismatch_and_offscreen_prediction_preserve_track_id():
 
 
 def test_conveyor_example_keeps_ids_after_missing_detection_and_leaving_view():
-    path = Path(__file__).resolve().parents[1] / "examples/conveyor_tracking/conveyor_tracking.json"
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "examples/flow_control/conveyor_tracking/conveyor_tracking.json"
+    )
     graph = Graph.load(path, builtin_registry())
     try:
         tracker = graph.blocks["track"]

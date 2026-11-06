@@ -69,7 +69,9 @@ def test_tile_rejects_an_oversized_output_before_allocating():
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_finds_six_matches_at_the_grid_origins(profile):
-    project = Path(__file__).parents[1] / "examples" / "tile_image" / "tile_image.json"
+    project = (
+        Path(__file__).parents[1] / "examples/image_processing" / "tile_image" / "tile_image.json"
+    )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
     graph.run()

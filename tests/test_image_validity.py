@@ -111,7 +111,12 @@ def test_nonfinite_preview_marks_pixels_without_changing_source(color):
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_synthetic_depth_graph_measures_only_valid_source_pixels(profile):
-    project = Path(__file__).parents[1] / "examples" / "image_validity" / "image_validity.json"
+    project = (
+        Path(__file__).parents[1]
+        / "examples/image_processing"
+        / "image_validity"
+        / "image_validity.json"
+    )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
     graph.run()

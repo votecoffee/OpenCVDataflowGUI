@@ -61,7 +61,7 @@ EXAMPLES = [
 @pytest.mark.parametrize("profile", ["debug", "balanced", "lean"])
 def test_saved_3d_examples_roundtrip_and_execute(name, factory, profile):
     registry = builtin_registry()
-    graph = Graph.load(Path("examples") / name / f"{name}.json", registry)
+    graph = Graph.load(Path("examples/3d") / name / f"{name}.json", registry)
     assert graph.to_dict() == factory(registry).to_dict()
     graph.set_run_profile(profile)
     graph.run()

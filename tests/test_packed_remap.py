@@ -102,7 +102,7 @@ def test_wrong_packet_type_and_invalid_native_indices_are_rejected():
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_preserves_rectified_frame_and_ticket(profile):
-    project = Path(__file__).parents[1] / "examples/packed_remap/packed_remap.json"
+    project = Path(__file__).parents[1] / "examples/calibration/packed_remap/packed_remap.json"
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
     graph.run()

@@ -81,7 +81,8 @@ def test_displacement_requires_tagged_matching_map_planes():
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_displacement_example_overlays_arrows_on_the_heatmap(profile):
     project = (
-        Path(__file__).parents[1] / "examples/lens_map_displacement/lens_map_displacement.json"
+        Path(__file__).parents[1]
+        / "examples/calibration/lens_map_displacement/lens_map_displacement.json"
     )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)

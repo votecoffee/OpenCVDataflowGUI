@@ -127,6 +127,6 @@ select its pyramid level explicitly. **Capture image** emits a private
 same capture from your own controls. Each picker keeps its own selection, so
 a dialog can use separate pickers for reference and inspection images.
 
-See the [custom invert plugin](../examples/custom_invert/custom_invert.py)
-for a working factory and [its project](../examples/custom_invert/README.md)
+See the [custom invert plugin](../examples/user_tools/custom_invert/custom_invert.py)
+for a working factory and [its project](../examples/user_tools/custom_invert/README.md)
 for the desktop and headless workflows.

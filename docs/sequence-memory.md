@@ -4,13 +4,13 @@ Sequence blocks retain bounded, private state between accepted image activations
 Use them for temporal operations or learning a reference image. They appear under
 **Sequence > Temporal processing / Image memory** in the toolbox.
 
-Open [sequence memory](../examples/sequence_memory/sequence_memory.json).
+Open [sequence memory](../examples/flow_control/sequence_memory/sequence_memory.json).
 Run continuously, or press F5 several times. The source initially holds a textured
 patch still and then moves it. The example compares background subtraction,
 Farneback flow, point tracking and a learned reference. No camera or download is needed.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/sequence_memory/sequence_memory.json --repeat 8
+.\.venv\Scripts\opencv-dataflow-run examples/flow_control/sequence_memory/sequence_memory.json --repeat 8
 ```
 
 ## Readiness and events
@@ -125,8 +125,8 @@ fresh model. Independent execution graphs also start fresh. The sequence
 budget covers retained native CPU model arrays. Transient images and
 previews use additional memory.
 
-Run the [native background example](../examples/native_background/native_background.json)
-with `opencv-dataflow-run examples/native_background/native_background.json --repeat 25`.
+Run the [native background example](../examples/flow_control/native_background/native_background.json)
+with `opencv-dataflow-run examples/flow_control/native_background/native_background.json --repeat 25`.
 The synthetic target stays still during warmup, then moves.
 See the [OpenCV background subtraction tutorial](https://docs.opencv.org/5.0/tutorials/others/background_subtraction.html).
 
@@ -153,8 +153,8 @@ Live models survive Run Once and Stop/Resume in the editor. Reopening the
 project initializes a fresh tracker. The state budget uses a conservative
 estimate from the search patch and algorithm settings.
 
-Run the [native box tracking example](../examples/native_box_tracking/native_box_tracking.json)
-with `opencv-dataflow-run examples/native_box_tracking/native_box_tracking.json --repeat 8`.
+Run the [native box tracking example](../examples/flow_control/native_box_tracking/native_box_tracking.json)
+with `opencv-dataflow-run examples/flow_control/native_box_tracking/native_box_tracking.json --repeat 8`.
 Both blocks follow the same moving synthetic target.
 See the [OpenCV tracking tutorial](https://docs.opencv.org/5.0/tutorials_contrib/tracking/tutorial_introduction_to_tracker.html).
 
@@ -182,8 +182,8 @@ bound retention. Encoder prediction assumes constant displacement per count
 in the working image grid. Physical encoder capture, timestamp pairing and
 world-space calibration are separate workflow steps.
 
-Run the [conveyor tracking example](../examples/conveyor_tracking/conveyor_tracking.json)
-with `opencv-dataflow-run examples/conveyor_tracking/conveyor_tracking.json --repeat 15`.
+Run the [conveyor tracking example](../examples/flow_control/conveyor_tracking/conveyor_tracking.json)
+with `opencv-dataflow-run examples/flow_control/conveyor_tracking/conveyor_tracking.json --repeat 15`.
 The synthetic source emits two parts and an encoder value on the same
 ticket. One detection drops out briefly and one part leaves the camera view.
 

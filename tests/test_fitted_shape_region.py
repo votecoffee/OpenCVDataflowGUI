@@ -12,7 +12,9 @@ from opencv_dataflow.images import ImageArray
 from opencv_dataflow.payloads import ValuePacket, frame, metadata
 
 TYPE_ID = "region.fitted_shape"
-_PROJECT = Path(__file__).parents[1] / "examples/fitted_shape_region/fitted_shape_region.json"
+_PROJECT = (
+    Path(__file__).parents[1] / "examples/geometry/fitted_shape_region/fitted_shape_region.json"
+)
 
 
 def test_rotated_ellipse_preserves_center_angle_and_full_axis_units():

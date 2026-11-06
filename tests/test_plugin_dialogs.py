@@ -18,7 +18,7 @@ from opencv_dataflow.plugin_dialog import PluginDialogContext
 from opencv_dataflow.plugin_image_picker import PluginImagePicker
 from opencv_dataflow.plugins import load_plugin
 
-_EXAMPLE = Path(__file__).parents[1] / "examples/custom_invert"
+_EXAMPLE = Path(__file__).parents[1] / "examples/user_tools/custom_invert"
 
 
 @pytest.fixture

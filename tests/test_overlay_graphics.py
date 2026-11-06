@@ -18,7 +18,7 @@ from opencv_dataflow.payloads import ValuePacket, frame, moved_payload
 from opencv_dataflow.tickets import TicketClock
 from opencv_dataflow.toolblocks import encapsulate
 
-EXAMPLE = Path("examples/overlay_result_graphics/overlay_result_graphics.json")
+EXAMPLE = Path("examples/inspection/overlay_result_graphics/overlay_result_graphics.json")
 
 
 def test_graphics_ports_are_opt_in_and_compose_without_copying_the_backdrop():
