@@ -673,6 +673,23 @@ Calibration / Lens distortion
 | `units` | `"mm"` |  |
 | `max_rms_pixels` | `1.0` |  |
 
+## Build lens correction maps (`calibration.lens_maps`)
+
+Calibration / Lens distortion
+
+Inputs: `calibration` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `0` | Value must be a whole number between 0 and 16384. Output width in pixels. Zero keeps the calibrated width. |
+| `height` | `0` | Value must be a whole number between 0 and 16384. Output height in pixels. Zero keeps the calibrated height. |
+| `camera_matrix_mode` | `"scaled"` | `scaled`, `optimal`, `custom` Scale the original intrinsics, optimize the crop, or use a matrix. |
+| `new_camera_matrix` | `[]` | Custom output intrinsics as a 3×3 pinhole camera matrix. |
+| `alpha` | `0.0` | Value must be a finite number between 0 and 1. Optimal mode crop. Zero favors valid pixels and one retains more of the source. |
+| `center_principal_point` | `false` | Center the principal point in optimal mode. |
+| `rotation_vector` | `[0.0, 0.0, 0.0]` | Optional rectification rotation as a Rodrigues vector in radians. |
+| `max_rms_pixels` | `1.0` | Value must be a finite number at least 1e-09. Maximum source calibration reprojection RMS in pixels. |
+
 ## Pixel to physical (`calibration.pixel_to_physical`)
 
 Calibration / Grid and coordinates
@@ -2365,6 +2382,7 @@ Ticket mode and fixed value are common inspector controls.
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `path` | `""` |  |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
 
 ## Camera (`input.camera`)
 

@@ -92,6 +92,13 @@ Connect the calibration output to Undistort lens along with the image. The tool
 checks matrix validity, image dimensions and its reprojection-error limit. Save
 and reload the lens profile to avoid solving the dataset on every runtime cycle.
 The output retains the input dimensions and uses the original camera matrix.
+For reusable correction maps, connect the lens profile to **Build lens
+correction maps** and wire both map outputs to **Remap image coordinates**.
+Use a source image from the camera and input pixel grid used for calibration.
+Remap validates the map pair and assigns the corrected image a separate
+coordinate frame. The map builder also returns the output camera matrix
+in a zero-distortion profile. [Lens correction maps example](../examples/lens_correction_maps/README.md)
+
 Fisheye models, uncertainty estimates, dataset management and independent validation
 are future work. Current checks use offline synthetic geometry; they do not prove
 accuracy for a particular physical camera.

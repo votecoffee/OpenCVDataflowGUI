@@ -2868,7 +2868,7 @@ P3	function	cv2.getGaussianKernel	literal reference	-
 P3	function	cv2.getHardwareFeatureName	no static reference	-
 P3	function	cv2.getNumberOfCPUs	no static reference	-
 P3	function	cv2.getOptimalDFTSize	literal reference	-
-P3	function	cv2.getOptimalNewCameraMatrix	no static reference	-
+P3	function	cv2.getOptimalNewCameraMatrix	literal reference	-
 P3	function	cv2.getPerspectiveTransform	literal reference	-
 P3	function	cv2.getRectSubPix	no static reference	-
 P3	function	cv2.getRotationMatrix2D	literal reference	-

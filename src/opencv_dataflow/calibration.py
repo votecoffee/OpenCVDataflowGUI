@@ -489,10 +489,16 @@ class LoadCalibration(Block):
     type_id, title, category = "input.calibration", "Load calibration profile", "Input"
     block_type, subtype = "Input", "Calibration profiles"
     outputs = (Port("profile", "data"),)
-    defaults = {"path": ""}
+    defaults = {"path": "", "path_base": "working_directory"}
+    parameter_choices = {"path_base": ("working_directory", "project")}
 
     def process(self, inputs):
-        profile = json.loads(Path(self.parameters["path"]).read_text(encoding="utf-8"))
+        path = Path(self.parameters["path"])
+        if self.parameters["path_base"] == "project" and not path.is_absolute():
+            if self.project_dir is None:
+                raise ValueError("Save or open the project before loading a relative profile")
+            path = self.project_dir / path
+        profile = json.loads(path.read_text(encoding="utf-8"))
         validate_profile(profile)
         return Result({"profile": profile}, message=profile["model"])
 

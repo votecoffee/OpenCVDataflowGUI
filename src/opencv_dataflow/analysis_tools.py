@@ -11,6 +11,7 @@ from .payloads import NO_VALUE, require_same_frame
 from .processing import ImageTool, encoded_result, finite, gray_image, image_value, integer
 from .registration import BORDERS as WARP_BORDERS
 from .registration import INTERPOLATION
+from .remap_maps import lens_remap_payload
 from .selection import SELECTION_INPUTS, RegionalOperation, selection_mask
 
 
@@ -471,6 +472,7 @@ class Remap(Block):
         x, y = (image_value(inputs[k], (np.float32,)) for k in ("map_x", "map_y"))
         if x.ndim != 2 or y.shape != x.shape or x.size > 64_000_000:
             raise ValueError("Remap needs matching 2D float32 coordinate maps")
+        payloads = lens_remap_payload(self, list(image.shape[1::-1]), list(x.shape[::-1]))
         value = finite(self.parameters["border_value"], "Border value")
         fill = tuple([value] * image.shape[2]) if image.ndim == 3 else value
         result = cv2.remap(
@@ -481,7 +483,7 @@ class Remap(Block):
             borderMode=WARP_BORDERS[self.parameters["border"]],
             borderValue=fill,
         )
-        return encoded_result(result, inputs["image"])
+        return encoded_result(result, inputs["image"], payloads=payloads)
 
 
 _ANGLE_UNITS = ("radians", "degrees")
