@@ -869,6 +869,10 @@ retained variance. **Transform principal components** projects rows or
 reconstructs them with the same fitted model.
 [Principal components example](examples/ml/principal_components/README.md)
 
+**Measure image norm** computes a signal magnitude or reference difference inside a
+mask or region. Choose infinity, L1, L2, squared L2, Hamming or Hamming2 and set an
+optional upper limit. Try the [image norms example](examples/inspection/image_norm/README.md).
+
 ## Architecture
 
 Choose **Run profile: debug / balanced / lean** in the toolbar to control observation

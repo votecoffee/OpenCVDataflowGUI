@@ -110,6 +110,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Intensity profile](inspection/intensity_profile/README.md) | Plot the mean and locate the maximum in each selected column. |
 | [Lab color classification](inspection/lab_color_classification/README.md) | Classify a measured image patch against a named Lab palette. |
 | [Lab color matching](inspection/lab_color_match/README.md) | Measure separate reference and sample regions and compare their Lab colors. |
+| [Measure image norms](inspection/image_norm/README.md) | Measure absolute and reference-relative norms inside a patch and apply an inclusive limit. |
 | [Overlay result graphics](inspection/overlay_result_graphics/README.md) | Combine selected region and contour graphics on the final color image. |
 | [Path intensity profile](inspection/path_intensity_profile/README.md) | Sample all color channels along a bent path and preserve excluded samples. |
 | [Pose-relative inspection](inspection/pose_inspection/README.md) | Train a geometric pattern and use its detected pose to position a circular inspection region. |

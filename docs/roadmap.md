@@ -69,8 +69,10 @@ Image transposition swaps axes without interpolation and tracks the
 coordinate transform through crops and pyramids.
 Labeled distance transforms divide an image into zones by its nearest seeds.
 Pixel comparisons and ranges turn signed segmentation labels into masks.
-Specialized array operations remain open. The
-[coverage backlog](opencv-coverage.md) tracks the missing workflows and the
+Image norms measure signal magnitude and absolute or relative reference differences
+over selected pixels. The [core array backlog](opencv-coverage.md#stage-1--remaining-core-array-work)
+prioritizes the remaining standalone array operations. The
+[coverage backlog](opencv-coverage.md) also tracks missing 2D workflows and the
 [binding inventory](opencv-bindings.tsv) maps static references to the pinned
 build. Coverage is measured by runnable graph use cases. Aliases, alternate
 overloads and low-level infrastructure may be covered through an existing block
