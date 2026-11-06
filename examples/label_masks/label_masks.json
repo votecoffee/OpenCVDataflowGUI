@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Synthetic inspection target",
+      "parameters": {},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "first",
+      "type": "region.shape",
+      "name": "First watershed seed",
+      "parameters": {"shape": "circle", "center": [140, 180], "radius": 20},
+      "position": [320, 200],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["region"],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "second",
+      "type": "region.shape",
+      "name": "Second watershed seed",
+      "parameters": {"shape": "circle", "center": [330, 175], "radius": 20},
+      "position": [320, 400],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["region"],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "seeds",
+      "type": "region.combine",
+      "name": "Combine the seeds",
+      "parameters": {"operation": "union"},
+      "position": [640, 200],
+      "exposed_inputs": ["image", "region_a", "region_b"],
+      "exposed_outputs": ["mask"],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "watershed",
+      "type": "inspect.watershed",
+      "name": "Create a signed label image",
+      "parameters": {},
+      "position": [960, 0],
+      "exposed_inputs": ["image", "markers"],
+      "exposed_outputs": ["labels", "regions"],
+      "thumbnail": true,
+      "preview_output": "labels"
+    },
+    {
+      "id": "boundaries",
+      "type": "cv.compare_pixels",
+      "name": "Select boundary label -1",
+      "parameters": {"operation": "equal", "scalar": -1},
+      "position": [1280, 0],
+      "exposed_inputs": ["image_a"],
+      "exposed_outputs": ["mask", "count"],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "interiors",
+      "type": "cv.in_range",
+      "name": "Select region labels 1 through 2",
+      "parameters": {"lower": [1], "upper": [2]},
+      "position": [1280, 220],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "first", "input": "image"},
+    {"source": "source", "output": "image", "target": "second", "input": "image"},
+    {"source": "source", "output": "image", "target": "seeds", "input": "image"},
+    {"source": "first", "output": "region", "target": "seeds", "input": "region_a"},
+    {"source": "second", "output": "region", "target": "seeds", "input": "region_b"},
+    {"source": "source", "output": "image", "target": "watershed", "input": "image"},
+    {"source": "seeds", "output": "mask", "target": "watershed", "input": "markers"},
+    {"source": "watershed", "output": "labels", "target": "boundaries", "input": "image_a"},
+    {"source": "watershed", "output": "labels", "target": "interiors", "input": "image"}
+  ]
+}

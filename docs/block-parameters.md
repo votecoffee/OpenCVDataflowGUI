@@ -1152,6 +1152,10 @@ Image processing / Image math
 
 Inputs: `image_a` (image), `image_b` (image, optional), `scalar_b` (number, optional), `mask` (image, optional), `region` (data, optional).
 
+Input `image_a` — Grayscale or color image, or a signed int32 label plane.
+
+Input `image_b` — Optional comparison image or signed int32 label plane.
+
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `operation` | `"greater"` | `equal`, `not_equal`, `less`, `less_or_equal`, `greater`, `greater_or_equal` |
@@ -1671,6 +1675,8 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 Image processing / Segmentation
 
 Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `lower` (data, optional), `upper` (data, optional).
+
+Input `image` — Grayscale or color image, or a signed int32 label plane.
 
 Input `lower` — Inclusive lower bound. Wire one number or a list of values in channel order.
 

@@ -85,6 +85,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Blend with weight maps](blend_weight_maps/README.md) | Feather a boundary between a sharp image and its blurred copy. |
 | [Colorize scalar image](colorize_scalar/README.md) | Show how far each foreground pixel lies from the edge of a synthetic part. |
 | [Labeled distance transform](labeled_distance/README.md) | Partition an image into nearest-seed zones and emit a mask for one zone. |
+| [Masks from signed labels](label_masks/README.md) | Select watershed boundaries and interiors directly from the label image. |
 | [Fourier correlation](fourier_correlation/README.md) | Recover a known signed shift and inspect the lag map. |
 | [Fourier gain mask](fourier_gain/README.md) | Apply a custom notch at a specific frequency pair and reconstruct the image. |
 | [Fourier spectrum filtering](fourier_filter/README.md) | Reject a periodic stripe pattern with a band-stop filter and inverse DFT. |

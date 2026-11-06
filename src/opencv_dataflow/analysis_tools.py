@@ -700,8 +700,8 @@ def intensity_result(output, source, output_depth, generate_graphics):
     return encoded_result(output, source, graphics=graphics)
 
 
-def aligned_operand(source, image_b, signal, alignment):
-    right = image_value(image_b)
+def aligned_operand(source, image_b, signal, alignment, *, allow_labels=False):
+    right = image_value(image_b, allow_labels=allow_labels)
     if right.shape[:2] != source.shape[:2]:
         raise ValidationError("Image A and Image B must have the same pixel dimensions")
     if alignment == "same_frame":
@@ -724,9 +724,9 @@ def aligned_operand(source, image_b, signal, alignment):
     return right
 
 
-def binary_image_operands(inputs, parameters, include_alpha):
+def binary_image_operands(inputs, parameters, include_alpha, *, allow_labels=False):
     source = inputs["image_a"]
-    left = image_value(source)
+    left = image_value(source, allow_labels=allow_labels)
     if image_format(source) in ("hsv", "lab"):
         raise ValidationError("Image A needs monochrome or RGB/BGR samples")
     image_b, scalar_b = inputs.get("image_b"), inputs.get("scalar_b")
@@ -735,7 +735,7 @@ def binary_image_operands(inputs, parameters, include_alpha):
     if left.ndim == 3 and left.shape[2] == 4 and not include_alpha:
         left = left[..., :3]
     right = (
-        aligned_operand(source, image_b, left, parameters["alignment"])
+        aligned_operand(source, image_b, left, parameters["alignment"], allow_labels=allow_labels)
         if image_b is not None
         else finite(parameters["scalar"] if scalar_b is None else scalar_b, "Scalar B")
     )
@@ -868,6 +868,10 @@ class ComparePixels(Block):
         "channel_rule": ("all", "any"),
     }
     parameter_ranges = {"scalar": NumericRange(), "tolerance": NumericRange(0)}
+    input_help = {
+        "image_a": "Grayscale or color image, or a signed int32 label plane.",
+        "image_b": "Optional comparison image or signed int32 label plane.",
+    }
     parameter_help = {
         "scalar": ImageArithmetic.parameter_help["scalar"],
         "alignment": ImageArithmetic.parameter_help["alignment"],
@@ -879,7 +883,9 @@ class ComparePixels(Block):
     def process(self, inputs):
         source = inputs["image_a"]
         p = self.parameters
-        left, right = binary_image_operands(inputs, p, include_alpha=p["include_alpha"])
+        left, right = binary_image_operands(
+            inputs, p, include_alpha=p["include_alpha"], allow_labels=True
+        )
         selection = selection_mask(inputs, source)
         selected = None if selection is None else selection != 0
         a, b, shape = operand_matrices(left, right, selected)
