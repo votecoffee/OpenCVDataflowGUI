@@ -71,3 +71,87 @@ def test_hough_template_handles_no_matches_and_invalid_templates(repeated_shape)
     block.parameters["template_anchor"] = [100, 100]
     assert block.execute({"image": image, "template": template}) is None
     assert "anchor must be inside" in block.error
+
+
+def test_guil_template_recovers_rotation_scale_and_oriented_graphics(repeated_shape):
+    _, template = repeated_shape
+    scene = np.zeros((135, 180), np.uint8)
+    scene[13:49, 13:57] = template
+    transform = cv2.getRotationMatrix2D((22, 18), -90, 1.25)
+    transform[:, 2] += [117 - 22, 81 - 18]
+    scene = np.maximum(scene, cv2.warpAffine(template, transform, (180, 135)))
+    mask = np.zeros_like(scene)
+    mask[68:94, 103:132] = 255
+    block = builtin_registry().create(
+        "inspect.guil_template",
+        parameters={
+            "dp": 1,
+            "min_angle": 80,
+            "max_angle": 101,
+            "angle_step": 5,
+            "min_scale": 1.15,
+            "max_scale": 1.29,
+            "scale_step": 0.05,
+            "angle_epsilon": 3,
+            "min_angle_votes": 200,
+            "min_scale_votes": 25,
+            "minimum_votes": 25,
+            "max_buffer_size": 32,
+            "maximum_matches": 1,
+        },
+    )
+    result = block.execute({"image": scene, "template": template, "mask": mask})
+    assert result is not None, block.error
+    assert result.passed and result.outputs["count"] == 1
+    match = result.outputs["matches"][0]
+    np.testing.assert_allclose(match["center"], [117, 81], atol=2, rtol=0)
+    assert match["angle_degrees"] == pytest.approx(-90)
+    assert match["scale"] == pytest.approx(1.25)
+    assert match["votes"] >= 25 and match["scale_votes"] >= 25 and match["angle_votes"] >= 200
+    pose = np.array(match["pose"]["source_to_target"])
+    np.testing.assert_allclose(pose[:2, :2], [[0, -1.25], [1.25, 0]], atol=1e-12)
+    local = np.array([[-22, -18, 1], [21, -18, 1], [21, 17, 1], [-22, 17, 1]])
+    np.testing.assert_allclose(match["corners"], (local @ pose.T)[:, :2])
+    assert result.drawings["Hough matches"].objects[0].points == tuple(map(tuple, match["corners"]))
+
+
+def test_guil_template_rejects_invalid_ranges_and_overlarge_search(repeated_shape):
+    image, template = repeated_shape
+    block = builtin_registry().create(
+        "inspect.guil_template", parameters={"min_scale": 2, "max_scale": 1}
+    )
+    assert block.execute({"image": image, "template": template}) is None
+    assert "Minimum scale must be below maximum scale" in block.error
+    block.parameters.update(min_scale=0.05, max_scale=8, scale_step=0.01, angle_step=0.5)
+    assert block.execute({"image": image, "template": template}) is None
+    assert "Guil search is too large" in block.error
+
+
+def test_guil_template_can_find_a_reduced_part_in_a_smaller_scene(repeated_shape):
+    _, template = repeated_shape
+    transform = cv2.getRotationMatrix2D((22, 18), -90, 0.5)
+    transform[:, 2] += [17 - 22, 16 - 18]
+    scene = cv2.warpAffine(template, transform, (34, 32))
+    block = builtin_registry().create(
+        "inspect.guil_template",
+        parameters={
+            "dp": 1,
+            "min_angle": 80,
+            "max_angle": 101,
+            "angle_step": 5,
+            "min_scale": 0.45,
+            "max_scale": 0.54,
+            "scale_step": 0.05,
+            "min_angle_votes": 20,
+            "min_scale_votes": 5,
+            "minimum_votes": 3,
+            "angle_epsilon": 5,
+            "maximum_matches": 1,
+        },
+    )
+    result = block.execute({"image": scene, "template": template})
+    assert result is not None, block.error
+    match = result.outputs["matches"][0]
+    np.testing.assert_allclose(match["center"], [17, 16], atol=2, rtol=0)
+    assert match["scale"] == pytest.approx(0.5)
+    assert match["angle_degrees"] == pytest.approx(-90)

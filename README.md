@@ -403,6 +403,8 @@ CLAHE → corners, edges → line segments, and a histogram in one project.
 **Find Hough template** locates translated copies of a shape from its edges.
 The [generalized Hough example](examples/generalized_hough/README.md) compares
 full-image and region-limited searches.
+The [Guil example](examples/generalized_hough_guil/README.md) finds the same
+template after rotation and scaling.
 
 The [color normalization example](examples/normalize_color/README.md) compares
 shared and independent channel scaling in a selected patch while preserving the

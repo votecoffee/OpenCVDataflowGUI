@@ -2975,6 +2975,36 @@ Inputs: `image` (image), `markers` (image, optional).
 | `rectangle` | `[10, 10, 100, 100]` | Initial foreground rectangle [x, y, width, height] in image pixels. |
 | `iterations` | `3` |  |
 
+## Find rotated and scaled Hough template (`inspect.guil_template`)
+
+Inspection / Matching
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `template` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `template_anchor` | `[-1, -1]` | Template pose origin. [-1, -1] uses the integer center. |
+| `canny_low` | `40.0` | Value must be a finite number at least 0. |
+| `canny_high` | `100.0` | Value must be a finite number at least 0. |
+| `levels` | `90` | Value must be a whole number between 1 and 720. Number of gradient orientation bins used for voting. |
+| `dp` | `2.0` | Value must be a finite number between 1 and 16. Accumulator cell spacing in source pixels. Larger values use a coarser grid. |
+| `minimum_votes` | `50` | Value must be a whole number between 1 and 4e+08. Minimum accepted center vote count. |
+| `min_center_distance` | `10.0` | Value must be a finite number between 0 and 10000. Minimum distance between retained anchors after selection. |
+| `minimum_matches` | `1` | Value must be a whole number between 0 and 64. |
+| `maximum_matches` | `25` | Value must be a whole number between 1 and 64. |
+| `draw_overlay` | `true` |  |
+| `min_angle` | `0.0` | Value must be a finite number between 0 and 360. Start of the clockwise image-angle search in degrees. |
+| `max_angle` | `360.0` | Value must be a finite number between 0 and 360. Exclusive end of the clockwise angle grid, up to 360 degrees. |
+| `angle_step` | `10.0` | Value must be a finite number between 0.5 and 359. Spacing between angle hypotheses in degrees. |
+| `min_scale` | `0.5` | Value must be a finite number between 0.05 and 8. Smallest template magnification to search. |
+| `max_scale` | `2.0` | Value must be a finite number between 0.05 and 8. Exclusive end of the magnification grid. |
+| `scale_step` | `0.1` | Value must be a finite number between 0.01 and 8. Spacing between magnification hypotheses. |
+| `min_angle_votes` | `300` | Value must be a whole number between 1 and 4e+08. |
+| `min_scale_votes` | `50` | Value must be a whole number between 1 and 4e+08. |
+| `max_buffer_size` | `48` | Value must be a whole number between 1 and 256. Maximum feature pairs kept per orientation bin. |
+| `pair_angle` | `90.0` | Value must be a finite number between 1 and 359. Target angle difference between the two gradients of a feature pair. |
+| `angle_epsilon` | `4.0` | Value must be a finite number between 0.1 and 30. Angular tolerance in degrees for building and matching pairs. |
+
 ## Histogram (`inspect.histogram`)
 
 Image processing / Statistics
