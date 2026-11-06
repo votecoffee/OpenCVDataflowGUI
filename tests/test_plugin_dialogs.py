@@ -1,6 +1,7 @@
 """Offscreen coverage for plugin dialogs and their cached image context."""
 
 from pathlib import Path
+from threading import get_ident
 
 import cv2
 import numpy as np
@@ -169,11 +170,16 @@ def test_modeless_dialog_captures_two_runs_and_stages_during_execution(
         if button.text() == "Capture latest source image"
     )
     summary = dialog.findChild(QLabel, "capture_summary")
+    output_notice = dialog.findChild(QLabel, "output_notice")
 
-    for expected in (23, 89):
+    for revision, expected in enumerate((23, 89), 1):
         window.start_run(False)
-        pump_until(app, lambda: window.runner is None)
+        pump_until(
+            app,
+            lambda: window.runner is None and f"output {revision}" in output_notice.text(),
+        )
         assert inspector._plugin_dialog is dialog and dialog.isVisible()
+        assert context.output_revision == revision
         capture.click()
         assert any(row.block_id == source.id for row in context.refresh_images())
         image = context.snapshot_image(source.id, "image")
@@ -251,6 +257,78 @@ def test_changing_project_directory_discards_open_dialog(example_window, monkeyp
     assert inspector._plugin_dialog is None
     assert window.graph.project_dir == tmp_path
     assert block.parameters["start_percent"] == 20
+
+
+def test_output_notifications_coalesce_and_cancel_with_dialog(app, example_window, monkeypatch):
+    window, block = example_window
+    inspector = window.inspector
+    seen = []
+    dialogs = []
+
+    def create(self, parent, parameters, context):
+        dialogs.append(context)
+        return QDialog(parent)
+
+    monkeypatch.setattr(type(block), "create_plugin_dialog", create)
+    inspector.open_plugin_dialog()
+    (context,) = dialogs
+    assert context.output_revision == 0
+    unsubscribe = context.subscribe_outputs(seen.append)
+    for _ in range(3):
+        inspector.plugin_outputs_published()
+    assert not seen and context.output_revision == 3
+    pump_until(app, lambda: seen == [3])
+
+    unsubscribe()
+    unsubscribe()
+    inspector.plugin_outputs_published()
+    app.processEvents()
+    assert seen == [3] and context.output_revision == 4
+
+    context.subscribe_outputs(seen.append)
+    inspector.plugin_outputs_published()
+    inspector.close_plugin_dialog()
+    app.processEvents()
+    assert seen == [3]
+    with pytest.raises(RuntimeError, match="closed"):
+        context.subscribe_outputs(seen.append)
+
+
+def test_output_callback_errors_are_isolated_from_other_callbacks_and_runs(
+    app, example_window, monkeypatch
+):
+    window, block = example_window
+    inspector = window.inspector
+    source = window.graph.blocks["source"]
+    main_thread = get_ident()
+    failed, received = [], []
+
+    def bad(revision):
+        failed.append(revision)
+        raise SystemExit("bad output callback")
+
+    def create(self, parent, parameters, context):
+        def observe(revision):
+            catalog_was_empty = not context.image_outputs
+            context.refresh_images()
+            snapshot = context.snapshot_image(source.id, "image")
+            received.append((revision, get_ident(), catalog_was_empty, snapshot.payload["ticket"]))
+
+        context.subscribe_outputs(bad)
+        context.subscribe_outputs(observe)
+        return QDialog(parent)
+
+    monkeypatch.setattr(type(block), "create_plugin_dialog", create)
+    inspector.open_plugin_dialog()
+    for count in (1, 2):
+        window.start_run(False)
+        pump_until(app, lambda: window.runner is None and len(received) == count)
+        assert block.state == "pass"
+    assert failed == [1]
+    assert [entry[:3] for entry in received] == [(1, main_thread, True), (2, main_thread, False)]
+    assert received[0][3] != received[1][3]
+    errors = [event for event in block.logger.snapshot()["events"] if event["kind"] == "exception"]
+    assert any("Plugin output subscriber failed" in event["message"] for event in errors)
 
 
 def test_snapshots_copy_pixels_and_keep_selected_level_provenance(tmp_path):

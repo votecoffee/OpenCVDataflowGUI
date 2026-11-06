@@ -258,6 +258,10 @@ class Inspector(QWidget):
         self.editor = QGroupBox("Configuration")
         self.form = QFormLayout(self.editor)
         self._plugin_dialog = None
+        self._plugin_context = None
+        self._plugin_output_timer = QTimer(self)
+        self._plugin_output_timer.setSingleShot(True)
+        self._plugin_output_timer.timeout.connect(self._notify_plugin_outputs)
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setWidget(self.editor)
@@ -947,16 +951,17 @@ class Inspector(QWidget):
                 widget.deleteLater()
                 return
             self._plugin_dialog = widget
+            self._plugin_context = context
             if widget.parentWidget() is not self:
                 widget.setParent(self, widget.windowFlags())
             widget.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, False)
 
             def finish(status):
-                context._close()
+                self._release_plugin_context(context)
                 self.finish_plugin_dialog(widget, block, original, draft, status)
 
             def destroyed():
-                context._close()
+                self._release_plugin_context(context)
                 if self._plugin_dialog is widget:
                     self._plugin_dialog = None
 
@@ -974,13 +979,35 @@ class Inspector(QWidget):
             block.logger.exception("Plugin dialog could not open")
             self.window.warn(f"{block.title} dialog · {exception_message(exc)}")
 
+    def _release_plugin_context(self, context):
+        context._close()
+        if self._plugin_context is context:
+            self._plugin_context = None
+            self._plugin_output_timer.stop()
+
     def close_plugin_dialog(self):
+        if self._plugin_context is not None:
+            self._release_plugin_context(self._plugin_context)
         dialog, self._plugin_dialog = self._plugin_dialog, None
         if dialog is not None:
             try:
                 QDialog.reject(dialog)
             finally:
                 dialog.deleteLater()
+
+    def plugin_outputs_published(self):
+        context = self._plugin_context
+        if context is not None and context._outputs_published():
+            if not self._plugin_output_timer.isActive():
+                self._plugin_output_timer.start(0)
+
+    def _notify_plugin_outputs(self):
+        context = self._plugin_context
+        if context is None:
+            return
+        newer_outputs = context._notify_outputs(self.block.logger.exception)
+        if newer_outputs and self._plugin_context is context:
+            self._plugin_output_timer.start(0)
 
     def finish_plugin_dialog(self, dialog, block, original, draft, status):
         if self._plugin_dialog is not dialog:
@@ -2221,6 +2248,8 @@ class MainWindow(QMainWindow):
             self.runner.ack.set()
         if error is not None:
             self.warn(error)
+        else:
+            self.inspector.plugin_outputs_published()
 
     def stop_run(self):
         if self.runner:

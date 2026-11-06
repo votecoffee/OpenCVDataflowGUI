@@ -52,6 +52,8 @@ The `context` argument is a `PluginDialogContext` with the following members.
 | `image_outputs` | Cached image outputs at opening or the last refresh. Each entry gives `block_id`, `block_name`, `port`, and `level_count`. |
 | `refresh_images()` | Refreshes the catalog from the latest completed outputs published to the editor and returns the new entries. |
 | `snapshot_image(block_id, port, *, level=0)` | Returns a private `ValuePacket` containing a copied image and copied wire payload. |
+| `output_revision` | Number of result publications received by the editor since the popup opened. Starts at zero. |
+| `subscribe_outputs(callback)` | Calls `callback(revision)` on the GUI thread after a publication and returns an unsubscribe function. |
 
 Run the graph in a profile that retains output previews, such as Debug, to
 populate the cache. Use `refresh_images()` on the GUI thread
@@ -62,6 +64,28 @@ level zero as the largest. Snapshots retain pixel depth, channel encoding,
 spatial and pyramid transforms, and ticket metadata. You can keep separate
 reference and preview snapshots and process the copies in a plugin worker.
 Store asset paths and IDs as normal block parameters if the graph needs them.
+
+## Follow graph outputs
+
+Use `subscribe_outputs` when the popup should react to new graph results.
+There is no initial callback. During continuous runs the editor publishes
+results at the current run profile's display interval. Pending notices
+collapse to the newest revision before dispatch. A notice carries the revision
+number. The catalog and pixels are fetched separately, on demand.
+
+```python
+def outputs_ready(revision):
+    status_label.setText(f"Graph output {revision} is ready")
+
+unsubscribe = context.subscribe_outputs(outputs_ready)
+```
+
+Keep callbacks short. Refresh the catalog and copy an image on the GUI thread
+when you need one, then hand the copy to a worker for heavier processing. For
+live previews, compare the captured revision with `context.output_revision`
+before showing a worker result. The host removes subscriptions on close.
+Call the returned function to unsubscribe earlier. A callback that raises is
+removed and logged in **Diagnostics**. Other subscribers continue.
 
 See the [custom invert plugin](../examples/custom_invert/custom_invert.py)
 for a working factory and [its project](../examples/custom_invert/README.md)
