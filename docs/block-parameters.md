@@ -2003,6 +2003,26 @@ Inputs: `image` (image), `graphics_1` (graphics, optional), `graphics_2` (graphi
 | --- | --- | --- |
 | `excluded_graphics` | `{}` |  |
 
+## Paste image patch (`cv.paste_patch`)
+
+Image processing / Geometry
+
+Inputs: `canvas` (image), `patch` (image), `x` (integer, optional), `y` (integer, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `canvas` — Image to copy and update. Its coordinates are used for the result.
+
+Input `patch` — Samples to copy. Pixel depth and channel encoding must match the canvas.
+
+Input `mask` — Optional monochrome mask in patch coordinates.
+
+Input `region` — Optional region in patch coordinates.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `x` | `0` | Value must be a whole number between -1e+06 and 1e+06. Canvas X coordinate of the patch's top-left pixel. A wired value takes precedence. |
+| `y` | `0` | Value must be a whole number between -1e+06 and 1e+06. Canvas Y coordinate of the patch's top-left pixel. A wired value takes precedence. |
+| `bounds_policy` | `"clip"` | `clip`, `strict` Clip uses the visible overlap. Strict requires the whole patch to fit. |
+
 ## Path intensity profile (`cv.path_intensity_profile`)
 
 Image processing / Statistics

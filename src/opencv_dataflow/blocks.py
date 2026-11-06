@@ -674,7 +674,7 @@ def builtin_registry():
     from .image_blend import BlendWeightMaps
     from .image_codecs import DecodeImage, EncodeImage
     from .image_colorize import ColorizeScalar
-    from .image_layout import JoinImages, TileImage
+    from .image_layout import JoinImages, PasteImagePatch, TileImage
     from .image_quality import CompareImageQuality
     from .image_queue import ImageQueue
     from .image_statistics import ImageSummaryStatistics
@@ -779,6 +779,7 @@ def builtin_registry():
         SaveCalibration,
         *PROCESSING_BLOCKS,
         JoinImages,
+        PasteImagePatch,
         TileImage,
         *FEATURE_BLOCKS,
         *REGISTRATION_BLOCKS,
