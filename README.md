@@ -813,6 +813,9 @@ Its layout output records each panel's source frame. See the
 [image join example](examples/join_images/README.md).
 **Paste image patch** copies selected pixels onto a canvas and reports
 their placement. See the [masked paste example](examples/paste_patch/README.md).
+**Crop subpixel patch** samples around a fractional point or pose origin
+and carries the patch-to-source transform. See the
+[subpixel crop example](examples/subpixel_crop/README.md).
 **Polar image warp** straightens circular features into a radius-by-angle grid
 and carries a mapping for rewrapping the result. See the
 [circular inspection example](examples/polar_image_warp/README.md).

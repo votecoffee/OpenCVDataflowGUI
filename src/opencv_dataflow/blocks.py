@@ -723,6 +723,7 @@ def builtin_registry():
     from .spanning_tree import MinimumSpanningTree
     from .spectral import SPECTRAL_BLOCKS
     from .stereo3d import STEREO3D_BLOCKS
+    from .subpixel_crop import CropSubpixel
     from .table_sort import SortNumericTable
     from .template_instances import FindTemplateInstances
     from .text_rules import VerifyText
@@ -784,6 +785,7 @@ def builtin_registry():
         *PROCESSING_BLOCKS,
         JoinImages,
         PasteImagePatch,
+        CropSubpixel,
         PolarImageWarp,
         TileImage,
         *FEATURE_BLOCKS,

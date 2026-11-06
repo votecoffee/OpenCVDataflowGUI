@@ -1209,7 +1209,10 @@ class EstimateHomography(Block):
 class TransformPoints(Block):
     type_id, title, category = "cv.transform_points", "Transform image points", "Image processing"
     block_type, subtype = "Image processing", "Geometry"
-    inputs = (Port("transform", "data", required=False), Port("points", "data", required=False))
+    inputs = (
+        Port("transform", "data", required=False, required_when_connected=True),
+        Port("points", "data", required=False),
+    )
     outputs = (Port("points", "data"),)
     defaults = {
         "matrix": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],

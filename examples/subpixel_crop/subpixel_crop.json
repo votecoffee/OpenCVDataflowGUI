@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.file",
+      "name": "Scene with fractional target locations",
+      "parameters": {
+        "path": "../subpixel_template/assets/scene.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "template",
+      "type": "input.file",
+      "name": "Reference template",
+      "parameters": {
+        "path": "../subpixel_template/assets/template.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [0, 260],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "match",
+      "type": "inspect.match_template",
+      "name": "Refine the strongest match center",
+      "parameters": {"method": "sqdiff_normed", "min_score": 0.95, "subpixel": true},
+      "position": [330, 260],
+      "exposed_inputs": ["image", "template"],
+      "exposed_outputs": ["center", "overlay"],
+      "thumbnail": true
+    },
+    {
+      "id": "patch",
+      "type": "cv.crop_subpixel",
+      "name": "Sample a 37 × 31 patch at the matched center",
+      "parameters": {"width": 37, "height": 31},
+      "position": [660, 0],
+      "exposed_inputs": ["image", "center"],
+      "exposed_outputs": ["image", "geometry", "valid_mask"],
+      "input_failure_policies": {"center": "reject_failed"},
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "remap_center",
+      "type": "cv.transform_points",
+      "name": "Map the patch center back into the scene",
+      "parameters": {"pixel_points": [[18, 15]]},
+      "position": [990, 0],
+      "exposed_inputs": ["transform"],
+      "exposed_outputs": ["points"]
+    }
+  ],
+  "connections": [
+    {"source": "scene", "output": "image", "target": "match", "input": "image"},
+    {"source": "template", "output": "image", "target": "match", "input": "template"},
+    {"source": "scene", "output": "image", "target": "patch", "input": "image"},
+    {"source": "match", "output": "center", "target": "patch", "input": "center"},
+    {"source": "patch", "output": "geometry", "target": "remap_center", "input": "transform"}
+  ]
+}

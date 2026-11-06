@@ -66,6 +66,8 @@ and emits a mask of changed pixels.
 comparison views with padding and per-panel coordinate context.
 [Paste image patch](../examples/paste_patch/README.md) performs a masked
 copy at a canvas offset and reports both rectangles and the copied pixels.
+[Subpixel patch extraction](../examples/subpixel_crop/README.md) samples a
+rectangular patch at a fractional center and preserves coordinate provenance.
 [Polar image warp](../examples/polar_image_warp/README.md) unwraps circular
 features onto linear or semilog grids, tracks source coverage, and can rewrap
 an intact grid into its original frame.

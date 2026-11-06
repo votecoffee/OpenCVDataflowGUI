@@ -34,6 +34,8 @@ coordinates and source frames. Image tiling builds repeatable inspection
 fixtures from a single reference.
 Masked patch placement copies pixels into a canvas and reports the affected
 area and coordinate mapping.
+Subpixel cropping samples around a fractional match or pose origin with
+a patch-to-source transform and a border coverage mask.
 Polar image warping straightens circular inspection features and can rewrap
 an intact polar grid to its original Cartesian frame.
 Iterative phase correlation estimates fractional-pixel motion between two
