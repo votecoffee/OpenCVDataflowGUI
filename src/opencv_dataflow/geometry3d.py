@@ -255,6 +255,9 @@ class SolvePnP3D(Tool3D):
         xyz, xy = points(inputs["object_points"], 3, 4), points(inputs["image_points"], 2, 4)
         if len(xyz) != len(xy):
             raise ValueError("PnP object/image point counts differ")
+        units = self.input_payloads.get("object_points", {}).get("object_point_units")
+        if units is not None and units != model.get("units", "m"):
+            raise ValueError("PnP object point units must match the camera model")
         guess = inputs.get("initial_pose")
         rv, tv = None, None
         if guess:

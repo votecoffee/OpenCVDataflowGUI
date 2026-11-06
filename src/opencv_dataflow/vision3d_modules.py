@@ -5,6 +5,7 @@ import numpy as np
 
 from .core import Port, Result
 from .features import overlay_image
+from .fiducial_detection import DICTIONARIES, MARKER_CHOICES, MARKER_OPTIONS, detector_parameters
 from .geometry3d_common import (
     Tool3D,
     camera_for_image,
@@ -97,13 +98,6 @@ class RectifyCamera3D(Tool3D):
         return Result({"image": output, "camera": cam}, payloads={"image": payload})
 
 
-DICTIONARIES = {
-    name.removeprefix("DICT_").lower(): getattr(cv2.aruco, name)
-    for name in dir(cv2.aruco)
-    if name.startswith("DICT_") and isinstance(getattr(cv2.aruco, name), int)
-}
-
-
 class ArucoPose3D(Tool3D):
     type_id, title, subtype = "3d.aruco_pose", "ArUco 3D marker poses", "Fiducials"
     inputs = (Port("image"), Port("camera", "data"))
@@ -117,57 +111,18 @@ class ArucoPose3D(Tool3D):
         "dictionary": "4x4_50",
         "marker_length": 0.04,
         "minimum_markers": 1,
-        "corner_refinement": "subpixel",
-        "adaptive_min": 3,
-        "adaptive_max": 23,
-        "adaptive_step": 10,
-        "adaptive_constant": 7.0,
-        "min_perimeter_rate": 0.03,
-        "max_perimeter_rate": 4.0,
-        "min_border_distance": 3,
-        "border_bits": 1,
-        "error_correction_rate": 0.6,
+        **MARKER_OPTIONS,
         "axis_length": 0.02,
         "max_reprojection_error": 3.0,
     }
-    parameter_choices = {
-        "dictionary": tuple(DICTIONARIES),
-        "corner_refinement": ("none", "subpixel", "contour", "apriltag"),
-    }
+    parameter_choices = MARKER_CHOICES
 
     def process(self, inputs):
         model, p = inputs["camera"], self.parameters
         k, d, _ = require_pinhole(model)
         camera_for_image(model, inputs["image"])
         gray = gray_image(inputs["image"], (np.uint8,))
-        parameters = cv2.aruco.DetectorParameters()
-        parameters.cornerRefinementMethod = {
-            "none": cv2.aruco.CORNER_REFINE_NONE,
-            "subpixel": cv2.aruco.CORNER_REFINE_SUBPIX,
-            "contour": cv2.aruco.CORNER_REFINE_CONTOUR,
-            "apriltag": cv2.aruco.CORNER_REFINE_APRILTAG,
-        }[p["corner_refinement"]]
-        parameters.adaptiveThreshWinSizeMin = integer(p["adaptive_min"], "Adaptive min", 3, 255)
-        parameters.adaptiveThreshWinSizeMax = integer(
-            p["adaptive_max"], "Adaptive max", parameters.adaptiveThreshWinSizeMin, 1000
-        )
-        parameters.adaptiveThreshWinSizeStep = integer(p["adaptive_step"], "Adaptive step", 1, 100)
-        parameters.adaptiveThreshConstant = finite(p["adaptive_constant"], "Adaptive constant")
-        parameters.minMarkerPerimeterRate = finite(
-            p["min_perimeter_rate"], "Min perimeter rate", 0.0001
-        )
-        parameters.maxMarkerPerimeterRate = finite(
-            p["max_perimeter_rate"], "Max perimeter rate", parameters.minMarkerPerimeterRate
-        )
-        parameters.minDistanceToBorder = integer(
-            p["min_border_distance"], "Border distance", 0, 1000
-        )
-        parameters.markerBorderBits = integer(p["border_bits"], "Border bits", 1, 10)
-        parameters.errorCorrectionRate = finite(
-            p["error_correction_rate"], "Error correction rate", 0
-        )
-        if parameters.errorCorrectionRate > 1:
-            raise ValueError("Error correction rate must be in [0,1]")
+        parameters = detector_parameters(p)
         dictionary = cv2.aruco.getPredefinedDictionary(DICTIONARIES[p["dictionary"]])
         corners, ids, _ = cv2.aruco.ArucoDetector(dictionary, parameters).detectMarkers(gray)
         overlay = overlay_image(inputs["image"])

@@ -131,6 +131,21 @@ Set the overall and optional worst-point limits for the job. Wire
 validation image to see the measured points and residual directions.
 The bundled example uses rendered targets. [Lens validation example](../examples/validate_lens_calibration/README.md)
 
+## Observe a ChArUco board
+
+**Detect ChArUco board** returns corner IDs, image coordinates, and
+corresponding physical board points. Configure the number of squares
+across and down, both physical side lengths, and the marker dictionary
+to match the target. Use **Legacy pattern** for boards printed with the
+older OpenCV layout when applicable. Custom marker IDs follow board
+marker order.
+
+The optional pinhole camera input improves interpolation of corners.
+Wire **Image points** and **Object points** to **3D object pose (PnP)**
+with a matching camera model and board units. The board's coordinate
+origin follows the target layout even when it is outside the image.
+[ChArUco board example](../examples/charuco_board/README.md)
+
 ## White and color balance
 
 White / color balance supports gray-world gains from the whole image or a JSON

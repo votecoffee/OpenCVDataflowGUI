@@ -372,6 +372,10 @@ view even when the overall fit passes.
 image and shows the measured reprojection residuals.
 [Lens validation example](examples/validate_lens_calibration/README.md)
 
+**Detect ChArUco board** pairs identified image corners with physical
+board coordinates. A partial view can feed the existing PnP pose block.
+[ChArUco board example](examples/charuco_board/README.md)
+
 ### Build and test a starter project
 
 For the real-image Lena review example, run `python scripts/prepare_lena.py` once,

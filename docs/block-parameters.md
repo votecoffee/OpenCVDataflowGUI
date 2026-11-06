@@ -527,6 +527,40 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | --- | --- | --- |
 | `model` | `{}` | Stored color correction JSON. A wired model takes precedence. |
 
+## Detect ChArUco board (`calibration.charuco`)
+
+Calibration / Grid and coordinates
+
+Inputs: `image` (image), `camera` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `columns` | `7` | Value must be a whole number between 3 and 64. Number of squares across the board. |
+| `rows` | `5` | Value must be a whole number between 3 and 64. Number of squares down the board. |
+| `square_length` | `0.03` | Value must be a finite number between 1e-06 and 1e+06. Physical side length of a square in the chosen units. |
+| `marker_length` | `0.022` | Value must be a finite number between 1e-06 and 1e+06. Physical side length of an ArUco marker in the same units. |
+| `units` | `"m"` | `m`, `mm`, `unitless` |
+| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original` |
+| `marker_ids` | `[]` | IDs in board marker order. An empty list uses the dictionary's first IDs. |
+| `legacy_pattern` | `false` | Use the OpenCV pre-4.6 chessboard pattern for older printed boards. |
+| `minimum_corners` | `6` | Value must be a whole number between 4 and 3969. Minimum identified corners required to emit point correspondences. |
+| `min_adjacent_markers` | `2` | Value must be a whole number between 1 and 2. Minimum detected neighboring markers for an interpolated corner. |
+| `check_markers` | `true` | Check whether detected markers belong to the ChArUco pattern. |
+| `try_refine_markers` | `false` | Look for missed board markers near their predicted positions. |
+| `refine_max_distance` | `10.0` | Value must be a finite number between 1e-06 and 1000. Maximum marker recovery reprojection distance in pixels. |
+| `refine_error_correction` | `3.0` | Value must be a finite number between 0 and 10. Marker error correction multiplier during recovery. |
+| `refine_check_all_orders` | `true` | Check all four possible corner orderings during recovery. |
+| `corner_refinement` | `"none"` | `none`, `subpixel`, `contour`, `apriltag` |
+| `adaptive_min` | `3` |  |
+| `adaptive_max` | `23` |  |
+| `adaptive_step` | `10` |  |
+| `adaptive_constant` | `7.0` |  |
+| `min_perimeter_rate` | `0.03` |  |
+| `max_perimeter_rate` | `4.0` |  |
+| `min_border_distance` | `3` |  |
+| `border_bits` | `1` |  |
+| `error_correction_rate` | `0.6` |  |
+
 ## White / color balance (`calibration.color_balance`)
 
 Calibration / Color balance

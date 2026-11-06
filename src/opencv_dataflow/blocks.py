@@ -644,6 +644,7 @@ def builtin_registry():
     from .calibration_validation import ValidateLensCalibration
     from .calipers import BeadCalipers
     from .channel_transform import ChannelTransform
+    from .charuco import DetectCharucoBoard
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_tools import CLOUD_BLOCKS
     from .clustering import KMeansImage, KMeansSamples
@@ -751,6 +752,7 @@ def builtin_registry():
         WriteResults,
         Histogram,
         CalibrationGrid,
+        DetectCharucoBoard,
         LensCalibration,
         ValidateLensCalibration,
         BuildLensMaps,
