@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 
 from .core import Port, Result
+from .deblur import WienerDeblur
 from .images import ImageArray, convert_depth, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import (
@@ -415,6 +416,7 @@ RESTORATION_BLOCKS = (
     NonLocalMeans,
     TemporalNonLocalMeans,
     DenoiseTVL1,
+    WienerDeblur,
     Inpaint,
     GuidedFilter,
     DomainTransformFilter,

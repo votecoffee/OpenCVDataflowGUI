@@ -2864,7 +2864,7 @@ P3	function	cv2.getDefaultNewCameraMatrix	no static reference	-
 P3	function	cv2.getDerivKernels	no static reference	-
 P3	function	cv2.getFontScaleFromHeight	no static reference	-
 P3	function	cv2.getGaborKernel	literal reference	-
-P3	function	cv2.getGaussianKernel	no static reference	-
+P3	function	cv2.getGaussianKernel	literal reference	-
 P3	function	cv2.getHardwareFeatureName	no static reference	-
 P3	function	cv2.getNumberOfCPUs	no static reference	-
 P3	function	cv2.getOptimalDFTSize	literal reference	-
