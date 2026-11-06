@@ -27,7 +27,8 @@ Singular value decomposition exposes the spectrum, vector bases, and low-rank
 approximations of numeric tables. Real eigendecomposition exposes square-matrix
 eigenpairs and checks their residuals.
 Image validity checks locate nonfinite and out-of-range samples and emit masks
-for downstream measurement.
+for downstream measurement. NaN and infinity can be replaced by channel with
+configured values inside a mask or region.
 Specialized array operations remain open. The
 [coverage backlog](opencv-coverage.md) tracks the missing workflows and the
 [binding inventory](opencv-bindings.tsv) maps static references to the pinned
