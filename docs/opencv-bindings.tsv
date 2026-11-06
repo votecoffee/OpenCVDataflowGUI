@@ -3981,7 +3981,7 @@ P3	class	cv2.phase_unwrapping_HistogramPhaseUnwrapping_Params	no static referenc
 P3	class	cv2.phase_unwrapping_PhaseUnwrapping	alias	cv2.phase_unwrapping.PhaseUnwrapping
 P3	method	cv2.phase_unwrapping_PhaseUnwrapping.unwrapPhaseMap	alias	cv2.phase_unwrapping.PhaseUnwrapping.unwrapPhaseMap
 P3	function	cv2.phaseCorrelate	literal reference	-
-P3	function	cv2.phaseCorrelateIterative	no static reference	-
+P3	function	cv2.phaseCorrelateIterative	literal reference	-
 P3	class	cv2.plot.Plot2d	no static reference	-
 P3	method	cv2.plot.Plot2d.create	method name only	-
 P3	method	cv2.plot.Plot2d.render	method name only	-

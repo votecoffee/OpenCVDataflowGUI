@@ -21,6 +21,7 @@ parameter names and default behavior are retained.
 | Harris / minimum eigenvalue response | Image → floating response and display preview | Method, block size, derivative aperture, Harris K, border |
 | Refine corners to subpixel | Image and point list → refined point list | X/Y window, zero zone, termination mode, iteration limit, epsilon |
 | Phase correlation shift | Two images and optional floating window → shift and response | Float precision, generated Hanning window, acceptance response |
+| Iterative phase correlation | Reference and moving images → subpixel shift, inverse warp, and status | Float precision, odd refinement neighborhood, iteration limit |
 | Estimate affine transform | MatchORB correspondences → transform and inlier count | Full/partial model, RANSAC/LMedS, reprojection threshold, iterations, confidence, refinement and acceptance limits |
 | Remap image coordinates | Image and float32 X/Y maps → image | Interpolation, border and constant fill |
 | Cartesian to polar fields | Matching monochrome float X/Y fields → magnitude and angle | Radians/degrees |
@@ -33,6 +34,12 @@ Phase correlation reports the translation from image A to image B in pixels.
 Its response output retains the native number, while the node's score is clamped
 to [0,1] for display. A connected window takes precedence over the generated
 Hanning window and must match the chosen float precision and image dimensions.
+
+[Iterative phase correlation](../examples/iterative_phase_correlation/README.md)
+uses OpenCV's built-in Hann window and returns an inverse translation for
+**Warp affine**. Use matching even-sized inputs with distinctive detail. The
+block withholds the shift and transform for flat interiors and invalid or
+half-period shifts.
 
 Affine estimation consumes the same query/train point dictionary as homography
 estimation. The transform maps query pixels to train pixels and can connect to

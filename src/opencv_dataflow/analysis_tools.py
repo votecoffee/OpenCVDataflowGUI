@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
+from .fourier_correlation import MAX_TRANSFORM_PIXELS
+from .graphics_layers import GraphicDrawing, graphic_object
 from .images import ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS, OUTPUT_DEPTHS, anchor_value
@@ -339,6 +341,23 @@ class RefineCorners(Block):
         return Result({"points": refined.reshape(-1, 2).tolist()})
 
 
+def _phase_inputs(inputs):
+    a, b = (
+        gray_image(inputs[name], (np.uint8, np.uint16, np.float32, np.float64))
+        for name in ("image_a", "image_b")
+    )
+    if a.shape != b.shape:
+        raise ValueError("Phase correlation images must have identical dimensions")
+    return a, b
+
+
+def _phase_signal(image, dtype):
+    low, high, _, _ = cv2.minMaxLoc(image)
+    scale = max(abs(low), abs(high)) or 1.0
+    # Scale before narrowing precision so extreme floating-point samples stay bounded.
+    return np.divide(image, scale, dtype=np.float64).astype(dtype, copy=False)
+
+
 class PhaseCorrelation(Block):
     type_id, title, category = "inspect.phase_correlation", "Phase correlation shift", "Inspection"
     block_type, subtype = "Inspection", "Registration"
@@ -348,12 +367,7 @@ class PhaseCorrelation(Block):
     parameter_choices = {"precision": ("float32", "float64")}
 
     def process(self, inputs):
-        a, b = (
-            gray_image(inputs[k], (np.uint8, np.uint16, np.float32, np.float64))
-            for k in ("image_a", "image_b")
-        )
-        if a.shape != b.shape:
-            raise ValueError("Phase correlation images must have identical dimensions")
+        a, b = _phase_inputs(inputs)
         dtype = np.float32 if self.parameters["precision"] == "float32" else np.float64
         a, b = a.astype(dtype), b.astype(dtype)
         window = inputs.get("window")
@@ -388,6 +402,90 @@ class PhaseCorrelation(Block):
             passed=response >= minimum,
             score=float(np.clip(response, 0, 1)),
         )
+
+
+class IterativePhaseCorrelation(Block):
+    type_id, title = "inspect.phase_correlation_iterative", "Iterative phase correlation"
+    category, block_type, subtype = "Inspection", "Inspection", "Registration"
+    inputs = (Port("image_a"), Port("image_b"))
+    outputs = (
+        Port("shift", "data", required=False),
+        Port("alignment_transform", "data", required=False),
+        Port("status", "text"),
+    )
+    payload_reference = "image_b"
+    process_inputs_readonly = True
+    defaults = {"precision": "float64", "neighborhood_size": 7, "max_iterations": 10}
+    parameter_choices = {"precision": ("float32", "float64")}
+    parameter_ranges = {
+        "neighborhood_size": NumericRange(3, 63, whole=True, odd=True),
+        "max_iterations": NumericRange(1, 1000, whole=True),
+    }
+    parameter_help = {
+        "precision": "Floating-point working depth. Color inputs are converted to grayscale.",
+        "neighborhood_size": "Initial odd neighborhood width (OpenCV L2size).",
+        "max_iterations": "Maximum iterations per native refinement attempt.",
+    }
+    input_help = {
+        "image_a": "Reference image with even width and height.",
+        "image_b": "Moving image. Its observed shift is measured relative to the reference.",
+    }
+
+    @staticmethod
+    def unavailable(reason, message):
+        return Result(
+            {"shift": NO_VALUE, "alignment_transform": NO_VALUE, "status": reason},
+            passed=False,
+            fail_reasons=[reason],
+            message=message,
+        )
+
+    def process(self, inputs):
+        a, b = _phase_inputs(inputs)
+        height, width = a.shape
+        if min(a.shape) < 4 or width % 2 or height % 2:
+            raise ValidationError("Iterative phase correlation needs even dimensions of at least 4")
+        if a.size > MAX_TRANSFORM_PIXELS:
+            raise ValidationError("Iterative phase correlation is limited to 8,388,608 pixels")
+
+        p = self.parameters
+        dtype = np.dtype(p["precision"])
+        a, b = (_phase_signal(image, dtype) for image in (a, b))
+        # The native Hann window gives the outermost row and column on each side zero weight.
+        limits = [cv2.minMaxLoc(image[1:-1, 1:-1])[:2] for image in (a, b)]
+        if any(low == high for low, high in limits):
+            return self.unavailable(
+                "phase_flat_image", "Both image interiors need intensity detail"
+            )
+
+        dx, dy = cv2.phaseCorrelateIterative(
+            a, b, int(p["neighborhood_size"]), int(p["max_iterations"])
+        )
+        if not np.isfinite([dx, dy]).all() or abs(dx) >= width / 2 or abs(dy) >= height / 2:
+            return self.unavailable(
+                "phase_ambiguous_shift", "Native shift is invalid or at wraparound"
+            )
+
+        message = f"Observed shift ({dx:+.3f}, {dy:+.3f}) px"
+        result = Result(
+            {
+                "shift": {"x": dx, "y": dy, "direction": "image_a to image_b", "units": "pixels"},
+                "alignment_transform": {
+                    "model": "image_translation_v1",
+                    "source_to_target": [[1, 0, -dx], [0, 1, -dy], [0, 0, 1]],
+                    "source_size": [width, height],
+                    "target_size": [width, height],
+                    "source_spatial": self.input_payloads["image_b"]["spatial"],
+                    "target_spatial": self.input_payloads["image_a"]["spatial"],
+                },
+                "status": "ok",
+            },
+            message=message,
+        )
+        if self.generate_graphics:
+            label = graphic_object("text", ((8, 22),), (60, 220, 140), text=message)
+            result.drawings["observed shift"] = GraphicDrawing((label,), source="image_b")
+        return result
 
 
 class EstimateAffine(Block):
@@ -1046,6 +1144,7 @@ ANALYSIS_BLOCKS = (
     CornerResponse,
     RefineCorners,
     PhaseCorrelation,
+    IterativePhaseCorrelation,
     EstimateAffine,
     Remap,
     CartesianToPolar,

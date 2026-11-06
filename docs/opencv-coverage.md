@@ -88,6 +88,8 @@ search, candidate masks, mutual nearest matching, and numeric or packed-byte dis
 [Sort numeric table](../examples/numeric_table_sort/README.md) ranks whole records or
 individual columns and rows, preserving input order for ties and returning source indices.
 [Cartesian and polar fields](../examples/polar_fields/README.md) convert in both directions and preserve angle units.
+[Iterative phase correlation](../examples/iterative_phase_correlation/README.md)
+estimates subpixel translation and emits a correction for the moving image.
 [Paired Sobel and derivative-fed Canny](../examples/canny_derivatives/README.md) expose signed gradients and accept custom derivative fields.
 [Scale absolute to 8-bit](../examples/scale_absolute/README.md) applies gain
 and offset in stored units, saturates large magnitudes, and supports mask and

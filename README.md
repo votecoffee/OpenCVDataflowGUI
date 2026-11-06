@@ -462,6 +462,8 @@ Further tools include box and separable filtering, Harris/minimum-eigenvalue
 responses, subpixel corner refinement, phase correlation, full/partial affine
 estimation, coordinate remapping, and Cartesian-to-polar image fields. See
 [analysis tools and parameter conventions](docs/analysis-tools.md).
+**Iterative phase correlation** estimates fractional-pixel translation and
+emits an inverse warp. See the [subpixel alignment example](examples/iterative_phase_correlation/README.md).
 
 The [OpenCV coverage backlog](docs/opencv-coverage.md) ranks missing tools and
 links to the full Python binding inventory for the pinned contrib build. The
