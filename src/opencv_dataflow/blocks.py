@@ -671,6 +671,7 @@ def builtin_registry():
     from .image_statistics import ImageSummaryStatistics
     from .judgments import FinalJudgment
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
+    from .linear_system import SolveLinearSystem
     from .native_background import NATIVE_BACKGROUND_BLOCKS
     from .native_trackers import NATIVE_TRACKER_BLOCKS
     from .ocr import OCR_BLOCKS
@@ -801,6 +802,7 @@ def builtin_registry():
         FinalJudgment,
         *DNN_BLOCKS,
         FitFeatureCovariance,
+        SolveLinearSystem,
         FitPrincipalComponents,
         TransformPrincipalComponents,
         MahalanobisDistance,
