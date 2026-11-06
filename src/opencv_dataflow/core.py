@@ -107,6 +107,11 @@ class Block:
     input_help: ClassVar[dict[str, str]] = {}
     preview_safe: ClassVar[bool | None] = None
     parameter_ranges: ClassVar[dict[str, NumericRange]] = {}
+    plugin_dialog_label: ClassVar[str] = ""
+
+    def create_plugin_dialog(self, parent, parameters, context):
+        """Return a fresh QDialog that edits the supplied inspector draft."""
+        raise NotImplementedError("A block with a plugin dialog label must create a dialog")
 
     def __init__(self, *, block_id=None, parameters=None):
         self.id = block_id or uuid.uuid4().hex

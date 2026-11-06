@@ -12,7 +12,7 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from PySide6.QtCore import Qt, QThread, QTimer, Signal
+from PySide6.QtCore import QSignalBlocker, Qt, QThread, QTimer, Signal
 from PySide6.QtGui import QAction, QKeySequence
 from PySide6.QtWidgets import (
     QApplication,
@@ -61,6 +61,7 @@ from .outcomes import INPUT_FAILURE_POLICIES
 from .parallel_inspection import ParallelInspect
 from .parameter_validation import ValidationError
 from .payloads import ValuePacket, describe_value, packet_for, prepare_inputs
+from .plugin_dialog import PluginDialogContext
 from .plugins import load_plugin
 from .program_documentation import export_program_documentation
 from .project_compare import ProjectCompare
@@ -256,6 +257,7 @@ class Inspector(QWidget):
         self.timing_timer.start()
         self.editor = QGroupBox("Configuration")
         self.form = QFormLayout(self.editor)
+        self._plugin_dialog = None
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setWidget(self.editor)
@@ -282,6 +284,7 @@ class Inspector(QWidget):
         self.setMinimumWidth(310)
 
     def select(self, block):
+        self.close_plugin_dialog()
         self.show_draft_error()
         advanced_open = (
             block is self.block
@@ -481,6 +484,10 @@ class Inspector(QWidget):
             edit_seeds = QPushButton("Edit watershed seeds…")
             edit_seeds.clicked.connect(self.edit_seeds)
             self.form.addRow(edit_seeds)
+        if block.plugin_dialog_label:
+            button = QPushButton(block.plugin_dialog_label)
+            button.clicked.connect(self.open_plugin_dialog)
+            self.form.addRow(button)
         self.show_advanced = QCheckBox("Show advanced")
         self.show_advanced.setToolTip("Show recipe, port, and node display settings.")
         advanced_panel = QWidget()
@@ -700,6 +707,7 @@ class Inspector(QWidget):
             worker.deleteLater()
 
     def hideEvent(self, event):
+        self.close_plugin_dialog()
         self.stop_previews()
         super().hideEvent(event)
 
@@ -840,7 +848,7 @@ class Inspector(QWidget):
             field.setText(json.dumps(choices))
         dialog.deleteLater()
 
-    def read_parameters(self):
+    def read_parameters(self, *, validate=True):
         b = self.block
         parameters = dict(self.kernel_parameters)
         for key, field in self.fields.items():
@@ -866,7 +874,8 @@ class Inspector(QWidget):
                 raise ValidationError(f"{label}: {exc}", key) from exc
             parameters[key] = value
         json.dumps(parameters, allow_nan=False)
-        b.validate_parameters(parameters)
+        if validate:
+            b.validate_parameters(parameters)
         return parameters
 
     def validate_draft(self):
@@ -910,6 +919,93 @@ class Inspector(QWidget):
     def update_kernel_label(self):
         shape = self.kernel_parameters["shape"]
         self.kernel_button.setText(f"Edit kernel… ({SHAPE_LABELS.get(shape, shape)})")
+
+    def open_plugin_dialog(self):
+        block = self.block
+        if (
+            block is None
+            or not block.plugin_dialog_label
+            or self.window.runner
+            or self._plugin_dialog is not None
+        ):
+            return
+        try:
+            original = self.read_parameters(validate=False)
+        except (Exception, SystemExit) as exc:
+            message = str(exc) if isinstance(exc, ValidationError) else exception_message(exc)
+            self.show_draft_error(message, exc.fields if isinstance(exc, ValidationError) else ())
+            return
+        fields = self.fields
+        draft = copy.deepcopy(original)
+        try:
+            context = PluginDialogContext(self.window.graph, block)
+            widget = block.create_plugin_dialog(self, draft, context)
+            if not isinstance(widget, QDialog):
+                raise TypeError("create_plugin_dialog must return a PySide6 QDialog")
+            if self.fields is not fields or self.window.runner:
+                widget.deleteLater()
+                return
+            self._plugin_dialog = widget
+            if widget.parentWidget() is not self:
+                widget.setParent(self, widget.windowFlags())
+            widget.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, False)
+            widget.finished.connect(
+                lambda status: self.finish_plugin_dialog(widget, block, original, draft, status)
+            )
+            widget.open()
+        except (Exception, SystemExit) as exc:
+            self.close_plugin_dialog()
+            block.logger.exception("Plugin dialog could not open")
+            self.window.warn(f"{block.title} dialog · {exception_message(exc)}")
+
+    def close_plugin_dialog(self):
+        dialog, self._plugin_dialog = self._plugin_dialog, None
+        if dialog is not None:
+            try:
+                QDialog.reject(dialog)
+            finally:
+                dialog.deleteLater()
+
+    def finish_plugin_dialog(self, dialog, block, original, draft, status):
+        if self._plugin_dialog is not dialog:
+            return
+        self._plugin_dialog = None
+        dialog.deleteLater()
+        if status != QDialog.DialogCode.Accepted or self.block is not block or self.window.runner:
+            return
+        try:
+            parameters = json.loads(json.dumps(draft, allow_nan=False))
+            if parameters.keys() != original.keys():
+                raise ValueError("The dialog must keep the block's declared parameter names")
+            for name, value in parameters.items():
+                expected = type(original[name])
+                if expected is float and type(value) is int:
+                    parameters[name] = float(value)
+                elif type(value) is not expected:
+                    raise ValueError(f"{name} must have type {expected.__name__}")
+            block.validate_parameters(parameters)
+            if parameters == original:
+                return
+            for name, field in self.fields.items():
+                value = parameters[name]
+                if value == original[name]:
+                    continue
+                with QSignalBlocker(field):
+                    if isinstance(field, QComboBox):
+                        field.setCurrentText(value)
+                    elif isinstance(field, QCheckBox):
+                        field.setChecked(value)
+                    else:
+                        field.setText(
+                            json.dumps(value) if isinstance(value, (list, dict)) else str(value)
+                        )
+            if self.kernel_parameters:
+                self.kernel_parameters = {key: parameters[key] for key in self.kernel_parameters}
+                self.update_kernel_label()
+            self.schedule_live_preview()
+        except (Exception, SystemExit) as exc:
+            block.logger.exception("Plugin dialog edits could not be staged")
+            self.window.warn(f"{block.title} dialog · {exception_message(exc)}")
 
     def edit_kernel(self):
         try:
@@ -2021,6 +2117,7 @@ class MainWindow(QMainWindow):
     def start_run(self, continuous):
         if self.runner:
             return
+        self.inspector.close_plugin_dialog()
         self.inspector.stop_previews()
         # Worker owns a separate runtime graph. Qt paints stable display snapshots.
         try:
@@ -2220,6 +2317,7 @@ class MainWindow(QMainWindow):
             self.stop_run()
             event.ignore()
         elif self.confirm_discard():
+            self.inspector.close_plugin_dialog()
             self.inspector.close_image_popouts()
             self.inspector.stop_previews(wait=True)
             self.root_graph.close()

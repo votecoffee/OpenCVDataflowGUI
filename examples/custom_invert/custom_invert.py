@@ -11,6 +11,7 @@ class Invert(Block):
     title = "Invert"
     category = "Custom"
     preview_safe = True
+    plugin_dialog_label = "Edit inversion band…"
     inputs = (Port("image"),)
     outputs = (Port("image"), Port("original"))
     defaults = {"start_percent": 0, "end_percent": 100}
@@ -30,6 +31,34 @@ class Invert(Block):
             raise ValidationError(
                 "Start percent must be less than end percent", "start_percent", "end_percent"
             )
+
+    def create_plugin_dialog(self, parent, parameters, context):
+        from PySide6.QtWidgets import QDialog, QDialogButtonBox, QFormLayout, QSpinBox
+
+        dialog = QDialog(parent)
+        dialog.setWindowTitle("Inversion band")
+        form = QFormLayout(dialog)
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
+        ok = buttons.button(QDialogButtonBox.StandardButton.Ok)
+
+        def update(key, value):
+            parameters[key] = value
+            ok.setEnabled(parameters["start_percent"] < parameters["end_percent"])
+
+        for key, label in (("start_percent", "Start (%)"), ("end_percent", "End (%)")):
+            field = QSpinBox(dialog)
+            field.setObjectName(key)
+            field.setRange(0, 100)
+            field.setValue(parameters[key])
+            update(key, field.value())
+            field.valueChanged.connect(lambda value, name=key: update(name, value))
+            form.addRow(label, field)
+        buttons.accepted.connect(dialog.accept)
+        buttons.rejected.connect(dialog.reject)
+        form.addRow(buttons)
+        return dialog
 
     def process(self, inputs):
         image = inputs["image"]

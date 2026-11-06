@@ -28,7 +28,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Conveyor pick selection](conveyor_pick/README.md) | Find 25 fixed-scale parts and select a candidate using clearance and downstream position. |
 | [Conveyor tracking](conveyor_tracking/README.md) | Find repeated parts in a synthetic moving sequence and track them using encoder displacement. |
 | [Coordinated camera inputs](input_coordination/README.md) | Join two synthetic camera images to a simulated PLC part counter by ticket. |
-| [Custom Python invert block](custom_invert/README.md) | Run a custom block that inverts a band of the image and demonstrates numeric and cross-field validation. |
+| [Custom Python invert block](custom_invert/README.md) | Edit an inversion band in a plugin popup and preview it with numeric and cross-field validation. |
 | [Principal components](principal_components/README.md) | Fit PCA, project numeric rows, and compare reduced and full reconstruction. |
 | [Feature covariance and outliers](feature_covariance/README.md) | Score correlated measurements and identify rows outside a distance limit. |
 | [Solve linear system](linear_system/README.md) | Fit two calibration curves with a shared coefficient matrix and compare the residuals. |

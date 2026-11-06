@@ -284,8 +284,13 @@ Migration details and a possible browser/WebAssembly backend are covered in the
 
 Load trusted custom blocks via **File > Load Python plugin**. The
 [custom invert project](examples/custom_invert/README.md) demonstrates custom
-fields and validation. Plugins run arbitrary Python. Load the same plugins before opening
+fields, validation, and a popup editor. Plugins run arbitrary Python. Load the same plugins before opening
 projects that use their types. No code is needed for built-in pipelines.
+
+Plugin blocks can add their own inspector button and open a Qt dialog for
+configuration or review. The dialog can use copies of cached images with their
+coordinate metadata. Accepted edits appear in the inspector draft for preview
+and **Apply configuration**. [Plugin dialog API](docs/plugin-dialogs.md)
 
 If a block raises a Python exception during processing, the app records an error
 and traceback in **Diagnostics**. The block emits no outputs, dependent blocks
@@ -916,6 +921,7 @@ boundaries, parallel work and explicit final-decision timestamps.
 - `objects.py`, `collection_tools.py`: measured blob/line/contour/circle collections, filtering, sorting and rendering.
 - `examples.py` and `runner.py`: built-in starter graphs and headless project verification.
 - `plugins.py`: explicitly loaded trusted Python extensions.
+- `plugin_dialog.py`: plugin editor context and cached image snapshots.
 - `canvas.py`: movable nodes, typed sockets, selectable wires, pan and zoom.
 - `app.py`: Qt editor, inspector, worker execution, project and plugin actions.
 - `toolblocks.py`: composite blocks, public terminal mappings, reusable definitions.
