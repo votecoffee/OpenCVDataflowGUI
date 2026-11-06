@@ -2811,7 +2811,7 @@ P3	class	cv2.GCompileArg	no static reference	-
 P3	class	cv2.GComputation	literal reference	-
 P3	method	cv2.GComputation.apply	method name only	-
 P3	method	cv2.GComputation.compileStreaming	no static reference	-
-P3	function	cv2.gemm	no static reference	-
+P3	function	cv2.gemm	literal reference	-
 P3	class	cv2.GeneralizedHough	no static reference	-
 P3	method	cv2.GeneralizedHough.detect	method name only	-
 P3	method	cv2.GeneralizedHough.getCannyHighThresh	no static reference	-

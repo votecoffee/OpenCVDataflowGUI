@@ -684,6 +684,10 @@ Try [sequence memory](examples/sequence_memory/sequence_memory.json), then run c
 **Solve linear system** fits one or more observation columns and reports residuals
 and numerical rank. See the [linear system example](examples/linear_system/README.md).
 
+**Multiply matrices** applies weighted matrix products and optional offsets.
+The [matrix multiplication example](examples/matrix_multiply/README.md) uses
+fitted coefficients to predict new readings.
+
 **Sort numeric table** ranks records or sorts values within each row or column
 and returns their source indices. See the [numeric table sort example](examples/numeric_table_sort/README.md).
 
