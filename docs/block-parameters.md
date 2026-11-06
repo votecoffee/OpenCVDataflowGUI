@@ -2026,6 +2026,21 @@ Inputs: `image` (image), `map_x` (image), `map_y` (image).
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
 | `border_value` | `0.0` |  |
 
+## Replace nonfinite samples (`cv.replace_nonfinite`)
+
+Image processing / Color and depth
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Float32 or float64 grayscale, color, or physical depth samples.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"all_nonfinite"` | `all_nonfinite`, `nan_only`, `infinity_only` Choose which nonfinite sample types to replace inside the selection. |
+| `nan_replacement` | `0.0` | Value must be a finite number. Replacement for NaN in the input's stored units. |
+| `positive_infinity_replacement` | `0.0` | Value must be a finite number. Replacement for positive infinity in stored units. |
+| `negative_infinity_replacement` | `0.0` | Value must be a finite number. Replacement for negative infinity in stored units. |
+
 ## Resize (`cv.resize`)
 
 Image processing / Geometry

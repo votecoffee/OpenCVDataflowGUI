@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "stereo",
+      "type": "input.stereo_demo",
+      "name": "Depth with a missing corner",
+      "parameters": {"width": 64, "height": 64},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["depth"],
+      "preview_output": "depth"
+    },
+    {
+      "id": "before",
+      "type": "inspect.image_validity",
+      "name": "Locate the 100 missing samples",
+      "parameters": {"max_invalid_fraction": 0.03},
+      "position": [350, 170],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["invalid_mask", "invalid_count"],
+      "preview_output": "invalid_mask"
+    },
+    {
+      "id": "replace",
+      "type": "cv.replace_nonfinite",
+      "name": "Fill missing depth with 3 m",
+      "parameters": {"mode": "nan_only", "nan_replacement": 3.0},
+      "position": [700, 0],
+      "exposed_inputs": ["image", "mask"],
+      "exposed_outputs": ["image", "replaced_mask", "replaced_pixel_count", "report"],
+      "preview_output": "replaced_mask"
+    },
+    {
+      "id": "after",
+      "type": "inspect.image_validity",
+      "name": "Verify repaired depth",
+      "parameters": {"check_range": true, "minimum": 2.9, "maximum": 3.1},
+      "position": [1050, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["valid_mask", "invalid_count", "report"],
+      "preview_output": "valid_mask"
+    }
+  ],
+  "connections": [
+    {"source": "stereo", "output": "depth", "target": "before", "input": "image"},
+    {"source": "stereo", "output": "depth", "target": "replace", "input": "image"},
+    {"source": "before", "output": "invalid_mask", "target": "replace", "input": "mask"},
+    {"source": "replace", "output": "image", "target": "after", "input": "image"}
+  ]
+}

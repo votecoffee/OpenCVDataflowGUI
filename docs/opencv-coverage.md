@@ -59,6 +59,9 @@ thin or full factors, low-rank reconstruction and relative truncation error.
 nonsymmetric real eigenpairs, numerical basis rank, and residual checks.
 [Check image samples](../examples/image_validity/README.md) reports nonfinite and
 out-of-range pixels with source-aligned masks, a first location, and a fraction limit.
+[Replace nonfinite samples](../examples/nonfinite_replacement/README.md) repairs
+NaN and signed infinity by channel, preserves the image encoding and depth units,
+and emits a mask of changed pixels.
 [Gram matrix](../examples/gram_matrix/README.md) computes row or column dot products
 with optional centering, reusable offsets, and sample or population normalization.
 [Find nearest rows](../examples/nearest_rows/README.md) adds exact top-K feature-table
