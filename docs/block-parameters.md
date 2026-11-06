@@ -1541,6 +1541,17 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `output_depth` | `"float64"` | `float64`, `float32`, `same` Same keeps the source depth, rounding and saturating integer results. |
 | `preserve_alpha` | `true` | Copy the alpha channel through unchanged in the chosen output depth. |
 
+## Invert matrix (`cv.invert_matrix`)
+
+Image processing / Statistics
+
+Inputs: `matrix` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `matrix` | `[]` | Rectangular table of real numbers. A wired table takes precedence. |
+| `method` | `"svd"` | `svd`, `lu`, `cholesky` SVD handles rectangular and rank-deficient matrices. LU needs a full-rank square matrix. Cholesky also needs symmetry and positive definiteness. |
+
 ## Local window statistics (`cv.local_statistics`)
 
 Image processing / Intensity

@@ -23,6 +23,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Solve linear program](linear_program/README.md) | Allocate shared capacity or meet demand at minimum cost, with constraint slack and solver status. |
 | [Solve polynomial roots](polynomial_roots/README.md) | Fit a measurement curve, solve for its zero crossings, and compare with a quartic that has complex roots. |
 | [Multiply matrices](matrix_multiply/README.md) | Use fitted calibration coefficients to predict new readings and apply offsets. |
+| [Invert matrix](matrix_inverse/README.md) | Recover signals from a square calibration matrix and compare a rank-deficient pseudoinverse. |
 | [Gram matrix](gram_matrix/README.md) | Compute feature covariance and reuse the learned offset for a new batch. |
 | [Find nearest rows](nearest_rows/README.md) | Compare scaled measurements with masked candidates and mutual nearest-neighbor matching. |
 | [Sort numeric table](numeric_table_sort/README.md) | Rank complete part records by score and compare that with independent column sorting. |
