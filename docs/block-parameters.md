@@ -2530,7 +2530,12 @@ Input `masks` — Optional ordered uint8 masks for feature detection and valid m
 | `max_rotation_degrees` | `15.0` | Value must be a finite number between 0 and 180. |
 | `min_overlap_pixels` | `64` | Value must be a whole number between 1 and 1.67772e+07. Minimum number of valid overlapping pixels for each adjacent pair. |
 | `interpolation` | `"linear"` | `nearest`, `linear` |
-| `blend` | `"prefer_first"` | `prefer_first`, `prefer_last` Choose the earliest or latest view in batch order for covered overlap pixels. |
+| `blend` | `"prefer_first"` | `prefer_first`, `prefer_last`, `feather` Prefer the earliest or latest covered view, or feather across valid edges. |
+| `feather_width` | `32` | Value must be a whole number between 1 and 512. Distance from a valid edge, in mosaic pixels, to reach full weight. |
+| `exposure` | `"none"` | `none`, `gain`, `offset` Match the first view using a median gain or offset from valid overlaps. |
+| `min_exposure_samples` | `64` | Value must be a whole number between 1 and 32768. Minimum usable samples per adjacent overlap for exposure fitting. |
+| `max_exposure_gain` | `2.0` | Value must be a finite number between 1 and 8. Limit cumulative gain to this ratio and its reciprocal. |
+| `max_exposure_offset_fraction` | `0.25` | Value must be a finite number between 0 and 1. Limit cumulative offset as a fraction of full scale. |
 
 ## Temporal non-local means (`cv.temporal_nlm`)
 
