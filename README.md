@@ -664,6 +664,9 @@ two-key sorting with explicit policies for undefined measurements.
 
 Use **Approximate contour** to simplify a detected boundary or open path.
 [Contour approximation example](examples/contour_approximation/README.md)
+**Approximate convex contour** reduces a closed boundary to a target number
+of sides with an optional added-area budget.
+[Convex contour example](examples/convex_contour_approximation/README.md)
 Use **Contour hierarchy** to inspect nested boundaries, holes, and islands.
 [Contour hierarchy example](examples/contour_hierarchy/README.md)
 Use **Contour hull and convexity defects** to measure edge notches and judge their count.

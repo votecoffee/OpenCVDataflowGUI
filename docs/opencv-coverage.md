@@ -239,6 +239,8 @@ boundary. See the [OpenCV shape-analysis reference](https://docs.opencv.org/5.0/
 In a two-object fixture with one hole, the pinned OpenCV 5.0.0
 `findContoursLinkRuns` binding reported the hole contour without a parent link.
 The standard contour path remains the supported option for hierarchy.
+[Approximate convex contour](../examples/convex_contour_approximation/README.md)
+exposes fixed-side reduction with an added-area budget and verifies enclosure.
 
 
 ## Available alignment and restoration
