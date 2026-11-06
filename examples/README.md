@@ -80,6 +80,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Intensity lookup table](intensity_lut/README.md) | Apply distinct intensity curves to an RGB ramp. |
 | [Color normalization](normalize_color/README.md) | Compare shared and independent channel scaling inside a region while preserving outside pixels. |
 | [Linear channel transform](channel_transform/README.md) | Mix BGR channels and derive a grayscale difference image inside a region. |
+| [Route image channels](route_channels/README.md) | Build a false-color image by routing two source channels and a zero-filled channel. |
 | [Fourier correlation](fourier_correlation/README.md) | Recover a known signed shift and inspect the lag map. |
 | [Fourier gain mask](fourier_gain/README.md) | Apply a custom notch at a specific frequency pair and reconstruct the image. |
 | [Fourier spectrum filtering](fourier_filter/README.md) | Reject a periodic stripe pattern with a band-stop filter and inverse DFT. |

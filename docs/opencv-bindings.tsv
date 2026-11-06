@@ -3464,7 +3464,7 @@ P3	function	cv2.min	literal reference	-
 P3	function	cv2.minEnclosingConvexPolygon	literal reference	-
 P3	function	cv2.minEnclosingTriangle	literal reference	-
 P3	function	cv2.minMaxLoc	literal reference	-
-P3	function	cv2.mixChannels	no static reference	-
+P3	function	cv2.mixChannels	literal reference	-
 P3	class	cv2.ml_ANN_MLP	alias	cv2.ml.ANN_MLP
 P3	method	cv2.ml_ANN_MLP.create	alias	cv2.ml.ANN_MLP.create
 P3	method	cv2.ml_ANN_MLP.getAnnealCoolingRatio	alias	cv2.ml.ANN_MLP.getAnnealCoolingRatio

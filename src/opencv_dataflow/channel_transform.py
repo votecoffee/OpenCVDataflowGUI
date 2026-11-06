@@ -1,4 +1,4 @@
-"""Apply a configurable linear transform to each selected pixel."""
+"""Apply linear transforms and copy channels in stored sample order."""
 
 import cv2
 import numpy as np
@@ -6,8 +6,106 @@ import numpy as np
 from .core import Port, Result
 from .images import ImageArray, image_format
 from .parameter_validation import ValidationError
+from .payloads import metadata, require_same_frame
 from .processing import ImageTool, image_value
-from .selection import SELECTION_INPUTS, selection_mask
+from .selection import SELECTION_INPUTS, RegionalOperation, selection_mask
+from .tickets import ticket_key
+
+_CHANNEL_COUNTS = {"gray": 1, "bgr": 3, "rgb": 3, "bgra": 4, "rgba": 4, "hsv": 3, "lab": 3}
+
+
+def _route_indices(value, count):
+    if not isinstance(value, (list, tuple)):
+        raise ValidationError("Channel map must be a list of source indices", "channel_map")
+    if not value:
+        return list(range(count))
+    if len(value) != count or any(
+        type(index) is not int or not -1 <= index <= 7 for index in value
+    ):
+        raise ValidationError(
+            f"Use {count} whole channel indices from -1 to 7 for this output format", "channel_map"
+        )
+    return list(value)
+
+
+class RouteChannels(RegionalOperation, ImageTool):
+    type_id, title, subtype = "cv.route_channels", "Route image channels", "Channels"
+    region_source, region_background = "image_a", "zero"
+    process_inputs_readonly = True
+    inputs = (
+        Port("image_a"),
+        Port("image_b", required=False, required_when_connected=True),
+        *SELECTION_INPUTS[1:],
+        Port("channel_map", "data", required=False, required_when_connected=True),
+    )
+    defaults = {"color_format": "bgr", "channel_map": [], "alignment": "same_frame"}
+    parameter_choices = {
+        "color_format": tuple(_CHANNEL_COUNTS),
+        "alignment": ("same_frame", "pixel_grid"),
+    }
+    parameter_help = {
+        "color_format": "Encoding of the assembled channels. Samples are copied verbatim.",
+        "channel_map": (
+            "One index per output channel, numbering A then B from zero. "
+            "Use -1 for zero fill or an empty list to copy the first channels in order."
+        ),
+        "alignment": "Pixel grid pairs equal-size images by index, even with different frame IDs.",
+    }
+    input_help = {
+        "image_a": "First group of channels and the output coordinate frame.",
+        "image_b": "Optional second group. Size and pixel depth must match Image A.",
+        "channel_map": "Optional list of channel indices that overrides the configuration.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        _route_indices(p["channel_map"], _CHANNEL_COUNTS[p["color_format"]])
+
+    def process(self, inputs):
+        a = inputs["image_a"]
+        first = image_value(a)
+        p = self.parameters
+        encoding = p["color_format"]
+        if encoding in ("hsv", "lab") and first.dtype not in (np.uint8, np.float32):
+            raise ValidationError("HSV/Lab output needs uint8 or float32 samples", "color_format")
+        count = _CHANNEL_COUNTS[encoding]
+        indices = _route_indices(inputs.get("channel_map", p["channel_map"]), count)
+        images = [first]
+        payload = metadata(a)
+        payload.pop("channel", None)
+        if "image_b" in inputs:
+            b = inputs["image_b"]
+            second = image_value(b)
+            if second.shape[:2] != first.shape[:2] or second.dtype != first.dtype:
+                raise ValidationError("Channel sources must have the same size and pixel depth")
+            if p["alignment"] == "same_frame":
+                require_same_frame((a, b))
+            other = metadata(b)
+            if "ticket" in other:
+                if "ticket" in payload and ticket_key(payload["ticket"]) != ticket_key(
+                    other["ticket"]
+                ):
+                    raise ValidationError("Route channels from the same ticket")
+                if "ticket" not in payload:
+                    payload.update(
+                        {key: other[key] for key in ("ticket", "processing_time") if key in other}
+                    )
+            images.append(second)
+        available = sum(image.shape[2] if image.ndim == 3 else 1 for image in images)
+        if max(indices) >= available:
+            raise ValidationError(f"Only {available} source channels are available", "channel_map")
+        shape = first.shape[:2] if count == 1 else (*first.shape[:2], count)
+        output = np.empty(shape, dtype=first.dtype)
+        pairs = []
+        for target, source in enumerate(indices):
+            pairs.extend((source, target))
+        cv2.mixChannels(images, [output], pairs)
+        return Result(
+            {"image": ImageArray(output, encoding)},
+            payloads={"image": payload},
+            message=f"Routed {count} channels into {encoding.upper()}",
+        )
 
 
 def _coefficients(value):

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Synthetic BGR scene",
+      "parameters": {},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "green",
+      "type": "cv.extract_channel",
+      "name": "Extract the green plane",
+      "parameters": {"channel": "1"},
+      "position": [340, 150],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "route",
+      "type": "cv.route_channels",
+      "name": "Build the false-color RGB image",
+      "parameters": {"color_format": "rgb", "channel_map": [2, -1, 3]},
+      "position": [680, 0],
+      "exposed_inputs": ["image_a", "image_b", "mask", "region", "channel_map"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "green", "input": "image"},
+    {"source": "source", "output": "image", "target": "route", "input": "image_a"},
+    {"source": "green", "output": "image", "target": "route", "input": "image_b"}
+  ]
+}
