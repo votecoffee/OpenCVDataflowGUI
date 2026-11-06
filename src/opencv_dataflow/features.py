@@ -10,7 +10,7 @@ from .graphics_layers import GraphicDrawing, graphic_box, graphic_circle, graphi
 from .images import ImageArray, convert_depth, format_image, image_format, preview_rgb
 from .objects import collection, line_item
 from .parameter_validation import NumericRange, ValidationError
-from .parameters import optional_mask
+from .parameters import OUTPUT_DEPTHS, optional_mask
 from .payloads import NO_VALUE, require_same_frame
 from .processing import (
     ImageTool,
@@ -105,43 +105,105 @@ class Normalize(ImageTool):
         "pixel_depth": "uint8",
         "norm_type": "minmax",
         "norm_value": 1.0,
+        "channel_mode": "joint",
+        "outside_selection": "zero",
+        "preserve_alpha": False,
+    }
+    norms = {
+        "minmax": cv2.NORM_MINMAX,
+        "l1": cv2.NORM_L1,
+        "l2": cv2.NORM_L2,
+        "inf": cv2.NORM_INF,
     }
     parameter_choices = {
-        "pixel_depth": ("uint8", "uint16", "int16", "float32", "float64"),
-        "norm_type": ("minmax", "l1", "l2", "inf"),
+        "pixel_depth": tuple(OUTPUT_DEPTHS),
+        "norm_type": tuple(norms),
+        "channel_mode": ("joint", "per_channel"),
+        "outside_selection": ("zero", "preserve"),
+    }
+    parameter_ranges = {
+        "minimum": NumericRange(),
+        "maximum": NumericRange(),
+        "norm_value": NumericRange(0),
+    }
+    parameter_help = {
+        "channel_mode": "Use one scale across the active channels or a separate scale for each.",
+        "outside_selection": "Zero unselected samples or retain their raw values.",
+        "preserve_alpha": "Keep opacity separate and scale it for the output depth.",
     }
 
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["norm_type"] == "minmax" and float(p["maximum"]) <= float(p["minimum"]):
+            raise ValidationError("Maximum must be greater than minimum", "minimum", "maximum")
+
+    def normalize_signal(self, values, channels, depth):
+        p = self.parameters
+        alpha, beta = (
+            (float(p["minimum"]), float(p["maximum"]))
+            if p["norm_type"] == "minmax"
+            else (float(p["norm_value"]), 0)
+        )
+        mode = self.norms[p["norm_type"]]
+        samples = values.reshape(-1, channels)
+        if channels == 1 or p["channel_mode"] == "joint":
+            normalized = cv2.normalize(samples, None, alpha, beta, mode, dtype=depth)
+        else:
+            normalized = np.column_stack(
+                [
+                    cv2.normalize(plane, None, alpha, beta, mode, dtype=depth).ravel()
+                    for plane in samples.T
+                ]
+            )
+        return normalized.reshape(values.shape)
+
     def process(self, inputs):
+        p = self.parameters
         source = inputs["image"]
         image = image_value(source)
-        low, high = (finite(self.parameters[k], k) for k in ("minimum", "maximum"))
-        if high <= low:
-            raise ValueError("Maximum must be greater than minimum")
-        depth = {
-            "uint8": cv2.CV_8U,
-            "uint16": cv2.CV_16U,
-            "int16": cv2.CV_16S,
-            "float32": cv2.CV_32F,
-            "float64": cv2.CV_64F,
-        }[self.parameters["pixel_depth"]]
-        if image_format(source) in ("hsv", "lab"):
-            raise ValueError("Convert HSV/Lab to grayscale or BGR before intensity normalization")
+        encoding = image_format(source)
+        if encoding in ("hsv", "lab"):
+            raise ValidationError("Convert HSV/Lab to grayscale or BGR before normalization")
         mask = optional_mask(inputs, image)
-        if mask is not None and image.ndim != 2:
-            raise ValueError("Masked normalization requires monochrome input")
-        norm = self.parameters["norm_type"]
-        alpha, beta = (
-            (low, high)
-            if norm == "minmax"
-            else (finite(self.parameters["norm_value"], "Norm value", 0), 0)
-        )
-        mode = {
-            "minmax": cv2.NORM_MINMAX,
-            "l1": cv2.NORM_L1,
-            "l2": cv2.NORM_L2,
-            "inf": cv2.NORM_INF,
-        }[norm]
-        output = cv2.normalize(image, None, alpha, beta, mode, dtype=depth, mask=mask)
+        selected = None if mask is None else mask != 0
+        keep_alpha = p["preserve_alpha"] and encoding in ("rgba", "bgra")
+        signal = image[..., :3] if keep_alpha else image
+        channels = 1 if signal.ndim == 2 else signal.shape[2]
+        depth = OUTPUT_DEPTHS[p["pixel_depth"]]
+        dtype = image.dtype if depth == -1 else np.dtype(p["pixel_depth"])
+        if selected is None:
+            output = self.normalize_signal(signal, channels, depth)
+        else:
+            output = np.zeros(signal.shape, dtype=dtype)
+            if p["outside_selection"] == "preserve":
+                outside = signal[~selected]
+                if dtype.kind in "iu":
+                    limits = np.iinfo(dtype)
+                    outside = np.rint(outside).clip(limits.min, limits.max)
+                elif (
+                    outside.size
+                    and np.max(np.abs(outside.astype(np.float64))) > np.finfo(dtype).max
+                ):
+                    raise ValidationError("Unselected samples exceed the requested pixel depth")
+                output[~selected] = outside
+            if selected.any():
+                output[selected] = self.normalize_signal(signal[selected], channels, depth)
+        if not np.isfinite(output).all():
+            raise ValidationError("Normalization produced nonfinite values")
+        if keep_alpha:
+            opacity = image[..., 3]
+            if dtype != image.dtype:
+                opacity = opacity.astype(np.float64)
+                if image.dtype.kind in "iu":
+                    opacity /= np.iinfo(image.dtype).max
+                opacity = opacity.clip(0, 1)
+                if dtype.kind in "iu":
+                    opacity = np.rint(opacity * np.iinfo(dtype).max)
+                opacity = opacity.astype(dtype)
+            if selected is not None and p["outside_selection"] == "zero":
+                opacity = np.where(selected, opacity, 0)
+            output = np.dstack((output, opacity))
         return encoded_result(output, source)
 
 

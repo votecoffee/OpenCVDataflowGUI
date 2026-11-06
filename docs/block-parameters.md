@@ -1654,11 +1654,14 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `minimum` | `0.0` |  |
-| `maximum` | `255.0` |  |
-| `pixel_depth` | `"uint8"` | `uint8`, `uint16`, `int16`, `float32`, `float64` |
+| `minimum` | `0.0` | Value must be a finite number. |
+| `maximum` | `255.0` | Value must be a finite number. |
+| `pixel_depth` | `"uint8"` | `same`, `uint8`, `uint16`, `int16`, `float32`, `float64` |
 | `norm_type` | `"minmax"` | `minmax`, `l1`, `l2`, `inf` |
-| `norm_value` | `1.0` |  |
+| `norm_value` | `1.0` | Value must be a finite number at least 0. |
+| `channel_mode` | `"joint"` | `joint`, `per_channel` Use one scale across the active channels or a separate scale for each. |
+| `outside_selection` | `"zero"` | `zero`, `preserve` Zero unselected samples or retain their raw values. |
+| `preserve_alpha` | `false` | Keep opacity separate and scale it for the output depth. |
 
 ## Overlay result graphics (`cv.overlay_result_graphics`)
 
