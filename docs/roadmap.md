@@ -38,6 +38,8 @@ Channel routing assembles selected channels from one or two images without
 changing their sample values.
 Weight-map blending combines aligned images with a separate contribution at
 each pixel.
+Scalar colorization turns distance, response and depth maps into display
+images with reusable palette and range controls.
 Specialized array operations remain open. The
 [coverage backlog](opencv-coverage.md) tracks the missing workflows and the
 [binding inventory](opencv-bindings.tsv) maps static references to the pinned

@@ -11,17 +11,13 @@ from .calibration import camera_parameters
 from .core import Block, Port, Result
 from .graphics_layers import GraphicDrawing, graphic_object
 from .parameter_validation import NumericRange, ValidationError
+from .parameters import COLORMAPS
 from .payloads import NO_VALUE, frame
 from .processing import finite
 
 _MAX_AXIS = 16_384
 MAX_MAP_PIXELS = 64_000_000
 _TAG = "lens_remap_map"
-_COLORMAPS = {
-    name.removeprefix("COLORMAP_").lower(): getattr(cv2, name)
-    for name in dir(cv2)
-    if name.startswith("COLORMAP_")
-}
 
 
 def valid_lens_size(size):
@@ -245,7 +241,7 @@ class LensMapDisplacement(Block):
         Port("valid_fraction", "number"),
     )
     defaults = {"colormap": "turbo", "heatmap_max": 0.0, "arrow_spacing": 0, "arrow_scale": 1.0}
-    parameter_choices = {"colormap": tuple(_COLORMAPS)}
+    parameter_choices = {"colormap": tuple(COLORMAPS)}
     parameter_ranges = {
         "heatmap_max": NumericRange(1e-6, float(np.finfo(np.float32).max), zero_allowed=True),
         "arrow_spacing": NumericRange(0, _MAX_AXIS, whole=True),
@@ -299,7 +295,7 @@ class LensMapDisplacement(Block):
         mean, stddev = float(mean.item()), float(stddev.item())
         limit = float(self.parameters["heatmap_max"]) or max(maximum, 1e-5)
         levels = cv2.convertScaleAbs(np.minimum(magnitude, limit), alpha=255 / limit)
-        heatmap = cv2.applyColorMap(levels, _COLORMAPS[self.parameters["colormap"]])
+        heatmap = cv2.applyColorMap(levels, COLORMAPS[self.parameters["colormap"]])
         outputs = {
             "heatmap": heatmap,
             "magnitude": magnitude,
