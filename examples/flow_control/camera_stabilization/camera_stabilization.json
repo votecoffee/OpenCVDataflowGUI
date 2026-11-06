@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "frames",
+      "type": "input.file",
+      "name": "Known camera jitter",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/frame_00.png",
+          "assets/frame_01.png",
+          "assets/frame_02.png",
+          "assets/frame_03.png",
+          "assets/frame_04.png",
+          "assets/frame_05.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Anchor frame",
+      "parameters": {
+        "path": "assets/frame_00.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "stabilize",
+      "type": "sequence.stabilize_camera",
+      "name": "Lock to anchor",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "motion_model": "similarity",
+        "follow": 0.0,
+        "max_features": 240,
+        "feature_quality": 0.01,
+        "feature_spacing": 8.0,
+        "tracking_window": 21,
+        "max_pyramid_level": 3,
+        "forward_backward_pixels": 1.0,
+        "max_patch_error": 30.0,
+        "inlier_pixels": 2.0,
+        "min_inliers": 12,
+        "min_inlier_ratio": 0.5,
+        "max_step_pixels": 40.0,
+        "max_step_degrees": 12.0,
+        "max_step_scale_ratio": 1.15,
+        "min_coverage_fraction": 0.65,
+        "interpolation": "linear"
+      },
+      "position": [
+        340,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "transform",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "raw_error",
+      "type": "inspect.image_quality",
+      "name": "Raw error vs anchor",
+      "parameters": {
+        "metric": "mae",
+        "check_threshold": false,
+        "threshold": 0.95,
+        "peak_value": 255.0
+      },
+      "position": [
+        690,
+        245
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "stabilized_error",
+      "type": "inspect.image_quality",
+      "name": "Covered error vs anchor",
+      "parameters": {
+        "metric": "mae",
+        "check_threshold": false,
+        "threshold": 0.95,
+        "peak_value": 255.0
+      },
+      "position": [
+        690,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "stabilize",
+      "input": "image"
+    },
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "raw_error",
+      "input": "image_a"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "raw_error",
+      "input": "image_b"
+    },
+    {
+      "source": "stabilize",
+      "output": "image",
+      "target": "stabilized_error",
+      "input": "image_a"
+    },
+    {
+      "source": "stabilize",
+      "output": "coverage",
+      "target": "stabilized_error",
+      "input": "mask"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "stabilized_error",
+      "input": "image_b"
+    }
+  ]
+}

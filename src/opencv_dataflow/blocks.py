@@ -732,6 +732,7 @@ def builtin_registry():
     from .skeleton import PruneSkeleton, Skeletonize
     from .spanning_tree import MinimumSpanningTree
     from .spectral import SPECTRAL_BLOCKS
+    from .stabilization import StabilizeCameraMotion
     from .stereo3d import STEREO3D_BLOCKS
     from .subpixel_crop import CropSubpixel
     from .table_sort import SortNumericTable
@@ -869,6 +870,7 @@ def builtin_registry():
         RecipeSelect,
         RecipeField,
         *SEQUENCE_BLOCKS,
+        StabilizeCameraMotion,
         *NATIVE_BACKGROUND_BLOCKS,
         *NATIVE_TRACKER_BLOCKS,
         TrackConveyorParts,

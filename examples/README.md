@@ -203,6 +203,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 
 | Example | Demonstrates |
 | --- | --- |
+| [Camera motion stabilization](flow_control/camera_stabilization/README.md) | Replay known camera jitter and compare raw and corrected error against an anchor frame. |
 | [Conveyor tracking](flow_control/conveyor_tracking/README.md) | Find repeated parts in a synthetic moving sequence and track them using encoder displacement. |
 | [Coordinated camera inputs](flow_control/input_coordination/README.md) | Join two synthetic camera images to a simulated PLC part counter by ticket. |
 | [Native background subtraction](flow_control/native_background/README.md) | Compare OpenCV MOG2 and KNN foreground masks on a synthetic sequence. |

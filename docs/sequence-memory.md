@@ -40,6 +40,7 @@ or consume primary outputs; a status event during warmup does not mean inspectio
 | Running background subtraction | Running mean/variance; foreground mask, background, masked foreground | Warmup, optional stability; absolute/variance threshold, rate, deviations, variance floor, foreground-learning policy, learn input |
 | Farneback optical flow | Previous frame and optional previous flow; dense float32 XY vectors, magnitude, angle, visualization | Needs previous frame and warmup; scale, levels, window, iterations, polynomial neighborhood/sigma, Gaussian window, warm-start flow, visualization scale |
 | Track points (Lucas-Kanade) | Previous grayscale image, feature positions, IDs and ages; track collection and overlay | Warmup plus minimum mature tracks; corner detector controls, LK window/levels/termination, patch error or minimum eigenvalue, forward/backward tolerance, reseeding and age limits |
+| Stabilize camera motion | Previous grayscale frame, background feature tracks and a smoothed global trajectory. Corrected image, coverage mask and forward/inverse transform. | Needs a usable fit after the anchor frame. Translation or similarity, smoothing, motion and coverage gates, re-anchoring on loss of fit. |
 | Image memory / trained reference | First/latest/mean image; reference, absolute difference, current image | Eligible learning count or validated trained seed; learn input, freeze after warmup, strict/shape-only reference context |
 
 Flow vectors are displacements from the previous image grid to the current image in
@@ -57,6 +58,15 @@ or vectors to the selection. Reference learning stores the full image and masks 
 difference output. Point tracking seeds and retains points inside the selection.
 Background supports uint8/uint16/float32; flow and point tracking require uint8
 (color converts to grayscale). Reference memory preserves supported image depth and encoding.
+
+The [camera stabilization example](../examples/flow_control/camera_stabilization/README.md)
+replays measured shifts and rotations. The background selection controls
+feature centers. The correction applies to the whole frame. Corrected pixels
+and their coverage mask share a new coordinate frame for each anchor.
+The transform reports the mapping to and from the current raw input.
+For sequence plugins that change the grid, a sequence step can provide an
+output frame per primary port. The port retains its current ticket and sequence
+status and uses the supplied frame in place of the input spatial and pyramid grid.
 
 ## Streams, resets and execution
 
