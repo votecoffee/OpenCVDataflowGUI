@@ -3814,6 +3814,22 @@ Inputs: `image_a` (image), `image_b` (image), `window` (image, optional).
 | `hanning_window` | `false` |  |
 | `min_response` | `0.0` |  |
 
+## Iterative phase correlation (`inspect.phase_correlation_iterative`)
+
+Inspection / Registration
+
+Inputs: `image_a` (image), `image_b` (image).
+
+Input `image_a` — Reference image with even width and height.
+
+Input `image_b` — Moving image. Its observed shift is measured relative to the reference.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `precision` | `"float64"` | `float32`, `float64` Floating-point working depth. Color inputs are converted to grayscale. |
+| `neighborhood_size` | `7` | Value must be a positive odd integer between 3 and 63. Initial odd neighborhood width (OpenCV L2size). |
+| `max_iterations` | `10` | Value must be a whole number between 1 and 1000. Maximum iterations per native refinement attempt. |
+
 ## Prune skeleton spurs (`inspect.prune_skeleton`)
 
 Inspection / Segmentation
