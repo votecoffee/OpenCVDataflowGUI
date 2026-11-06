@@ -903,6 +903,8 @@ Try the [camera stabilization example](examples/flow_control/camera_stabilizatio
 **Stitch scan sequence** automatically registers two to eight ordered views.
 Each adjacent pair must meet the fit and overlap thresholds before the graph
 receives a mosaic. Try the [ordered scan example](examples/image_processing/stitch_scan_sequence/README.md).
+For scans with uneven lighting, the [exposure example](examples/image_processing/stitch_scan_exposure/README.md)
+shows optional gain correction and feathered blending.
 
 ## Architecture
 

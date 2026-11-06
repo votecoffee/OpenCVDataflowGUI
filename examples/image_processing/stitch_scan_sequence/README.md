@@ -30,6 +30,9 @@ The example uses nearest-neighbor resampling to verify the covered pixels
 against their source tiles.
 [OpenCV feature matching](https://docs.opencv.org/5.0/py_tutorials/py_features/py_matcher/py_matcher.html)
 
+For tiles with varying brightness, see the
+[exposure correction and feathering example](../stitch_scan_exposure/README.md).
+
 ```powershell
 opencv-dataflow-run examples/image_processing/stitch_scan_sequence/stitch_scan_sequence.json --all-images
 ```

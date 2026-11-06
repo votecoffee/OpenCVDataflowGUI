@@ -47,7 +47,7 @@ def _project_edges(image, to_anchor):
         return projected[:, :2] / denominator[:, None]
 
 
-def mosaic_canvas(images, transforms):
+def mosaic_canvas(images, transforms, *, extra_bytes_per_pixel=0):
     edges = np.concatenate(
         [_project_edges(image, matrix) for image, matrix in zip(images, transforms, strict=True)]
     )
@@ -71,7 +71,8 @@ def mosaic_canvas(images, transforms):
     width, height = map(int, size)
     first = images[0]
     channels = 1 if first.ndim == 2 else first.shape[2]
-    if width * height * (5 * channels * first.itemsize + 10) > _MAX_WORKSPACE:
+    bytes_per_pixel = 5 * channels * first.itemsize + 10 + extra_bytes_per_pixel
+    if width * height * bytes_per_pixel > _MAX_WORKSPACE:
         raise ValidationError("Mosaic exceeds the 256 MiB workspace limit")
     a_to_mosaic = np.eye(3)
     a_to_mosaic[:2, 2] = -lower

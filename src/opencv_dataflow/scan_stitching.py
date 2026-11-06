@@ -5,9 +5,17 @@ import math
 import cv2
 import numpy as np
 
+from .analysis_tools import cast_intensity
 from .core import Port, Result
 from .image_stitching import mosaic_canvas, mosaic_frame, warp_mosaic_view
 from .images import ImageArray, image_format
+from .mosaic_photometry import (
+    IDENTITY_EXPOSURE,
+    MAX_EXPOSURE_SAMPLES,
+    FeatherMosaic,
+    corrected_view,
+    fit_overlap_exposure,
+)
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, FlowGroup, check_spatial, image_with_payload, metadata
 from .processing import ImageTool, gray_image, image_value
@@ -170,11 +178,17 @@ class StitchScanSequence(ImageTool):
         "min_overlap_pixels": 64,
         "interpolation": "linear",
         "blend": "prefer_first",
+        "feather_width": 32,
+        "exposure": "none",
+        "min_exposure_samples": 64,
+        "max_exposure_gain": 2.0,
+        "max_exposure_offset_fraction": 0.25,
     }
     parameter_choices = {
         "motion_model": ("translation", "similarity"),
         "interpolation": tuple(_INTERPOLATION),
-        "blend": ("prefer_first", "prefer_last"),
+        "blend": ("prefer_first", "prefer_last", "feather"),
+        "exposure": ("none", "gain", "offset"),
     }
     parameter_ranges = {
         "max_features": NumericRange(12, 2500, whole=True),
@@ -186,6 +200,10 @@ class StitchScanSequence(ImageTool):
         "max_scale_ratio": NumericRange(1, 2),
         "max_rotation_degrees": NumericRange(0, 180),
         "min_overlap_pixels": NumericRange(1, 16_777_216, whole=True),
+        "feather_width": NumericRange(1, 512, whole=True),
+        "min_exposure_samples": NumericRange(1, MAX_EXPOSURE_SAMPLES, whole=True),
+        "max_exposure_gain": NumericRange(1, 8),
+        "max_exposure_offset_fraction": NumericRange(0, 1),
     }
     parameter_help = {
         "motion_model": "Similarity additionally fits rotation and uniform scale.",
@@ -193,7 +211,12 @@ class StitchScanSequence(ImageTool):
         "min_inliers": "Minimum distinct correspondences supporting each adjacent transform.",
         "max_scale_ratio": "Similarity scale range is the reciprocal of this ratio to the ratio.",
         "min_overlap_pixels": "Minimum number of valid overlapping pixels for each adjacent pair.",
-        "blend": "Choose the earliest or latest view in batch order for covered overlap pixels.",
+        "blend": "Prefer the earliest or latest covered view, or feather across valid edges.",
+        "feather_width": "Distance from a valid edge, in mosaic pixels, to reach full weight.",
+        "exposure": "Match the first view using a median gain or offset from valid overlaps.",
+        "min_exposure_samples": "Minimum usable samples per adjacent overlap for exposure fitting.",
+        "max_exposure_gain": "Limit cumulative gain to this ratio and its reciprocal.",
+        "max_exposure_offset_fraction": "Limit cumulative offset as a fraction of full scale.",
     }
     input_help = {
         "views": "Two to eight ordered overlapping images from Batch serial entries.",
@@ -245,13 +268,29 @@ class StitchScanSequence(ImageTool):
             transforms.append(transforms[-1] @ transform)
             previous = current
 
-        size, anchor_to_mosaic = mosaic_canvas(pixels, transforms)
+        dtype = pixels[0].dtype
+        channels = 1 if pixels[0].ndim == 2 else pixels[0].shape[2]
+        fit_exposure = p["exposure"] != "none"
+        feather = p["blend"] == "feather"
+        extra_bytes = 0
+        # Include retained warped views, sample indices, and blend/cast buffers.
+        if fit_exposure:
+            extra_bytes += 9 + channels * (dtype.itemsize + 16)
+        if feather:
+            extra_bytes += 20 + 24 * channels
+        size, anchor_to_mosaic = mosaic_canvas(
+            pixels, transforms, extra_bytes_per_pixel=extra_bytes
+        )
         width, height = size
-        mosaic = np.zeros((height, width, *pixels[0].shape[2:]), dtype=pixels[0].dtype)
+        shape = (height, width, *pixels[0].shape[2:])
+        blender = FeatherMosaic(shape, int(p["feather_width"])) if feather else None
+        mosaic = np.zeros(shape, dtype=dtype) if blender is None else None
         counts = np.zeros((height, width), dtype=np.uint8)
         layout["views"] = []
         interpolation = _INTERPOLATION[p["interpolation"]]
         previous_valid = None
+        previous_warped = None
+        correction = IDENTITY_EXPOSURE
         for index, (image, mask, to_anchor, context, label) in enumerate(
             zip(pixels, masks, transforms, contexts, group.labels, strict=True)
         ):
@@ -264,24 +303,44 @@ class StitchScanSequence(ImageTool):
             valid = warp_mosaic_view(support, to_mosaic, size, interpolation) == 1
             if previous_valid is not None:
                 report = layout["pairs"][index - 1]
-                report["overlap_pixels"] = int(np.count_nonzero(previous_valid & valid))
+                overlap = previous_valid & valid
+                report["overlap_pixels"] = int(np.count_nonzero(overlap))
                 if report["overlap_pixels"] < int(p["min_overlap_pixels"]):
                     report["status"] = "insufficient_overlap"
                     return self._reject(layout, report, "scan_insufficient_overlap")
-            use = valid if p["blend"] == "prefer_last" else valid & (counts == 0)
             warped = warp_mosaic_view(image, to_mosaic, size, interpolation)
-            np.copyto(mosaic, warped, where=use if mosaic.ndim == 2 else use[..., None])
+            if previous_warped is not None:
+                correction, exposure_report = fit_overlap_exposure(
+                    previous_warped, warped, overlap, correction, p
+                )
+                report["exposure"] = exposure_report
+                if correction is None:
+                    report["status"] = exposure_report["status"]
+                    return self._reject(layout, report, "scan_exposure_failed")
+            if fit_exposure:
+                previous_warped = warped
+                warped = corrected_view(warped, valid, correction)
+            if blender is not None:
+                blender.add(warped, valid)
+            else:
+                use = valid if p["blend"] == "prefer_last" else valid & (counts == 0)
+                warped = cast_intensity(warped, dtype) if warped.dtype != dtype else warped
+                np.copyto(mosaic, warped, where=use if channels == 1 else use[..., None])
             counts += valid
             previous_valid = valid
-            layout["views"].append(
-                {
-                    "index": index,
-                    "label": label,
-                    "source_to_mosaic": to_mosaic.tolist(),
-                    "source_spatial": context.get("spatial"),
-                    "source_ticket": context.get("ticket"),
-                }
-            )
+            view = {
+                "index": index,
+                "label": label,
+                "source_to_mosaic": to_mosaic.tolist(),
+                "source_spatial": context.get("spatial"),
+                "source_ticket": context.get("ticket"),
+            }
+            if fit_exposure:
+                gain, offset = correction
+                view["exposure"] = {"gain": gain, "offset": offset}
+            layout["views"].append(view)
+        if blender is not None:
+            mosaic = blender.finish(dtype)
         if mosaic.dtype.kind == "f" and not np.isfinite(mosaic).all():
             raise ValidationError("Stitching produced nonfinite samples")
         layout.update(
