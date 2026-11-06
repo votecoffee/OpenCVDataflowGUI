@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "L-shaped part",
+      "parameters": {
+        "path": "assets/part.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "contours",
+      "type": "inspect.contours",
+      "name": "Measure the part boundary",
+      "parameters": {
+        "expected_count": 1
+      },
+      "position": [
+        320,
+        220
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlap",
+      "type": "inspect.convex_polygon_overlap",
+      "name": "Compare the hull with a reference footprint",
+      "graphics_mode": "on",
+      "parameters": {
+        "input_mode": "convex_hull",
+        "points_b": [
+          [
+            25,
+            20
+          ],
+          [
+            55,
+            20
+          ],
+          [
+            55,
+            45
+          ],
+          [
+            25,
+            45
+          ]
+        ],
+        "check_iou": true,
+        "minimum_iou": 0.3
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "points_a",
+        "image"
+      ],
+      "exposed_outputs": [
+        "area",
+        "iou",
+        "classification",
+        "points",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show the footprints and overlap",
+      "parameters": {},
+      "position": [
+        975,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "contours",
+      "input": "image"
+    },
+    {
+      "source": "contours",
+      "output": "collection",
+      "target": "overlap",
+      "input": "points_a"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlap",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "overlap",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}

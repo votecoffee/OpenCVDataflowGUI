@@ -652,6 +652,7 @@ def builtin_registry():
     from .color_measurement import COLOR_MEASUREMENT_BLOCKS
     from .contour_analysis import CONTOUR_ANALYSIS_BLOCKS
     from .control_flow import CONTROL_BLOCKS
+    from .convex_overlap import ConvexPolygonOverlap
     from .conveyor_tracking import ConveyorDemo, TrackConveyorParts
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
@@ -786,6 +787,7 @@ def builtin_registry():
         FitShape,
         BoundingRotatedRectangle,
         RotatedRectangleOverlap,
+        ConvexPolygonOverlap,
         FindTemplateInstances,
         SelectPickCandidate,
         BeadCalipers,

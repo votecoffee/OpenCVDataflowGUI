@@ -2818,6 +2818,23 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `offset` | `[0, 0]` |  |
 | `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
 
+## Convex polygon overlap (`inspect.convex_polygon_overlap`)
+
+Inspection / Measurements
+
+Inputs: `points_a` (data, optional), `points_b` (data, optional), `image` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `points_a` | `[[10, 10], [50, 10], [50, 50], [10, 50]]` | Vertices for polygon A. Wired points or a contour collection take precedence. |
+| `points_b` | `[[30, 20], [60, 20], [60, 60], [30, 60]]` | Vertices for polygon B. Wired points or a contour collection take precedence. |
+| `a_item_index` | `0` | Value must be a whole number at least 0. Zero-based contour collection item for A. |
+| `b_item_index` | `0` | Value must be a whole number at least 0. Zero-based contour collection item for B. |
+| `input_mode` | `"ordered"` | `ordered`, `convex_hull` Use ordered convex boundaries or form a convex hull from each point set. |
+| `include_containment` | `true` | Include strictly nested polygons in the intersection. |
+| `check_iou` | `false` |  |
+| `minimum_iou` | `0.5` | Value must be a finite number between 0 and 1. Minimum intersection-over-union ratio for a passing result. |
+
 ## Harris / minimum eigenvalue response (`inspect.corner_response`)
 
 Inspection / Features

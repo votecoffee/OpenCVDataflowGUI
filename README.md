@@ -459,6 +459,10 @@ and compares it against a reference. The measurement includes intersection
 area, intersection-over-union and the fraction of each footprint covered.
 [Rotated rectangle overlap example](examples/rotated_rectangle_overlap/README.md)
 
+**Convex polygon overlap** measures intersection area and IoU for polygon
+footprints. The [example](examples/convex_overlap/README.md) wires a detected
+contour into the block and compares its convex hull with a reference.
+
 **Path intensity profile** samples each image channel at regular distances
 along an open or closed path and preserves gaps outside the selection.
 [Path intensity profile example](examples/path_intensity_profile/README.md)
