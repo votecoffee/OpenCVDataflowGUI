@@ -873,6 +873,11 @@ reconstructs them with the same fitted model.
 mask or region. Choose infinity, L1, L2, squared L2, Hamming or Hamming2 and set an
 optional upper limit. Try the [image norms example](examples/inspection/image_norm/README.md).
 
+**Combine Fourier spectra** multiplies two typed DFT outputs or conjugates a spectrum.
+The product can drive a custom frequency-domain filter or a circular convolution.
+Multiplying by a conjugate gives a separate circular lag frame after IDFT.
+Try the [spectrum product example](examples/image_processing/spectrum_product/README.md).
+
 ## Architecture
 
 Choose **Run profile: debug / balanced / lean** in the toolbar to control observation

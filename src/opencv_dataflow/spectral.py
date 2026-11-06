@@ -8,6 +8,7 @@ import numpy as np
 from .core import Block, Port, Result
 from .images import ImageArray, convert_depth
 from .parameter_validation import NumericRange, ValidationError
+from .payloads import frame
 from .processing import image_value
 
 DCT_FLAGS = {"2d": 0, "rows": cv2.DCT_ROWS}
@@ -355,6 +356,68 @@ class MaskFourierSpectrum(Block):
         )
 
 
+class CombineFourierSpectra(Block):
+    type_id, title = "cv.combine_fourier_spectra", "Combine Fourier spectra"
+    category, block_type, subtype = "Image processing", "Image processing", "Spectral"
+    process_inputs_readonly = True
+    inputs = (
+        *DiscreteFourierTransform.outputs,
+        Port("spectrum_b", "dft", required=False, required_when_connected=True, visual_type="data"),
+    )
+    outputs = DiscreteFourierTransform.outputs
+    payload_reference = "spectrum"
+    defaults = {"operation": "multiply"}
+    parameter_choices = {"operation": ("multiply", "multiply_conjugate", "conjugate")}
+    parameter_help = {
+        "operation": "Multiply applies a filter or circular convolution. "
+        "Multiply conjugate gives circular correlation. Conjugate uses only Spectrum.",
+    }
+    input_help = {
+        "spectrum": "First DFT. Supplies the output size after inverse reconstruction.",
+        "spectrum_b": "Second DFT with the same full bin grid and transform mode.",
+    }
+
+    def process(self, inputs):
+        first = inputs["spectrum"]
+        left = first.validated_values()
+        second = inputs.get("spectrum_b")
+        operation = self.parameters["operation"]
+        if operation == "conjugate":
+            if second is not None:
+                raise ValidationError("Disconnect Spectrum B for unary conjugation", "operation")
+            values = left.copy()
+            np.negative(left[..., 1], out=values[..., 1])
+        else:
+            if second is None:
+                raise ValidationError("Connect Spectrum B for complex multiplication", "operation")
+            right = second.validated_values()
+            if first.mode != second.mode or left.shape != right.shape:
+                raise ValidationError("Spectra must have the same transform mode and bin grid")
+            dtype = np.result_type(left, right)
+            values = cv2.mulSpectrums(
+                left.astype(dtype, copy=False),
+                right.astype(dtype, copy=False),
+                DFT_FLAGS[first.mode],
+                conjB=operation == "multiply_conjugate",
+            )
+            if not np.isfinite(values).all():
+                raise ValidationError("Spectrum multiplication overflowed. Reduce the input range")
+        combined = replace(first, values=values)
+        payloads = {}
+        if operation != "multiply":
+            # Reflected samples and circular lags use new coordinates with index zero as origin.
+            payloads["spectrum"] = {
+                "spatial": frame(first.image_shape[::-1], f"{self.id}:spectrum"),
+            }
+            if operation == "multiply_conjugate":
+                payloads["spectrum"]["lag_origin"] = [0, 0]
+        return Result(
+            {"spectrum": combined},
+            graphics=combined.preview() if self.generate_graphics else {},
+            payloads=payloads,
+        )
+
+
 class InverseDiscreteFourierTransform(Block):
     type_id, title = "cv.idft", "Inverse discrete Fourier transform (IDFT)"
     category, block_type, subtype = "Image processing", "Image processing", "Spectral"
@@ -384,5 +447,6 @@ SPECTRAL_BLOCKS = (
     DiscreteFourierTransform,
     FilterFourierSpectrum,
     MaskFourierSpectrum,
+    CombineFourierSpectra,
     InverseDiscreteFourierTransform,
 )

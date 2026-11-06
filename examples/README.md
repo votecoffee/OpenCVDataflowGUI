@@ -40,6 +40,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Flat-field illumination correction](image_processing/flat_field/README.md) | Remove a lighting gradient using bright and dark references while retaining a synthetic defect. |
 | [Fourier gain mask](image_processing/fourier_gain/README.md) | Apply a custom notch at a specific frequency pair and reconstruct the image. |
 | [Fourier spectrum filtering](image_processing/fourier_filter/README.md) | Reject a periodic stripe pattern with a band-stop filter and inverse DFT. |
+| [Fourier spectrum product](image_processing/spectrum_product/README.md) | Combine two DFT spectra and recover a known wrapped shift from the reconstructed lag map. |
 | [Gabor orientation bank](image_processing/gabor_orientation_bank/README.md) | Find dominant stripe directions and reject a flat patch. |
 | [Gabor texture direction](image_processing/gabor_texture/README.md) | Compare two oriented texture responses on vertical and horizontal stripes. |
 | [Guided edge-preserving filter](image_processing/guided_filter/README.md) | Smooth a noisy image while preserving its main intensity edge. |

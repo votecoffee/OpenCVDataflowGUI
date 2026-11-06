@@ -17,13 +17,15 @@ solvers and decompositions, and reversible Fourier and cosine transforms.
 [Measure image norms](../examples/inspection/image_norm/README.md) adds
 absolute and reference-relative reductions across selected pixels, including
 L1, L2, squared L2, infinity, Hamming and Hamming2.
+[Combine Fourier spectra](../examples/image_processing/spectrum_product/README.md)
+exposes complex bin multiplication and conjugation for custom filters,
+circular convolution and circular correlation.
 
 | Priority | Remaining core array work | Graph use |
 | --- | --- | --- |
-| 1 | Complex spectrum multiplication and conjugation | Wire two DFT spectra to construct custom frequency-domain filters, circular convolutions and correlations. Dedicated Fourier correlation and deblurring blocks already compose these primitives internally. |
-| 2 | Repeatable random arrays and perturbations | Build reproducible synthetic noise, sampling and stress fixtures with seed control that works during parallel execution. |
-| 3 | Matrix structure utilities | Extract diagonals and traces, construct diagonal or identity matrices, and complete a symmetric matrix from one triangle when an upstream job provides partial coefficients. |
-| 4 | Specialized layouts and precision | Assess concrete use cases for N-dimensional arrays, native half-precision storage, sparse matrices and batched matrix operations before defining port types. |
+| 1 | Repeatable random arrays and perturbations | Build reproducible synthetic noise, sampling and stress fixtures with seed control that works during parallel execution. |
+| 2 | Matrix structure utilities | Extract diagonals and traces, construct diagonal or identity matrices, and complete a symmetric matrix from one triangle when an upstream job provides partial coefficients. |
+| 3 | Specialized layouts and precision | Assess concrete use cases for N-dimensional arrays, native half-precision storage, sparse matrices and batched matrix operations before defining port types. |
 
 The remaining baseline 2D workflows are tracked below. Stage 1 also needs a
 classification pass over the pinned Python inventory for helper functions,
