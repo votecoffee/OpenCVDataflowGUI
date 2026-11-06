@@ -661,6 +661,7 @@ def builtin_registry():
     from .feature_covariance import FitFeatureCovariance, MahalanobisDistance
     from .features import FEATURE_BLOCKS
     from .fourier_correlation import FourierCorrelation
+    from .generalized_hough import FindHoughTemplate
     from .geometry3d import GEOMETRY3D_BLOCKS
     from .gram_matrix import GramMatrix
     from .histogram import Histogram
@@ -757,6 +758,7 @@ def builtin_registry():
         *SPECTRAL_BLOCKS,
         FourierCorrelation,
         *ANALYSIS_BLOCKS,
+        FindHoughTemplate,
         ChannelTransform,
         IntensityProfile,
         PathIntensityProfile,

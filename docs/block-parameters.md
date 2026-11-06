@@ -3051,6 +3051,25 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `rho` | `1.0` | Value must be a finite number at least 0. |
 | `theta_degrees` | `1.0` | Value must be a finite number between 0 and 180. |
 
+## Find Hough template (`inspect.hough_template`)
+
+Inspection / Matching
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `template` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `template_anchor` | `[-1, -1]` | Template pose origin. [-1, -1] uses the integer center. |
+| `canny_low` | `40.0` | Value must be a finite number at least 0. |
+| `canny_high` | `100.0` | Value must be a finite number at least 0. |
+| `levels` | `360` | Value must be a whole number between 1 and 720. Number of gradient orientation bins used for voting. |
+| `dp` | `1.0` | Value must be a finite number between 1 and 16. Accumulator cell spacing in source pixels. Larger values use a coarser grid. |
+| `minimum_votes` | `25` | Value must be a whole number between 2 and 1.5e+08. Minimum accepted center vote count. |
+| `min_center_distance` | `10.0` | Value must be a finite number between 0 and 10000. Minimum distance between retained anchors after selection. |
+| `minimum_matches` | `1` | Value must be a whole number between 0 and 64. |
+| `maximum_matches` | `25` | Value must be a whole number between 1 and 64. |
+| `draw_overlay` | `true` |  |
+
 ## Compare image quality (`inspect.image_quality`)
 
 Inspection / Measurements

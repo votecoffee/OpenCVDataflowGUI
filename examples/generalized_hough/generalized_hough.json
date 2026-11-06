@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.file",
+      "name": "Two repeated parts",
+      "parameters": {
+        "path": "assets/scene.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "template",
+      "type": "input.file",
+      "name": "Template shape",
+      "parameters": {
+        "path": "assets/template.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        225
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Select the lower-right part",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          85,
+          55,
+          65,
+          50
+        ]
+      },
+      "position": [
+        315,
+        225
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "all",
+      "type": "inspect.hough_template",
+      "name": "Locate both shapes",
+      "parameters": {
+        "minimum_matches": 2
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "template"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "poses",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "selected",
+      "type": "inspect.hough_template",
+      "name": "Locate shapes inside the region",
+      "parameters": {
+        "min_center_distance": 100
+      },
+      "position": [
+        640,
+        240
+      ],
+      "exposed_inputs": [
+        "image",
+        "template",
+        "region"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "all",
+      "input": "image"
+    },
+    {
+      "source": "template",
+      "output": "image",
+      "target": "all",
+      "input": "template"
+    },
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "selected",
+      "input": "image"
+    },
+    {
+      "source": "template",
+      "output": "image",
+      "target": "selected",
+      "input": "template"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "selected",
+      "input": "region"
+    }
+  ]
+}

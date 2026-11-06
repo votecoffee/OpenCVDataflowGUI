@@ -400,6 +400,10 @@ circles and distance transform. See [additional tools](docs/additional-tools.md)
 After preparing the optional Lena asset, open `examples/lena_features/lena_features.json` to try
 CLAHE → corners, edges → line segments, and a histogram in one project.
 
+**Find Hough template** locates translated copies of a shape from its edges.
+The [generalized Hough example](examples/generalized_hough/README.md) compares
+full-image and region-limited searches.
+
 The [color normalization example](examples/normalize_color/README.md) compares
 shared and independent channel scaling in a selected patch while preserving the
 pixels outside it.

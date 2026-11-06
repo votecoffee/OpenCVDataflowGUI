@@ -304,7 +304,7 @@ P2	method	cv2.ccm.ColorCorrectionModel.write	method name only	-
 P2	function	cv2.ccm.gammaCorrection	no static reference	-
 P2	function	cv2.convexHull	literal reference	-
 P2	function	cv2.convexityDefects	literal reference	-
-P2	function	cv2.createGeneralizedHoughBallard	no static reference	-
+P2	function	cv2.createGeneralizedHoughBallard	literal reference	-
 P2	function	cv2.createGeneralizedHoughGuil	no static reference	-
 P2	function	cv2.dct	literal reference	-
 P2	class	cv2.detail.AffineBasedEstimator	no static reference	-
@@ -2821,15 +2821,15 @@ P3	method	cv2.GeneralizedHough.getMaxBufferSize	no static reference	-
 P3	method	cv2.GeneralizedHough.getMinDist	no static reference	-
 P3	method	cv2.GeneralizedHough.setCannyHighThresh	no static reference	-
 P3	method	cv2.GeneralizedHough.setCannyLowThresh	no static reference	-
-P3	method	cv2.GeneralizedHough.setDp	no static reference	-
+P3	method	cv2.GeneralizedHough.setDp	method name only	-
 P3	method	cv2.GeneralizedHough.setMaxBufferSize	no static reference	-
 P3	method	cv2.GeneralizedHough.setMinDist	no static reference	-
-P3	method	cv2.GeneralizedHough.setTemplate	no static reference	-
+P3	method	cv2.GeneralizedHough.setTemplate	method name only	-
 P3	class	cv2.GeneralizedHoughBallard	no static reference	-
 P3	method	cv2.GeneralizedHoughBallard.getLevels	no static reference	-
 P3	method	cv2.GeneralizedHoughBallard.getVotesThreshold	no static reference	-
-P3	method	cv2.GeneralizedHoughBallard.setLevels	no static reference	-
-P3	method	cv2.GeneralizedHoughBallard.setVotesThreshold	no static reference	-
+P3	method	cv2.GeneralizedHoughBallard.setLevels	method name only	-
+P3	method	cv2.GeneralizedHoughBallard.setVotesThreshold	method name only	-
 P3	class	cv2.GeneralizedHoughGuil	no static reference	-
 P3	method	cv2.GeneralizedHoughGuil.getAngleEpsilon	no static reference	-
 P3	method	cv2.GeneralizedHoughGuil.getAngleStep	no static reference	-
@@ -2846,7 +2846,7 @@ P3	method	cv2.GeneralizedHoughGuil.getXi	no static reference	-
 P3	method	cv2.GeneralizedHoughGuil.setAngleEpsilon	no static reference	-
 P3	method	cv2.GeneralizedHoughGuil.setAngleStep	no static reference	-
 P3	method	cv2.GeneralizedHoughGuil.setAngleThresh	no static reference	-
-P3	method	cv2.GeneralizedHoughGuil.setLevels	no static reference	-
+P3	method	cv2.GeneralizedHoughGuil.setLevels	method name only	-
 P3	method	cv2.GeneralizedHoughGuil.setMaxAngle	no static reference	-
 P3	method	cv2.GeneralizedHoughGuil.setMaxScale	no static reference	-
 P3	method	cv2.GeneralizedHoughGuil.setMinAngle	no static reference	-
