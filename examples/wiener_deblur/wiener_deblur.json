@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Load the sharp reference",
+      "parameters": {
+        "path": "assets/sharp_parts.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "blur",
+      "type": "cv.gaussian_blur",
+      "name": "Simulate a known blur",
+      "parameters": {
+        "kernel": 9,
+        "kernel_y": 9,
+        "sigma": 2.0,
+        "sigma_y": 2.0,
+        "border": "reflect_101"
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "restore",
+      "type": "cv.wiener_deblur",
+      "name": "Restore with the matching PSF",
+      "parameters": {
+        "kernel_width": 9,
+        "kernel_height": 9,
+        "sigma_x": 2.0,
+        "sigma_y": 2.0,
+        "noise_to_signal": 0.0005
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "psf"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "before",
+      "type": "inspect.image_quality",
+      "name": "Measure blurred RMSE",
+      "parameters": {
+        "metric": "rmse"
+      },
+      "position": [
+        640,
+        235
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "after",
+      "type": "inspect.image_quality",
+      "name": "Measure restored RMSE",
+      "parameters": {
+        "metric": "rmse"
+      },
+      "position": [
+        960,
+        235
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "blur",
+      "input": "image"
+    },
+    {
+      "source": "blur",
+      "output": "image",
+      "target": "restore",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "before",
+      "input": "image_a"
+    },
+    {
+      "source": "blur",
+      "output": "image",
+      "target": "before",
+      "input": "image_b"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "after",
+      "input": "image_a"
+    },
+    {
+      "source": "restore",
+      "output": "image",
+      "target": "after",
+      "input": "image_b"
+    }
+  ]
+}

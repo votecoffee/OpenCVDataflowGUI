@@ -1942,6 +1942,29 @@ Inputs: `image` (image), `transform` (data, optional).
 | `border_value` | `0.0` |  |
 | `inverse_map` | `false` |  |
 
+## Wiener deblur (`cv.wiener_deblur`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `psf` (data, optional).
+
+Input `psf` — Optional centered point-spread function as a numeric table.
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model` | `"gaussian"` | `gaussian`, `custom` Model of the blur. A wired PSF overrides this setting. |
+| `kernel_width` | `9` | Value must be a positive odd integer between 1 and 127. |
+| `kernel_height` | `9` | Value must be a positive odd integer between 1 and 127. |
+| `sigma_x` | `2.0` | Value must be a finite number between 0.01 and 100. Gaussian blur standard deviation along X, in pixels. |
+| `sigma_y` | `2.0` | Value must be a finite number between 0.01 and 100. Gaussian blur standard deviation along Y, in pixels. |
+| `custom_psf` | `[[0, 0, 0], [0, 1, 0], [0, 0, 0]]` | Odd-sized, nonnegative convolution kernel with the origin at its center. |
+| `noise_to_signal` | `0.002` | Value must be a finite number between 1e-12 and 1000. Noise-to-signal power ratio. Increase to suppress noise amplification. |
+| `boundary` | `"reflect_101"` | `reflect_101`, `circular` Reflect before deblurring or treat opposite edges as adjacent. |
+| `output_depth` | `"same"` | `same`, `float32`, `float64` Floating output preserves signed values in the original sample units. |
+
 ## Batch serial entries (`flow.batch`)
 
 Control flow / Groups

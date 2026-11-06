@@ -31,6 +31,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Intensity profile](intensity_profile/README.md) | Plot the mean and locate the maximum in each selected column. |
 | [Find nonzero pixels](nonzero_pixels/README.md) | Extract a bounded set of coordinates and full bounds from a texture mask. |
 | [Pixel comparison](pixel_comparison/README.md) | Compare a background difference with a scalar to build a texture mask. |
+| [Wiener deblur](wiener_deblur/README.md) | Recover detail after a known Gaussian blur and measure the change in RMSE. |
 | [TV-L1 denoising](tvl1_denoising/README.md) | Fuse three aligned views to suppress impulse noise. |
 | [Temporal non-local means](temporal_nlm/README.md) | Denoise the middle frame of a short sequence and preserve its ticket. |
 | [Pyramid mean-shift filtering](mean_shift_filter/README.md) | Flatten checkerboard color texture and separate the two color classes. |
