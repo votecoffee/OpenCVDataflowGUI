@@ -403,6 +403,8 @@ CLAHE → corners, edges → line segments, and a histogram in one project.
 The [color normalization example](examples/normalize_color/README.md) compares
 shared and independent channel scaling in a selected patch while preserving the
 pixels outside it.
+The [linear channel transform example](examples/channel_transform/README.md)
+mixes color channels using a matrix and derives a grayscale difference image.
 
 The [registration and transform tools](docs/registration-tools.md) add arbitrary
 rotation, affine/perspective warps, borders, pyramids, custom filtering, unsharp

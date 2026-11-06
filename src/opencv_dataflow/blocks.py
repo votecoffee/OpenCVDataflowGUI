@@ -642,6 +642,7 @@ def builtin_registry():
         Undistort,
     )
     from .calipers import BeadCalipers
+    from .channel_transform import ChannelTransform
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_tools import CLOUD_BLOCKS
     from .clustering import KMeansImage, KMeansSamples
@@ -748,6 +749,7 @@ def builtin_registry():
         *SPECTRAL_BLOCKS,
         FourierCorrelation,
         *ANALYSIS_BLOCKS,
+        ChannelTransform,
         IntensityProfile,
         PathIntensityProfile,
         ImageSummaryStatistics,

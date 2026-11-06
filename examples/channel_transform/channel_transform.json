@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Color gradients",
+      "parameters": {
+        "path": "assets/color_gradient.png",
+        "path_base": "project",
+        "color_format": "bgr"
+      },
+      "position": [
+        0,
+        110
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Select center patch",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          24,
+          16,
+          80,
+          40
+        ]
+      },
+      "position": [
+        300,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "correct",
+      "type": "cv.channel_transform",
+      "name": "Subtract green from blue",
+      "parameters": {
+        "matrix": [
+          [
+            1,
+            -0.5,
+            0,
+            10
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ]
+        ]
+      },
+      "position": [
+        610,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "difference",
+      "type": "cv.channel_transform",
+      "name": "Red minus blue",
+      "parameters": {
+        "matrix": [
+          [
+            -1,
+            0,
+            1,
+            128
+          ]
+        ]
+      },
+      "position": [
+        610,
+        220
+      ],
+      "exposed_inputs": [
+        "image",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "correct",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "correct",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "difference",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "difference",
+      "input": "region"
+    }
+  ]
+}
