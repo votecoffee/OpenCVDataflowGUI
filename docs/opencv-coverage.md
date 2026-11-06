@@ -66,6 +66,9 @@ and emits a mask of changed pixels.
 comparison views with padding and per-panel coordinate context.
 [Paste image patch](../examples/paste_patch/README.md) performs a masked
 copy at a canvas offset and reports both rectangles and the copied pixels.
+[Polar image warp](../examples/polar_image_warp/README.md) unwraps circular
+features onto linear or semilog grids, tracks source coverage, and can rewrap
+an intact grid into its original frame.
 [Tile image](../examples/tile_image/README.md) repeats full images in a grid
 with compact layout data and source-frame provenance.
 [Transpose image](../examples/transpose_image/README.md) swaps image axes
