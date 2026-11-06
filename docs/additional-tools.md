@@ -15,7 +15,7 @@ contracts. They are available immediately in the toolbox after restarting the ap
 | Image processing / Image math | Absolute difference | `absdiff`; unsigned differences do not wrap, inputs must have matching size and depth |
 | Inspection / Features | Good features / corners | `goodFeaturesToTrack`, Shi–Tomasi or Harris; corner list, count and overlay |
 | Inspection / Features | Hough line segments | `HoughLinesP`; edge input, pixel line segments, count and overlay |
-| Inspection / Features | Hough circles | `HoughCircles` gradient method; grayscale input, centers/radii, count and overlay |
+| Inspection / Features | Hough circles | Gradient and Gradient ALT, centers and radii, native votes, sortable circle collection and overlay |
 | Image processing / Morphology | Distance transform | `distanceTransform` L2, approximate 3/5 mask or precise; raw float32 pixel distances and separate preview |
 
 Corner lists and circle centers are lists of `[x,y]` pairs in the input image's

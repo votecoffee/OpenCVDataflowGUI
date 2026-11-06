@@ -635,10 +635,11 @@ Contour/component **Region mode** chooses whole-object center filtering or clipp
 measurements. See [region behavior and supported tools](docs/regions.md) for
 outside-pixel policies, neighborhood behavior and coordinate rules.
 
-### Blob, line and contour collections
+### Blob, line, contour and circle collections
 
 **Find blobs**, **Connected components**, **Find contours**, **Hough line segments**,
-**Hough lines from points**, **Hough polar lines**, and **Find line segments (LSD)** expose a `collection`
+**Hough lines from points**, **Hough polar lines**, **Hough circles**, and
+**Find line segments (LSD)** expose a `collection`
 output. Connect it to
 **Filter object collection**, **Sort object collection**, and **Draw object
 collection** to select and visualize measured objects without code.
@@ -648,6 +649,8 @@ the vote count as **Strength**. [Sparse line example](examples/point_set_lines/R
 **Hough polar lines** detects lines in an 8-bit edge map. Vote by pixel count
 or intensity and restrict voting with a mask or region.
 [Binary and weighted voting example](examples/hough_polar_lines/README.md)
+**Hough circles** exposes fitted radius and native detection strength for sorting
+and filtering. [Circle collection example](examples/hough_circle_collections/README.md)
 
 Filter/sort criteria use dropdowns: area, bounding width/height and position,
 centroid, aspect ratio, principal-axis angle, line length, perimeter, fitted box
@@ -900,7 +903,7 @@ boundaries, parallel work and explicit final-decision timestamps.
 - `regions.py`, `selection.py`: reusable shape regions, mask intersections and selection policies.
 - `region_editor.py`: interactive image-space drawing and editing of region shapes.
 - `payloads.py`, `pyramids.py`: optional wire payloads, image coordinate provenance and bundled pyramids.
-- `objects.py`, `collection_tools.py`: measured blob/line/contour collections, filtering, sorting and rendering.
+- `objects.py`, `collection_tools.py`: measured blob/line/contour/circle collections, filtering, sorting and rendering.
 - `examples.py` and `runner.py`: built-in starter graphs and headless project verification.
 - `plugins.py`: explicitly loaded trusted Python extensions.
 - `canvas.py`: movable nodes, typed sockets, selectable wires, pan and zoom.

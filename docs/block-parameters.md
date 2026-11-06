@@ -867,7 +867,7 @@ Inputs: `collection` (data), `mask` (image, optional), `region` (data, optional)
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
+| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `radius`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
 | `use_minimum` | `true` |  |
 | `minimum` | `0.0` |  |
 | `include_minimum` | `true` |  |
@@ -886,9 +886,9 @@ Inputs: `collection` (data).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
+| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `radius`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
 | `direction` | `"descending"` | `ascending`, `descending` |
-| `secondary_metric` | `"none"` | `none`, `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
+| `secondary_metric` | `"none"` | `none`, `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `radius`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
 | `secondary_direction` | `"ascending"` | `ascending`, `descending` |
 | `missing` | `"last"` | `last`, `first`, `error` |
 | `reference_point` | `[0.0, 0.0]` |  |
@@ -3554,14 +3554,20 @@ Inspection / Features
 
 Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
+Input `image` — 8-bit monochrome or color image. Color is converted to grayscale.
+
+Input `mask` — Keep detections whose center lies in this mask.
+
+Input `region` — Keep detections whose center lies in this region.
+
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `dp` | `1.2` | Value must be a finite number at least 1. |
-| `min_distance` | `20.0` | Value must be a finite number at least 0. |
-| `edge_threshold` | `100.0` | Value must be a finite number at least 0. |
-| `center_threshold` | `30.0` | Value must be a finite number at least 0. For gradient_alt use a perfectness threshold below 1 (e.g. 0.9). |
-| `min_radius` | `0` | Value must be a whole number between 0 and 100000. |
-| `max_radius` | `0` | Value must be a whole number between -1 and 100000. |
+| `dp` | `1.2` | Value must be a finite number at least 1. Inverse accumulator resolution. Use 1 for the same resolution as the image. |
+| `min_distance` | `20.0` | Value must be a finite number at least 0. Minimum distance between detected centers in image pixels. |
+| `edge_threshold` | `100.0` | Value must be a finite number at least 0. Upper Canny threshold. Gradient ALT uses Scharr derivatives. |
+| `center_threshold` | `30.0` | Value must be a finite number at least 0. Gradient uses an accumulator cutoff. Gradient ALT uses a perfectness threshold below 1 (e.g. 0.9). |
+| `min_radius` | `0` | Value must be a whole number between 0 and 100000. Smallest searched radius in pixels. |
+| `max_radius` | `0` | Value must be a whole number between -1 and 100000. Largest searched radius in pixels. Zero uses the largest image dimension. Use -1 in Gradient mode to locate centers without fitting radii. |
 | `method` | `"gradient"` | `gradient`, `gradient_alt` |
 
 ## Hough line segments (`inspect.hough_lines`)

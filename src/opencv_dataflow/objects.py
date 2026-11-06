@@ -24,6 +24,7 @@ METRICS = (
     "extent",
     "solidity",
     "circularity",
+    "radius",
     "distance",
     "line_width",
     "precision",
@@ -157,6 +158,31 @@ def line_item(segment, index, width=None, precision=None, nfa=None):
     return {"id": int(index), "metrics": metrics, "geometry": {"points": points.tolist()}}
 
 
+def circle_item(circle, votes, index):
+    x, y, radius = circle
+    raster_radius = round(radius)
+    diameter = 2 * raster_radius + 1
+    metrics = dict.fromkeys(METRICS)
+    metrics.update(
+        x=round(x) - raster_radius,
+        y=round(y) - raster_radius,
+        width=diameter,
+        height=diameter,
+        center_x=x,
+        center_y=y,
+        aspect_ratio=1.0,
+        radius=radius or None,
+        area=math.pi * radius**2 if radius else None,
+        perimeter=2 * math.pi * radius if radius else None,
+        strength=votes,
+    )
+    return {
+        "id": index,
+        "metrics": metrics,
+        "geometry": {"center": [x, y], "radius": metrics["radius"]},
+    }
+
+
 def collection(kind, items, image, payload, origin=(0, 0)):
     return {
         "model": "vision_collection_v1",
@@ -175,9 +201,9 @@ def validate_collection(value):
     if (
         not isinstance(value, dict)
         or value.get("model") != "vision_collection_v1"
-        or value.get("kind") not in ("blobs", "lines", "contours")
+        or value.get("kind") not in ("blobs", "lines", "contours", "circles")
     ):
-        raise ValueError("Expected a vision_collection_v1 blob, line or contour collection")
+        raise ValueError("Expected a vision_collection_v1 blob, line, contour or circle collection")
     items = value.get("items")
     size, origin = value.get("image_size"), value.get("origin", [0, 0])
     if (

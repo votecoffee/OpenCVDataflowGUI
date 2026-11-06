@@ -39,6 +39,8 @@ a patch-to-source transform and a border coverage mask.
 Point-set Hough detection reports line votes and support spans from sparse
 image coordinates. Raster Hough detection reports the strongest polar lines
 and support spans from binary or intensity-weighted edge maps.
+Hough circle detection emits fitted radii and native strengths for collection
+filtering, ranking, and filled disk masks.
 Polar image warping straightens circular inspection features and can rewrap
 an intact polar grid to its original Cartesian frame.
 Iterative phase correlation estimates fractional-pixel motion between two

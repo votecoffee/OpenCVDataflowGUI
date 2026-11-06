@@ -208,10 +208,14 @@ def test_hough_result_filters_use_centers_and_line_endpoints(monkeypatch):
     output = run("inspect.hough_lines", {"image": image, "region": region})
     assert output["segments"] == [[12, 12, 45, 45]]
     monkeypatch.setattr(
-        cv2, "HoughCircles", lambda *a, **k: np.array([[[25, 25, 10], [70, 60, 15]]], np.float32)
+        cv2,
+        "HoughCirclesWithAccumulator",
+        lambda *a, **k: np.array([[[25, 25, 10, 30], [70, 60, 15, 55]]], np.float32),
     )
     output = run("inspect.hough_circles", {"image": image, "region": region})
     assert output["circles"] == [[25, 25, 10]]
+    assert output["votes"] == [30]
+    assert output["collection"]["items"][0]["metrics"]["strength"] == 30
 
 
 def test_empty_and_invalid_selection_contracts():

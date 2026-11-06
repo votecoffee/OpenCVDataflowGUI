@@ -1,7 +1,7 @@
-# Blob, line and contour collections
+# Blob, line, contour and circle collections
 
 The toolbox includes **Find blobs** (connected components), **Find contours**,
-**Hough line segments** and **Find line segments (LSD)**. Each exposes a structured
+**Hough line segments**, **Find line segments (LSD)** and **Hough circles**. Each exposes a structured
 `collection` output usable by the same filtering, sorting and drawing tools.
 Existing detector outputs remain available. Older saved nodes retain their port
 exposure choices; expose the new collection output in the inspector if needed.
@@ -24,18 +24,20 @@ lies within a concave region.
 
 | Criteria | Meaning |
 | --- | --- |
-| area | Exact foreground pixel count for blobs; native geometric contour area for contours; undefined for lines |
-| x, y, width, height | Axis-aligned OpenCV pixel bounding rectangle, including its upper/right boundary pixel |
-| center_x, center_y | Mass centroid for blobs/contours, endpoint midpoint for lines |
+| area | Foreground pixel count for blobs, geometric area for contours and fitted disks |
+| x, y, width, height | Axis-aligned pixel bounds. Circle bounds use the rounded center and radius. |
+| center_x, center_y | Mass centroid for blobs/contours, endpoint midpoint for lines, fitted center for circles |
 | aspect_ratio | Axis-aligned width / height |
 | angle | Principal mass-axis orientation for blobs/contours, segment orientation for lines; degrees in [0,180), clockwise in image coordinates |
 | length | Euclidean endpoint distance for lines; undefined for blobs/contours |
-| perimeter | Closed native boundary length; includes hole boundaries for blobs |
+| perimeter | Native closed boundary length including blob holes, or fitted circle circumference |
 | major_size, minor_size | Long/short sides of the minimum-area fitted rectangle in continuous coordinates |
 | rotated_aspect_ratio | major_size / minor_size when the short side is nonzero |
 | extent | area / axis-aligned bounding-box area |
 | solidity | area / convex-hull area; blob hull area is rasterized pixel count, contour hull area is geometric |
 | circularity | 4π × area / perimeter², without artificial clamping |
+| radius | Fitted circle radius in pixels. Center-only detections have no radius. |
+| strength | For Hough circles, native support in the selected gradient method. Center-only detections have no strength. |
 | distance | Centroid/midpoint distance to the block's configured reference point |
 | line_width, precision, nfa | Native LSD width, dimensionless precision parameter, and −log10(NFA) significance when advanced refinement supplies it |
 | hu_1 … hu_7 | Native Hu invariants from binary-label moments for blobs or contour moments for contours |
@@ -103,15 +105,17 @@ within that run and do not track objects between camera frames.
 Blob masks preserve holes. Contour masks fill the individual selected contour
 interiors; they do not infer unselected hole/parent relationships. Line masks use
 the chosen display stroke thickness, not an inferred physical line width.
+Circle masks fill the fitted disk or mark a single pixel in center-only mode.
 Reported contour offsets are subtracted for drawing on the local image and retained
 in coordinates/measurements. Image dimensions and known coordinate frames must
 match; use the matching pyramid level/frame rather than silently rescaling data.
 
 ## Collection and coordinate contract
 
-`vision_collection_v1` contains `kind` (blobs/contours/lines), `count`, `items`,
+`vision_collection_v1` contains `kind` (blobs/contours/lines/circles), `count`, `items`,
 `image_size`, `origin`, and spatial/pyramid `context`. Each item has a stable run-local
-`id`, `metrics` and native point geometry. Contour hierarchy references identify
+`id`, `metrics` and shape geometry. Circle geometry stores a center and radius.
+Contour hierarchy references identify
 native detector contour IDs, which may not remain present after filtering; they
 are not indices into a sorted collection. Blob hierarchy is local to its boundary
 loops. Existing legacy outputs remain unchanged in shape.
