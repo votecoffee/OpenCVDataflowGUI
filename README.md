@@ -543,6 +543,10 @@ built-in or wired palette. See the [distance-map example](examples/colorize_scal
 **Labeled distance transform** computes distance to the nearest seed and
 returns its region or pixel label. See the [nearest-seed example](examples/labeled_distance/README.md).
 
+**Compare pixels** and **In range mask** accept signed label planes. The
+[label-mask example](examples/label_masks/README.md) selects watershed
+boundaries and region interiors.
+
 **Gabor texture response** isolates stripes by orientation and wavelength.
 Compare two responses to map the dominant texture direction.
 [Gabor texture example](examples/gabor_texture/README.md)

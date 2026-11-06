@@ -72,6 +72,8 @@ with exact main- or anti-diagonal reflection and coordinate mapping.
 and duplicates channels across matching input images, with optional zero fill.
 [Labeled distance transform](../examples/labeled_distance/README.md) computes
 pixel distances, nearest-seed labels, and a mask for one selected zone.
+[Masks from signed labels](../examples/label_masks/README.md) shows exact
+pixel comparisons and inclusive ranges on int32 segmentation outputs.
 [Blend with weight maps](../examples/blend_weight_maps/README.md) blends aligned
 images using pixel weights and optional mask and region selection.
 [Gram matrix](../examples/gram_matrix/README.md) computes row or column dot products

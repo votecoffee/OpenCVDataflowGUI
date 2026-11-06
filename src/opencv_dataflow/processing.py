@@ -43,10 +43,16 @@ def finite(value, name, low=None):
 
 
 def image_value(
-    image, depths=(np.uint8, np.uint16, np.int16, np.float32, np.float64), canonical=False
+    image,
+    depths=(np.uint8, np.uint16, np.int16, np.float32, np.float64),
+    canonical=False,
+    *,
+    allow_labels=False,
 ):
     if isinstance(image, DepthArray):
         raise ValidationError("Use depth tools for physical depth planes")
+    if allow_labels and image.dtype == np.int32 and image.ndim == 2:
+        return np.asarray(image)
     if (
         image.dtype not in depths
         or image.ndim not in (2, 3)
@@ -259,10 +265,10 @@ class TransposeImage(ImageTool):
 
     def process(self, inputs):
         source = inputs["image"]
-        if source.ndim == 2 and (isinstance(source, DepthArray) or source.dtype == np.int32):
+        if isinstance(source, DepthArray) and source.ndim == 2:
             image = np.asarray(source)
         else:
-            image = image_value(source)
+            image = image_value(source, allow_labels=True)
         output = cv2.transpose(image)
         if self.parameters["diagonal"] == "anti":
             height, width = image.shape[:2]
@@ -407,6 +413,7 @@ class InRange(RegionalOperation, ImageTool):
     )
     defaults = {"lower": [0], "upper": [255]}
     input_help = {
+        "image": "Grayscale or color image, or a signed int32 label plane.",
         "lower": "Inclusive lower bound. Wire one number or a list of values in channel order.",
         "upper": "Inclusive upper bound. Wire one number or a list of values in channel order.",
     }
@@ -417,7 +424,7 @@ class InRange(RegionalOperation, ImageTool):
 
     def process(self, inputs):
         # Deliberately retain the actual encoding: HSV masks must test HSV samples.
-        image = image_value(inputs["image"], (np.uint8, np.uint16, np.float32))
+        image = image_value(inputs["image"], (np.uint8, np.uint16, np.float32), allow_labels=True)
         count = 1 if image.ndim == 2 else image.shape[2]
         bounds = []
         for name in ("lower", "upper"):
@@ -432,9 +439,11 @@ class InRange(RegionalOperation, ImageTool):
             bounds.append(np.repeat(values, count) if values.size == 1 else values)
         if np.any(bounds[0] > bounds[1]):
             raise ValidationError("Lower bounds must not exceed upper bounds")
-        if image.dtype.kind == "u" and ("lower" in inputs or "upper" in inputs):
-            lower = np.maximum(np.ceil(bounds[0]), 0)
-            upper = np.minimum(np.floor(bounds[1]), np.iinfo(image.dtype).max)
+        wired_bounds = "lower" in inputs or "upper" in inputs
+        if image.dtype == np.int32 or (image.dtype.kind == "u" and wired_bounds):
+            limits = np.iinfo(image.dtype)
+            lower = np.maximum(np.ceil(bounds[0]), limits.min)
+            upper = np.minimum(np.floor(bounds[1]), limits.max)
             if np.any(lower > upper):
                 return Result({"image": np.zeros(image.shape[:2], dtype=np.uint8)})
             bounds = (lower, upper)
