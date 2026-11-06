@@ -680,6 +680,7 @@ def builtin_registry():
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .linear_program import SolveLinearProgram
     from .linear_system import SolveLinearSystem
+    from .matrix_eigen import MatrixEigen
     from .matrix_inverse import InvertMatrix
     from .matrix_multiply import MultiplyMatrices
     from .matrix_svd import MatrixSVD
@@ -845,6 +846,7 @@ def builtin_registry():
         MultiplyMatrices,
         InvertMatrix,
         MatrixSVD,
+        MatrixEigen,
         GramMatrix,
         FindNearestRows,
         SortNumericTable,

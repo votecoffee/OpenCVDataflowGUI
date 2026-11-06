@@ -1733,6 +1733,18 @@ Input `gain` — Monochrome gain image at the full spectrum size, including any 
 | `layout` | `"centered"` | `centered`, `native` Centered matches the spectrum preview. Native has zero frequency at index 0. |
 | `symmetry` | `"require"` | `require`, `average`, `minimum`, `maximum` Require matching paired gains, or combine each pair by average, min, or max. |
 
+## Eigendecomposition (`cv.matrix_eigen`)
+
+Image processing / Statistics
+
+Inputs: `matrix` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `matrix` | `[]` | Square real matrix of order 1 to 128. A wired matrix takes precedence. |
+| `method` | `"auto"` | `auto`, `symmetric`, `general_real` Auto uses the symmetric solver for exactly symmetric inputs. General real requires a real spectrum. |
+| `max_relative_residual` | `1e-09` | Value must be a finite number between 0 and 1. Largest allowed normalized eigenpair error. Zero disables the limit. |
+
 ## Singular value decomposition (`cv.matrix_svd`)
 
 Image processing / Statistics

@@ -767,6 +767,9 @@ conditioning, and square-matrix determinants. See the [matrix inverse example](e
 **Singular value decomposition** exposes the spectrum, vector bases, numerical
 rank, and an optional low-rank reconstruction. See the [SVD example](examples/matrix_svd/README.md).
 
+**Eigendecomposition** extracts real eigenpairs from square matrices and
+checks their residuals. See the [eigendecomposition example](examples/matrix_eigen/README.md).
+
 **Gram matrix** compares rows or columns by dot product and can reuse the same
 centering offset across batches. See the [Gram matrix example](examples/gram_matrix/README.md).
 
