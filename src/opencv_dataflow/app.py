@@ -942,7 +942,11 @@ class Inspector(QWidget):
         draft = copy.deepcopy(original)
         context = None
         try:
-            context = PluginDialogContext(self.window.graph, block)
+            context = PluginDialogContext(
+                self.window.graph,
+                block,
+                input_levels={key: field.currentText() for key, field in self.level_fields.items()},
+            )
             widget = block.create_plugin_dialog(self, draft, context)
             if not isinstance(widget, QDialog):
                 raise TypeError("create_plugin_dialog must return a PySide6 QDialog")

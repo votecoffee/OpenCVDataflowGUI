@@ -12,7 +12,8 @@ from test_editor import pump_until
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Block, Graph, Port, Result
-from opencv_dataflow.payloads import metadata
+from opencv_dataflow.images import DepthArray
+from opencv_dataflow.payloads import frame, metadata
 from opencv_dataflow.plugin_dialog import PluginDialogContext
 from opencv_dataflow.plugins import load_plugin
 
@@ -167,7 +168,7 @@ def test_modeless_dialog_captures_two_runs_and_stages_during_execution(
     capture = next(
         button
         for button in dialog.findChildren(QPushButton)
-        if button.text() == "Capture latest source image"
+        if button.text() == "Capture latest input image"
     )
     summary = dialog.findChild(QLabel, "capture_summary")
     output_notice = dialog.findChild(QLabel, "output_notice")
@@ -366,3 +367,103 @@ def test_snapshots_copy_pixels_and_keep_selected_level_provenance(tmp_path):
     assert metadata(level.value) == level.payload
     with pytest.raises(ValueError, match="outside the available range"):
         context.snapshot_image(pyramid.id, "images", level=2)
+
+
+def test_popup_captures_wired_draft_level_and_exact_processed_level(example_window, monkeypatch):
+    window, example = example_window
+    graph = Graph()
+    source = graph.add(window.registry.create("input.demo"))
+    pyramid = graph.add(window.registry.create("cv.image_pyramid", parameters={"levels": 3}))
+    block = graph.add(window.registry.create(example.type_id, parameters=example.parameters))
+    block.input_levels = {"image": "1"}
+    graph.connect(source.id, "image", pyramid.id, "image")
+    graph.connect(pyramid.id, "images", block.id, "image")
+    window.replace_graph(graph)
+    graph.run()
+    window.scene.nodes[block.id].setSelected(True)
+    inspector = window.inspector
+    inspector.level_fields["image"].setCurrentText("2")
+    contexts = []
+
+    def create(self, parent, parameters, context):
+        contexts.append(context)
+        return QDialog(parent)
+
+    monkeypatch.setattr(type(block), "create_plugin_dialog", create)
+    inspector.open_plugin_dialog()
+    (context,) = contexts
+    connected = context.snapshot_input_image("image")
+    processed = context.snapshot_input_image("image", source="processed")
+    largest = context.snapshot_input_image("image", level=0)
+    levels = pyramid.last_result.outputs["images"].levels
+
+    np.testing.assert_array_equal(connected.value, levels[2])
+    np.testing.assert_array_equal(processed.value, block.last_inputs["image"])
+    np.testing.assert_array_equal(largest.value, levels[0])
+    assert connected.payload["pyramid"]["level"] == 2
+    assert processed.payload == block.input_payloads["image"]
+    assert largest.payload["pyramid"]["level"] == 0
+    assert connected.payload["ticket"] == processed.payload["ticket"]
+    assert connected.payload["spatial"]["to_root"] == metadata(levels[2])["spatial"]["to_root"]
+    assert block.input_levels == {"image": "1"}
+    connected.value[:] = 0
+    assert np.any(levels[2])
+    with pytest.raises(ValueError, match="single image"):
+        context.snapshot_input_image("image", source="processed", level=2)
+
+
+def test_connected_image_can_advance_when_the_block_rejects_it():
+    class Source(Block):
+        type_id = "input.test_dialog_capture"
+        outputs = (Port("image"),)
+        defaults = {"intensity": 20, "passed": True}
+
+        def process(self, inputs):
+            image = np.full((5, 6), self.parameters["intensity"], np.uint8)
+            return Result({"image": image}, passed=self.parameters["passed"])
+
+    graph = Graph()
+    source = graph.add(Source())
+    consumer = graph.add(builtin_registry().create("cv.gray"))
+    consumer.input_failure_policies = {"image": "reject_failed"}
+    graph.connect(source.id, "image", consumer.id, "image")
+    context = PluginDialogContext(graph, consumer)
+    with pytest.raises(ValueError, match="No connected image"):
+        context.snapshot_input_image("image")
+    graph.run()
+    context.refresh_images()
+    reference = context.snapshot_input_image("image", source="processed")
+    source.parameters.update(intensity=90, passed=False)
+    graph.run()
+    assert consumer.input_rejected
+    assert np.all(context.snapshot_input_image("image").value == 20)
+    context.refresh_images()
+
+    connected = context.snapshot_input_image("image")
+    processed = context.snapshot_input_image("image", source="processed")
+    assert np.all(connected.value == 90) and np.all(processed.value == 20)
+    assert connected.payload["ticket"] != processed.payload["ticket"]
+    assert not connected.payload["outcome"]["chain_passed"]
+    assert processed.payload == reference.payload
+
+
+def test_processed_image_capture_supports_injected_depth_inputs():
+    class DepthTarget(Block):
+        inputs = (Port("depth", "depth"),)
+
+        def process(self, inputs):
+            return Result({})
+
+    graph = Graph()
+    block = graph.add(DepthTarget())
+    depth = DepthArray(np.full((2, 3), 0.75), units="m", display_max=2)
+    depth.metadata["spatial"] = frame([3, 2], "depth camera")
+    graph.run(injected={(block.id, "depth"): depth})
+    context = PluginDialogContext(graph, block)
+    with pytest.raises(ValueError, match="Connect a source"):
+        context.snapshot_input_image("depth")
+    captured = context.snapshot_input_image("depth", source="processed")
+    assert isinstance(captured.value, DepthArray)
+    assert captured.value.units == "m" and captured.value.display_max == 2
+    assert captured.payload["spatial"]["root_id"] == "depth camera"
+    np.testing.assert_array_equal(captured.value, depth)

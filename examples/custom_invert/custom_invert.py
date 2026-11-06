@@ -76,18 +76,13 @@ class Invert(Block):
         summary.setTextFormat(Qt.TextFormat.PlainText)
 
         def capture():
-            source = next(
-                (
-                    output
-                    for output in context.refresh_images()
-                    if output.port == "image" and output.block_id != context.block_id
-                ),
-                None,
-            )
-            if source is None:
-                summary.setText("Run once to produce a source image.")
+            context.refresh_images()
+            try:
+                packet = context.snapshot_input_image("image")
+            except (TypeError, ValueError) as exc:
+                summary.setText(str(exc))
                 return
-            captures.append(context.snapshot_image(source.block_id, source.port))
+            captures.append(packet)
             del captures[:-2]
             rows = []
             labels = ("Previous", "Latest")[-len(captures) :]
@@ -97,7 +92,7 @@ class Invert(Block):
                 rows.append(f"{label} · {width} × {height} · ticket {ticket}")
             summary.setText("\n".join(rows))
 
-        capture_button = QPushButton("Capture latest source image")
+        capture_button = QPushButton("Capture latest input image")
         capture_button.clicked.connect(capture)
         form.addRow(capture_button)
         form.addRow(summary)
