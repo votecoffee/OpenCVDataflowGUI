@@ -33,24 +33,43 @@ def _transform(value, source_size=None, target_size=None):
         raise ValidationError(f"Invalid Image B to A transform: {exc}", "matrix") from exc
 
 
-def _canvas(first, second, b_to_a):
-    h, w = second.shape[:2]
+def _project_edges(image, to_anchor):
+    h, w = image.shape[:2]
     # Work from the outer pixel edges so a magnified view keeps its full footprint.
     corners = np.array(
         [[-0.5, -0.5, 1], [w - 0.5, -0.5, 1], [-0.5, h - 0.5, 1], [w - 0.5, h - 0.5, 1]]
     )
     with np.errstate(over="ignore", divide="ignore", invalid="ignore"):
-        projected = corners @ b_to_a.T
+        projected = corners @ to_anchor.T
         denominator = projected[:, 2]
         if not (np.all(denominator > 0) or np.all(denominator < 0)):
-            raise ValidationError("Transform crosses infinity inside Image B")
-        xy = projected[:, :2] / denominator[:, None]
-        lower = np.minimum(0, np.floor(xy.min(axis=0) + 0.5))
-        upper = np.maximum(np.array(first.shape[1::-1]) - 1, np.ceil(xy.max(axis=0) - 0.5))
+            raise ValidationError("Transform crosses infinity inside a mosaic view")
+        return projected[:, :2] / denominator[:, None]
+
+
+def mosaic_canvas(images, transforms):
+    edges = np.concatenate(
+        [_project_edges(image, matrix) for image, matrix in zip(images, transforms, strict=True)]
+    )
+    # Round out at output pixel edges. Tiny numerical drift at integral bounds
+    # does not need an additional uncovered row or column.
+    lower_edge, upper_edge = edges.min(axis=0) + 0.5, edges.max(axis=0) - 0.5
+    with np.errstate(over="ignore", invalid="ignore"):
+        lower = np.floor(
+            np.where(
+                np.abs(lower_edge - np.rint(lower_edge)) < 1e-9, np.rint(lower_edge), lower_edge
+            )
+        )
+        upper = np.ceil(
+            np.where(
+                np.abs(upper_edge - np.rint(upper_edge)) < 1e-9, np.rint(upper_edge), upper_edge
+            )
+        )
         size = upper - lower + 1
     if not np.isfinite(size).all() or np.any(size > _MAX_SIDE):
         raise ValidationError(f"Mosaic exceeds the {_MAX_SIDE:,}-pixel dimension limit")
     width, height = map(int, size)
+    first = images[0]
     channels = 1 if first.ndim == 2 else first.shape[2]
     if width * height * (5 * channels * first.itemsize + 10) > _MAX_WORKSPACE:
         raise ValidationError("Mosaic exceeds the 256 MiB workspace limit")
@@ -74,10 +93,16 @@ def _selected(inputs, side):
     return np.ones(source.shape[:2], dtype=bool) if mask is None else mask != 0
 
 
-def _warp(image, matrix, size, interpolation):
+def warp_mosaic_view(image, matrix, size, interpolation):
     return cv2.warpPerspective(
         image, matrix, size, flags=interpolation, borderMode=cv2.BORDER_CONSTANT, borderValue=0
     )
+
+
+def mosaic_frame(anchor, anchor_to_mosaic, size, block_id):
+    if anchor.get("root_id") is None:
+        return frame(size, f"{block_id}:image")
+    return moved_payload({"spatial": anchor}, np.linalg.inv(anchor_to_mosaic), size)["spatial"]
 
 
 class StitchImagePair(ImageTool):
@@ -170,7 +195,7 @@ class StitchImagePair(ImageTool):
                 raise ValidationError("Stitch images from the same ticket or choose Anchor A")
         a_frame, b_frame = context_a.get("spatial", {}), context_b.get("spatial", {})
         b_to_a = self.registration(inputs, a_frame, b_frame, first, second)
-        size, a_to_mosaic = _canvas(first, second, b_to_a)
+        size, a_to_mosaic = mosaic_canvas((first, second), (np.eye(3), b_to_a))
         b_to_mosaic = a_to_mosaic @ b_to_a
         width, height = size
         x, y = map(int, a_to_mosaic[:2, 2])
@@ -180,7 +205,9 @@ class StitchImagePair(ImageTool):
         a_valid = np.zeros((height, width), dtype=bool)
         a_valid[a_area] = a_selected
         interpolation = _INTERPOLATION[p["interpolation"]]
-        b_valid = _warp(b_selected.astype(np.float32), b_to_mosaic, size, interpolation) == 1
+        b_valid = (
+            warp_mosaic_view(b_selected.astype(np.float32), b_to_mosaic, size, interpolation) == 1
+        )
         overlap = a_valid & b_valid
         coverage = a_valid | b_valid
         overlap_count = int(np.count_nonzero(overlap))
@@ -204,12 +231,7 @@ class StitchImagePair(ImageTool):
         }
         primary = context_a if ticket_a else context_b
         payload = {key: primary[key] for key in ("ticket", "processing_time") if key in primary}
-        if a_frame.get("root_id") is None:
-            payload["spatial"] = frame(size, f"{self.id}:image")
-        else:
-            payload["spatial"] = moved_payload(
-                {"spatial": a_frame}, np.linalg.inv(a_to_mosaic), size
-            )["spatial"]
+        payload["spatial"] = mosaic_frame(a_frame, a_to_mosaic, size, self.id)
 
         passed = bool(b_valid.any()) and overlap_count >= int(p["min_overlap_pixels"])
         output = NO_VALUE
@@ -217,7 +239,7 @@ class StitchImagePair(ImageTool):
             mosaic = np.zeros((height, width, *first.shape[2:]), dtype=first.dtype)
             condition = a_selected if first.ndim == 2 else a_selected[..., None]
             np.copyto(mosaic[a_area], first, where=condition)
-            warped_b = _warp(second, b_to_mosaic, size, interpolation)
+            warped_b = warp_mosaic_view(second, b_to_mosaic, size, interpolation)
             blend = p["blend"]
             if blend == "average" and overlap_count:
                 values_a, values_b = mosaic[overlap], warped_b[overlap]

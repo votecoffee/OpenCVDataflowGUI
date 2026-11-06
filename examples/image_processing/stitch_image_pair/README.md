@@ -25,9 +25,9 @@ feature matcher, use Image B as Query and Image A as Train.
   reports coverage and layout. **Anchor A** allows separate offline image
   tickets. The default requires matching tickets when both are present.
 
-This workflow uses an existing registration or shared frame. Automatic
-multi-image matching, seam finding, and exposure compensation are tracked
-in the [coverage backlog](../../../docs/opencv-coverage.md).
+This workflow uses an existing registration or shared frame. Use the
+[ordered scan example](../stitch_scan_sequence/README.md) to register a
+batch of overlapping views automatically.
 [OpenCV image transforms](https://docs.opencv.org/5.0/main_modules/imgproc_transform.html)
 
 ```powershell

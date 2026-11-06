@@ -2507,6 +2507,31 @@ Input `region_b` — Optional region in Image B coordinates.
 | `min_overlap_pixels` | `1` | Value must be a whole number between 0 and 2.68435e+08. Withhold the mosaic below this count. Zero permits disjoint tiles. |
 | `ticket_policy` | `"same_ticket"` | `same_ticket`, `anchor_a` Anchor A allows distinct tickets for offline stitching and reports both. |
 
+## Stitch scan sequence (`cv.stitch_scan_sequence`)
+
+Image processing / Geometry
+
+Inputs: `views` (any), `masks` (any, optional).
+
+Input `views` — Two to eight ordered overlapping images from Batch serial entries.
+
+Input `masks` — Optional ordered uint8 masks for feature detection and valid mosaic pixels.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `motion_model` | `"translation"` | `translation`, `similarity` Similarity additionally fits rotation and uniform scale. |
+| `max_features` | `900` | Value must be a whole number between 12 and 2500. |
+| `match_ratio` | `0.75` | Value must be a finite number between 1e-06 and 0.999999. Require a distinctive nearest descriptor in both matching directions. |
+| `max_descriptor_distance` | `250.0` | Value must be a finite number between 0 and 8192. |
+| `inlier_pixels` | `2.0` | Value must be a finite number between 1e-06 and 100. |
+| `min_inliers` | `12` | Value must be a whole number between 3 and 2500. Minimum distinct correspondences supporting each adjacent transform. |
+| `min_inlier_ratio` | `0.5` | Value must be a finite number between 0 and 1. |
+| `max_scale_ratio` | `1.15` | Value must be a finite number between 1 and 2. Similarity scale range is the reciprocal of this ratio to the ratio. |
+| `max_rotation_degrees` | `15.0` | Value must be a finite number between 0 and 180. |
+| `min_overlap_pixels` | `64` | Value must be a whole number between 1 and 1.67772e+07. Minimum number of valid overlapping pixels for each adjacent pair. |
+| `interpolation` | `"linear"` | `nearest`, `linear` |
+| `blend` | `"prefer_first"` | `prefer_first`, `prefer_last` Choose the earliest or latest view in batch order for covered overlap pixels. |
+
 ## Temporal non-local means (`cv.temporal_nlm`)
 
 Image processing / Filters

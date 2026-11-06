@@ -900,6 +900,10 @@ translation or similarity jitter before measuring a frame. It publishes
 corrected pixels, a coverage mask, and the mapping back to the raw image.
 Try the [camera stabilization example](examples/flow_control/camera_stabilization/README.md).
 
+**Stitch scan sequence** automatically registers two to eight ordered views.
+Each adjacent pair must meet the fit and overlap thresholds before the graph
+receives a mosaic. Try the [ordered scan example](examples/image_processing/stitch_scan_sequence/README.md).
+
 ## Architecture
 
 Choose **Run profile: debug / balanced / lean** in the toolbar to control observation
