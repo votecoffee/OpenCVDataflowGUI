@@ -467,6 +467,10 @@ contour into the block and compares its convex hull with a reference.
 The [enclosing polygon example](examples/enclosing_polygon/README.md) compares
 a triangle and a quadrilateral fitted to the same part.
 
+**Delaunay triangulation** connects point sites or measured object centers
+and reports indexed triangles, unique edges, and edge lengths.
+[Delaunay triangulation example](examples/delaunay_triangulation/README.md)
+
 **Path intensity profile** samples each image channel at regular distances
 along an open or closed path and preserves gaps outside the selection.
 [Path intensity profile example](examples/path_intensity_profile/README.md)
