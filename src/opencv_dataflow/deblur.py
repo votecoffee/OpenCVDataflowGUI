@@ -1,5 +1,7 @@
 """Wiener deconvolution with a centered point-spread function and explicit boundaries."""
 
+import math
+
 import cv2
 import numpy as np
 
@@ -8,6 +10,39 @@ from .images import ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .processing import ImageTool, image_value
 from .selection import SELECTION_INPUTS, RegionalOperation
+
+
+def motion_psf(length, angle):
+    """Integrate a centered line over the bilinear pixel basis."""
+    theta = math.radians(angle % 180)
+    extent = np.round((length / 2) * np.array([math.cos(theta), math.sin(theta)]), 12)
+    half_x, half_y = np.ceil(np.abs(extent)).astype(int)
+    width, height = 2 * half_x + 1, 2 * half_y + 1
+    samples = max(1, math.ceil(16 * length))
+    t = 2 * (np.arange(samples) + 0.5) / samples - 1
+    x, y = (t[:, None] * extent + [half_x, half_y]).T
+    left, top = np.floor(x).astype(int), np.floor(y).astype(int)
+    fx, fy = x - left, y - top
+    kernel = np.zeros((height, width), dtype=np.float64)
+    for dx, wx in ((0, 1 - fx), (1, fx)):
+        for dy, wy in ((0, 1 - fy), (1, fy)):
+            np.add.at(
+                kernel,
+                (np.minimum(top + dy, height - 1), np.minimum(left + dx, width - 1)),
+                wx * wy,
+            )
+    return kernel / kernel.sum()
+
+
+def defocus_psf(radius):
+    """Approximate circular aperture coverage by sampling on a fine grid."""
+    side = 2 * math.ceil(radius) + 1
+    scale = 9
+    fine = np.zeros((side * scale, side * scale), dtype=np.uint8)
+    center = fine.shape[0] // 2
+    cv2.circle(fine, (center, center), round(radius * scale), 1, thickness=-1)
+    coverage = fine.reshape(side, scale, side, scale).mean(axis=(1, 3))
+    return coverage / coverage.sum()
 
 
 class WienerDeblur(RegionalOperation, ImageTool):
@@ -20,13 +55,16 @@ class WienerDeblur(RegionalOperation, ImageTool):
         "kernel_height": 9,
         "sigma_x": 2.0,
         "sigma_y": 2.0,
+        "motion_length": 8.0,
+        "motion_angle": 0.0,
+        "defocus_radius": 3.0,
         "custom_psf": [[0, 0, 0], [0, 1, 0], [0, 0, 0]],
         "noise_to_signal": 0.002,
         "boundary": "reflect_101",
         "output_depth": "same",
     }
     parameter_choices = {
-        "model": ("gaussian", "custom"),
+        "model": ("gaussian", "motion", "defocus", "custom"),
         "boundary": ("reflect_101", "circular"),
         "output_depth": ("same", "float32", "float64"),
     }
@@ -35,6 +73,9 @@ class WienerDeblur(RegionalOperation, ImageTool):
         "kernel_height": NumericRange(1, 127, whole=True, odd=True),
         "sigma_x": NumericRange(0.01, 100),
         "sigma_y": NumericRange(0.01, 100),
+        "motion_length": NumericRange(0, 126),
+        "motion_angle": NumericRange(),
+        "defocus_radius": NumericRange(0, 63),
         "noise_to_signal": NumericRange(1e-12, 1e3),
     }
     parameter_help = {
@@ -42,6 +83,9 @@ class WienerDeblur(RegionalOperation, ImageTool):
         "custom_psf": "Odd-sized, nonnegative convolution kernel with the origin at its center.",
         "sigma_x": "Gaussian blur standard deviation along X, in pixels.",
         "sigma_y": "Gaussian blur standard deviation along Y, in pixels.",
+        "motion_length": "Length of the centered motion path, in pixels.",
+        "motion_angle": "Degrees clockwise from horizontal.",
+        "defocus_radius": "Radius of the circular blur disk, in pixels.",
         "noise_to_signal": "Noise-to-signal power ratio. Increase to suppress noise amplification.",
         "boundary": "Reflect before deblurring or treat opposite edges as adjacent.",
         "output_depth": "Floating output preserves signed values in the original sample units.",
@@ -50,7 +94,12 @@ class WienerDeblur(RegionalOperation, ImageTool):
 
     def point_spread(self, inputs):
         p = self.parameters
-        if "psf" not in inputs and p["model"] == "gaussian":
+        model = "custom" if "psf" in inputs else p["model"]
+        if model == "motion":
+            return motion_psf(float(p["motion_length"]), float(p["motion_angle"]))
+        if model == "defocus":
+            return defocus_psf(float(p["defocus_radius"]))
+        if model == "gaussian":
             x = cv2.getGaussianKernel(int(p["kernel_width"]), float(p["sigma_x"]), cv2.CV_64F)
             y = cv2.getGaussianKernel(int(p["kernel_height"]), float(p["sigma_y"]), cv2.CV_64F)
             return y @ x.T

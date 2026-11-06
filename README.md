@@ -478,9 +478,9 @@ denoise a selected frame while retaining its ticket and pixel frame.
 aligned views with impulse noise.
 [TV-L1 denoising example](examples/tvl1_denoising/README.md)
 
-**Wiener deblur** restores detail using a Gaussian or custom point-spread
-function and a configurable noise-to-signal ratio.
-[Wiener deblur example](examples/wiener_deblur/README.md)
+**Wiener deblur** restores detail using Gaussian, linear motion, circular
+defocus, or custom blur kernels and a configurable noise-to-signal ratio.
+[Gaussian example](examples/wiener_deblur/README.md) · [Motion example](examples/motion_deblur/README.md)
 
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing

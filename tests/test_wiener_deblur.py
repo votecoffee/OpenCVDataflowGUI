@@ -69,3 +69,65 @@ def test_wiener_rejects_invalid_point_spread_functions(kernel):
     assert block.execute({"image": np.zeros((5, 5), np.uint8), "psf": kernel}) is None
     assert block.error_kind == "invalid"
     assert "PSF must be" in block.error
+
+
+@pytest.mark.parametrize("angle", [0, 90])
+def test_wiener_motion_model_inverts_a_known_linear_blur(angle):
+    rng = np.random.default_rng(19)
+    original = rng.normal(110, 18, (29, 31))
+    weights = np.array([0.5, 1, 1, 1, 1, 1, 1, 1, 0.5]) / 8
+    axis = 1 if angle == 0 else 0
+    blurred = sum(
+        weight * np.roll(original, offset, axis=axis)
+        for offset, weight in enumerate(weights, start=-4)
+    )
+    block = builtin_registry().create(
+        "cv.wiener_deblur",
+        parameters={
+            "model": "motion",
+            "motion_length": 8,
+            "motion_angle": angle,
+            "boundary": "circular",
+            "noise_to_signal": 1e-12,
+        },
+    )
+    result = block.execute({"image": blurred})
+    assert result is not None, block.error
+    psf = np.asarray(result.outputs["psf"])
+    assert psf.shape == ((1, 9) if angle == 0 else (9, 1))
+    np.testing.assert_allclose(psf.ravel(), weights)
+    np.testing.assert_allclose(result.outputs["image"], original, atol=1e-5)
+
+
+def test_wiener_defocus_model_has_centered_disk_and_supports_zero_radius():
+    registry = builtin_registry()
+    block = registry.create(
+        "cv.wiener_deblur",
+        parameters={"model": "defocus", "defocus_radius": 2.5, "noise_to_signal": 1e-12},
+    )
+    image = np.arange(81, dtype=np.uint8).reshape(9, 9)
+    result = block.execute({"image": image})
+    assert result is not None, block.error
+    kernel = np.asarray(result.outputs["psf"])
+    assert kernel.shape == (7, 7)
+    assert kernel.sum() == pytest.approx(1)
+    assert kernel[0, 0] == 0 and 0 < kernel[3, 5] < kernel[3, 3]
+    np.testing.assert_allclose(kernel, kernel.T)
+    np.testing.assert_allclose(kernel, kernel[::-1, ::-1])
+
+    block.parameters["defocus_radius"] = 0
+    result = block.execute({"image": image})
+    assert result is not None, block.error
+    assert result.outputs["psf"] == [[1]]
+    np.testing.assert_array_equal(result.outputs["image"], image)
+
+
+def test_motion_model_positive_angle_follows_image_coordinates():
+    block = builtin_registry().create(
+        "cv.wiener_deblur", parameters={"model": "motion", "motion_length": 6, "motion_angle": 45}
+    )
+    result = block.execute({"image": np.ones((16, 16), np.float64)})
+    assert result is not None, block.error
+    kernel = np.asarray(result.outputs["psf"])
+    np.testing.assert_allclose(kernel, kernel[::-1, ::-1], atol=1e-15)
+    assert kernel[2, 2] > 0 and kernel[2, 4] == 0
