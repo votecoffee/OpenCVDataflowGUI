@@ -2493,6 +2493,18 @@ Ticket mode and fixed value are common inspector controls.
 | `pixel_depth` | `"uint8"` | `unchanged`, `uint8`, `uint16`, `float32` |
 | `path_base` | `"working_directory"` | `working_directory`, `project` |
 
+## Load lens correction maps (`input.lens_maps`)
+
+Input / Calibration profiles
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
+
 ## Repeated parts demo (`input.parts_demo`)
 
 Input / Synthetic
@@ -3979,6 +3991,17 @@ Inputs: `image` (image).
 | `png_strategy` | `"native"` | `native`, `default`, `filtered`, `huffman`, `rle`, `fixed` |
 | `png_bilevel` | `false` |  |
 | `webp_quality` | `-1` | -1 preserves the codec default; otherwise 1..100. WebP only. |
+
+## Save lens correction maps (`output.lens_maps`)
+
+Output / Calibration profiles
+
+Inputs: `map_x` (image), `map_y` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"lens_maps.npz"` |  |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
 
 ## Write results (`output.results`)
 

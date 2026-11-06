@@ -103,6 +103,12 @@ Wire the map pair to **Inspect lens map displacement** to see correction
 strength and direction, measure displacement in source pixels, and identify
 samples outside the source. [Lens map displacement example](../examples/lens_map_displacement/README.md)
 
+Connect both maps to **Save lens correction maps** to publish a versioned
+`.npz` file. **Load lens correction maps** restores the pair, its coordinate
+metadata, the rectified profile and any valid ROI. Use **Project** path base
+for a portable saved graph. Saving requires a new file name.
+[Lens map files example](../examples/lens_map_files/README.md)
+
 Fisheye models, uncertainty estimates, dataset management and independent validation
 are future work. Current checks use offline synthetic geometry; they do not prove
 accuracy for a particular physical camera.

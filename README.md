@@ -359,6 +359,10 @@ coordinate frame for the corrected image.
 and reports how much of the output samples inside the source image.
 [Lens map displacement example](examples/lens_map_displacement/README.md)
 
+**Save lens correction maps** and **Load lens correction maps** preserve
+the map pair, output intrinsics, and pixel-grid metadata in one file.
+[Lens map files example](examples/lens_map_files/README.md)
+
 ### Build and test a starter project
 
 For the real-image Lena review example, run `python scripts/prepare_lena.py` once,

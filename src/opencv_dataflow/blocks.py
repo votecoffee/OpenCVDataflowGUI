@@ -673,6 +673,7 @@ def builtin_registry():
     from .image_queue import ImageQueue
     from .image_statistics import ImageSummaryStatistics
     from .judgments import FinalJudgment
+    from .lens_map_files import LoadLensMaps, SaveLensMaps
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .linear_program import SolveLinearProgram
     from .linear_system import SolveLinearSystem
@@ -752,6 +753,8 @@ def builtin_registry():
         LensCalibration,
         BuildLensMaps,
         LensMapDisplacement,
+        LoadLensMaps,
+        SaveLensMaps,
         Undistort,
         ColorBalance,
         *COLOR_CALIBRATION_BLOCKS,
