@@ -1002,6 +1002,28 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `gamma` | `0.0` |  |
 | `output_depth` | `"same"` | `same`, `uint8`, `uint16`, `int16`, `float32`, `float64` |
 
+## Blend with weight maps (`cv.blend_weight_maps`)
+
+Image processing / Image math
+
+Inputs: `image_a` (image), `image_b` (image), `weight_a` (image), `weight_b` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `image_a` — First image and output frame. Supplies pixels outside the selection.
+
+Input `image_b` — Second image with the same size, pixel depth and channel encoding.
+
+Input `weight_a` — Monochrome weights for Image A. Integer full scale or floating [0, 1].
+
+Input `weight_b` — Optional weights for Image B. The default is one minus Weight A.
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid pairs equal-size images and weights by index across frame IDs. |
+| `zero_weight` | `"keep_a"` | `keep_a`, `zero` When both weights are zero, keep Image A or write zero. |
+
 ## Box blur (`cv.box_blur`)
 
 Image processing / Filtering

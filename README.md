@@ -480,6 +480,8 @@ The [intensity transform example](examples/intensity_transform/README.md) clips
 a ramp and reconstructs it through log and exponential blocks. The
 [image arithmetic example](examples/image_arithmetic/README.md) subtracts
 a blurred background and scales the signed residual. The
+[weight-map blend example](examples/blend_weight_maps/README.md) feathers
+between two aligned images using a per-pixel weight. The
 [pixel comparison example](examples/pixel_comparison/README.md) turns the
 background difference into a binary texture mask. The [nonzero pixels example](examples/nonzero_pixels/README.md)
 extracts coordinates from that mask and outlines its full bounds. The

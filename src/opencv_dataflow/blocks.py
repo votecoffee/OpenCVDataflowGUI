@@ -671,6 +671,7 @@ def builtin_registry():
     from .histogram import Histogram
     from .histogram_comparison import CompareHistograms, HistogramBackProjection
     from .illumination import AdaptiveBackgroundCorrection, FlatFieldCorrection
+    from .image_blend import BlendWeightMaps
     from .image_codecs import DecodeImage, EncodeImage
     from .image_layout import JoinImages, TileImage
     from .image_quality import CompareImageQuality
@@ -785,6 +786,7 @@ def builtin_registry():
         *SPECTRAL_BLOCKS,
         FourierCorrelation,
         *ANALYSIS_BLOCKS,
+        BlendWeightMaps,
         FindHoughTemplate,
         FindGuilTemplate,
         ChannelTransform,
