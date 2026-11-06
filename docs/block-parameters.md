@@ -2223,6 +2223,17 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `max_value` | `255.0` | Value must be a finite number at least 0. |
 | `mode` | `"binary"` | `binary`, `binary_inv`, `trunc`, `tozero`, `tozero_inv` |
 
+## Tile image (`cv.tile_image`)
+
+Image processing / Geometry
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `rows` | `2` | Value must be a whole number between 1 and 4096. Number of full copies vertically. |
+| `columns` | `2` | Value must be a whole number between 1 and 4096. Number of full copies horizontally. |
+
 ## Tilted window statistics (`cv.tilted_statistics`)
 
 Image processing / Statistics

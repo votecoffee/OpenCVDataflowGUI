@@ -672,7 +672,7 @@ def builtin_registry():
     from .histogram_comparison import CompareHistograms, HistogramBackProjection
     from .illumination import AdaptiveBackgroundCorrection, FlatFieldCorrection
     from .image_codecs import DecodeImage, EncodeImage
-    from .image_layout import JoinImages
+    from .image_layout import JoinImages, TileImage
     from .image_quality import CompareImageQuality
     from .image_queue import ImageQueue
     from .image_statistics import ImageSummaryStatistics
@@ -777,6 +777,7 @@ def builtin_registry():
         SaveCalibration,
         *PROCESSING_BLOCKS,
         JoinImages,
+        TileImage,
         *FEATURE_BLOCKS,
         *REGISTRATION_BLOCKS,
         AlignECC,

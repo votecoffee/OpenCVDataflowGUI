@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.pattern_demo",
+      "name": "Single shape reference",
+      "parameters": {},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["shape_reference"],
+      "thumbnail": true,
+      "preview_output": "shape_reference"
+    },
+    {
+      "id": "tile",
+      "type": "cv.tile_image",
+      "name": "Repeat two rows by three columns",
+      "parameters": {"rows": 2, "columns": 3},
+      "position": [340, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image", "layout"],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "find",
+      "type": "inspect.template_instances",
+      "name": "Verify all six template copies",
+      "parameters": {"min_score": 0.99, "minimum_matches": 6, "maximum_matches": 12},
+      "position": [700, 0],
+      "exposed_inputs": ["image", "template"],
+      "exposed_outputs": ["count", "matches", "overlay"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {"source": "reference", "output": "shape_reference", "target": "tile", "input": "image"},
+    {"source": "reference", "output": "shape_reference", "target": "find", "input": "template"},
+    {"source": "tile", "output": "image", "target": "find", "input": "image"}
+  ]
+}

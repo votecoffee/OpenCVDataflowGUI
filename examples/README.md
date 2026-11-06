@@ -39,6 +39,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Check image samples](image_validity/README.md) | Detect a missing depth patch and use the valid-pixel mask to measure the corresponding intensity pixels. |
 | [Replace nonfinite samples](nonfinite_replacement/README.md) | Fill a known synthetic depth patch with a configured value, track the changed pixels, and verify the result. |
 | [Join images](join_images/README.md) | Compare a full inspection image with a filtered crop, separated by a gap. |
+| [Tile image](tile_image/README.md) | Repeat a reference in a 2 × 3 grid and find all six copies with template matching. |
 | [Gram matrix](gram_matrix/README.md) | Compute feature covariance and reuse the learned offset for a new batch. |
 | [Find nearest rows](nearest_rows/README.md) | Compare scaled measurements with masked candidates and mutual nearest-neighbor matching. |
 | [Sort numeric table](numeric_table_sort/README.md) | Rank complete part records by score and compare that with independent column sorting. |

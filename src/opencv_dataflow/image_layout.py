@@ -74,7 +74,7 @@ class JoinImages(ImageTool):
         span = b_start + second.shape[1 - cross_axis]
         size = [span, cross_size] if horizontal else [cross_size, span]
         if size[0] * size[1] > _MAX_PIXELS:
-            raise ValidationError("Joined image exceeds 16,777,216 pixels")
+            raise ValidationError(f"Joined image exceeds {_MAX_PIXELS:,} pixels")
 
         fill = float(p["fill_value"])
         if a_cross != b_cross or gap:
@@ -115,4 +115,51 @@ class JoinImages(ImageTool):
             {"image": ImageArray(joined, encoding), "layout": layout},
             payloads={"image": payload, "layout": payload},
             message=f"Joined two images into {size[0]} × {size[1]} pixels",
+        )
+
+
+class TileImage(ImageTool):
+    type_id, title, subtype = "cv.tile_image", "Tile image", "Geometry"
+    outputs = (Port("image"), Port("layout", "data"))
+    process_inputs_readonly = True
+    defaults = {"rows": 2, "columns": 2}
+    parameter_ranges = {
+        "rows": NumericRange(1, 4096, whole=True),
+        "columns": NumericRange(1, 4096, whole=True),
+    }
+    parameter_help = {
+        "rows": "Number of full copies vertically.",
+        "columns": "Number of full copies horizontally.",
+    }
+
+    def process(self, inputs):
+        source = inputs["image"]
+        image = image_value(source)
+        rows, columns = int(self.parameters["rows"]), int(self.parameters["columns"])
+        height, width = image.shape[:2]
+        size = [width * columns, height * rows]
+        if size[0] * size[1] > _MAX_PIXELS:
+            raise ValidationError(f"Tiled image exceeds {_MAX_PIXELS:,} pixels", "rows", "columns")
+
+        context = metadata(source)
+        payload = context
+        if rows != 1 or columns != 1:
+            # Repeated pixels cannot share the source's single spatial transform.
+            payload = {key: context[key] for key in ("ticket", "processing_time") if key in context}
+            payload["spatial"] = frame(size, f"{self.id}:image")
+        layout = {
+            "rows": rows,
+            "columns": columns,
+            "image_size": size,
+            "tile_size": [width, height],
+            "source_spatial": context.get("spatial"),
+            "source_pyramid": context.get("pyramid"),
+        }
+        return Result(
+            {
+                "image": ImageArray(cv2.repeat(image, rows, columns), image_format(source)),
+                "layout": layout,
+            },
+            payloads={"image": payload, "layout": payload},
+            message=f"Repeated the image in {rows} rows and {columns} columns",
         )
