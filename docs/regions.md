@@ -16,6 +16,20 @@ a JSON-compatible `region` definition, and a tinted `overlay`.
 Fields are in full input-image pixel coordinates. Configure them numerically in
 the inspector or use the interactive editor below.
 
+## Regions from fitted shapes
+
+Wire the `fit` output of **Fit line, ellipse or enclosing circle** to
+**Region from fitted shape** and connect the image in the same coordinate frame.
+The block accepts ellipse and enclosing-circle fits. It retains the fitted
+center and orientation and adds **Margin** pixels to each semi-axis. Negative
+margins shrink the shape. The resulting semi-axes must stay positive.
+
+The mask includes the rasterized boundary. **Invert** selects the outside.
+The reusable `region` uses the `ellipse` shape with `center`, full
+`axis_lengths`, and clockwise image-space `angle_degrees`. An enclosing
+circle uses equal axis lengths. The outputs carry the image's frame.
+[Fitted ellipse inspection band example](../examples/fitted_shape_region/README.md)
+
 ## Draw and edit on an image
 
 **Shape mask** has a **Draw / edit mask…** editor and an optional `pose` input.

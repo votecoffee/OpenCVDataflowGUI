@@ -227,6 +227,8 @@ See the [OpenCV backprojection tutorial](https://docs.opencv.org/5.0/tutorials/i
 It reports image-space geometry and root mean squared distance to the fitted
 boundary, with an optional residual tolerance. Circle mode returns the
 smallest enclosing circle.
+[Region from fitted shape](../examples/fitted_shape_region/README.md) turns
+ellipse or enclosing-circle fits into reusable image selections with an axis margin.
 
 **Compare contours (Hu moments)** measures similarity between ordered point
 lists or selected contour/blob collection items. **Contour hull and convexity
@@ -234,6 +236,9 @@ defects** reports hull vertices, solidity and concavity depths from a
 whole-pixel contour. **Test points against contour** classifies points as
 inside, on the edge or outside, and can filter them by signed distance to the
 boundary. See the [OpenCV shape-analysis reference](https://docs.opencv.org/5.0/main_modules/geometry_shape.html).
+In a two-object fixture with one hole, the pinned OpenCV 5.0.0
+`findContoursLinkRuns` binding reported the hole contour without a parent link.
+The standard contour path remains the supported option for hierarchy.
 
 
 ## Available alignment and restoration
