@@ -486,6 +486,10 @@ defocus, or custom blur kernels and a configurable noise-to-signal ratio.
 and subtracts or divides out the estimated background.
 [Adaptive background example](examples/adaptive_background/README.md)
 
+**Hann window** tapers image edges or rows before a Fourier transform and
+exposes the coefficients and coherent gain.
+[Hann window example](examples/hann_window/README.md)
+
 The [complete parameter reference](docs/block-parameters.md) lists defaults,
 dropdown choices and input ports directly from the block definitions. Existing
 wrappers also expose kernel dimensions, anchors, borders, output depths, masks,
