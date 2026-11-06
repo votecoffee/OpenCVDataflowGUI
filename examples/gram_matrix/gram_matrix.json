@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "training",
+      "type": "cv.gram_matrix",
+      "name": "Measure feature covariance and learn the offset",
+      "parameters": {
+        "samples": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            5,
+            6
+          ]
+        ],
+        "centering": "column_mean",
+        "normalization": "sample"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "matrix",
+        "offset"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "held_out",
+      "type": "cv.gram_matrix",
+      "name": "Compare new rows around the same offset",
+      "parameters": {
+        "samples": [
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            6
+          ]
+        ],
+        "axis": "rows"
+      },
+      "position": [
+        420,
+        0
+      ],
+      "exposed_inputs": [
+        "offset"
+      ],
+      "exposed_outputs": [
+        "matrix"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "training",
+      "output": "offset",
+      "target": "held_out",
+      "input": "offset"
+    }
+  ]
+}

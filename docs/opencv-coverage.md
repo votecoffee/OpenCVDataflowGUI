@@ -49,6 +49,8 @@ solutions with multiple observation columns, numerical rank, and residuals.
 roots through degree three, iterative complex roots, and relative residual judgments.
 [Multiply matrices](../examples/matrix_multiply/README.md) applies weighted real matrix
 products with an optional addend and independent transposition controls.
+[Gram matrix](../examples/gram_matrix/README.md) computes row or column dot products
+with optional centering, reusable offsets, and sample or population normalization.
 [Find nearest rows](../examples/nearest_rows/README.md) adds exact top-K feature-table
 search, candidate masks, mutual nearest matching, and numeric or packed-byte distances.
 [Sort numeric table](../examples/numeric_table_sort/README.md) ranks whole records or
