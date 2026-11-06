@@ -305,7 +305,7 @@ P2	function	cv2.ccm.gammaCorrection	no static reference	-
 P2	function	cv2.convexHull	literal reference	-
 P2	function	cv2.convexityDefects	literal reference	-
 P2	function	cv2.createGeneralizedHoughBallard	literal reference	-
-P2	function	cv2.createGeneralizedHoughGuil	no static reference	-
+P2	function	cv2.createGeneralizedHoughGuil	literal reference	-
 P2	function	cv2.dct	literal reference	-
 P2	class	cv2.detail.AffineBasedEstimator	no static reference	-
 P2	class	cv2.detail.AffineBestOf2NearestMatcher	no static reference	-
@@ -1007,7 +1007,7 @@ P2	method	cv2.optflow.DualTVL1OpticalFlow.setLambda	method name only	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setMedianFiltering	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setOuterIterations	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setScalesNumber	no static reference	-
-P2	method	cv2.optflow.DualTVL1OpticalFlow.setScaleStep	no static reference	-
+P2	method	cv2.optflow.DualTVL1OpticalFlow.setScaleStep	method name only	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setTau	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setTheta	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setUseInitialFlow	no static reference	-
@@ -2822,7 +2822,7 @@ P3	method	cv2.GeneralizedHough.getMinDist	no static reference	-
 P3	method	cv2.GeneralizedHough.setCannyHighThresh	no static reference	-
 P3	method	cv2.GeneralizedHough.setCannyLowThresh	no static reference	-
 P3	method	cv2.GeneralizedHough.setDp	method name only	-
-P3	method	cv2.GeneralizedHough.setMaxBufferSize	no static reference	-
+P3	method	cv2.GeneralizedHough.setMaxBufferSize	method name only	-
 P3	method	cv2.GeneralizedHough.setMinDist	no static reference	-
 P3	method	cv2.GeneralizedHough.setTemplate	method name only	-
 P3	class	cv2.GeneralizedHoughBallard	no static reference	-
@@ -2843,18 +2843,18 @@ P3	method	cv2.GeneralizedHoughGuil.getPosThresh	no static reference	-
 P3	method	cv2.GeneralizedHoughGuil.getScaleStep	no static reference	-
 P3	method	cv2.GeneralizedHoughGuil.getScaleThresh	no static reference	-
 P3	method	cv2.GeneralizedHoughGuil.getXi	no static reference	-
-P3	method	cv2.GeneralizedHoughGuil.setAngleEpsilon	no static reference	-
-P3	method	cv2.GeneralizedHoughGuil.setAngleStep	no static reference	-
-P3	method	cv2.GeneralizedHoughGuil.setAngleThresh	no static reference	-
+P3	method	cv2.GeneralizedHoughGuil.setAngleEpsilon	method name only	-
+P3	method	cv2.GeneralizedHoughGuil.setAngleStep	method name only	-
+P3	method	cv2.GeneralizedHoughGuil.setAngleThresh	method name only	-
 P3	method	cv2.GeneralizedHoughGuil.setLevels	method name only	-
-P3	method	cv2.GeneralizedHoughGuil.setMaxAngle	no static reference	-
-P3	method	cv2.GeneralizedHoughGuil.setMaxScale	no static reference	-
-P3	method	cv2.GeneralizedHoughGuil.setMinAngle	no static reference	-
-P3	method	cv2.GeneralizedHoughGuil.setMinScale	no static reference	-
-P3	method	cv2.GeneralizedHoughGuil.setPosThresh	no static reference	-
-P3	method	cv2.GeneralizedHoughGuil.setScaleStep	no static reference	-
-P3	method	cv2.GeneralizedHoughGuil.setScaleThresh	no static reference	-
-P3	method	cv2.GeneralizedHoughGuil.setXi	no static reference	-
+P3	method	cv2.GeneralizedHoughGuil.setMaxAngle	method name only	-
+P3	method	cv2.GeneralizedHoughGuil.setMaxScale	method name only	-
+P3	method	cv2.GeneralizedHoughGuil.setMinAngle	method name only	-
+P3	method	cv2.GeneralizedHoughGuil.setMinScale	method name only	-
+P3	method	cv2.GeneralizedHoughGuil.setPosThresh	method name only	-
+P3	method	cv2.GeneralizedHoughGuil.setScaleStep	method name only	-
+P3	method	cv2.GeneralizedHoughGuil.setScaleThresh	method name only	-
+P3	method	cv2.GeneralizedHoughGuil.setXi	method name only	-
 P3	function	cv2.getAffineTransform	no static reference	-
 P3	function	cv2.getClosestEllipsePoints	literal reference	-
 P3	function	cv2.getCPUFeaturesLine	no static reference	-

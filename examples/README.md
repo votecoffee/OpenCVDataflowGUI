@@ -35,6 +35,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Absolute image error](absolute_image_error/README.md) | Compare mean, RMS, and maximum absolute error on two known deviations. |
 | [Rotated rectangle overlap](rotated_rectangle_overlap/README.md) | Fit a part footprint and measure overlap against a reference. |
 | [Generalized Hough matching](generalized_hough/README.md) | Locate two copies of a template shape, then restrict the search results to a region. |
+| [Rotated and scaled Hough matching](generalized_hough_guil/README.md) | Find a template with a different rotation and scale, and inspect its oriented outline. |
 | [Image summary statistics](image_statistics/README.md) | Measure a selected patch and mark the extrema in source pixel coordinates. |
 | [Path intensity profile](path_intensity_profile/README.md) | Sample all color channels along a bent path and preserve excluded samples. |
 | [Intensity profile](intensity_profile/README.md) | Plot the mean and locate the maximum in each selected column. |
