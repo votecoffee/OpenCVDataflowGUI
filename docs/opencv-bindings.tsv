@@ -2095,7 +2095,7 @@ P3	function	cv2.contourArea	literal reference	-
 P3	function	cv2.convertMaps	no static reference	-
 P3	function	cv2.convertPointsFromHomogeneous	no static reference	-
 P3	function	cv2.convertPointsToHomogeneous	no static reference	-
-P3	function	cv2.convertScaleAbs	no static reference	-
+P3	function	cv2.convertScaleAbs	literal reference	-
 P3	function	cv2.copyMakeBorder	literal reference	-
 P3	function	cv2.copyTo	literal reference	-
 P3	function	cv2.cornerEigenValsAndVecs	no static reference	-

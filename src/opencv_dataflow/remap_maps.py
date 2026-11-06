@@ -2,18 +2,33 @@
 
 import hashlib
 import json
+import math
 
 import cv2
 import numpy as np
 
 from .calibration import camera_parameters
 from .core import Block, Port, Result
+from .graphics_layers import GraphicDrawing, graphic_object
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, frame
 from .processing import finite
 
 _MAX_AXIS = 16_384
 _TAG = "lens_remap_map"
+_COLORMAPS = {
+    name.removeprefix("COLORMAP_").lower(): getattr(cv2, name)
+    for name in dir(cv2)
+    if name.startswith("COLORMAP_")
+}
+
+
+def _valid_size(size):
+    return (
+        isinstance(size, list)
+        and len(size) == 2
+        and all(type(v) is int and 1 <= v <= _MAX_AXIS for v in size)
+    )
 
 
 def _signature(values):
@@ -24,10 +39,10 @@ def _map_frame(info):
     return frame(info["output_size"], f"lens-map:{info['id']}")
 
 
-def lens_remap_payload(block, source_size, output_size):
+def _lens_map_pair(block, output_size):
     x, y = (block.input_payloads[name] for name in ("map_x", "map_y"))
     if _TAG not in x and _TAG not in y:
-        return {}
+        return None
     info, other = x.get(_TAG), y.get(_TAG)
     if (
         not isinstance(info, dict)
@@ -36,15 +51,23 @@ def lens_remap_payload(block, source_size, output_size):
         or {**info, "axis": "y"} != other
     ):
         raise ValidationError("Connect matching X and Y lens maps from the same correction")
-    if info.get("source_size") != source_size:
-        raise ValidationError("Source image dimensions do not match the lens map calibration")
     if (
-        info.get("output_size") != output_size
+        not _valid_size(info.get("source_size"))
+        or not _valid_size(output_size)
+        or info.get("output_size") != output_size
         or x.get("spatial") != _map_frame(info)
         or y.get("spatial") != _map_frame(info)
     ):
         raise ValidationError("Lens maps must retain their original pixel grid")
+    return info
 
+
+def lens_remap_payload(block, source_size, output_size):
+    info = _lens_map_pair(block, output_size)
+    if info is None:
+        return {}
+    if info["source_size"] != source_size:
+        raise ValidationError("Source image dimensions do not match the lens map calibration")
     payload = dict(block.input_payloads["image"])
     spatial = payload["spatial"]
     source_frame = spatial if spatial["root_id"] is not None else [block.id, spatial]
@@ -97,11 +120,7 @@ class BuildLensMaps(Block):
         p, profile = self.parameters, inputs["calibration"]
         matrix, distortion = camera_parameters(profile)
         source = profile["image_size"]
-        if (
-            not isinstance(source, list)
-            or len(source) != 2
-            or any(type(v) is not int or not 1 <= v <= _MAX_AXIS for v in source)
-        ):
+        if not _valid_size(source):
             raise ValidationError("Lens calibration needs valid [width, height] dimensions")
         size = [int(p["width"]) or source[0], int(p["height"]) or source[1]]
         if size[0] * size[1] > 64_000_000:
@@ -172,4 +191,134 @@ class BuildLensMaps(Block):
                 for axis in ("x", "y")
             },
             message=f"{size[0]} × {size[1]} lens correction maps",
+        )
+
+
+def _displacement_arrows(dx, dy, valid, ratio_x, ratio_y, spacing, scale):
+    height, width = dx.shape
+    step = max(spacing, math.ceil(max(width, height) / 64))
+    arrows = []
+    for row in range(min(step // 2, height - 1), height, step):
+        for column in range(min(step // 2, width - 1), width, step):
+            if not valid[row, column]:
+                continue
+            vx = float(dx[row, column]) * scale / ratio_x
+            vy = float(dy[row, column]) * scale / ratio_y
+            length = math.hypot(vx, vy)
+            if length < 1:
+                continue
+            head = (column + vx, row + vy)
+            tip = min(0.3, 5 / length)
+            left = (head[0] - tip * (vx - vy / 2), head[1] - tip * (vy + vx / 2))
+            right = (head[0] - tip * (vx + vy / 2), head[1] - tip * (vy - vx / 2))
+            arrows.append(
+                graphic_object(
+                    "polyline",
+                    ((column, row), head, left, head, right),
+                    (255, 255, 255),
+                    thickness=1,
+                )
+            )
+    return tuple(arrows)
+
+
+class LensMapDisplacement(Block):
+    type_id, title = "calibration.lens_map_displacement", "Inspect lens map displacement"
+    category, block_type, subtype = "Calibration", "Calibration", "Lens distortion"
+    inputs = (Port("map_x"), Port("map_y"))
+    outputs = (
+        Port("heatmap"),
+        Port("magnitude"),
+        Port("valid_mask"),
+        Port("summary", "data"),
+        Port("maximum", "number"),
+        Port("valid_fraction", "number"),
+    )
+    defaults = {"colormap": "turbo", "heatmap_max": 0.0, "arrow_spacing": 0, "arrow_scale": 1.0}
+    parameter_choices = {"colormap": tuple(_COLORMAPS)}
+    parameter_ranges = {
+        "heatmap_max": NumericRange(1e-6, float(np.finfo(np.float32).max), zero_allowed=True),
+        "arrow_spacing": NumericRange(0, _MAX_AXIS, whole=True),
+        "arrow_scale": NumericRange(0.01, 100),
+    }
+    parameter_help = {
+        "colormap": "Color palette used to display displacement magnitude.",
+        "heatmap_max": "Source-pixel displacement at the top of the palette. Zero fits the data.",
+        "arrow_spacing": "Minimum sample spacing in output pixels. Zero hides direction arrows.",
+        "arrow_scale": "Display multiplier for arrow length. Measurements retain their scale.",
+    }
+    process_inputs_readonly = True
+
+    def process(self, inputs):
+        x, y = (np.asarray(inputs[name]) for name in ("map_x", "map_y"))
+        if (
+            x.ndim != 2
+            or y.shape != x.shape
+            or x.dtype != np.float32
+            or y.dtype != np.float32
+            or x.size > 64_000_000
+            or not np.isfinite(x).all()
+            or not np.isfinite(y).all()
+        ):
+            raise ValidationError("Use matching, finite float32 lens map planes")
+        height, width = x.shape
+        info = _lens_map_pair(self, [width, height])
+        if info is None:
+            raise ValidationError("Connect X and Y maps from Build lens correction maps")
+        source_width, source_height = info["source_size"]
+        ratio_x, ratio_y = source_width / width, source_height / height
+        dx = x - (np.arange(width) * ratio_x).astype(np.float32)
+        dy = y - (np.arange(height) * ratio_y).astype(np.float32)[:, None]
+        with np.errstate(over="ignore"):
+            magnitude = np.hypot(dx, dy)
+        if not np.isfinite(magnitude).all():
+            raise ValidationError("Lens map displacement exceeds float32 range")
+
+        # Tolerate roundoff at the outermost source pixel centers.
+        eps = 1e-5
+        valid = (
+            (x >= -eps)
+            & (x <= source_width - 1 + eps)
+            & (y >= -eps)
+            & (y <= source_height - 1 + eps)
+        )
+        valid_count = int(np.count_nonzero(valid))
+        fraction = valid_count / x.size
+        minimum, maximum, _, _ = cv2.minMaxLoc(magnitude)
+        mean, stddev = cv2.meanStdDev(magnitude)
+        mean, stddev = float(mean.item()), float(stddev.item())
+        limit = float(self.parameters["heatmap_max"]) or max(maximum, 1e-5)
+        levels = cv2.convertScaleAbs(np.minimum(magnitude, limit), alpha=255 / limit)
+        heatmap = cv2.applyColorMap(levels, _COLORMAPS[self.parameters["colormap"]])
+        outputs = {
+            "heatmap": heatmap,
+            "magnitude": magnitude,
+            "valid_mask": valid.astype(np.uint8) * 255,
+            "summary": {
+                "minimum_source_pixels": minimum,
+                "maximum_source_pixels": maximum,
+                "mean_source_pixels": mean,
+                "rms_source_pixels": math.hypot(mean, stddev),
+                "heatmap_max_source_pixels": limit,
+                "valid_count": valid_count,
+                "pixel_count": x.size,
+                "valid_fraction": fraction,
+            },
+            "maximum": maximum,
+            "valid_fraction": fraction,
+        }
+        drawings = {}
+        spacing = int(self.parameters["arrow_spacing"])
+        if self.generate_graphics and spacing:
+            arrows = _displacement_arrows(
+                dx, dy, valid, ratio_x, ratio_y, spacing, float(self.parameters["arrow_scale"])
+            )
+            if arrows:
+                drawings["Displacement vectors"] = GraphicDrawing(arrows, "map_x")
+        payload = {key: value for key, value in self.input_payloads["map_x"].items() if key != _TAG}
+        return Result(
+            outputs,
+            payloads=dict.fromkeys(outputs, payload),
+            drawings=drawings,
+            message=f"Peak {maximum:.3g} source px, {fraction:.1%} inside source",
         )

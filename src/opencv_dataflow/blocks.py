@@ -697,7 +697,7 @@ def builtin_registry():
     from .recipe_blocks import RecipeField, RecipeSelect
     from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
-    from .remap_maps import BuildLensMaps
+    from .remap_maps import BuildLensMaps, LensMapDisplacement
     from .restoration import RESTORATION_BLOCKS
     from .segmentation import SEGMENTATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
@@ -751,6 +751,7 @@ def builtin_registry():
         CalibrationGrid,
         LensCalibration,
         BuildLensMaps,
+        LensMapDisplacement,
         Undistort,
         ColorBalance,
         *COLOR_CALIBRATION_BLOCKS,

@@ -673,6 +673,19 @@ Calibration / Lens distortion
 | `units` | `"mm"` |  |
 | `max_rms_pixels` | `1.0` |  |
 
+## Inspect lens map displacement (`calibration.lens_map_displacement`)
+
+Calibration / Lens distortion
+
+Inputs: `map_x` (image), `map_y` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `colormap` | `"turbo"` | `autumn`, `bone`, `cividis`, `cool`, `deepgreen`, `hot`, `hsv`, `inferno`, `jet`, `magma`, `ocean`, `parula`, `pink`, `plasma`, `rainbow`, `spring`, `summer`, `turbo`, `twilight`, `twilight_shifted`, `viridis`, `winter` Color palette used to display displacement magnitude. |
+| `heatmap_max` | `0.0` | Value must be zero or a finite number between 1e-06 and 3.40282e+38. Source-pixel displacement at the top of the palette. Zero fits the data. |
+| `arrow_spacing` | `0` | Value must be a whole number between 0 and 16384. Minimum sample spacing in output pixels. Zero hides direction arrows. |
+| `arrow_scale` | `1.0` | Value must be a finite number between 0.01 and 100. Display multiplier for arrow length. Measurements retain their scale. |
+
 ## Build lens correction maps (`calibration.lens_maps`)
 
 Calibration / Lens distortion
