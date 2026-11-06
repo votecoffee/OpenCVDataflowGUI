@@ -52,11 +52,12 @@ The `context` argument is a `PluginDialogContext` with the following members.
 | `image_outputs` | Cached image outputs at opening or the last refresh. Each entry gives `block_id`, `block_name`, `port`, and `level_count`. |
 | `refresh_images()` | Refreshes the catalog from the latest completed outputs published to the editor and returns the new entries. |
 | `snapshot_image(block_id, port, *, level=0)` | Returns a private `ValuePacket` containing a copied image and copied wire payload. |
+| `snapshot_input_image(port, *, source="connected", level=None)` | Copies an image for a named input of the selected block. |
 | `output_revision` | Number of result publications received by the editor since the popup opened. Starts at zero. |
 | `subscribe_outputs(callback)` | Calls `callback(revision)` on the GUI thread after a publication and returns an unsubscribe function. |
 
-Run the graph in a profile that retains output previews, such as Debug, to
-populate the cache. Use `refresh_images()` on the GUI thread
+Run the graph in a profile that retains input and output previews, such as
+Debug, to populate the cache. Use `refresh_images()` on the GUI thread
 before taking a new snapshot in a modeless dialog. The catalog and snapshot API
 are available for the life of the popup. Copies already taken can outlive it.
 Select any cached image output and use a zero-based level for a pyramid, with
@@ -64,6 +65,23 @@ level zero as the largest. Snapshots retain pixel depth, channel encoding,
 spatial and pyramid transforms, and ticket metadata. You can keep separate
 reference and preview snapshots and process the copies in a plugin worker.
 Store asset paths and IDs as normal block parameters if the graph needs them.
+
+### Capture a block input
+
+Call `context.snapshot_input_image("image")` to follow the wire into the
+block. It uses the cached upstream output and the inspector's pyramid level
+at popup opening. Pass `level=N` to select a different level. For inputs
+that receive a whole pyramid, a capture defaults to its largest image.
+
+Use `source="processed"` to capture the last input the block received.
+That capture keeps the actual level, ticket, and outcome, even if a newer
+image on the wire was rejected. It also works for injected inputs inside a
+ToolBlock. When the block received a single image, this capture contains
+that image at its original coordinates. When it received a whole pyramid,
+you can select a level with `level=N`.
+
+Both captures read the catalog at opening or the last `refresh_images()`.
+The method raises a `ValueError` when the input image is unavailable.
 
 ## Follow graph outputs
 

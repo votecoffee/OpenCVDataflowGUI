@@ -174,7 +174,17 @@ def check_spatial(payload, size):
         raise ValueError("Spatial payload needs valid root_size and invertible to_root matrix")
 
 
-def prepare_inputs(block, values):
+def pyramid_level_image(pyramid, payload, level):
+    """Use the selected level's geometry and retain the incoming wire metadata."""
+    value = pyramid.levels[level]
+    return value, {
+        **metadata(value),
+        **{key: item for key, item in payload.items() if key not in ("spatial", "pyramid")},
+    }
+
+
+def prepare_inputs(block, values, *, input_levels=None):
+    input_levels = block.input_levels if input_levels is None else input_levels
     prepared, payloads = {}, {}
     for port in block.inputs:
         if port.name not in values:
@@ -189,15 +199,11 @@ def prepare_inputs(block, values):
             and port.kind == "image"
             and not getattr(block, "preserve_image_sets", False)
         ):
-            choice = block.input_levels.get(port.name, "largest")
+            choice = input_levels.get(port.name, "largest")
             index = 0 if choice == "largest" else int(choice)
             if not 0 <= index < len(value.levels):
                 raise ValueError(f"{port.name} has no pyramid level {index}")
-            value = value.levels[index]
-            payload = {
-                **metadata(value),
-                **{key: item for key, item in payload.items() if key not in ("spatial", "pyramid")},
-            }
+            value, payload = pyramid_level_image(value, payload, index)
         if isinstance(value, np.ndarray) and value.ndim in (2, 3):
             payload.setdefault("spatial", frame([value.shape[1], value.shape[0]]))
             check_spatial(payload, [value.shape[1], value.shape[0]])

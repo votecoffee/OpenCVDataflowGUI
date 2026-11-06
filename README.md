@@ -291,6 +291,7 @@ Plugin blocks can add their own inspector button and open a Qt dialog for
 configuration or review. The dialog can use copies of cached images with their
 coordinate metadata. Plugins can opt into a modeless popup to capture new
 outputs while the graph runs and subscribe to completed output notices.
+Dialogs can also capture the selected block's wired or last processed input.
 Accepted edits appear in the inspector draft for preview and **Apply
 configuration**. [Plugin dialog API](docs/plugin-dialogs.md)
 
