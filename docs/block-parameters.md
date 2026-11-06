@@ -1894,6 +1894,19 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `output_depth` | `"same"` | `same`, `uint8`, `uint16`, `int16`, `float32`, `float64` |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 
+## Solve linear program (`cv.solve_linear_program`)
+
+Image processing / Statistics
+
+Inputs: `objective` (data, optional), `constraints` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `objective` | `[]` | One coefficient per nonnegative continuous variable. Wired values win. |
+| `constraints` | `[]` | Rows have one coefficient per variable and a final upper bound. |
+| `direction` | `"maximize"` | `maximize`, `minimize` |
+| `constraint_tolerance` | `1e-12` | Value must be a finite number at least 0. Maximum numerical constraint violation in the original units. |
+
 ## Solve linear system (`cv.solve_linear_system`)
 
 Image processing / Statistics

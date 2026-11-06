@@ -20,6 +20,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Principal components](principal_components/README.md) | Fit PCA, project numeric rows, and compare reduced and full reconstruction. |
 | [Feature covariance and outliers](feature_covariance/README.md) | Score correlated measurements and identify rows outside a distance limit. |
 | [Solve linear system](linear_system/README.md) | Fit two calibration curves with a shared coefficient matrix and compare the residuals. |
+| [Solve linear program](linear_program/README.md) | Allocate shared capacity or meet demand at minimum cost, with constraint slack and solver status. |
 | [Solve polynomial roots](polynomial_roots/README.md) | Fit a measurement curve, solve for its zero crossings, and compare with a quartic that has complex roots. |
 | [Multiply matrices](matrix_multiply/README.md) | Use fitted calibration coefficients to predict new readings and apply offsets. |
 | [Gram matrix](gram_matrix/README.md) | Compute feature covariance and reuse the learned offset for a new batch. |
