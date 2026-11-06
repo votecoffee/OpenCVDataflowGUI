@@ -663,7 +663,7 @@ def builtin_registry():
     from .geometry3d import GEOMETRY3D_BLOCKS
     from .histogram import Histogram
     from .histogram_comparison import CompareHistograms, HistogramBackProjection
-    from .illumination import FlatFieldCorrection
+    from .illumination import AdaptiveBackgroundCorrection, FlatFieldCorrection
     from .image_codecs import DecodeImage, EncodeImage
     from .image_quality import CompareImageQuality
     from .image_queue import ImageQueue
@@ -765,6 +765,7 @@ def builtin_registry():
         WatershedPointSeeds,
         WatershedMaskSeeds,
         FlatFieldCorrection,
+        AdaptiveBackgroundCorrection,
         CompareImageQuality,
         CompareHistograms,
         *COLOR_MEASUREMENT_BLOCKS,

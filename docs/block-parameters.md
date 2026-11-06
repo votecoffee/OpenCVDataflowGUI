@@ -748,6 +748,24 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 
 No configurable algorithm parameters.
 
+## Adaptive background correction (`cv.adaptive_background`)
+
+Image processing / Color and depth
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `estimator` | `"closing"` | `gaussian`, `opening`, `closing` Opening ignores small bright details. Closing fills small dark details. |
+| `radius` | `15` | Value must be a whole number between 1 and 63. Half-width of the background window in pixels. |
+| `shape` | `"ellipse"` | `ellipse`, `rect` Window shape for opening or closing. |
+| `sigma` | `0.0` | Value must be a finite number between 0 and 100. Gaussian sigma in pixels. Zero derives it from the radius. |
+| `border` | `"reflect_101"` | `reflect_101`, `replicate` |
+| `operation` | `"subtract"` | `subtract`, `divide` Subtract an additive background or divide out multiplicative shading. |
+| `target_level` | `0.5` | Value must be a finite number at least 0. Baseline after correction, as integer full-scale fraction or float units. |
+| `min_background` | `0.001` | Value must be a finite number at least 0. Division floor, as integer full-scale fraction or float units. |
+| `output_depth` | `"same"` | `same`, `float32`, `float64` Floating output retains signed differences in raw sample units. |
+
 ## Adaptive threshold (`cv.adaptive_threshold`)
 
 Image processing / Segmentation
