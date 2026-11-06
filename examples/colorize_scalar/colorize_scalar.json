@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Synthetic inspection target",
+      "parameters": {},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "part",
+      "type": "mask.shape",
+      "name": "Isolate the round part",
+      "parameters": {"shape": "circle", "center": [140, 180], "radius": 72},
+      "position": [320, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["mask"],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "distance",
+      "type": "cv.distance_transform",
+      "name": "Measure distance to background",
+      "parameters": {"distance_type": "l2", "mask_size": "precise"},
+      "position": [640, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["distance"],
+      "thumbnail": true
+    },
+    {
+      "id": "colors",
+      "type": "cv.colorize_scalar",
+      "name": "Display the selected distances",
+      "parameters": {"colormap": "viridis"},
+      "position": [960, 0],
+      "exposed_inputs": ["image", "mask"],
+      "exposed_outputs": ["image", "levels", "valid_mask", "range"],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "part", "input": "image"},
+    {"source": "part", "output": "mask", "target": "distance", "input": "image"},
+    {"source": "distance", "output": "distance", "target": "colors", "input": "image"},
+    {"source": "part", "output": "mask", "target": "colors", "input": "mask"}
+  ]
+}

@@ -1129,6 +1129,23 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `tiles_x` | `8` |  |
 | `tiles_y` | `8` |  |
 
+## Colorize scalar image (`cv.colorize_scalar`)
+
+Image processing / Color and depth
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `palette` (image, optional).
+
+Input `image` — Single-channel scalar image or physical depth plane.
+
+Input `palette` — Optional 1 × 256 or 256 × 1 uint8 strip in gray, BGR or RGB order.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `colormap` | `"turbo"` | `autumn`, `bone`, `cividis`, `cool`, `deepgreen`, `hot`, `hsv`, `inferno`, `jet`, `magma`, `ocean`, `parula`, `pink`, `plasma`, `rainbow`, `spring`, `summer`, `turbo`, `twilight`, `twilight_shifted`, `viridis`, `winter` OpenCV palette. A wired palette strip takes precedence. |
+| `range_mode` | `"auto"` | `auto`, `fixed` Auto uses the minimum and maximum of selected valid pixels. |
+| `minimum` | `0.0` | Value must be a finite number. Fixed mode maps this sample value and lower values to palette index 0. |
+| `maximum` | `255.0` | Value must be a finite number. Fixed mode maps this sample value and higher values to palette index 255. |
+
 ## Compare pixels (`cv.compare_pixels`)
 
 Image processing / Image math

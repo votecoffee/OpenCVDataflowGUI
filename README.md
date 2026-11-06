@@ -537,6 +537,9 @@ by **Canny from derivatives**.
 samples, then produces a clipped magnitude image for display or thresholding.
 [Signed-gradient example](examples/scale_absolute/README.md)
 
+**Colorize scalar image** maps grayscale, response, or depth values to a
+built-in or wired palette. See the [distance-map example](examples/colorize_scalar/README.md).
+
 **Gabor texture response** isolates stripes by orientation and wavelength.
 Compare two responses to map the dominant texture direction.
 [Gabor texture example](examples/gabor_texture/README.md)

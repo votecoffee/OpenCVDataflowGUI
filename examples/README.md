@@ -82,6 +82,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Linear channel transform](channel_transform/README.md) | Mix BGR channels and derive a grayscale difference image inside a region. |
 | [Route image channels](route_channels/README.md) | Build a false-color image by routing two source channels and a zero-filled channel. |
 | [Blend with weight maps](blend_weight_maps/README.md) | Feather a boundary between a sharp image and its blurred copy. |
+| [Colorize scalar image](colorize_scalar/README.md) | Show how far each foreground pixel lies from the edge of a synthetic part. |
 | [Fourier correlation](fourier_correlation/README.md) | Recover a known signed shift and inspect the lag map. |
 | [Fourier gain mask](fourier_gain/README.md) | Apply a custom notch at a specific frequency pair and reconstruct the image. |
 | [Fourier spectrum filtering](fourier_filter/README.md) | Reject a periodic stripe pattern with a band-stop filter and inverse DFT. |

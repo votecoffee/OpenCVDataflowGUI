@@ -10,6 +10,11 @@ BORDERS = {
     "reflect_101": cv2.BORDER_REFLECT_101,
     "reflect_edge": cv2.BORDER_REFLECT,
 }
+COLORMAPS = {
+    name.removeprefix("COLORMAP_").lower(): getattr(cv2, name)
+    for name in dir(cv2)
+    if name.startswith("COLORMAP_")
+}
 CONTOUR_APPROXIMATIONS = {
     "none": cv2.CHAIN_APPROX_NONE,
     "simple": cv2.CHAIN_APPROX_SIMPLE,
