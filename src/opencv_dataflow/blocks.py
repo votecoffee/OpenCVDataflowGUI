@@ -700,7 +700,12 @@ def builtin_registry():
     from .restoration import RESTORATION_BLOCKS
     from .segmentation import SEGMENTATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
-    from .shape_fitting import BoundingRotatedRectangle, FitShape, RotatedRectangleOverlap
+    from .shape_fitting import (
+        BoundingConvexPolygon,
+        BoundingRotatedRectangle,
+        FitShape,
+        RotatedRectangleOverlap,
+    )
     from .skeleton import PruneSkeleton, Skeletonize
     from .spectral import SPECTRAL_BLOCKS
     from .stereo3d import STEREO3D_BLOCKS
@@ -786,6 +791,7 @@ def builtin_registry():
         HistogramBackProjection,
         FitShape,
         BoundingRotatedRectangle,
+        BoundingConvexPolygon,
         RotatedRectangleOverlap,
         ConvexPolygonOverlap,
         FindTemplateInstances,

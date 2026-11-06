@@ -2652,6 +2652,17 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
 | `check_count` | `false` |  |
 
+## Enclosing convex polygon (`inspect.bounding_convex_polygon`)
+
+Inspection / Measurements
+
+Inputs: `points` (data, optional), `collection` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `item_index` | `0` | Value must be a whole number at least 0. Zero-based position in the collection, after filtering or sorting. |
+| `maximum_sides` | `3` | Value must be a whole number between 3 and 16. Three selects the triangle solver. Larger limits allow polygon search. |
+
 ## Minimum-area rotated rectangle (`inspect.bounding_rotated_rectangle`)
 
 Inspection / Measurements
