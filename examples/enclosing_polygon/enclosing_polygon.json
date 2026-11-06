@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Five-sided part",
+      "parameters": {
+        "path": "assets/part.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "contours",
+      "type": "inspect.contours",
+      "name": "Measure the part boundary",
+      "parameters": {
+        "expected_count": 1
+      },
+      "position": [
+        315,
+        170
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "triangle",
+      "type": "inspect.bounding_convex_polygon",
+      "name": "Enclose with up to 3 sides",
+      "parameters": {
+        "maximum_sides": 3
+      },
+      "position": [
+        645,
+        0
+      ],
+      "exposed_inputs": [
+        "collection"
+      ],
+      "exposed_outputs": [
+        "area",
+        "fill_ratio",
+        "points",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "graphics_mode": "on"
+    },
+    {
+      "id": "triangle_overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show the triangle footprint",
+      "parameters": {},
+      "position": [
+        975,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "quadrilateral",
+      "type": "inspect.bounding_convex_polygon",
+      "name": "Enclose with up to 4 sides",
+      "parameters": {
+        "maximum_sides": 4
+      },
+      "position": [
+        645,
+        250
+      ],
+      "exposed_inputs": [
+        "collection"
+      ],
+      "exposed_outputs": [
+        "area",
+        "fill_ratio",
+        "points",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "graphics_mode": "on"
+    },
+    {
+      "id": "quadrilateral_overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show the quadrilateral footprint",
+      "parameters": {},
+      "position": [
+        975,
+        250
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "contours",
+      "input": "image"
+    },
+    {
+      "source": "contours",
+      "output": "collection",
+      "target": "triangle",
+      "input": "collection"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "triangle_overlay",
+      "input": "image"
+    },
+    {
+      "source": "triangle",
+      "output": "result_graphics",
+      "target": "triangle_overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "contours",
+      "output": "collection",
+      "target": "quadrilateral",
+      "input": "collection"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "quadrilateral_overlay",
+      "input": "image"
+    },
+    {
+      "source": "quadrilateral",
+      "output": "result_graphics",
+      "target": "quadrilateral_overlay",
+      "input": "graphics_1"
+    }
+  ]
+}

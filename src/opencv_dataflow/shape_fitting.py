@@ -211,6 +211,119 @@ class BoundingRotatedRectangle(Block):
         return Result(outputs, payloads=dict.fromkeys(outputs, payload), drawings=drawings)
 
 
+def _checked_enclosure(hull, hull_area, vertices, side_limit):
+    if vertices is None or not np.isfinite(vertices).all():
+        return None
+    boundary = cv2.convexHull(vertices).reshape(-1, 2)
+    if not 3 <= len(boundary) <= side_limit:
+        return None
+    area = cv2.contourArea(boundary)
+    if area <= 0 or area < hull_area * (1 - 1e-5):
+        return None
+    polygon = boundary.astype(np.float64)
+    edges = np.roll(polygon, -1, axis=0) - polygon
+    normals = np.column_stack((-edges[:, 1], edges[:, 0]))
+    clearance = hull.reshape(-1, 2) @ normals.T - np.sum(polygon * normals, axis=1)
+    tolerance = 32 * np.finfo(np.float32).eps * max(1.0, float(np.max(np.abs(polygon))))
+    if np.any(clearance < -tolerance * np.linalg.norm(normals, axis=1)):
+        return None
+    return polygon, area
+
+
+def _fit_enclosure(hull, hull_area, side_limit):
+    if len(hull) <= side_limit:
+        return hull.reshape(-1, 2).astype(np.float64), hull_area, "hull"
+    if side_limit == 3:
+        _, vertices = cv2.minEnclosingTriangle(hull)
+        triangle = _checked_enclosure(hull, hull_area, vertices, side_limit)
+        if triangle is None:
+            raise ValidationError("OpenCV returned an invalid enclosing triangle")
+        return *triangle, "triangle"
+    if len(hull) > 256:
+        raise ValidationError("Polygon search is limited to 256 hull vertices")
+    rectangle = _checked_enclosure(
+        hull, hull_area, cv2.boxPoints(cv2.minAreaRect(hull)), side_limit
+    )
+    try:
+        _, vertices = cv2.minEnclosingConvexPolygon(hull, side_limit)
+    except cv2.error:
+        vertices = None
+    polygon = _checked_enclosure(hull, hull_area, vertices, side_limit)
+    if polygon is not None and (rectangle is None or polygon[1] <= rectangle[1]):
+        return *polygon, "convex_polygon"
+    if rectangle is not None:
+        return *rectangle, "rectangle"
+    raise ValidationError("OpenCV could not produce a valid enclosing polygon")
+
+
+class BoundingConvexPolygon(Block):
+    type_id, title = "inspect.bounding_convex_polygon", "Enclosing convex polygon"
+    category, block_type, subtype = "Inspection", "Inspection", "Measurements"
+    inputs = FitShape.inputs
+    outputs = (
+        Port("measurements", "data"),
+        Port("points", "data"),
+        Port("area", "number"),
+        Port("fill_ratio", "number"),
+    )
+    defaults = {"item_index": 0, "maximum_sides": 3}
+    parameter_ranges = {
+        "item_index": NumericRange(0, whole=True),
+        "maximum_sides": NumericRange(3, 16, whole=True),
+    }
+    parameter_help = {
+        "item_index": FitShape.parameter_help["item_index"],
+        "maximum_sides": "Three selects the triangle solver. Larger limits allow polygon search.",
+    }
+
+    def process(self, inputs):
+        points, payload, source = shape_points(self, inputs)
+        if (
+            points.ndim != 2
+            or points.shape[1] != 2
+            or not 3 <= len(points) <= 100_000
+            or not np.isfinite(points).all()
+            or np.max(np.abs(points)) > _COORDINATE.maximum
+        ):
+            raise ValidationError("Provide 3 to 100,000 finite [x, y] points within ±10 million")
+        low, high = points.min(axis=0), points.max(axis=0)
+        origin = (low + high) / 2
+        extent = float(np.max(high - low))
+        if extent < 1e-6:
+            raise ValidationError("Points must span at least 0.000001 pixels")
+        factor = math.ldexp(1.0, 10 - math.frexp(extent)[1])
+        hull = cv2.convexHull(((points - origin) * factor).astype(np.float32))
+        hull_area = cv2.contourArea(hull)
+        if hull_area <= 0:
+            raise ValidationError("Points must enclose a nonzero area")
+        side_limit = int(self.parameters["maximum_sides"])
+        polygon, area, method = _fit_enclosure(hull, hull_area, side_limit)
+        world = polygon / factor + origin
+        fill = min(1.0, hull_area / area)
+        outputs = {
+            "measurements": {
+                "method": method,
+                "side_count": len(polygon),
+                "area": area / factor**2,
+                "hull_area": hull_area / factor**2,
+                "fill_ratio": fill,
+            },
+            "points": world.tolist(),
+            "area": area / factor**2,
+            "fill_ratio": fill,
+        }
+        drawings = {}
+        if self.generate_graphics:
+            outline = graphic_object("polyline", world, ACCEPTED, closed=True)
+            drawings["enclosing polygon"] = GraphicDrawing((outline,), source)
+        return Result(
+            outputs,
+            payloads=dict.fromkeys(outputs, payload),
+            drawings=drawings,
+            message=f"{len(polygon)} sides, {fill:.1%} hull fill, {method.replace('_', ' ')}",
+        )
+
+
 class RotatedRectangleOverlap(Block):
     type_id, title = "inspect.rotated_rectangle_overlap", "Rotated rectangle overlap"
     category, block_type, subtype = "Inspection", "Inspection", "Measurements"

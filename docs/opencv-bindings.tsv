@@ -3461,8 +3461,8 @@ P3	method	cv2.MergeMertens.setSaturationWeight	no static reference	-
 P3	class	cv2.MergeRobertson	no static reference	-
 P3	method	cv2.MergeRobertson.process	method name only	-
 P3	function	cv2.min	literal reference	-
-P3	function	cv2.minEnclosingConvexPolygon	no static reference	-
-P3	function	cv2.minEnclosingTriangle	no static reference	-
+P3	function	cv2.minEnclosingConvexPolygon	literal reference	-
+P3	function	cv2.minEnclosingTriangle	literal reference	-
 P3	function	cv2.minMaxLoc	literal reference	-
 P3	function	cv2.mixChannels	no static reference	-
 P3	class	cv2.ml_ANN_MLP	alias	cv2.ml.ANN_MLP

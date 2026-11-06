@@ -463,6 +463,10 @@ area, intersection-over-union and the fraction of each footprint covered.
 footprints. The [example](examples/convex_overlap/README.md) wires a detected
 contour into the block and compares its convex hull with a reference.
 
+**Enclosing convex polygon** fits a footprint under a side-count limit.
+The [enclosing polygon example](examples/enclosing_polygon/README.md) compares
+a triangle and a quadrilateral fitted to the same part.
+
 **Path intensity profile** samples each image channel at regular distances
 along an open or closed path and preserves gaps outside the selection.
 [Path intensity profile example](examples/path_intensity_profile/README.md)
