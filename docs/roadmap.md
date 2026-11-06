@@ -39,6 +39,8 @@ a patch-to-source transform and a border coverage mask.
 Point-set Hough detection reports line votes and support spans from sparse
 image coordinates. Raster Hough detection reports the strongest polar lines
 and support spans from binary or intensity-weighted edge maps.
+Line collection clipping measures visible spans inside rectangular inspection
+windows and retains source IDs for downstream sorting and drawing.
 Hough circle detection emits fitted radii and native strengths for collection
 filtering, ranking, and filled disk masks.
 Fitted ellipse and enclosing-circle selections follow measured geometry for

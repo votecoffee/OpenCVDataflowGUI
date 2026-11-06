@@ -72,6 +72,8 @@ rectangular patch at a fractional center and preserves coordinate provenance.
 from sparse coordinates and exposes vote counts for collection sorting.
 [Hough polar lines](../examples/hough_polar_lines/README.md) supports binary
 and intensity-weighted raster voting with masks and regions.
+[Clip line segments](../examples/clip_line_segments/README.md) trims measured
+lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](../examples/hough_circle_collections/README.md) expose
 native strengths for Gradient and Gradient ALT and support radius filtering.
 [Polar image warp](../examples/polar_image_warp/README.md) unwraps circular

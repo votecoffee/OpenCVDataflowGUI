@@ -656,6 +656,9 @@ or intensity and restrict voting with a mask or region.
 **Hough circles** exposes fitted radius and native detection strength for sorting
 and filtering. [Circle collection example](examples/hough_circle_collections/README.md)
 
+Use **Clip line segments** to measure only the part of each detected line inside
+the image or a rectangular region. [Line clipping example](examples/clip_line_segments/README.md)
+
 Filter/sort criteria use dropdowns: area, bounding width/height and position,
 centroid, aspect ratio, principal-axis angle, line length, perimeter, fitted box
 sizes, extent, solidity, circularity, distance and all seven raw/signed-log Hu moments.

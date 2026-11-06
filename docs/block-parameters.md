@@ -845,6 +845,20 @@ Input `observation` — Optional identified ChArUco points from the validation i
 | `max_point_error_pixels` | `0.0` | Value must be a finite number at least 0. Maximum error of any point. Zero skips this check. |
 | `residual_scale` | `12.0` | Value must be a finite number between 0 and 100. Display multiplier for residual vectors. Zero hides the vectors. |
 
+## Clip line segments (`collection.clip_lines`)
+
+Inspection / Collections
+
+Inputs: `collection` (data), `region` (data, optional).
+
+Input `collection` — Measured line segments in the source image coordinates.
+
+Input `region` — Optional non-inverted rectangle in the source frame. Defaults to image bounds.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_length` | `0.0` | Value must be a finite number at least 0. Shortest retained span in pixels, inclusive. Zero allows point contacts. |
+
 ## Draw object collection (`collection.draw`)
 
 Inspection / Collections

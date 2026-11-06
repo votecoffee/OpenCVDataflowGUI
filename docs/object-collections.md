@@ -87,6 +87,21 @@ preserved. Chain filters for AND conditions, such as width → height → area �
 blocks to inspect each branch. Empty output is valid and does not itself assert
 an expected inspection count.
 
+## Clip line segments
+
+Connect a line collection from a detector. An optional rectangular `region`
+sets the clipping window in the source image frame. The block intersects that
+window with the image bounds. Without a region, it uses the full image.
+The last pixel center on each edge is included.
+
+**Minimum length** applies after clipping. Zero includes point contacts.
+The block keeps the object ID and detector strength for clipped spans and
+recomputes geometric measurements. Other detector measurements are cleared
+for changed spans. Rejected items carry their original geometry and metrics.
+The `clipped_count` counts retained spans whose endpoints changed.
+The output retains collection coordinates and can feed **Draw object collection**.
+[Line clipping example](../examples/clip_line_segments/README.md)
+
 ## Sort object collection
 
 Choose a primary metric and ascending/descending order, with an optional secondary

@@ -10,6 +10,7 @@ from .core import Block, Port, Result
 from .features import overlay_image
 from .graphics_layers import GraphicDrawing, graphic_box, graphic_circle, graphic_object
 from .objects import METRICS, collection, line_item, validate_collection
+from .parameter_validation import NumericRange, ValidationError
 from .payloads import (
     ValuePacket,
     image_with_payload,
@@ -19,7 +20,9 @@ from .payloads import (
 )
 from .processing import ConnectedComponents, finite, gray_image, integer
 from .result_graphics import ACCEPTED, REJECTED, review_legend
-from .selection import SELECTION_INPUTS, contains, selection_mask
+from .selection import SELECTION_INPUTS, contains, region_size, selection_mask, whole
+
+_CLIP_SCALE = 1024
 
 
 def read_collection(block, inputs, port="collection"):
@@ -32,6 +35,11 @@ def read_collection(block, inputs, port="collection"):
         key: copy.deepcopy(payload[key]) for key in ("spatial", "pyramid") if key in payload
     }
     return data, payload
+
+
+def _local_collection_payload(data, payload):
+    x, y = data.get("origin", [0, 0])
+    return moved_payload(payload, np.array([[1, 0, x], [0, 1, y], [0, 0, 1]]), data["image_size"])
 
 
 def metric_value(item, name, reference):
@@ -240,9 +248,7 @@ class FilterCollection(Block):
         width, height = data["image_size"]
         dummy = np.empty((height, width), np.uint8)
         origin = np.asarray(data.get("origin", [0, 0]))
-        local_payload = moved_payload(
-            payload, np.array([[1, 0, origin[0]], [0, 1, origin[1]], [0, 0, 1]]), [width, height]
-        )
+        local_payload = _local_collection_payload(data, payload)
         image = image_with_payload(dummy, local_payload)
         selection = selection_mask({**inputs, "image": image}, image)
         accepted, rejected = [], []
@@ -339,6 +345,116 @@ class SortCollection(Block):
         )
 
 
+class ClipLineCollection(Block):
+    type_id, title = "collection.clip_lines", "Clip line segments"
+    category, block_type, subtype = "Inspection", "Inspection", "Collections"
+    inputs = (Port("collection", "data"), Port("region", "data", required=False))
+    outputs = (*FilterCollection.outputs, Port("clipped_count", "number"))
+    payload_reference = "collection"
+    process_inputs_readonly = True
+    defaults = {"minimum_length": 0.0}
+    parameter_ranges = {"minimum_length": NumericRange(0)}
+    parameter_help = {
+        "minimum_length": "Shortest retained span in pixels, inclusive. Zero allows point contacts."
+    }
+    input_help = {
+        "collection": "Measured line segments in the source image coordinates.",
+        "region": "Optional non-inverted rectangle in the source frame. Defaults to image bounds.",
+    }
+
+    def _window(self, data, payload, region):
+        width, height = data["image_size"]
+        if region is None:
+            return np.array([0, 0]), np.array([width - 1, height - 1])
+        if list(region_size(region)) != [width, height]:
+            raise ValidationError("Rectangle must match the line collection image dimensions")
+        if region.get("shape") != "rectangle" or region.get("invert", False):
+            raise ValidationError("Line clipping needs a non-inverted rectangle")
+        embedded = (
+            {"spatial": region["coordinate_context"]} if "coordinate_context" in region else {}
+        )
+        validate_payload(embedded)
+        require_same_frame(
+            (
+                ValuePacket(None, _local_collection_payload(data, payload)),
+                ValuePacket(None, embedded),
+                ValuePacket(None, self.input_payloads["region"]),
+            ),
+            message="Rectangle must use the line collection image coordinate frame",
+        )
+        x, y, w, h = (whole(value, "Rectangle") for value in region["rectangle"])
+        if w <= 0 or h <= 0:
+            raise ValidationError("Rectangle width and height must be positive")
+        return np.maximum([x, y], 0), np.minimum([x + w - 1, y + h - 1], [width - 1, height - 1])
+
+    def process(self, inputs):
+        data, payload = read_collection(self, inputs)
+        if data["kind"] != "lines":
+            raise ValidationError("Line clipping requires a line collection")
+        self.input_payloads["collection"] = payload
+        origin = np.array([whole(v, "Collection origin") for v in data.get("origin", [0, 0])])
+        low, high = self._window(data, payload, inputs.get("region"))
+        window = np.all(high >= low)
+        # The far edge is inclusive in clipLine's integer grid. Scale the extent minus one.
+        rect = tuple(map(int, np.r_[low * _CLIP_SCALE, (high - low) * _CLIP_SCALE + 1]))
+        minimum = float(self.parameters["minimum_length"])
+        accepted, rejected = [], []
+        clipped_count = 0
+        for item in data["items"]:
+            points = np.asarray(item["geometry"].get("points"), float)
+            if points.shape != (2, 2) or not np.isfinite(points).all():
+                raise ValidationError("Line geometry needs two finite [x,y] endpoints")
+            local = points - origin
+            if np.any(np.abs(local) > 1_000_000):
+                raise ValidationError(
+                    "Line endpoints must be within ±1M pixels of the image origin"
+                )
+            if not window:
+                rejected.append(item)
+                continue
+            inside = ((local >= low) & (local <= high)).all(axis=1)
+            clipped = not inside.all()
+            if clipped:
+                a, b = np.rint(local * _CLIP_SCALE).astype(np.int32)
+                visible, a, b = cv2.clipLine(rect, tuple(a), tuple(b))
+                if not visible:
+                    rejected.append(item)
+                    continue
+                local[~inside] = np.asarray([a, b])[~inside] / _CLIP_SCALE
+            if np.linalg.norm(local[1] - local[0]) < minimum:
+                rejected.append(item)
+                continue
+            if clipped:
+                measured = line_item(local, 0)
+                metrics = measured["metrics"]
+                for axis, offset in zip(("x", "y"), origin, strict=True):
+                    metrics[axis] += int(offset)
+                    metrics[f"center_{axis}"] += int(offset)
+                metrics["strength"] = item["metrics"].get("strength")
+                item = {
+                    "id": item["id"],
+                    "metrics": metrics,
+                    "geometry": {"points": (local + origin).tolist()},
+                }
+                clipped_count += 1
+            accepted.append(item)
+        result = collection_result(
+            subset(data, accepted),
+            payload,
+            rejected=subset(data, rejected),
+            rejected_count=len(rejected),
+            clipped_count=clipped_count,
+        )
+        if self.generate_graphics and accepted:
+            lines = tuple(
+                graphic_object("polyline", item["geometry"]["points"], ACCEPTED)
+                for item in accepted
+            )
+            result.drawings["clipped lines"] = GraphicDrawing(lines, source="collection")
+        result.message = f"{len(accepted)} kept, {clipped_count} clipped, {len(rejected)} rejected"
+        return result
+
+
 class DrawCollection(Block):
     type_id, title, category = "collection.draw", "Draw object collection", "Inspection"
     block_type, subtype = "Inspection", "Collections"
@@ -361,9 +477,7 @@ class DrawCollection(Block):
                 "Collection dimensions differ from target image; select the matching image level"
             )
         origin = np.asarray(data.get("origin", [0, 0]))
-        local = moved_payload(
-            payload, np.array([[1, 0, origin[0]], [0, 1, origin[1]], [0, 0, 1]]), data["image_size"]
-        )
+        local = _local_collection_payload(data, payload)
         try:
             require_same_frame([image, ValuePacket(image, local)])
         except ValueError as exc:
@@ -456,4 +570,11 @@ class DrawCollection(Block):
         )
 
 
-COLLECTION_BLOCKS = (FindBlobs, FindLineSegments, FilterCollection, SortCollection, DrawCollection)
+COLLECTION_BLOCKS = (
+    FindBlobs,
+    FindLineSegments,
+    FilterCollection,
+    SortCollection,
+    ClipLineCollection,
+    DrawCollection,
+)
