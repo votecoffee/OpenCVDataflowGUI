@@ -84,6 +84,7 @@ or have no graph-facing use case.
 - Opt-in modeless plugin dialogs for capturing outputs across graph runs.
 - Plugin output subscriptions for preview and capture tools.
 - Plugin input captures that follow graph wires and preserve processed-image provenance.
+- Reusable image and pyramid-level picker for plugin dialogs.
 - Acquisition, basic processing, contour inspection, image and structured result sinks.
 - Reusable nested ToolBlocks, public-terminal mapping, editor navigation and JSON definitions.
 - Toolbox tree grouped by block type and subtype; monochrome and per-channel histograms.

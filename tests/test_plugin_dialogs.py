@@ -15,6 +15,7 @@ from opencv_dataflow.core import Block, Graph, Port, Result
 from opencv_dataflow.images import DepthArray
 from opencv_dataflow.payloads import frame, metadata
 from opencv_dataflow.plugin_dialog import PluginDialogContext
+from opencv_dataflow.plugin_image_picker import PluginImagePicker
 from opencv_dataflow.plugins import load_plugin
 
 _EXAMPLE = Path(__file__).parents[1] / "examples/custom_invert"
@@ -165,11 +166,7 @@ def test_modeless_dialog_captures_two_runs_and_stages_during_execution(
     assert dialog.isVisible() and not dialog.isModal()
     context = state["context"]
     assert context.image_outputs == ()
-    capture = next(
-        button
-        for button in dialog.findChildren(QPushButton)
-        if button.text() == "Capture latest input image"
-    )
+    picker = dialog.findChild(PluginImagePicker)
     summary = dialog.findChild(QLabel, "capture_summary")
     output_notice = dialog.findChild(QLabel, "output_notice")
 
@@ -181,7 +178,11 @@ def test_modeless_dialog_captures_two_runs_and_stages_during_execution(
         )
         assert inspector._plugin_dialog is dialog and dialog.isVisible()
         assert context.output_revision == revision
-        capture.click()
+        assert any(
+            picker.source_combo.itemData(row) == ("output", source.id, "image")
+            for row in range(picker.source_combo.count())
+        )
+        picker.capture_button.click()
         assert any(row.block_id == source.id for row in context.refresh_images())
         image = context.snapshot_image(source.id, "image")
         assert np.all(image.value == expected)
