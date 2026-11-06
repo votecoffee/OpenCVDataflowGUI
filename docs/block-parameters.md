@@ -2099,6 +2099,26 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `rotation` | `"clockwise"` | `clockwise`, `counterclockwise`, `180` |
 
+## Scale absolute to 8-bit (`cv.scale_absolute`)
+
+Image processing / Image math
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `scale` (float, optional), `offset` (float, optional).
+
+Input `image` — Monochrome or RGB/BGR samples in their stored units.
+
+Input `scale` — Optional scale override for this activation.
+
+Input `offset` — Optional offset override for this activation.
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `scale` | `1.0` | Value must be a finite number. Multiply each stored sample by this value before applying the offset. |
+| `offset` | `0.0` | Value must be a finite number. Add this value to the scaled sample before taking the absolute value. |
+
 ## Separable 2D filter (`cv.separable_filter`)
 
 Image processing / Filtering

@@ -531,6 +531,10 @@ The angle output carries its units through compatible graph blocks.
 by **Canny from derivatives**.
 [Derivative-fed Canny example](examples/canny_derivatives/README.md)
 
+**Scale absolute to 8-bit** applies a gain and offset to signed or high-depth
+samples, then produces a clipped magnitude image for display or thresholding.
+[Signed-gradient example](examples/scale_absolute/README.md)
+
 **Gabor texture response** isolates stripes by orientation and wavelength.
 Compare two responses to map the dominant texture direction.
 [Gabor texture example](examples/gabor_texture/README.md)

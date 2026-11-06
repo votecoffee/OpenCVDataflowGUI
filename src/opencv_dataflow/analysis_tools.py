@@ -560,6 +560,43 @@ class PolarToCartesian(Block):
         return Result({"x": x, "y": y}, payloads={"x": payload, "y": payload})
 
 
+class ScaleAbsolute(RegionalOperation, ImageTool):
+    type_id, title, subtype = "cv.scale_absolute", "Scale absolute to 8-bit", "Image math"
+    region_background = "zero"
+    process_inputs_readonly = True
+    inputs = (
+        *SELECTION_INPUTS,
+        Port("scale", "float", required=False, required_when_connected=True),
+        Port("offset", "float", required=False, required_when_connected=True),
+    )
+    defaults = {"scale": 1.0, "offset": 0.0}
+    parameter_ranges = {"scale": NumericRange(), "offset": NumericRange()}
+    parameter_help = {
+        "scale": "Multiply each stored sample by this value before applying the offset.",
+        "offset": "Add this value to the scaled sample before taking the absolute value.",
+    }
+    input_help = {
+        "image": "Monochrome or RGB/BGR samples in their stored units.",
+        "scale": "Optional scale override for this activation.",
+        "offset": "Optional offset override for this activation.",
+    }
+
+    def process(self, inputs):
+        source = inputs["image"]
+        image = image_value(source)
+        if image_format(source) in ("hsv", "lab"):
+            raise ValidationError("Scale absolute needs monochrome or RGB/BGR samples")
+        scale = float(inputs.get("scale", self.parameters["scale"]))
+        offset = float(inputs.get("offset", self.parameters["offset"]))
+        scaled = image.astype(np.float64)
+        with np.errstate(over="ignore"):
+            scaled *= scale
+            scaled += offset
+        # Bound the native round-to-integer step for very large finite inputs.
+        np.clip(scaled, -255, 255, out=scaled)
+        return encoded_result(cv2.convertScaleAbs(scaled), source)
+
+
 class IntensityTransform(ImageTool):
     type_id, title, subtype = "cv.intensity_transform", "Intensity transform", "Image math"
     inputs = SELECTION_INPUTS
@@ -994,6 +1031,7 @@ ANALYSIS_BLOCKS = (
     BoxFilter,
     LocalWindowStatistics,
     IntensityTransform,
+    ScaleAbsolute,
     ImageArithmetic,
     ComparePixels,
     SeparableFilter,
