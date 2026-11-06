@@ -7,7 +7,8 @@ function (PSF). The two **Image quality** blocks report RMSE against
 the sharp reference. RMSE falls from 18.11 to 11.92 gray levels.
 
 **Wiener deblur** is under **Image processing → Filters**. Enter the
-Gaussian kernel dimensions and X/Y sigma, or choose **Custom** to
+Gaussian kernel dimensions and X/Y sigma, select **Motion** for a
+centered line, or select **Defocus** for a disk. Choose **Custom** to
 supply an odd-sized table. A connected **Psf** input overrides the
 configured model. The custom kernel must contain nonnegative weights,
 with the convolution origin at its center. The block normalizes the

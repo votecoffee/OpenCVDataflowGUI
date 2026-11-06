@@ -2706,7 +2706,7 @@ P3	method	cv2.Feature2D.getDefaultName	no static reference	-
 P3	method	cv2.Feature2D.read	method name only	-
 P3	method	cv2.Feature2D.write	method name only	-
 P3	class	cv2.FileNode	no static reference	-
-P3	method	cv2.FileNode.at	no static reference	-
+P3	method	cv2.FileNode.at	method name only	-
 P3	method	cv2.FileNode.empty	method name only	-
 P3	method	cv2.FileNode.getNode	method name only	-
 P3	method	cv2.FileNode.isInt	no static reference	-
@@ -2908,9 +2908,9 @@ P3	method	cv2.GInferInputs.setInput	method name only	-
 P3	class	cv2.GInferListInputs	no static reference	-
 P3	method	cv2.GInferListInputs.setInput	method name only	-
 P3	class	cv2.GInferListOutputs	no static reference	-
-P3	method	cv2.GInferListOutputs.at	no static reference	-
+P3	method	cv2.GInferListOutputs.at	method name only	-
 P3	class	cv2.GInferOutputs	no static reference	-
-P3	method	cv2.GInferOutputs.at	no static reference	-
+P3	method	cv2.GInferOutputs.at	method name only	-
 P3	class	cv2.GKernelPackage	no static reference	-
 P3	method	cv2.GKernelPackage.size	method name only	-
 P3	class	cv2.GMat	literal reference	-
