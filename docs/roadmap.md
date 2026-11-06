@@ -42,6 +42,8 @@ Matched-feature registration estimates translation with outlier rejection,
 per-pair residuals and configurable inlier acceptance.
 Fixed-point coordinate maps reduce map storage for reusable remapping and
 carry the lens correction frame through the packed path.
+Checkerboard capture checks measure edge width and exposure before
+forwarding accepted calibration images.
 Scaled absolute conversion maps signed responses to an 8-bit magnitude image
 for display and thresholding.
 Channel routing assembles selected channels from one or two images without

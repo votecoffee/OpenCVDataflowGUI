@@ -350,6 +350,10 @@ calibration profiles as JSON for subsequent measurement jobs.
 [Calibration and depth workflows](docs/calibration-depth.md) ·
 [Circle grid example](examples/circle_grid_calibration/README.md)
 
+**Check chessboard quality** measures edge width, contrast, and brightness
+before forwarding accepted calibration images.
+[Checkerboard quality example](examples/chessboard_quality/README.md)
+
 **Build lens correction maps** creates reusable pinhole correction maps
 for **Remap image coordinates**, with output intrinsics and a separate
 coordinate frame for the corrected image.

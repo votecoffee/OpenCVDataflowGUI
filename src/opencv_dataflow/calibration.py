@@ -65,6 +65,14 @@ class GridNotFoundError(ValueError):
     """The selected target could not be detected in the image."""
 
 
+def chessboard_sb_flags(parameters):
+    return (
+        (cv2.CALIB_CB_NORMALIZE_IMAGE if parameters["normalize"] else 0)
+        | (cv2.CALIB_CB_EXHAUSTIVE if parameters["exhaustive"] else 0)
+        | (cv2.CALIB_CB_ACCURACY if parameters["accuracy"] else 0)
+    )
+
+
 def find_grid(image, size, parameters=None):
     # Detection copy only: numeric source pixels remain unchanged.
     display = cv2.cvtColor(preview_rgb(image), cv2.COLOR_RGB2BGR)
@@ -75,9 +83,7 @@ def find_grid(image, size, parameters=None):
     if is_circle_grid:
         found, corners = find_circle_grid(gray, size, p)
     elif p["detector"] == "sb":
-        flags |= cv2.CALIB_CB_EXHAUSTIVE if p["exhaustive"] else 0
-        flags |= cv2.CALIB_CB_ACCURACY if p["accuracy"] else 0
-        found, corners = cv2.findChessboardCornersSB(gray, size, flags=flags)
+        found, corners = cv2.findChessboardCornersSB(gray, size, flags=chessboard_sb_flags(p))
     else:
         flags |= cv2.CALIB_CB_ADAPTIVE_THRESH if p["adaptive_threshold"] else 0
         flags |= cv2.CALIB_CB_FAST_CHECK if p["fast_check"] else 0

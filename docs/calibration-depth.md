@@ -32,6 +32,9 @@ scaled to their peak; compare numeric counts rather than line height across chan
 
 ## Grid origin and physical coordinates
 
+Use [Check chessboard quality](../examples/chessboard_quality/README.md) to
+measure blur and exposure and forward only accepted checkerboard images.
+
 1. Load a calibration target image. For chessboards, set **columns and rows of
    inner corners**. A 10×7 square board has 9×6 inner corners. For circle grids,
    set the number of **circle centers** per row and the number of rows.

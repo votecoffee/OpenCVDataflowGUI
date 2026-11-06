@@ -645,6 +645,7 @@ def builtin_registry():
     from .calipers import BeadCalipers
     from .channel_transform import ChannelTransform, RouteChannels
     from .charuco import DetectCharucoBoard
+    from .chessboard_quality import CheckChessboardQuality
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_tools import CLOUD_BLOCKS
     from .clustering import KMeansImage, KMeansSamples
@@ -764,6 +765,7 @@ def builtin_registry():
         DetectCharucoBoard,
         LensCalibration,
         ValidateLensCalibration,
+        CheckChessboardQuality,
         HandEyeCalibration,
         BuildLensMaps,
         LensMapDisplacement,

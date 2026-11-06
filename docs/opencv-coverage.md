@@ -94,6 +94,8 @@ estimates subpixel translation and emits a correction for the moving image.
 fits a translation with RANSAC or LMeDS and reports per-pair residuals.
 [Packed remap coordinates](../examples/packed_remap/README.md) supports nearest
 and subpixel fixed-point maps and retains lens correction provenance.
+[Checkerboard capture quality](../examples/chessboard_quality/README.md)
+measures edge width and brightness in both board directions.
 [Paired Sobel and derivative-fed Canny](../examples/canny_derivatives/README.md) expose signed gradients and accept custom derivative fields.
 [Scale absolute to 8-bit](../examples/scale_absolute/README.md) applies gain
 and offset in stored units, saturates large magnitudes, and supports mask and
