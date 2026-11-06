@@ -676,6 +676,7 @@ def builtin_registry():
     from .image_codecs import DecodeImage, EncodeImage
     from .image_colorize import ColorizeScalar
     from .image_layout import JoinImages, PasteImagePatch, TileImage
+    from .image_noise import AddImageNoise, RandomImage
     from .image_norm import MeasureImageNorm
     from .image_quality import CompareImageQuality
     from .image_queue import ImageQueue
@@ -745,6 +746,7 @@ def builtin_registry():
     registry = Registry()
     for block in (
         DemoImage,
+        RandomImage,
         ImageFile,
         VideoFile,
         TiffFile,
@@ -799,6 +801,7 @@ def builtin_registry():
         FourierCorrelation,
         *ANALYSIS_BLOCKS,
         BlendWeightMaps,
+        AddImageNoise,
         ColorizeScalar,
         FindHoughTemplate,
         FindGuilTemplate,

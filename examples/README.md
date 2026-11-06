@@ -64,6 +64,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Replace nonfinite samples](image_processing/nonfinite_replacement/README.md) | Fill a known synthetic depth patch with a configured value, track the changed pixels, and verify the result. |
 | [Route image channels](image_processing/route_channels/README.md) | Build a false-color image by routing two source channels and a zero-filled channel. |
 | [Scale absolute to 8-bit](image_processing/scale_absolute/README.md) | Convert signed Sobel responses to magnitudes and threshold both edge polarities. |
+| [Seeded random images and noise](image_processing/seeded_noise/README.md) | Compare two independently scheduled noise branches for exact agreement. |
 | [Skeletonization and spur pruning](image_processing/skeleton_pruning/README.md) | Extract a binary centerline and visualize the short branches removed from it. |
 | [Temporal non-local means](image_processing/temporal_nlm/README.md) | Denoise the middle frame of a short sequence and preserve its ticket. |
 | [Tile image](image_processing/tile_image/README.md) | Repeat a reference in a 2 × 3 grid and find all six copies with template matching. |

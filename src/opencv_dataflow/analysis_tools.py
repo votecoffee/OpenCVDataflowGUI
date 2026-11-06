@@ -807,14 +807,18 @@ class IntensityTransform(ImageTool):
         return intensity_result(output, source, p["output_depth"], self.generate_graphics)
 
 
-def intensity_result(output, source, output_depth, generate_graphics):
-    depth = source.dtype if output_depth == "same" else np.dtype(output_depth)
+def cast_intensity(output, depth):
     if depth.kind in "iu":
         limits = np.iinfo(depth)
         output = np.clip(np.rint(output), limits.min, limits.max)
     elif depth == np.float32 and np.any(np.abs(output) > np.finfo(depth).max):
         raise ValidationError("Result exceeds the float32 range. Choose float64", "output_depth")
-    output = output.astype(depth, copy=False)
+    return output.astype(depth, copy=False)
+
+
+def intensity_result(output, source, output_depth, generate_graphics):
+    depth = source.dtype if output_depth == "same" else np.dtype(output_depth)
+    output = cast_intensity(output, depth)
     graphics = {}
     if generate_graphics and depth.kind == "f":
         encoding = image_format(source)
