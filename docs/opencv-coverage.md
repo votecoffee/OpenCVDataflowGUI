@@ -53,6 +53,8 @@ roots through degree three, iterative complex roots, and relative residual judgm
 products with an optional addend and independent transposition controls.
 [Invert matrix](../examples/matrix_inverse/README.md) supports LU, Cholesky and SVD
 with numerical rank, reciprocal conditioning, and determinants for square matrices.
+[Singular value decomposition](../examples/matrix_svd/README.md) exposes the spectrum,
+thin or full factors, low-rank reconstruction and relative truncation error.
 [Gram matrix](../examples/gram_matrix/README.md) computes row or column dot products
 with optional centering, reusable offsets, and sample or population normalization.
 [Find nearest rows](../examples/nearest_rows/README.md) adds exact top-K feature-table

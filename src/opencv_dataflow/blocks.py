@@ -682,6 +682,7 @@ def builtin_registry():
     from .linear_system import SolveLinearSystem
     from .matrix_inverse import InvertMatrix
     from .matrix_multiply import MultiplyMatrices
+    from .matrix_svd import MatrixSVD
     from .native_background import NATIVE_BACKGROUND_BLOCKS
     from .native_trackers import NATIVE_TRACKER_BLOCKS
     from .nearest_rows import FindNearestRows
@@ -843,6 +844,7 @@ def builtin_registry():
         SolvePolynomialRoots,
         MultiplyMatrices,
         InvertMatrix,
+        MatrixSVD,
         GramMatrix,
         FindNearestRows,
         SortNumericTable,
