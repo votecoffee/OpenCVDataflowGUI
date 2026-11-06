@@ -1638,6 +1638,23 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 | `border_value` | `[]` | Empty keeps the neutral native border; otherwise one to four values. |
 
+## Multiply matrices (`cv.multiply_matrices`)
+
+Image processing / Statistics
+
+Inputs: `left` (data, optional), `right` (data, optional), `addend` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `left` | `[]` | Left factor. A wired matrix takes precedence. |
+| `right` | `[]` | Right factor. A wired matrix takes precedence. |
+| `addend` | `[]` | Optional matrix with the product's shape after transposition. |
+| `product_weight` | `1.0` | Value must be a finite number between -1e+100 and 1e+100. Scale applied to the matrix product. |
+| `addend_weight` | `1.0` | Value must be a finite number between -1e+100 and 1e+100. Scale applied to the optional addend. |
+| `transpose_left` | `false` |  |
+| `transpose_right` | `false` |  |
+| `transpose_addend` | `false` |  |
+
 ## Non-local means denoise (`cv.non_local_means`)
 
 Image processing / Filters

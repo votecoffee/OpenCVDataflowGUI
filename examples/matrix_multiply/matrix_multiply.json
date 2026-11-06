@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fit",
+      "type": "cv.solve_linear_system",
+      "name": "Fit two calibration curves",
+      "parameters": {
+        "coefficients": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        "observations": [
+          [
+            3,
+            10
+          ],
+          [
+            4,
+            8
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            12,
+            4
+          ]
+        ],
+        "method": "qr"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "solution",
+        "rmse"
+      ],
+      "thumbnail": true,
+      "preview_output": "residuals"
+    },
+    {
+      "id": "predict",
+      "type": "cv.multiply_matrices",
+      "name": "Predict and offset three new readings",
+      "parameters": {
+        "left": [
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            4,
+            5,
+            6
+          ]
+        ],
+        "addend": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            -2,
+            -2,
+            -2
+          ]
+        ],
+        "addend_weight": 0.5,
+        "transpose_left": true,
+        "transpose_addend": true
+      },
+      "position": [
+        390,
+        0
+      ],
+      "exposed_inputs": [
+        "right"
+      ],
+      "exposed_outputs": [
+        "matrix"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "fit",
+      "output": "solution",
+      "target": "predict",
+      "input": "right"
+    }
+  ]
+}

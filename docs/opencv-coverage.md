@@ -45,6 +45,8 @@ within those stages.
 [Feature covariance and Mahalanobis distance](../examples/feature_covariance/README.md) cover joint variation and numeric outlier checks.
 [Solve linear system](../examples/linear_system/README.md) provides exact and least-squares
 solutions with multiple observation columns, numerical rank, and residuals.
+[Multiply matrices](../examples/matrix_multiply/README.md) applies weighted real matrix
+products with an optional addend and independent transposition controls.
 [Sort numeric table](../examples/numeric_table_sort/README.md) ranks whole records or
 individual columns and rows, preserving input order for ties and returning source indices.
 [Cartesian and polar fields](../examples/polar_fields/README.md) convert in both directions and preserve angle units.
