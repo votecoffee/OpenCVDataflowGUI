@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Synthetic inspection canvas",
+      "parameters": {},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "patch",
+      "type": "cv.crop",
+      "name": "Crop a patch from the circular part",
+      "parameters": {"x": 105, "y": 145, "width": 70, "height": 70},
+      "position": [330, 190],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "mask",
+      "type": "mask.shape",
+      "name": "Select a circle within the patch",
+      "parameters": {"shape": "circle", "center": [35, 35], "radius": 30},
+      "position": [660, 190],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["mask"],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "paste",
+      "type": "cv.paste_patch",
+      "name": "Paste with left-edge clipping",
+      "parameters": {"x": -24, "y": 40},
+      "position": [990, 0],
+      "exposed_inputs": ["canvas", "patch", "x", "y", "mask", "region"],
+      "exposed_outputs": ["image", "copied_mask", "placement", "copied_pixel_count"],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "patch", "input": "image"},
+    {"source": "patch", "output": "image", "target": "mask", "input": "image"},
+    {"source": "source", "output": "image", "target": "paste", "input": "canvas"},
+    {"source": "patch", "output": "image", "target": "paste", "input": "patch"},
+    {"source": "mask", "output": "mask", "target": "paste", "input": "mask"}
+  ]
+}

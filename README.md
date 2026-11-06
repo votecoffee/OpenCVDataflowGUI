@@ -798,6 +798,8 @@ infinity and emits a mask of changed pixels. See the
 **Join images** assembles a side-by-side or stacked view without resampling.
 Its layout output records each panel's source frame. See the
 [image join example](examples/join_images/README.md).
+**Paste image patch** copies selected pixels onto a canvas and reports
+their placement. See the [masked paste example](examples/paste_patch/README.md).
 **Tile image** repeats an image in a row-and-column grid. The
 [tiling example](examples/tile_image/README.md) uses the grid as a synthetic
 fixture for template matching.

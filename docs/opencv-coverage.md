@@ -64,6 +64,8 @@ NaN and signed infinity by channel, preserves the image encoding and depth units
 and emits a mask of changed pixels.
 [Join images](../examples/join_images/README.md) builds horizontal or vertical
 comparison views with padding and per-panel coordinate context.
+[Paste image patch](../examples/paste_patch/README.md) performs a masked
+copy at a canvas offset and reports both rectangles and the copied pixels.
 [Tile image](../examples/tile_image/README.md) repeats full images in a grid
 with compact layout data and source-frame provenance.
 [Transpose image](../examples/transpose_image/README.md) swaps image axes

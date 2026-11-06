@@ -32,6 +32,8 @@ configured values inside a mask or region.
 Image joins build horizontal or vertical comparison views with per-panel
 coordinates and source frames. Image tiling builds repeatable inspection
 fixtures from a single reference.
+Masked patch placement copies pixels into a canvas and reports the affected
+area and coordinate mapping.
 Scaled absolute conversion maps signed responses to an 8-bit magnitude image
 for display and thresholding.
 Channel routing assembles selected channels from one or two images without

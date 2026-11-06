@@ -8,6 +8,7 @@ from .images import ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import frame, metadata
 from .processing import ImageTool, image_value
+from .selection import SELECTION_INPUTS, selection_mask
 from .tickets import ticket_key
 
 _MAX_PIXELS = 16_777_216
@@ -162,4 +163,127 @@ class TileImage(ImageTool):
             },
             payloads={"image": payload, "layout": payload},
             message=f"Repeated the image in {rows} rows and {columns} columns",
+        )
+
+
+class PasteImagePatch(ImageTool):
+    type_id, title, subtype = "cv.paste_patch", "Paste image patch", "Geometry"
+    inputs = (
+        Port("canvas"),
+        Port("patch"),
+        Port("x", "integer", required=False, required_when_connected=True),
+        Port("y", "integer", required=False, required_when_connected=True),
+        *SELECTION_INPUTS[1:],
+    )
+    outputs = (
+        Port("image"),
+        Port("copied_mask", visual_type="region"),
+        Port("placement", "data"),
+        Port("copied_pixel_count", "number"),
+    )
+    payload_reference = "canvas"
+    process_inputs_readonly = True
+    defaults = {"x": 0, "y": 0, "bounds_policy": "clip"}
+    parameter_choices = {"bounds_policy": ("clip", "strict")}
+    parameter_ranges = {
+        axis: NumericRange(-1_000_000, 1_000_000, whole=True) for axis in ("x", "y")
+    }
+    parameter_help = {
+        "x": "Canvas X coordinate of the patch's top-left pixel. A wired value takes precedence.",
+        "y": "Canvas Y coordinate of the patch's top-left pixel. A wired value takes precedence.",
+        "bounds_policy": "Clip uses the visible overlap. Strict requires the whole patch to fit.",
+    }
+    input_help = {
+        "canvas": "Image to copy and update. Its coordinates are used for the result.",
+        "patch": "Samples to copy. Pixel depth and channel encoding must match the canvas.",
+        "mask": "Optional monochrome mask in patch coordinates.",
+        "region": "Optional region in patch coordinates.",
+    }
+
+    def process(self, inputs):
+        canvas, patch = inputs["canvas"], inputs["patch"]
+        base = image_value(canvas, allow_labels=True)
+        pixels = image_value(patch, allow_labels=True)
+        encoding = image_format(canvas)
+        if (
+            base.dtype != pixels.dtype
+            or base.shape[2:] != pixels.shape[2:]
+            or encoding != image_format(patch)
+        ):
+            raise ValidationError(
+                "Canvas and patch must have the same pixel depth and color encoding"
+            )
+        if base.shape[0] * base.shape[1] > _MAX_PIXELS:
+            raise ValidationError(f"Canvas exceeds {_MAX_PIXELS:,} pixels")
+        payload, patch_payload = metadata(canvas), metadata(patch)
+        if "ticket" in patch_payload:
+            if "ticket" in payload and ticket_key(payload["ticket"]) != ticket_key(
+                patch_payload["ticket"]
+            ):
+                raise ValidationError("Paste images from the same ticket")
+            if "ticket" not in payload:
+                payload.update(
+                    {
+                        key: patch_payload[key]
+                        for key in ("ticket", "processing_time")
+                        if key in patch_payload
+                    }
+                )
+
+        x, y = (
+            self.parameter_ranges[axis].check(inputs.get(axis, self.parameters[axis]), axis, axis)
+            for axis in ("x", "y")
+        )
+        height, width = base.shape[:2]
+        patch_h, patch_w = pixels.shape[:2]
+        if self.parameters["bounds_policy"] == "strict" and (
+            x < 0 or y < 0 or x + patch_w > width or y + patch_h > height
+        ):
+            raise ValidationError(
+                "Patch must fit inside the canvas in Strict mode", "bounds_policy"
+            )
+        selection = selection_mask(
+            {"image": patch, "mask": inputs.get("mask"), "region": inputs.get("region")}, patch
+        )
+        x0, y0 = max(0, x), max(0, y)
+        x1, y1 = min(width, x + patch_w), min(height, y + patch_h)
+        output = base.copy()
+        copied_mask = np.zeros((height, width), dtype=np.uint8)
+        source_rect = destination_rect = None
+        count = 0
+        reason = "paste_no_overlap"
+        if x0 < x1 and y0 < y1:
+            destination = np.s_[y0:y1, x0:x1]
+            origin = np.s_[y0 - y : y1 - y, x0 - x : x1 - x]
+            patch_mask = None if selection is None else selection[origin]
+            cv2.copyTo(pixels[origin], patch_mask, dst=output[destination])
+            copied_mask[destination] = 255 if patch_mask is None else patch_mask
+            count = int(cv2.countNonZero(copied_mask[destination]))
+            source_rect = [x0 - x, y0 - y, x1 - x0, y1 - y0]
+            destination_rect = [x0, y0, x1 - x0, y1 - y0]
+            reason = "paste_empty_selection"
+
+        placement = {
+            "requested_rect": [x, y, patch_w, patch_h],
+            "source_rect": source_rect,
+            "destination_rect": destination_rect,
+            "source_to_target": [[1, 0, x], [0, 1, y], [0, 0, 1]],
+            "source_size": [patch_w, patch_h],
+            "target_size": [width, height],
+            "source_spatial": patch_payload.get("spatial"),
+        }
+        return Result(
+            {
+                "image": ImageArray(output, encoding),
+                "copied_mask": copied_mask,
+                "placement": placement,
+                "copied_pixel_count": count,
+            },
+            payloads={
+                name: payload
+                for name in ("image", "copied_mask", "placement", "copied_pixel_count")
+            },
+            passed=bool(count),
+            fail_reasons=[] if count else [reason],
+            message=f"Copied {count} patch pixels",
         )
