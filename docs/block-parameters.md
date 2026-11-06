@@ -1655,6 +1655,21 @@ Inputs: `left` (data, optional), `right` (data, optional), `addend` (data, optio
 | `transpose_right` | `false` |  |
 | `transpose_addend` | `false` |  |
 
+## Find nearest rows (`cv.nearest_rows`)
+
+Image processing / Statistics
+
+Inputs: `queries` (data, optional), `references` (data, optional), `candidate_mask` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `queries` | `[]` | One query vector per row. Wired data takes precedence. |
+| `references` | `[]` | One reference vector per row. Wired data takes precedence. |
+| `candidate_mask` | `[]` | Optional query-by-reference table. A 1 allows that pair to match. |
+| `metric` | `"euclidean"` | `euclidean`, `squared_euclidean`, `manhattan`, `hamming`, `hamming2` Hamming counts differing bits. Hamming2 counts differing two-bit groups. |
+| `neighbors` | `1` | Value must be a whole number between 1 and 256. Maximum matches per query, capped at the number of reference rows. |
+| `crosscheck` | `false` | Keep mutual nearest neighbors. Requires one neighbor and an empty mask. |
+
 ## Non-local means denoise (`cv.non_local_means`)
 
 Image processing / Filters

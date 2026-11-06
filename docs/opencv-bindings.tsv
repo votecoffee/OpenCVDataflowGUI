@@ -1828,7 +1828,7 @@ P3	method	cv2.barcode_BarcodeDetector.setDetectorScales	alias	cv2.barcode.Barcod
 P3	method	cv2.barcode_BarcodeDetector.setDownsamplingThreshold	alias	cv2.barcode.BarcodeDetector.setDownsamplingThreshold
 P3	method	cv2.barcode_BarcodeDetector.setGradientThreshold	alias	cv2.barcode.BarcodeDetector.setGradientThreshold
 P3	class	cv2.BaseCascadeClassifier	no static reference	-
-P3	function	cv2.batchDistance	no static reference	-
+P3	function	cv2.batchDistance	literal reference	-
 P3	class	cv2.BFMatcher	literal reference	-
 P3	method	cv2.BFMatcher.create	method name only	-
 P3	function	cv2.BFMatcher_create	no static reference	-

@@ -675,6 +675,7 @@ def builtin_registry():
     from .matrix_multiply import MultiplyMatrices
     from .native_background import NATIVE_BACKGROUND_BLOCKS
     from .native_trackers import NATIVE_TRACKER_BLOCKS
+    from .nearest_rows import FindNearestRows
     from .ocr import OCR_BLOCKS
     from .oriented_edges import FindOrientedEdges
     from .overlay_graphics import OverlayResultGraphics
@@ -806,6 +807,7 @@ def builtin_registry():
         FitFeatureCovariance,
         SolveLinearSystem,
         MultiplyMatrices,
+        FindNearestRows,
         SortNumericTable,
         FitPrincipalComponents,
         TransformPrincipalComponents,
