@@ -696,6 +696,7 @@ def builtin_registry():
     from .skeleton import PruneSkeleton, Skeletonize
     from .spectral import SPECTRAL_BLOCKS
     from .stereo3d import STEREO3D_BLOCKS
+    from .table_sort import SortNumericTable
     from .template_instances import FindTemplateInstances
     from .text_rules import VerifyText
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
@@ -803,6 +804,7 @@ def builtin_registry():
         *DNN_BLOCKS,
         FitFeatureCovariance,
         SolveLinearSystem,
+        SortNumericTable,
         FitPrincipalComponents,
         TransformPrincipalComponents,
         MahalanobisDistance,

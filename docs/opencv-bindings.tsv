@@ -4458,7 +4458,7 @@ P3	function	cv2.solvePnPRefineLM	literal reference	-
 P3	function	cv2.solvePnPRefineVVS	literal reference	-
 P3	function	cv2.solvePoly	no static reference	-
 P3	function	cv2.sort	no static reference	-
-P3	function	cv2.sortIdx	no static reference	-
+P3	function	cv2.sortIdx	literal reference	-
 P3	class	cv2.SparseOpticalFlow	no static reference	-
 P3	method	cv2.SparseOpticalFlow.calc	no static reference	-
 P3	class	cv2.SparsePyrLKOpticalFlow	no static reference	-

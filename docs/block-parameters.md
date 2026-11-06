@@ -1843,6 +1843,19 @@ Inputs: `coefficients` (data, optional), `observations` (data, optional).
 | `observations` | `[]` | Enter a vector or a table with one right-hand side per column. |
 | `method` | `"svd"` | `svd`, `qr`, `lu`, `cholesky`, `eigen` SVD allows any shape and rank. QR needs at least as many equations as unknowns. LU needs a square matrix. Eigen needs symmetry, and Cholesky also needs positive definiteness. |
 
+## Sort numeric table (`cv.sort_numeric_table`)
+
+Image processing / Statistics
+
+Inputs: `table` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `table` | `[]` | Enter a rectangular numeric table or wire a table from another block. |
+| `mode` | `"rows_by_column"` | `rows_by_column`, `columns_by_row`, `within_rows`, `within_columns` Move whole rows or columns by a key, or sort values independently within each slice. |
+| `order` | `"ascending"` | `ascending`, `descending` |
+| `key_index` | `0` | Value must be a whole number between 0 and 99999. Zero-based column for Rows by column or row for Columns by row. |
+
 ## Paired Sobel derivatives (`cv.spatial_gradient`)
 
 Image processing / Edges
