@@ -2481,7 +2481,7 @@ P3	method	cv2.dynafu_DynaFu.update	alias	cv2.dynafu.DynaFu.update
 P3	class	cv2.ECCParameters	literal reference	-
 P3	function	cv2.edgePreservingFilter	no static reference	-
 P3	function	cv2.eigen	literal reference	-
-P3	function	cv2.eigenNonSymmetric	no static reference	-
+P3	function	cv2.eigenNonSymmetric	literal reference	-
 P3	function	cv2.ellipse	no static reference	-
 P3	function	cv2.ellipse2Poly	no static reference	-
 P3	function	cv2.EMD	literal reference	-
