@@ -3307,6 +3307,18 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 No configurable algorithm parameters.
 
+## Minimum spanning tree (`inspect.minimum_spanning_tree`)
+
+Inspection / Measurements
+
+Inputs: `edges` (data), `edge_weights` (data, optional), `points` (data, optional), `node_count` (number, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `node_count` | `0` | Value must be a whole number between 0 and 10000. Zero derives the count from the points. A wired count takes precedence. |
+| `algorithm` | `"kruskal"` | `prim`, `kruskal` Use OpenCV's Prim or Kruskal algorithm on an undirected graph. |
+| `root` | `0` | Value must be a whole number between 0 and 9999. Zero-based starting node for Prim. Kruskal ignores this setting. |
+
 ## Detect MSER regions (`inspect.mser`)
 
 Inspection / Features

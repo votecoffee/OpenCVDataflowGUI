@@ -707,6 +707,7 @@ def builtin_registry():
         RotatedRectangleOverlap,
     )
     from .skeleton import PruneSkeleton, Skeletonize
+    from .spanning_tree import MinimumSpanningTree
     from .spectral import SPECTRAL_BLOCKS
     from .stereo3d import STEREO3D_BLOCKS
     from .table_sort import SortNumericTable
@@ -796,6 +797,7 @@ def builtin_registry():
         BoundingConvexPolygon,
         DelaunayTriangulation,
         VoronoiCells,
+        MinimumSpanningTree,
         RotatedRectangleOverlap,
         ConvexPolygonOverlap,
         FindTemplateInstances,

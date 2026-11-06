@@ -475,6 +475,10 @@ and reports indexed triangles, unique edges, and edge lengths.
 wired points. It returns bounded polygons, areas, and a mask for a selected zone.
 [Voronoi cells example](examples/voronoi_cells/README.md)
 
+**Minimum spanning tree** finds the lowest total cost to connect nodes
+using supplied weights or Euclidean distances from point coordinates.
+[Minimum spanning tree example](examples/minimum_spanning_tree/README.md)
+
 **Path intensity profile** samples each image channel at regular distances
 along an open or closed path and preserves gaps outside the selection.
 [Path intensity profile example](examples/path_intensity_profile/README.md)
