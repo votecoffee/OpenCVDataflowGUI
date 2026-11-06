@@ -1733,6 +1733,19 @@ Input `gain` — Monochrome gain image at the full spectrum size, including any 
 | `layout` | `"centered"` | `centered`, `native` Centered matches the spectrum preview. Native has zero frequency at index 0. |
 | `symmetry` | `"require"` | `require`, `average`, `minimum`, `maximum` Require matching paired gains, or combine each pair by average, min, or max. |
 
+## Singular value decomposition (`cv.matrix_svd`)
+
+Image processing / Statistics
+
+Inputs: `matrix` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `matrix` | `[]` | Rectangular table of real numbers. A wired table takes precedence. |
+| `mode` | `"thin"` | `thin`, `full`, `values_only` Thin returns compact factors. Full returns complete orthogonal bases. Values only skips both bases and the reconstruction. |
+| `components` | `0` | Value must be a whole number between 0 and 128. Leading terms in the approximation and energy report. Zero keeps all terms. |
+| `relative_rank_tolerance` | `0.0` | Value must be a finite number between 0 and 1. Count singular values above this fraction of the largest. Zero uses float64 epsilon times the larger matrix dimension. |
+
 ## Pyramid mean-shift filter (`cv.mean_shift_filter`)
 
 Image processing / Filtering
