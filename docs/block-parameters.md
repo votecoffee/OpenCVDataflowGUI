@@ -973,6 +973,26 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `invert` | `false` |  |
 | `max_value` | `255.0` | Value must be a finite number at least 0. |
 
+## Add image noise (`cv.add_image_noise`)
+
+Image processing / Image math
+
+Inputs: `image` (image), `seed` (number, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `seed` — Optional whole-number seed between 0 and 4,294,967,295.
+
+Input `image` — Grayscale or RGB/BGR image. Output keeps the input depth and encoding.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `distribution` | `"gaussian"` | `gaussian`, `uniform` |
+| `seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Repeat the same draw on each activation. A wired Seed takes precedence. |
+| `mean` | `0.0` | Value must be a finite number. Gaussian mean in stored sample units. |
+| `standard_deviation` | `8.0` | Value must be a finite number at least 0. Gaussian spread in stored sample units. Zero gives a constant. |
+| `minimum` | `-8.0` | Value must be a finite number. Uniform lower bound in stored sample units. |
+| `maximum` | `8.0` | Value must be a finite number. Uniform upper bound in stored sample units. |
+| `preserve_alpha` | `true` | Keep the alpha samples of a four-channel image. |
+
 ## Apply mask (`cv.apply_mask`)
 
 Image processing / Image math
@@ -2965,6 +2985,30 @@ Ticket terminals: optional `ticket` data input and `ticket` data output.
 Ticket mode and fixed value are common inspector controls.
 
 No configurable algorithm parameters.
+
+## Generate random image (`input.random_image`)
+
+Input / Synthetic
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+Inputs: `seed` (number, optional).
+
+Input `seed` — Optional whole-number seed between 0 and 4,294,967,295.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `distribution` | `"uniform"` | `gaussian`, `uniform` |
+| `seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Repeat the same draw on each activation. A wired Seed takes precedence. |
+| `mean` | `127.5` | Value must be a finite number. Gaussian mean in stored sample units. |
+| `standard_deviation` | `32.0` | Value must be a finite number at least 0. Gaussian spread in stored sample units. Zero gives a constant. |
+| `minimum` | `0.0` | Value must be a finite number. Uniform lower bound in stored sample units. |
+| `maximum` | `255.0` | Value must be a finite number. Uniform upper bound in stored sample units. |
+| `width` | `320` | Value must be a whole number between 1 and 8192. |
+| `height` | `240` | Value must be a whole number between 1 and 8192. |
+| `color_format` | `"gray"` | `gray`, `bgr`, `rgb` |
+| `output_depth` | `"uint8"` | `uint8`, `uint16`, `int16`, `float32`, `float64` Integer output rounds and saturates Gaussian samples. Uniform integers are drawn inclusively between the configured bounds. |
 
 ## Raw YUV frame (`input.raw_yuv`)
 

@@ -878,6 +878,11 @@ The product can drive a custom frequency-domain filter or a circular convolution
 Multiplying by a conjugate gives a separate circular lag frame after IDFT.
 Try the [spectrum product example](examples/image_processing/spectrum_product/README.md).
 
+**Generate random image** and **Add image noise** provide repeatable Gaussian and
+uniform fixtures with saved or wired seeds. Add noise inside a mask or region
+while keeping the original encoding and depth.
+Try the [seeded noise example](examples/image_processing/seeded_noise/README.md).
+
 ## Architecture
 
 Choose **Run profile: debug / balanced / lean** in the toolbar to control observation
