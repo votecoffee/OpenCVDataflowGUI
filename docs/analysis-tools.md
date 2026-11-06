@@ -22,6 +22,7 @@ parameter names and default behavior are retained.
 | Refine corners to subpixel | Image and point list → refined point list | X/Y window, zero zone, termination mode, iteration limit, epsilon |
 | Phase correlation shift | Two images and optional floating window → shift and response | Float precision, generated Hanning window, acceptance response |
 | Iterative phase correlation | Reference and moving images → subpixel shift, inverse warp, and status | Float precision, odd refinement neighborhood, iteration limit |
+| Estimate image translation | Matched image points → translation matrix, inliers, and residuals | RANSAC/LMeDS, pixel tolerance, iterations, confidence, refinement and acceptance limits |
 | Estimate affine transform | MatchORB correspondences → transform and inlier count | Full/partial model, RANSAC/LMedS, reprojection threshold, iterations, confidence, refinement and acceptance limits |
 | Remap image coordinates | Image and float32 X/Y maps → image | Interpolation, border and constant fill |
 | Pack remap coordinates | Float32 X/Y maps → fixed-point packet | Subpixel fractions or rounded nearest coordinates |
@@ -42,6 +43,12 @@ uses OpenCV's built-in Hann window and returns an inverse translation for
 **Warp affine**. Use matching even-sized inputs with distinctive detail. The
 block withholds the shift and transform for flat interiors and invalid or
 half-period shifts.
+
+[Estimate image translation](../examples/translation_registration/README.md)
+fits only X/Y displacement from matched feature points. The accepted transform
+maps query to train. The fit preserves each pair's inlier label and residual.
+Connected affine and perspective warp transform inputs require an emitted value.
+Unconnected transform inputs use the configured matrix.
 
 Affine estimation consumes the same query/train point dictionary as homography
 estimation. The transform maps query pixels to train pixels and can connect to
