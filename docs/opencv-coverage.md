@@ -47,6 +47,8 @@ within those stages.
 solutions with multiple observation columns, numerical rank, and residuals.
 [Multiply matrices](../examples/matrix_multiply/README.md) applies weighted real matrix
 products with an optional addend and independent transposition controls.
+[Find nearest rows](../examples/nearest_rows/README.md) adds exact top-K feature-table
+search, candidate masks, mutual nearest matching, and numeric or packed-byte distances.
 [Sort numeric table](../examples/numeric_table_sort/README.md) ranks whole records or
 individual columns and rows, preserving input order for ties and returning source indices.
 [Cartesian and polar fields](../examples/polar_fields/README.md) convert in both directions and preserve angle units.

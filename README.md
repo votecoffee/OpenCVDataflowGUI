@@ -688,6 +688,9 @@ and numerical rank. See the [linear system example](examples/linear_system/READM
 The [matrix multiplication example](examples/matrix_multiply/README.md) uses
 fitted coefficients to predict new readings.
 
+**Find nearest rows** compares numeric feature tables and returns exact nearest
+reference indices and distances. See the [nearest rows example](examples/nearest_rows/README.md).
+
 **Sort numeric table** ranks records or sorts values within each row or column
 and returns their source indices. See the [numeric table sort example](examples/numeric_table_sort/README.md).
 

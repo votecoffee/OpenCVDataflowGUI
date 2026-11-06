@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scale",
+      "type": "cv.multiply_matrices",
+      "name": "Put both measurements in comparable units",
+      "parameters": {
+        "left": [
+          [
+            9,
+            20
+          ],
+          [
+            2,
+            95
+          ],
+          [
+            7,
+            70
+          ],
+          [
+            8.5,
+            10
+          ]
+        ],
+        "right": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0.1
+          ]
+        ]
+      },
+      "position": [
+        0,
+        100
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "matrix"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "masked",
+      "type": "cv.nearest_rows",
+      "name": "Rank two allowed references",
+      "parameters": {
+        "references": [
+          [
+            10,
+            0
+          ],
+          [
+            8,
+            8
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            10
+          ]
+        ],
+        "candidate_mask": [
+          [
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ]
+        ],
+        "neighbors": 2
+      },
+      "position": [
+        390,
+        0
+      ],
+      "exposed_inputs": [
+        "queries"
+      ],
+      "exposed_outputs": [
+        "indices",
+        "distances"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "mutual",
+      "type": "cv.nearest_rows",
+      "name": "Require a mutual nearest match",
+      "parameters": {
+        "references": [
+          [
+            10,
+            0
+          ],
+          [
+            8,
+            8
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            10
+          ]
+        ],
+        "crosscheck": true
+      },
+      "position": [
+        390,
+        210
+      ],
+      "exposed_inputs": [
+        "queries"
+      ],
+      "exposed_outputs": [
+        "indices",
+        "distances"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scale",
+      "output": "matrix",
+      "target": "masked",
+      "input": "queries"
+    },
+    {
+      "source": "scale",
+      "output": "matrix",
+      "target": "mutual",
+      "input": "queries"
+    }
+  ]
+}

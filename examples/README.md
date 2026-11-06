@@ -21,6 +21,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Feature covariance and outliers](feature_covariance/README.md) | Score correlated measurements and identify rows outside a distance limit. |
 | [Solve linear system](linear_system/README.md) | Fit two calibration curves with a shared coefficient matrix and compare the residuals. |
 | [Multiply matrices](matrix_multiply/README.md) | Use fitted calibration coefficients to predict new readings and apply offsets. |
+| [Find nearest rows](nearest_rows/README.md) | Compare scaled measurements with masked candidates and mutual nearest-neighbor matching. |
 | [Sort numeric table](numeric_table_sort/README.md) | Rank complete part records by score and compare that with independent column sorting. |
 | [K-means clustering](kmeans/README.md) | Cluster image pixels and numeric samples, then inspect the color map, quantized image, and cluster plot. |
 | [Histogram thresholds](histogram_thresholds/README.md) | Visualize percentiles, mean, and median, and wire measured cutoffs into three threshold masks. |
