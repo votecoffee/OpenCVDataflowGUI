@@ -13,6 +13,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Channels and image pyramids](channels_pyramids/README.md) | Split and reassemble BGR channels, then carry payloads and coordinate transforms through a four-level image pyramid. |
 | [Circle grid calibration](circle_grid_calibration/README.md) | Detect a staggered dot target and map its centers to physical coordinates. |
 | [Lens correction maps](lens_correction_maps/README.md) | Load a lens profile, build reusable coordinate maps, and straighten a synthetic distorted grid. |
+| [Lens fit report](lens_fit_report/README.md) | Fit six circle-grid views, identify the largest reprojection error, and inspect parameter uncertainty. |
 | [Lens map displacement](lens_map_displacement/README.md) | Measure correction strength and source coverage, and overlay directions on a heatmap. |
 | [Lens map files](lens_map_files/README.md) | Reload a saved map pair and straighten a synthetic grid using the restored maps. |
 | [Color chart calibration](color_chart_calibration/README.md) | Detect a bundled synthetic color chart, fit a correction model, and apply it to the image. |

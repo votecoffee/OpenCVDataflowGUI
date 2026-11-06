@@ -82,11 +82,17 @@ even-row staggered board, try detection with clustering disabled.
 Calibrate lens accepts a JSON `image_paths` list with at least three distinct grid
 views of identical dimensions. Use substantially varied board orientations and
 positions. It uses the same detector and target spacing settings as Calibration grid
-and solves a standard OpenCV pinhole
-model. Outputs include camera matrix, distortion coefficients, image dimensions,
-units, view count and reprojection RMS in pixels. Duplicated detected views and
-failed detections are rejected; excessive RMS produces an inspection failure.
+and solves a standard OpenCV pinhole model. Outputs include camera matrix,
+distortion coefficients, image dimensions, units, view count and reprojection
+RMS in pixels. Set **Path base** to **Project** to use paths relative to the
+saved graph. Duplicate detections and missed targets raise a block error.
 Pose diversity beyond exact-duplicate rejection remains the user's responsibility.
+
+**Fit report** includes per-view RMS, board-to-camera poses, and OpenCV's
+estimated standard deviations. The report names each image and retains
+the input order. Set **Max view RMS pixels** to apply a separate limit
+to the worst view. Zero leaves that check off. The overall and worst-view
+checks emit distinct failure reasons. [Lens fit report example](../examples/lens_fit_report/README.md)
 
 Connect the calibration output to Undistort lens along with the image. The tool
 checks matrix validity, image dimensions and its reprojection-error limit. Save
@@ -109,9 +115,9 @@ metadata, the rectified profile and any valid ROI. Use **Project** path base
 for a portable saved graph. Saving requires a new file name.
 [Lens map files example](../examples/lens_map_files/README.md)
 
-Fisheye models, uncertainty estimates, dataset management and independent validation
-are future work. Current checks use offline synthetic geometry; they do not prove
-accuracy for a particular physical camera.
+Fisheye fitting, dataset management and independent validation remain open.
+The example and automated checks use rendered targets. Use separate views
+to measure the accuracy of a physical setup.
 
 ## White and color balance
 

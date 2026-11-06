@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fit",
+      "type": "calibration.lens",
+      "name": "Fit six circle-grid views",
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "detector": "circles_asymmetric",
+        "columns": 4,
+        "rows": 6,
+        "spacing": 10.0,
+        "image_paths": [
+          "assets/view-01.png",
+          "assets/view-02.png",
+          "assets/view-03.png",
+          "assets/view-04.png",
+          "assets/view-05.png",
+          "assets/view-06.png"
+        ],
+        "path_base": "project",
+        "max_rms_pixels": 0.4,
+        "max_view_rms_pixels": 0.8
+      },
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "calibration",
+        "rms",
+        "worst_view_rms",
+        "fit_report"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "maps",
+      "type": "calibration.lens_maps",
+      "name": "Build maps from the fit",
+      "position": [
+        325,
+        0
+      ],
+      "parameters": {},
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "map_x",
+        "map_y"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "displacement",
+      "type": "calibration.lens_map_displacement",
+      "name": "Show correction strength",
+      "position": [
+        650,
+        0
+      ],
+      "parameters": {},
+      "exposed_inputs": [
+        "map_x",
+        "map_y"
+      ],
+      "exposed_outputs": [
+        "heatmap",
+        "maximum",
+        "valid_fraction"
+      ],
+      "thumbnail": true,
+      "preview_output": "heatmap"
+    }
+  ],
+  "connections": [
+    {
+      "source": "fit",
+      "output": "calibration",
+      "target": "maps",
+      "input": "calibration"
+    },
+    {
+      "source": "maps",
+      "output": "map_x",
+      "target": "displacement",
+      "input": "map_x"
+    },
+    {
+      "source": "maps",
+      "output": "map_y",
+      "target": "displacement",
+      "input": "map_y"
+    }
+  ]
+}

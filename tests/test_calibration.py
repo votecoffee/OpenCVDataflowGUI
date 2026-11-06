@@ -7,6 +7,12 @@ from opencv_dataflow.calibration import calibration_templates, grid_settings, ma
 from opencv_dataflow.toolblocks import ToolBlock
 
 
+@pytest.fixture(autouse=True)
+def seed_opencv_detection():
+    # The native chessboard detector depends on the RNG state left by earlier vision tests.
+    cv2.setRNGSeed(0)
+
+
 def chessboard(columns=7, rows=5, square=40, margin=40):
     image = np.full(
         ((rows + 1) * square + margin * 2, (columns + 1) * square + margin * 2, 3), 200, np.uint8

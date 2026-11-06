@@ -667,11 +667,13 @@ Calibration / Lens distortion
 | `max_iterations` | `30` |  |
 | `epsilon` | `2.220446049250313e-16` |  |
 | `image_paths` | `[]` |  |
+| `path_base` | `"working_directory"` | `working_directory`, `project` Base folder for relative calibration image paths. |
 | `columns` | `9` | Number of inner chessboard corners or circle centers in each row. |
 | `rows` | `6` | Number of rows of inner chessboard corners or circle centers. |
 | `spacing` | `10.0` | Feature pitch. For asymmetric circles, same-row pitch is twice this value. |
 | `units` | `"mm"` |  |
 | `max_rms_pixels` | `1.0` |  |
+| `max_view_rms_pixels` | `0.0` | Value must be a finite number at least 0. Maximum RMS of any fitted view in pixels. Zero skips this check. |
 
 ## Inspect lens map displacement (`calibration.lens_map_displacement`)
 
