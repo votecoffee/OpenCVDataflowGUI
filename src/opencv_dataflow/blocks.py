@@ -662,6 +662,7 @@ def builtin_registry():
     from .features import FEATURE_BLOCKS
     from .fourier_correlation import FourierCorrelation
     from .geometry3d import GEOMETRY3D_BLOCKS
+    from .gram_matrix import GramMatrix
     from .histogram import Histogram
     from .histogram_comparison import CompareHistograms, HistogramBackProjection
     from .illumination import AdaptiveBackgroundCorrection, FlatFieldCorrection
@@ -809,6 +810,7 @@ def builtin_registry():
         SolveLinearSystem,
         SolvePolynomialRoots,
         MultiplyMatrices,
+        GramMatrix,
         FindNearestRows,
         SortNumericTable,
         FitPrincipalComponents,

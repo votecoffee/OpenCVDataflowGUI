@@ -1341,6 +1341,22 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `output_depth` | `"float32"` | `int16`, `float32`, `float64` |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 
+## Gram matrix (`cv.gram_matrix`)
+
+Image processing / Statistics
+
+Inputs: `samples` (data, optional), `offset` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `samples` | `[]` | Rectangular table. A wired table takes precedence. |
+| `offset` | `[]` | A scalar table, row, column, or full table to subtract before multiplication. |
+| `axis` | `"columns"` | `columns`, `rows` Columns computes AᵀA. Rows computes AAᵀ. |
+| `centering` | `"none"` | `none`, `column_mean`, `row_mean` Subtract row or column means. A supplied offset takes precedence. |
+| `normalization` | `"none"` | `none`, `population`, `sample` Divide by vector length for population or length minus one for sample. |
+| `scale` | `1.0` | Value must be a finite number between -1e+100 and 1e+100. Additional multiplier applied to the result. |
+| `precision` | `"float64"` | `float64`, `float32` Floating-point precision for input conversion and the product. |
+
 ## Grayscale (`cv.gray`)
 
 Image processing / Color and depth

@@ -691,6 +691,9 @@ candidate's relative residual. See the [polynomial roots example](examples/polyn
 The [matrix multiplication example](examples/matrix_multiply/README.md) uses
 fitted coefficients to predict new readings.
 
+**Gram matrix** compares rows or columns by dot product and can reuse the same
+centering offset across batches. See the [Gram matrix example](examples/gram_matrix/README.md).
+
 **Find nearest rows** compares numeric feature tables and returns exact nearest
 reference indices and distances. See the [nearest rows example](examples/nearest_rows/README.md).
 
