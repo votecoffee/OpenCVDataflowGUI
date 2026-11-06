@@ -74,6 +74,9 @@ search, candidate masks, mutual nearest matching, and numeric or packed-byte dis
 individual columns and rows, preserving input order for ties and returning source indices.
 [Cartesian and polar fields](../examples/polar_fields/README.md) convert in both directions and preserve angle units.
 [Paired Sobel and derivative-fed Canny](../examples/canny_derivatives/README.md) expose signed gradients and accept custom derivative fields.
+[Scale absolute to 8-bit](../examples/scale_absolute/README.md) applies gain
+and offset in stored units, saturates large magnitudes, and supports mask and
+region selection.
 [Principal components](../examples/principal_components/README.md) supports fitted dimensionality reduction and reconstruction.
 
 ## P3 — Specialized families

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Synthetic inspection target",
+      "parameters": {},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "sobel",
+      "type": "cv.spatial_gradient",
+      "name": "Measure the signed X gradient",
+      "parameters": {"border": "replicate"},
+      "position": [310, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["dx"],
+      "thumbnail": true,
+      "preview_output": "dx"
+    },
+    {
+      "id": "magnitude",
+      "type": "cv.scale_absolute",
+      "name": "Map both polarities to uint8",
+      "parameters": {"scale": 0.75},
+      "position": [620, 0],
+      "exposed_inputs": ["image", "mask", "region", "scale", "offset"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "strong",
+      "type": "cv.compare_pixels",
+      "name": "Select strong X gradients",
+      "parameters": {"operation": "greater_or_equal", "scalar": 120},
+      "position": [930, 0],
+      "exposed_inputs": ["image_a"],
+      "exposed_outputs": ["mask", "count", "fraction"],
+      "thumbnail": true,
+      "preview_output": "mask"
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "sobel", "input": "image"},
+    {"source": "sobel", "output": "dx", "target": "magnitude", "input": "image"},
+    {"source": "magnitude", "output": "image", "target": "strong", "input": "image_a"}
+  ]
+}
