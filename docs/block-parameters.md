@@ -1356,6 +1356,18 @@ Input `guide` — Optional aligned guide. Otherwise the block guides with the so
 | `scale` | `1.0` | Value must be a finite number between 0.01 and 1. Internal subsampling fraction. One filters at full resolution. |
 | `output_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` |
 
+## Hann window (`cv.hann_window`)
+
+Image processing / Spectral
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `axes` | `"2d"` | `2d`, `rows` Taper both dimensions or taper each row independently. |
+| `window` | `"hann"` | `hann`, `sqrt_hann` Square-root Hann matches OpenCV's phase-correlation coefficients. |
+| `precision` | `"auto"` | `auto`, `float32`, `float64` Auto uses float64 for float64 input and float32 otherwise. |
+
 ## Inverse discrete cosine transform (IDCT) (`cv.idct`)
 
 Image processing / Spectral

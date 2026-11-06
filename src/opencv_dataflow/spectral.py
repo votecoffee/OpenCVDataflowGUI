@@ -167,6 +167,58 @@ class DFTSpectrum:
         return magnitude_graphics(np.fft.fftshift(magnitude, axes=axes))
 
 
+class HannWindow(Block):
+    type_id, title = "cv.hann_window", "Hann window"
+    category, block_type, subtype = "Image processing", "Image processing", "Spectral"
+    inputs = (Port("image"),)
+    outputs = (Port("image"), Port("window"), Port("coherent_gain", "number"))
+    defaults = {"axes": "2d", "window": "hann", "precision": "auto"}
+    parameter_choices = {
+        "axes": ("2d", "rows"),
+        "window": ("hann", "sqrt_hann"),
+        "precision": ("auto", "float32", "float64"),
+    }
+    parameter_help = {
+        "axes": "Taper both dimensions or taper each row independently.",
+        "window": "Square-root Hann matches OpenCV's phase-correlation coefficients.",
+        "precision": "Auto uses float64 for float64 input and float32 otherwise.",
+    }
+
+    def process(self, inputs):
+        image = image_value(inputs["image"], IMAGE_DEPTHS)
+        if image.ndim != 2 or image.size == 0:
+            raise ValidationError("Hann window requires a nonempty monochrome image")
+        p = self.parameters
+        height, width = image.shape
+        rows = p["axes"] == "rows"
+        if width < 3 or (not rows and height < 3):
+            raise ValidationError("Every tapered axis must have at least three samples")
+        precision = p["precision"]
+        if precision == "auto":
+            precision = "float64" if image.dtype == np.float64 else "float32"
+        native_depth = cv2.CV_64F if precision == "float64" else cv2.CV_32F
+        window = cv2.createHanningWindow((width, 3 if rows else height), native_depth)
+        if p["window"] == "hann":
+            np.square(window, out=window)
+        if rows:
+            window = np.broadcast_to(window[1], image.shape).copy()
+        if image.dtype.kind == "u":
+            working = image.astype(np.float64)
+            working /= np.iinfo(image.dtype).max
+            working = working.astype(precision, copy=False)
+        else:
+            if precision == "float32" and np.max(np.abs(image)) > np.finfo(np.float32).max:
+                raise ValidationError("Image samples exceed float32 range. Use float64 precision.")
+            working = image.astype(precision, copy=False)
+        return Result(
+            {
+                "image": ImageArray(working * window, "gray"),
+                "window": ImageArray(window, "gray"),
+                "coherent_gain": float(window.mean(dtype=np.float64)),
+            }
+        )
+
+
 class DiscreteFourierTransform(Block):
     type_id, title = "cv.dft", "Discrete Fourier transform (DFT)"
     category, block_type, subtype = "Image processing", "Image processing", "Spectral"
@@ -328,6 +380,7 @@ class InverseDiscreteFourierTransform(Block):
 SPECTRAL_BLOCKS = (
     DiscreteCosineTransform,
     InverseDiscreteCosineTransform,
+    HannWindow,
     DiscreteFourierTransform,
     FilterFourierSpectrum,
     MaskFourierSpectrum,
