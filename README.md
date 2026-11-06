@@ -385,6 +385,11 @@ reprojection RMS for each image.
 a separate partial view and reports residuals by board corner ID.
 [ChArUco validation example](examples/validate_charuco_calibration/README.md)
 
+**Calibrate hand–eye** fits a camera-to-gripper transform from paired
+robot and target poses. The output composes with the current gripper
+pose to place the camera in the robot base frame.
+[Hand–eye example](examples/hand_eye_calibration/README.md)
+
 ### Build and test a starter project
 
 For the real-image Lena review example, run `python scripts/prepare_lena.py` once,

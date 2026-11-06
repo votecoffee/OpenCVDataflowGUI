@@ -667,6 +667,7 @@ def builtin_registry():
     from .generalized_hough import FindGuilTemplate, FindHoughTemplate
     from .geometry3d import GEOMETRY3D_BLOCKS
     from .gram_matrix import GramMatrix
+    from .hand_eye import HandEyeCalibration
     from .histogram import Histogram
     from .histogram_comparison import CompareHistograms, HistogramBackProjection
     from .illumination import AdaptiveBackgroundCorrection, FlatFieldCorrection
@@ -755,6 +756,7 @@ def builtin_registry():
         DetectCharucoBoard,
         LensCalibration,
         ValidateLensCalibration,
+        HandEyeCalibration,
         BuildLensMaps,
         LensMapDisplacement,
         LoadLensMaps,

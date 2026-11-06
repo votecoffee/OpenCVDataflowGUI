@@ -654,6 +654,23 @@ Inputs: `image` (image).
 | `reverse_order` | `false` |  |
 | `max_error` | `1.0` |  |
 
+## Calibrate hand–eye (`calibration.hand_eye`)
+
+Calibration / Robot coordinates
+
+Inputs: `gripper_poses` (any, optional), `target_poses` (any, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `gripper_poses` | `[]` | Gripper-to-base rigid pose records. A wired input takes precedence. |
+| `target_poses` | `[]` | Target-to-camera pose records for the same captures. A wired input wins. |
+| `gripper_frame` | `"gripper"` |  |
+| `base_frame` | `"base"` |  |
+| `target_frame` | `"target"` |  |
+| `camera_frame` | `"camera"` |  |
+| `max_translation_rms_mm` | `2.0` | Value must be a finite number at least 0. Maximum RMS spread of target positions in base. Zero skips it. |
+| `max_rotation_rms_degrees` | `1.0` | Value must be a finite number between 0 and 180. Maximum RMS spread of target orientations. Zero skips it. |
+
 ## Calibrate lens (`calibration.lens`)
 
 Calibration / Lens distortion
