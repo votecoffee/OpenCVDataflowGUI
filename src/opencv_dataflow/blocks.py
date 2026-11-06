@@ -643,7 +643,7 @@ def builtin_registry():
     )
     from .calibration_validation import ValidateLensCalibration
     from .calipers import BeadCalipers
-    from .channel_transform import ChannelTransform
+    from .channel_transform import ChannelTransform, RouteChannels
     from .charuco import DetectCharucoBoard
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_tools import CLOUD_BLOCKS
@@ -788,6 +788,7 @@ def builtin_registry():
         FindHoughTemplate,
         FindGuilTemplate,
         ChannelTransform,
+        RouteChannels,
         IntensityProfile,
         PathIntensityProfile,
         ImageSummaryStatistics,

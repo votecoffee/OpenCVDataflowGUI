@@ -641,6 +641,8 @@ isolates two long vertical lines. See [collection tools and measurement conventi
 Use **Split three channels / Merge three channels**, or the four-channel alpha
 variants, to process planes independently. **Extract image channel** and **Replace
 image channel** use channel-index dropdowns and preserve coordinate payloads.
+**Route image channels** assembles channels from one or two images with a
+configurable or wired index map. See the [false-color example](examples/route_channels/README.md).
 
 **Gaussian image pyramid set** sends all levels together on its `images` port.
 Connect it to an ordinary image input: the largest level is used by default.

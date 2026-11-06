@@ -66,6 +66,8 @@ and emits a mask of changed pixels.
 comparison views with padding and per-panel coordinate context.
 [Tile image](../examples/tile_image/README.md) repeats full images in a grid
 with compact layout data and source-frame provenance.
+[Route image channels](../examples/route_channels/README.md) copies, reorders,
+and duplicates channels across matching input images, with optional zero fill.
 [Gram matrix](../examples/gram_matrix/README.md) computes row or column dot products
 with optional centering, reusable offsets, and sample or population normalization.
 [Find nearest rows](../examples/nearest_rows/README.md) adds exact top-K feature-table

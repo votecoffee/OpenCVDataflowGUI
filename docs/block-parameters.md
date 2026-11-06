@@ -2099,6 +2099,27 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `rotation` | `"clockwise"` | `clockwise`, `counterclockwise`, `180` |
 
+## Route image channels (`cv.route_channels`)
+
+Image processing / Channels
+
+Inputs: `image_a` (image), `image_b` (image, optional), `mask` (image, optional), `region` (data, optional), `channel_map` (data, optional).
+
+Input `image_a` — First group of channels and the output coordinate frame.
+
+Input `image_b` — Optional second group. Size and pixel depth must match Image A.
+
+Input `channel_map` — Optional list of channel indices that overrides the configuration.
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `color_format` | `"bgr"` | `gray`, `bgr`, `rgb`, `bgra`, `rgba`, `hsv`, `lab` Encoding of the assembled channels. Samples are copied verbatim. |
+| `channel_map` | `[]` | One index per output channel, numbering A then B from zero. Use -1 for zero fill or an empty list to copy the first channels in order. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid pairs equal-size images by index, even with different frame IDs. |
+
 ## Scale absolute to 8-bit (`cv.scale_absolute`)
 
 Image processing / Image math
