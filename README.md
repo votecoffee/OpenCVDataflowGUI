@@ -540,6 +540,9 @@ samples, then produces a clipped magnitude image for display or thresholding.
 **Colorize scalar image** maps grayscale, response, or depth values to a
 built-in or wired palette. See the [distance-map example](examples/colorize_scalar/README.md).
 
+**Labeled distance transform** computes distance to the nearest seed and
+returns its region or pixel label. See the [nearest-seed example](examples/labeled_distance/README.md).
+
 **Gabor texture response** isolates stripes by orientation and wavelength.
 Compare two responses to map the dominant texture direction.
 [Gabor texture example](examples/gabor_texture/README.md)

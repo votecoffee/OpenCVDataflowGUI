@@ -764,13 +764,16 @@ class HoughCircles(ImageTool):
         )
 
 
+_DISTANCE_TYPES = {"l1": cv2.DIST_L1, "l2": cv2.DIST_L2, "chessboard": cv2.DIST_C}
+
+
 class DistanceTransform(ImageTool):
     type_id, title, subtype = "cv.distance_transform", "Distance transform", "Morphology"
     outputs = (Port("distance"), Port("preview"))
     defaults = {"mask_size": "5", "distance_type": "l2", "output_depth": "float32"}
     parameter_choices = {
         "mask_size": ("3", "5", "precise"),
-        "distance_type": ("l1", "l2", "chessboard"),
+        "distance_type": tuple(_DISTANCE_TYPES),
         "output_depth": ("float32", "uint8"),
     }
 
@@ -779,9 +782,7 @@ class DistanceTransform(ImageTool):
         if np.all(image != 0):
             raise ValueError("Distance transform needs background zero pixels")
         mask = {"3": 3, "5": 5, "precise": cv2.DIST_MASK_PRECISE}[self.parameters["mask_size"]]
-        mode = {"l1": cv2.DIST_L1, "l2": cv2.DIST_L2, "chessboard": cv2.DIST_C}[
-            self.parameters["distance_type"]
-        ]
+        mode = _DISTANCE_TYPES[self.parameters["distance_type"]]
         depth = cv2.CV_8U if self.parameters["output_depth"] == "uint8" else cv2.CV_32F
         if depth == cv2.CV_8U and mode != cv2.DIST_L1:
             raise ValueError("uint8 distance output is supported only for L1")
@@ -791,6 +792,98 @@ class DistanceTransform(ImageTool):
             {"distance": distance, "preview": preview},
             graphics={"distance": preview},
             message=f"{self.parameters['distance_type']} pixel distances; separate display scale",
+        )
+
+
+class LabeledDistanceTransform(ImageTool):
+    type_id, title, subtype = "cv.distance_labels", "Labeled distance transform", "Morphology"
+    inputs = SELECTION_INPUTS
+    outputs = (
+        Port("distance"),
+        Port("labels"),
+        Port("selected_mask", visual_type="region", required=False),
+        Port("label_count", "number"),
+        Port("seed_pixel_count", "number"),
+    )
+    process_inputs_readonly = True
+    defaults = {
+        "seed_polarity": "nonzero",
+        "label_mode": "components",
+        "distance_type": "l2",
+        "selected_label": 0,
+    }
+    parameter_choices = {
+        "seed_polarity": ("nonzero", "zero"),
+        "label_mode": ("components", "pixels"),
+        "distance_type": tuple(_DISTANCE_TYPES),
+    }
+    parameter_ranges = {"selected_label": NumericRange(0, 16_777_216, whole=True)}
+    parameter_help = {
+        "seed_polarity": "Choose nonzero or zero pixels as seeds.",
+        "label_mode": "Assign a label to each 8-connected seed group or to each seed pixel.",
+        "distance_type": "L1 and chessboard are exact. L2 uses OpenCV's 5 × 5 approximation.",
+        "selected_label": "Emit a mask of this nearest-seed label. Zero disables the mask.",
+    }
+    input_help = {
+        "image": "Monochrome uint8 seed image.",
+        "mask": "Restricts eligible seeds. Distances and labels still cover the full image.",
+        "region": "Restricts eligible seeds. Distances and labels still cover the full image.",
+    }
+
+    def process(self, inputs):
+        source = inputs["image"]
+        image = image_value(source, (np.uint8,))
+        if image.ndim != 2:
+            raise ValidationError("Use a monochrome uint8 seed image")
+        if max(image.shape) > 16_384 or image.size > 16_777_216:
+            raise ValidationError("Seed image exceeds 16,384 pixels per axis or 16,777,216 total")
+        p = self.parameters
+        seeds = image != 0 if p["seed_polarity"] == "nonzero" else image == 0
+        selection = selection_mask(inputs, source)
+        if selection is not None:
+            seeds &= selection != 0
+        seed_count = int(np.count_nonzero(seeds))
+        if not seed_count:
+            return Result(
+                {
+                    "distance": NO_VALUE,
+                    "labels": NO_VALUE,
+                    "selected_mask": NO_VALUE,
+                    "label_count": 0,
+                    "seed_pixel_count": 0,
+                },
+                passed=False,
+                fail_reasons=["distance_no_seeds"],
+                message="No eligible seed pixels",
+            )
+
+        mode = cv2.DIST_LABEL_CCOMP if p["label_mode"] == "components" else cv2.DIST_LABEL_PIXEL
+        distance, labels = cv2.distanceTransformWithLabels(
+            (~seeds).astype(np.uint8),
+            _DISTANCE_TYPES[p["distance_type"]],
+            cv2.DIST_MASK_5,
+            labelType=mode,
+        )
+        count = int(labels.max())
+        requested = int(p["selected_label"])
+        found = requested <= count
+        return Result(
+            {
+                "distance": distance,
+                "labels": labels,
+                "selected_mask": (labels == requested).astype(np.uint8) * 255
+                if requested and found
+                else NO_VALUE,
+                "label_count": count,
+                "seed_pixel_count": seed_count,
+            },
+            passed=found,
+            fail_reasons=[] if found else ["distance_label_unavailable"],
+            message=(
+                f"{count} labels from {seed_count} seed pixels"
+                if found
+                else f"Label {requested} is unavailable. Found {count} labels."
+            ),
         )
 
 
@@ -936,4 +1029,5 @@ FEATURE_BLOCKS = (
     HoughLines,
     HoughCircles,
     DistanceTransform,
+    LabeledDistanceTransform,
 )
