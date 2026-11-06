@@ -15,6 +15,9 @@ image. It exposes both the edited image and the original.
 6. Click **Edit inversion band…** to edit both percentages with the plugin's own
    controls. **OK** stages the values in the inspector. **Cancel** discards the
    popup edits. Click **Apply configuration** to keep accepted edits.
+7. Keep the popup open and click **Capture latest source image**. Click **Run
+   once** in the main window and capture again. The popup shows the previous
+   and latest captures with their tickets.
 
 The plugin declares the limits with `NumericRange` and raises `ValidationError`
 with both field names for the cross-field rule. The inspector and runtime use

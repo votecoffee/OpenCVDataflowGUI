@@ -108,6 +108,7 @@ class Block:
     preview_safe: ClassVar[bool | None] = None
     parameter_ranges: ClassVar[dict[str, NumericRange]] = {}
     plugin_dialog_label: ClassVar[str] = ""
+    plugin_dialog_modeless: ClassVar[bool] = False
 
     def create_plugin_dialog(self, parent, parameters, context):
         """Return a fresh QDialog that edits the supplied inspector draft."""

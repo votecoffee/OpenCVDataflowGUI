@@ -2,9 +2,11 @@
 
 from pathlib import Path
 
+import cv2
 import numpy as np
 import pytest
-from PySide6.QtWidgets import QDialog, QPushButton, QSpinBox
+from PySide6.QtWidgets import QDialog, QFileDialog, QLabel, QPushButton, QSpinBox
+from test_editor import pump_until
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
@@ -128,6 +130,127 @@ def test_factory_failure_and_selection_change_keep_configuration(example_window,
     inspector.select(block)
     assert inspector.read_parameters() == {"start_percent": 20, "end_percent": 80}
     assert not window.dirty and inspector._plugin_dialog is None
+
+
+def test_modeless_dialog_captures_two_runs_and_stages_during_execution(
+    app, example_window, monkeypatch, tmp_path
+):
+    window, example = example_window
+    graph = Graph()
+    paths = []
+    for index, value in enumerate((23, 89, 181)):
+        path = tmp_path / f"frame_{index}.png"
+        assert cv2.imwrite(str(path), np.full((20, 24), value, np.uint8))
+        paths.append(str(path))
+    source = graph.add(
+        window.registry.create("input.file", parameters={"source_mode": "files", "paths": paths})
+    )
+    block = graph.add(window.registry.create(example.type_id, parameters=example.parameters))
+    graph.connect(source.id, "image", block.id, "image")
+    window.replace_graph(graph)
+    window.scene.nodes[block.id].setSelected(True)
+    inspector = window.inspector
+    state = {}
+    create_example_dialog = type(block).create_plugin_dialog
+
+    def create(self, parent, parameters, context):
+        state.update(parameters=parameters, context=context)
+        return create_example_dialog(self, parent, parameters, context)
+
+    monkeypatch.setattr(type(block), "create_plugin_dialog", create)
+    inspector.open_plugin_dialog()
+    dialog = inspector._plugin_dialog
+    assert dialog.isVisible() and not dialog.isModal()
+    context = state["context"]
+    assert context.image_outputs == ()
+    capture = next(
+        button
+        for button in dialog.findChildren(QPushButton)
+        if button.text() == "Capture latest source image"
+    )
+    summary = dialog.findChild(QLabel, "capture_summary")
+
+    for expected in (23, 89):
+        window.start_run(False)
+        pump_until(app, lambda: window.runner is None)
+        assert inspector._plugin_dialog is dialog and dialog.isVisible()
+        capture.click()
+        assert any(row.block_id == source.id for row in context.refresh_images())
+        image = context.snapshot_image(source.id, "image")
+        assert np.all(image.value == expected)
+        if expected == 23:
+            reference = image
+    assert np.all(reference.value == 23)
+    assert reference.payload["ticket"] != image.payload["ticket"]
+    assert "Previous" in summary.text() and "Latest" in summary.text()
+
+    state["parameters"]["start_percent"] = 35
+    window.start_run(False)
+    assert window.runner is not None and inspector._plugin_dialog is dialog
+    dialog.accept()
+    assert inspector.read_parameters()["start_percent"] == 35
+    assert window.runner.graph.blocks[block.id].parameters["start_percent"] == 20
+    assert not inspector.apply() and block.parameters["start_percent"] == 20
+    pump_until(app, lambda: window.runner is None)
+    assert inspector.apply() and block.parameters["start_percent"] == 35
+    assert np.all(reference.value == 23)
+    with pytest.raises(RuntimeError, match="closed"):
+        context.refresh_images()
+
+
+def test_modeless_dialog_merges_independent_edits_and_rejects_conflicts(
+    example_window, monkeypatch
+):
+    window, block = example_window
+    inspector = window.inspector
+    warnings = []
+    monkeypatch.setattr(window, "warn", warnings.append)
+
+    inspector.open_plugin_dialog()
+    dialog = inspector._plugin_dialog
+    dialog.findChild(QSpinBox, "start_percent").setValue(30)
+    inspector.fields["end_percent"].setText("70")
+    dialog.accept()
+    assert inspector.read_parameters() == {"start_percent": 30, "end_percent": 70}
+
+    inspector.open_plugin_dialog()
+    dialog = inspector._plugin_dialog
+    dialog.findChild(QSpinBox, "start_percent").setValue(35)
+    dialog.findChild(QSpinBox, "end_percent").setValue(65)
+    inspector.fields["start_percent"].setText("40")
+    dialog.accept()
+    assert warnings and "both changed start_percent" in warnings[0]
+    assert inspector.read_parameters() == {"start_percent": 40, "end_percent": 70}
+    assert block.parameters == {"start_percent": 20, "end_percent": 80}
+    assert not window.dirty
+
+
+def test_modal_dialog_closes_when_graph_starts(app, example_window, monkeypatch):
+    window, block = example_window
+    inspector = window.inspector
+    monkeypatch.setattr(type(block), "plugin_dialog_modeless", False)
+    inspector.open_plugin_dialog()
+    dialog = inspector._plugin_dialog
+    assert dialog.isModal()
+    dialog.findChild(QSpinBox, "start_percent").setValue(35)
+    window.start_run(False)
+    pump_until(app, lambda: window.runner is None)
+    assert inspector._plugin_dialog is None
+    assert inspector.read_parameters()["start_percent"] == 20
+
+
+def test_changing_project_directory_discards_open_dialog(example_window, monkeypatch, tmp_path):
+    window, block = example_window
+    inspector = window.inspector
+    inspector.open_plugin_dialog()
+    dialog = inspector._plugin_dialog
+    dialog.findChild(QSpinBox, "start_percent").setValue(35)
+    path = tmp_path / "relocated.json"
+    monkeypatch.setattr(QFileDialog, "getSaveFileName", lambda *a, **k: (str(path), ""))
+    assert window.save_project(save_as=True)
+    assert inspector._plugin_dialog is None
+    assert window.graph.project_dir == tmp_path
+    assert block.parameters["start_percent"] == 20
 
 
 def test_snapshots_copy_pixels_and_keep_selected_level_provenance(tmp_path):

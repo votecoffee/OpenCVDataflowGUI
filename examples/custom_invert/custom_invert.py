@@ -12,6 +12,7 @@ class Invert(Block):
     category = "Custom"
     preview_safe = True
     plugin_dialog_label = "Edit inversion band…"
+    plugin_dialog_modeless = True
     inputs = (Port("image"),)
     outputs = (Port("image"), Port("original"))
     defaults = {"start_percent": 0, "end_percent": 100}
@@ -33,7 +34,15 @@ class Invert(Block):
             )
 
     def create_plugin_dialog(self, parent, parameters, context):
-        from PySide6.QtWidgets import QDialog, QDialogButtonBox, QFormLayout, QSpinBox
+        from PySide6.QtCore import Qt
+        from PySide6.QtWidgets import (
+            QDialog,
+            QDialogButtonBox,
+            QFormLayout,
+            QLabel,
+            QPushButton,
+            QSpinBox,
+        )
 
         dialog = QDialog(parent)
         dialog.setWindowTitle("Inversion band")
@@ -55,6 +64,37 @@ class Invert(Block):
             update(key, field.value())
             field.valueChanged.connect(lambda value, name=key: update(name, value))
             form.addRow(label, field)
+        captures = []
+        summary = QLabel("Run once, then capture the source image.")
+        summary.setObjectName("capture_summary")
+        summary.setTextFormat(Qt.TextFormat.PlainText)
+
+        def capture():
+            source = next(
+                (
+                    output
+                    for output in context.refresh_images()
+                    if output.port == "image" and output.block_id != context.block_id
+                ),
+                None,
+            )
+            if source is None:
+                summary.setText("Run once to produce a source image.")
+                return
+            captures.append(context.snapshot_image(source.block_id, source.port))
+            del captures[:-2]
+            rows = []
+            labels = ("Previous", "Latest")[-len(captures) :]
+            for label, packet in zip(labels, captures, strict=True):
+                height, width = packet.value.shape[:2]
+                ticket = packet.payload.get("ticket", {}).get("value", "unticketed")
+                rows.append(f"{label} · {width} × {height} · ticket {ticket}")
+            summary.setText("\n".join(rows))
+
+        capture_button = QPushButton("Capture latest source image")
+        capture_button.clicked.connect(capture)
+        form.addRow(capture_button)
+        form.addRow(summary)
         buttons.accepted.connect(dialog.accept)
         buttons.rejected.connect(dialog.reject)
         form.addRow(buttons)
