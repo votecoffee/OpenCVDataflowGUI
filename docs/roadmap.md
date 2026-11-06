@@ -71,7 +71,10 @@ Labeled distance transforms divide an image into zones by its nearest seeds.
 Pixel comparisons and ranges turn signed segmentation labels into masks.
 Image norms measure signal magnitude and absolute or relative reference differences
 over selected pixels. Seeded synthetic images and additive noise provide
-repeatable fixtures across serial and parallel branches. The [core array backlog](opencv-coverage.md#stage-1--remaining-core-array-work)
+repeatable fixtures across serial and parallel branches. Matrix structure tools
+construct scaled identities and custom diagonals, complete symmetric matrices,
+and report diagonals and traces. The
+[core array backlog](opencv-coverage.md#stage-1--remaining-core-array-work)
 prioritizes the remaining standalone array operations. The
 [coverage backlog](opencv-coverage.md) also tracks missing 2D workflows and the
 [binding inventory](opencv-bindings.tsv) maps static references to the pinned

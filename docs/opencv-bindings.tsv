@@ -2083,7 +2083,7 @@ P3	method	cv2.colored_kinfu_Params.defaultParams	alias	cv2.colored_kinfu.Params.
 P3	method	cv2.colored_kinfu_Params.hashTSDFParams	alias	cv2.colored_kinfu.Params.hashTSDFParams
 P3	method	cv2.colored_kinfu_Params.setInitialVolumePose	alias	cv2.colored_kinfu.Params.setInitialVolumePose
 P3	function	cv2.compare	literal reference	-
-P3	function	cv2.completeSymm	no static reference	-
+P3	function	cv2.completeSymm	literal reference	-
 P3	function	cv2.composeRT	no static reference	-
 P3	function	cv2.computeCorrespondEpilines	no static reference	-
 P3	function	cv2.computeECC	no static reference	-
@@ -4394,7 +4394,7 @@ P3	method	cv2.segmentation_IntelligentScissorsMB.setWeights	alias	cv2.segmentati
 P3	function	cv2.selectROI	no static reference	-
 P3	function	cv2.selectROIs	no static reference	-
 P3	function	cv2.sepFilter2D	literal reference	-
-P3	function	cv2.setIdentity	no static reference	-
+P3	function	cv2.setIdentity	literal reference	-
 P3	function	cv2.setMouseCallback	no static reference	-
 P3	function	cv2.setRNGSeed	no static reference	-
 P3	function	cv2.setTrackbarMax	no static reference	-
@@ -4667,7 +4667,7 @@ P3	method	cv2.TonemapReinhard.getLightAdaptation	no static reference	-
 P3	method	cv2.TonemapReinhard.setColorAdaptation	no static reference	-
 P3	method	cv2.TonemapReinhard.setIntensity	no static reference	-
 P3	method	cv2.TonemapReinhard.setLightAdaptation	no static reference	-
-P3	function	cv2.trace	no static reference	-
+P3	function	cv2.trace	literal reference	-
 P3	class	cv2.Tracker	no static reference	-
 P3	method	cv2.Tracker.getTrackingScore	no static reference	-
 P3	method	cv2.Tracker.init	method name only	-

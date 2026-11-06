@@ -883,6 +883,10 @@ uniform fixtures with saved or wired seeds. Add noise inside a mask or region
 while keeping the original encoding and depth.
 Try the [seeded noise example](examples/image_processing/seeded_noise/README.md).
 
+**Create diagonal matrix**, **Complete symmetric matrix**, and **Measure matrix diagonal**
+prepare and inspect numeric tables for fitting, regularization, and inversion.
+Try the [matrix structure example](examples/numerical/matrix_structure/README.md).
+
 ## Architecture
 
 Choose **Run profile: debug / balanced / lean** in the toolbar to control observation

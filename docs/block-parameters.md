@@ -1235,6 +1235,17 @@ Input `image_b` — Optional comparison image or signed int32 label plane.
 | `channel_rule` | `"all"` | `all`, `any` Match a color pixel when all or any active channels match. |
 | `include_alpha` | `false` | Compare alpha as an active channel when present. |
 
+## Complete symmetric matrix (`cv.complete_symmetric_matrix`)
+
+Image processing / Statistics
+
+Inputs: `matrix` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `matrix` | `[]` | Square matrix. Enter finite placeholders in the triangle to be replaced. |
+| `source_triangle` | `"upper"` | `upper`, `lower` Triangle to mirror across the diagonal. Diagonal values stay in place. |
+
 ## Convert image (`cv.convert`)
 
 Image processing / Color and depth
@@ -1260,6 +1271,19 @@ Inputs: `image` (image).
 | `right` | `10` |  |
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
 | `value` | `0.0` |  |
+
+## Create diagonal matrix (`cv.create_diagonal_matrix`)
+
+Image processing / Statistics
+
+Inputs: `diagonal` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `rows` | `3` | Value must be a whole number between 1 and 100000. Output row count. The matrix may be rectangular. |
+| `columns` | `3` | Value must be a whole number between 1 and 100000. Output column count. The diagonal length is the smaller dimension. |
+| `diagonal_value` | `1.0` | Value must be a finite number. Value on the main diagonal when no vector is supplied. |
+| `diagonal` | `[]` | Optional vector of main diagonal values. A wired vector takes precedence. |
 
 ## Crop ROI (`cv.crop`)
 
@@ -1923,6 +1947,16 @@ Input `gain` — Monochrome gain image at the full spectrum size, including any 
 | --- | --- | --- |
 | `layout` | `"centered"` | `centered`, `native` Centered matches the spectrum preview. Native has zero frequency at index 0. |
 | `symmetry` | `"require"` | `require`, `average`, `minimum`, `maximum` Require matching paired gains, or combine each pair by average, min, or max. |
+
+## Measure matrix diagonal (`cv.matrix_diagonal`)
+
+Image processing / Statistics
+
+Inputs: `matrix` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `matrix` | `[]` | Rectangular table of finite real numbers. A wired table takes precedence. |
 
 ## Eigendecomposition (`cv.matrix_eigen`)
 

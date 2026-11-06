@@ -23,10 +23,13 @@ circular convolution and circular correlation.
 [Seeded random images and noise](../examples/image_processing/seeded_noise/README.md)
 provide Gaussian and uniform fixtures and selected perturbations using a
 private generator per activation.
+[Matrix structure tools](../examples/numerical/matrix_structure/README.md)
+construct diagonal matrices, extract diagonals and traces, and mirror
+the upper or lower half of a square matrix.
 
 | Priority | Remaining core array work | Graph use |
 | --- | --- | --- |
-| 1 | Matrix structure utilities | Extract diagonals and traces, construct diagonal or identity matrices, and complete a symmetric matrix from one triangle when an upstream job provides partial coefficients. |
+| 1 | Numeric table composition and reductions | Slice, concatenate, transpose, and reduce wired feature tables by row or column. Image variants already cover spatial grids. |
 | 2 | Specialized layouts and precision | Assess concrete use cases for N-dimensional arrays, native half-precision storage, sparse matrices and batched matrix operations before defining port types. |
 
 The remaining baseline 2D workflows are tracked below. Stage 1 also needs a
