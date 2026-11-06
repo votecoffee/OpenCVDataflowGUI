@@ -561,6 +561,28 @@ Inputs: `image` (image), `camera` (data, optional).
 | `border_bits` | `1` |  |
 | `error_correction_rate` | `0.6` |  |
 
+## Check chessboard quality (`calibration.chessboard_quality`)
+
+Calibration / Grid and coordinates
+
+Inputs: `image` (image), `corners` (data, optional).
+
+Input `corners` — Optional SB inner corners in row order, from this image's frame and capture.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `columns` | `9` | Value must be a whole number between 3 and 64. Number of inner corner columns in the chessboard. |
+| `rows` | `6` | Value must be a whole number between 3 and 64. Number of inner corner rows in the chessboard. |
+| `orientation` | `"both"` | `both`, `horizontal`, `vertical` Chessboard edge directions in detected board coordinates. |
+| `rise_distance` | `0.8` | Value must be a finite number between 1e-06 and 1. Intensity transition fraction. 0.8 measures the 10% to 90% rise. |
+| `normalize` | `true` | Normalize the detector image. Brightness is measured before normalization. |
+| `exhaustive` | `true` | Spend more detector effort searching for the chessboard. |
+| `accuracy` | `false` | Upsample during SB corner detection for improved corner localization. |
+| `max_transition_pixels` | `3.0` | Value must be a finite number between 0 and 32766. Maximum mean width per direction. Zero skips the limit. |
+| `min_contrast` | `32.0` | Value must be a finite number between 0 and 255. Minimum mean white-minus-black contrast per direction, in 8-bit units. |
+| `max_black` | `255.0` | Value must be a finite number between 0 and 255. Maximum mean black-cell intensity per direction, on an 8-bit scale. |
+| `min_white` | `0.0` | Value must be a finite number between 0 and 255. Minimum mean white-cell intensity per direction, on an 8-bit scale. |
+
 ## White / color balance (`calibration.color_balance`)
 
 Calibration / Color balance
