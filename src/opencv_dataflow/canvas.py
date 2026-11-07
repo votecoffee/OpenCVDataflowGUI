@@ -39,6 +39,7 @@ from .visual_style import (
     connection_type,
     port_type,
 )
+from .wire_routing import curve, route_wire
 from .workspace import arranged_positions
 
 
@@ -67,13 +68,6 @@ def block_preview_images(block):
     for name, image in block.last_graphics.items():
         if name not in drawings:
             yield "Graphic", name, image
-
-
-def curve(start, end):
-    path = QPainterPath(start)
-    distance = max(70, abs(end.x() - start.x()) * 0.5)
-    path.cubicTo(start + QPointF(distance, 0), end - QPointF(distance, 0), end)
-    return path
 
 
 class Socket(QGraphicsEllipseItem):
@@ -178,7 +172,7 @@ class Node(QGraphicsItem):
         self.block.node_size = size
         self.update_size()
         if self.scene():
-            self.scene().geometry_changed()
+            self.scene().geometry_changed((self.block.id,))
         self.update()
 
     def boundingRect(self):
@@ -321,7 +315,7 @@ class Node(QGraphicsItem):
         if change == QGraphicsItem.GraphicsItemChange.ItemPositionHasChanged:
             self.block.position = [self.pos().x(), self.pos().y()]
             if self.scene():
-                self.scene().geometry_changed()
+                self.scene().geometry_changed((self.block.id,))
         return super().itemChange(change, value)
 
 
@@ -338,13 +332,31 @@ class Wire(QGraphicsPathItem):
         self.setToolTip(f"{source.port.name} → {target.port.name} · {self.visual_type}{detail}")
         self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable)
         self.setZValue(-1)
-        self.refresh()
-
-    def refresh(self):
-        self.setPath(curve(self.source.scenePos(), self.target.scenePos()))
         pen = QPen(self.color, 3)
         pen.setCosmetic(True)
         self.setPen(pen)
+        self.refresh()
+
+    def refresh(self):
+        self.routing_bounds = QRectF()
+        start, end = self.source.scenePos(), self.target.scenePos()
+        scene = self.source.scene()
+        if scene is None:
+            self.setPath(curve(start, end))
+            return
+        source, target = self.source.node, self.target.node
+
+        def nearby_blocks(bounds):
+            self.routing_bounds = self.routing_bounds.united(bounds)
+            return [
+                item.sceneBoundingRect()
+                for item in scene.items(bounds, Qt.ItemSelectionMode.IntersectsItemBoundingRect)
+                if isinstance(item, Node) and item is not source and item is not target
+            ]
+
+        self.setPath(route_wire(
+            start, end, source.sceneBoundingRect(), target.sceneBoundingRect(), nearby_blocks,
+        ))
 
     def paint(self, painter, option, widget=None):
         painter.save()
@@ -414,6 +426,7 @@ class CanvasScene(QGraphicsScene):
             self.nodes[b.id] = node
             if b.id == selected:
                 node.setSelected(True)
+        self._node_bounds = {key: node.sceneBoundingRect() for key, node in self.nodes.items()}
         for c in self.graph.connections:
             wire = Wire(
                 c,
@@ -437,10 +450,10 @@ class CanvasScene(QGraphicsScene):
             bounds = bounds.united(view.mapToScene(view.viewport().rect()).boundingRect())
         self.setSceneRect(bounds.united(QRectF(-1500, -1200, 5000, 3200)))
 
-    def geometry_changed(self):
+    def geometry_changed(self, moved=None):
         if self._moving_nodes:
             return
-        self.update_wires()
+        self.update_wires(moved)
         for group in self.groups.values():
             group.refresh()
         self.expand_workspace()
@@ -502,9 +515,28 @@ class CanvasScene(QGraphicsScene):
         node = next((n for n in self.selectedItems() if isinstance(n, Node)), None)
         self.selected_block.emit(node.block if node else None)
 
-    def update_wires(self):
+    def update_wires(self, moved=None):
+        if moved is None:
+            self._node_bounds = {key: node.sceneBoundingRect() for key, node in self.nodes.items()}
+            for wire in self.wires:
+                wire.refresh()
+            return
+
+        # A block can obstruct an unrelated wire, or open a shorter route as it moves away.
+        dirty = []
+        for key in moved:
+            previous = self._node_bounds[key]
+            current = self.nodes[key].sceneBoundingRect()
+            self._node_bounds[key] = current
+            dirty.extend((previous, current))
+        moved = set(moved)
         for wire in self.wires:
-            wire.refresh()
+            if (
+                wire.connection.source in moved
+                or wire.connection.target in moved
+                or any(wire.routing_bounds.intersects(bounds) for bounds in dirty)
+            ):
+                wire.refresh()
 
     def start_wire(self, socket):
         self.drag_socket = socket
@@ -800,7 +832,7 @@ class NodeGroup(QGraphicsItem):
                 scene._moving_nodes = False
         result = super().itemChange(change, value)
         if change == QGraphicsItem.GraphicsItemChange.ItemPositionHasChanged and self.scene():
-            self.scene().geometry_changed()
+            self.scene().geometry_changed(self.data["members"])
         return result
 
 

@@ -17,6 +17,11 @@ overview draws inexpensive node rectangles and a highlighted viewport. Click or
 drag it to navigate without rendering image previews there. The dotted grid
 adapts at low zoom to keep drawing costs bounded.
 
+**Workspace > Auto arrange blocks** places dependencies in left-to-right columns.
+Connections take short detours around blocks when there is room. They reroute as
+you move or resize a block, including blocks with no connection to that wire.
+Wires can still cross each other or pass behind a block in a crowded layout.
+
 Save stores group membership, absolute node positions, view center and zoom in
 project JSON. Nested ToolBlocks have independent workspace state. Creating a
 ToolBlock transfers fully selected groups into its internal graph; partially

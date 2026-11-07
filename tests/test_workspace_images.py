@@ -10,8 +10,8 @@ from types import SimpleNamespace
 import cv2
 import numpy as np
 import pytest
-from PySide6.QtCore import QPoint, QPointF, QSize, Qt
-from PySide6.QtGui import QWheelEvent
+from PySide6.QtCore import QPoint, QPointF, QRectF, QSize, Qt
+from PySide6.QtGui import QPainterPathStroker, QWheelEvent
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QFileDialog, QPushButton
 
@@ -25,6 +25,7 @@ from opencv_dataflow.queued_execution import QueuedExecution
 from opencv_dataflow.tickets import ticket_key
 from opencv_dataflow.toolblocks import encapsulate
 from opencv_dataflow.validation import run_set
+from opencv_dataflow.wire_routing import curve
 from opencv_dataflow.workspace import add_group
 
 
@@ -101,6 +102,75 @@ def test_auto_arrange_places_branches_and_groups_without_rewiring(app):
     )
     assert graph.connections == connections and graph.groups == [group]
     assert all(block.last_result is results[key] for key, block in graph.blocks.items())
+
+
+def test_auto_arrange_routes_shortcut_around_intermediate_block(app):
+    registry = builtin_registry()
+    graph = Graph()
+    source = graph.add(registry.create("input.demo"))
+    middle = graph.add(registry.create("cv.gray"))
+    merge = graph.add(registry.create("cv.blend"))
+    graph.connect(source.id, "image", middle.id, "image")
+    graph.connect(middle.id, "image", merge.id, "image_a")
+    graph.connect(source.id, "image", merge.id, "image_b")
+
+    scene = CanvasScene(graph)
+    assert scene.auto_arrange()
+    shortcut = scene.wires[-1]
+    start, end = shortcut.source.scenePos(), shortcut.target.scenePos()
+    direct = curve(start, end)
+    blocker = scene.nodes[middle.id]
+    stroker = QPainterPathStroker()
+    assert stroker.createStroke(direct).intersects(blocker.sceneBoundingRect())
+    for wire in scene.wires:
+        stroke = stroker.createStroke(wire.path())
+        for key in graph.blocks.keys() - {wire.connection.source, wire.connection.target}:
+            assert not stroke.intersects(scene.nodes[key].sceneBoundingRect())
+    assert shortcut.path().pointAtPercent(0) == start
+    assert shortcut.path().pointAtPercent(1) == end
+
+    before = blocker.pos()
+    blocker.setY(before.y() - 500)
+    assert shortcut.path() == direct
+    blocker.setPos(before)
+    assert shortcut.path() != direct
+    assert not stroker.createStroke(shortcut.path()).intersects(blocker.sceneBoundingRect())
+
+
+def test_canvas_reroutes_on_block_resize_and_avoids_backwards_endpoints(app):
+    registry = builtin_registry()
+    graph = Graph()
+    source = graph.add(registry.create("input.demo"))
+    blocker = graph.add(registry.create("input.demo"))
+    target = graph.add(registry.create("cv.gray"))
+    source.position = [0, 0]
+    blocker.position = [400, -180]
+    blocker.node_size = "small"
+    target.position = [900, 0]
+    graph.connect(source.id, "image", target.id, "image")
+
+    scene = CanvasScene(graph)
+    wire, = scene.wires
+    direct = curve(wire.source.scenePos(), wire.target.scenePos())
+    assert wire.path() == direct
+    obstacle = scene.nodes[blocker.id]
+    obstacle.set_size("large")
+    assert wire.path() != direct
+    assert not QPainterPathStroker().createStroke(wire.path()).intersects(
+        obstacle.sceneBoundingRect()
+    )
+
+    scene.nodes[source.id].setX(900)
+    scene.nodes[target.id].setX(0)
+    start, end = wire.source.scenePos(), wire.target.scenePos()
+    assert wire.path().pointAtPercent(0) == start
+    assert wire.path().pointAtPercent(1) == end
+    stroke = QPainterPathStroker().createStroke(wire.path())
+    for key in (source.id, target.id):
+        node = scene.nodes[key]
+        body = QRectF(node.x(), node.y(), node.width, node.height).adjusted(1, 1, -1, -1)
+        assert not stroke.intersects(body)
+    assert not stroke.intersects(obstacle.sceneBoundingRect())
 
 
 def test_workspace_auto_arrange_menu_saves_only_the_open_toolblock_layout(app, tmp_path):
