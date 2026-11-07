@@ -11,7 +11,11 @@ from PySide6.QtWidgets import QFileDialog
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
-from opencv_dataflow.plugins import GEOMETRIC_MATCHER_TYPES, PIXEL_SEGMENTATION_TYPES
+from opencv_dataflow.plugins import (
+    GEOMETRIC_MATCHER_TYPES,
+    IMAGE_CLASSIFIER_TYPES,
+    PIXEL_SEGMENTATION_TYPES,
+)
 
 
 def test_installed_matcher_opens_an_application_without_manual_plugin(app, monkeypatch, tmp_path):
@@ -88,6 +92,12 @@ def test_installed_segmentation_opens_and_locates_boards_without_manual_plugin(a
             "examples/applications/README.md",
         ),
         (
+            "opencv_simple_classifier",
+            "inspect.simple_classify_image",
+            IMAGE_CLASSIFIER_TYPES,
+            "examples/applications/README.md",
+        ),
+        (
             "opencv_defect_segmentation",
             "inspection.ocv_segment_image",
             PIXEL_SEGMENTATION_TYPES,
@@ -112,3 +122,22 @@ def test_missing_plugin_has_setup_guidance_and_unknown_types_stay_explicit(
     assert not set(known_types) & registry.types.keys()
     with pytest.raises(ValueError, match="Load its plugin first"):
         registry.create("example.unregistered")
+
+
+def test_installed_image_classifier_resolves_on_project_open(tmp_path):
+    pytest.importorskip("opencv_simple_classifier.dataflow")
+    registry = builtin_registry()
+    assert not set(IMAGE_CLASSIFIER_TYPES) & registry.types.keys()
+    project = tmp_path / "classifier.json"
+    graph = Graph()
+    try:
+        graph.add(builtin_registry().create(IMAGE_CLASSIFIER_TYPES[0], block_id="classifier"))
+        graph.save(project)
+    finally:
+        graph.close()
+    graph = Graph.load(project, registry)
+    try:
+        assert graph.blocks["classifier"].plugin_dialog_label == "Train image classifier…"
+    finally:
+        graph.close()
+    assert set(IMAGE_CLASSIFIER_TYPES) <= registry.types.keys()

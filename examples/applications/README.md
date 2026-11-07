@@ -21,3 +21,18 @@ OpenCV contrib wheel.
 ## Set up pixel segmentation
 
 See [Pixel segmentation](pixel_segmentation/README.md) for installation and the saved projects.
+
+## Set up image classification
+
+Install the classifier in the DataflowGUI environment. The `--no-deps` option
+keeps the host's existing OpenCV and Qt versions.
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install --no-deps "opencv-simple-classifier @ git+https://github.com/votecoffee/OpenCVSimpleClassifier.git@43c4f9bf235edf02f948e82efb9da59725a5c53f"
+```
+
+Open the [VegQual application](https://github.com/votecoffee/OpenCVSimpleClassifier/tree/43c4f9bf235edf02f948e82efb9da59725a5c53f/examples/vegqual)
+from a checkout of the classifier repository. It includes labeled filmstrips,
+a trained model, and a separate test sequence. To add the tool to a new session
+without opening the example, use **File → Load Python plugin…** and select
+`integrations/opencv_dataflow_plugin.py` from that checkout.
