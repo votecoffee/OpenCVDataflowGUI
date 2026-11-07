@@ -16,6 +16,8 @@ Open a project above and press **Run once**. Inspect **Overlay** for the highlig
 
 The examples use four voting workers at native sampling with segmentation revision `feb5422` or newer. Adjust **Workers** in the inspector to budget CPU alongside other graph branches. Use one worker to measure the serial block time.
 
+With segmentation revision `6a643f3` or newer, the same voting limit applies at supersampled resolutions and when a batch contains one registered patch. Batches with several registered parts use the workers across the parts.
+
 In the PCB project, **Locate one board** takes the external contour of the laminate mask and checks for one board-sized object. Its **Collection** output includes the contour, bounding box, and centroid in the 650 × 495 image grid. **Show board outline and center** draws the contour and centroid over the learned mask. The contour follows visible laminate, so it can curve inward near edge-mounted components. The raw laminate mask and the filled contour mask are separate outputs.
 
 From the DataflowGUI repository root, you can replay both PCB photographs in the same environment:
