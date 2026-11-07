@@ -211,18 +211,18 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Validate lens calibration](<custom tools/validate_lens_calibration/README.md>) | Check a saved profile on a separate circle-grid view and overlay the reprojection residuals. |
 | [Wiener deblur](<custom tools/wiener_deblur/README.md>) | Recover detail after a known Gaussian blur and measure the change in RMSE. |
 
-## Flow tools
+## Control flow tools
 
 Examples of pipeline control, including split, join, routing, queues, and decisions.
 
 | Example | Demonstrates |
 | --- | --- |
-| [Coordinated camera inputs](<flow tools/input_coordination/README.md>) | Join two synthetic camera images to a simulated PLC part counter by ticket. |
-| [Parallel inspection of 25 parts](<flow tools/parallel_parts/README.md>) | Find 25 synthetic parts and run a reusable inspection around each part pose. |
-| [Queued image inspection](<flow tools/queued_input/README.md>) | Place a FIFO image queue ahead of the 25-part parallel inspection. |
-| [Ticket results and final judgment](<flow tools/ticket_results/README.md>) | Track block results for a synthetic acquisition and publish a final judgment before a pass-only branch. |
-| [Ticketed control flow](<flow tools/control_flow/README.md>) | Group three synthetic acquisitions and exercise split, join, routing, and FIFO reordering with tickets. |
-| [Ticketed recipes](<flow tools/recipes/README.md>) | Select recipe settings and trained models, then coordinate shape and texture results for a final judgment. |
+| [Coordinated camera inputs](<control flow tools/input_coordination/README.md>) | Join two synthetic camera images to a simulated PLC part counter by ticket. |
+| [Parallel inspection of 25 parts](<control flow tools/parallel_parts/README.md>) | Find 25 synthetic parts and run a reusable inspection around each part pose. |
+| [Queued image inspection](<control flow tools/queued_input/README.md>) | Place a FIFO image queue ahead of the 25-part parallel inspection. |
+| [Ticket results and final judgment](<control flow tools/ticket_results/README.md>) | Track block results for a synthetic acquisition and publish a final judgment before a pass-only branch. |
+| [Ticketed control flow](<control flow tools/control_flow/README.md>) | Group three synthetic acquisitions and exercise split, join, routing, and FIFO reordering with tickets. |
+| [Ticketed recipes](<control flow tools/recipes/README.md>) | Select recipe settings and trained models, then coordinate shape and texture results for a final judgment. |
 
 ## User tools and plugins
 

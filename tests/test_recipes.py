@@ -493,7 +493,7 @@ def test_saved_recipe_example_and_gui_version_activation(app, load_example, tmp_
     from opencv_dataflow.runner import main
 
     registry = builtin_registry()
-    graph = Graph.load("examples/flow tools/recipes/recipes.json", registry)
+    graph = Graph.load("examples/control flow tools/recipes/recipes.json", registry)
     assert graph.to_dict() == recipes_graph(registry).to_dict()
     for name, threshold in (("Widget A", 110), ("Widget B", 150)):
         graph.recipes.activate(name)
@@ -505,7 +505,7 @@ def test_saved_recipe_example_and_gui_version_activation(app, load_example, tmp_
     report = tmp_path / "report.json"
     assert (
         main(
-            ["examples/flow tools/recipes/recipes.json", "--repeat", "2", "--report", str(report)]
+            ["examples/control flow tools/recipes/recipes.json", "--repeat", "2", "--report", str(report)]
         )
         == 0
     )

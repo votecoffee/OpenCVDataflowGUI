@@ -14,7 +14,7 @@ dist/
 !/examples/assets/
 !/examples/custom tools/
 !/examples/demos/
-!/examples/flow tools/
+!/examples/control flow tools/
 !/examples/industrial integration/
 !/examples/Simple Plugins/
 !/examples/opencv tools/

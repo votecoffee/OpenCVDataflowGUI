@@ -209,7 +209,7 @@ Shape mask can also operate in ordinary image pixels with its pose disconnected.
 Input sources carry numeric, string or timestamp tickets, generated automatically
 or supplied through an external data input. **Control flow** tools split/join
 parallel branches, batch/unbatch entries, select cases and restore FIFO by ticket.
-Try [ticketed control flow](<../examples/flow tools/control_flow/control_flow.json>). See
+Try [ticketed control flow](<../examples/control flow tools/control_flow/control_flow.json>). See
 [tickets and control flow](control-flow.md) for external/PLC ticket inputs,
 buffer limits and stream execution semantics.
 
@@ -218,30 +218,30 @@ status. Every input has a **continue / reject_failed** policy; rejection emits n
 data and retains the last processed previews. **Final ticket judgment** assigns an
 explicit decision separately from intermediate tool results. Open **Results >
 Ticket results…** to search tickets and inspect their status and event timelines.
-Try [ticket results](<../examples/flow tools/ticket_results/ticket_results.json>). See [ticket results](ticket-results.md)
+Try [ticket results](<../examples/control flow tools/ticket_results/ticket_results.json>). See [ticket results](ticket-results.md)
 for status propagation, final decisions, retention limits and plugin event data.
 
 **Coordinate inputs** offers ticket-matched waiting with timeouts, latest snapshots,
 triggered latest snapshots, and first-arrival-per-ticket selection. Freshness,
-duplicate and late-arrival controls make reuse explicit. Try [input coordination](<../examples/flow tools/input_coordination/input_coordination.json>). See [input coordination](input-coordination.md) for
+duplicate and late-arrival controls make reuse explicit. Try [input coordination](<../examples/control flow tools/input_coordination/input_coordination.json>). See [input coordination](input-coordination.md) for
 recommended policies and cooperative timing limits.
 
 **Recipes > Manage recipes…** stores versioned settings and trained pattern models.
 Use **Select recipe** / **Recipe value or model** blocks, or bind tool parameters
 and matcher models in **Recipe overrides**. Images retain their recipe revision
-across queues and global changes. Try [recipes](<../examples/flow tools/recipes/recipes.json>); see
+across queues and global changes. Try [recipes](<../examples/control flow tools/recipes/recipes.json>); see
 [recipes and model swaps](recipes.md) for activation and persistence rules.
 
 **Inspect each pose in parallel** runs a reusable inspection ToolBlock for every
 pattern match, measured feature or supplied pose, then returns one aggregate. Set
 worker count and optional N-pass/N-failure stop thresholds; results explicitly
-identify uninspected parts. The [parallel inspection example](<../examples/flow tools/parallel_parts/parallel_parts.json>) finds
+identify uninspected parts. The [parallel inspection example](<../examples/control flow tools/parallel_parts/parallel_parts.json>) finds
 and inspects 25 parts. See [parallel part inspection](parallel-inspection.md)
 for editing the inspection, acceptance policies and cancellation behavior.
 
 Insert **Queue input images** after a source to retain frames and release them
 one at a time. It supports bounded FIFO storage, explicit overflow policies and
-optional background acquisition during inspection. Try [queued input](<../examples/flow tools/queued_input/queued_input.json>), then Continuous. See [input queues](input-queues.md) for capacity,
+optional background acquisition during inspection. Try [queued input](<../examples/control flow tools/queued_input/queued_input.json>), then Continuous. See [input queues](input-queues.md) for capacity,
 metadata pairing and Stop/Resume behavior. Stop keeps the last completed result visible.
 
 ## Runtime and plugins

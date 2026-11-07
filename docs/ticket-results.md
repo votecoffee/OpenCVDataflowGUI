@@ -142,7 +142,7 @@ not required for the example or automated validation.
 
 ## Example
 
-Open [ticket results](<../examples/flow tools/ticket_results/ticket_results.json>), run once, then open **Results > Ticket
+Open [ticket results](<../examples/control flow tools/ticket_results/ticket_results.json>), run once, then open **Results > Ticket
 results…**. Two synthetic parts produce a `final_pass` ticket. The grayscale
 diagnostic branch accepts only passing inspection images. Change **Find contours >
 expected_count** from 2 to 3, apply, and run again: the new ticket is `final_fail`,
@@ -150,7 +150,7 @@ and that branch emits nothing. Configuration application intentionally clears ol
 previews; runtime failure rejection itself does not overwrite prior previews.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run "examples/flow tools/ticket_results/ticket_results.json" --repeat 3 --report .local/ticket-receipt.json
+.\.venv\Scripts\opencv-dataflow-run "examples/control flow tools/ticket_results/ticket_results.json" --repeat 3 --report .local/ticket-receipt.json
 ```
 
 ## Custom blocks
