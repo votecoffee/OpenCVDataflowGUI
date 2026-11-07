@@ -145,7 +145,7 @@ region selection.
 | Recognition | WeChat QR, QR encoding, multiple-code layout, cascade and HOG detector workflows, face detection/recognition, saliency, line descriptors, image retrieval/vocabulary and OpenCV-specific OCR variants. |
 | Sequence | Additional tracker families, background subtractors in `bgsegm`, motion history and advanced video stabilization. |
 | Geometric utilities | Expanded robust estimators, graph matching, rectification variants, affine-invariant feature variants, panorama detail steps and coordinate-space diagnostics. |
-| Diagnostics and visualization | Display overlays as reusable blocks, match/inlier overlays, density maps, 3D axes and camera frusta, disparity confidence views and inspection measurement plots. [Colorize scalar image](<../examples/opencv tools/colorize_scalar/README.md>) provides built-in or custom palettes, fixed and automatic ranges, and invalid-pixel masking. |
+| Diagnostics and visualization | Display overlays as reusable blocks, density maps, 3D axes and camera frusta, disparity confidence views and inspection measurement plots. Review feature matches draws inlier and outlier layers on a comparison canvas. [Colorize scalar image](<../examples/opencv tools/colorize_scalar/README.md>) provides built-in or custom palettes, fixed and automatic ranges, and invalid-pixel masking. |
 | Contrib and domain tools | Fuzzy and bioinspired processing, structured-light modes beyond Gray code, saliency, detailed image hashing and optional SfM, mesh/visualization and hardware-specific modules where the Python build supplies them. |
 
 ## P4 — Infrastructure and build-dependent features

@@ -14,6 +14,7 @@ from .graphics_layers import (
     GraphicLayer,
     GraphicObject,
     draw_object,
+    drawing_payload,
     layer_transform,
 )
 from .images import preview_rgb
@@ -133,7 +134,7 @@ class FilmstripCapture:
                 continue
             if not isinstance(drawing.source, str) or not drawing.objects:
                 continue
-            payload = block.input_payloads.get(drawing.source, {})
+            payload = drawing_payload(block, result, drawing)
             ticket, frame = payload.get("ticket"), payload.get("spatial")
             if not ticket or not frame:
                 continue

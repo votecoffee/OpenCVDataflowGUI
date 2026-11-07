@@ -690,6 +690,7 @@ def builtin_registry():
     from .linear_program import SolveLinearProgram
     from .linear_system import SolveLinearSystem
     from .logix import LOGIX_BLOCKS
+    from .match_review import ReviewFeatureMatches
     from .matrix_eigen import MatrixEigen
     from .matrix_inverse import InvertMatrix
     from .matrix_multiply import MultiplyMatrices
@@ -822,6 +823,7 @@ def builtin_registry():
         TileImage,
         *FEATURE_BLOCKS,
         *REGISTRATION_BLOCKS,
+        ReviewFeatureMatches,
         AlignECC,
         *RESTORATION_BLOCKS,
         *PHOTO_FILTER_BLOCKS,

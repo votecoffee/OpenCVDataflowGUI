@@ -4613,6 +4613,28 @@ Inputs: `image` (image), `points` (data).
 | `max_iterations` | `30` |  |
 | `epsilon` | `0.01` |  |
 
+## Review feature matches (`inspect.review_matches`)
+
+Inspection / Registration
+
+Inputs: `query_image` (image), `train_image` (image), `matches` (data), `fit` (data, optional).
+
+Input `query_image` — Image used by the query feature detector, displayed on the left.
+
+Input `train_image` — Image used by the train feature detector, displayed on the right.
+
+Input `matches` — Paired Query and Train points in image pixels.
+
+Input `fit` — Optional geometric fit made from this same ordered match list.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `show` | `"all"` | `all`, `inliers`, `outliers` Filter displayed pairs by the optional geometric fit. |
+| `max_pairs` | `160` | Value must be a whole number between 1 and 1000. Maximum number of pairs to draw, in the incoming match order. |
+| `gap` | `16` | Value must be a whole number between 0 and 128. Pixels between the two images. |
+| `line_width` | `1` | Value must be a whole number between 1 and 8. Width of the lines in pixels. |
+| `endpoints` | `true` | Mark both feature locations on each displayed pair. |
+
 ## Rotated rectangle overlap (`inspect.rotated_rectangle_overlap`)
 
 Inspection / Measurements

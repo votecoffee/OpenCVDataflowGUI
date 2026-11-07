@@ -57,6 +57,14 @@ uses rotation, uniform scale and translation; the full model also permits shear
 and independent axis scaling. These are image-space transforms, separate from
 grid-based physical calibration.
 
+**Review feature matches** compares a query image and train image side by side.
+Connect the same ordered match record to the review and the geometric fit.
+The optional fit input accepts a homography or affine transform with an inlier
+mask, or the Fit output from **Estimate image translation**. The review can draw
+all pairs, only inliers, or only outliers. Its clean canvas has its own pixel
+frame, and the inlier and outlier layers can be wired to **Overlay result
+graphics** with that canvas.
+
 Remap accepts two single-channel float32 coordinate images. Each output pixel
 samples the source at `(map_x, map_y)`. **Pack remap coordinates** converts
 the pair for **Remap with packed coordinates**. Both paths preserve the

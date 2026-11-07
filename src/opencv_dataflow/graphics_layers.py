@@ -40,6 +40,7 @@ def graphic_circle(x, y, radius, color, *, thickness=1):
 class GraphicDrawing:
     objects: tuple[GraphicObject, ...]
     source: str = "image"
+    from_output: bool = False
 
 
 @dataclass(frozen=True)
@@ -62,9 +63,14 @@ class GraphicsBundle:
         }
 
 
+def drawing_payload(block, result, drawing):
+    contexts = result.payloads if drawing.from_output else block.input_payloads
+    return contexts.get(drawing.source, {})
+
+
 def graphics_bundle(block, result):
     layers = [
-        GraphicLayer(name, drawing.objects, block.input_payloads.get(drawing.source, {}))
+        GraphicLayer(name, drawing.objects, drawing_payload(block, result, drawing))
         for name, drawing in result.drawings.items()
     ]
     if block.type_id == "core.toolblock" and block.generate_graphics:
