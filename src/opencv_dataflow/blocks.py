@@ -657,6 +657,7 @@ def builtin_registry():
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
     from .dnn_blocks import DNN_BLOCKS
     from .ecc_registration import AlignECC
+    from .example_plugins import invert as invert_example
     from .examples3d import StereoDemo
     from .fanuc import FANUC_BLOCKS
     from .feature_covariance import FitFeatureCovariance, MahalanobisDistance
@@ -922,6 +923,7 @@ def builtin_registry():
         registry.register(block)
     registry.add_provider(GEOMETRIC_MATCHER_TYPES, load_installed_geometric_matcher)
     registry.add_provider(PIXEL_SEGMENTATION_TYPES, load_installed_pixel_segmentation)
+    registry.add_provider((invert_example.Invert.type_id,), invert_example.register)
     return registry
 
 

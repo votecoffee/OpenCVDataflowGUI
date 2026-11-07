@@ -31,7 +31,7 @@ from opencv_dataflow.kernel_editor import KernelEditor
 from opencv_dataflow.project_compare import ProjectCompare
 from opencv_dataflow.project_xml import read_project_xml
 from opencv_dataflow.toolblock_editor import InterfaceDialog
-from opencv_dataflow.toolblocks import encapsulate
+from opencv_dataflow.toolblocks import ToolBlock, encapsulate
 from opencv_dataflow.toolbox import TOOL_MIME
 from opencv_dataflow.visual_style import BLOCK_STATE_COLORS
 
@@ -1387,5 +1387,57 @@ def test_file_menu_opens_example_from_disk(app, monkeypatch):
         entries["Open…"].trigger()
         assert window.path == project
         assert "roi_circle" in window.graph.blocks
+    finally:
+        window.close()
+
+
+@pytest.mark.local_examples
+@pytest.mark.parametrize("name", ["inspect_shapes", "registered_defect_inspection"])
+def test_file_open_toolblock_definition_starts_an_unsaved_project(app, monkeypatch, tmp_path, name):
+    folder = Path(__file__).resolve().parents[1] / "examples/user_tools" / name
+    definition = folder / f"{name}.toolblock.json"
+    original = definition.read_bytes()
+    save_path = tmp_path / "new-project.json"
+    window = MainWindow()
+    warnings = []
+    monkeypatch.setattr(window, "warn", warnings.append)
+    monkeypatch.setattr(QFileDialog, "getOpenFileName", lambda *a, **k: (str(definition), ""))
+    monkeypatch.setattr(QFileDialog, "getSaveFileName", lambda *a, **k: (str(save_path), ""))
+    try:
+        window.open_project()
+        assert not warnings
+        assert window.path is None
+        block, = window.graph.blocks.values()
+        assert isinstance(block, ToolBlock)
+        assert block.inputs and block.outputs
+        assert block.graph.project_dir == folder
+        assert window.save_project()
+        restored = Graph.load(save_path, window.registry)
+        assert restored.to_dict() == window.graph.to_dict()
+        assert definition.read_bytes() == original
+    finally:
+        window.close()
+
+
+@pytest.mark.local_examples
+def test_file_open_custom_invert_registers_bundled_plugin_and_runs(app, monkeypatch):
+    project = (
+        Path(__file__).resolve().parents[1] / "examples/user_tools/custom_invert/custom_invert.json"
+    )
+    window = MainWindow()
+    warnings = []
+    monkeypatch.setattr(window, "warn", warnings.append)
+    monkeypatch.setattr(QFileDialog, "getOpenFileName", lambda *a, **k: (str(project), ""))
+    try:
+        assert "example.invert" not in window.registry.types
+        window.open_project()
+        assert not warnings
+        assert window.path == project
+        window.start_run(continuous=False)
+        pump_until(app, lambda: window.runner is None)
+        assert not warnings
+        invert = next(b for b in window.graph.blocks.values() if b.type_id == "example.invert")
+        assert invert.state == "pass"
+        assert set(invert.last_output_images) == {"image", "original"}
     finally:
         window.close()

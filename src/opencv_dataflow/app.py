@@ -2103,14 +2103,30 @@ class MainWindow(QMainWindow):
         if not self.runner and self.confirm_discard():
             self.replace_graph(Graph())
 
+    def open_path(self, path):
+        path = Path(path)
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(data, dict):
+            raise ValueError("Expected a Dataflow project or ToolBlock JSON object")
+        directory = path.resolve().parent
+        if "toolblock_version" in data and "schema_version" not in data:
+            graph = Graph()
+            graph.add(ToolBlock.from_definition(data, self.registry))
+            graph.bind_project_dir(directory)
+            self.replace_graph(graph)
+            self.statusBar().showMessage(f"Opened {path.name} as a new project")
+        else:
+            graph = Graph.from_dict(data, self.registry, project_dir=directory)
+            self.replace_graph(graph, path)
+
     def open_project(self):
         if self.runner or not self.confirm_discard():
             return
-        path, _ = QFileDialog.getOpenFileName(self, "Open project", filter="Dataflow (*.json)")
+        path, _ = QFileDialog.getOpenFileName(self, "Open project or ToolBlock",
+                                             filter="Dataflow (*.json)")
         if path:
             try:
-                graph = Graph.load(path, self.registry)
-                self.replace_graph(graph, Path(path))
+                self.open_path(path)
             except Exception as exc:
                 self.warn(str(exc))
 
@@ -2457,7 +2473,7 @@ QStatusBar { background: #111c2a; color: #a5bdd4; }
 
 def main():
     parser = argparse.ArgumentParser(description="Develop and run OpenCV node graphs")
-    parser.add_argument("project", nargs="?", type=Path, help="Saved JSON project to open")
+    parser.add_argument("project", nargs="?", type=Path, help="Saved JSON project or ToolBlock")
     parser.add_argument(
         "--starter", action="store_true", help="Open the synthetic inspection starter"
     )
@@ -2473,7 +2489,7 @@ def main():
         window.replace_graph(starter_graph(window.registry))
     elif args.project:
         try:
-            window.replace_graph(Graph.load(args.project, window.registry), args.project)
+            window.open_path(args.project)
         except Exception as exc:
             print(f"Unable to open project: {exc}", file=sys.stderr)
             sys.exit(2)
