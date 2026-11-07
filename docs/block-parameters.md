@@ -1246,6 +1246,23 @@ Inputs: `matrix` (data, optional).
 | `matrix` | `[]` | Square matrix. Enter finite placeholders in the triangle to be replaced. |
 | `source_triangle` | `"upper"` | `upper`, `lower` Triangle to mirror across the diagonal. Diagonal values stay in place. |
 
+## Transform from control points (`cv.control_point_transform`)
+
+Image processing / Geometry
+
+Inputs: `source_points` (data, optional), `target_points` (data, optional).
+
+Input `source_points` — Three or four ordered source points.
+
+Input `target_points` — Corresponding points in the destination image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model` | `"affine"` | `affine`, `perspective` Affine uses three pairs. Perspective uses four pairs. |
+| `source_points` | `[]` | Ordered source [x, y] coordinates. A wired list takes precedence. |
+| `target_points` | `[]` | Corresponding destination [x, y] coordinates in the same pair order. |
+| `solver` | `"lu"` | `lu`, `svd` OpenCV linear solver for the perspective model. |
+
 ## Convert image (`cv.convert`)
 
 Image processing / Color and depth

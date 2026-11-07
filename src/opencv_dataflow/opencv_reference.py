@@ -38,6 +38,7 @@ BINDINGS = {
     "cv.clahe": "createCLAHE CLAHE.apply",
     "cv.colorize_scalar": "applyColorMap",
     "cv.compare_pixels": "compare",
+    "cv.control_point_transform": "getAffineTransform getPerspectiveTransform",
     "cv.copy_border": "copyMakeBorder",
     "cv.crop_subpixel": "getRectSubPix",
     "cv.dct": "dct",

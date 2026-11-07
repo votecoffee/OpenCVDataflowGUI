@@ -1,5 +1,7 @@
 """Geometric transforms, feature registration and additional native filters."""
 
+from itertools import combinations
+
 import cv2
 import numpy as np
 
@@ -74,6 +76,88 @@ def warped(source, matrix, size, interpolation, border, value, inverse_map=False
     return geometry_result(
         result, source, homogeneous if inverse_map else np.linalg.inv(homogeneous)
     )
+
+
+def _normalized_control_points(value, count, field):
+    message = f"Provide {count} finite [x, y] points within ±10 million pixels"
+    try:
+        points = np.asarray(value, dtype=np.float64)
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise ValidationError(message, field) from exc
+    if points.shape != (count, 2) or not np.isfinite(points).all() or np.abs(points).max() > 1e7:
+        raise ValidationError(message, field)
+
+    center = points.mean(axis=0)
+    centered = points - center
+    span = float(np.abs(centered).max())
+    if span < 1e-6:
+        raise ValidationError("Control points must span at least 0.000001 pixels", field)
+    local = centered / span
+    for a, b, c in combinations(local, 3):
+        ab, ac = b - a, c - a
+        if abs(ab[0] * ac[1] - ab[1] * ac[0]) <= 1e-6:
+            raise ValidationError("Control points must be distinct and non-collinear", field)
+    basis = np.eye(3)
+    basis[:2, :2] /= span
+    basis[:2, 2] = -center / span
+    return local, basis
+
+
+class ControlPointTransform(Block):
+    type_id, title = "cv.control_point_transform", "Transform from control points"
+    category, block_type, subtype = "Image processing", "Image processing", "Geometry"
+    inputs = (
+        Port("source_points", "data", required=False, required_when_connected=True),
+        Port("target_points", "data", required=False, required_when_connected=True),
+    )
+    outputs = (Port("transform", "data"), Port("rms_pixels", "number"))
+    defaults = {"model": "affine", "source_points": [], "target_points": [], "solver": "lu"}
+    parameter_choices = {"model": ("affine", "perspective"), "solver": ("lu", "svd")}
+    parameter_help = {
+        "model": "Affine uses three pairs. Perspective uses four pairs.",
+        "source_points": "Ordered source [x, y] coordinates. A wired list takes precedence.",
+        "target_points": "Corresponding destination [x, y] coordinates in the same pair order.",
+        "solver": "OpenCV linear solver for the perspective model.",
+    }
+    input_help = {
+        "source_points": "Three or four ordered source points.",
+        "target_points": "Corresponding points in the destination image.",
+    }
+
+    def process(self, inputs):
+        p = self.parameters
+        affine = p["model"] == "affine"
+        count = 3 if affine else 4
+        (source, source_basis), (target, target_basis) = (
+            _normalized_control_points(inputs.get(field, p[field]), count, field)
+            for field in ("source_points", "target_points")
+        )
+        a, b = source.astype(np.float32), target.astype(np.float32)
+        if affine:
+            local_matrix = np.vstack((cv2.getAffineTransform(a, b), [0, 0, 1]))
+        else:
+            solver = cv2.DECOMP_LU if p["solver"] == "lu" else cv2.DECOMP_SVD
+            local_matrix = cv2.getPerspectiveTransform(a, b, solver)
+        if not np.isfinite(local_matrix).all() or np.linalg.matrix_rank(local_matrix) != 3:
+            raise ValidationError("Control points do not define an invertible mapping")
+        w = np.c_[source, np.ones(count)] @ local_matrix[2]
+        if np.min(np.abs(w)) <= 1e-8 or np.min(w) < 0 < np.max(w):
+            raise ValidationError("The mapping crosses infinity within the selected points")
+        projected = cv2.perspectiveTransform(source[:, None, :], local_matrix).reshape(-1, 2)
+        error = np.linalg.norm(projected - target, axis=1)
+        if not np.isfinite(error).all() or error.max() > 1e-4:
+            raise ValidationError("Cannot solve the control-point mapping accurately")
+        rms = float(np.sqrt(np.mean(error**2)) / target_basis[0, 0])
+        matrix = matrix_value(np.linalg.inv(target_basis) @ local_matrix @ source_basis, (3, 3))
+        transform = {
+            "model": "image_affine_v1" if affine else "image_homography_v1",
+            "source_to_target": matrix.tolist(),
+            "rms_pixels": rms,
+        }
+        return Result(
+            {"transform": transform, "rms_pixels": rms},
+            message=f"{count} pairs · RMS {rms:.3g} px",
+        )
 
 
 class WarpAffine(ImageTool):
@@ -1273,6 +1357,7 @@ class TransformPoints(Block):
 
 
 REGISTRATION_BLOCKS = (
+    ControlPointTransform,
     WarpAffine,
     WarpPerspective,
     Rotate,

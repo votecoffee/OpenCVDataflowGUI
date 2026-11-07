@@ -2855,7 +2855,7 @@ P3	method	cv2.GeneralizedHoughGuil.setPosThresh	method name only	-
 P3	method	cv2.GeneralizedHoughGuil.setScaleStep	method name only	-
 P3	method	cv2.GeneralizedHoughGuil.setScaleThresh	method name only	-
 P3	method	cv2.GeneralizedHoughGuil.setXi	method name only	-
-P3	function	cv2.getAffineTransform	no static reference	-
+P3	function	cv2.getAffineTransform	literal reference	-
 P3	function	cv2.getClosestEllipsePoints	literal reference	-
 P3	function	cv2.getCPUFeaturesLine	no static reference	-
 P3	function	cv2.getCPUTickCount	no static reference	-
