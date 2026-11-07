@@ -202,8 +202,9 @@ navigate. Save remembers groups, zoom, and viewport position, including inside T
 Open the [image-set workspace](<examples/demos/image_set_workspace/image_set_workspace.json>)
 for a grouped, three-image inspection.
 Press **Continuous** to run the complete set and see filename tickets and verdict
-borders in **Results > Image results filmstrip**. Double-click a thumbnail to
-open a resizable image viewer with zoom and pan. In an **Image file** block, use
+borders in **Results > Image results filmstrip**. The filmstrip overlays enabled
+result graphics for the matching ticket and image frame. Double-click a thumbnail
+to open a resizable image viewer with zoom and pan. In an **Image file** block, use
 **Select images…** or **Select directory…**, then **Apply configuration**. Run once
 advances one image; Continuous stops at the end unless `repeat=loop`.
 **File > Reset flow state** restarts the sequence. Filmstrips also appear in the

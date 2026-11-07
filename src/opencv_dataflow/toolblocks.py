@@ -134,7 +134,9 @@ class ToolBlock(Block):
                 packet for packet in packets if not rejected_inputs(self, {name: packet})
             )
         self.graph._inherit_graphics_from(self)
-        self.graph.run(self._cancelled, injected)
+        self.graph.run(
+            self._cancelled, injected, filmstrip_capture=getattr(self, "_filmstrip_capture", None)
+        )
         children = list(self.graph.blocks.values())
         unavailable = [b for b in children if b.state in ("error", "skipped")]
         if unavailable:

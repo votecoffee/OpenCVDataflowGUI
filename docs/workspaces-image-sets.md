@@ -76,20 +76,23 @@ border: green pass, red fail, purple execution error/conflicting final judgments
 amber pending. Borders follow ticket final judgments or completed job outcomes,
 not the source block's successful decoding. Pending entries update as buffered
 branches finish. Hover to see the path, ticket value and failure reasons. A broken
-image has an error placeholder. Validation sets have their own filmstrip: a
-correctly predicted failing image still has a red border, independently of its
-validation score.
+image has an error placeholder. When result graphics are enabled, the filmstrip
+overlays drawings that match the ticket and coordinate frame. For example, an
+outline found on a crop is mapped back onto the source thumbnail. Validation
+sets have their own filmstrip. A correctly predicted failing image still has a
+red border, independently of its validation score.
 
 Double-click a thumbnail to open it in a resizable window. Scroll the mouse wheel
 or use **Zoom in** and **Zoom out**, and drag the image to pan. **Fit** follows the
 window size and **100%** shows one image pixel per view pixel. The window shows the
 ticket and verdict, and reuses the same window when you open another entry.
-Still images reload on demand with the capture's color, depth, and EXIF settings.
-The viewer uses the captured thumbnail when the original is missing or its preview
-has changed, and for video frames and TIFF sequence pages.
+Still images reload on demand with the capture's color, depth, and EXIF settings,
+then receive the same result graphics. The viewer uses the annotated thumbnail
+when the original is missing or its preview has changed, and for video frames
+and TIFF sequence pages.
 
-Capture keeps at most 200 thumbnails and 8 MiB of encoded thumbnail bytes; oldest
-entries are evicted. Full-resolution images and filmstrip histories are not saved
+Capture keeps at most 200 entries within an 8 MiB budget for thumbnails and
+retained graphics. The oldest entries are evicted. Full-resolution images and filmstrip histories are not saved
 in projects or validation JSON reports. GUI publication sampling does not lose
 entries because workers capture into a shared, thread-safe store. **Clear** clears
 the retained thumbnails, independently of production counts and ticket history.

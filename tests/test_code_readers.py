@@ -1,5 +1,7 @@
 """Exercise native code readers with generated linear and matrix symbols."""
 
+from pathlib import Path
+
 import cv2
 import numpy as np
 import pytest
@@ -23,6 +25,10 @@ def test_qr_decode_and_mask(mode):
     assert np.asarray(code["corners"]).shape == (4, 2)
     assert np.allclose(code["center"], np.asarray(image.shape[::-1]) / 2, atol=2)
     assert result.outputs["overlay"].shape == (*image.shape, 3)
+    outline, axis_x, axis_y, label = result.drawings["decoded codes"].objects
+    assert outline.closed
+    assert axis_x.kind == axis_y.kind == "arrow"
+    assert label.kind == "label" and label.text == code["text"]
     assert not reader.execute({"image": image, "mask": np.zeros_like(image)}).passed
     blank = reader.execute({"image": np.full_like(image, 255)})
     assert not blank.passed
@@ -62,6 +68,10 @@ def test_ean13_decode_with_geometry():
     assert result.outputs["overlay"] is NO_VALUE
     layers = result.outputs[RESULT_GRAPHICS].layers
     assert len(layers) == 1 and layers[0].objects[0].closed
+    _, axis_x, axis_y, label = layers[0].objects
+    assert label.text == "5901234123457"
+    assert abs(axis_x.points[1][0] - axis_x.points[0][0]) > 40
+    assert abs(axis_y.points[1][1] - axis_y.points[0][1]) > 25
     assert not result.graphics
     code = result.outputs["codes"][0]
     assert code["text"] == "5901234123457"
@@ -126,8 +136,6 @@ def test_zxing_reads_gs1_and_keeps_checksum_errors_out_of_codes():
 @pytest.mark.local_examples
 def test_zxing_example_verifies_ticketed_lot_code():
     pytest.importorskip("zxingcpp")
-    from pathlib import Path
-
     project = (
         Path(__file__).resolve().parents[1]
         / "examples/applications/datamatrix_reading/datamatrix_reading.json"
@@ -140,4 +148,76 @@ def test_zxing_example_verifies_ticketed_lot_code():
         assert verifier.last_result.outputs["matches"] == ["LOT-0042"]
         assert verifier.last_result.payloads["matches"]["ticket"]["value"] == "datamatrix_lot.png"
     finally:
+        graph.close()
+
+
+def test_buffered_barcode_filmstrip_reprojects_each_ticket_and_updates_popout(app, tmp_path):
+    from opencv_dataflow.filmstrip_viewer import FilmstripViewer
+    from opencv_dataflow.toolblocks import encapsulate
+
+    texts = ["lot-001", "lot-002"]
+    files = []
+    for text in texts:
+        code = cv2.QRCodeEncoder_create().encode(text)
+        image = np.pad(np.repeat(np.repeat(code, 8, axis=0), 8, axis=1), 50, constant_values=255)
+        path = tmp_path / f"{text}.png"
+        assert cv2.imwrite(str(path), image)
+        files.append(str(path))
+
+    registry = builtin_registry()
+    graph = Graph()
+    graph.filmstrip_enabled = True
+    source = graph.add(registry.create("input.file", parameters={
+        "source_mode": "files", "paths": files, "color_format": "gray",
+    }))
+    batch = graph.add(registry.create("flow.batch", parameters={"size": 2}))
+    serial = graph.add(registry.create("flow.unbatch"))
+    crop = graph.add(registry.create("cv.crop", parameters={"x": 24, "y": 30}))
+    reader = graph.add(registry.create("inspect.read_qr", parameters={"mode": "single"}))
+    graph.connect(source.id, "image", batch.id, "item_1")
+    graph.connect(batch.id, "group", serial.id, "group")
+    graph.connect(serial.id, "value", crop.id, "image")
+    graph.connect(crop.id, "image", reader.id, "image")
+    encapsulate(graph, [crop.id, reader.id], "Read cropped QR code", registry)
+
+    viewer = FilmstripViewer(lambda: graph.filmstrip)
+    try:
+        graph.run()
+        viewer.refresh()
+        viewer.open_image(viewer.items.item(0))
+        dialog = viewer.popout
+        assert "with result graphics" not in dialog.source_label.text()
+        dialog.view.actual_size()
+
+        graph.run()
+        viewer.refresh()
+        rows = graph.filmstrip.snapshot()
+        assert [row["state"] for row in rows] == ["pass", "pass"]
+        assert viewer.popout is dialog
+        assert "Reloaded source image with result graphics" in dialog.source_label.text()
+        assert dialog.view.transform().m11() == 1
+        for row, text in zip(rows, texts, strict=True):
+            assert row["thumbnail"] != row["source_thumbnail"]
+            (layer, _), = row["layers"].values()
+            outline, axis_x, axis_y, label = layer.objects
+            assert (axis_x.kind, axis_y.kind, label.kind, label.text) == (
+                "arrow", "arrow", "label", text
+            )
+            assert axis_x.points[0] == axis_y.points[0]
+            x, y = np.rint(outline.points[0]).astype(int) + [24, 30]
+            if row is rows[0]:
+                image = dialog.view.image_item.pixmap().toImage()
+                assert image.width() > 160
+                pixel = image.pixelColor(int(x), int(y))
+                assert pixel.green() > pixel.red() > pixel.blue()
+
+        dialog.close()
+        Path(files[0]).unlink()
+        viewer.open_image(viewer.items.item(0))
+        assert "Captured thumbnail with result graphics" in viewer.popout.source_label.text()
+        assert viewer.popout.view.image_item.pixmap().height() == 100
+    finally:
+        if viewer.popout is not None:
+            viewer.popout.close()
+        viewer.close()
         graph.close()

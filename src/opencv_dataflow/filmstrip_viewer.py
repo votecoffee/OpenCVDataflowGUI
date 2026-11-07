@@ -24,9 +24,9 @@ from PySide6.QtWidgets import (
 )
 
 from .canvas import pixmap
-from .filmstrip import encode_thumbnail
+from .filmstrip import annotate_filmstrip_image, encode_thumbnail
 from .image_metadata import decode_file_image
-from .images import format_image
+from .images import format_image, preview_rgb
 
 COLORS = {"pass": "#2cb978", "fail": "#ef5350", "error": "#cc78e8", "pending": "#edba50"}
 
@@ -99,6 +99,7 @@ class FilmstripImageWindow(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
         self.ticket = None
+        self.image_revision = None
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, True)
         self.resize(800, 600)
@@ -131,10 +132,14 @@ class FilmstripImageWindow(QDialog):
         layout.addWidget(self.source_label)
 
     def open_entry(self, row):
+        same_ticket = self.ticket == row["ticket"]
         self.ticket = row["ticket"]
+        self.image_revision = row["image_revision"]
         image = QPixmap.fromImage(QImage.fromData(row["thumbnail"]))
         description = "Captured thumbnail"
         source = row["image_file"]
+        frame = row["frame"]
+        layers = [row["layers"][label][0] for label in sorted(row["layers"])]
         if source:
             try:
                 path = Path(source["path"])
@@ -142,7 +147,13 @@ class FilmstripImageWindow(QDialog):
                     raw, _ = decode_file_image(path.read_bytes(), source["metadata_mode"])
                     if raw is not None:
                         restored = format_image(raw, source["color_format"], source["pixel_depth"])
-                        if encode_thumbnail(restored) == row["thumbnail"]:
+                        if (
+                            (not frame or list(restored.shape[:2][::-1]) == frame["image_size"])
+                            and encode_thumbnail(restored) == row["source_thumbnail"]
+                        ):
+                            if layers:
+                                bgr = cv2.cvtColor(preview_rgb(restored), cv2.COLOR_RGB2BGR)
+                                restored = annotate_filmstrip_image(bgr, frame, layers)
                             image = pixmap(restored)
                             description = "Reloaded source image"
             except (OSError, ValueError, TypeError, cv2.error):
@@ -151,10 +162,15 @@ class FilmstripImageWindow(QDialog):
         self.empty.setVisible(not has_image)
         self.view.setVisible(has_image)
         self.controls.setEnabled(has_image)
+        if layers:
+            description += " with result graphics"
         self.source_label.setText(
             f"{description} · {image.width()} × {image.height()} px" if has_image else ""
         )
-        self.view.set_image(image)
+        if same_ticket and image.size() == self.view.image_item.pixmap().size():
+            self.view.image_item.setPixmap(image)
+        else:
+            self.view.set_image(image)
         self.update_verdict(row)
 
     def update_verdict(self, row):
@@ -224,7 +240,10 @@ class FilmstripViewer(QWidget):
             )
             self.items.addItem(item)
             if self.popout is not None and row["ticket"] == self.popout.ticket:
-                self.popout.update_verdict(row)
+                if row["image_revision"] != self.popout.image_revision:
+                    self.popout.open_entry(row)
+                else:
+                    self.popout.update_verdict(row)
         if selected >= 0:
             self.items.setCurrentRow(min(selected, self.items.count() - 1))
         if following:

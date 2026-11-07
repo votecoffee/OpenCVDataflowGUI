@@ -1001,10 +1001,14 @@ class Graph:
             )
         self.branch_workers = value
 
-    def run(self, cancelled=lambda: False, injected=None, provided=None):
+    def run(self, cancelled=lambda: False, injected=None, provided=None, *, filmstrip_capture=None):
+        if self.filmstrip_enabled and self.production_completion and not self._event_prefix:
+            from .filmstrip import FilmstripCapture
+
+            filmstrip_capture = FilmstripCapture(self.filmstrip.max_bytes)
         failed = False
         try:
-            return self._run_iteration(cancelled, injected, provided)
+            return self._run_iteration(cancelled, injected, provided, filmstrip_capture)
         except BaseException:
             failed = True
             raise
@@ -1034,7 +1038,7 @@ class Graph:
             ):
                 self._complete_tickets()
                 if self.filmstrip_enabled:
-                    self.filmstrip.capture(self)
+                    self.filmstrip.capture(self, filmstrip_capture)
 
     def _complete_tickets(self):
         from .outcomes import failed_input, packets_in
@@ -1071,7 +1075,7 @@ class Graph:
                 ticket, passed, timing, summary=not self.run_profile.ticket_details
             )
 
-    def _run_iteration(self, cancelled=lambda: False, injected=None, provided=None):
+    def _run_iteration(self, cancelled, injected, provided, filmstrip_capture):
         from .toolblocks import ToolBlock
 
         if provided is None and not cancelled():
@@ -1124,6 +1128,8 @@ class Graph:
         for key in provided:
             block = self.blocks[key]
             if block.last_result is not None:
+                if filmstrip_capture is not None:
+                    filmstrip_capture.record_snapshot(block)
                 for port in block.execution_outputs:
                     emitted[key, port.name] = block.current_emissions.get(port.name, [])
 
@@ -1312,15 +1318,23 @@ class Graph:
                 if cancelled():
                     block.state, block.error = "skipped", "Run stopped"
                     return
+                observe_children = filmstrip_capture is not None and isinstance(block, ToolBlock)
+                if observe_children:
+                    block._filmstrip_capture = filmstrip_capture
                 try:
                     result = block.execute(values, cancelled)
                 except (Exception, SystemExit) as exc:
                     block._record_execution_error(exc, values)
                     return
+                finally:
+                    if observe_children:
+                        block._filmstrip_capture = None
                 if result is None:
                     if block.input_rejected:
                         continue
                     return
+                if filmstrip_capture is not None:
+                    filmstrip_capture.record(block, result)
                 had_result = True
                 last_processed_state = block.state
                 failed |= block.state == "fail"

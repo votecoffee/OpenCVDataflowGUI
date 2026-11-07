@@ -95,6 +95,30 @@ def layer_transform(layer, context):
     return np.linalg.solve(target_matrix, source_matrix)
 
 
+def _draw_label(image, text, anchor, color):
+    # Hershey fonts are ASCII. Escape control characters and Unicode for display.
+    text = text.encode("unicode_escape").decode("ascii")
+    text = text if len(text) <= 160 else text[:157] + "..."
+    font, scale = cv2.FONT_HERSHEY_SIMPLEX, 0.5
+    height, width = image.shape[:2]
+    if width < 12 or height < 12:
+        return
+    (label_width, label_height), baseline = cv2.getTextSize(text, font, scale, 1)
+    if label_width > width - 4:
+        scale = max(0.32, scale * (width - 4) / label_width)
+        (label_width, label_height), baseline = cv2.getTextSize(text, font, scale, 1)
+    if label_width > width - 4:
+        count = max(0, int(len(text) * (width - 4) / label_width) - 3)
+        text = text[:count] + "..."
+        (label_width, label_height), baseline = cv2.getTextSize(text, font, scale, 1)
+    x, y = map(int, anchor)
+    x = max(2, min(x, width - label_width - 2))
+    y = y - 4 if y - 4 > label_height else y + label_height + 4
+    y = max(label_height, min(y, height - baseline - 1))
+    cv2.putText(image, text, (x, y), font, scale, (0, 0, 0), 3, cv2.LINE_AA)
+    cv2.putText(image, text, (x, y), font, scale, color, 1, cv2.LINE_AA)
+
+
 def draw_object(image, graphic, transform):
     points = np.asarray(graphic.points, np.float64)
     if not len(points):
@@ -112,6 +136,11 @@ def draw_object(image, graphic, transform):
         cv2.polylines(image, [pixels], graphic.closed, color, graphic.thickness)
     elif graphic.kind == "marker":
         cv2.drawMarker(image, tuple(pixels[0]), color, cv2.MARKER_CROSS, 12, 1)
+    elif graphic.kind == "arrow" and len(pixels) == 2:
+        cv2.arrowedLine(image, tuple(pixels[0]), tuple(pixels[1]), color,
+                        graphic.thickness, tipLength=0.3)
+    elif graphic.kind == "label":
+        _draw_label(image, graphic.text, pixels[0], color)
     elif graphic.kind == "text":
         cv2.putText(
             image, graphic.text, tuple(pixels[0]), cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 1

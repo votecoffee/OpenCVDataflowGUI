@@ -5,7 +5,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .features import overlay_image
-from .graphics_layers import GraphicDrawing, graphic_object
+from .graphics_layers import GraphicDrawing, draw_object, graphic_object
 from .parameter_validation import NumericRange
 from .payloads import NO_VALUE, image_with_payload
 from .processing import finite, gray_image
@@ -30,7 +30,24 @@ def code_record(value, symbology, corners):
     }
 
 
+def code_graphics(code, corner_order):
+    corners = np.asarray(code["corners"], dtype=float)
+    top_left, top_right, bottom_right, bottom_left = corners[list(corner_order)]
+    origin = np.asarray(code["center"])
+    axis_x = (top_right - top_left + bottom_right - bottom_left) / 2
+    axis_y = (bottom_left - top_left + bottom_right - top_right) / 2
+    color = (60, 230, 120)
+    return (
+        graphic_object("polyline", corners, color, closed=True),
+        graphic_object("arrow", (origin, origin + 0.35 * axis_x), (40, 40, 240)),
+        graphic_object("arrow", (origin, origin + 0.35 * axis_y), (40, 220, 40)),
+        graphic_object("label", (corners.min(axis=0),), color, text=code["text"]),
+    )
+
+
 class CodeReader(Block):
+    pose_corner_order = (0, 1, 2, 3)
+    composes_result_image = True
     category, block_type, subtype = "Inspection", "Inspection", "Code reading"
     inputs = SELECTION_INPUTS
     outputs = (Port("codes", "data"), Port("count", "number"), Port("overlay", required=False))
@@ -53,10 +70,16 @@ class CodeReader(Block):
     def code_result(self, source, codes, **extra):
         minimum = int(self.parameters["minimum_reads"])
         overlay = overlay_image(source) if self.parameters["draw_overlay"] else None
-        if overlay is not None:
-            for code in codes:
-                corners = np.rint(code["corners"]).astype(np.int32)
-                cv2.polylines(overlay, [corners], True, (60, 230, 120), 2)
+        objects = (
+            tuple(
+                graphic for code in codes for graphic in code_graphics(code, self.pose_corner_order)
+            )
+            if overlay is not None or self.generate_graphics else ()
+        )
+        if overlay is not None and objects:
+            transform = np.eye(3)
+            for graphic in objects:
+                draw_object(overlay, graphic, transform)
         count = len(codes)
         outputs = {
             "codes": codes,
@@ -72,10 +95,8 @@ class CodeReader(Block):
         return Result(
             outputs,
             graphics={"decoded codes": overlay} if overlay is not None else {},
-            drawings={"decoded codes": GraphicDrawing(tuple(
-                graphic_object("polyline", code["corners"], (60, 230, 120), closed=True)
-                for code in codes
-            ))} if self.generate_graphics and codes else {},
+            drawings={"decoded codes": GraphicDrawing(objects)}
+            if self.generate_graphics and objects else {},
             passed=count >= minimum,
             message=f"Decoded {count} codes (minimum {minimum})",
             payloads=payloads,
@@ -119,6 +140,7 @@ class ReadQRCode(CodeReader):
 
 class ReadLinearBarcode(CodeReader):
     type_id, title = "inspect.read_barcode", "Read linear barcodes"
+    pose_corner_order = (1, 2, 3, 0)  # OpenCV linear corners start at bottom left.
     defaults = {
         **CodeReader.defaults,
         "detector_scales": [0.01, 0.03, 0.06, 0.08],

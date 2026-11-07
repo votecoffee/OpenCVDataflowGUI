@@ -27,6 +27,14 @@ corners. The default HRI text mode formats GS1 human-readable text. Use the
 raw bytes when the application must preserve payload encoding. **Verify
 decoded text** accepts the `codes` output.
 
+OpenCV QR, OpenCV linear, and ZXing readers can draw the decoded text, symbol
+outline, and two pose axes centered on each valid code. The axes follow the
+detected symbol edges. The **Draw overlay** setting controls the reader's
+image output. The same objects are available as **Result graphics** and appear
+on matching filmstrip images when result graphics are enabled. Display labels
+may shorten long payloads or escape non-ASCII characters. The `codes` output
+keeps the complete decoded value.
+
 Enable **Report decode errors** to collect invalid detections separately.
 They do not satisfy the minimum read count or enter the valid codes list.
 The reader decodes and reports backend errors. Barcode quality grading and

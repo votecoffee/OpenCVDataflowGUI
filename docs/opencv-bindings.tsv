@@ -2873,7 +2873,7 @@ P3	function	cv2.getPerspectiveTransform	literal reference	-
 P3	function	cv2.getRectSubPix	literal reference	-
 P3	function	cv2.getRotationMatrix2D	literal reference	-
 P3	function	cv2.getStructuringElement	literal reference	-
-P3	function	cv2.getTextSize	no static reference	-
+P3	function	cv2.getTextSize	literal reference	-
 P3	function	cv2.getThreadNum	no static reference	-
 P3	function	cv2.getTickFrequency	no static reference	-
 P3	function	cv2.getTrackbarPos	no static reference	-
