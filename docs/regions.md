@@ -28,7 +28,7 @@ The mask includes the rasterized boundary. **Invert** selects the outside.
 The reusable `region` uses the `ellipse` shape with `center`, full
 `axis_lengths`, and clockwise image-space `angle_degrees`. An enclosing
 circle uses equal axis lengths. The outputs carry the image's frame.
-[Fitted ellipse inspection band example](../examples/geometry/fitted_shape_region/README.md)
+[Fitted ellipse inspection band example](<../examples/custom tools/fitted_shape_region/README.md>)
 
 ## Draw and edit on an image
 
@@ -119,13 +119,13 @@ area and coverage control pass/fail; maximum area zero means unlimited. Failed
 inspections retain their measurements for downstream reporting. This block does
 not convert area or coordinates into calibrated physical units.
 
-Open [combined regions](../examples/geometry/combined_regions/combined_regions.json)
+Open [combined regions](<../examples/custom tools/combined_regions/combined_regions.json>)
 for a ring selection unioned with a separate rectangle, then measured and used by
 histogram, threshold and component tools. The component tool uses `clip` mode:
 center filtering would reject a ring whose centroid lies in its excluded hole.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/geometry/combined_regions/combined_regions.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run "examples/custom tools/combined_regions/combined_regions.json" --repeat 3
 ```
 
 ## Transform regions between image coordinate systems
@@ -173,13 +173,13 @@ Transformed source and target frames are limited to 16384 pixels per axis and
 64 million pixels total. The output transform includes source/target dimensions
 and connects directly to **Transform points** for associated annotations.
 
-Open [transformed regions](../examples/geometry/transformed_regions/transformed_regions.json) for a 12-block project carrying a circular
+Open [transformed regions](<../examples/custom tools/transformed_regions/transformed_regions.json>) for a 12-block project carrying a circular
 inspection region through crop, resize and arbitrary rotation. It measures the
 selection, computes its color histogram and inspects the same part in the final
 image. The project needs no external images or camera.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/geometry/transformed_regions/transformed_regions.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run "examples/custom tools/transformed_regions/transformed_regions.json" --repeat 3
 ```
 
 This is image-space affine/projective mapping. Lens-distortion/nonlinear remapping
@@ -227,13 +227,13 @@ public terminals; hide unused ports with the inspector's exposure controls.
 
 ## Example
 
-Use [regions](../examples/geometry/regions/regions.json). It contains
+Use [regions](<../examples/custom tools/regions/regions.json>). It contains
 circle, rectangle and polygon overlays, a one-part component measurement, a
 one-part contour inspection, a selected histogram and a circular blur. It runs
 without a camera or external assets:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/geometry/regions/regions.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run "examples/custom tools/regions/regions.json" --repeat 3
 ```
 
 For Lena, open an existing Lena example, add Shape region, connect the source image

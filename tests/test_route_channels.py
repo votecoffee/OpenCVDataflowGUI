@@ -105,7 +105,7 @@ def test_second_source_must_match_dimensions_and_depth(second):
 def test_example_creates_rgb_from_two_sources(profile):
     project = (
         Path(__file__).parents[1]
-        / "examples/image_processing"
+        / "examples/custom tools"
         / "route_channels"
         / "route_channels.json"
     )

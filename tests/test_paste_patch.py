@@ -113,7 +113,7 @@ def test_ticket_identity_checks_and_patch_ticket_propagation():
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_copies_only_the_visible_circle_selection(profile):
     project = (
-        Path(__file__).parents[1] / "examples/image_processing" / "paste_patch" / "paste_patch.json"
+        Path(__file__).parents[1] / "examples/custom tools" / "paste_patch" / "paste_patch.json"
     )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)

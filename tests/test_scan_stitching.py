@@ -12,7 +12,7 @@ from opencv_dataflow.core import Graph
 from opencv_dataflow.mosaic_photometry import FeatherMosaic, corrected_view
 from opencv_dataflow.payloads import NO_VALUE, FlowGroup, ValuePacket, metadata
 
-EXAMPLE = Path(__file__).parents[1] / "examples/image_processing/stitch_scan_sequence"
+EXAMPLE = Path(__file__).parents[1] / "examples/custom tools/stitch_scan_sequence"
 EXPOSURE_EXAMPLE = EXAMPLE.parent / "stitch_scan_exposure/stitch_scan_exposure.json"
 LOOP_EXAMPLE = EXAMPLE.parent / "stitch_scan_loop/stitch_scan_loop.json"
 TYPE = "cv.stitch_scan_sequence"

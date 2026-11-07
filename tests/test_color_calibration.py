@@ -92,7 +92,7 @@ def test_affine_ccm_restores_each_exposed_linearization(linearization):
 def test_color_chart_example_executes_headlessly():
     path = (
         Path(__file__).resolve().parents[1]
-        / "examples/calibration/color_chart_calibration/color_chart_calibration.json"
+        / "examples/opencv tools/color_chart_calibration/color_chart_calibration.json"
     )
     graph = Graph.load(path, builtin_registry())
     try:

@@ -96,7 +96,7 @@ def test_tracker_state_survives_editor_worker_close():
 def test_tracker_example_runs_both_trackers():
     project = (
         Path(__file__).resolve().parents[1]
-        / "examples/flow_control/native_box_tracking/native_box_tracking.json"
+        / "examples/opencv tools/native_box_tracking/native_box_tracking.json"
     )
     graph = Graph.load(project, builtin_registry())
     try:

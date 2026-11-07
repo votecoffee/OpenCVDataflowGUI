@@ -79,7 +79,7 @@ def test_wired_label_range_and_selection_preserve_coordinates():
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_masks_watershed_boundaries_and_interiors(profile):
     project = (
-        Path(__file__).parents[1] / "examples/image_processing" / "label_masks" / "label_masks.json"
+        Path(__file__).parents[1] / "examples/custom tools" / "label_masks" / "label_masks.json"
     )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)

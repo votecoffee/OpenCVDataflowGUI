@@ -129,7 +129,7 @@ def test_zxing_example_verifies_ticketed_lot_code():
 
     project = (
         Path(__file__).resolve().parents[1]
-        / "examples/inspection/datamatrix_reading/datamatrix_reading.json"
+        / "examples/applications/datamatrix_reading/datamatrix_reading.json"
     )
     graph = Graph.load(project, builtin_registry())
     try:

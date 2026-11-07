@@ -80,28 +80,28 @@ over selected pixels. Seeded synthetic images and additive noise provide
 repeatable fixtures across serial and parallel branches. Matrix structure tools
 construct scaled identities and custom diagonals, complete symmetric matrices,
 and report diagonals and traces.
-[Stitch overlapping views](../examples/image_processing/stitch_image_pair/README.md)
+[Stitch overlapping views](<../examples/custom tools/stitch_image_pair/README.md>)
 builds a registered two-view mosaic and emits coverage and source mappings.
-[Choose a content-aware seam](../examples/image_processing/stitch_seam/README.md)
+[Choose a content-aware seam](<../examples/custom tools/stitch_seam/README.md>)
 demonstrates graph-cut selection of individual source samples in an overlap,
 with a bounded seam work grid for larger overlaps.
-[Stitch an ordered inspection scan](../examples/image_processing/stitch_scan_sequence/README.md)
+[Stitch an ordered inspection scan](<../examples/custom tools/stitch_scan_sequence/README.md>)
 automatically registers adjacent views and checks the fit and coverage of each join.
-[Close the loop on an inspection scan](../examples/image_processing/stitch_scan_loop/README.md)
+[Close the loop on an inspection scan](<../examples/custom tools/stitch_scan_loop/README.md>)
 demonstrates bounded drift correction when the last view overlaps the first.
-[Correct exposure in an inspection scan](../examples/image_processing/stitch_scan_exposure/README.md)
+[Correct exposure in an inspection scan](<../examples/custom tools/stitch_scan_exposure/README.md>)
 demonstrates overlap-based exposure correction and feathering on 16-bit tiles.
-[Camera motion stabilization](../examples/flow_control/camera_stabilization/README.md)
+[Camera motion stabilization](<../examples/custom tools/camera_stabilization/README.md>)
 corrects translation or similarity jitter with bounded sequence memory,
 coverage, and a measured synthetic replay.
-[Recorded camera stabilization](../examples/flow_control/recorded_camera_stabilization/README.md)
+[Recorded camera stabilization](<../examples/custom tools/recorded_camera_stabilization/README.md>)
 measures before and after over the same covered pixels and verifies
 recovery after a coverage rejection.
-[Check stabilization on a second plane](../examples/flow_control/stabilization_validation/README.md)
+[Check stabilization on a second plane](<../examples/custom tools/stabilization_validation/README.md>)
 tracks an independent area from the anchor and rejects accumulated drift.
-[Check stabilization on recorded depth variation](../examples/flow_control/recorded_stabilization_validation/README.md)
+[Check stabilization on recorded depth variation](<../examples/custom tools/recorded_stabilization_validation/README.md>)
 verifies rejection and recovery on depth-separated patches of a recorded scene.
-[Smooth a recorded camera path](../examples/flow_control/offline_camera_stabilization/README.md)
+[Smooth a recorded camera path](<../examples/custom tools/offline_camera_stabilization/README.md>)
 uses centered look-ahead within finite segments and preserves frame tickets.
 The [coverage backlog](opencv-coverage.md) tracks the remaining inspection
 workflows. Specialized array formats and additional matrix utilities are

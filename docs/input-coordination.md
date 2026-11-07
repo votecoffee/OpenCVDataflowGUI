@@ -139,7 +139,7 @@ acquisition service.
 
 ## Example
 
-Open [input coordination](../examples/flow_control/input_coordination/input_coordination.json). A **Counter input** stands in for
+Open [input coordination](<../examples/flow tools/input_coordination/input_coordination.json>). A **Counter input** stands in for
 a PLC part ID and supplies each synthetic camera's external ticket input. Run once
 or continuously, inspect `info`, and open **Results > Ticket results…**. Both cameras
 agree on one part ticket and the group receives an explicit final judgment. No
@@ -152,5 +152,5 @@ feeding the cameras' ticket inputs. It is a demonstration source, not a PLC driv
 Production part identities must remain unique across workpieces and resets.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/flow_control/input_coordination/input_coordination.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run "examples/flow tools/input_coordination/input_coordination.json" --repeat 3
 ```

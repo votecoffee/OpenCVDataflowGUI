@@ -93,7 +93,7 @@ def test_background_memory_eviction_happens_before_model_allocation():
 def test_native_background_example_reports_moving_foreground():
     path = (
         Path(__file__).resolve().parents[1]
-        / "examples/flow_control/native_background/native_background.json"
+        / "examples/opencv tools/native_background/native_background.json"
     )
     graph = Graph.load(path, builtin_registry())
     try:

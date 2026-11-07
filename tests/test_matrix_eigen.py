@@ -100,7 +100,7 @@ def test_bad_eigenpairs_emit_residual_diagnostics_without_spectrum(monkeypatch):
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_projects_along_gram_matrix_axes(profile):
     project = (
-        Path(__file__).parents[1] / "examples/numerical" / "matrix_eigen" / "matrix_eigen.json"
+        Path(__file__).parents[1] / "examples/opencv tools" / "matrix_eigen" / "matrix_eigen.json"
     )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)

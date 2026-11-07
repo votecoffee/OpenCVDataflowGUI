@@ -78,7 +78,7 @@ def test_reference_frame_and_relative_denominator_are_validated():
 
 
 def test_saved_example_reports_selected_norms_and_inclusive_limit():
-    path = Path(__file__).parents[1] / "examples/inspection/image_norm/image_norm.json"
+    path = Path(__file__).parents[1] / "examples/opencv tools/image_norm/image_norm.json"
     graph = Graph.load(path, builtin_registry())
     try:
         graph.set_run_profile("lean")

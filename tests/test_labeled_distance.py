@@ -96,7 +96,7 @@ def test_empty_seed_set_and_unavailable_label_emit_distinct_failures():
 def test_example_partitions_every_pixel_between_two_seed_regions(profile):
     project = (
         Path(__file__).parents[1]
-        / "examples/image_processing"
+        / "examples/opencv tools"
         / "labeled_distance"
         / "labeled_distance.json"
     )

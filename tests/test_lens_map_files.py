@@ -148,7 +148,7 @@ def test_loader_checks_array_header_shape_before_reading_its_body(tmp_path):
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_archive_example_corrects_the_distorted_grid(profile):
-    project = Path(__file__).parents[1] / "examples/calibration/lens_map_files/lens_map_files.json"
+    project = Path(__file__).parents[1] / "examples/custom tools/lens_map_files/lens_map_files.json"
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
     graph.run()

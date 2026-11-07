@@ -15,7 +15,7 @@ from opencv_dataflow.toolblocks import encapsulate
 def test_saved_starter_matches_builder_and_runs_repeatedly():
     registry = builtin_registry()
     graph = Graph.load(
-        "examples/getting_started/starter_inspection/starter_inspection.json", registry
+        "examples/demos/starter_inspection/starter_inspection.json", registry
     )
     assert graph.to_dict() == starter_graph(registry).to_dict()
     previous = None
@@ -60,7 +60,7 @@ def test_starter_can_be_encapsulated_and_reopened(tmp_path):
 def test_template_project_matches_builder_and_known_patch():
     registry = builtin_registry()
     graph = Graph.load(
-        "examples/pattern_matching/template_matching/template_matching.json", registry
+        "examples/opencv tools/template_matching/template_matching.json", registry
     )
     assert graph.to_dict() == template_graph(registry).to_dict()
     graph.run()
@@ -75,7 +75,7 @@ def test_headless_report_repeats_and_preserves_existing_receipt(tmp_path):
     assert (
         main(
             [
-                "examples/getting_started/starter_inspection/starter_inspection.json",
+                "examples/demos/starter_inspection/starter_inspection.json",
                 "--repeat",
                 "3",
                 "--report",
@@ -94,7 +94,7 @@ def test_headless_report_repeats_and_preserves_existing_receipt(tmp_path):
     assert (
         main(
             [
-                "examples/getting_started/starter_inspection/starter_inspection.json",
+                "examples/demos/starter_inspection/starter_inspection.json",
                 "--report",
                 str(report),
             ]
@@ -126,7 +126,7 @@ def test_actual_headless_entry_does_not_import_qt():
     code = (
         "import sys; from opencv_dataflow.runner import main; "
         "assert not any(k.startswith('PySide6') for k in sys.modules); "
-        "raise SystemExit(main(['examples/pattern_matching/"
+        "raise SystemExit(main(['examples/opencv tools/"
         "template_matching/template_matching.json']))"
     )
     process = subprocess.run(

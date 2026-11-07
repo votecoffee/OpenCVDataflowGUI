@@ -10,7 +10,7 @@ from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 from opencv_dataflow.payloads import metadata
 
-_EXAMPLE = Path(__file__).parents[1] / "examples/geometry/hough_circle_collections"
+_EXAMPLE = Path(__file__).parents[1] / "examples/opencv tools/hough_circle_collections"
 _PROJECT = _EXAMPLE / "hough_circle_collections.json"
 _PARAMETERS = {"dp": 1.0, "min_distance": 40.0, "min_radius": 15, "max_radius": 36}
 

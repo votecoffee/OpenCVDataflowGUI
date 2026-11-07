@@ -226,7 +226,9 @@ def test_saved_transform_project_repeats_and_survives_toolblock_reuse(tmp_path):
     from opencv_dataflow.toolblocks import encapsulate
 
     registry = builtin_registry()
-    graph = Graph.load("examples/geometry/transformed_regions/transformed_regions.json", registry)
+    graph = Graph.load(
+        "examples/custom tools/transformed_regions/transformed_regions.json", registry
+    )
     assert graph.to_dict() == transformed_regions_graph(registry).to_dict()
     previous = None
     for _ in range(3):

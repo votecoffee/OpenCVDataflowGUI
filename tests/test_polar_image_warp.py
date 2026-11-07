@@ -137,7 +137,7 @@ def test_untagged_rewrap_and_invalid_parameters():
 def test_example_unwraps_the_notch_and_rewraps_on_original_grid(profile):
     example = (
         Path(__file__).parents[1]
-        / "examples/image_processing/polar_image_warp/polar_image_warp.json"
+        / "examples/opencv tools/polar_image_warp/polar_image_warp.json"
     )
     graph = Graph.load(example, builtin_registry())
     graph.set_run_profile(profile)

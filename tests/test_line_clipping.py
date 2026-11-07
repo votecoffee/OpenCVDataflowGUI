@@ -14,7 +14,7 @@ from opencv_dataflow.payloads import frame, metadata, moved_payload
 
 TYPE_ID = "collection.clip_lines"
 _PROJECT = (
-    Path(__file__).parents[1] / "examples/geometry/clip_line_segments/clip_line_segments.json"
+    Path(__file__).parents[1] / "examples/custom tools/clip_line_segments/clip_line_segments.json"
 )
 
 

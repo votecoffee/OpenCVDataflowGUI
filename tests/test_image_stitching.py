@@ -142,7 +142,7 @@ def test_ticket_policy_requires_matching_views_unless_explicitly_relaxed():
 def test_saved_example_reconstructs_original_pixel_for_pixel():
     path = (
         Path(__file__).parents[1]
-        / "examples/image_processing/stitch_image_pair/stitch_image_pair.json"
+        / "examples/custom tools/stitch_image_pair/stitch_image_pair.json"
     )
     graph = Graph.load(path, builtin_registry())
     try:
@@ -164,7 +164,7 @@ def test_saved_example_reconstructs_original_pixel_for_pixel():
 def test_saved_graph_cut_selects_original_samples_and_retains_both_marks(
     project, scale, work_factor
 ):
-    folder = Path(__file__).parents[1] / "examples/image_processing/stitch_seam"
+    folder = Path(__file__).parents[1] / "examples/custom tools/stitch_seam"
     path = folder / f"{project}.json"
     graph = Graph.load(path, builtin_registry())
     try:

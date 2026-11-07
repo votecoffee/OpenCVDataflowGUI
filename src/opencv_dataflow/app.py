@@ -2047,6 +2047,7 @@ class MainWindow(QMainWindow):
         self.root_graph.close()
         self.graph_stack = []
         self.show_graph(graph)
+        self.populate_library()
         self.path, self.dirty = path, False
         self.profile_choice.blockSignals(True)
         self.profile_choice.setCurrentText(graph.run_profile.name)

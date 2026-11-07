@@ -64,7 +64,8 @@ def test_pose_rotates_scan_and_selection_withholds_measurement():
 
 def test_caliper_project_measures_demo_rectangle():
     path = (
-        Path(__file__).resolve().parents[1] / "examples/inspection/bead_calipers/bead_calipers.json"
+        Path(__file__).resolve().parents[1]
+        / "examples/applications/bead_calipers/bead_calipers.json"
     )
     graph = Graph.load(path, builtin_registry())
     try:

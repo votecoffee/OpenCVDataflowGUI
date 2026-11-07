@@ -112,7 +112,7 @@ def test_bad_pair_lengths_and_wrong_preview_dimensions_are_validated():
 def test_saved_graph_recovers_and_applies_translation_from_sift_matches(profile):
     project = (
         Path(__file__).parents[1]
-        / "examples/pattern_matching/translation_registration/translation_registration.json"
+        / "examples/opencv tools/translation_registration/translation_registration.json"
     )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
@@ -132,7 +132,7 @@ def test_saved_graph_recovers_and_applies_translation_from_sift_matches(profile)
 def test_rejected_fit_stops_connected_warp_and_rerun_recovers(warp_type):
     project = (
         Path(__file__).parents[1]
-        / "examples/pattern_matching/translation_registration/translation_registration.json"
+        / "examples/opencv tools/translation_registration/translation_registration.json"
     )
     registry = builtin_registry()
     data = Graph.load(project, registry).to_dict()

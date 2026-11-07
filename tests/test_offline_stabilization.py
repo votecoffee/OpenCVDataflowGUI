@@ -37,7 +37,7 @@ def _group(*images):
 def test_saved_offline_replay_reduces_jitter_and_preserves_frame_tickets():
     project = (
         Path(__file__).parents[1]
-        / "examples/flow_control/offline_camera_stabilization/offline_camera_stabilization.json"
+        / "examples/custom tools/offline_camera_stabilization/offline_camera_stabilization.json"
     )
     graph = Graph.load(project, builtin_registry())
     try:

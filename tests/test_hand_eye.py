@@ -15,7 +15,7 @@ from opencv_dataflow.tickets import TicketClock
 
 _PROJECT = (
     Path(__file__).parents[1]
-    / "examples/calibration/hand_eye_calibration/hand_eye_calibration.json"
+    / "examples/opencv tools/hand_eye_calibration/hand_eye_calibration.json"
 )
 
 

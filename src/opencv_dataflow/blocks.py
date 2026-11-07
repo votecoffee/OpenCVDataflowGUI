@@ -707,6 +707,7 @@ def builtin_registry():
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .pick_selection import SelectPickCandidate
+    from .plugins import GEOMETRIC_MATCHER_TYPES, load_installed_geometric_matcher
     from .point_set_lines import HoughPointSetLines
     from .polar_image import PolarImageWarp
     from .polynomial_roots import SolvePolynomialRoots
@@ -912,6 +913,7 @@ def builtin_registry():
         StereoDemo,
     ):
         registry.register(block)
+    registry.add_provider(GEOMETRIC_MATCHER_TYPES, load_installed_geometric_matcher)
     return registry
 
 

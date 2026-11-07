@@ -158,7 +158,7 @@ def test_measurement_limit_validation(parameters):
 
 def test_saved_composition_project_and_nested_reuse(tmp_path):
     registry = builtin_registry()
-    graph = Graph.load("examples/geometry/combined_regions/combined_regions.json", registry)
+    graph = Graph.load("examples/custom tools/combined_regions/combined_regions.json", registry)
     assert graph.to_dict() == combined_regions_graph(registry).to_dict()
     previous = None
     for _ in range(3):

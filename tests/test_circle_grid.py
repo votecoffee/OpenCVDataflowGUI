@@ -132,7 +132,7 @@ def test_circle_detector_reports_invalid_ranges_and_a_missing_target(changes, me
 def test_saved_circle_grid_example_maps_staggered_centers(profile):
     project = (
         Path(__file__).parents[1]
-        / "examples/calibration/circle_grid_calibration/circle_grid_calibration.json"
+        / "examples/opencv tools/circle_grid_calibration/circle_grid_calibration.json"
     )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)

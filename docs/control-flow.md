@@ -162,7 +162,7 @@ cooperative between block invocations; an in-flight native operation can finish.
 
 ## Example
 
-Open [ticketed control flow](../examples/flow_control/control_flow/control_flow.json).
+Open [ticketed control flow](<../examples/flow tools/control_flow/control_flow.json>).
 Three synthetic camera sources are grouped, then deliberately unbatched in reverse
 order. Two parallel image-processing branches join by ticket, case selection routes
 even/odd tickets, and a manifest restores the original acquisition order before a
@@ -170,5 +170,5 @@ histogram. Run once: the final histogram receives three serial image events, FIF
 has `queued=0`, and all nodes pass. Continuous runs need no camera or file writes.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/flow_control/control_flow/control_flow.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run "examples/flow tools/control_flow/control_flow.json" --repeat 3
 ```

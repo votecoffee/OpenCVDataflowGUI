@@ -67,7 +67,7 @@ def test_real_lena_matches_expected_asset_and_repeated_results():
         == "7de7ed51a1594fff247f4cae2301eceacf5313d6011e37b4a4c8733f7bb72c07"
     )
     registry = builtin_registry()
-    graph = Graph.load("examples/getting_started/lena/lena.json", registry)
+    graph = Graph.load("examples/demos/lena/lena.json", registry)
     assert graph.to_dict() == lena_graph(registry).to_dict()
     for _ in range(3):
         graph.run()
@@ -97,7 +97,7 @@ def test_lena_downloader_preserves_mismatched_existing_asset(tmp_path):
 )
 def test_lena_feature_pipeline_and_saved_graph():
     registry = builtin_registry()
-    graph = Graph.load("examples/image_processing/lena_features/lena_features.json", registry)
+    graph = Graph.load("examples/demos/lena_features/lena_features.json", registry)
     assert graph.to_dict() == lena_features_graph(registry).to_dict()
     graph.run()
     assert all(b.state == "pass" for b in graph.blocks.values())
@@ -113,7 +113,7 @@ def test_lena_feature_pipeline_and_saved_graph():
 def test_lena_registration_matches_known_rotation():
     registry = builtin_registry()
     graph = Graph.load(
-        "examples/pattern_matching/lena_registration/lena_registration.json", registry
+        "examples/opencv tools/lena_registration/lena_registration.json", registry
     )
     assert graph.to_dict() == lena_registration_graph(registry).to_dict()
     graph.run()

@@ -13,7 +13,7 @@ from opencv_dataflow.payloads import ValuePacket, frame, metadata
 
 TYPE_ID = "region.fitted_shape"
 _PROJECT = (
-    Path(__file__).parents[1] / "examples/geometry/fitted_shape_region/fitted_shape_region.json"
+    Path(__file__).parents[1] / "examples/custom tools/fitted_shape_region/fitted_shape_region.json"
 )
 
 

@@ -125,7 +125,7 @@ def test_lens_map_builder_rejects_unusable_profiles(change, message):
 def test_saved_lens_map_example_applies_a_project_relative_profile(profile):
     project = (
         Path(__file__).parents[1]
-        / "examples/calibration/lens_correction_maps/lens_correction_maps.json"
+        / "examples/opencv tools/lens_correction_maps/lens_correction_maps.json"
     )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)

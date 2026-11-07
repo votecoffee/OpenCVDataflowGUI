@@ -83,7 +83,7 @@ def test_transposing_twice_restores_source_and_pyramid_coordinates():
 def test_example_maps_transposed_crop_points_back_to_full_source(profile):
     project = (
         Path(__file__).parents[1]
-        / "examples/image_processing"
+        / "examples/opencv tools"
         / "transpose_image"
         / "transpose_image.json"
     )

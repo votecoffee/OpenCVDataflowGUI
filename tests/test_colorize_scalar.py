@@ -110,7 +110,7 @@ def test_invalid_fixed_range_and_palette_are_rejected():
 def test_example_maps_distance_only_inside_the_circular_part(profile):
     project = (
         Path(__file__).parents[1]
-        / "examples/image_processing"
+        / "examples/opencv tools"
         / "colorize_scalar"
         / "colorize_scalar.json"
     )

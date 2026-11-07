@@ -165,7 +165,7 @@ stopped; runtime selector blocks activate already installed revisions.
 
 ## Example
 
-Open [recipes](../examples/flow_control/recipes/recipes.json). Widget A uses an edge model and ORB; Widget B
+Open [recipes](<../examples/flow tools/recipes/recipes.json>). Widget A uses an edge model and ORB; Widget B
 uses a corner model and SIFT, with different threshold/search settings. Both are
 synthetic positive examples, not production acceptance thresholds. The geometric
 model uses the inspector binding; the texture model comes from a Recipe value or
@@ -177,5 +177,5 @@ Automated tests cover both recipes, model swaps, queued/background work, paralle
 inspection, catalog persistence and GUI activation; no camera is required.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/flow_control/recipes/recipes.json --repeat 3 --report .local/recipe-receipt.json
+.\.venv\Scripts\opencv-dataflow-run "examples/flow tools/recipes/recipes.json" --repeat 3 --report .local/recipe-receipt.json
 ```

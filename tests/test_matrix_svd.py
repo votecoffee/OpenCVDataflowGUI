@@ -37,7 +37,7 @@ def test_svd_bases_reconstruct_tall_and_wide_inputs(mode, shape):
 
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_svd_example_reuses_low_rank_matrix(profile):
-    project = Path(__file__).parents[1] / "examples/numerical" / "matrix_svd" / "matrix_svd.json"
+    project = Path(__file__).parents[1] / "examples/opencv tools" / "matrix_svd" / "matrix_svd.json"
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)
     graph.run()

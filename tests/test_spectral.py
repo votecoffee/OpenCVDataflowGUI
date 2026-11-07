@@ -259,7 +259,7 @@ def test_combine_fourier_spectra_rejects_incompatible_grids_and_overflow():
 def test_spectrum_product_example_finds_a_wrapped_displacement():
     path = (
         Path(__file__).parents[1]
-        / "examples/image_processing/spectrum_product/spectrum_product.json"
+        / "examples/opencv tools/spectrum_product/spectrum_product.json"
     )
     graph = Graph.load(path, builtin_registry())
     try:

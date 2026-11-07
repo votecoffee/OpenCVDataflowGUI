@@ -97,7 +97,7 @@ def test_tree_rejects_invalid_graphs(inputs, parameters, message):
 def test_spanning_tree_example_connects_delaunay_sites_and_draws_edges(profile):
     project = (
         Path(__file__).parents[1]
-        / "examples/geometry/minimum_spanning_tree/minimum_spanning_tree.json"
+        / "examples/custom tools/minimum_spanning_tree/minimum_spanning_tree.json"
     )
     graph = Graph.load(project, builtin_registry())
     graph.set_run_profile(profile)

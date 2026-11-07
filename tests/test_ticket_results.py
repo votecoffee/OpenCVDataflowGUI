@@ -454,7 +454,7 @@ def test_saved_example_final_status_and_headless_receipt(tmp_path, app, load_exa
     from opencv_dataflow.runner import main
 
     registry = builtin_registry()
-    graph = Graph.load("examples/flow_control/ticket_results/ticket_results.json", registry)
+    graph = Graph.load("examples/flow tools/ticket_results/ticket_results.json", registry)
     assert graph.to_dict() == ticket_results_graph(registry).to_dict()
     graph.run()
     gate = graph.blocks["ticket_accepted_preview"]
@@ -467,7 +467,7 @@ def test_saved_example_final_status_and_headless_receipt(tmp_path, app, load_exa
     assert (
         main(
             [
-                "examples/flow_control/ticket_results/ticket_results.json",
+                "examples/flow tools/ticket_results/ticket_results.json",
                 "--repeat",
                 "3",
                 "--report",

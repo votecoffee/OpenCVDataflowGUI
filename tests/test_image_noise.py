@@ -99,7 +99,7 @@ def test_selected_noise_preserves_encoding_alpha_unselected_pixels_and_frame():
 
 
 def test_noise_example_is_repeatable_across_serial_and_parallel_branches():
-    path = Path(__file__).parents[1] / "examples/image_processing/seeded_noise/seeded_noise.json"
+    path = Path(__file__).parents[1] / "examples/custom tools/seeded_noise/seeded_noise.json"
     graph = Graph.load(path, builtin_registry())
     try:
         assert graph.branch_workers == 2

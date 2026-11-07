@@ -705,6 +705,11 @@ def validate_value(port, value):
 class Registry:
     def __init__(self):
         self.types: dict[str, type[Block]] = {}
+        self._providers = {}
+
+    def add_provider(self, type_ids, load):
+        """Register a host-selected loader for known optional block IDs."""
+        self._providers.update(dict.fromkeys(type_ids, load))
 
     def register(self, block_type):
         if not issubclass(block_type, Block) or block_type.type_id in self.types:
@@ -712,9 +717,11 @@ class Registry:
         self.types[block_type.type_id] = block_type
 
     def create(self, type_id, **kwargs):
-        if type_id not in self.types:
-            raise ValueError(f"Unavailable block type: {type_id}. Load its plugin first.")
         try:
+            if type_id not in self.types and type_id in self._providers:
+                self._providers[type_id](self)
+            if type_id not in self.types:
+                raise ValueError(f"Unavailable block type: {type_id}. Load its plugin first.")
             block = self.types[type_id](**kwargs)
             if hasattr(block, "bind_registry"):
                 block.bind_registry(self)
