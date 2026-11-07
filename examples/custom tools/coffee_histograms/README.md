@@ -1,9 +1,14 @@
 # Coffee histograms
 
 Open [coffee_histograms.json](coffee_histograms.json) and press **Run once**.
-Select **BGR channel histograms** to compare the color channels. The percentile
-and mean/median markers refer to the red channel. Select **Grayscale histogram**
-to see the same image reduced to one intensity distribution.
+The graph converts the original color image to HSV on one branch and to grayscale
+on the other. Select **HSV channel histograms** to compare hue, saturation, and
+value. The percentile, mean, and median markers describe the value (V) channel.
+Each curve spans its own channel range. Select **Grayscale histogram** to see
+the original photograph's grayscale intensity distribution.
+
+The built-in Histogram block uses NumPy for the counts and adds channel plots,
+percentile cutoffs, mean, and median outputs.
 
 See [image credits and license](../../assets/photograph-sources.md).
 

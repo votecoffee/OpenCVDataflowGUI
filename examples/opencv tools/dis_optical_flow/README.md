@@ -6,5 +6,5 @@ initializes the sequence. Inspect the visualization or flow magnitude on
 later frames.
 
 ```powershell
-opencv-dataflow-run "examples/flow tools/dis_optical_flow/dis_optical_flow.json" --repeat 4
+opencv-dataflow-run "examples/opencv tools/dis_optical_flow/dis_optical_flow.json" --repeat 4
 ```

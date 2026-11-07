@@ -9,10 +9,12 @@ See [image sources and licenses](assets/photograph-sources.md) for the bundled p
 
 | Example | Demonstrates |
 | --- | --- |
+| [Image-set workspace](demos/image_set_workspace/README.md) | Inspect a sequence of three bundled images in a grouped workspace with filename tickets. |
 | [Lena features and contrast](demos/lena_features/README.md) | Enhance local contrast on Lena and inspect corners, Canny edges, and Hough line segments. |
 | [Lena image inspection](demos/lena/README.md) | Use a nested preprocessing ToolBlock, histogram and edge views, and template matching on Lena. |
 | [Quick-start demo](demos/demo/README.md) | Run the editor's default two-part inspection and inspect its contour output. |
 | [Starter inspection](demos/starter_inspection/README.md) | Crop a synthetic scene, filter noise, threshold and clean the mask, and measure two parts. |
+| [Validation image set](demos/validation_images/README.md) | Validate a synthetic inspection against bundled pass, fail, and unknown image cases. |
 
 ## Applications
 
@@ -54,6 +56,7 @@ See the [applications guide](applications/README.md) for geometric matcher setup
 | [Delaunay triangulation](<opencv tools/delaunay_triangulation/README.md>) | Connect five detected dot centers and overlay their four triangles and eight edges. |
 | [Derivative-fed Canny](<opencv tools/canny_derivatives/README.md>) | Inspect both Sobel derivatives and compare the resulting edges with ordinary Canny. |
 | [Descriptor radius matching](<opencv tools/descriptor_radius/README.md>) | Keep multiple BRISK candidates within a Hamming distance limit and estimate the image shift. |
+| [DIS optical flow](<opencv tools/dis_optical_flow/README.md>) | Measure motion of a textured patch with a known displacement. |
 | [Discrete cosine transform](<opencv tools/dct_round_trip/README.md>) | Inspect DCT coefficients and verify the reconstructed image against the source. |
 | [DNN color embeddings](<opencv tools/dnn_embeddings/README.md>) | Use a bundled ONNX model that averages RGB channels, then expose classification and vector outputs. |
 | [Domain transform filter](<opencv tools/domain_transform_filter/README.md>) | Compare three edge-preserving smoothing modes on the same noisy image. |
@@ -98,6 +101,7 @@ See the [applications guide](applications/README.md) for geometric matcher setup
 | [Native background subtraction](<opencv tools/native_background/README.md>) | Compare OpenCV MOG2 and KNN foreground masks on a synthetic sequence. |
 | [Native box tracking](<opencv tools/native_box_tracking/README.md>) | Compare CSRT and KCF tracking of a box in a synthetic image sequence. |
 | [Packed remap coordinates](<opencv tools/packed_remap/README.md>) | Straighten a grid with floating and fixed-point maps, then compare pixel differences. |
+| [PCB motion](<opencv tools/pcb_motion/README.md>) | Replay two PCB photographs through DIS to estimate apparent motion. |
 | [Pixel comparison](<opencv tools/pixel_comparison/README.md>) | Compare a background difference with a scalar to build a texture mask. |
 | [Polar field rotation](<opencv tools/polar_fields/README.md>) | Rotate a Sobel gradient field by 90 degrees while preserving its magnitude. |
 | [Polar image warp](<opencv tools/polar_image_warp/README.md>) | Unwrap a circular edge with a simulated defect and rewrap it into the source frame. |
@@ -141,7 +145,7 @@ See the [applications guide](applications/README.md) for geometric matcher setup
 | [Choose a content-aware seam](<custom tools/stitch_seam/README.md>) | Compare averaging with graph-cut selection on 16-bit views and try automatic seam scaling for larger overlaps. |
 | [Clip line segments](<custom tools/clip_line_segments/README.md>) | Measure the portion of a long detected edge inside a rectangular inspection window. |
 | [Close the loop on an inspection scan](<custom tools/stitch_scan_loop/README.md>) | Compare adjacent registration with a bounded correction when the scan returns to its first view. |
-| [Coffee histograms](<custom tools/coffee_histograms/README.md>) | Compare BGR histograms with a single grayscale histogram. |
+| [Coffee histograms](<custom tools/coffee_histograms/README.md>) | Compare hue, saturation, and value with a grayscale histogram and percentile markers. |
 | [Combined inspection regions](<custom tools/combined_regions/README.md>) | Subtract the center of a circle and union the resulting ring with a second part region. |
 | [Convex polygon overlap](<custom tools/convex_overlap/README.md>) | Compare a detected part hull with an editable polygon and display the intersection. |
 | [Correct exposure in an inspection scan](<custom tools/stitch_scan_exposure/README.md>) | Compare raw and exposure-matched 16-bit mosaics with feathered seams. |
@@ -173,6 +177,7 @@ See the [applications guide](applications/README.md) for geometric matcher setup
 | [RGB-D point cloud](<custom tools/rgbd_cloud/README.md>) | Project synthetic depth into 3D, filter and voxel-sample the cloud, and estimate normals. |
 | [Route image channels](<custom tools/route_channels/README.md>) | Build a false-color image by routing two source channels and a zero-filled channel. |
 | [Seeded random images and noise](<custom tools/seeded_noise/README.md>) | Compare two independently scheduled noise branches for exact agreement. |
+| [Sequence memory](<custom tools/sequence_memory/README.md>) | Run background subtraction, dense optical flow, point tracking, and reference-image learning on a synthetic sequence. |
 | [Skeletonization and spur pruning](<custom tools/skeleton_pruning/README.md>) | Extract a binary centerline and visualize the short branches removed from it. |
 | [Smooth a recorded camera path](<custom tools/offline_camera_stabilization/README.md>) | Apply centered look-ahead to a recorded batch and replay corrected frames with their source tickets. |
 | [Sort numeric table](<custom tools/numeric_table_sort/README.md>) | Rank complete part records by score and compare that with independent column sorting. |
@@ -188,19 +193,16 @@ See the [applications guide](applications/README.md) for geometric matcher setup
 
 ## Flow tools
 
+Examples of pipeline control, including split, join, routing, queues, and decisions.
+
 | Example | Demonstrates |
 | --- | --- |
-| [DIS optical flow](<flow tools/dis_optical_flow/README.md>) | Measure motion of a textured patch with a known displacement. |
 | [Coordinated camera inputs](<flow tools/input_coordination/README.md>) | Join two synthetic camera images to a simulated PLC part counter by ticket. |
-| [Image-set workspace](<flow tools/image_set_workspace/README.md>) | Inspect a sequence of three bundled images in a grouped workspace with filename tickets. |
 | [Parallel inspection of 25 parts](<flow tools/parallel_parts/README.md>) | Find 25 synthetic parts and run a reusable inspection around each part pose. |
-| [PCB motion](<flow tools/pcb_motion/README.md>) | Replay two PCB photographs through DIS to estimate apparent motion. |
 | [Queued image inspection](<flow tools/queued_input/README.md>) | Place a FIFO image queue ahead of the 25-part parallel inspection. |
-| [Sequence memory](<flow tools/sequence_memory/README.md>) | Run background subtraction, dense optical flow, point tracking, and reference-image learning on a synthetic sequence. |
 | [Ticket results and final judgment](<flow tools/ticket_results/README.md>) | Track block results for a synthetic acquisition and publish a final judgment before a pass-only branch. |
 | [Ticketed control flow](<flow tools/control_flow/README.md>) | Group three synthetic acquisitions and exercise split, join, routing, and FIFO reordering with tickets. |
 | [Ticketed recipes](<flow tools/recipes/README.md>) | Select recipe settings and trained models, then coordinate shape and texture results for a final judgment. |
-| [Validation image set](<flow tools/validation_images/README.md>) | Validate a synthetic inspection against bundled pass, fail, and unknown image cases. |
 
 ## User tools and plugins
 

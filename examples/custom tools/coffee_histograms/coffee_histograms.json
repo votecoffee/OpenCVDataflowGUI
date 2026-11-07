@@ -35,10 +35,32 @@
       "preview_output": ""
     },
     {
+      "id": "hsv",
+      "type": "cv.convert",
+      "name": "Convert BGR to HSV",
+      "description": "Convert the original photograph to 8-bit hue, saturation, and value.",
+      "parameters": {
+        "color_format": "hsv",
+        "pixel_depth": "unchanged"
+      },
+      "position": [
+        300,
+        -280
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
       "id": "color_histogram",
       "type": "inspect.histogram",
-      "name": "BGR channel histograms",
-      "description": "Compare the individual channels. Statistics markers describe the red channel.",
+      "name": "HSV channel histograms",
+      "description": "Compare H, S, and V. Statistics markers describe the value channel.",
       "parameters": {
         "bins": 64,
         "range_mode": "automatic",
@@ -47,12 +69,12 @@
         "include_alpha": false,
         "lower_percentile": 10.0,
         "upper_percentile": 90.0,
-        "statistics_channel": "R",
+        "statistics_channel": "V",
         "threshold_statistic": "median",
         "show_statistics": true
       },
       "position": [
-        300,
+        600,
         -280
       ],
       "exposed_inputs": [
@@ -125,6 +147,12 @@
   "connections": [
     {
       "source": "coffee",
+      "output": "image",
+      "target": "hsv",
+      "input": "image"
+    },
+    {
+      "source": "hsv",
       "output": "image",
       "target": "color_histogram",
       "input": "image"

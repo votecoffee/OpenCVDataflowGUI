@@ -5,13 +5,13 @@ Use them for temporal operations or learning a reference image. Native flow and
 background models are under **OpenCV > Video Analysis (video)**. Built-in
 sequence workflows and reference memory are under **Custom > Sequence**.
 
-Open [sequence memory](<../examples/flow tools/sequence_memory/sequence_memory.json>).
+Open [sequence memory](<../examples/custom tools/sequence_memory/sequence_memory.json>).
 Run continuously, or press F5 several times. The source initially holds a textured
 patch still and then moves it. The example compares background subtraction,
 Farneback flow, point tracking and a learned reference. No camera or download is needed.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run "examples/flow tools/sequence_memory/sequence_memory.json" --repeat 8
+.\.venv\Scripts\opencv-dataflow-run "examples/custom tools/sequence_memory/sequence_memory.json" --repeat 8
 ```
 
 ## Readiness and events
@@ -60,7 +60,7 @@ finest scale can reduce for a smaller input. An explicit incompatible scale
 or patch stride is reported as invalid. Masks and regions zero the reported
 vectors outside the selection, while warm start uses the full preceding field.
 See the [OpenCV 5 DIS API](https://docs.opencv.org/5.0/main_modules/classcv_1_1DISOpticalFlow.html)
-and the [PCB photograph replay](<../examples/flow tools/pcb_motion/README.md>).
+and the [PCB photograph replay](<../examples/opencv tools/pcb_motion/README.md>).
 
 All blocks accept optional circle/rectangle/polygon regions or masks. Background and
 flow retain full-image neighborhood/learning context and restrict reported foreground

@@ -11,5 +11,5 @@ ground truth for this pair. Change **Preset** and use **Reset flow state** to
 replay both photos. See [image credits and license](../../assets/photograph-sources.md#visual-anomaly-visa-pcb-photographs).
 
 ```powershell
-opencv-dataflow-run "examples/flow tools/pcb_motion/pcb_motion.json" --all-images
+opencv-dataflow-run "examples/opencv tools/pcb_motion/pcb_motion.json" --all-images
 ```

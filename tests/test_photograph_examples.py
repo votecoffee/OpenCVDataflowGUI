@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+import cv2
 import numpy as np
 
 from opencv_dataflow.blocks import builtin_registry
@@ -33,11 +34,20 @@ def test_coffee_histograms_project(tmp_path, monkeypatch):
     try:
         graph.run()
         assert all(block.state == "pass" for block in graph.blocks.values())
-        for block_id, count in [("color_histogram", 3), ("gray_histogram", 1)]:
-            outputs = graph.blocks[block_id].last_result.outputs
-            channels = outputs["histogram"]["channels"]
-            assert len(channels) == count
-            assert all(sum(channel["counts"]) == 400 * 600 for channel in channels)
+        source = graph.blocks["coffee"].last_result.outputs["image"]
+        hsv = graph.blocks["hsv"].last_result.outputs["image"]
+        np.testing.assert_array_equal(hsv, cv2.cvtColor(source, cv2.COLOR_BGR2HSV))
+
+        color = graph.blocks["color_histogram"].last_result.outputs["histogram"]
+        gray = graph.blocks["gray_histogram"].last_result.outputs["histogram"]
+        assert color["color_format"] == "hsv"
+        assert color["statistics_channel"] == "V"
+        assert [channel["channel"] for channel in color["channels"]] == ["H", "S", "V"]
+        assert [channel["edges"][-1] for channel in color["channels"]] == [180, 256, 256]
+        assert gray["color_format"] == "gray"
+        assert [channel["channel"] for channel in gray["channels"]] == ["Gray"]
+        assert all(sum(channel["counts"]) == 400 * 600
+                   for channel in color["channels"] + gray["channels"])
     finally:
         graph.close()
 
@@ -65,7 +75,7 @@ def test_pcb_outline_project(tmp_path, monkeypatch):
 
 def test_pcb_motion_project(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
-    graph = Graph.load(EXAMPLES / "flow tools/pcb_motion/pcb_motion.json", builtin_registry())
+    graph = Graph.load(EXAMPLES / "opencv tools/pcb_motion/pcb_motion.json", builtin_registry())
     try:
         dis = graph.blocks["dis"]
         graph.run()

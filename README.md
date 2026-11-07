@@ -199,7 +199,7 @@ For larger workspaces, select nodes and use **Workspace > Group selected nodes**
 inspector in the upper-right corner shows the visible region. Click or drag it to
 navigate. Save remembers groups, zoom, and viewport position, including inside ToolBlocks.
 
-Open the [image-set workspace](<examples/flow tools/image_set_workspace/image_set_workspace.json>)
+Open the [image-set workspace](<examples/demos/image_set_workspace/image_set_workspace.json>)
 for a grouped, three-image inspection.
 Press **Continuous** to run the complete set and see filename tickets and verdict
 borders in **Results > Image results filmstrip**. Double-click a thumbnail to
@@ -807,7 +807,7 @@ graph.close()
 flow, Lucas-Kanade point tracking and first/latest/mean image references. They report
 readiness and activation counts, suppress primary outputs during warmup, and support
 bounded per-stream state, resets and trained references stored in projects or recipes.
-Try [sequence memory](<examples/flow tools/sequence_memory/sequence_memory.json>), then run continuously. See
+Try [sequence memory](<examples/custom tools/sequence_memory/sequence_memory.json>), then run continuously. See
 [sequence memory](docs/sequence-memory.md) for training, masks, ticket provenance and limits.
 
 **Fit feature covariance** models how numeric measurements vary together.
@@ -945,7 +945,7 @@ The bottom status bar shows running ticket totals, pass/fail counts, pass rate a
 average end-to-end time. Final judgments can attach stable failure codes and explanations.
 Use **Results > Validation image sets…** to grade saved images as must/should pass,
 unknown or must/should fail, optionally matching a preferred failure code. Runs produce
-a score and per-image report without affecting production counts. Try [validation image set](<examples/flow tools/validation_images/validation_images.json>); see [production counts and validation](docs/production-validation.md).
+a score and per-image report without affecting production counts. Try [validation image set](<examples/demos/validation_images/validation_images.json>); see [production counts and validation](docs/production-validation.md).
 
 Open **Results > Block diagnostics** (**Ctrl+Shift+D**) for a bottom dock with
 severity-colored logs. Selecting a block isolates its logs; clearing the selection shows
