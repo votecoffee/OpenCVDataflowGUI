@@ -701,7 +701,7 @@ def builtin_registry():
     from .ocr import OCR_BLOCKS
     from .offline_stabilization import StabilizeRecordedSequence
     from .oriented_edges import FindOrientedEdges
-    from .overlay_graphics import OverlayResultGraphics
+    from .overlay_graphics import OverlayResultGraphics, SetFilmstripImage
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .pick_selection import SelectPickCandidate
@@ -770,6 +770,7 @@ def builtin_registry():
         EncodeImage,
         DecodeImage,
         OverlayResultGraphics,
+        SetFilmstripImage,
         Threshold,
         Contours,
         SaveImage,

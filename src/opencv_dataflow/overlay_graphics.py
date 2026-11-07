@@ -6,9 +6,38 @@ import numpy as np
 from .core import Block, Port, Result
 from .graphics_layers import draw_object, layer_transform
 from .images import DepthArray, ImageArray, image_format, opencv_image, preview_rgb
+from .parameter_validation import NumericRange
 from .tickets import ticket_key
 
 GRAPHICS_INPUTS = tuple(f"graphics_{index}" for index in range(1, 9))
+
+
+class SetFilmstripImage(Block):
+    """Select the image shown for the input ticket in the results filmstrip."""
+
+    type_id = "output.filmstrip_image"
+    title, category = "Set filmstrip image", "Output"
+    block_type, subtype = "Output", "Results"
+    inputs = (Port("image"),)
+    outputs = (Port("image"),)
+    input_help = {"image": "Ticketed image to display in the filmstrip and its pop-out."}
+    defaults = {"priority": 0}
+    parameter_ranges = {"priority": NumericRange(0, 100, whole=True)}
+    parameter_help = {
+        "priority": "Higher priority wins when several blocks select the same ticket.",
+    }
+    filmstrip_output = "image"
+    preview_safe = False
+    process_inputs_readonly = True
+    parallel_safe = True
+
+    def process(self, inputs):
+        ticket = self.input_payloads["image"].get("ticket")
+        return Result(
+            {"image": inputs["image"]},
+            message="" if ticket else "Filmstrip image requires a ticket",
+            event_data={"filmstrip_priority": int(self.parameters["priority"])},
+        )
 
 
 class OverlayResultGraphics(Block):

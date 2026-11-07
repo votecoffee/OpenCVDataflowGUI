@@ -86,6 +86,15 @@ from .toolbox import ToolEntry, ToolLibrary, block_entry
 from .visual_style import BLOCK_COLORS, NODE_SIZES, PORT_COLORS, PORT_LABELS
 
 
+def uses_filmstrip(blocks):
+    return any(
+        getattr(block, "file_source", False)
+        or getattr(block, "filmstrip_output", None)
+        or (hasattr(block, "graph") and uses_filmstrip(block.graph.blocks.values()))
+        for block in blocks
+    )
+
+
 def capture_display_results(blocks):
     """Hold one completed frame's result references while the worker keeps running."""
     for block in blocks:
@@ -2222,7 +2231,7 @@ class MainWindow(QMainWindow):
             execution_graph.bind_activity(self.root_graph.activity)
             execution_graph.filmstrip = self.root_graph.filmstrip
             execution_graph.filmstrip_enabled = self.filmstrip_view.capture.isChecked()
-            if any(getattr(b, "file_source", False) for b in self.root_graph.blocks.values()):
+            if uses_filmstrip(self.root_graph.blocks.values()):
                 self.filmstrip_dock.show()
             for key, block in self.root_graph.blocks.items():
                 execution_graph.blocks[key].copy_results_from(block)

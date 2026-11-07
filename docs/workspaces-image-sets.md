@@ -70,9 +70,10 @@ source. Ordinary `--repeat N` also stops when the sequence is exhausted.
 
 ## Filmstrip
 
-**Results > Image results filmstrip** toggles the bottom dock. File-source runs
-show it automatically. Each source image has a thumbnail, filename and labeled
-border: green pass, red fail, purple execution error/conflicting final judgments,
+**Results > Image results filmstrip** toggles the bottom dock. Runs with file
+sources or a **Set filmstrip image** block show it automatically. Each entry has
+a thumbnail, a filename when available, and a verdict border. Green indicates
+pass, red fail, purple an execution error or conflicting final judgments, and
 amber pending. Borders follow ticket final judgments or completed job outcomes,
 not the source block's successful decoding. Pending entries update as buffered
 branches finish. Hover to see the path, ticket value and failure reasons. A broken
@@ -82,6 +83,16 @@ outline found on a crop is mapped back onto the source thumbnail. Validation
 sets have their own filmstrip. A correctly predicted failing image still has a
 red border, independently of its validation score.
 
+To choose what appears for a ticket, add **Custom > Output > Results >
+Set filmstrip image** and connect the image you want to display. Connect the
+output of **Overlay result graphics** if you want to choose which drawings are
+included. With capture enabled, the selected image replaces the automatic source
+preview in both views and keeps the ticket's verdict and failure reasons.
+Ticketed images from sources such as cameras can create entries as well.
+Images without a ticket are ignored.
+If several blocks select an image for the same ticket, higher **Priority** wins.
+Use distinct priorities when the choice matters.
+
 Double-click a thumbnail to open it in a resizable window. Scroll the mouse wheel
 or use **Zoom in** and **Zoom out**, and drag the image to pan. **Fit** follows the
 window size and **100%** shows one image pixel per view pixel. The window shows the
@@ -89,9 +100,11 @@ ticket and verdict, and reuses the same window when you open another entry.
 Still images reload on demand with the capture's color, depth, and EXIF settings,
 then receive the same result graphics. The viewer uses the annotated thumbnail
 when the original is missing or its preview has changed, and for video frames
-and TIFF sequence pages.
+and TIFF sequence pages. Selected result images use a captured preview up to
+1280 pixels on the longest edge, with the thumbnail as a fallback when the
+larger preview exceeds its byte limit.
 
-Capture keeps at most 200 entries within an 8 MiB budget for thumbnails and
+Capture keeps at most 200 entries within an 8 MiB budget for previews and
 retained graphics. The oldest entries are evicted. Full-resolution images and filmstrip histories are not saved
 in projects or validation JSON reports. GUI publication sampling does not lose
 entries because workers capture into a shared, thread-safe store. **Clear** clears

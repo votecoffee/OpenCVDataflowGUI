@@ -135,8 +135,10 @@ class FilmstripImageWindow(QDialog):
         same_ticket = self.ticket == row["ticket"]
         self.ticket = row["ticket"]
         self.image_revision = row["image_revision"]
-        image = QPixmap.fromImage(QImage.fromData(row["thumbnail"]))
-        description = "Captured thumbnail"
+        override = row["override"]
+        encoded = override.detail if override is not None and override.detail else row["thumbnail"]
+        image = QPixmap.fromImage(QImage.fromData(encoded))
+        description = "Selected result image" if override is not None else "Captured thumbnail"
         source = row["image_file"]
         frame = row["frame"]
         layers = [row["layers"][label][0] for label in sorted(row["layers"])]

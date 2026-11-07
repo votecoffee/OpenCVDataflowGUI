@@ -4840,6 +4840,18 @@ Inputs: `cloud` (cloud).
 | `path` | `"cloud.ply"` |  |
 | `binary_ply` | `true` |  |
 
+## Set filmstrip image (`output.filmstrip_image`)
+
+Output / Results
+
+Inputs: `image` (image).
+
+Input `image` — Ticketed image to display in the filmstrip and its pop-out.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `priority` | `0` | Value must be a whole number between 0 and 100. Higher priority wins when several blocks select the same ticket. |
+
 ## Save image (`output.image`)
 
 Output / Images

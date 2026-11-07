@@ -3,6 +3,7 @@
 import copy
 import threading
 from collections import OrderedDict
+from dataclasses import dataclass
 from pathlib import Path
 
 import cv2
@@ -24,12 +25,48 @@ def _encode_png(bgr):
     return encoded.tobytes() if ok else b""
 
 
+def _resize_preview(pixels, max_width, max_height):
+    height, width = pixels.shape[:2]
+    scale = min(max_width / width, max_height / height, 1.0)
+    if scale == 1.0:
+        return pixels
+    return cv2.resize(pixels, (max(1, round(width * scale)), max(1, round(height * scale))))
+
+
 def encode_thumbnail(image):
-    rgb = preview_rgb(image)
-    height, width = rgb.shape[:2]
-    scale = min(160 / width, 100 / height, 1.0)
-    rgb = cv2.resize(rgb, (max(1, round(width * scale)), max(1, round(height * scale))))
+    rgb = _resize_preview(preview_rgb(image), 160, 100)
     return _encode_png(cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR))
+
+
+@dataclass(frozen=True)
+class _FilmstripOverride:
+    ticket: dict
+    rank: tuple[int, str]
+    thumbnail: bytes
+    detail: bytes
+
+    @property
+    def size(self):
+        return len(self.thumbnail) + len(self.detail)
+
+
+def _encode_override(ticket, rank, image, max_bytes):
+    rgb = preview_rgb(image)
+    small = _resize_preview(rgb, 160, 100)
+    thumbnail = _encode_png(cv2.cvtColor(small, cv2.COLOR_RGB2BGR))
+    if not thumbnail or len(thumbnail) > max_bytes:
+        return None
+    detail = b""
+    if small is not rgb:
+        # Keep one bounded zoom image, with a compressed fallback for busy scenes.
+        detail_limit = min(512 * 1024, max_bytes - len(thumbnail), max_bytes // 8)
+        if detail_limit > 0:
+            larger = cv2.cvtColor(_resize_preview(rgb, 1280, 1280), cv2.COLOR_RGB2BGR)
+            detail = _encode_png(larger)
+            if not detail or len(detail) > detail_limit:
+                ok, encoded = cv2.imencode(".jpg", larger, [cv2.IMWRITE_JPEG_QUALITY, 90])
+                detail = encoded.tobytes() if ok and encoded.nbytes <= detail_limit else b""
+    return _FilmstripOverride(ticket, rank, thumbnail, detail)
 
 
 def annotate_filmstrip_image(bgr, frame, layers):
@@ -49,15 +86,46 @@ def annotate_filmstrip_image(bgr, frame, layers):
 
 
 class FilmstripCapture:
-    """Collect display graphics for each activation, including buffered tickets."""
+    """Collect display graphics and selected images, including buffered tickets."""
 
     def __init__(self, max_bytes):
         self.max_bytes = max_bytes
         self.bytes = 0
         self.lock = threading.Lock()
         self.layers = {}
+        self.overrides = OrderedDict()
+        self.override_bytes = 0
+
+    def _record_override(self, block, packet):
+        ticket = packet.payload.get("ticket")
+        if ticket is None:
+            return
+        key = ticket_key(ticket)
+        priority = packet.payload["outcome"]["data"]["filmstrip_priority"]
+        rank = (priority, getattr(block, "_event_path", block.id))
+        try:
+            override = _encode_override(ticket, rank, packet.value, self.max_bytes)
+        except (cv2.error, TypeError, ValueError, OverflowError):
+            return
+        if override is None:
+            return
+        with self.lock:
+            previous = self.overrides.get(key)
+            if previous is not None:
+                if rank < previous.rank:
+                    return
+                self.override_bytes -= previous.size
+            self.overrides[key] = override
+            self.overrides.move_to_end(key)
+            self.override_bytes += override.size
+            while self.override_bytes > self.max_bytes:
+                _, removed = self.overrides.popitem(last=False)
+                self.override_bytes -= removed.size
 
     def record(self, block, result):
+        if output := getattr(block, "filmstrip_output", None):
+            for packet in result.emissions.get(output, []):
+                self._record_override(block, packet)
         if not block.capture_graphics or not isinstance(result.drawings, dict):
             return
         for name, drawing in result.drawings.items():
@@ -135,6 +203,7 @@ class Filmstrip:
                 "image_file": copy.deepcopy(image_file),
                 "frame": copy.deepcopy(frame),
                 "layers": {},
+                "override": None,
                 "image_revision": 0,
                 "state": "pending",
                 "reasons": [],
@@ -146,6 +215,8 @@ class Filmstrip:
 
     @staticmethod
     def _row_bytes(row):
+        if row["override"] is not None:
+            return row["override"].size
         size = len(row["source_thumbnail"])
         if row["layers"]:
             size += len(row["thumbnail"]) + sum(cost for _, cost in row["layers"].values())
@@ -156,6 +227,24 @@ class Filmstrip:
             _, removed = self.rows.popitem(last=False)
             self.bytes -= self._row_bytes(removed)
             self.dropped += 1
+
+    def _apply_overrides(self, graphics):
+        with self.lock:
+            for key, override in graphics.overrides.items():
+                if key not in self.rows:
+                    self.add(override.ticket, "Result image")
+                row = self.rows[key]
+                previous = row["override"]
+                if previous is not None and (override.rank < previous.rank or override == previous):
+                    continue
+                self.bytes += override.size - self._row_bytes(row)
+                row.update(
+                    override=override, thumbnail=override.thumbnail, source_thumbnail=b"",
+                    image_file=None, frame=None, layers={},
+                )
+                row["image_revision"] += 1
+                self._trim()
+                self.revision += 1
 
     def _apply_graphics(self, graphics):
         with self.lock:
@@ -229,6 +318,7 @@ class Filmstrip:
     def capture(self, graph, graphics=None):
         self._capture_sources(graph)
         if graphics is not None:
+            self._apply_overrides(graphics)
             self._apply_graphics(graphics)
         self.update_results(graph.ticket_results)
 

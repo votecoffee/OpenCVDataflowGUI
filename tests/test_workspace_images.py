@@ -464,6 +464,97 @@ def test_filmstrip_double_click_zoom_and_thumbnail_fallback(app, tmp_path):
         graph.close()
 
 
+def test_filmstrip_override_updates_buffered_tickets_and_open_popout(app, tmp_path):
+    paths = []
+    colors = [(20, 80, 140), (220, 120, 10)]
+    for index, color in enumerate(colors):
+        path = tmp_path / f"part-{index}.png"
+        assert cv2.imwrite(str(path), np.full((480, 640, 3), color, np.uint8))
+        paths.append(str(path))
+    graph, source = file_graph(paths)
+    registry = builtin_registry()
+    contours = graph.add(registry.create("inspect.contours", parameters={"expected_count": 1}))
+    batch = graph.add(registry.create("flow.batch", parameters={"size": 2}))
+    serial = graph.add(registry.create("flow.unbatch"))
+    crop = graph.add(registry.create("cv.crop", parameters={"width": 320, "height": 200}))
+    selected = graph.add(registry.create("output.filmstrip_image"))
+    judgment = graph.add(registry.create(
+        "inspect.final_judgment", parameters={"mode": "fail", "fail_reason": "bad_part"}
+    ))
+    graph.connect(source.id, "image", contours.id, "image")
+    graph.connect(source.id, "image", batch.id, "item_1")
+    graph.connect(batch.id, "group", serial.id, "group")
+    graph.connect(serial.id, "value", crop.id, "image")
+    graph.connect(crop.id, "image", selected.id, "image")
+    graph.connect(selected.id, "image", judgment.id, "value")
+    encapsulate(graph, [crop.id, selected.id], "Filmstrip crop", registry)
+
+    viewer = FilmstripViewer(lambda: graph.filmstrip)
+    try:
+        graph.run()
+        viewer.refresh()
+        viewer.open_image(viewer.items.item(0))
+        dialog = viewer.popout
+        assert dialog.view.image_item.pixmap().size() == QSize(640, 480)
+        assert "with result graphics" in dialog.source_label.text()
+        assert graph.filmstrip.snapshot()[0]["state"] == "pending"
+
+        graph.run()
+        viewer.refresh()
+        assert viewer.popout is dialog
+        assert dialog.view.image_item.pixmap().size() == QSize(320, 200)
+        assert "Selected result image" in dialog.source_label.text()
+        assert dialog.windowTitle().endswith("Ticket part-0.png · FAIL")
+        for row, color in zip(graph.filmstrip.snapshot(), colors, strict=True):
+            assert row["state"] == "fail"
+            assert row["reasons"][0]["code"] == "bad_part"
+            assert not row["layers"]
+            encoded = np.frombuffer(row["thumbnail"], np.uint8)
+            thumbnail = cv2.imdecode(encoded, cv2.IMREAD_COLOR)
+            assert thumbnail.shape == (100, 160, 3)
+            assert tuple(thumbnail[0, 0]) == color
+        assert 0 < graph.filmstrip.bytes <= graph.filmstrip.max_bytes
+    finally:
+        if viewer.popout is not None:
+            viewer.popout.close()
+        viewer.close()
+        graph.close()
+
+
+def test_filmstrip_override_works_for_nonfile_sources_with_lean_capture():
+    registry = builtin_registry()
+    graph = Graph()
+    graph.set_run_profile("lean")
+    graph.filmstrip_enabled = True
+    graph.branch_workers = 2
+    source = graph.add(registry.create("input.demo"))
+    lower = graph.add(registry.create("output.filmstrip_image", block_id="z"))
+    higher = graph.add(registry.create(
+        "output.filmstrip_image", block_id="a", parameters={"priority": 1}
+    ))
+    resize = graph.add(registry.create("cv.resize", parameters={"width": 1920, "height": 1280}))
+    graph.connect(source.id, "image", lower.id, "image")
+    graph.connect(source.id, "image", resize.id, "image")
+    graph.connect(resize.id, "image", higher.id, "image")
+    graph.run()
+
+    row, = graph.filmstrip.snapshot()
+    assert row["ticket"] == source.current_emissions["image"][0].payload["ticket"]
+    assert row["state"] == "pass"
+    detail = cv2.imdecode(np.frombuffer(row["override"].detail, np.uint8), cv2.IMREAD_COLOR)
+    assert detail.shape[:2] == (853, 1280)
+    assert graph.filmstrip.bytes == len(row["thumbnail"]) + len(row["override"].detail)
+    graph.close()
+
+    unticketed = Graph()
+    unticketed.filmstrip_enabled = True
+    block = unticketed.add(registry.create("output.filmstrip_image"))
+    unticketed.run(injected={(block.id, "image"): np.zeros((4, 4), np.uint8)})
+    assert block.state == "pass"
+    assert unticketed.filmstrip.snapshot() == []
+    unticketed.close()
+
+
 def test_filmstrip_captures_multipage_tiff_images(app, tmp_path):
     path = tmp_path / "pages.tiff"
     first = np.full((32, 40), 80, np.uint8)
