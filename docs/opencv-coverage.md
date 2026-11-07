@@ -141,7 +141,7 @@ region selection.
 
 | Family | Outstanding capability |
 | --- | --- |
-| Photo and exposure | Exposure alignment/merge, HDR/tone mapping, seamless clone, decolorization, stylization, motion deblur, `xphoto` white-balance variants and learning-based super-resolution. |
+| Photo and exposure | Exposure alignment and merge, HDR and tone mapping, decolorization, motion deblur, `xphoto` white-balance variants and learning-based super-resolution. Seamless clone and edge-aware photo filters have blocks. |
 | Recognition | WeChat QR, QR encoding, multiple-code layout, cascade/HOG, face detection/recognition, saliency, line descriptors, image retrieval/vocabulary and OpenCV-specific OCR variants. |
 | Sequence | Additional tracker families, background subtractors in `bgsegm`, motion history and advanced video stabilization. |
 | Geometric utilities | Expanded robust estimators, graph matching, rectification variants, affine-invariant feature variants, panorama detail steps and coordinate-space diagnostics. |

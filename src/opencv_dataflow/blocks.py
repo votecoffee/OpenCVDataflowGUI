@@ -705,6 +705,7 @@ def builtin_registry():
     from .overlay_graphics import OverlayResultGraphics, SetFilmstripImage
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
+    from .photo_filters import PHOTO_FILTER_BLOCKS
     from .pick_selection import SelectPickCandidate
     from .plugins import (
         GEOMETRIC_MATCHER_TYPES,
@@ -816,6 +817,7 @@ def builtin_registry():
         *REGISTRATION_BLOCKS,
         AlignECC,
         *RESTORATION_BLOCKS,
+        *PHOTO_FILTER_BLOCKS,
         *SPECTRAL_BLOCKS,
         FourierCorrelation,
         *ANALYSIS_BLOCKS,

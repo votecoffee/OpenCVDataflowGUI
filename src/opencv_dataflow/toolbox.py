@@ -66,7 +66,7 @@ IMPLEMENTATION_MODULES = {
     "videoio": "video_files",
     "objdetect": "charuco code_readers",
     "dnn": "dnn_blocks ocr",
-    "photo": "restoration",
+    "photo": "photo_filters restoration",
     "stitching": "image_stitching scan_stitching",
     "stereo": "stereo3d",
     "ccm": "color_calibration",

@@ -1383,6 +1383,22 @@ Input `observations` — Ordered batch of aligned 8-bit monochrome views of the 
 | `lambda_weight` | `1.0` | Value must be a finite number between 1e-06 and 1e+06. Weight of the L1 observation error relative to total variation. |
 | `iterations` | `30` | Value must be a whole number between 1 and 200. Number of primal-dual solver iterations. |
 
+## Enhance photo detail (`cv.detail_enhance`)
+
+Image processing / Edge-aware rendering
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — 8-bit BGR or RGB image at least two pixels wide and high.
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sigma_s` | `10.0` | Value must be a finite number between 0.0001 and 200. Spatial scale in pixels. Larger values smooth across wider neighborhoods. |
+| `sigma_r` | `0.15` | Value must be a finite number between 0.0001 and 1. Relative color tolerance. Larger values smooth across stronger edges. |
+
 ## Discrete Fourier transform (DFT) (`cv.dft`)
 
 Image processing / Spectral
@@ -1440,6 +1456,23 @@ Input `guide` — Optional aligned guide. Otherwise the block guides with the so
 | `mode` | `"normalized_convolution"` | `normalized_convolution`, `interpolated_convolution`, `recursive_filtering` |
 | `iterations` | `3` | Value must be a whole number between 1 and 16. Number of horizontal and vertical filtering passes. |
 | `output_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` |
+
+## Edge-preserving photo filter (`cv.edge_preserving_photo`)
+
+Image processing / Edge-aware rendering
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — 8-bit BGR or RGB image at least two pixels wide and high.
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sigma_s` | `60.0` | Value must be a finite number between 0.0001 and 200. Spatial scale in pixels. Larger values smooth across wider neighborhoods. |
+| `sigma_r` | `0.4` | Value must be a finite number between 0.0001 and 1. Relative color tolerance. Larger values smooth across stronger edges. |
+| `method` | `"recursive"` | `recursive`, `normalized_convolution` OpenCV domain-filter mode. |
 
 ## Encode image in memory (`cv.encode_image`)
 
@@ -2192,6 +2225,23 @@ Input `path` — Ordered [x, y] point list in the image's pixel coordinate frame
 | `interpolation` | `"linear"` | `nearest`, `linear` |
 | `include_alpha` | `false` | Include alpha as its own profile on four-channel images. |
 
+## Pencil sketch (`cv.pencil_sketch`)
+
+Image processing / Edge-aware rendering
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — 8-bit BGR or RGB image at least two pixels wide and high.
+
+Selection writes: `image`, `gray`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sigma_s` | `60.0` | Value must be a finite number between 0.0001 and 200. Spatial scale in pixels. Larger values smooth across wider neighborhoods. |
+| `sigma_r` | `0.07` | Value must be a finite number between 0.0001 and 1. Relative color tolerance. Larger values smooth across stronger edges. |
+| `shade_factor` | `0.02` | Value must be a finite number between 0 and 0.1. Sketch brightness scaling. |
+
 ## Polar to Cartesian fields (`cv.polar_to_cart`)
 
 Image processing / Image math
@@ -2566,6 +2616,22 @@ Input `masks` — Optional ordered uint8 masks for feature detection and valid m
 | `min_exposure_samples` | `64` | Value must be a whole number between 1 and 32768. Minimum usable samples per adjacent overlap for exposure fitting. |
 | `max_exposure_gain` | `2.0` | Value must be a finite number between 1 and 8. Limit cumulative gain to this ratio and its reciprocal. |
 | `max_exposure_offset_fraction` | `0.25` | Value must be a finite number between 0 and 1. Limit cumulative offset as a fraction of full scale. |
+
+## Stylize photo (`cv.stylize_photo`)
+
+Image processing / Edge-aware rendering
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — 8-bit BGR or RGB image at least two pixels wide and high.
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sigma_s` | `60.0` | Value must be a finite number between 0.0001 and 200. Spatial scale in pixels. Larger values smooth across wider neighborhoods. |
+| `sigma_r` | `0.45` | Value must be a finite number between 0.0001 and 1. Relative color tolerance. Larger values smooth across stronger edges. |
 
 ## Temporal non-local means (`cv.temporal_nlm`)
 

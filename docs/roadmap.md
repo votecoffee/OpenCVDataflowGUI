@@ -11,6 +11,19 @@ inputs, parameters, and results fit a graph and recur across jobs. Numeric and
 control-flow tools qualify when they support those workflows. Use Python
 plugins for specialized operations with job-specific interfaces.
 
+## Short-term focus
+
+Work through older [LearnOpenCV tutorials](https://github.com/spmallick/learnopencv)
+that teach reusable OpenCV workflows. Build and run a graph for each selected
+topic. Use a known result or a before-and-after measurement to verify it. Add a
+reusable block when the workflow exposes a gap. Defer framework-specific
+training and workflows that depend primarily on tools outside OpenCV.
+
+Use original or clearly licensed fixtures and credit each tutorial. Keep study
+projects under the ignored `examples/private/learnopencv` collection while
+upstream reuse permission is unclear. Publish independently authored tool
+implementations and tests.
+
 ## Vision tool priorities
 
 | Order | Milestone | Next work | Exit criteria |

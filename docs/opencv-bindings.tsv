@@ -2296,7 +2296,7 @@ P3	method	cv2.detail_Timelapser.process	alias	cv2.detail.Timelapser.process
 P3	class	cv2.detail_TimelapserCrop	alias	cv2.detail.TimelapserCrop
 P3	class	cv2.detail_VoronoiSeamFinder	alias	cv2.detail.VoronoiSeamFinder
 P3	method	cv2.detail_VoronoiSeamFinder.find	alias	cv2.detail.VoronoiSeamFinder.find
-P3	function	cv2.detailEnhance	no static reference	-
+P3	function	cv2.detailEnhance	literal reference	-
 P3	function	cv2.determinant	literal reference	-
 P3	function	cv2.dilate	literal reference	-
 P3	class	cv2.DISK	no static reference	-
@@ -2479,7 +2479,7 @@ P3	method	cv2.dynafu_DynaFu.render	alias	cv2.dynafu.DynaFu.render
 P3	method	cv2.dynafu_DynaFu.reset	alias	cv2.dynafu.DynaFu.reset
 P3	method	cv2.dynafu_DynaFu.update	alias	cv2.dynafu.DynaFu.update
 P3	class	cv2.ECCParameters	literal reference	-
-P3	function	cv2.edgePreservingFilter	no static reference	-
+P3	function	cv2.edgePreservingFilter	literal reference	-
 P3	function	cv2.eigen	literal reference	-
 P3	function	cv2.eigenNonSymmetric	literal reference	-
 P3	function	cv2.ellipse	literal reference	-
@@ -3963,7 +3963,7 @@ P3	function	cv2.PCABackProject	literal reference	-
 P3	function	cv2.PCACompute	no static reference	-
 P3	function	cv2.PCACompute2	literal reference	-
 P3	function	cv2.PCAProject	literal reference	-
-P3	function	cv2.pencilSketch	no static reference	-
+P3	function	cv2.pencilSketch	literal reference	-
 P3	function	cv2.perspectiveTransform	literal reference	-
 P3	function	cv2.phase	no static reference	-
 P3	class	cv2.phase_unwrapping.HistogramPhaseUnwrapping	no static reference	-
@@ -4579,7 +4579,7 @@ P3	class	cv2.structured_light_SinusoidalPattern_Params	no static reference	-
 P3	class	cv2.structured_light_StructuredLightPattern	alias	cv2.structured_light.StructuredLightPattern
 P3	method	cv2.structured_light_StructuredLightPattern.decode	alias	cv2.structured_light.StructuredLightPattern.decode
 P3	method	cv2.structured_light_StructuredLightPattern.generate	alias	cv2.structured_light.StructuredLightPattern.generate
-P3	function	cv2.stylization	no static reference	-
+P3	function	cv2.stylization	literal reference	-
 P3	class	cv2.Subdiv2D	literal reference	-
 P3	method	cv2.Subdiv2D.edgeDst	no static reference	-
 P3	method	cv2.Subdiv2D.edgeOrg	no static reference	-
