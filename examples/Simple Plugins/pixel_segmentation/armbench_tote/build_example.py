@@ -13,6 +13,7 @@ from opencv_defect_segmentation.dataflow import pin_assets
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
+from opencv_dataflow.graphics_layers import RESULT_GRAPHICS
 
 ARCHIVE_SHA256 = "30f2539a2c8ae32ae25000ee9025657e2c49529cf9e513196597f9a94e7ca0d7"
 SIZE = (612, 512)
@@ -79,7 +80,41 @@ def prepare_frames(archive, root, registry):
     return samples, validation_images
 
 
-def write_project(root, registry, paths):
+def add_pick_candidate(graph, registry, segment, overlay):
+    distance = graph.add(registry.create(
+        "cv.distance_transform", block_id="distance", parameters={"mask_size": "precise"},
+    ))
+    distance.name = "Distance to foreground boundary"
+    distance.position = [1100., 360.]
+    distance.preview_output = "preview"
+    eligible = graph.add(registry.create(
+        "cv.in_range", block_id="eligible", parameters={"lower": [12.], "upper": [1e6]},
+    ))
+    eligible.name = "Minimum interior clearance (px)"
+    eligible.position = [1460., 360.]
+    peak = graph.add(registry.create(
+        "cv.image_statistics", block_id="pick", parameters={"statistic": "maximum"},
+    ))
+    peak.name = "Best image-space pick candidate"
+    peak.position = [1820., 360.]
+    peak.exposed_outputs = ["value", "maximum_location", "selected_count", RESULT_GRAPHICS]
+    composite = graph.add(registry.create(
+        "cv.overlay_result_graphics", block_id="pick_overlay",
+        parameters={"excluded_graphics": {"graphics_1": ["minimum"]}},
+    ))
+    composite.name = "Show candidate on the photo"
+    composite.position = [2220., 0.]
+    composite.exposed_inputs = ["image", "graphics_1"]
+    composite.preview_output = "image"
+    graph.connect(segment.id, "mask", distance.id, "image")
+    graph.connect(distance.id, "distance", eligible.id, "image")
+    graph.connect(distance.id, "distance", peak.id, "image")
+    graph.connect(eligible.id, "image", peak.id, "mask")
+    graph.connect(overlay.id, "overlay", composite.id, "image")
+    graph.connect(peak.id, RESULT_GRAPHICS, composite.id, "graphics_1")
+
+
+def write_project(root, registry, paths, *, pick_candidate=False):
     graph = Graph()
     try:
         source = graph.add(registry.create("input.file", block_id="source", parameters={
@@ -126,7 +161,9 @@ def write_project(root, registry, paths):
         graph.connect(segment.id, "mask", blobs.id, "image")
         graph.connect(blobs.id, "collection", overlay.id, "collection")
         graph.connect(source.id, "image", overlay.id, "image")
-        graph.save(root / "project.json")
+        if pick_candidate:
+            add_pick_candidate(graph, registry, segment, overlay)
+        graph.save(root / ("pick_candidate.json" if pick_candidate else "project.json"))
     finally:
         graph.close()
 
@@ -143,6 +180,7 @@ def build_example(archive, root):
     cv2.setRNGSeed(34)
     PixelSegmenter.train(samples, seed=34).save(root / "model.yml")
     write_project(root, registry, validation_images)
+    write_project(root, registry, validation_images, pick_candidate=True)
 
 
 if __name__ == "__main__":
