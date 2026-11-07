@@ -12,7 +12,7 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from PySide6.QtCore import QSignalBlocker, Qt, QThread, QTimer, Signal
+from PySide6.QtCore import QEvent, QSignalBlocker, Qt, QThread, QTimer, Signal
 from PySide6.QtGui import QAction, QKeySequence
 from PySide6.QtWidgets import (
     QApplication,
@@ -27,13 +27,16 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QInputDialog,
     QLabel,
+    QLayout,
     QLineEdit,
     QMainWindow,
     QMessageBox,
     QPlainTextEdit,
     QPushButton,
     QScrollArea,
+    QSizePolicy,
     QSplitter,
+    QTabWidget,
     QTextEdit,
     QToolBar,
     QTreeWidget,
@@ -222,15 +225,13 @@ class Inspector(QWidget):
         self.live_timer.setSingleShot(True)
         self.live_timer.timeout.connect(self.start_preview)
         layout = QVBoxLayout(self)
-        title = QLabel("BLOCK INSPECTOR")
-        title.setObjectName("sectionTitle")
-        layout.addWidget(title)
-        self.caption = QLabel("Select a block to configure its tools and ports.")
+        self.caption = QLabel("Select a block")
+        self.caption.setObjectName("inspectorCaption")
+        self.caption.setTextFormat(Qt.TextFormat.PlainText)
         self.caption.setWordWrap(True)
         layout.addWidget(self.caption)
         self.timing_label = QLabel()
         self.timing_label.setWordWrap(True)
-        layout.addWidget(self.timing_label)
         self.live_results = QCheckBox("Live results")
         self.live_results.setEnabled(False)
         self.live_results.setToolTip(
@@ -250,22 +251,30 @@ class Inspector(QWidget):
         self.validation_label.setTextFormat(Qt.TextFormat.PlainText)
         self.validation_label.setStyleSheet("color: #ffcb78;")
         self.validation_label.hide()
-        layout.addWidget(self.validation_label)
         self.timing_timer = QTimer(self)
         self.timing_timer.setInterval(200)
         self.timing_timer.timeout.connect(self.refresh_timing)
         self.timing_timer.start()
-        self.editor = QGroupBox("Configuration")
-        self.form = QFormLayout(self.editor)
+        self.tabs = QTabWidget()
+        self.tabs.setObjectName("inspectorTabs")
+        self.parameters_page, self.form = self.add_form_tab("Parameters")
+        self.editor = self.parameters_page.widget()
+        self.block_page, self.block_form = self.add_form_tab("Block")
+        self.results_page = QWidget()
+        results_layout = QVBoxLayout(self.results_page)
+        results_layout.setContentsMargins(6, 6, 6, 6)
+        self.tabs.addTab(self.results_page, "Results")
+        layout.addWidget(self.tabs, 1)
+        layout.addWidget(self.validation_label)
+        self.apply_button = QPushButton("Apply configuration")
+        self.apply_button.clicked.connect(self.apply)
+        self.apply_button.setEnabled(False)
+        layout.addWidget(self.apply_button)
         self._plugin_dialog = None
         self._plugin_context = None
         self._plugin_output_timer = QTimer(self)
         self._plugin_output_timer.setSingleShot(True)
         self._plugin_output_timer.timeout.connect(self._notify_plugin_outputs)
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        scroll.setWidget(self.editor)
-        layout.addWidget(scroll, 3)
         self.preview_choice = QComboBox()
         self.preview_choice.currentTextChanged.connect(self.show_preview)
         self.preview_choice.textActivated.connect(self.remember_preview_selection)
@@ -276,16 +285,41 @@ class Inspector(QWidget):
         self.pop_out_image.setToolTip("Open a live window for the selected output or graphic.")
         self.pop_out_image.clicked.connect(self.open_image_popout)
         image_controls.addWidget(self.pop_out_image)
-        layout.addLayout(image_controls)
+        results_layout.addWidget(self.timing_label)
+        results_layout.addLayout(image_controls)
+        results_split = QSplitter(Qt.Orientation.Vertical)
+        results_split.setChildrenCollapsible(False)
         self.image = QLabel("No image available")
         self.image.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.image.setMinimumHeight(160)
+        self.image.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored)
+        self.image.setMinimumHeight(80)
         self.image.setStyleSheet("background: #111b29; border-radius: 6px;")
-        layout.addWidget(self.image, 2)
+        self.image.installEventFilter(self)
+        results_split.addWidget(self.image)
         self.details = QTextEdit()
         self.details.setReadOnly(True)
-        layout.addWidget(self.details, 2)
+        results_split.addWidget(self.details)
+        results_split.setSizes([240, 120])
+        results_layout.addWidget(results_split, 1)
         self.setMinimumWidth(310)
+
+    def add_form_tab(self, title):
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        content = QWidget()
+        form = QFormLayout(content)
+        form.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
+        form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
+        form.setRowWrapPolicy(QFormLayout.RowWrapPolicy.WrapLongRows)
+        scroll.setWidget(content)
+        self.tabs.addTab(scroll, title)
+        return scroll, form
+
+    def refresh_configuration_controls(self):
+        editable = self.block is not None and self.window.runner is None
+        self.editor.setEnabled(editable)
+        self.block_page.widget().setEnabled(editable)
+        self.apply_button.setEnabled(editable and not self.draft_error)
 
     def select(self, block):
         self.close_plugin_dialog()
@@ -296,7 +330,8 @@ class Inspector(QWidget):
             and self.show_advanced.isChecked()
         )
         self.show_advanced = None
-        if block is not self.block:
+        changed_block = block is not self.block
+        if changed_block:
             self._preview_selection = None
             self.stop_previews()
             self._region_image = None
@@ -306,27 +341,34 @@ class Inspector(QWidget):
         if hasattr(self.window, "diagnostics_view"):
             self.window.diagnostics_view.set_block(block)
         self.reference_capture = None
-        while self.form.rowCount():
-            self.form.removeRow(0)
+        for form in (self.form, self.block_form):
+            while form.rowCount():
+                form.removeRow(0)
+        if changed_block:
+            self.parameters_page.verticalScrollBar().setValue(0)
+            self.block_page.verticalScrollBar().setValue(0)
         self.fields, self.port_checks, self.level_fields, self.failure_fields = {}, [], {}, {}
         self.kernel_parameters = {}
         if block is None:
-            self.caption.setText("Select a block to configure its tools and ports.")
+            self.caption.setText("Select a block")
+            self.caption.setToolTip("")
+            self.refresh_configuration_controls()
             self.refresh_result()
             return
-        self.caption.setText(
+        self.caption.setText(block.name)
+        self.caption.setToolTip(
             f"{block.title} / {block.block_type or block.category} / {block.subtype}"
             f"\n{block.type_id}"
         )
         self.name_field = QLineEdit(block.name)
-        self.form.addRow("Name", self.name_field)
+        self.block_form.addRow("Name", self.name_field)
         self.description_field = QPlainTextEdit(block.description)
         self.description_field.setPlaceholderText("Shown when hovering over this block")
         self.description_field.setMaximumHeight(76)
-        self.form.addRow("Description", self.description_field)
+        self.block_form.addRow("Description", self.description_field)
         documentation = QPushButton("Edit documentation…")
         documentation.clicked.connect(self.edit_documentation)
-        self.form.addRow(documentation)
+        self.block_form.addRow(documentation)
         xml_actions = QHBoxLayout()
         for title, callback in (
             ("Save block XML…", self.save_selected_block_xml),
@@ -335,7 +377,7 @@ class Inspector(QWidget):
             button = QPushButton(title)
             button.clicked.connect(callback)
             xml_actions.addWidget(button)
-        self.form.addRow(xml_actions)
+        self.block_form.addRow(xml_actions)
         if block.ticket_source:
             self.ticket_mode = QComboBox()
             self.ticket_mode.addItems(TICKET_MODES)
@@ -345,20 +387,20 @@ class Inspector(QWidget):
                 "Fixed JSON number/string or {timestamp: ISO8601}; "
                 "external mode uses the ticket input."
             )
-            self.form.addRow("Ticket mode", self.ticket_mode)
-            self.form.addRow("Fixed ticket", self.ticket_value)
+            self.block_form.addRow("Ticket mode", self.ticket_mode)
+            self.block_form.addRow("Fixed ticket", self.ticket_value)
         if isinstance(block, ToolBlock):
             self.type_field = QLineEdit(block.block_type)
             self.subtype_field = QLineEdit(block.subtype)
-            self.form.addRow("Block type", self.type_field)
-            self.form.addRow("Subtype", self.subtype_field)
+            self.block_form.addRow("Block type", self.type_field)
+            self.block_form.addRow("Subtype", self.subtype_field)
             for title, callback in (
                 ("Edit internal graph", lambda: self.window.enter_toolblock(block)),
                 ("Edit public terminals", self.window.edit_interface),
             ):
                 button = QPushButton(title)
                 button.clicked.connect(callback)
-                self.form.addRow(button)
+                self.block_form.addRow(button)
         if isinstance(block, ParallelInspect):
             for title, callback in (
                 ("Edit inspection graph", lambda: self.window.enter_toolblock(block)),
@@ -367,7 +409,7 @@ class Inspector(QWidget):
             ):
                 button = QPushButton(title)
                 button.clicked.connect(callback)
-                self.form.addRow(button)
+                self.block_form.addRow(button)
         if getattr(block, "sequence_memory", False):
             button = QPushButton("Reset sequence memory")
             button.clicked.connect(self.reset_sequence)
@@ -492,13 +534,17 @@ class Inspector(QWidget):
             button = QPushButton(block.plugin_dialog_label)
             button.clicked.connect(self.open_plugin_dialog)
             self.form.addRow(button)
+        if not self.form.rowCount():
+            hint = QLabel("This block has no parameters. See Block for its settings.")
+            hint.setWordWrap(True)
+            self.form.addRow(hint)
         self.show_advanced = QCheckBox("Show advanced")
         self.show_advanced.setToolTip("Show recipe, port, and node display settings.")
         advanced_panel = QWidget()
         advanced_form = QFormLayout(advanced_panel)
         advanced_form.setContentsMargins(0, 0, 0, 0)
-        self.form.addRow(self.show_advanced)
-        self.form.addRow(advanced_panel)
+        self.block_form.addRow(self.show_advanced)
+        self.block_form.addRow(advanced_panel)
         self.show_advanced.setChecked(advanced_open)
         advanced_panel.setVisible(advanced_open)
         self.show_advanced.toggled.connect(advanced_panel.setVisible)
@@ -575,10 +621,6 @@ class Inspector(QWidget):
                     )
                     self.failure_fields[port.name] = policy
                     advanced_form.addRow(f"{port.name} failure policy", policy)
-        self.apply_button = QPushButton("Apply configuration")
-        self.apply_button.clicked.connect(self.apply)
-        self.form.addRow(self.apply_button)
-        self.editor.setEnabled(self.window.runner is None)
         self.validate_draft()
         self.refresh_result()
 
@@ -913,8 +955,7 @@ class Inspector(QWidget):
             invalid = any(key in self.kernel_parameters for key in keys)
             self.kernel_button.setStyleSheet("border: 1px solid #ffac70;" if invalid else "")
             self.kernel_button.setToolTip(message if invalid else "")
-        if hasattr(self, "apply_button"):
-            self.apply_button.setEnabled(not message)
+        self.refresh_configuration_controls()
         self.run_block.setEnabled(not message and self.can_preview() and self._live_worker is None)
         node = self.window.scene.nodes.get(self.block.id)
         if node is not None and node.block is self.block:
@@ -1426,6 +1467,7 @@ class Inspector(QWidget):
             b.preview_output = self.node_image.currentData()
             self.window.graph.invalidate()
             self.window.scene.rebuild(b.id)
+            self.caption.setText(b.name)
             self.window.mark_dirty()
             self.window.statusBar().showMessage("Configuration applied; run to update results")
             return True
@@ -1594,9 +1636,10 @@ class Inspector(QWidget):
         for viewer in list(self.image_popouts.values()):
             viewer.close()
 
-    def resizeEvent(self, event):
-        super().resizeEvent(event)
-        self.show_preview(self.preview_choice.currentText())
+    def eventFilter(self, watched, event):
+        if watched is self.image and event.type() == QEvent.Type.Resize:
+            self.show_preview(self.preview_choice.currentText())
+        return super().eventFilter(watched, event)
 
 
 class MainWindow(QMainWindow):
@@ -2207,7 +2250,7 @@ class MainWindow(QMainWindow):
         self.runner.finished.connect(self.on_finished)
         self.scene.set_locked(True)
         self.library.setEnabled(False)
-        self.inspector.editor.setEnabled(False)
+        self.inspector.refresh_configuration_controls()
         self.inspector.refresh_result()
         for action in self.edit_actions + [self.run_action, self.continuous_action]:
             action.setEnabled(False)
@@ -2284,7 +2327,7 @@ class MainWindow(QMainWindow):
         worker.deleteLater()
         self.scene.set_locked(False)
         self.library.setEnabled(True)
-        self.inspector.editor.setEnabled(True)
+        self.inspector.refresh_configuration_controls()
         for action in self.edit_actions + [self.run_action, self.continuous_action]:
             action.setEnabled(True)
         self.stop_action.setEnabled(False)
@@ -2408,6 +2451,10 @@ QTreeWidget::item { padding: 5px 2px; }
 QTreeWidget::item:selected { background: #31566c; }
 QGroupBox { border: 1px solid #34475f; margin-top: 14px; padding-top: 12px; }
 QGroupBox::title { subcontrol-origin: margin; left: 9px; }
+QTabWidget#inspectorTabs::pane { border: 1px solid #34475f; }
+QTabWidget#inspectorTabs QTabBar::tab { background: #202e41; padding: 7px 10px; }
+QTabWidget#inspectorTabs QTabBar::tab:selected { background: #30455d; color: #e9f6ff; }
+QLabel#inspectorCaption { color: #70d3e3; font-weight: bold; }
 QLabel#sectionTitle { color: #70d3e3; font-weight: bold; padding: 10px 0; }
 QSplitter::handle { background: #304056; width: 3px; }
 QStatusBar { background: #111c2a; color: #a5bdd4; }

@@ -1186,6 +1186,39 @@ def test_inspector_prefers_result_or_output_and_preserves_manual_choice(app):
         window.close()
 
 
+def test_inspector_tabs_prioritize_parameters_and_keep_draft_controls_visible(app):
+    window = MainWindow()
+    window.resize(1080, 550)
+    graph = Graph()
+    block = graph.add(window.registry.create("sequence.dis"))
+    window.replace_graph(graph)
+    inspector = window.inspector
+    try:
+        window.show()
+        inspector.select(block)
+        app.processEvents()
+        assert inspector.tabs.currentWidget() is inspector.parameters_page
+        assert inspector.parameters_page.viewport().height() > inspector.height() * 0.55
+        assert inspector.parameters_page.verticalScrollBar().maximum() > 0
+        assert not inspector.name_field.isVisible()
+        assert not inspector.image.isVisible()
+        field = inspector.fields["patch_size"]
+        field.setText("12")
+        inspector.tabs.setCurrentWidget(inspector.block_page)
+        assert inspector.name_field.isVisible()
+        inspector.tabs.setCurrentWidget(inspector.results_page)
+        assert inspector.image.isVisible()
+        assert inspector.run_block.isVisible() and inspector.apply_button.isVisible()
+        assert block.parameters["patch_size"] == 0
+        inspector.apply_button.click()
+        assert block.parameters["patch_size"] == 12
+        inspector.tabs.setCurrentWidget(inspector.parameters_page)
+        assert inspector.fields["patch_size"].text() == "12"
+    finally:
+        window.dirty = False
+        window.close()
+
+
 def test_inspector_advanced_visibility_and_unapplied_drafts(app):
     window = MainWindow()
     window.show()
@@ -1200,6 +1233,7 @@ def test_inspector_advanced_visibility_and_unapplied_drafts(app):
         assert not inspector.show_advanced.isChecked()
         assert inspector.fields["value"].isVisible()
         assert not inspector.recipe_group.isVisible()
+        inspector.tabs.setCurrentWidget(inspector.block_page)
         inspector.show_advanced.setChecked(True)
         assert inspector.recipe_group.isVisible()
         assert inspector.node_size.isVisible()

@@ -91,10 +91,11 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
    Hover over a connector dot or its label to see the full port name and any captured
    number, boolean, or text value.
    The **Debug** run profile captures input values.
-3. Select a block, edit parameters in the right inspector, and click **Apply
-   configuration**. Switching blocks discards unapplied edits. Use **Show advanced**
-   to configure recipe overrides, ports, and node display. Block size and the
-   result graphics setting take effect immediately.
+3. Select a block and edit it in the right inspector's **Parameters** tab.
+   Click **Apply configuration** to save the draft. Switching tabs keeps the
+   draft. Switching blocks discards unapplied edits. Use **Block** for the name,
+   description, and documentation, and **Show advanced** for recipes, ports, and
+   node display. Block size and the result graphics setting take effect immediately.
    Hover over a field for its limits. The inspector shows an inline message when an entry is invalid.
    **Run block** previews eligible tools with their last captured inputs, including text and
    other structured data. The [parameter reference](docs/block-parameters.md) lists declared limits.
@@ -104,8 +105,8 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
    Use **Edit documentation…** for longer, formatted notes stored with the block.
    OpenCV enum controls use dropdowns; booleans use checkboxes. Hover over controls
    with help text for method-specific guidance.
-4. Run once or continuously. Inspect retained input, output, and graphic images
-   with the preview selector. Nodes show pass/fail/error state, timing, and score
+4. Run once or continuously. Open the **Results** tab to inspect retained input,
+   output, and graphic images. Drag the divider to resize the image and result details. Nodes show pass/fail/error state, timing, and score
    intensity where provided. A failed inspection still supplies results downstream;
    execution errors skip dependent blocks.
    The inspector and automatic node thumbnails prefer the result image, then an output image.
