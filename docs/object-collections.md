@@ -25,6 +25,12 @@ collection item. It reduces a convex boundary toward a requested side count
 and reports the resulting area. An optional budget limits the area added
 over the convex hull. [Convex contour example](<../examples/opencv tools/convex_contour_approximation/README.md>)
 
+**Selective Search proposals** groups related image segments and emits candidate boxes.
+Use the Fast, Single or Quality preset, set a working-image size, and optionally
+keep proposals by their center using a mask or region. Box dimensions and area
+refer to the input image. IDs are the native proposal positions for one run.
+Use width, height, aspect ratio or position to filter and sort them.
+
 ## Measurements and conventions
 
 | Criteria | Meaning |
@@ -132,7 +138,7 @@ match; use the matching pyramid level/frame rather than silently rescaling data.
 
 ## Collection and coordinate contract
 
-`vision_collection_v1` contains `kind` (blobs/contours/lines/circles), `count`, `items`,
+`vision_collection_v1` contains `kind` (blobs/contours/lines/circles/boxes), `count`, `items`,
 `image_size`, `origin`, and spatial/pyramid `context`. Each item has a stable run-local
 `id`, `metrics` and shape geometry. Circle geometry stores a center and radius.
 Contour hierarchy references identify

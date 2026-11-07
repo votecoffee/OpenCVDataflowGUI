@@ -727,6 +727,7 @@ def builtin_registry():
     from .pyramids import PYRAMID_BLOCKS
     from .raster_hough_lines import HoughPolarLines
     from .recipe_blocks import RecipeField, RecipeSelect
+    from .region_proposals import GraphSegments, SelectiveSearchProposals
     from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
     from .remap_maps import BuildLensMaps, LensMapDisplacement
@@ -856,6 +857,8 @@ def builtin_registry():
         ReadZXingBarcode,
         VerifyText,
         *SEGMENTATION_BLOCKS,
+        GraphSegments,
+        SelectiveSearchProposals,
         Skeletonize,
         PruneSkeleton,
         WatershedPointSeeds,

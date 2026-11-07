@@ -1790,6 +1790,24 @@ Inputs: `samples` (data, optional), `offset` (data, optional).
 | `scale` | `1.0` | Value must be a finite number between -1e+100 and 1e+100. Additional multiplier applied to the result. |
 | `precision` | `"float64"` | `float64`, `float32` Floating-point precision for input conversion and the product. |
 
+## Graph-based segmentation (`cv.graph_segments`)
+
+Image processing / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale, BGR or RGB uint8 image with at most 2.1 million pixels.
+
+Input `mask` — Optional output selection. Pixels outside it receive label zero.
+
+Input `region` — Optional output selection. Native segmentation uses the full image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sigma` | `0.5` | Value must be a finite number between 0.01 and 5. Gaussian smoothing before computing neighboring pixel differences. |
+| `k` | `300.0` | Value must be a finite number between 0.01 and 10000. Region merge threshold scale. Larger values generally yield larger regions. |
+| `min_size` | `100` | Value must be a whole number between 1 and 2.1e+06. Native post-merge size threshold in pixels before selection. |
+
 ## Grayscale (`cv.gray`)
 
 Image processing / Color and depth
@@ -4635,6 +4653,28 @@ Inputs: `image` (image), `matches` (data), `occupancy` (image, optional), `regio
 | `maximum_occupied_pixels` | `0` | Maximum nonzero occupancy pixels outside the part footprint. |
 | `require_occupancy` | `false` | Require an obstacle mask in addition to match footprints. |
 | `draw_overlay` | `true` |  |
+
+## Selective Search proposals (`inspect.selective_search`)
+
+Image processing / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale, BGR or RGB uint8 image. Output boxes use this image's grid.
+
+Input `mask` — Keep proposals whose centers fall within this optional selection.
+
+Input `region` — Keep proposals whose centers fall within this optional selection.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"fast"` | `single`, `fast`, `quality` Native preset. Quality evaluates more color spaces and strategies. |
+| `base_k` | `150` | Value must be a whole number between 1 and 10000. Initial graph segmentation threshold. Single uses only this value. |
+| `inc_k` | `150` | Value must be a whole number between 1 and 10000. Threshold increment between segmentations in Fast or Quality mode. |
+| `sigma` | `0.8` | Value must be a finite number between 0.01 and 5. Gaussian smoothing used by the graph segmentations. |
+| `working_side` | `320` | Value must be a whole number between 64 and 640. Downscale the longest side to this limit before generating proposals. |
+| `max_proposals` | `200` | Value must be a whole number between 1 and 5000. Maximum number of retained boxes after the selection filter. |
+| `preview_count` | `25` | Value must be a whole number between 0 and 250. Number of retained boxes to draw. Zero disables the overlay. |
 
 ## SIFT keypoints and descriptors (`inspect.sift`)
 

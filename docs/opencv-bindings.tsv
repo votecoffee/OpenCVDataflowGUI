@@ -1583,8 +1583,8 @@ P2	method	cv2.ximgproc.ScanSegment.getLabelContourMask	no static reference	-
 P2	method	cv2.ximgproc.ScanSegment.getLabels	no static reference	-
 P2	method	cv2.ximgproc.ScanSegment.getNumberOfSuperpixels	no static reference	-
 P2	method	cv2.ximgproc.ScanSegment.iterate	no static reference	-
-P2	function	cv2.ximgproc.segmentation.createGraphSegmentation	no static reference	-
-P2	function	cv2.ximgproc.segmentation.createSelectiveSearchSegmentation	no static reference	-
+P2	function	cv2.ximgproc.segmentation.createGraphSegmentation	literal reference	-
+P2	function	cv2.ximgproc.segmentation.createSelectiveSearchSegmentation	literal reference	-
 P2	function	cv2.ximgproc.segmentation.createSelectiveSearchSegmentationStrategyColor	no static reference	-
 P2	function	cv2.ximgproc.segmentation.createSelectiveSearchSegmentationStrategyFill	no static reference	-
 P2	function	cv2.ximgproc.segmentation.createSelectiveSearchSegmentationStrategyMultiple	no static reference	-
@@ -1594,7 +1594,7 @@ P2	class	cv2.ximgproc.segmentation.GraphSegmentation	no static reference	-
 P2	method	cv2.ximgproc.segmentation.GraphSegmentation.getK	no static reference	-
 P2	method	cv2.ximgproc.segmentation.GraphSegmentation.getMinSize	no static reference	-
 P2	method	cv2.ximgproc.segmentation.GraphSegmentation.getSigma	no static reference	-
-P2	method	cv2.ximgproc.segmentation.GraphSegmentation.processImage	no static reference	-
+P2	method	cv2.ximgproc.segmentation.GraphSegmentation.processImage	method name only	-
 P2	method	cv2.ximgproc.segmentation.GraphSegmentation.setK	no static reference	-
 P2	method	cv2.ximgproc.segmentation.GraphSegmentation.setMinSize	no static reference	-
 P2	method	cv2.ximgproc.segmentation.GraphSegmentation.setSigma	no static reference	-
@@ -1606,10 +1606,10 @@ P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentation.clearGraphSegmen
 P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentation.clearImages	no static reference	-
 P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentation.clearStrategies	no static reference	-
 P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentation.process	method name only	-
-P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentation.setBaseImage	no static reference	-
-P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentation.switchToSelectiveSearchFast	no static reference	-
-P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentation.switchToSelectiveSearchQuality	no static reference	-
-P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentation.switchToSingleStrategy	no static reference	-
+P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentation.setBaseImage	method name only	-
+P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentation.switchToSelectiveSearchFast	method name only	-
+P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentation.switchToSelectiveSearchQuality	method name only	-
+P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentation.switchToSingleStrategy	method name only	-
 P2	class	cv2.ximgproc.segmentation.SelectiveSearchSegmentationStrategy	no static reference	-
 P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentationStrategy.get	method name only	-
 P2	method	cv2.ximgproc.segmentation.SelectiveSearchSegmentationStrategy.merge	method name only	-

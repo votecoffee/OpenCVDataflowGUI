@@ -75,6 +75,7 @@ IMPLEMENTATION_MODULES = {
     "quality": "image_quality",
     "rgbd": "ptcloud3d",
     "tracking": "native_trackers",
+    "ximgproc": "region_proposals",
 }
 BLOCK_MODULES = {
     "core": (
@@ -127,6 +128,8 @@ _MODULE_BY_BLOCK = {
 }
 _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
+    "cv.graph_segments": ("createGraphSegmentation",),
+    "inspect.selective_search": ("createSelectiveSearchSegmentation",),
     "cv.calibrate_debevec": ("createCalibrateDebevec",),
     "cv.merge_debevec": ("createMergeDebevec",),
     "cv.tonemap_hdr": ("createTonemap", "TonemapDrago", "TonemapReinhard", "TonemapMantiuk"),
