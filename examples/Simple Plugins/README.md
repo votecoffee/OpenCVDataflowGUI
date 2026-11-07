@@ -6,7 +6,7 @@ load their installed integrations when you add a block or open a project.
 
 | Tool | Example projects |
 | --- | --- |
-| **SimpleSegmentation** | [Brick mortar, cup rim, and PCB laminate](pixel_segmentation/README.md) |
+| **SimpleSegmentation** | [Brick mortar, cup rim, PCB laminate, and ARMBench tote foreground](pixel_segmentation/README.md) |
 | **SimpleClassify** | [VegQual surface texture and color/layout classification](image_classification/README.md) |
 | **SimplePatternMatch** | [VisA PCB photographs](pattern_matching/visa_pcb2/README.md) for real board localization and [asymmetric brackets](pattern_matching/asymmetric_brackets/README.md) for generated multi-part scenes. |
 

@@ -1,12 +1,13 @@
 # SimpleSegmentation examples
 
-These examples use **SimpleSegmentation** to learn a foreground class from painted labels. Each includes a saved project, editable labels, and a pinned model. The images come from the [bundled photograph collection](../../assets/photograph-sources.md).
+These examples use **SimpleSegmentation** to learn a foreground class from labels. Each includes a saved project, editable labels, and a pinned model.
 
 | Project | Foreground | What to look for |
 | --- | --- | --- |
 | [Brick mortar](brick_mortar/project.json) | Bright mortar joints | Labels cover selected joint and brick patches in the upper-left area. The result follows joints across the photograph. |
 | [Cup rim](cup_rim/project.json) | Porcelain lip | A coarse rectangular search region keeps the model focused on the cup. The learned mask traces the rim within it. |
 | [PCB laminate](pcb_laminate/project.json) | Exposed blue board surface | Run twice to locate two different VisA boards. Training labels come from the first photo. Dark chips and metal pins are mostly background. |
+| [ARMBench tote](armbench_tote/README.md) | Inventory inside a blue tote | Train on two real photos, then replay separate loaded and empty totes. |
 
 ## Run in DataflowGUI
 
