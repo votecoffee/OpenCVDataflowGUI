@@ -1,8 +1,11 @@
 """Filmstrip trainer for the DataflowGUI image classifier."""
 
 from concurrent.futures import ThreadPoolExecutor
+from dataclasses import replace
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
+import cv2
 from PySide6.QtCore import QSize, Qt, QTimer
 from PySide6.QtGui import QIcon, QImageReader, QKeySequence, QPixmap, QShortcut
 from PySide6.QtWidgets import (
@@ -22,7 +25,17 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from .model import PROFILES, Example, load_assignments, stage_classifier, train_classifier
+from ..images import opencv_image
+from ..plugin_image_picker import PluginImagePicker
+from .model import (
+    PROFILES,
+    Example,
+    image_pixels,
+    load_assignments,
+    pixel_digest,
+    stage_classifier,
+    train_classifier,
+)
 
 _TRAINERS = ThreadPoolExecutor(max_workers=1, thread_name_prefix="image-classifier")
 _THUMBNAIL = QSize(112, 84)
@@ -47,6 +60,8 @@ class ClassifierTrainer(QDialog):
         self.candidate = None
         self.future = None
         self.predictions = {}
+        self.capture_directory = None
+        self.capture_paths = {}
         self.timer = QTimer(self, interval=60)
         self.timer.timeout.connect(self._training_finished)
         self.setWindowTitle("Image classifier training")
@@ -92,6 +107,9 @@ class ClassifierTrainer(QDialog):
         self.drop_button = self._button(edits, "Remove class…", self._remove_class)
         edits.addStretch()
         self.import_button = self._button(edits, "Add images…", self._import_images)
+        self.capture_panel_button = QPushButton("Capture from graph")
+        self.capture_panel_button.setCheckable(True)
+        edits.addWidget(self.capture_panel_button)
         self.split_button = self._button(edits, "Toggle validation", self._toggle_validation)
         self.split_button.setToolTip(
             "Mark selected images as held out. Mark at least one image per class and "
@@ -100,6 +118,12 @@ class ClassifierTrainer(QDialog):
         )
         self.move_button = self._button(edits, "Move to class…", self._move_selected)
         self.remove_button = self._button(edits, "Remove selected", self.remove_selected)
+
+        self.image_picker = PluginImagePicker(context, self, input_port="image")
+        self.image_picker.setVisible(False)
+        self.image_picker.captured.connect(self._capture_image)
+        self.capture_panel_button.toggled.connect(self.image_picker.setVisible)
+        layout.addWidget(self.image_picker)
 
         self.status = QLabel("Training health is measured on held-out images.")
         self.status.setWordWrap(True)
@@ -115,7 +139,7 @@ class ClassifierTrainer(QDialog):
         self.train_button = self._button(actions, "Train", self.start_training)
         self.stage_button = self._button(actions, "Stage trained model", self._stage)
         self._button(actions, "Close", self.reject)
-        self.finished.connect(self._stop_polling)
+        self.finished.connect(self._close_training)
 
         if parameters["model"]:
             try:
@@ -146,8 +170,11 @@ class ClassifierTrainer(QDialog):
         self.new_button.setEnabled(idle)
         self.profile.setEnabled(idle)
         self.review_filter.setEnabled(idle and bool(self.predictions))
-        for button in (self.rename_button, self.drop_button, self.import_button):
-            button.setEnabled(idle and strip is not None)
+        for widget in (
+            self.rename_button, self.drop_button, self.import_button, self.capture_panel_button,
+            self.image_picker,
+        ):
+            widget.setEnabled(idle and strip is not None)
         for button in (self.split_button, self.remove_button):
             button.setEnabled(idle and selected)
         self.move_button.setEnabled(idle and selected and self.tabs.count() > 1)
@@ -236,8 +263,8 @@ class ClassifierTrainer(QDialog):
         item.setData(_EXAMPLE, example)
         split = "Validation" if example.validation else "Labeled image"
         marker = " · Validation" if example.validation else ""
-        item.setText(f"{example.path.name}{marker}")
-        item.setToolTip(f"{split}\n{example.path}")
+        item.setText(f"{example.name}{marker}")
+        item.setToolTip(f"{split}\n{example.name}\n{example.path}")
 
     def _append_item(self, strip, example):
         item = QListWidgetItem(_thumbnail(example.path), "")
@@ -253,7 +280,7 @@ class ClassifierTrainer(QDialog):
 
     def add_images(self, paths):
         strip = self.tabs.currentWidget()
-        known = {example.path.resolve() for rows in self.assignments().values() for example in rows}
+        known = self._assigned_paths()
         duplicates = 0
         added = 0
         for path in map(Path, paths):
@@ -269,10 +296,46 @@ class ClassifierTrainer(QDialog):
         if duplicates:
             self.status.setText(f"Skipped {duplicates} image path(s) already assigned to a class.")
 
+    def _assigned_paths(self):
+        return {example.path.resolve() for rows in self.assignments().values() for example in rows}
+
+    def _capture_image(self, packet):
+        strip = self.tabs.currentWidget()
+        if strip is None or self.future is not None:
+            return
+        notice = self.image_picker.status_label
+        try:
+            pixels = image_pixels(opencv_image(packet.value))
+            digest = pixel_digest(pixels)
+            path = self.capture_paths.get(digest)
+            if path is not None and path in self._assigned_paths():
+                notice.setText("This capture is already assigned to a class.")
+                return
+            if path is None:
+                if self.capture_directory is None:
+                    self.capture_directory = TemporaryDirectory(prefix="dataflow-classifier-")
+                name = f"Capture {len(self.capture_paths) + 1:03d}"
+                path = Path(self.capture_directory.name).resolve() / f"{name}.png"
+                ok, encoded = cv2.imencode(".png", pixels)
+                if not ok:
+                    raise ValueError("Could not encode capture")
+                path.write_bytes(encoded.tobytes())
+                self.capture_paths[digest] = path
+        except (OSError, TypeError, ValueError, cv2.error) as exc:
+            notice.setText(f"Capture failed. {exc}")
+            return
+        self._append_item(strip, Example(path, display_name=path.stem))
+        self._invalidate()
+        height, width = pixels.shape[:2]
+        ticket = (packet.payload.get("ticket") or {}).get("value")
+        ticket_text = f" · ticket {ticket}" if ticket is not None else ""
+        label = self.tabs.tabText(self.tabs.currentIndex())
+        notice.setText(f"{path.stem} added to {label} · {width} × {height}{ticket_text}")
+
     def _toggle_validation(self):
         for item in self.tabs.currentWidget().selectedItems():
             example = item.data(_EXAMPLE)
-            self._set_example(item, Example(example.path, not example.validation))
+            self._set_example(item, replace(example, validation=not example.validation))
         self._invalidate()
 
     def _move_selected(self):
@@ -335,10 +398,15 @@ class ClassifierTrainer(QDialog):
             self._show_health(health)
         self._refresh_controls()
 
-    def _stop_polling(self):
+    def _close_training(self):
         self.timer.stop()
+        directory, self.capture_directory = self.capture_directory, None
         if self.future is not None:
             self.future.cancel()
+            if directory is not None:
+                self.future.add_done_callback(lambda _: directory.cleanup())
+        elif directory is not None:
+            directory.cleanup()
 
     def _show_health(self, health):
         labels = [self.tabs.tabText(i) for i in range(self.tabs.count())]
@@ -377,7 +445,7 @@ class ClassifierTrainer(QDialog):
                 expected = self.tabs.tabText(class_index)
                 predicted = self.tabs.tabText(prediction.predicted_index)
                 status = "Correct" if class_index == prediction.predicted_index else "Wrong"
-                item.setText(f"{example.path.name} · {status} ({prediction.score:.0f}%)")
+                item.setText(f"{example.name} · {status} ({prediction.score:.0f}%)")
                 item.setToolTip(
                     f"Held out · {status}\n"
                     f"Expected {expected}\n"

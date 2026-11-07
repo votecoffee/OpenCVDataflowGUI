@@ -1,10 +1,17 @@
 import math
-from types import SimpleNamespace
+from concurrent.futures import Future
 
 import cv2
 import numpy as np
 import pytest
+from PySide6.QtCore import Qt
+from PySide6.QtTest import QTest
+from PySide6.QtWidgets import QDialog, QInputDialog
 
+from opencv_dataflow.core import Graph
+from opencv_dataflow.payloads import ValuePacket
+from opencv_dataflow.plugin_dialog import PluginDialogContext
+from opencv_dataflow.simple_classifier.dataflow import ClassifyImage
 from opencv_dataflow.simple_classifier.model import (
     APPEARANCE,
     SURFACE_TEXTURE,
@@ -16,6 +23,7 @@ from opencv_dataflow.simple_classifier.model import (
     stage_classifier,
     train_classifier,
 )
+from opencv_dataflow.simple_classifier.qt_training import ClassifierTrainer
 
 
 @pytest.fixture
@@ -96,18 +104,11 @@ def test_automatic_holdout_and_duplicate_assignment(assignments):
 
 
 @pytest.mark.parametrize("profile", [APPEARANCE, SURFACE_TEXTURE])
-def test_filmstrip_stage_and_remove_assignment(assignments, tmp_path, monkeypatch, profile):
-    monkeypatch.setenv("QT_QPA_PLATFORM", "offscreen")
-    pytest.importorskip("PySide6")
-    from PySide6.QtCore import Qt
-    from PySide6.QtTest import QTest
-    from PySide6.QtWidgets import QApplication, QDialog, QInputDialog
-
-    from opencv_dataflow.simple_classifier.qt_training import ClassifierTrainer
-
-    app = QApplication.instance() or QApplication([])
+def test_filmstrip_stage_and_remove_assignment(app, assignments, tmp_path, monkeypatch, profile):
     draft = {"model": ""}
-    context = SimpleNamespace(project_dir=tmp_path)
+    graph = Graph()
+    graph.bind_project_dir(tmp_path)
+    context = PluginDialogContext(graph, graph.add(ClassifyImage()))
     dialog = ClassifierTrainer(None, draft, context)
     try:
         dialog.profile.setCurrentIndex(dialog.profile.findData(profile))
@@ -160,3 +161,27 @@ def test_filmstrip_stage_and_remove_assignment(assignments, tmp_path, monkeypatc
             reopened.reject()
     finally:
         dialog.reject()
+        graph.close()
+
+
+def test_closing_trainer_keeps_captures_until_the_running_worker_finishes(app):
+    graph = Graph()
+    context = PluginDialogContext(graph, graph.add(ClassifyImage()))
+    dialog = ClassifierTrainer(None, {"model": ""}, context)
+    worker = Future()
+    try:
+        dialog.add_class("Sample")
+        dialog._capture_image(ValuePacket(np.zeros((4, 6, 3), np.uint8), {}))
+        [capture] = dialog.assignments()["Sample"]
+        assert capture.path.is_file()
+        assert worker.set_running_or_notify_cancel()
+        dialog.future = worker
+        dialog.reject()
+        assert capture.path.is_file()
+        worker.set_result(None)
+        assert not capture.path.parent.exists()
+    finally:
+        if not worker.done():
+            worker.cancel()
+        dialog.reject()
+        graph.close()

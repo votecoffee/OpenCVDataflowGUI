@@ -25,6 +25,11 @@ PROFILES = {APPEARANCE: "Color and layout", SURFACE_TEXTURE: "Surface texture"}
 class Example:
     path: Path
     validation: bool = False
+    display_name: str = ""
+
+    @property
+    def name(self):
+        return self.display_name or self.path.name
 
 
 def image_pixels(image):
@@ -56,6 +61,13 @@ def read_image(path):
     if pixels is None:
         raise ValueError(f"Cannot decode image {path}")
     return image_pixels(pixels)
+
+
+def pixel_digest(pixels):
+    """Identify the canonical decoded pixels and their shape."""
+    digest = hashlib.sha256(str(pixels.shape).encode())
+    digest.update(pixels.tobytes())
+    return digest.digest()
 
 
 def image_features(image):
@@ -188,7 +200,7 @@ def train_classifier(assignments, *, profile=APPEARANCE):
         rows = []
         for image_index, example in enumerate(samples):
             pixels = read_image(example.path)
-            key = hashlib.sha256(str(pixels.shape).encode() + pixels.tobytes()).digest()
+            key = pixel_digest(pixels)
             if key in seen:
                 raise ValueError(f"Duplicate image assignment in {label!r} and {seen[key]!r}")
             seen[key] = label
@@ -260,7 +272,10 @@ def stage_classifier(project_dir, assignments, model, health, *, revision=None):
                     stored.parent.mkdir(exist_ok=True)
                     stored.write_bytes(content)
                     relative = (target / "images" / name).relative_to(root)
-                rows.append({"path": relative.as_posix(), "validation": example.validation})
+                row = {"path": relative.as_posix(), "validation": example.validation}
+                if example.display_name:
+                    row["display_name"] = example.display_name
+                rows.append(row)
             classes.append({"label": label, "images": rows})
         if model.surface is not None:
             model.surface.save(bundle / "surface.npz")
@@ -299,7 +314,10 @@ def load_assignments(project_dir, manifest):
     _, root, data = read_manifest(project_dir, manifest)
     assignments = {
         entry["label"]: [
-            Example(_project_path(root, row["path"]), row["validation"]) for row in entry["images"]
+            Example(
+                _project_path(root, row["path"]), row["validation"], row.get("display_name", "")
+            )
+            for row in entry["images"]
         ]
         for entry in data["classes"]
     }

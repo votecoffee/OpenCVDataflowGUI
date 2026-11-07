@@ -19,6 +19,7 @@ class ClassifyImage(Block):
     defaults = {"model": ""}
     parameter_help = {"model": "Project-relative manifest staged by the classifier trainer."}
     plugin_dialog_label = "Train image classifier…"
+    plugin_dialog_modeless = True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

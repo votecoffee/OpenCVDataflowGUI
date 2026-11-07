@@ -16,8 +16,18 @@ divided by the winning score, expressed as a percentage.
 
 Select **Classify image** and click **Train image classifier…** to review
 labeled filmstrips, held-out predictions, and the confusion matrix. Click
-**New class…** and **Add images…** to start a new recipe. After training, stage
-the model, apply the inspector configuration, and save the project.
+**New class…** and **Add images…** to label files from disk.
+
+To label images from the pipeline, select a class tab and open **Capture from
+graph**. Run the graph with the trainer open, then click **Capture image**.
+**Wired input / image** captures the latest image on the classifier's input
+at the configured pyramid level. The picker also offers the last processed
+input and other cached image outputs. Each capture appears in the active
+filmstrip. Use **Toggle validation** to hold out selected captures.
+
+After training, stage the model, apply the inspector configuration, and save
+the project. Staging copies the captured PNGs into the model revision, so the
+filmstrips can reopen with the project.
 
 The [optional plugin entry point](classifier_plugin.py) can also be loaded
 through **File → Load Python plugin…**. The bundled implementation was
