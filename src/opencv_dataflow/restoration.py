@@ -7,7 +7,7 @@ import numpy as np
 
 from .core import Port, Result
 from .deblur import WienerDeblur
-from .images import ImageArray, convert_depth, image_format
+from .images import ImageArray, convert_depth, format_image, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import (
     FlowGroup,
@@ -412,6 +412,85 @@ class DomainTransformFilter(AlignedGuideFilter):
         )
 
 
+class SeamlessClone(ImageTool):
+    type_id, title, subtype = "cv.seamless_clone", "Seamless clone", "Compositing"
+    inputs = (Port("source"), Port("destination"), *SELECTION_INPUTS[1:])
+    payload_reference = "destination"
+    modes = {
+        "normal": cv2.NORMAL_CLONE,
+        "mixed": cv2.MIXED_CLONE,
+        "monochrome_transfer": cv2.MONOCHROME_TRANSFER,
+        "normal_wide": cv2.NORMAL_CLONE_WIDE,
+        "mixed_wide": cv2.MIXED_CLONE_WIDE,
+        "monochrome_transfer_wide": cv2.MONOCHROME_TRANSFER_WIDE,
+    }
+    defaults = {"mode": "normal", "center_x": -1, "center_y": -1}
+    parameter_choices = {"mode": tuple(modes)}
+    parameter_ranges = {
+        "center_x": NumericRange(-1, whole=True),
+        "center_y": NumericRange(-1, whole=True),
+    }
+    parameter_help = {
+        "mode": "Wide modes place the full source center. Other modes center the selected bounds.",
+        "center_x": "Destination column in pixels. Use -1 for the destination center.",
+        "center_y": "Destination row in pixels. Use -1 for the destination center.",
+    }
+    input_help = {
+        "source": "8-bit color patch to blend.",
+        "destination": "8-bit color image that supplies the output size and coordinate frame.",
+        "mask": "Optional 8-bit binary mask in source coordinates. Intersects the region if given.",
+        "region": "Optional rectangle, circle, or polygon in source coordinates.",
+    }
+
+    def process(self, inputs):
+        source, destination = inputs["source"], inputs["destination"]
+        patch = image_value(source, (np.uint8,), canonical=True)
+        target = image_value(destination, (np.uint8,), canonical=True)
+        if patch.ndim != 3 or target.ndim != 3 or not patch.size or not target.size:
+            raise ValidationError("Seamless clone requires two nonempty 8-bit color images")
+        mask = selection_mask({**inputs, "image": source}, patch)
+        if mask is None:
+            mask = np.full(patch.shape[:2], 255, np.uint8)
+        x, y, width, height = cv2.boundingRect(mask)
+        if not width:
+            return encoded_result(
+                np.asarray(destination).copy(), destination, message="Empty source selection"
+            )
+        if min(width, height) < 3:
+            raise ValidationError("The selected source bounds must be at least 3 × 3 pixels")
+
+        p = self.parameters
+        target_height, target_width = target.shape[:2]
+        cx = target_width // 2 if p["center_x"] == -1 else p["center_x"]
+        cy = target_height // 2 if p["center_y"] == -1 else p["center_y"]
+        offset_x, offset_y = width // 2, height // 2
+        if p["mode"].endswith("_wide"):
+            offset_x, offset_y = patch.shape[1] // 2 - x, patch.shape[0] // 2 - y
+        left, top = cx - offset_x, cy - offset_y
+        if (
+            not 0 <= cx < target_width or not 0 <= cy < target_height
+            or not 0 <= left <= target_width - width or not 0 <= top <= target_height - height
+        ):
+            raise ValidationError(
+                "The selected source bounds must fit at the destination center",
+                "center_x", "center_y",
+            )
+
+        # The native binding clears the outer mask pixels. Padding preserves a
+        # selection that reaches the edge without shifting either center convention.
+        padded_patch = cv2.copyMakeBorder(patch[..., :3], 1, 1, 1, 1, cv2.BORDER_CONSTANT)
+        padded_mask = cv2.copyMakeBorder(mask, 1, 1, 1, 1, cv2.BORDER_CONSTANT)
+        target = target[..., :3]
+        output = cv2.seamlessClone(
+            padded_patch, target, padded_mask, (cx, cy), self.modes[p["mode"]]
+        )
+        encoded = format_image(output, image_format(destination), "unchanged")
+        result = np.asarray(destination).copy()
+        changed = np.any(output != target, axis=2)
+        result[..., :3][changed] = encoded[..., :3][changed]
+        return encoded_result(result, destination)
+
+
 RESTORATION_BLOCKS = (
     NonLocalMeans,
     TemporalNonLocalMeans,
@@ -420,4 +499,5 @@ RESTORATION_BLOCKS = (
     Inpaint,
     GuidedFilter,
     DomainTransformFilter,
+    SeamlessClone,
 )

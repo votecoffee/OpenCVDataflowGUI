@@ -4372,7 +4372,7 @@ P3	function	cv2.saveMesh	no static reference	-
 P3	function	cv2.savePointCloud	no static reference	-
 P3	function	cv2.scaleAdd	no static reference	-
 P3	function	cv2.Scharr	literal reference	-
-P3	function	cv2.seamlessClone	no static reference	-
+P3	function	cv2.seamlessClone	literal reference	-
 P3	class	cv2.segmentation.IntelligentScissorsMB	no static reference	-
 P3	method	cv2.segmentation.IntelligentScissorsMB.applyImage	no static reference	-
 P3	method	cv2.segmentation.IntelligentScissorsMB.applyImageFeatures	no static reference	-

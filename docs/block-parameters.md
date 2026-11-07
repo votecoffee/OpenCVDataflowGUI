@@ -2391,6 +2391,26 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `scale` | `1.0` | Value must be a finite number. Multiply each stored sample by this value before applying the offset. |
 | `offset` | `0.0` | Value must be a finite number. Add this value to the scaled sample before taking the absolute value. |
 
+## Seamless clone (`cv.seamless_clone`)
+
+Image processing / Compositing
+
+Inputs: `source` (image), `destination` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `source` — 8-bit color patch to blend.
+
+Input `destination` — 8-bit color image that supplies the output size and coordinate frame.
+
+Input `mask` — Optional 8-bit binary mask in source coordinates. Intersects the region if given.
+
+Input `region` — Optional rectangle, circle, or polygon in source coordinates.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"normal"` | `normal`, `mixed`, `monochrome_transfer`, `normal_wide`, `mixed_wide`, `monochrome_transfer_wide` Wide modes place the full source center. Other modes center the selected bounds. |
+| `center_x` | `-1` | Value must be a whole number at least -1. Destination column in pixels. Use -1 for the destination center. |
+| `center_y` | `-1` | Value must be a whole number at least -1. Destination row in pixels. Use -1 for the destination center. |
+
 ## Separable 2D filter (`cv.separable_filter`)
 
 Image processing / Filtering
@@ -4299,6 +4319,36 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `sigma` | `1.6` | Value must be a finite number between 0.01 and 100. |
 | `descriptor_depth` | `"float32"` | `float32`, `uint8` |
 | `precise_upscale` | `false` | Use OpenCV's precise initial upscale to reduce localization bias. |
+
+## Simple blob detector (`inspect.simple_blob_detector`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `mask` — Accept only blob centers inside the mask. The source is not clipped.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `min_threshold` | `50.0` | Value must be a finite number between 0 and 255. |
+| `max_threshold` | `220.0` | Value must be a finite number between 0 and 256. The threshold sweep stops before this value. |
+| `threshold_step` | `10.0` | Value must be a finite number between 0.1 and 256. |
+| `min_distance` | `10.0` | Value must be a finite number between 0.001 and 16384. Minimum distance in pixels for treating nearby centers as separate blobs. |
+| `min_repeatability` | `2` | Value must be a whole number between 1 and 2560. Minimum observations needed to retain a grouped blob. |
+| `polarity` | `"dark"` | `dark`, `light`, `any` |
+| `filter_area` | `true` |  |
+| `min_area` | `25.0` | Value must be a finite number between 0.001 and 6.4e+07. |
+| `max_area` | `5000.0` | Value must be a finite number between 0.001 and 6.4e+07. Upper limit for contour area in square pixels, exclusive. |
+| `filter_circularity` | `false` |  |
+| `min_circularity` | `0.8` | Value must be a finite number between 1e-06 and 2. |
+| `max_circularity` | `1.01` | Value must be a finite number between 1e-06 and 2. Upper limit is exclusive. Set above 1 to accept an exact ratio of 1. |
+| `filter_inertia` | `true` |  |
+| `min_inertia` | `0.1` | Value must be a finite number between 1e-06 and 2. |
+| `max_inertia` | `1.01` | Value must be a finite number between 1e-06 and 2. Upper limit is exclusive. Set above 1 to accept an exact ratio of 1. |
+| `filter_convexity` | `true` |  |
+| `min_convexity` | `0.95` | Value must be a finite number between 1e-06 and 2. |
+| `max_convexity` | `1.01` | Value must be a finite number between 1e-06 and 2. Upper limit is exclusive. Set above 1 to accept an exact ratio of 1. |
+| `minimum_count` | `0` | Value must be a whole number between 0 and 100000. Minimum detected blobs for a pass. Zero disables the count check. |
 
 ## Skeletonize mask (scikit-image) (`inspect.skeletonize`)
 

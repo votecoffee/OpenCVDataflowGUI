@@ -627,6 +627,7 @@ def builtin_registry():
     from .analysis_tools import ANALYSIS_BLOCKS
     from .annoy_blocks import ANNOY_BLOCKS
     from .basic_processing import BASIC_PROCESSING_BLOCKS
+    from .blob_detection import SimpleBlobDetection
     from .calibration import (
         CalibrationGrid,
         ColorBalance,
@@ -825,6 +826,7 @@ def builtin_registry():
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,
         *COLLECTION_BLOCKS,
+        SimpleBlobDetection,
         HoughPointSetLines,
         HoughPolarLines,
         *CONTOUR_ANALYSIS_BLOCKS,

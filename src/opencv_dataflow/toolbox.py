@@ -93,7 +93,7 @@ BLOCK_MODULES = {
     "geometry": "inspect.affine inspect.homography collection.clip_lines",
     "features": (
         "inspect.fast inspect.orb inspect.sift inspect.akaze inspect.kaze inspect.brisk "
-        "inspect.mser "
+        "inspect.mser inspect.simple_blob_detector "
         "inspect.match_orb inspect.match_sift inspect.match_akaze inspect.match_brisk "
         "inspect.match_descriptor_radius"
     ),
@@ -133,6 +133,8 @@ _NATIVE_NAMES = {
     "inspect.contours": ("findContours",),
     "inspect.corners": ("goodFeaturesToTrack",),
     "inspect.blobs": ("connectedComponentsWithStats",),
+    "inspect.simple_blob_detector": ("SimpleBlobDetector", "SimpleBlobDetector_create"),
+    "cv.seamless_clone": ("seamlessClone",),
     "inspect.components": ("connectedComponents", "connectedComponentsWithStats"),
     "inspect.line_segments": ("HoughLinesP", "createLineSegmentDetector"),
     "inspect.fit_shape": ("fitEllipse", "fitLine", "minEnclosingCircle"),

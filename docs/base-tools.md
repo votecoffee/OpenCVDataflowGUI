@@ -35,6 +35,8 @@ The portable `examples/custom tools/trained_patterns/trained_patterns.json` job 
 | Image math | Weighted blend | `addWeighted`; explicit alpha, beta and gamma |
 | Edges | Sobel / Scharr / Laplacian | Signed float32 derivative and a separate uint8 absolute-magnitude preview |
 | Inspection / Shapes | Connected components | `connectedComponentsWithStats`; area filtering, bounds, centroids, count, overlay and mask |
+| Inspection / Shapes | Simple blob detector | `SimpleBlobDetector`; threshold sweep with color, repeatability, separation, area, circularity, inertia and convexity controls. The optional mask/region filters keypoint centers. Outputs approximate circles for collection sorting and overlay. |
+| Compositing | Seamless clone | `seamlessClone`; six gradient blend modes, a source-space mask/region and placement in destination pixels. Output retains the destination coordinate frame, color encoding and alpha. |
 | Inspection / Matching | Match template | `matchTemplate`; normalized coefficient, correlation or squared-difference matching |
 
 Older tools remain available: Advanced G-API grayscale/Gaussian blur/Canny, fixed
