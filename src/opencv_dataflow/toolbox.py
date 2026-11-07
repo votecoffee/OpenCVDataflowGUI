@@ -6,8 +6,10 @@ from dataclasses import dataclass
 from PySide6.QtCore import QMimeData, Qt
 from PySide6.QtWidgets import QAbstractItemView, QTreeWidget, QTreeWidgetItem
 
+from .visual_style import INDUSTRIAL
+
 TOOL_MIME = "application/x-opencv-dataflow-tool"
-TOOL_SOURCES = ("OpenCV", "scikit-image", "Custom", "User")
+TOOL_SOURCES = ("OpenCV", "scikit-image", INDUSTRIAL, "Custom", "User")
 
 OPENCV_MODULES = {
     "imgproc": "Image Processing",
@@ -165,6 +167,8 @@ def block_entry(block):
     type_id = block.type_id
     if package != "opencv_dataflow":
         path = ("User", kind, subtype)
+    elif kind == INDUSTRIAL:
+        path = (INDUSTRIAL, subtype)
     elif file == "skeleton":
         family = "Graph" if type_id == "inspect.prune_skeleton" else "Morphology"
         path = ("scikit-image", family)

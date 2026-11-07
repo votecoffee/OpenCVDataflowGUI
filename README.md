@@ -47,6 +47,10 @@ Browse the [example catalog](examples/README.md) for runnable projects organized
 by workflow. Examples with bundled photographs link to their
 [image sources and licenses](examples/assets/photograph-sources.md).
 
+**Industrial integration** includes ControlLogix tag reads, triggers and writeback,
+plus FANUC register access and ticketed robot poses for hand–eye calibration.
+[Industrial integration guide](docs/industrial-integration.md)
+
 **3D vision** includes camera and pose geometry, stereo calibration/rectification,
 disparity, RGB-D projection and registration, point clouds, ICP/PPF, ArUco,
 structured light, odometry, and posed TSDF fusion. Try [stereo cloud](<examples/opencv tools/stereo_cloud/stereo_cloud.json>), press **Run once**, and open **Results > 3D point-cloud viewer…**.
@@ -81,7 +85,8 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
 
 ![Editor showing the synthetic inspection demo](docs/images/editor.png)
 
-1. Expand **OpenCV**, **scikit-image**, **Custom**, or **User** in the left toolbox.
+1. Expand **OpenCV**, **scikit-image**, **Industrial integration**, **Custom**, or **User**
+   in the left toolbox.
    OpenCV tools follow the OpenCV 5 modules, such as **Image Processing (imgproc)**
    and **Video Analysis (video)**. Search by tool name, module, or common API names
    such as `cv2.findContours`. Drag a tool onto the canvas to place it, or double-click

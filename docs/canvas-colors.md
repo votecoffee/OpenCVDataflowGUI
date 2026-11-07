@@ -43,7 +43,7 @@ Block borders indicate the block's functional category, with purple **Regions** 
 blue **Poses** subtypes. Input tools use teal, outputs coral, image processing gold,
 inspection mauve, calibration mint, control flow blue-gray, sequence memory indigo,
 data slate, recipes pink, ML rose, 3D vision sea green, advanced tools tan and reusable
-ToolBlocks violet-blue.
+ToolBlocks violet-blue. Industrial integration uses warm tan.
 Unrecognized custom categories use neutral gray. The minimap uses these same block
 category colors.
 

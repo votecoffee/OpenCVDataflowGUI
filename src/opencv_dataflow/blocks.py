@@ -658,6 +658,7 @@ def builtin_registry():
     from .dnn_blocks import DNN_BLOCKS
     from .ecc_registration import AlignECC
     from .examples3d import StereoDemo
+    from .fanuc import FANUC_BLOCKS
     from .feature_covariance import FitFeatureCovariance, MahalanobisDistance
     from .features import FEATURE_BLOCKS
     from .fourier_correlation import FourierCorrelation
@@ -684,6 +685,7 @@ def builtin_registry():
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .linear_program import SolveLinearProgram
     from .linear_system import SolveLinearSystem
+    from .logix import LOGIX_BLOCKS
     from .matrix_eigen import MatrixEigen
     from .matrix_inverse import InvertMatrix
     from .matrix_multiply import MultiplyMatrices
@@ -753,6 +755,8 @@ def builtin_registry():
     for block in (
         DemoImage,
         RandomImage,
+        *LOGIX_BLOCKS,
+        *FANUC_BLOCKS,
         ImageFile,
         VideoFile,
         TiffFile,

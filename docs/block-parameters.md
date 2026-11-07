@@ -2967,6 +2967,94 @@ Inputs: `image` (image), `depth` (depth).
 
 No configurable algorithm parameters.
 
+## Commit approved FANUC register write (`industrial.fanuc_commit_register`)
+
+Industrial integration / FANUC
+
+Inputs: `approval` (data), `enable` (boolean).
+
+Input `approval` — Operator-approved plan_id, review_sha256 and approved_sha256 for this target.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `profile` | `""` | Local Workbench JSON policy for the configured robot. |
+| `robot_id` | `""` |  |
+| `timeout_seconds` | `15.0` | Value must be a finite number between 1 and 120. |
+| `target` | `""` | Use R[index] or PR[group,index]. |
+| `write_enabled` | `false` |  |
+
+## FANUC Cartesian pose (`industrial.fanuc_pose`)
+
+Industrial integration / FANUC
+
+Inputs: `position` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `source_frame` | `"gripper"` | Name of the sampled tool frame. Use gripper for flange samples. |
+| `target_frame` | `"base"` | Name of the sampled user frame. Use base for UF 0. |
+| `expected_user_frame` | `0` | Value must be a whole number between 0 and 255. Reject a sample measured in any other user frame. |
+| `expected_user_tool` | `0` | Value must be a whole number between 0 and 255. Reject a sample measured with any other user tool. |
+
+## Read FANUC current position (`industrial.fanuc_position`)
+
+Industrial integration / FANUC
+
+Inputs: `trigger` (any, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `profile` | `""` | Local Workbench JSON policy for the configured robot. |
+| `robot_id` | `""` |  |
+| `timeout_seconds` | `15.0` | Value must be a finite number between 1 and 120. |
+| `group` | `1` | Value must be a whole number between 1 and 8. |
+| `enabled` | `false` |  |
+
+## Prepare FANUC register write (`industrial.fanuc_prepare_register`)
+
+Industrial integration / FANUC
+
+Inputs: `reference` (data), `change` (data), `enable` (boolean).
+
+Input `reference` — Preserved reference output of a matching FANUC register read.
+
+Input `change` — Numeric register {"type":"integer","value":42} or PR {"values":{"X":12}}.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `profile` | `""` | Local Workbench JSON policy for the configured robot. |
+| `robot_id` | `""` |  |
+| `timeout_seconds` | `15.0` | Value must be a finite number between 1 and 120. |
+| `target` | `""` | Use R[index] or PR[group,index]. |
+| `enabled` | `false` |  |
+
+## Read FANUC register (`industrial.fanuc_register`)
+
+Industrial integration / FANUC
+
+Inputs: `trigger` (any, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `profile` | `""` | Local Workbench JSON policy for the configured robot. |
+| `robot_id` | `""` |  |
+| `timeout_seconds` | `15.0` | Value must be a finite number between 1 and 120. |
+| `target` | `""` | Use R[index] or PR[group,index]. |
+| `enabled` | `false` |  |
+
+## Write Logix tag (`industrial.logix_write`)
+
+Industrial integration / ControlLogix
+
+Inputs: `value` (any), `enable` (boolean).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `route` | `""` | Controller IP or explicit CIP route, such as 192.0.2.1/0. |
+| `timeout_seconds` | `2.0` | Value must be a finite number between 0.1 and 30. |
+| `tag` | `""` | One explicit scalar destination, including a specific UDT member or array element. |
+| `write_enabled` | `false` | Also wire a true enable input for each intended write. |
+
 ## Load calibration profile (`input.calibration`)
 
 Input / Calibration profiles
@@ -3087,6 +3175,24 @@ Ticket mode and fixed value are common inspector controls.
 | --- | --- | --- |
 | `path` | `""` |  |
 | `path_base` | `"working_directory"` | `working_directory`, `project` |
+
+## Read Logix tags and trigger (`input.logix_tags`)
+
+Industrial integration / ControlLogix
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `route` | `""` | Controller IP or explicit CIP route, such as 192.0.2.1/0. |
+| `timeout_seconds` | `2.0` | Value must be a finite number between 0.1 and 30. |
+| `enabled` | `false` |  |
+| `tags` | `[]` | Ordered JSON list of up to 32 named tags. Read with the trigger and ticket tags. |
+| `trigger_tag` | `""` | Optional BOOL or integer tag. With no trigger tag, emit each poll. |
+| `trigger_mode` | `"rising"` | `rising`, `change`, `high` Rising and change establish a baseline on the first successful poll. |
+| `ticket_tag` | `""` | Optional numeric or text sequence tag to use as the acquisition ticket. |
+| `value_tag` | `""` | Optional tag to expose as an individual value port. |
 
 ## Repeated parts demo (`input.parts_demo`)
 

@@ -3,6 +3,7 @@
 from .port_types import NUMERIC_KINDS
 
 DEFAULT_NODE_SIZE = "medium"
+INDUSTRIAL = "Industrial integration"
 # Width, socket row spacing, and thumbnail height in scene units.
 NODE_SIZES = {"small": (168, 22, 0), "medium": (220, 25, 90), "large": (320, 30, 160)}
 
@@ -58,6 +59,7 @@ BLOCK_COLORS = {
     "ToolBlocks": "#9399ed",
     "ML": "#e18cc8",
     "3D vision": "#63c5b7",
+    INDUSTRIAL: "#e2bb80",
     "Custom": "#c2cbd5",
 }
 
