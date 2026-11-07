@@ -67,6 +67,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Seeded random images and noise](image_processing/seeded_noise/README.md) | Compare two independently scheduled noise branches for exact agreement. |
 | [Skeletonization and spur pruning](image_processing/skeleton_pruning/README.md) | Extract a binary centerline and visualize the short branches removed from it. |
 | [Stitch an ordered inspection scan](image_processing/stitch_scan_sequence/README.md) | Automatically register a three-tile scan and measure only covered pixels. |
+| [Close the loop on an inspection scan](image_processing/stitch_scan_loop/README.md) | Compare adjacent registration with a bounded correction when the scan returns to its first view. |
 | [Correct exposure in an inspection scan](image_processing/stitch_scan_exposure/README.md) | Compare raw and exposure-matched 16-bit mosaics with feathered seams. |
 | [Stitch overlapping inspection views](image_processing/stitch_image_pair/README.md) | Reconstruct a scan from two crops and verify covered pixels against the original. |
 | [Temporal non-local means](image_processing/temporal_nlm/README.md) | Denoise the middle frame of a short sequence and preserve its ticket. |

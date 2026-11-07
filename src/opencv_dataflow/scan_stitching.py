@@ -105,7 +105,20 @@ def _pairs(matcher, source, target, ratio, distance):
     ).reshape(-1, 2)
 
 
-def _estimate(source, target, settings, report):
+def _reprojection_rms(matrix, source, target):
+    residuals = source @ matrix[:2, :2].T + matrix[:2, 2] - target
+    return float(np.sqrt(np.mean(np.sum(residuals**2, axis=1))))
+
+
+def _register(matcher, current, reference, settings, report):
+    source, target = _pairs(
+        matcher,
+        current,
+        reference,
+        float(settings["match_ratio"]),
+        float(settings["max_descriptor_distance"]),
+    )
+    report["matches"] = len(source)
     minimum = int(settings["min_inliers"])
     if len(source) < minimum:
         report["status"] = "insufficient_matches"
@@ -142,13 +155,51 @@ def _estimate(source, target, settings, report):
     ):
         report["status"] = "motion_out_of_range"
         return None
-    residuals = source[inliers] @ matrix[:2, :2].T + matrix[:2, 2] - target[inliers]
+    points = source[inliers], target[inliers]
     report.update(
         status="registered",
-        rms_pixels=float(np.sqrt(np.mean(np.sum(residuals**2, axis=1)))),
-        source_to_previous=matrix.tolist(),
+        rms_pixels=_reprojection_rms(matrix, *points),
     )
-    return matrix
+    return matrix, points
+
+
+def _max_corner_shift(image, before, after):
+    h, w = image.shape[:2]
+    corners = np.array([[0, 0, 1], [w - 1, 0, 1], [0, h - 1, 1], [w - 1, h - 1, 1]])
+    return float(np.linalg.norm(corners @ (after - before)[:2].T, axis=1).max())
+
+
+def _distribute_loop_drift(pixels, transforms, closing, adjacent, settings, layout):
+    report = layout["closure"]
+    report["source_to_anchor"] = closing.tolist()
+    report["uncorrected_drift_pixels"] = _max_corner_shift(pixels[-1], transforms[-1], closing)
+    correction = closing @ np.linalg.inv(transforms[-1])
+    # Blending two similarities preserves their form. Reject a large rotation
+    # disagreement before interpolating, which could otherwise collapse a view.
+    if correction[0, 0] <= 0:
+        report["status"] = "rotation_disagreement"
+        return None
+    last = len(transforms) - 1
+    adjusted = [transforms[0]]
+    for i, matrix in enumerate(transforms[1:-1], start=1):
+        adjusted.append(matrix + (i / last) * (correction @ matrix - matrix))
+    adjusted.append(closing)
+    report["max_adjustment_pixels"] = max(
+        _max_corner_shift(image, before, after)
+        for image, before, after in zip(pixels, transforms, adjusted, strict=True)
+    )
+    if report["max_adjustment_pixels"] > float(settings["max_loop_drift_pixels"]):
+        report["status"] = "drift_out_of_range"
+        return None
+    for index, (pair, points) in enumerate(zip(layout["pairs"], adjacent, strict=True)):
+        relative = np.linalg.solve(adjusted[index], adjusted[index + 1])
+        pair["adjusted_rms_pixels"] = _reprojection_rms(relative, *points)
+    if max(pair["adjusted_rms_pixels"] for pair in layout["pairs"]) > float(
+        settings["inlier_pixels"]
+    ):
+        report["status"] = "adjusted_fit_out_of_range"
+        return None
+    return adjusted
 
 
 class StitchScanSequence(ImageTool):
@@ -176,6 +227,8 @@ class StitchScanSequence(ImageTool):
         "max_scale_ratio": 1.15,
         "max_rotation_degrees": 15.0,
         "min_overlap_pixels": 64,
+        "loop_closure": False,
+        "max_loop_drift_pixels": 8.0,
         "interpolation": "linear",
         "blend": "prefer_first",
         "feather_width": 32,
@@ -200,6 +253,7 @@ class StitchScanSequence(ImageTool):
         "max_scale_ratio": NumericRange(1, 2),
         "max_rotation_degrees": NumericRange(0, 180),
         "min_overlap_pixels": NumericRange(1, 16_777_216, whole=True),
+        "max_loop_drift_pixels": NumericRange(0, 512),
         "feather_width": NumericRange(1, 512, whole=True),
         "min_exposure_samples": NumericRange(1, MAX_EXPOSURE_SAMPLES, whole=True),
         "max_exposure_gain": NumericRange(1, 8),
@@ -208,9 +262,12 @@ class StitchScanSequence(ImageTool):
     parameter_help = {
         "motion_model": "Similarity additionally fits rotation and uniform scale.",
         "match_ratio": "Require a distinctive nearest descriptor in both matching directions.",
+        "inlier_pixels": "Fit threshold and maximum adjacent RMS error after loop adjustment.",
         "min_inliers": "Minimum distinct correspondences supporting each adjacent transform.",
         "max_scale_ratio": "Similarity scale range is the reciprocal of this ratio to the ratio.",
-        "min_overlap_pixels": "Minimum number of valid overlapping pixels for each adjacent pair.",
+        "min_overlap_pixels": "Minimum valid overlap for each adjacent pair and the closing pair.",
+        "loop_closure": "Require an independent match from the last view back to the first.",
+        "max_loop_drift_pixels": "Maximum allowed corner adjustment in first-view pixels.",
         "blend": "Prefer the earliest or latest covered view, or feather across valid edges.",
         "feather_width": "Distance from a valid edge, in mosaic pixels, to reach full weight.",
         "exposure": "Match the first view using a median gain or offset from valid overlaps.",
@@ -226,6 +283,8 @@ class StitchScanSequence(ImageTool):
     def validate_parameters(self, parameters=None):
         super().validate_parameters(parameters)
         p = self.parameters if parameters is None else parameters
+        if not isinstance(p["loop_closure"], bool):
+            raise ValidationError("Loop closure must be a boolean", "loop_closure")
         if int(p["min_inliers"]) > int(p["max_features"]):
             raise ValidationError(
                 "Minimum inliers exceeds maximum features", "min_inliers", "max_features"
@@ -245,34 +304,47 @@ class StitchScanSequence(ImageTool):
         group = inputs["views"]
         images, pixels, masks, contexts = _unpack(group, inputs.get("masks"))
         p = self.parameters
+        close_loop = p["loop_closure"]
+        if close_loop and len(images) < 3:
+            raise ValidationError("Loop closure requires at least three views", "loop_closure")
         maximum = int(p["max_features"])
         detector = cv2.SIFT_create(maximum)
         matcher = cv2.BFMatcher(cv2.NORM_L2)
         layout = {"model": "scan_mosaic_v1", "view_count": len(images), "pairs": []}
         transforms = [np.eye(3)]
+        adjacent = []
         previous = _features(detector, images[0], masks[0], maximum)
+        first = previous if close_loop else None
         for index in range(1, len(images)):
             current = _features(detector, images[index], masks[index], maximum)
-            source, target = _pairs(
-                matcher,
-                current,
-                previous,
-                float(p["match_ratio"]),
-                float(p["max_descriptor_distance"]),
-            )
-            report = {"view_index": index, "previous_index": index - 1, "matches": len(source)}
+            report = {"view_index": index, "previous_index": index - 1}
             layout["pairs"].append(report)
-            transform = _estimate(source, target, p, report)
-            if transform is None:
+            fit = _register(matcher, current, previous, p, report)
+            if fit is None:
                 return self._reject(layout, report, "scan_registration_failed")
+            transform, points = fit
+            report["source_to_previous"] = transform.tolist()
             transforms.append(transforms[-1] @ transform)
+            if close_loop:
+                adjacent.append(points)
             previous = current
+        closure = None
+        if close_loop:
+            closure = {"view_index": len(images) - 1, "previous_index": 0}
+            layout["closure"] = closure
+            fit = _register(matcher, previous, first, p, closure)
+            if fit is None:
+                return self._reject(layout, closure, "scan_loop_closure_failed")
+            closing, _ = fit
+            transforms = _distribute_loop_drift(pixels, transforms, closing, adjacent, p, layout)
+            if transforms is None:
+                return self._reject(layout, closure, "scan_loop_closure_failed")
 
         dtype = pixels[0].dtype
         channels = 1 if pixels[0].ndim == 2 else pixels[0].shape[2]
         fit_exposure = p["exposure"] != "none"
         feather = p["blend"] == "feather"
-        extra_bytes = 0
+        extra_bytes = 2 if close_loop else 0
         # Include retained warped views, sample indices, and blend/cast buffers.
         if fit_exposure:
             extra_bytes += 9 + channels * (dtype.itemsize + 16)
@@ -288,6 +360,7 @@ class StitchScanSequence(ImageTool):
         counts = np.zeros((height, width), dtype=np.uint8)
         layout["views"] = []
         interpolation = _INTERPOLATION[p["interpolation"]]
+        first_valid = None
         previous_valid = None
         previous_warped = None
         correction = IDENTITY_EXPOSURE
@@ -308,6 +381,15 @@ class StitchScanSequence(ImageTool):
                 if report["overlap_pixels"] < int(p["min_overlap_pixels"]):
                     report["status"] = "insufficient_overlap"
                     return self._reject(layout, report, "scan_insufficient_overlap")
+            if closure is not None:
+                if index == 0:
+                    first_valid = valid
+                elif index == closure["view_index"]:
+                    closure["overlap_pixels"] = int(np.count_nonzero(first_valid & valid))
+                    if closure["overlap_pixels"] < int(p["min_overlap_pixels"]):
+                        closure["status"] = "insufficient_overlap"
+                        return self._reject(layout, closure, "scan_loop_closure_failed")
+                    closure["status"] = "closed"
             warped = warp_mosaic_view(image, to_mosaic, size, interpolation)
             if previous_warped is not None:
                 correction, exposure_report = fit_overlap_exposure(

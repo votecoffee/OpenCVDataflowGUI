@@ -26,6 +26,8 @@ Find **Stitch scan sequence** under **Image processing → Geometry**.
 
 Use ordered, textured views of a mostly planar scene. The registration
 follows adjacent pairs, so errors can accumulate along a long scan.
+If the last view returns to the first, see the
+[loop closure example](../stitch_scan_loop/README.md) for drift correction.
 The example uses nearest-neighbor resampling to verify the covered pixels
 against their source tiles.
 [OpenCV feature matching](https://docs.opencv.org/5.0/py_tutorials/py_features/py_matcher/py_matcher.html)
