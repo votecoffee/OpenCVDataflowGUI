@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "test_images",
+      "type": "input.file",
+      "name": "VegQual held-out test images",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "images/test/fresh_potato/01.jpg",
+          "images/test/fresh_potato/02.jpg",
+          "images/test/fresh_potato/03.jpg",
+          "images/test/fresh_potato/04.jpg",
+          "images/test/defected_Potato/01.jpg",
+          "images/test/defected_Potato/02.jpg",
+          "images/test/defected_Potato/03.jpg",
+          "images/test/defected_Potato/04.jpg",
+          "images/test/fresh_capsicum/01.jpg",
+          "images/test/fresh_capsicum/02.jpg",
+          "images/test/fresh_capsicum/03.jpg",
+          "images/test/fresh_capsicum/04.jpg",
+          "images/test/defected_capsicum/01.jpg",
+          "images/test/defected_capsicum/02.jpg",
+          "images/test/defected_capsicum/03.jpg",
+          "images/test/defected_capsicum/04.jpg"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "classifier",
+      "type": "inspect.simple_classify_image",
+      "name": "Classify image",
+      "parameters": {
+        "model": "assets/image_classification/vegqual-v4-surface/manifest.json"
+      },
+      "position": [
+        340.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "label",
+        "score",
+        "confusion",
+        "probabilities"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "test_images",
+      "output": "image",
+      "target": "classifier",
+      "input": "image"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 # Application examples
 
 The [applications index](../README.md#applications) lists saved projects
-for part location, conveyor inspection, measurement, color checks, and
+for part location, conveyor inspection, measurement, classification, and
 code reading. Each application folder contains its own project and setup notes.
 
 ## Set up the matcher
@@ -22,18 +22,8 @@ OpenCV contrib wheel.
 
 See [Pixel segmentation](pixel_segmentation/README.md) for installation and the saved projects.
 
-## Set up image classification
+## Run image classification
 
-Install the classifier in the DataflowGUI environment. The `--no-deps` option
-keeps the host's existing OpenCV and Qt versions.
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install --upgrade --no-deps "opencv-simple-classifier @ git+https://github.com/votecoffee/OpenCVSimpleClassifier.git@1283d62607768264bc60a206c8c2a82863bcaeb9"
-```
-
-Open the [VegQual application](https://github.com/votecoffee/OpenCVSimpleClassifier/tree/1283d62607768264bc60a206c8c2a82863bcaeb9/examples/vegqual)
-from a checkout of the classifier repository. It includes labeled filmstrips
-with held-out prediction review, a trained surface texture model, and a
-separate test sequence. To add the tool to a new session
-without opening the example, use **File → Load Python plugin…** and select
-`integrations/opencv_dataflow_plugin.py` from that checkout.
+Open either [bundled VegQual project](image_classification/README.md) to compare
+two training profiles on the same labeled images. **Classify image** uses
+DataflowGUI's existing OpenCV and Qt dependencies.

@@ -32,6 +32,7 @@ See the [applications guide](applications/README.md) for geometric matcher setup
 | [Lab color matching](applications/lab_color_match/README.md) | Measure separate reference and sample regions and compare their Lab colors. |
 | [PCB outline](applications/pcb_outline/README.md) | Check board presence and overlay its outline on two inspection photographs. |
 | [Pixel segmentation](applications/pixel_segmentation/README.md) | Train foreground masks for brick mortar, a cup rim, and PCB laminate. |
+| [Image classification](applications/image_classification/README.md) | Compare two classifier profiles on labeled VegQual produce crops. |
 | [Pose-relative inspection](applications/pose_inspection/README.md) | Train a geometric pattern and use its detected pose to position a circular inspection region. |
 
 ## OpenCV tools

@@ -715,10 +715,8 @@ def builtin_registry():
     from .pick_selection import SelectPickCandidate
     from .plugins import (
         GEOMETRIC_MATCHER_TYPES,
-        IMAGE_CLASSIFIER_TYPES,
         PIXEL_SEGMENTATION_TYPES,
         load_installed_geometric_matcher,
-        load_installed_image_classifier,
         load_installed_pixel_segmentation,
     )
     from .point_set_lines import HoughPointSetLines
@@ -746,6 +744,7 @@ def builtin_registry():
         FitShape,
         RotatedRectangleOverlap,
     )
+    from .simple_classifier.dataflow import ClassifyImage
     from .skeleton import PruneSkeleton, Skeletonize
     from .spanning_tree import MinimumSpanningTree
     from .spectral import SPECTRAL_BLOCKS
@@ -874,6 +873,7 @@ def builtin_registry():
         CompareImageQuality,
         CompareHistograms,
         *COLOR_MEASUREMENT_BLOCKS,
+        ClassifyImage,
         HistogramBackProjection,
         FitShape,
         BoundingRotatedRectangle,
@@ -942,7 +942,6 @@ def builtin_registry():
     ):
         registry.register(block)
     registry.add_provider(GEOMETRIC_MATCHER_TYPES, load_installed_geometric_matcher)
-    registry.add_provider(IMAGE_CLASSIFIER_TYPES, load_installed_image_classifier)
     registry.add_provider(PIXEL_SEGMENTATION_TYPES, load_installed_pixel_segmentation)
     registry.add_provider((invert_example.Invert.type_id,), invert_example.register)
     return registry

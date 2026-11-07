@@ -1,0 +1,673 @@
+{
+  "schema": 1,
+  "profile": "surface_texture",
+  "classes": [
+    {
+      "label": "fresh_potato",
+      "images": [
+        {
+          "path": "images/valid/fresh_potato/01.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/fresh_potato/02.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/fresh_potato/03.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/fresh_potato/04.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/fresh_potato/05.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/train/fresh_potato/01.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/02.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/03.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/04.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/05.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/06.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/07.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/08.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/09.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/10.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/11.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/12.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/13.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/14.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/15.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/16.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/17.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/18.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/19.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/20.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/21.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/22.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/23.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_potato/24.jpg",
+          "validation": false
+        }
+      ]
+    },
+    {
+      "label": "defected_Potato",
+      "images": [
+        {
+          "path": "images/valid/defected_Potato/01.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/defected_Potato/02.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/defected_Potato/03.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/defected_Potato/04.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/defected_Potato/05.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/train/defected_Potato/01.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/02.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/03.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/04.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/05.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/06.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/07.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/08.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/09.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/10.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/11.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/12.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/13.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/14.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/15.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/16.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/17.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/18.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/19.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/20.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/21.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/22.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/23.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_Potato/24.jpg",
+          "validation": false
+        }
+      ]
+    },
+    {
+      "label": "fresh_capsicum",
+      "images": [
+        {
+          "path": "images/valid/fresh_capsicum/01.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/fresh_capsicum/02.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/fresh_capsicum/03.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/fresh_capsicum/04.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/fresh_capsicum/05.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/train/fresh_capsicum/01.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/02.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/03.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/04.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/05.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/06.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/07.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/08.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/09.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/10.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/11.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/12.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/13.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/14.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/15.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/16.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/17.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/18.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/19.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/20.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/21.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/22.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/23.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/fresh_capsicum/24.jpg",
+          "validation": false
+        }
+      ]
+    },
+    {
+      "label": "defected_capsicum",
+      "images": [
+        {
+          "path": "images/valid/defected_capsicum/01.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/defected_capsicum/02.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/defected_capsicum/03.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/defected_capsicum/04.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/valid/defected_capsicum/05.jpg",
+          "validation": true
+        },
+        {
+          "path": "images/train/defected_capsicum/01.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/02.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/03.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/04.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/05.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/06.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/07.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/08.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/09.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/10.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/11.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/12.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/13.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/14.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/15.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/16.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/17.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/18.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/19.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/20.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/21.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/22.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/23.jpg",
+          "validation": false
+        },
+        {
+          "path": "images/train/defected_capsicum/24.jpg",
+          "validation": false
+        }
+      ]
+    }
+  ],
+  "health": {
+    "train_counts": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "validation_counts": [
+      5,
+      5,
+      5,
+      5
+    ],
+    "matrix": [
+      [
+        5,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        4,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        5,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        5
+      ]
+    ],
+    "split": "explicit",
+    "predictions": [
+      {
+        "class_index": 0,
+        "image_index": 0,
+        "predicted_index": 0,
+        "score": 49.59035732697704,
+        "confusion": 94.16655044481307
+      },
+      {
+        "class_index": 0,
+        "image_index": 1,
+        "predicted_index": 0,
+        "score": 51.078334075222756,
+        "confusion": 57.332508721842544
+      },
+      {
+        "class_index": 0,
+        "image_index": 2,
+        "predicted_index": 0,
+        "score": 55.170210804900016,
+        "confusion": 55.24872709245913
+      },
+      {
+        "class_index": 0,
+        "image_index": 3,
+        "predicted_index": 0,
+        "score": 42.36567711771337,
+        "confusion": 76.82025571001124
+      },
+      {
+        "class_index": 0,
+        "image_index": 4,
+        "predicted_index": 0,
+        "score": 48.435732113957734,
+        "confusion": 95.35723011842275
+      },
+      {
+        "class_index": 1,
+        "image_index": 0,
+        "predicted_index": 0,
+        "score": 49.82737792102019,
+        "confusion": 91.65733238066937
+      },
+      {
+        "class_index": 1,
+        "image_index": 1,
+        "predicted_index": 1,
+        "score": 50.57179268954545,
+        "confusion": 56.17755477592079
+      },
+      {
+        "class_index": 1,
+        "image_index": 2,
+        "predicted_index": 1,
+        "score": 50.2453359601564,
+        "confusion": 55.66002871622461
+      },
+      {
+        "class_index": 1,
+        "image_index": 3,
+        "predicted_index": 1,
+        "score": 49.753514040926476,
+        "confusion": 91.56067698385154
+      },
+      {
+        "class_index": 1,
+        "image_index": 4,
+        "predicted_index": 1,
+        "score": 51.23274378186703,
+        "confusion": 48.04709028884733
+      },
+      {
+        "class_index": 2,
+        "image_index": 0,
+        "predicted_index": 2,
+        "score": 58.87024087133153,
+        "confusion": 24.702723026159788
+      },
+      {
+        "class_index": 2,
+        "image_index": 1,
+        "predicted_index": 2,
+        "score": 72.49773568257015,
+        "confusion": 26.85877687368411
+      },
+      {
+        "class_index": 2,
+        "image_index": 2,
+        "predicted_index": 2,
+        "score": 62.20479768858484,
+        "confusion": 34.875090092306436
+      },
+      {
+        "class_index": 2,
+        "image_index": 3,
+        "predicted_index": 2,
+        "score": 46.92565063326762,
+        "confusion": 95.02497844807897
+      },
+      {
+        "class_index": 2,
+        "image_index": 4,
+        "predicted_index": 2,
+        "score": 56.51121422566596,
+        "confusion": 27.478285402234377
+      },
+      {
+        "class_index": 3,
+        "image_index": 0,
+        "predicted_index": 3,
+        "score": 46.91060426489409,
+        "confusion": 80.9125658923765
+      },
+      {
+        "class_index": 3,
+        "image_index": 1,
+        "predicted_index": 3,
+        "score": 64.85181058753508,
+        "confusion": 44.22952760319403
+      },
+      {
+        "class_index": 3,
+        "image_index": 2,
+        "predicted_index": 3,
+        "score": 48.33989628060903,
+        "confusion": 71.23292761940863
+      },
+      {
+        "class_index": 3,
+        "image_index": 3,
+        "predicted_index": 3,
+        "score": 49.58799573145286,
+        "confusion": 83.55553027515668
+      },
+      {
+        "class_index": 3,
+        "image_index": 4,
+        "predicted_index": 3,
+        "score": 48.88513271544197,
+        "confusion": 92.68520872180639
+      }
+    ]
+  }
+}

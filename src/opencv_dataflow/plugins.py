@@ -17,7 +17,6 @@ PIXEL_SEGMENTATION_TYPES = (
     "inspection.ocv_segment_image",
     "inspection.ocv_segment_parts",
 )
-IMAGE_CLASSIFIER_TYPES = ("inspect.simple_classify_image",)
 
 
 def _register_blocks(register, registry):
@@ -52,19 +51,6 @@ def load_installed_pixel_segmentation(registry):
         raise ValueError(
             "Install OpenCV Pixel Segmentation in the Python environment running DataflowGUI. "
             "See examples/applications/pixel_segmentation/README.md for setup."
-        ) from exc
-    _register_blocks(register, registry)
-
-
-def load_installed_image_classifier(registry):
-    try:
-        from opencv_simple_classifier.dataflow import register
-    except ModuleNotFoundError as exc:
-        if exc.name not in ("opencv_simple_classifier", "opencv_simple_classifier.dataflow"):
-            raise
-        raise ValueError(
-            "Install OpenCVSimpleClassifier in the Python environment running DataflowGUI. "
-            "See examples/applications/README.md for setup."
         ) from exc
     _register_blocks(register, registry)
 
