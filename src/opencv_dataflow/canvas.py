@@ -40,6 +40,8 @@ from .visual_style import (
 )
 from .workspace import arranged_positions
 
+TOOL_MIME = "application/x-opencv-dataflow-tool"
+
 
 def pixmap(image):
     rgb = preview_rgb(image)
@@ -563,8 +565,12 @@ class CanvasScene(QGraphicsScene):
 
 
 class CanvasView(QGraphicsView):
-    def __init__(self, scene):
+    tool_dropped = Signal(str, QPointF)
+
+    def __init__(self, scene, *, tool_source=None):
         super().__init__(scene)
+        self.tool_source = tool_source
+        self.setAcceptDrops(tool_source is not None)
         self.setRenderHint(QPainter.RenderHint.Antialiasing)
         self.setBackgroundBrush(QColor("#111b29"))
         self.setDragMode(QGraphicsView.DragMode.RubberBandDrag)
@@ -581,6 +587,40 @@ class CanvasView(QGraphicsView):
             scrollbar.actionTriggered.connect(
                 lambda action: QTimer.singleShot(0, self.remember_view)
             )
+
+    def accept_tool_drag(self, event):
+        accepted = (
+            self.tool_source is not None
+            and event.source() is self.tool_source
+            and not self.scene().locked
+            and event.mimeData().hasFormat(TOOL_MIME)
+            and event.possibleActions() & Qt.DropAction.CopyAction
+        )
+        if accepted:
+            event.setDropAction(Qt.DropAction.CopyAction)
+            event.accept()
+        else:
+            event.ignore()
+        return accepted
+
+    def dragEnterEvent(self, event):
+        self.accept_tool_drag(event)
+
+    def dragMoveEvent(self, event):
+        self.accept_tool_drag(event)
+
+    def dropEvent(self, event):
+        if not self.accept_tool_drag(event):
+            return
+        try:
+            type_id = bytes(event.mimeData().data(TOOL_MIME)).decode("utf-8")
+        except UnicodeDecodeError:
+            event.ignore()
+            return
+        if not type_id:
+            event.ignore()
+            return
+        self.tool_dropped.emit(type_id, self.mapToScene(event.position().toPoint()))
 
     def remember_view(self, *args):
         self.overview.update()

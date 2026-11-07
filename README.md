@@ -81,7 +81,8 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
 
 ![Editor showing the synthetic inspection demo](docs/images/editor.png)
 
-1. Expand a type and subtype in the left toolbox tree, then double-click a tool to add a block.
+1. Expand a type and subtype in the left toolbox tree. Drag a tool onto the
+   canvas to place it where you drop it, or double-click to add it near the center.
 2. Drag between an output socket and an input socket in either direction. Image
    ports and wires are gold for images, purple for regions/masks, blue for poses/transforms,
    pale gold for pyramids, turquoise for depth, green for numbers, and slate for other data.
@@ -771,7 +772,7 @@ and errors. Internal run records remain inspectable by opening the block after a
 
 **Export ToolBlock** writes a `.toolblock.json` definition; **Import ToolBlock**
 adds an instance and a session library entry. Creation and export also add reusable
-library snapshots. Double-click a library entry to add another independent instance.
+library snapshots. Drag or double-click a library entry to add another independent instance.
 Editing an instance does not change other instances or a previously captured library
 snapshot; export again to capture the edited version. Job files embed their ToolBlocks,
 so they do not depend on the original definition file. Load any local Python plugin

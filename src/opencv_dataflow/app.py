@@ -12,9 +12,10 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from PySide6.QtCore import QEvent, QSignalBlocker, Qt, QThread, QTimer, Signal
+from PySide6.QtCore import QEvent, QMimeData, QSignalBlocker, Qt, QThread, QTimer, Signal
 from PySide6.QtGui import QAction, QKeySequence
 from PySide6.QtWidgets import (
+    QAbstractItemView,
     QApplication,
     QCheckBox,
     QComboBox,
@@ -49,7 +50,7 @@ from .activity_window import ActivityWindow
 from .block_xml import block_xml_suffix, load_block_xml, save_block_xml
 from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
-from .canvas import CanvasScene, CanvasView, Node, block_preview_images, pixmap
+from .canvas import TOOL_MIME, CanvasScene, CanvasView, Node, block_preview_images, pixmap
 from .cloud_viewer import CloudViewer
 from .core import DISPLAY_RESULT_FIELDS, Graph
 from .diagnostic_viewer import DiagnosticViewer
@@ -1642,6 +1643,27 @@ class Inspector(QWidget):
         return super().eventFilter(watched, event)
 
 
+class ToolLibrary(QTreeWidget):
+    def __init__(self):
+        super().__init__()
+        self.setDragDropMode(QAbstractItemView.DragDropMode.DragOnly)
+        self.setDefaultDropAction(Qt.DropAction.CopyAction)
+
+    def mimeTypes(self):
+        return [TOOL_MIME]
+
+    def mimeData(self, items):
+        type_id = items[0].data(0, Qt.ItemDataRole.UserRole) if len(items) == 1 else None
+        if not type_id:
+            return None
+        data = QMimeData()
+        data.setData(TOOL_MIME, type_id.encode("utf-8"))
+        return data
+
+    def supportedDropActions(self):
+        return Qt.DropAction.CopyAction
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -1656,9 +1678,10 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("OpenCV Dataflow · Untitled")
         self.resize(1500, 920)
         self.scene = CanvasScene(self.graph)
-        self.view = CanvasView(self.scene)
+        self.library = ToolLibrary()
+        self.view = CanvasView(self.scene, tool_source=self.library)
+        self.view.tool_dropped.connect(self.add_tool)
         self.inspector = Inspector(self)
-        self.library = QTreeWidget()
         self.library.setHeaderHidden(True)
         self.library.setIndentation(14)
         self.library.itemDoubleClicked.connect(self.add_block)
@@ -1674,7 +1697,7 @@ class MainWindow(QMainWindow):
         library_layout.addWidget(self.search)
         library_layout.addWidget(self.library)
         hint = QLabel(
-            "Double-click to add\n\nDrag ports to connect\nDelete removes selection\n"
+            "Drag or double-click to add\n\nDrag ports to connect\nDelete removes selection\n"
             "Wheel zooms · middle-drag pans"
         )
         hint.setWordWrap(True)
@@ -1884,14 +1907,19 @@ class MainWindow(QMainWindow):
         query = self.search.text().lower()
         groups = {}
 
+        def add_group(parent, label):
+            group = QTreeWidgetItem(parent, [label])
+            group.setFlags(group.flags() & ~Qt.ItemFlag.ItemIsDragEnabled)
+            return group
+
         def add_entry(kind, subtype, title, type_id):
             if query not in f"{kind} {subtype} {title}".lower():
                 return
             if kind not in groups:
-                groups[kind] = QTreeWidgetItem(self.library, [kind])
+                groups[kind] = add_group(self.library, kind)
             key = (kind, subtype)
             if key not in groups:
-                groups[key] = QTreeWidgetItem(groups[kind], [subtype])
+                groups[key] = add_group(groups[kind], subtype)
             item = QTreeWidgetItem(groups[key], [title])
             item.setToolTip(0, f"{kind} / {subtype} / {title}")
             item.setData(0, Qt.ItemDataRole.UserRole, type_id)
@@ -1913,10 +1941,10 @@ class MainWindow(QMainWindow):
         self.library.expandAll()
 
     def add_block(self, item, column=0):
-        if self.runner:
-            return
-        type_id = item.data(0, Qt.ItemDataRole.UserRole)
-        if not type_id:
+        self.add_tool(item.data(0, Qt.ItemDataRole.UserRole))
+
+    def add_tool(self, type_id, position=None):
+        if self.runner or self.scene.locked or not type_id:
             return
         try:
             if type_id.startswith("template:"):
@@ -1927,11 +1955,14 @@ class MainWindow(QMainWindow):
         except (Exception, SystemExit) as exc:
             self.warn(exception_message(exc))
             return
-        self.insert_block(block)
+        self.insert_block(block, position)
 
-    def insert_block(self, block):
-        center = self.view.mapToScene(self.view.viewport().rect().center())
-        block.position = [center.x() - 110, center.y() - 80]
+    def insert_block(self, block, position=None):
+        if position is None:
+            center = self.view.mapToScene(self.view.viewport().rect().center())
+            block.position = [center.x() - 110, center.y() - 80]
+        else:
+            block.position = [position.x(), position.y()]
         self.graph.add(block)
         self.graph.invalidate()
         self.scene.rebuild(block.id)

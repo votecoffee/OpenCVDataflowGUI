@@ -10,7 +10,7 @@ import cv2
 import numpy as np
 import pytest
 from PySide6.QtCore import QEvent, QPoint, QPointF, Qt
-from PySide6.QtGui import QFont, QHelpEvent
+from PySide6.QtGui import QDragEnterEvent, QDragMoveEvent, QDropEvent, QFont, QHelpEvent
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (
     QDialog,
@@ -22,7 +22,7 @@ from PySide6.QtWidgets import (
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
-from opencv_dataflow.canvas import CanvasScene, CanvasView
+from opencv_dataflow.canvas import TOOL_MIME, CanvasScene, CanvasView
 from opencv_dataflow.core import Block, Graph, Port, Result
 from opencv_dataflow.documentation_editor import DocumentationEditor
 from opencv_dataflow.images import ImageArray
@@ -915,6 +915,80 @@ def test_image_file_dropdowns_metadata_and_preview(app, tmp_path):
     assert '"bits_per_channel": 16' in window.inspector.details.toPlainText()
     window.dirty = False
     window.close()
+
+
+@pytest.mark.filterwarnings("ignore:Function.*QDrag.*is marked as deprecated:DeprecationWarning")
+def test_toolbox_drag_places_tools_at_the_drop_point(app, tmp_path):
+    window = MainWindow()
+    window.show()
+    app.processEvents()
+    tree, view = window.library, window.view
+    match = Qt.MatchFlag.MatchExactly | Qt.MatchFlag.MatchRecursive
+    position = QPoint(140, 165)
+
+    def drag_data(title):
+        item = tree.findItems(title, match)[0]
+        return tree.model().mimeData([tree.indexFromItem(item)])
+
+    def send_drag(event_type, data, source):
+        point = QPointF(position) if event_type is QDropEvent else position
+        event = event_type(
+            point, Qt.DropAction.CopyAction, data, Qt.MouseButton.LeftButton,
+            Qt.KeyboardModifier.NoModifier,
+        )
+        # Offscreen Qt accepts constructed events but has no native drag source.
+        event.source = lambda: source
+        app.sendEvent(view.viewport(), event)
+        return event.isAccepted()
+
+    def drop(title):
+        data = drag_data(title)
+        expected = view.mapToScene(position)
+        assert send_drag(QDragEnterEvent, data, tree)
+        assert send_drag(QDragMoveEvent, data, tree)
+        assert send_drag(QDropEvent, data, tree)
+        block = window.inspector.block
+        assert block.position == [expected.x(), expected.y()]
+        assert window.scene.nodes[block.id].isSelected()
+        return block
+
+    try:
+        group = tree.findItems("Input", match)[0]
+        assert not (group.flags() & Qt.ItemFlag.ItemIsDragEnabled)
+        assert tree.model().mimeData([tree.indexFromItem(group)]) is None
+        assert tree.dragEnabled()
+        assert tree.model().supportedDragActions() == Qt.DropAction.CopyAction
+        data = drag_data("Histogram")
+        assert bytes(data.data(TOOL_MIME)) == b"inspect.histogram"
+        count = len(window.graph.blocks)
+        assert not send_drag(QDragEnterEvent, data, None)
+        assert send_drag(QDragEnterEvent, data, tree)
+        window.scene.set_locked(True)
+        assert not send_drag(QDragMoveEvent, data, tree)
+        assert not send_drag(QDropEvent, data, tree)
+        assert len(window.graph.blocks) == count
+        window.scene.set_locked(False)
+
+        view.scale(1.4, 1.4)
+        view.centerOn(670, 390)
+        histogram = drop("Histogram")
+        assert histogram.type_id == "inspect.histogram"
+        assert len(window.graph.blocks) == count + 1 and window.dirty
+        project = tmp_path / "dropped.json"
+        window.graph.save(project)
+        reopened = Graph.load(project, window.registry)
+        assert reopened.blocks[histogram.id].position == histogram.position
+        reopened.close()
+
+        toolblock = drop("Calibrate lens ToolBlock")
+        assert toolblock.block_type == "Calibration"
+        window.enter_toolblock(toolblock)
+        nested = drop("Histogram")
+        assert nested.id in toolblock.graph.blocks
+        assert nested.id not in window.root_graph.blocks
+    finally:
+        window.dirty = False
+        window.close()
 
 
 def test_toolbox_tree_types_subtypes_search_and_leaf_activation(app, monkeypatch):
