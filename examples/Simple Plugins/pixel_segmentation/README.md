@@ -11,17 +11,15 @@ These examples use **SimpleSegmentation** to learn a foreground class from label
 
 ## Run in DataflowGUI
 
-Install the SimpleSegmentation package from a source checkout at revision `c43358c` or newer in the Python environment running DataflowGUI. From the segmentation checkout, run that environment's Python with `-m pip install --no-deps -e .`. DataflowGUI loads the installed integration when you open a saved project that uses it.
+Install a current SimpleSegmentation build from a local source checkout or wheel in the Python environment running DataflowGUI. From the source checkout, run that environment's Python with `-m pip install --no-deps -e .`. DataflowGUI loads the installed integration when you open a saved project that uses it.
 
 Open a project above and press **Run once**. Inspect **Overlay** for the highlighted foreground, **Mask** for the binary result, or **Score map** for the raw forest votes. Use **Inspected** to identify which pixels were evaluated. The block's **Threshold** and **Min area px** change the binary output without retraining. Reset flow state to replay a finished sequence.
 
-The examples use four voting workers at native sampling with segmentation revision `feb5422` or newer. Adjust **Workers** in the inspector to budget CPU alongside other graph branches. Use one worker to measure the serial block time.
+The examples use four voting workers at native sampling. Adjust **Workers** in the inspector to budget CPU alongside other graph branches. Use one worker to measure the serial block time.
 
-With segmentation revision `6a643f3` or newer, the same voting limit applies at supersampled resolutions and when a batch contains one registered patch. Batches with several registered parts use the workers across the parts.
+The same voting limit applies at supersampled resolutions and when a batch contains one registered patch. Batches with several registered parts use the workers across the parts.
 
-With segmentation revision `c32525e` or newer, compact inspection regions such as the cup example limit Gaussian feature computation to the selected window and its surrounding filter support. The output mask and scores use the source image coordinates.
-
-With revision `9237b72` or newer, normalization and connected-component measurement also use the compact window. The cached cutoff preview uses a direct threshold at **Min px** of one.
+Compact inspection regions such as the cup example limit feature computation, normalization, and connected-component measurement to the selected window and any needed filter support. The output mask and scores use the source image coordinates. The cached cutoff preview uses a direct threshold at **Min px** of one.
 
 In the PCB project, **Locate one board** takes the external contour of the laminate mask and checks for one board-sized object. Its **Collection** output includes the contour, bounding box, and centroid in the 650 × 495 image grid. **Show board outline and center** draws the contour and centroid over the learned mask. The contour follows visible laminate, so it can curve inward near edge-mounted components. The raw laminate mask and the filled contour mask are separate outputs.
 
@@ -37,11 +35,11 @@ Select the segmentation block and open **Train segmentation candidate…**. Choo
 
 The cup and brick results show coverage on images used for training. The PCB example also includes a held-out [validation manifest](pcb_laminate/validation.json) for board 0621. It marks 21,065 pixels (6.5% of the image) across visible laminate, chips, pins, and the background. Unmarked pixels are ignored by the metrics.
 
-Live validation review requires segmentation revision `fe79959` or newer. In the trainer, select the PCB **Validation manifest**, choose **Open validation labels**, and turn on **Show prediction**. **Compare labels** shows hits in green, missed foreground in red, foreground on labeled background in amber, and predictions on unlabeled areas in purple. Change **Cutoff** or **Min px** to update the current image's overlay and metrics from its cached scores.
+In the trainer, select the PCB **Validation manifest**, choose **Open validation labels**, and turn on **Show prediction**. **Compare labels** shows hits in green, missed foreground in red, foreground on labeled background in amber, and predictions on unlabeled areas in purple. Change **Cutoff** or **Min px** to update the current image's overlay and metrics from its cached scores.
 
-With segmentation revision `7183312` or newer, choose **Keep preview settings** while comparing the saved labels. Close the review and choose **Stage settings** for the pinned model or **Stage candidate** for a newly trained model. Use **Apply configuration** in the inspector and save the project. The aggregate training summary lists the cutoff and area used for that report.
+Choose **Keep preview settings** while comparing the saved labels. Close the review and choose **Stage settings** for the pinned model or **Stage candidate** for a newly trained model. Use **Apply configuration** in the inspector and save the project. The aggregate training summary lists the cutoff and area used for that report.
 
-With segmentation revision `f539261` or newer, you can choose **Evaluate validation set** before staging. The trainer compares the inspector values with the kept settings on every saved validation image using the same model scores for both rows. It shows the number of observed labeled pixels and precision, recall, and specificity. Select another validation manifest to evaluate the same candidate on a different set.
+Choose **Evaluate validation set** before staging to compare the inspector values with the kept settings on every saved validation image using the same model scores for both rows. The trainer shows the number of observed labeled pixels and precision, recall, and specificity. Select another validation manifest to evaluate the same candidate on a different set.
 
 Results for the bundled PCB model at a minimum area of 70 pixels:
 
