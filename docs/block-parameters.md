@@ -2523,12 +2523,14 @@ Input `masks` — Optional ordered uint8 masks for feature detection and valid m
 | `max_features` | `900` | Value must be a whole number between 12 and 2500. |
 | `match_ratio` | `0.75` | Value must be a finite number between 1e-06 and 0.999999. Require a distinctive nearest descriptor in both matching directions. |
 | `max_descriptor_distance` | `250.0` | Value must be a finite number between 0 and 8192. |
-| `inlier_pixels` | `2.0` | Value must be a finite number between 1e-06 and 100. |
+| `inlier_pixels` | `2.0` | Value must be a finite number between 1e-06 and 100. Fit threshold and maximum adjacent RMS error after loop adjustment. |
 | `min_inliers` | `12` | Value must be a whole number between 3 and 2500. Minimum distinct correspondences supporting each adjacent transform. |
 | `min_inlier_ratio` | `0.5` | Value must be a finite number between 0 and 1. |
 | `max_scale_ratio` | `1.15` | Value must be a finite number between 1 and 2. Similarity scale range is the reciprocal of this ratio to the ratio. |
 | `max_rotation_degrees` | `15.0` | Value must be a finite number between 0 and 180. |
-| `min_overlap_pixels` | `64` | Value must be a whole number between 1 and 1.67772e+07. Minimum number of valid overlapping pixels for each adjacent pair. |
+| `min_overlap_pixels` | `64` | Value must be a whole number between 1 and 1.67772e+07. Minimum valid overlap for each adjacent pair and the closing pair. |
+| `loop_closure` | `false` | Require an independent match from the last view back to the first. |
+| `max_loop_drift_pixels` | `8.0` | Value must be a finite number between 0 and 512. Maximum allowed corner adjustment in first-view pixels. |
 | `interpolation` | `"linear"` | `nearest`, `linear` |
 | `blend` | `"prefer_first"` | `prefer_first`, `prefer_last`, `feather` Prefer the earliest or latest covered view, or feather across valid edges. |
 | `feather_width` | `32` | Value must be a whole number between 1 and 512. Distance from a valid edge, in mosaic pixels, to reach full weight. |

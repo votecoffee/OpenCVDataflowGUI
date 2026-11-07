@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 import pytest
 
+from opencv_dataflow import scan_stitching
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 from opencv_dataflow.mosaic_photometry import FeatherMosaic, corrected_view
@@ -13,6 +14,7 @@ from opencv_dataflow.payloads import NO_VALUE, FlowGroup, ValuePacket, metadata
 
 EXAMPLE = Path(__file__).parents[1] / "examples/image_processing/stitch_scan_sequence"
 EXPOSURE_EXAMPLE = EXAMPLE.parent / "stitch_scan_exposure/stitch_scan_exposure.json"
+LOOP_EXAMPLE = EXAMPLE.parent / "stitch_scan_loop/stitch_scan_loop.json"
 TYPE = "cv.stitch_scan_sequence"
 
 
@@ -24,6 +26,13 @@ def _group(*images):
     return FlowGroup(
         tuple(ValuePacket(image, {}) for image in images), tuple(map(str, range(len(images))))
     )
+
+
+def _loop_images():
+    return [
+        cv2.imread(str(LOOP_EXAMPLE.parent / "assets" / f"view-{i:02d}.png"), cv2.IMREAD_UNCHANGED)
+        for i in range(1, 6)
+    ]
 
 
 def test_saved_scan_waits_for_batch_and_reconstructs_all_covered_pixels():
@@ -221,3 +230,117 @@ def test_exposure_correction_ignores_masked_high_dynamic_range_samples():
     corrected = corrected_view(image, np.array([[True, False]]), (2.0, 0.0))
     assert corrected[0, 0] == 0.4
     assert np.isfinite(corrected).all()
+
+
+@pytest.mark.parametrize("motion_model", ["translation", "similarity"])
+def test_saved_loop_reduces_final_view_drift_in_first_view_coordinates(motion_model):
+    graph = Graph.load(LOOP_EXAMPLE, builtin_registry())
+    try:
+        graph.set_run_profile("lean")
+        for name in ("stitch", "closed"):
+            graph.blocks[name].parameters["motion_model"] = motion_model
+        for _ in range(5):
+            graph.run()
+        open_scan = graph.blocks["stitch"]
+        closed_scan = graph.blocks["closed"]
+        assert open_scan.state == "pass", open_scan.error
+        assert closed_scan.state == "pass", closed_scan.error
+        raw = open_scan.last_result.outputs["layout"]
+        result = closed_scan.last_result.outputs
+        layout = result["layout"]
+        closure = layout["closure"]
+        assert "closure" not in raw
+        assert closure["status"] == "closed" and closure["overlap_pixels"] == 21960
+        assert 1 < closure["uncorrected_drift_pixels"] <= closure["max_adjustment_pixels"] < 8
+        assert all(pair["adjusted_rms_pixels"] < 3 for pair in layout["pairs"])
+        for view in layout["views"]:
+            matrix = np.asarray(view["source_to_mosaic"])
+            np.testing.assert_allclose(
+                [matrix[0, 0], matrix[0, 1]], [matrix[1, 1], -matrix[1, 0]], atol=1e-12
+            )
+        corners = np.array([[0, 0, 1], [179, 0, 1], [0, 131, 1], [179, 131, 1]])
+        expected = corners[:, :2] + [0, 10]
+        for mosaic in (raw, layout):
+            first, last = (mosaic["views"][i]["source_to_mosaic"] for i in (0, -1))
+            to_first = np.linalg.solve(first, last)
+            projected = corners @ to_first[:2].T
+            if mosaic is raw:
+                assert np.max(np.linalg.norm(projected - expected, axis=1)) > 1
+            else:
+                np.testing.assert_allclose(projected, expected, atol=0.1)
+                np.testing.assert_allclose(to_first, closure["source_to_anchor"], atol=1e-12)
+        assert metadata(result["image"])["spatial"] == metadata(result["coverage"])["spatial"]
+        assert (
+            graph.blocks["measure"].last_result.outputs["selected_count"]
+            == layout["covered_pixels"]
+        )
+    finally:
+        graph.close()
+
+
+def test_required_loop_rejects_an_open_scan_and_reports_final_pair():
+    block = builtin_registry().create(TYPE, parameters={"loop_closure": True})
+    result = block.execute({"views": _group(_tile(1), _tile(2), _tile(3))})
+    assert result is not None and not result.passed
+    assert result.outputs["image"] is result.outputs["coverage"] is NO_VALUE
+    assert result.fail_reasons[0]["code"] == "scan_loop_closure_failed"
+    layout = result.outputs["layout"]
+    assert [p["status"] for p in layout["pairs"]] == ["registered", "registered"]
+    assert layout["closure"]["status"] == "insufficient_matches"
+    assert layout["closure"]["view_index"] == 2 and layout["closure"]["previous_index"] == 0
+    assert block.execute({"views": _group(_tile(1), _tile(2))}) is None
+    assert "at least three views" in block.error
+
+
+def test_closure_checks_drift_limit_before_rendering():
+    block = builtin_registry().create(
+        TYPE, parameters={"loop_closure": True, "inlier_pixels": 3, "max_loop_drift_pixels": 1}
+    )
+    result = block.execute({"views": _group(*_loop_images())})
+    assert result is not None and not result.passed
+    closure = result.outputs["layout"]["closure"]
+    assert closure["status"] == "drift_out_of_range"
+    assert closure["max_adjustment_pixels"] > 1
+    assert result.outputs["image"] is NO_VALUE
+
+
+def test_closure_rechecks_adjacent_residuals_after_adjustment(monkeypatch):
+    points = np.array([[0, 0], [2, 0], [0, 2]], dtype=np.float32)
+    fits = [np.eye(3), np.eye(3), np.eye(3)]
+    fits[-1][0, 2] = 6
+
+    def register(matcher, source, target, settings, report):
+        report.update(status="registered", matches=3)
+        return fits.pop(0), (points, points)
+
+    monkeypatch.setattr(scan_stitching, "_register", register)
+    block = builtin_registry().create(TYPE, parameters={"loop_closure": True})
+    result = block.execute({"views": _group(_tile(1), _tile(2), _tile(3))})
+    assert result is not None and not result.passed
+    assert result.outputs["image"] is NO_VALUE
+    layout = result.outputs["layout"]
+    assert layout["closure"]["status"] == "adjusted_fit_out_of_range"
+    assert [p["adjusted_rms_pixels"] for p in layout["pairs"]] == [3, 3]
+
+
+def test_closure_checks_masked_overlap_separately_from_adjacent_overlaps():
+    images = _loop_images()
+    masks = [np.full_like(image, 255) for image in images]
+    masks[0][:, :85] = 0
+    masks[-1][:, 116:] = 0
+    block = builtin_registry().create(
+        TYPE,
+        parameters={
+            "loop_closure": True,
+            "inlier_pixels": 3,
+            "interpolation": "nearest",
+            "min_overlap_pixels": 5000,
+        },
+    )
+    result = block.execute({"views": _group(*images), "masks": _group(*masks)})
+    assert result is not None and not result.passed
+    assert result.outputs["image"] is NO_VALUE
+    layout = result.outputs["layout"]
+    assert all(p["overlap_pixels"] >= 5000 for p in layout["pairs"])
+    assert layout["closure"]["status"] == "insufficient_overlap"
+    assert layout["closure"]["overlap_pixels"] == 3782
