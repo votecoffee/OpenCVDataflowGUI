@@ -1,7 +1,8 @@
 # OpenCV runtime and browser options
 
-The project requires `opencv-contrib-python>=5.0.0.93,<6`. The local development
-environment uses OpenCV **5.0.0**, Python distribution **5.0.0.93**. Its desktop UI is
+The project requires Python **3.14 or newer** and `opencv-contrib-python>=5.0.0.93,<6`.
+The local development environment uses Python **3.14.3**, OpenCV **5.0.0** and
+the **5.0.0.93** contrib wheel. Its desktop UI is
 PySide6/Qt, with native OpenCV Python bindings and NumPy image buffers. It does not
 embed a browser or execute WebAssembly.
 
@@ -84,11 +85,8 @@ acceptance tolerances. OpenCV's [migration guide](https://github.com/opencv/open
 documents array-layout, interpolation and rendering changes, so numerical results
 are not promised to be bit-identical across major versions.
 
-Install only one OpenCV distribution in an environment. The base, contrib and
-headless packages all provide `cv2`; contrib replaces the base wheel. See the
-[README upgrade commands](../README.md#install). The dependency exposes additional
-native APIs to plugins; new contrib algorithms still need explicit block wrappers
-to appear in the toolbox.
+The contrib wheel exposes additional native APIs to plugins. Contrib algorithms
+appear in the toolbox when the project provides a block wrapper.
 
 ## Browser option
 

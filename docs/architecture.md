@@ -179,22 +179,15 @@ These are intentionally basic sinks rather than a user-defined reporting schema.
 Each output block executes for accepted input events; configure it accordingly.
 Graph runs are not transactions: earlier external writes remain if a later block fails.
 
-## Workflow references
+## Related references
 
-- [Cognex QuickBuild](https://docs.cognex.com/vpromx_1000/web/EN/visionpro/Content/Topics/users-guide/quickbuild/quickbuild-intro.htm):
-  visual prototyping and reusable ToolBlocks.
-- [MVTec MERLIC connections](https://www.mvtec.com/doc/merlic/26.10/manual/en-us/Content/Creator/Merlic_concepts/Connections/connections.html):
-  connected tool flow showing image-processing dependencies.
-- [OpenCV Graph API](https://docs.opencv.org/4.x/d0/d1e/gapi.html):
-  native operation graphs and execution backends.
-- [Qt Graphics View](https://doc.qt.io/qtforpython-6.8/overviews/qtwidgets-graphicsview.html):
-  desktop scene, item, and view model.
+- [OpenCV Graph API](https://docs.opencv.org/4.x/d0/d1e/gapi.html) describes native
+  operation graphs and execution backends.
+- [Qt Graphics View](https://doc.qt.io/qtforpython-6.8/overviews/qtwidgets-graphicsview.html)
+  describes the desktop scene, item, and view model.
 
 See [ticket results](ticket-results.md) for per-connection outcomes, per-input
 failure gates, the shared thread-safe event consumer and explicit final judgments.
 `current_emissions` describes this iteration separately from retained preview data.
 Only a gate's accepted invocations update its retained inputs/results; an inactive
 gate's retained `last_result` must never be used to infer new stream events.
-
-These inform workflow expectations; this independent prototype does not implement
-Cognex, HALCON, or MERLIC compatibility or their commercial tool catalogs.

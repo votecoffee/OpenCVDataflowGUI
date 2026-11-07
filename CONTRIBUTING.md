@@ -1,6 +1,15 @@
 # Contributing
 
-Install the editable package with the `dev` extra as described in README.md.
+Create a Python 3.14 environment using the [install guide](README.md#install),
+then install the `dev` extra and run the local checks.
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.\.venv\Scripts\python.exe -m pytest
+.\.venv\Scripts\python.exe -m ruff check src tests
+.\.venv\Scripts\python.exe scripts/block_parameter_reference.py --check
+```
+
 Keep UI-independent behavior in the runtime and Qt behavior in the desktop modules.
 New blocks declare a stable type identifier, typed ports, JSON-compatible parameter
 defaults, and `process(inputs) -> Result`. Add checks for meaningful execution,
@@ -26,3 +35,5 @@ owner requests a different policy. Preserve the existing license ownership.
 Plugins run with the current user's Python permissions. Never auto-load code named
 by a project file. Do not commit personal inspection images, credentials, device
 addresses, reports, `.venv/`, or generated captures. `.local/` is ignored for local work.
+Keep customer examples in ignored folders. For shared third-party images, document
+their source, license, attribution, and modifications.

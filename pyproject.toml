@@ -7,7 +7,7 @@ name = "opencv-dataflow-gui"
 version = "0.1.0"
 description = "Visual OpenCV development and execution with extensible Python blocks"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 license = "MIT"
 dependencies = ["numpy>=2,<3", "opencv-contrib-python>=5.0.0.93,<6", "PySide6>=6.8,<7"]
 

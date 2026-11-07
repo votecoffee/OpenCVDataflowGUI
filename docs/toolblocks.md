@@ -6,12 +6,6 @@ tool. Its public terminals map to selected internal ports; the internal graph ca
 contain further ToolBlocks. Jobs remain root graphs responsible for acquisition,
 execution, and outputs.
 
-This follows the composition principle described by Cognex's
-[CogToolBlock class](https://docs.cognex.com/vpro_0x090A00/web/EN/help/html/T_Cognex_VisionPro_ToolBlock_CogToolBlock.htm)
-and [Using a CogToolBlock](https://docs.cognex.com/vpro_0x091500/web/EN/help/html/0fd5c02d-a7ce-49ff-87e3-2f9ebe04d38d.htm):
-contained tools, configurable terminals, and aggregate execution records. It is
-an independent implementation, without VisionPro binary compatibility.
-
 ## Example workflow
 
 1. Run the initial demo once.
