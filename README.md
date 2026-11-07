@@ -44,8 +44,8 @@ the `cv2` namespace and must not coexist:
 ## Usage
 
 Browse the [example catalog](examples/README.md) for runnable projects organized
-by workflow. The [public gallery](examples/public/README.md) uses independently
-sourced photographs with documented licenses.
+by workflow. Examples with bundled photographs link to their
+[image sources and licenses](examples/assets/photograph-sources.md).
 
 **3D vision** includes camera and pose geometry, stereo calibration/rectification,
 disparity, RGB-D projection and registration, point clouds, ICP/PPF, ArUco,
@@ -425,11 +425,10 @@ robot and target poses. The output composes with the current gripper
 pose to place the camera in the robot base frame.
 [Hand–eye example](<examples/opencv tools/hand_eye_calibration/README.md>)
 
-### Run a public example or the built-in starter
+### Run an example or the built-in starter
 
-The [public example gallery](examples/public/README.md) includes runnable
-projects with openly licensed images. Open a project through **File > Open** and press
-**Run once**.
+Try [Brick edges](<examples/opencv tools/brick_edges/README.md>) with its bundled
+photograph. Open the project through **File > Open** and press **Run once**.
 
 Launch the built-in synthetic inspection project with:
 
@@ -444,7 +443,7 @@ to edit it later.
 To verify a saved graph without the editor:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run examples/public/brick_edges/brick_edges.json --repeat 3
+.\.venv\Scripts\opencv-dataflow-run "examples/opencv tools/brick_edges/brick_edges.json" --repeat 3
 ```
 
 Add `--report <new-file.json>` for a JSON receipt of each run, including states,

@@ -3,7 +3,7 @@
 Each example has its own folder and README. Start with
 [Starter inspection](demos/starter_inspection/README.md). Commands run from
 the repository root. Shared fixtures are in [assets](assets/README.md).
-The [public photo gallery](public/README.md) includes licensed industrial photos.
+See [image sources and licenses](assets/photograph-sources.md) for the bundled photographs.
 
 ## Demos
 
@@ -28,6 +28,7 @@ See the [applications guide](applications/README.md) for geometric matcher setup
 | [Data Matrix reading](applications/datamatrix_reading/README.md) | Read the bundled synthetic Data Matrix and verify the decoded text. |
 | [Lab color classification](applications/lab_color_classification/README.md) | Classify a measured image patch against a named Lab palette. |
 | [Lab color matching](applications/lab_color_match/README.md) | Measure separate reference and sample regions and compare their Lab colors. |
+| [PCB outline](applications/pcb_outline/README.md) | Check board presence and overlay its outline on two inspection photographs. |
 | [Pose-relative inspection](applications/pose_inspection/README.md) | Train a geometric pattern and use its detected pose to position a circular inspection region. |
 
 ## OpenCV tools
@@ -38,6 +39,7 @@ See the [applications guide](applications/README.md) for geometric matcher setup
 | [3D pose and triangulation](<opencv tools/pose_3d/README.md>) | Project synthetic 3D points into two cameras, recover a pose with PnP, and triangulate points. |
 | [AKAZE registration](<opencv tools/akaze_registration/README.md>) | Match binary AKAZE descriptors and recover a known image translation. |
 | [Bayer demosaicing](<opencv tools/bayer_demosaicing/README.md>) | Decode a synthetic 16-bit camera mosaic with bilinear and edge-aware interpolation. |
+| [Brick edges](<opencv tools/brick_edges/README.md>) | Reduce surface texture with Gaussian blur and find mortar edges with Canny. |
 | [BRISK registration](<opencv tools/brisk_registration/README.md>) | Detect and match BRISK keypoints before estimating a known image shift. |
 | [Channels and image pyramids](<opencv tools/channels_pyramids/README.md>) | Split and reassemble BGR channels, then carry payloads and coordinate transforms through a four-level image pyramid. |
 | [ChArUco board](<opencv tools/charuco_board/README.md>) | Identify corners on a cropped target and recover the board pose. |
@@ -139,6 +141,7 @@ See the [applications guide](applications/README.md) for geometric matcher setup
 | [Choose a content-aware seam](<custom tools/stitch_seam/README.md>) | Compare averaging with graph-cut selection on 16-bit views and try automatic seam scaling for larger overlaps. |
 | [Clip line segments](<custom tools/clip_line_segments/README.md>) | Measure the portion of a long detected edge inside a rectangular inspection window. |
 | [Close the loop on an inspection scan](<custom tools/stitch_scan_loop/README.md>) | Compare adjacent registration with a bounded correction when the scan returns to its first view. |
+| [Coffee histograms](<custom tools/coffee_histograms/README.md>) | Compare BGR histograms with a single grayscale histogram. |
 | [Combined inspection regions](<custom tools/combined_regions/README.md>) | Subtract the center of a circle and union the resulting ring with a second part region. |
 | [Convex polygon overlap](<custom tools/convex_overlap/README.md>) | Compare a detected part hull with an editable polygon and display the intersection. |
 | [Correct exposure in an inspection scan](<custom tools/stitch_scan_exposure/README.md>) | Compare raw and exposure-matched 16-bit mosaics with feathered seams. |
@@ -191,6 +194,7 @@ See the [applications guide](applications/README.md) for geometric matcher setup
 | [Coordinated camera inputs](<flow tools/input_coordination/README.md>) | Join two synthetic camera images to a simulated PLC part counter by ticket. |
 | [Image-set workspace](<flow tools/image_set_workspace/README.md>) | Inspect a sequence of three bundled images in a grouped workspace with filename tickets. |
 | [Parallel inspection of 25 parts](<flow tools/parallel_parts/README.md>) | Find 25 synthetic parts and run a reusable inspection around each part pose. |
+| [PCB motion](<flow tools/pcb_motion/README.md>) | Replay two PCB photographs through DIS to estimate apparent motion. |
 | [Queued image inspection](<flow tools/queued_input/README.md>) | Place a FIFO image queue ahead of the 25-part parallel inspection. |
 | [Sequence memory](<flow tools/sequence_memory/README.md>) | Run background subtraction, dense optical flow, point tracking, and reference-image learning on a synthetic sequence. |
 | [Ticket results and final judgment](<flow tools/ticket_results/README.md>) | Track block results for a synthetic acquisition and publish a final judgment before a pass-only branch. |

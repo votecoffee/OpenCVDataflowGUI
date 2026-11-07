@@ -9,8 +9,8 @@
         "path": "",
         "source_mode": "files",
         "paths": [
-          "../assets/visa-pcb2-normal-0000.jpg",
-          "../assets/visa-pcb2-normal-0621.jpg"
+          "../../assets/visa-pcb2-normal-0000.jpg",
+          "../../assets/visa-pcb2-normal-0621.jpg"
         ],
         "directory": "",
         "recursive": false,

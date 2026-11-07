@@ -8,8 +8,8 @@ and brightness shows displacement magnitude up to **Visual max motion**.
 These are two independent captures of the same board type. The flow shows
 apparent image displacement between them. The dataset supplies no motion
 ground truth for this pair. Change **Preset** and use **Reset flow state** to
-replay both photos. See [image credits and license](../assets/README.md#visual-anomaly-visa-pcb-photographs).
+replay both photos. See [image credits and license](../../assets/photograph-sources.md#visual-anomaly-visa-pcb-photographs).
 
 ```powershell
-opencv-dataflow-run examples/public/pcb_motion/pcb_motion.json --all-images
+opencv-dataflow-run "examples/flow tools/pcb_motion/pcb_motion.json" --all-images
 ```

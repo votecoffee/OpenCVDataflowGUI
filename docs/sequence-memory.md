@@ -60,7 +60,7 @@ finest scale can reduce for a smaller input. An explicit incompatible scale
 or patch stride is reported as invalid. Masks and regions zero the reported
 vectors outside the selection, while warm start uses the full preceding field.
 See the [OpenCV 5 DIS API](https://docs.opencv.org/5.0/main_modules/classcv_1_1DISOpticalFlow.html)
-and the [public PCB replay](../examples/public/pcb_motion/README.md).
+and the [PCB photograph replay](<../examples/flow tools/pcb_motion/README.md>).
 
 All blocks accept optional circle/rectangle/polygon regions or masks. Background and
 flow retain full-image neighborhood/learning context and restrict reported foreground

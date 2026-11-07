@@ -7,7 +7,7 @@
       "name": "Brick wall",
       "description": "Load the bundled CC0 brick texture.",
       "parameters": {
-        "path": "../assets/brick.png",
+        "path": "../../assets/brick.png",
         "source_mode": "single",
         "paths": [],
         "directory": "",

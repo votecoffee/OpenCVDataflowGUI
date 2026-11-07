@@ -7,7 +7,7 @@ __pycache__/
 build/
 dist/
 .local/
-# Shared example categories and the curated public gallery.
+# Shared example categories.
 /examples/*
 !/examples/README.md
 !/examples/applications/
@@ -17,27 +17,6 @@ dist/
 !/examples/flow tools/
 !/examples/opencv tools/
 !/examples/user_tools/
-!/examples/public/
-/examples/public/**
-!/examples/public/assets/
-!/examples/public/brick_edges/
-!/examples/public/coffee_histograms/
-!/examples/public/pcb_outline/
-!/examples/public/pcb_motion/
-!/examples/public/README.md
-!/examples/public/assets/README.md
-!/examples/public/assets/brick.png
-!/examples/public/assets/coffee.png
-!/examples/public/assets/visa-pcb2-normal-0000.jpg
-!/examples/public/assets/visa-pcb2-normal-0621.jpg
-!/examples/public/brick_edges/README.md
-!/examples/public/brick_edges/brick_edges.json
-!/examples/public/coffee_histograms/README.md
-!/examples/public/coffee_histograms/coffee_histograms.json
-!/examples/public/pcb_outline/README.md
-!/examples/public/pcb_outline/pcb_outline.json
-!/examples/public/pcb_motion/README.md
-!/examples/public/pcb_motion/pcb_motion.json
 # Local examples and downloaded images with separate rights.
 /examples/private/
 /examples/**/[Cc]ognex[Tt]ools/

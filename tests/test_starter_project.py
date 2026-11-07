@@ -129,7 +129,7 @@ def test_actual_headless_entry_does_not_import_qt():
     code = (
         "import sys; from opencv_dataflow.runner import main; "
         "assert not any(k.startswith('PySide6') for k in sys.modules); "
-        "raise SystemExit(main(['examples/public/brick_edges/brick_edges.json']))"
+        "raise SystemExit(main(['examples/opencv tools/brick_edges/brick_edges.json']))"
     )
     process = subprocess.run(
         [sys.executable, "-c", code], capture_output=True, text=True, timeout=20

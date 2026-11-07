@@ -9,10 +9,10 @@ The graph converts the photo to HSV, selects the blue board, closes small
 gaps in the mask, and checks that exactly one external contour exceeds the
 minimum area. This example checks board presence and extracts the outline.
 Measurements are in pixels. Both photos are normal samples from VisA. See
-[image credits and license](../assets/README.md#visual-anomaly-visa-pcb-photographs).
+[image credits and license](../../assets/photograph-sources.md#visual-anomaly-visa-pcb-photographs).
 
 To run both photos headlessly from the repository root:
 
 ```powershell
-opencv-dataflow-run examples/public/pcb_outline/pcb_outline.json --all-images
+opencv-dataflow-run examples/applications/pcb_outline/pcb_outline.json --all-images
 ```

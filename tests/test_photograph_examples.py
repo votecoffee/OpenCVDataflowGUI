@@ -1,4 +1,4 @@
-"""Verify the public gallery runs with its bundled images from any working directory."""
+"""Verify the photograph examples run with bundled images from any working directory."""
 
 from pathlib import Path
 
@@ -7,12 +7,14 @@ import numpy as np
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 
-GALLERY = Path(__file__).resolve().parents[1] / "examples" / "public"
+EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
 
 
 def test_brick_edges_project(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
-    graph = Graph.load(GALLERY / "brick_edges" / "brick_edges.json", builtin_registry())
+    graph = Graph.load(
+        EXAMPLES / "opencv tools/brick_edges/brick_edges.json", builtin_registry()
+    )
     try:
         graph.run()
         assert all(block.state == "pass" for block in graph.blocks.values())
@@ -26,7 +28,7 @@ def test_brick_edges_project(tmp_path, monkeypatch):
 def test_coffee_histograms_project(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     graph = Graph.load(
-        GALLERY / "coffee_histograms" / "coffee_histograms.json", builtin_registry()
+        EXAMPLES / "custom tools/coffee_histograms/coffee_histograms.json", builtin_registry()
     )
     try:
         graph.run()
@@ -42,7 +44,7 @@ def test_coffee_histograms_project(tmp_path, monkeypatch):
 
 def test_pcb_outline_project(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
-    graph = Graph.load(GALLERY / "pcb_outline" / "pcb_outline.json", builtin_registry())
+    graph = Graph.load(EXAMPLES / "applications/pcb_outline/pcb_outline.json", builtin_registry())
     try:
         for sample in ("0000", "0621"):
             graph.run()
@@ -63,7 +65,7 @@ def test_pcb_outline_project(tmp_path, monkeypatch):
 
 def test_pcb_motion_project(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
-    graph = Graph.load(GALLERY / "pcb_motion" / "pcb_motion.json", builtin_registry())
+    graph = Graph.load(EXAMPLES / "flow tools/pcb_motion/pcb_motion.json", builtin_registry())
     try:
         dis = graph.blocks["dis"]
         graph.run()

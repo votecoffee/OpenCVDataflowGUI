@@ -17,6 +17,9 @@ and is not bundled into the Python package or committed in this repository.
 
 ## Bundled fixtures
 
+- See [photograph sources and licenses](photograph-sources.md) for the shared
+  scikit-image and VisA samples.
+
 - `rgb_average.onnx` is a tiny synthetic RGB-average model used by the DNN and
   Annoy examples. It is generated with `scripts/prepare_ml_assets.py`.
 - `validation/` contains the synthetic pass, fail, and unknown images shared

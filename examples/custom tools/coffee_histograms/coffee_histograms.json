@@ -7,7 +7,7 @@
       "name": "Coffee photograph",
       "description": "Load the bundled CC0 photograph in BGR order.",
       "parameters": {
-        "path": "../assets/coffee.png",
+        "path": "../../assets/coffee.png",
         "source_mode": "single",
         "paths": [],
         "directory": "",

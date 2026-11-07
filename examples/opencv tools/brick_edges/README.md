@@ -6,8 +6,10 @@ to find edges. Select **Find mortar edges** to see the binary edge image. Adjust
 the low and high thresholds, apply the settings, and rerun to compare the
 mortar lines and the surface detail.
 
+See [image credits and license](../../assets/photograph-sources.md).
+
 Run the graph headlessly from the repository root:
 
 ```powershell
-opencv-dataflow-run examples/public/brick_edges/brick_edges.json
+opencv-dataflow-run "examples/opencv tools/brick_edges/brick_edges.json"
 ```
