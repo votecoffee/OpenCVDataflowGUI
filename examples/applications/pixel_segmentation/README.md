@@ -20,6 +20,8 @@ With segmentation revision `6a643f3` or newer, the same voting limit applies at 
 
 With segmentation revision `c32525e` or newer, compact inspection regions such as the cup example limit Gaussian feature computation to the selected window and its surrounding filter support. The output mask and scores use the source image coordinates.
 
+With revision `9237b72` or newer, normalization and connected-component measurement also use the compact window. The cached cutoff preview uses a direct threshold at **Min px** of one.
+
 In the PCB project, **Locate one board** takes the external contour of the laminate mask and checks for one board-sized object. Its **Collection** output includes the contour, bounding box, and centroid in the 650 × 495 image grid. **Show board outline and center** draws the contour and centroid over the learned mask. The contour follows visible laminate, so it can curve inward near edge-mounted components. The raw laminate mask and the filled contour mask are separate outputs.
 
 From the DataflowGUI repository root, you can replay both PCB photographs in the same environment:
