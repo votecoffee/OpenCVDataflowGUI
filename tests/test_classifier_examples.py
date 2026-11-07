@@ -20,7 +20,7 @@ from opencv_dataflow.simple_classifier.model import (
     read_image,
 )
 
-APPLICATION = Path(__file__).resolve().parents[1] / "examples/applications/image_classification"
+APPLICATION = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/image_classification"
 VEGQUAL = APPLICATION / "vegqual"
 
 

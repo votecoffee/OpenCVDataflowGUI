@@ -344,7 +344,7 @@ P2	method	cv2.detail.BundleAdjusterBase.confThresh	no static reference	-
 P2	method	cv2.detail.BundleAdjusterBase.refinementMask	no static reference	-
 P2	method	cv2.detail.BundleAdjusterBase.setConfThresh	no static reference	-
 P2	method	cv2.detail.BundleAdjusterBase.setRefinementMask	no static reference	-
-P2	method	cv2.detail.BundleAdjusterBase.setTermCriteria	no static reference	-
+P2	method	cv2.detail.BundleAdjusterBase.setTermCriteria	method name only	-
 P2	method	cv2.detail.BundleAdjusterBase.termCriteria	no static reference	-
 P2	class	cv2.detail.BundleAdjusterRay	no static reference	-
 P2	class	cv2.detail.BundleAdjusterReproj	no static reference	-
@@ -517,7 +517,7 @@ P2	method	cv2.dnn.Layer.outputNameToIndex	no static reference	-
 P2	method	cv2.dnn.Layer.run	method name only	-
 P2	class	cv2.dnn.Model	no static reference	-
 P2	method	cv2.dnn.Model.enableWinograd	no static reference	-
-P2	method	cv2.dnn.Model.predict	no static reference	-
+P2	method	cv2.dnn.Model.predict	method name only	-
 P2	method	cv2.dnn.Model.setInputCrop	no static reference	-
 P2	method	cv2.dnn.Model.setInputMean	no static reference	-
 P2	method	cv2.dnn.Model.setInputParams	method name only	-
@@ -698,7 +698,7 @@ P2	method	cv2.ml.ANN_MLP.setRpropDWMax	no static reference	-
 P2	method	cv2.ml.ANN_MLP.setRpropDWMin	no static reference	-
 P2	method	cv2.ml.ANN_MLP.setRpropDWMinus	no static reference	-
 P2	method	cv2.ml.ANN_MLP.setRpropDWPlus	no static reference	-
-P2	method	cv2.ml.ANN_MLP.setTermCriteria	no static reference	-
+P2	method	cv2.ml.ANN_MLP.setTermCriteria	method name only	-
 P2	method	cv2.ml.ANN_MLP.setTrainMethod	no static reference	-
 P2	function	cv2.ml.ANN_MLP_create	no static reference	-
 P2	function	cv2.ml.ANN_MLP_load	no static reference	-
@@ -728,7 +728,7 @@ P2	method	cv2.ml.DTrees.load	method name only	-
 P2	method	cv2.ml.DTrees.setCVFolds	no static reference	-
 P2	method	cv2.ml.DTrees.setMaxCategories	no static reference	-
 P2	method	cv2.ml.DTrees.setMaxDepth	method name only	-
-P2	method	cv2.ml.DTrees.setMinSampleCount	no static reference	-
+P2	method	cv2.ml.DTrees.setMinSampleCount	method name only	-
 P2	method	cv2.ml.DTrees.setPriors	no static reference	-
 P2	method	cv2.ml.DTrees.setRegressionAccuracy	no static reference	-
 P2	method	cv2.ml.DTrees.setTruncatePrunedTree	no static reference	-
@@ -745,11 +745,11 @@ P2	method	cv2.ml.EM.getMeans	no static reference	-
 P2	method	cv2.ml.EM.getTermCriteria	no static reference	-
 P2	method	cv2.ml.EM.getWeights	no static reference	-
 P2	method	cv2.ml.EM.load	method name only	-
-P2	method	cv2.ml.EM.predict	no static reference	-
+P2	method	cv2.ml.EM.predict	method name only	-
 P2	method	cv2.ml.EM.predict2	no static reference	-
 P2	method	cv2.ml.EM.setClustersNumber	no static reference	-
 P2	method	cv2.ml.EM.setCovarianceMatrixType	no static reference	-
-P2	method	cv2.ml.EM.setTermCriteria	no static reference	-
+P2	method	cv2.ml.EM.setTermCriteria	method name only	-
 P2	method	cv2.ml.EM.trainE	no static reference	-
 P2	method	cv2.ml.EM.trainEM	no static reference	-
 P2	method	cv2.ml.EM.trainM	no static reference	-
@@ -779,12 +779,12 @@ P2	method	cv2.ml.LogisticRegression.getRegularization	no static reference	-
 P2	method	cv2.ml.LogisticRegression.getTermCriteria	no static reference	-
 P2	method	cv2.ml.LogisticRegression.getTrainMethod	no static reference	-
 P2	method	cv2.ml.LogisticRegression.load	method name only	-
-P2	method	cv2.ml.LogisticRegression.predict	no static reference	-
+P2	method	cv2.ml.LogisticRegression.predict	method name only	-
 P2	method	cv2.ml.LogisticRegression.setIterations	no static reference	-
 P2	method	cv2.ml.LogisticRegression.setLearningRate	no static reference	-
 P2	method	cv2.ml.LogisticRegression.setMiniBatchSize	no static reference	-
 P2	method	cv2.ml.LogisticRegression.setRegularization	no static reference	-
-P2	method	cv2.ml.LogisticRegression.setTermCriteria	no static reference	-
+P2	method	cv2.ml.LogisticRegression.setTermCriteria	method name only	-
 P2	method	cv2.ml.LogisticRegression.setTrainMethod	no static reference	-
 P2	function	cv2.ml.LogisticRegression_create	no static reference	-
 P2	function	cv2.ml.LogisticRegression_load	no static reference	-
@@ -803,20 +803,20 @@ P2	method	cv2.ml.RTrees.getActiveVarCount	no static reference	-
 P2	method	cv2.ml.RTrees.getCalculateVarImportance	no static reference	-
 P2	method	cv2.ml.RTrees.getTermCriteria	no static reference	-
 P2	method	cv2.ml.RTrees.getVarImportance	no static reference	-
-P2	method	cv2.ml.RTrees.getVotes	no static reference	-
+P2	method	cv2.ml.RTrees.getVotes	method name only	-
 P2	method	cv2.ml.RTrees.load	method name only	-
 P2	method	cv2.ml.RTrees.setActiveVarCount	no static reference	-
 P2	method	cv2.ml.RTrees.setCalculateVarImportance	no static reference	-
-P2	method	cv2.ml.RTrees.setTermCriteria	no static reference	-
-P2	function	cv2.ml.RTrees_create	no static reference	-
+P2	method	cv2.ml.RTrees.setTermCriteria	method name only	-
+P2	function	cv2.ml.RTrees_create	literal reference	-
 P2	function	cv2.ml.RTrees_load	no static reference	-
 P2	class	cv2.ml.StatModel	no static reference	-
 P2	method	cv2.ml.StatModel.calcError	no static reference	-
 P2	method	cv2.ml.StatModel.empty	method name only	-
 P2	method	cv2.ml.StatModel.getVarCount	no static reference	-
 P2	method	cv2.ml.StatModel.isClassifier	no static reference	-
-P2	method	cv2.ml.StatModel.isTrained	no static reference	-
-P2	method	cv2.ml.StatModel.predict	no static reference	-
+P2	method	cv2.ml.StatModel.isTrained	method name only	-
+P2	method	cv2.ml.StatModel.predict	method name only	-
 P2	method	cv2.ml.StatModel.train	method name only	-
 P2	class	cv2.ml.SVM	no static reference	-
 P2	method	cv2.ml.SVM.create	method name only	-
@@ -843,7 +843,7 @@ P2	method	cv2.ml.SVM.setGamma	no static reference	-
 P2	method	cv2.ml.SVM.setKernel	no static reference	-
 P2	method	cv2.ml.SVM.setNu	no static reference	-
 P2	method	cv2.ml.SVM.setP	no static reference	-
-P2	method	cv2.ml.SVM.setTermCriteria	no static reference	-
+P2	method	cv2.ml.SVM.setTermCriteria	method name only	-
 P2	method	cv2.ml.SVM.setType	no static reference	-
 P2	method	cv2.ml.SVM.trainAuto	no static reference	-
 P2	function	cv2.ml.SVM_create	no static reference	-
@@ -866,7 +866,7 @@ P2	method	cv2.ml.SVMSGD.setMarginType	no static reference	-
 P2	method	cv2.ml.SVMSGD.setOptimalParameters	no static reference	-
 P2	method	cv2.ml.SVMSGD.setStepDecreasingPower	no static reference	-
 P2	method	cv2.ml.SVMSGD.setSvmsgdType	no static reference	-
-P2	method	cv2.ml.SVMSGD.setTermCriteria	no static reference	-
+P2	method	cv2.ml.SVMSGD.setTermCriteria	method name only	-
 P2	function	cv2.ml.SVMSGD_create	no static reference	-
 P2	function	cv2.ml.SVMSGD_load	no static reference	-
 P2	class	cv2.ml.TrainData	no static reference	-
@@ -1968,7 +1968,7 @@ P3	function	cv2.broadcast	no static reference	-
 P3	function	cv2.buildMST	literal reference	-
 P3	function	cv2.buildOpticalFlowPyramid	no static reference	-
 P3	function	cv2.calcCovarMatrix	literal reference	-
-P3	function	cv2.calcHist	no static reference	-
+P3	function	cv2.calcHist	literal reference	-
 P3	function	cv2.calcOpticalFlowFarneback	literal reference	-
 P3	function	cv2.calcOpticalFlowPyrLK	literal reference	-
 P3	function	cv2.calibrateCamera	no static reference	-
@@ -2536,7 +2536,7 @@ P3	class	cv2.face.FacemarkTrain	no static reference	-
 P3	class	cv2.face.FaceRecognizer	no static reference	-
 P3	method	cv2.face.FaceRecognizer.getLabelInfo	no static reference	-
 P3	method	cv2.face.FaceRecognizer.getLabelsByString	no static reference	-
-P3	method	cv2.face.FaceRecognizer.predict	no static reference	-
+P3	method	cv2.face.FaceRecognizer.predict	method name only	-
 P3	method	cv2.face.FaceRecognizer.predict_collect	no static reference	-
 P3	method	cv2.face.FaceRecognizer.predict_label	no static reference	-
 P3	method	cv2.face.FaceRecognizer.read	method name only	-
@@ -3088,7 +3088,7 @@ P3	method	cv2.IStreamReader.read	method name only	-
 P3	method	cv2.IStreamReader.seek	method name only	-
 P3	class	cv2.KalmanFilter	no static reference	-
 P3	method	cv2.KalmanFilter.correct	no static reference	-
-P3	method	cv2.KalmanFilter.predict	no static reference	-
+P3	method	cv2.KalmanFilter.predict	method name only	-
 P3	class	cv2.KeyPoint	no static reference	-
 P3	method	cv2.KeyPoint.convert	no static reference	-
 P3	method	cv2.KeyPoint.overlap	no static reference	-
@@ -4471,7 +4471,7 @@ P3	method	cv2.SparsePyrLKOpticalFlow.getWinSize	no static reference	-
 P3	method	cv2.SparsePyrLKOpticalFlow.setFlags	method name only	-
 P3	method	cv2.SparsePyrLKOpticalFlow.setMaxLevel	no static reference	-
 P3	method	cv2.SparsePyrLKOpticalFlow.setMinEigThreshold	no static reference	-
-P3	method	cv2.SparsePyrLKOpticalFlow.setTermCriteria	no static reference	-
+P3	method	cv2.SparsePyrLKOpticalFlow.setTermCriteria	method name only	-
 P3	method	cv2.SparsePyrLKOpticalFlow.setWinSize	no static reference	-
 P3	function	cv2.SparsePyrLKOpticalFlow_create	no static reference	-
 P3	function	cv2.spatialGradient	literal reference	-

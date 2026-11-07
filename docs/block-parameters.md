@@ -4744,6 +4744,16 @@ Input `mask` — Accept only blob centers inside the mask. The source is not cli
 | `max_convexity` | `1.01` | Value must be a finite number between 1e-06 and 2. Upper limit is exclusive. Set above 1 to accept an exact ratio of 1. |
 | `minimum_count` | `0` | Value must be a whole number between 0 and 100000. Minimum detected blobs for a pass. Zero disables the count check. |
 
+## SimpleClassify (`inspect.simple_classify_image`)
+
+Inspection / Classification
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model` | `""` | Project-relative manifest staged by the classifier trainer. |
+
 ## Skeletonize mask (scikit-image) (`inspect.skeletonize`)
 
 Inspection / Segmentation

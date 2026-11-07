@@ -38,7 +38,7 @@
     {
       "id": "segment",
       "type": "inspection.ocv_segment_image",
-      "name": "Segment cup rim",
+      "name": "SimpleSegmentation · Segment cup rim",
       "parameters": {
         "model_path": "model.yml",
         "model_sha256": "a8fc0fe4372a9085fd696115aa258c5d1b67445c03d1d6f76719e6a702e84059",

@@ -22,7 +22,7 @@ To rebuild into a new folder, download `VegQual_latest.zip` from Figshare and
 run the script in the DataflowGUI environment.
 
 ```powershell
-python examples/applications/image_classification/vegqual/build_example.py path/to/VegQual_latest.zip path/to/new-example
+python "examples/Simple Plugins/image_classification/vegqual/build_example.py" path/to/VegQual_latest.zip path/to/new-example
 ```
 
 The archive MD5 is `de19cbfe7d9792c5db37b6c3af0458e1`, as published by

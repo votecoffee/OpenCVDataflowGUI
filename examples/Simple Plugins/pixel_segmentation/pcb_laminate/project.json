@@ -39,7 +39,7 @@
     {
       "id": "segment",
       "type": "inspection.ocv_segment_image",
-      "name": "Segment blue PCB laminate",
+      "name": "SimpleSegmentation · Segment blue PCB laminate",
       "parameters": {
         "model_path": "model.yml",
         "model_sha256": "e1fd300863b89a7526b083b51863bf9bb95547a5f55d2f4c3b185590b3967d6d",

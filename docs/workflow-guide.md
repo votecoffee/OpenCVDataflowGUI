@@ -257,10 +257,9 @@ Load trusted custom blocks via **File > Load Python plugin**. The
 fields, validation, and a popup editor. A project that uses a local Python
 plugin can open after you explicitly load that trusted file.
 
-The [geometric inspection applications](../examples/applications/README.md) bundle a tray grid,
-a needle row, and weighted part discrimination with pinned recipes and
-expected counts for headless replay. The projects open directly when the
-geometric matcher is installed in the app's Python environment.
+The [Simple Plugins guide](<../examples/Simple Plugins/README.md>) covers
+SimplePatternMatch, SimpleSegmentation, and SimpleClassify. Projects open
+directly when their integrations are available in the app's Python environment.
 
 Plugin blocks can add their own inspector button and open a Qt dialog for
 configuration or review. The dialog can use copies of cached images with their

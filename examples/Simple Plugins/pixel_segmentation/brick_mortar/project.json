@@ -38,7 +38,7 @@
     {
       "id": "segment",
       "type": "inspection.ocv_segment_image",
-      "name": "Segment mortar joints",
+      "name": "SimpleSegmentation · Segment mortar joints",
       "parameters": {
         "model_path": "model.yml",
         "model_sha256": "de6f477ee7c4ce577fa1a26b16c5cb3ea5fb4b12f94a5afdf8eb13da1caba2ed",

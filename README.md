@@ -103,9 +103,9 @@ from **User**, connect an image, and run the graph. Load the plugin before openi
 a saved project that uses it. The headless runner accepts `--plugin count_pixels.py`.
 Load Python code only from sources you trust.
 
-Projects that use the installed geometric matcher or pixel segmentation can
-open directly after setup. The [image classifier](examples/applications/image_classification/README.md)
-is bundled with DataflowGUI. [Application setup](examples/applications/README.md)
+Projects that use **SimplePatternMatch** or **SimpleSegmentation** open directly
+after setup. **SimpleClassify** is bundled with DataflowGUI. See the
+[Simple Plugins examples and setup](<examples/Simple Plugins/README.md>).
 
 [Runnable plugin example](examples/user_tools/custom_invert/README.md) · [Plugin dialog API](docs/plugin-dialogs.md)
 

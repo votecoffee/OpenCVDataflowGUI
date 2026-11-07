@@ -3,7 +3,7 @@
 This saved DataflowGUI project classifies whole crops of individual vegetables
 into the publisher's four selected classes. Open [Surface texture](project.json)
 or [Color and layout](color_and_layout.json), select
-**Classify image**, and click **Train image classifier…** to inspect the
+**SimpleClassify**, and click **Train image classifier…** to inspect the
 filmstrips and validation report. Use **Run once** to step through the separate
 test sequence. The saved model and all example crops are included.
 
@@ -29,8 +29,8 @@ mistake, then step through the test images in the saved graph.
 Run from the DataflowGUI repository root.
 
 ```powershell
-opencv-dataflow-run examples/applications/image_classification/vegqual/project.json --all-images
-opencv-dataflow-run examples/applications/image_classification/vegqual/color_and_layout.json --all-images
+opencv-dataflow-run "examples/Simple Plugins/image_classification/vegqual/project.json" --all-images
+opencv-dataflow-run "examples/Simple Plugins/image_classification/vegqual/color_and_layout.json" --all-images
 ```
 
 [Dataset attribution and ground truth](SOURCES.md)

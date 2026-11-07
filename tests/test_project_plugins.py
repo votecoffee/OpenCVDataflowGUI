@@ -86,7 +86,7 @@ def test_installed_segmentation_opens_and_locates_boards_without_manual_plugin(a
     pytest.importorskip("opencv_defect_segmentation.dataflow")
     project = (
         Path(__file__).resolve().parents[1]
-        / "examples/applications/pixel_segmentation/pcb_laminate/project.json"
+        / "examples/Simple Plugins/pixel_segmentation/pcb_laminate/project.json"
     )
     monkeypatch.setattr(QFileDialog, "getOpenFileName", lambda *args, **kwargs: (str(project), ""))
     window = MainWindow()
@@ -129,13 +129,13 @@ def test_installed_segmentation_opens_and_locates_boards_without_manual_plugin(a
             "opencv_geometric_pattern_match",
             "pattern.ogpm_recipe",
             GEOMETRIC_MATCHER_TYPES,
-            "examples/applications/README.md",
+            "examples/Simple Plugins/README.md",
         ),
         (
             "opencv_defect_segmentation",
             "inspection.ocv_segment_image",
             PIXEL_SEGMENTATION_TYPES,
-            "examples/applications/pixel_segmentation/README.md",
+            "examples/Simple Plugins/pixel_segmentation/README.md",
         ),
     ],
 )

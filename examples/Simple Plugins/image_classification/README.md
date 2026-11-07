@@ -1,6 +1,6 @@
-# Image classification
+# SimpleClassify examples
 
-**Classify image** is bundled in the DataflowGUI toolbox. Search for it by
+**SimpleClassify** is bundled in the DataflowGUI toolbox. Search for it by
 name, or open one of the two saved projects. Both projects share the same
 132 labeled VegQual images and a 16-image test sequence.
 
@@ -14,7 +14,7 @@ winning label, score, confusion, and the ranked scores for all classes. Scores
 are uncalibrated percentages totaling 100%. Confusion is the runner-up score
 divided by the winning score, expressed as a percentage.
 
-Select **Classify image** and click **Train image classifier…** to review
+Select **SimpleClassify** and click **Train image classifier…** to review
 labeled filmstrips, held-out predictions, and the confusion matrix. Click
 **New class…** and **Add images…** to label files from disk.
 

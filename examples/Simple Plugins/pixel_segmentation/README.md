@@ -1,6 +1,6 @@
-# Pixel segmentation
+# SimpleSegmentation examples
 
-These examples use **Segment image** to learn a foreground class from painted labels. Each includes a saved project, editable labels, and a pinned model. The images come from the [bundled photograph collection](../../assets/photograph-sources.md).
+These examples use **SimpleSegmentation** to learn a foreground class from painted labels. Each includes a saved project, editable labels, and a pinned model. The images come from the [bundled photograph collection](../../assets/photograph-sources.md).
 
 | Project | Foreground | What to look for |
 | --- | --- | --- |
@@ -10,7 +10,7 @@ These examples use **Segment image** to learn a foreground class from painted la
 
 ## Run in DataflowGUI
 
-Install OpenCV Pixel Segmentation from a source checkout at revision `c43358c` or newer in the Python environment running DataflowGUI. From the segmentation checkout, run that environment's Python with `-m pip install --no-deps -e .`. DataflowGUI loads the installed integration when you open a saved project that uses it.
+Install the SimpleSegmentation package from a source checkout at revision `c43358c` or newer in the Python environment running DataflowGUI. From the segmentation checkout, run that environment's Python with `-m pip install --no-deps -e .`. DataflowGUI loads the installed integration when you open a saved project that uses it.
 
 Open a project above and press **Run once**. Inspect **Overlay** for the highlighted foreground, **Mask** for the binary result, or **Score map** for the raw forest votes. Use **Inspected** to identify which pixels were evaluated. The block's **Threshold** and **Min area px** change the binary output without retraining. Reset flow state to replay a finished sequence.
 
@@ -27,7 +27,7 @@ In the PCB project, **Locate one board** takes the external contour of the lamin
 From the DataflowGUI repository root, you can replay both PCB photographs in the same environment:
 
 ```powershell
-opencv-dataflow-run examples/applications/pixel_segmentation/pcb_laminate/project.json --all-images
+opencv-dataflow-run "examples/Simple Plugins/pixel_segmentation/pcb_laminate/project.json" --all-images
 ```
 
 ## Review or retrain
@@ -53,7 +53,7 @@ Results for the bundled PCB model at a minimum area of 70 pixels:
 The figures describe the marked pixels on board 0621. To reproduce the saved cutoff result from the DataflowGUI repository root:
 
 ```powershell
-ocv-segment evaluate examples/applications/pixel_segmentation/pcb_laminate/model.yml examples/applications/pixel_segmentation/pcb_laminate/validation.json --threshold 0.55 --min-area 70
+ocv-segment evaluate "examples/Simple Plugins/pixel_segmentation/pcb_laminate/model.yml" "examples/Simple Plugins/pixel_segmentation/pcb_laminate/validation.json" --threshold 0.55 --min-area 70
 ```
 
 ## Image credits and preprocessing

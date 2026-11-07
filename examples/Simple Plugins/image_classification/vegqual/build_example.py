@@ -146,6 +146,7 @@ def write_project(path, test_images, manifest):
         classifier = graph.add(registry.create(
             ClassifyImage.type_id, block_id="classifier", parameters={"model": manifest}
         ))
+        classifier.name = "SimpleClassify"
         classifier.position = [340.0, 0.0]
         graph.connect(inputs.id, "image", classifier.id, "image")
         graph.save(path)

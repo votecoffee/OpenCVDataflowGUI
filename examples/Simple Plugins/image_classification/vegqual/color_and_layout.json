@@ -53,7 +53,7 @@
     {
       "id": "classifier",
       "type": "inspect.simple_classify_image",
-      "name": "Classify image",
+      "name": "SimpleClassify",
       "parameters": {
         "model": "assets/image_classification/vegqual-v4/manifest.json"
       },
