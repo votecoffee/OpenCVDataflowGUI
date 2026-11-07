@@ -18,7 +18,7 @@ def test_brick_edges_project(tmp_path, monkeypatch):
     )
     try:
         graph.run()
-        assert all(block.state == "pass" for block in graph.blocks.values())
+        assert all(block.state == "pass" for block in graph.processing_blocks())
         edges = graph.blocks["edges"].last_output_images["image"]
         assert edges.shape == (512, 512)
         np.testing.assert_array_equal(np.unique(edges), [0, 255])
@@ -33,7 +33,7 @@ def test_coffee_histograms_project(tmp_path, monkeypatch):
     )
     try:
         graph.run()
-        assert all(block.state == "pass" for block in graph.blocks.values())
+        assert all(block.state == "pass" for block in graph.processing_blocks())
         source = graph.blocks["coffee"].last_result.outputs["image"]
         hsv = graph.blocks["hsv"].last_result.outputs["image"]
         np.testing.assert_array_equal(hsv, cv2.cvtColor(source, cv2.COLOR_BGR2HSV))
@@ -58,7 +58,7 @@ def test_pcb_outline_project(tmp_path, monkeypatch):
     try:
         for sample in ("0000", "0621"):
             graph.run()
-            assert all(block.state == "pass" for block in graph.blocks.values())
+            assert all(block.state == "pass" for block in graph.processing_blocks())
             source = graph.blocks["source"].last_result.outputs
             assert source["info"]["filename"] == f"visa-pcb2-normal-{sample}.jpg"
             outline = graph.blocks["outline"].last_result.outputs

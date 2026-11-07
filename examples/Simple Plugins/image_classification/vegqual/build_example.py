@@ -149,6 +149,18 @@ def write_project(path, test_images, manifest):
         classifier.name = "SimpleClassify"
         classifier.position = [340.0, 0.0]
         graph.connect(inputs.id, "image", classifier.id, "image")
+        credits = graph.add(registry.create("layout.comment", block_id="source_credits"))
+        credits.name = "VegQual dataset credits"
+        credits.description = (
+            "VegQual v4 images and labels by Tarek Rahman, Md Rahadul Islam Jishan, Robiul "
+            "Islam, Md Rakibul Islam, Jannatul Tajrian, Md. Sakhawat Hossain, Suman Ahmmed, and "
+            "Ohidujjaman (CC BY 4.0).\n\nThe original bounding boxes were used to crop the "
+            "images. The crops were resized and encoded as JPEGs. Dataset at "
+            "https://doi.org/10.6084/m9.figshare.30596084.v4.\n\nThe bundled SimpleClassify "
+            "implementation comes from OpenCVSimpleClassifier 0.2.0 (MIT)."
+        )
+        credits.node_size = "large"
+        credits.position = [0.0, -254.0]
         graph.save(path)
     finally:
         graph.close()

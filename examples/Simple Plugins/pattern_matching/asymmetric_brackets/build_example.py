@@ -76,6 +76,15 @@ def write_project(root, paths, *, wired):
         matcher.position = [375., 0.]
         matcher.exposed_outputs.append("result_graphics")
         graph.connect(source.id, "image", matcher.id, "image")
+        credits = graph.add(registry.create("layout.comment", block_id="source_credits"))
+        credits.name = "Bracket example credits"
+        credits.description = (
+            "The synthetic bracket geometry and both recipe routes were adapted from the "
+            "MIT-licensed OpenCVGeometricPatternMatch Dataflow example.\n\nSource at "
+            "https://github.com/votecoffee/OpenCVGeometricPatternMatch/blob/632e81bbd12c6640d1c6f65618bd85e45aa26b9e/examples/dataflow/build_example.py."
+        )
+        credits.node_size = "large"
+        credits.position = [0.0, -254.0]
         graph.save(root / ("wired_recipe.json" if wired else "project.json"))
     finally:
         graph.close()

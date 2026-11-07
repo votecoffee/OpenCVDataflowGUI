@@ -32,7 +32,7 @@ def test_project_relative_image_survives_move_clone_and_nested_graph(tmp_path, m
     monkeypatch.chdir(tmp_path)
     graph = Graph.load(project, registry)
     graph.run()
-    assert all(b.state == "pass" for b in graph.blocks.values())
+    assert all(b.state == "pass" for b in graph.processing_blocks())
     assert graph.blocks["lena_match"].last_result.outputs["location"]["top_left"] == [220, 200]
     assert graph.blocks["lena_source"].parameters["path"] == "../../assets/lena.jpg"
     clone = Graph.from_dict(graph.to_dict(), registry, project_dir=graph.project_dir)
@@ -44,7 +44,7 @@ def test_project_relative_image_survives_move_clone_and_nested_graph(tmp_path, m
     graph.save(project)
     restored = Graph.load(project, registry)
     restored.run()
-    assert all(b.state == "pass" for b in restored.blocks.values())
+    assert all(b.state == "pass" for b in restored.processing_blocks())
 
 
 def test_unsaved_project_relative_input_is_explicit_and_legacy_default_unchanged():
@@ -71,7 +71,7 @@ def test_real_lena_matches_expected_asset_and_repeated_results():
     assert graph.to_dict() == lena_graph(registry).to_dict()
     for _ in range(3):
         graph.run()
-        assert all(b.state == "pass" for b in graph.blocks.values())
+        assert all(b.state == "pass" for b in graph.processing_blocks())
         assert graph.blocks["lena_source"].last_output_images["image"].shape == (512, 512, 3)
         assert graph.blocks["lena_match"].last_result.outputs["score"] > 0.999
         assert graph.blocks["lena_match"].last_result.outputs["location"]["top_left"] == [220, 200]
@@ -100,7 +100,7 @@ def test_lena_feature_pipeline_and_saved_graph():
     graph = Graph.load("examples/demos/lena_features/lena_features.json", registry)
     assert graph.to_dict() == lena_features_graph(registry).to_dict()
     graph.run()
-    assert all(b.state == "pass" for b in graph.blocks.values())
+    assert all(b.state == "pass" for b in graph.processing_blocks())
     assert 0 < graph.blocks["feature_corners"].last_result.outputs["count"] <= 100
     assert graph.blocks["feature_lines"].last_result.outputs["count"] > 0
     histogram = graph.blocks["feature_histogram"].last_result.outputs["histogram"]
@@ -117,8 +117,8 @@ def test_lena_registration_matches_known_rotation():
     )
     assert graph.to_dict() == lena_registration_graph(registry).to_dict()
     graph.run()
-    assert all(b.state == "pass" for b in graph.blocks.values()), [
-        (b.name, b.error) for b in graph.blocks.values()
+    assert all(b.state == "pass" for b in graph.processing_blocks()), [
+        (b.name, b.error) for b in graph.processing_blocks()
     ]
     known = np.linalg.inv(
         np.array(

@@ -119,6 +119,20 @@
       ],
       "thumbnail": true,
       "preview_output": "overlay"
+    },
+    {
+      "id": "source_credits",
+      "type": "layout.comment",
+      "name": "VisA PCB2 photo credits",
+      "description": "VisA PCB2 photographs 0000 and 0621 by Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang, and Onkar Dabeer (ECCV 2022, CC BY 4.0).\n\nThe inputs were resized to 650 × 495 and converted to a grayscale blue-excess channel using saturating B − R.\n\nDataset and citation at https://registry.opendata.aws/visa/.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -254.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "node_size": "large"
     }
   ],
   "connections": [

@@ -101,6 +101,20 @@
       ],
       "thumbnail": true,
       "preview_output": ""
+    },
+    {
+      "id": "source_credits",
+      "type": "layout.comment",
+      "name": "Bracket example credits",
+      "description": "The synthetic bracket geometry and both recipe routes were adapted from the MIT-licensed OpenCVGeometricPatternMatch Dataflow example.\n\nSource at https://github.com/votecoffee/OpenCVGeometricPatternMatch/blob/632e81bbd12c6640d1c6f65618bd85e45aa26b9e/examples/dataflow/build_example.py.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -254.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "node_size": "large"
     }
   ],
   "connections": [

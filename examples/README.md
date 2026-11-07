@@ -3,6 +3,7 @@
 Each example has its own folder and README. Start with
 [Starter inspection](demos/starter_inspection/README.md). Commands run from
 the repository root. Shared fixtures are in [assets](assets/README.md).
+Examples with third-party sources include a **Comment** on the canvas.
 See [image sources and licenses](assets/photograph-sources.md) for the bundled photographs.
 
 ## Demos

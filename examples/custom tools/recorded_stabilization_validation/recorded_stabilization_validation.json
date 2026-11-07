@@ -240,6 +240,20 @@
       ],
       "thumbnail": false,
       "preview_output": ""
+    },
+    {
+      "id": "source_credits",
+      "type": "layout.comment",
+      "name": "TUM RGB-D frame credits",
+      "description": "RGB and registered depth from freiburg1_xyz of the TUM RGB-D benchmark by J. Sturm, N. Engelhard, F. Endres, W. Burgard, and D. Cremers (IROS 2012, CC BY 4.0).\n\nEight RGB frames were resized to 320 × 240 and converted to grayscale. Two registered depth frames were subsampled to the same grid.\n\nDataset and citation at https://cvg.cit.tum.de/data/datasets/rgbd-dataset.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -424.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "node_size": "large"
     }
   ],
   "connections": [

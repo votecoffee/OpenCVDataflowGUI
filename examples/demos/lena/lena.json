@@ -259,6 +259,20 @@
       ],
       "thumbnail": true,
       "preview_output": ""
+    },
+    {
+      "id": "source_credits",
+      "type": "layout.comment",
+      "name": "Lena image source",
+      "description": "This example uses the optional third-party lena.jpg from the OpenCV samples, pinned to revision 1007c06d44a118566bbc0200577942423b38911d.\n\nThe image is downloaded separately. See examples/assets/README.md for its source and checksum.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -254.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "node_size": "large"
     }
   ],
   "connections": [

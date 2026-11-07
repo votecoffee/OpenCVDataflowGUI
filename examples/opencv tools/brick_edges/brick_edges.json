@@ -93,6 +93,20 @@
       ],
       "thumbnail": true,
       "preview_output": ""
+    },
+    {
+      "id": "source_credits",
+      "type": "layout.comment",
+      "name": "Brick image credits",
+      "description": "Brick texture by CC0Textures, transformed by scikit-image (CC0 1.0). This example uses brick.png from scikit-image v0.25.2.\n\nSource and checksum in examples/assets/photograph-sources.md.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -254.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "node_size": "large"
     }
   ],
   "connections": [

@@ -1176,7 +1176,7 @@ def test_project_relative_image_works_in_editor_worker(app, tmp_path, monkeypatc
     window.show()
     window.start_run(False)
     pump_until(app, lambda: window.runner is None)
-    assert all(b.state == "pass" for b in window.graph.blocks.values())
+    assert all(b.state == "pass" for b in window.graph.processing_blocks())
     source = window.graph.blocks["lena_source"]
     assert source.parameters["path"] == "../../assets/lena.jpg"
     window.dirty = False

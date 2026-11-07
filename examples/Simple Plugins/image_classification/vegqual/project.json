@@ -72,6 +72,20 @@
       ],
       "thumbnail": true,
       "preview_output": ""
+    },
+    {
+      "id": "source_credits",
+      "type": "layout.comment",
+      "name": "VegQual dataset credits",
+      "description": "VegQual v4 images and labels by Tarek Rahman, Md Rahadul Islam Jishan, Robiul Islam, Md Rakibul Islam, Jannatul Tajrian, Md. Sakhawat Hossain, Suman Ahmmed, and Ohidujjaman (CC BY 4.0).\n\nThe original bounding boxes were used to crop the images. The crops were resized and encoded as JPEGs. Dataset at https://doi.org/10.6084/m9.figshare.30596084.v4.\n\nThe bundled SimpleClassify implementation comes from OpenCVSimpleClassifier 0.2.0 (MIT).",
+      "parameters": {},
+      "position": [
+        0.0,
+        -254.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "node_size": "large"
     }
   ],
   "connections": [

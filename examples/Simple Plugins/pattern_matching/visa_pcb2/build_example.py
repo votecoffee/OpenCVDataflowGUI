@@ -81,6 +81,16 @@ def build_example(root):
         matcher.position = [375., 0.]
         matcher.exposed_outputs.append("result_graphics")
         graph.connect(source.id, "image", matcher.id, "image")
+        credits = graph.add(registry.create("layout.comment", block_id="source_credits"))
+        credits.name = "VisA PCB2 photo credits"
+        credits.description = (
+            "VisA PCB2 photographs 0000 and 0621 by Yang Zou, Jongheon Jeong, Latha Pemula, "
+            "Dongqing Zhang, and Onkar Dabeer (ECCV 2022, CC BY 4.0).\n\nThe photos were resized "
+            "to 702 × 535 and re-encoded as JPEGs. The training reference was converted to "
+            "grayscale.\n\nDataset and citation at https://registry.opendata.aws/visa/."
+        )
+        credits.node_size = "large"
+        credits.position = [0.0, -254.0]
         graph.save(root / "project.json")
     finally:
         graph.close()

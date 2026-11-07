@@ -291,6 +291,19 @@ def template_graph(registry):
     return graph
 
 
+def _add_lena_credits(graph, registry):
+    credits = graph.add(registry.create("layout.comment", block_id="source_credits"))
+    credits.name = "Lena image source"
+    credits.description = (
+        "This example uses the optional third-party lena.jpg from the OpenCV samples, "
+        "pinned to revision 1007c06d44a118566bbc0200577942423b38911d.\n\n"
+        "The image is downloaded separately. See examples/assets/README.md for its source "
+        "and checksum."
+    )
+    credits.node_size = "large"
+    credits.position = [0.0, -254.0]
+
+
 def lena_graph(registry):
     """An editable real-image review project; assets are relative to its JSON file."""
     from .toolblocks import Binding, ToolBlock
@@ -345,6 +358,7 @@ def lena_graph(registry):
     graph.connect(source.id, "image", reference.id, "image")
     graph.connect(source.id, "image", match.id, "image")
     graph.connect(reference.id, "image", match.id, "template")
+    _add_lena_credits(graph, registry)
     return graph
 
 
@@ -380,6 +394,7 @@ def lena_features_graph(registry):
         graph.connect(source, "image", target, "image")
     graph.blocks["feature_corners"].preview_output = "overlay"
     graph.blocks["feature_lines"].preview_output = "overlay"
+    _add_lena_credits(graph, registry)
     return graph
 
 
@@ -445,6 +460,7 @@ def lena_registration_graph(registry):
         graph.connect(source, output, target, input)
     for key in ("registration_query", "registration_train"):
         graph.blocks[key].preview_output = "overlay"
+    _add_lena_credits(graph, registry)
     return graph
 
 

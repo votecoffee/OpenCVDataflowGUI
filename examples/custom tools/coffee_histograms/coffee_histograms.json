@@ -142,6 +142,20 @@
       ],
       "thumbnail": true,
       "preview_output": "plot"
+    },
+    {
+      "id": "source_credits",
+      "type": "layout.comment",
+      "name": "Coffee image credits",
+      "description": "Coffee photograph by Rachel Michetti, courtesy of Pikolo Espresso Bar (CC0 1.0). The sample comes from scikit-image v0.25.2.\n\nSource and checksum in examples/assets/photograph-sources.md.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -534.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "node_size": "large"
     }
   ],
   "connections": [
