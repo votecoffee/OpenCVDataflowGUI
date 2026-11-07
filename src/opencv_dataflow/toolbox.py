@@ -7,10 +7,17 @@ from PySide6.QtCore import QMimeData, Qt
 from PySide6.QtWidgets import QAbstractItemView, QTreeWidget, QTreeWidgetItem
 
 from .core import block_display_title
+from .plugins import GEOMETRIC_MATCHER_TYPES, PIXEL_SEGMENTATION_TYPES
 from .visual_style import INDUSTRIAL
 
 TOOL_MIME = "application/x-opencv-dataflow-tool"
-TOOL_SOURCES = ("OpenCV", "scikit-image", INDUSTRIAL, "Custom", "User")
+SIMPLE_PLUGINS = "Simple Plugins"
+TOOL_SOURCES = ("OpenCV", "scikit-image", INDUSTRIAL, "Custom", SIMPLE_PLUGINS, "User")
+_OPTIONAL_SIMPLE_FAMILIES = {
+    **dict.fromkeys(GEOMETRIC_MATCHER_TYPES, "Pattern matching"),
+    **dict.fromkeys(PIXEL_SEGMENTATION_TYPES, "Segmentation"),
+}
+_SIMPLE_FAMILIES = {**_OPTIONAL_SIMPLE_FAMILIES, "inspect.simple_classify_image": "Classification"}
 
 OPENCV_MODULES = {
     "imgproc": "Image Processing",
@@ -174,7 +181,9 @@ def block_entry(block):
     kind, subtype = block.block_type or block.category, block.subtype
     package, _, file = block.__module__.rpartition(".")
     type_id = block.type_id
-    if package != "opencv_dataflow":
+    if type_id in _SIMPLE_FAMILIES:
+        path = (SIMPLE_PLUGINS, _SIMPLE_FAMILIES[type_id])
+    elif package != "opencv_dataflow":
         path = ("User", kind, subtype)
     elif kind == INDUSTRIAL:
         path = (INDUSTRIAL, subtype)
@@ -197,6 +206,15 @@ def block_entry(block):
         path, title, type_id,
         (kind, subtype, *former_title, *aliases, *_NATIVE_NAMES.get(type_id, ())),
     )
+
+
+def optional_simple_entries(registry):
+    """Expose optional tools without importing their packages during toolbox setup."""
+    return [
+        ToolEntry((SIMPLE_PLUGINS, family), block_display_title(type_id), type_id, ("Inspection",))
+        for type_id, family in _OPTIONAL_SIMPLE_FAMILIES.items()
+        if type_id not in registry.types
+    ]
 
 
 def _compact(text):

@@ -70,7 +70,9 @@ DISPLAY_RESULT_FIELDS = (
 
 
 def block_display_title(block):
-    """Return the host title for a block class or instance."""
+    """Return the host title for a block class, instance, or optional plugin ID."""
+    if isinstance(block, str):
+        return _PLUGIN_DISPLAY_TITLES.get(block, block)
     return _PLUGIN_DISPLAY_TITLES.get(block.type_id, block.title)
 
 

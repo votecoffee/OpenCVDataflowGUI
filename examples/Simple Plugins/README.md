@@ -1,5 +1,9 @@
 # Simple Plugins
 
+In a new graph, expand **Simple Plugins** in the toolbox or search for the tool
+by name. SimpleClassify is bundled. SimplePatternMatch and SimpleSegmentation
+load their installed integrations when you add a block or open a project.
+
 | Tool | Example projects |
 | --- | --- |
 | **SimpleSegmentation** | [Brick mortar, cup rim, and PCB laminate](pixel_segmentation/README.md) |

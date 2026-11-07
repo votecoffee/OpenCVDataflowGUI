@@ -83,7 +83,7 @@ from .ticket_window import TicketResultsWindow
 from .tickets import TICKET_MODES
 from .toolblock_editor import InterfaceDialog
 from .toolblocks import ToolBlock, encapsulate
-from .toolbox import ToolEntry, ToolLibrary, block_entry
+from .toolbox import ToolEntry, ToolLibrary, block_entry, optional_simple_entries
 from .visual_style import BLOCK_COLORS, NODE_SIZES, PORT_COLORS, PORT_LABELS
 
 
@@ -1923,6 +1923,7 @@ class MainWindow(QMainWindow):
 
     def populate_library(self):
         entries = [block_entry(block) for block in self.registry.types.values()]
+        entries.extend(optional_simple_entries(self.registry))
         for index, definition in enumerate(self.toolblock_templates):
             source = "Custom" if index < self._builtin_template_count else "User"
             entries.append(ToolEntry(
@@ -1944,7 +1945,10 @@ class MainWindow(QMainWindow):
                 definition = self.toolblock_templates[int(type_id.split(":")[1])]
                 block = ToolBlock.from_definition(definition, self.registry)
             else:
+                registered = type_id in self.registry.types
                 block = self.registry.create(type_id)
+                if not registered:
+                    self.populate_library()
         except (Exception, SystemExit) as exc:
             self.warn(exception_message(exc))
             return
