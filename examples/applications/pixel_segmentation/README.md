@@ -28,7 +28,9 @@ Select the segmentation block and open **Train segmentation candidate…**. Choo
 
 The cup and brick results show coverage on images used for training. The PCB example also includes a held-out [validation manifest](pcb_laminate/validation.json) for board 0621. It marks 21,065 pixels (6.5% of the image) across visible laminate, chips, pins, and the background. Unmarked pixels are ignored by the metrics.
 
-Live validation review requires segmentation revision `fe79959` or newer. In the trainer, select the PCB **Validation manifest**, choose **Open validation labels**, and turn on **Show prediction**. **Compare labels** shows hits in green, missed foreground in red, foreground on labeled background in amber, and predictions on unlabeled areas in purple. Change **Cutoff** or **Min px** to update the current image's overlay and metrics from its cached scores. Enter the chosen settings in the inspector when you want to use them for execution.
+Live validation review requires segmentation revision `fe79959` or newer. In the trainer, select the PCB **Validation manifest**, choose **Open validation labels**, and turn on **Show prediction**. **Compare labels** shows hits in green, missed foreground in red, foreground on labeled background in amber, and predictions on unlabeled areas in purple. Change **Cutoff** or **Min px** to update the current image's overlay and metrics from its cached scores.
+
+With segmentation revision `7183312` or newer, choose **Keep preview settings** while comparing the saved labels. Close the review and choose **Stage settings** for the pinned model or **Stage candidate** for a newly trained model. Use **Apply configuration** in the inspector and save the project. The aggregate training summary lists the cutoff and area used for that report.
 
 Results for the bundled PCB model at a minimum area of 70 pixels:
 
