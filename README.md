@@ -418,8 +418,8 @@ Hand–eye example
 
 ### Run a public example or the built-in starter
 
-The [public example gallery](examples/public/README.md) includes two runnable
-projects with CC0 images. Open a project through **File > Open** and press
+The [public example gallery](examples/public/README.md) includes runnable
+projects with openly licensed images. Open a project through **File > Open** and press
 **Run once**.
 
 Launch the built-in synthetic inspection project with:
@@ -999,9 +999,13 @@ and there is no operator interface, undo/redo, or full OpenCV tool catalog yet.
 
 ## Contributing
 
-Use a `src/` package layout. Keep private projects under `examples/` or
-`.local/`. Git ignores them. Add only reviewed public files under
-`examples/public/` and allow each one explicitly in `.gitignore`. Keep device
+Use a `src/` package layout. Keep examples saved from tool development or
+customer work in the ignored local folders under `examples/`. Keep their
+images, recipes, trained models, and results with the private projects.
+Build public counterparts separately under `examples/public/` using
+independently sourced images whose licenses allow redistribution and
+commercial use. Record source, license, attribution, and changes for each
+image. Allow each reviewed public file explicitly in `.gitignore`. Keep device
 configuration and scratch artifacts in `.local/`.
 Run local checks before committing. Tests that require the optional local
 example collection are skipped in a fresh public checkout.

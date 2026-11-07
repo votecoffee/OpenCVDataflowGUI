@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Load PCB photos",
+      "description": "Two unmodified normal photos of the reverse side of an ultrasonic sensor PCB.",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "../assets/visa-pcb2-normal-0000.jpg",
+          "../assets/visa-pcb2-normal-0621.jpg"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "hsv",
+      "type": "cv.convert",
+      "name": "Convert to HSV",
+      "description": "Separate board color from brightness.",
+      "parameters": {
+        "color_format": "hsv",
+        "pixel_depth": "unchanged"
+      },
+      "position": [
+        300,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mask",
+      "type": "cv.in_range",
+      "name": "Select blue board",
+      "description": "The hue and saturation bounds select the blue board surface.",
+      "parameters": {
+        "lower": [
+          90,
+          80,
+          40
+        ],
+        "upper": [
+          125,
+          255,
+          255
+        ]
+      },
+      "position": [
+        600,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "close",
+      "type": "cv.morphology",
+      "name": "Close small gaps",
+      "description": "Merge breaks in the board mask around traces and silkscreen.",
+      "parameters": {
+        "operation": "close",
+        "shape": "rect",
+        "kernel": 21,
+        "iterations": 1,
+        "kernel_y": 0,
+        "custom_kernel": [],
+        "anchor": [
+          -1,
+          -1
+        ],
+        "shape_anchor": [
+          -1,
+          -1
+        ],
+        "border": "constant",
+        "border_value": []
+      },
+      "position": [
+        900,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "outline",
+      "type": "inspect.contours",
+      "name": "Check for one board outline",
+      "description": "Keep external contours over 150,000 square pixels and require exactly one.",
+      "parameters": {
+        "min_area": 150000.0,
+        "expected_count": 1,
+        "retrieval": "external",
+        "approximation": "simple",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        1200,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "data",
+        "collection",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Draw outline on photo",
+      "description": "Draw the contour on the original color photograph using result graphics.",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1500,
+        320
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "hsv",
+      "input": "image"
+    },
+    {
+      "source": "hsv",
+      "output": "image",
+      "target": "mask",
+      "input": "image"
+    },
+    {
+      "source": "mask",
+      "output": "image",
+      "target": "close",
+      "input": "image"
+    },
+    {
+      "source": "close",
+      "output": "image",
+      "target": "outline",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "outline",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}
