@@ -91,6 +91,7 @@ def test_inpaint_preserves_high_depth_color_and_alpha():
         np.testing.assert_array_equal(output[..., channel], expected)
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("with_defect", [False, True])
 def test_registered_defect_toolblock_judges_translated_parts(with_defect):
     example = (

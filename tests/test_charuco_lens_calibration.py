@@ -17,6 +17,7 @@ _PROJECT = (
 )
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_batch_fits_only_when_all_views_arrive(profile):
     graph = Graph.load(_PROJECT, builtin_registry())
@@ -65,6 +66,7 @@ def observations():
     return tuple(packets)
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize(
     ("problem", "message"),
     [
@@ -89,6 +91,7 @@ def test_inconsistent_view_lists_are_rejected(observations, problem, message):
     assert message in fit.error
 
 
+@pytest.mark.local_examples
 def test_group_rejects_views_with_a_different_pixel_transform(observations):
     entries = copy.deepcopy(observations)
     entries[2].payload["spatial"]["to_root"][0][2] = 3.0
@@ -98,6 +101,7 @@ def test_group_rejects_views_with_a_different_pixel_transform(observations):
     assert "same camera pixel grid" in fit.error
 
 
+@pytest.mark.local_examples
 def test_group_rejects_a_failed_detection_even_when_it_contains_enough_points(observations):
     entries = copy.deepcopy(observations)
     entries[2].payload["outcome"] = {

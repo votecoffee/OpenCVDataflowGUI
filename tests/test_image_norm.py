@@ -77,6 +77,7 @@ def test_reference_frame_and_relative_denominator_are_validated():
     assert "at least one selected pixel" in block.error
 
 
+@pytest.mark.local_examples
 def test_saved_example_reports_selected_norms_and_inclusive_limit():
     path = Path(__file__).parents[1] / "examples/opencv tools/image_norm/image_norm.json"
     graph = Graph.load(path, builtin_registry())

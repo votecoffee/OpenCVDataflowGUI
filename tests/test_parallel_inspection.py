@@ -220,6 +220,7 @@ def test_blob_collection_produces_25_local_inspections():
     assert inspect.last_result.outputs["pass_count"] == 25
 
 
+@pytest.mark.local_examples
 def test_25_pattern_example_and_nested_saved_inspection(tmp_path):
     r = builtin_registry()
     graph = Graph.load(
@@ -282,6 +283,7 @@ def test_input_memory_guard_and_ticket_mismatch_reject_before_submission():
     assert block.state == "error" and "tickets differ" in block.error and not tool.started
 
 
+@pytest.mark.local_examples
 def test_editor_nested_inspection_region_save_reload_and_template_files(
     app, load_example, tmp_path, monkeypatch
 ):

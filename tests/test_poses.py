@@ -173,6 +173,7 @@ def test_projective_pose_keeps_full_mapping_and_rejects_crossing_horizon():
     assert block.state == "error" and "horizon" in block.error
 
 
+@pytest.mark.local_examples
 def test_saved_pose_inspection_runs_repeatedly_and_reloads(tmp_path):
     registry = builtin_registry()
     graph = Graph.load(

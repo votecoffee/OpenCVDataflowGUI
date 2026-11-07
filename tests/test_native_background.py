@@ -90,6 +90,7 @@ def test_background_memory_eviction_happens_before_model_allocation():
     assert second.outputs["status"]["evicted"] == 1
 
 
+@pytest.mark.local_examples
 def test_native_background_example_reports_moving_foreground():
     path = (
         Path(__file__).resolve().parents[1]

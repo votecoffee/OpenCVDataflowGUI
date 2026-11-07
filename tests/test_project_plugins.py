@@ -13,6 +13,7 @@ from opencv_dataflow.plugins import GEOMETRIC_MATCHER_TYPES
 EXAMPLES = Path(__file__).resolve().parents[1] / "examples" / "applications"
 
 
+@pytest.mark.local_examples
 def test_installed_matcher_opens_an_application_without_manual_plugin(app, monkeypatch):
     pytest.importorskip("opencv_geometric_pattern_match.dataflow")
     project = EXAMPLES / "tray_grid" / "inspection.json"

@@ -76,6 +76,7 @@ def test_wired_label_range_and_selection_preserve_coordinates():
     assert metadata(result.outputs["image"])["spatial"] == spatial
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_masks_watershed_boundaries_and_interiors(profile):
     project = (

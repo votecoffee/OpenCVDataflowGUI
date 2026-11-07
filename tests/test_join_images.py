@@ -120,6 +120,7 @@ def test_matches_tickets_across_sources_and_keeps_the_only_input_ticket():
     assert "same ticket" in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_contains_original_and_filtered_crop(profile):
     project = (

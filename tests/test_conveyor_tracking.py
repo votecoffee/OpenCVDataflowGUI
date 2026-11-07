@@ -4,6 +4,7 @@ from itertools import permutations
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.conveyor_tracking import associate_positions
@@ -83,6 +84,7 @@ def test_encoder_rollover_mismatch_and_offscreen_prediction_preserve_track_id():
     assert expired.outputs["status"]["expired"] == 1
 
 
+@pytest.mark.local_examples
 def test_conveyor_example_keeps_ids_after_missing_detection_and_leaving_view():
     path = (
         Path(__file__).resolve().parents[1]

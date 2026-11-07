@@ -112,6 +112,7 @@ def test_empty_votes_and_invalid_accumulator_or_frame():
     assert "Hough accumulator" in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_example_sorts_and_renders_line_collection(profile):
     graph = Graph.load(_PROJECT, builtin_registry())

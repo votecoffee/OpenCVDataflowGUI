@@ -149,6 +149,7 @@ def test_invalid_center_inputs_and_output_size_are_rejected():
     assert "Convert HSV or Lab" in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_project_remaps_the_subpixel_center_and_waits_after_rejection(profile):
     graph = Graph.load(_PROJECT, builtin_registry())

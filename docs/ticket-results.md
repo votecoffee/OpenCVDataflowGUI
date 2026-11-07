@@ -1,5 +1,8 @@
 # Ticket outcomes, input gates and final judgments
 
+Named projects in this guide refer to optional local examples. See the
+[public example gallery](../examples/public/README.md) for bundled projects.
+
 Final judgments support stable fail codes/messages, and the status bar reports cumulative
 ticket counts and end-to-end timing. See [production counts and validation](production-validation.md)
 for reason propagation, counting boundaries and scored validation image sets.
@@ -142,7 +145,7 @@ not required for the example or automated validation.
 
 ## Example
 
-Open [ticket results](<../examples/flow tools/ticket_results/ticket_results.json>), run once, then open **Results > Ticket
+Open ticket results, run once, then open **Results > Ticket
 results…**. Two synthetic parts produce a `final_pass` ticket. The grayscale
 diagnostic branch accepts only passing inspection images. Change **Find contours >
 expected_count** from 2 to 3, apply, and run again: the new ticket is `final_fail`,

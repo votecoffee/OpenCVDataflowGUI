@@ -139,6 +139,7 @@ def test_ticket_policy_requires_matching_views_unless_explicitly_relaxed():
     assert result.outputs["layout"]["views"][1]["source_ticket"] == b_ticket
 
 
+@pytest.mark.local_examples
 def test_saved_example_reconstructs_original_pixel_for_pixel():
     path = (
         Path(__file__).parents[1]
@@ -157,6 +158,7 @@ def test_saved_example_reconstructs_original_pixel_for_pixel():
         graph.close()
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize(
     ("project", "scale", "work_factor"),
     [("stitch_seam", 1, 1), ("stitch_large_seam", 8, 2)],

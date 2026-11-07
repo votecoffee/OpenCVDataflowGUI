@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "brick",
+      "type": "input.file",
+      "name": "Brick wall",
+      "description": "Load the bundled CC0 brick texture.",
+      "parameters": {
+        "path": "../assets/brick.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "smooth",
+      "type": "cv.gaussian_blur",
+      "name": "Smooth the texture",
+      "description": "Reduce texture noise before finding edges.",
+      "parameters": {
+        "kernel": 5,
+        "sigma": 1.2,
+        "kernel_y": 0,
+        "sigma_y": 0.0,
+        "border": "reflect",
+        "border_value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "algorithm_hint": "default"
+      },
+      "position": [
+        300,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "edges",
+      "type": "cv.canny",
+      "name": "Find mortar edges",
+      "description": "Tune the two thresholds to balance mortar and surface detail.",
+      "parameters": {
+        "low": 30.0,
+        "high": 85.0,
+        "l2_gradient": true,
+        "aperture": "3"
+      },
+      "position": [
+        600,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "brick",
+      "output": "image",
+      "target": "smooth",
+      "input": "image"
+    },
+    {
+      "source": "smooth",
+      "output": "image",
+      "target": "edges",
+      "input": "image"
+    }
+  ]
+}

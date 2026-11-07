@@ -86,6 +86,7 @@ def test_roundtrip_and_schema_rejection(tmp_path, registry):
         Graph.load(path, registry)
 
 
+@pytest.mark.local_examples
 def test_custom_plugin_and_branch_isolation(registry):
     load_plugin("examples/user_tools/custom_invert/custom_invert.py", registry)
     graph = Graph()

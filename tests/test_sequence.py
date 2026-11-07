@@ -385,6 +385,7 @@ def test_editor_f5_retains_memory_training_and_runtime_reset(app):
     window.close()
 
 
+@pytest.mark.local_examples
 def test_synthetic_example_matches_saved_and_runs():
     registry = builtin_registry()
     built = sequence_graph(registry)

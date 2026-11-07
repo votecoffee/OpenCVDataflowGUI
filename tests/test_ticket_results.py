@@ -449,6 +449,7 @@ def test_toolblock_public_policy_survives_export_and_terminal_rename(tmp_path):
     assert restored.input_failure_policies == {"renamed": "reject_failed"}
 
 
+@pytest.mark.local_examples
 def test_saved_example_final_status_and_headless_receipt(tmp_path, app, load_example):
     from opencv_dataflow.examples import ticket_results_graph
     from opencv_dataflow.runner import main

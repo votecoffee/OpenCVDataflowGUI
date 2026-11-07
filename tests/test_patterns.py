@@ -246,6 +246,7 @@ def test_training_selection_is_independent_and_models_survive_runtime_clone(kind
     assert restored.state == "fail" and restored.last_result.outputs["count"] == 0
 
 
+@pytest.mark.local_examples
 def test_saved_trained_patterns_example(tmp_path):
     from pathlib import Path
 

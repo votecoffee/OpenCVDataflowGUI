@@ -13,6 +13,7 @@ from opencv_dataflow.payloads import NO_VALUE, packet_for
 _PROJECT = Path(__file__).parents[1] / "examples/opencv tools/charuco_board/charuco_board.json"
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_cropped_board_graph_identifies_points_and_recovers_pose(profile):
     graph = Graph.load(_PROJECT, builtin_registry())
@@ -100,6 +101,7 @@ def test_invalid_board_configuration_is_reported(changes, message):
     assert message in detector.error
 
 
+@pytest.mark.local_examples
 def test_pnp_rejects_conflicting_charuco_object_point_units():
     graph = Graph.load(_PROJECT, builtin_registry())
     graph.run()

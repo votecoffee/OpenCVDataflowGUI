@@ -68,6 +68,7 @@ def test_nonfinite_wire_override_fails_without_emitting_an_image():
     assert not block.current_emissions.get("image")
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_thresholds_both_gradient_polarities(profile):
     project = (

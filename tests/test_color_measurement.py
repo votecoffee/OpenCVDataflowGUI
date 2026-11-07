@@ -69,6 +69,7 @@ def test_ciede2000_reference_pairs(reference, sample, expected):
     assert result.outputs["delta_e"] == pytest.approx(expected, abs=5e-5)
 
 
+@pytest.mark.local_examples
 def test_color_match_example_measures_and_compares_two_regions():
     path = (
         Path(__file__).resolve().parents[1]

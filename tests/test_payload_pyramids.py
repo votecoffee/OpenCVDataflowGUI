@@ -230,6 +230,7 @@ def test_payload_added_to_bundle_reaches_selected_level_and_invalid_payloads_fai
     assert invalid.state == "error"
 
 
+@pytest.mark.local_examples
 def test_saved_channel_pyramid_example_preserves_payload_and_maps_centroids():
     from opencv_dataflow.examples import channel_pyramid_graph
     from opencv_dataflow.runner import describe
@@ -325,6 +326,7 @@ def test_custom_geometry_composes_tagged_arrays_and_explicit_packets():
     assert producer.last_result.payloads["value"] == {"units": "mm"}
 
 
+@pytest.mark.local_examples
 def test_headless_pyramid_receipt_serializes_frames_and_json_primary_values(tmp_path):
     from opencv_dataflow.runner import main
 

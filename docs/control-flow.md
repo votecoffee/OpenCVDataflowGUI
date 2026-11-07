@@ -1,5 +1,8 @@
 # Tickets and control flow
 
+Named projects in this guide refer to optional local examples. See the
+[public example gallery](../examples/public/README.md) for bundled projects.
+
 Ticketed connections also carry tool outcomes. Input failure policies can suppress
 failed entries before buffering, and a shared collector tracks intermediate events
 and explicit final judgments. See [ticket results](ticket-results.md) and
@@ -162,7 +165,7 @@ cooperative between block invocations; an in-flight native operation can finish.
 
 ## Example
 
-Open [ticketed control flow](<../examples/flow tools/control_flow/control_flow.json>).
+Open ticketed control flow.
 Three synthetic camera sources are grouped, then deliberately unbatched in reverse
 order. Two parallel image-processing branches join by ticket, case selection routes
 even/odd tickets, and a manifest restores the original acquisition order before a

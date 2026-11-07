@@ -115,6 +115,7 @@ def test_frame_policy_and_ticket_identity_cover_weight_maps():
     assert metadata(result.outputs["image"])["ticket"]["value"] == 2
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_keeps_both_endpoints_and_feathers_the_transition(profile):
     project = (

@@ -81,6 +81,7 @@ def test_geometry_and_refinement_limits(shape, parameters, error):
     assert error in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_applies_measured_correction_to_color_image(profile):
     project = (

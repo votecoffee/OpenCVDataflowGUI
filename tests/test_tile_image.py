@@ -67,6 +67,7 @@ def test_tile_rejects_an_oversized_output_before_allocating():
     assert not block.current_emissions.get("image")
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_finds_six_matches_at_the_grid_origins(profile):
     project = (

@@ -60,6 +60,7 @@ def test_delaunay_rejects_invalid_or_unresolved_geometry(points, error):
     assert error in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_delaunay_example_connects_detected_centers_and_overlays_edges(profile):
     project = (

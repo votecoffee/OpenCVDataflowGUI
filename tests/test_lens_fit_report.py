@@ -13,6 +13,7 @@ from opencv_dataflow.core import Graph
 _PROJECT = Path(__file__).parents[1] / "examples/custom tools/lens_fit_report/lens_fit_report.json"
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_calibration_report_matches_the_rendered_views(profile):
     graph = Graph.load(_PROJECT, builtin_registry())
@@ -58,6 +59,7 @@ def test_saved_calibration_report_matches_the_rendered_views(profile):
     assert view["rms_pixels"] == pytest.approx(float(np.sqrt(np.mean(error**2))), abs=1e-4)
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize(
     ("overall_limit", "view_limit", "code"),
     [
@@ -75,6 +77,7 @@ def test_fit_thresholds_emit_separate_reasons_and_keep_the_report(overall_limit,
     assert result.outputs["calibration"]["views"] == 6
 
 
+@pytest.mark.local_examples
 def test_unavailable_standard_deviations_are_serializable(monkeypatch):
     fit = Graph.load(_PROJECT, builtin_registry()).blocks["fit"]
     native = cv2.calibrateCameraExtended

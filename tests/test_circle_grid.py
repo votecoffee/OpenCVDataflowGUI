@@ -128,6 +128,7 @@ def test_circle_detector_reports_invalid_ranges_and_a_missing_target(changes, me
     assert message in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_circle_grid_example_maps_staggered_centers(profile):
     project = (

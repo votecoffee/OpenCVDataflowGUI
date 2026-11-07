@@ -75,6 +75,7 @@ def test_rejects_fits_in_a_different_frame_or_size(spatial):
     assert "target image coordinate frame" in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_measures_a_rotated_band_around_the_fitted_part(profile):
     graph = Graph.load(_PROJECT, builtin_registry())

@@ -1,5 +1,8 @@
 # Barcode reading
 
+Named projects in this guide refer to optional local examples. See the
+[public example gallery](../examples/public/README.md) for bundled projects.
+
 The standard toolbox includes OpenCV QR and linear barcode readers. Install
 the optional backend for Data Matrix, Code 128, PDF417 and more symbologies.
 
@@ -7,7 +10,7 @@ the optional backend for Data Matrix, Code 128, PDF417 and more symbologies.
 python -m pip install -e ".[barcodes]"
 ```
 
-Open the [Data Matrix example](../examples/applications/datamatrix_reading/datamatrix_reading.json), or run it
+Open the Data Matrix example, or run it
 from the repository root with:
 
 ```powershell

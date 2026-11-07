@@ -133,6 +133,7 @@ def test_untagged_rewrap_and_invalid_parameters():
     assert "image limits" in large.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_unwraps_the_notch_and_rewraps_on_original_grid(profile):
     example = (

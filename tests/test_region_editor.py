@@ -6,6 +6,7 @@ import os
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 import numpy as np
+import pytest
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QDialog
@@ -138,6 +139,7 @@ def test_dialog_drafts_are_private_and_incomplete_polygon_cannot_accept(app):
         dialog.close()
 
 
+@pytest.mark.local_examples
 def test_inspector_accept_cancel_cache_and_saved_project(app, load_example, monkeypatch, tmp_path):
     from opencv_dataflow.app import MainWindow
     from opencv_dataflow.core import Graph
@@ -187,6 +189,7 @@ def test_inspector_accept_cancel_cache_and_saved_project(app, load_example, monk
     window.close()
 
 
+@pytest.mark.local_examples
 def test_inspector_missing_frame_and_active_run_do_not_change_graph(app, load_example, monkeypatch):
     from opencv_dataflow.app import MainWindow
 

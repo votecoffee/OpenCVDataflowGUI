@@ -79,6 +79,7 @@ def test_inspector_training_worker_save_load_and_model_files(app, tmp_path, monk
     window.close()
 
 
+@pytest.mark.local_examples
 def test_pose_inspection_edit_and_background_reload(app, load_example, tmp_path):
     window = MainWindow()
     load_example(window, "pose_inspection")

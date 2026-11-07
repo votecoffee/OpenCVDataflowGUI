@@ -19,6 +19,7 @@ def _image():
     return cv2.imread(str(_EXAMPLE / "assets/disks.png"), cv2.IMREAD_GRAYSCALE)
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize(
     ("method", "native_method", "edge", "threshold"),
     [
@@ -60,6 +61,7 @@ def test_votes_and_radii_match_native_results(method, native_method, edge, thres
     assert [item["metrics"]["radius"] for item in data["items"]] == pytest.approx([30, 20], abs=2)
 
 
+@pytest.mark.local_examples
 def test_center_only_retains_legacy_rows_and_has_no_radius_or_vote_strength():
     registry = builtin_registry()
     block = registry.create(
@@ -86,6 +88,7 @@ def test_center_only_retains_legacy_rows_and_has_no_radius_or_vote_strength():
     assert empty.outputs["collection"]["count"] == 0
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_project_ranks_circles_and_draws_selected_disk(profile):
     graph = Graph.load(_PROJECT, builtin_registry())

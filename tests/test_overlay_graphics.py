@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import numpy as np
+import pytest
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QDialog, QTreeWidget
 
@@ -21,6 +22,7 @@ from opencv_dataflow.toolblocks import encapsulate
 EXAMPLE = Path("examples/custom tools/overlay_result_graphics/overlay_result_graphics.json")
 
 
+@pytest.mark.local_examples
 def test_graphics_ports_are_opt_in_and_compose_without_copying_the_backdrop():
     registry = builtin_registry()
     node = registry.create("inspect.contours")
@@ -84,6 +86,7 @@ def test_composite_maps_drawing_objects_to_the_final_grid_and_skips_other_ticket
     assert np.count_nonzero(output != canvas) == 6
 
 
+@pytest.mark.local_examples
 def test_inspector_layer_checklist_persists_the_exclusion(app, monkeypatch):
     window = MainWindow()
     graph = Graph.load(EXAMPLE, window.registry)

@@ -302,6 +302,7 @@ def test_manager_import_copy_revision_and_inspector_bindings(app, monkeypatch, a
     window.close()
 
 
+@pytest.mark.local_examples
 def test_legacy_arbitrary_recipe_metadata_remains_valid_and_unknown_revision_fails():
     registry = builtin_registry()
     graph = Graph.load(
@@ -484,6 +485,7 @@ def test_recipe_parameter_types_are_checked_before_processing(kind, name, value)
     assert block.parameters == configured and block.current_emissions == {}
 
 
+@pytest.mark.local_examples
 def test_saved_recipe_example_and_gui_version_activation(app, load_example, tmp_path):
     from PySide6.QtTest import QTest
 

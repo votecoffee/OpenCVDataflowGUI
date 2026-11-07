@@ -96,6 +96,7 @@ def test_empty_edges_and_invalid_input_or_search_settings():
     assert "Theta maximum" in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_selects_and_draws_different_lines(profile):
     graph = Graph.load(_PROJECT, builtin_registry())

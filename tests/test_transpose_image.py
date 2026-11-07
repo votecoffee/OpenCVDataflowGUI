@@ -79,6 +79,7 @@ def test_transposing_twice_restores_source_and_pyramid_coordinates():
     assert metadata(restored)["pyramid"] == pyramid
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_maps_transposed_crop_points_back_to_full_source(profile):
     project = (

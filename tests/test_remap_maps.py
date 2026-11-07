@@ -121,6 +121,7 @@ def test_lens_map_builder_rejects_unusable_profiles(change, message):
     assert message in builder.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_lens_map_example_applies_a_project_relative_profile(profile):
     project = (

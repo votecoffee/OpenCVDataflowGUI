@@ -101,6 +101,7 @@ def test_second_source_must_match_dimensions_and_depth(second):
     assert "same size and pixel depth" in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_creates_rgb_from_two_sources(profile):
     project = (

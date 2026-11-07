@@ -311,6 +311,7 @@ def test_inspector_enum_controls_and_policy_roundtrip(app):
     window.close()
 
 
+@pytest.mark.local_examples
 def test_saved_example_receipt_and_gui_repeated_runs(app, load_example, tmp_path):
     import json
 

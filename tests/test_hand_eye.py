@@ -23,6 +23,7 @@ def _expected(rvec, translation):
     return pose_matrix(cv2.Rodrigues(np.asarray(rvec, dtype=float))[0], translation)
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_eye_in_hand_graph_recovers_camera_mount_and_current_world_pose(profile):
     graph = Graph.load(_PROJECT, builtin_registry())
@@ -49,6 +50,7 @@ def test_saved_eye_in_hand_graph_recovers_camera_mount_and_current_world_pose(pr
     np.testing.assert_allclose(rigid(world), expected, atol=1e-8)
 
 
+@pytest.mark.local_examples
 def test_ticketed_groups_pair_by_identity_even_when_one_arrives_in_reverse_order():
     registry = builtin_registry()
     fit = Graph.load(_PROJECT, registry).blocks["fit"]
@@ -103,6 +105,7 @@ def test_single_axis_motion_is_rejected():
     assert "two independent axes" in fit.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("unit", ("mm", "m"))
 def test_inconsistent_target_positions_fail_in_millimeters_and_suppress_transforms(unit):
     fit = Graph.load(_PROJECT, builtin_registry()).blocks["fit"]
@@ -122,6 +125,7 @@ def test_inconsistent_target_positions_fail_in_millimeters_and_suppress_transfor
     assert result.outputs["camera_to_gripper"] is result.outputs["target_to_base"] is NO_VALUE
 
 
+@pytest.mark.local_examples
 def test_inconsistent_target_orientation_has_its_own_failure_reason():
     fit = Graph.load(_PROJECT, builtin_registry()).blocks["fit"]
     fit.parameters["max_translation_rms_mm"] = 0
@@ -136,6 +140,7 @@ def test_inconsistent_target_orientation_has_its_own_failure_reason():
     ]
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("change", ({"source_frame": "camera"}, {"units": "m"}))
 def test_wrong_target_direction_or_units_are_rejected(change):
     fit = Graph.load(_PROJECT, builtin_registry()).blocks["fit"]

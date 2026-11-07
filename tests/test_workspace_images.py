@@ -369,6 +369,7 @@ def test_background_queue_drains_finite_source_without_hanging(tmp_path):
     assert graph.ticket_results.statistics()["total"] == 3
 
 
+@pytest.mark.local_examples
 def test_filmstrip_actual_verdicts_bounded_and_validation(app):
     registry = builtin_registry()
     graph = Graph.load("examples/flow tools/validation_images/validation_images.json", registry)
@@ -462,6 +463,7 @@ def test_buffered_ticket_thumbnails_update_when_batch_finishes(tmp_path):
     assert [r["state"] for r in graph.filmstrip.snapshot()] == ["pass", "pass", "pending"]
 
 
+@pytest.mark.local_examples
 def test_image_set_example_cli_finite_guard_and_report(tmp_path):
     from opencv_dataflow.examples import image_set_workspace_graph
     from opencv_dataflow.runner import main
@@ -489,6 +491,7 @@ def test_image_set_example_cli_finite_guard_and_report(tmp_path):
     assert main([str(ordinary), "--all-images"]) == 2
 
 
+@pytest.mark.local_examples
 def test_directory_picker_and_validation_filmstrip_worker(app, monkeypatch):
     from opencv_dataflow.validation_editor import ValidationManager
 

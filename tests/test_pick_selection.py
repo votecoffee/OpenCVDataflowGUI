@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
@@ -72,6 +73,7 @@ def test_pick_selection_ranking_symmetry_and_no_pick():
     assert failure.fail_reasons[0]["code"] == "no_pick_candidate"
 
 
+@pytest.mark.local_examples
 def test_pick_project_runs_with_masked_downstream_part():
     path = (
         Path(__file__).resolve().parents[1]

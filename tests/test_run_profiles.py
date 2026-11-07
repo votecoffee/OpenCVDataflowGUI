@@ -101,6 +101,7 @@ def test_capture_filter_runs_before_formatting_or_parameter_snapshot():
     assert graph.activity.snapshot()["events"][-1]["parameters"] == {"score": 0.5}
 
 
+@pytest.mark.local_examples
 def test_lean_keeps_fail_reasons_errors_and_final_decisions():
     graph = Graph.load(
         "examples/flow tools/validation_images/validation_images.json", builtin_registry()
@@ -134,6 +135,7 @@ def test_balanced_keeps_activity_spans_but_skips_routine_parameter_dumps():
     assert all(e["parameters"] == {} for e in events)
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("name", PROFILES)
 def test_profile_roundtrip_and_validation_scoring(name, tmp_path):
     registry = builtin_registry()

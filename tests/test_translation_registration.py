@@ -108,6 +108,7 @@ def test_bad_pair_lengths_and_wrong_preview_dimensions_are_validated():
     assert "match the train image" in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_graph_recovers_and_applies_translation_from_sift_matches(profile):
     project = (
@@ -128,6 +129,7 @@ def test_saved_graph_recovers_and_applies_translation_from_sift_matches(profile)
     assert np.mean(np.abs(expected - actual)) < 0.5
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("warp_type", ("cv.warp_affine", "cv.warp_perspective"))
 def test_rejected_fit_stops_connected_warp_and_rerun_recovers(warp_type):
     project = (

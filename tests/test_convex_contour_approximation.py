@@ -96,6 +96,7 @@ def test_rejects_overlay_with_different_coordinate_frame():
     assert "share the contour frame" in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_has_two_enclosing_footprints_with_overlays(profile):
     graph = Graph.load(_PROJECT, builtin_registry())

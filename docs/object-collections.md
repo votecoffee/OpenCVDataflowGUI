@@ -1,5 +1,8 @@
 # Blob, line, contour and circle collections
 
+Named projects in this guide refer to optional local examples. See the
+[public example gallery](../examples/public/README.md) for bundled projects.
+
 The toolbox includes **Find blobs** (connected components), **Find contours**,
 **Hough line segments**, **Find line segments (LSD)** and **Hough circles**. Each exposes a structured
 `collection` output usable by the same filtering, sorting and drawing tools.
@@ -23,7 +26,7 @@ lies within a concave region.
 **Approximate convex contour** accepts an ordered outline or a contour/blob
 collection item. It reduces a convex boundary toward a requested side count
 and reports the resulting area. An optional budget limits the area added
-over the convex hull. [Convex contour example](<../examples/opencv tools/convex_contour_approximation/README.md>)
+over the convex hull. Convex contour example
 
 ## Measurements and conventions
 
@@ -100,7 +103,7 @@ recomputes geometric measurements. Other detector measurements are cleared
 for changed spans. Rejected items carry their original geometry and metrics.
 The `clipped_count` counts retained spans whose endpoints changed.
 The output retains collection coordinates and can feed **Draw object collection**.
-[Line clipping example](<../examples/custom tools/clip_line_segments/README.md>)
+Line clipping example
 
 ## Sort object collection
 
@@ -153,7 +156,7 @@ level selections pass through nested ToolBlocks and save/load with normal projec
 
 ## Example
 
-Use [object collections](<../examples/custom tools/object_collections/object_collections.json>). Its 16 blocks threshold synthetic parts, filter
+Use object collections. Its 16 blocks threshold synthetic parts, filter
 and sort two blobs left-to-right, isolate a round contour by circularity, and select
 two long vertical LSD segments by length and angle. Each branch has a ranked
 overlay. No camera or optional image download is required.

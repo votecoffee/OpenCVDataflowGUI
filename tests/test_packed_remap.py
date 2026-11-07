@@ -100,6 +100,7 @@ def test_wrong_packet_type_and_invalid_native_indices_are_rejected():
         PackedRemapMap((1, 1), bytes(4), np.array([cv2.INTER_TAB_SIZE2], np.uint16).tobytes())
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_preserves_rectified_frame_and_ticket(profile):
     project = Path(__file__).parents[1] / "examples/opencv tools/packed_remap/packed_remap.json"

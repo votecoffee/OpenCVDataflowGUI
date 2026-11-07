@@ -146,6 +146,7 @@ def test_loader_checks_array_header_shape_before_reading_its_body(tmp_path):
     assert "Unexpected shape or type" in loader.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_archive_example_corrects_the_distorted_grid(profile):
     project = Path(__file__).parents[1] / "examples/custom tools/lens_map_files/lens_map_files.json"

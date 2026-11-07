@@ -220,6 +220,7 @@ def test_transformed_expression_validates_source_dimensions_before_allocation():
         rasterize(expression, (60, 80))
 
 
+@pytest.mark.local_examples
 def test_saved_transform_project_repeats_and_survives_toolblock_reuse(tmp_path):
     from opencv_dataflow.core import Graph
     from opencv_dataflow.examples import transformed_regions_graph

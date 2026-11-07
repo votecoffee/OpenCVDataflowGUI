@@ -35,6 +35,7 @@ def test_svd_bases_reconstruct_tall_and_wide_inputs(mode, shape):
     assert result.outputs["relative_truncation_error"] == 0
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_svd_example_reuses_low_rank_matrix(profile):
     project = Path(__file__).parents[1] / "examples/opencv tools" / "matrix_svd" / "matrix_svd.json"

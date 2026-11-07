@@ -173,6 +173,7 @@ def test_clip_mode_measures_intersection_instead_of_whole_object():
     assert output["data"]["areas"] == [81.0]
 
 
+@pytest.mark.local_examples
 def test_saved_region_project_runs_and_roundtrips_nested(tmp_path):
     from opencv_dataflow.examples import regions_graph
     from opencv_dataflow.toolblocks import encapsulate

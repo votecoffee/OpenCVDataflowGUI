@@ -78,6 +78,7 @@ def test_displacement_requires_tagged_matching_map_planes():
     assert "matching X and Y" in tool.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_displacement_example_overlays_arrows_on_the_heatmap(profile):
     project = (

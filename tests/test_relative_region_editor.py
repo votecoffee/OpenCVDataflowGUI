@@ -110,6 +110,7 @@ def test_shape_mask_runtime_optional_frame_and_saved_project(with_pose, tmp_path
     np.testing.assert_array_equal(loaded.blocks[mask.id].last_result.outputs["mask"], expected)
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("kind", ["region.pose", "mask.shape"])
 def test_inspector_pose_editor_apply_cancel_cached_pair_and_missing_pose(
     app, load_example, monkeypatch, tmp_path, kind

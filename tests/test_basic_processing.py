@@ -157,6 +157,11 @@ def test_default_graph_runs_without_gapi_and_legacy_projects_remain_loadable(mon
     graph.run()
     assert all(b.state == "pass" for b in graph.blocks.values())
     assert list(graph.blocks.values())[-1].last_result.outputs["count"] == 2
+
+
+@pytest.mark.local_examples
+def test_local_projects_use_eager_blocks_and_toolblock_definition_loads():
+    registry = builtin_registry()
     paths = sorted(Path("examples").glob("*/*/*.json"))
     assert paths
     for path in paths:

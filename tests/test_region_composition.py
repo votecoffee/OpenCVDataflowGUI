@@ -156,6 +156,7 @@ def test_measurement_limit_validation(parameters):
     assert block.state == "error" and block.last_result is None
 
 
+@pytest.mark.local_examples
 def test_saved_composition_project_and_nested_reuse(tmp_path):
     registry = builtin_registry()
     graph = Graph.load("examples/custom tools/combined_regions/combined_regions.json", registry)

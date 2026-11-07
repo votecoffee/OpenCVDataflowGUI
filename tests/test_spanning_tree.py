@@ -93,6 +93,7 @@ def test_tree_rejects_invalid_graphs(inputs, parameters, message):
     assert message in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_spanning_tree_example_connects_delaunay_sites_and_draws_edges(profile):
     project = (

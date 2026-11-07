@@ -187,6 +187,7 @@ def test_nested_grouping_and_renaming_preserve_owner_terminals():
     assert displayed_inner.graph.blocks[nodes[1].id].state == "pass"
 
 
+@pytest.mark.local_examples
 def test_shipped_inspection_pattern():
     registry = builtin_registry()
     block = ToolBlock.read(

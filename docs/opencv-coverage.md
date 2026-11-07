@@ -1,5 +1,8 @@
 # OpenCV coverage backlog
 
+Named projects in this guide refer to optional local examples. See the
+[public example gallery](../examples/public/README.md) for bundled projects.
+
 This inventory compares the built-in graph registry with the public Python
 bindings in the pinned OpenCV 5 contrib wheel. Priorities reflect reuse across
 industrial vision jobs and the workflows in the [roadmap](roadmap.md). They
@@ -13,16 +16,16 @@ jobs and by how naturally inputs and results fit a graph.
 The graph already covers common array arithmetic, range and mask operations,
 channel routing, geometric transforms, reductions and extrema, matrix
 solvers and decompositions, and reversible Fourier and cosine transforms.
-[Measure image norms](<../examples/opencv tools/image_norm/README.md>) adds
+Measure image norms adds
 absolute and reference-relative reductions across selected pixels, including
 L1, L2, squared L2, infinity, Hamming and Hamming2.
-[Combine Fourier spectra](<../examples/opencv tools/spectrum_product/README.md>)
+Combine Fourier spectra
 exposes complex bin multiplication and conjugation for custom filters,
 circular convolution and circular correlation.
-[Seeded random images and noise](<../examples/custom tools/seeded_noise/README.md>)
+Seeded random images and noise
 provide Gaussian and uniform fixtures and selected perturbations using a
 private generator per activation.
-[Matrix structure tools](<../examples/opencv tools/matrix_structure/README.md>)
+Matrix structure tools
 construct diagonal matrices, extract diagonals and traces, and mirror
 the upper or lower half of a square matrix.
 
@@ -36,106 +39,106 @@ binding inventory helps identify candidates and verify availability.
 
 | Rank | Outstanding capability | OpenCV primitives and graph work |
 | --- | --- | --- |
-| 1 | Inspection image stitching | [Stitch overlapping views](<../examples/custom tools/stitch_image_pair/README.md>) builds a two-view mosaic from a shared frame or wired registration, with coverage and overlap masks. [Stitch an ordered scan](<../examples/custom tools/stitch_scan_sequence/README.md>) automatically registers up to eight adjacent views and reports fit and overlap quality. [Correct exposure in an inspection scan](<../examples/custom tools/stitch_scan_exposure/README.md>) demonstrates overlap-based gain or offset correction and distance-weighted feathering. [Close the loop on an inspection scan](<../examples/custom tools/stitch_scan_loop/README.md>) constrains accumulated drift when the final view overlaps the first. [Choose a content-aware seam](<../examples/custom tools/stitch_seam/README.md>) uses bounded graph-cut selection on registered pairs or ordered scans, with automatic seam scaling for larger overlaps. Tiled rendering for mosaics beyond the current canvas and memory limits remains open. |
-| 2 | Camera motion stabilization | [Camera stabilization](<../examples/custom tools/camera_stabilization/README.md>) estimates translation or similarity motion from background tracks, smooths or locks the trajectory, and emits a coverage mask and frame transforms. [Recorded camera stabilization](<../examples/custom tools/recorded_camera_stabilization/README.md>) measures a real sequence on matched support and verifies recovery after coverage rejection. [Check stabilization on a second plane](<../examples/custom tools/stabilization_validation/README.md>) detects accumulated drift in a held-out inspection region on synthetic parallax. [Check stabilization on recorded depth variation](<../examples/custom tools/recorded_stabilization_validation/README.md>) verifies the gate on a recorded translation excerpt with depth-separated patches. [Smooth a recorded camera path](<../examples/custom tools/offline_camera_stabilization/README.md>) adds centered look-ahead for finite batches with per-frame coverage and transforms. Continuous smoothing across longer clips remains open. |
-| 3 | Separate touching parts and isolate foreground | [Watershed separation](<../examples/opencv tools/watershed/README.md>) includes distance peaks, editable point seeds, mask seeds, and a synthetic touching-parts example. Production calibration and validation fixtures remain open. |
-| 4 | Reference comparison and defect scoring | The basic workflow is available, including histogram backprojection and a reusable registered defect inspection. [Flat-field correction](<../examples/custom tools/flat_field/README.md>) normalizes illumination using bright and optional dark references. Validated defect-specific inspection recipes remain open. |
-| 5 | Multi-result template search and pick selection | Explicit visible-feature evidence and depth-based occlusion checks remain open. Multi-result matching and image-plane pick selection support score, pose angle, clearance and deterministic downstream ranking. [Subpixel refinement](<../examples/custom tools/subpixel_template/README.md>) is available for template centers and poses. |
-| 6 | Calipers, widths, contours and shape fitting | Physical-unit tolerance recipes remain open. [Path intensity profiles](<../examples/custom tools/path_intensity_profile/README.md>) sample open and closed paths with mask and region selection. [Contour profile tolerance](../examples/applications/contour_profile/README.md) measures both directions between aligned outlines in pixels. Pose-relative paired-edge calipers now measure width, center offset and gaps across straight parallel scans. [Hull and convexity defect inspection](../examples/applications/contour_defects/README.md), contour similarity, [contour approximation](<../examples/opencv tools/contour_approximation/README.md>), point-to-contour distance and dedicated shape fits are available. |
+| 1 | Inspection image stitching | Stitch overlapping views builds a two-view mosaic from a shared frame or wired registration, with coverage and overlap masks. Stitch an ordered scan automatically registers up to eight adjacent views and reports fit and overlap quality. Correct exposure in an inspection scan demonstrates overlap-based gain or offset correction and distance-weighted feathering. Close the loop on an inspection scan constrains accumulated drift when the final view overlaps the first. Choose a content-aware seam uses bounded graph-cut selection on registered pairs or ordered scans, with automatic seam scaling for larger overlaps. Tiled rendering for mosaics beyond the current canvas and memory limits remains open. |
+| 2 | Camera motion stabilization | Camera stabilization estimates translation or similarity motion from background tracks, smooths or locks the trajectory, and emits a coverage mask and frame transforms. Recorded camera stabilization measures a real sequence on matched support and verifies recovery after coverage rejection. Check stabilization on a second plane detects accumulated drift in a held-out inspection region on synthetic parallax. Check stabilization on recorded depth variation verifies the gate on a recorded translation excerpt with depth-separated patches. Smooth a recorded camera path adds centered look-ahead for finite batches with per-frame coverage and transforms. Continuous smoothing across longer clips remains open. |
+| 3 | Separate touching parts and isolate foreground | Watershed separation includes distance peaks, editable point seeds, mask seeds, and a synthetic touching-parts example. Production calibration and validation fixtures remain open. |
+| 4 | Reference comparison and defect scoring | The basic workflow is available, including histogram backprojection and a reusable registered defect inspection. Flat-field correction normalizes illumination using bright and optional dark references. Validated defect-specific inspection recipes remain open. |
+| 5 | Multi-result template search and pick selection | Explicit visible-feature evidence and depth-based occlusion checks remain open. Multi-result matching and image-plane pick selection support score, pose angle, clearance and deterministic downstream ranking. Subpixel refinement is available for template centers and poses. |
+| 6 | Calipers, widths, contours and shape fitting | Physical-unit tolerance recipes remain open. Path intensity profiles sample open and closed paths with mask and region selection. Contour profile tolerance measures both directions between aligned outlines in pixels. Pose-relative paired-edge calipers now measure width, center offset and gaps across straight parallel scans. Hull and convexity defect inspection, contour similarity, contour approximation, point-to-contour distance and dedicated shape fits are available. |
 | 7 | File video and replay | Timed playback, live network streams, independent source readiness and deeper codec validation. Local video replay and writing are available with frame ranges, stride, frame tickets, timestamp provenance and stop/loop modes. See [video file workflows](video-files.md). |
 | 8 | Industrial text and code workflows | Trainable OCR workflow assets, qualification of direct part marks on production images, and a separate barcode grading workflow. OCR and decoded-text checks are available alongside OpenCV QR/linear readers and optional ZXing Data Matrix and multi-format decoding. See [OCR workflows](ocr.md). |
-| 9 | Color tolerance and coating checks | Production color-chart qualification remains open. [Multi-reference Lab classification](../examples/applications/lab_color_classification/README.md) is available. Color-chart detection, fitted correction matrices, selected Lab statistics and CIE76/CIEDE2000 tolerance checks are available. See [color measurement](color-measurement.md). |
+| 9 | Color tolerance and coating checks | Production color-chart qualification remains open. Multi-reference Lab classification is available. Color-chart detection, fitted correction matrices, selected Lab statistics and CIE76/CIEDE2000 tolerance checks are available. See [color measurement](color-measurement.md). |
 | 10 | Motion and conveyor tracking | PLC/camera hardware synchronization, timestamp-window pairing, calibrated world coordinates and production validation. Multi-part association and frame-latched encoder prediction support tracking beyond the camera view in image coordinates. CSRT/KCF track seeded boxes, and MOG2/KNN, sparse LK and Farneback provide motion primitives. |
-| 11 | Robot and calibration workflows | Fixed-camera and robot-world/hand–eye calibration, frame composition tied to acquisition timestamps, held-out robot target checks and calibration revision selection. PnP and basic ArUco pose are available. [Validate lens calibration](<../examples/custom tools/validate_lens_calibration/README.md>) checks fixed pinhole profiles on separate grid observations. [ChArUco board](<../examples/opencv tools/charuco_board/README.md>) emits identified board coordinates from partial views and feeds pose estimation. [ChArUco lens calibration](<../examples/opencv tools/charuco_lens_calibration/README.md>) fits a pinhole model from batches with different visible corners. [ChArUco calibration validation](<../examples/custom tools/validate_charuco_calibration/README.md>) reports held-out errors by corner ID. [Hand–eye calibration](<../examples/opencv tools/hand_eye_calibration/README.md>) fits an eye-in-hand transform from paired poses and checks target consistency. |
+| 11 | Robot and calibration workflows | Fixed-camera and robot-world/hand–eye calibration, frame composition tied to acquisition timestamps, held-out robot target checks and calibration revision selection. PnP and basic ArUco pose are available. Validate lens calibration checks fixed pinhole profiles on separate grid observations. ChArUco board emits identified board coordinates from partial views and feeds pose estimation. ChArUco lens calibration fits a pinhole model from batches with different visible corners. ChArUco calibration validation reports held-out errors by corner ID. Hand–eye calibration fits an eye-in-hand transform from paired poses and checks target consistency. |
 
 ## P2 — Common extensions
 
 | Family | Outstanding capability |
 | --- | --- |
-| Image restoration | Blind deblurring and hard-shadow removal remain open. [Adaptive background correction](<../examples/custom tools/adaptive_background/README.md>) estimates smooth shading from one image. [Wiener deblur](<../examples/custom tools/wiener_deblur/README.md>) uses Gaussian, [linear motion](<../examples/custom tools/motion_deblur/README.md>), circular defocus, or custom point-spread functions. [TV-L1 denoising](<../examples/opencv tools/tvl1_denoising/README.md>) supports single images and aligned observation batches. [Temporal non-local means](<../examples/opencv tools/temporal_nlm/README.md>), single-frame non-local means, Telea/Navier–Stokes inpainting, [guided filtering](<../examples/opencv tools/guided_filter/README.md>), and [domain transform filtering](<../examples/opencv tools/domain_transform_filter/README.md>) are available. |
+| Image restoration | Blind deblurring and hard-shadow removal remain open. Adaptive background correction estimates smooth shading from one image. Wiener deblur uses Gaussian, linear motion, circular defocus, or custom point-spread functions. TV-L1 denoising supports single images and aligned observation batches. Temporal non-local means, single-frame non-local means, Telea/Navier–Stokes inpainting, guided filtering, and domain transform filtering are available. |
 | Registration extensions | Sparse alignment diagnostics and perspective panorama workflows. Single-scale and multiscale ECC support intensity alignment with masks. |
-| Feature detection and correspondence | Custom BRISK patterns remain open. [Descriptor radius matching](<../examples/opencv tools/descriptor_radius/README.md>) retains multiple candidates per keypoint within a distance limit. [MSER](<../examples/opencv tools/mser_regions/README.md>) detects stable grayscale and color regions. [Standard BRISK](<../examples/opencv tools/brisk_registration/README.md>) supports Hamming matching. ORB/FAST and [standalone SIFT](<../examples/opencv tools/sift_registration/README.md>) are available. [AKAZE](<../examples/opencv tools/akaze_registration/README.md>) supports binary and float descriptors. ORB, SIFT, and AKAZE matching support ratio and cross-check modes, with homography inlier scoring downstream. [FLANN KD-tree matching](<../examples/opencv tools/flann_registration/README.md>) accepts SIFT, [standalone KAZE](<../examples/opencv tools/kaze_registration/README.md>), and float AKAZE descriptors. |
-| Shape and topology | [Ballard generalized Hough](<../examples/opencv tools/generalized_hough/README.md>) locates fixed-scale, fixed-orientation template shapes. [Guil generalized Hough](<../examples/opencv tools/generalized_hough_guil/README.md>) searches rotation and scale and emits oriented poses. Ellipse/arc and additional polygon models, shape context and Zernike-style descriptors where available. [Contour hierarchy](<../examples/opencv tools/contour_hierarchy/README.md>) exposes parent and child links, nesting depth, and holes. [Rotated rectangle overlap](<../examples/opencv tools/rotated_rectangle_overlap/README.md>) fits part footprints and measures their intersection. [Convex polygon overlap](<../examples/custom tools/convex_overlap/README.md>) measures continuous intersection, contact, and IoU from vertices or contour hulls. [Enclosing convex polygon](<../examples/opencv tools/enclosing_polygon/README.md>) fits bounded-side footprints and reports hull fill. [Delaunay triangulation](<../examples/opencv tools/delaunay_triangulation/README.md>) builds a planar mesh from point sites or measured centers. [Voronoi cells](<../examples/opencv tools/voronoi_cells/README.md>) partitions the image around sites and emits a selected-cell mask. [Minimum spanning tree](<../examples/custom tools/minimum_spanning_tree/README.md>) finds minimum-cost connections in weighted graphs and point meshes. Connected components and Find blobs expose OpenCV's default, SAUF, BBDT, and Spaghetti labeling algorithms. |
-| Segmentation and texture | SLIC/SEEDS/LSC superpixels, graph segmentation, selective search, ridge/Frangi-style response, local binary patterns, and co-occurrence matrices. [Pyramid mean-shift filtering](<../examples/opencv tools/mean_shift_filter/README.md>) flattens local color variation before segmentation. [Gabor orientation bank](<../examples/custom tools/gabor_orientation_bank/README.md>) compares multiple angles and reports orientation confidence. [Gabor texture response](<../examples/opencv tools/gabor_texture/README.md>) supports signed and quadrature responses with independently configurable orientations. [Pixel K-means](<../examples/opencv tools/kmeans/README.md>) is available. |
-| Spectral and intensity processing | [Linear channel transform](<../examples/opencv tools/channel_transform/README.md>) mixes channels with an editable or wired matrix and optional per-channel offsets. [Color normalization](<../examples/opencv tools/normalize_color/README.md>) supports shared or independent channel scales and optional mask or region selection. [DCT/IDCT](<../examples/opencv tools/dct_round_trip/README.md>) supports reversible monochrome transforms. [DFT/IDFT and radial filtering](<../examples/custom tools/fourier_filter/README.md>) support band selection. [Hann window](<../examples/opencv tools/hann_window/README.md>) exposes 2D or row tapering before a transform. [Per-channel intensity LUTs](<../examples/opencv tools/intensity_lut/README.md>) support uint8 and uint16. [Intensity transforms](<../examples/opencv tools/intensity_transform/README.md>) include log, exp, square root, power, and clipping. [Image arithmetic](<../examples/opencv tools/image_arithmetic/README.md>) combines two images or an image and a scalar. [Pixel comparisons](<../examples/opencv tools/pixel_comparison/README.md>) produce masks from relational tests. [Find nonzero pixels](<../examples/opencv tools/nonzero_pixels/README.md>) extracts bounded coordinate lists and full-mask bounds. [Intensity profiles](<../examples/custom tools/intensity_profile/README.md>) reduce rows or columns by channel and can return extrema coordinates. [Image summary statistics](<../examples/opencv tools/image_statistics/README.md>) measure masked channel statistics, arbitrary percentiles, and extrema locations. [Custom Fourier gain masks](<../examples/custom tools/fourier_gain/README.md>) support per-bin gains and conjugate pairing. [Fourier correlation](<../examples/opencv tools/fourier_correlation/README.md>) measures linear or circular image displacement. [Tilted window statistics](<../examples/custom tools/tilted_statistics/README.md>) measure batches of 45-degree rectangles. [Local window statistics](<../examples/opencv tools/local_statistics/README.md>) use summed-area tables for rectangular mean, standard deviation, and sample-count maps. |
-| Image metrics | [Absolute image error](<../examples/custom tools/absolute_image_error/README.md>) provides MAE, RMSE, maximum absolute error, and error maps. [Earth Mover’s Distance](<../examples/opencv tools/earth_movers_distance/README.md>) measures histogram shifts using bin-center distances. BRISQUE and other no-reference scores, perceptual image hashes, and defect score calibration remain open. |
+| Feature detection and correspondence | Custom BRISK patterns remain open. Descriptor radius matching retains multiple candidates per keypoint within a distance limit. MSER detects stable grayscale and color regions. Standard BRISK supports Hamming matching. ORB/FAST and standalone SIFT are available. AKAZE supports binary and float descriptors. ORB, SIFT, and AKAZE matching support ratio and cross-check modes, with homography inlier scoring downstream. FLANN KD-tree matching accepts SIFT, standalone KAZE, and float AKAZE descriptors. |
+| Shape and topology | Ballard generalized Hough locates fixed-scale, fixed-orientation template shapes. Guil generalized Hough searches rotation and scale and emits oriented poses. Ellipse/arc and additional polygon models, shape context and Zernike-style descriptors where available. Contour hierarchy exposes parent and child links, nesting depth, and holes. Rotated rectangle overlap fits part footprints and measures their intersection. Convex polygon overlap measures continuous intersection, contact, and IoU from vertices or contour hulls. Enclosing convex polygon fits bounded-side footprints and reports hull fill. Delaunay triangulation builds a planar mesh from point sites or measured centers. Voronoi cells partitions the image around sites and emits a selected-cell mask. Minimum spanning tree finds minimum-cost connections in weighted graphs and point meshes. Connected components and Find blobs expose OpenCV's default, SAUF, BBDT, and Spaghetti labeling algorithms. |
+| Segmentation and texture | SLIC/SEEDS/LSC superpixels, graph segmentation, selective search, ridge/Frangi-style response, local binary patterns, and co-occurrence matrices. Pyramid mean-shift filtering flattens local color variation before segmentation. Gabor orientation bank compares multiple angles and reports orientation confidence. Gabor texture response supports signed and quadrature responses with independently configurable orientations. Pixel K-means is available. |
+| Spectral and intensity processing | Linear channel transform mixes channels with an editable or wired matrix and optional per-channel offsets. Color normalization supports shared or independent channel scales and optional mask or region selection. DCT/IDCT supports reversible monochrome transforms. DFT/IDFT and radial filtering support band selection. Hann window exposes 2D or row tapering before a transform. Per-channel intensity LUTs support uint8 and uint16. Intensity transforms include log, exp, square root, power, and clipping. Image arithmetic combines two images or an image and a scalar. Pixel comparisons produce masks from relational tests. Find nonzero pixels extracts bounded coordinate lists and full-mask bounds. Intensity profiles reduce rows or columns by channel and can return extrema coordinates. Image summary statistics measure masked channel statistics, arbitrary percentiles, and extrema locations. Custom Fourier gain masks support per-bin gains and conjugate pairing. Fourier correlation measures linear or circular image displacement. Tilted window statistics measure batches of 45-degree rectangles. Local window statistics use summed-area tables for rectangular mean, standard deviation, and sample-count maps. |
+| Image metrics | Absolute image error provides MAE, RMSE, maximum absolute error, and error maps. Earth Mover’s Distance measures histogram shifts using bin-center distances. BRISQUE and other no-reference scores, perceptual image hashes, and defect score calibration remain open. |
 | Motion and background | DIS, Dual TV-L1, DeepFlow and RLOF where bound, optical-flow consistency and visualization, Kalman filtering and tracking across missing detections. MOG2 and KNN provide adaptive foreground masking. |
-| Calibration models and target tooling | Fisheye/omnidir, multi-camera extrinsics and sparse bundle adjustment where supported. [Circle grid calibration](<../examples/opencv tools/circle_grid_calibration/README.md>) supports symmetric and staggered targets for planar mapping and lens fitting. [Lens correction maps](<../examples/opencv tools/lens_correction_maps/README.md>) exposes reusable pinhole undistortion and rectification maps in the graph. [Lens map displacement](<../examples/custom tools/lens_map_displacement/README.md>) measures and visualizes correction magnitude, direction, and source coverage. [Lens map files](<../examples/custom tools/lens_map_files/README.md>) saves and reloads complete map pairs with output intrinsics. [Lens fit report](<../examples/custom tools/lens_fit_report/README.md>) adds per-view reprojection RMS and native uncertainty estimates. |
-| Depth and stereo | Edge-aware depth filtering, time-of-flight depth cleanup, alternative stereo algorithms and dense calibration evaluation. Stereo BM/SGBM supports [WLS confidence and left–right consistency](<../examples/opencv tools/stereo_confidence/README.md>). [Depth hole filling](<../examples/custom tools/depth_hole_filling/README.md>) is available. |
+| Calibration models and target tooling | Fisheye/omnidir, multi-camera extrinsics and sparse bundle adjustment where supported. Circle grid calibration supports symmetric and staggered targets for planar mapping and lens fitting. Lens correction maps exposes reusable pinhole undistortion and rectification maps in the graph. Lens map displacement measures and visualizes correction magnitude, direction, and source coverage. Lens map files saves and reloads complete map pairs with output intrinsics. Lens fit report adds per-view reprojection RMS and native uncertainty estimates. |
+| Depth and stereo | Edge-aware depth filtering, time-of-flight depth cleanup, alternative stereo algorithms and dense calibration evaluation. Stereo BM/SGBM supports WLS confidence and left–right consistency. Depth hole filling is available. |
 | Point cloud and reconstruction | Surface/mesh output, organized segmentation and plane fitting, feature registration, multiple hypotheses and fitness ranking, occlusion/z-buffer visibility, SfM and more complete multi-frame pose/mesh workflows. Existing ICP, PPF, depth/point-cloud conversion and TSDF cover the baseline. |
 | DNN task adapters | Multi-input model binding, dynamic shapes and batching, detection/rotated detection, NMS, semantic/instance masks, keypoints and OCR postprocessing, confidence calibration, portable preprocessing and CPU-vs-accelerator validation. Existing ONNX inference, classification and embeddings provide the base. |
-| Classical ML | Persist and reuse fitted K-means centers for prediction, and add train/predict/export with SVM, KNearest, trees/forests, boosting, EM and other `ml` estimators. Add feature-table preparation and train/validation split. [Numeric K-means fitting](<../examples/opencv tools/kmeans/README.md>) is available. |
-| Media and image formats | [Bayer demosaicing](<../examples/opencv tools/bayer_demosaicing/README.md>) supports four tile patterns, three interpolation modes, and crop parity. [In-memory PNG and JPEG](<../examples/opencv tools/in_memory_image_codecs/README.md>) provide typed packets and explicit compression settings. [TIFF page replay](<../examples/opencv tools/tiff_page_sequence/README.md>) emits ticketed pages from a multipage file. [Multipage TIFF output](<../examples/opencv tools/multipage_tiff_output/README.md>) writes ordered lossless image batches. [Raw YUV decoding](<../examples/opencv tools/raw_yuv/README.md>) handles seven packed 8-bit 4:2:0 and 4:2:2 layouts. [Image metadata and EXIF orientation](<../examples/opencv tools/exif_orientation/README.md>) report decoded chunk types and selected EXIF fields and can orient JPEG/PNG inputs. Metadata writing, other sensor formats, and additional codecs and numerical formats remain open. |
+| Classical ML | Persist and reuse fitted K-means centers for prediction, and add train/predict/export with SVM, KNearest, trees/forests, boosting, EM and other `ml` estimators. Add feature-table preparation and train/validation split. Numeric K-means fitting is available. |
+| Media and image formats | Bayer demosaicing supports four tile patterns, three interpolation modes, and crop parity. In-memory PNG and JPEG provide typed packets and explicit compression settings. TIFF page replay emits ticketed pages from a multipage file. Multipage TIFF output writes ordered lossless image batches. Raw YUV decoding handles seven packed 8-bit 4:2:0 and 4:2:2 layouts. Image metadata and EXIF orientation report decoded chunk types and selected EXIF fields and can orient JPEG/PNG inputs. Metadata writing, other sensor formats, and additional codecs and numerical formats remain open. |
 
-[Feature covariance and Mahalanobis distance](<../examples/opencv tools/feature_covariance/README.md>) cover joint variation and numeric outlier checks.
-[Solve linear system](<../examples/opencv tools/linear_system/README.md>) provides exact and least-squares
+Feature covariance and Mahalanobis distance cover joint variation and numeric outlier checks.
+Solve linear system provides exact and least-squares
 solutions with multiple observation columns, numerical rank, and residuals.
-[Solve linear program](<../examples/opencv tools/linear_program/README.md>) optimizes continuous
+Solve linear program optimizes continuous
 nonnegative variables with linear constraints and emits solver status and constraint slack.
-[Solve polynomial roots](<../examples/opencv tools/polynomial_roots/README.md>) supports analytic real
+Solve polynomial roots supports analytic real
 roots through degree three, iterative complex roots, and relative residual judgments.
-[Multiply matrices](<../examples/opencv tools/matrix_multiply/README.md>) applies weighted real matrix
+Multiply matrices applies weighted real matrix
 products with an optional addend and independent transposition controls.
-[Invert matrix](<../examples/opencv tools/matrix_inverse/README.md>) supports LU, Cholesky and SVD
+Invert matrix supports LU, Cholesky and SVD
 with numerical rank, reciprocal conditioning, and determinants for square matrices.
-[Singular value decomposition](<../examples/opencv tools/matrix_svd/README.md>) exposes the spectrum,
+Singular value decomposition exposes the spectrum,
 thin or full factors, low-rank reconstruction and relative truncation error.
-[Eigendecomposition](<../examples/opencv tools/matrix_eigen/README.md>) exposes symmetric and
+Eigendecomposition exposes symmetric and
 nonsymmetric real eigenpairs, numerical basis rank, and residual checks.
-[Check image samples](<../examples/custom tools/image_validity/README.md>) reports nonfinite and
+Check image samples reports nonfinite and
 out-of-range pixels with source-aligned masks, a first location, and a fraction limit.
-[Replace nonfinite samples](<../examples/custom tools/nonfinite_replacement/README.md>) repairs
+Replace nonfinite samples repairs
 NaN and signed infinity by channel, preserves the image encoding and depth units,
 and emits a mask of changed pixels.
-[Join images](<../examples/custom tools/join_images/README.md>) builds horizontal or vertical
+Join images builds horizontal or vertical
 comparison views with padding and per-panel coordinate context.
-[Paste image patch](<../examples/custom tools/paste_patch/README.md>) performs a masked
+Paste image patch performs a masked
 copy at a canvas offset and reports both rectangles and the copied pixels.
-[Subpixel patch extraction](<../examples/opencv tools/subpixel_crop/README.md>) samples a
+Subpixel patch extraction samples a
 rectangular patch at a fractional center and preserves coordinate provenance.
-[Hough lines from points](<../examples/opencv tools/point_set_lines/README.md>) finds lines
+Hough lines from points finds lines
 from sparse coordinates and exposes vote counts for collection sorting.
-[Hough polar lines](<../examples/opencv tools/hough_polar_lines/README.md>) supports binary
+Hough polar lines supports binary
 and intensity-weighted raster voting with masks and regions.
-[Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
+Clip line segments trims measured
 lines to image or rectangular region bounds and measures the visible span.
-[Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose
+Hough circle collections expose
 native strengths for Gradient and Gradient ALT and support radius filtering.
-[Polar image warp](<../examples/opencv tools/polar_image_warp/README.md>) unwraps circular
+Polar image warp unwraps circular
 features onto linear or semilog grids, tracks source coverage, and can rewrap
 an intact grid into its original frame.
-[Tile image](<../examples/custom tools/tile_image/README.md>) repeats full images in a grid
+Tile image repeats full images in a grid
 with compact layout data and source-frame provenance.
-[Transpose image](<../examples/opencv tools/transpose_image/README.md>) swaps image axes
+Transpose image swaps image axes
 with exact main- or anti-diagonal reflection and coordinate mapping.
-[Route image channels](<../examples/custom tools/route_channels/README.md>) copies, reorders,
+Route image channels copies, reorders,
 and duplicates channels across matching input images, with optional zero fill.
-[Labeled distance transform](<../examples/opencv tools/labeled_distance/README.md>) computes
+Labeled distance transform computes
 pixel distances, nearest-seed labels, and a mask for one selected zone.
-[Masks from signed labels](<../examples/custom tools/label_masks/README.md>) shows exact
+Masks from signed labels shows exact
 pixel comparisons and inclusive ranges on int32 segmentation outputs.
-[Blend with weight maps](<../examples/custom tools/blend_weight_maps/README.md>) blends aligned
+Blend with weight maps blends aligned
 images using pixel weights and optional mask and region selection.
-[Gram matrix](<../examples/opencv tools/gram_matrix/README.md>) computes row or column dot products
+Gram matrix computes row or column dot products
 with optional centering, reusable offsets, and sample or population normalization.
-[Find nearest rows](<../examples/custom tools/nearest_rows/README.md>) adds exact top-K feature-table
+Find nearest rows adds exact top-K feature-table
 search, candidate masks, mutual nearest matching, and numeric or packed-byte distances.
-[Sort numeric table](<../examples/custom tools/numeric_table_sort/README.md>) ranks whole records or
+Sort numeric table ranks whole records or
 individual columns and rows, preserving input order for ties and returning source indices.
-[Cartesian and polar fields](<../examples/opencv tools/polar_fields/README.md>) convert in both directions and preserve angle units.
-[Iterative phase correlation](<../examples/opencv tools/iterative_phase_correlation/README.md>)
+Cartesian and polar fields convert in both directions and preserve angle units.
+Iterative phase correlation
 estimates subpixel translation and emits a correction for the moving image.
-[Matched-feature translation](<../examples/opencv tools/translation_registration/README.md>)
+Matched-feature translation
 fits a translation with RANSAC or LMeDS and reports per-pair residuals.
-[Packed remap coordinates](<../examples/opencv tools/packed_remap/README.md>) supports nearest
+Packed remap coordinates supports nearest
 and subpixel fixed-point maps and retains lens correction provenance.
-[Checkerboard capture quality](<../examples/custom tools/chessboard_quality/README.md>)
+Checkerboard capture quality
 measures edge width and brightness in both board directions.
-[Paired Sobel and derivative-fed Canny](<../examples/opencv tools/canny_derivatives/README.md>) expose signed gradients and accept custom derivative fields.
-[Scale absolute to 8-bit](<../examples/opencv tools/scale_absolute/README.md>) applies gain
+Paired Sobel and derivative-fed Canny expose signed gradients and accept custom derivative fields.
+Scale absolute to 8-bit applies gain
 and offset in stored units, saturates large magnitudes, and supports mask and
 region selection.
-[Principal components](<../examples/opencv tools/principal_components/README.md>) supports fitted dimensionality reduction and reconstruction.
+Principal components supports fitted dimensionality reduction and reconstruction.
 
 ## P3 — Specialized families
 
@@ -145,7 +148,7 @@ region selection.
 | Recognition | WeChat QR, QR encoding, multiple-code layout, cascade/HOG, face detection/recognition, saliency, line descriptors, image retrieval/vocabulary and OpenCV-specific OCR variants. |
 | Sequence | Additional tracker families, background subtractors in `bgsegm`, motion history and advanced video stabilization. |
 | Geometric utilities | Expanded robust estimators, graph matching, rectification variants, affine-invariant feature variants, panorama detail steps and coordinate-space diagnostics. |
-| Diagnostics and visualization | Display overlays as reusable blocks, match/inlier overlays, density maps, 3D axes and camera frusta, disparity confidence views and inspection measurement plots. [Colorize scalar image](<../examples/opencv tools/colorize_scalar/README.md>) provides built-in or custom palettes, fixed and automatic ranges, and invalid-pixel masking. |
+| Diagnostics and visualization | Display overlays as reusable blocks, match/inlier overlays, density maps, 3D axes and camera frusta, disparity confidence views and inspection measurement plots. Colorize scalar image provides built-in or custom palettes, fixed and automatic ranges, and invalid-pixel masking. |
 | Contrib and domain tools | Fuzzy and bioinspired processing, structured-light modes beyond Gray code, saliency, detailed image hashing and optional SfM, mesh/visualization and hardware-specific modules where the Python build supplies them. |
 
 ## P4 — Infrastructure and build-dependent features
@@ -217,7 +220,7 @@ or native four-state markers. It initializes a new model for each activation.
 **Thin binary mask** exposes Zhang–Suen and Guo–Hall skeletonization.
 The optional scikit-image blocks expose Zhang, Lee, Guo–Hall, and medial-axis
 skeletonization, plus length-based pruning of terminal branches. See the
-[skeleton pruning example](<../examples/custom tools/skeleton_pruning/README.md>).
+skeleton pruning example.
 **Fill holes in a binary mask** fills enclosed background components, with an
 optional maximum hole area and configurable background connectivity.
 
@@ -234,7 +237,7 @@ maps. The score uses equal weighting across selected pixels and channels.
 copies with a normalized matching method, minimum score, result limit,
 overlap suppression and optional mask/region inputs. It returns ranked
 bounds, centers, scores and a list of center poses. The pose list connects
-directly to **Inspect each pose in parallel**. Open the [25-part example](<../examples/opencv tools/template_instances/template_instances.json>)
+directly to **Inspect each pose in parallel**. Open the 25-part example
 or run it with `opencv-dataflow-run "examples/opencv tools/template_instances/template_instances.json"`.
 
 
@@ -254,7 +257,7 @@ See the [OpenCV backprojection tutorial](https://docs.opencv.org/5.0/tutorials/i
 It reports image-space geometry and root mean squared distance to the fitted
 boundary, with an optional residual tolerance. Circle mode returns the
 smallest enclosing circle.
-[Region from fitted shape](<../examples/custom tools/fitted_shape_region/README.md>) turns
+Region from fitted shape turns
 ellipse or enclosing-circle fits into reusable image selections with an axis margin.
 
 **Compare contours (Hu moments)** measures similarity between ordered point
@@ -266,7 +269,7 @@ boundary. See the [OpenCV shape-analysis reference](https://docs.opencv.org/5.0/
 In a two-object fixture with one hole, the pinned OpenCV 5.0.0
 `findContoursLinkRuns` binding reported the hole contour without a parent link.
 The standard contour path remains the supported option for hierarchy.
-[Approximate convex contour](<../examples/opencv tools/convex_contour_approximation/README.md>)
+Approximate convex contour
 exposes fixed-side reduction with an added-area budget and verifies enclosure.
 
 
@@ -279,7 +282,7 @@ transform and a minimum coefficient. It emits the aligned image and the
 sample-to-reference transform. The inverse mapping is available on its
 geometry output.
 
-Import the [Registered defect inspection ToolBlock](../examples/user_tools/registered_defect_inspection/registered_defect_inspection.toolblock.json)
+Import the Registered defect inspection ToolBlock
 to align a sample to a known-good reference, threshold the absolute
 difference and report connected defects. Its optional region is in reference
 coordinates. The included settings use translation, a residual threshold of
@@ -306,7 +309,7 @@ when their scores or angles make them ineligible for selection.
 The block returns one pose, eligible count, per-candidate rejection reasons
 and an optional overlay. Ranking uses the configured image-space downstream
 vector or the match score, with stable input order as the final tie breaker.
-The [conveyor pick example](../examples/applications/conveyor_pick/conveyor_pick.json) supplies a
+The conveyor pick example supplies a
 synthetic obstacle mask and runs with
 `opencv-dataflow-run examples/applications/conveyor_pick/conveyor_pick.json`. The check measures visible
 image-plane clearance. Depth, gripper reachability and swept-volume collision
@@ -326,6 +329,6 @@ The block checks minimum edge gradient, width, center offset, passing-scan
 fraction and the longest run of missing scans. A mask or region must cover
 the full scan, including any interpolation neighbors that contribute.
 Missing scans, including scans outside the image or selection, count
-toward the gap. The [caliper example](../examples/applications/bead_calipers/bead_calipers.json) measures
+toward the gap. The caliper example measures
 a 126-pixel synthetic strip and runs with
 `opencv-dataflow-run examples/applications/bead_calipers/bead_calipers.json`.

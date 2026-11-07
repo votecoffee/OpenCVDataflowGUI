@@ -97,6 +97,7 @@ def test_bad_eigenpairs_emit_residual_diagnostics_without_spectrum(monkeypatch):
     assert len(block.current_emissions["relative_residuals"]) == 1
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_projects_along_gram_matrix_axes(profile):
     project = (

@@ -106,6 +106,7 @@ def test_invalid_fixed_range_and_palette_are_rejected():
     assert "256-pixel uint8 strip" in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_maps_distance_only_inside_the_circular_part(profile):
     project = (

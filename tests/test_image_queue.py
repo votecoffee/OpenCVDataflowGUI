@@ -357,6 +357,7 @@ def test_background_nested_acquisition_preserves_internal_preview_snapshots():
             )
 
 
+@pytest.mark.local_examples
 def test_saved_queued_example_headless_receipt_and_gui_load(app, load_example, tmp_path):
     import json
     from pathlib import Path

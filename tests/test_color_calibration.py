@@ -89,6 +89,7 @@ def test_affine_ccm_restores_each_exposed_linearization(linearization):
     assert result.outputs["image"].dtype == np.uint8
 
 
+@pytest.mark.local_examples
 def test_color_chart_example_executes_headlessly():
     path = (
         Path(__file__).resolve().parents[1]

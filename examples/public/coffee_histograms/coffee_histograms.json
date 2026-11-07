@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "coffee",
+      "type": "input.file",
+      "name": "Coffee photograph",
+      "description": "Load the bundled CC0 photograph in BGR order.",
+      "parameters": {
+        "path": "../assets/coffee.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "color_histogram",
+      "type": "inspect.histogram",
+      "name": "BGR channel histograms",
+      "description": "Compare the individual channels. Statistics markers describe the red channel.",
+      "parameters": {
+        "bins": 64,
+        "range_mode": "automatic",
+        "range_min": 0.0,
+        "range_max": 1.0,
+        "include_alpha": false,
+        "lower_percentile": 10.0,
+        "upper_percentile": 90.0,
+        "statistics_channel": "R",
+        "threshold_statistic": "median",
+        "show_statistics": true
+      },
+      "position": [
+        300,
+        -280
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": "plot"
+    },
+    {
+      "id": "gray",
+      "type": "cv.gray",
+      "name": "Convert to grayscale",
+      "description": "Convert the source to one intensity channel.",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        300,
+        20
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray_histogram",
+      "type": "inspect.histogram",
+      "name": "Grayscale histogram",
+      "description": "Inspect the central 80% of grayscale intensities.",
+      "parameters": {
+        "bins": 64,
+        "range_mode": "automatic",
+        "range_min": 0.0,
+        "range_max": 1.0,
+        "include_alpha": false,
+        "lower_percentile": 10.0,
+        "upper_percentile": 90.0,
+        "statistics_channel": "auto",
+        "threshold_statistic": "median",
+        "show_statistics": true
+      },
+      "position": [
+        600,
+        20
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": "plot"
+    }
+  ],
+  "connections": [
+    {
+      "source": "coffee",
+      "output": "image",
+      "target": "color_histogram",
+      "input": "image"
+    },
+    {
+      "source": "coffee",
+      "output": "image",
+      "target": "gray",
+      "input": "image"
+    },
+    {
+      "source": "gray",
+      "output": "image",
+      "target": "gray_histogram",
+      "input": "image"
+    }
+  ]
+}

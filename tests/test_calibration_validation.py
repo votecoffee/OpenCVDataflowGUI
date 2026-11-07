@@ -31,6 +31,7 @@ def _inputs():
     }
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_validation_example_measures_and_draws_held_out_residuals(profile):
     graph = Graph.load(_PROJECT, builtin_registry())
@@ -57,6 +58,7 @@ def test_saved_validation_example_measures_and_draws_held_out_residuals(profile)
     assert output.shape == (420, 540, 3) and np.any(output[..., 0] != output[..., 1])
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize(
     ("rms_limit", "point_limit", "code"),
     [
@@ -81,6 +83,7 @@ def test_altered_profile_fails_selected_limit_and_remains_fixed(rms_limit, point
             assert marker.color == (REJECTED if point["error_pixels"] > point_limit else ACCEPTED)
 
 
+@pytest.mark.local_examples
 def test_missing_target_reports_failure_without_emitting_numeric_errors():
     tool = Graph.load(_PROJECT, builtin_registry()).blocks["validate"]
     inputs = _inputs()
@@ -92,6 +95,7 @@ def test_missing_target_reports_failure_without_emitting_numeric_errors():
     assert not result.drawings
 
 
+@pytest.mark.local_examples
 def test_validation_rejects_mismatched_image_size():
     tool = Graph.load(_PROJECT, builtin_registry()).blocks["validate"]
     inputs = _inputs()

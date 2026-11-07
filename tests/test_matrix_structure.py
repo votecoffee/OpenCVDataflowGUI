@@ -53,6 +53,7 @@ def test_complete_symmetry_only_copies_selected_triangle(triangle, value):
     assert block.error_kind == "invalid" and "square" in block.error
 
 
+@pytest.mark.local_examples
 def test_example_builds_regularized_symmetric_matrix_and_inverts_it():
     path = (
         Path(__file__).parents[1] / "examples/opencv tools/matrix_structure/matrix_structure.json"

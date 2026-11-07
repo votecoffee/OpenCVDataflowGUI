@@ -322,6 +322,7 @@ def test_join_memory_limit_and_case_range_default_and_cancellation():
     assert source.state == "skipped" and source.last_result is None
 
 
+@pytest.mark.local_examples
 def test_shipped_control_flow_example_repeats_drains_and_reports_each_event():
     import json
     from pathlib import Path

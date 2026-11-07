@@ -7,5 +7,19 @@ __pycache__/
 build/
 dist/
 .local/
-/examples/
+# Publish only individually reviewed examples and assets.
+/examples/*
+!/examples/public/
+/examples/public/**
+!/examples/public/assets/
+!/examples/public/brick_edges/
+!/examples/public/coffee_histograms/
+!/examples/public/README.md
+!/examples/public/assets/README.md
+!/examples/public/assets/brick.png
+!/examples/public/assets/coffee.png
+!/examples/public/brick_edges/README.md
+!/examples/public/brick_edges/brick_edges.json
+!/examples/public/coffee_histograms/README.md
+!/examples/public/coffee_histograms/coffee_histograms.json
 /applications/

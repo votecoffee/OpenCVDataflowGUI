@@ -1,5 +1,8 @@
 # Recipes and trained-model swaps
 
+Named projects in this guide refer to optional local examples. See the
+[public example gallery](../examples/public/README.md) for bundled projects.
+
 The job has one shared, versioned recipe catalog. Root blocks, nested ToolBlocks,
 background acquisition and parallel part inspections use that catalog. This is a
 job-wide system stored with the project, not a separate cross-process recipe
@@ -165,7 +168,7 @@ stopped; runtime selector blocks activate already installed revisions.
 
 ## Example
 
-Open [recipes](<../examples/flow tools/recipes/recipes.json>). Widget A uses an edge model and ORB; Widget B
+Open recipes. Widget A uses an edge model and ORB; Widget B
 uses a corner model and SIFT, with different threshold/search settings. Both are
 synthetic positive examples, not production acceptance thresholds. The geometric
 model uses the inspector binding; the texture model comes from a Recipe value or

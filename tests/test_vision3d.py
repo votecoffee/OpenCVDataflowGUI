@@ -57,6 +57,7 @@ EXAMPLES = [
 ]
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("name,factory", EXAMPLES)
 @pytest.mark.parametrize("profile", ["debug", "balanced", "lean"])
 def test_saved_3d_examples_roundtrip_and_execute(name, factory, profile):
@@ -481,6 +482,7 @@ def test_cloud_toolblock_and_headless_summary(tmp_path):
     assert cloud["model"] == "point_cloud_v1" and cloud["count"] > 0 and "points" not in cloud
 
 
+@pytest.mark.local_examples
 def test_offscreen_cloud_viewer_renders_retained_result(app, load_example):
     window = MainWindow()
     load_example(window, "rgbd_cloud")

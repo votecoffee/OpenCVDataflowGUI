@@ -11,6 +11,21 @@ from PySide6.QtCore import QCoreApplication, QEvent
 from PySide6.QtWidgets import QApplication
 
 
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers", "local_examples: needs the optional local example collection"
+    )
+
+
+def pytest_collection_modifyitems(config, items):
+    if (config.rootpath / "examples" / "README.md").is_file():
+        return
+    skip = pytest.mark.skip(reason="Optional local example collection is absent")
+    for item in items:
+        if item.get_closest_marker("local_examples"):
+            item.add_marker(skip)
+
+
 @pytest.fixture(scope="session")
 def app():
     application = QApplication.instance() or QApplication([])

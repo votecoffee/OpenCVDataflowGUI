@@ -123,6 +123,7 @@ def test_zxing_reads_gs1_and_keeps_checksum_errors_out_of_codes():
     assert "ChecksumError" in invalid.outputs["errors"][0]["error"]
 
 
+@pytest.mark.local_examples
 def test_zxing_example_verifies_ticketed_lot_code():
     pytest.importorskip("zxingcpp")
     from pathlib import Path

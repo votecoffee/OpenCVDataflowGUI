@@ -110,6 +110,7 @@ def test_ticket_identity_checks_and_patch_ticket_propagation():
     assert result.payloads["copied_pixel_count"]["ticket"]["value"] == 2
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_copies_only_the_visible_circle_selection(profile):
     project = (

@@ -4,6 +4,7 @@ from pathlib import Path
 
 import cv2
 import numpy as np
+import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
@@ -28,6 +29,7 @@ def _shift(image, x, y):
     )
 
 
+@pytest.mark.local_examples
 def test_synthetic_camera_replay_recovers_rotation_and_translation():
     project = (
         Path(__file__).parents[1]
@@ -146,6 +148,7 @@ def test_image_quality_mask_alignment_requires_an_explicit_pixel_grid_choice():
     assert "matching image dimensions" in block.error
 
 
+@pytest.mark.local_examples
 def test_recorded_camera_replay_reduces_matched_error_and_reanchors_on_coverage_loss():
     project = (
         Path(__file__).parents[1]
@@ -206,6 +209,7 @@ def test_recorded_camera_replay_reduces_matched_error_and_reanchors_on_coverage_
         graph.close()
 
 
+@pytest.mark.local_examples
 def test_validation_rejects_accumulated_drift_even_when_the_background_fit_passes():
     graph = Graph.load(VALIDATION_EXAMPLE / "stabilization_validation.json", builtin_registry())
     try:
@@ -245,6 +249,7 @@ def test_validation_rejects_accumulated_drift_even_when_the_background_fit_passe
         graph.close()
 
 
+@pytest.mark.local_examples
 def test_validation_mask_excludes_its_features_from_the_fit_and_requires_tracks():
     images = [
         cv2.imread(str(VALIDATION_EXAMPLE / "assets" / f"frame-{i:02d}.png"), cv2.IMREAD_GRAYSCALE)
@@ -276,6 +281,7 @@ def test_validation_mask_excludes_its_features_from_the_fit_and_requires_tracks(
     assert result.outputs["ready"]
 
 
+@pytest.mark.local_examples
 def test_recorded_depth_separated_regions_reject_motion_and_resume(tmp_path, monkeypatch):
     folder = VALIDATION_EXAMPLE.parent / "recorded_stabilization_validation"
     monkeypatch.chdir(tmp_path)

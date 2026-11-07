@@ -71,6 +71,7 @@ def test_invalid_site_coordinates_or_selection_fail_as_a_block_error(points, par
     assert message in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_saved_voronoi_example_measures_selected_cell_and_overlays_geometry(profile):
     project = Path(__file__).parents[1] / "examples/opencv tools/voronoi_cells/voronoi_cells.json"

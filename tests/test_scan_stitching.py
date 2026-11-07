@@ -35,6 +35,7 @@ def _loop_images():
     ]
 
 
+@pytest.mark.local_examples
 def test_saved_scan_waits_for_batch_and_reconstructs_all_covered_pixels():
     graph = Graph.load(EXAMPLE / "stitch_scan_sequence.json", builtin_registry())
     try:
@@ -70,6 +71,7 @@ def test_saved_scan_waits_for_batch_and_reconstructs_all_covered_pixels():
         graph.close()
 
 
+@pytest.mark.local_examples
 def test_similarity_motion_recovers_rotated_16_bit_view():
     first = _tile(1).astype(np.uint16) * 257
     forward = cv2.getRotationMatrix2D((89.5, 65.5), 2.0, 1.01)
@@ -84,6 +86,7 @@ def test_similarity_motion_recovers_rotated_16_bit_view():
     np.testing.assert_allclose(points @ np.vstack((forward, [0, 0, 1])).T @ fit.T, points, atol=0.4)
 
 
+@pytest.mark.local_examples
 def test_masks_keep_excluded_later_pixels_from_overwriting_valid_earlier_pixels():
     first, second = _tile(1), _tile(2) + 20
     mask = np.full_like(second, 255)
@@ -102,6 +105,7 @@ def test_masks_keep_excluded_later_pixels_from_overwriting_valid_earlier_pixels(
     assert result.outputs["overlap"][y + 50, x + 140] == 0
 
 
+@pytest.mark.local_examples
 def test_unregistrable_pair_reports_which_join_failed_without_partial_mosaic():
     first = _tile(1)
     block = builtin_registry().create(TYPE)
@@ -119,6 +123,7 @@ def test_unregistrable_pair_reports_which_join_failed_without_partial_mosaic():
     assert result.fail_reasons[0]["code"] == "scan_registration_failed"
 
 
+@pytest.mark.local_examples
 def test_overlap_and_mask_group_bounds_are_checked():
     first = _tile(1)
     block = builtin_registry().create(TYPE, parameters={"min_overlap_pixels": 12000})
@@ -133,6 +138,7 @@ def test_overlap_and_mask_group_bounds_are_checked():
     assert block.error_kind == "invalid" and "two to eight" in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("blend", ["feather", "graph_cut"])
 def test_saved_scan_corrects_cumulative_gain_without_changing_coverage(blend):
     graph = Graph.load(EXPOSURE_EXAMPLE, builtin_registry())
@@ -170,6 +176,7 @@ def test_saved_scan_corrects_cumulative_gain_without_changing_coverage(blend):
         graph.close()
 
 
+@pytest.mark.local_examples
 def test_offset_changes_color_but_leaves_alpha_and_masked_pixels_alone():
     first = cv2.cvtColor(_tile(1), cv2.COLOR_GRAY2BGRA)
     second = cv2.cvtColor(_tile(2), cv2.COLOR_GRAY2BGRA)
@@ -195,6 +202,7 @@ def test_offset_changes_color_but_leaves_alpha_and_masked_pixels_alone():
     )
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize(
     ("settings", "status"),
     [
@@ -241,6 +249,7 @@ def test_exposure_correction_ignores_masked_high_dynamic_range_samples():
     assert np.isfinite(corrected).all()
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("motion_model", ["translation", "similarity"])
 def test_saved_loop_reduces_final_view_drift_in_first_view_coordinates(motion_model):
     graph = Graph.load(LOOP_EXAMPLE, builtin_registry())
@@ -287,6 +296,7 @@ def test_saved_loop_reduces_final_view_drift_in_first_view_coordinates(motion_mo
         graph.close()
 
 
+@pytest.mark.local_examples
 def test_required_loop_rejects_an_open_scan_and_reports_final_pair():
     block = builtin_registry().create(TYPE, parameters={"loop_closure": True})
     result = block.execute({"views": _group(_tile(1), _tile(2), _tile(3))})
@@ -301,6 +311,7 @@ def test_required_loop_rejects_an_open_scan_and_reports_final_pair():
     assert "at least three views" in block.error
 
 
+@pytest.mark.local_examples
 def test_closure_checks_drift_limit_before_rendering():
     block = builtin_registry().create(
         TYPE, parameters={"loop_closure": True, "inlier_pixels": 3, "max_loop_drift_pixels": 1}
@@ -313,6 +324,7 @@ def test_closure_checks_drift_limit_before_rendering():
     assert result.outputs["image"] is NO_VALUE
 
 
+@pytest.mark.local_examples
 def test_closure_rechecks_adjacent_residuals_after_adjustment(monkeypatch):
     points = np.array([[0, 0], [2, 0], [0, 2]], dtype=np.float32)
     fits = [np.eye(3), np.eye(3), np.eye(3)]
@@ -332,6 +344,7 @@ def test_closure_rechecks_adjacent_residuals_after_adjustment(monkeypatch):
     assert [p["adjusted_rms_pixels"] for p in layout["pairs"]] == [3, 3]
 
 
+@pytest.mark.local_examples
 def test_closure_checks_masked_overlap_separately_from_adjacent_overlaps():
     images = _loop_images()
     masks = [np.full_like(image, 255) for image in images]

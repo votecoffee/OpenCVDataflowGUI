@@ -505,6 +505,7 @@ def test_export_preserves_existing_files_and_includes_event_schema(app, tmp_path
     window.close()
 
 
+@pytest.mark.local_examples
 def test_headless_receipt_contains_paired_activity_events(tmp_path):
     from opencv_dataflow.runner import main
 

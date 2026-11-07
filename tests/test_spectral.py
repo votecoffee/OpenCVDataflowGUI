@@ -256,6 +256,7 @@ def test_combine_fourier_spectra_rejects_incompatible_grids_and_overflow():
     assert block.error_kind == "invalid" and "overflowed" in block.error
 
 
+@pytest.mark.local_examples
 def test_spectrum_product_example_finds_a_wrapped_displacement():
     path = (
         Path(__file__).parents[1]

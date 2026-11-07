@@ -34,6 +34,7 @@ def _small_board(pitch):
     return board, points.reshape(-1, 2).tolist()
 
 
+@pytest.mark.local_examples
 def test_matches_native_profiles_and_preserves_color_depth_and_frame():
     gray = _fixture()
     pixels = np.repeat(gray[..., None], 3, axis=2).astype(np.uint16) * 257
@@ -65,6 +66,7 @@ def test_matches_native_profiles_and_preserves_color_depth_and_frame():
     assert all(marker.color == ACCEPTED for marker in markers)
 
 
+@pytest.mark.local_examples
 def test_directional_blur_fails_only_the_affected_edge_orientation():
     registry = builtin_registry()
     blurred = cv2.GaussianBlur(_fixture(), (1, 19), 0, sigmaY=2.4)
@@ -84,6 +86,7 @@ def test_directional_blur_fails_only_the_affected_edge_orientation():
     assert set(passed.outputs["report"]["directions"]) == {"vertical"}
 
 
+@pytest.mark.local_examples
 def test_contrast_and_brightness_failures_even_when_width_check_is_disabled():
     gray = np.rint(_fixture() * 0.4 + 60).astype(np.uint8)
     block = builtin_registry().create(
@@ -139,6 +142,7 @@ def test_wired_corners_reject_wrong_frame_or_capture():
         assert result is None and message in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_compares_and_can_reject_the_blurred_capture(profile):
     graph = Graph.load(_EXAMPLE / "chessboard_quality.json", builtin_registry())

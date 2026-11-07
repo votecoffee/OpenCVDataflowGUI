@@ -24,6 +24,7 @@ def _graph(profile="debug"):
     return graph
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_separate_view_uses_only_observed_board_ids(profile):
     graph = _graph(profile)
@@ -59,6 +60,7 @@ def sample():
     }
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize(
     ("problem", "message"),
     [
@@ -98,6 +100,7 @@ def test_validator_rejects_observations_incompatible_with_the_image(sample, prob
     assert message in validate.error
 
 
+@pytest.mark.local_examples
 def test_failed_detector_status_suppresses_reprojection_measurements(sample):
     inputs = dict(sample)
     inputs["observation"] = ValuePacket(
@@ -118,6 +121,7 @@ def test_failed_detector_status_suppresses_reprojection_measurements(sample):
     assert result.outputs["rms"] is result.outputs["max_error"] is NO_VALUE
 
 
+@pytest.mark.local_examples
 def test_altered_profile_reports_the_corner_id_that_fails(sample):
     inputs = dict(sample)
     inputs["calibration"] = {**inputs["calibration"], "distortion": [0.6, 0, 0, 0, 0]}

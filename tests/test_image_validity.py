@@ -109,6 +109,7 @@ def test_nonfinite_preview_marks_pixels_without_changing_source(color):
     np.testing.assert_array_equal(samples, original)
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_synthetic_depth_graph_measures_only_valid_source_pixels(profile):
     project = (

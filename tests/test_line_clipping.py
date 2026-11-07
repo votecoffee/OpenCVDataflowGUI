@@ -110,6 +110,7 @@ def test_rejects_regions_with_incompatible_shape_or_frame():
     assert "non-inverted rectangle" in block.error
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_measures_and_draws_only_the_visible_span(profile):
     graph = Graph.load(_PROJECT, builtin_registry())

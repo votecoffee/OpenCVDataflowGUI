@@ -92,6 +92,7 @@ def test_empty_seed_set_and_unavailable_label_emit_distinct_failures():
     assert result.outputs["selected_mask"] is NO_VALUE
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("profile", ("debug", "lean"))
 def test_example_partitions_every_pixel_between_two_seed_regions(profile):
     project = (

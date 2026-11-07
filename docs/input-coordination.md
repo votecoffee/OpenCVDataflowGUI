@@ -1,5 +1,8 @@
 # Coordinating multiple inputs
 
+Named projects in this guide refer to optional local examples. See the
+[public example gallery](../examples/public/README.md) for bundled projects.
+
 Use **Control flow > Synchronization > Coordinate inputs** for explicit arrival
 policies. Connect two to four streams to `input_1` … `input_4`. This keeps ordinary
 OpenCV node scheduling predictable and makes intentional reuse or missing inputs
@@ -139,7 +142,7 @@ acquisition service.
 
 ## Example
 
-Open [input coordination](<../examples/flow tools/input_coordination/input_coordination.json>). A **Counter input** stands in for
+Open input coordination. A **Counter input** stands in for
 a PLC part ID and supplies each synthetic camera's external ticket input. Run once
 or continuously, inspect `info`, and open **Results > Ticket results…**. Both cameras
 agree on one part ticket and the group receives an explicit final judgment. No

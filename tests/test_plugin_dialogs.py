@@ -38,6 +38,7 @@ def example_window(app):
         app.processEvents()
 
 
+@pytest.mark.local_examples
 def test_popup_uses_current_draft_and_stages_only_accepted_values(example_window, monkeypatch):
     window, block = example_window
     inspector = window.inspector
@@ -80,6 +81,7 @@ def test_popup_uses_current_draft_and_stages_only_accepted_values(example_window
     assert block.parameters == schedules[0] and window.dirty
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize(
     ("updates", "warning"),
     [
@@ -108,6 +110,7 @@ def test_invalid_plugin_edits_are_atomic(example_window, monkeypatch, updates, w
     assert block.logger.snapshot()["events"][-1]["kind"] == "exception"
 
 
+@pytest.mark.local_examples
 def test_factory_failure_and_selection_change_keep_configuration(example_window, monkeypatch):
     window, block = example_window
     inspector = window.inspector
@@ -135,6 +138,7 @@ def test_factory_failure_and_selection_change_keep_configuration(example_window,
     assert not window.dirty and inspector._plugin_dialog is None
 
 
+@pytest.mark.local_examples
 def test_modeless_dialog_captures_two_runs_and_stages_during_execution(
     app, example_window, monkeypatch, tmp_path
 ):
@@ -206,6 +210,7 @@ def test_modeless_dialog_captures_two_runs_and_stages_during_execution(
         context.refresh_images()
 
 
+@pytest.mark.local_examples
 def test_modeless_dialog_merges_independent_edits_and_rejects_conflicts(
     example_window, monkeypatch
 ):
@@ -233,6 +238,7 @@ def test_modeless_dialog_merges_independent_edits_and_rejects_conflicts(
     assert not window.dirty
 
 
+@pytest.mark.local_examples
 def test_modal_dialog_closes_when_graph_starts(app, example_window, monkeypatch):
     window, block = example_window
     inspector = window.inspector
@@ -247,6 +253,7 @@ def test_modal_dialog_closes_when_graph_starts(app, example_window, monkeypatch)
     assert inspector.read_parameters()["start_percent"] == 20
 
 
+@pytest.mark.local_examples
 def test_changing_project_directory_discards_open_dialog(example_window, monkeypatch, tmp_path):
     window, block = example_window
     inspector = window.inspector
@@ -261,6 +268,7 @@ def test_changing_project_directory_discards_open_dialog(example_window, monkeyp
     assert block.parameters["start_percent"] == 20
 
 
+@pytest.mark.local_examples
 def test_output_notifications_coalesce_and_cancel_with_dialog(app, example_window, monkeypatch):
     window, block = example_window
     inspector = window.inspector
@@ -296,6 +304,7 @@ def test_output_notifications_coalesce_and_cancel_with_dialog(app, example_windo
         context.subscribe_outputs(seen.append)
 
 
+@pytest.mark.local_examples
 def test_output_callback_errors_are_isolated_from_other_callbacks_and_runs(
     app, example_window, monkeypatch
 ):
@@ -370,6 +379,7 @@ def test_snapshots_copy_pixels_and_keep_selected_level_provenance(tmp_path):
         context.snapshot_image(pyramid.id, "images", level=2)
 
 
+@pytest.mark.local_examples
 def test_popup_captures_wired_draft_level_and_exact_processed_level(example_window, monkeypatch):
     window, example = example_window
     graph = Graph()

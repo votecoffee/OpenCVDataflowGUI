@@ -235,6 +235,7 @@ def test_cross_field_parameter_errors_highlight_both_controls(app):
         window.close()
 
 
+@pytest.mark.local_examples
 def test_custom_invert_example_shows_validation_only_for_invalid_drafts(app):
     from opencv_dataflow.plugins import load_plugin
 
@@ -817,6 +818,7 @@ def test_toolblock_interface_dialog_and_library_instances(app):
     window.close()
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize(
     "folder,count,shape_id",
     [
@@ -852,6 +854,7 @@ def test_regions_example_editor_load_save_and_shape_dropdown(
     app.processEvents()
 
 
+@pytest.mark.local_examples
 def test_channel_pyramid_editor_preview_level_selection_and_save(app, load_example, tmp_path):
     window = MainWindow()
     load_example(window, "channels_pyramids")
@@ -957,6 +960,7 @@ def test_toolbox_tree_types_subtypes_search_and_leaf_activation(app, monkeypatch
     window.close()
 
 
+@pytest.mark.local_examples
 def test_starter_project_editor_run_edit_save_and_template_example(app, load_example, tmp_path):
     window = MainWindow()
     window.show()
@@ -1126,6 +1130,7 @@ def test_enum_fields_are_dropdowns_and_unknown_values_are_not_silently_replaced(
     window.close()
 
 
+@pytest.mark.local_examples
 def test_object_collection_editor_filter_sort_preview_worker_and_save(app, load_example, tmp_path):
     from PySide6.QtWidgets import QComboBox
 
@@ -1210,6 +1215,7 @@ def test_inspector_advanced_visibility_and_unapplied_drafts(app):
         window.close()
 
 
+@pytest.mark.local_examples
 def test_file_menu_opens_example_from_disk(app, monkeypatch):
     window = MainWindow()
     project = Path(__file__).resolve().parents[1] / "examples/custom tools/regions/regions.json"

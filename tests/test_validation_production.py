@@ -28,6 +28,7 @@ def program():
     return registry, graph
 
 
+@pytest.mark.local_examples
 def test_saved_example_and_all_expected_classes(program):
     registry, graph = program
     assert graph.to_dict() == validation_graph(registry).to_dict()
@@ -52,6 +53,7 @@ def test_saved_example_and_all_expected_classes(program):
     json.dumps(report, allow_nan=False)
 
 
+@pytest.mark.local_examples
 def test_production_counts_are_per_ticket_not_block(program):
     _, graph = program
     graph.run()
@@ -78,6 +80,7 @@ def test_parallel_child_tickets_do_not_inflate_image_counts():
     assert graph.ticket_results.statistics()["pass"] == 1
 
 
+@pytest.mark.local_examples
 def test_duplicate_and_conflicting_final_judgments_count_once(program):
     _, graph = program
     source, final = graph.blocks["validation_source"], graph.blocks["validation_final"]
@@ -132,6 +135,7 @@ def test_totals_survive_ticket_history_eviction():
     assert len(restored.snapshot()["tickets"]) == 1
 
 
+@pytest.mark.local_examples
 def test_fail_reasons_propagate_and_are_output_with_final_judgment(program):
     _, graph = program
     graph.blocks["validation_source"].parameters["path"] = "../../assets/validation/fail.png"
@@ -151,6 +155,7 @@ def test_invalid_fail_reason_contract_rejects_bad_values(bad):
         normalize_reasons(bad)
 
 
+@pytest.mark.local_examples
 def test_must_mismatch_and_preferred_reason_are_required(program):
     registry, graph = program
     manifest = copy.deepcopy(graph.validation_sets[0])
@@ -162,6 +167,7 @@ def test_must_mismatch_and_preferred_reason_are_required(program):
     assert report["summary"]["must_mismatches"] == 1
 
 
+@pytest.mark.local_examples
 def test_should_mismatch_is_advisory_and_unknown_is_unscored(program):
     registry, graph = program
     manifest = copy.deepcopy(graph.validation_sets[0])
@@ -173,6 +179,7 @@ def test_should_mismatch_is_advisory_and_unknown_is_unscored(program):
     assert report["summary"]["unknown"] == 1
 
 
+@pytest.mark.local_examples
 def test_missing_image_is_execution_error_not_expected_inspection_failure(program):
     registry, graph = program
     manifest = copy.deepcopy(graph.validation_sets[0])
@@ -183,6 +190,7 @@ def test_missing_image_is_execution_error_not_expected_inspection_failure(progra
     assert not report["summary"]["passed"] and report["cases"][0]["matched"] is False
 
 
+@pytest.mark.local_examples
 def test_validation_replaces_camera_without_opening_hardware(program, monkeypatch):
     import cv2
 
@@ -195,6 +203,7 @@ def test_validation_replaces_camera_without_opening_hardware(program, monkeypatc
     assert report["summary"]["passed"]
 
 
+@pytest.mark.local_examples
 def test_validation_disables_output_writes_and_keeps_live_graph_unchanged(program, tmp_path):
     registry, graph = program
     output = graph.add(
@@ -208,6 +217,7 @@ def test_validation_disables_output_writes_and_keeps_live_graph_unchanged(progra
     assert graph.to_dict() == before and graph.ticket_results.statistics()["total"] == 0
 
 
+@pytest.mark.local_examples
 def test_manifest_roundtrip_and_cli_report_preserves_existing_file(program, tmp_path):
     registry, graph = program
     saved = tmp_path / "program.json"
@@ -247,6 +257,7 @@ def test_manifest_roundtrip_and_cli_report_preserves_existing_file(program, tmp_
     )
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize(
     "change", ["bad_expectation", "duplicate_case", "bad_source", "bad_preference"]
 )
@@ -281,6 +292,7 @@ def test_statusbar_statistics_survive_worker_runs_and_reset(app):
     window.close()
 
 
+@pytest.mark.local_examples
 def test_validation_manager_background_run_and_saved_criteria(app, program):
     from test_editor import pump_until
 
@@ -307,6 +319,7 @@ def test_validation_manager_background_run_and_saved_criteria(app, program):
     window.close()
 
 
+@pytest.mark.local_examples
 def test_sequence_validation_can_warm_up_and_isolated_validation_starts_fresh(program):
     registry, original = program
     graph = Graph()
@@ -334,6 +347,7 @@ def test_sequence_validation_can_warm_up_and_isolated_validation_starts_fresh(pr
     assert not report["summary"]["passed"] and report["cases"][1]["actual"] is None
 
 
+@pytest.mark.local_examples
 def test_validation_cancellation_keeps_partial_report(program):
     registry, graph = program
     stop = threading.Event()
@@ -349,6 +363,7 @@ def test_validation_cancellation_keeps_partial_report(program):
     assert report["summary"]["cancelled"] and not report["summary"]["passed"]
 
 
+@pytest.mark.local_examples
 def test_wired_reason_codes_are_consumable_and_forced_pass_does_not_publish_failure(program):
     registry, graph = program
     final = graph.blocks["validation_final"]
@@ -373,6 +388,7 @@ def test_wired_reason_codes_are_consumable_and_forced_pass_does_not_publish_fail
     assert final.last_result.outputs["judgment"]["fail_reasons"] == []
 
 
+@pytest.mark.local_examples
 def test_validation_can_use_automatic_terminal_results_with_no_final_tool(program):
     registry, original = program
     graph = demo_graph(registry)
@@ -392,6 +408,7 @@ def test_validation_can_use_automatic_terminal_results_with_no_final_tool(progra
     assert report["summary"]["passed"]
 
 
+@pytest.mark.local_examples
 def test_automatic_counts_include_private_toolblock_inspection_failures(program):
     registry, original = program
     inner, outer = Graph(), Graph()

@@ -36,6 +36,7 @@ def inference(**parameters):
     return DNNInference(parameters={"model_path": ONNX, "width": 32, "height": 32, **parameters})
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("engine", ["auto", "classic", "new"])
 @pytest.mark.parametrize("profile", ["debug", "balanced", "lean"])
 def test_real_onnx_channels_normalization_ticket_and_profiles(engine, profile):
@@ -65,6 +66,7 @@ def test_preprocessing_preserves_declared_rgb_and_uint16_units():
     np.testing.assert_allclose(blob, 0, atol=1e-6)
 
 
+@pytest.mark.local_examples
 def test_letterbox_transform_mask_and_model_paths(tmp_path):
     source = np.full((10, 20, 3), 255, np.uint8)
     mask = np.zeros((10, 20), np.uint8)
@@ -84,6 +86,7 @@ def test_letterbox_transform_mask_and_model_paths(tmp_path):
     execute(block, {"image": source})
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize(
     "parameters,fragment",
     [
@@ -242,6 +245,7 @@ def test_real_lightglue_local_weights_geometry_cache_and_no_download(monkeypatch
     assert block._matcher is None
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize(
     "filename,factory",
     [
@@ -258,6 +262,7 @@ def test_ml_examples_roundtrip_and_registry(filename, factory):
     json.dumps(graph.to_dict(), allow_nan=False)
 
 
+@pytest.mark.local_examples
 def test_ml_inspector_exposes_enums_paths_and_library(app, load_example, monkeypatch):
     window = MainWindow()
     load_example(window, "dnn_embeddings")
@@ -277,6 +282,7 @@ def test_ml_inspector_exposes_enums_paths_and_library(app, load_example, monkeyp
     window.close()
 
 
+@pytest.mark.local_examples
 @pytest.mark.parametrize("missing", ["annoy", "torch"])
 def test_optional_dependencies_are_lazy_and_fail_with_install_guidance(monkeypatch, missing):
     original = builtins.__import__

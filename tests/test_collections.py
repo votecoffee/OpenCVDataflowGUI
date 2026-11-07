@@ -344,6 +344,7 @@ def test_collection_pipeline_preserves_pyramid_frames_and_refuses_wrong_render_l
     assert renderer.last_output_images["overlay"].shape[:2] == (90, 120)
 
 
+@pytest.mark.local_examples
 def test_saved_example_repeats_nested_and_headless_receipts_preserve_descriptors(tmp_path):
     import json
 

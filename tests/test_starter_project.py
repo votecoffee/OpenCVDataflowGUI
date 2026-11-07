@@ -12,6 +12,7 @@ from opencv_dataflow.runner import main
 from opencv_dataflow.toolblocks import encapsulate
 
 
+@pytest.mark.local_examples
 def test_saved_starter_matches_builder_and_runs_repeatedly():
     registry = builtin_registry()
     graph = Graph.load(
@@ -57,6 +58,7 @@ def test_starter_can_be_encapsulated_and_reopened(tmp_path):
     )
 
 
+@pytest.mark.local_examples
 def test_template_project_matches_builder_and_known_patch():
     registry = builtin_registry()
     graph = Graph.load(
@@ -70,6 +72,7 @@ def test_template_project_matches_builder_and_known_patch():
     assert match.last_result.outputs["location"]["top_left"] == [250, 85]
 
 
+@pytest.mark.local_examples
 def test_headless_report_repeats_and_preserves_existing_receipt(tmp_path):
     report = tmp_path / "run.json"
     assert (
@@ -126,8 +129,7 @@ def test_actual_headless_entry_does_not_import_qt():
     code = (
         "import sys; from opencv_dataflow.runner import main; "
         "assert not any(k.startswith('PySide6') for k in sys.modules); "
-        "raise SystemExit(main(['examples/opencv tools/"
-        "template_matching/template_matching.json']))"
+        "raise SystemExit(main(['examples/public/brick_edges/brick_edges.json']))"
     )
     process = subprocess.run(
         [sys.executable, "-c", code], capture_output=True, text=True, timeout=20

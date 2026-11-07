@@ -1,5 +1,8 @@
 # Pose-relative inspection
 
+Named projects in this guide refer to optional local examples. See the
+[public example gallery](../examples/public/README.md) for bundled projects.
+
 An image pose defines a local 2D coordinate frame in an image. Use it to locate an
 inspection on a part after pattern matching or blob/line/contour detection. These
 are image-plane transforms, not 3D robot poses or calibrated physical units.
@@ -113,7 +116,7 @@ transform** to map local points into the target frame.
 
 ## Example
 
-Open [pose-relative inspection](../examples/applications/pose_inspection/pose_inspection.json), then press F5:
+Open pose-relative inspection, then press F5:
 
 1. Train the synthetic geometric reference and find it rotated +10 degrees.
 2. Set the matcher's pose origin on its circle with offsets `(20.5,-17.5)` from

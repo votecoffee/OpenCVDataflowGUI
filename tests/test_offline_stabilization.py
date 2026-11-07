@@ -4,6 +4,7 @@ from pathlib import Path
 
 import cv2
 import numpy as np
+import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
@@ -34,6 +35,7 @@ def _group(*images):
     return FlowGroup(items, tuple(map(str, range(len(items)))))
 
 
+@pytest.mark.local_examples
 def test_saved_offline_replay_reduces_jitter_and_preserves_frame_tickets():
     project = (
         Path(__file__).parents[1]

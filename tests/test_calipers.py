@@ -62,6 +62,7 @@ def test_pose_rotates_scan_and_selection_withholds_measurement():
     assert clipped.outputs["measurements"][0]["reason"] == "scan_outside_selection"
 
 
+@pytest.mark.local_examples
 def test_caliper_project_measures_demo_rectangle():
     path = (
         Path(__file__).resolve().parents[1]
