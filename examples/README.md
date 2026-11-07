@@ -31,6 +31,7 @@ See the [applications guide](applications/README.md) for geometric matcher setup
 | [Lab color classification](applications/lab_color_classification/README.md) | Classify a measured image patch against a named Lab palette. |
 | [Lab color matching](applications/lab_color_match/README.md) | Measure separate reference and sample regions and compare their Lab colors. |
 | [PCB outline](applications/pcb_outline/README.md) | Check board presence and overlay its outline on two inspection photographs. |
+| [Pixel segmentation](applications/pixel_segmentation/README.md) | Train foreground masks for brick mortar, a cup rim, and PCB laminate. |
 | [Pose-relative inspection](applications/pose_inspection/README.md) | Train a geometric pattern and use its detected pose to position a circular inspection region. |
 
 ## OpenCV tools

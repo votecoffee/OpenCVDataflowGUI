@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "cup-gray.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "segment",
+      "type": "inspection.ocv_segment_image",
+      "name": "Segment cup rim",
+      "parameters": {
+        "model_path": "model.yml",
+        "model_sha256": "a8fc0fe4372a9085fd696115aa258c5d1b67445c03d1d6f76719e6a702e84059",
+        "region_path": "region.png",
+        "region_sha256": "add29543ddfd4e84cd7165f6230b3ad864d0db5feb95b32dd7a3e881c338fdd0",
+        "samples_per_pixel": 1,
+        "threshold": 0.56,
+        "min_area_px": 100,
+        "workers": 1,
+        "render_overlay": true,
+        "capture_only": false,
+        "emit_score_map": true
+      },
+      "position": [
+        355.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "valid"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "inspected",
+        "report",
+        "count",
+        "overlay",
+        "score_map"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "segment",
+      "input": "image"
+    }
+  ]
+}

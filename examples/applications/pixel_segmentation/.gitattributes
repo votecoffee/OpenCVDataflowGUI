@@ -1,0 +1,2 @@
+# The saved graphs pin the exact bytes of generated OpenCV models.
+**/model.yml -text -diff

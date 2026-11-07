@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "../../../assets/brick.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "segment",
+      "type": "inspection.ocv_segment_image",
+      "name": "Segment mortar joints",
+      "parameters": {
+        "model_path": "model.yml",
+        "model_sha256": "de6f477ee7c4ce577fa1a26b16c5cb3ea5fb4b12f94a5afdf8eb13da1caba2ed",
+        "region_path": "",
+        "region_sha256": "",
+        "samples_per_pixel": 1,
+        "threshold": 0.57,
+        "min_area_px": 25,
+        "workers": 1,
+        "render_overlay": true,
+        "capture_only": false,
+        "emit_score_map": true
+      },
+      "position": [
+        355.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "valid"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "inspected",
+        "report",
+        "count",
+        "overlay",
+        "score_map"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "segment",
+      "input": "image"
+    }
+  ]
+}
