@@ -19,6 +19,9 @@ _TARGET = re.compile(r"R\[[1-9][0-9]*\]|PR\[[1-8],[1-9][0-9]*\]")
 _SHA256 = re.compile(r"[0-9a-f]{64}")
 _PLAN_ID = re.compile(r"[0-9a-f]{32}")
 _AXES = "XYZWPR"
+_GROUP = NumericRange(1, 8, whole=True)
+_FRAME_INDEX = NumericRange(1, 255, whole=True)
+_FRAME_NUMBER = NumericRange(0, 255, whole=True)
 
 
 def workbench_command():
@@ -26,17 +29,19 @@ def workbench_command():
         raise RuntimeError("FANUC online blocks require the Windows FANUC Workbench")
     home = os.environ.get("OPENCV_DATAFLOW_FANUC_HOME")
     if home:
-        directory = Path(home).resolve()
+        directories = (Path(home).resolve(),)
     else:
         local = os.environ.get("LOCALAPPDATA")
         if not local:
             raise RuntimeError("Set OPENCV_DATAFLOW_FANUC_HOME to the installed Workbench folder")
-        directory = Path(local) / "Programs" / "FanucMiddleware" / "1.0.0"
-    executable = directory / ".venv" / "Scripts" / "python.exe"
-    script = directory / "scripts" / "fanuc_middleware.py"
-    if not executable.is_file() or not script.is_file():
-        raise RuntimeError("Set OPENCV_DATAFLOW_FANUC_HOME to the installed Workbench folder")
-    return [str(executable), "-I", "-B", str(script)]
+        root = Path(local) / "Programs" / "FanucMiddleware"
+        directories = (root / "1.0.1", root / "1.0.0")
+    for directory in directories:
+        executable = directory / ".venv" / "Scripts" / "python.exe"
+        script = directory / "scripts" / "fanuc_middleware.py"
+        if executable.is_file() and script.is_file():
+            return [str(executable), "-I", "-B", str(script)]
+    raise RuntimeError("Set OPENCV_DATAFLOW_FANUC_HOME to the installed Workbench folder")
 
 
 def workbench_call(profile, operation, arguments, timeout):
@@ -125,14 +130,14 @@ class ReadFanucPosition(FanucBlock):
         Port("position", "data"), Port("user_frame", "integer"), Port("user_tool", "integer"),
     )
     defaults = {**FanucBlock.defaults, "group": 1, "enabled": False}
-    parameter_ranges = {**FanucBlock.parameter_ranges, "group": NumericRange(1, 8, whole=True)}
+    parameter_ranges = {**FanucBlock.parameter_ranges, "group": _GROUP}
 
     def process(self, inputs):
         if self.parameters["enabled"] is not True:
             return Result(
                 {port.name: NO_VALUE for port in self.outputs}, message="FANUC read disabled"
             )
-        group = self.parameters["group"]
+        group = _GROUP.check(self.parameters["group"], "Motion group", "group")
         status = self.call(
             "core.controller.status", robot_id=self.robot(), group=group, alarm_limit=0,
         )
@@ -240,6 +245,86 @@ class CommitFanucRegister(FanucBlock):
         return Result({"receipt": receipt}, message=f"Verified FANUC write to {target}")
 
 
+def _cartesian_pose(values, source, target):
+    if not isinstance(values, dict) or any(
+        not isinstance(values.get(axis), (int, float, np.integer, np.floating))
+        or isinstance(values[axis], (bool, np.bool_))
+        for axis in _AXES
+    ):
+        raise ValidationError("FANUC Cartesian values require numeric X, Y, Z, W, P, R")
+    x, y, z, w, pitch, r = (NumericRange().check(values[axis], axis) for axis in _AXES)
+    angles = np.radians([w, pitch, r])
+    cw, cp, cr = np.cos(angles)
+    sw, sp, sr = np.sin(angles)
+    rx = np.array([[1, 0, 0], [0, cw, -sw], [0, sw, cw]])
+    ry = np.array([[cp, 0, sp], [0, 1, 0], [-sp, 0, cp]])
+    rz = np.array([[cr, -sr, 0], [sr, cr, 0], [0, 0, 1]])
+    return pose_record(pose_matrix(rz @ ry @ rx, [x, y, z]), source, target, "mm")
+
+
+class _ReadFanucOffset(FanucBlock):
+    inputs = (*ReadFanucRegister.inputs, Port("index", "integer", required=False))
+    outputs = (Port("offset", "data"), Port("pose", "data", visual_type="pose"))
+    defaults = {
+        **FanucBlock.defaults, "group": 1, "index": 1, "enabled": False,
+        "source_frame": "", "target_frame": "",
+    }
+    parameter_ranges = {**FanucBlock.parameter_ranges, "group": _GROUP, "index": _FRAME_INDEX}
+    parameter_help = {
+        **FanucBlock.parameter_help,
+        "group": "Motion group containing the frame table.",
+        "index": "Frame table entry. A wired index takes precedence.",
+        "source_frame": "Optional pose source label. Blank uses the frame kind and index.",
+        "target_frame": "Optional target label. Blank uses base for UFRAME or gripper for UTOOL.",
+    }
+
+    def process(self, inputs):
+        if self.parameters["enabled"] is not True:
+            return Result({"offset": NO_VALUE, "pose": NO_VALUE}, message="FANUC read disabled")
+        p = self.parameters
+        group = _GROUP.check(p["group"], "Motion group", "group")
+        index = _FRAME_INDEX.check(inputs.get("index", p["index"]), "Frame index", "index")
+        source, target = p["source_frame"], p["target_frame"]
+        if not isinstance(source, str) or not isinstance(target, str):
+            raise ValidationError("Frame names must be text", "source_frame", "target_frame")
+        source = source.strip() or f"{self.source_prefix}_{index}"
+        target = target.strip() or self.default_target
+        expression = f"{self.frame_kind}[{group},{index}]"
+        robot = self.robot()
+        receipt = self.call("core.controller.sample", robot_id=robot, expressions=[expression])
+        if receipt.get("robot_id") != robot or receipt.get("provider") != "frrobot":
+            raise RuntimeError("Workbench frame receipt does not match the configured robot")
+        errors, values = receipt.get("errors"), receipt.get("values")
+        if not isinstance(errors, dict) or not isinstance(values, dict):
+            raise RuntimeError("Workbench returned an invalid frame receipt")
+        if expression in errors:
+            raise RuntimeError(f"Workbench could not read {expression} as an initialized offset")
+        offset = values.get(expression)
+        if (
+            not isinstance(offset, dict)
+            or type(offset.get("group")) is not int or type(offset.get("index")) is not int
+            or (offset.get("kind"), offset.get("group"), offset.get("index"))
+            != (self.frame_kind, group, index)
+            or offset.get("initialized") is not True
+            or offset.get("representation") != "cartesian"
+        ):
+            raise RuntimeError(f"Workbench did not return the requested Cartesian {expression}")
+        pose = _cartesian_pose(offset.get("values"), source, target)
+        timestamp = NumericRange(0).check(receipt.get("timestamp"), "Sample timestamp")
+        offset = {**offset, "robot_id": robot, "timestamp": timestamp}
+        return Result({"offset": offset, "pose": pose}, message=f"Read {expression}")
+
+
+class ReadFanucUserFrame(_ReadFanucOffset):
+    type_id, title = "industrial.fanuc_uframe", "Read FANUC UFRAME offset"
+    frame_kind, source_prefix, default_target = "UFRAME", "user_frame", "base"
+
+
+class ReadFanucUserTool(_ReadFanucOffset):
+    type_id, title = "industrial.fanuc_utool", "Read FANUC UTOOL offset"
+    frame_kind, source_prefix, default_target = "UTOOL", "user_tool", "gripper"
+
+
 class FanucCartesianPose(Block):
     type_id, title = "industrial.fanuc_pose", "FANUC Cartesian pose"
     category = block_type = INDUSTRIAL
@@ -251,8 +336,8 @@ class FanucCartesianPose(Block):
         "expected_user_frame": 0, "expected_user_tool": 0,
     }
     parameter_ranges = {
-        "expected_user_frame": NumericRange(0, 255, whole=True),
-        "expected_user_tool": NumericRange(0, 255, whole=True),
+        "expected_user_frame": _FRAME_NUMBER,
+        "expected_user_tool": _FRAME_NUMBER,
     }
     parameter_help = {
         "source_frame": "Name of the sampled tool frame. Use gripper for flange samples.",
@@ -269,27 +354,20 @@ class FanucCartesianPose(Block):
             or position.get("representation") != "cartesian"
         ):
             raise ValidationError("Use an initialized Cartesian FANUC XYZ/WPR sample")
-        if (position.get("user_frame"), position.get("user_tool")) != (
-            p["expected_user_frame"], p["expected_user_tool"]
-        ):
-            raise ValidationError("The FANUC sample's user frame or tool does not match")
-        values = position.get("values")
-        if not isinstance(values, dict) or any(axis not in values for axis in _AXES):
-            raise ValidationError("FANUC Cartesian values require X, Y, Z, W, P, R")
-        xyz = [NumericRange().check(values[axis], axis) for axis in "XYZ"]
-        w, pitch, r = np.radians([NumericRange().check(values[axis], axis) for axis in "WPR"])
-        cw, cp, cr = np.cos([w, pitch, r])
-        sw, sp, sr = np.sin([w, pitch, r])
-        rx = np.array([[1, 0, 0], [0, cw, -sw], [0, sw, cw]])
-        ry = np.array([[cp, 0, sp], [0, 1, 0], [-sp, 0, cp]])
-        rz = np.array([[cr, -sr, 0], [sr, cr, 0], [0, 0, 1]])
-        pose = pose_record(
-            pose_matrix(rz @ ry @ rx, xyz), p["source_frame"], p["target_frame"], "mm"
-        )
+        frame, tool = position.get("user_frame"), position.get("user_tool")
+        if type(frame) is not int or type(tool) is not int:
+            raise ValidationError("The FANUC sample needs integer user frame and tool numbers")
+        expected = (p["expected_user_frame"], p["expected_user_tool"])
+        if (frame, tool) != expected:
+            raise ValidationError(
+                f"The FANUC sample's user frame or tool does not match. "
+                f"Read UF {frame}, UT {tool}. Expected UF {expected[0]}, UT {expected[1]}."
+            )
+        pose = _cartesian_pose(position.get("values"), p["source_frame"], p["target_frame"])
         return Result({"pose": pose})
 
 
 FANUC_BLOCKS = (
     ReadFanucRegister, ReadFanucPosition, PrepareFanucRegister, CommitFanucRegister,
-    FanucCartesianPose,
+    FanucCartesianPose, ReadFanucUserFrame, ReadFanucUserTool,
 )

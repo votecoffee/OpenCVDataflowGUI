@@ -3042,6 +3042,40 @@ Inputs: `trigger` (any, optional).
 | `target` | `""` | Use R[index] or PR[group,index]. |
 | `enabled` | `false` |  |
 
+## Read FANUC UFRAME offset (`industrial.fanuc_uframe`)
+
+Industrial integration / FANUC
+
+Inputs: `trigger` (any, optional), `index` (integer, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `profile` | `""` | Local Workbench JSON policy for the configured robot. |
+| `robot_id` | `""` |  |
+| `timeout_seconds` | `15.0` | Value must be a finite number between 1 and 120. |
+| `group` | `1` | Value must be a whole number between 1 and 8. Motion group containing the frame table. |
+| `index` | `1` | Value must be a whole number between 1 and 255. Frame table entry. A wired index takes precedence. |
+| `enabled` | `false` |  |
+| `source_frame` | `""` | Optional pose source label. Blank uses the frame kind and index. |
+| `target_frame` | `""` | Optional target label. Blank uses base for UFRAME or gripper for UTOOL. |
+
+## Read FANUC UTOOL offset (`industrial.fanuc_utool`)
+
+Industrial integration / FANUC
+
+Inputs: `trigger` (any, optional), `index` (integer, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `profile` | `""` | Local Workbench JSON policy for the configured robot. |
+| `robot_id` | `""` |  |
+| `timeout_seconds` | `15.0` | Value must be a finite number between 1 and 120. |
+| `group` | `1` | Value must be a whole number between 1 and 8. Motion group containing the frame table. |
+| `index` | `1` | Value must be a whole number between 1 and 255. Frame table entry. A wired index takes precedence. |
+| `enabled` | `false` |  |
+| `source_frame` | `""` | Optional pose source label. Blank uses the frame kind and index. |
+| `target_frame` | `""` | Optional target label. Blank uses base for UFRAME or gripper for UTOOL. |
+
 ## Write Logix tag (`industrial.logix_write`)
 
 Industrial integration / ControlLogix

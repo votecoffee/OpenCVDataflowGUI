@@ -122,7 +122,62 @@ def test_fanuc_register_read_and_ticketed_cartesian_pose(monkeypatch, tmp_path):
         atol=1e-12,
     )
     converter.execute({"position": {**POSITION, "user_frame": 2}})
-    assert "user frame or tool" in converter.error
+    assert "Read UF 2, UT 0. Expected UF 0, UT 0." in converter.error
+    assert converter.execute({"position": {**POSITION, "user_tool": False}}) is None
+    assert "integer user frame and tool" in converter.error
+
+
+def test_fanuc_indexed_offset_reads_preserve_ticket_and_check_exact_receipt(monkeypatch, tmp_path):
+    profile = tmp_path / "profile.json"
+    profile.write_text("{}", encoding="utf-8")
+    registry = builtin_registry()
+    common = {"profile": str(profile), "robot_id": "robot", "group": 2, "index": 3}
+    ticket = TicketClock().issue("capture")
+    trigger = ValuePacket(True, {"ticket": ticket})
+    pending = []
+
+    def call(path, operation, arguments, timeout):
+        assert path == profile and operation == "core.controller.sample"
+        expected, reply = pending.pop(0)
+        assert arguments == {"robot_id": "robot", "expressions": [expected]}
+        return reply
+
+    monkeypatch.setattr(fanuc, "workbench_call", call)
+    for suffix, kind, label, target in [
+        ("uframe", "UFRAME", "user_frame_4", "base"),
+        ("utool", "UTOOL", "user_tool_4", "gripper"),
+    ]:
+        block = registry.create(f"industrial.fanuc_{suffix}", parameters=common)
+        assert block.execute({}).outputs["offset"] is NO_VALUE
+        block.parameters["enabled"] = True
+        expression = f"{kind}[2,4]"
+        offset = {"kind": kind, "group": 2, "index": 4, "initialized": True,
+                  "representation": "cartesian", "values": POSITION["values"]}
+        receipt = {"robot_id": "robot", "provider": "frrobot", "timestamp": 1,
+                   "values": {expression: offset}, "errors": {}}
+        pending.append((expression, receipt))
+        result = block.execute({"trigger": trigger, "index": 4})
+        assert result is not None, block.error
+        assert result.payloads["offset"]["ticket"] == result.payloads["pose"]["ticket"] == ticket
+        assert result.outputs["offset"] == {**offset, "robot_id": "robot", "timestamp": 1.0}
+        pose = result.outputs["pose"]
+        assert (pose["source_frame"], pose["target_frame"], pose["units"]) == (label, target, "mm")
+        np.testing.assert_allclose(
+            pose["source_to_target"],
+            [[0, 0, 1, 123], [1, 0, 0, -12], [0, 1, 0, 38], [0, 0, 0, 1]],
+            atol=1e-12,
+        )
+        pending.append((expression, {**receipt, "values": {expression: {**offset, "index": 3}}}))
+        assert block.execute({"trigger": trigger, "index": 4}) is None
+        assert "requested Cartesian" in block.error
+        pending.append((expression, {
+            **receipt, "values": {}, "errors": {expression: "ValueError"},
+        }))
+        assert block.execute({"trigger": trigger, "index": 4}) is None
+        assert "could not read" in block.error
+        assert block.execute({"trigger": trigger, "index": 0}) is None
+        assert "Frame index" in block.error
+    assert not pending
 
 
 def test_fanuc_prepare_and_commit_bind_exact_review_and_never_replay(monkeypatch, tmp_path):

@@ -49,17 +49,21 @@ updated together.
 The online tools call the installed Windows [FANUC Workbench](https://github.com/votecoffee/FanucMCPServer)
 through its JSON CLI. The Workbench profile must select the configured robot,
 licensed FRRobot provider and allowed targets. Configure **Profile** and
-**Robot ID** in each online block. DataflowGUI looks for Workbench 1.0.0 under
-the normal per-user installation directory. Set the
+**Robot ID** in each online block. DataflowGUI looks for Workbench 1.0.1 or
+1.0.0 under the normal per-user installation directory. Set the
 `OPENCV_DATAFLOW_FANUC_HOME` environment variable to select another compatible
 Workbench installation.
 
 - **Read FANUC register** accepts `R[index]` or `PR[group,index]`. It returns
   the scalar or position record and the retained reference for a later review.
 - **Read FANUC current position** returns the position for the selected motion
-  group, including active user-frame and user-tool numbers. It reads the current
-  position with frame IDs. Reading arbitrary UFRAME/UTOOL table entries and
-  their offsets is outside this adapter's current interface.
+  group, including active user-frame and user-tool numbers.
+- **Read FANUC UFRAME offset** and **Read FANUC UTOOL offset** read one table
+  entry by motion group and index through Workbench 1.0.1. A wired **Index**
+  overrides the configured index. The blocks start disabled and return the
+  raw XYZ/WPR offset and a 3D pose. UFRAME maps the named user frame to base.
+  UTOOL maps the named TCP to the flange (gripper). The pose frame labels are
+  configurable. A wired acquisition trigger carries its ticket to both outputs.
 - **Prepare FANUC register write** takes the retained reference, a true
   **Enable** input and a typed change such as `{"type":"integer","value":42}`
   for R or `{"values":{"X":120.5}}` for an initialized Cartesian PR. It returns
@@ -78,8 +82,11 @@ then connect **Position** to **FANUC Cartesian pose**. The latter checks the
 expected user-frame and user-tool numbers and converts XYZ/WPR to a rigid pose
 in millimetres using `Rz(R) Ry(P) Rx(W)`. The pose retains the acquisition
 ticket. For the default gripper-to-base labels, sample the flange in UF 0 and
-UT 0. With other frames, name them explicitly and compose the known transforms
-into the gripper-to-base convention before calibration.
+UT 0. For nonzero frame or tool numbers, name the measured frames explicitly.
+Use the indexed reads and **Compose / invert 3D poses** to express the pose
+in the gripper-to-base convention before calibration. Apply the UFRAME offset
+after the measured TCP-to-UFRAME pose, and apply the inverse UTOOL offset before
+it. Each read is sequential.
 
 Capture with the robot settled so the image and sequential robot read correspond
 to the same pose. Batch the resulting gripper-to-base poses and matching
