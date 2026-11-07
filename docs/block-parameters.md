@@ -3029,6 +3029,7 @@ Ticket mode and fixed value are common inspector controls.
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `path` | `""` |  |
+| `path_base` | `"working_directory"` | `working_directory`, `project` Resolve a relative depth path from the saved project folder. |
 | `units_per_sample` | `0.001` |  |
 | `units` | `"m"` | `m`, `mm` |
 | `display_min` | `0.0` |  |

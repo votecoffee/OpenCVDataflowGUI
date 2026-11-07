@@ -274,3 +274,63 @@ def test_validation_mask_excludes_its_features_from_the_fit_and_requires_tracks(
     assert result.outputs["status"]["reason"] == "initial_frame"
     result = block.execute({"image": images[1]})
     assert result.outputs["ready"]
+
+
+def test_recorded_depth_separated_regions_reject_motion_and_resume(tmp_path, monkeypatch):
+    folder = VALIDATION_EXAMPLE.parent / "recorded_stabilization_validation"
+    monkeypatch.chdir(tmp_path)
+    graph = Graph.load(folder / "recorded_stabilization_validation.json", builtin_registry())
+    try:
+        graph.set_run_profile("lean")
+        old_root = None
+        for index in range(8):
+            graph.run()
+            baseline = graph.blocks["baseline"].last_result.outputs
+            checked = graph.blocks["checked"]
+            outputs = checked.last_result.outputs
+            status = outputs["status"]
+            if index == 0:
+                assert status["reason"] == "initial_frame"
+                continue
+            assert baseline["ready"]
+            if index == 5:
+                assert baseline["status"]["inlier_ratio"] > 0.95
+                assert baseline["status"]["coverage_fraction"] > 0.97
+                assert status["reason"] == "validation_motion_rejected"
+                validation = status["validation"]
+                assert validation["tracked"] >= 40
+                assert validation["median_error_pixels"] > 3.5
+                assert validation["inlier_ratio"] < 0.25
+                assert outputs["image"] is outputs["coverage"] is outputs["transform"] is NO_VALUE
+                assert not checked.current_emissions.get("image")
+                continue
+            assert outputs["ready"] and status["validation"]["accepted"]
+            assert metadata(outputs["image"])["ticket"] == metadata(baseline["image"])["ticket"]
+            root = metadata(outputs["image"])["spatial"]["root_id"]
+            old_root = root if old_root is None else old_root
+            assert (root == old_root) == (index < 5)
+            assert status["anchor"] == int(index > 5)
+
+        assert graph.sources_exhausted()
+        depth = graph.blocks["depth"].last_result.outputs["depth"]
+        assert depth.units == "m" and depth.shape == (240, 320)
+        samples = graph.blocks["sample"].last_result.outputs["samples"]
+        np.testing.assert_allclose(
+            [sample["depth"] for sample in samples["samples"]], [1.1872, 0.8252]
+        )
+        rejecting_depth = cv2.imread(
+            str(folder / "assets/depth-1305031107.130308.png"), cv2.IMREAD_UNCHANGED
+        ).astype(float)
+        rejecting_depth[rejecting_depth == 0] = np.nan
+        for image, expected in (
+            (depth, [1.0966, 0.8332]),
+            (rejecting_depth / 5000, [1.2938, 0.9298]),
+        ):
+            areas = []
+            for name in ("background", "check"):
+                x, y, width, height = graph.blocks[name].parameters["rectangle"]
+                areas.append(image[y : y + height, x : x + width])
+            np.testing.assert_allclose([np.nanmedian(area) for area in areas], expected)
+            assert np.nanpercentile(areas[0], 10) > np.nanpercentile(areas[1], 90)
+    finally:
+        graph.close()

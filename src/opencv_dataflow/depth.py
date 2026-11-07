@@ -7,7 +7,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .images import DepthArray, preview_rgb
-from .parameter_validation import NumericRange
+from .parameter_validation import NumericRange, ValidationError
 from .selection import selection_mask
 
 
@@ -17,12 +17,17 @@ class DepthFile(Block):
     outputs = (Port("depth", "depth"), Port("preview"), Port("info", "data"))
     defaults = {
         "path": "",
+        "path_base": "working_directory",
         "units_per_sample": 0.001,
         "units": "m",
         "display_min": 0.0,
         "display_max": 5.0,
     }
-    parameter_choices = {"units": ("m", "mm")}
+    parameter_choices = {
+        "path_base": ("working_directory", "project"),
+        "units": ("m", "mm"),
+    }
+    parameter_help = {"path_base": "Resolve a relative depth path from the saved project folder."}
 
     def process(self, inputs):
         p = self.parameters
@@ -31,9 +36,12 @@ class DepthFile(Block):
             raise ValueError("Depth scale must be positive and display max greater than min")
         if p["units"] not in ("m", "mm"):
             raise ValueError("Depth units must be m or mm")
-        image = cv2.imdecode(
-            np.frombuffer(Path(p["path"]).read_bytes(), np.uint8), cv2.IMREAD_UNCHANGED
-        )
+        path = Path(p["path"])
+        if p["path_base"] == "project" and not path.is_absolute():
+            if self.project_dir is None:
+                raise ValidationError("Save or open the project before using a relative depth path")
+            path = self.project_dir / path
+        image = cv2.imdecode(np.frombuffer(path.read_bytes(), np.uint8), cv2.IMREAD_UNCHANGED)
         if (
             image is None
             or image.ndim != 2
