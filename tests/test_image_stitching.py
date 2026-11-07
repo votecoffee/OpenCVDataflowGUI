@@ -8,6 +8,7 @@ import pytest
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 from opencv_dataflow.images import ImageArray, image_format
+from opencv_dataflow.mosaic_seams import _cost_images
 from opencv_dataflow.payloads import NO_VALUE, ValuePacket, frame, metadata, moved_payload
 from opencv_dataflow.tickets import TicketClock
 
@@ -156,32 +157,45 @@ def test_saved_example_reconstructs_original_pixel_for_pixel():
         graph.close()
 
 
-def test_saved_graph_cut_selects_original_samples_and_retains_both_marks():
-    path = Path(__file__).parents[1] / "examples/image_processing/stitch_seam/stitch_seam.json"
+@pytest.mark.parametrize(
+    ("project", "scale", "work_factor"),
+    [("stitch_seam", 1, 1), ("stitch_large_seam", 8, 2)],
+)
+def test_saved_graph_cut_selects_original_samples_and_retains_both_marks(
+    project, scale, work_factor
+):
+    folder = Path(__file__).parents[1] / "examples/image_processing/stitch_seam"
+    path = folder / f"{project}.json"
     graph = Graph.load(path, builtin_registry())
     try:
         graph.set_run_profile("lean")
         graph.run()
         assert all(block.state == "pass" for block in graph.blocks.values())
-        a = graph.blocks["left"].last_result.outputs["image"]
-        b = graph.blocks["right"].last_result.outputs["image"]
+        suffix = "_full" if scale > 1 else ""
+        a = graph.blocks["left" + suffix].last_result.outputs["image"]
+        b = graph.blocks["right" + suffix].last_result.outputs["image"]
         cut = graph.blocks["cut"].last_result.outputs
         average = graph.blocks["average"].last_result.outputs
         assert cut["image"].dtype == np.uint16
         for mask in ("coverage", "overlap"):
             np.testing.assert_array_equal(cut[mask], average[mask])
-        overlap = cut["image"][:, 45:140]
-        assert np.all((overlap == a[:, 45:]) | (overlap == b[:, :95]))
+        overlap = cut["image"][:, 45 * scale : 140 * scale]
+        assert np.all((overlap == a[:, 45 * scale :]) | (overlap == b[:, : 95 * scale]))
         for y, x in ((45, 75), (50, 124)):
-            assert cut["image"][y, x] == 53970 > average["image"][y, x]
-        assert cut["layout"]["seam"]["overlap_from_existing"] > 0
-        assert cut["layout"]["seam"]["overlap_from_incoming"] > 0
-        assert cut["layout"]["seam"]["overlap_pixels"] == 9120
+            point = y * scale, x * scale
+            assert cut["image"][point] == 53970 > average["image"][point]
+        seam = cut["layout"]["seam"]
+        assert seam["overlap_from_existing"] > 0
+        assert seam["overlap_from_incoming"] > 0
+        assert seam["overlap_pixels"] == 9120 * scale**2
+        assert seam["downsample_factor"] == work_factor
+        assert seam["work_pixels"] <= 524_288
     finally:
         graph.close()
 
 
-def test_graph_cut_uses_authoritative_support_and_preserves_hdr_color_and_alpha():
+@pytest.mark.parametrize(("resolution", "factor"), [("auto", 1), ("quarter", 4)])
+def test_graph_cut_uses_authoritative_support_and_preserves_hdr_color_and_alpha(resolution, factor):
     a = np.broadcast_to([-1e308, 0, 2, 0.25], (48, 80, 4)).copy()
     b = np.broadcast_to([1e308, 3, 0, 0.75], a.shape).copy()
     mask_a = np.full(a.shape[:2], 255, np.uint8)
@@ -189,7 +203,12 @@ def test_graph_cut_uses_authoritative_support_and_preserves_hdr_color_and_alpha(
     mask_a[5:12, 48:60] = 0
     mask_b[5:12, 33:45] = 0
     block = builtin_registry().create(
-        TYPE, parameters={"blend": "graph_cut", "interpolation": "nearest"}
+        TYPE,
+        parameters={
+            "blend": "graph_cut",
+            "interpolation": "nearest",
+            "seam_resolution": resolution,
+        },
     )
     result = block.execute(
         {
@@ -207,11 +226,22 @@ def test_graph_cut_uses_authoritative_support_and_preserves_hdr_color_and_alpha(
     np.testing.assert_array_equal(output[7, 57], [0, 0, 0, 0])
     np.testing.assert_array_equal(output[7, 63], a[7, 63])
     assert result.outputs["coverage"][7, 50:66].tolist() == [255] * 5 + [0] * 5 + [255] * 6
+    assert result.outputs["layout"]["seam"]["downsample_factor"] == factor
+
+
+def test_seam_decimation_averages_only_valid_samples_and_keeps_thin_support():
+    a = np.array([[10, 255, 20, 255, 255, 255], [30, 255, 255, 255, 255, 255]], np.uint8)
+    mask = np.zeros(a.shape, dtype=bool)
+    mask[:, 0] = mask[0, 2] = True
+    cost_images, masks = _cost_images((a, a), (mask, mask), (3, 1))
+    for cost, support in zip(cost_images, masks, strict=True):
+        np.testing.assert_allclose(cost, [[[20, 20, 20], [20, 20, 20], [0, 0, 0]]])
+        np.testing.assert_array_equal(support, [[1, 1, 0]])
 
 
 def test_graph_cut_skips_disjoint_views_and_bounds_native_workspace():
     block = builtin_registry().create(
-        TYPE, parameters={"blend": "graph_cut", "min_overlap_pixels": 0}
+        TYPE, parameters={"blend": "graph_cut", "min_overlap_pixels": 0, "seam_resolution": "full"}
     )
     small = np.ones((4, 8), np.uint8)
     result = block.execute(

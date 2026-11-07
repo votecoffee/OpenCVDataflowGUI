@@ -83,7 +83,8 @@ and report diagonals and traces.
 [Stitch overlapping views](../examples/image_processing/stitch_image_pair/README.md)
 builds a registered two-view mosaic and emits coverage and source mappings.
 [Choose a content-aware seam](../examples/image_processing/stitch_seam/README.md)
-demonstrates graph-cut selection of individual source samples in an overlap.
+demonstrates graph-cut selection of individual source samples in an overlap,
+with a bounded seam work grid for larger overlaps.
 [Stitch an ordered inspection scan](../examples/image_processing/stitch_scan_sequence/README.md)
 automatically registers adjacent views and checks the fit and coverage of each join.
 [Close the loop on an inspection scan](../examples/image_processing/stitch_scan_loop/README.md)

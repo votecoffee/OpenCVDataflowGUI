@@ -10,6 +10,12 @@ follows the strip of agreement and keeps both marks at full intensity.
 The graph-cut mosaic selects a source value at all 9,120 overlap pixels
 and covers the same 17,760 pixels as the averaged mosaic.
 
+The [large overlap project](stitch_large_seam.json) enlarges the same
+views eightfold. **Auto** estimates the seam at half resolution using
+168,064 graph pixels, including padding. The final 1,480 × 768 mosaic
+retains both 16-bit marks and selects source values throughout its
+583,680-pixel overlap.
+
 - Set **Blend** to **Graph cut** on **Stitch image pair** or
   **Stitch scan sequence**. **Seam cost** offers **Color** and
   **Color gradient**. The terminal cost and bad-region penalty control
@@ -21,11 +27,18 @@ and covers the same 17,760 pixels as the averaged mosaic.
   before seam selection.
 - In a scan, each incoming view is compared with the current mosaic.
   **Layout** reports how many overlap pixels each source contributed at
-  each merge. Coverage and overlap continue to describe valid source support.
-  Graph cut is capped at 524,288 work pixels per merge, including padding.
+  each merge, along with the downsample factor and work size.
+- **Seam resolution** defaults to **Auto**. It starts at full resolution
+  and halves both work dimensions until the graph fits the 524,288-pixel
+  limit per merge. **Full**, **Half**, and **Quarter** select a fixed
+  work scale and report an invalid setting if the work area exceeds the
+  limit. Reduced resolution averages valid samples for the seam calculation
+  and can miss narrow features. The final image and support masks use the
+  original mosaic grid. [OpenCV multiresolution stitching example](https://docs.opencv.org/5.0/examples/samples_cpp_stitching_detailed_cpp.html)
 
 ```powershell
 opencv-dataflow-run examples/image_processing/stitch_seam/stitch_seam.json
+opencv-dataflow-run examples/image_processing/stitch_seam/stitch_large_seam.json
 ```
 
 [All examples](../../README.md)

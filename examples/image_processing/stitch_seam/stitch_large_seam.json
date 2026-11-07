@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "left",
+      "type": "input.file",
+      "name": "16-bit left view",
+      "parameters": {
+        "path": "assets/left.png",
+        "path_base": "project",
+        "color_format": "gray",
+        "pixel_depth": "unchanged"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "input.file",
+      "name": "16-bit right view",
+      "parameters": {
+        "path": "assets/right.png",
+        "path_base": "project",
+        "color_format": "gray",
+        "pixel_depth": "unchanged"
+      },
+      "position": [
+        0,
+        230
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left_full",
+      "type": "cv.resize",
+      "name": "Enlarge left view 8x",
+      "parameters": {
+        "width": 1120,
+        "height": 768,
+        "interpolation": "nearest"
+      },
+      "position": [
+        285,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right_full",
+      "type": "cv.resize",
+      "name": "Enlarge right view 8x",
+      "parameters": {
+        "width": 1120,
+        "height": 768,
+        "interpolation": "nearest"
+      },
+      "position": [
+        285,
+        230
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "average",
+      "type": "cv.stitch_image_pair",
+      "name": "Average the overlap",
+      "parameters": {
+        "transform_source": "matrix",
+        "matrix": [
+          [
+            1,
+            0,
+            360
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "interpolation": "nearest",
+        "blend": "average",
+        "min_overlap_pixels": 1,
+        "ticket_policy": "anchor_a"
+      },
+      "position": [
+        590,
+        -45
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "layout"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cut",
+      "type": "cv.stitch_image_pair",
+      "name": "Choose a content-aware seam",
+      "parameters": {
+        "transform_source": "matrix",
+        "matrix": [
+          [
+            1,
+            0,
+            360
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "interpolation": "nearest",
+        "blend": "graph_cut",
+        "min_overlap_pixels": 1,
+        "ticket_policy": "anchor_a",
+        "seam_cost": "color",
+        "seam_resolution": "auto"
+      },
+      "position": [
+        590,
+        220
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "layout"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "left",
+      "output": "image",
+      "target": "left_full",
+      "input": "image"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "right_full",
+      "input": "image"
+    },
+    {
+      "source": "left_full",
+      "output": "image",
+      "target": "average",
+      "input": "image_a"
+    },
+    {
+      "source": "right_full",
+      "output": "image",
+      "target": "average",
+      "input": "image_b"
+    },
+    {
+      "source": "left_full",
+      "output": "image",
+      "target": "cut",
+      "input": "image_a"
+    },
+    {
+      "source": "right_full",
+      "output": "image",
+      "target": "cut",
+      "input": "image_b"
+    }
+  ]
+}

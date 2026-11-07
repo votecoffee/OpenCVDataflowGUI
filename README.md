@@ -896,6 +896,8 @@ or with a wired registration. It reports coverage, overlap, and the mappings
 from both inputs. Try the [stitching example](examples/image_processing/stitch_image_pair/README.md).
 For overlapping views with different content, the [graph-cut example](examples/image_processing/stitch_seam/README.md)
 compares averaging with a seam that selects individual source samples.
+It includes a larger overlap that uses a smaller seam work grid and keeps
+the full mosaic resolution.
 
 **Stabilize camera motion** tracks stable background features to reduce
 translation or similarity jitter before measuring a frame. It publishes

@@ -139,6 +139,7 @@ def test_saved_scan_corrects_cumulative_gain_without_changing_coverage(blend):
     try:
         graph.set_run_profile("lean")
         graph.blocks["corrected"].parameters["blend"] = blend
+        graph.blocks["corrected"].parameters["seam_resolution"] = "half"
         for _ in range(3):
             graph.run()
         raw = graph.blocks["stitch"].last_result.outputs
@@ -164,6 +165,7 @@ def test_saved_scan_corrects_cumulative_gain_without_changing_coverage(blend):
             assert [seam["overlap_pixels"] for seam in layout["seams"]] == [11088, 11088]
             for seam in layout["seams"]:
                 assert seam["overlap_from_existing"] + seam["overlap_from_incoming"] == 11088
+                assert seam["downsample_factor"] == 2
     finally:
         graph.close()
 

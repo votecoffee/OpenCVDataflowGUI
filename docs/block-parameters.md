@@ -2505,6 +2505,7 @@ Input `region_b` — Optional region in Image B coordinates.
 | `interpolation` | `"linear"` | `nearest`, `linear` Resample Image B. Linear requires all contributing pixels to be valid. |
 | `blend` | `"prefer_a"` | `prefer_a`, `prefer_b`, `average`, `graph_cut` Choose a priority, average samples, or select a seam from image content. |
 | `seam_cost` | `"color_gradient"` | `color`, `color_gradient` Graph cut uses color disagreement alone or weights it by local gradients. |
+| `seam_resolution` | `"auto"` | `auto`, `full`, `half`, `quarter` Estimate at full, half, or quarter resolution. Auto fits the work limit. |
 | `seam_terminal_cost` | `10000.0` | Value must be a finite number between 1 and 1e+06. Graph cut weight for retaining pixels supported by a view. |
 | `seam_bad_region_penalty` | `1000.0` | Value must be a finite number between 0 and 1e+06. Graph cut penalty for crossing invalid support boundaries. |
 | `min_overlap_pixels` | `1` | Value must be a whole number between 0 and 2.68435e+08. Withhold the mosaic below this count. Zero permits disjoint tiles. |
@@ -2538,6 +2539,7 @@ Input `masks` — Optional ordered uint8 masks for feature detection and valid m
 | `blend` | `"prefer_first"` | `prefer_first`, `prefer_last`, `feather`, `graph_cut` Choose priority, feather valid edges, or select a seam from image content. |
 | `feather_width` | `32` | Value must be a whole number between 1 and 512. Distance from a valid edge, in mosaic pixels, to reach full weight. |
 | `seam_cost` | `"color_gradient"` | `color`, `color_gradient` Graph cut uses color disagreement alone or weights it by local gradients. |
+| `seam_resolution` | `"auto"` | `auto`, `full`, `half`, `quarter` Estimate at full, half, or quarter resolution. Auto fits the work limit. |
 | `seam_terminal_cost` | `10000.0` | Value must be a finite number between 1 and 1e+06. Graph cut weight for retaining pixels supported by a view. |
 | `seam_bad_region_penalty` | `1000.0` | Value must be a finite number between 0 and 1e+06. Graph cut penalty for crossing invalid support boundaries. |
 | `exposure` | `"none"` | `none`, `gain`, `offset` Match the first view using a median gain or offset from valid overlaps. |

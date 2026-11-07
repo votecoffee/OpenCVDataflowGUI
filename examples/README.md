@@ -70,7 +70,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Close the loop on an inspection scan](image_processing/stitch_scan_loop/README.md) | Compare adjacent registration with a bounded correction when the scan returns to its first view. |
 | [Correct exposure in an inspection scan](image_processing/stitch_scan_exposure/README.md) | Compare raw and exposure-matched 16-bit mosaics with feathered seams. |
 | [Stitch overlapping inspection views](image_processing/stitch_image_pair/README.md) | Reconstruct a scan from two crops and verify covered pixels against the original. |
-| [Choose a content-aware seam](image_processing/stitch_seam/README.md) | Compare averaging with graph-cut selection on 16-bit overlapping views. |
+| [Choose a content-aware seam](image_processing/stitch_seam/README.md) | Compare averaging with graph-cut selection on 16-bit views and try automatic seam scaling for larger overlaps. |
 | [Temporal non-local means](image_processing/temporal_nlm/README.md) | Denoise the middle frame of a short sequence and preserve its ticket. |
 | [Tile image](image_processing/tile_image/README.md) | Repeat a reference in a 2 × 3 grid and find all six copies with template matching. |
 | [Tilted window statistics](image_processing/tilted_statistics/README.md) | Measure two diagonal patches using batched 45-degree windows. |
