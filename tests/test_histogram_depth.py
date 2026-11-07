@@ -73,7 +73,15 @@ def test_percentiles_and_summary_use_selected_samples_independent_of_bin_range()
     assert np.any(marked != plain.outputs["plot"])
 
 
-def test_numeric_threshold_uses_selected_color_channel():
+def test_plot_lists_all_channels_and_numeric_threshold_uses_selected_channel(monkeypatch):
+    rows = {}
+    put_text = cv2.putText
+
+    def capture_text(image, text, origin, *args):
+        rows.setdefault(origin[1], []).append(text)
+        return put_text(image, text, origin, *args)
+
+    monkeypatch.setattr(cv2, "putText", capture_text)
     block = builtin_registry().create(
         "inspect.histogram", parameters={"statistics_channel": "G", "threshold_statistic": "median"}
     )
@@ -83,6 +91,19 @@ def test_numeric_threshold_uses_selected_color_channel():
     assert result.outputs["mean"] == result.outputs["median"] == result.outputs["threshold"] == 30
     channels = result.outputs["histogram"]["channels"]
     assert [channel["statistics"]["mean"] for channel in channels] == [2, 30, 180]
+    legend, heading, *statistics_rows = [rows[y] for y in sorted(rows)]
+    assert legend == ["R", "G", "B", "Markers: G"]
+    assert heading == ["Channel", "Mean", "Median", "Std dev", "Min", "Max", "P5", "P95"]
+    assert statistics_rows == [
+        ["R", "2", "2", "1", "1", "3", "1.1", "2.9"],
+        ["G", "30", "30", "10", "20", "40", "21", "39"],
+        ["B", "180", "180", "30", "150", "210", "153", "207"],
+    ]
+
+    rows.clear()
+    block.parameters["show_statistics"] = False
+    assert block.execute({"image": image}).outputs["threshold"] == 30
+    assert list(rows.values()) == [["R", "G", "B"]]
     block.parameters["statistics_channel"] = "A"
     assert block.execute({"image": image}) is None
     assert block.error_kind == "invalid" and "unavailable" in block.error

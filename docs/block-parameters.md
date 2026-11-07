@@ -3853,9 +3853,9 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `include_alpha` | `false` |  |
 | `lower_percentile` | `5.0` | Value must be a finite number between 0 and 100. Lower-tail cutoff. Pair with upper percentile for a middle range. |
 | `upper_percentile` | `95.0` | Value must be a finite number between 0 and 100. Cutoff for the upper tail, expressed as a percentile from the bottom. |
-| `statistics_channel` | `"auto"` | `auto`, `Gray`, `B`, `G`, `R`, `A`, `H`, `S`, `V`, `L`, `a`, `b` Channel for numeric outputs and plot markers. Auto uses the first. |
+| `statistics_channel` | `"auto"` | `auto`, `Gray`, `B`, `G`, `R`, `A`, `H`, `S`, `V`, `L`, `a`, `b` Channel for scalar outputs and plot markers. Auto uses the first. |
 | `threshold_statistic` | `"median"` | `lower_threshold`, `upper_threshold`, `mean`, `median` Value sent on the threshold output. |
-| `show_statistics` | `true` | Shade the middle range and mark cutoffs, mean and median on the plot. |
+| `show_statistics` | `true` | Show all channel statistics and mark the selected channel on the plot. |
 
 ## Histogram backprojection (`inspect.histogram_backproject`)
 

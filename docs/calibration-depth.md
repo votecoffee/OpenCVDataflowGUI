@@ -30,7 +30,12 @@ uses 0–180) or each float channel's finite minimum/maximum. Manual ranges use 
 configured minimum/maximum for every channel. Nonfinite values are omitted; each
 channel reports finite samples and samples outside the range. The upper edge is
 inclusive, following NumPy histogram semantics. Plot curves are independently
-scaled to their peak; compare numeric counts rather than line height across channels.
+scaled to their peak. Use numeric counts to compare sample totals across channels.
+
+With **Show Statistics** enabled, the table below the curves shows the mean,
+median, standard deviation, minimum, maximum, and configured percentiles for
+each measured channel. **Statistics Channel** chooses the channel used for the
+plot markers and scalar threshold outputs.
 
 ## Grid origin and physical coordinates
 

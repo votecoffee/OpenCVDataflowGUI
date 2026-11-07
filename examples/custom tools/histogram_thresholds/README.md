@@ -20,8 +20,9 @@ For your own graph:
   them to the `lower` and `upper` inputs of **In range mask** for the middle
   band. Wired integer ranges round the lower bound up and the upper bound down
   to preserve the inclusive interval.
-- For color images, the histogram data includes statistics for every measured
-  channel. Choose **Statistics Channel** for scalar outputs and plot markers.
+- For color images, both the plot table and the histogram data include statistics
+  for every measured channel. Choose **Statistics Channel** for scalar outputs
+  and plot markers.
   Measure and threshold the same channel or grayscale plane.
 
 Statistics use the finite pixels inside the connected mask or region, including

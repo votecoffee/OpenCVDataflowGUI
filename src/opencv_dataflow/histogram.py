@@ -60,13 +60,50 @@ def channel_statistics(samples, lower, upper):
     }
 
 
+def _draw_statistics_table(graphic, channels, colors, lower, upper, header_y):
+    columns = (
+        ("Channel", None),
+        ("Mean", "mean"),
+        ("Median", "median"),
+        ("Std dev", "standard_deviation"),
+        ("Min", "minimum"),
+        ("Max", "maximum"),
+        (f"P{lower:.5g}", "lower_threshold"),
+        (f"P{upper:.5g}", "upper_threshold"),
+    )
+    text_color = (212, 212, 212)
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    for index, (label, statistic) in enumerate(columns):
+        x = 22 + index * 71
+        cv2.putText(
+            graphic, label, (x, header_y), font, 0.4, STATISTIC_COLORS.get(statistic, text_color), 1
+        )
+        for row, (channel, color) in enumerate(zip(channels, colors, strict=True), start=1):
+            y = header_y + row * 17
+            if statistic is None:
+                cv2.putText(graphic, channel["channel"], (x, y), font, 0.4, color, 1)
+            else:
+                value = channel["statistics"][statistic]
+                text = "n/a" if value is None else f"{value:.4g}"
+                if len(text) > 10:
+                    text = f"{value:.3g}"
+                cv2.putText(graphic, text, (x, y), font, 0.4, text_color, 1)
+
+
 def histogram_plot(channels, selected, lower, upper, show_statistics):
     graphic = np.full((300, 600, 3), 25, np.uint8)
-    colors = {"B": (240, 150, 70), "G": (90, 220, 90), "R": (80, 80, 245)}
+    primary_colors = {"B": (240, 150, 70), "G": (90, 220, 90), "R": (80, 80, 245)}
     fallback = ((200, 200, 200), (220, 180, 90), (180, 90, 220))
+    colors = [
+        primary_colors.get(channel["channel"], fallback[index % len(fallback)])
+        for index, channel in enumerate(channels)
+    ]
     edges = selected["edges"]
     statistics = selected["statistics"]
     left, right = edges[0], edges[-1]
+    header_y = 282 - 17 * len(channels)
+    axis_y = header_y - 13 if show_statistics else 260
+    font = cv2.FONT_HERSHEY_SIMPLEX
 
     def position(value):
         return round(36 + 544 * ((value - left) / (right - left)))
@@ -75,45 +112,26 @@ def histogram_plot(channels, selected, lower, upper, show_statistics):
         low = max(left, statistics["lower_threshold"])
         high = min(right, statistics["upper_threshold"])
         if low <= high:
-            graphic[46:261, position(low) : position(high) + 1] = (34, 37, 44)
-    for index, channel in enumerate(channels):
-        label = channel["channel"]
+            graphic[46:axis_y + 1, position(low) : position(high) + 1] = (34, 37, 44)
+    for index, (channel, color) in enumerate(zip(channels, colors, strict=True)):
         counts = np.asarray(channel["counts"])
         x = 36 + (np.arange(len(counts)) + 0.5) * (544 / len(counts))
-        y = 260 - counts.astype(float) / max(int(counts.max()), 1) * 205
+        y = axis_y - counts.astype(float) / max(int(counts.max()), 1) * (axis_y - 55)
         points = np.column_stack((x, y)).astype(np.int32)
-        color = colors.get(label, fallback[index % len(fallback)])
         cv2.polylines(graphic, [points], False, color, 1)
-        cv2.putText(graphic, label, (40 + index * 110, 24), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
-    cv2.line(graphic, (36, 260), (580, 260), (150, 150, 150), 1)
+        cv2.putText(graphic, channel["channel"], (40 + index * 110, 24), font, 0.5, color, 1)
+    cv2.line(graphic, (36, axis_y), (580, axis_y), (150, 150, 150), 1)
     if show_statistics:
         for name, color in STATISTIC_COLORS.items():
             value = statistics[name]
             if value is not None and left <= value <= right:
                 x = position(value)
-                cv2.line(graphic, (x, 46), (x, 259), color, 1)
-        label = selected["channel"]
-        if statistics["mean"] is None:
-            text = ((f"{label}: no finite selected pixels", (170, 170, 170), 36, 282),)
-        else:
-            text = (
-                (
-                    f"{label} P{lower:g}: {statistics['lower_threshold']:.5g}",
-                    STATISTIC_COLORS["lower_threshold"],
-                    36,
-                    277,
-                ),
-                (
-                    f"P{upper:g}: {statistics['upper_threshold']:.5g}",
-                    STATISTIC_COLORS["upper_threshold"],
-                    300,
-                    277,
-                ),
-                (f"Mean: {statistics['mean']:.5g}", STATISTIC_COLORS["mean"], 36, 294),
-                (f"Median: {statistics['median']:.5g}", STATISTIC_COLORS["median"], 300, 294),
-            )
-        for value, color, x, y in text:
-            cv2.putText(graphic, value, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.42, color, 1)
+                cv2.line(graphic, (x, 46), (x, axis_y - 1), color, 1)
+        cv2.putText(
+            graphic, f"Markers: {selected['channel']}", (450, 24),
+            font, 0.4, (212, 212, 212), 1,
+        )
+        _draw_statistics_table(graphic, channels, colors, lower, upper, header_y)
     return graphic
 
 
@@ -152,9 +170,9 @@ class Histogram(Block):
     parameter_help = {
         "lower_percentile": "Lower-tail cutoff. Pair with upper percentile for a middle range.",
         "upper_percentile": "Cutoff for the upper tail, expressed as a percentile from the bottom.",
-        "statistics_channel": "Channel for numeric outputs and plot markers. Auto uses the first.",
+        "statistics_channel": "Channel for scalar outputs and plot markers. Auto uses the first.",
         "threshold_statistic": "Value sent on the threshold output.",
-        "show_statistics": "Shade the middle range and mark cutoffs, mean and median on the plot.",
+        "show_statistics": "Show all channel statistics and mark the selected channel on the plot.",
     }
 
     def __init__(self, **kwargs):
