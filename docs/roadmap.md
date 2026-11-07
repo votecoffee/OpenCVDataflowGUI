@@ -122,6 +122,32 @@ The [coverage backlog](opencv-coverage.md) tracks the remaining inspection
 workflows. Specialized array formats and additional matrix utilities are
 deferred until a concrete workflow needs them.
 
+## Structured-light example candidates
+
+- **Accurate Structured Light Scanning Simulation.** Use one calibrated physical
+  capture to replay a pattern sequence, or compare reconstructed depth and a
+  point cloud against synthetic ground truth and the source mesh. The project
+  provides raw and processed calibration, physical HDR captures, synthetic
+  HDR/LDR images, and a Python/C++ pipeline with a Docker/Jupyter demo.
+  The authors list CC BY 4.0 for the datasets, with separate licenses for seven
+  textured or colored models. [Project, datasets, and license](https://geometryprocessing.github.io/scanner-sim/)
+- **3DLF-Scan v1.** Use a small set of turntable views to demonstrate sparse-to-dense
+  depth comparison, point-cloud registration, or pose-aware multi-view fusion.
+  The collection pairs light-field and structured-light captures with metric
+  depth, point clouds, camera poses, and calibration. Mendeley lists CC BY 4.0
+  for version 1 (DOI `10.17632/ngvgpsvd8b.1`).
+  [Dataset record](https://data.mendeley.com/datasets/ngvgpsvd8b/1)
+- **Structured-light APIs and toolkits.** Use OpenCV's Gray-code and sinusoidal
+  pattern references to guide generation and decoding examples. Use SLStudio
+  as a reference for synchronized camera/projector capture, and SLTK for
+  calibration and point-cloud processing. [OpenCV Structured Light API](https://docs.opencv.org/4.13.0/d1/d90/group__structured__light.html) ·
+  [SLStudio](https://github.com/jakobwilm/slstudio) · [SLTK](https://github.com/jhdewitt/sltk)
+
+Build on the existing Gray-code workflow. When choosing a fixture, record the
+source revision, license, and any changes, and credit the source in an on-canvas
+Comment. Confirm redistribution terms for the selected files before bundling a
+subset. [Current 3D workflows](vision-3d.md#motion-fusion-and-structured-light)
+
 ## Implemented prototype
 
 - Node canvas, typed connections, configurable port visibility, inspector and previews.
