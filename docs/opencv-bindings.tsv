@@ -2108,7 +2108,7 @@ P3	function	cv2.countNonZero	literal reference	-
 P3	function	cv2.createAffineTransformer	no static reference	-
 P3	function	cv2.createAlignMTB	literal reference	-
 P3	function	cv2.createButton	no static reference	-
-P3	function	cv2.createCalibrateDebevec	no static reference	-
+P3	function	cv2.createCalibrateDebevec	literal reference	-
 P3	function	cv2.createCalibrateRobertson	no static reference	-
 P3	function	cv2.createChiHistogramCostExtractor	no static reference	-
 P3	function	cv2.createCLAHE	literal reference	-
@@ -2117,16 +2117,16 @@ P3	function	cv2.createEMDL1HistogramCostExtractor	no static reference	-
 P3	function	cv2.createHanningWindow	literal reference	-
 P3	function	cv2.createHausdorffDistanceExtractor	no static reference	-
 P3	function	cv2.createLineSegmentDetector	literal reference	-
-P3	function	cv2.createMergeDebevec	no static reference	-
+P3	function	cv2.createMergeDebevec	literal reference	-
 P3	function	cv2.createMergeMertens	literal reference	-
 P3	function	cv2.createMergeRobertson	no static reference	-
 P3	function	cv2.createNormHistogramCostExtractor	no static reference	-
 P3	function	cv2.createShapeContextDistanceExtractor	no static reference	-
 P3	function	cv2.createThinPlateSplineShapeTransformer	no static reference	-
-P3	function	cv2.createTonemap	no static reference	-
-P3	function	cv2.createTonemapDrago	no static reference	-
-P3	function	cv2.createTonemapMantiuk	no static reference	-
-P3	function	cv2.createTonemapReinhard	no static reference	-
+P3	function	cv2.createTonemap	literal reference	-
+P3	function	cv2.createTonemapDrago	literal reference	-
+P3	function	cv2.createTonemapMantiuk	literal reference	-
+P3	function	cv2.createTonemapReinhard	literal reference	-
 P3	function	cv2.createTrackbar	no static reference	-
 P3	function	cv2.cubeRoot	no static reference	-
 P3	function	cv2.currentUIFramework	no static reference	-

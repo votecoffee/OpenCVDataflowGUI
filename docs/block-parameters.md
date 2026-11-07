@@ -1129,6 +1129,24 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `output_depth` | `"same"` | `same`, `uint8`, `uint16`, `int16`, `float32`, `float64` |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 
+## Calibrate camera response (Debevec) (`cv.calibrate_debevec`)
+
+Image processing / Exposure stacks
+
+Inputs: `exposures` (any), `times` (data, optional).
+
+Input `exposures` — Ordered batch of 2–16 aligned uint8 gray, BGR or RGB exposures.
+
+Input `times` — Optional list of exposure durations in seconds, in batch order.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_index` | `0` | Value must be a whole number between 0 and 15. Zero-based exposure that defines the output coordinate frame. |
+| `exposure_times` | `[]` | Exposure durations in seconds, in batch order. Times input overrides. |
+| `samples` | `70` | Value must be a whole number between 4 and 256. Pixel locations used to fit each channel's 256 response levels. |
+| `smoothness` | `10.0` | Value must be a finite number between 0.001 and 1000. Penalty on curvature of the fitted log response. |
+| `random` | `false` | Sample random pixel locations. Off uses a repeatable rectangular grid. |
+
 ## Canny edges (`cv.canny`)
 
 Image processing / Edges
@@ -2120,6 +2138,23 @@ Inputs: `channel_0` (image), `channel_1` (image), `channel_2` (image).
 | --- | --- | --- |
 | `color_format` | `"bgr"` | `bgr`, `rgb`, `hsv`, `lab` |
 
+## Merge HDR radiance (Debevec) (`cv.merge_debevec`)
+
+Image processing / Exposure stacks
+
+Inputs: `exposures` (any), `times` (data, optional), `response` (data, optional).
+
+Input `exposures` — Ordered batch of 2–16 aligned uint8 gray, BGR or RGB exposures.
+
+Input `times` — Optional list of exposure durations in seconds, in batch order.
+
+Input `response` — Optional camera response. If disconnected, assume linear response.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_index` | `0` | Value must be a whole number between 0 and 15. Zero-based exposure that defines the output coordinate frame. |
+| `exposure_times` | `[]` | Exposure durations in seconds, in batch order. Times input overrides. |
+
 ## Morphological reconstruction (`cv.morph_reconstruct`)
 
 Image processing / Morphology
@@ -2745,6 +2780,26 @@ Input `windows` — Optional list of tilted windows that replaces the configured
 | --- | --- | --- |
 | `windows` | `[[32, 0, 16, 16]]` | Each [x, y, width, height] starts at the top integral-grid vertex. Width extends down-right and height extends down-left at 45 degrees. |
 | `include_alpha` | `false` | Measure alpha as its own channel on four-channel input. |
+
+## Tone map HDR (`cv.tonemap_hdr`)
+
+Image processing / Exposure stacks
+
+Inputs: `image` (image).
+
+Input `image` — Finite nonnegative float32 radiance in gray, BGR or RGB.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"linear"` | `linear`, `drago`, `reinhard`, `mantiuk` Operator for mapping radiance to a display range. |
+| `gamma` | `1.0` | Value must be a finite number between 0.1 and 8. Display gamma. Values above 1 brighten midtones. |
+| `output_depth` | `"uint8"` | `uint8`, `float32` 8-bit output or float32 display samples in [0, 1]. |
+| `saturation` | `1.0` | Value must be a finite number between 0.01 and 5. Color saturation for Drago and Mantiuk. |
+| `bias` | `0.85` | Value must be a finite number between 0.01 and 1. Drago logarithmic compression bias. |
+| `intensity` | `0.0` | Value must be a finite number between -8 and 8. Reinhard brightness adjustment. |
+| `light_adaptation` | `1.0` | Value must be a finite number between 0 and 1. Reinhard global-to-local light adaptation. |
+| `color_adaptation` | `0.0` | Value must be a finite number between 0 and 1. Reinhard channel adaptation. Retains a tiny shared luminance term. |
+| `contrast_scale` | `0.7` | Value must be a finite number between 0.01 and 1. Mantiuk contrast response scale. |
 
 ## Transform principal components (`cv.transform_pca`)
 

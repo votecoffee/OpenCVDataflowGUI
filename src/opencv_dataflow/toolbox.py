@@ -68,7 +68,7 @@ IMPLEMENTATION_MODULES = {
     "objdetect": "charuco code_readers",
     "xobjdetect": "hog",
     "dnn": "dnn_blocks ocr",
-    "photo": "exposure photo_filters restoration",
+    "photo": "exposure hdr photo_filters restoration",
     "stitching": "image_stitching scan_stitching",
     "stereo": "stereo3d",
     "ccm": "color_calibration",
@@ -127,6 +127,9 @@ _MODULE_BY_BLOCK = {
 }
 _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
+    "cv.calibrate_debevec": ("createCalibrateDebevec",),
+    "cv.merge_debevec": ("createMergeDebevec",),
+    "cv.tonemap_hdr": ("createTonemap", "TonemapDrago", "TonemapReinhard", "TonemapMantiuk"),
     "cv.gaussian_blur": ("GaussianBlur",),
     "cv.morphology": ("morphologyEx", "erode", "dilate"),
     "cv.adaptive_threshold": ("adaptiveThreshold",),
