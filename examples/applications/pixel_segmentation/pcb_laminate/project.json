@@ -48,7 +48,7 @@
         "samples_per_pixel": 1,
         "threshold": 0.55,
         "min_area_px": 70,
-        "workers": 1,
+        "workers": 4,
         "render_overlay": true,
         "capture_only": false,
         "emit_score_map": true
