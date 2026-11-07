@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Nested binary shapes",
+      "parameters": {
+        "path": "assets/nested_parts.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "hierarchy",
+      "type": "inspect.contour_hierarchy",
+      "name": "Contour hierarchy",
+      "parameters": {
+        "approximation": "simple",
+        "draw_overlay": true
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "hierarchy",
+        "collection",
+        "count",
+        "hole_count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "hierarchy",
+      "input": "image"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Two edges with different strengths",
+      "parameters": {
+        "path": "assets/edge_strengths.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [0, 200],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "binary",
+      "type": "inspect.hough_polar_lines",
+      "name": "Rank by edge pixel count",
+      "parameters": {"vote_mode": "binary", "minimum_votes": 20, "maximum_lines": 1},
+      "position": [400, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["collection", "polar_lines", "count"],
+      "thumbnail": true
+    },
+    {
+      "id": "weighted",
+      "type": "inspect.hough_polar_lines",
+      "name": "Rank by edge intensity",
+      "parameters": {"vote_mode": "weighted", "minimum_votes": 3000, "maximum_lines": 1},
+      "position": [400, 400],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["collection", "polar_lines", "count"],
+      "thumbnail": true
+    },
+    {
+      "id": "draw_binary",
+      "type": "collection.draw",
+      "name": "Show longest edge",
+      "parameters": {"draw_bounds": false, "draw_centers": false, "thickness": 1},
+      "position": [800, 0],
+      "exposed_inputs": ["image", "collection"],
+      "exposed_outputs": ["overlay", "count"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "draw_weighted",
+      "type": "collection.draw",
+      "name": "Show highest intensity sum",
+      "parameters": {"draw_bounds": false, "draw_centers": false, "thickness": 1},
+      "position": [800, 400],
+      "exposed_inputs": ["image", "collection"],
+      "exposed_outputs": ["overlay", "count"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "binary", "input": "image"},
+    {"source": "source", "output": "image", "target": "weighted", "input": "image"},
+    {"source": "source", "output": "image", "target": "draw_binary", "input": "image"},
+    {"source": "binary", "output": "collection", "target": "draw_binary", "input": "collection"},
+    {"source": "source", "output": "image", "target": "draw_weighted", "input": "image"},
+    {"source": "weighted", "output": "collection", "target": "draw_weighted", "input": "collection"}
+  ]
+}

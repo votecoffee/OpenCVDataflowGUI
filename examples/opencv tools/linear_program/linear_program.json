@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "maximize",
+      "type": "cv.solve_linear_program",
+      "name": "Maximize value under three capacity limits",
+      "parameters": {
+        "objective": [
+          3,
+          2
+        ],
+        "constraints": [
+          [
+            1,
+            1,
+            4
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ]
+        ]
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "solution",
+        "objective_value",
+        "slacks",
+        "status"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "usage",
+      "type": "cv.multiply_matrices",
+      "name": "Calculate shared and individual capacity use",
+      "parameters": {
+        "left": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "position": [
+        430,
+        0
+      ],
+      "exposed_inputs": [
+        "right"
+      ],
+      "exposed_outputs": [
+        "matrix"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "minimize",
+      "type": "cv.solve_linear_program",
+      "name": "Meet demand at minimum cost",
+      "parameters": {
+        "objective": [
+          3,
+          2
+        ],
+        "constraints": [
+          [
+            -1,
+            -1,
+            -4
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ]
+        ],
+        "direction": "minimize"
+      },
+      "position": [
+        0,
+        245
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "solution",
+        "objective_value",
+        "slacks",
+        "status"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "maximize",
+      "output": "solution",
+      "target": "usage",
+      "input": "right"
+    }
+  ]
+}

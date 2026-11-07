@@ -1,22 +1,23 @@
 """Verify installed integrations resolve through the normal project open route."""
 
 import builtins
-from pathlib import Path
 
 import pytest
 from PySide6.QtWidgets import QFileDialog
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
+from opencv_dataflow.core import Graph
 from opencv_dataflow.plugins import GEOMETRIC_MATCHER_TYPES
 
-EXAMPLES = Path(__file__).resolve().parents[1] / "examples" / "applications"
 
-
-@pytest.mark.local_examples
-def test_installed_matcher_opens_an_application_without_manual_plugin(app, monkeypatch):
+def test_installed_matcher_opens_an_application_without_manual_plugin(app, monkeypatch, tmp_path):
     pytest.importorskip("opencv_geometric_pattern_match.dataflow")
-    project = EXAMPLES / "tray_grid" / "inspection.json"
+    project = tmp_path / "inspection.json"
+    graph = Graph()
+    graph.add(builtin_registry().create("pattern.ogpm_recipe", block_id="matcher"))
+    graph.save(project)
+    graph.close()
     monkeypatch.setattr(QFileDialog, "getOpenFileName", lambda *args, **kwargs: (str(project), ""))
     window = MainWindow()
     warnings = []

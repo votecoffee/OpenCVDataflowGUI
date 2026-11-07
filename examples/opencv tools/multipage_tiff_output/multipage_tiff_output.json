@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.tiff_file",
+      "name": "Replay pages in order",
+      "parameters": {
+        "path": "assets/pages.tiff",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Collect three TIFF pages",
+      "parameters": {
+        "size": 3
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ]
+    },
+    {
+      "id": "writer",
+      "type": "output.tiff_file",
+      "name": "Write a lossless TIFF batch",
+      "parameters": {
+        "path": "tiff_export.tiff",
+        "compression": "lzw"
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "pages"
+      ],
+      "exposed_outputs": [
+        "info",
+        "page_count",
+        "byte_count"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "writer",
+      "input": "pages"
+    }
+  ]
+}

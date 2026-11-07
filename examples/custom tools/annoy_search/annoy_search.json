@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "ml_image",
+      "type": "input.demo",
+      "name": "Demo image",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ml_net",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "model_path": "../../assets/rgb_average.onnx",
+        "width": 32,
+        "height": 32,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "",
+        "output_names": [],
+        "engine": "auto",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ml_class",
+      "type": "ml.classify",
+      "name": "Classify DNN tensor",
+      "parameters": {
+        "output_name": "",
+        "labels": [
+          "red",
+          "green",
+          "blue"
+        ],
+        "softmax": false,
+        "top_k": 3,
+        "minimum_confidence": 0.0,
+        "accepted_labels": []
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "tensors"
+      ],
+      "exposed_outputs": [
+        "predictions",
+        "label",
+        "confidence"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ml_vector",
+      "type": "ml.tensor_vector",
+      "name": "Tensor to embedding vector",
+      "parameters": {
+        "output_name": "",
+        "pooling": "flatten",
+        "channel_axis": 1,
+        "normalize": "l2"
+      },
+      "position": [
+        660,
+        390
+      ],
+      "exposed_inputs": [
+        "tensors"
+      ],
+      "exposed_outputs": [
+        "vector",
+        "dimensions"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ml_samples",
+      "type": "ml.vector_data",
+      "name": "Vector data",
+      "parameters": {
+        "values": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "position": [
+        330,
+        760
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "vectors"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ml_index",
+      "type": "ml.annoy_build",
+      "name": "Build Annoy index",
+      "parameters": {
+        "metric": "angular",
+        "trees": 10,
+        "seed": 0,
+        "normalize": "none",
+        "labels": [
+          "red",
+          "green",
+          "blue"
+        ]
+      },
+      "position": [
+        660,
+        760
+      ],
+      "exposed_inputs": [
+        "vectors",
+        "labels"
+      ],
+      "exposed_outputs": [
+        "model",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ml_search",
+      "type": "ml.annoy_search",
+      "name": "Annoy nearest neighbors",
+      "parameters": {
+        "neighbors": 3,
+        "search_k": -1,
+        "max_distance": -1.0,
+        "min_similarity": -1.0,
+        "minimum_results": 1
+      },
+      "position": [
+        1000,
+        390
+      ],
+      "exposed_inputs": [
+        "model",
+        "vector"
+      ],
+      "exposed_outputs": [
+        "neighbors",
+        "label",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "ml_image",
+      "output": "image",
+      "target": "ml_net",
+      "input": "image"
+    },
+    {
+      "source": "ml_net",
+      "output": "tensors",
+      "target": "ml_class",
+      "input": "tensors"
+    },
+    {
+      "source": "ml_net",
+      "output": "tensors",
+      "target": "ml_vector",
+      "input": "tensors"
+    },
+    {
+      "source": "ml_samples",
+      "output": "vectors",
+      "target": "ml_index",
+      "input": "vectors"
+    },
+    {
+      "source": "ml_index",
+      "output": "model",
+      "target": "ml_search",
+      "input": "model"
+    },
+    {
+      "source": "ml_vector",
+      "output": "vector",
+      "target": "ml_search",
+      "input": "vector"
+    }
+  ]
+}

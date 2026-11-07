@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "tiles",
+      "type": "input.file",
+      "name": "Five overlapping views",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/view-01.png",
+          "assets/view-02.png",
+          "assets/view-03.png",
+          "assets/view-04.png",
+          "assets/view-05.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Collect a scan",
+      "parameters": {
+        "size": 5,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        290,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "stitch",
+      "type": "cv.stitch_scan_sequence",
+      "name": "Adjacent registration",
+      "parameters": {
+        "motion_model": "translation",
+        "max_features": 900,
+        "match_ratio": 0.75,
+        "max_descriptor_distance": 250.0,
+        "inlier_pixels": 3.0,
+        "min_inliers": 12,
+        "min_inlier_ratio": 0.5,
+        "max_scale_ratio": 1.15,
+        "max_rotation_degrees": 15.0,
+        "min_overlap_pixels": 64,
+        "interpolation": "nearest",
+        "blend": "feather"
+      },
+      "position": [
+        590,
+        -190
+      ],
+      "exposed_inputs": [
+        "views"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "layout"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "closed",
+      "type": "cv.stitch_scan_sequence",
+      "name": "Close the scan loop",
+      "parameters": {
+        "motion_model": "translation",
+        "max_features": 900,
+        "match_ratio": 0.75,
+        "max_descriptor_distance": 250.0,
+        "inlier_pixels": 3.0,
+        "min_inliers": 12,
+        "min_inlier_ratio": 0.5,
+        "max_scale_ratio": 1.15,
+        "max_rotation_degrees": 15.0,
+        "min_overlap_pixels": 64,
+        "interpolation": "nearest",
+        "blend": "feather",
+        "loop_closure": true
+      },
+      "position": [
+        590,
+        130
+      ],
+      "exposed_inputs": [
+        "views"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "layout"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "cv.image_statistics",
+      "name": "Measure covered pixels",
+      "parameters": {
+        "channel": "auto",
+        "statistic": "mean",
+        "percentiles": [],
+        "value_percentile": 50.0,
+        "percentile_method": "linear",
+        "include_alpha": false
+      },
+      "position": [
+        895,
+        130
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask"
+      ],
+      "exposed_outputs": [
+        "value",
+        "selected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "tiles",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "stitch",
+      "input": "views"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "closed",
+      "input": "views"
+    },
+    {
+      "source": "closed",
+      "output": "image",
+      "target": "measure",
+      "input": "image"
+    },
+    {
+      "source": "closed",
+      "output": "coverage",
+      "target": "measure",
+      "input": "mask"
+    }
+  ]
+}

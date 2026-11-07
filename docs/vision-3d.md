@@ -1,25 +1,22 @@
 # OpenCV 3D workflows
 
-Named projects in this guide refer to optional local examples. See the
-[public example gallery](../examples/public/README.md) for bundled projects.
-
 The **3D vision** tree exposes camera models, calibration, geometry, stereo,
 reconstruction, RGB-D, point clouds, surface matching, fiducials, structured light,
 odometry and volumetric reconstruction. The point-cloud file blocks are under
 **Input/Output > Point clouds**. No extra Python packages are required on the
 tested OpenCV 5.0.0 contrib build.
 
-## Try the optional local jobs
+## Try the included jobs
 
 Open these projects with **File → Open…**.
 
 | Project | What it demonstrates |
 | --- | --- |
-| stereo cloud | Rectified 8 px disparity from a known baseline reconstructs a 3 m plane. |
-| RGB-D cloud | Metric depth, RGB color, pixel correspondence, XYZ filtering, voxel sampling and normals. |
-| 3D pose | Project known XYZ, recover a camera-relative pose, and triangulate the points. |
-| structured light | Generate Gray-code patterns and decode an identity camera/projector mapping. |
-| TSDF fusion | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
+| [stereo cloud](<../examples/opencv tools/stereo_cloud/stereo_cloud.json>) | Rectified 8 px disparity from a known baseline reconstructs a 3 m plane. |
+| [RGB-D cloud](<../examples/custom tools/rgbd_cloud/rgbd_cloud.json>) | Metric depth, RGB color, pixel correspondence, XYZ filtering, voxel sampling and normals. |
+| [3D pose](<../examples/opencv tools/pose_3d/pose_3d.json>) | Project known XYZ, recover a camera-relative pose, and triangulate the points. |
+| [structured light](<../examples/opencv tools/structured_light/structured_light.json>) | Generate Gray-code patterns and decode an identity camera/projector mapping. |
+| [TSDF fusion](<../examples/custom tools/tsdf_fusion/tsdf_fusion.json>) | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
 
 Run once, then use **Results > 3D point-cloud viewer…**. Choose a retained cloud
 output and adjust yaw, pitch and point size. Debug/Balanced retain actual cloud
@@ -82,7 +79,7 @@ Cloud transforms reject unit or frame mismatches instead of guessing conversions
    (native fixed-point values are divided by 16); invalid values are NaN. Use
    the valid mask or the colored preview for inspection. WLS also emits a
    normalized confidence image. An optional cutoff excludes low-confidence
-   pixels from downstream reconstruction. Stereo confidence example
+   pixels from downstream reconstruction. [Stereo confidence example](<../examples/opencv tools/stereo_confidence/README.md>)
 4. **Disparity to 3D cloud** uses Q, accepts a mask/region and optional registered
    color, and emits a cloud in the first camera's rectified frame plus Z depth.
    Depth limits are in rig units. Use `input_scale=0.0625` for raw OpenCV int16
@@ -90,7 +87,7 @@ Cloud transforms reject unit or frame mismatches instead of guessing conversions
 
 **Fill small depth holes** copies nearby valid samples into small invalid
 regions and emits a mask identifying the estimates. Its default settings
-preserve border-connected gaps. Depth hole filling example
+preserve border-connected gaps. [Depth hole filling example](<../examples/custom tools/depth_hole_filling/README.md>)
 
 **Depth to point cloud** calls OpenCV's RGB-D projection using undistorted
 pinhole intrinsics. `DepthArray` supplies its declared m/mm units. Untagged

@@ -1,8 +1,5 @@
 # Production counts, fail reasons and validation image sets
 
-Named projects in this guide refer to optional local examples. See the
-[public example gallery](../examples/public/README.md) for bundled projects.
-
 The bottom status bar continuously shows **Total, Pass, Fail, pass rate and average
 end-to-end processing time** for the current job. These are ticket counts, not block
 activation counts. Totals survive F5, Stop/Resume and eviction of detailed ticket events.
@@ -111,7 +108,7 @@ decision downstream of such a port will be unresolved. Trusted custom plugin cod
 executes as part of the program. The initial workflow substitutes one root image source;
 multi-camera validation bundles require a future extension.
 
-Try validation image set. Its five synthetic cases cover all
+Try [validation image set](<../examples/flow tools/validation_images/validation_images.json>). Its five synthetic cases cover all
 expectations and should score **100%** with required checks passing; the must-fail image
 reports `part_count`. No camera/download is needed.
 

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Synthetic checkerboard",
+      "parameters": {"path": "assets/checkerboard.png", "path_base": "project", "color_format": "gray"},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "sharp",
+      "type": "calibration.chessboard_quality",
+      "name": "Measure the sharp capture",
+      "parameters": {},
+      "position": [330, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image", "corners", "report", "max_width", "min_contrast"],
+      "thumbnail": true
+    },
+    {
+      "id": "blur",
+      "type": "cv.gaussian_blur",
+      "name": "Simulate a defocused capture",
+      "parameters": {"kernel": 19, "sigma": 2.4},
+      "position": [330, 280],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "defocused",
+      "type": "calibration.chessboard_quality",
+      "name": "Measure defocus at a wider limit",
+      "parameters": {"max_transition_pixels": 8.0},
+      "position": [700, 280],
+      "exposed_inputs": ["image", "corners"],
+      "exposed_outputs": ["image", "report", "max_width", "min_contrast"],
+      "thumbnail": true
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "sharp", "input": "image"},
+    {"source": "source", "output": "image", "target": "blur", "input": "image"},
+    {"source": "blur", "output": "image", "target": "defocused", "input": "image"},
+    {"source": "sharp", "output": "corners", "target": "defocused", "input": "corners"}
+  ]
+}

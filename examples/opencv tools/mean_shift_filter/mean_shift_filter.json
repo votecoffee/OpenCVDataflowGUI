@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Load two textured colors",
+      "parameters": {
+        "path": "assets/two_textured_colors.png",
+        "path_base": "project",
+        "color_format": "bgr"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "mean_shift",
+      "type": "cv.mean_shift_filter",
+      "name": "Flatten the local color texture",
+      "parameters": {
+        "spatial_radius": 8,
+        "color_radius": 28,
+        "pyramid_level": 1
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "clusters",
+      "type": "inspect.kmeans_image",
+      "name": "Separate the two color classes",
+      "parameters": {
+        "clusters": 2
+      },
+      "position": [
+        700,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "cluster_map",
+        "quantized",
+        "centers",
+        "counts"
+      ],
+      "thumbnail": true,
+      "preview_output": "cluster_map"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "mean_shift",
+      "input": "image"
+    },
+    {
+      "source": "mean_shift",
+      "output": "image",
+      "target": "clusters",
+      "input": "image"
+    }
+  ]
+}

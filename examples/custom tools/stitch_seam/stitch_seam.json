@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "left",
+      "type": "input.file",
+      "name": "16-bit left view",
+      "parameters": {
+        "path": "assets/left.png",
+        "path_base": "project",
+        "color_format": "gray",
+        "pixel_depth": "unchanged"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "input.file",
+      "name": "16-bit right view",
+      "parameters": {
+        "path": "assets/right.png",
+        "path_base": "project",
+        "color_format": "gray",
+        "pixel_depth": "unchanged"
+      },
+      "position": [
+        0,
+        230
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "average",
+      "type": "cv.stitch_image_pair",
+      "name": "Average the overlap",
+      "parameters": {
+        "transform_source": "matrix",
+        "matrix": [
+          [
+            1,
+            0,
+            45
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "interpolation": "nearest",
+        "blend": "average",
+        "min_overlap_pixels": 1,
+        "ticket_policy": "anchor_a"
+      },
+      "position": [
+        335,
+        -45
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "layout"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cut",
+      "type": "cv.stitch_image_pair",
+      "name": "Choose a content-aware seam",
+      "parameters": {
+        "transform_source": "matrix",
+        "matrix": [
+          [
+            1,
+            0,
+            45
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "interpolation": "nearest",
+        "blend": "graph_cut",
+        "min_overlap_pixels": 1,
+        "ticket_policy": "anchor_a",
+        "seam_cost": "color"
+      },
+      "position": [
+        335,
+        220
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "layout"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "left",
+      "output": "image",
+      "target": "average",
+      "input": "image_a"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "average",
+      "input": "image_b"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "cut",
+      "input": "image_a"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "cut",
+      "input": "image_b"
+    }
+  ]
+}

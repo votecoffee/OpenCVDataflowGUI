@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.demo",
+      "name": "Reference image",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "patch",
+      "type": "region.shape",
+      "name": "Background sample region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          8,
+          8,
+          20,
+          10
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        300,
+        195
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample",
+      "type": "cv.image_arithmetic",
+      "name": "Add 7 levels in selected patch",
+      "parameters": {
+        "operation": "add",
+        "scalar": 7.0,
+        "scale": 1.0,
+        "zero_divisor": "error",
+        "alignment": "same_frame",
+        "output_depth": "same",
+        "preserve_alpha": true
+      },
+      "position": [
+        600,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "absolute",
+      "type": "cv.image_norm",
+      "name": "Absolute L1 difference",
+      "parameters": {
+        "metric": "l1",
+        "mode": "absolute",
+        "alignment": "same_frame",
+        "include_alpha": false,
+        "check_threshold": false,
+        "maximum": 1.0
+      },
+      "position": [
+        925,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "reference",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "relative",
+      "type": "cv.image_norm",
+      "name": "Relative L1 difference",
+      "parameters": {
+        "metric": "l1",
+        "mode": "relative",
+        "alignment": "same_frame",
+        "include_alpha": false,
+        "check_threshold": true,
+        "maximum": 0.25
+      },
+      "position": [
+        925,
+        195
+      ],
+      "exposed_inputs": [
+        "image",
+        "reference",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "patch",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "sample",
+      "input": "image_a"
+    },
+    {
+      "source": "patch",
+      "output": "region",
+      "target": "sample",
+      "input": "region"
+    },
+    {
+      "source": "sample",
+      "output": "image",
+      "target": "absolute",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "absolute",
+      "input": "reference"
+    },
+    {
+      "source": "patch",
+      "output": "region",
+      "target": "absolute",
+      "input": "region"
+    },
+    {
+      "source": "sample",
+      "output": "image",
+      "target": "relative",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "relative",
+      "input": "reference"
+    },
+    {
+      "source": "patch",
+      "output": "region",
+      "target": "relative",
+      "input": "region"
+    }
+  ]
+}

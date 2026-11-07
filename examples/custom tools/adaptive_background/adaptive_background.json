@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Read the shaded part",
+      "parameters": {
+        "path": "assets/shaded_part.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "correct",
+      "type": "cv.adaptive_background",
+      "name": "Flatten the lighting gradient",
+      "parameters": {
+        "estimator": "closing",
+        "shape": "rect",
+        "radius": 9,
+        "operation": "subtract",
+        "target_level": 0.5019607843137255
+      },
+      "position": [
+        325,
+        225
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "background"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "before",
+      "type": "cv.compare_pixels",
+      "name": "Threshold the shaded image",
+      "parameters": {
+        "operation": "less",
+        "scalar": 95
+      },
+      "position": [
+        650,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "after",
+      "type": "cv.compare_pixels",
+      "name": "Threshold the corrected image",
+      "parameters": {
+        "operation": "less",
+        "scalar": 95
+      },
+      "position": [
+        650,
+        225
+      ],
+      "exposed_inputs": [
+        "image_a"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "correct",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "before",
+      "input": "image_a"
+    },
+    {
+      "source": "correct",
+      "output": "image",
+      "target": "after",
+      "input": "image_a"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.demo",
+      "name": "Reference image",
+      "parameters": {},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "moving",
+      "type": "cv.warp_affine",
+      "name": "Move right 4.3125 px and up 5.6875 px",
+      "parameters": {
+        "matrix": [[1, 0, 4.3125], [0, 1, -5.6875]],
+        "interpolation": "cubic",
+        "border": "wrap"
+      },
+      "position": [330, 190],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "correlate",
+      "type": "inspect.phase_correlation_iterative",
+      "name": "Estimate the subpixel displacement",
+      "parameters": {},
+      "position": [660, 0],
+      "exposed_inputs": ["image_a", "image_b"],
+      "exposed_outputs": ["shift", "alignment_transform", "status"],
+      "thumbnail": true
+    },
+    {
+      "id": "align",
+      "type": "cv.warp_affine",
+      "name": "Apply the estimated correction",
+      "parameters": {"interpolation": "cubic", "border": "wrap"},
+      "position": [990, 190],
+      "exposed_inputs": ["image", "transform"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    }
+  ],
+  "connections": [
+    {"source": "reference", "output": "image", "target": "moving", "input": "image"},
+    {"source": "reference", "output": "image", "target": "correlate", "input": "image_a"},
+    {"source": "moving", "output": "image", "target": "correlate", "input": "image_b"},
+    {"source": "moving", "output": "image", "target": "align", "input": "image"},
+    {
+      "source": "correlate",
+      "output": "alignment_transform",
+      "target": "align",
+      "input": "transform"
+    }
+  ]
+}

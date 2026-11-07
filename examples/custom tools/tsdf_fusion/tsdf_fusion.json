@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "pair",
+      "type": "input.stereo_demo",
+      "name": "Synthetic stereo / RGB-D",
+      "parameters": {
+        "width": 320,
+        "height": 180,
+        "disparity": 8,
+        "focal_length": 200.0,
+        "baseline_m": 0.12,
+        "seed": 3
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "left",
+        "right",
+        "depth",
+        "camera",
+        "rig",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "source_frame": "left_camera",
+        "target_frame": "world",
+        "units": "m"
+      },
+      "position": [
+        0,
+        380
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "volume",
+      "type": "3d.tsdf_fuse",
+      "name": "Fuse posed depth frames (TSDF)",
+      "parameters": {
+        "resolution": [
+          64,
+          64,
+          64
+        ],
+        "voxel_size_m": 0.02,
+        "volume_origin_m": [
+          -0.64,
+          -0.64,
+          2.5
+        ],
+        "truncation_m": 0.06,
+        "max_weight": 64,
+        "max_depth_m": 5.0,
+        "raycast_step_factor": 0.25,
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "sample_step": 1,
+        "max_points": 200000
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "frames",
+        "poses",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "depth",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "view",
+      "type": "3d.cloud_render",
+      "name": "Render point cloud",
+      "parameters": {
+        "width": 640,
+        "height": 480,
+        "yaw_degrees": 25.0,
+        "pitch_degrees": -20.0,
+        "max_drawn_points": 20000,
+        "point_size": 2
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "pair",
+      "output": "depth",
+      "target": "volume",
+      "input": "depth"
+    },
+    {
+      "source": "pair",
+      "output": "camera",
+      "target": "volume",
+      "input": "camera"
+    },
+    {
+      "source": "pose",
+      "output": "transform",
+      "target": "volume",
+      "input": "poses"
+    },
+    {
+      "source": "volume",
+      "output": "cloud",
+      "target": "view",
+      "input": "cloud"
+    }
+  ]
+}

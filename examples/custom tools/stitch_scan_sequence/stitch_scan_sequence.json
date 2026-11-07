@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "tiles",
+      "type": "input.file",
+      "name": "Three overlapping tiles",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/tile-01.png",
+          "assets/tile-02.png",
+          "assets/tile-03.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Collect a scan",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        290,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "stitch",
+      "type": "cv.stitch_scan_sequence",
+      "name": "Register and stitch the scan",
+      "parameters": {
+        "motion_model": "translation",
+        "max_features": 900,
+        "match_ratio": 0.75,
+        "max_descriptor_distance": 250.0,
+        "inlier_pixels": 2.0,
+        "min_inliers": 12,
+        "min_inlier_ratio": 0.5,
+        "max_scale_ratio": 1.15,
+        "max_rotation_degrees": 15.0,
+        "min_overlap_pixels": 64,
+        "interpolation": "nearest",
+        "blend": "prefer_first"
+      },
+      "position": [
+        590,
+        0
+      ],
+      "exposed_inputs": [
+        "views"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "layout"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "cv.image_statistics",
+      "name": "Measure covered pixels",
+      "parameters": {
+        "channel": "auto",
+        "statistic": "mean",
+        "percentiles": [],
+        "value_percentile": 50.0,
+        "percentile_method": "linear",
+        "include_alpha": false
+      },
+      "position": [
+        895,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask"
+      ],
+      "exposed_outputs": [
+        "value",
+        "selected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "tiles",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "stitch",
+      "input": "views"
+    },
+    {
+      "source": "stitch",
+      "output": "image",
+      "target": "measure",
+      "input": "image"
+    },
+    {
+      "source": "stitch",
+      "output": "coverage",
+      "target": "measure",
+      "input": "mask"
+    }
+  ]
+}

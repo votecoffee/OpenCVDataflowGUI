@@ -1,0 +1,250 @@
+{
+  "block_type": "ToolBlocks",
+  "subtype": "Reusable",
+  "toolblock_version": 1,
+  "name": "Registered defect inspection",
+  "graph": {
+    "schema_version": 1,
+    "blocks": [
+      {
+        "id": "reference_gray",
+        "type": "cv.gray",
+        "name": "Grayscale",
+        "parameters": {
+          "algorithm_hint": "default"
+        },
+        "position": [
+          0,
+          0
+        ],
+        "exposed_inputs": [
+          "image"
+        ],
+        "exposed_outputs": [
+          "image"
+        ],
+        "thumbnail": true,
+        "preview_output": ""
+      },
+      {
+        "id": "sample_gray",
+        "type": "cv.gray",
+        "name": "Grayscale",
+        "parameters": {
+          "algorithm_hint": "default"
+        },
+        "position": [
+          0,
+          220
+        ],
+        "exposed_inputs": [
+          "image"
+        ],
+        "exposed_outputs": [
+          "image"
+        ],
+        "thumbnail": true,
+        "preview_output": ""
+      },
+      {
+        "id": "align",
+        "type": "inspect.align_ecc",
+        "name": "Align images (ECC)",
+        "parameters": {
+          "motion": "translation",
+          "pyramid_levels": 1,
+          "max_iterations": 50,
+          "iterations_per_level": [],
+          "epsilon": 1e-06,
+          "gaussian_size": 5,
+          "min_coefficient": 0.8,
+          "interpolation": "linear",
+          "border": "constant",
+          "border_value": 0.0
+        },
+        "position": [
+          300,
+          150
+        ],
+        "exposed_inputs": [
+          "image",
+          "mask",
+          "region",
+          "reference",
+          "reference_mask",
+          "initial_transform"
+        ],
+        "exposed_outputs": [
+          "image",
+          "geometry",
+          "transform",
+          "coefficient"
+        ],
+        "thumbnail": true,
+        "preview_output": ""
+      },
+      {
+        "id": "difference",
+        "type": "cv.absdiff",
+        "name": "Absolute difference",
+        "parameters": {},
+        "position": [
+          600,
+          160
+        ],
+        "exposed_inputs": [
+          "image_a",
+          "image_b",
+          "mask",
+          "region"
+        ],
+        "exposed_outputs": [
+          "image"
+        ],
+        "thumbnail": true,
+        "preview_output": ""
+      },
+      {
+        "id": "residual_threshold",
+        "type": "cv.threshold",
+        "name": "Threshold",
+        "parameters": {
+          "value": 35,
+          "invert": false,
+          "max_value": 255.0,
+          "mode": "binary"
+        },
+        "position": [
+          900,
+          160
+        ],
+        "exposed_inputs": [
+          "image",
+          "mask",
+          "region"
+        ],
+        "exposed_outputs": [
+          "image",
+          "threshold"
+        ],
+        "thumbnail": true,
+        "preview_output": ""
+      },
+      {
+        "id": "defects",
+        "type": "inspect.blobs",
+        "name": "Find blobs",
+        "parameters": {
+          "connectivity": 8,
+          "min_area": 12,
+          "max_area": 0,
+          "expected_count": 0,
+          "algorithm": "default",
+          "region_mode": "center",
+          "check_count": true
+        },
+        "position": [
+          1200,
+          160
+        ],
+        "exposed_inputs": [
+          "image",
+          "mask",
+          "region"
+        ],
+        "exposed_outputs": [
+          "overlay",
+          "mask",
+          "count",
+          "centroids",
+          "data",
+          "collection"
+        ],
+        "thumbnail": true,
+        "preview_output": ""
+      }
+    ],
+    "connections": [
+      {
+        "source": "reference_gray",
+        "output": "image",
+        "target": "align",
+        "input": "reference"
+      },
+      {
+        "source": "sample_gray",
+        "output": "image",
+        "target": "align",
+        "input": "image"
+      },
+      {
+        "source": "reference_gray",
+        "output": "image",
+        "target": "difference",
+        "input": "image_a"
+      },
+      {
+        "source": "align",
+        "output": "image",
+        "target": "difference",
+        "input": "image_b"
+      },
+      {
+        "source": "difference",
+        "output": "image",
+        "target": "residual_threshold",
+        "input": "image"
+      },
+      {
+        "source": "residual_threshold",
+        "output": "image",
+        "target": "defects",
+        "input": "image"
+      }
+    ]
+  },
+  "inputs": {
+    "sample": {
+      "block": "sample_gray",
+      "port": "image"
+    },
+    "reference": {
+      "block": "reference_gray",
+      "port": "image"
+    },
+    "region": {
+      "block": "difference",
+      "port": "region"
+    }
+  },
+  "outputs": {
+    "aligned": {
+      "block": "align",
+      "port": "image"
+    },
+    "alignment_coefficient": {
+      "block": "align",
+      "port": "coefficient"
+    },
+    "residual": {
+      "block": "difference",
+      "port": "image"
+    },
+    "defect_mask": {
+      "block": "defects",
+      "port": "mask"
+    },
+    "defect_count": {
+      "block": "defects",
+      "port": "count"
+    },
+    "defects": {
+      "block": "defects",
+      "port": "collection"
+    },
+    "overlay": {
+      "block": "defects",
+      "port": "overlay"
+    }
+  }
+}

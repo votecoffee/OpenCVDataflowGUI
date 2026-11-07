@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fit",
+      "type": "cv.fit_pca",
+      "name": "Keep the main source of variation",
+      "parameters": {
+        "samples": [
+          [
+            6,
+            20
+          ],
+          [
+            14,
+            20
+          ],
+          [
+            10,
+            19
+          ],
+          [
+            10,
+            21
+          ]
+        ],
+        "selection": "variance",
+        "minimum_variance": 0.9
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "samples"
+      ],
+      "exposed_outputs": [
+        "model",
+        "component_count",
+        "explained_variance_ratios",
+        "retained_variance"
+      ],
+      "thumbnail": true,
+      "preview_output": "variance"
+    },
+    {
+      "id": "project",
+      "type": "cv.transform_pca",
+      "name": "Project rows to component scores",
+      "parameters": {
+        "samples": [
+          [
+            13,
+            21
+          ],
+          [
+            8,
+            18
+          ]
+        ],
+        "direction": "project"
+      },
+      "position": [
+        340,
+        0
+      ],
+      "exposed_inputs": [
+        "model",
+        "samples"
+      ],
+      "exposed_outputs": [
+        "samples",
+        "feature_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reconstruct",
+      "type": "cv.transform_pca",
+      "name": "Reconstruct the original features",
+      "parameters": {
+        "direction": "reconstruct"
+      },
+      "position": [
+        680,
+        0
+      ],
+      "exposed_inputs": [
+        "model",
+        "samples"
+      ],
+      "exposed_outputs": [
+        "samples",
+        "feature_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "fit",
+      "output": "model",
+      "target": "project",
+      "input": "model"
+    },
+    {
+      "source": "fit",
+      "output": "model",
+      "target": "reconstruct",
+      "input": "model"
+    },
+    {
+      "source": "project",
+      "output": "samples",
+      "target": "reconstruct",
+      "input": "samples"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Replay three noisy frames",
+      "parameters": {
+        "source_mode": "files",
+        "paths": [
+          "assets/frame_01.png",
+          "assets/frame_02.png",
+          "assets/frame_03.png"
+        ],
+        "repeat": "stop",
+        "filename_ticket": true,
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Collect a three-frame window",
+      "parameters": {
+        "size": 3
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "denoise",
+      "type": "cv.temporal_nlm",
+      "name": "Denoise the middle frame",
+      "parameters": {
+        "strength": 14,
+        "template_window": 3,
+        "search_window": 7
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "frames"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "denoise",
+      "input": "frames"
+    }
+  ]
+}

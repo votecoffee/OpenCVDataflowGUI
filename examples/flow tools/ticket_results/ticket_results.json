@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "ticket_source",
+      "type": "input.demo",
+      "name": "Demo image",
+      "parameters": {},
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ticket_gray",
+      "type": "cv.gray",
+      "name": "Grayscale",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        265.0,
+        45.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ticket_blur",
+      "type": "cv.gaussian_blur",
+      "name": "Gaussian blur",
+      "parameters": {
+        "kernel": 5,
+        "sigma": 1.2,
+        "kernel_y": 0,
+        "sigma_y": 0.0,
+        "border": "reflect",
+        "border_value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "algorithm_hint": "default"
+      },
+      "position": [
+        530.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ticket_threshold",
+      "type": "cv.threshold",
+      "name": "Threshold",
+      "parameters": {
+        "value": 100,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        795.0,
+        45.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ticket_inspect",
+      "type": "inspect.contours",
+      "name": "Find contours",
+      "parameters": {
+        "min_area": 1000.0,
+        "expected_count": 2,
+        "retrieval": "external",
+        "approximation": "simple",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        1060.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ticket_final",
+      "type": "inspect.final_judgment",
+      "name": "Final ticket judgment",
+      "parameters": {
+        "mode": "upstream",
+        "data": {
+          "station": "synthetic inspection"
+        }
+      },
+      "position": [
+        1325,
+        0
+      ],
+      "exposed_inputs": [
+        "value",
+        "passed"
+      ],
+      "exposed_outputs": [
+        "value",
+        "judgment"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ticket_accepted_preview",
+      "type": "cv.gray",
+      "name": "Only inspect passing images",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        1325,
+        340
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "input_failure_policies": {
+        "image": "reject_failed"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "source": "ticket_source",
+      "output": "image",
+      "target": "ticket_gray",
+      "input": "image"
+    },
+    {
+      "source": "ticket_gray",
+      "output": "image",
+      "target": "ticket_blur",
+      "input": "image"
+    },
+    {
+      "source": "ticket_blur",
+      "output": "image",
+      "target": "ticket_threshold",
+      "input": "image"
+    },
+    {
+      "source": "ticket_threshold",
+      "output": "image",
+      "target": "ticket_inspect",
+      "input": "image"
+    },
+    {
+      "source": "ticket_inspect",
+      "output": "data",
+      "target": "ticket_final",
+      "input": "value"
+    },
+    {
+      "source": "ticket_inspect",
+      "output": "overlay",
+      "target": "ticket_accepted_preview",
+      "input": "image"
+    }
+  ]
+}

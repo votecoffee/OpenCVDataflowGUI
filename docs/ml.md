@@ -1,8 +1,5 @@
 # DNN, LightGlue and Annoy
 
-Named projects in this guide refer to optional local examples. See the
-[public example gallery](../examples/public/README.md) for bundled projects.
-
 The **ML** toolbox tree groups tools into DNN inference, Classification, Embeddings,
 Feature matching and Vector search. ML borders use pink. Image, pose, region and
 data connections keep the ordinary canvas type colors. All these blocks use the
@@ -89,7 +86,7 @@ the generic inference block does not guess a YOLO/SSD/segmentation schema.
 all axes except a configured channel axis. It accepts one-image batches, with
 optional L2 normalization. A zero vector cannot be L2 normalized.
 
-Try DNN embedding, or:
+Try [DNN embedding](<../examples/opencv tools/dnn_embeddings/dnn_embeddings.json>), or:
 
 ```powershell
 .\.venv\Scripts\opencv-dataflow-run "examples/opencv tools/dnn_embeddings/dnn_embeddings.json" --repeat 3
@@ -131,7 +128,7 @@ reference/query coordinate contexts. Use the pose with existing pose-relative
 region/inspection blocks. This is one planar registration, not repeated-part
 multi-instance discovery.
 
-Try LightGlue matcher after preparing its weights, or:
+Try [LightGlue matcher](<../examples/custom tools/lightglue_match/lightglue_match.json>) after preparing its weights, or:
 
 ```powershell
 .\.venv\Scripts\opencv-dataflow-run "examples/custom tools/lightglue_match/lightglue_match.json"
@@ -172,7 +169,7 @@ and unloads it on close/reset. Optional prefault requests eager page loading.
 Training data does not have to travel through the graph after loading a file index.
 Opening a project does not load/map the index until it is run.
 
-Try Annoy search, or:
+Try [Annoy search](<../examples/custom tools/annoy_search/annoy_search.json>), or:
 
 ```powershell
 .\.venv\Scripts\opencv-dataflow-run "examples/custom tools/annoy_search/annoy_search.json" --repeat 3

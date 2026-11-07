@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "profile",
+      "type": "input.calibration",
+      "name": "Load the fitted lens profile",
+      "position": [
+        0,
+        170
+      ],
+      "parameters": {
+        "path": "assets/fitted_profile.json",
+        "path_base": "project"
+      },
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "profile"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Separate circle-grid view",
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "path": "assets/held_out_grid.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "validate",
+      "type": "calibration.validate_lens",
+      "name": "Check the held-out grid",
+      "position": [
+        320,
+        170
+      ],
+      "parameters": {
+        "detector": "circles_asymmetric",
+        "columns": 4,
+        "rows": 6,
+        "spacing": 10.0,
+        "max_rms_pixels": 0.3,
+        "max_point_error_pixels": 0.6,
+        "residual_scale": 35.0
+      },
+      "exposed_inputs": [
+        "image",
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "report",
+        "rms",
+        "max_error",
+        "result_graphics"
+      ],
+      "thumbnail": false,
+      "preview_output": "",
+      "graphics_mode": "on"
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show reprojection residuals",
+      "position": [
+        650,
+        0
+      ],
+      "parameters": {},
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "profile",
+      "output": "profile",
+      "target": "validate",
+      "input": "calibration"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "validate",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "validate",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}

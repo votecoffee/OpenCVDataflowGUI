@@ -7,8 +7,16 @@ __pycache__/
 build/
 dist/
 .local/
-# Keep tool examples local. Publish only individually reviewed counterparts and assets.
+# Shared example categories and the curated public gallery.
 /examples/*
+!/examples/README.md
+!/examples/applications/
+!/examples/assets/
+!/examples/custom tools/
+!/examples/demos/
+!/examples/flow tools/
+!/examples/opencv tools/
+!/examples/user_tools/
 !/examples/public/
 /examples/public/**
 !/examples/public/assets/
@@ -30,4 +38,12 @@ dist/
 !/examples/public/pcb_outline/pcb_outline.json
 !/examples/public/pcb_motion/README.md
 !/examples/public/pcb_motion/pcb_motion.json
+# Local examples and downloaded images with separate rights.
+/examples/private/
+/examples/**/[Cc]ognex[Tt]ools/
+/examples/applications/build_geometric_examples.py
+/examples/applications/needle_row/
+/examples/applications/tray_grid/
+/examples/applications/weighted_blocks/
+/examples/assets/lena.jpg
 /applications/

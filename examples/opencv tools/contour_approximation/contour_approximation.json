@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Chamfered part mask",
+      "parameters": {
+        "path": "assets/chamfered_part.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "contours",
+      "type": "inspect.contours",
+      "name": "Find contours",
+      "parameters": {
+        "min_area": 100.0,
+        "expected_count": 1,
+        "retrieval": "external",
+        "approximation": "none",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "simplify",
+      "type": "inspect.approximate_contour",
+      "name": "Approximate contour",
+      "parameters": {
+        "item_index": 0,
+        "closed": true,
+        "epsilon_mode": "pixels",
+        "epsilon_pixels": 2.0,
+        "length_fraction": 0.01
+      },
+      "position": [
+        700,
+        0
+      ],
+      "exposed_inputs": [
+        "contour",
+        "image"
+      ],
+      "exposed_outputs": [
+        "points",
+        "vertex_count",
+        "measurements",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "contours",
+      "input": "image"
+    },
+    {
+      "source": "contours",
+      "output": "collection",
+      "target": "simplify",
+      "input": "contour"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "simplify",
+      "input": "image"
+    }
+  ]
+}

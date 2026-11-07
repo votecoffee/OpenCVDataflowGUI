@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "lg_images",
+      "type": "input.pattern_demo",
+      "name": "Pattern training demo images",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "shape_reference",
+        "texture_reference",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "lg_reference",
+      "type": "ml.lightglue_features",
+      "name": "LightGlue SIFT features",
+      "parameters": {
+        "max_features": 128,
+        "octave_layers": 3,
+        "contrast_threshold": 0.0066667,
+        "edge_threshold": 10.0,
+        "sigma": 1.6
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "lg_match",
+      "type": "ml.lightglue",
+      "name": "LightGlue feature matcher",
+      "parameters": {
+        "max_features": 256,
+        "octave_layers": 3,
+        "contrast_threshold": 0.0066667,
+        "edge_threshold": 10.0,
+        "sigma": 1.6,
+        "weights_path": "../../../.local/models/sift_lightglue.pth",
+        "device": "cpu",
+        "layers": 9,
+        "filter_threshold": 0.1,
+        "depth_confidence": 0.95,
+        "width_confidence": 0.99,
+        "flash": true,
+        "mixed_precision": false,
+        "minimum_matches": 8,
+        "minimum_inliers": 6,
+        "minimum_inlier_ratio": 0.5,
+        "geometry": "ransac",
+        "ransac_threshold": 3.0,
+        "ransac_confidence": 0.995,
+        "ransac_iterations": 2000
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reference",
+        "reference_features",
+        "reference_mask",
+        "reference_region"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "transform",
+        "pose",
+        "count",
+        "inliers",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "lg_images",
+      "output": "texture_reference",
+      "target": "lg_reference",
+      "input": "image"
+    },
+    {
+      "source": "lg_images",
+      "output": "image",
+      "target": "lg_match",
+      "input": "image"
+    },
+    {
+      "source": "lg_reference",
+      "output": "features",
+      "target": "lg_match",
+      "input": "reference_features"
+    }
+  ]
+}

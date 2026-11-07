@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Calibration patch with extrema",
+      "parameters": {
+        "path": "assets/patch.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Sample central strip",
+      "parameters": {
+        "rectangle": [
+          16,
+          16,
+          128,
+          64
+        ]
+      },
+      "position": [
+        330,
+        200
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "summary",
+      "type": "cv.image_statistics",
+      "name": "Selected patch statistics",
+      "parameters": {
+        "percentiles": [
+          1,
+          50,
+          99
+        ],
+        "statistic": "mean"
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "region"
+      ],
+      "exposed_outputs": [
+        "summary",
+        "selected_count",
+        "value",
+        "minimum_location",
+        "maximum_location",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show minimum and maximum",
+      "parameters": {},
+      "position": [
+        990,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "summary",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "summary",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "summary",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}

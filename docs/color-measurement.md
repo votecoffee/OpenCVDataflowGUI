@@ -1,8 +1,5 @@
 # Lab color measurement
 
-Named projects in this guide refer to optional local examples. See the
-[public example gallery](../examples/public/README.md) for bundled projects.
-
 **Measure Lab color** measures the selected image area. Connect a mask or
 region, or leave both disconnected to measure the whole image. The block
 outputs mean CIELAB coordinates, per-channel standard deviations, the
@@ -18,7 +15,7 @@ sample-minus-reference channel differences. CIEDE2000 uses configurable
 lightness, chroma and hue divisors.
 See the [CIEDE2000 reference data and implementation notes](https://hajim.rochester.edu/ece/sites/gsharma/ciede2000/).
 
-Open the Lab color match example, or run:
+Open the [Lab color match example](../examples/applications/lab_color_match/lab_color_match.json), or run:
 
 ```powershell
 opencv-dataflow-run examples/applications/lab_color_match/lab_color_match.json
@@ -36,11 +33,11 @@ camera settings and reference-white assumptions.
 **Classify Lab color** ranks named references by CIE76 or CIEDE2000.
 Set a maximum distance and, when multiple references exist, a minimum gap
 to the second-closest reference. Rejected samples retain their ranking
-and swatches for review. Classification example
+and swatches for review. [Classification example](../examples/applications/lab_color_classification/README.md)
 
 ## Fit and apply a color-chart correction
 
-Open the color-chart calibration example
+Open the [color-chart calibration example](<../examples/opencv tools/color_chart_calibration/color_chart_calibration.json>)
 or run `opencv-dataflow-run "examples/opencv tools/color_chart_calibration/color_chart_calibration.json"`.
 
 1. **Detect color chart** finds a Macbeth, Digital SG or Vinyl chart and

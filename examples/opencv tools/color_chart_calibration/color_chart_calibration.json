@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/synthetic_color_chart.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "chart",
+      "type": "calibration.detect_color_chart",
+      "name": "Detect color chart",
+      "parameters": {
+        "chart": "macbeth",
+        "maximum_charts": 1,
+        "minimum_charts": 1,
+        "maximum_detection_error": 0.1,
+        "minimum_image_size": 1000,
+        "draw_overlay": true
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "charts",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "fit",
+      "type": "calibration.fit_ccm",
+      "name": "Fit color correction model",
+      "parameters": {
+        "chart_index": 0,
+        "reference_chart": "auto",
+        "reference_rgb": [],
+        "reference_encoding": "srgb",
+        "matrix_type": "linear",
+        "distance": "ciede2000",
+        "linearization": "gamma",
+        "gamma": 2.2,
+        "polynomial_degree": 3,
+        "initial": "least_squares",
+        "saturation_low": 0.0,
+        "saturation_high": 0.98,
+        "weights": [],
+        "lightness_weight_exponent": 0.0,
+        "maximum_iterations": 500,
+        "epsilon": 0.0001
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "patches",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "model",
+        "matrix",
+        "statistics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "correct",
+      "type": "calibration.apply_ccm",
+      "name": "Apply color correction model",
+      "parameters": {
+        "model": {}
+      },
+      "position": [
+        960,
+        150
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "model"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "chart",
+      "input": "image"
+    },
+    {
+      "source": "chart",
+      "output": "charts",
+      "target": "fit",
+      "input": "patches"
+    },
+    {
+      "source": "fit",
+      "output": "model",
+      "target": "correct",
+      "input": "model"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "correct",
+      "input": "image"
+    }
+  ]
+}

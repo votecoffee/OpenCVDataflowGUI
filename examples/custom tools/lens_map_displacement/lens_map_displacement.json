@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "profile",
+      "type": "input.calibration",
+      "name": "Load the synthetic lens profile",
+      "parameters": {
+        "path": "assets/synthetic_lens.json",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "profile"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "maps",
+      "type": "calibration.lens_maps",
+      "name": "Build the lens maps",
+      "parameters": {},
+      "position": [
+        315,
+        0
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "map_x",
+        "map_y"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "diagnostics",
+      "type": "calibration.lens_map_displacement",
+      "name": "Measure lens displacement",
+      "position": [
+        630,
+        0
+      ],
+      "parameters": {
+        "arrow_spacing": 24
+      },
+      "exposed_inputs": [
+        "map_x",
+        "map_y"
+      ],
+      "exposed_outputs": [
+        "heatmap",
+        "magnitude",
+        "valid_mask",
+        "maximum",
+        "valid_fraction",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": "heatmap",
+      "graphics_mode": "on"
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show displacement directions",
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {},
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "profile",
+      "output": "profile",
+      "target": "maps",
+      "input": "calibration"
+    },
+    {
+      "source": "maps",
+      "output": "map_x",
+      "target": "diagnostics",
+      "input": "map_x"
+    },
+    {
+      "source": "maps",
+      "output": "map_y",
+      "target": "diagnostics",
+      "input": "map_y"
+    },
+    {
+      "source": "diagnostics",
+      "output": "heatmap",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "diagnostics",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}

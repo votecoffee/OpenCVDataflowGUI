@@ -1,0 +1,392 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "pose_images",
+      "type": "input.pattern_demo",
+      "name": "References and scene",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "shape_reference",
+        "texture_reference",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_train",
+      "type": "pattern.train_shape",
+      "name": "Train geometry",
+      "parameters": {
+        "feature_mode": "edges",
+        "blur_kernel": 3,
+        "blur_sigma": 1.0,
+        "edge_low": 50.0,
+        "edge_high": 150.0,
+        "edge_aperture": "3",
+        "edge_l2": true,
+        "max_points": 512,
+        "min_points": 8,
+        "corner_quality": 0.01,
+        "corner_distance": 3.0,
+        "corner_block": 3,
+        "corner_gradient": "3",
+        "corner_harris": false,
+        "corner_k": 0.04,
+        "line_votes": 20,
+        "line_min_length": 10.0,
+        "line_max_gap": 3.0,
+        "line_rho": 1.0,
+        "line_theta_degrees": 1.0,
+        "circle_dp": 1.2,
+        "circle_min_distance": 10.0,
+        "circle_threshold": 20.0,
+        "circle_min_radius": 0,
+        "circle_max_radius": 0
+      },
+      "position": [
+        300,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "model",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_match",
+      "type": "pattern.match_shape",
+      "name": "Find geometry and circle pose",
+      "parameters": {
+        "feature_mode": "edges",
+        "blur_kernel": 3,
+        "blur_sigma": 1.0,
+        "edge_low": 50.0,
+        "edge_high": 150.0,
+        "edge_aperture": "3",
+        "edge_l2": true,
+        "max_points": 512,
+        "min_points": 8,
+        "corner_quality": 0.01,
+        "corner_distance": 3.0,
+        "corner_block": 3,
+        "corner_gradient": "3",
+        "corner_harris": false,
+        "corner_k": 0.04,
+        "line_votes": 20,
+        "line_min_length": 10.0,
+        "line_max_gap": 3.0,
+        "line_rho": 1.0,
+        "line_theta_degrees": 1.0,
+        "circle_dp": 1.2,
+        "circle_min_distance": 10.0,
+        "circle_threshold": 20.0,
+        "circle_min_radius": 0,
+        "circle_max_radius": 0,
+        "pose_offset_x": 20.5,
+        "pose_offset_y": -17.5,
+        "pose_offset_angle": 0.0,
+        "rotation_min": -20.0,
+        "rotation_max": 20.0,
+        "rotation_step": 5.0,
+        "scale_min": 1.0,
+        "scale_max": 1.0,
+        "scale_step": 0.1,
+        "distance_tolerance": 3.0,
+        "min_score": 0.7,
+        "min_coverage": 0.8,
+        "max_matches": 1,
+        "max_overlap": 0.3
+      },
+      "position": [
+        620,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "model",
+        "training_mask",
+        "training_region"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count",
+        "score",
+        "transform",
+        "pose",
+        "points",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "pose_offset",
+      "type": "pose.offset",
+      "name": "Adjust inspection origin",
+      "parameters": {
+        "pose_offset_x": 0.0,
+        "pose_offset_y": 0.0,
+        "pose_offset_angle": 0.0
+      },
+      "position": [
+        960,
+        0
+      ],
+      "exposed_inputs": [
+        "pose"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "points",
+        "angle_degrees"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_region",
+      "type": "region.pose",
+      "name": "Circle-relative inspection",
+      "parameters": {
+        "shape": "circle",
+        "rectangle": [
+          -20,
+          -20,
+          40,
+          40
+        ],
+        "center": [
+          0,
+          0
+        ],
+        "radius": 18,
+        "vertices": [
+          [
+            -20,
+            -20
+          ],
+          [
+            20,
+            -20
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        620,
+        420
+      ],
+      "exposed_inputs": [
+        "image",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "pose_histogram",
+      "type": "inspect.histogram",
+      "name": "Inspect positioned circle",
+      "parameters": {
+        "bins": 256,
+        "range_mode": "automatic",
+        "range_min": 0.0,
+        "range_max": 1.0,
+        "include_alpha": false
+      },
+      "position": [
+        960,
+        420
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_mask",
+      "type": "mask.shape",
+      "name": "Draw a local mask",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          -18,
+          -18,
+          36,
+          36
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        620,
+        820
+      ],
+      "exposed_inputs": [
+        "image",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "pose_mask_histogram",
+      "type": "inspect.histogram",
+      "name": "Inspect editable mask",
+      "parameters": {
+        "bins": 256,
+        "range_mode": "automatic",
+        "range_min": 0.0,
+        "range_max": 1.0,
+        "include_alpha": false
+      },
+      "position": [
+        960,
+        820
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "pose_images",
+      "output": "shape_reference",
+      "target": "pose_train",
+      "input": "image"
+    },
+    {
+      "source": "pose_images",
+      "output": "image",
+      "target": "pose_match",
+      "input": "image"
+    },
+    {
+      "source": "pose_train",
+      "output": "model",
+      "target": "pose_match",
+      "input": "model"
+    },
+    {
+      "source": "pose_match",
+      "output": "pose",
+      "target": "pose_offset",
+      "input": "pose"
+    },
+    {
+      "source": "pose_offset",
+      "output": "pose",
+      "target": "pose_region",
+      "input": "pose"
+    },
+    {
+      "source": "pose_images",
+      "output": "image",
+      "target": "pose_region",
+      "input": "image"
+    },
+    {
+      "source": "pose_images",
+      "output": "image",
+      "target": "pose_histogram",
+      "input": "image"
+    },
+    {
+      "source": "pose_region",
+      "output": "region",
+      "target": "pose_histogram",
+      "input": "region"
+    },
+    {
+      "source": "pose_images",
+      "output": "image",
+      "target": "pose_mask",
+      "input": "image"
+    },
+    {
+      "source": "pose_offset",
+      "output": "pose",
+      "target": "pose_mask",
+      "input": "pose"
+    },
+    {
+      "source": "pose_images",
+      "output": "image",
+      "target": "pose_mask_histogram",
+      "input": "image"
+    },
+    {
+      "source": "pose_mask",
+      "output": "mask",
+      "target": "pose_mask_histogram",
+      "input": "mask"
+    }
+  ]
+}

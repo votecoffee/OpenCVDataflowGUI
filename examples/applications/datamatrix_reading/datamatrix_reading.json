@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/datamatrix_lot.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "read",
+      "type": "inspect.read_zxing",
+      "name": "Read barcodes (ZXing)",
+      "parameters": {
+        "minimum_reads": 1,
+        "draw_overlay": true,
+        "format": "DataMatrix",
+        "try_rotate": true,
+        "try_downscale": true,
+        "try_invert": true,
+        "text_mode": "HRI",
+        "binarizer": "LocalAverage",
+        "is_pure": false,
+        "ean_add_on": "Ignore",
+        "report_decode_errors": false
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "codes",
+        "count",
+        "overlay",
+        "errors"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "verify",
+      "type": "inspect.verify_text",
+      "name": "Verify decoded text",
+      "parameters": {
+        "comparison": "exact",
+        "expected": "LOT-0042",
+        "case_sensitive": true,
+        "trim": true,
+        "minimum_length": 1,
+        "maximum_length": 0,
+        "character_set": "any",
+        "custom_characters": "",
+        "aggregate": "all"
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "text"
+      ],
+      "exposed_outputs": [
+        "checks",
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "read",
+      "input": "image"
+    },
+    {
+      "source": "read",
+      "output": "codes",
+      "target": "verify",
+      "input": "text"
+    }
+  ]
+}

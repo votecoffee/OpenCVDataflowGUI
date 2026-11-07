@@ -1,8 +1,5 @@
 # Port payloads, channels and pyramids
 
-Named projects in this guide refer to optional local examples. See the
-[public example gallery](../examples/public/README.md) for bundled projects.
-
 Ports have a primary value and an optional JSON object payload. Primary values
 remain ordinary images, numbers and structured data for existing Python blocks.
 Payloads travel with graph connections and nested ToolBlocks. Runtime snapshots
@@ -152,7 +149,7 @@ the actual primary type at execution. A packet does not bypass image/data checks
 
 ## Example project
 
-Open channels and pyramids. It round-trips BGR channels, adds a recipe payload,
+Open [channels and pyramids](<../examples/opencv tools/channels_pyramids/channels_pyramids.json>). It round-trips BGR channels, adds a recipe payload,
 creates four image levels, detects two blobs at level 2, maps their centroids into
 the largest image, previews level 1 and computes a largest-level histogram.
 

@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Synthetic inspection target",
+      "parameters": {},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "left",
+      "type": "region.shape",
+      "name": "Left seed region",
+      "parameters": {"shape": "circle", "center": [120, 180], "radius": 24},
+      "position": [310, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["region"],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "right",
+      "type": "region.shape",
+      "name": "Right seed region",
+      "parameters": {"shape": "circle", "center": [360, 180], "radius": 24},
+      "position": [310, 230],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["region"],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "union",
+      "type": "region.combine",
+      "name": "Build the seed mask",
+      "parameters": {"operation": "union"},
+      "position": [620, 0],
+      "exposed_inputs": ["image", "region_a", "region_b"],
+      "exposed_outputs": ["mask"],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "distance",
+      "type": "cv.distance_labels",
+      "name": "Assign every pixel to its nearest seed",
+      "parameters": {"distance_type": "l1", "selected_label": 1},
+      "position": [930, 0],
+      "exposed_inputs": ["image", "mask", "region"],
+      "exposed_outputs": ["distance", "labels", "selected_mask", "label_count", "seed_pixel_count"],
+      "thumbnail": true,
+      "preview_output": "labels"
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "left", "input": "image"},
+    {"source": "source", "output": "image", "target": "right", "input": "image"},
+    {"source": "source", "output": "image", "target": "union", "input": "image"},
+    {"source": "left", "output": "region", "target": "union", "input": "region_a"},
+    {"source": "right", "output": "region", "target": "union", "input": "region_b"},
+    {"source": "union", "output": "mask", "target": "distance", "input": "image"}
+  ]
+}

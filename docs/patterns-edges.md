@@ -1,11 +1,8 @@
 # Pattern training and oriented edges
 
-Named projects in this guide refer to optional local examples. See the
-[public example gallery](../examples/public/README.md) for bundled projects.
-
 ## Example
 
-Open trained patterns and edges and press F5.
+Open [trained patterns and edges](<../examples/custom tools/trained_patterns/trained_patterns.json>) and press F5.
 Synthetic reference images train two patterns,
 which are located in a larger scene. A rectangular region isolates a vertical bar.
 Expected results are:

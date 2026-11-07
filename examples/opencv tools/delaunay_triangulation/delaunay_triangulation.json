@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Five dots",
+      "parameters": {
+        "path": "assets/dots.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "contours",
+      "type": "inspect.contours",
+      "name": "Find the dot centers",
+      "parameters": {
+        "expected_count": 5,
+        "min_area": 40
+      },
+      "position": [
+        305,
+        150
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "triangulation",
+      "type": "inspect.delaunay_triangulation",
+      "name": "Connect the centers",
+      "parameters": {},
+      "position": [
+        640,
+        150
+      ],
+      "exposed_inputs": [
+        "collection"
+      ],
+      "exposed_outputs": [
+        "triangles",
+        "edges",
+        "edge_lengths",
+        "triangle_count",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "graphics_mode": "on"
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show the Delaunay edges",
+      "parameters": {},
+      "position": [
+        975,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "contours",
+      "input": "image"
+    },
+    {
+      "source": "contours",
+      "output": "collection",
+      "target": "triangulation",
+      "input": "collection"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "triangulation",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}

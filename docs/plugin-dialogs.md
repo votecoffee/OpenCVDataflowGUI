@@ -1,8 +1,5 @@
 # Plugin dialogs
 
-Named projects in this guide refer to optional local examples. See the
-[public example gallery](../examples/public/README.md) for bundled projects.
-
 A trusted Python plugin can add a button to a block's **Configuration**
 inspector. Set `plugin_dialog_label` on the block class and implement
 `create_plugin_dialog(self, parent, parameters, context)`. Registration stays
@@ -130,6 +127,6 @@ select its pyramid level explicitly. **Capture image** emits a private
 same capture from your own controls. Each picker keeps its own selection, so
 a dialog can use separate pickers for reference and inspection images.
 
-See the custom invert plugin
-for a working factory and its project
+See the [custom invert plugin](../examples/user_tools/custom_invert/custom_invert.py)
+for a working factory and [its project](../examples/user_tools/custom_invert/README.md)
 for the desktop and headless workflows.

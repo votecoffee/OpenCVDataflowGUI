@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "16-bit RGBA test image",
+      "parameters": {
+        "path": "assets/rgba16.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "rgba",
+        "pixel_depth": "uint16",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "encode",
+      "type": "cv.encode_image",
+      "name": "Encode PNG in memory",
+      "parameters": {
+        "codec": "png",
+        "png_compression": 6
+      },
+      "position": [
+        330,
+        200
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "encoded",
+        "byte_count"
+      ]
+    },
+    {
+      "id": "decode",
+      "type": "cv.decode_image",
+      "name": "Decode and restore RGBA",
+      "parameters": {},
+      "position": [
+        660,
+        200
+      ],
+      "exposed_inputs": [
+        "encoded"
+      ],
+      "exposed_outputs": [
+        "image"
+      ]
+    },
+    {
+      "id": "compare",
+      "type": "inspect.image_quality",
+      "name": "Check lossless reconstruction",
+      "parameters": {
+        "metric": "mae",
+        "check_threshold": true,
+        "threshold": 0
+      },
+      "position": [
+        990,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "preview_output": "absolute error"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "encode",
+      "input": "image"
+    },
+    {
+      "source": "encode",
+      "output": "encoded",
+      "target": "decode",
+      "input": "encoded"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "compare",
+      "input": "image_a"
+    },
+    {
+      "source": "decode",
+      "output": "image",
+      "target": "compare",
+      "input": "image_b"
+    }
+  ]
+}

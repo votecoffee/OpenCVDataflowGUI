@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "pair",
+      "type": "input.stereo_demo",
+      "name": "Synthetic stereo / RGB-D",
+      "parameters": {
+        "width": 320,
+        "height": 180,
+        "disparity": 8,
+        "focal_length": 200.0,
+        "baseline_m": 0.12,
+        "seed": 3
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "left",
+        "right",
+        "depth",
+        "camera",
+        "rig",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "project",
+      "type": "3d.depth_cloud",
+      "name": "Depth to point cloud",
+      "parameters": {
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m",
+        "sample_step": 4,
+        "max_points": 200000
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filter",
+      "type": "3d.cloud_filter",
+      "name": "Filter point cloud",
+      "parameters": {
+        "minimum": [
+          -1,
+          -1,
+          2.9
+        ],
+        "maximum": [
+          1,
+          1,
+          3.1
+        ],
+        "invert": false,
+        "sample_step": 1,
+        "minimum_points": 1
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample",
+      "type": "3d.cloud_voxel",
+      "name": "Voxel-sample point cloud",
+      "parameters": {
+        "voxel_size": 0.08,
+        "mode": "centroid"
+      },
+      "position": [
+        990,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "normals",
+      "type": "3d.cloud_normals",
+      "name": "Estimate point-cloud normals",
+      "parameters": {
+        "neighbors": 10,
+        "flip_viewpoint": true,
+        "viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        1320,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "3d.cloud_measure",
+      "name": "Measure point cloud",
+      "parameters": {},
+      "position": [
+        1650,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "view",
+      "type": "3d.cloud_render",
+      "name": "Render point cloud",
+      "parameters": {
+        "width": 640,
+        "height": 480,
+        "yaw_degrees": 25.0,
+        "pitch_degrees": -20.0,
+        "max_drawn_points": 20000,
+        "point_size": 2
+      },
+      "position": [
+        1650,
+        350
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "pair",
+      "output": "depth",
+      "target": "project",
+      "input": "depth"
+    },
+    {
+      "source": "pair",
+      "output": "left",
+      "target": "project",
+      "input": "image"
+    },
+    {
+      "source": "pair",
+      "output": "camera",
+      "target": "project",
+      "input": "camera"
+    },
+    {
+      "source": "project",
+      "output": "cloud",
+      "target": "filter",
+      "input": "cloud"
+    },
+    {
+      "source": "filter",
+      "output": "cloud",
+      "target": "sample",
+      "input": "cloud"
+    },
+    {
+      "source": "sample",
+      "output": "cloud",
+      "target": "normals",
+      "input": "cloud"
+    },
+    {
+      "source": "normals",
+      "output": "cloud",
+      "target": "measure",
+      "input": "cloud"
+    },
+    {
+      "source": "normals",
+      "output": "cloud",
+      "target": "view",
+      "input": "cloud"
+    }
+  ]
+}

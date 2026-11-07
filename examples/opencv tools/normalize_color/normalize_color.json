@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Color gradients",
+      "parameters": {
+        "path": "assets/color_patches.png",
+        "path_base": "project",
+        "color_format": "bgr"
+      },
+      "position": [
+        0,
+        110
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Select center patch",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          24,
+          16,
+          80,
+          40
+        ]
+      },
+      "position": [
+        300,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "joint",
+      "type": "cv.normalize",
+      "name": "Shared channel scale",
+      "parameters": {
+        "channel_mode": "joint",
+        "outside_selection": "preserve",
+        "pixel_depth": "same"
+      },
+      "position": [
+        610,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "per_channel",
+      "type": "cv.normalize",
+      "name": "Independent channel scales",
+      "parameters": {
+        "channel_mode": "per_channel",
+        "outside_selection": "preserve",
+        "pixel_depth": "same"
+      },
+      "position": [
+        610,
+        220
+      ],
+      "exposed_inputs": [
+        "image",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "joint",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "joint",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "per_channel",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "per_channel",
+      "input": "region"
+    }
+  ]
+}

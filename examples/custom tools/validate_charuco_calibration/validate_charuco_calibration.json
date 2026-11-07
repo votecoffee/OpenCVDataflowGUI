@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Separate cropped target",
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "path": "assets/held_out_board.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "profile",
+      "type": "input.calibration",
+      "name": "Load the fitted lens profile",
+      "position": [
+        0,
+        250
+      ],
+      "parameters": {
+        "path": "assets/fitted_profile.json",
+        "path_base": "project"
+      },
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "profile"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "observe",
+      "type": "calibration.charuco",
+      "name": "Identify the visible corners",
+      "position": [
+        320,
+        0
+      ],
+      "parameters": {},
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "corner_count"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "validate",
+      "type": "calibration.validate_lens",
+      "name": "Check the held-out corners",
+      "position": [
+        645,
+        160
+      ],
+      "parameters": {
+        "max_rms_pixels": 0.35,
+        "max_point_error_pixels": 0.65,
+        "residual_scale": 24.0
+      },
+      "exposed_inputs": [
+        "image",
+        "calibration",
+        "observation"
+      ],
+      "exposed_outputs": [
+        "report",
+        "rms",
+        "max_error",
+        "result_graphics"
+      ],
+      "thumbnail": false,
+      "preview_output": "",
+      "graphics_mode": "on"
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show the reprojection errors",
+      "position": [
+        965,
+        0
+      ],
+      "parameters": {},
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "observe",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "validate",
+      "input": "image"
+    },
+    {
+      "source": "observe",
+      "output": "observation",
+      "target": "validate",
+      "input": "observation"
+    },
+    {
+      "source": "profile",
+      "output": "profile",
+      "target": "validate",
+      "input": "calibration"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "validate",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}

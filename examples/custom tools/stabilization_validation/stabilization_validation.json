@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "frames",
+      "type": "input.file",
+      "name": "Two-plane camera motion",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/frame-00.png",
+          "assets/frame-01.png",
+          "assets/frame-02.png",
+          "assets/frame-03.png",
+          "assets/frame-04.png",
+          "assets/frame-05.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "background",
+      "type": "region.shape",
+      "name": "Far plane for fitting",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          15,
+          18,
+          225,
+          53
+        ]
+      },
+      "position": [
+        285,
+        -170
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "check",
+      "type": "region.shape",
+      "name": "Near plane for validation",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          15,
+          108,
+          225,
+          54
+        ]
+      },
+      "position": [
+        285,
+        165
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "baseline",
+      "type": "sequence.stabilize_camera",
+      "name": "Stabilize from far plane",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "motion_model": "translation",
+        "follow": 0.0,
+        "max_features": 240,
+        "feature_quality": 0.01,
+        "feature_spacing": 8.0,
+        "tracking_window": 21,
+        "max_pyramid_level": 3,
+        "forward_backward_pixels": 1.0,
+        "max_patch_error": 30.0,
+        "inlier_pixels": 2.0,
+        "min_inliers": 12,
+        "min_inlier_ratio": 0.5,
+        "max_step_pixels": 40.0,
+        "max_step_degrees": 12.0,
+        "max_step_scale_ratio": 1.15,
+        "min_coverage_fraction": 0.65,
+        "interpolation": "linear"
+      },
+      "position": [
+        635,
+        -170
+      ],
+      "exposed_inputs": [
+        "image",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "transform",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "checked",
+      "type": "sequence.stabilize_camera",
+      "name": "Require near-plane agreement",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "motion_model": "translation",
+        "follow": 0.0,
+        "max_features": 240,
+        "feature_quality": 0.01,
+        "feature_spacing": 8.0,
+        "tracking_window": 21,
+        "max_pyramid_level": 3,
+        "forward_backward_pixels": 1.0,
+        "max_patch_error": 30.0,
+        "inlier_pixels": 2.0,
+        "min_inliers": 12,
+        "min_inlier_ratio": 0.5,
+        "max_step_pixels": 40.0,
+        "max_step_degrees": 12.0,
+        "max_step_scale_ratio": 1.15,
+        "min_coverage_fraction": 0.65,
+        "interpolation": "linear",
+        "max_validation_error_pixels": 2.5
+      },
+      "position": [
+        635,
+        165
+      ],
+      "exposed_inputs": [
+        "image",
+        "region",
+        "validation_region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "transform",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "background",
+      "input": "image"
+    },
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "check",
+      "input": "image"
+    },
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "baseline",
+      "input": "image"
+    },
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "checked",
+      "input": "image"
+    },
+    {
+      "source": "background",
+      "output": "region",
+      "target": "baseline",
+      "input": "region"
+    },
+    {
+      "source": "background",
+      "output": "region",
+      "target": "checked",
+      "input": "region"
+    },
+    {
+      "source": "check",
+      "output": "region",
+      "target": "checked",
+      "input": "validation_region"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Distorted grid",
+      "parameters": {
+        "path": "assets/distorted_grid.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        315,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "maps",
+      "type": "input.lens_maps",
+      "name": "Load the saved lens maps",
+      "parameters": {
+        "path": "assets/synthetic_maps.npz",
+        "path_base": "project"
+      },
+      "position": [
+        315,
+        190
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "map_x",
+        "map_y",
+        "rectified_calibration"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "remap",
+      "type": "cv.remap",
+      "name": "Correct the grid",
+      "parameters": {},
+      "position": [
+        645,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "map_x",
+        "map_y"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "remap",
+      "input": "image"
+    },
+    {
+      "source": "maps",
+      "output": "map_x",
+      "target": "remap",
+      "input": "map_x"
+    },
+    {
+      "source": "maps",
+      "output": "map_y",
+      "target": "remap",
+      "input": "map_y"
+    }
+  ]
+}

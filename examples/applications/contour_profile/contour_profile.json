@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Nominal part silhouette",
+      "parameters": {
+        "path": "assets/reference/part.png",
+        "path_base": "project",
+        "color_format": "gray",
+        "filename_ticket": true
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_boundary",
+      "type": "inspect.contours",
+      "name": "Nominal outer boundary",
+      "parameters": {
+        "expected_count": 1
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample",
+      "type": "input.file",
+      "name": "Sample part silhouette",
+      "parameters": {
+        "path": "assets/sample/part.png",
+        "path_base": "project",
+        "color_format": "gray",
+        "filename_ticket": true
+      },
+      "position": [
+        0,
+        230
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample_boundary",
+      "type": "inspect.contours",
+      "name": "Sample outer boundary",
+      "parameters": {
+        "expected_count": 1
+      },
+      "position": [
+        320,
+        230
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "profile",
+      "type": "inspect.contour_profile",
+      "name": "Compare profile to nominal",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "tolerance": 10.0
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample"
+      ],
+      "exposed_outputs": [
+        "maximum_deviation",
+        "rms_deviation",
+        "violation_count",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Compare both outlines",
+      "parameters": {},
+      "position": [
+        980,
+        230
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_boundary",
+      "input": "image"
+    },
+    {
+      "source": "sample",
+      "output": "image",
+      "target": "sample_boundary",
+      "input": "image"
+    },
+    {
+      "source": "reference_boundary",
+      "output": "collection",
+      "target": "profile",
+      "input": "reference"
+    },
+    {
+      "source": "sample_boundary",
+      "output": "collection",
+      "target": "profile",
+      "input": "sample"
+    },
+    {
+      "source": "sample",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "profile",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}

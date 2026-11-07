@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "coord_counter",
+      "type": "input.counter",
+      "name": "Simulated PLC part counter",
+      "parameters": {
+        "start": 1,
+        "step": 1
+      },
+      "position": [
+        0,
+        160
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "value",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "coord_left",
+      "type": "input.demo",
+      "name": "Synthetic left camera",
+      "parameters": {},
+      "position": [
+        285,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "external",
+        "value": 1
+      }
+    },
+    {
+      "id": "coord_right",
+      "type": "input.demo",
+      "name": "Synthetic right camera",
+      "parameters": {},
+      "position": [
+        285,
+        380
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "external",
+        "value": 1
+      }
+    },
+    {
+      "id": "coord_inputs",
+      "type": "flow.coordinate",
+      "name": "Coordinate inputs",
+      "parameters": {
+        "inputs": 2,
+        "mode": "ticket_all",
+        "max_wait_ms": 1000.0,
+        "timeout": "discard",
+        "warmup": "all",
+        "max_age_ms": 1000.0,
+        "primary": "input_1",
+        "duplicates": "error",
+        "late": "ignore",
+        "history_size": 4096,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        600,
+        160
+      ],
+      "exposed_inputs": [
+        "input_1",
+        "input_2",
+        "input_3",
+        "input_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "value",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "coord_histogram",
+      "type": "inspect.histogram",
+      "name": "Primary camera histogram",
+      "parameters": {
+        "bins": 256,
+        "range_mode": "automatic",
+        "range_min": 0.0,
+        "range_max": 1.0,
+        "include_alpha": false
+      },
+      "position": [
+        915,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "coord_final",
+      "type": "inspect.final_judgment",
+      "name": "Final ticket judgment",
+      "parameters": {
+        "mode": "upstream",
+        "data": {}
+      },
+      "position": [
+        915,
+        380
+      ],
+      "exposed_inputs": [
+        "value",
+        "passed"
+      ],
+      "exposed_outputs": [
+        "value",
+        "judgment"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "coord_counter",
+      "output": "value",
+      "target": "coord_left",
+      "input": "ticket"
+    },
+    {
+      "source": "coord_counter",
+      "output": "value",
+      "target": "coord_right",
+      "input": "ticket"
+    },
+    {
+      "source": "coord_left",
+      "output": "image",
+      "target": "coord_inputs",
+      "input": "input_1"
+    },
+    {
+      "source": "coord_right",
+      "output": "image",
+      "target": "coord_inputs",
+      "input": "input_2"
+    },
+    {
+      "source": "coord_inputs",
+      "output": "value",
+      "target": "coord_histogram",
+      "input": "image"
+    },
+    {
+      "source": "coord_inputs",
+      "output": "group",
+      "target": "coord_final",
+      "input": "value"
+    }
+  ]
+}

@@ -1,0 +1,609 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "objects_source",
+      "type": "input.demo",
+      "name": "Synthetic parts",
+      "parameters": {},
+      "position": [
+        0,
+        -330
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_roi",
+      "type": "cv.crop",
+      "name": "Exclude caption",
+      "parameters": {
+        "x": 0,
+        "y": 0,
+        "width": 480,
+        "height": 290
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_gray",
+      "type": "cv.convert",
+      "name": "Grayscale",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "unchanged"
+      },
+      "position": [
+        300,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_threshold",
+      "type": "cv.threshold",
+      "name": "Segment shapes",
+      "parameters": {
+        "value": 127.0,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        600,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_blobs",
+      "type": "inspect.blobs",
+      "name": "Find all blobs",
+      "parameters": {
+        "connectivity": 8,
+        "min_area": 100,
+        "max_area": 0,
+        "expected_count": 2,
+        "algorithm": "default",
+        "region_mode": "center",
+        "check_count": false
+      },
+      "position": [
+        0,
+        360
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "centroids",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_blob_filter",
+      "type": "collection.filter",
+      "name": "Keep tall parts",
+      "parameters": {
+        "metric": "height",
+        "use_minimum": true,
+        "minimum": 80.0,
+        "include_minimum": true,
+        "use_maximum": false,
+        "maximum": 0.0,
+        "include_maximum": true,
+        "invert_range": false,
+        "missing": "reject",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        300,
+        360
+      ],
+      "exposed_inputs": [
+        "collection",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "rejected",
+        "rejected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_blob_sort",
+      "type": "collection.sort",
+      "name": "Order parts left to right",
+      "parameters": {
+        "metric": "center_x",
+        "direction": "ascending",
+        "secondary_metric": "none",
+        "secondary_direction": "ascending",
+        "missing": "last",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        600,
+        360
+      ],
+      "exposed_inputs": [
+        "collection"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_blob_draw",
+      "type": "collection.draw",
+      "name": "Ranked parts",
+      "parameters": {
+        "color": [
+          80,
+          230,
+          140
+        ],
+        "thickness": 2,
+        "draw_bounds": true,
+        "draw_centers": true,
+        "labels": "rank"
+      },
+      "position": [
+        900,
+        360
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "objects_contours",
+      "type": "inspect.contours",
+      "name": "Find contours",
+      "parameters": {
+        "min_area": 100.0,
+        "expected_count": 2,
+        "retrieval": "external",
+        "approximation": "simple",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        0,
+        720
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_contour_filter",
+      "type": "collection.filter",
+      "name": "Keep round contour",
+      "parameters": {
+        "metric": "circularity",
+        "use_minimum": true,
+        "minimum": 0.85,
+        "include_minimum": true,
+        "use_maximum": false,
+        "maximum": 0.0,
+        "include_maximum": true,
+        "invert_range": false,
+        "missing": "reject",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        300,
+        720
+      ],
+      "exposed_inputs": [
+        "collection",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "rejected",
+        "rejected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_contour_draw",
+      "type": "collection.draw",
+      "name": "Round contour",
+      "parameters": {
+        "color": [
+          80,
+          180,
+          250
+        ],
+        "thickness": 2,
+        "draw_bounds": true,
+        "draw_centers": true,
+        "labels": "rank"
+      },
+      "position": [
+        600,
+        720
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "objects_lines",
+      "type": "inspect.line_segments",
+      "name": "Find line segments",
+      "parameters": {
+        "refinement": "standard",
+        "scale": 0.8,
+        "sigma_scale": 0.6,
+        "quantization": 2.0,
+        "angle_tolerance": 22.5,
+        "log_epsilon": 0.0,
+        "density_threshold": 0.7,
+        "bins": 1024
+      },
+      "position": [
+        0,
+        1080
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "segments",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_line_length",
+      "type": "collection.filter",
+      "name": "Keep long lines",
+      "parameters": {
+        "metric": "length",
+        "use_minimum": true,
+        "minimum": 100.0,
+        "include_minimum": true,
+        "use_maximum": false,
+        "maximum": 0.0,
+        "include_maximum": true,
+        "invert_range": false,
+        "missing": "reject",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        300,
+        1080
+      ],
+      "exposed_inputs": [
+        "collection",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "rejected",
+        "rejected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_line_angle",
+      "type": "collection.filter",
+      "name": "Keep vertical lines",
+      "parameters": {
+        "metric": "angle",
+        "use_minimum": true,
+        "minimum": 85.0,
+        "include_minimum": true,
+        "use_maximum": true,
+        "maximum": 95.0,
+        "include_maximum": true,
+        "invert_range": false,
+        "missing": "reject",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        600,
+        1080
+      ],
+      "exposed_inputs": [
+        "collection",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "rejected",
+        "rejected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_line_sort",
+      "type": "collection.sort",
+      "name": "Order lines left to right",
+      "parameters": {
+        "metric": "center_x",
+        "direction": "ascending",
+        "secondary_metric": "none",
+        "secondary_direction": "ascending",
+        "missing": "last",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        900,
+        1080
+      ],
+      "exposed_inputs": [
+        "collection"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "objects_line_draw",
+      "type": "collection.draw",
+      "name": "Vertical line results",
+      "parameters": {
+        "color": [
+          240,
+          160,
+          70
+        ],
+        "thickness": 2,
+        "draw_bounds": true,
+        "draw_centers": true,
+        "labels": "rank"
+      },
+      "position": [
+        1200,
+        1080
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "objects_source",
+      "output": "image",
+      "target": "objects_roi",
+      "input": "image"
+    },
+    {
+      "source": "objects_roi",
+      "output": "image",
+      "target": "objects_gray",
+      "input": "image"
+    },
+    {
+      "source": "objects_gray",
+      "output": "image",
+      "target": "objects_threshold",
+      "input": "image"
+    },
+    {
+      "source": "objects_threshold",
+      "output": "image",
+      "target": "objects_blobs",
+      "input": "image"
+    },
+    {
+      "source": "objects_blobs",
+      "output": "collection",
+      "target": "objects_blob_filter",
+      "input": "collection"
+    },
+    {
+      "source": "objects_blob_filter",
+      "output": "collection",
+      "target": "objects_blob_sort",
+      "input": "collection"
+    },
+    {
+      "source": "objects_blob_sort",
+      "output": "collection",
+      "target": "objects_blob_draw",
+      "input": "collection"
+    },
+    {
+      "source": "objects_threshold",
+      "output": "image",
+      "target": "objects_contours",
+      "input": "image"
+    },
+    {
+      "source": "objects_contours",
+      "output": "collection",
+      "target": "objects_contour_filter",
+      "input": "collection"
+    },
+    {
+      "source": "objects_contour_filter",
+      "output": "collection",
+      "target": "objects_contour_draw",
+      "input": "collection"
+    },
+    {
+      "source": "objects_gray",
+      "output": "image",
+      "target": "objects_lines",
+      "input": "image"
+    },
+    {
+      "source": "objects_lines",
+      "output": "collection",
+      "target": "objects_line_length",
+      "input": "collection"
+    },
+    {
+      "source": "objects_line_length",
+      "output": "collection",
+      "target": "objects_line_angle",
+      "input": "collection"
+    },
+    {
+      "source": "objects_line_angle",
+      "output": "collection",
+      "target": "objects_line_sort",
+      "input": "collection"
+    },
+    {
+      "source": "objects_line_sort",
+      "output": "collection",
+      "target": "objects_line_draw",
+      "input": "collection"
+    },
+    {
+      "source": "objects_roi",
+      "output": "image",
+      "target": "objects_blob_draw",
+      "input": "image"
+    },
+    {
+      "source": "objects_roi",
+      "output": "image",
+      "target": "objects_contour_draw",
+      "input": "image"
+    },
+    {
+      "source": "objects_roi",
+      "output": "image",
+      "target": "objects_line_draw",
+      "input": "image"
+    }
+  ]
+}

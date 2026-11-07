@@ -1,8 +1,5 @@
 # Base OpenCV tools and starter projects
 
-Named projects in this guide refer to optional local examples. See the
-[public example gallery](../examples/public/README.md) for bundled projects.
-
 ![Passing synthetic inspection starter](images/starter-project.png)
 
 These tools are usable node blocks with typed ports, inspector parameters, latest
@@ -101,7 +98,7 @@ measurements downstream. These are standard native operations, not all of OpenCV
 
 ## Starter inspection
 
-Open starter inspection
+Open [starter inspection](../examples/demos/starter_inspection/starter_inspection.json)
 or run `opencv-dataflow --starter`. The project contains no
 device paths or output writers; repeat execution needs no camera and writes no
 files. It is suitable for testing wiring, inspector edits, previews, save/load and

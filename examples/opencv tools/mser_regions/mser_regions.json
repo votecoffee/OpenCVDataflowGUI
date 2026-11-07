@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Bright and dark intensity extrema",
+      "parameters": {
+        "path": "assets/intensity_extrema.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        105
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "both",
+      "type": "inspect.mser",
+      "name": "MSER with both polarities",
+      "parameters": {
+        "mode": "grayscale",
+        "polarity": "both",
+        "delta": 5,
+        "min_area": 35,
+        "max_area": 3000,
+        "max_variation": 0.25,
+        "min_diversity": 0.2,
+        "max_evolution": 200,
+        "area_threshold": 1.01,
+        "min_margin": 0.003,
+        "edge_blur_size": 5,
+        "max_regions": 1000,
+        "draw_overlay": true
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "regions",
+        "count",
+        "mask",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "bright",
+      "type": "inspect.mser",
+      "name": "MSER with bright polarity",
+      "parameters": {
+        "mode": "grayscale",
+        "polarity": "bright",
+        "delta": 5,
+        "min_area": 35,
+        "max_area": 3000,
+        "max_variation": 0.25,
+        "min_diversity": 0.2,
+        "max_evolution": 200,
+        "area_threshold": 1.01,
+        "min_margin": 0.003,
+        "edge_blur_size": 5,
+        "max_regions": 1000,
+        "draw_overlay": true
+      },
+      "position": [
+        360,
+        290
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "regions",
+        "count",
+        "mask",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "both",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "bright",
+      "input": "image"
+    }
+  ]
+}

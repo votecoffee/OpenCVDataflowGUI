@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Asymmetric reference",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "shift",
+      "type": "cv.warp_affine",
+      "name": "Shift reference by (+17, -9)",
+      "parameters": {
+        "matrix": [
+          [
+            1,
+            0,
+            17
+          ],
+          [
+            0,
+            1,
+            -9
+          ]
+        ]
+      },
+      "position": [
+        330,
+        170
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "correlate",
+      "type": "inspect.fourier_correlation",
+      "name": "Find displacement",
+      "parameters": {
+        "boundary": "linear",
+        "normalization": "energy"
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "reference",
+        "mask",
+        "region",
+        "reference_mask"
+      ],
+      "exposed_outputs": [
+        "correlation",
+        "shift",
+        "peak"
+      ],
+      "thumbnail": true,
+      "preview_output": "lag map"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "shift",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "correlate",
+      "input": "reference"
+    },
+    {
+      "source": "shift",
+      "output": "image",
+      "target": "correlate",
+      "input": "image"
+    }
+  ]
+}

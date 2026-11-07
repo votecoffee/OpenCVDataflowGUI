@@ -1,0 +1,522 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "tracked_source",
+      "type": "input.demo",
+      "name": "Original image",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tracked_shape",
+      "type": "region.shape",
+      "name": "Left-part region",
+      "parameters": {
+        "shape": "circle",
+        "rectangle": [
+          0,
+          0,
+          100,
+          100
+        ],
+        "center": [
+          140,
+          180
+        ],
+        "radius": 80,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "tracked_crop",
+      "type": "cv.crop",
+      "name": "Crop image",
+      "parameters": {
+        "x": 50,
+        "y": 60,
+        "width": 380,
+        "height": 240
+      },
+      "position": [
+        300,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tracked_crop_region",
+      "type": "region.transform",
+      "name": "Region in crop",
+      "parameters": {
+        "matrix": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "direction": "forward",
+        "interpolation": "nearest",
+        "threshold": 0.5
+      },
+      "position": [
+        300,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "region",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay",
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "tracked_resize",
+      "type": "cv.resize",
+      "name": "Resize image",
+      "parameters": {
+        "width": 570,
+        "height": 360,
+        "interpolation": "linear",
+        "size_mode": "absolute",
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      },
+      "position": [
+        600,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tracked_resize_region",
+      "type": "region.transform",
+      "name": "Region in resized image",
+      "parameters": {
+        "matrix": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "direction": "forward",
+        "interpolation": "nearest",
+        "threshold": 0.5
+      },
+      "position": [
+        600,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "region",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay",
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "tracked_rotate",
+      "type": "cv.rotate",
+      "name": "Rotate image",
+      "parameters": {
+        "angle_degrees": 10.0,
+        "scale": 1.0,
+        "center": [],
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        900,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tracked_rotate_region",
+      "type": "region.transform",
+      "name": "Region follows rotation",
+      "parameters": {
+        "matrix": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "direction": "forward",
+        "interpolation": "nearest",
+        "threshold": 0.5
+      },
+      "position": [
+        900,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "region",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay",
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "tracked_histogram",
+      "type": "inspect.histogram",
+      "name": "Histogram in moved region",
+      "parameters": {
+        "bins": 256,
+        "range_mode": "automatic",
+        "range_min": 0.0,
+        "range_max": 1.0,
+        "include_alpha": false
+      },
+      "position": [
+        1200,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tracked_threshold",
+      "type": "cv.threshold",
+      "name": "Segment moved part",
+      "parameters": {
+        "value": 100.0,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        1200,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tracked_components",
+      "type": "inspect.components",
+      "name": "Inspect one moved part",
+      "parameters": {
+        "connectivity": 8,
+        "min_area": 100,
+        "max_area": 0,
+        "expected_count": 1,
+        "algorithm": "default",
+        "region_mode": "clip"
+      },
+      "position": [
+        1500,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "centroids",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "tracked_measure",
+      "type": "region.measure",
+      "name": "Measure transformed selection",
+      "parameters": {
+        "min_area": 44000,
+        "max_area": 46000,
+        "min_coverage": 0.0,
+        "max_coverage": 1.0
+      },
+      "position": [
+        1500,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "area",
+        "coverage",
+        "centroid",
+        "bounds",
+        "data"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "tracked_source",
+      "output": "image",
+      "target": "tracked_shape",
+      "input": "image"
+    },
+    {
+      "source": "tracked_source",
+      "output": "image",
+      "target": "tracked_crop",
+      "input": "image"
+    },
+    {
+      "source": "tracked_crop",
+      "output": "image",
+      "target": "tracked_crop_region",
+      "input": "image"
+    },
+    {
+      "source": "tracked_crop",
+      "output": "geometry",
+      "target": "tracked_crop_region",
+      "input": "transform"
+    },
+    {
+      "source": "tracked_shape",
+      "output": "region",
+      "target": "tracked_crop_region",
+      "input": "region"
+    },
+    {
+      "source": "tracked_crop",
+      "output": "image",
+      "target": "tracked_resize",
+      "input": "image"
+    },
+    {
+      "source": "tracked_resize",
+      "output": "image",
+      "target": "tracked_resize_region",
+      "input": "image"
+    },
+    {
+      "source": "tracked_resize",
+      "output": "geometry",
+      "target": "tracked_resize_region",
+      "input": "transform"
+    },
+    {
+      "source": "tracked_crop_region",
+      "output": "region",
+      "target": "tracked_resize_region",
+      "input": "region"
+    },
+    {
+      "source": "tracked_resize",
+      "output": "image",
+      "target": "tracked_rotate",
+      "input": "image"
+    },
+    {
+      "source": "tracked_rotate",
+      "output": "image",
+      "target": "tracked_rotate_region",
+      "input": "image"
+    },
+    {
+      "source": "tracked_rotate",
+      "output": "geometry",
+      "target": "tracked_rotate_region",
+      "input": "transform"
+    },
+    {
+      "source": "tracked_resize_region",
+      "output": "region",
+      "target": "tracked_rotate_region",
+      "input": "region"
+    },
+    {
+      "source": "tracked_rotate",
+      "output": "image",
+      "target": "tracked_histogram",
+      "input": "image"
+    },
+    {
+      "source": "tracked_rotate_region",
+      "output": "region",
+      "target": "tracked_histogram",
+      "input": "region"
+    },
+    {
+      "source": "tracked_rotate",
+      "output": "image",
+      "target": "tracked_threshold",
+      "input": "image"
+    },
+    {
+      "source": "tracked_rotate_region",
+      "output": "region",
+      "target": "tracked_threshold",
+      "input": "region"
+    },
+    {
+      "source": "tracked_rotate",
+      "output": "image",
+      "target": "tracked_measure",
+      "input": "image"
+    },
+    {
+      "source": "tracked_rotate_region",
+      "output": "region",
+      "target": "tracked_measure",
+      "input": "region"
+    },
+    {
+      "source": "tracked_threshold",
+      "output": "image",
+      "target": "tracked_components",
+      "input": "image"
+    },
+    {
+      "source": "tracked_rotate_region",
+      "output": "region",
+      "target": "tracked_components",
+      "input": "region"
+    }
+  ]
+}

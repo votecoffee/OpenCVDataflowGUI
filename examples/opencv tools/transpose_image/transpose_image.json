@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Synthetic inspection target",
+      "parameters": {},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "crop",
+      "type": "cv.crop",
+      "name": "Crop a 160 by 200 patch",
+      "parameters": {"x": 255, "y": 80, "width": 160, "height": 200},
+      "position": [310, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "transpose",
+      "type": "cv.transpose_image",
+      "name": "Reflect across the anti-diagonal",
+      "parameters": {"diagonal": "anti"},
+      "position": [620, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image", "geometry"],
+      "thumbnail": true
+    },
+    {
+      "id": "coordinates",
+      "type": "core.read_payload",
+      "name": "Read the mapping to the full source",
+      "parameters": {"reference": "root"},
+      "position": [930, 0],
+      "exposed_inputs": ["value"],
+      "exposed_outputs": ["transform"],
+      "thumbnail": false
+    },
+    {
+      "id": "points",
+      "type": "cv.transform_points",
+      "name": "Map three points back to the source",
+      "parameters": {"pixel_points": [[0, 0], [199, 159], [31, 80]]},
+      "position": [1240, 0],
+      "exposed_inputs": ["transform"],
+      "exposed_outputs": ["points"],
+      "thumbnail": false
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "crop", "input": "image"},
+    {"source": "crop", "output": "image", "target": "transpose", "input": "image"},
+    {"source": "transpose", "output": "image", "target": "coordinates", "input": "value"},
+    {"source": "coordinates", "output": "transform", "target": "points", "input": "transform"}
+  ]
+}

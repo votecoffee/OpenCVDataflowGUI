@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.file",
+      "name": "Two differently posed parts",
+      "parameters": {
+        "path": "assets/scene.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "template",
+      "type": "input.file",
+      "name": "Reference shape",
+      "parameters": {
+        "path": "assets/template.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        225
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Select the rotated part",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          103,
+          68,
+          29,
+          26
+        ]
+      },
+      "position": [
+        315,
+        225
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixed",
+      "type": "inspect.hough_template",
+      "name": "Locate the unchanged part",
+      "parameters": {
+        "minimum_votes": 95
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "template"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "guil",
+      "type": "inspect.guil_template",
+      "name": "Locate the rotated and enlarged part",
+      "parameters": {
+        "dp": 1,
+        "min_angle": 80,
+        "max_angle": 101,
+        "angle_step": 5,
+        "min_scale": 1.15,
+        "max_scale": 1.29,
+        "scale_step": 0.05,
+        "angle_epsilon": 3,
+        "min_angle_votes": 200,
+        "min_scale_votes": 25,
+        "minimum_votes": 25,
+        "max_buffer_size": 32,
+        "maximum_matches": 1
+      },
+      "position": [
+        640,
+        240
+      ],
+      "exposed_inputs": [
+        "image",
+        "template",
+        "region"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "poses",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "fixed",
+      "input": "image"
+    },
+    {
+      "source": "template",
+      "output": "image",
+      "target": "fixed",
+      "input": "template"
+    },
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "guil",
+      "input": "image"
+    },
+    {
+      "source": "template",
+      "output": "image",
+      "target": "guil",
+      "input": "template"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "guil",
+      "input": "region"
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Load a three-channel ramp",
+      "parameters": {
+        "path": "assets/color_ramp.png",
+        "path_base": "project",
+        "color_format": "bgr"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Measure inside the inspection area",
+      "parameters": {
+        "rectangle": [
+          20,
+          0,
+          60,
+          55
+        ]
+      },
+      "position": [
+        320,
+        230
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "profile",
+      "type": "cv.path_intensity_profile",
+      "name": "Follow a two-segment path",
+      "parameters": {
+        "vertices": [
+          [
+            10,
+            10
+          ],
+          [
+            50,
+            10
+          ],
+          [
+            50,
+            40
+          ]
+        ],
+        "sample_spacing": 10.0
+      },
+      "position": [
+        650,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "region"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "path_length",
+        "selected_count",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": "profile"
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show the path on the input",
+      "parameters": {},
+      "position": [
+        980,
+        230
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "profile",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "profile",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "profile",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Read eight target views",
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "source_mode": "files",
+        "paths": [
+          "assets/view-01.png",
+          "assets/view-02.png",
+          "assets/view-03.png",
+          "assets/view-04.png",
+          "assets/view-05.png",
+          "assets/view-06.png",
+          "assets/view-07.png",
+          "assets/view-08.png"
+        ],
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "observe",
+      "type": "calibration.charuco",
+      "name": "Match visible corners by ID",
+      "position": [
+        320,
+        0
+      ],
+      "parameters": {},
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "corner_count"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Collect eight views",
+      "position": [
+        640,
+        0
+      ],
+      "parameters": {
+        "size": 8
+      },
+      "exposed_inputs": [
+        "item_1"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "fit",
+      "type": "calibration.lens",
+      "name": "Fit one lens profile",
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "fix_k3": true,
+        "max_rms_pixels": 0.4,
+        "max_view_rms_pixels": 0.6
+      },
+      "exposed_inputs": [
+        "observations"
+      ],
+      "exposed_outputs": [
+        "calibration",
+        "fit_report",
+        "rms",
+        "worst_view_rms"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "maps",
+      "type": "calibration.lens_maps",
+      "name": "Build maps from the fit",
+      "position": [
+        1280,
+        0
+      ],
+      "parameters": {},
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "map_x",
+        "map_y"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "observe",
+      "input": "image"
+    },
+    {
+      "source": "observe",
+      "output": "observation",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "fit",
+      "input": "observations"
+    },
+    {
+      "source": "fit",
+      "output": "calibration",
+      "target": "maps",
+      "input": "calibration"
+    }
+  ]
+}

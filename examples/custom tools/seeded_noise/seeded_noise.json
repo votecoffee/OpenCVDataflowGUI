@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "branch_workers": 2,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.random_image",
+      "name": "Seeded background",
+      "parameters": {
+        "distribution": "uniform",
+        "seed": 2026,
+        "mean": 127.5,
+        "standard_deviation": 32.0,
+        "minimum": 96.0,
+        "maximum": 160.0,
+        "width": 200,
+        "height": 132,
+        "color_format": "gray",
+        "output_depth": "uint8"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "seed",
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "seed",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "patch",
+      "type": "region.shape",
+      "name": "Central inspection patch",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          36,
+          32,
+          128,
+          64
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        285,
+        200
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noise_a",
+      "type": "cv.add_image_noise",
+      "name": "Noise A \u00b7 seed 73",
+      "parameters": {
+        "distribution": "gaussian",
+        "seed": 73,
+        "mean": 0.0,
+        "standard_deviation": 24.0,
+        "minimum": -8.0,
+        "maximum": 8.0,
+        "preserve_alpha": true
+      },
+      "position": [
+        590,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "seed"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noise_b",
+      "type": "cv.add_image_noise",
+      "name": "Noise B \u00b7 seed 73",
+      "parameters": {
+        "distribution": "gaussian",
+        "seed": 73,
+        "mean": 0.0,
+        "standard_deviation": 24.0,
+        "minimum": -8.0,
+        "maximum": 8.0,
+        "preserve_alpha": true
+      },
+      "position": [
+        590,
+        200
+      ],
+      "exposed_inputs": [
+        "image",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "seed"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "compare",
+      "type": "cv.image_norm",
+      "name": "Check exact repeatability",
+      "parameters": {
+        "metric": "infinity",
+        "mode": "absolute",
+        "alignment": "same_frame",
+        "include_alpha": false,
+        "check_threshold": true,
+        "maximum": 0.0
+      },
+      "position": [
+        900,
+        80
+      ],
+      "exposed_inputs": [
+        "image",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "patch",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "noise_a",
+      "input": "image"
+    },
+    {
+      "source": "patch",
+      "output": "region",
+      "target": "noise_a",
+      "input": "region"
+    },
+    {
+      "source": "noise_a",
+      "output": "image",
+      "target": "compare",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "noise_b",
+      "input": "image"
+    },
+    {
+      "source": "patch",
+      "output": "region",
+      "target": "noise_b",
+      "input": "region"
+    },
+    {
+      "source": "noise_b",
+      "output": "image",
+      "target": "compare",
+      "input": "reference"
+    }
+  ]
+}

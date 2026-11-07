@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "sharp",
+      "type": "input.file",
+      "name": "Read the sharp reference",
+      "parameters": {
+        "path": "assets/reference.png",
+        "path_base": "project",
+        "color_format": "gray",
+        "filename_ticket": false
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "blurred",
+      "type": "input.file",
+      "name": "Read the motion-blurred frame",
+      "parameters": {
+        "path": "assets/motion_blur.png",
+        "path_base": "project",
+        "color_format": "gray",
+        "filename_ticket": false
+      },
+      "position": [
+        0,
+        220
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "restore",
+      "type": "cv.wiener_deblur",
+      "name": "Restore horizontal motion blur",
+      "parameters": {
+        "model": "motion",
+        "motion_length": 8,
+        "motion_angle": 0,
+        "boundary": "circular",
+        "noise_to_signal": 0.0005
+      },
+      "position": [
+        340,
+        220
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "psf"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "before",
+      "type": "inspect.image_quality",
+      "name": "Blurred RMSE",
+      "parameters": {
+        "metric": "rmse"
+      },
+      "position": [
+        680,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "after",
+      "type": "inspect.image_quality",
+      "name": "Restored RMSE",
+      "parameters": {
+        "metric": "rmse"
+      },
+      "position": [
+        680,
+        220
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "blurred",
+      "output": "image",
+      "target": "restore",
+      "input": "image"
+    },
+    {
+      "source": "sharp",
+      "output": "image",
+      "target": "before",
+      "input": "image_a"
+    },
+    {
+      "source": "blurred",
+      "output": "image",
+      "target": "before",
+      "input": "image_b"
+    },
+    {
+      "source": "sharp",
+      "output": "image",
+      "target": "after",
+      "input": "image_a"
+    },
+    {
+      "source": "restore",
+      "output": "image",
+      "target": "after",
+      "input": "image_b"
+    }
+  ]
+}

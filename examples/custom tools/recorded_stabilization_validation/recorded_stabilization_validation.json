@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "frames",
+      "type": "input.file",
+      "name": "Recorded TUM camera translation",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/rgb-1305031106.975547.png",
+          "assets/rgb-1305031107.011576.png",
+          "assets/rgb-1305031107.043281.png",
+          "assets/rgb-1305031107.075432.png",
+          "assets/rgb-1305031107.111229.png",
+          "assets/rgb-1305031107.143260.png",
+          "assets/rgb-1305031107.175399.png",
+          "assets/rgb-1305031107.211358.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "background",
+      "type": "region.shape",
+      "name": "Far patch for fitting",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          36,
+          60,
+          80,
+          64
+        ]
+      },
+      "position": [
+        285,
+        -170
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "check",
+      "type": "region.shape",
+      "name": "Near patch for validation",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          180,
+          132,
+          112,
+          96
+        ]
+      },
+      "position": [
+        285,
+        165
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "baseline",
+      "type": "sequence.stabilize_camera",
+      "name": "Fit from the far patch",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "motion_model": "similarity",
+        "follow": 0.0,
+        "max_features": 240,
+        "feature_quality": 0.01,
+        "feature_spacing": 5.0,
+        "tracking_window": 21,
+        "max_pyramid_level": 3,
+        "forward_backward_pixels": 1.0,
+        "max_patch_error": 30.0,
+        "inlier_pixels": 2.0,
+        "min_inliers": 16,
+        "min_inlier_ratio": 0.5,
+        "max_step_pixels": 40.0,
+        "max_step_degrees": 12.0,
+        "max_step_scale_ratio": 1.15,
+        "min_coverage_fraction": 0.65,
+        "interpolation": "linear"
+      },
+      "position": [
+        635,
+        -170
+      ],
+      "exposed_inputs": [
+        "image",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "transform",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "checked",
+      "type": "sequence.stabilize_camera",
+      "name": "Require near-patch agreement",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "motion_model": "similarity",
+        "follow": 0.0,
+        "max_features": 240,
+        "feature_quality": 0.01,
+        "feature_spacing": 5.0,
+        "tracking_window": 21,
+        "max_pyramid_level": 3,
+        "forward_backward_pixels": 1.0,
+        "max_patch_error": 30.0,
+        "inlier_pixels": 2.0,
+        "min_inliers": 16,
+        "min_inlier_ratio": 0.5,
+        "max_step_pixels": 40.0,
+        "max_step_degrees": 12.0,
+        "max_step_scale_ratio": 1.15,
+        "min_coverage_fraction": 0.65,
+        "interpolation": "linear",
+        "max_validation_error_pixels": 2.5,
+        "min_validation_inlier_ratio": 0.75
+      },
+      "position": [
+        635,
+        165
+      ],
+      "exposed_inputs": [
+        "image",
+        "region",
+        "validation_region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "transform",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth",
+      "type": "input.depth_file",
+      "name": "Anchor depth in meters",
+      "parameters": {
+        "path": "assets/depth-1305031106.967232.png",
+        "path_base": "project",
+        "units": "m",
+        "units_per_sample": 0.0002,
+        "display_min": 0.6,
+        "display_max": 1.6
+      },
+      "position": [
+        0,
+        490
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "depth",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": "preview"
+    },
+    {
+      "id": "sample",
+      "type": "inspect.depth_sample",
+      "name": "Far and near center depths",
+      "parameters": {
+        "pixel_points": [
+          [
+            76,
+            92
+          ],
+          [
+            236,
+            180
+          ]
+        ]
+      },
+      "position": [
+        285,
+        490
+      ],
+      "exposed_inputs": [
+        "depth"
+      ],
+      "exposed_outputs": [
+        "samples"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "background",
+      "input": "image"
+    },
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "check",
+      "input": "image"
+    },
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "baseline",
+      "input": "image"
+    },
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "checked",
+      "input": "image"
+    },
+    {
+      "source": "background",
+      "output": "region",
+      "target": "baseline",
+      "input": "region"
+    },
+    {
+      "source": "background",
+      "output": "region",
+      "target": "checked",
+      "input": "region"
+    },
+    {
+      "source": "check",
+      "output": "region",
+      "target": "checked",
+      "input": "validation_region"
+    },
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "sample",
+      "input": "depth"
+    }
+  ]
+}

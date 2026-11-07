@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/texture.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "shift",
+      "type": "cv.warp_affine",
+      "name": "Warp affine",
+      "parameters": {
+        "matrix": [
+          [
+            1,
+            0,
+            9
+          ],
+          [
+            0,
+            1,
+            13
+          ]
+        ],
+        "width": 0,
+        "height": 0,
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0,
+        "inverse_map": false
+      },
+      "position": [
+        335,
+        275
+      ],
+      "exposed_inputs": [
+        "image",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query",
+      "type": "inspect.sift",
+      "name": "SIFT on reference",
+      "parameters": {
+        "max_features": 500,
+        "octave_layers": 3,
+        "contrast_threshold": 0.04,
+        "edge_threshold": 10.0,
+        "sigma": 1.6,
+        "descriptor_depth": "float32",
+        "precise_upscale": false
+      },
+      "position": [
+        670,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "train",
+      "type": "inspect.sift",
+      "name": "SIFT on shifted image",
+      "parameters": {
+        "max_features": 500,
+        "octave_layers": 3,
+        "contrast_threshold": 0.04,
+        "edge_threshold": 10.0,
+        "sigma": 1.6,
+        "descriptor_depth": "uint8",
+        "precise_upscale": false
+      },
+      "position": [
+        670,
+        275
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "match",
+      "type": "inspect.match_flann",
+      "name": "FLANN KD-tree matching",
+      "parameters": {
+        "mode": "ratio",
+        "ratio": 0.75,
+        "max_distance": 250.0,
+        "trees": 5,
+        "checks": 80
+      },
+      "position": [
+        1005,
+        120
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "estimate",
+      "type": "inspect.homography",
+      "name": "Estimate image homography",
+      "parameters": {
+        "ransac_pixels": 3.0,
+        "min_inliers": 4,
+        "min_inlier_ratio": 0.5,
+        "method": "ransac",
+        "max_iterations": 2000,
+        "confidence": 0.995
+      },
+      "position": [
+        1340,
+        120
+      ],
+      "exposed_inputs": [
+        "matches"
+      ],
+      "exposed_outputs": [
+        "transform",
+        "inliers"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "shift",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "query",
+      "input": "image"
+    },
+    {
+      "source": "shift",
+      "output": "image",
+      "target": "train",
+      "input": "image"
+    },
+    {
+      "source": "query",
+      "output": "features",
+      "target": "match",
+      "input": "query"
+    },
+    {
+      "source": "train",
+      "output": "features",
+      "target": "match",
+      "input": "train"
+    },
+    {
+      "source": "match",
+      "output": "matches",
+      "target": "estimate",
+      "input": "matches"
+    }
+  ]
+}

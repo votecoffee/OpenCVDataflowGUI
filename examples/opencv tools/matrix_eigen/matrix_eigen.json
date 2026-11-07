@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "gram",
+      "type": "cv.gram_matrix",
+      "name": "Build the two-channel Gram matrix",
+      "parameters": {
+        "samples": [[2, 2], [1, -1], [-1, 1], [-2, -2]]
+      },
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["matrix"],
+      "thumbnail": false
+    },
+    {
+      "id": "axes",
+      "type": "cv.matrix_eigen",
+      "name": "Find the dominant measurement axes",
+      "parameters": {},
+      "position": [380, 0],
+      "exposed_inputs": ["matrix"],
+      "exposed_outputs": ["eigenvalues", "eigenvectors", "basis_rank"],
+      "thumbnail": true,
+      "preview_output": "spectrum"
+    },
+    {
+      "id": "project",
+      "type": "cv.multiply_matrices",
+      "name": "Project a measurement onto the axes",
+      "parameters": {
+        "left": [[2, 2]],
+        "transpose_right": true
+      },
+      "position": [780, 0],
+      "exposed_inputs": ["right"],
+      "exposed_outputs": ["matrix"],
+      "thumbnail": false
+    },
+    {
+      "id": "general",
+      "type": "cv.matrix_eigen",
+      "name": "Measure nonsymmetric mixing",
+      "parameters": {
+        "matrix": [[0.8, 0.4], [0, 0.5]],
+        "method": "general_real"
+      },
+      "position": [380, 250],
+      "exposed_inputs": [],
+      "exposed_outputs": ["eigenvalues", "spectral_radius", "max_relative_residual"],
+      "thumbnail": true,
+      "preview_output": "spectrum"
+    }
+  ],
+  "connections": [
+    {
+      "source": "gram",
+      "output": "matrix",
+      "target": "axes",
+      "input": "matrix"
+    },
+    {
+      "source": "axes",
+      "output": "eigenvectors",
+      "target": "project",
+      "input": "right"
+    }
+  ]
+}

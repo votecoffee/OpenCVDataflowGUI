@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Rotated oval part",
+      "parameters": {"path": "assets/oval.png", "path_base": "project", "color_format": "gray"},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "outline",
+      "type": "inspect.contours",
+      "name": "Find part outline",
+      "parameters": {"expected_count": 1, "min_area": 100},
+      "position": [320, 280],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["collection", "count"]
+    },
+    {
+      "id": "fit",
+      "type": "inspect.fit_shape",
+      "name": "Fit ellipse to part outline",
+      "parameters": {"shape": "ellipse", "check_rmse": true, "maximum_rmse": 1.0},
+      "position": [640, 280],
+      "exposed_inputs": ["collection"],
+      "exposed_outputs": ["fit", "rmse"]
+    },
+    {
+      "id": "outer",
+      "type": "region.fitted_shape",
+      "name": "Grow ellipse by 3 px",
+      "parameters": {"margin": 3.0},
+      "position": [960, 100],
+      "exposed_inputs": ["image", "fit"],
+      "exposed_outputs": ["region", "overlay"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "inner",
+      "type": "region.fitted_shape",
+      "name": "Shrink ellipse by 3 px",
+      "parameters": {"margin": -3.0},
+      "position": [960, 440],
+      "exposed_inputs": ["image", "fit"],
+      "exposed_outputs": ["region", "overlay"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "band",
+      "type": "region.combine",
+      "name": "Isolate the perimeter band",
+      "parameters": {"operation": "difference"},
+      "position": [1280, 280],
+      "exposed_inputs": ["image", "region_a", "region_b"],
+      "exposed_outputs": ["mask", "region", "overlay"],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "measure",
+      "type": "region.measure",
+      "name": "Measure selected edge pixels",
+      "parameters": {"min_area": 100},
+      "position": [1600, 280],
+      "exposed_inputs": ["image", "region"],
+      "exposed_outputs": ["area", "coverage", "centroid"]
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "outline", "input": "image"},
+    {"source": "outline", "output": "collection", "target": "fit", "input": "collection"},
+    {"source": "source", "output": "image", "target": "outer", "input": "image"},
+    {"source": "fit", "output": "fit", "target": "outer", "input": "fit"},
+    {"source": "source", "output": "image", "target": "inner", "input": "image"},
+    {"source": "fit", "output": "fit", "target": "inner", "input": "fit"},
+    {"source": "source", "output": "image", "target": "band", "input": "image"},
+    {"source": "outer", "output": "region", "target": "band", "input": "region_a"},
+    {"source": "inner", "output": "region", "target": "band", "input": "region_b"},
+    {"source": "source", "output": "image", "target": "measure", "input": "image"},
+    {"source": "band", "output": "region", "target": "measure", "input": "region"}
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "decompose",
+      "type": "cv.matrix_svd",
+      "name": "Keep the dominant measurement mode",
+      "parameters": {
+        "matrix": [
+          [3, 4, 0],
+          [0, 0, 2],
+          [0, 0, 0],
+          [0, 0, 0]
+        ],
+        "components": 1
+      },
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["approximation", "singular_values", "rank", "retained_energy"],
+      "thumbnail": true,
+      "preview_output": "spectrum"
+    },
+    {
+      "id": "apply",
+      "type": "cv.multiply_matrices",
+      "name": "Apply the rank-one matrix",
+      "parameters": {
+        "right": [[2], [1], [3]]
+      },
+      "position": [420, 0],
+      "exposed_inputs": ["left"],
+      "exposed_outputs": ["matrix"],
+      "thumbnail": false
+    }
+  ],
+  "connections": [
+    {
+      "source": "decompose",
+      "output": "approximation",
+      "target": "apply",
+      "input": "left"
+    }
+  ]
+}

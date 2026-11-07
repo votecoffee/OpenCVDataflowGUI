@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Circular inspection target",
+      "parameters": {},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "background",
+      "type": "cv.crop",
+      "name": "Sample background pixels",
+      "parameters": {"x": 0, "y": 0, "width": 24, "height": 14},
+      "position": [330, 200],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "notch",
+      "type": "cv.paste_patch",
+      "name": "Simulate a missing edge segment",
+      "parameters": {"x": 190, "y": 207},
+      "position": [660, 0],
+      "exposed_inputs": ["canvas", "patch"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "unwrap",
+      "type": "cv.warp_polar",
+      "name": "Unwrap around the circular part",
+      "parameters": {
+        "center_mode": "custom",
+        "center_x": 140,
+        "center_y": 180,
+        "radius": 90,
+        "width": 90,
+        "height": 360
+      },
+      "position": [990, 0],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image", "valid_mask", "mapping", "valid_fraction"],
+      "thumbnail": true
+    },
+    {
+      "id": "rewrap",
+      "type": "cv.warp_polar",
+      "name": "Rewrap to the original camera frame",
+      "parameters": {"direction": "rewrap"},
+      "position": [1320, 0],
+      "exposed_inputs": ["image", "mask"],
+      "exposed_outputs": ["image", "valid_mask"],
+      "thumbnail": true
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "background", "input": "image"},
+    {"source": "source", "output": "image", "target": "notch", "input": "canvas"},
+    {"source": "background", "output": "image", "target": "notch", "input": "patch"},
+    {"source": "notch", "output": "image", "target": "unwrap", "input": "image"},
+    {"source": "unwrap", "output": "image", "target": "rewrap", "input": "image"},
+    {"source": "unwrap", "output": "valid_mask", "target": "rewrap", "input": "mask"}
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Raw depth in millimeters",
+      "parameters": {
+        "path": "assets/depth_gaps.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint16",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 150,
+        "fy": 150,
+        "cx": 60,
+        "cy": 40,
+        "width": 120,
+        "height": 80,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "camera"
+      },
+      "position": [
+        330,
+        290
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fill",
+      "type": "3d.fill_depth_holes",
+      "name": "Fill small depth holes",
+      "parameters": {
+        "maximum_hole_area": 64,
+        "maximum_distance": 4,
+        "hole_connectivity": "8",
+        "distance_metric": "manhattan",
+        "include_border": false
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "filled_mask",
+        "remaining_mask",
+        "filled_count"
+      ],
+      "thumbnail": true,
+      "preview_output": "filled_mask"
+    },
+    {
+      "id": "cloud",
+      "type": "3d.depth_cloud",
+      "name": "Depth to point cloud",
+      "parameters": {
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m",
+        "sample_step": 1,
+        "max_points": 200000
+      },
+      "position": [
+        680,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "fill",
+      "input": "depth"
+    },
+    {
+      "source": "fill",
+      "output": "depth",
+      "target": "cloud",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "cloud",
+      "input": "camera"
+    }
+  ]
+}

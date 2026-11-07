@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "parts_source",
+      "type": "input.parts_demo",
+      "name": "25 synthetic parts",
+      "parameters": {},
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "reference",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "parts_matches",
+      "type": "inspect.template_instances",
+      "name": "Find 25 fixed-scale parts",
+      "parameters": {
+        "min_score": 0.85,
+        "minimum_matches": 25
+      },
+      "position": [
+        340,
+        100
+      ],
+      "exposed_inputs": [
+        "image",
+        "template",
+        "mask",
+        "search_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "poses",
+        "matches",
+        "count",
+        "response",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "parts_source",
+      "output": "image",
+      "target": "parts_matches",
+      "input": "image"
+    },
+    {
+      "source": "parts_source",
+      "output": "reference",
+      "target": "parts_matches",
+      "input": "template"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Synthetic inspection target",
+      "parameters": {},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "blur",
+      "type": "cv.gaussian_blur",
+      "name": "Blur a copy of the target",
+      "parameters": {"kernel": 31, "sigma": 7},
+      "position": [330, 180],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "region",
+      "type": "mask.shape",
+      "name": "Select the left part",
+      "parameters": {"shape": "rectangle", "rectangle": [0, 0, 141, 360]},
+      "position": [330, 400],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["mask"],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "feather",
+      "type": "cv.gaussian_blur",
+      "name": "Soften the boundary",
+      "parameters": {"kernel": 61, "sigma": 12},
+      "position": [660, 400],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "blend",
+      "type": "cv.blend_weight_maps",
+      "name": "Feather sharp and blurred views",
+      "parameters": {},
+      "position": [990, 0],
+      "exposed_inputs": ["image_a", "image_b", "weight_a", "weight_b", "mask", "region"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "blur", "input": "image"},
+    {"source": "source", "output": "image", "target": "region", "input": "image"},
+    {"source": "region", "output": "mask", "target": "feather", "input": "image"},
+    {"source": "source", "output": "image", "target": "blend", "input": "image_a"},
+    {"source": "blur", "output": "image", "target": "blend", "input": "image_b"},
+    {"source": "feather", "output": "image", "target": "blend", "input": "weight_a"}
+  ]
+}

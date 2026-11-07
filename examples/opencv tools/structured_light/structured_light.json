@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "patterns",
+      "type": "3d.graycode",
+      "name": "Generate Gray-code patterns",
+      "parameters": {
+        "width": 160,
+        "height": 120
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "patterns",
+        "white",
+        "black",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "3d.graycode_decode",
+      "name": "Decode Gray-code correspondences",
+      "parameters": {
+        "width": 160,
+        "height": 120,
+        "sample_step": 20,
+        "white_threshold": 5,
+        "black_threshold": 40
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "patterns",
+        "points",
+        "white",
+        "black"
+      ],
+      "exposed_outputs": [
+        "camera_points",
+        "projector_points",
+        "valid"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "first",
+      "type": "flow.select_entry",
+      "name": "Select group entry",
+      "parameters": {
+        "index": 0
+      },
+      "position": [
+        360,
+        400
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "patterns",
+      "output": "patterns",
+      "target": "decode",
+      "input": "patterns"
+    },
+    {
+      "source": "patterns",
+      "output": "white",
+      "target": "decode",
+      "input": "white"
+    },
+    {
+      "source": "patterns",
+      "output": "black",
+      "target": "decode",
+      "input": "black"
+    },
+    {
+      "source": "patterns",
+      "output": "patterns",
+      "target": "first",
+      "input": "group"
+    }
+  ]
+}

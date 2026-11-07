@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "complete",
+      "type": "cv.complete_symmetric_matrix",
+      "name": "Complete upper triangle",
+      "parameters": {
+        "matrix": [
+          [
+            4,
+            1,
+            2
+          ],
+          [
+            0,
+            5,
+            0
+          ],
+          [
+            0,
+            0,
+            6
+          ]
+        ],
+        "source_triangle": "upper"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "matrix"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ridge",
+      "type": "cv.create_diagonal_matrix",
+      "name": "Build scaled identity",
+      "parameters": {
+        "rows": 3,
+        "columns": 3,
+        "diagonal_value": 0.5,
+        "diagonal": []
+      },
+      "position": [
+        0,
+        210
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "matrix"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "regularize",
+      "type": "cv.multiply_matrices",
+      "name": "Add 0.5 to the diagonal",
+      "parameters": {
+        "left": [],
+        "right": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "addend": [],
+        "product_weight": 1.0,
+        "addend_weight": 1.0,
+        "transpose_left": false,
+        "transpose_right": false,
+        "transpose_addend": false
+      },
+      "position": [
+        320,
+        80
+      ],
+      "exposed_inputs": [
+        "left",
+        "addend"
+      ],
+      "exposed_outputs": [
+        "matrix"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "cv.matrix_diagonal",
+      "name": "Read diagonal and trace",
+      "parameters": {
+        "matrix": []
+      },
+      "position": [
+        665,
+        0
+      ],
+      "exposed_inputs": [
+        "matrix"
+      ],
+      "exposed_outputs": [
+        "diagonal",
+        "trace"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "invert",
+      "type": "cv.invert_matrix",
+      "name": "Invert using Cholesky",
+      "parameters": {
+        "matrix": [],
+        "method": "cholesky"
+      },
+      "position": [
+        665,
+        200
+      ],
+      "exposed_inputs": [
+        "matrix"
+      ],
+      "exposed_outputs": [
+        "inverse",
+        "determinant"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "complete",
+      "output": "matrix",
+      "target": "regularize",
+      "input": "addend"
+    },
+    {
+      "source": "ridge",
+      "output": "matrix",
+      "target": "regularize",
+      "input": "left"
+    },
+    {
+      "source": "regularize",
+      "output": "matrix",
+      "target": "measure",
+      "input": "matrix"
+    },
+    {
+      "source": "regularize",
+      "output": "matrix",
+      "target": "invert",
+      "input": "matrix"
+    }
+  ]
+}

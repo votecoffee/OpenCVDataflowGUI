@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "calibration",
+      "type": "cv.invert_matrix",
+      "name": "Invert a two-channel calibration matrix",
+      "parameters": {
+        "matrix": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        "method": "lu"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "inverse",
+        "determinant",
+        "reciprocal_condition"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "recover",
+      "type": "cv.multiply_matrices",
+      "name": "Recover the original signals",
+      "parameters": {
+        "right": [
+          [
+            7,
+            14
+          ],
+          [
+            11,
+            22
+          ]
+        ]
+      },
+      "position": [
+        420,
+        0
+      ],
+      "exposed_inputs": [
+        "left"
+      ],
+      "exposed_outputs": [
+        "matrix"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "redundant",
+      "type": "cv.invert_matrix",
+      "name": "Pseudoinvert redundant measurements",
+      "parameters": {
+        "matrix": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ]
+        ]
+      },
+      "position": [
+        0,
+        210
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "inverse",
+        "rank",
+        "reciprocal_condition"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "minimum_norm",
+      "type": "cv.multiply_matrices",
+      "name": "Recover a minimum-norm signal pair",
+      "parameters": {
+        "right": [
+          [
+            4
+          ],
+          [
+            8
+          ],
+          [
+            12
+          ]
+        ]
+      },
+      "position": [
+        420,
+        210
+      ],
+      "exposed_inputs": [
+        "left"
+      ],
+      "exposed_outputs": [
+        "matrix"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "calibration",
+      "output": "inverse",
+      "target": "recover",
+      "input": "left"
+    },
+    {
+      "source": "redundant",
+      "output": "inverse",
+      "target": "minimum_norm",
+      "input": "left"
+    }
+  ]
+}

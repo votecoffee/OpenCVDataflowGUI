@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Partly visible ChArUco board",
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "path": "assets/cropped_board.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Synthetic camera intrinsics",
+      "position": [
+        0,
+        220
+      ],
+      "parameters": {
+        "fx": 720,
+        "fy": 720,
+        "cx": 319.5,
+        "cy": 239.5,
+        "width": 640,
+        "height": 480
+      },
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "detect",
+      "type": "calibration.charuco",
+      "name": "Identify visible board corners",
+      "position": [
+        325,
+        0
+      ],
+      "parameters": {},
+      "exposed_inputs": [
+        "image",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "corner_count",
+        "corner_ids",
+        "image_points",
+        "object_points",
+        "result_graphics"
+      ],
+      "thumbnail": false,
+      "preview_output": "",
+      "graphics_mode": "on"
+    },
+    {
+      "id": "pose",
+      "type": "3d.pnp",
+      "name": "Recover the board pose",
+      "position": [
+        680,
+        240
+      ],
+      "parameters": {
+        "ransac": false,
+        "source_frame": "charuco_target",
+        "max_rms": 0.5
+      },
+      "exposed_inputs": [
+        "camera",
+        "image_points",
+        "object_points"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "rms"
+      ],
+      "thumbnail": false,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show marker and corner IDs",
+      "position": [
+        680,
+        0
+      ],
+      "parameters": {},
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "detect",
+      "input": "image"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "detect",
+      "input": "camera"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "pose",
+      "input": "camera"
+    },
+    {
+      "source": "detect",
+      "output": "image_points",
+      "target": "pose",
+      "input": "image_points"
+    },
+    {
+      "source": "detect",
+      "output": "object_points",
+      "target": "pose",
+      "input": "object_points"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    }
+  ]
+}

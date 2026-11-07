@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "match_source",
+      "type": "input.demo",
+      "name": "Demo image",
+      "parameters": {},
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match_template",
+      "type": "cv.crop",
+      "name": "Reference patch",
+      "parameters": {
+        "x": 250,
+        "y": 85,
+        "width": 165,
+        "height": 185
+      },
+      "position": [
+        0,
+        320
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match_result",
+      "type": "inspect.match_template",
+      "name": "Match template",
+      "parameters": {
+        "method": "ccoeff_normed",
+        "min_score": 0.99
+      },
+      "position": [
+        340,
+        100
+      ],
+      "exposed_inputs": [
+        "image",
+        "template",
+        "mask",
+        "search_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "score",
+        "location",
+        "center",
+        "raw_score",
+        "response"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "match_source",
+      "output": "image",
+      "target": "match_template",
+      "input": "image"
+    },
+    {
+      "source": "match_source",
+      "output": "image",
+      "target": "match_result",
+      "input": "image"
+    },
+    {
+      "source": "match_template",
+      "output": "image",
+      "target": "match_result",
+      "input": "template"
+    }
+  ]
+}

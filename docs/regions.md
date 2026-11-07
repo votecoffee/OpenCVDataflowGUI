@@ -1,8 +1,5 @@
 # Masks and image-space regions
 
-Named projects in this guide refer to optional local examples. See the
-[public example gallery](../examples/public/README.md) for bundled projects.
-
 **Shape region** creates a rectangle, circle or polygon using the inspector's shape
 dropdown and numeric/JSON fields. Connect an image to size the mask and preview;
 the source image is not modified. It outputs a uint8 `mask` (selected pixels 255),
@@ -31,7 +28,7 @@ The mask includes the rasterized boundary. **Invert** selects the outside.
 The reusable `region` uses the `ellipse` shape with `center`, full
 `axis_lengths`, and clockwise image-space `angle_degrees`. An enclosing
 circle uses equal axis lengths. The outputs carry the image's frame.
-Fitted ellipse inspection band example
+[Fitted ellipse inspection band example](<../examples/custom tools/fitted_shape_region/README.md>)
 
 ## Draw and edit on an image
 
@@ -122,7 +119,7 @@ area and coverage control pass/fail; maximum area zero means unlimited. Failed
 inspections retain their measurements for downstream reporting. This block does
 not convert area or coordinates into calibrated physical units.
 
-Open combined regions
+Open [combined regions](<../examples/custom tools/combined_regions/combined_regions.json>)
 for a ring selection unioned with a separate rectangle, then measured and used by
 histogram, threshold and component tools. The component tool uses `clip` mode:
 center filtering would reject a ring whose centroid lies in its excluded hole.
@@ -176,7 +173,7 @@ Transformed source and target frames are limited to 16384 pixels per axis and
 64 million pixels total. The output transform includes source/target dimensions
 and connects directly to **Transform points** for associated annotations.
 
-Open transformed regions for a 12-block project carrying a circular
+Open [transformed regions](<../examples/custom tools/transformed_regions/transformed_regions.json>) for a 12-block project carrying a circular
 inspection region through crop, resize and arbitrary rotation. It measures the
 selection, computes its color histogram and inspects the same part in the final
 image. The project needs no external images or camera.
@@ -230,7 +227,7 @@ public terminals; hide unused ports with the inspector's exposure controls.
 
 ## Example
 
-Use regions. It contains
+Use [regions](<../examples/custom tools/regions/regions.json>). It contains
 circle, rectangle and polygon overlays, a one-part component measurement, a
 one-part contour inspection, a selected histogram and a circular blur. It runs
 without a camera or external assets:

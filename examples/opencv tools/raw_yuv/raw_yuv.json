@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "raw",
+      "type": "input.raw_yuv",
+      "name": "Read the raw NV12 frame",
+      "parameters": {
+        "path": "assets/color_bars.nv12",
+        "path_base": "project",
+        "width": 120,
+        "height": 64,
+        "layout": "NV12",
+        "color_format": "rgb"
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "buffer",
+      "type": "input.file",
+      "name": "Load the packed NV12 matrix",
+      "parameters": {
+        "path": "assets/packed_nv12.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        230
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "cv.decode_yuv",
+      "name": "Decode packed NV12",
+      "parameters": {
+        "layout": "NV12",
+        "color_format": "rgb"
+      },
+      "position": [
+        330,
+        230
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "buffer",
+      "output": "image",
+      "target": "decode",
+      "input": "image"
+    }
+  ]
+}

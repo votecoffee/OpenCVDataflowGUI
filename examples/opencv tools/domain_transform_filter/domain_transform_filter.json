@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Noisy edge",
+      "parameters": {
+        "path": "assets/noisy_edge.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filter_0",
+      "type": "cv.domain_transform_filter",
+      "name": "Normalized convolution",
+      "parameters": {
+        "mode": "normalized_convolution"
+      },
+      "position": [
+        350,
+        -220
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filter_1",
+      "type": "cv.domain_transform_filter",
+      "name": "Interpolated convolution",
+      "parameters": {
+        "mode": "interpolated_convolution"
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filter_2",
+      "type": "cv.domain_transform_filter",
+      "name": "Recursive filtering",
+      "parameters": {
+        "mode": "recursive_filtering"
+      },
+      "position": [
+        350,
+        220
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "filter_0",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "filter_1",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "filter_2",
+      "input": "image"
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "sample",
+      "type": "input.file",
+      "name": "Sample with uneven illumination",
+      "parameters": {
+        "path": "assets/sample.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flat",
+      "type": "input.file",
+      "name": "Uniform bright reference",
+      "parameters": {
+        "path": "assets/flat.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        275
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dark",
+      "type": "input.file",
+      "name": "Dark reference",
+      "parameters": {
+        "path": "assets/dark.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        550
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "correct",
+      "type": "cv.flat_field",
+      "name": "Flat-field correction",
+      "parameters": {
+        "target_mode": "reference_mean",
+        "target_level": 0.5,
+        "min_response": 0.01
+      },
+      "position": [
+        350,
+        220
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "flat",
+        "dark"
+      ],
+      "exposed_outputs": [
+        "image",
+        "invalid_mask",
+        "corrected_pixels"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "sample",
+      "output": "image",
+      "target": "correct",
+      "input": "image"
+    },
+    {
+      "source": "flat",
+      "output": "image",
+      "target": "correct",
+      "input": "flat"
+    },
+    {
+      "source": "dark",
+      "output": "image",
+      "target": "correct",
+      "input": "dark"
+    }
+  ]
+}

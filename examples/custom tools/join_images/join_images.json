@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Synthetic inspection image",
+      "parameters": {},
+      "position": [0, 0],
+      "exposed_inputs": [],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "crop",
+      "type": "cv.crop",
+      "name": "Crop the right-hand part",
+      "parameters": {"x": 255, "y": 80, "width": 160, "height": 200},
+      "position": [300, 200],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "blur",
+      "type": "cv.gaussian_blur",
+      "name": "Smooth the cropped part",
+      "parameters": {"kernel": 9, "sigma": 2},
+      "position": [600, 200],
+      "exposed_inputs": ["image"],
+      "exposed_outputs": ["image"],
+      "thumbnail": true
+    },
+    {
+      "id": "join",
+      "type": "cv.join_images",
+      "name": "Compare full image and crop",
+      "parameters": {"size_policy": "pad", "alignment": "center", "gap": 12, "fill_value": 12},
+      "position": [900, 0],
+      "exposed_inputs": ["image_a", "image_b"],
+      "exposed_outputs": ["image", "layout"],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {"source": "source", "output": "image", "target": "crop", "input": "image"},
+    {"source": "crop", "output": "image", "target": "blur", "input": "image"},
+    {"source": "source", "output": "image", "target": "join", "input": "image_a"},
+    {"source": "blur", "output": "image", "target": "join", "input": "image_b"}
+  ]
+}

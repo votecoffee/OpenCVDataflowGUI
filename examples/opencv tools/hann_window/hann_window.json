@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Read an off-bin sinusoid",
+      "parameters": {
+        "path": "assets/off_bin_wave.png",
+        "path_base": "project",
+        "color_format": "gray"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "window",
+      "type": "cv.hann_window",
+      "name": "Taper each row",
+      "parameters": {
+        "axes": "rows"
+      },
+      "position": [
+        320,
+        220
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "window",
+        "coherent_gain"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "raw_dft",
+      "type": "cv.dft",
+      "name": "Spectrum without a taper",
+      "parameters": {
+        "mode": "rows"
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "spectrum"
+      ],
+      "thumbnail": true,
+      "preview_output": "magnitude"
+    },
+    {
+      "id": "hann_dft",
+      "type": "cv.dft",
+      "name": "Spectrum with the Hann taper",
+      "parameters": {
+        "mode": "rows"
+      },
+      "position": [
+        640,
+        220
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "spectrum"
+      ],
+      "thumbnail": true,
+      "preview_output": "magnitude"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "window",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "raw_dft",
+      "input": "image"
+    },
+    {
+      "source": "window",
+      "output": "image",
+      "target": "hann_dft",
+      "input": "image"
+    }
+  ]
+}

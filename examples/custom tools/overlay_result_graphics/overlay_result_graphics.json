@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Demo image",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          70,
+          105,
+          150,
+          155
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "threshold",
+      "type": "cv.threshold",
+      "name": "Threshold",
+      "parameters": {
+        "value": 100,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        360,
+        340
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "contours",
+      "type": "inspect.contours",
+      "name": "Find contours",
+      "parameters": {
+        "min_area": 1000.0,
+        "expected_count": 2,
+        "retrieval": "external",
+        "approximation": "simple",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        700,
+        340
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "data",
+        "collection",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "composite",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1060,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "threshold",
+      "input": "image"
+    },
+    {
+      "source": "threshold",
+      "output": "image",
+      "target": "contours",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "composite",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "result_graphics",
+      "target": "composite",
+      "input": "graphics_1"
+    },
+    {
+      "source": "contours",
+      "output": "result_graphics",
+      "target": "composite",
+      "input": "graphics_2"
+    }
+  ]
+}

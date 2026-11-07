@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Synthetic parts",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray",
+      "type": "cv.gray",
+      "name": "Reference",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        250,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "shift",
+      "type": "cv.warp_affine",
+      "name": "Wrap-shift by (+17, -9)",
+      "parameters": {
+        "matrix": [
+          [
+            1,
+            0,
+            17
+          ],
+          [
+            0,
+            1,
+            -9
+          ]
+        ],
+        "width": 0,
+        "height": 0,
+        "interpolation": "nearest",
+        "border": "wrap",
+        "border_value": 0.0,
+        "inverse_map": false
+      },
+      "position": [
+        500,
+        195
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_dft",
+      "type": "cv.dft",
+      "name": "Reference spectrum",
+      "parameters": {
+        "mode": "2d",
+        "size": "exact"
+      },
+      "position": [
+        775,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "spectrum"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample_dft",
+      "type": "cv.dft",
+      "name": "Shifted spectrum",
+      "parameters": {
+        "mode": "2d",
+        "size": "exact"
+      },
+      "position": [
+        775,
+        195
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "spectrum"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "combine",
+      "type": "cv.combine_fourier_spectra",
+      "name": "Sample \u00d7 conjugate(reference)",
+      "parameters": {
+        "operation": "multiply_conjugate"
+      },
+      "position": [
+        1050,
+        80
+      ],
+      "exposed_inputs": [
+        "spectrum",
+        "spectrum_b"
+      ],
+      "exposed_outputs": [
+        "spectrum"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "lag_map",
+      "type": "cv.idft",
+      "name": "Circular lag map",
+      "parameters": {
+        "output_depth": "float32"
+      },
+      "position": [
+        1350,
+        80
+      ],
+      "exposed_inputs": [
+        "spectrum"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "peak",
+      "type": "cv.image_statistics",
+      "name": "Find maximum lag",
+      "parameters": {
+        "channel": "auto",
+        "statistic": "maximum",
+        "percentiles": [],
+        "value_percentile": 50.0,
+        "percentile_method": "linear",
+        "include_alpha": false
+      },
+      "position": [
+        1650,
+        80
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "value",
+        "maximum_location"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "gray",
+      "input": "image"
+    },
+    {
+      "source": "gray",
+      "output": "image",
+      "target": "shift",
+      "input": "image"
+    },
+    {
+      "source": "gray",
+      "output": "image",
+      "target": "reference_dft",
+      "input": "image"
+    },
+    {
+      "source": "shift",
+      "output": "image",
+      "target": "sample_dft",
+      "input": "image"
+    },
+    {
+      "source": "sample_dft",
+      "output": "spectrum",
+      "target": "combine",
+      "input": "spectrum"
+    },
+    {
+      "source": "reference_dft",
+      "output": "spectrum",
+      "target": "combine",
+      "input": "spectrum_b"
+    },
+    {
+      "source": "combine",
+      "output": "spectrum",
+      "target": "lag_map",
+      "input": "spectrum"
+    },
+    {
+      "source": "lag_map",
+      "output": "image",
+      "target": "peak",
+      "input": "image"
+    }
+  ]
+}
