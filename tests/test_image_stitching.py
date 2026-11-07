@@ -154,3 +154,73 @@ def test_saved_example_reconstructs_original_pixel_for_pixel():
         assert layout["overlap_pixels"] == 120 * 360
     finally:
         graph.close()
+
+
+def test_saved_graph_cut_selects_original_samples_and_retains_both_marks():
+    path = Path(__file__).parents[1] / "examples/image_processing/stitch_seam/stitch_seam.json"
+    graph = Graph.load(path, builtin_registry())
+    try:
+        graph.set_run_profile("lean")
+        graph.run()
+        assert all(block.state == "pass" for block in graph.blocks.values())
+        a = graph.blocks["left"].last_result.outputs["image"]
+        b = graph.blocks["right"].last_result.outputs["image"]
+        cut = graph.blocks["cut"].last_result.outputs
+        average = graph.blocks["average"].last_result.outputs
+        assert cut["image"].dtype == np.uint16
+        for mask in ("coverage", "overlap"):
+            np.testing.assert_array_equal(cut[mask], average[mask])
+        overlap = cut["image"][:, 45:140]
+        assert np.all((overlap == a[:, 45:]) | (overlap == b[:, :95]))
+        for y, x in ((45, 75), (50, 124)):
+            assert cut["image"][y, x] == 53970 > average["image"][y, x]
+        assert cut["layout"]["seam"]["overlap_from_existing"] > 0
+        assert cut["layout"]["seam"]["overlap_from_incoming"] > 0
+        assert cut["layout"]["seam"]["overlap_pixels"] == 9120
+    finally:
+        graph.close()
+
+
+def test_graph_cut_uses_authoritative_support_and_preserves_hdr_color_and_alpha():
+    a = np.broadcast_to([-1e308, 0, 2, 0.25], (48, 80, 4)).copy()
+    b = np.broadcast_to([1e308, 3, 0, 0.75], a.shape).copy()
+    mask_a = np.full(a.shape[:2], 255, np.uint8)
+    mask_b = np.full_like(mask_a, 255)
+    mask_a[5:12, 48:60] = 0
+    mask_b[5:12, 33:45] = 0
+    block = builtin_registry().create(
+        TYPE, parameters={"blend": "graph_cut", "interpolation": "nearest"}
+    )
+    result = block.execute(
+        {
+            "image_a": a,
+            "image_b": b,
+            "mask_a": mask_a,
+            "mask_b": mask_b,
+            "transform": [[1, 0, 22], [0, 1, 0]],
+        }
+    )
+    assert result is not None and result.passed, block.error
+    output = result.outputs["image"]
+    assert output.dtype == np.float64 and image_format(output) == "bgra"
+    np.testing.assert_array_equal(output[7, 50], b[7, 28])
+    np.testing.assert_array_equal(output[7, 57], [0, 0, 0, 0])
+    np.testing.assert_array_equal(output[7, 63], a[7, 63])
+    assert result.outputs["coverage"][7, 50:66].tolist() == [255] * 5 + [0] * 5 + [255] * 6
+
+
+def test_graph_cut_skips_disjoint_views_and_bounds_native_workspace():
+    block = builtin_registry().create(
+        TYPE, parameters={"blend": "graph_cut", "min_overlap_pixels": 0}
+    )
+    small = np.ones((4, 8), np.uint8)
+    result = block.execute(
+        {"image_a": small, "image_b": small, "transform": [[1, 0, 10], [0, 1, 0]]}
+    )
+    assert result is not None and result.passed
+    assert result.outputs["layout"]["seam"]["overlap_pixels"] == 0
+    np.testing.assert_array_equal(result.outputs["image"][0], [1] * 8 + [0, 0] + [1] * 8)
+    large = np.ones((720, 720), np.uint8)
+    inputs = {"image_a": large, "image_b": large, "transform": np.eye(3).tolist()}
+    assert block.execute(inputs) is None
+    assert block.error_kind == "invalid" and "Graph-cut work area exceeds" in block.error

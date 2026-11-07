@@ -398,7 +398,7 @@ P2	method	cv2.detail.GainCompensator.getSimilarityThreshold	no static reference	
 P2	method	cv2.detail.GainCompensator.setMatGains	no static reference	-
 P2	method	cv2.detail.GainCompensator.setNrFeeds	no static reference	-
 P2	method	cv2.detail.GainCompensator.setSimilarityThreshold	no static reference	-
-P2	class	cv2.detail.GraphCutSeamFinder	no static reference	-
+P2	class	cv2.detail.GraphCutSeamFinder	literal reference	-
 P2	method	cv2.detail.GraphCutSeamFinder.find	method name only	-
 P2	class	cv2.detail.HomographyBasedEstimator	no static reference	-
 P2	class	cv2.detail.ImageFeatures	no static reference	-
