@@ -1675,8 +1675,8 @@ P3	method	cv2.Algorithm.write	method name only	-
 P3	class	cv2.AlignExposures	no static reference	-
 P3	method	cv2.AlignExposures.process	method name only	-
 P3	class	cv2.AlignMTB	no static reference	-
-P3	method	cv2.AlignMTB.calculateShift	no static reference	-
-P3	method	cv2.AlignMTB.computeBitmaps	no static reference	-
+P3	method	cv2.AlignMTB.calculateShift	method name only	-
+P3	method	cv2.AlignMTB.computeBitmaps	method name only	-
 P3	method	cv2.AlignMTB.getCut	no static reference	-
 P3	method	cv2.AlignMTB.getExcludeRange	no static reference	-
 P3	method	cv2.AlignMTB.getMaxBits	no static reference	-
@@ -1684,7 +1684,7 @@ P3	method	cv2.AlignMTB.process	method name only	-
 P3	method	cv2.AlignMTB.setCut	no static reference	-
 P3	method	cv2.AlignMTB.setExcludeRange	no static reference	-
 P3	method	cv2.AlignMTB.setMaxBits	no static reference	-
-P3	method	cv2.AlignMTB.shiftMat	no static reference	-
+P3	method	cv2.AlignMTB.shiftMat	method name only	-
 P3	class	cv2.ALIKED	no static reference	-
 P3	method	cv2.ALIKED.create	method name only	-
 P3	method	cv2.ALIKED.Params	method name only	-
@@ -2106,7 +2106,7 @@ P3	function	cv2.correctChromaticAberration	no static reference	-
 P3	function	cv2.correctMatches	no static reference	-
 P3	function	cv2.countNonZero	literal reference	-
 P3	function	cv2.createAffineTransformer	no static reference	-
-P3	function	cv2.createAlignMTB	no static reference	-
+P3	function	cv2.createAlignMTB	literal reference	-
 P3	function	cv2.createButton	no static reference	-
 P3	function	cv2.createCalibrateDebevec	no static reference	-
 P3	function	cv2.createCalibrateRobertson	no static reference	-
@@ -2118,7 +2118,7 @@ P3	function	cv2.createHanningWindow	literal reference	-
 P3	function	cv2.createHausdorffDistanceExtractor	no static reference	-
 P3	function	cv2.createLineSegmentDetector	literal reference	-
 P3	function	cv2.createMergeDebevec	no static reference	-
-P3	function	cv2.createMergeMertens	no static reference	-
+P3	function	cv2.createMergeMertens	literal reference	-
 P3	function	cv2.createMergeRobertson	no static reference	-
 P3	function	cv2.createNormHistogramCostExtractor	no static reference	-
 P3	function	cv2.createShapeContextDistanceExtractor	no static reference	-

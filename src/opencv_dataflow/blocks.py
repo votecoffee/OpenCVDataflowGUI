@@ -659,6 +659,7 @@ def builtin_registry():
     from .ecc_registration import AlignECC
     from .example_plugins import invert as invert_example
     from .examples3d import StereoDemo
+    from .exposure import AlignExposures, FuseExposures
     from .fanuc import FANUC_BLOCKS
     from .feature_covariance import FitFeatureCovariance, MahalanobisDistance
     from .features import FEATURE_BLOCKS
@@ -820,6 +821,8 @@ def builtin_registry():
         AlignECC,
         *RESTORATION_BLOCKS,
         *PHOTO_FILTER_BLOCKS,
+        AlignExposures,
+        FuseExposures,
         *SPECTRAL_BLOCKS,
         FourierCorrelation,
         *ANALYSIS_BLOCKS,

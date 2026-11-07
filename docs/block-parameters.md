@@ -993,6 +993,21 @@ Input `image` — Grayscale or RGB/BGR image. Output keeps the input depth and e
 | `maximum` | `8.0` | Value must be a finite number. Uniform upper bound in stored sample units. |
 | `preserve_alpha` | `true` | Keep the alpha samples of a four-channel image. |
 
+## Align exposures (MTB) (`cv.align_exposures`)
+
+Image processing / Exposure stacks
+
+Inputs: `exposures` (any).
+
+Input `exposures` — Ordered batch of 2–16 uint8 gray, BGR or RGB exposures.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_index` | `0` | Value must be a whole number between 0 and 15. Zero-based exposure that defines the output grid. |
+| `max_bits` | `4` | Value must be a whole number between 1 and 10. Shift search levels. Up to 2^levels − 1 pixels per axis, limited by size. |
+| `exclude_range` | `4` | Value must be a whole number between 0 and 127. Ignore brightness values this close to the median when matching. |
+| `border_mode` | `"crop"` | `crop`, `zero_pad` Crop to the area shared by all exposures, or zero-pad the original canvas. |
+
 ## Apply mask (`cv.apply_mask`)
 
 Image processing / Image math
@@ -1622,6 +1637,26 @@ Inputs: `image` (image).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `direction` | `"horizontal"` | `horizontal`, `vertical`, `both` |
+
+## Fuse exposures (Mertens) (`cv.fuse_exposures`)
+
+Image processing / Exposure stacks
+
+Inputs: `exposures` (any), `mask` (image, optional), `region` (data, optional).
+
+Input `exposures` — Ordered batch of 2–16 aligned uint8 gray, BGR or RGB exposures.
+
+Input `mask` — Optional mask on the reference grid. Outside pixels come from the reference.
+
+Input `region` — Optional output selection on the reference grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_index` | `0` | Value must be a whole number between 0 and 15. Zero-based source for the output grid and pixels outside a selection. |
+| `contrast_weight` | `1.0` | Value must be a finite number between 0 and 10. Favor detail where local contrast is higher. |
+| `saturation_weight` | `1.0` | Value must be a finite number between 0 and 10. Favor more saturated pixels in color images. |
+| `exposure_weight` | `0.0` | Value must be a finite number between 0 and 10. Favor pixels near midrange intensity. |
+| `output_depth` | `"uint8"` | `uint8`, `float32` Clip and scale to uint8, or preserve the native float32 samples. |
 
 ## Gabor orientation bank (`cv.gabor_bank`)
 

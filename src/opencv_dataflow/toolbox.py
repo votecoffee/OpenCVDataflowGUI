@@ -68,7 +68,7 @@ IMPLEMENTATION_MODULES = {
     "objdetect": "charuco code_readers",
     "xobjdetect": "hog",
     "dnn": "dnn_blocks ocr",
-    "photo": "photo_filters restoration",
+    "photo": "exposure photo_filters restoration",
     "stitching": "image_stitching scan_stitching",
     "stereo": "stereo3d",
     "ccm": "color_calibration",
