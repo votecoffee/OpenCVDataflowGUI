@@ -4,6 +4,10 @@ The toolbox groups **ControlLogix** and **FANUC** tools under **Industrial
 integration**. Online blocks start disabled and are unavailable in live preview.
 Enable and configure them for the cell's intended endpoint before running a graph.
 
+The [industrial integration examples](<../examples/industrial integration/README.md>)
+include a runnable synthetic FANUC calibration and disabled wiring templates
+for FANUC registers and frames and for ControlLogix trigger and writeback.
+
 ## ControlLogix
 
 Install the optional pycomm3 driver in the application's Python environment.

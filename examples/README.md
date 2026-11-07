@@ -35,6 +35,17 @@ See the [applications guide](applications/README.md) for geometric matcher setup
 | [Image classification](applications/image_classification/README.md) | Compare two classifier profiles on labeled VegQual produce crops. |
 | [Pose-relative inspection](applications/pose_inspection/README.md) | Train a geometric pattern and use its detected pose to position a circular inspection region. |
 
+## Industrial integration
+
+| Example | Demonstrates |
+| --- | --- |
+| [FANUC hand–eye calibration](<industrial integration/fanuc_hand_eye_calibration/README.md>) | Convert synthetic FANUC XYZ/WPR captures and fit the camera mount from ticket-paired poses. |
+| [FANUC registers and frames](<industrial integration/fanuc_registers_and_frames/README.md>) | Wire R and PR reads, UFRAME and UTOOL offsets, flange-to-base composition, and reviewed register changes. |
+| [ControlLogix trigger and writeback](<industrial integration/controllogix_trigger_and_writeback/README.md>) | Trigger a ticketed inspection, write the part count, and verify readback. |
+
+The two hardware templates open with controller access disabled.
+See the [industrial integration examples](<industrial integration/README.md>) for setup and replay details.
+
 ## OpenCV tools
 
 | Example | Demonstrates |

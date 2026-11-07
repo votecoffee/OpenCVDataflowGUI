@@ -1,0 +1,1008 @@
+{
+  "schema_version": 1,
+  "recipes": {
+    "model": "recipe_catalog_v1",
+    "recipes": [
+      {
+        "model": "vision_recipe_v1",
+        "id": "Synthetic FANUC captures",
+        "revision": 1,
+        "settings": {
+          "position": [
+            {
+              "initialized": true,
+              "representation": "cartesian",
+              "user_frame": 0,
+              "user_tool": 0,
+              "values": {
+                "X": 200.0,
+                "Y": 30.0,
+                "Z": 250.0,
+                "W": -1.0512179670659227,
+                "P": -17.15043421643992,
+                "R": 14.591011182256008
+              }
+            },
+            {
+              "initialized": true,
+              "representation": "cartesian",
+              "user_frame": 0,
+              "user_tool": 0,
+              "values": {
+                "X": 240.0,
+                "Y": 80.0,
+                "Z": 265.0,
+                "W": 21.286263747497426,
+                "P": 14.808669250400873,
+                "R": -4.778359395923648
+              }
+            },
+            {
+              "initialized": true,
+              "representation": "cartesian",
+              "user_frame": 0,
+              "user_tool": 0,
+              "values": {
+                "X": 150.0,
+                "Y": 130.0,
+                "Z": 285.0,
+                "W": -17.247575200771806,
+                "P": 13.249008005158235,
+                "R": 21.75767152171843
+              }
+            },
+            {
+              "initialized": true,
+              "representation": "cartesian",
+              "user_frame": 0,
+              "user_tool": 0,
+              "values": {
+                "X": 130.0,
+                "Y": 15.0,
+                "Z": 270.0,
+                "W": 19.230284273502154,
+                "P": -21.210871627052857,
+                "R": 5.725228051078361
+              }
+            }
+          ],
+          "target": [
+            {
+              "model": "pose_3d_v1",
+              "source_to_target": [
+                [
+                  0.6866359685790182,
+                  0.6355382325684076,
+                  0.35301869865118785,
+                  182.52171400920145
+                ],
+                [
+                  -0.656229898919458,
+                  0.7507979636190116,
+                  -0.07526445103568366,
+                  127.92620961404768
+                ],
+                [
+                  -0.3128791562531954,
+                  -0.17998214569609278,
+                  0.932584077074512,
+                  425.98546388903213
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "source_frame": "target",
+              "target_frame": "camera",
+              "units": "mm",
+              "rvec": [
+                -0.058657829077625054,
+                0.373004034158766,
+                -0.7235865391275245
+              ],
+              "translation": [
+                182.52171400920145,
+                127.92620961404768,
+                425.98546388903213
+              ]
+            },
+            {
+              "model": "pose_3d_v1",
+              "source_to_target": [
+                [
+                  0.9654995248368121,
+                  0.2566541275518421,
+                  -0.0440377832150162,
+                  -151.47859128041137
+                ],
+                [
+                  -0.21705975692601417,
+                  0.8866240086862317,
+                  0.40839065751358244,
+                  329.9719434296137
+                ],
+                [
+                  0.14386010379222464,
+                  -0.3847421552569452,
+                  0.9117443416359277,
+                  362.26859137531886
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "source_frame": "target",
+              "target_frame": "camera",
+              "units": "mm",
+              "rvec": [
+                -0.4129498444196038,
+                -0.0978302775488142,
+                -0.24664226690005137
+              ],
+              "translation": [
+                -151.47859128041137,
+                329.9719434296137,
+                362.26859137531886
+              ]
+            },
+            {
+              "model": "pose_3d_v1",
+              "source_to_target": [
+                [
+                  0.6854362428318286,
+                  0.6906985395525372,
+                  -0.2304618937537808,
+                  -143.47673675052567
+                ],
+                [
+                  -0.7281281268025814,
+                  0.6513088787202551,
+                  -0.2136028451569124,
+                  -63.74183625703779
+                ],
+                [
+                  0.0025667044143754696,
+                  0.314216918640859,
+                  0.9493477445426904,
+                  431.5861514814035
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "source_frame": "target",
+              "target_frame": "camera",
+              "units": "mm",
+              "rvec": [
+                0.30061042692017065,
+                -0.13271732357255495,
+                -0.808067676037514
+              ],
+              "translation": [
+                -143.47673675052567,
+                -63.74183625703779,
+                431.5861514814035
+              ]
+            },
+            {
+              "model": "pose_3d_v1",
+              "source_to_target": [
+                [
+                  0.7228495655246067,
+                  0.47258518174059627,
+                  0.5041346562378898,
+                  292.05689718748283
+                ],
+                [
+                  -0.6350105487004737,
+                  0.7419983684440893,
+                  0.2149419090485443,
+                  257.9150791478629
+                ],
+                [
+                  -0.2724887312532589,
+                  -0.47550149024531696,
+                  0.8364497738145861,
+                  283.2587367209402
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "source_frame": "target",
+              "target_frame": "camera",
+              "units": "mm",
+              "rvec": [
+                -0.39203705947826123,
+                0.4409704683475322,
+                -0.6288981453032693
+              ],
+              "translation": [
+                292.05689718748283,
+                257.9150791478629,
+                283.2587367209402
+              ]
+            }
+          ]
+        },
+        "models": {},
+        "digest": "8a75fd9bc42e4bf62adada811de753e6aa270ec3a72ee8e6e7d456fe2b240a2d"
+      }
+    ],
+    "default": {
+      "id": "Synthetic FANUC captures",
+      "revision": 1,
+      "digest": "8a75fd9bc42e4bf62adada811de753e6aa270ec3a72ee8e6e7d456fe2b240a2d"
+    }
+  },
+  "blocks": [
+    {
+      "id": "robot_group",
+      "type": "flow.batch",
+      "name": "Collect flange-to-base poses",
+      "parameters": {
+        "size": 4,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        350,
+        150
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "target_group",
+      "type": "flow.batch",
+      "name": "Collect target-to-camera poses",
+      "parameters": {
+        "size": 4,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        350,
+        450
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit",
+      "type": "calibration.hand_eye",
+      "name": "Fit camera-to-gripper",
+      "parameters": {
+        "gripper_poses": [],
+        "target_poses": [],
+        "gripper_frame": "gripper",
+        "base_frame": "base",
+        "target_frame": "target",
+        "camera_frame": "camera",
+        "max_translation_rms_mm": 2.0,
+        "max_rotation_rms_degrees": 1.0
+      },
+      "position": [
+        730,
+        300
+      ],
+      "exposed_inputs": [
+        "gripper_poses",
+        "target_poses"
+      ],
+      "exposed_outputs": [
+        "camera_to_gripper",
+        "target_to_base",
+        "report",
+        "translation_rms_mm",
+        "rotation_rms_degrees"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "capture_1",
+      "type": "core.toolblock",
+      "name": "Saved capture 1",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "gripper_to_base",
+        "target_to_camera"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "toolblock": {
+        "block_type": "ToolBlocks",
+        "subtype": "Reusable",
+        "toolblock_version": 1,
+        "name": "Saved capture 1",
+        "graph": {
+          "schema_version": 1,
+          "blocks": [
+            {
+              "id": "event",
+              "type": "input.counter",
+              "name": "Synthetic capture ticket",
+              "parameters": {
+                "start": 1,
+                "step": 1
+              },
+              "position": [
+                0,
+                170
+              ],
+              "exposed_inputs": [
+                "ticket"
+              ],
+              "exposed_outputs": [
+                "value",
+                "ticket"
+              ],
+              "thumbnail": true,
+              "preview_output": "",
+              "ticket_settings": {
+                "mode": "fixed",
+                "value": "capture-1"
+              }
+            },
+            {
+              "id": "position",
+              "type": "recipe.field",
+              "name": "Saved FANUC XYZ/WPR",
+              "parameters": {
+                "path": "settings.position.0",
+                "missing": "error"
+              },
+              "position": [
+                325,
+                0
+              ],
+              "exposed_inputs": [
+                "recipe",
+                "value"
+              ],
+              "exposed_outputs": [
+                "value"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "target",
+              "type": "recipe.field",
+              "name": "Saved target-to-camera pose",
+              "parameters": {
+                "path": "settings.target.0",
+                "missing": "error"
+              },
+              "position": [
+                325,
+                350
+              ],
+              "exposed_inputs": [
+                "recipe",
+                "value"
+              ],
+              "exposed_outputs": [
+                "value"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "robot",
+              "type": "industrial.fanuc_pose",
+              "name": "FANUC Cartesian pose (UF 0, UT 0)",
+              "parameters": {
+                "source_frame": "gripper",
+                "target_frame": "base",
+                "expected_user_frame": 0,
+                "expected_user_tool": 0
+              },
+              "position": [
+                655,
+                0
+              ],
+              "exposed_inputs": [
+                "position"
+              ],
+              "exposed_outputs": [
+                "pose"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            }
+          ],
+          "connections": [
+            {
+              "source": "event",
+              "output": "value",
+              "target": "position",
+              "input": "value"
+            },
+            {
+              "source": "event",
+              "output": "value",
+              "target": "target",
+              "input": "value"
+            },
+            {
+              "source": "position",
+              "output": "value",
+              "target": "robot",
+              "input": "position"
+            }
+          ]
+        },
+        "inputs": {},
+        "outputs": {
+          "gripper_to_base": {
+            "block": "robot",
+            "port": "pose"
+          },
+          "target_to_camera": {
+            "block": "target",
+            "port": "value"
+          }
+        }
+      }
+    },
+    {
+      "id": "capture_2",
+      "type": "core.toolblock",
+      "name": "Saved capture 2",
+      "parameters": {},
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "gripper_to_base",
+        "target_to_camera"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "toolblock": {
+        "block_type": "ToolBlocks",
+        "subtype": "Reusable",
+        "toolblock_version": 1,
+        "name": "Saved capture 2",
+        "graph": {
+          "schema_version": 1,
+          "blocks": [
+            {
+              "id": "event",
+              "type": "input.counter",
+              "name": "Synthetic capture ticket",
+              "parameters": {
+                "start": 1,
+                "step": 1
+              },
+              "position": [
+                0,
+                170
+              ],
+              "exposed_inputs": [
+                "ticket"
+              ],
+              "exposed_outputs": [
+                "value",
+                "ticket"
+              ],
+              "thumbnail": true,
+              "preview_output": "",
+              "ticket_settings": {
+                "mode": "fixed",
+                "value": "capture-2"
+              }
+            },
+            {
+              "id": "position",
+              "type": "recipe.field",
+              "name": "Saved FANUC XYZ/WPR",
+              "parameters": {
+                "path": "settings.position.1",
+                "missing": "error"
+              },
+              "position": [
+                325,
+                0
+              ],
+              "exposed_inputs": [
+                "recipe",
+                "value"
+              ],
+              "exposed_outputs": [
+                "value"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "target",
+              "type": "recipe.field",
+              "name": "Saved target-to-camera pose",
+              "parameters": {
+                "path": "settings.target.1",
+                "missing": "error"
+              },
+              "position": [
+                325,
+                350
+              ],
+              "exposed_inputs": [
+                "recipe",
+                "value"
+              ],
+              "exposed_outputs": [
+                "value"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "robot",
+              "type": "industrial.fanuc_pose",
+              "name": "FANUC Cartesian pose (UF 0, UT 0)",
+              "parameters": {
+                "source_frame": "gripper",
+                "target_frame": "base",
+                "expected_user_frame": 0,
+                "expected_user_tool": 0
+              },
+              "position": [
+                655,
+                0
+              ],
+              "exposed_inputs": [
+                "position"
+              ],
+              "exposed_outputs": [
+                "pose"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            }
+          ],
+          "connections": [
+            {
+              "source": "event",
+              "output": "value",
+              "target": "position",
+              "input": "value"
+            },
+            {
+              "source": "event",
+              "output": "value",
+              "target": "target",
+              "input": "value"
+            },
+            {
+              "source": "position",
+              "output": "value",
+              "target": "robot",
+              "input": "position"
+            }
+          ]
+        },
+        "inputs": {},
+        "outputs": {
+          "gripper_to_base": {
+            "block": "robot",
+            "port": "pose"
+          },
+          "target_to_camera": {
+            "block": "target",
+            "port": "value"
+          }
+        }
+      }
+    },
+    {
+      "id": "capture_3",
+      "type": "core.toolblock",
+      "name": "Saved capture 3",
+      "parameters": {},
+      "position": [
+        0,
+        480
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "gripper_to_base",
+        "target_to_camera"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "toolblock": {
+        "block_type": "ToolBlocks",
+        "subtype": "Reusable",
+        "toolblock_version": 1,
+        "name": "Saved capture 3",
+        "graph": {
+          "schema_version": 1,
+          "blocks": [
+            {
+              "id": "event",
+              "type": "input.counter",
+              "name": "Synthetic capture ticket",
+              "parameters": {
+                "start": 1,
+                "step": 1
+              },
+              "position": [
+                0,
+                170
+              ],
+              "exposed_inputs": [
+                "ticket"
+              ],
+              "exposed_outputs": [
+                "value",
+                "ticket"
+              ],
+              "thumbnail": true,
+              "preview_output": "",
+              "ticket_settings": {
+                "mode": "fixed",
+                "value": "capture-3"
+              }
+            },
+            {
+              "id": "position",
+              "type": "recipe.field",
+              "name": "Saved FANUC XYZ/WPR",
+              "parameters": {
+                "path": "settings.position.2",
+                "missing": "error"
+              },
+              "position": [
+                325,
+                0
+              ],
+              "exposed_inputs": [
+                "recipe",
+                "value"
+              ],
+              "exposed_outputs": [
+                "value"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "target",
+              "type": "recipe.field",
+              "name": "Saved target-to-camera pose",
+              "parameters": {
+                "path": "settings.target.2",
+                "missing": "error"
+              },
+              "position": [
+                325,
+                350
+              ],
+              "exposed_inputs": [
+                "recipe",
+                "value"
+              ],
+              "exposed_outputs": [
+                "value"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "robot",
+              "type": "industrial.fanuc_pose",
+              "name": "FANUC Cartesian pose (UF 0, UT 0)",
+              "parameters": {
+                "source_frame": "gripper",
+                "target_frame": "base",
+                "expected_user_frame": 0,
+                "expected_user_tool": 0
+              },
+              "position": [
+                655,
+                0
+              ],
+              "exposed_inputs": [
+                "position"
+              ],
+              "exposed_outputs": [
+                "pose"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            }
+          ],
+          "connections": [
+            {
+              "source": "event",
+              "output": "value",
+              "target": "position",
+              "input": "value"
+            },
+            {
+              "source": "event",
+              "output": "value",
+              "target": "target",
+              "input": "value"
+            },
+            {
+              "source": "position",
+              "output": "value",
+              "target": "robot",
+              "input": "position"
+            }
+          ]
+        },
+        "inputs": {},
+        "outputs": {
+          "gripper_to_base": {
+            "block": "robot",
+            "port": "pose"
+          },
+          "target_to_camera": {
+            "block": "target",
+            "port": "value"
+          }
+        }
+      }
+    },
+    {
+      "id": "capture_4",
+      "type": "core.toolblock",
+      "name": "Saved capture 4",
+      "parameters": {},
+      "position": [
+        0,
+        720
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "gripper_to_base",
+        "target_to_camera"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "toolblock": {
+        "block_type": "ToolBlocks",
+        "subtype": "Reusable",
+        "toolblock_version": 1,
+        "name": "Saved capture 4",
+        "graph": {
+          "schema_version": 1,
+          "blocks": [
+            {
+              "id": "event",
+              "type": "input.counter",
+              "name": "Synthetic capture ticket",
+              "parameters": {
+                "start": 1,
+                "step": 1
+              },
+              "position": [
+                0,
+                170
+              ],
+              "exposed_inputs": [
+                "ticket"
+              ],
+              "exposed_outputs": [
+                "value",
+                "ticket"
+              ],
+              "thumbnail": true,
+              "preview_output": "",
+              "ticket_settings": {
+                "mode": "fixed",
+                "value": "capture-4"
+              }
+            },
+            {
+              "id": "position",
+              "type": "recipe.field",
+              "name": "Saved FANUC XYZ/WPR",
+              "parameters": {
+                "path": "settings.position.3",
+                "missing": "error"
+              },
+              "position": [
+                325,
+                0
+              ],
+              "exposed_inputs": [
+                "recipe",
+                "value"
+              ],
+              "exposed_outputs": [
+                "value"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "target",
+              "type": "recipe.field",
+              "name": "Saved target-to-camera pose",
+              "parameters": {
+                "path": "settings.target.3",
+                "missing": "error"
+              },
+              "position": [
+                325,
+                350
+              ],
+              "exposed_inputs": [
+                "recipe",
+                "value"
+              ],
+              "exposed_outputs": [
+                "value"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "robot",
+              "type": "industrial.fanuc_pose",
+              "name": "FANUC Cartesian pose (UF 0, UT 0)",
+              "parameters": {
+                "source_frame": "gripper",
+                "target_frame": "base",
+                "expected_user_frame": 0,
+                "expected_user_tool": 0
+              },
+              "position": [
+                655,
+                0
+              ],
+              "exposed_inputs": [
+                "position"
+              ],
+              "exposed_outputs": [
+                "pose"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            }
+          ],
+          "connections": [
+            {
+              "source": "event",
+              "output": "value",
+              "target": "position",
+              "input": "value"
+            },
+            {
+              "source": "event",
+              "output": "value",
+              "target": "target",
+              "input": "value"
+            },
+            {
+              "source": "position",
+              "output": "value",
+              "target": "robot",
+              "input": "position"
+            }
+          ]
+        },
+        "inputs": {},
+        "outputs": {
+          "gripper_to_base": {
+            "block": "robot",
+            "port": "pose"
+          },
+          "target_to_camera": {
+            "block": "target",
+            "port": "value"
+          }
+        }
+      }
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture_1",
+      "output": "gripper_to_base",
+      "target": "robot_group",
+      "input": "item_1"
+    },
+    {
+      "source": "capture_1",
+      "output": "target_to_camera",
+      "target": "target_group",
+      "input": "item_1"
+    },
+    {
+      "source": "capture_2",
+      "output": "gripper_to_base",
+      "target": "robot_group",
+      "input": "item_2"
+    },
+    {
+      "source": "capture_2",
+      "output": "target_to_camera",
+      "target": "target_group",
+      "input": "item_2"
+    },
+    {
+      "source": "capture_3",
+      "output": "gripper_to_base",
+      "target": "robot_group",
+      "input": "item_3"
+    },
+    {
+      "source": "capture_3",
+      "output": "target_to_camera",
+      "target": "target_group",
+      "input": "item_3"
+    },
+    {
+      "source": "capture_4",
+      "output": "gripper_to_base",
+      "target": "robot_group",
+      "input": "item_4"
+    },
+    {
+      "source": "capture_4",
+      "output": "target_to_camera",
+      "target": "target_group",
+      "input": "item_4"
+    },
+    {
+      "source": "robot_group",
+      "output": "group",
+      "target": "fit",
+      "input": "gripper_poses"
+    },
+    {
+      "source": "target_group",
+      "output": "group",
+      "target": "fit",
+      "input": "target_poses"
+    }
+  ]
+}

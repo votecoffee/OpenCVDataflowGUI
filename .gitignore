@@ -15,6 +15,7 @@ dist/
 !/examples/custom tools/
 !/examples/demos/
 !/examples/flow tools/
+!/examples/industrial integration/
 !/examples/opencv tools/
 !/examples/user_tools/
 # Local examples and downloaded images with separate rights.

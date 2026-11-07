@@ -1,0 +1,498 @@
+{
+  "schema_version": 1,
+  "recipes": {
+    "model": "recipe_catalog_v1",
+    "recipes": [
+      {
+        "model": "vision_recipe_v1",
+        "id": "Example write values",
+        "revision": 1,
+        "settings": {
+          "change": {
+            "type": "integer",
+            "value": 42
+          },
+          "enable": false
+        },
+        "models": {},
+        "digest": "f4f0d317e3f164e7f4d8ae3fc46948f4919d0d5bfe7049588af9a284ac399f58"
+      }
+    ],
+    "default": {
+      "id": "Example write values",
+      "revision": 1,
+      "digest": "f4f0d317e3f164e7f4d8ae3fc46948f4919d0d5bfe7049588af9a284ac399f58"
+    }
+  },
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.counter",
+      "name": "Sample request",
+      "parameters": {
+        "start": 1,
+        "step": 1
+      },
+      "position": [
+        0,
+        200
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "value",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "position",
+      "type": "industrial.fanuc_position",
+      "name": "Read current position",
+      "parameters": {
+        "profile": "",
+        "robot_id": "",
+        "timeout_seconds": 15.0,
+        "group": 1,
+        "enabled": false
+      },
+      "position": [
+        300,
+        0
+      ],
+      "exposed_inputs": [
+        "trigger"
+      ],
+      "exposed_outputs": [
+        "position",
+        "user_frame",
+        "user_tool"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "uframe",
+      "type": "industrial.fanuc_uframe",
+      "name": "Read active UFRAME offset",
+      "parameters": {
+        "profile": "",
+        "robot_id": "",
+        "timeout_seconds": 15.0,
+        "group": 1,
+        "index": 1,
+        "enabled": false,
+        "source_frame": "",
+        "target_frame": ""
+      },
+      "position": [
+        625,
+        300
+      ],
+      "exposed_inputs": [
+        "trigger",
+        "index"
+      ],
+      "exposed_outputs": [
+        "offset",
+        "pose"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "utool",
+      "type": "industrial.fanuc_utool",
+      "name": "Read active UTOOL offset",
+      "parameters": {
+        "profile": "",
+        "robot_id": "",
+        "timeout_seconds": 15.0,
+        "group": 1,
+        "index": 1,
+        "enabled": false,
+        "source_frame": "",
+        "target_frame": ""
+      },
+      "position": [
+        625,
+        620
+      ],
+      "exposed_inputs": [
+        "trigger",
+        "index"
+      ],
+      "exposed_outputs": [
+        "offset",
+        "pose"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tcp",
+      "type": "industrial.fanuc_pose",
+      "name": "TCP to UFRAME 3",
+      "parameters": {
+        "source_frame": "user_tool_2",
+        "target_frame": "user_frame_3",
+        "expected_user_frame": 3,
+        "expected_user_tool": 2
+      },
+      "position": [
+        625,
+        0
+      ],
+      "exposed_inputs": [
+        "position"
+      ],
+      "exposed_outputs": [
+        "pose"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inverse",
+      "type": "3d.compose",
+      "name": "Invert UTOOL to get flange to TCP",
+      "parameters": {
+        "operation": "inverse"
+      },
+      "position": [
+        965,
+        620
+      ],
+      "exposed_inputs": [
+        "first",
+        "second"
+      ],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flange_in_user",
+      "type": "3d.compose",
+      "name": "Flange to UFRAME 3",
+      "parameters": {
+        "operation": "compose"
+      },
+      "position": [
+        1295,
+        360
+      ],
+      "exposed_inputs": [
+        "first",
+        "second"
+      ],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flange_in_base",
+      "type": "3d.compose",
+      "name": "Flange to robot base",
+      "parameters": {
+        "operation": "compose"
+      },
+      "position": [
+        1625,
+        300
+      ],
+      "exposed_inputs": [
+        "first",
+        "second"
+      ],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "r_read",
+      "type": "industrial.fanuc_register",
+      "name": "Read numeric register",
+      "parameters": {
+        "profile": "",
+        "robot_id": "",
+        "timeout_seconds": 15.0,
+        "target": "R[10]",
+        "enabled": false
+      },
+      "position": [
+        300,
+        935
+      ],
+      "exposed_inputs": [
+        "trigger"
+      ],
+      "exposed_outputs": [
+        "value",
+        "reference"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pr_read",
+      "type": "industrial.fanuc_register",
+      "name": "Read position register",
+      "parameters": {
+        "profile": "",
+        "robot_id": "",
+        "timeout_seconds": 15.0,
+        "target": "PR[1,10]",
+        "enabled": false
+      },
+      "position": [
+        300,
+        1200
+      ],
+      "exposed_inputs": [
+        "trigger"
+      ],
+      "exposed_outputs": [
+        "value",
+        "reference"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "change",
+      "type": "recipe.field",
+      "name": "Example numeric change",
+      "parameters": {
+        "path": "settings.change",
+        "missing": "error"
+      },
+      "position": [
+        300,
+        1465
+      ],
+      "exposed_inputs": [
+        "recipe",
+        "value"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "enable",
+      "type": "recipe.field",
+      "name": "Write interlock (false)",
+      "parameters": {
+        "path": "settings.enable",
+        "missing": "error"
+      },
+      "position": [
+        300,
+        1730
+      ],
+      "exposed_inputs": [
+        "recipe",
+        "value"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "approval",
+      "type": "recipe.field",
+      "name": "No approval in this template",
+      "parameters": {
+        "path": "settings.approval",
+        "missing": "inactive"
+      },
+      "position": [
+        300,
+        2000
+      ],
+      "exposed_inputs": [
+        "recipe",
+        "value"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "prepare",
+      "type": "industrial.fanuc_prepare_register",
+      "name": "Prepare review for R[10]",
+      "parameters": {
+        "profile": "",
+        "robot_id": "",
+        "timeout_seconds": 15.0,
+        "target": "R[10]",
+        "enabled": false
+      },
+      "position": [
+        700,
+        1000
+      ],
+      "exposed_inputs": [
+        "reference",
+        "change",
+        "enable"
+      ],
+      "exposed_outputs": [
+        "review"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "commit",
+      "type": "industrial.fanuc_commit_register",
+      "name": "Commit with external approval",
+      "parameters": {
+        "profile": "",
+        "robot_id": "",
+        "timeout_seconds": 15.0,
+        "target": "R[10]",
+        "write_enabled": false
+      },
+      "position": [
+        700,
+        1450
+      ],
+      "exposed_inputs": [
+        "approval",
+        "enable"
+      ],
+      "exposed_outputs": [
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "value",
+      "target": "position",
+      "input": "trigger"
+    },
+    {
+      "source": "capture",
+      "output": "value",
+      "target": "r_read",
+      "input": "trigger"
+    },
+    {
+      "source": "capture",
+      "output": "value",
+      "target": "pr_read",
+      "input": "trigger"
+    },
+    {
+      "source": "position",
+      "output": "position",
+      "target": "tcp",
+      "input": "position"
+    },
+    {
+      "source": "position",
+      "output": "position",
+      "target": "uframe",
+      "input": "trigger"
+    },
+    {
+      "source": "position",
+      "output": "user_frame",
+      "target": "uframe",
+      "input": "index"
+    },
+    {
+      "source": "position",
+      "output": "position",
+      "target": "utool",
+      "input": "trigger"
+    },
+    {
+      "source": "position",
+      "output": "user_tool",
+      "target": "utool",
+      "input": "index"
+    },
+    {
+      "source": "utool",
+      "output": "pose",
+      "target": "inverse",
+      "input": "first"
+    },
+    {
+      "source": "inverse",
+      "output": "transform",
+      "target": "flange_in_user",
+      "input": "first"
+    },
+    {
+      "source": "tcp",
+      "output": "pose",
+      "target": "flange_in_user",
+      "input": "second"
+    },
+    {
+      "source": "flange_in_user",
+      "output": "transform",
+      "target": "flange_in_base",
+      "input": "first"
+    },
+    {
+      "source": "uframe",
+      "output": "pose",
+      "target": "flange_in_base",
+      "input": "second"
+    },
+    {
+      "source": "r_read",
+      "output": "reference",
+      "target": "prepare",
+      "input": "reference"
+    },
+    {
+      "source": "change",
+      "output": "value",
+      "target": "prepare",
+      "input": "change"
+    },
+    {
+      "source": "enable",
+      "output": "value",
+      "target": "prepare",
+      "input": "enable"
+    },
+    {
+      "source": "enable",
+      "output": "value",
+      "target": "commit",
+      "input": "enable"
+    },
+    {
+      "source": "approval",
+      "output": "value",
+      "target": "commit",
+      "input": "approval"
+    }
+  ]
+}
