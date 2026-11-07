@@ -1,12 +1,46 @@
 # Industrial integration
 
-The toolbox groups **ControlLogix** and **FANUC** tools under **Industrial
-integration**. Online blocks start disabled and are unavailable in live preview.
+The toolbox groups **ControlLogix**, **FANUC**, and **MQTT** tools under
+**Industrial integration**. Online blocks start disabled and are unavailable in live preview.
 Enable and configure them for the cell's intended endpoint before running a graph.
 
 The [industrial integration examples](<../examples/industrial integration/README.md>)
 include a runnable synthetic FANUC calibration and disabled wiring templates
 for FANUC registers and frames and for ControlLogix trigger and writeback.
+
+## MQTT
+
+Install Paho in the application's Python environment.
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -e ".[mqtt]"
+```
+
+**Read MQTT message** subscribes to an MQTT 3.1.1 topic or wildcard filter
+and emits one message per graph cycle. Choose JSON, UTF-8 text, or raw bytes.
+**Message** includes the topic, delivered QoS, and retained flag. With no
+message before the timeout, the reader waits without emitting a ticket or
+trigger. Disable **Include retained** to skip retained replay on subscription.
+**Continuous** keeps the subscription open between cycles. A new manual run
+starts a fresh subscription.
+
+The reader issues a normal acquisition ticket when it receives a message.
+For JSON objects, **Ticket field** can take a ticket from a top-level field
+such as `part_id`. Wire **Ticket** to an image source in **External** ticket
+mode to use MQTT messages as acquisition triggers.
+
+**Publish MQTT message** takes a payload and a true **Enable** input.
+Set an exact topic and turn on **Write enabled**. QoS 0 reports that the
+message was sent. QoS 1 and 2 wait for the broker handshake. The **Delivery**
+output records the configured QoS and whether the broker acknowledged it.
+When a publish outcome is uncertain, subsequent publishes are held until
+flow state is reset. Check the broker or consumer before resetting.
+
+Both blocks support TLS with broker certificate and hostname verification.
+Leave **CA file** blank to use the system trust store or select a PEM CA
+bundle. For username and password authentication, enter the username and
+the name of the environment variable that holds the password. Set the
+broker's TCP port explicitly. Payloads up to 1 MiB are accepted.
 
 ## ControlLogix
 

@@ -710,6 +710,7 @@ def builtin_registry():
         MeasureMatrixDiagonal,
     )
     from .matrix_svd import MatrixSVD
+    from .mqtt import MQTT_BLOCKS
     from .native_background import NATIVE_BACKGROUND_BLOCKS
     from .native_trackers import NATIVE_TRACKER_BLOCKS
     from .nearest_rows import FindNearestRows
@@ -781,6 +782,7 @@ def builtin_registry():
         RandomImage,
         *LOGIX_BLOCKS,
         *FANUC_BLOCKS,
+        *MQTT_BLOCKS,
         ImageFile,
         VideoFile,
         TiffFile,

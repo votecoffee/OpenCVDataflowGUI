@@ -3280,6 +3280,27 @@ Inputs: `value` (any), `enable` (boolean).
 | `tag` | `""` | One explicit scalar destination, including a specific UDT member or array element. |
 | `write_enabled` | `false` | Also wire a true enable input for each intended write. |
 
+## Publish MQTT message (`industrial.mqtt_publish`)
+
+Industrial integration / MQTT
+
+Inputs: `payload` (any), `enable` (boolean).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `host` | `"127.0.0.1"` | Broker hostname or IP address. Use a host without a URI scheme. |
+| `port` | `1883` | Value must be a whole number between 1 and 65535. Broker TCP port, often 1883 for TCP or 8883 for TLS. |
+| `topic` | `""` | Publish to one exact topic. |
+| `qos` | `1` | `0`, `1`, `2` 0 sends without an acknowledgment; 1 and 2 use MQTT acknowledgments. |
+| `timeout_seconds` | `2.0` | Value must be a finite number between 0.1 and 30. Time limit for each connect, subscribe, receive or publish wait. |
+| `payload_format` | `"json"` | `json`, `text`, `bytes` JSON value, UTF-8 text or raw bytes. |
+| `tls` | `false` | Verify the broker certificate and hostname over TLS. |
+| `ca_file` | `""` | Optional PEM CA bundle. Relative paths use the saved project's directory. |
+| `username` | `""` |  |
+| `password_env` | `""` | Name of the environment variable that holds the password. |
+| `write_enabled` | `false` | Also wire a true Enable input for each intended publication. |
+| `retain` | `false` | Ask the broker to retain the last value on the topic. |
+
 ## Load calibration profile (`input.calibration`)
 
 Input / Calibration profiles
@@ -3418,6 +3439,29 @@ Ticket mode and fixed value are common inspector controls.
 | `trigger_mode` | `"rising"` | `rising`, `change`, `high` Rising and change establish a baseline on the first successful poll. |
 | `ticket_tag` | `""` | Optional numeric or text sequence tag to use as the acquisition ticket. |
 | `value_tag` | `""` | Optional tag to expose as an individual value port. |
+
+## Read MQTT message (`input.mqtt`)
+
+Industrial integration / MQTT
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `host` | `"127.0.0.1"` | Broker hostname or IP address. Use a host without a URI scheme. |
+| `port` | `1883` | Value must be a whole number between 1 and 65535. Broker TCP port, often 1883 for TCP or 8883 for TLS. |
+| `topic` | `""` | Subscription topic or filter, such as cell/+/trigger. |
+| `qos` | `1` | `0`, `1`, `2` 0 sends without an acknowledgment; 1 and 2 use MQTT acknowledgments. |
+| `timeout_seconds` | `2.0` | Value must be a finite number between 0.1 and 30. Time limit for each connect, subscribe, receive or publish wait. |
+| `payload_format` | `"json"` | `json`, `text`, `bytes` JSON value, UTF-8 text or raw bytes. |
+| `tls` | `false` | Verify the broker certificate and hostname over TLS. |
+| `ca_file` | `""` | Optional PEM CA bundle. Relative paths use the saved project's directory. |
+| `username` | `""` |  |
+| `password_env` | `""` | Name of the environment variable that holds the password. |
+| `enabled` | `false` |  |
+| `include_retained` | `true` | Accept the retained message replayed when a subscription starts. |
+| `ticket_field` | `""` | Optional top-level JSON field containing an external ticket value. |
 
 ## Repeated parts demo (`input.parts_demo`)
 

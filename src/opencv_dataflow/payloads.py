@@ -324,6 +324,8 @@ def describe_value(value):
         return {"emitted": False}
     if isinstance(value, np.ndarray):
         return {"image_shape": list(value.shape), "dtype": str(value.dtype)}
+    if isinstance(value, bytes):
+        return {"byte_count": len(value), "hex_preview": value[:64].hex()}
     if isinstance(value, ImagePyramid):
         return {"pyramid": [describe_value(level) for level in value.levels]}
     if isinstance(value, FlowGroup):
