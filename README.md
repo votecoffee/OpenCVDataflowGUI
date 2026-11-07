@@ -47,6 +47,9 @@ results. To build your own small project:
    images and measurements. Click **Pop out…** to open an image for closer review.
    Save the graph with **File → Save**.
 
+For recorded inputs, **Run all** starts at the first entry and runs one pass.
+**Continuous** loops the recordings until **Stop**. The status bar shows the active mode.
+
 Explore the [example catalog](examples/README.md) for runnable projects and the
 [workflow guide](docs/workflow-guide.md) for editor, inspection, and runtime details.
 

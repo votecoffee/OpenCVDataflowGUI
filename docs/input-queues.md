@@ -18,7 +18,7 @@ batch/join has drained.
 | Mode | Behavior |
 | --- | --- |
 | buffer_only (default) | Capture during ordinary runs, retain bursts, and release one image per Run once/iteration |
-| background_acquisition | During Continuous or the headless runner, acquire upstream on a dedicated thread while downstream processes one frame at a time |
+| background_acquisition | During Run all, Continuous, or the headless runner, acquire upstream on a dedicated thread while downstream processes one frame at a time |
 
 Buffer-only mode supports multiple queues and queues inside reusable ToolBlocks.
 It can drain a burst when the upstream branch subsequently emits nothing. Waiting

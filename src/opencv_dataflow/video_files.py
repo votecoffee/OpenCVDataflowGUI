@@ -11,6 +11,7 @@ from .core import Block, Port, Result
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image
 from .payloads import NO_VALUE, frame
 from .processing import finite, gray_image, image_value, integer
+from .replay import ReplaySource
 
 BACKENDS = {
     "auto": cv2.CAP_ANY,
@@ -35,10 +36,9 @@ def video_path(block):
     return path.parent.resolve() / path.name
 
 
-class VideoFile(Block):
+class VideoFile(ReplaySource):
     type_id, title, category = "input.video_file", "Video file", "Input"
     block_type, subtype = "Input", "Video"
-    file_source = True
     outputs = (Port("image"), Port("info", "data"))
     defaults = {
         "path": "",
@@ -95,10 +95,6 @@ class VideoFile(Block):
         super().validate_parameters(parameters)
         if "repeat" in self.recipe_bindings:
             raise ValueError("Video repeat is a run setting and cannot be recipe-bound")
-
-    @property
-    def finite_source(self):
-        return self.parameters["repeat"] == "stop"
 
     @property
     def exhausted(self):

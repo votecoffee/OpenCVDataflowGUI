@@ -6,8 +6,8 @@
 2. Set the zero-based start frame, optional exclusive end frame and stride.
    For example, start 1, end 6 and stride 2 emits frames 1, 3 and 5.
 3. Connect the image to an inspection graph. Run once advances one frame.
-   Continuous stops when finite sources are exhausted. Set repeat to loop
-   to restart the selected range at its end. **File > Reset flow state**
+   **Run all** replays the selected range once from the start frame. **Continuous**
+   repeats that range until you press **Stop**. **File > Reset flow state**
    returns the source to its start frame.
 
 Each activation emits a frame ticket such as `clip.avi#000003` by default.

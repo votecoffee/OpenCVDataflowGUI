@@ -150,12 +150,13 @@ navigate. Save remembers groups, zoom, and viewport position, including inside T
 
 Open the [image-set workspace](<../examples/demos/image_set_workspace/image_set_workspace.json>)
 for a grouped, three-image inspection.
-Press **Continuous** to run the complete set and see filename tickets and verdict
+Press **Run all** to run the complete set and see filename tickets and verdict
 borders in **Results > Image results filmstrip**. The filmstrip overlays enabled
 result graphics for the matching ticket and image frame. Double-click a thumbnail
 to open a resizable image viewer with zoom and pan. In an **Image file** block, use
 **Select images…** or **Select directory…**, then **Apply configuration**. Run once
-advances one image; Continuous stops at the end unless `repeat=loop`.
+advances one image. **Continuous** loops the set until you press **Stop**.
+The status bar shows the active run mode.
 **File > Reset flow state** restarts the sequence. Filmstrips also appear in the
 validation-set window. [Workspace and image-set details](workspaces-image-sets.md)
 cover ordering, queue behavior, filename identity, retention and Lean mode.
@@ -716,7 +717,7 @@ also gives decoder time or an explicitly labeled frame-rate estimate.
 
 Connect the result to **Write video file** to encode processed frames at a
 configured playback rate. Choose a new output path and a codec supported by
-the selected backend. A continuous run or a headless run with `--all-images`
+the selected backend. **Run all** or a headless run with `--all-images`
 writes one clip, which is finalized when execution closes.
 See [video file workflows](video-files.md).
 

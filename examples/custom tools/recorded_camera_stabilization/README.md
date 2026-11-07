@@ -1,7 +1,7 @@
 # Stabilize recorded camera motion
 
 Open [recorded_camera_stabilization.json](recorded_camera_stabilization.json)
-with **File → Open…** and run continuously. The graph replays the first
+with **File → Open…** and click **Run all**. The graph replays the first
 48 frames of the bundled 320 × 240 clip. Frame 0 is the anchor. The
 **Status** output shows when the stabilizer is ready and how much of each
 corrected frame has valid source support.

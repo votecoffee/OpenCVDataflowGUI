@@ -651,7 +651,7 @@ def test_filmstrip_captures_multipage_tiff_images(app, tmp_path):
         graph.close()
 
 
-def test_gui_multifile_picker_continuous_and_lean_opt_in(app, tmp_path, monkeypatch):
+def test_gui_multifile_picker_run_all_and_lean_opt_in(app, tmp_path, monkeypatch):
     paths = images(tmp_path)
     graph, source = file_graph(paths)
     window = MainWindow()
@@ -663,7 +663,7 @@ def test_gui_multifile_picker_continuous_and_lean_opt_in(app, tmp_path, monkeypa
     window.inspector.browse_images()
     assert json.loads(window.inspector.fields["paths"].text()) == paths
     assert window.inspector.fields["source_mode"].currentText() == "files"
-    window.start_run(True)
+    window.run_all_action.trigger()
     pump(app, lambda: window.runner is None)
     window.filmstrip_view.refresh()
     assert window.filmstrip_view.items.count() == 3
@@ -672,11 +672,76 @@ def test_gui_multifile_picker_continuous_and_lean_opt_in(app, tmp_path, monkeypa
     assert not window.filmstrip_view.capture.isChecked()
     window.root_graph.invalidate()
     window.root_graph.filmstrip.clear()
-    window.start_run(True)
+    window.run_all_action.trigger()
     pump(app, lambda: window.runner is None)
     assert window.root_graph.filmstrip.snapshot() == []
     window.dirty = False
     window.close()
+
+
+@pytest.mark.parametrize("background", [False, True])
+def test_gui_continuous_wraps_saved_stop_and_keeps_its_running_state(app, tmp_path, background):
+    paths = images(tmp_path)
+    graph, source = file_graph(paths)
+    window = MainWindow()
+    if background:
+        queue = graph.add(window.registry.create("flow.image_queue", parameters={
+            "mode": "background_acquisition", "overflow": "block", "capture_interval_ms": 10,
+        }))
+        graph.connect(source.id, "image", queue.id, "image")
+    window.replace_graph(graph)
+    try:
+        window.continuous_action.trigger()
+        assert window.run_state.text() == "Running continuously"
+        assert window.stop_action.isEnabled() and not window.run_all_action.isEnabled()
+        pump(app, lambda: len(graph.filmstrip.snapshot()) >= 5)
+        assert window.runner is not None and window.run_state.text() == "Running continuously"
+        tickets = [row["ticket"] for row in graph.filmstrip.snapshot()[:5]]
+        values = [ticket["value"] for ticket in tickets]
+        assert values == ["z.png", "a.png", "b.png", "z.png", "a.png"]
+        assert len({ticket_key(ticket) for ticket in tickets}) == 5
+        window.stop_action.trigger()
+        assert window.run_state.text() == "Stopping…"
+        pump(app, lambda: window.runner is None)
+        assert window.run_state.text() == "Idle"
+        assert window.statusBar().currentMessage().startswith("Stopped")
+        assert source.parameters["repeat"] == "stop"
+    finally:
+        if window.runner:
+            window.stop_run()
+            pump(app, lambda: window.runner is None)
+        window.close()
+
+
+@pytest.mark.parametrize("background", [False, True])
+def test_gui_run_all_rewinds_and_reads_saved_loop_exactly_once(app, tmp_path, background):
+    graph, source = file_graph(images(tmp_path), repeat="loop")
+    window = MainWindow()
+    if background:
+        queue = graph.add(window.registry.create("flow.image_queue", parameters={
+            "mode": "background_acquisition", "overflow": "block",
+        }))
+        graph.connect(source.id, "image", queue.id, "image")
+    window.replace_graph(graph)
+    try:
+        window.run_action.trigger()
+        pump(app, lambda: window.runner is None)
+        window.run_all_action.trigger()
+        assert window.run_state.text() == "Running all"
+        pump(app, lambda: window.runner is None)
+        values = [row["ticket"]["value"] for row in graph.filmstrip.snapshot()]
+        assert values == ["z.png", "z.png", "a.png", "b.png"]
+        assert window.run_state.text() == "Idle"
+        assert window.statusBar().currentMessage().startswith("Run all complete · 3")
+        assert source.parameters["repeat"] == "loop"
+        window.run_action.trigger()
+        pump(app, lambda: window.runner is None)
+        assert source.last_result.outputs["ticket"]["value"] == "z.png"
+    finally:
+        if window.runner:
+            window.stop_run()
+            pump(app, lambda: window.runner is None)
+        window.close()
 
 
 def test_group_header_drag_and_locked_layout(app):

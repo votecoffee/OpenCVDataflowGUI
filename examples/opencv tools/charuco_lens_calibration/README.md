@@ -1,7 +1,7 @@
 # ChArUco lens calibration
 
 Open [charuco_lens_calibration.json](charuco_lens_calibration.json)
-with **File → Open…** and click **Continuous** to process the eight
+with **File → Open…** and click **Run all** to process the eight
 rendered views. **Detect ChArUco board** pairs the visible image corners
 with their board coordinates. **Batch serial entries** collects all
 eight observations before **Calibrate lens** fits the profile.

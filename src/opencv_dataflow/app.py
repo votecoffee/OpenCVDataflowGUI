@@ -69,10 +69,11 @@ from .plugins import load_plugin
 from .program_documentation import export_program_documentation
 from .project_compare import ProjectCompare
 from .project_xml import XML_FILTER, export_project_xml
-from .queued_execution import QueuedExecution, background_queue
+from .queued_execution import QueuedExecution, ancestors, background_queue
 from .recipe_editor import RecipeManager
 from .recipes import validate_bindings
 from .region_editor import RegionEditor
+from .replay import replay_sources
 from .result_image import ResultImageWindow
 from .run_profiles import PROFILES
 from .scheduling import MAX_BRANCH_WORKERS
@@ -114,9 +115,12 @@ class Runner(QThread):
     frame = Signal()
     failed = Signal(str)
 
-    def __init__(self, graph, continuous, registry=None):
+    def __init__(self, graph, mode, registry=None):
         super().__init__()
-        self.graph, self.continuous = graph, continuous
+        self.graph, self.mode = graph, mode
+        self.continuous = mode == "continuous"
+        self.iterations = 0
+        self.ended_with_error = False
         self.stop_requested = threading.Event()
         self.ack = threading.Event()
         self.duration = 0.0
@@ -146,8 +150,15 @@ class Runner(QThread):
             self.ack.wait()
 
         try:
-            if self.continuous and background_queue(self.graph) is not None:
-                queued = QueuedExecution(self.graph, self.registry, self.stop_requested.is_set)
+            repeat = {"all": "stop", "continuous": "loop"}.get(self.mode)
+            sources = tuple(replay_sources(self.graph))
+            for source in sources:
+                if repeat is not None or source.parameters["repeat"] == "loop":
+                    source.configure_replay(repeat, rewind=self.mode == "all")
+            if repeat and background_queue(self.graph) is not None:
+                queued = QueuedExecution(
+                    self.graph, self.registry, self.stop_requested.is_set, repeat=repeat
+                )
                 queued.start()
             while not self.stop_requested.is_set():
                 started = time.perf_counter()
@@ -158,10 +169,11 @@ class Runner(QThread):
                     self.graph.run(cancelled)
                 if interrupted:
                     break
+                self.iterations += 1
                 self.duration = (time.perf_counter() - started) * 1000
                 now = time.perf_counter()
                 if (
-                    not self.continuous
+                    not repeat
                     or published_at is None
                     or (now - published_at) * 1000 >= self.graph.run_profile.ui_interval_ms
                     or self.stop_requested.is_set()
@@ -172,10 +184,18 @@ class Runner(QThread):
                     published_at = time.perf_counter()
                 else:
                     pending = list(capture_display_results(self.graph.blocks.values()))
-                if not self.continuous or (queued is None and self.graph.sources_exhausted()):
+                if any(source.replay_stalled for source in sources):
+                    self.ended_with_error = True
+                    if self.continuous:
+                        break
+                if not repeat or (
+                    queued is None and (not self.continuous or not sources)
+                    and self.graph.sources_exhausted()
+                ):
                     break
                 self.stop_requested.wait(self.graph.run_profile.iteration_pause_ms / 1000)
         except (Exception, SystemExit) as exc:
+            self.ended_with_error = True
             self.failed.emit(exception_message(exc))
         finally:
             if pending is not None:
@@ -1722,6 +1742,9 @@ class MainWindow(QMainWindow):
         self.scene.warning.connect(self.warn)
         self.scene.open_block.connect(self.enter_toolblock)
         self.make_actions()
+        self.run_state = QLabel("Idle")
+        self.run_state.setAccessibleName("Execution state")
+        self.statusBar().addPermanentWidget(self.run_state)
         self.production_label = QLabel()
         self.statusBar().addPermanentWidget(self.production_label)
         self.production_timer = QTimer(self)
@@ -1760,7 +1783,14 @@ class MainWindow(QMainWindow):
         toolbar.addSeparator()
         self.run_action = toolbar.addAction("Run once", lambda: self.start_run(False))
         self.run_action.setShortcut("F5")
+        self.run_action.setToolTip("Run the job once and advance each source one step.")
+        self.run_all_action = toolbar.addAction(
+            "Run all", lambda: self.start_run(False, run_all=True)
+        )
+        self.run_all_action.setToolTip("Replay each recorded sequence once from the start.")
         self.continuous_action = toolbar.addAction("Continuous", lambda: self.start_run(True))
+        self.continuous_action.setToolTip("Keep running and loop recorded sequences until Stop.")
+        self.run_actions = [self.run_action, self.run_all_action, self.continuous_action]
         self.stop_action = toolbar.addAction("Stop", self.stop_run)
         self.stop_action.setEnabled(False)
         toolbar.addWidget(QLabel("Run profile"))
@@ -2230,9 +2260,35 @@ class MainWindow(QMainWindow):
         except Exception as exc:
             self.warn(str(exc))
 
-    def start_run(self, continuous):
+    def check_run_all(self):
+        sources = set(replay_sources(self.root_graph))
+        if not sources:
+            raise ValueError("Run all requires an image set, TIFF sequence, or video file")
+        for block in walk(self.root_graph):
+            if isinstance(block, ImageQueue) and block.stats()["queued"]:
+                raise ValueError(
+                    "Run all starts from the first recording. Drain pending images with Run once"
+                    " or Continuous, or use Reset flow state to clear the queue."
+                )
+        queue = background_queue(self.root_graph)
+        if queue is not None:
+            if queue.parameters["overflow"] != "block" or "overflow" in queue.recipe_bindings:
+                raise ValueError("Run all requires fixed Block overflow on the background queue")
+            upstream = ancestors(self.root_graph, queue.id)
+            upstream_sources = set(replay_sources(self.root_graph, upstream))
+            if not sources <= upstream_sources:
+                raise ValueError("Run all requires every recording before the background queue")
+
+    def start_run(self, continuous, *, run_all=False):
         if self.runner:
             return
+        mode = "all" if run_all else "continuous" if continuous else "once"
+        if run_all:
+            try:
+                self.check_run_all()
+            except ValueError as exc:
+                self.warn(str(exc))
+                return
         block = self.inspector.block
         if block is None or not block.plugin_dialog_modeless:
             self.inspector.close_plugin_dialog()
@@ -2257,7 +2313,7 @@ class MainWindow(QMainWindow):
         except (Exception, SystemExit) as exc:
             self.warn(exception_message(exc))
             return
-        self.runner = Runner(execution_graph, continuous, self.registry)
+        self.runner = Runner(execution_graph, mode, self.registry)
         self.runner.frame.connect(self.on_frame)
         self.runner.failed.connect(self.warn)
         self.runner.finished.connect(self.on_finished)
@@ -2265,13 +2321,16 @@ class MainWindow(QMainWindow):
         self.library.setEnabled(False)
         self.inspector.refresh_configuration_controls()
         self.inspector.refresh_result()
-        for action in self.edit_actions + [self.run_action, self.continuous_action]:
+        for action in self.edit_actions + self.run_actions:
             action.setEnabled(False)
         self.stop_action.setEnabled(True)
         self.profile_choice.setEnabled(False)
         self.project_graphics_choice.setEnabled(False)
         self.branch_workers_choice.setEnabled(False)
-        self.statusBar().showMessage("Running…")
+        self.run_state.setText({
+            "once": "Running once", "all": "Running all", "continuous": "Running continuously",
+        }[mode])
+        self.statusBar().clearMessage()
         self.runner.start()
 
     def reset_flow_state(self):
@@ -2303,6 +2362,7 @@ class MainWindow(QMainWindow):
                 f" · {states.count('waiting')} waiting · {states.count('inactive')} inactive"
             )
         except (Exception, SystemExit) as exc:
+            self.runner.ended_with_error = True
             self.runner.stop()
             error = exception_message(exc)
         finally:
@@ -2315,6 +2375,8 @@ class MainWindow(QMainWindow):
     def stop_run(self):
         if self.runner:
             self.runner.stop()
+            self.stop_action.setEnabled(False)
+            self.run_state.setText("Stopping…")
             self.statusBar().showMessage("Stopping after the current block returns…")
 
     def on_finished(self):
@@ -2336,12 +2398,23 @@ class MainWindow(QMainWindow):
                 block.update_metrics()
         self.scene.update()
         self.runner = None
+        self.run_state.setText("Idle")
+        if worker.ended_with_error or error is not None:
+            status = "Run ended with an error"
+        elif worker.stop_requested.is_set():
+            status = "Stopped"
+        else:
+            status = {
+                "once": "Run once complete", "all": "Run all complete",
+                "continuous": "Continuous run ended",
+            }[worker.mode]
+        self.statusBar().showMessage(f"{status} · {worker.iterations} job cycles")
         self.inspector.refresh_result()
         worker.deleteLater()
         self.scene.set_locked(False)
         self.library.setEnabled(True)
         self.inspector.refresh_configuration_controls()
-        for action in self.edit_actions + [self.run_action, self.continuous_action]:
+        for action in self.edit_actions + self.run_actions:
             action.setEnabled(True)
         self.stop_action.setEnabled(False)
         self.profile_choice.setEnabled(True)

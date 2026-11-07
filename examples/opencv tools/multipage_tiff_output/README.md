@@ -1,7 +1,7 @@
 # Multipage TIFF output
 
 Open [multipage_tiff_output.json](multipage_tiff_output.json) with
-**File → Open…**. Start continuous execution or click **Run once** three
+**File → Open…**. Click **Run all** or click **Run once** three
 times. The source replays three pages. **Batch serial entries** groups
 them in order and **Write multipage TIFF** creates `tiff_export.tiff` in
 the working directory. You can set an explicit new output path in the

@@ -13,16 +13,16 @@ from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, ope
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, FlowGroup, frame
 from .processing import image_value
+from .replay import ReplaySource
 
 TIFF_SIGNATURES = (b"II*\0", b"MM\0*", b"II+\0", b"MM\0+")
 MAX_FILE_BYTES = 128 * 1024 * 1024
 MAX_PAGE_INDEX = 2**31 - 2
 
 
-class TiffFile(Block):
+class TiffFile(ReplaySource):
     type_id, title, category = "input.tiff_file", "TIFF page sequence", "Input"
     block_type, subtype = "Input", "Files"
-    file_source = True
     outputs = (Port("image"), Port("info", "data"))
     defaults = {
         "path": "",
@@ -87,10 +87,6 @@ class TiffFile(Block):
             )
         if "repeat" in self.recipe_bindings:
             raise ValidationError("TIFF repeat is a run setting and cannot be recipe-bound")
-
-    @property
-    def finite_source(self):
-        return self.parameters["repeat"] == "stop"
 
     @property
     def exhausted(self):

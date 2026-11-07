@@ -9,6 +9,7 @@ from .core import Graph
 from .image_queue import ImageQueue, QueuedCapture
 from .outcomes import publish_result, rejected_inputs
 from .payloads import NO_VALUE
+from .replay import replay_sources
 from .tickets import ticket_key
 from .toolblocks import ToolBlock
 
@@ -131,7 +132,7 @@ def snapshots_for_frame(graph, frame, keys=None):
 class QueuedExecution:
     """Own the acquisition thread and join it before returning control to callers."""
 
-    def __init__(self, graph, registry, cancelled=lambda: False):
+    def __init__(self, graph, registry, cancelled=lambda: False, *, repeat=None):
         self.graph, self.registry, self.cancelled = graph, registry, cancelled
         graph.bind_ticket_results()
         self.queue = background_queue(graph)
@@ -159,6 +160,9 @@ class QueuedExecution:
         self.producer.bind_recipes(graph.recipes)
         self.producer.copy_timing_from(graph)
         self.producer.copy_source_runtime_from(graph)
+        if repeat is not None:
+            for source in replay_sources(self.producer):
+                source.configure_replay(repeat)
         self.stop = threading.Event()
         self.thread = None
 

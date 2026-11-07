@@ -46,12 +46,18 @@ and `pixel_depth` conversions apply to every image. `path_base=project` resolves
 relative paths beside the saved project. Reading bytes before OpenCV decoding
 supports Unicode filenames. The `info` output includes filename and path.
 
-`repeat=stop` ends the sequence; Continuous stops automatically when all finite
-sources finish. Background acquisition drains accepted queued frames before
-stopping. `repeat=loop` repeats until Stop. Run once advances one entry; Stop/Resume
-keeps the runtime cursor. Reset flow state or a configuration change restarts it.
-Cursors and directory snapshots are runtime state: reopening a project starts
-from the first image. Incomplete batches/joins may remain pending at end of set;
+**Run once** advances the current cursor and uses the saved Repeat setting.
+**Run all** starts from the first entry and finishes after one pass through the
+recordings. **Continuous** loops recorded sources until **Stop** and resumes the
+cursor after a stop. Both modes choose replay behavior for that run. The status
+bar shows the active mode, when a stop is pending, and when the run finishes.
+
+With a background queue, Run all requires recorded sources upstream of the queue,
+Block overflow, and an empty queue at the start. It drains accepted frames at
+the end. Stop preserves queued captures for Run once or Continuous.
+
+Reset flow state or a source configuration change restarts its cursor. Reopening
+a project starts from the first image. Incomplete batches/joins may remain pending at end of set;
 this does not invent a verdict for unfinished work. Configure matching source
 counts and buffering policies for coordinated multi-source jobs.
 

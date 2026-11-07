@@ -21,6 +21,7 @@ from .objects import collection, contour_item
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS, CONTOUR_APPROXIMATIONS, scalar_value
 from .payloads import NO_VALUE, moved_payload
+from .replay import ReplaySource
 from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
 
 
@@ -37,11 +38,10 @@ class DemoImage(Block):
         return Result({"image": image}, message="Synthetic inspection target")
 
 
-class ImageFile(Block):
+class ImageFile(ReplaySource):
     block_type, subtype = "Input", "Files"
     type_id, title, category = "input.file", "Image file", "Input"
     outputs = (Port("image"), Port("info", "data"))
-    file_source = True
     defaults = {
         "path": "",
         "source_mode": "single",
@@ -110,8 +110,8 @@ class ImageFile(Block):
         self.restore_runtime(other.snapshot_runtime())
 
     @property
-    def finite_source(self):
-        return self.parameters["source_mode"] != "single" and self.parameters["repeat"] == "stop"
+    def replayable(self):
+        return self.parameters["source_mode"] != "single"
 
     @property
     def exhausted(self):
@@ -172,6 +172,8 @@ class ImageFile(Block):
         state["selected"] = state["files"][index]
         state["cursor"] += 1
         state["finished"] = self.finite_source and state["cursor"] >= len(state["files"])
+        if self.replayable and not self.finite_source:
+            state["cursor"] %= len(state["files"])
         ticket = super().issue_source_ticket()
         if self.parameters["filename_ticket"] and self.ticket_settings["mode"] == "auto_number":
             ticket.update(

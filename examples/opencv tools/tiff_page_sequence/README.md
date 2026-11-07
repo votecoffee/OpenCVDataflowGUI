@@ -1,7 +1,7 @@
 # TIFF page sequence
 
 Open [tiff_page_sequence.json](tiff_page_sequence.json) with **File → Open…**.
-Click **Run once** for the next page or start continuous execution to replay
+Click **Run once** for the next page or click **Run all** to replay
 the file. The example measures three 16-bit grayscale pages with means of
 1,000, 20,000, and 45,000. Each page has its own ticket and pixel frame.
 
