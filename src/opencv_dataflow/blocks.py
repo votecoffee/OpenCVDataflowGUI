@@ -25,6 +25,14 @@ from .replay import ReplaySource
 from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
 
 
+class Comment(Block):
+    """A saved canvas note for instructions, context, or source attribution."""
+
+    type_id, title, category = "layout.comment", "Comment", "Annotations"
+    subtype = "Layout"
+    layout_only = True
+
+
 class DemoImage(Block):
     block_type, subtype = "Input", "Synthetic"
     type_id, title, category = "input.demo", "Demo image", "Input"
@@ -768,6 +776,7 @@ def builtin_registry():
 
     registry = Registry()
     for block in (
+        Comment,
         DemoImage,
         RandomImage,
         *LOGIX_BLOCKS,

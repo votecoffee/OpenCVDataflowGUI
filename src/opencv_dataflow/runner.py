@@ -23,7 +23,7 @@ from .toolblocks import ToolBlock
 
 def describe(graph):
     records = []
-    for block in graph.blocks.values():
+    for block in graph.processing_blocks():
         result = block.last_result
         record = {
             "id": block.id,
@@ -124,7 +124,8 @@ def main(argv=None):
             else:
                 graph.run()
             records = describe(graph) if args.report else []
-            ok = all(b.state in ("pass", "waiting", "inactive") for b in graph.blocks.values())
+            blocks = list(graph.processing_blocks())
+            ok = all(b.state in ("pass", "waiting", "inactive") for b in blocks)
             passed = passed and ok
             if args.report:
                 runs.append(
@@ -135,8 +136,8 @@ def main(argv=None):
                         "blocks": records,
                     }
                 )
-            print(f"Run {index + 1}: {'PASS' if ok else 'FAIL'} ({len(graph.blocks)} blocks)")
-            for block in graph.blocks.values():
+            print(f"Run {index + 1}: {'PASS' if ok else 'FAIL'} ({len(blocks)} blocks)")
+            for block in blocks:
                 if block.state not in ("pass", "waiting", "inactive"):
                     message = block.error or (
                         block.last_result.message if block.last_result else ""

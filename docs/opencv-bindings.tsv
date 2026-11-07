@@ -3397,7 +3397,7 @@ P3	method	cv2.mcc.CChecker.setTarget	no static reference	-
 P3	function	cv2.mcc.CChecker_create	no static reference	-
 P3	class	cv2.mcc.CCheckerDetector	literal reference	-
 P3	method	cv2.mcc.CCheckerDetector.create	literal reference	-
-P3	method	cv2.mcc.CCheckerDetector.draw	no static reference	-
+P3	method	cv2.mcc.CCheckerDetector.draw	method name only	-
 P3	method	cv2.mcc.CCheckerDetector.getBestColorChecker	no static reference	-
 P3	method	cv2.mcc.CCheckerDetector.getColorChartType	no static reference	-
 P3	method	cv2.mcc.CCheckerDetector.getDetectionParams	no static reference	-

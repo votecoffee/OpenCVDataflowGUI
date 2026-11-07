@@ -20,7 +20,10 @@ def test_builtin_catalog_defaults_help_and_persistence(tmp_path):
         assert cls.parameter_ranges.keys() <= cls.defaults.keys(), kind
         assert cls.parameter_help.keys() <= cls.defaults.keys(), kind
         assert cls.input_help.keys() <= input_names, kind
-        assert RESULT_GRAPHICS in output_names, kind
+        if block.layout_only:
+            assert not input_names and not output_names, kind
+        else:
+            assert RESULT_GRAPHICS in output_names, kind
         assert set(block.exposed_inputs) <= input_names, kind
         assert set(block.exposed_outputs) <= output_names, kind
         if block.ticket_source:

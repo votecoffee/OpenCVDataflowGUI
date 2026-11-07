@@ -114,6 +114,7 @@ class Block:
     category: ClassVar[str] = "Custom"
     block_type: ClassVar[str] = ""
     parallel_safe: ClassVar[bool] = False
+    layout_only: ClassVar[bool] = False
     subtype: ClassVar[str] = "General"
     inputs: ClassVar[tuple[Port, ...]] = ()
     outputs: ClassVar[tuple[Port, ...]] = ()
@@ -311,6 +312,8 @@ class Block:
 
     @property
     def output_ports(self):
+        if self.layout_only:
+            return ()
         if any(port.name == RESULT_GRAPHICS for port in self.outputs):
             return self.outputs
         return (*self.outputs, Port(RESULT_GRAPHICS, "graphics", required=False))
@@ -894,13 +897,14 @@ class Graph:
 
     def remove(self, block_id):
         self.connections = [c for c in self.connections if block_id not in (c.source, c.target)]
-        del self.blocks[block_id]
+        block = self.blocks.pop(block_id)
         self.groups = [
             {**g, "members": [m for m in g["members"] if m != block_id]}
             for g in self.groups
             if any(m != block_id for m in g["members"])
         ]
-        self.invalidate()
+        if not block.layout_only:
+            self.invalidate()
 
     def invalidate(self):
         self.clock = TicketClock()
@@ -1009,6 +1013,10 @@ class Graph:
 
     def ordered(self):
         return DependencyPlan(self.blocks, self.connections).order
+
+    def processing_blocks(self):
+        """Iterate the tools that participate in execution and runtime results."""
+        return (block for block in self.blocks.values() if not block.layout_only)
 
     def set_branch_workers(self, value):
         if value != "auto" and (type(value) is not int or not 1 <= value <= MAX_BRANCH_WORKERS):
@@ -1128,7 +1136,7 @@ class Graph:
                 c.target == target and c.input == name for c in self.connections
             ):
                 raise ValueError("Invalid or internally connected public input")
-        plan = DependencyPlan(self.blocks, self.connections)
+        plan = DependencyPlan((block.id for block in self.processing_blocks()), self.connections)
         splits = [block for block in self.blocks.values() if block.type_id == "flow.split"]
         workers = self.branch_workers
         if workers == "auto":
@@ -1398,10 +1406,10 @@ class Graph:
             self.blocks[key].state, self.blocks[key].error = "skipped", "Run stopped"
 
         parallel = {
-            key
-            for key, block in self.blocks.items()
+            block.id
+            for block in self.processing_blocks()
             if workers > 1
-            and key not in provided
+            and block.id not in provided
             and (
                 splits
                 or block.parallel_safe

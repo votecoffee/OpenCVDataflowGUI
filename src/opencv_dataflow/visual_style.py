@@ -60,6 +60,7 @@ BLOCK_COLORS = {
     "ML": "#e18cc8",
     "3D vision": "#63c5b7",
     INDUSTRIAL: "#e2bb80",
+    "Annotations": "#f6d56f",
     "Custom": "#c2cbd5",
 }
 

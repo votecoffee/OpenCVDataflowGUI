@@ -15,6 +15,8 @@ from PySide6.QtGui import (
     QPainterPathStroker,
     QPen,
     QPixmap,
+    QTextLayout,
+    QTextOption,
     QTransform,
 )
 from PySide6.QtWidgets import (
@@ -155,6 +157,10 @@ class Node(QGraphicsItem):
 
     def update_size(self):
         self.width, spacing, thumbnail_height = NODE_SIZES[self.block.node_size]
+        if self.block.layout_only:
+            self.thumbnail_rect = QRectF()
+            self.height = 60 + max(30, thumbnail_height)
+            return
         for socket in self.sockets.values():
             socket.setPos(self.width if socket.output else 0, 62 + socket.row * spacing)
         bottom = 72 + self.rows * spacing
@@ -203,16 +209,20 @@ class Node(QGraphicsItem):
         return badges
 
     def refresh_issue_tooltip(self):
-        heading = escape(f"{self.block.name} · {self.category}")
+        title = escape(self.block.name)
         description = escape(self.block.description).replace("\n", "<br>")
         description = f"<br><br>{description}" if description else ""
-        details = "".join(
-            "<br>" + escape(detail).replace("\n", "<br>") for _, _, detail in self.issue_badges()
-        )
-        tooltip = (
-            f"<qt>{heading}{description}<br>Border: tool category · header: run status"
-            f"{details}</qt>"
-        )
+        if self.block.layout_only:
+            tooltip = f"<qt><b>{title}</b>{description}</qt>"
+        else:
+            details = "".join(
+                "<br>" + escape(detail).replace("\n", "<br>")
+                for _, _, detail in self.issue_badges()
+            )
+            tooltip = (
+                f"<qt>{title} · {escape(self.category)}{description}"
+                f"<br>Border: tool category · header: run status{details}</qt>"
+            )
         if self.toolTip() != tooltip:
             self.setToolTip(tooltip)
 
@@ -228,16 +238,19 @@ class Node(QGraphicsItem):
 
     def paint(self, painter, option, widget=None):
         b = self.block
-        status = QColor(BLOCK_STATE_COLORS[b.state])
-        if b.last_result and b.last_result.score is not None:
-            status = status.lighter(75 + int(50 * b.last_result.score))
         if self.isSelected():
             painter.setPen(QPen(QColor("#f4f7fb"), 5))
             painter.setBrush(Qt.BrushStyle.NoBrush)
             painter.drawRoundedRect(QRectF(0, 0, self.width, self.height), 9, 9)
         painter.setPen(QPen(self.border_color, 2))
-        painter.setBrush(QColor("#202c3d"))
+        painter.setBrush(QColor("#fff3c2" if b.layout_only else "#202c3d"))
         painter.drawRoundedRect(QRectF(0, 0, self.width, self.height), 9, 9)
+        if b.layout_only:
+            self.paint_comment(painter)
+            return
+        status = QColor(BLOCK_STATE_COLORS[b.state])
+        if b.last_result and b.last_result.score is not None:
+            status = status.lighter(75 + int(50 * b.last_result.score))
         painter.setPen(Qt.PenStyle.NoPen)
         painter.setBrush(status)
         painter.drawRoundedRect(QRectF(1, 1, self.width - 2, 39), 8, 8)
@@ -310,6 +323,49 @@ class Node(QGraphicsItem):
         painter.drawText(
             QRectF(12, self.status_y - 3, content_width, 22), Qt.AlignmentFlag.AlignLeft, label
         )
+
+    def paint_comment(self, painter):
+        width = self.width - 24
+        font = painter.font()
+        font.setBold(True)
+        painter.setFont(font)
+        painter.setPen(QColor("#352e1d"))
+        painter.drawText(
+            QRectF(12, 0, width, 39),
+            Qt.AlignmentFlag.AlignVCenter,
+            painter.fontMetrics().elidedText(self.block.name, Qt.TextElideMode.ElideRight, width),
+        )
+        font.setBold(False)
+        painter.setFont(font)
+        text = self.block.description.replace("\r\n", "\n").replace("\n", "\u2028")
+        layout = QTextLayout(text, font, painter.device())
+        option = QTextOption()
+        option.setWrapMode(QTextOption.WrapMode.WrapAtWordBoundaryOrAnywhere)
+        layout.setTextOption(option)
+        origin = QPointF(12, 41)
+        available_height = self.height - origin.y() - 10
+        lines, y, overflow = [], 0, False
+        layout.beginLayout()
+        while (line := layout.createLine()).isValid():
+            line.setLineWidth(width)
+            if y + line.height() > available_height:
+                overflow = True
+                break
+            line.setPosition(QPointF(0, y))
+            lines.append(line)
+            y += line.height()
+        layout.endLayout()
+        if overflow and lines:
+            last = lines.pop()
+            # Qt text offsets are UTF-16 code units, including for non-BMP characters.
+            start, length = last.textStart(), last.textLength()
+            tail = text.encode("utf-16-le")[start * 2:(start + length) * 2].decode("utf-16-le")
+            tail = painter.fontMetrics().elidedText(
+                tail.rstrip() + "…", Qt.TextElideMode.ElideRight, width
+            )
+            painter.drawText(origin + QPointF(0, last.y() + last.ascent()), tail)
+        for line in lines:
+            line.draw(painter, origin)
 
     def itemChange(self, change, value):
         if change == QGraphicsItem.GraphicsItemChange.ItemPositionHasChanged:
@@ -581,7 +637,10 @@ class CanvasScene(QGraphicsScene):
                 self.graph.connections.remove(item.connection)
             elif isinstance(item, Node) and item.block.id in self.graph.blocks:
                 self.graph.remove(item.block.id)
-        topology_changed = any(isinstance(i, (Node, Wire)) for i in selected)
+        topology_changed = any(
+            isinstance(item, Wire) or (isinstance(item, Node) and not item.block.layout_only)
+            for item in selected
+        )
         group_ids = {i.data["id"] for i in selected if isinstance(i, NodeGroup)}
         self.graph.groups = [g for g in self.graph.groups if g["id"] not in group_ids]
         if topology_changed:

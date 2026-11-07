@@ -137,7 +137,7 @@ class ToolBlock(Block):
         self.graph.run(
             self._cancelled, injected, filmstrip_capture=getattr(self, "_filmstrip_capture", None)
         )
-        children = list(self.graph.blocks.values())
+        children = list(self.graph.processing_blocks())
         unavailable = [b for b in children if b.state in ("error", "skipped")]
         if unavailable:
             message = "; ".join(f"{b.name}: {b.error}" for b in unavailable)

@@ -379,6 +379,10 @@ class Inspector(QWidget):
             self.block_page.verticalScrollBar().setValue(0)
         self.fields, self.port_checks, self.level_fields, self.failure_fields = {}, [], {}, {}
         self.kernel_parameters = {}
+        annotation = block is not None and block.layout_only
+        self.tabs.setTabEnabled(self.tabs.indexOf(self.results_page), not annotation)
+        self.live_results.setVisible(not annotation)
+        self.run_block.setVisible(not annotation)
         if block is None:
             self.caption.setText("Select a block")
             self.caption.setToolTip("")
@@ -391,11 +395,18 @@ class Inspector(QWidget):
             f"\n{block.type_id}"
         )
         self.name_field = QLineEdit(block.name)
-        self.block_form.addRow("Name", self.name_field)
         self.description_field = QPlainTextEdit(block.description)
-        self.description_field.setPlaceholderText("Shown when hovering over this block")
-        self.description_field.setMaximumHeight(76)
-        self.block_form.addRow("Description", self.description_field)
+        if annotation:
+            self.form.addRow("Title", self.name_field)
+            self.description_field.setPlaceholderText("Notes, instructions, or source credits")
+            self.form.addRow("Text", self.description_field)
+            if changed_block:
+                self.tabs.setCurrentWidget(self.parameters_page)
+        else:
+            self.block_form.addRow("Name", self.name_field)
+            self.description_field.setPlaceholderText("Shown when hovering over this block")
+            self.description_field.setMaximumHeight(76)
+            self.block_form.addRow("Description", self.description_field)
         documentation = QPushButton("Edit documentation…")
         documentation.clicked.connect(self.edit_documentation)
         self.block_form.addRow(documentation)
@@ -608,7 +619,10 @@ class Inspector(QWidget):
         for size in NODE_SIZES:
             self.node_size.addItem(size.capitalize(), size)
         self.node_size.setCurrentIndex(self.node_size.findData(block.node_size))
-        self.node_size.setToolTip("Change the layout immediately. Small hides the node image.")
+        self.node_size.setToolTip(
+            "Change how much text fits on the canvas." if annotation
+            else "Change the layout immediately. Small hides the node image."
+        )
         self.node_size.currentIndexChanged.connect(self.resize_selected_node)
         advanced_form.addRow("Block size", self.node_size)
         self.thumb = QCheckBox("Show image on node")
@@ -633,6 +647,9 @@ class Inspector(QWidget):
         )
         self.graphics_choice.currentIndexChanged.connect(self.change_graphics_mode)
         advanced_form.addRow("Result graphics", self.graphics_choice)
+        if annotation:
+            for widget in (self.recipe_group, self.thumb, self.node_image, self.graphics_choice):
+                advanced_form.setRowVisible(widget, False)
         for direction in ("inputs", "outputs"):
             ports = block.inputs if direction == "inputs" else block.output_ports
             for port in ports:
@@ -715,7 +732,10 @@ class Inspector(QWidget):
                 )
                 if loaded is not None:
                     window.scene.rebuild(block.id)
-                    window.mark_dirty()
+                    if loaded.layout_only:
+                        window.mark_layout_dirty()
+                    else:
+                        window.mark_dirty()
                     window.statusBar().showMessage("Block configuration loaded from XML")
             except Exception as exc:
                 self.window.warn(str(exc))
@@ -1495,11 +1515,16 @@ class Inspector(QWidget):
             b.exposed_inputs, b.exposed_outputs = exposed["inputs"], exposed["outputs"]
             b.thumbnail = self.thumb.isChecked()
             b.preview_output = self.node_image.currentData()
-            self.window.graph.invalidate()
+            if not b.layout_only:
+                self.window.graph.invalidate()
             self.window.scene.rebuild(b.id)
             self.caption.setText(b.name)
-            self.window.mark_dirty()
-            self.window.statusBar().showMessage("Configuration applied; run to update results")
+            if b.layout_only:
+                self.window.mark_layout_dirty()
+                self.window.statusBar().showMessage("Comment updated")
+            else:
+                self.window.mark_dirty()
+                self.window.statusBar().showMessage("Configuration applied; run to update results")
             return True
         except (ValueError, TypeError) as exc:
             self.window.warn(str(exc))
@@ -1963,9 +1988,13 @@ class MainWindow(QMainWindow):
         else:
             block.position = [position.x(), position.y()]
         self.graph.add(block)
-        self.graph.invalidate()
+        if not block.layout_only:
+            self.graph.invalidate()
         self.scene.rebuild(block.id)
-        self.mark_dirty()
+        if block.layout_only:
+            self.mark_layout_dirty()
+        else:
+            self.mark_dirty()
 
     @property
     def root_graph(self):
@@ -2361,7 +2390,7 @@ class MainWindow(QMainWindow):
             self.scene.update()
             self.filmstrip_view.refresh()
             self.inspector.refresh_result()
-            states = [b.state for b in self.root_graph.blocks.values()]
+            states = [b.state for b in self.root_graph.processing_blocks()]
             self.statusBar().showMessage(
                 f"{len(states)} blocks · {self.runner.duration:.1f} ms · "
                 f"{states.count('pass')} pass · {states.count('fail')} fail · "

@@ -644,6 +644,51 @@ def test_inspector_block_xml_asks_before_disconnecting_wires(app, monkeypatch, t
         window.close()
 
 
+def test_comment_tool_edits_save_and_preserve_inspection_results(app, tmp_path):
+    window = MainWindow()
+    graph = Graph()
+    source = graph.add(window.registry.create("input.demo"))
+    window.replace_graph(graph)
+    app.processEvents()
+    graph.run()
+    clock, result = graph.clock, source.last_result
+    try:
+        window.search.setText("Comment")
+        flags = Qt.MatchFlag.MatchExactly | Qt.MatchFlag.MatchRecursive
+        (item,) = window.library.findItems("Comment", flags, 0)
+        window.add_block(item)
+        note = window.inspector.block
+        assert not note.inputs and not note.output_ports
+        assert graph.clock is clock and source.last_result is result
+
+        window.inspector.name_field.setText("Source <credit>")
+        window.inspector.description_field.setPlainText("First line\nLast line & detail")
+        assert window.inspector.apply()
+        assert graph.clock is clock and source.last_result is result
+        node = window.scene.nodes[note.id]
+        assert not node.sockets and node.thumbnail_rect.isEmpty()
+        assert "<b>Source &lt;credit&gt;</b>" in node.toolTip()
+        assert "First line<br>Last line &amp; detail" in node.toolTip()
+
+        path = tmp_path / "comment.json"
+        graph.save(path)
+        restored = Graph.load(path, window.registry)
+        assert restored.blocks[note.id].name == "Source <credit>"
+        assert restored.blocks[note.id].description == "First line\nLast line & detail"
+        tool = ToolBlock(restored, {}, {})
+        tool.execute({})
+        assert tool.state == "pass"
+        assert restored.blocks[note.id].last_result is None
+        tool.close()
+
+        window.scene.delete_selected()
+        assert note.id not in graph.blocks
+        assert graph.clock is clock and source.last_result is result
+    finally:
+        window.dirty = False
+        window.close()
+
+
 def test_socket_tooltips_show_full_names_and_latest_scalar_values(app):
     name = "a_long_input_name_that_is_truncated_on_the_node"
 

@@ -71,6 +71,33 @@ def test_canvas_thumbnail_prefers_result_then_output(app):
     assert preview_pixel() == 40
 
 
+def test_comment_paints_bold_title_and_elides_overflow(app):
+    class TextRecorder(QPainter):
+        def drawText(self, *args):
+            drawn.append((args[-1], self.font().bold()))
+            return super().drawText(*args)
+
+    graph = Graph()
+    note = graph.add(builtin_registry().create("layout.comment"))
+    note.description = ("😀 Comments wrap across several words. " * 5 + "\n") * 3 + "Full ending"
+    scene = CanvasScene(graph)
+    node = scene.nodes[note.id]
+    surface = QImage(node.width, node.height, QImage.Format.Format_RGB32)
+    drawn = []
+    with TextRecorder(surface) as painter:
+        node.paint(painter, None)
+    assert surface.pixelColor(8, 25).name() == "#fff3c2"
+    assert drawn[0] == ("Comment", True)
+    assert drawn[-1][0].endswith("…") and not drawn[-1][1]
+    assert "Full ending" in node.toolTip()
+
+    note.description = "Short text"
+    drawn.clear()
+    with TextRecorder(surface) as painter:
+        node.paint(painter, None)
+    assert drawn == [("Comment", True)]
+
+
 def test_requested_colors_and_aliases_survive_nested_toolblocks(app):
     registry = builtin_registry()
     inner = Graph()

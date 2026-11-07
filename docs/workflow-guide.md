@@ -133,6 +133,13 @@ Choose **Small**, **Medium**, or **Large** under **Block size** in the inspector
 The canvas applies the size immediately and keeps room for every exposed port.
 Small hides the thumbnail, and Large gives it more room. Save the project to keep
 the size, including for nodes inside ToolBlocks.
+
+Search the toolbox for **Comment** under **Custom → Annotations → Layout**.
+Enter a **Title** and **Text** in the inspector, then choose **Apply configuration**.
+The yellow note can hold instructions or example credits. Hover to read the full
+text when it ends in an ellipsis, or choose a larger **Block size** to show more.
+Comments are saved with the project and are included in program documentation.
+
 Use **Workspace → Auto arrange blocks** to organize the current canvas from
 inputs on the left to outputs on the right. Groups and independent flows get
 separate lanes. Save the project to keep the new positions.

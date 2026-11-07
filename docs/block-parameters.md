@@ -4887,6 +4887,12 @@ Input `background_points` — Overrides the saved background points.
 | `radius` | `2` | Value must be a whole number between 0 and 64. |
 | `background_mode` | `"border"` | `border`, `points` Border adds an inset ring. Points uses only specified points. |
 
+## Comment (`layout.comment`)
+
+Annotations / Layout
+
+No configurable algorithm parameters.
+
 ## Shape mask (`mask.shape`)
 
 Image processing / Masks

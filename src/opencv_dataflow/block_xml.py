@@ -77,7 +77,8 @@ def load_block_xml(graph, block_id, path, registry, *, owner=None, confirm_disco
     graph.bind_recipes()
     graph.bind_activity()
     graph.bind_ticket_results()
-    graph.invalidate()
+    if not candidate.layout_only:
+        graph.invalidate()
     try:
         target.close()
     except Exception:
