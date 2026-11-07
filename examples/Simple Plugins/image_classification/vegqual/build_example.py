@@ -156,8 +156,7 @@ def write_project(path, test_images, manifest):
             "Islam, Md Rakibul Islam, Jannatul Tajrian, Md. Sakhawat Hossain, Suman Ahmmed, and "
             "Ohidujjaman (CC BY 4.0).\n\nThe original bounding boxes were used to crop the "
             "images. The crops were resized and encoded as JPEGs. Dataset at "
-            "https://doi.org/10.6084/m9.figshare.30596084.v4.\n\nThe bundled SimpleClassify "
-            "implementation comes from OpenCVSimpleClassifier 0.2.0 (MIT)."
+            "https://doi.org/10.6084/m9.figshare.30596084.v4."
         )
         credits.node_size = "large"
         credits.position = [0.0, -254.0]

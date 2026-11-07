@@ -30,8 +30,6 @@ the project. Staging copies the captured PNGs into the model revision, so the
 filmstrips can reopen with the project.
 
 The [optional plugin entry point](classifier_plugin.py) can also be loaded
-through **File → Load Python plugin…**. The bundled implementation was
-imported from [OpenCVSimpleClassifier 0.2.0](https://github.com/votecoffee/OpenCVSimpleClassifier/tree/1283d62607768264bc60a206c8c2a82863bcaeb9)
-under the repository's MIT license.
+through **File → Load Python plugin…**.
 
 [VegQual results and commands](vegqual/README.md) · [Image and label attribution](vegqual/SOURCES.md)

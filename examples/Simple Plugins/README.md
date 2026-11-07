@@ -15,13 +15,13 @@ load their installed integrations when you add a block or open a project.
 If SimplePatternMatch is already installed in the Python environment running
 OpenCVDataflowGUI, open a project that uses it directly. DataflowGUI
 loads the installed integration when it encounters a SimplePatternMatch block.
-For a fresh environment, install the verified
-[OpenCVGeometricPatternMatch revision](https://github.com/votecoffee/OpenCVGeometricPatternMatch/tree/07f9b8b8743ab3dc26fbe6bfef9f2c3f5eaf00f0)
-from the host repository root. The `--no-deps` option reuses the host's
-OpenCV contrib wheel.
+From the DataflowGUI repository root, install your local SimplePatternMatch
+checkout or wheel that includes the DataflowGUI integration. Replace the
+sample path with your checkout or wheel. The `--no-deps` option reuses the
+host's OpenCV contrib wheel.
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install --no-deps "opencv-geometric-pattern-match @ git+https://github.com/votecoffee/OpenCVGeometricPatternMatch.git@07f9b8b8743ab3dc26fbe6bfef9f2c3f5eaf00f0"
+.\.venv\Scripts\python.exe -m pip install --no-deps "C:\path\to\SimplePatternMatch"
 ```
 
 With **Render overlay** enabled, select **Result / overlay** on the matcher

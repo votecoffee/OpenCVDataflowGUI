@@ -10,8 +10,6 @@ open [the project](project.json), and click **Run once** twice. Select
 color image. The segmentation block also exposes the binary **mask**, raw
 **score map**, and **inspected** region.
 
-This project was verified with [OpenCVDefectSegmentation revision 241b593](https://github.com/votecoffee/OpenCVDefectSegmentation/tree/241b593a51420f3ee78fab85e86e7f6b2bde2b46).
-
 The **Measure blue dominance** block computes the grayscale input used
 by the pixel model. The fixed region limits evaluation to the tote cavity.
 This example is scoped to the blue tote and similar camera placement.

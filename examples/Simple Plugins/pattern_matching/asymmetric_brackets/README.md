@@ -36,9 +36,7 @@ opencv-dataflow-run "examples/Simple Plugins/pattern_matching/asymmetric_bracket
 ```
 
 The [generator](build_example.py) creates both project files, their PNGs, the
-pinned recipe, and the ground truth in a new folder. The bracket geometry and
-two recipe routes are adapted from the original MIT-licensed
-[matcher example](https://github.com/votecoffee/OpenCVGeometricPatternMatch/blob/632e81bbd12c6640d1c6f65618bd85e45aa26b9e/examples/dataflow/build_example.py).
+pinned recipe, and the ground truth in a new folder.
 
 ```powershell
 python "examples/Simple Plugins/pattern_matching/asymmetric_brackets/build_example.py" path/to/new-example
