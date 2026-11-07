@@ -1,0 +1,82 @@
+[
+  {
+    "path": "assets/tray.png",
+    "poses": [
+      {
+        "x": 78.2,
+        "y": 77.4,
+        "angle_deg": -4,
+        "scale": 0.98,
+        "aspect": 1.0
+      },
+      {
+        "x": 219.2,
+        "y": 77.4,
+        "angle_deg": 3,
+        "scale": 1.02,
+        "aspect": 1.0
+      },
+      {
+        "x": 360.2,
+        "y": 77.4,
+        "angle_deg": 0,
+        "scale": 1.0,
+        "aspect": 1.0
+      },
+      {
+        "x": 78.2,
+        "y": 217.4,
+        "angle_deg": 4,
+        "scale": 1.01,
+        "aspect": 1.0
+      },
+      {
+        "x": 219.2,
+        "y": 217.4,
+        "angle_deg": -2,
+        "scale": 0.99,
+        "aspect": 1.0
+      },
+      {
+        "x": 360.2,
+        "y": 217.4,
+        "angle_deg": 1,
+        "scale": 1.0,
+        "aspect": 1.0
+      }
+    ]
+  },
+  {
+    "path": "assets/partial_tray.png",
+    "poses": [
+      {
+        "x": 79.4,
+        "y": 74.8,
+        "angle_deg": 5.0,
+        "scale": 1.03,
+        "aspect": 1.0
+      },
+      {
+        "x": 221.6,
+        "y": 78.2,
+        "angle_deg": -5.0,
+        "scale": 0.96,
+        "aspect": 1.0
+      },
+      {
+        "x": 75.4,
+        "y": 214.9,
+        "angle_deg": -2.0,
+        "scale": 0.99,
+        "aspect": 1.0
+      },
+      {
+        "x": 362.8,
+        "y": 213.3,
+        "angle_deg": 4.0,
+        "scale": 1.04,
+        "aspect": 1.0
+      }
+    ]
+  }
+]

@@ -39,6 +39,7 @@ See the [applications guide](applications/README.md) for the application collect
 | --- | --- |
 | [SimpleSegmentation](<Simple Plugins/pixel_segmentation/README.md>) | Train foreground masks for brick mortar, a cup rim, and PCB laminate. |
 | [SimpleClassify](<Simple Plugins/image_classification/README.md>) | Compare two classifier profiles on labeled VegQual produce crops. |
+| [SimplePatternMatch](<Simple Plugins/pattern_matching/asymmetric_brackets/README.md>) | Locate synthetic brackets with direct and wired recipes, and inspect the pose and edge overlays. |
 
 See the [Simple Plugins guide](<Simple Plugins/README.md>) for setup and project links.
 

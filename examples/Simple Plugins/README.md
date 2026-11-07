@@ -8,7 +8,7 @@ load their installed integrations when you add a block or open a project.
 | --- | --- |
 | **SimpleSegmentation** | [Brick mortar, cup rim, and PCB laminate](pixel_segmentation/README.md) |
 | **SimpleClassify** | [VegQual surface texture and color/layout classification](image_classification/README.md) |
-| **SimplePatternMatch** | See setup below. Local matcher examples belong in `examples/private/Simple Plugins`. |
+| **SimplePatternMatch** | [Asymmetric brackets](pattern_matching/asymmetric_brackets/README.md) shows rotation, scale, occlusion, and two recipe routes. |
 
 ## Set up SimplePatternMatch
 
