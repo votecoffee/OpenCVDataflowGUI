@@ -36,6 +36,8 @@ remains a separate step.
 
 The [recorded camera example](../recorded_camera_stabilization/README.md)
 uses the same coverage mask to compare raw and corrected error on a real clip.
+The [two-plane validation example](../stabilization_validation/README.md)
+checks whether the background fit also holds on a separate inspection area.
 
 ```powershell
 opencv-dataflow-run examples/flow_control/camera_stabilization/camera_stabilization.json --all-images
