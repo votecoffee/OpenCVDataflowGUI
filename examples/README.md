@@ -33,6 +33,7 @@ See the [applications guide](applications/README.md) for the application collect
 | [Lab color matching](applications/lab_color_match/README.md) | Measure separate reference and sample regions and compare their Lab colors. |
 | [PCB outline](applications/pcb_outline/README.md) | Check board presence and overlay its outline on two inspection photographs. |
 | [Pose-relative inspection](applications/pose_inspection/README.md) | Train a geometric pattern and use its detected pose to position a circular inspection region. |
+| [Shipping label barcode reading](applications/shipping_label_barcodes/README.md) | Replay four Dynamsoft shipping label photos for Code 128 and read MaxiCode in an isolated crop. |
 
 ## Simple Plugins
 

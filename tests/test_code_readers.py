@@ -1,5 +1,6 @@
 """Exercise native code readers with generated linear and matrix symbols."""
 
+import json
 from pathlib import Path
 
 import cv2
@@ -147,6 +148,43 @@ def test_zxing_example_verifies_ticketed_lot_code():
         assert verifier.state == "pass", verifier.error
         assert verifier.last_result.outputs["matches"] == ["LOT-0042"]
         assert verifier.last_result.payloads["matches"]["ticket"]["value"] == "datamatrix_lot.png"
+    finally:
+        graph.close()
+
+
+@pytest.mark.local_examples
+@pytest.mark.parametrize("isolated", [False, True])
+def test_shipping_label_examples_match_dynamsoft_annotations(isolated, tmp_path, monkeypatch):
+    pytest.importorskip("zxingcpp")
+    root = Path(__file__).resolve().parents[1] / "examples/applications/shipping_label_barcodes"
+    expected = json.loads((root / "expected_reads.json").read_bytes())
+    if isolated:
+        project = "maxicode_crop.json"
+        symbology = "MaxiCode"
+        crop = expected["maxicode_crop"]
+        cases = [(crop["file"], [crop["text"]])]
+    else:
+        project = "shipping_label_barcodes.json"
+        symbology = "Code128"
+        cases = [(row["file"], row["code128"]) for row in expected["code128_replay"]]
+    monkeypatch.chdir(tmp_path)
+    graph = Graph.load(root / project, builtin_registry())
+    graph.filmstrip_enabled = True
+    try:
+        reader = graph.blocks["read"]
+        for filename, texts in cases:
+            graph.run()
+            assert reader.state == "pass", reader.error
+            result = reader.last_result
+            assert result.outputs["count"] == len(texts)
+            assert sorted(code["text"] for code in result.outputs["codes"]) == texts
+            assert {code["symbology"] for code in result.outputs["codes"]} == {symbology}
+            assert result.payloads["codes"]["ticket"]["value"] == filename
+            assert np.any(result.outputs["overlay"] != reader.last_inputs["image"])
+        assert isolated or graph.sources_exhausted()
+        rows = graph.filmstrip.snapshot()
+        assert [row["ticket"]["value"] for row in rows] == [filename for filename, _ in cases]
+        assert all(row["override"] is not None for row in rows)
     finally:
         graph.close()
 

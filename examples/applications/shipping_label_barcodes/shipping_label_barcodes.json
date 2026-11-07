@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Shipping label photos",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/IMG_8745.jpg",
+          "assets/IMG_8747.jpg",
+          "assets/IMG_9568.jpg",
+          "assets/IMG_9591.jpg"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "read",
+      "type": "inspect.read_zxing",
+      "name": "Read both Code 128 symbols",
+      "parameters": {
+        "minimum_reads": 2,
+        "draw_overlay": true,
+        "format": "Code128",
+        "try_rotate": true,
+        "try_downscale": true,
+        "try_invert": true,
+        "text_mode": "HRI",
+        "binarizer": "LocalAverage",
+        "is_pure": false,
+        "ean_add_on": "Ignore",
+        "report_decode_errors": false
+      },
+      "position": [
+        345,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "codes",
+        "count",
+        "overlay",
+        "errors"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Show decoded label",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        690,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_credits",
+      "type": "layout.comment",
+      "name": "Dynamsoft dataset credit",
+      "description": "UPS Synthetic Shipping Label Dataset, Dynamsoft, 2025. Created by G (Dynamsoft), CC BY 4.0.\n\nThe bundled photos were resized and re-encoded as JPEGs. See the example README for source files and changes.\n\nhttps://github.com/Dynamsoft/datasets-from-dynamsoft/tree/ba77c0c64aedddb4553c91ca7e9db46e1ab86af7/UPS-Synthetic-Labels\nhttps://creativecommons.org/licenses/by/4.0/",
+      "parameters": {},
+      "position": [
+        0,
+        -254
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "read",
+      "input": "image"
+    },
+    {
+      "source": "read",
+      "output": "overlay",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}
