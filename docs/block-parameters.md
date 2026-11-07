@@ -5088,6 +5088,36 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `stable_activations` | `0` | Optional consecutive low-foreground frames before readiness. |
 | `max_foreground_fraction` | `0.05` |  |
 
+## DIS optical flow (`sequence.dis`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `1000.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `preset` | `"fast"` | `ultrafast`, `fast`, `medium` OpenCV preset for the search and refinement defaults. |
+| `initial_flow` | `"none"` | `none`, `previous` Previous reuses the preceding unmasked vectors as the initial estimate. |
+| `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. Pixels mapped to full brightness. Vectors retain pixel units. |
+| `finest_scale` | `-1` | Value must be a whole number between -1 and 9. -1 uses the preset, reduced for small images. Zero uses full resolution. |
+| `coarsest_scale` | `-1` | Value must be a whole number between -1 and 9. -1 selects the coarsest level that fits the input and OpenCV limits. |
+| `patch_size` | `0` | Value must be zero or a whole number between 4 and 64. Square matching patch in level pixels. Zero uses the preset. |
+| `patch_stride` | `0` | Value must be a whole number between 0 and 63. Distance between patches. Zero uses the preset. |
+| `gradient_iterations` | `0` | Value must be a whole number between 0 and 1000. Maximum inverse-search iterations. Zero uses the preset. |
+| `mean_normalization` | `true` | Normalize patch brightness before comparing image patches. |
+| `spatial_propagation` | `true` | Use nearby flow vectors as candidates during patch search. |
+| `refinement_iterations` | `-1` | Value must be a whole number between -1 and 1000. -1 uses the preset. Zero disables variational refinement. |
+| `refinement_alpha` | `20.0` | Value must be a finite number between 1e-06 and 1e+06. Variational refinement smoothness weight. |
+| `refinement_delta` | `5.0` | Value must be a finite number between 0 and 1e+06. Variational refinement brightness-constancy weight. |
+| `refinement_gamma` | `10.0` | Value must be a finite number between 0 and 1e+06. Variational refinement gradient-constancy weight. |
+| `refinement_epsilon` | `0.01` | Value must be a finite number between 1e-06 and 1e+06. Variational refinement robust penalty offset. |
+
 ## Farneback optical flow (`sequence.farneback`)
 
 Sequence / Temporal processing

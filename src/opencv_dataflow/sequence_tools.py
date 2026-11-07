@@ -1,6 +1,8 @@
 """Copyable background, optical-flow, tracking and reference-image sequences."""
 
 import copy
+import math
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 
 import cv2
@@ -9,6 +11,7 @@ import numpy as np
 from .core import Block, Port, Result
 from .image_assets import decode_image, encode_image
 from .images import ImageArray, image_format, opencv_image
+from .parameter_validation import NumericRange, ValidationError
 from .processing import finite, gray_image, integer
 from .selection import contains
 from .sequence import (
@@ -154,9 +157,57 @@ class DenseFlow:
         }
 
 
-class FarnebackSequence(SequenceBlock):
-    type_id, title = "sequence.farneback", "Farneback optical flow"
+class _DenseFlowSequence(SequenceBlock, ABC):
     data_outputs = (Port("flow", "any"), Port("magnitude"), Port("angle"), Port("visualization"))
+
+    @abstractmethod
+    def flow_calculator(self, shape):
+        """Return a callable accepting two contiguous grayscale frames and optional initial flow."""
+
+    def step(self, inputs, state, mask):
+        gray = np.ascontiguousarray(gray_image(inputs["image"], (np.uint8,)))
+        p = self.parameters
+        visual = finite(p["visual_max_motion"], "Visual motion scale", 0)
+        if visual <= 0:
+            raise ValidationError("Visual motion scale must be positive", "visual_max_motion")
+        calculate = self.flow_calculator(gray.shape)
+        previous = state.get("previous")
+        state["previous"] = gray.copy()
+        if previous is None:
+            return SequenceStep(
+                dict.fromkeys(self.flow_primary, None),
+                False,
+                True,
+                {"reason": "needs_previous_image"},
+            )
+        initial = state.get("flow") if p["initial_flow"] == "previous" else None
+        flow = calculate(previous, gray, None if initial is None else initial.copy())
+        if not np.isfinite(flow).all():
+            raise ValueError("Optical flow produced nonfinite vectors")
+        state["flow"] = flow.copy() if p["initial_flow"] == "previous" else None
+        if mask is not None:
+            flow[mask == 0] = 0
+        magnitude, angle = cv2.cartToPolar(flow[..., 0], flow[..., 1], angleInDegrees=True)
+        hsv = np.zeros((*gray.shape, 3), np.uint8)
+        hsv[..., 0] = np.rint(angle / 2).astype(np.uint8) % 180
+        hsv[..., 1] = 255
+        hsv[..., 2] = np.clip(magnitude * 255 / visual, 0, 255).astype(np.uint8)
+        view = ImageArray(cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR), "bgr")
+        field = DenseFlow(flow, copy.deepcopy(self.input_payloads["image"]))
+        return SequenceStep(
+            {
+                "flow": field,
+                "magnitude": ImageArray(magnitude, "gray"),
+                "angle": ImageArray(angle, "gray"),
+                "visualization": view,
+            },
+            graphics={"flow preview": view},
+            details={"coordinates": field.describe()["coordinates"]},
+        )
+
+
+class FarnebackSequence(_DenseFlowSequence):
+    type_id, title = "sequence.farneback", "Farneback optical flow"
     defaults = {
         **SEQUENCE_DEFAULTS,
         "max_gap_ms": 1000.0,
@@ -180,64 +231,151 @@ class FarnebackSequence(SequenceBlock):
         "visual_max_motion": "Pixels mapped to full brightness; raw vectors are unchanged.",
     }
 
-    def step(self, inputs, state, mask):
-        gray = gray_image(inputs["image"], (np.uint8,))
+    def flow_calculator(self, shape):
         p = self.parameters
         scale = finite(p["pyramid_scale"], "Pyramid scale", 0)
         sigma = finite(p["poly_sigma"], "Polynomial sigma", 0)
-        visual = finite(p["visual_max_motion"], "Visual motion scale", 0)
         levels = integer(p["levels"], "Pyramid levels", 1, 8)
         window = integer(p["window"], "Window", 3, 255, odd=True)
         iterations = integer(p["iterations"], "Iterations", 1, 100)
-        if not 0 < scale < 1 or sigma <= 0 or visual <= 0:
-            raise ValueError("Invalid Farneback scale, sigma or visualization range")
-        previous = state.get("previous")
-        state["previous"] = gray.copy()
-        if previous is None:
-            return SequenceStep(
-                dict.fromkeys(self.flow_primary, None),
-                False,
-                True,
-                {"reason": "needs_previous_image"},
+        if not 0 < scale < 1 or sigma <= 0:
+            raise ValueError("Invalid Farneback scale or sigma")
+
+        def calculate(previous, gray, initial):
+            flags = cv2.OPTFLOW_FARNEBACK_GAUSSIAN if p["gaussian_window"] else 0
+            if initial is not None:
+                flags |= cv2.OPTFLOW_USE_INITIAL_FLOW
+            return cv2.calcOpticalFlowFarneback(
+                previous,
+                gray,
+                initial,
+                scale,
+                levels,
+                window,
+                iterations,
+                int(p["poly_n"]),
+                sigma,
+                flags,
             )
-        initial = state.get("flow") if p["initial_flow"] == "previous" else None
-        flags = cv2.OPTFLOW_FARNEBACK_GAUSSIAN if p["gaussian_window"] else 0
-        if initial is not None:
-            flags |= cv2.OPTFLOW_USE_INITIAL_FLOW
-        flow = cv2.calcOpticalFlowFarneback(
-            previous,
-            gray,
-            None if initial is None else initial.copy(),
-            scale,
-            levels,
-            window,
-            iterations,
-            int(p["poly_n"]),
-            sigma,
-            flags,
+
+        return calculate
+
+
+class DISSequence(_DenseFlowSequence):
+    type_id, title = "sequence.dis", "DIS optical flow"
+    presets = {
+        "ultrafast": cv2.DISOpticalFlow_PRESET_ULTRAFAST,
+        "fast": cv2.DISOpticalFlow_PRESET_FAST,
+        "medium": cv2.DISOpticalFlow_PRESET_MEDIUM,
+    }
+    defaults = {
+        **SEQUENCE_DEFAULTS,
+        "max_gap_ms": 1000.0,
+        "preset": "fast",
+        "initial_flow": "none",
+        "visual_max_motion": 10.0,
+        "finest_scale": -1,
+        "coarsest_scale": -1,
+        "patch_size": 0,
+        "patch_stride": 0,
+        "gradient_iterations": 0,
+        "mean_normalization": True,
+        "spatial_propagation": True,
+        "refinement_iterations": -1,
+        "refinement_alpha": 20.0,
+        "refinement_delta": 5.0,
+        "refinement_gamma": 10.0,
+        "refinement_epsilon": 0.01,
+    }
+    parameter_choices = {
+        **SEQUENCE_CHOICES,
+        "preset": tuple(presets),
+        "initial_flow": ("none", "previous"),
+    }
+    parameter_ranges = {
+        "visual_max_motion": NumericRange(1e-6),
+        "finest_scale": NumericRange(-1, 9, whole=True),
+        "coarsest_scale": NumericRange(-1, 9, whole=True),
+        "patch_size": NumericRange(4, 64, whole=True, zero_allowed=True),
+        "patch_stride": NumericRange(0, 63, whole=True),
+        "gradient_iterations": NumericRange(0, 1000, whole=True),
+        "refinement_iterations": NumericRange(-1, 1000, whole=True),
+        "refinement_alpha": NumericRange(1e-6, 1e6),
+        "refinement_delta": NumericRange(0, 1e6),
+        "refinement_gamma": NumericRange(0, 1e6),
+        "refinement_epsilon": NumericRange(1e-6, 1e6),
+    }
+    parameter_help = {
+        **SEQUENCE_HELP,
+        "preset": "OpenCV preset for the search and refinement defaults.",
+        "initial_flow": "Previous reuses the preceding unmasked vectors as the initial estimate.",
+        "visual_max_motion": "Pixels mapped to full brightness. Vectors retain pixel units.",
+        "finest_scale": "-1 uses the preset, reduced for small images. Zero uses full resolution.",
+        "coarsest_scale": "-1 selects the coarsest level that fits the input and OpenCV limits.",
+        "patch_size": "Square matching patch in level pixels. Zero uses the preset.",
+        "patch_stride": "Distance between patches. Zero uses the preset.",
+        "gradient_iterations": "Maximum inverse-search iterations. Zero uses the preset.",
+        "mean_normalization": "Normalize patch brightness before comparing image patches.",
+        "spatial_propagation": "Use nearby flow vectors as candidates during patch search.",
+        "refinement_iterations": "-1 uses the preset. Zero disables variational refinement.",
+        "refinement_alpha": "Variational refinement smoothness weight.",
+        "refinement_delta": "Variational refinement brightness-constancy weight.",
+        "refinement_gamma": "Variational refinement gradient-constancy weight.",
+        "refinement_epsilon": "Variational refinement robust penalty offset.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        patch = p["patch_size"] or 8
+        stride = p["patch_stride"] or (3 if p["preset"] == "medium" else 4)
+        if stride >= patch:
+            raise ValidationError(
+                "Patch stride must be smaller than patch size", "patch_stride", "patch_size"
+            )
+        if 0 <= p["coarsest_scale"] < p["finest_scale"]:
+            raise ValidationError(
+                "Coarsest scale must be at least finest scale", "coarsest_scale", "finest_scale"
+            )
+
+    def flow_calculator(self, shape):
+        p = self.parameters
+        solver = cv2.DISOpticalFlow.create(self.presets[p["preset"]])
+        patch = int(p["patch_size"]) or solver.getPatchSize()
+        if min(shape) < patch or max(shape) < 2 * patch:
+            raise ValidationError(
+                "DIS requires both dimensions to fit the patch and one to fit two patches",
+                "patch_size",
+            )
+        # OpenCV also bounds the search by displacement and the size of its refinement pyramid.
+        displacement_limit = int(math.log2(max(shape) / (4 * patch)) + 0.5)
+        patch_limit = (min(shape) // patch).bit_length() - 1
+        possible = min(9, displacement_limit, patch_limit)
+        coarsest = possible if p["coarsest_scale"] == -1 else int(p["coarsest_scale"])
+        finest = int(p["finest_scale"])
+        if finest == -1:
+            finest = min(solver.getFinestScale(), coarsest)
+        if not 0 <= finest <= coarsest <= possible:
+            raise ValidationError(
+                "DIS pyramid scales are too large for the image and patch size",
+                "finest_scale", "coarsest_scale", "patch_size",
+            )
+        solver.setPatchSize(patch)
+        solver.setPatchStride(int(p["patch_stride"]) or solver.getPatchStride())
+        solver.setCoarsestScale(coarsest)
+        solver.setFinestScale(finest)
+        solver.setGradientDescentIterations(
+            int(p["gradient_iterations"]) or solver.getGradientDescentIterations()
         )
-        if not np.isfinite(flow).all():
-            raise ValueError("Optical flow produced nonfinite vectors")
-        state["flow"] = flow.copy() if p["initial_flow"] == "previous" else None
-        if mask is not None:
-            flow[mask == 0] = 0
-        magnitude, angle = cv2.cartToPolar(flow[..., 0], flow[..., 1], angleInDegrees=True)
-        hsv = np.zeros((*gray.shape, 3), np.uint8)
-        hsv[..., 0] = np.rint(angle / 2).astype(np.uint8) % 180
-        hsv[..., 1] = 255
-        hsv[..., 2] = np.clip(magnitude * 255 / visual, 0, 255).astype(np.uint8)
-        view = ImageArray(cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR), "bgr")
-        field = DenseFlow(flow, copy.deepcopy(self.input_payloads["image"]))
-        return SequenceStep(
-            {
-                "flow": field,
-                "magnitude": ImageArray(magnitude, "gray"),
-                "angle": ImageArray(angle, "gray"),
-                "visualization": view,
-            },
-            graphics={"flow preview": view},
-            details={"coordinates": field.describe()["coordinates"]},
-        )
+        solver.setUseMeanNormalization(p["mean_normalization"])
+        solver.setUseSpatialPropagation(p["spatial_propagation"])
+        if p["refinement_iterations"] != -1:
+            solver.setVariationalRefinementIterations(int(p["refinement_iterations"]))
+        solver.setVariationalRefinementAlpha(float(p["refinement_alpha"]))
+        solver.setVariationalRefinementDelta(float(p["refinement_delta"]))
+        solver.setVariationalRefinementGamma(float(p["refinement_gamma"]))
+        solver.setVariationalRefinementEpsilon(float(p["refinement_epsilon"]))
+        return solver.calc
 
 
 class TrackPointsSequence(SequenceBlock):
@@ -602,6 +740,7 @@ class SequenceDemo(Block):
 SEQUENCE_BLOCKS = (
     BackgroundSequence,
     FarnebackSequence,
+    DISSequence,
     TrackPointsSequence,
     ImageMemory,
     SequenceDemo,

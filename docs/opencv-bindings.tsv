@@ -455,13 +455,13 @@ P2	class	cv2.detail.VoronoiSeamFinder	no static reference	-
 P2	method	cv2.detail.VoronoiSeamFinder.find	method name only	-
 P2	function	cv2.detail.waveCorrect	no static reference	-
 P2	function	cv2.dft	literal reference	-
-P2	class	cv2.DISOpticalFlow	no static reference	-
-P2	method	cv2.DISOpticalFlow.create	method name only	-
+P2	class	cv2.DISOpticalFlow	literal reference	-
+P2	method	cv2.DISOpticalFlow.create	literal reference	-
 P2	method	cv2.DISOpticalFlow.getCoarsestScale	no static reference	-
-P2	method	cv2.DISOpticalFlow.getFinestScale	no static reference	-
-P2	method	cv2.DISOpticalFlow.getGradientDescentIterations	no static reference	-
-P2	method	cv2.DISOpticalFlow.getPatchSize	no static reference	-
-P2	method	cv2.DISOpticalFlow.getPatchStride	no static reference	-
+P2	method	cv2.DISOpticalFlow.getFinestScale	method name only	-
+P2	method	cv2.DISOpticalFlow.getGradientDescentIterations	method name only	-
+P2	method	cv2.DISOpticalFlow.getPatchSize	method name only	-
+P2	method	cv2.DISOpticalFlow.getPatchStride	method name only	-
 P2	method	cv2.DISOpticalFlow.getUseMeanNormalization	no static reference	-
 P2	method	cv2.DISOpticalFlow.getUseSpatialPropagation	no static reference	-
 P2	method	cv2.DISOpticalFlow.getVariationalRefinementAlpha	no static reference	-
@@ -469,18 +469,18 @@ P2	method	cv2.DISOpticalFlow.getVariationalRefinementDelta	no static reference	-
 P2	method	cv2.DISOpticalFlow.getVariationalRefinementEpsilon	no static reference	-
 P2	method	cv2.DISOpticalFlow.getVariationalRefinementGamma	no static reference	-
 P2	method	cv2.DISOpticalFlow.getVariationalRefinementIterations	no static reference	-
-P2	method	cv2.DISOpticalFlow.setCoarsestScale	no static reference	-
-P2	method	cv2.DISOpticalFlow.setFinestScale	no static reference	-
-P2	method	cv2.DISOpticalFlow.setGradientDescentIterations	no static reference	-
-P2	method	cv2.DISOpticalFlow.setPatchSize	no static reference	-
-P2	method	cv2.DISOpticalFlow.setPatchStride	no static reference	-
-P2	method	cv2.DISOpticalFlow.setUseMeanNormalization	no static reference	-
-P2	method	cv2.DISOpticalFlow.setUseSpatialPropagation	no static reference	-
-P2	method	cv2.DISOpticalFlow.setVariationalRefinementAlpha	no static reference	-
-P2	method	cv2.DISOpticalFlow.setVariationalRefinementDelta	no static reference	-
-P2	method	cv2.DISOpticalFlow.setVariationalRefinementEpsilon	no static reference	-
-P2	method	cv2.DISOpticalFlow.setVariationalRefinementGamma	no static reference	-
-P2	method	cv2.DISOpticalFlow.setVariationalRefinementIterations	no static reference	-
+P2	method	cv2.DISOpticalFlow.setCoarsestScale	method name only	-
+P2	method	cv2.DISOpticalFlow.setFinestScale	method name only	-
+P2	method	cv2.DISOpticalFlow.setGradientDescentIterations	method name only	-
+P2	method	cv2.DISOpticalFlow.setPatchSize	method name only	-
+P2	method	cv2.DISOpticalFlow.setPatchStride	method name only	-
+P2	method	cv2.DISOpticalFlow.setUseMeanNormalization	method name only	-
+P2	method	cv2.DISOpticalFlow.setUseSpatialPropagation	method name only	-
+P2	method	cv2.DISOpticalFlow.setVariationalRefinementAlpha	method name only	-
+P2	method	cv2.DISOpticalFlow.setVariationalRefinementDelta	method name only	-
+P2	method	cv2.DISOpticalFlow.setVariationalRefinementEpsilon	method name only	-
+P2	method	cv2.DISOpticalFlow.setVariationalRefinementGamma	method name only	-
+P2	method	cv2.DISOpticalFlow.setVariationalRefinementIterations	method name only	-
 P2	function	cv2.DISOpticalFlow_create	no static reference	-
 P2	function	cv2.dnn.blobFromImage	no static reference	-
 P2	function	cv2.dnn.blobFromImages	no static reference	-
@@ -2153,7 +2153,7 @@ P3	function	cv2.decomposeProjectionMatrix	no static reference	-
 P3	function	cv2.demosaicing	literal reference	-
 P3	function	cv2.denoise_TVL1	literal reference	-
 P3	class	cv2.DenseOpticalFlow	no static reference	-
-P3	method	cv2.DenseOpticalFlow.calc	no static reference	-
+P3	method	cv2.DenseOpticalFlow.calc	method name only	-
 P3	method	cv2.DenseOpticalFlow.collectGarbage	no static reference	-
 P3	function	cv2.depthTo3d	no static reference	-
 P3	function	cv2.depthTo3dSparse	no static reference	-
@@ -3943,7 +3943,7 @@ P3	method	cv2.ORB.getFastThreshold	no static reference	-
 P3	method	cv2.ORB.getFirstLevel	no static reference	-
 P3	method	cv2.ORB.getMaxFeatures	no static reference	-
 P3	method	cv2.ORB.getNLevels	no static reference	-
-P3	method	cv2.ORB.getPatchSize	no static reference	-
+P3	method	cv2.ORB.getPatchSize	method name only	-
 P3	method	cv2.ORB.getScaleFactor	no static reference	-
 P3	method	cv2.ORB.getScoreType	no static reference	-
 P3	method	cv2.ORB.getWTA_K	no static reference	-
@@ -3952,7 +3952,7 @@ P3	method	cv2.ORB.setFastThreshold	no static reference	-
 P3	method	cv2.ORB.setFirstLevel	no static reference	-
 P3	method	cv2.ORB.setMaxFeatures	no static reference	-
 P3	method	cv2.ORB.setNLevels	no static reference	-
-P3	method	cv2.ORB.setPatchSize	no static reference	-
+P3	method	cv2.ORB.setPatchSize	method name only	-
 P3	method	cv2.ORB.setScaleFactor	no static reference	-
 P3	method	cv2.ORB.setScoreType	no static reference	-
 P3	method	cv2.ORB.setWTA_K	no static reference	-
@@ -4460,7 +4460,7 @@ P3	function	cv2.solvePoly	literal reference	-
 P3	function	cv2.sort	no static reference	-
 P3	function	cv2.sortIdx	literal reference	-
 P3	class	cv2.SparseOpticalFlow	no static reference	-
-P3	method	cv2.SparseOpticalFlow.calc	no static reference	-
+P3	method	cv2.SparseOpticalFlow.calc	method name only	-
 P3	class	cv2.SparsePyrLKOpticalFlow	no static reference	-
 P3	method	cv2.SparsePyrLKOpticalFlow.create	method name only	-
 P3	method	cv2.SparsePyrLKOpticalFlow.getFlags	no static reference	-

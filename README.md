@@ -795,7 +795,7 @@ for block in graph.blocks.values():
 graph.close()
 ```
 
-**Sequence** blocks retain memory for running background subtraction, Farneback optical
+**Sequence** blocks retain memory for running background subtraction, Farneback and DIS optical
 flow, Lucas-Kanade point tracking and first/latest/mean image references. They report
 readiness and activation counts, suppress primary outputs during warmup, and support
 bounded per-stream state, resets and trained references stored in projects or recipes.

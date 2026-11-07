@@ -42,6 +42,7 @@ or consume primary outputs; a status event during warmup does not mean inspectio
 | --- | --- | --- |
 | Running background subtraction | Running mean/variance; foreground mask, background, masked foreground | Warmup, optional stability; absolute/variance threshold, rate, deviations, variance floor, foreground-learning policy, learn input |
 | Farneback optical flow | Previous frame and optional previous flow; dense float32 XY vectors, magnitude, angle, visualization | Needs previous frame and warmup; scale, levels, window, iterations, polynomial neighborhood/sigma, Gaussian window, warm-start flow, visualization scale |
+| DIS optical flow | Same dense flow, magnitude, angle and visualization outputs as Farneback | Needs previous frame and warmup. Select Ultrafast, Fast or Medium, then tune patch search, pyramid scales, propagation, refinement and warm start. |
 | Track points (Lucas-Kanade) | Previous grayscale image, feature positions, IDs and ages; track collection and overlay | Warmup plus minimum mature tracks; corner detector controls, LK window/levels/termination, patch error or minimum eigenvalue, forward/backward tolerance, reseeding and age limits |
 | Stabilize camera motion | Previous grayscale frame, background feature tracks and a smoothed global trajectory. Corrected image, coverage mask and forward/inverse transform. | Needs a usable fit after the anchor frame. Translation or similarity, smoothing, motion and coverage gates, re-anchoring on loss of fit. |
 | Image memory / trained reference | First/latest/mean image; reference, absolute difference, current image | Eligible learning count or validated trained seed; learn input, freeze after warmup, strict/shape-only reference context |
@@ -54,6 +55,14 @@ root image. These are point tracks, not object identities or trained object trac
 The dense-flow value has a compact report description and a `vectors` NumPy array for
 custom consumers. See the [OpenCV tracking API](https://docs.opencv.org/4.x/dc/d6b/group__video__track.html)
 for the native Farneback and Lucas-Kanade parameter semantics.
+
+DIS uses OpenCV's Dense Inverse Search. Level zero is the full-resolution grid.
+Automatic coarsest scale is bounded by the image and patch size. The preset's
+finest scale can reduce for a smaller input. An explicit incompatible scale
+or patch stride is reported as invalid. Masks and regions zero the reported
+vectors outside the selection, while warm start uses the full preceding field.
+See the [OpenCV 5 DIS API](https://docs.opencv.org/5.0/main_modules/classcv_1_1DISOpticalFlow.html)
+and the [public PCB replay](../examples/public/pcb_motion/README.md).
 
 All blocks accept optional circle/rectangle/polygon regions or masks. Background and
 flow retain full-image neighborhood/learning context and restrict reported foreground

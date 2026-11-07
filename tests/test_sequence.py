@@ -188,6 +188,64 @@ def test_dense_flow_direction_metadata_and_selection(initial, gaussian):
     assert not np.any(out["flow"].vectors[mask == 0])
 
 
+def test_dis_uses_native_settings_and_unmasked_warm_start():
+    block = make(
+        "dis", preset="medium", finest_scale=0, coarsest_scale=1,
+        patch_size=12, patch_stride=5, gradient_iterations=18,
+        mean_normalization=False, spatial_propagation=False,
+        refinement_iterations=2, refinement_alpha=15.0, refinement_delta=3.0,
+        refinement_gamma=8.0, refinement_epsilon=0.02, initial_flow="previous", max_gap_ms=0,
+    )
+    native = cv2.DISOpticalFlow.create(cv2.DISOpticalFlow_PRESET_MEDIUM)
+    native.setFinestScale(0)
+    native.setCoarsestScale(1)
+    native.setPatchSize(12)
+    native.setPatchStride(5)
+    native.setGradientDescentIterations(18)
+    native.setUseMeanNormalization(False)
+    native.setUseSpatialPropagation(False)
+    native.setVariationalRefinementIterations(2)
+    native.setVariationalRefinementAlpha(15.0)
+    native.setVariationalRefinementDelta(3.0)
+    native.setVariationalRefinementGamma(8.0)
+    native.setVariationalRefinementEpsilon(0.02)
+
+    image = texture()
+    moved = np.roll(image, (1, 2), axis=(0, 1))
+    again = np.roll(moved, (1, 2), axis=(0, 1))
+    mask = np.zeros_like(image)
+    mask[20:-20, 20:-20] = 255
+    assert frame(block, image)["flow"] is NO_VALUE
+    out = frame(block, moved, mask=mask)
+    expected = native.calc(image, moved, None)
+    vectors = out["flow"].vectors
+    np.testing.assert_allclose(vectors[mask != 0], expected[mask != 0], atol=1e-5)
+    np.testing.assert_array_equal(vectors[mask == 0], 0)
+    np.testing.assert_allclose(np.median(vectors[mask != 0], axis=0), [2, 1], atol=0.2)
+    assert out["flow"].metadata["sequence"]["activations"] == 2
+    assert out["visualization"].shape == (*image.shape, 3)
+
+    third = frame(block, again)["flow"].vectors
+    np.testing.assert_allclose(third, native.calc(moved, again, expected), atol=1e-5)
+    assert frame(block, image, reset=True)["flow"] is NO_VALUE
+
+
+@pytest.mark.parametrize(
+    "parameters, error",
+    [
+        ({"patch_size": 4}, "stride must be smaller"),
+        ({"coarsest_scale": 0, "finest_scale": 1}, "Coarsest scale must be"),
+        ({"coarsest_scale": 9}, "scales are too large"),
+        ({"patch_size": 64}, "both dimensions to fit the patch"),
+    ],
+)
+def test_dis_rejects_invalid_patch_and_pyramid_settings(parameters, error):
+    block = make("dis", **parameters)
+    block.execute({"image": np.zeros((32, 48), np.uint8)})
+    assert block.state == "error" and error in block.error
+    assert not block.current_emissions
+
+
 @pytest.mark.parametrize("metric", ["patch", "min_eigenvalue"])
 def test_sparse_tracking_ids_and_age(metric):
     block = make("track_points", error_metric=metric, max_gap_ms=0)

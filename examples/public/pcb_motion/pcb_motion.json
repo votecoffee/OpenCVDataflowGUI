@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Load PCB inspection photos",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "../assets/visa-pcb2-normal-0000.jpg",
+          "../assets/visa-pcb2-normal-0621.jpg"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dis",
+      "type": "sequence.dis",
+      "name": "Visualize apparent PCB motion",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "preset": "fast",
+        "initial_flow": "none",
+        "visual_max_motion": 10.0,
+        "finest_scale": -1,
+        "coarsest_scale": -1,
+        "patch_size": 0,
+        "patch_stride": 0,
+        "gradient_iterations": 0,
+        "mean_normalization": true,
+        "spatial_propagation": true,
+        "refinement_iterations": -1,
+        "refinement_alpha": 20.0,
+        "refinement_delta": 5.0,
+        "refinement_gamma": 10.0,
+        "refinement_epsilon": 0.01
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream"
+      ],
+      "exposed_outputs": [
+        "flow",
+        "magnitude",
+        "angle",
+        "visualization",
+        "ready",
+        "activations",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": "visualization"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "dis",
+      "input": "image"
+    }
+  ]
+}

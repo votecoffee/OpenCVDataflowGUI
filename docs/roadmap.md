@@ -94,6 +94,8 @@ Close the loop on an inspection scan
 demonstrates bounded drift correction when the last view overlaps the first.
 Correct exposure in an inspection scan
 demonstrates overlap-based exposure correction and feathering on 16-bit tiles.
+DIS optical flow adds a dense motion estimator with native preset and patch
+controls, masked outputs, and an offline PCB replay.
 Camera motion stabilization
 corrects translation or similarity jitter with bounded sequence memory,
 coverage, and a measured synthetic replay.

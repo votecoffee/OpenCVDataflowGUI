@@ -59,3 +59,25 @@ def test_pcb_outline_project(tmp_path, monkeypatch):
         assert graph.blocks["source"].exhausted
     finally:
         graph.close()
+
+
+def test_pcb_motion_project(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    graph = Graph.load(GALLERY / "pcb_motion" / "pcb_motion.json", builtin_registry())
+    try:
+        dis = graph.blocks["dis"]
+        graph.run()
+        assert dis.state == "waiting"
+        assert not dis.last_result.outputs["ready"]
+        assert not dis.current_emissions["flow"]
+        graph.run()
+        assert dis.state == "pass", dis.error
+        result = dis.last_result.outputs
+        assert result["ready"]
+        assert result["flow"].vectors.shape == (1070, 1404, 2)
+        assert np.isfinite(result["flow"].vectors).all()
+        assert result["magnitude"].max() > 1
+        assert result["status"]["previous_ticket"]["value"] == "visa-pcb2-normal-0000.jpg"
+        assert result["status"]["current_ticket"]["value"] == "visa-pcb2-normal-0621.jpg"
+    finally:
+        graph.close()

@@ -15,6 +15,7 @@ dist/
 !/examples/public/brick_edges/
 !/examples/public/coffee_histograms/
 !/examples/public/pcb_outline/
+!/examples/public/pcb_motion/
 !/examples/public/README.md
 !/examples/public/assets/README.md
 !/examples/public/assets/brick.png
@@ -27,4 +28,6 @@ dist/
 !/examples/public/coffee_histograms/coffee_histograms.json
 !/examples/public/pcb_outline/README.md
 !/examples/public/pcb_outline/pcb_outline.json
+!/examples/public/pcb_motion/README.md
+!/examples/public/pcb_motion/pcb_motion.json
 /applications/
