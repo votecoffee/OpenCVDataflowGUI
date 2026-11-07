@@ -111,3 +111,10 @@ def decode_image_metadata(buffer, apply_orientation):
         image = orient_image(image, orientation)
         summary["orientation_applied"] = True
     return image, summary
+
+
+def decode_file_image(buffer, metadata_mode):
+    if metadata_mode == "off":
+        image = cv2.imdecode(np.frombuffer(buffer, np.uint8), cv2.IMREAD_UNCHANGED)
+        return image, None
+    return decode_image_metadata(buffer, metadata_mode == "apply_orientation")

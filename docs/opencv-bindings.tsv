@@ -2723,7 +2723,7 @@ P3	method	cv2.FileNode.rawSize	no static reference	-
 P3	method	cv2.FileNode.real	method name only	-
 P3	method	cv2.FileNode.size	method name only	-
 P3	method	cv2.FileNode.string	no static reference	-
-P3	method	cv2.FileNode.type	no static reference	-
+P3	method	cv2.FileNode.type	method name only	-
 P3	class	cv2.FileStorage	literal reference	-
 P3	method	cv2.FileStorage.endWriteStruct	no static reference	-
 P3	method	cv2.FileStorage.getFirstTopLevelNode	no static reference	-
@@ -2805,7 +2805,7 @@ P3	function	cv2.ft.FT12D_process	no static reference	-
 P3	function	cv2.ft.inpaint	no static reference	-
 P3	class	cv2.GArrayDesc	no static reference	-
 P3	class	cv2.GArrayT	no static reference	-
-P3	method	cv2.GArrayT.type	no static reference	-
+P3	method	cv2.GArrayT.type	method name only	-
 P3	function	cv2.GaussianBlur	literal reference	-
 P3	class	cv2.GCompileArg	no static reference	-
 P3	class	cv2.GComputation	literal reference	-
@@ -2925,7 +2925,7 @@ P3	function	cv2.goodFeaturesToTrack	literal reference	-
 P3	function	cv2.goodFeaturesToTrackWithQuality	no static reference	-
 P3	class	cv2.GOpaqueDesc	no static reference	-
 P3	class	cv2.GOpaqueT	no static reference	-
-P3	method	cv2.GOpaqueT.type	no static reference	-
+P3	method	cv2.GOpaqueT.type	method name only	-
 P3	class	cv2.GraphicalCodeDetector	no static reference	-
 P3	method	cv2.GraphicalCodeDetector.decode	method name only	-
 P3	method	cv2.GraphicalCodeDetector.decodeBytes	no static reference	-
@@ -5445,7 +5445,7 @@ P4	method	cv2.cuda.GpuMat.setTo	no static reference	-
 P4	method	cv2.cuda.GpuMat.size	method name only	-
 P4	method	cv2.cuda.GpuMat.step1	no static reference	-
 P4	method	cv2.cuda.GpuMat.swap	no static reference	-
-P4	method	cv2.cuda.GpuMat.type	no static reference	-
+P4	method	cv2.cuda.GpuMat.type	method name only	-
 P4	method	cv2.cuda.GpuMat.updateContinuityFlag	no static reference	-
 P4	method	cv2.cuda.GpuMat.upload	no static reference	-
 P4	function	cv2.cuda.GpuMat_defaultAllocator	no static reference	-
@@ -5467,7 +5467,7 @@ P4	method	cv2.cuda.HostMem.reshape	method name only	-
 P4	method	cv2.cuda.HostMem.size	method name only	-
 P4	method	cv2.cuda.HostMem.step1	no static reference	-
 P4	method	cv2.cuda.HostMem.swap	no static reference	-
-P4	method	cv2.cuda.HostMem.type	no static reference	-
+P4	method	cv2.cuda.HostMem.type	method name only	-
 P4	function	cv2.cuda.nonLocalMeans	no static reference	-
 P4	function	cv2.cuda.printCudaDeviceInfo	no static reference	-
 P4	function	cv2.cuda.printShortCudaDeviceInfo	no static reference	-
@@ -5956,7 +5956,7 @@ P4	method	cv2.ocl.Device.preferredVectorWidthShort	no static reference	-
 P4	method	cv2.ocl.Device.printfBufferSize	no static reference	-
 P4	method	cv2.ocl.Device.profilingTimerResolution	no static reference	-
 P4	method	cv2.ocl.Device.singleFPConfig	no static reference	-
-P4	method	cv2.ocl.Device.type	no static reference	-
+P4	method	cv2.ocl.Device.type	method name only	-
 P4	method	cv2.ocl.Device.vendorID	no static reference	-
 P4	method	cv2.ocl.Device.vendorName	no static reference	-
 P4	method	cv2.ocl.Device.version	no static reference	-

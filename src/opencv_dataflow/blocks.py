@@ -15,7 +15,7 @@ import numpy as np
 from .core import Block, Graph, Port, Registry, Result
 from .graphics_layers import GraphicDrawing, graphic_object
 from .image_codecs import CODEC_CHOICES, CODEC_DEFAULTS, CODEC_HELP, codec_options
-from .image_metadata import decode_image_metadata
+from .image_metadata import decode_file_image
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 from .objects import collection, contour_item
 from .parameter_validation import NumericRange, ValidationError
@@ -187,12 +187,7 @@ class ImageFile(Block):
             return Result({"image": NO_VALUE, "info": NO_VALUE}, message="Image sequence complete")
         path = Path(selected)
         buffer = self.read_bytes(path)
-        mode = self.parameters["metadata_mode"]
-        metadata = None
-        if mode == "off":
-            image = cv2.imdecode(np.frombuffer(buffer, np.uint8), cv2.IMREAD_UNCHANGED)
-        else:
-            image, metadata = decode_image_metadata(buffer, mode == "apply_orientation")
+        image, metadata = decode_file_image(buffer, self.parameters["metadata_mode"])
         if image is None:
             raise ValueError(f"Unable to decode image: {path}")
         output = format_image(

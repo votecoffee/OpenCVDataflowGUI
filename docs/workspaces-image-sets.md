@@ -80,6 +80,14 @@ image has an error placeholder. Validation sets have their own filmstrip: a
 correctly predicted failing image still has a red border, independently of its
 validation score.
 
+Double-click a thumbnail to open it in a resizable window. Scroll the mouse wheel
+or use **Zoom in** and **Zoom out**, and drag the image to pan. **Fit** follows the
+window size and **100%** shows one image pixel per view pixel. The window shows the
+ticket and verdict, and reuses the same window when you open another entry.
+Still images reload on demand with the capture's color, depth, and EXIF settings.
+The viewer uses the captured thumbnail when the original is missing or its preview
+has changed, and for video frames and TIFF sequence pages.
+
 Capture keeps at most 200 thumbnails and 8 MiB of encoded thumbnail bytes; oldest
 entries are evicted. Full-resolution images and filmstrip histories are not saved
 in projects or validation JSON reports. GUI publication sampling does not lose

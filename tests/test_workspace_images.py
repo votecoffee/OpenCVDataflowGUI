@@ -5,13 +5,15 @@ import json
 import time
 from itertools import combinations
 from pathlib import Path
+from types import SimpleNamespace
 
 import cv2
 import numpy as np
 import pytest
-from PySide6.QtCore import QPoint, QPointF, Qt
+from PySide6.QtCore import QPoint, QPointF, QSize, Qt
+from PySide6.QtGui import QWheelEvent
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QFileDialog
+from PySide6.QtWidgets import QFileDialog, QPushButton
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import ImageFile, builtin_registry, demo_graph
@@ -391,6 +393,101 @@ def test_filmstrip_actual_verdicts_bounded_and_validation(app):
     small.add(strip.snapshot()[0]["ticket"], "image", np.zeros((4, 4), np.uint8))
     assert small.snapshot() == [] and small.dropped == 1
     viewer.close()
+
+
+def test_filmstrip_double_click_zoom_and_thumbnail_fallback(app, tmp_path):
+    path = tmp_path / "detail.png"
+    source_image = np.full((480, 640, 3), (20, 150, 250), np.uint8)
+    assert cv2.imwrite(str(path), source_image)
+    graph, _ = file_graph([str(path)], color_format="gray")
+    graph.run()
+    viewer = FilmstripViewer(lambda: graph.filmstrip)
+    viewer.resize(460, 260)
+    viewer.show()
+    viewer.refresh()
+    app.processEvents()
+
+    def double_click():
+        item = viewer.items.item(0)
+        viewport = viewer.items.viewport()
+        center = viewer.items.visualItemRect(item).center()
+        QTest.mouseClick(viewport, Qt.MouseButton.LeftButton, pos=center)
+        QTest.mouseDClick(viewport, Qt.MouseButton.LeftButton, pos=center)
+        assert viewer.popout is not None
+        app.processEvents()
+        return viewer.popout
+
+    try:
+        dialog = double_click()
+        assert dialog.isVisible() and "Ticket detail.png" in dialog.windowTitle()
+        full = dialog.view.image_item.pixmap()
+        assert full.size() == QSize(640, 480)
+        pixel = full.toImage().pixelColor(0, 0)
+        assert pixel.red() == pixel.green() == pixel.blue()
+        assert "Reloaded source image" in dialog.source_label.text()
+
+        buttons = {b.text(): b for b in dialog.controls.findChildren(QPushButton)}
+        buttons["100%"].click()
+        assert dialog.view.transform().m11() == 1
+        viewport = dialog.view.viewport()
+        point = viewport.rect().center()
+        wheel = QWheelEvent(
+            QPointF(point), QPointF(viewport.mapToGlobal(point)), QPoint(), QPoint(0, 120),
+            Qt.MouseButton.NoButton, Qt.KeyboardModifier.NoModifier, Qt.ScrollPhase.NoScrollPhase,
+            False,
+        )
+        app.sendEvent(viewport, wheel)
+        assert dialog.view.transform().m11() > 1
+        buttons["Fit"].click()
+        old_scale = dialog.view.transform().m11()
+        dialog.resize(980, 760)
+        app.processEvents()
+        assert dialog.view.transform().m11() > old_scale
+
+        graph.filmstrip.update_results(SimpleNamespace(verdict=lambda ticket: ("fail", ["test"])))
+        viewer.refresh()
+        assert dialog.windowTitle().endswith("FAIL")
+        assert double_click() is dialog
+        dialog.close()
+        assert viewer.popout is None
+
+        # The stored thumbnail continues to represent the result if a file was overwritten.
+        assert cv2.imwrite(str(path), np.zeros_like(source_image))
+        fallback = double_click()
+        assert fallback.view.image_item.pixmap().height() == 100
+        assert "Captured thumbnail" in fallback.source_label.text()
+        fallback.close()
+    finally:
+        if viewer.popout is not None:
+            viewer.popout.close()
+        viewer.close()
+        graph.close()
+
+
+def test_filmstrip_captures_multipage_tiff_images(app, tmp_path):
+    path = tmp_path / "pages.tiff"
+    first = np.full((32, 40), 80, np.uint8)
+    second = np.full_like(first, 160)
+    ok, encoded = cv2.imencodemulti(".tiff", [first, second])
+    assert ok
+    path.write_bytes(encoded.tobytes())
+    graph = Graph()
+    graph.add(builtin_registry().create("input.tiff_file", parameters={"path": str(path)}))
+    graph.filmstrip_enabled = True
+    viewer = FilmstripViewer(lambda: graph.filmstrip)
+    try:
+        graph.run()
+        graph.run()
+        viewer.refresh()
+        assert viewer.items.count() == 2
+        viewer.open_image(viewer.items.item(1))
+        assert "page-000001" in viewer.popout.windowTitle()
+        assert viewer.popout.view.image_item.pixmap().toImage().pixelColor(0, 0).red() == 160
+    finally:
+        if viewer.popout is not None:
+            viewer.popout.close()
+        viewer.close()
+        graph.close()
 
 
 def test_gui_multifile_picker_continuous_and_lean_opt_in(app, tmp_path, monkeypatch):
