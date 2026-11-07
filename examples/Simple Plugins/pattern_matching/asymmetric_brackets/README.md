@@ -20,10 +20,10 @@ contains the accepted poses, coverage, and fit errors. The
 [ground truth](expected.json) records the generated datum positions, angles,
 and scales in source-image coordinates.
 
-To try training in the saved-recipe project, first run the graph to publish
-its images. Select the matcher and open **Train geometric recipe…**. Choose
-the **Training reference** output and click **Capture reference**, then click
-**Train pattern**. Choose the **Generated tray scenes** output, click
+Select the matcher and open **Train geometric recipe…** to see the saved
+fine and coarse edges on the training image. To try a new fit, adjust the
+training controls and click **Train pattern**. Run the graph to publish
+its images. Choose the **Generated tray scenes** output, click
 **Capture scene**, and use **Run preview**. To keep a new recipe, click
 **Stage recipe**, apply the inspector configuration, and save the project.
 

@@ -111,7 +111,8 @@ def build_example(root):
         ("partial_tray.png", changed, make_scene(reference, changed, occluded=True)),
     ]
     for filename, pixels in [
-        ("reference.png", reference), *((name, pixels) for name, _, pixels in scenes)
+        ("reference.png", reference), ("bracket.reference.png", reference),
+        *((name, pixels) for name, _, pixels in scenes)
     ]:
         ok, encoded = cv2.imencode(".png", pixels)
         if not ok:

@@ -16,12 +16,12 @@ If SimplePatternMatch is already installed in the Python environment running
 OpenCVDataflowGUI, open a project that uses it directly. DataflowGUI
 loads the installed integration when it encounters a SimplePatternMatch block.
 For a fresh environment, install the verified
-[OpenCVGeometricPatternMatch revision](https://github.com/votecoffee/OpenCVGeometricPatternMatch/tree/632e81bbd12c6640d1c6f65618bd85e45aa26b9e)
+[OpenCVGeometricPatternMatch revision](https://github.com/votecoffee/OpenCVGeometricPatternMatch/tree/cb86cb6925137ac6f522d8fefc7c3335ca42bc1c)
 from the host repository root. The `--no-deps` option reuses the host's
 OpenCV contrib wheel.
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install --no-deps "opencv-geometric-pattern-match @ git+https://github.com/votecoffee/OpenCVGeometricPatternMatch.git@632e81bbd12c6640d1c6f65618bd85e45aa26b9e"
+.\.venv\Scripts\python.exe -m pip install --no-deps "opencv-geometric-pattern-match @ git+https://github.com/votecoffee/OpenCVGeometricPatternMatch.git@cb86cb6925137ac6f522d8fefc7c3335ca42bc1c"
 ```
 
 ## Set up SimpleSegmentation

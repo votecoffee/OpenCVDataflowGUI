@@ -21,7 +21,8 @@ lower right. The integration test projects all four reference points
 through the measured pose and checks them against the annotated points.
 
 Select **SimplePatternMatch · Locate the PCB** and open **Train geometric
-recipe…** to review the recipe. After running the graph, **Training
+recipe…** to see the saved fine or coarse edges over the training photo.
+After running the graph, **Training
 reference · VisA 0000** and **VisA PCB2 photographs** are available to
 capture into the trainer.
 

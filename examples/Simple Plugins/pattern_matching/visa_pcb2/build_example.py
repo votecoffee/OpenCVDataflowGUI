@@ -51,6 +51,10 @@ def build_example(root):
     reference_bytes = (root / frames[0]["path"]).read_bytes()
     reference = cv2.imdecode(np.frombuffer(reference_bytes, np.uint8), cv2.IMREAD_COLOR)
     gray = cv2.cvtColor(reference, cv2.COLOR_BGR2GRAY)
+    ok, encoded = cv2.imencode(".png", gray)
+    if not ok:
+        raise RuntimeError("Could not encode the PCB training reference")
+    (assets / "pcb2.reference.png").write_bytes(encoded.tobytes())
     pattern = train(gray, roi=ROI, origin=DATUM)
     search = Search(
         angle=(-5., 5., 2.5), scale=(.96, 1.04, .04), accept=.55, coarse_accept=.27,
