@@ -51,7 +51,7 @@ from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
 from .canvas import CanvasScene, CanvasView, Node, block_preview_images, pixmap
 from .cloud_viewer import CloudViewer
-from .core import DISPLAY_RESULT_FIELDS, Graph
+from .core import DISPLAY_RESULT_FIELDS, Graph, block_display_title
 from .diagnostic_viewer import DiagnosticViewer
 from .diagnostics import exception_message
 from .documentation_editor import DocumentationEditor
@@ -387,7 +387,7 @@ class Inspector(QWidget):
             return
         self.caption.setText(block.name)
         self.caption.setToolTip(
-            f"{block.title} / {block.block_type or block.category} / {block.subtype}"
+            f"{block_display_title(block)} / {block.block_type or block.category} / {block.subtype}"
             f"\n{block.type_id}"
         )
         self.name_field = QLineEdit(block.name)
@@ -1052,7 +1052,7 @@ class Inspector(QWidget):
             if context is not None:
                 context._close()
             block.logger.exception("Plugin dialog could not open")
-            self.window.warn(f"{block.title} dialog · {exception_message(exc)}")
+            self.window.warn(f"{block_display_title(block)} dialog · {exception_message(exc)}")
 
     def _release_plugin_context(self, context):
         context._close()
@@ -1135,7 +1135,7 @@ class Inspector(QWidget):
             self.schedule_live_preview()
         except (Exception, SystemExit) as exc:
             block.logger.exception("Plugin dialog edits could not be staged")
-            self.window.warn(f"{block.title} dialog · {exception_message(exc)}")
+            self.window.warn(f"{block_display_title(block)} dialog · {exception_message(exc)}")
 
     def edit_kernel(self):
         try:

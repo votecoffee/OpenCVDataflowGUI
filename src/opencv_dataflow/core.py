@@ -43,6 +43,15 @@ from .tickets import DEFAULT_TICKET_SETTINGS, DIRECT_CLOCK, TICKET_MODES, Ticket
 from .timing import WorkTiming
 from .visual_style import DEFAULT_NODE_SIZE, NODE_SIZES
 
+_PLUGIN_DISPLAY_TITLES = {
+    "inspection.ocv_segment_image": "SimpleSegmentation",
+    "inspection.ocv_segment_parts": "SimpleSegmentation · Matched parts",
+    "pattern.ogpm_recipe": "SimplePatternMatch",
+    "pattern.ogpm_load_recipe": "SimplePatternMatch · Load recipe",
+    "pattern.ogpm_train_recipe": "SimplePatternMatch · Train recipe",
+    "pattern.ogpm_match_model": "SimplePatternMatch · Match wired recipe",
+}
+
 DISPLAY_RESULT_FIELDS = (
     "last_inputs",
     "input_payloads",
@@ -58,6 +67,11 @@ DISPLAY_RESULT_FIELDS = (
     "last_recipe_ref",
     "last_recipe_parameters",
 )
+
+
+def block_display_title(block):
+    """Return the host title for a block class or instance."""
+    return _PLUGIN_DISPLAY_TITLES.get(block.type_id, block.title)
 
 
 @dataclass(frozen=True)
@@ -116,7 +130,7 @@ class Block:
 
     def __init__(self, *, block_id=None, parameters=None):
         self.id = block_id or uuid.uuid4().hex
-        self.name = self.title
+        self.name = block_display_title(self)
         self._description = ""
         self._documentation = ""
         self.parameters = copy.deepcopy(self.defaults)

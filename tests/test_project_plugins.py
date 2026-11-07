@@ -10,8 +10,49 @@ from PySide6.QtWidgets import QFileDialog
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
-from opencv_dataflow.core import Graph
+from opencv_dataflow.core import Graph, block_display_title
 from opencv_dataflow.plugins import GEOMETRIC_MATCHER_TYPES, PIXEL_SEGMENTATION_TYPES
+from opencv_dataflow.toolbox import block_entry
+
+
+@pytest.mark.parametrize(
+    ("module", "expected"),
+    [
+        (None, {"inspect.simple_classify_image": "SimpleClassify"}),
+        ("opencv_geometric_pattern_match.dataflow", {
+            "pattern.ogpm_recipe": "SimplePatternMatch",
+            "pattern.ogpm_load_recipe": "SimplePatternMatch · Load recipe",
+            "pattern.ogpm_train_recipe": "SimplePatternMatch · Train recipe",
+            "pattern.ogpm_match_model": "SimplePatternMatch · Match wired recipe",
+        }),
+        ("opencv_defect_segmentation.dataflow", {
+            "inspection.ocv_segment_image": "SimpleSegmentation",
+            "inspection.ocv_segment_parts": "SimpleSegmentation · Matched parts",
+        }),
+    ],
+)
+def test_simple_plugin_titles_preserve_saved_node_names(module, expected):
+    if module:
+        pytest.importorskip(module)
+    registry = builtin_registry()
+    for type_id, title in expected.items():
+        graph = Graph()
+        try:
+            block = graph.add(registry.create(type_id))
+            assert block.name == block_display_title(block) == title
+            assert block_entry(registry.types[type_id]).title == title
+            block.name = "Saved application-specific label"
+            saved = graph.to_dict()
+        finally:
+            graph.close()
+        reopened = Graph.from_dict(saved, registry)
+        try:
+            block = next(iter(reopened.blocks.values()))
+            assert block.type_id == type_id
+            assert block.name == "Saved application-specific label"
+            assert block_display_title(block) == title
+        finally:
+            reopened.close()
 
 
 def test_installed_matcher_opens_an_application_without_manual_plugin(app, monkeypatch, tmp_path):
@@ -30,7 +71,10 @@ def test_installed_matcher_opens_an_application_without_manual_plugin(app, monke
         window.open_project()
         assert not warnings
         assert window.path == project
-        assert window.graph.blocks["matcher"].type_id == "pattern.ogpm_recipe"
+        block = window.graph.blocks["matcher"]
+        assert block.type_id == "pattern.ogpm_recipe"
+        window.inspector.select(block)
+        assert window.inspector.caption.toolTip().startswith("SimplePatternMatch /")
         assert set(GEOMETRIC_MATCHER_TYPES) <= window.registry.types.keys()
     finally:
         window.dirty = False

@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from PySide6.QtCore import QMimeData, Qt
 from PySide6.QtWidgets import QAbstractItemView, QTreeWidget, QTreeWidgetItem
 
+from .core import block_display_title
 from .visual_style import INDUSTRIAL
 
 TOOL_MIME = "application/x-opencv-dataflow-tool"
@@ -190,8 +191,11 @@ def block_entry(block):
             else ("Custom", kind, subtype)
         )
     aliases = ("skimage",) if file == "skeleton" and package == "opencv_dataflow" else ()
+    title = block_display_title(block)
+    former_title = (block.title,) if title != block.title else ()
     return ToolEntry(
-        path, block.title, type_id, (kind, subtype, *aliases, *_NATIVE_NAMES.get(type_id, ()))
+        path, title, type_id,
+        (kind, subtype, *former_title, *aliases, *_NATIVE_NAMES.get(type_id, ())),
     )
 
 

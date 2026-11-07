@@ -6,7 +6,7 @@ from .model import load_classifier
 
 
 class ClassifyImage(Block):
-    type_id, title, category = "inspect.simple_classify_image", "Classify image", "Inspection"
+    type_id, title, category = "inspect.simple_classify_image", "SimpleClassify", "Inspection"
     block_type, subtype = "Inspection", "Classification"
     parallel_safe = True
     inputs = (Port("image"),)
