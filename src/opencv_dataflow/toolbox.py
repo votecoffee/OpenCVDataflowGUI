@@ -36,6 +36,7 @@ OPENCV_MODULES = {
     "surface_matching": "Surface Matching",
     "tracking": "Tracking",
     "ximgproc": "Extended Image Processing",
+    "xobjdetect": "Extended Object Detection",
 }
 _MODULE_ORDER = {
     f"{title} ({module})": index for index, (module, title) in enumerate(OPENCV_MODULES.items())
@@ -65,6 +66,7 @@ IMPLEMENTATION_MODULES = {
     "video": "ecc_registration native_background sequence_tools",
     "videoio": "video_files",
     "objdetect": "charuco code_readers",
+    "xobjdetect": "hog",
     "dnn": "dnn_blocks ocr",
     "photo": "photo_filters restoration",
     "stitching": "image_stitching scan_stitching",

@@ -3986,6 +3986,25 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `h
 | `normalization` | `"peak"` | `peak`, `probability`, `counts` Divide counts by their peak or sum, or keep the raw counts. |
 | `scale` | `1.0` | Multiplier applied to the resulting bin weights. |
 
+## Histogram of oriented gradients (`inspect.hog`)
+
+Inspection / Features
+
+Inputs: `image` (image).
+
+Input `image` — One uint8 grayscale, BGR or RGB window. Crop first to measure a region.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `cell_size` | `[8, 8]` | [Width, height] of a cell in pixels. |
+| `block_size` | `[16, 16]` | [Width, height] in pixels. Both dimensions must be multiples of cell size. |
+| `block_stride` | `[8, 8]` | [X, Y] stride in pixels, in whole cells no larger than the block. |
+| `bins` | `9` | Value must be a whole number between 2 and 36. Gradient orientation bins per cell. |
+| `win_sigma` | `-1.0` | Value must be a finite number between -1 and 4096. Gaussian weighting sigma in pixels. −1 uses OpenCV's automatic value. |
+| `l2_hys_threshold` | `0.2` | Value must be a finite number between 0.0001 and 1. Clipping threshold before the second block normalization. |
+| `gamma_correction` | `true` | Apply square-root gamma correction before measuring gradients. |
+| `signed_gradient` | `false` | Use 360° directions. Off treats opposite directions as equivalent. |
+
 ## Estimate image homography (`inspect.homography`)
 
 Inspection / Registration

@@ -2998,7 +2998,7 @@ P3	method	cv2.HistogramCostExtractor.getDefaultCost	no static reference	-
 P3	method	cv2.HistogramCostExtractor.getNDummies	no static reference	-
 P3	method	cv2.HistogramCostExtractor.setDefaultCost	no static reference	-
 P3	method	cv2.HistogramCostExtractor.setNDummies	no static reference	-
-P3	class	cv2.HOGDescriptor	no static reference	-
+P3	class	cv2.HOGDescriptor	literal reference	-
 P3	method	cv2.HOGDescriptor.checkDetectorSize	no static reference	-
 P3	method	cv2.HOGDescriptor.compute	method name only	-
 P3	method	cv2.HOGDescriptor.computeGradient	no static reference	-

@@ -127,6 +127,7 @@ BINDINGS = {
     "inspect.flood_fill": "floodFill",
     "inspect.grabcut": "grabCut",
     "inspect.histogram_backproject": "calcBackProject",
+    "inspect.hog": "HOGDescriptor HOGDescriptor.compute",
     "inspect.homography": "findHomography",
     "inspect.hough_circles": "HoughCircles HoughCirclesWithAccumulator",
     "inspect.hough_lines": "HoughLinesP",

@@ -669,6 +669,7 @@ def builtin_registry():
     from .hand_eye import HandEyeCalibration
     from .histogram import Histogram
     from .histogram_comparison import CompareHistograms, HistogramBackProjection
+    from .hog import HOGFeatures
     from .illumination import AdaptiveBackgroundCorrection, FlatFieldCorrection
     from .image_blend import BlendWeightMaps
     from .image_codecs import DecodeImage, EncodeImage
@@ -785,6 +786,7 @@ def builtin_registry():
         WriteVideo,
         WriteResults,
         Histogram,
+        HOGFeatures,
         CalibrationGrid,
         DetectCharucoBoard,
         LensCalibration,
