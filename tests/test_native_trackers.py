@@ -1,10 +1,14 @@
 """Exercise native tracking, lost-target behavior, and editor state handoff."""
 
+import time
 from pathlib import Path
 
+import cv2
 import numpy as np
 import pytest
+from PySide6.QtCore import QThread
 
+from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 from opencv_dataflow.payloads import NO_VALUE, ValuePacket, frame
@@ -110,3 +114,22 @@ def test_tracker_example_runs_both_trackers():
             assert 40 <= result.outputs["bounds"][0] <= 47
     finally:
         graph.close()
+
+
+def test_kcf_initializes_opencl_on_desktop_thread_before_worker(app, monkeypatch):
+    window = MainWindow()
+    graph = Graph()
+    graph.add(window.registry.create("sequence.track_kcf"))
+    window.replace_graph(graph)
+    queried = []
+    monkeypatch.setattr(cv2.ocl, "useOpenCL", lambda: queried.append(QThread.currentThread()))
+    try:
+        window.start_run(continuous=False)
+        assert queried == [app.thread()]
+        deadline = time.monotonic() + 5
+        while window.runner is not None and time.monotonic() < deadline:
+            app.processEvents()
+            time.sleep(0.01)
+        assert window.runner is None
+    finally:
+        window.close()

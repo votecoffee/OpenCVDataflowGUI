@@ -61,7 +61,7 @@ from .graphics_layers import RESULT_GRAPHICS, GraphicsBundle
 from .image_queue import ImageQueue
 from .kernel_editor import KERNEL_PARAMETERS, SHAPE_LABELS, KernelEditor
 from .outcomes import INPUT_FAILURE_POLICIES
-from .parallel_inspection import ParallelInspect
+from .parallel_inspection import ParallelInspect, walk
 from .parameter_validation import ValidationError
 from .payloads import ValuePacket, describe_value, packet_for, prepare_inputs
 from .plugin_dialog import PluginDialogContext
@@ -2251,6 +2251,9 @@ class MainWindow(QMainWindow):
                 self.filmstrip_dock.show()
             for key, block in self.root_graph.blocks.items():
                 execution_graph.blocks[key].copy_results_from(block)
+            if any(b.type_id == "sequence.track_kcf" for b in walk(execution_graph)):
+                # Keep KCF from creating the primary OpenCL context on a short-lived Qt worker.
+                cv2.ocl.useOpenCL()
         except (Exception, SystemExit) as exc:
             self.warn(exception_message(exc))
             return
