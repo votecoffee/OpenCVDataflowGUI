@@ -32,6 +32,8 @@ Live validation review requires segmentation revision `fe79959` or newer. In the
 
 With segmentation revision `7183312` or newer, choose **Keep preview settings** while comparing the saved labels. Close the review and choose **Stage settings** for the pinned model or **Stage candidate** for a newly trained model. Use **Apply configuration** in the inspector and save the project. The aggregate training summary lists the cutoff and area used for that report.
 
+With segmentation revision `f539261` or newer, you can choose **Evaluate validation set** before staging. The trainer compares the inspector values with the kept settings on every saved validation image using the same model scores for both rows. It shows the number of observed labeled pixels and precision, recall, and specificity. Select another validation manifest to evaluate the same candidate on a different set.
+
 Results for the bundled PCB model at a minimum area of 70 pixels:
 
 | Cutoff | Precision | Recall |
