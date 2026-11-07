@@ -14,7 +14,8 @@ twice. The first scene contains six rotated and scaled brackets. The second
 contains four brackets, including one partially occluded bracket, plus a
 lookalike. The expected counts are six and four.
 
-In the matcher results, view **overlay** for the pose markers, green observed
+Select **Result / overlay** on the matcher or double-click the processed tray
+in the image results filmstrip. The overlay shows pose markers, green observed
 edges, and red missing edges on the occluded bracket. The **matches** output
 contains the accepted poses, coverage, and fit errors. The
 [ground truth](expected.json) records the generated datum positions, angles,
