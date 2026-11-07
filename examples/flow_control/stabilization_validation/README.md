@@ -30,6 +30,9 @@ Parallax, moving parts, or lost tracks can all trigger it. The correction
 itself still uses one global translation or similarity transform.
 [OpenCV sparse optical flow](https://docs.opencv.org/5.0/tutorials/others/optical_flow.html)
 
+The [recorded validation example](../recorded_stabilization_validation/README.md)
+uses the same check on near and far patches selected from recorded depth.
+
 ```powershell
 opencv-dataflow-run examples/flow_control/stabilization_validation/stabilization_validation.json --all-images
 ```

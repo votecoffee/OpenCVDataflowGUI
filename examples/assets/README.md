@@ -23,3 +23,5 @@ and is not bundled into the Python package or committed in this repository.
   by the validation and image-set workspace examples.
 - The [recorded stabilization fixtures](../flow_control/recorded_camera_stabilization/README.md)
   use a trimmed, grayscale TUM RGB-D recording under CC BY 4.0.
+- The [recorded depth variation fixtures](../flow_control/recorded_stabilization_validation/README.md)
+  use eight reduced TUM RGB-D frames and two registered depth images under CC BY 4.0.

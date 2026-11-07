@@ -907,6 +907,8 @@ The [recorded camera example](examples/flow_control/recorded_camera_stabilizatio
 compares raw and corrected error over the same covered pixels on a bundled clip.
 The [two-plane example](examples/flow_control/stabilization_validation/README.md)
 shows how a separate validation area can catch drift that the background fit misses.
+The [recorded depth example](examples/flow_control/recorded_stabilization_validation/README.md)
+exercises the check on near and far patches from a camera recording.
 
 **Stitch scan sequence** automatically registers two to eight ordered views.
 Each adjacent pair must meet the fit and overlap thresholds before the graph
