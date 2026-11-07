@@ -17,3 +17,7 @@ OpenCV contrib wheel.
 ```powershell
 .\.venv\Scripts\python.exe -m pip install --no-deps "opencv-geometric-pattern-match @ git+https://github.com/votecoffee/OpenCVGeometricPatternMatch.git@632e81bbd12c6640d1c6f65618bd85e45aa26b9e"
 ```
+
+## Set up pixel segmentation
+
+See [Pixel segmentation](pixel_segmentation/README.md) for installation and the saved projects.

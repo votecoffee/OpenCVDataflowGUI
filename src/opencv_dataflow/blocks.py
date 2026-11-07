@@ -705,7 +705,12 @@ def builtin_registry():
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .pick_selection import SelectPickCandidate
-    from .plugins import GEOMETRIC_MATCHER_TYPES, load_installed_geometric_matcher
+    from .plugins import (
+        GEOMETRIC_MATCHER_TYPES,
+        PIXEL_SEGMENTATION_TYPES,
+        load_installed_geometric_matcher,
+        load_installed_pixel_segmentation,
+    )
     from .point_set_lines import HoughPointSetLines
     from .polar_image import PolarImageWarp
     from .polynomial_roots import SolvePolynomialRoots
@@ -916,6 +921,7 @@ def builtin_registry():
     ):
         registry.register(block)
     registry.add_provider(GEOMETRIC_MATCHER_TYPES, load_installed_geometric_matcher)
+    registry.add_provider(PIXEL_SEGMENTATION_TYPES, load_installed_pixel_segmentation)
     return registry
 
 

@@ -6,13 +6,21 @@ These examples use **Segment image** to learn a foreground class from painted la
 | --- | --- | --- |
 | [Brick mortar](brick_mortar/project.json) | Bright mortar joints | Labels cover selected joint and brick patches in the upper-left area. The result follows joints across the photograph. |
 | [Cup rim](cup_rim/project.json) | Porcelain lip | A coarse rectangular search region keeps the model focused on the cup. The learned mask traces the rim within it. |
-| [PCB laminate](pcb_laminate/project.json) | Exposed blue board surface | Run twice to compare two different VisA boards. Training labels come from the first photo. Dark chips and metal pins are mostly background. |
+| [PCB laminate](pcb_laminate/project.json) | Exposed blue board surface | Run twice to locate two different VisA boards. Training labels come from the first photo. Dark chips and metal pins are mostly background. |
 
 ## Run in DataflowGUI
 
-Install the OpenCV Pixel Segmentation package from its source checkout in the Python environment running DataflowGUI. From the segmentation checkout, run that environment's Python with `-m pip install --no-deps -e .`. Use **File → Load Python plugin…** and select `integrations/opencv_dataflow_plugin.py` from the segmentation checkout.
+Install OpenCV Pixel Segmentation from a source checkout at revision `c43358c` or newer in the Python environment running DataflowGUI. From the segmentation checkout, run that environment's Python with `-m pip install --no-deps -e .`. DataflowGUI loads the installed integration when you open a saved project that uses it.
 
 Open a project above and press **Run once**. Inspect **Overlay** for the highlighted foreground, **Mask** for the binary result, or **Score map** for the raw forest votes. Use **Inspected** to identify which pixels were evaluated. The block's **Threshold** and **Min area px** change the binary output without retraining. Reset flow state to replay a finished sequence.
+
+In the PCB project, **Locate one board** takes the external contour of the laminate mask and checks for one board-sized object. Its **Collection** output includes the contour, bounding box, and centroid in the 650 × 495 image grid. **Show board outline and center** draws the contour and centroid over the learned mask. The contour follows visible laminate, so it can curve inward near edge-mounted components. The raw laminate mask and the filled contour mask are separate outputs.
+
+From the DataflowGUI repository root, you can replay both PCB photographs in the same environment:
+
+```powershell
+opencv-dataflow-run examples/applications/pixel_segmentation/pcb_laminate/project.json --all-images
+```
 
 ## Review or retrain
 

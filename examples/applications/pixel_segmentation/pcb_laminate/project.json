@@ -71,6 +71,54 @@
       ],
       "thumbnail": true,
       "preview_output": "overlay"
+    },
+    {
+      "id": "board",
+      "type": "inspect.contours",
+      "name": "Locate one board",
+      "description": "Use the external contour of the learned mask to measure the board outline and center.",
+      "parameters": {
+        "min_area": 30000.0,
+        "expected_count": 1,
+        "retrieval": "external"
+      },
+      "position": [
+        725.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "count",
+        "collection",
+        "mask"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "board_preview",
+      "type": "collection.draw",
+      "name": "Show board outline and center",
+      "parameters": {
+        "draw_bounds": false,
+        "draw_centers": true,
+        "labels": "none"
+      },
+      "position": [
+        1105.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
     }
   ],
   "connections": [
@@ -79,6 +127,24 @@
       "output": "image",
       "target": "segment",
       "input": "image"
+    },
+    {
+      "source": "segment",
+      "output": "mask",
+      "target": "board",
+      "input": "image"
+    },
+    {
+      "source": "segment",
+      "output": "overlay",
+      "target": "board_preview",
+      "input": "image"
+    },
+    {
+      "source": "board",
+      "output": "collection",
+      "target": "board_preview",
+      "input": "collection"
     }
   ]
 }

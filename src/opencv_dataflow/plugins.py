@@ -13,6 +13,10 @@ GEOMETRIC_MATCHER_TYPES = (
     "pattern.ogpm_train_recipe",
     "pattern.ogpm_match_model",
 )
+PIXEL_SEGMENTATION_TYPES = (
+    "inspection.ocv_segment_image",
+    "inspection.ocv_segment_parts",
+)
 
 
 def _register_blocks(register, registry):
@@ -34,6 +38,19 @@ def load_installed_geometric_matcher(registry):
         raise ValueError(
             "Install OpenCVGeometricPatternMatch in the Python environment running DataflowGUI. "
             "See examples/applications/README.md for setup."
+        ) from exc
+    _register_blocks(register, registry)
+
+
+def load_installed_pixel_segmentation(registry):
+    try:
+        from opencv_defect_segmentation.dataflow import register
+    except ModuleNotFoundError as exc:
+        if exc.name not in ("opencv_defect_segmentation", "opencv_defect_segmentation.dataflow"):
+            raise
+        raise ValueError(
+            "Install OpenCV Pixel Segmentation in the Python environment running DataflowGUI. "
+            "See examples/applications/pixel_segmentation/README.md for setup."
         ) from exc
     _register_blocks(register, registry)
 
