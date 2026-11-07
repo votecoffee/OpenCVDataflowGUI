@@ -894,6 +894,8 @@ Try the [matrix structure example](examples/numerical/matrix_structure/README.md
 **Stitch image pair** combines overlapping inspection views in a shared frame
 or with a wired registration. It reports coverage, overlap, and the mappings
 from both inputs. Try the [stitching example](examples/image_processing/stitch_image_pair/README.md).
+For overlapping views with different content, the [graph-cut example](examples/image_processing/stitch_seam/README.md)
+compares averaging with a seam that selects individual source samples.
 
 **Stabilize camera motion** tracks stable background features to reduce
 translation or similarity jitter before measuring a frame. It publishes

@@ -133,10 +133,12 @@ def test_overlap_and_mask_group_bounds_are_checked():
     assert block.error_kind == "invalid" and "two to eight" in block.error
 
 
-def test_saved_scan_corrects_cumulative_gain_without_changing_coverage():
+@pytest.mark.parametrize("blend", ["feather", "graph_cut"])
+def test_saved_scan_corrects_cumulative_gain_without_changing_coverage(blend):
     graph = Graph.load(EXPOSURE_EXAMPLE, builtin_registry())
     try:
         graph.set_run_profile("lean")
+        graph.blocks["corrected"].parameters["blend"] = blend
         for _ in range(3):
             graph.run()
         raw = graph.blocks["stitch"].last_result.outputs
@@ -157,6 +159,11 @@ def test_saved_scan_corrects_cumulative_gain_without_changing_coverage():
         assert result["image"].dtype == expected.dtype
         assert not result["image"][result["coverage"] == 0].any()
         assert graph.blocks["measure"].last_result.outputs["selected_count"] == 49104
+        if blend == "graph_cut":
+            assert [seam["view_index"] for seam in layout["seams"]] == [1, 2]
+            assert [seam["overlap_pixels"] for seam in layout["seams"]] == [11088, 11088]
+            for seam in layout["seams"]:
+                assert seam["overlap_from_existing"] + seam["overlap_from_incoming"] == 11088
     finally:
         graph.close()
 

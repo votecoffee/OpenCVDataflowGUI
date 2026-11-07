@@ -16,6 +16,7 @@ from .mosaic_photometry import (
     corrected_view,
     fit_overlap_exposure,
 )
+from .mosaic_seams import SEAM_CHOICES, SEAM_DEFAULTS, SEAM_HELP, SEAM_RANGES, graph_cut_selection
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, FlowGroup, check_spatial, image_with_payload, metadata
 from .processing import ImageTool, gray_image, image_value
@@ -232,6 +233,7 @@ class StitchScanSequence(ImageTool):
         "interpolation": "linear",
         "blend": "prefer_first",
         "feather_width": 32,
+        **SEAM_DEFAULTS,
         "exposure": "none",
         "min_exposure_samples": 64,
         "max_exposure_gain": 2.0,
@@ -240,7 +242,8 @@ class StitchScanSequence(ImageTool):
     parameter_choices = {
         "motion_model": ("translation", "similarity"),
         "interpolation": tuple(_INTERPOLATION),
-        "blend": ("prefer_first", "prefer_last", "feather"),
+        "blend": ("prefer_first", "prefer_last", "feather", "graph_cut"),
+        **SEAM_CHOICES,
         "exposure": ("none", "gain", "offset"),
     }
     parameter_ranges = {
@@ -255,6 +258,7 @@ class StitchScanSequence(ImageTool):
         "min_overlap_pixels": NumericRange(1, 16_777_216, whole=True),
         "max_loop_drift_pixels": NumericRange(0, 512),
         "feather_width": NumericRange(1, 512, whole=True),
+        **SEAM_RANGES,
         "min_exposure_samples": NumericRange(1, MAX_EXPOSURE_SAMPLES, whole=True),
         "max_exposure_gain": NumericRange(1, 8),
         "max_exposure_offset_fraction": NumericRange(0, 1),
@@ -268,8 +272,9 @@ class StitchScanSequence(ImageTool):
         "min_overlap_pixels": "Minimum valid overlap for each adjacent pair and the closing pair.",
         "loop_closure": "Require an independent match from the last view back to the first.",
         "max_loop_drift_pixels": "Maximum allowed corner adjustment in first-view pixels.",
-        "blend": "Prefer the earliest or latest covered view, or feather across valid edges.",
+        "blend": "Choose priority, feather valid edges, or select a seam from image content.",
         "feather_width": "Distance from a valid edge, in mosaic pixels, to reach full weight.",
+        **SEAM_HELP,
         "exposure": "Match the first view using a median gain or offset from valid overlaps.",
         "min_exposure_samples": "Minimum usable samples per adjacent overlap for exposure fitting.",
         "max_exposure_gain": "Limit cumulative gain to this ratio and its reciprocal.",
@@ -344,12 +349,16 @@ class StitchScanSequence(ImageTool):
         channels = 1 if pixels[0].ndim == 2 else pixels[0].shape[2]
         fit_exposure = p["exposure"] != "none"
         feather = p["blend"] == "feather"
+        graph_cut = p["blend"] == "graph_cut"
         extra_bytes = 2 if close_loop else 0
         # Include retained warped views, sample indices, and blend/cast buffers.
         if fit_exposure:
             extra_bytes += 9 + channels * (dtype.itemsize + 16)
         if feather:
             extra_bytes += 20 + 24 * channels
+        if graph_cut:
+            extra_bytes += 4
+            layout["seams"] = []
         size, anchor_to_mosaic = mosaic_canvas(
             pixels, transforms, extra_bytes_per_pixel=extra_bytes
         )
@@ -405,8 +414,12 @@ class StitchScanSequence(ImageTool):
             if blender is not None:
                 blender.add(warped, valid)
             else:
-                use = valid if p["blend"] == "prefer_last" else valid & (counts == 0)
                 warped = cast_intensity(warped, dtype) if warped.dtype != dtype else warped
+                if graph_cut and index:
+                    use, seam = graph_cut_selection(mosaic, warped, counts != 0, valid, p)
+                    layout["seams"].append({"view_index": index, **seam})
+                else:
+                    use = valid if p["blend"] == "prefer_last" else valid & (counts == 0)
                 np.copyto(mosaic, warped, where=use if channels == 1 else use[..., None])
             counts += valid
             previous_valid = valid

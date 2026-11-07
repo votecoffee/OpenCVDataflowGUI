@@ -5,6 +5,7 @@ import numpy as np
 
 from .core import Port, Result
 from .images import ImageArray, image_format
+from .mosaic_seams import SEAM_CHOICES, SEAM_DEFAULTS, SEAM_HELP, SEAM_RANGES, graph_cut_selection
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, frame, metadata, moved_payload
 from .processing import ImageTool, image_value
@@ -130,21 +131,27 @@ class StitchImagePair(ImageTool):
         "matrix": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
         "interpolation": "linear",
         "blend": "prefer_a",
+        **SEAM_DEFAULTS,
         "min_overlap_pixels": 1,
         "ticket_policy": "same_ticket",
     }
     parameter_choices = {
         "transform_source": ("shared_frame", "matrix"),
         "interpolation": tuple(_INTERPOLATION),
-        "blend": ("prefer_a", "prefer_b", "average"),
+        "blend": ("prefer_a", "prefer_b", "average", "graph_cut"),
+        **SEAM_CHOICES,
         "ticket_policy": ("same_ticket", "anchor_a"),
     }
-    parameter_ranges = {"min_overlap_pixels": NumericRange(0, _MAX_SIDE**2, whole=True)}
+    parameter_ranges = {
+        "min_overlap_pixels": NumericRange(0, _MAX_SIDE**2, whole=True),
+        **SEAM_RANGES,
+    }
     parameter_help = {
         "transform_source": "Use a common recorded image frame or the editable matrix.",
         "matrix": "Affine or projective matrix mapping Image B pixels into Image A coordinates.",
         "interpolation": "Resample Image B. Linear requires all contributing pixels to be valid.",
-        "blend": "Choose which image to use in the overlap or average their samples.",
+        "blend": "Choose a priority, average samples, or select a seam from image content.",
+        **SEAM_HELP,
         "min_overlap_pixels": "Withhold the mosaic below this count. Zero permits disjoint tiles.",
         "ticket_policy": "Anchor A allows distinct tickets for offline stitching and reports both.",
     }
@@ -196,7 +203,12 @@ class StitchImagePair(ImageTool):
                 raise ValidationError("Stitch images from the same ticket or choose Anchor A")
         a_frame, b_frame = context_a.get("spatial", {}), context_b.get("spatial", {})
         b_to_a = self.registration(inputs, a_frame, b_frame, first, second)
-        size, a_to_mosaic = mosaic_canvas((first, second), (np.eye(3), b_to_a))
+        blend = p["blend"]
+        size, a_to_mosaic = mosaic_canvas(
+            (first, second),
+            (np.eye(3), b_to_a),
+            extra_bytes_per_pixel=3 if blend == "graph_cut" else 0,
+        )
         b_to_mosaic = a_to_mosaic @ b_to_a
         width, height = size
         x, y = map(int, a_to_mosaic[:2, 2])
@@ -241,12 +253,14 @@ class StitchImagePair(ImageTool):
             condition = a_selected if first.ndim == 2 else a_selected[..., None]
             np.copyto(mosaic[a_area], first, where=condition)
             warped_b = warp_mosaic_view(second, b_to_mosaic, size, interpolation)
-            blend = p["blend"]
             if blend == "average" and overlap_count:
                 values_a, values_b = mosaic[overlap], warped_b[overlap]
                 mixed = cv2.addWeighted(values_a, 0.5, values_b, 0.5, 0)
                 mosaic[overlap] = mixed.reshape(values_a.shape)
-            use_b = b_valid if blend == "prefer_b" else b_valid & ~a_valid
+            if blend == "graph_cut":
+                use_b, layout["seam"] = graph_cut_selection(mosaic, warped_b, a_valid, b_valid, p)
+            else:
+                use_b = b_valid if blend == "prefer_b" else b_valid & ~a_valid
             condition = use_b if second.ndim == 2 else use_b[..., None]
             np.copyto(mosaic, warped_b, where=condition)
             if mosaic.dtype.kind == "f" and not np.isfinite(mosaic).all():

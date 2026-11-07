@@ -1,0 +1,31 @@
+# Choose a content-aware seam
+
+Open [stitch_seam.json](stitch_seam.json) with **File → Open…** and run
+once. Two 16-bit views overlap across 95 columns. The views have
+different brightness, with a narrow strip where their samples agree.
+Each view also contains a bright mark seen only in that view.
+
+**Average the overlap** fades both marks. **Choose a content-aware seam**
+follows the strip of agreement and keeps both marks at full intensity.
+The graph-cut mosaic selects a source value at all 9,120 overlap pixels
+and covers the same 17,760 pixels as the averaged mosaic.
+
+- Set **Blend** to **Graph cut** on **Stitch image pair** or
+  **Stitch scan sequence**. **Seam cost** offers **Color** and
+  **Color gradient**. The terminal cost and bad-region penalty control
+  the preference for supported pixels and the cost of crossing an
+  invalid boundary. [OpenCV seam estimator](https://docs.opencv.org/5.0/extra_modules/classcv_1_1detail_1_1GraphCutSeamFinder.html)
+- The cost image excludes alpha and uses a common intensity scale for both
+  views. The mosaic copies the selected warped samples at their original
+  depth, including alpha. In a scan, optional exposure correction runs
+  before seam selection.
+- In a scan, each incoming view is compared with the current mosaic.
+  **Layout** reports how many overlap pixels each source contributed at
+  each merge. Coverage and overlap continue to describe valid source support.
+  Graph cut is capped at 524,288 work pixels per merge, including padding.
+
+```powershell
+opencv-dataflow-run examples/image_processing/stitch_seam/stitch_seam.json
+```
+
+[All examples](../../README.md)
