@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "frames",
+      "type": "input.video_file",
+      "name": "Recorded TUM camera motion",
+      "parameters": {
+        "path": "../recorded_camera_stabilization/assets/fr1-rpy-0384-0443.mkv",
+        "path_base": "project",
+        "backend": "ffmpeg",
+        "start_frame": 0,
+        "end_frame": 48,
+        "stride": 1,
+        "repeat": "stop",
+        "frame_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Buffer the 48-frame excerpt",
+      "parameters": {
+        "size": 48
+      },
+      "position": [
+        285,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "smooth",
+      "type": "sequence.stabilize_batch",
+      "name": "Smooth the recorded path",
+      "parameters": {
+        "radius_frames": 4,
+        "sigma_frames": 2.0
+      },
+      "position": [
+        590,
+        0
+      ],
+      "exposed_inputs": [
+        "frames"
+      ],
+      "exposed_outputs": [
+        "corrected",
+        "coverage",
+        "transforms",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "replay",
+      "type": "flow.unbatch",
+      "name": "Emit corrected frames in order",
+      "parameters": {},
+      "position": [
+        935,
+        0
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "smooth",
+      "input": "frames"
+    },
+    {
+      "source": "smooth",
+      "output": "corrected",
+      "target": "replay",
+      "input": "group"
+    }
+  ]
+}

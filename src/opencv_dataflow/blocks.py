@@ -701,6 +701,7 @@ def builtin_registry():
     from .native_trackers import NATIVE_TRACKER_BLOCKS
     from .nearest_rows import FindNearestRows
     from .ocr import OCR_BLOCKS
+    from .offline_stabilization import StabilizeRecordedSequence
     from .oriented_edges import FindOrientedEdges
     from .overlay_graphics import OverlayResultGraphics
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
@@ -873,6 +874,7 @@ def builtin_registry():
         RecipeField,
         *SEQUENCE_BLOCKS,
         StabilizeCameraMotion,
+        StabilizeRecordedSequence,
         *NATIVE_BACKGROUND_BLOCKS,
         *NATIVE_TRACKER_BLOCKS,
         TrackConveyorParts,

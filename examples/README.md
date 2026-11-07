@@ -211,6 +211,7 @@ Run commands from the repository root. Shared fixtures are in [assets](assets/RE
 | [Recorded camera stabilization](flow_control/recorded_camera_stabilization/README.md) | Replay real camera motion and measure raw and corrected error over the same coverage mask. |
 | [Check stabilization on a second plane](flow_control/stabilization_validation/README.md) | Detect accumulated drift in a separate inspection region while the background fit still passes. |
 | [Check stabilization on recorded depth variation](flow_control/recorded_stabilization_validation/README.md) | Verify drift rejection and recovery using depth-separated patches in a recorded camera sequence. |
+| [Smooth a recorded camera path](flow_control/offline_camera_stabilization/README.md) | Apply centered look-ahead to a recorded batch and replay corrected frames with their source tickets. |
 | [Conveyor tracking](flow_control/conveyor_tracking/README.md) | Find repeated parts in a synthetic moving sequence and track them using encoder displacement. |
 | [Coordinated camera inputs](flow_control/input_coordination/README.md) | Join two synthetic camera images to a simulated PLC part counter by ticket. |
 | [Native background subtraction](flow_control/native_background/README.md) | Compare OpenCV MOG2 and KNN foreground masks on a synthetic sequence. |
