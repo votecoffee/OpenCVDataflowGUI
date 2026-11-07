@@ -903,6 +903,8 @@ the full mosaic resolution.
 translation or similarity jitter before measuring a frame. It publishes
 corrected pixels, a coverage mask, and the mapping back to the raw image.
 Try the [camera stabilization example](examples/flow_control/camera_stabilization/README.md).
+The [recorded camera example](examples/flow_control/recorded_camera_stabilization/README.md)
+compares raw and corrected error over the same covered pixels on a bundled clip.
 
 **Stitch scan sequence** automatically registers two to eight ordered views.
 Each adjacent pair must meet the fit and overlap thresholds before the graph

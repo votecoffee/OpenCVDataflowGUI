@@ -8,7 +8,7 @@ import numpy as np
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 from opencv_dataflow.images import ImageArray, image_format
-from opencv_dataflow.payloads import NO_VALUE, metadata
+from opencv_dataflow.payloads import NO_VALUE, frame, metadata
 
 TYPE = "sequence.stabilize_camera"
 
@@ -126,3 +126,80 @@ def test_empty_feature_mask_prevents_tracking_and_coverage_gate_reanchors():
     limited = block.execute({"image": _shift(image, 4, 2)})
     assert not limited.outputs["ready"] and limited.outputs["image"] is NO_VALUE
     assert limited.outputs["status"]["reason"] == "insufficient_coverage"
+
+
+def test_image_quality_mask_alignment_requires_an_explicit_pixel_grid_choice():
+    raw_frame = {"spatial": frame([3, 2], "raw")}
+    stabilized_frame = {"spatial": frame([3, 2], "stabilized")}
+    raw = ImageArray(np.full((2, 3), 30, np.uint8), "gray", raw_frame)
+    anchor = np.array([[20, 0, 0], [20, 0, 0]], np.uint8)
+    mask = ImageArray(np.array([[255, 0, 0], [255, 0, 0]], np.uint8), "gray", stabilized_frame)
+    block = builtin_registry().create("inspect.image_quality", parameters={"metric": "mae"})
+    inputs = {"image_a": raw, "image_b": anchor, "mask": mask}
+    assert block.execute(inputs) is None
+    assert "Selection coordinate frame differs" in block.error
+    block.parameters["mask_alignment"] = "pixel_grid"
+    result = block.execute(inputs)
+    assert result is not None and result.outputs["value"] == 10
+    assert block.execute({**inputs, "mask": np.asarray(mask)[:, :2]}) is None
+    assert "matching image dimensions" in block.error
+
+
+def test_recorded_camera_replay_reduces_matched_error_and_reanchors_on_coverage_loss():
+    project = (
+        Path(__file__).parents[1]
+        / "examples/flow_control/recorded_camera_stabilization/recorded_camera_stabilization.json"
+    )
+    graph = Graph.load(project, builtin_registry())
+    try:
+        graph.set_run_profile("lean")
+        frames = graph.blocks["frames"]
+        assert frames.parameters["end_frame"] == 48
+        frames.parameters["end_frame"] = 60
+        errors = []
+        old_root = None
+        for index in range(60):
+            graph.run()
+            source = frames.last_result.outputs
+            raw = source["image"]
+            assert source["info"]["frame_index"] == index
+            result = graph.blocks["stabilize"].last_result
+            assert result is not None
+            out = result.outputs
+            status = out["status"]
+            if index in (0, 48):
+                assert not out["ready"]
+                assert out["image"] is out["coverage"] is out["transform"] is NO_VALUE
+                expected = "initial_frame" if index == 0 else "insufficient_coverage"
+                assert status["reason"] == expected
+                for name in ("raw_error", "stabilized_error"):
+                    assert graph.blocks[name].state == "inactive"
+                    assert not any(graph.blocks[name].current_emissions.values())
+                continue
+            assert out["ready"] and status["coverage_fraction"] >= 0.64
+            spatial = metadata(out["image"])["spatial"]
+            assert metadata(out["coverage"])["spatial"] == spatial
+            assert metadata(out["image"])["ticket"] == metadata(raw)["ticket"]
+            old_root = spatial["root_id"] if old_root is None else old_root
+            if index > 48:
+                assert status["anchor"] == 1 and spatial["root_id"] != old_root
+                continue
+            assert status["anchor"] == 0 and spatial["root_id"] == old_root
+            covered = out["coverage"] != 0
+            anchor = graph.blocks["reference"].last_result.outputs["image"]
+            before = graph.blocks["raw_error"].last_result.outputs["value"]
+            after = graph.blocks["stabilized_error"].last_result.outputs["value"]
+            np.testing.assert_allclose(
+                before, np.abs(raw[covered].astype(float) - anchor[covered]).mean()
+            )
+            np.testing.assert_allclose(
+                after, np.abs(out["image"][covered].astype(float) - anchor[covered]).mean()
+            )
+            errors.append((before, after))
+        assert graph.sources_exhausted()
+        assert len(errors) == 47
+        before, after = np.asarray(errors).T
+        assert np.all(after < before)
+        assert after.mean() < 0.25 * before.mean()
+    finally:
+        graph.close()

@@ -155,7 +155,7 @@ def rasterize(region, shape, *, _depth=0, _budget=None):
     return cv2.bitwise_not(mask) if region.get("invert", False) else mask
 
 
-def selection_mask(inputs, image):
+def selection_mask(inputs, image, *, match_mask_frame=True):
     from .payloads import metadata
 
     context = metadata(inputs.get("image", inputs.get("image_a", image))).get("spatial")
@@ -180,7 +180,8 @@ def selection_mask(inputs, image):
     if mask is not None:
         if mask.dtype != np.uint8 or mask.ndim != 2 or mask.shape != image.shape[:2]:
             raise ValidationError("Mask must be uint8 monochrome with matching image dimensions")
-        check_context(metadata(mask).get("spatial"))
+        if match_mask_frame:
+            check_context(metadata(mask).get("spatial"))
         mask = np.where(mask != 0, 255, 0).astype(np.uint8)
     region = inputs.get("region")
     if region is not None:

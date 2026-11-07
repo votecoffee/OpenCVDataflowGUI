@@ -15,7 +15,7 @@ plugins for specialized operations with job-specific interfaces.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Qualify stabilization on recorded sequences and close common gaps in image processing, geometry, replay, and measurement. Track larger inspection mosaics in the coverage backlog. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Evaluate stabilization under parallax and close common gaps in image processing, geometry, replay, and measurement. Track larger inspection mosaics in the coverage backlog. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and reusable classical ML train/predict blocks. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo, point-cloud interchange, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool is available on the pinned contrib build and ships with a CPU fixture, example and any capability limits. |
@@ -93,7 +93,10 @@ demonstrates bounded drift correction when the last view overlaps the first.
 demonstrates overlap-based exposure correction and feathering on 16-bit tiles.
 [Camera motion stabilization](../examples/flow_control/camera_stabilization/README.md)
 corrects translation or similarity jitter with bounded sequence memory,
-coverage, and a measured replay example.
+coverage, and a measured synthetic replay.
+[Recorded camera stabilization](../examples/flow_control/recorded_camera_stabilization/README.md)
+measures before and after over the same covered pixels and verifies
+recovery after a coverage rejection.
 The [coverage backlog](opencv-coverage.md) tracks the remaining inspection
 workflows. Specialized array formats and additional matrix utilities are
 deferred until a concrete workflow needs them.

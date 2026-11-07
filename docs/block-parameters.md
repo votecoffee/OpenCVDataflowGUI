@@ -3873,6 +3873,7 @@ Inputs: `image_a` (image), `image_b` (image), `mask` (image, optional), `region`
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `metric` | `"ssim"` | `ssim`, `psnr`, `mse`, `mae`, `rmse`, `max_absolute_error` |
+| `mask_alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid applies an equal-size mask by index across frame IDs. |
 | `check_threshold` | `false` |  |
 | `threshold` | `0.95` | Minimum for SSIM/PSNR, maximum for error metrics. |
 | `peak_value` | `255.0` | Maximum sample value for PSNR. Default is 255 for uint8 images. |

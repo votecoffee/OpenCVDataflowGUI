@@ -7,7 +7,7 @@ from .core import Block, Port, Result
 from .parameter_validation import ValidationError
 from .payloads import NO_VALUE
 from .processing import finite, matching_images
-from .selection import SELECTION_INPUTS, selection_mask
+from .selection import selection_mask
 
 ABSOLUTE_ERROR_METRICS = ("mae", "rmse", "max_absolute_error")
 
@@ -29,7 +29,12 @@ def reduce_absolute_error(samples, metric):
 class CompareImageQuality(Block):
     type_id, title = "inspect.image_quality", "Compare image quality"
     category, block_type, subtype = "Inspection", "Inspection", "Measurements"
-    inputs = (Port("image_a"), Port("image_b"), *SELECTION_INPUTS[1:])
+    inputs = (
+        Port("image_a"),
+        Port("image_b"),
+        Port("mask", required=False, required_when_connected=True),
+        Port("region", "data", required=False),
+    )
     outputs = (
         Port("value", "number"),
         Port("measurements", "data"),
@@ -37,19 +42,26 @@ class CompareImageQuality(Block):
     )
     defaults = {
         "metric": "ssim",
+        "mask_alignment": "same_frame",
         "check_threshold": False,
         "threshold": 0.95,
         "peak_value": 255.0,
     }
-    parameter_choices = {"metric": ("ssim", "psnr", "mse", *ABSOLUTE_ERROR_METRICS)}
+    parameter_choices = {
+        "metric": ("ssim", "psnr", "mse", *ABSOLUTE_ERROR_METRICS),
+        "mask_alignment": ("same_frame", "pixel_grid"),
+    }
     parameter_help = {
+        "mask_alignment": "Pixel grid applies an equal-size mask by index across frame IDs.",
         "threshold": "Minimum for SSIM/PSNR, maximum for error metrics.",
         "peak_value": "Maximum sample value for PSNR. Default is 255 for uint8 images.",
     }
 
     def process(self, inputs):
         a, b = matching_images(inputs)
-        selected = selection_mask(inputs, a)
+        selected = selection_mask(
+            inputs, a, match_mask_frame=self.parameters["mask_alignment"] == "same_frame"
+        )
         selected = selected != 0 if selected is not None else None
         if selected is not None and not selected.any():
             raise ValueError("Quality comparison requires at least one selected pixel")
