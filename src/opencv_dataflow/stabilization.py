@@ -10,6 +10,7 @@ from .images import ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, frame
 from .processing import gray_image
+from .selection import selection_mask
 from .sequence import (
     SEQUENCE_CHOICES,
     SEQUENCE_DEFAULTS,
@@ -20,6 +21,7 @@ from .sequence import (
 
 _INTERPOLATION = {"nearest": cv2.INTER_NEAREST, "linear": cv2.INTER_LINEAR}
 _OUTPUT_NAMES = ("image", "coverage", "transform")
+_VALIDATION_INPUTS = ("validation_mask", "validation_region")
 
 
 def _inside(points, shape):
@@ -40,25 +42,67 @@ def _correspondences(previous, current, points, mask, parameters):
         previous, current, points, None, **settings
     )
     if found is None or status is None or patch_error is None:
-        return points[:0, 0], points[:0, 0]
+        return np.empty(0, dtype=np.intp), points[:0, 0]
     original, tracked = points[:, 0], found[:, 0]
     keep = status.ravel().astype(bool) & _inside(tracked, current.shape)
     keep &= patch_error.ravel() <= float(parameters["max_patch_error"])
+    indices = np.flatnonzero(keep)
     original, tracked = original[keep], tracked[keep]
     if mask is not None:
         pixels = np.rint(tracked).astype(np.intp)
         keep = mask[pixels[:, 1], pixels[:, 0]] != 0
+        indices = indices[keep]
         original, tracked = original[keep], tracked[keep]
     if not len(tracked):
-        return original, tracked
+        return indices, tracked
     back, status, _ = cv2.calcOpticalFlowPyrLK(
         current, previous, tracked[:, None, :], None, **settings
     )
     if back is None or status is None:
-        return original[:0], tracked[:0]
+        return indices[:0], tracked[:0]
     error = np.linalg.norm(back[:, 0] - original, axis=1)
     keep = status.ravel().astype(bool) & (error <= float(parameters["forward_backward_pixels"]))
-    return original[keep], tracked[keep]
+    return indices[keep], tracked[keep]
+
+
+def _features(gray, mask, parameters, limit):
+    return cv2.goodFeaturesToTrack(
+        gray,
+        int(parameters[limit]),
+        float(parameters["feature_quality"]),
+        float(parameters["feature_spacing"]),
+        mask=mask,
+    )
+
+
+def _validate_motion(previous, current, state, mask, accumulated, parameters, details):
+    report = details["validation"] = {"tracked": 0, "accepted": False}
+    points = state["validation_points"]
+    if points is None:
+        return "insufficient_validation_tracks"
+    indices, tracked = _correspondences(previous, current, points, mask, parameters)
+    report["tracked"] = len(tracked)
+    if len(tracked) < int(parameters["min_validation_tracks"]):
+        return "insufficient_validation_tracks"
+    anchor = state["validation_anchor"][indices]
+    predicted = anchor @ accumulated[:2, :2].T + accumulated[:2, 2]
+    scale = math.hypot(accumulated[0, 0], accumulated[1, 0])
+    error = np.linalg.norm(tracked - predicted, axis=1) / scale
+    inliers = int(np.count_nonzero(error <= float(parameters["max_validation_error_pixels"])))
+    ratio = inliers / len(error)
+    accepted = ratio >= float(parameters["min_validation_inlier_ratio"])
+    report.update(
+        inliers=inliers,
+        inlier_ratio=ratio,
+        median_error_pixels=float(np.median(error)),
+        p90_error_pixels=float(np.percentile(error, 90)),
+        accepted=accepted,
+    )
+    if not accepted:
+        return "validation_motion_rejected"
+    # Keep the original anchor coordinates for each surviving track.
+    state.update(validation_points=tracked[:, None, :], validation_anchor=anchor)
+    return None
 
 
 def _fit_motion(previous, current, model, threshold):
@@ -93,6 +137,8 @@ class StabilizeCameraMotion(SequenceBlock):
         Port("image"),
         Port("mask", required=False, required_when_connected=True),
         Port("region", "data", required=False, required_when_connected=True),
+        Port("validation_mask", required=False, required_when_connected=True),
+        Port("validation_region", "data", required=False, required_when_connected=True),
         *SequenceBlock.inputs[3:],
     )
     data_outputs = (
@@ -118,6 +164,10 @@ class StabilizeCameraMotion(SequenceBlock):
         "max_step_degrees": 12.0,
         "max_step_scale_ratio": 1.15,
         "min_coverage_fraction": 0.65,
+        "max_validation_features": 120,
+        "min_validation_tracks": 12,
+        "max_validation_error_pixels": 2.0,
+        "min_validation_inlier_ratio": 0.8,
         "interpolation": "linear",
     }
     parameter_choices = {
@@ -141,6 +191,10 @@ class StabilizeCameraMotion(SequenceBlock):
         "max_step_degrees": NumericRange(0, 180),
         "max_step_scale_ratio": NumericRange(1, 2),
         "min_coverage_fraction": NumericRange(0, 1),
+        "max_validation_features": NumericRange(1, 5000, whole=True),
+        "min_validation_tracks": NumericRange(1, 5000, whole=True),
+        "max_validation_error_pixels": NumericRange(1e-6, 16384),
+        "min_validation_inlier_ratio": NumericRange(1e-6, 1),
     }
     parameter_help = {
         **SEQUENCE_HELP,
@@ -153,11 +207,17 @@ class StabilizeCameraMotion(SequenceBlock):
         "max_step_degrees": "Largest accepted rotation between consecutive frames.",
         "max_step_scale_ratio": "Allowed scale range is the reciprocal of this ratio to the ratio.",
         "min_coverage_fraction": "Re-anchor when too little of the corrected canvas is covered.",
+        "max_validation_features": "Maximum features seeded inside the check area at each anchor.",
+        "min_validation_tracks": "Minimum surviving anchor tracks required in the check area.",
+        "max_validation_error_pixels": "Allowed residual displacement in anchor pixels.",
+        "min_validation_inlier_ratio": "Fraction of check tracks that must meet the error limit.",
     }
     input_help = {
         "image": "Camera sequence in one consistent pixel grid.",
         "mask": "Optional static-background selection for feature centers.",
         "region": "Optional static-background region for motion estimation.",
+        "validation_mask": "Check the fitted motion on these pixels and exclude them from fitting.",
+        "validation_region": "Static area to validate against the anchor. Excluded from fitting.",
     }
 
     def validate_parameters(self, parameters=None):
@@ -167,15 +227,38 @@ class StabilizeCameraMotion(SequenceBlock):
             raise ValidationError(
                 "Minimum inliers exceeds maximum features", "min_inliers", "max_features"
             )
+        if int(p["min_validation_tracks"]) > int(p["max_validation_features"]):
+            raise ValidationError(
+                "Minimum validation tracks exceeds maximum validation features",
+                "min_validation_tracks",
+                "max_validation_features",
+            )
+
+    def extra_context(self, inputs):
+        return "validation" if any(name in inputs for name in _VALIDATION_INPUTS) else None
 
     def estimate_state_bytes(self, image):
-        return image.shape[0] * image.shape[1] + 8 * int(self.parameters["max_features"]) + 4096
+        p = self.parameters
+        validation_bytes = (
+            16 * int(p["max_validation_features"]) if self.extra_context(self.input_payloads) else 0
+        )
+        return (
+            image.shape[0] * image.shape[1] + 8 * int(p["max_features"]) + 4096 + validation_bytes
+        )
 
-    def _reanchor(self, state, reason, details):
+    def _reanchor(self, state, reason, details, validation):
         state["observed"] = np.zeros(4)
         state["smoothed"] = np.zeros(4)
         state["anchor"] = state.get("anchor", -1) + 1
         state["learning"] = 0
+        if validation is not None:
+            points = _features(
+                state["previous"], validation, self.parameters, "max_validation_features"
+            )
+            state["validation_points"] = points
+            state["validation_anchor"] = points[:, 0] if points is not None else None
+            report = details.setdefault("validation", {})
+            report["new_anchor_features"] = 0 if points is None else len(points)
         return SequenceStep(
             dict.fromkeys(_OUTPUT_NAMES, NO_VALUE),
             ready=False,
@@ -192,31 +275,40 @@ class StabilizeCameraMotion(SequenceBlock):
             raise ValidationError("Stabilization requires grayscale or RGB/BGR encoding")
         gray = gray_image(source, (np.uint8,), auto_depth=True)
         p = self.parameters
-        points = cv2.goodFeaturesToTrack(
-            gray,
-            int(p["max_features"]),
-            float(p["feature_quality"]),
-            float(p["feature_spacing"]),
-            mask=mask,
-        )
+        validation = None
+        if self.extra_context(inputs):
+            validation = selection_mask(
+                {
+                    "image": source,
+                    "mask": inputs.get("validation_mask"),
+                    "region": inputs.get("validation_region"),
+                },
+                source,
+            )
+            if validation is None:
+                raise ValidationError("Connect a validation mask or region")
+            outside_validation = cv2.bitwise_not(validation)
+            mask = outside_validation if mask is None else cv2.bitwise_and(mask, outside_validation)
+        points = _features(gray, mask, p, "max_features")
         previous, previous_points = state.get("previous"), state.get("points")
         state.update(previous=gray.copy(), points=points)
         details = {"tracked": 0, "inliers": 0, "inlier_ratio": 0.0}
         if previous is None:
-            return self._reanchor(state, "initial_frame", details)
+            return self._reanchor(state, "initial_frame", details, validation)
         minimum = int(p["min_inliers"])
         if previous_points is None or len(previous_points) < minimum:
-            return self._reanchor(state, "insufficient_features", details)
+            return self._reanchor(state, "insufficient_features", details, validation)
 
-        old, new = _correspondences(previous, gray, previous_points, mask, p)
-        details["tracked"] = len(old)
-        if len(old) < minimum:
-            return self._reanchor(state, "insufficient_tracks", details)
+        indices, new = _correspondences(previous, gray, previous_points, mask, p)
+        details["tracked"] = len(new)
+        if len(new) < minimum:
+            return self._reanchor(state, "insufficient_tracks", details, validation)
+        old = previous_points[indices, 0]
         step, inliers = _fit_motion(old, new, p["motion_model"], float(p["inlier_pixels"]))
         ratio = inliers / len(old)
         details.update(inliers=inliers, inlier_ratio=ratio)
         if step is None or inliers < minimum or ratio < float(p["min_inlier_ratio"]):
-            return self._reanchor(state, "motion_fit_rejected", details)
+            return self._reanchor(state, "motion_fit_rejected", details, validation)
 
         center = np.array([(width - 1) / 2, (height - 1) / 2])
         movement = step[:2, :2] @ center + step[:2, 2] - center
@@ -228,7 +320,7 @@ class StabilizeCameraMotion(SequenceBlock):
             or abs(math.degrees(angle)) > float(p["max_step_degrees"])
             or not 1 / scale_limit <= scale <= scale_limit
         ):
-            return self._reanchor(state, "motion_step_rejected", details)
+            return self._reanchor(state, "motion_step_rejected", details, validation)
 
         previous_pose = state["observed"]
         accumulated = step @ _pose_matrix(previous_pose, center)
@@ -237,7 +329,11 @@ class StabilizeCameraMotion(SequenceBlock):
             [*translation, previous_pose[2] + angle, previous_pose[3] + math.log(scale)]
         )
         if not np.isfinite(observed).all() or abs(observed[3]) > math.log(2):
-            return self._reanchor(state, "trajectory_out_of_range", details)
+            return self._reanchor(state, "trajectory_out_of_range", details, validation)
+        if validation is not None:
+            reason = _validate_motion(previous, gray, state, validation, accumulated, p, details)
+            if reason is not None:
+                return self._reanchor(state, reason, details, validation)
         smoothed = state["smoothed"] + float(p["follow"]) * (observed - state["smoothed"])
         correction = _pose_matrix(smoothed, center) @ np.linalg.inv(_pose_matrix(observed, center))
         size = (width, height)
@@ -254,7 +350,7 @@ class StabilizeCameraMotion(SequenceBlock):
         covered = float(valid.mean())
         details["coverage_fraction"] = covered
         if covered == 0 or covered < float(p["min_coverage_fraction"]):
-            return self._reanchor(state, "insufficient_coverage", details)
+            return self._reanchor(state, "insufficient_coverage", details, validation)
         output = cv2.warpAffine(
             np.asarray(source),
             correction[:2],

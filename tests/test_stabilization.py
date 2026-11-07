@@ -11,6 +11,7 @@ from opencv_dataflow.images import ImageArray, image_format
 from opencv_dataflow.payloads import NO_VALUE, frame, metadata
 
 TYPE = "sequence.stabilize_camera"
+VALIDATION_EXAMPLE = Path(__file__).parents[1] / "examples/flow_control/stabilization_validation"
 
 
 def _texture():
@@ -203,3 +204,73 @@ def test_recorded_camera_replay_reduces_matched_error_and_reanchors_on_coverage_
         assert after.mean() < 0.25 * before.mean()
     finally:
         graph.close()
+
+
+def test_validation_rejects_accumulated_drift_even_when_the_background_fit_passes():
+    graph = Graph.load(VALIDATION_EXAMPLE / "stabilization_validation.json", builtin_registry())
+    try:
+        graph.set_run_profile("lean")
+        checked = graph.blocks["checked"]
+        baseline = graph.blocks["baseline"]
+        first_root = None
+        for index in range(6):
+            graph.run()
+            out = checked.last_result.outputs
+            status = out["status"]
+            if index == 0:
+                assert status["reason"] == "initial_frame"
+                assert status["validation"]["new_anchor_features"] >= 12
+                continue
+            assert baseline.last_result.outputs["ready"]
+            assert baseline.last_result.outputs["status"]["inlier_ratio"] > 0.95
+            if index == 3:
+                assert status["reason"] == "validation_motion_rejected"
+                assert status["validation"]["tracked"] >= 12
+                assert not status["validation"]["accepted"]
+                assert abs(status["validation"]["median_error_pixels"] - 4) < 0.05
+                assert out["image"] is out["coverage"] is out["transform"] is NO_VALUE
+                assert not checked.current_emissions.get("image")
+                continue
+            assert out["ready"] and status["validation"]["accepted"]
+            root = metadata(out["image"])["spatial"]["root_id"]
+            if index == 1:
+                first_root = root
+            if index == 2:
+                assert root == first_root
+                assert abs(status["validation"]["median_error_pixels"] - 2) < 0.05
+            if index > 3:
+                assert status["anchor"] == 1 and root != first_root
+                assert status["validation"]["p90_error_pixels"] < 0.05
+    finally:
+        graph.close()
+
+
+def test_validation_mask_excludes_its_features_from_the_fit_and_requires_tracks():
+    images = [
+        cv2.imread(str(VALIDATION_EXAMPLE / "assets" / f"frame-{i:02d}.png"), cv2.IMREAD_GRAYSCALE)
+        for i in range(4)
+    ]
+    block = builtin_registry().create(
+        TYPE, parameters={"motion_model": "translation", "max_validation_error_pixels": 2.5}
+    )
+    mask = np.zeros_like(images[0])
+    mask[92:] = 255
+    for image in images:
+        result = block.execute({"image": image, "validation_mask": mask})
+        assert result is not None, block.error
+    assert result.outputs["status"]["reason"] == "validation_motion_rejected"
+    assert abs(result.outputs["status"]["validation"]["median_error_pixels"] - 4) < 0.2
+
+    empty = np.zeros_like(mask)
+    result = block.execute({"image": images[0], "validation_mask": empty, "reset": True})
+    assert result.outputs["status"]["validation"]["new_anchor_features"] == 0
+    result = block.execute({"image": images[1], "validation_mask": empty})
+    assert result.outputs["image"] is NO_VALUE
+    assert result.outputs["status"]["reason"] == "insufficient_validation_tracks"
+    assert result.outputs["status"]["validation"]["tracked"] == 0
+
+    # A stream can resume without validation, starting from a fresh anchor.
+    result = block.execute({"image": images[0]})
+    assert result.outputs["status"]["reason"] == "initial_frame"
+    result = block.execute({"image": images[1]})
+    assert result.outputs["ready"]

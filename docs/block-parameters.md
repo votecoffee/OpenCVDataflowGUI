@@ -5186,13 +5186,17 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 
 Sequence / Temporal processing
 
-Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `validation_mask` (image, optional), `validation_region` (data, optional), `reset` (data, optional), `stream` (data, optional).
 
 Input `image` — Camera sequence in one consistent pixel grid.
 
 Input `mask` — Optional static-background selection for feature centers.
 
 Input `region` — Optional static-background region for motion estimation.
+
+Input `validation_mask` — Check the fitted motion on these pixels and exclude them from fitting.
+
+Input `validation_region` — Static area to validate against the anchor. Excluded from fitting.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -5218,6 +5222,10 @@ Input `region` — Optional static-background region for motion estimation.
 | `max_step_degrees` | `12.0` | Value must be a finite number between 0 and 180. Largest accepted rotation between consecutive frames. |
 | `max_step_scale_ratio` | `1.15` | Value must be a finite number between 1 and 2. Allowed scale range is the reciprocal of this ratio to the ratio. |
 | `min_coverage_fraction` | `0.65` | Value must be a finite number between 0 and 1. Re-anchor when too little of the corrected canvas is covered. |
+| `max_validation_features` | `120` | Value must be a whole number between 1 and 5000. Maximum features seeded inside the check area at each anchor. |
+| `min_validation_tracks` | `12` | Value must be a whole number between 1 and 5000. Minimum surviving anchor tracks required in the check area. |
+| `max_validation_error_pixels` | `2.0` | Value must be a finite number between 1e-06 and 16384. Allowed residual displacement in anchor pixels. |
+| `min_validation_inlier_ratio` | `0.8` | Value must be a finite number between 1e-06 and 1. Fraction of check tracks that must meet the error limit. |
 | `interpolation` | `"linear"` | `nearest`, `linear` |
 
 ## Track conveyor parts (`sequence.track_conveyor`)
