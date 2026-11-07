@@ -26,7 +26,23 @@ opencv-dataflow-run examples/applications/pixel_segmentation/pcb_laminate/projec
 
 Select the segmentation block and open **Train segmentation candidate…**. Choose the `training.json` alongside the project and open **Open training labels**. Use **Foreground**, **Background**, and **Ignore** to edit the labels. Save the mask before training. Stage the candidate, apply the inspector configuration, and save the project to use the new model.
 
-The cup and brick results show coverage on images used for training. The second PCB photograph is an unlabeled replay image.
+The cup and brick results show coverage on images used for training. The PCB example also includes a held-out [validation manifest](pcb_laminate/validation.json) for board 0621. It marks 21,065 pixels (6.5% of the image) across visible laminate, chips, pins, and the background. Unmarked pixels are ignored by the metrics.
+
+Live validation review requires segmentation revision `fe79959` or newer. In the trainer, select the PCB **Validation manifest**, choose **Open validation labels**, and turn on **Show prediction**. **Compare labels** shows hits in green, missed foreground in red, foreground on labeled background in amber, and predictions on unlabeled areas in purple. Change **Cutoff** or **Min px** to update the current image's overlay and metrics from its cached scores. Enter the chosen settings in the inspector when you want to use them for execution.
+
+Results for the bundled PCB model at a minimum area of 70 pixels:
+
+| Cutoff | Precision | Recall |
+| --- | ---: | ---: |
+| 0.35 | 94.64% | 99.99% |
+| 0.55 (saved project) | 95.83% | 99.97% |
+| 0.90 | 97.65% | 99.50% |
+
+The figures describe the marked pixels on board 0621. To reproduce the saved cutoff result from the DataflowGUI repository root:
+
+```powershell
+ocv-segment evaluate examples/applications/pixel_segmentation/pcb_laminate/model.yml examples/applications/pixel_segmentation/pcb_laminate/validation.json --threshold 0.55 --min-area 70
+```
 
 ## Image credits and preprocessing
 
