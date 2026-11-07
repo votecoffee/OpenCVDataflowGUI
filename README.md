@@ -107,6 +107,9 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
    execution exception. Hover over the node for details.
    Add a plain-text **Description** to explain the block in its hover tooltip.
    Use **Edit documentation…** for longer, formatted notes stored with the block.
+   For supported OpenCV blocks, the **OpenCV reference** tab shows the installed Python
+   binding signatures and parameter details offline. Use **Copy reference to notes** to
+   append them to the editable notes for the project and its documentation export.
    OpenCV enum controls use dropdowns; booleans use checkboxes. Hover over controls
    with help text for method-specific guidance.
 4. Run once or continuously. Open the **Results** tab to inspect retained input,
