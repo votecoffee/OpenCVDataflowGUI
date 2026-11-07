@@ -1787,7 +1787,9 @@ class MainWindow(QMainWindow):
         self.run_all_action = toolbar.addAction(
             "Run all", lambda: self.start_run(False, run_all=True)
         )
-        self.run_all_action.setToolTip("Replay each recorded sequence once from the start.")
+        self.run_all_action.setToolTip(
+            "Replay each recorded sequence once from the start, or run once without a sequence."
+        )
         self.continuous_action = toolbar.addAction("Continuous", lambda: self.start_run(True))
         self.continuous_action.setToolTip("Keep running and loop recorded sequences until Stop.")
         self.run_actions = [self.run_action, self.run_all_action, self.continuous_action]
@@ -2264,10 +2266,10 @@ class MainWindow(QMainWindow):
         except Exception as exc:
             self.warn(str(exc))
 
-    def check_run_all(self):
+    def run_all_mode(self):
         sources = set(replay_sources(self.root_graph))
         if not sources:
-            raise ValueError("Run all requires an image set, TIFF sequence, or video file")
+            return "once"
         for block in walk(self.root_graph):
             if isinstance(block, ImageQueue) and block.stats()["queued"]:
                 raise ValueError(
@@ -2282,14 +2284,15 @@ class MainWindow(QMainWindow):
             upstream_sources = set(replay_sources(self.root_graph, upstream))
             if not sources <= upstream_sources:
                 raise ValueError("Run all requires every recording before the background queue")
+        return "all"
 
     def start_run(self, continuous, *, run_all=False):
         if self.runner:
             return
-        mode = "all" if run_all else "continuous" if continuous else "once"
+        mode = "continuous" if continuous else "once"
         if run_all:
             try:
-                self.check_run_all()
+                mode = self.run_all_mode()
             except ValueError as exc:
                 self.warn(str(exc))
                 return

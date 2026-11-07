@@ -713,6 +713,30 @@ def test_gui_continuous_wraps_saved_stop_and_keeps_its_running_state(app, tmp_pa
         window.close()
 
 
+def test_gui_run_all_runs_a_single_image_once(app, tmp_path, monkeypatch):
+    path = images(tmp_path)[0]
+    graph = Graph()
+    source = graph.add(ImageFile(parameters={"path": path}))
+    window = MainWindow()
+    window.replace_graph(graph)
+    app.processEvents()
+    warnings = []
+    monkeypatch.setattr(window, "warn", warnings.append)
+    try:
+        window.run_all_action.trigger()
+        assert warnings == []
+        assert window.run_state.text() == "Running once"
+        pump(app, lambda: window.runner is None)
+        assert warnings == []
+        assert source.last_result.outputs["image"].shape == (20, 30, 3)
+        assert window.statusBar().currentMessage().startswith("Run once complete · 1 ")
+    finally:
+        if window.runner:
+            window.stop_run()
+            pump(app, lambda: window.runner is None)
+        window.close()
+
+
 @pytest.mark.parametrize("background", [False, True])
 def test_gui_run_all_rewinds_and_reads_saved_loop_exactly_once(app, tmp_path, background):
     graph, source = file_graph(images(tmp_path), repeat="loop")
