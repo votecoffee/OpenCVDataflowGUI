@@ -909,6 +909,9 @@ The [two-plane example](examples/flow_control/stabilization_validation/README.md
 shows how a separate validation area can catch drift that the background fit misses.
 The [recorded depth example](examples/flow_control/recorded_stabilization_validation/README.md)
 exercises the check on near and far patches from a camera recording.
+**Stabilize recorded sequence** adds centered look-ahead smoothing for
+finite batches and preserves per-frame tickets, coverage, and transforms.
+Try the [offline smoothing example](examples/flow_control/offline_camera_stabilization/README.md).
 
 **Stitch scan sequence** automatically registers two to eight ordered views.
 Each adjacent pair must meet the fit and overlap thresholds before the graph

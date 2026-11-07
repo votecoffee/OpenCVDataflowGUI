@@ -131,6 +131,82 @@ def _pose_matrix(trajectory, center):
     return transform
 
 
+def _estimate_pose(previous, current, points, mask, center, previous_pose, p, details):
+    minimum = int(p["min_inliers"])
+    if points is None or len(points) < minimum:
+        return None, None, "insufficient_features"
+    indices, new = _correspondences(previous, current, points, mask, p)
+    details["tracked"] = len(new)
+    if len(new) < minimum:
+        return None, None, "insufficient_tracks"
+    step, inliers = _fit_motion(
+        points[indices, 0], new, p["motion_model"], float(p["inlier_pixels"])
+    )
+    ratio = inliers / len(new)
+    details.update(inliers=inliers, inlier_ratio=ratio)
+    if step is None or inliers < minimum or ratio < float(p["min_inlier_ratio"]):
+        return None, None, "motion_fit_rejected"
+    movement = step[:2, :2] @ center + step[:2, 2] - center
+    angle = math.atan2(step[1, 0], step[0, 0])
+    scale = math.hypot(step[0, 0], step[1, 0])
+    scale_limit = float(p["max_step_scale_ratio"])
+    if (
+        np.linalg.norm(movement) > float(p["max_step_pixels"])
+        or abs(math.degrees(angle)) > float(p["max_step_degrees"])
+        or not 1 / scale_limit <= scale <= scale_limit
+    ):
+        return None, None, "motion_step_rejected"
+    accumulated = step @ _pose_matrix(previous_pose, center)
+    translation = accumulated[:2, :2] @ center + accumulated[:2, 2] - center
+    observed = np.array(
+        [*translation, previous_pose[2] + angle, previous_pose[3] + math.log(scale)]
+    )
+    if not np.isfinite(observed).all() or abs(observed[3]) > math.log(2):
+        return None, None, "trajectory_out_of_range"
+    return observed, accumulated, None
+
+
+def _warp_correction(source, correction, p):
+    size = source.shape[1::-1]
+    interpolation = _INTERPOLATION[p["interpolation"]]
+    # The same interpolation and constant border define valid sample support.
+    support = cv2.warpAffine(
+        np.ones(source.shape[:2], dtype=np.float32),
+        correction[:2],
+        size,
+        flags=interpolation,
+        borderMode=cv2.BORDER_CONSTANT,
+    )
+    valid = support == 1
+    covered = float(valid.mean())
+    if covered == 0 or covered < float(p["min_coverage_fraction"]):
+        return None, None, covered
+    output = cv2.warpAffine(
+        np.asarray(source),
+        correction[:2],
+        size,
+        flags=interpolation,
+        borderMode=cv2.BORDER_CONSTANT,
+    )
+    output[~valid] = 0
+    if output.dtype.kind == "f" and not np.isfinite(output).all():
+        raise ValidationError("Stabilization produced nonfinite samples")
+    return output, valid.astype(np.uint8) * 255, covered
+
+
+def _transform_payload(correction, size, payload, spatial):
+    return {
+        "model": "image_stabilization_v1",
+        "source_to_target": correction.tolist(),
+        "target_to_source": np.linalg.inv(correction).tolist(),
+        "source_image_size": list(size),
+        "target_image_size": list(size),
+        "source_spatial": payload.get("spatial"),
+        "source_pyramid": payload.get("pyramid"),
+        "target_spatial": spatial,
+    }
+
+
 class StabilizeCameraMotion(SequenceBlock):
     type_id, title = "sequence.stabilize_camera", "Stabilize camera motion"
     inputs = (
@@ -295,41 +371,12 @@ class StabilizeCameraMotion(SequenceBlock):
         details = {"tracked": 0, "inliers": 0, "inlier_ratio": 0.0}
         if previous is None:
             return self._reanchor(state, "initial_frame", details, validation)
-        minimum = int(p["min_inliers"])
-        if previous_points is None or len(previous_points) < minimum:
-            return self._reanchor(state, "insufficient_features", details, validation)
-
-        indices, new = _correspondences(previous, gray, previous_points, mask, p)
-        details["tracked"] = len(new)
-        if len(new) < minimum:
-            return self._reanchor(state, "insufficient_tracks", details, validation)
-        old = previous_points[indices, 0]
-        step, inliers = _fit_motion(old, new, p["motion_model"], float(p["inlier_pixels"]))
-        ratio = inliers / len(old)
-        details.update(inliers=inliers, inlier_ratio=ratio)
-        if step is None or inliers < minimum or ratio < float(p["min_inlier_ratio"]):
-            return self._reanchor(state, "motion_fit_rejected", details, validation)
-
         center = np.array([(width - 1) / 2, (height - 1) / 2])
-        movement = step[:2, :2] @ center + step[:2, 2] - center
-        angle = math.atan2(step[1, 0], step[0, 0])
-        scale = math.hypot(step[0, 0], step[1, 0])
-        scale_limit = float(p["max_step_scale_ratio"])
-        if (
-            np.linalg.norm(movement) > float(p["max_step_pixels"])
-            or abs(math.degrees(angle)) > float(p["max_step_degrees"])
-            or not 1 / scale_limit <= scale <= scale_limit
-        ):
-            return self._reanchor(state, "motion_step_rejected", details, validation)
-
-        previous_pose = state["observed"]
-        accumulated = step @ _pose_matrix(previous_pose, center)
-        translation = accumulated[:2, :2] @ center + accumulated[:2, 2] - center
-        observed = np.array(
-            [*translation, previous_pose[2] + angle, previous_pose[3] + math.log(scale)]
+        observed, accumulated, reason = _estimate_pose(
+            previous, gray, previous_points, mask, center, state["observed"], p, details
         )
-        if not np.isfinite(observed).all() or abs(observed[3]) > math.log(2):
-            return self._reanchor(state, "trajectory_out_of_range", details, validation)
+        if reason is not None:
+            return self._reanchor(state, reason, details, validation)
         if validation is not None:
             reason = _validate_motion(previous, gray, state, validation, accumulated, p, details)
             if reason is not None:
@@ -337,48 +384,19 @@ class StabilizeCameraMotion(SequenceBlock):
         smoothed = state["smoothed"] + float(p["follow"]) * (observed - state["smoothed"])
         correction = _pose_matrix(smoothed, center) @ np.linalg.inv(_pose_matrix(observed, center))
         size = (width, height)
-        interpolation = _INTERPOLATION[p["interpolation"]]
-        # The same interpolation and constant border define valid sample support.
-        support = cv2.warpAffine(
-            np.ones((height, width), dtype=np.float32),
-            correction[:2],
-            size,
-            flags=interpolation,
-            borderMode=cv2.BORDER_CONSTANT,
-        )
-        valid = support == 1
-        covered = float(valid.mean())
+        output, coverage, covered = _warp_correction(source, correction, p)
         details["coverage_fraction"] = covered
-        if covered == 0 or covered < float(p["min_coverage_fraction"]):
+        if output is None:
             return self._reanchor(state, "insufficient_coverage", details, validation)
-        output = cv2.warpAffine(
-            np.asarray(source),
-            correction[:2],
-            size,
-            flags=interpolation,
-            borderMode=cv2.BORDER_CONSTANT,
-        )
-        output[~valid] = 0
-        if output.dtype.kind == "f" and not np.isfinite(output).all():
-            raise ValidationError("Stabilization produced nonfinite samples")
         state.update(observed=observed, smoothed=smoothed)
         anchor = state["anchor"]
         spatial = frame(size, f"{self.id}:stabilized:{state['generation']}:{anchor}")
         payload = self.input_payloads["image"]
-        transform = {
-            "model": "image_stabilization_v1",
-            "source_to_target": correction.tolist(),
-            "target_to_source": np.linalg.inv(correction).tolist(),
-            "source_image_size": list(size),
-            "target_image_size": list(size),
-            "source_spatial": payload.get("spatial"),
-            "source_pyramid": payload.get("pyramid"),
-            "target_spatial": spatial,
-        }
+        transform = _transform_payload(correction, size, payload, spatial)
         return SequenceStep(
             {
                 "image": ImageArray(output, encoding),
-                "coverage": valid.astype(np.uint8) * 255,
+                "coverage": coverage,
                 "transform": transform,
             },
             details={
