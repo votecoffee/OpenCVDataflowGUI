@@ -34,6 +34,9 @@ pixel grid provides image coordinates for inspection. Physical calibration
 remains a separate step.
 [OpenCV optical flow and tracking](https://docs.opencv.org/5.0/main_modules/video_track.html)
 
+The [recorded camera example](../recorded_camera_stabilization/README.md)
+uses the same coverage mask to compare raw and corrected error on a real clip.
+
 ```powershell
 opencv-dataflow-run examples/flow_control/camera_stabilization/camera_stabilization.json --all-images
 ```

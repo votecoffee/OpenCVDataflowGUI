@@ -21,3 +21,5 @@ and is not bundled into the Python package or committed in this repository.
   Annoy examples. It is generated with `scripts/prepare_ml_assets.py`.
 - `validation/` contains the synthetic pass, fail, and unknown images shared
   by the validation and image-set workspace examples.
+- The [recorded stabilization fixtures](../flow_control/recorded_camera_stabilization/README.md)
+  use a trimmed, grayscale TUM RGB-D recording under CC BY 4.0.
