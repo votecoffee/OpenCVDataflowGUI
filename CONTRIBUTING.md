@@ -14,6 +14,11 @@ saved-project defaults when extending a wrapper. Compare nondefault controls to
 native OpenCV calls and test invalid combinations. Regenerate the parameter catalog
 with `python scripts/block_parameter_reference.py`, then verify it with `--check`.
 
+For a new OpenCV wrapper, place its implementation file or type ID in the
+module map in `src/opencv_dataflow/toolbox.py`. Add an API search name when
+the OpenCV function name differs from the block label. Built-in workflows
+without a module assignment appear under **Custom**.
+
 Use small, verified commits. Run pytest and Ruff locally. Automated GitHub Actions
 are intentionally absent; future CI must use `workflow_dispatch` unless the project
 owner requests a different policy. Preserve the existing license ownership.

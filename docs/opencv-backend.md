@@ -24,7 +24,7 @@ its own input/output images, metadata, result and timing for inspection.
 
 The starter/demo, saved example projects and nested sample ToolBlocks now use
 ordinary calls. Existing `gapi.gray`, `gapi.blur` and `gapi.canny` remain available
-under **Advanced > G-API**, with unchanged IDs and parameters. Opening an older
+under **OpenCV > Advanced > G-API**, with unchanged IDs and parameters. Opening an older
 user project keeps its chosen backend; it is not silently rewritten. To switch a
 user project, replace those nodes with the ordinary equivalents and copy their
 parameters/connections. Existing Gaussian and Canny parameter names match; ordinary

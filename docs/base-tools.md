@@ -5,7 +5,7 @@
 These tools are usable node blocks with typed ports, inspector parameters, latest
 input/output records, native errors and previews. They use ordinary OpenCV calls;
 ordinary Grayscale, Gaussian blur and Canny are the defaults. Legacy variants live
-under **Advanced > G-API**, with their existing IDs retained for older projects.
+under **OpenCV > Advanced > G-API**, with their existing IDs retained for older projects.
 They are not silently fused into a shared graph.
 
 ## New block catalog

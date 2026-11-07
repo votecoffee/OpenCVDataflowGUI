@@ -1,8 +1,9 @@
 # Sequence memory
 
 Sequence blocks retain bounded, private state between accepted image activations.
-Use them for temporal operations or learning a reference image. They appear under
-**Sequence > Temporal processing / Image memory** in the toolbox.
+Use them for temporal operations or learning a reference image. Native flow and
+background models are under **OpenCV > Video Analysis (video)**. Built-in
+sequence workflows and reference memory are under **Custom > Sequence**.
 
 Open [sequence memory](<../examples/flow tools/sequence_memory/sequence_memory.json>).
 Run continuously, or press F5 several times. The source initially holds a textured

@@ -108,7 +108,7 @@ make it optional. Connected ports cannot be hidden until the wire is removed.
 Default Grayscale (`cv.gray`), Gaussian blur (`cv.gaussian_blur`) and Canny
 (`cv.canny`) execute ordinary OpenCV calls. Shipped projects use these observable
 blocks. The legacy `gapi.gray`, `gapi.blur` and `gapi.canny` IDs remain loadable
-under **Advanced > G-API**; `GAPIBlock` caches one native `cv2.GComputation` per
+under **OpenCV > Advanced > G-API**; `GAPIBlock` caches one native `cv2.GComputation` per
 parameter set without an eager fallback. The Python orchestration graph is not
 fused. [Compiled ToolBlocks](opencv-backend.md#compiled-toolblocks-future) are
 future opt-in scope, with selected diagnostic outputs and a measured-benefit gate.

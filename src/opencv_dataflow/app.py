@@ -12,10 +12,9 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from PySide6.QtCore import QEvent, QMimeData, QSignalBlocker, Qt, QThread, QTimer, Signal
+from PySide6.QtCore import QEvent, QSignalBlocker, Qt, QThread, QTimer, Signal
 from PySide6.QtGui import QAction, QKeySequence
 from PySide6.QtWidgets import (
-    QAbstractItemView,
     QApplication,
     QCheckBox,
     QComboBox,
@@ -50,7 +49,7 @@ from .activity_window import ActivityWindow
 from .block_xml import block_xml_suffix, load_block_xml, save_block_xml
 from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
-from .canvas import TOOL_MIME, CanvasScene, CanvasView, Node, block_preview_images, pixmap
+from .canvas import CanvasScene, CanvasView, Node, block_preview_images, pixmap
 from .cloud_viewer import CloudViewer
 from .core import DISPLAY_RESULT_FIELDS, Graph
 from .diagnostic_viewer import DiagnosticViewer
@@ -83,6 +82,7 @@ from .ticket_window import TicketResultsWindow
 from .tickets import TICKET_MODES
 from .toolblock_editor import InterfaceDialog
 from .toolblocks import ToolBlock, encapsulate
+from .toolbox import ToolEntry, ToolLibrary, block_entry
 from .visual_style import BLOCK_COLORS, NODE_SIZES, PORT_COLORS, PORT_LABELS
 
 
@@ -1643,27 +1643,6 @@ class Inspector(QWidget):
         return super().eventFilter(watched, event)
 
 
-class ToolLibrary(QTreeWidget):
-    def __init__(self):
-        super().__init__()
-        self.setDragDropMode(QAbstractItemView.DragDropMode.DragOnly)
-        self.setDefaultDropAction(Qt.DropAction.CopyAction)
-
-    def mimeTypes(self):
-        return [TOOL_MIME]
-
-    def mimeData(self, items):
-        type_id = items[0].data(0, Qt.ItemDataRole.UserRole) if len(items) == 1 else None
-        if not type_id:
-            return None
-        data = QMimeData()
-        data.setData(TOOL_MIME, type_id.encode("utf-8"))
-        return data
-
-    def supportedDropActions(self):
-        return Qt.DropAction.CopyAction
-
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -1671,6 +1650,7 @@ class MainWindow(QMainWindow):
         self.graph = demo_graph(self.registry)
         self.graph_stack = []
         self.toolblock_templates = calibration_templates(self.registry)
+        self._builtin_template_count = len(self.toolblock_templates)
         self.path = None
         self.dirty = False
         self.runner = None
@@ -1683,7 +1663,7 @@ class MainWindow(QMainWindow):
         self.view.tool_dropped.connect(self.add_tool)
         self.inspector = Inspector(self)
         self.library.setHeaderHidden(True)
-        self.library.setIndentation(14)
+        self.library.setIndentation(12)
         self.library.itemDoubleClicked.connect(self.add_block)
         self.search = QLineEdit()
         self.search.setPlaceholderText("Search blocks…")
@@ -1712,7 +1692,7 @@ class MainWindow(QMainWindow):
         split.addWidget(library_panel)
         split.addWidget(self.view)
         split.addWidget(sidebar)
-        split.setSizes([210, 940, 350])
+        split.setSizes([255, 895, 350])
         split.setStretchFactor(1, 1)
         self.setCentralWidget(split)
         self.diagnostics_dock = QDockWidget("Block diagnostics", self)
@@ -1903,42 +1883,16 @@ class MainWindow(QMainWindow):
                 self.warn(str(exc))
 
     def populate_library(self):
-        self.library.clear()
-        query = self.search.text().lower()
-        groups = {}
-
-        def add_group(parent, label):
-            group = QTreeWidgetItem(parent, [label])
-            group.setFlags(group.flags() & ~Qt.ItemFlag.ItemIsDragEnabled)
-            return group
-
-        def add_entry(kind, subtype, title, type_id):
-            if query not in f"{kind} {subtype} {title}".lower():
-                return
-            if kind not in groups:
-                groups[kind] = add_group(self.library, kind)
-            key = (kind, subtype)
-            if key not in groups:
-                groups[key] = add_group(groups[kind], subtype)
-            item = QTreeWidgetItem(groups[key], [title])
-            item.setToolTip(0, f"{kind} / {subtype} / {title}")
-            item.setData(0, Qt.ItemDataRole.UserRole, type_id)
-
-        for block_type in self.registry.types.values():
-            add_entry(
-                block_type.block_type or block_type.category,
-                block_type.subtype,
-                block_type.title,
-                block_type.type_id,
-            )
+        entries = [block_entry(block) for block in self.registry.types.values()]
         for index, definition in enumerate(self.toolblock_templates):
-            add_entry(
-                definition.get("block_type", "ToolBlocks"),
-                definition.get("subtype", "Reusable"),
+            source = "Custom" if index < self._builtin_template_count else "User"
+            entries.append(ToolEntry(
+                (source, definition.get("block_type", "ToolBlocks"),
+                 definition.get("subtype", "Reusable")),
                 definition["name"],
                 f"template:{index}",
-            )
-        self.library.expandAll()
+            ))
+        self.library.populate(entries, self.search.text())
 
     def add_block(self, item, column=0):
         self.add_tool(item.data(0, Qt.ItemDataRole.UserRole))

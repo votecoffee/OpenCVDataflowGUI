@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import pytest
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QComboBox
+from PySide6.QtWidgets import QComboBox, QTreeWidgetItemIterator
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry, demo_graph
@@ -186,17 +186,23 @@ def test_toolbox_separates_advanced_gapi_and_eager_enum_controls(app):
     window = MainWindow()
     found = {}
     tree = window.library
-    for i in range(tree.topLevelItemCount()):
-        category = tree.topLevelItem(i)
-        for j in range(category.childCount()):
-            subtype = category.child(j)
-            for k in range(subtype.childCount()):
-                item = subtype.child(k)
-                found[item.data(0, Qt.ItemDataRole.UserRole)] = (category.text(0), subtype.text(0))
-    assert found["gapi.gray"] == found["gapi.blur"] == found["gapi.canny"] == ("Advanced", "G-API")
-    assert found["cv.gray"] == ("Image processing", "Color and depth")
-    assert found["cv.gaussian_blur"] == ("Image processing", "Filtering")
-    assert found["cv.canny"] == ("Image processing", "Edges")
+    iterator = QTreeWidgetItemIterator(tree)
+    while item := iterator.value():
+        type_id = item.data(0, Qt.ItemDataRole.UserRole)
+        if type_id:
+            groups = []
+            parent = item.parent()
+            while parent:
+                groups.append(parent.text(0))
+                parent = parent.parent()
+            found[type_id] = tuple(reversed(groups))
+        iterator += 1
+    legacy = ("OpenCV", "Advanced", "G-API")
+    assert found["gapi.gray"] == found["gapi.blur"] == found["gapi.canny"] == legacy
+    image_processing = ("OpenCV", "Image Processing (imgproc)")
+    assert found["cv.gray"] == (*image_processing, "Color and depth")
+    assert found["cv.gaussian_blur"] == (*image_processing, "Filtering")
+    assert found["cv.canny"] == (*image_processing, "Edges")
     for kind, parameter in (
         ("cv.gaussian_blur", "border"),
         ("cv.canny", "aperture"),

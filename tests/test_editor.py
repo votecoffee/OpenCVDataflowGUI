@@ -18,11 +18,12 @@ from PySide6.QtWidgets import (
     QInputDialog,
     QMessageBox,
     QToolTip,
+    QTreeWidgetItemIterator,
 )
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
-from opencv_dataflow.canvas import TOOL_MIME, CanvasScene, CanvasView
+from opencv_dataflow.canvas import CanvasScene, CanvasView
 from opencv_dataflow.core import Block, Graph, Port, Result
 from opencv_dataflow.documentation_editor import DocumentationEditor
 from opencv_dataflow.images import ImageArray
@@ -31,6 +32,7 @@ from opencv_dataflow.project_compare import ProjectCompare
 from opencv_dataflow.project_xml import read_project_xml
 from opencv_dataflow.toolblock_editor import InterfaceDialog
 from opencv_dataflow.toolblocks import encapsulate
+from opencv_dataflow.toolbox import TOOL_MIME
 from opencv_dataflow.visual_style import BLOCK_STATE_COLORS
 
 
@@ -806,6 +808,7 @@ def test_toolblock_interface_dialog_and_library_instances(app):
     item = window.library.findItems(
         "Inspect", Qt.MatchFlag.MatchExactly | Qt.MatchFlag.MatchRecursive
     )[0]
+    assert item.parent().parent().parent().text(0) == "User"
     window.add_block(item)
     first = window.inspector.block
     window.add_block(item)
@@ -953,7 +956,7 @@ def test_toolbox_drag_places_tools_at_the_drop_point(app, tmp_path):
         return block
 
     try:
-        group = tree.findItems("Input", match)[0]
+        group = tree.findItems("OpenCV", match)[0]
         assert not (group.flags() & Qt.ItemFlag.ItemIsDragEnabled)
         assert tree.model().mimeData([tree.indexFromItem(group)]) is None
         assert tree.dragEnabled()
@@ -991,26 +994,71 @@ def test_toolbox_drag_places_tools_at_the_drop_point(app, tmp_path):
         window.close()
 
 
-def test_toolbox_tree_types_subtypes_search_and_leaf_activation(app, monkeypatch):
+def test_toolbox_sources_modules_search_and_leaf_activation(app, monkeypatch):
     window = MainWindow()
     tree = window.library
-    input_group = tree.findItems("Input", Qt.MatchFlag.MatchExactly)[0]
-    assert input_group.childCount() >= 3
-    histogram = tree.findItems(
-        "Histogram", Qt.MatchFlag.MatchExactly | Qt.MatchFlag.MatchRecursive
-    )[0]
-    assert histogram.parent().text(0) == "Statistics"
-    assert histogram.parent().parent().text(0) == "Image processing"
+    match = Qt.MatchFlag.MatchExactly | Qt.MatchFlag.MatchRecursive
+
+    def visible_tools():
+        found = {}
+        iterator = QTreeWidgetItemIterator(tree)
+        while item := iterator.value():
+            type_id = item.data(0, Qt.ItemDataRole.UserRole)
+            if type_id:
+                assert type_id not in found
+                found[type_id] = item
+            iterator += 1
+        return found
+
+    def path(item):
+        parts = []
+        while item is not None:
+            parts.append(item.text(0))
+            item = item.parent()
+        return tuple(reversed(parts))
+
+    roots = [tree.topLevelItem(i) for i in range(tree.topLevelItemCount())]
+    assert [item.text(0) for item in roots] == ["OpenCV", "scikit-image", "Custom", "User"]
+    assert not any(item.isExpanded() for item in roots)
+    assert roots[0].child(0).text(0) == "Image Processing (imgproc)"
+    filtering = tree.findItems("Filtering", match)[0]
+    names = [filtering.child(i).text(0) for i in range(filtering.childCount())]
+    assert len(names) > 1 and names == sorted(names, key=str.casefold)
+    tools = visible_tools()
+    assert set(window.registry.types) <= tools.keys()
+    assert path(tools["inspect.histogram"])[:3] == (
+        "OpenCV", "Image Processing (imgproc)", "Statistics"
+    )
+    assert path(tools["sequence.dis"])[:2] == ("OpenCV", "Video Analysis (video)")
+    assert path(tools["inspect.fit_shape"])[:2] == ("OpenCV", "Computational Geometry (geometry)")
+    assert path(tools["inspect.skeletonize"])[:2] == ("scikit-image", "Morphology")
+    assert path(tools["inspect.prune_skeleton"])[:2] == ("scikit-image", "Graph")
+    assert path(tools["flow.image_queue"])[:2] == ("Custom", "Control flow")
+
+    class SamplePlugin(Block):
+        type_id, title = "plugin.sample", "Sample plugin"
+        category, subtype = "Inspection", "Custom checks"
+
+    window.registry.register(SamplePlugin)
+    roots[0].setExpanded(True)
+    roots[0].child(0).setExpanded(True)
+    window.populate_library()
+    assert path(visible_tools()["plugin.sample"])[:3] == ("User", "Inspection", "Custom checks")
     before = len(window.graph.blocks)
-    window.add_block(input_group)
+    window.add_block(tree.topLevelItem(0))
     assert len(window.graph.blocks) == before
-    window.add_block(histogram)
+    window.add_block(visible_tools()["inspect.histogram"])
     assert window.inspector.block.type_id == "inspect.histogram"
+    window.search.setText("cv2.findContours")
+    assert list(visible_tools()) == ["inspect.contours"]
+    assert tree.topLevelItem(0).isExpanded()
+    window.search.clear()
+    assert tree.topLevelItem(0).isExpanded()
+    assert tree.topLevelItem(0).child(0).isExpanded()
+    assert not tree.topLevelItem(1).isExpanded()
     window.search.setText("Lens distortion")
-    assert tree.topLevelItemCount() == 1 and tree.topLevelItem(0).text(0) == "Calibration"
-    leaf = tree.findItems(
-        "Calibrate lens ToolBlock", Qt.MatchFlag.MatchExactly | Qt.MatchFlag.MatchRecursive
-    )[0]
+    leaf = tree.findItems("Calibrate lens ToolBlock", match)[0]
+    assert path(leaf)[:2] == ("Custom", "Calibration")
     window.add_block(leaf)
     toolblock = window.inspector.block
     assert toolblock.block_type == "Calibration"

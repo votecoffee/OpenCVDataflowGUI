@@ -1,0 +1,263 @@
+"""Toolbox organization for native wrappers, built-in workflows and user tools."""
+
+import re
+from dataclasses import dataclass
+
+from PySide6.QtCore import QMimeData, Qt
+from PySide6.QtWidgets import QAbstractItemView, QTreeWidget, QTreeWidgetItem
+
+TOOL_MIME = "application/x-opencv-dataflow-tool"
+TOOL_SOURCES = ("OpenCV", "scikit-image", "Custom", "User")
+
+OPENCV_MODULES = {
+    "imgproc": "Image Processing",
+    "core": "Core",
+    "imgcodecs": "Image Codecs",
+    "features": "Features Framework",
+    "calib": "Camera Calibration",
+    "geometry": "Computational Geometry",
+    "video": "Video Analysis",
+    "videoio": "Video I/O",
+    "objdetect": "Object Detection",
+    "dnn": "Deep Neural Networks",
+    "flann": "Clustering and Search",
+    "photo": "Computational Photography",
+    "stitching": "Image Stitching",
+    "stereo": "Stereo Correspondence",
+    "ptcloud": "Point Cloud Processing",
+    "ccm": "Color Correction",
+    "mcc": "Color Chart Detection",
+    "ml": "Machine Learning",
+    "quality": "Image Quality",
+    "rgbd": "RGB-D Processing",
+    "structured_light": "Structured Light",
+    "surface_matching": "Surface Matching",
+    "tracking": "Tracking",
+    "ximgproc": "Extended Image Processing",
+}
+_MODULE_ORDER = {
+    f"{title} ({module})": index for index, (module, title) in enumerate(OPENCV_MODULES.items())
+}
+
+# Most implementation files cover one OpenCV module. Blocks in mixed files
+# use the overrides below. Unmapped built-in workflows belong under Custom.
+IMPLEMENTATION_MODULES = {
+    "imgproc": (
+        "analysis_tools basic_processing blocks collection_tools features generalized_hough "
+        "histogram histogram_comparison image_blend image_colorize point_set_lines polar_image "
+        "processing "
+        "pyramids raster_hough_lines registration segmentation subpixel_crop template_instances "
+        "tilted_statistics"
+    ),
+    "core": (
+        "channel_transform clustering feature_covariance fourier_correlation gram_matrix "
+        "image_layout image_noise image_norm image_statistics image_validity linear_program "
+        "linear_system matrix_eigen "
+        "matrix_inverse matrix_multiply matrix_structure matrix_svd nearest_rows polynomial_roots "
+        "principal_components spectral"
+    ),
+    "imgcodecs": "image_codecs tiff_files",
+    "calib": "calibration calibration_validation chessboard_quality hand_eye remap_maps",
+    "geometry": "contour_analysis convex_overlap geometry3d shape_fitting translation_registration "
+    "triangulation voronoi",
+    "video": "ecc_registration native_background sequence_tools",
+    "videoio": "video_files",
+    "objdetect": "charuco code_readers",
+    "dnn": "dnn_blocks ocr",
+    "photo": "restoration",
+    "stitching": "image_stitching scan_stitching",
+    "stereo": "stereo3d",
+    "ccm": "color_calibration",
+    "quality": "image_quality",
+    "rgbd": "ptcloud3d",
+    "tracking": "native_trackers",
+}
+BLOCK_MODULES = {
+    "core": (
+        "cv.intensity_transform cv.scale_absolute cv.image_arithmetic cv.compare_pixels "
+        "cv.cart_to_polar cv.polar_to_cart cv.normalize cv.intensity_lut cv.split_channels "
+        "cv.merge_channels cv.extract_channel cv.insert_channel cv.apply_mask "
+        "cv.find_nonzero_pixels "
+        "cv.absdiff cv.flip cv.rotate90 cv.transpose_image cv.bitwise cv.blend cv.copy_border "
+        "cv.transform_points"
+    ),
+    "imgproc": (
+        "cv.hann_window cv.decode_yuv calibration.color_balance cv.pack_remap_map "
+        "inspect.contour_hierarchy"
+    ),
+    "imgcodecs": "input.file input.depth_file input.raw_yuv output.image",
+    "calib": (
+        "3d.camera 3d.project 3d.undistort_points 3d.stereo_rig 3d.stereo_calibrate "
+        "3d.stereo_rectify 3d.rectify_camera"
+    ),
+    "geometry": "inspect.affine inspect.homography collection.clip_lines",
+    "features": (
+        "inspect.fast inspect.orb inspect.sift inspect.akaze inspect.kaze inspect.brisk "
+        "inspect.mser "
+        "inspect.match_orb inspect.match_sift inspect.match_akaze inspect.match_brisk "
+        "inspect.match_descriptor_radius"
+    ),
+    "flann": "inspect.match_flann",
+    "videoio": "input.camera",
+    "objdetect": "3d.aruco_pose",
+    "ptcloud": "3d.depth_cloud",
+    "rgbd": "3d.register_depth",
+    "structured_light": "3d.graycode 3d.graycode_decode",
+    "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match",
+    "ximgproc": "cv.guided_filter cv.domain_transform_filter inspect.thin_mask",
+    "mcc": "calibration.detect_color_chart",
+    None: (
+        "input.demo output.results input.calibration output.calibration "
+        "calibration.pixel_to_physical "
+        "calibration.lens_map_displacement collection.filter collection.sort collection.draw "
+        "core.attach_payload core.read_payload sequence.background sequence.image_memory "
+        "input.sequence_demo cv.paste_patch cv.filter_fourier_spectrum cv.mask_fourier_spectrum "
+        "inspect.contour_profile"
+    ),
+}
+_MODULE_BY_FILE = {
+    file: module for module, files in IMPLEMENTATION_MODULES.items() for file in files.split()
+}
+_MODULE_BY_BLOCK = {
+    type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
+}
+_NATIVE_NAMES = {
+    "cv.gray": ("cvtColor",),
+    "cv.gaussian_blur": ("GaussianBlur",),
+    "cv.morphology": ("morphologyEx", "erode", "dilate"),
+    "cv.adaptive_threshold": ("adaptiveThreshold",),
+    "cv.distance_labels": ("distanceTransformWithLabels",),
+    "cv.demosaic_bayer": ("demosaicing",),
+    "input.file": ("imread", "imdecode"),
+    "output.image": ("imwrite", "imencode"),
+    "inspect.contours": ("findContours",),
+    "inspect.corners": ("goodFeaturesToTrack",),
+    "inspect.blobs": ("connectedComponentsWithStats",),
+    "inspect.components": ("connectedComponents", "connectedComponentsWithStats"),
+    "inspect.line_segments": ("HoughLinesP", "createLineSegmentDetector"),
+    "inspect.fit_shape": ("fitEllipse", "fitLine", "minEnclosingCircle"),
+    "inspect.bounding_rotated_rectangle": ("minAreaRect",),
+    "inspect.match_template": ("matchTemplate",),
+    "inspect.histogram": ("calcHist",),
+    "sequence.dis": ("DISOpticalFlow",),
+    "sequence.farneback": ("calcOpticalFlowFarneback",),
+    "sequence.track_points": ("calcOpticalFlowPyrLK",),
+    "calibration.lens": ("calibrateCamera", "calib3d"),
+    "inspect.homography": ("findHomography", "calib3d"),
+    "3d.pnp": ("solvePnP", "calib3d"),
+    "ml.dnn": ("dnn.readNetFromONNX", "readNetFromONNX"),
+}
+
+
+@dataclass(frozen=True)
+class ToolEntry:
+    path: tuple[str, ...]
+    title: str
+    type_id: str
+    keywords: tuple[str, ...] = ()
+
+
+def block_entry(block):
+    kind, subtype = block.block_type or block.category, block.subtype
+    package, _, file = block.__module__.rpartition(".")
+    type_id = block.type_id
+    if package != "opencv_dataflow":
+        path = ("User", kind, subtype)
+    elif file == "skeleton":
+        family = "Graph" if type_id == "inspect.prune_skeleton" else "Morphology"
+        path = ("scikit-image", family)
+    elif type_id.startswith("gapi."):
+        path = ("OpenCV", "Advanced", "G-API")
+    else:
+        module = _MODULE_BY_BLOCK.get(type_id, _MODULE_BY_FILE.get(file))
+        path = (
+            ("OpenCV", f"{OPENCV_MODULES[module]} ({module})", subtype)
+            if module
+            else ("Custom", kind, subtype)
+        )
+    aliases = ("skimage",) if file == "skeleton" and package == "opencv_dataflow" else ()
+    return ToolEntry(
+        path, block.title, type_id, (kind, subtype, *aliases, *_NATIVE_NAMES.get(type_id, ()))
+    )
+
+
+def _compact(text):
+    return re.sub(r"[\W_]+", "", text)
+
+
+def _matches(entry, terms):
+    fields = tuple(
+        field.casefold() for field in (*entry.path, entry.title, entry.type_id, *entry.keywords)
+    )
+    text = " ".join(fields)
+    compact = " ".join(_compact(field) for field in fields)
+    return all(term in text or (short and short in compact) for term, short in terms)
+
+
+class ToolLibrary(QTreeWidget):
+    def __init__(self):
+        super().__init__()
+        self.setDragDropMode(QAbstractItemView.DragDropMode.DragOnly)
+        self.setDefaultDropAction(Qt.DropAction.CopyAction)
+        self._groups = {}
+        self._expanded = set()
+        self._filtered = False
+
+    def mimeTypes(self):
+        return [TOOL_MIME]
+
+    def mimeData(self, items):
+        type_id = items[0].data(0, Qt.ItemDataRole.UserRole) if len(items) == 1 else None
+        if not type_id:
+            return None
+        data = QMimeData()
+        data.setData(TOOL_MIME, type_id.encode("utf-8"))
+        return data
+
+    def supportedDropActions(self):
+        return Qt.DropAction.CopyAction
+
+    def _group(self, path):
+        if path not in self._groups:
+            parent = self._group(path[:-1]) if len(path) > 1 else self
+            item = QTreeWidgetItem(parent, [path[-1]])
+            item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsDragEnabled)
+            item.setToolTip(0, " / ".join(path))
+            self._groups[path] = item
+        return self._groups[path]
+
+    def populate(self, entries, query):
+        if not self._filtered:
+            self._expanded = {path for path, item in self._groups.items() if item.isExpanded()}
+        terms = [word.removeprefix("cv2.").removeprefix("cv.") for word in query.casefold().split()]
+        terms = [(word, _compact(word)) for word in terms if word]
+        self._filtered = bool(terms)
+        self._groups.clear()
+        self.clear()
+        if not self._filtered:
+            for source in TOOL_SOURCES:
+                self._group((source,))
+            self._groups[("User",)].setToolTip(0, "Load a plugin or import a reusable ToolBlock.")
+        entries = sorted(
+            entries,
+            key=lambda entry: (
+                TOOL_SOURCES.index(entry.path[0]),
+                _MODULE_ORDER.get(entry.path[1], len(_MODULE_ORDER))
+                if entry.path[0] == "OpenCV"
+                else 0,
+                tuple(part.casefold() for part in entry.path[1:]),
+                entry.title.casefold(),
+                entry.type_id,
+            ),
+        )
+        for entry in entries:
+            if self._filtered and not _matches(entry, terms):
+                continue
+            item = QTreeWidgetItem(self._group(entry.path), [entry.title])
+            item.setData(0, Qt.ItemDataRole.UserRole, entry.type_id)
+            item.setToolTip(0, " / ".join((*entry.path, entry.title)))
+        if self._filtered:
+            self.expandAll()
+        else:
+            for path in self._expanded & self._groups.keys():
+                self._groups[path].setExpanded(True)

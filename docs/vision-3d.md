@@ -1,10 +1,10 @@
 # OpenCV 3D workflows
 
-The **3D vision** tree exposes camera models, calibration, geometry, stereo,
-reconstruction, RGB-D, point clouds, surface matching, fiducials, structured light,
-odometry and volumetric reconstruction. The point-cloud file blocks are under
-**Input/Output > Point clouds**. No extra Python packages are required on the
-tested OpenCV 5.0.0 contrib build.
+The **OpenCV** toolbox groups 3D tools by module. Start with **Camera Calibration
+(calib)**, **Computational Geometry (geometry)**, **Stereo Correspondence (stereo)**,
+or **RGB-D Processing (rgbd)**. Point-cloud file blocks are in the **Point clouds**
+subgroups under **Custom > Input** and **Custom > Output**. The tested OpenCV
+5.0.0 contrib build provides the dependencies for these tools.
 
 ## Try the included jobs
 

@@ -29,6 +29,7 @@ from PySide6.QtWidgets import (
 
 from .images import preview_rgb
 from .port_types import connection_mode
+from .toolbox import TOOL_MIME
 from .visual_style import (
     BLOCK_COLORS,
     BLOCK_STATE_COLORS,
@@ -39,8 +40,6 @@ from .visual_style import (
     port_type,
 )
 from .workspace import arranged_positions
-
-TOOL_MIME = "application/x-opencv-dataflow-tool"
 
 
 def pixmap(image):

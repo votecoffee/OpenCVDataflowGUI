@@ -57,9 +57,9 @@ uses a WLS confidence cutoff before reconstruction. The
 small enclosed gaps and marks the estimated samples.
 See [3D workflows and conventions](docs/vision-3d.md).
 
-**DNN/ML tools** are available under **ML** in the toolbox (model writers under **Output**): ONNX inference,
-classification, embedding conversion, SIFT + LightGlue matching, and Annoy vector
-index building/search/save/load. Try [DNN embedding](<examples/opencv tools/dnn_embeddings/dnn_embeddings.json>) with the
+**OpenCV > Deep Neural Networks (dnn)** contains ONNX inference, classification
+and embedding tools. **Custom > ML** contains SIFT + LightGlue and Annoy. The Annoy
+index writer is under **Custom > Output > ML models**. Try [DNN embedding](<examples/opencv tools/dnn_embeddings/dnn_embeddings.json>) with the
 included tiny synthetic ONNX model. [Annoy search](<examples/custom tools/annoy_search/annoy_search.json>) and [LightGlue matcher](<examples/custom tools/lightglue_match/lightglue_match.json>) use optional libraries. See [ML setup and workflows](docs/ml.md)
 for installation, local weights and runnable examples. Graph execution never downloads
 learned weights or imports optional ML libraries until their blocks need them.
@@ -81,8 +81,11 @@ package installed. The editor opens a synthetic inspection demo; press **Run onc
 
 ![Editor showing the synthetic inspection demo](docs/images/editor.png)
 
-1. Expand a type and subtype in the left toolbox tree. Drag a tool onto the
-   canvas to place it where you drop it, or double-click to add it near the center.
+1. Expand **OpenCV**, **scikit-image**, **Custom**, or **User** in the left toolbox.
+   OpenCV tools follow the OpenCV 5 modules, such as **Image Processing (imgproc)**
+   and **Video Analysis (video)**. Search by tool name, module, or common API names
+   such as `cv2.findContours`. Drag a tool onto the canvas to place it, or double-click
+   to add it near the center. Imported ToolBlocks and plugins appear under **User**.
 2. Drag between an output socket and an input socket in either direction. Image
    ports and wires are gold for images, purple for regions/masks, blue for poses/transforms,
    pale gold for pyramids, turquoise for depth, green for numbers, and slate for other data.
@@ -285,7 +288,7 @@ metadata pairing and Stop/Resume behavior. Stop keeps the last completed result 
 
 The supported dependency is OpenCV 5 contrib (development checks use 5.0.0.93).
 This desktop application uses native Python bindings. Ordinary OpenCV blocks are
-the defaults; legacy G-API blocks remain under **Advanced > G-API**.
+the defaults; legacy G-API blocks remain under **OpenCV > Advanced > G-API**.
 Migration details and a possible browser/WebAssembly backend are covered in the
 [backend notes](docs/opencv-backend.md).
 
@@ -984,7 +987,7 @@ boundaries, parallel work and explicit final-decision timestamps.
 - `tests/`: local runtime and persistence checks.
 
 Default Grayscale, Gaussian blur and Canny use ordinary OpenCV calls, retaining
-per-node results for inspection. Legacy variants under **Advanced > G-API** each
+per-node results for inspection. Legacy variants under **OpenCV > Advanced > G-API** each
 cache a `cv2.GComputation`; the editor graph is not fused. An explicitly compiled
 ToolBlock with selected diagnostics is [future work](docs/opencv-backend.md#compiled-toolblocks-future),
 subject to demonstrated performance benefit before enablement or expansion.

@@ -39,7 +39,7 @@ fall back to the ordinary kind/name rules. Hints are code metadata and do not
 require saved-project migration. Custom plugin code supplies its metadata when
 loaded, just as it supplies the port's ordinary kind.
 
-Block borders indicate the toolbox category, with specific purple **Regions** and
+Block borders indicate the block's functional category, with purple **Regions** and
 blue **Poses** subtypes. Input tools use teal, outputs coral, image processing gold,
 inspection mauve, calibration mint, control flow blue-gray, sequence memory indigo,
 data slate, recipes pink, ML rose, 3D vision sea green, advanced tools tan and reusable

@@ -13,8 +13,8 @@ are image-plane transforms, not 3D robot poses or calibrated physical units.
 | Offset pose (`pose.offset`) | pose | Compose a local x/y/angular offset |
 | Region relative to pose (`region.pose`) | image, pose | Position a rectangle, circle or polygon in the target image |
 
-Pose blocks are under **Inspection > Poses**; relative regions are under **Image
-processing > Regions**. Define/feature blocks draw local axes on their overlay.
+Find pose blocks under **Custom > Inspection > Poses** and relative regions under
+**Custom > Image processing > Regions**. Define/feature blocks draw local axes.
 Local x is red, local y is green. Pose outputs include the `pose`, one origin in
 `points`, and the local x-axis `angle_degrees`.
 

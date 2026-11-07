@@ -1,18 +1,20 @@
 # Toolbox, histogram, calibration and depth workflows
 
-![Toolbox tree, histogram and grid calibration](images/calibration-toolbox.png)
+![Histogram and grid calibration in an earlier editor layout](images/calibration-toolbox.png)
 
 ## Block classification
 
-The left toolbox is a tree: **type → subtype → block**. Input, Output,
-Image processing, Inspection and Calibration are examples of types. G-API,
-Statistics, Lens distortion, Color balance, and Grid and coordinates are subtypes.
-Search matches every level. Double-click a leaf to add an instance; group entries
-only expand/collapse. Custom block classes declare `block_type` and `subtype`;
-older plugins fall back to their existing `category` and the General subtype.
-Stable `type_id` values still identify implementations in saved projects.
+The toolbox starts with **OpenCV**, **scikit-image**, **Custom**, and **User**.
+OpenCV groups follow the [OpenCV 5 module reference](https://docs.opencv.org/5.0/main_modules/api_root.html)
+and retain subgroups such as Filtering, Statistics and Lens distortion. Look for
+Histogram under **OpenCV > Image Processing (imgproc) > Statistics** and lens
+calibration under **OpenCV > Camera Calibration (calib) > Lens distortion**.
+**Custom** holds built-in workflows and adapters. **User** holds plugins and
+reusable ToolBlocks added in the session. Their `block_type` and `subtype` set
+the group names. Search matches display labels, IDs, and common native API
+names. Drag or double-click a leaf to add it.
 
-Calibration also includes editable ToolBlock templates. Open their internal graph
+**Custom > Calibration** includes editable ToolBlock templates. Open their internal graph
 to configure primitive tools. They use the same public-port and result contracts
 as other reusable ToolBlocks; category/subtype metadata survives export/import.
 Their inspector allows editing type/subtype before exporting a reusable definition.

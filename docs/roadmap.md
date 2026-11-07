@@ -148,7 +148,7 @@ deferred until a concrete workflow needs them.
 - Acquisition tickets, bounded join/batch/FIFO buffers, serial group expansion, case routing and explicit branch concurrency.
 - Parallel per-pose ToolBlock inspections, aggregate outcomes, scoped part tickets and N-pass/N-failure stopping.
 - Bounded input-image FIFO queues, serialized frame leases, optional background acquisition and Stop/Resume retention.
-- Ordinary Grayscale/Gaussian blur/Canny defaults and examples; legacy blocks under Advanced > G-API.
+- Ordinary Grayscale/Gaussian blur/Canny defaults and examples; legacy blocks under OpenCV > Advanced > G-API.
 - Per-connection outcomes, per-input failure gates, bounded shared ticket history,
   explicit final judgments and a live searchable ticket-results window.
 - Stop/Resume retains the last completed result, including results held for throttled UI updates.

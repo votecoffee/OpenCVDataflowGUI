@@ -1,10 +1,11 @@
 # DNN, LightGlue and Annoy
 
-The **ML** toolbox tree groups tools into DNN inference, Classification, Embeddings,
-Feature matching and Vector search. ML borders use pink. Image, pose, region and
+**OpenCV > Deep Neural Networks (dnn)** contains DNN inference, classification
+and embedding tools. **Custom > ML** includes LightGlue matching and Annoy
+vector search. ML borders use pink. Image, pose, region and
 data connections keep the ordinary canvas type colors. All these blocks use the
 existing ticket/outcome, payload, recipe-parameter, timing and diagnostic contracts.
-The index writer is under **Output > ML models > Save Annoy index**.
+The index writer is under **Custom > Output > ML models > Save Annoy index**.
 
 ## Installation
 
