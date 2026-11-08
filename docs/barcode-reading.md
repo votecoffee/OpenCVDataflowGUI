@@ -35,6 +35,11 @@ on matching filmstrip images when result graphics are enabled. Display labels
 may shorten long payloads or escape non-ASCII characters. The `codes` output
 keeps the complete decoded value.
 
+**Read QR codes** also emits **Rectified** when exactly one symbol decodes
+and OpenCV returns its binary module image. This small image has its own grid
+and keeps the camera ticket. Use **Overlay** or **Codes** for camera-space
+geometry. With zero or multiple decoded symbols, Rectified emits no image.
+
 Enable **Report decode errors** to collect invalid detections separately.
 They do not satisfy the minimum read count or enter the valid codes list.
 The reader decodes and reports backend errors. Barcode quality grading and

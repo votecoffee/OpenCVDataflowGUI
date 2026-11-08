@@ -10,7 +10,7 @@ import pytest
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 from opencv_dataflow.graphics_layers import RESULT_GRAPHICS
-from opencv_dataflow.payloads import NO_VALUE
+from opencv_dataflow.payloads import NO_VALUE, ValuePacket, frame
 
 
 @pytest.mark.parametrize("mode", ["multi", "single"])
@@ -18,7 +18,8 @@ def test_qr_decode_and_mask(mode):
     reader = builtin_registry().create("inspect.read_qr", parameters={"mode": mode})
     qr = cv2.QRCodeEncoder_create().encode("dataflow-42")
     image = np.pad(np.repeat(np.repeat(qr, 8, axis=0), 8, axis=1), 24, constant_values=255)
-    result = reader.execute({"image": image})
+    spatial = frame(image.shape[::-1], "camera")
+    result = reader.execute({"image": ValuePacket(image, {"spatial": spatial})})
     assert result.passed
     assert result.outputs["count"] == 1
     code = result.outputs["codes"][0]
@@ -26,6 +27,13 @@ def test_qr_decode_and_mask(mode):
     assert np.asarray(code["corners"]).shape == (4, 2)
     assert np.allclose(code["center"], np.asarray(image.shape[::-1]) / 2, atol=2)
     assert result.outputs["overlay"].shape == (*image.shape, 3)
+    rectified = result.outputs["rectified"]
+    assert rectified.ndim == 2 and rectified.shape[0] == rectified.shape[1]
+    border = (qr.shape[0] - rectified.shape[0]) // 2
+    np.testing.assert_array_equal(rectified, qr[border:-border, border:-border])
+    module_grid = result.payloads["rectified"]["spatial"]
+    assert module_grid["root_id"] != spatial["root_id"]
+    assert module_grid["image_size"] == list(rectified.shape[::-1])
     outline, axis_x, axis_y, label = result.drawings["decoded codes"].objects
     assert outline.closed
     assert axis_x.kind == axis_y.kind == "arrow"
@@ -34,6 +42,21 @@ def test_qr_decode_and_mask(mode):
     blank = reader.execute({"image": np.full_like(image, 255)})
     assert not blank.passed
     assert blank.fail_reasons[0]["code"] == "code_read_count_below_minimum"
+    assert blank.outputs["rectified"] is NO_VALUE
+
+
+def test_qr_multiple_symbols_keep_all_reads_and_withhold_single_rectified_image():
+    scene = np.full((260, 490), 255, np.uint8)
+    for x, text in [(25, "LEFT-42"), (270, "RIGHT-07")]:
+        matrix = cv2.QRCodeEncoder_create().encode(text)
+        qr = cv2.resize(matrix, None, fx=7, fy=7, interpolation=cv2.INTER_NEAREST)
+        h, w = qr.shape
+        scene[35 : 35 + h, x : x + w] = qr
+    reader = builtin_registry().create("inspect.read_qr")
+    result = reader.execute({"image": scene})
+    assert result is not None, reader.error
+    assert {code["text"] for code in result.outputs["codes"]} == {"LEFT-42", "RIGHT-07"}
+    assert result.outputs["rectified"] is NO_VALUE
 
 
 def ean13(check_digit, module_width):

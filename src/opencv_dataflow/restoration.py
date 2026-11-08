@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 import cv2
 import numpy as np
 
-from .core import Port, Result
+from .core import Block, Port, Result
 from .deblur import WienerDeblur
 from .images import ImageArray, convert_depth, format_image, image_format
 from .parameter_validation import NumericRange, ValidationError
@@ -71,7 +71,12 @@ class NonLocalMeans(RegionalOperation, ImageTool):
 
 
 def aligned_observations(entries):
-    if any(not isinstance(entry.value, np.ndarray) or not entry.value.size for entry in entries):
+    if any(
+        not isinstance(entry.value, np.ndarray)
+        or entry.value.ndim not in (2, 3)
+        or not entry.value.size
+        for entry in entries
+    ):
         raise ValidationError("Every observation must be a nonempty image")
     originals = [entry.value for entry in entries]
     center = originals[0]
@@ -96,6 +101,61 @@ def aligned_observations(entries):
                 message="Frames sharing a source root must use the same pixel grid",
             )
     return originals
+
+
+class TemporalMedian(Block):
+    type_id, title = "sequence.temporal_median", "Temporal median background"
+    category, block_type, subtype = "Sequence", "Sequence", "Temporal processing"
+    payload_reference = "frames"
+    process_inputs_readonly = True
+    inputs = (Port("frames", "any"), *SELECTION_INPUTS[1:])
+    outputs = (Port("image"), Port("observation_count", "number"))
+    input_help = {
+        "frames": "Batch of two to 64 aligned frames of a stationary camera view.",
+        "mask": "Write the median only inside this mask. Outside uses the earlier middle frame.",
+        "region": "Write the median only inside this region. Outside uses the middle frame.",
+    }
+
+    def process(self, inputs):
+        group = inputs["frames"]
+        if not isinstance(group, FlowGroup) or len(group.items) < 2:
+            raise ValidationError("Connect a batch of two to 64 aligned images")
+        originals = aligned_observations(group.items)
+        count = len(originals)
+        middle = count // 2
+        anchor_index = (count - 1) // 2
+        anchor = originals[anchor_index]
+        encoding = image_format(anchor)
+        if encoding not in ("gray", "bgr", "rgb", "bgra", "rgba"):
+            raise ValidationError("Temporal median requires grayscale or RGB/BGR encoding")
+        frames = [image_value(image, (np.uint8, np.uint16, np.float32)) for image in originals]
+        alpha = encoding in ("rgba", "bgra")
+        if alpha:
+            frames = [image[..., :3] for image in frames]
+        context = metadata(group.items[anchor_index])
+        mask = selection_mask(inputs, image_with_payload(anchor, context))
+        # Partition over time in a private stack and keep the input frames untouched.
+        stack = np.stack(frames)
+        if count % 2:
+            stack.partition(middle, axis=0)
+            median = stack[middle]
+        else:
+            stack.partition((middle - 1, middle), axis=0)
+            median = cv2.addWeighted(stack[middle - 1], 0.5, stack[middle], 0.5, 0)
+        output = np.asarray(anchor).copy()
+        colors = output[..., :3] if alpha else output
+        if mask is None:
+            colors[:] = median
+        else:
+            selected = mask != 0
+            np.copyto(colors, median, where=selected[..., None] if colors.ndim == 3 else selected)
+        # Spatial context comes from the anchor while the wire retains the batch ticket.
+        payload = {key: context[key] for key in ("spatial", "pyramid") if key in context}
+        return Result(
+            {"image": ImageArray(output, encoding), "observation_count": count},
+            payloads={"image": payload},
+            message=f"Median of {count} aligned frames",
+        )
 
 
 class TemporalNonLocalMeans(ImageTool):
@@ -493,6 +553,7 @@ class SeamlessClone(ImageTool):
 
 RESTORATION_BLOCKS = (
     NonLocalMeans,
+    TemporalMedian,
     TemporalNonLocalMeans,
     DenoiseTVL1,
     WienerDeblur,

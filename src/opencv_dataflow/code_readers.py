@@ -7,7 +7,7 @@ from .core import Block, Port, Result
 from .features import overlay_image
 from .graphics_layers import GraphicDrawing, draw_object, graphic_object
 from .parameter_validation import NumericRange
-from .payloads import NO_VALUE, image_with_payload
+from .payloads import NO_VALUE, frame, image_with_payload
 from .processing import finite, gray_image
 from .selection import SELECTION_INPUTS, selection_mask
 
@@ -106,6 +106,7 @@ class CodeReader(Block):
 
 class ReadQRCode(CodeReader):
     type_id, title = "inspect.read_qr", "Read QR codes"
+    outputs = (*CodeReader.outputs, Port("rectified", required=False))
     defaults = {
         **CodeReader.defaults,
         "mode": "multi",
@@ -120,22 +121,44 @@ class ReadQRCode(CodeReader):
         "eps_y": NumericRange(0),
     }
 
-    def decode(self, image):
+    def process(self, inputs):
+        source = inputs["image"]
+        image, _ = barcode_image(inputs)
+        if image is None:
+            return self.code_result(source, [], rectified=NO_VALUE)
         detector = cv2.QRCodeDetector()
         detector.setEpsX(float(self.parameters["eps_x"]))
         detector.setEpsY(float(self.parameters["eps_y"]))
         detector.setUseAlignmentMarkers(self.parameters["use_alignment_markers"])
         mode = self.parameters["mode"]
         if mode == "multi":
-            _, texts, points, _ = detector.detectAndDecodeMulti(image)
+            _, texts, points, rectified_images = detector.detectAndDecodeMulti(image)
         else:
             decode = {
                 "single": detector.detectAndDecode,
                 "curved": detector.detectAndDecodeCurved,
             }[mode]
-            value, points, _ = decode(image)
-            texts = (value,)
-        return texts, ("QR_CODE",) * len(texts), points
+            value, points, rectified = decode(image)
+            texts, rectified_images = (value,), (rectified,)
+        codes = (
+            [
+                code_record(text, "QR_CODE", corners)
+                for text, corners in zip(texts, np.asarray(points).reshape(-1, 4, 2), strict=True)
+                if text
+            ]
+            if points is not None else []
+        )
+        rectified = rectified_images[0] if len(codes) == len(rectified_images) == 1 else None
+        result = self.code_result(
+            source, codes,
+            rectified=rectified if rectified is not None and rectified.size else NO_VALUE,
+        )
+        if result.outputs["rectified"] is not NO_VALUE:
+            # Module coordinates are separate from the camera frame, including on curved labels.
+            result.payloads["rectified"] = {
+                "spatial": frame(rectified.shape[1::-1], f"{self.id}:qr_modules"),
+            }
+        return result
 
 
 class ReadLinearBarcode(CodeReader):

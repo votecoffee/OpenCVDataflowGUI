@@ -5808,6 +5808,20 @@ Input `validation_region` — Static area to validate against the anchor. Exclud
 | `min_validation_inlier_ratio` | `0.8` | Value must be a finite number between 1e-06 and 1. Fraction of check tracks that must meet the error limit. |
 | `interpolation` | `"linear"` | `nearest`, `linear` |
 
+## Temporal median background (`sequence.temporal_median`)
+
+Sequence / Temporal processing
+
+Inputs: `frames` (any), `mask` (image, optional), `region` (data, optional).
+
+Input `frames` — Batch of two to 64 aligned frames of a stationary camera view.
+
+Input `mask` — Write the median only inside this mask. Outside uses the earlier middle frame.
+
+Input `region` — Write the median only inside this region. Outside uses the middle frame.
+
+No configurable algorithm parameters.
+
 ## Track conveyor parts (`sequence.track_conveyor`)
 
 Sequence / Object tracking

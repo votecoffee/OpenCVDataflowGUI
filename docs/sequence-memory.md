@@ -218,3 +218,18 @@ the existing trusted Python plugin system.
 
 Hardware encoder acquisition, timestamp-aware resampling and explicit
 learning of accumulated references remain future work.
+
+## Temporal median background from a batch
+
+Connect **Batch serial entries** to **Temporal median background** and collect
+two to 64 aligned views from a fixed camera. The block calculates the median
+independently at each pixel and color channel. An even batch averages the
+middle pair and rounds integer outputs to the nearest sample. The result
+carries the batch ticket and the pixel grid of the earlier middle frame.
+
+The block accepts gray, RGB or BGR images in uint8, uint16 or float32. It
+keeps alpha from the earlier middle frame and uses that frame's pixels outside
+an optional mask or region. Use a batch with at most 128 MiB of source pixels.
+A clear view of a pixel in more than half of the frames can remove a moving
+occlusion from the estimate. Persistent objects and camera motion can affect
+the result.
