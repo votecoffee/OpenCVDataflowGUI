@@ -104,6 +104,7 @@ BINDINGS = {
     "cv.transpose_image": "transpose",
     "cv.unsharp": "GaussianBlur addWeighted",
     "cv.warp_affine": "warpAffine",
+    "cv.rectify_quadrilateral": "getPerspectiveTransform warpPerspective",
     "cv.warp_perspective": "warpPerspective",
     "cv.warp_polar": "warpPolar",
     "gapi.blur": "gapi.gaussianBlur",

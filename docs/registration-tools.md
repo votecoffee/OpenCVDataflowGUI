@@ -19,6 +19,15 @@ graphs, layouts or parameters.
 | Inspection / Registration | Estimate image homography | `findHomography` with RANSAC; paired points, inlier mask/ratio and pixel RMS |
 | Image processing / Geometry | Transform image points | `perspectiveTransform`; optional inverse, matrix input and point list |
 
+**Rectify quadrilateral** maps four clockwise image corners onto a rectangle.
+The first point maps to the top-left pixel. Wire the corner output from
+**Find quadrilateral in mask** and use the original capture as the image.
+Zero width or height uses the longer corresponding edge, rounded and
+increased by one to include both endpoint pixels. Set both dimensions
+for a fixed inspection grid. Automatic dimensions are based on the
+projected edges and can vary between captures. The geometry output maps
+rectified coordinates back to source pixels.
+
 ## Geometry contracts
 
 Warp matrices describe **input/source pixels → output/target pixels**. The optional

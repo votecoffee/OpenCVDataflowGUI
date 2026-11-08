@@ -43,7 +43,8 @@ label over a resized inspection image and compares two layer selections.
 A GrabCut study uses editable seed masks to isolate a label from a similar
 background patch and checks both segmentation branches against a known outline.
 The follow-up finds the label corners and rectifies the original image
-against a known destination size and a held-out landmark.
+against a known destination size and a held-out landmark. A two-view
+study compares automatic edge-based sizing with a fixed inspection grid.
 
 ## Vision tool priorities
 

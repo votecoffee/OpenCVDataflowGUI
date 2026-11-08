@@ -16,7 +16,7 @@ from .parameters import (
     linear_filter_anchor,
     optional_mask,
 )
-from .payloads import NO_VALUE, metadata, moved_payload
+from .payloads import NO_VALUE, ValuePacket, metadata, moved_payload, require_same_frame
 from .processing import (
     ImageTool,
     encoded_result,
@@ -108,6 +108,30 @@ def _normalized_control_points(value, count, field):
     return local, basis
 
 
+def _solve_control_points(source_controls, target_controls, solver):
+    source, source_basis = source_controls
+    target, target_basis = target_controls
+    count = len(source)
+    a, b = source.astype(np.float32), target.astype(np.float32)
+    if count == 3:
+        local_matrix = np.vstack((cv2.getAffineTransform(a, b), [0, 0, 1]))
+    else:
+        method = cv2.DECOMP_LU if solver == "lu" else cv2.DECOMP_SVD
+        local_matrix = cv2.getPerspectiveTransform(a, b, method)
+    if not np.isfinite(local_matrix).all() or np.linalg.matrix_rank(local_matrix) != 3:
+        raise ValidationError("Control points do not define an invertible mapping")
+    w = np.c_[source, np.ones(count)] @ local_matrix[2]
+    if np.min(np.abs(w)) <= 1e-8 or np.min(w) < 0 < np.max(w):
+        raise ValidationError("The mapping crosses infinity within the selected points")
+    projected = cv2.perspectiveTransform(source[:, None, :], local_matrix).reshape(-1, 2)
+    error = np.linalg.norm(projected - target, axis=1)
+    if not np.isfinite(error).all() or error.max() > 1e-4:
+        raise ValidationError("Cannot solve the control-point mapping accurately")
+    rms = float(np.sqrt(np.mean(error**2)) / target_basis[0, 0])
+    matrix = matrix_value(np.linalg.inv(target_basis) @ local_matrix @ source_basis, (3, 3))
+    return matrix, rms
+
+
 class ControlPointTransform(Block):
     type_id, title = "cv.control_point_transform", "Transform from control points"
     category, block_type, subtype = "Image processing", "Image processing", "Geometry"
@@ -133,27 +157,11 @@ class ControlPointTransform(Block):
         p = self.parameters
         affine = p["model"] == "affine"
         count = 3 if affine else 4
-        (source, source_basis), (target, target_basis) = (
+        source, target = (
             _normalized_control_points(inputs.get(field, p[field]), count, field)
             for field in ("source_points", "target_points")
         )
-        a, b = source.astype(np.float32), target.astype(np.float32)
-        if affine:
-            local_matrix = np.vstack((cv2.getAffineTransform(a, b), [0, 0, 1]))
-        else:
-            solver = cv2.DECOMP_LU if p["solver"] == "lu" else cv2.DECOMP_SVD
-            local_matrix = cv2.getPerspectiveTransform(a, b, solver)
-        if not np.isfinite(local_matrix).all() or np.linalg.matrix_rank(local_matrix) != 3:
-            raise ValidationError("Control points do not define an invertible mapping")
-        w = np.c_[source, np.ones(count)] @ local_matrix[2]
-        if np.min(np.abs(w)) <= 1e-8 or np.min(w) < 0 < np.max(w):
-            raise ValidationError("The mapping crosses infinity within the selected points")
-        projected = cv2.perspectiveTransform(source[:, None, :], local_matrix).reshape(-1, 2)
-        error = np.linalg.norm(projected - target, axis=1)
-        if not np.isfinite(error).all() or error.max() > 1e-4:
-            raise ValidationError("Cannot solve the control-point mapping accurately")
-        rms = float(np.sqrt(np.mean(error**2)) / target_basis[0, 0])
-        matrix = matrix_value(np.linalg.inv(target_basis) @ local_matrix @ source_basis, (3, 3))
+        matrix, rms = _solve_control_points(source, target, p["solver"])
         transform = {
             "model": "image_affine_v1" if affine else "image_homography_v1",
             "source_to_target": matrix.tolist(),
@@ -218,6 +226,70 @@ class WarpPerspective(WarpAffine):
             p["border_value"],
             p["inverse_map"],
         )
+
+
+class RectifyQuadrilateral(ImageTool):
+    type_id, title, subtype = "cv.rectify_quadrilateral", "Rectify quadrilateral", "Geometry"
+    inputs = (Port("image"), Port("corners", "data"))
+    outputs = (Port("image"), Port("geometry", "data"))
+    defaults = {
+        "width": 0,
+        "height": 0,
+        "solver": "lu",
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0,
+    }
+    parameter_ranges = {
+        key: NumericRange(2, 16_384, whole=True, zero_allowed=True)
+        for key in ("width", "height")
+    }
+    parameter_choices = {**WarpAffine.parameter_choices, "solver": ("lu", "svd")}
+    parameter_help = {
+        "width": "Zero uses the longer top or bottom edge, rounded plus one pixel.",
+        "height": "Zero uses the longer left or right edge, rounded plus one pixel.",
+        "solver": "OpenCV linear solver for the perspective mapping.",
+    }
+    input_help = {
+        "corners": "Four clockwise image points. The first becomes the top-left output pixel.",
+    }
+    process_inputs_readonly = True
+    parallel_safe = True
+
+    def process(self, inputs):
+        image, corners = inputs["image"], inputs["corners"]
+        context = self.input_payloads["corners"]
+        try:
+            require_same_frame((image, ValuePacket(None, context)))
+        except ValueError as exc:
+            raise ValidationError(
+                "Corners must use the source image coordinate frame", "corners"
+            ) from exc
+        h, w = image.shape[:2]
+        if context.get("spatial", {}).get("image_size", [w, h]) != [w, h]:
+            raise ValidationError("Corners must use the source image dimensions", "corners")
+
+        source = _normalized_control_points(corners, 4, "corners")
+        polygon = source[0].astype(np.float32)
+        if not cv2.isContourConvex(polygon) or cv2.contourArea(polygon, oriented=True) <= 0:
+            raise ValidationError("Use four convex corners ordered clockwise", "corners")
+        points = np.asarray(corners, np.float64)
+        if np.any(points < 0) or np.any(points > [w - 1, h - 1]):
+            raise ValidationError("Corners must be inside the source image", "corners")
+
+        lengths = np.linalg.norm(np.roll(points, -1, axis=0) - points, axis=1)
+        p = self.parameters
+        width = int(p["width"]) or max(2, round(max(lengths[0], lengths[2])) + 1)
+        height = int(p["height"]) or max(2, round(max(lengths[1], lengths[3])) + 1)
+        size = output_size({"width": width, "height": height}, image)
+        target = _normalized_control_points(
+            [[0, 0], [width - 1, 0], [width - 1, height - 1], [0, height - 1]], 4, "output size"
+        )
+        matrix, rms = _solve_control_points(source, target, p["solver"])
+        result = warped(image, matrix, size, p["interpolation"], p["border"], p["border_value"])
+        result.outputs["geometry"]["rms_pixels"] = rms
+        result.message = f"Rectified to {width} × {height}"
+        return result
 
 
 def fitted_rotation(matrix, width, height):
@@ -1425,6 +1497,7 @@ REGISTRATION_BLOCKS = (
     ControlPointTransform,
     WarpAffine,
     WarpPerspective,
+    RectifyQuadrilateral,
     Rotate,
     CopyBorder,
     Pyramid,

@@ -6,6 +6,7 @@ import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
+from opencv_dataflow.payloads import ValuePacket, frame, metadata
 
 
 def test_affine_control_points_keep_subpixel_precision_at_large_coordinates():
@@ -60,3 +61,59 @@ def test_perspective_rejects_collinear_crossed_and_nonfinite_control_points(targ
     assert block.execute({"target_points": target}) is None
     assert block.state == "error"
     assert not block.current_emissions
+
+def test_rectify_quadrilateral_auto_size_keeps_both_endpoint_pixels():
+    image = np.arange(25 * 35, dtype=np.uint16).reshape(25, 35)
+    block = builtin_registry().create("cv.rectify_quadrilateral")
+    corners = [[6, 4], [23, 4], [23, 15], [6, 15]]
+    context = {"spatial": frame([35, 25], "inspection")}
+    result = block.execute({
+        "image": ValuePacket(image, context),
+        "corners": ValuePacket(corners, context),
+    })
+    assert result is not None, block.error
+    np.testing.assert_array_equal(result.outputs["image"], image[4:16, 6:24])
+    geometry = result.outputs["geometry"]
+    assert geometry["output_size"] == [18, 12]
+    transform = geometry["output_to_input"]
+    np.testing.assert_allclose(transform, [[1, 0, 6], [0, 1, 4], [0, 0, 1]], atol=1e-6)
+    np.testing.assert_allclose(metadata(result.outputs["image"])["spatial"]["to_root"], transform)
+
+
+def test_rectify_quadrilateral_uses_longer_edges_or_an_explicit_size():
+    image = np.arange(30 * 40, dtype=np.uint16).reshape(30, 40)
+    corners = [[8, 4], [23, 4], [28, 20], [3, 20]]
+    block = builtin_registry().create("cv.rectify_quadrilateral")
+    result = block.execute({"image": image, "corners": corners})
+    assert result is not None, block.error
+    assert result.outputs["geometry"]["output_size"] == [26, 18]
+    block.parameters.update(width=19, height=13, solver="svd")
+    result = block.execute({"image": image, "corners": corners})
+    assert result is not None, block.error
+    assert result.outputs["image"].shape == (13, 19)
+    expected = cv2.perspectiveTransform(
+        np.float64([[[0, 0], [18, 0], [18, 12], [0, 12]]]),
+        np.asarray(result.outputs["geometry"]["output_to_input"]),
+    )
+    np.testing.assert_allclose(expected[0], corners, atol=1e-5)
+
+
+@pytest.mark.parametrize(("corners", "error"), [
+    ([[2, 2], [2, 15], [16, 15], [16, 2]], "ordered clockwise"),
+    ([[2, 2], [16, 2], [5, 4], [2, 15]], "convex corners"),
+    ([[2, 2], [23, 2], [16, 15], [2, 15]], "inside the source image"),
+])
+def test_rectify_quadrilateral_rejects_unsafe_corner_sets(corners, error):
+    block = builtin_registry().create("cv.rectify_quadrilateral")
+    assert block.execute({"image": np.zeros((20, 20), np.uint8), "corners": corners}) is None
+    assert error in block.error
+    assert not block.current_emissions
+
+
+def test_rectify_quadrilateral_rejects_corners_from_another_frame():
+    block = builtin_registry().create("cv.rectify_quadrilateral")
+    image = ValuePacket(np.zeros((20, 20), np.uint8), {"spatial": frame([20, 20], "a")})
+    corners = ValuePacket([[2, 2], [16, 2], [16, 15], [2, 15]],
+                          {"spatial": frame([20, 20], "b")})
+    assert block.execute({"image": image, "corners": corners}) is None
+    assert "coordinate frame" in block.error

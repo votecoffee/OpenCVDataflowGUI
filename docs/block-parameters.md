@@ -2490,6 +2490,23 @@ Inputs: `image` (image).
 | `output_width` | `0` | 0 uses native sizing. Explicit dimensions apply to the final level. |
 | `output_height` | `0` |  |
 
+## Rectify quadrilateral (`cv.rectify_quadrilateral`)
+
+Image processing / Geometry
+
+Inputs: `image` (image), `corners` (data).
+
+Input `corners` — Four clockwise image points. The first becomes the top-left output pixel.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `0` | Value must be zero or a whole number between 2 and 16384. Zero uses the longer top or bottom edge, rounded plus one pixel. |
+| `height` | `0` | Value must be zero or a whole number between 2 and 16384. Zero uses the longer left or right edge, rounded plus one pixel. |
+| `solver` | `"lu"` | `lu`, `svd` OpenCV linear solver for the perspective mapping. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
+| `border_value` | `0.0` |  |
+
 ## Remap image coordinates (`cv.remap`)
 
 Image processing / Geometry
