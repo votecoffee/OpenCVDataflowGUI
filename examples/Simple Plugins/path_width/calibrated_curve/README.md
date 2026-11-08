@@ -41,3 +41,9 @@ width physical** (6 mm) and **Edge search radius physical** (1.2 mm
 on each side of the expected edge). Run once, attach **Use wired**
 calibration, then select **Preview on reference** to try a different
 radius. The pixel scan span must contain both projected windows.
+
+With SimplePathWidth 0.1.0.dev11 or later, open the same preview on
+**Fixed pixel edge bands** and click along the trend or step through
+stations. At a missed station the shaded windows can fall away from the
+gradient peaks. At a measured station cyan lines mark the selected edges.
+The dashed line on the image marks the sampled cross-section.

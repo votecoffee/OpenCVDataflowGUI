@@ -321,6 +321,61 @@ def test_calibrated_edge_bands_replay_and_preview(app, monkeypatch, tmp_path):
         app.processEvents()
 
 
+def test_cross_scan_preview_tracks_measured_and_missing_stations(app, monkeypatch, tmp_path):
+    trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
+    canvas = pytest.importorskip("opencv_simple_path_width.qt_canvas")
+    if not hasattr(canvas.MeasurementPreview, "_number_changed"):
+        pytest.skip("Cross-scan preview requires SimplePathWidth with station profiles")
+    moved = tmp_path / "cross_scan"
+    shutil.copytree(_EXAMPLE / "calibrated_curve", moved)
+    project = moved / "bands-project.json"
+    graph = Graph.load(project, builtin_registry())
+    window = MainWindow()
+    warnings, selections = [], []
+    monkeypatch.setattr(window, "warn", warnings.append)
+
+    def preview(view):
+        view.show()
+        app.processEvents()
+        result = view.result
+        measured = next(i for i, row in enumerate(result.stations) if row.edges is not None)
+        missing = next(i for i, row in enumerate(result.stations) if row.status == "missing")
+        view.station_number.setValue(measured + 1)
+        assert view.selected_station == measured
+        assert "width" in view.station_details.text()
+        image = view.profile.image_item.pixmap().toImage()
+        assert not image.isNull()
+        view.tabs.setCurrentIndex(0)
+        distance = result.stations[missing].distance_px
+        x = canvas.PLOT_LEFT + distance / result.path_length_px * (canvas.PLOT_RIGHT - canvas.PLOT_LEFT)
+        location = view.trend.mapFromScene(QPointF(x, 90.))
+        QTest.mouseClick(view.trend.viewport(), Qt.MouseButton.LeftButton, pos=location)
+        assert view.selected_station == missing and view.station_number.value() == missing + 1
+        assert "missing" in view.station_details.text()
+        assert view.profile.image_item.pixmap().toImage() != image
+        line = view.scan_line.line()
+        x, y = result.stations[missing].point
+        assert line.center().x() == pytest.approx(x + .5)
+        assert line.center().y() == pytest.approx(y + .5)
+        assert line.length() == pytest.approx(2 * view.settings.scan_half_width)
+        selections.extend((measured, missing))
+
+    monkeypatch.setattr(trainer.MeasurementPreview, "exec", preview)
+    try:
+        window.replace_graph(graph, project)
+        graph.run()
+        window.inspector.select(graph.blocks["pixel-bands"])
+        window.inspector.open_plugin_dialog()
+        dialog = window.inspector._plugin_dialog
+        dialog.wired_calibration_button.click()
+        dialog.preview_button.click()
+        assert len(selections) == 2 and not warnings
+    finally:
+        window.dirty = False
+        window.close()
+        app.processEvents()
+
+
 def test_station_spacing_replay_and_calibrated_training_preview(app, monkeypatch, tmp_path):
     trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
     recipe_io = pytest.importorskip("opencv_simple_path_width.recipe")
