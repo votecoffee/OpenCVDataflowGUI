@@ -156,6 +156,7 @@ BINDINGS = {
     "inspect.brisk": "xfeatures2d.BRISK_create",
     "inspect.compare_contours": "matchShapes",
     "inspect.compare_edge_maps": "distanceTransform",
+    "inspect.mask_clearance": "distanceTransform",
     "inspect.compare_histograms": "compareHist",
     "inspect.components": "connectedComponentsWithStatsWithAlgorithm",
     "inspect.contour_hierarchy": "findContours",

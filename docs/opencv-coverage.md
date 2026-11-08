@@ -344,7 +344,7 @@ image-plane clearance. Depth, gripper reachability and swept-volume collision
 checks remain separate work.
 
 
-## Available bead calipers
+## Available bead and mask clearance checks
 
 **Paired-edge bead calipers** samples parallel intensity scans and finds
 opposing edges around a bright or dark bead. Set the scan endpoints across
@@ -360,3 +360,12 @@ Missing scans, including scans outside the image or selection, count
 toward the gap. The [caliper example](../examples/applications/bead_calipers/bead_calipers.json) measures
 a 126-pixel synthetic strip and runs with
 `opencv-dataflow-run examples/applications/bead_calipers/bead_calipers.json`.
+
+**Mask clearance at reference** samples an exact Euclidean distance transform
+at registered reference pixels. It reports missing foreground separately from
+covered samples outside clearance limits. The distance is from pixel center to
+nearest background pixel center, with a one-pixel background pad at image edges.
+It estimates local margin in pixels around the expected path. Use paired-edge
+calipers to measure edge-to-edge width. A mask or region limits sample locations
+while retaining the full foreground neighborhood. The two output masks include
+every affected sample. The review draws at most 256 points per status.

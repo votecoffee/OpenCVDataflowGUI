@@ -710,6 +710,7 @@ def builtin_registry():
     from .local_binary_patterns import LocalBinaryPatterns
     from .local_threshold import LocalThreshold
     from .logix import LOGIX_BLOCKS
+    from .mask_clearance import MaskClearance
     from .match_review import ReviewFeatureMatches
     from .matrix_eigen import MatrixEigen
     from .matrix_inverse import InvertMatrix
@@ -932,6 +933,7 @@ def builtin_registry():
         FindTemplateInstances,
         SelectPickCandidate,
         BeadCalipers,
+        MaskClearance,
         TrainShapePattern,
         MatchShapePattern,
         TrainTexturePattern,

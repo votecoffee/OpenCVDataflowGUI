@@ -61,7 +61,9 @@ the two disconnected marks. A texture study compares local binary pattern
 histograms for an unchanged surface under different brightness and a worn surface. A
 co-occurrence study detects a rotated brushed pattern with the same intensity histogram.
 A ridge study checks dark and bright crack-like marks on a synthetic surface. A
-multiscale follow-up measures how a single-scale filter misses wider marks.
+multiscale follow-up measures how a single-scale filter misses wider marks. A
+mask clearance study distinguishes missing material from a narrow section
+along a nominal bead centerline.
 
 ## Vision tool priorities
 

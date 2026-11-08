@@ -4804,6 +4804,28 @@ Inputs: `model` (data), `samples` (data, optional).
 | `check_distance` | `false` | Fail when any row exceeds the distance limit. |
 | `distance_limit` | `3.0` | Value must be a finite number at least 0. Maximum Mahalanobis distance for an accepted row. |
 
+## Mask clearance at reference (`inspect.mask_clearance`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reference` (image).
+
+Input `image` — Measured 8-bit monochrome mask. Nonzero pixels mark foreground.
+
+Input `reference` — 8-bit monochrome mask of expected sample locations, such as a centerline.
+
+Input `mask` — Limit reference sample locations. Clearance uses the full foreground mask.
+
+Input `region` — Limit reference sample locations. Clearance uses the full foreground mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_clearance` | `1.0` | Value must be a finite number at least 0. Minimum Euclidean distance in pixels from a covered sample center to a background pixel center, including background outside the image. |
+| `maximum_clearance` | `0.0` | Value must be a finite number at least 0. Maximum accepted distance. Zero disables the upper limit. |
+| `minimum_coverage` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of reference samples covered by foreground. At least one reference sample must be covered. |
+| `minimum_in_range_fraction` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of covered samples within clearance limits. Missing samples are checked separately by coverage. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid compares equal-size images by index across frame IDs. Use it for an independently registered reference. |
+
 ## Mask from filtered labels (`inspect.mask_from_labels`)
 
 Inspection / Segmentation
