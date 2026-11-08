@@ -5361,6 +5361,27 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `max_iterations` | `0` | Value must be a whole number between 0 and 10000. Guo–Hall only. Zero runs until stable. |
 | `medial_axis_seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Local random seed for breaking medial-axis ties. |
 
+## Inspect strip width (`inspect.strip_width`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `mask` (image, optional), `sampling` (data, optional).
+
+Input `image` — 8-bit monochrome foreground mask. Nonzero pixels are foreground.
+
+Input `mask` — Validity mask from the same strip grid. Zero means the sample is unavailable.
+
+Input `sampling` — Optional Unwrap path strip sampling data for source-pixel widths. Also connect its validity mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `center_row` | `-1` | Value must be a whole number between -1 and 2.1e+06. Row the foreground run must cross. -1 uses the sampling center row or the middle row of an untagged mask. |
+| `minimum_width` | `1.0` | Value must be a finite number at least 0. Inclusive minimum. Measured as sample count times cross-strip step. |
+| `maximum_width` | `0.0` | Value must be a finite number at least 0. Inclusive maximum. Zero disables the upper limit. |
+| `minimum_valid_fraction` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of columns that can be classified. A clipped run or a masked-out center is unmeasurable. |
+| `minimum_coverage` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of classifiable columns with a measurable foreground run. At least one run must be measurable. |
+| `minimum_in_range_fraction` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of measured widths within limits. |
+
 ## Find template instances (`inspect.template_instances`)
 
 Inspection / Matching

@@ -385,3 +385,11 @@ maps on a distinct strip grid. Invalid coordinates are -1 and invalid pixels
 are zero. Closed paths include the closing segment without a duplicate end
 column. Keep the strip narrow on tight bends to limit overlap. Along-step
 spacing describes the centerline and cross-step spacing is in source pixels.
+
+**Inspect strip width** measures the contiguous foreground run across each
+column's nominal center. It needs an observed background sample on each side.
+Masked samples and clipped edges are reported as unmeasurable, while observed
+background at the center is reported as missing. Connect the strip sampling
+data and validity mask for source-pixel widths. The width estimate is the
+sample count times the cross-step. Coverage and width tolerance have separate
+limits and ticket reasons.

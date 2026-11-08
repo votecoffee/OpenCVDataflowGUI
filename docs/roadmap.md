@@ -66,7 +66,8 @@ mask clearance study distinguishes missing material from a narrow section
 along a nominal bead centerline. A path continuity study distinguishes short,
 scattered defects from a long gap, including across a closed path's start. A
 path strip study straightens a curved bead and measures foreground width
-across the remapped strip.
+across the remapped strip. A follow-up checks width tolerance, missing material,
+and clipped edges with distinct ticket reasons.
 
 ## Vision tool priorities
 
