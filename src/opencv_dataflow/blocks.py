@@ -731,6 +731,7 @@ def builtin_registry():
     from .oriented_edges import FindOrientedEdges
     from .overlay_graphics import OverlayResultGraphics, SetFilmstripImage
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
+    from .path_continuity import InspectPathContinuity
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .photo_filters import PHOTO_FILTER_BLOCKS
     from .pick_selection import SelectPickCandidate
@@ -880,6 +881,7 @@ def builtin_registry():
         RouteChannels,
         IntensityProfile,
         PathIntensityProfile,
+        InspectPathContinuity,
         ImageSummaryStatistics,
         MeasureImageNorm,
         CheckImageValidity,

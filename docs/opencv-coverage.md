@@ -369,3 +369,11 @@ It estimates local margin in pixels around the expected path. Use paired-edge
 calipers to measure edge-to-edge width. A mask or region limits sample locations
 while retaining the full foreground neighborhood. The two output masks include
 every affected sample. The review draws at most 256 points per status.
+
+**Inspect path continuity** consumes an ordered Path intensity profile. It
+checks a selected channel against an inclusive range, measures contiguous
+out-of-range lengths in path pixels, and merges a gap across a closed path's
+start. Each sample represents the interval between neighboring midpoints,
+clipped at open endpoints. Unavailable samples split runs and are checked
+separately. Gap lengths are estimates at the configured sampling resolution.
+The gap list includes every run, while the overlay draws the 256 longest.

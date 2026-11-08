@@ -279,6 +279,7 @@ class PathIntensityProfile(Block):
         outputs = {
             "profile": {
                 "closed": p["closed"],
+                "path_length": length,
                 "distances": distances.tolist(),
                 "points": locations,
                 "channels": [

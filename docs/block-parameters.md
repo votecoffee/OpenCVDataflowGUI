@@ -5063,6 +5063,23 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `max_contrast` | `0.0` |  |
 | `contrast_offset` | `2.0` | Sample this far beyond half band width on each side for contrast. |
 
+## Inspect path continuity (`inspect.path_continuity`)
+
+Inspection / Measurements
+
+Inputs: `profile` (data).
+
+Input `profile` — Ordered samples and path length from Path intensity profile.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `channel` | `"auto"` | `auto`, `Gray`, `B`, `G`, `R`, `A`, `H`, `S`, `V`, `L`, `a`, `b` Auto uses the first channel in the path profile. |
+| `range_mode` | `"at_least"` | `at_least`, `at_most`, `between` Select the inclusive limits that define an acceptable sample. |
+| `minimum_value` | `1.0` | Value must be a finite number. |
+| `maximum_value` | `255.0` | Value must be a finite number. |
+| `maximum_gap` | `0.0` | Value must be a finite number at least -1. Maximum contiguous out-of-range length in path pixels. Negative disables. |
+| `minimum_sampled_fraction` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of path samples with values. Unavailable samples break a gap and are checked separately. |
+
 ## Phase correlation shift (`inspect.phase_correlation`)
 
 Inspection / Registration
