@@ -143,6 +143,7 @@ _MODULE_BY_BLOCK = {
 _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
     "inspect.focus": ("Laplacian", "Sobel", "Tenengrad", "sharpness", "blur"),
+    "inspect.local_binary_patterns": ("LBP", "local_binary_pattern"),
     "cv.graph_segments": ("createGraphSegmentation",),
     "inspect.selective_search": ("createSelectiveSearchSegmentation",),
     "cv.calibrate_debevec": ("createCalibrateDebevec",),
@@ -206,6 +207,8 @@ def block_entry(block):
     elif file == "skeleton":
         family = "Graph" if type_id == "inspect.prune_skeleton" else "Morphology"
         path = ("scikit-image", family)
+    elif file == "local_binary_patterns":
+        path = ("scikit-image", "Texture")
     elif type_id.startswith("gapi."):
         path = ("OpenCV", "Advanced", "G-API")
     else:
@@ -215,7 +218,7 @@ def block_entry(block):
             if module
             else ("Custom", kind, subtype)
         )
-    aliases = ("skimage",) if file == "skeleton" and package == "opencv_dataflow" else ()
+    aliases = ("skimage",) if path[0] == "scikit-image" else ()
     title = block_display_title(block)
     former_title = (block.title,) if title != block.title else ()
     return ToolEntry(

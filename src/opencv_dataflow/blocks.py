@@ -706,6 +706,7 @@ def builtin_registry():
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .linear_program import SolveLinearProgram
     from .linear_system import SolveLinearSystem
+    from .local_binary_patterns import LocalBinaryPatterns
     from .local_threshold import LocalThreshold
     from .logix import LOGIX_BLOCKS
     from .match_review import ReviewFeatureMatches
@@ -841,6 +842,7 @@ def builtin_registry():
         SaveCalibration,
         *PROCESSING_BLOCKS,
         LocalThreshold,
+        LocalBinaryPatterns,
         JoinImages,
         StitchImagePair,
         StitchScanSequence,

@@ -342,6 +342,11 @@ The [skeleton pruning example](<../examples/custom tools/skeleton_pruning/README
 centerlines from a binary mask and removes short spurs. Install the optional
 dependency with `python -m pip install -e ".[morphology]"`.
 
+**Local binary patterns** uses the same scikit-image dependency. Wire its histogram to
+**Compare histograms** and keep the method, radius, and neighbor count consistent across
+reference and sample. The validity mask excludes centers whose neighborhood would cross
+the image border. Compare selected areas at the same image scale.
+
 Additional tools include monochrome/per-channel color histograms, planar
 pixel-to-physical mapping, offline multi-view lens calibration, undistortion,
 white/color balance, reusable calibration ToolBlocks, and typed depth-image

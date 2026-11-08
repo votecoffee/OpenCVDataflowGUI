@@ -99,7 +99,7 @@ def histogram_plot(channels, selected, lower, upper, show_statistics):
         for index, channel in enumerate(channels)
     ]
     edges = selected["edges"]
-    statistics = selected["statistics"]
+    statistics = selected["statistics"] if show_statistics else {}
     left, right = edges[0], edges[-1]
     header_y = 282 - 17 * len(channels)
     axis_y = header_y - 13 if show_statistics else 260

@@ -4720,6 +4720,24 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `density_threshold` | `0.7` |  |
 | `bins` | `1024` |  |
 
+## Local binary patterns (`inspect.local_binary_patterns`)
+
+Inspection / Texture
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale or color uint8/uint16, limited to 2.1 million pixels.
+
+Input `mask` — Restrict code centers. Neighbor samples may come from outside the mask.
+
+Input `region` — Restrict code centers. Intersected with a wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"uniform"` | `default`, `ror`, `uniform`, `nri_uniform` Uniform and ror group rotations. Default and nri_uniform retain direction. |
+| `neighbors` | `8` | Value must be a whole number between 4 and 24. Samples per circle. Default and ror support up to 12 to bound bin counts. |
+| `radius` | `1.0` | Value must be a finite number between 0.5 and 32. Sampling radius in pixels. The border is excluded from the histogram. |
+
 ## Mahalanobis distance (`inspect.mahalanobis_distance`)
 
 Inspection / Measurements
