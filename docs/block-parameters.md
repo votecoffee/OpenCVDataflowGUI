@@ -2537,6 +2537,10 @@ Inputs: `image` (image).
 | `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
 | `border_value` | `0.0` |  |
+| `offset_x` | `0.0` | Shift right in output pixels after rotation. |
+| `offset_y` | `0.0` | Shift down in output pixels after rotation. |
+| `canvas_mode` | `"same_size"` | `same_size`, `fit` Fit centers the transformed footprint and records its canvas origin. |
+| `emit_valid_mask` | `false` | Mark source coverage using nearest-neighbor sampling and zero border. |
 
 ## Rotate 90 / 180 (`cv.rotate90`)
 

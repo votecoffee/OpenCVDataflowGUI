@@ -16,7 +16,7 @@ from .parameters import (
     linear_filter_anchor,
     optional_mask,
 )
-from .payloads import metadata, moved_payload
+from .payloads import NO_VALUE, metadata, moved_payload
 from .processing import (
     ImageTool,
     encoded_result,
@@ -220,9 +220,32 @@ class WarpPerspective(WarpAffine):
         )
 
 
+def fitted_rotation(matrix, width, height):
+    # Bounds of the transformed source's pixel cells, including the outer half-pixels.
+    linear = matrix[:, :2]
+    span = np.abs(linear) @ [width, height]
+    if not np.isfinite(span).all():
+        raise ValidationError("Fitted rotation produced nonfinite dimensions")
+    # Suppress trigonometric roundoff at exact integer extents.
+    size = tuple(max(1, int(np.ceil(round(float(length), 10)))) for length in span)
+    if max(size) > 16_384:
+        raise ValidationError("Fitted rotation is limited to 16,384 pixels per axis")
+    if size[0] * size[1] > 64_000_000:
+        raise ValidationError("Fitted rotation is limited to 64 million pixels")
+    center = (np.array([width, height]) - 1) / 2
+    translation = (np.asarray(size) - 1) / 2 - linear @ center
+    origin = (matrix[:, 2] - translation).tolist()
+    matrix[:, 2] = translation
+    return size, origin
+
+
 class Rotate(ImageTool):
     type_id, title, subtype = "cv.rotate", "Rotate arbitrary angle", "Geometry"
-    outputs = (Port("image"), Port("geometry", "data"))
+    outputs = (
+        Port("image"),
+        Port("geometry", "data"),
+        Port("valid_mask", required=False, visual_type="mask"),
+    )
     defaults = {
         "angle_degrees": 15.0,
         "scale": 1.0,
@@ -230,8 +253,18 @@ class Rotate(ImageTool):
         "interpolation": "linear",
         "border": "constant",
         "border_value": 0.0,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "canvas_mode": "same_size",
+        "emit_valid_mask": False,
     }
-    parameter_choices = WarpAffine.parameter_choices
+    parameter_choices = {**WarpAffine.parameter_choices, "canvas_mode": ("same_size", "fit")}
+    parameter_help = {
+        "offset_x": "Shift right in output pixels after rotation.",
+        "offset_y": "Shift down in output pixels after rotation.",
+        "canvas_mode": "Fit centers the transformed footprint and records its canvas origin.",
+        "emit_valid_mask": "Mark source coverage using nearest-neighbor sampling and zero border.",
+    }
 
     def process(self, inputs):
         source = inputs["image"]
@@ -240,18 +273,31 @@ class Rotate(ImageTool):
         angle, scale = finite(p["angle_degrees"], "Angle"), finite(p["scale"], "Scale", 0)
         if scale <= 0:
             raise ValueError("Scale must be positive")
-        center = p["center"] or [(image.shape[1] - 1) / 2, (image.shape[0] - 1) / 2]
+        height, width = image.shape[:2]
+        center = p["center"] or [(width - 1) / 2, (height - 1) / 2]
         if np.asarray(center).shape != (2,) or not np.isfinite(center).all():
             raise ValueError("Center must be a finite [x,y] pair or an empty list")
         matrix = cv2.getRotationMatrix2D(tuple(map(float, center)), angle, scale)
-        return warped(
-            source,
-            matrix,
-            (image.shape[1], image.shape[0]),
-            p["interpolation"],
-            p["border"],
-            p["border_value"],
-        )
+        matrix[:, 2] += [finite(p["offset_x"], "Offset X"), finite(p["offset_y"], "Offset Y")]
+        if not np.isfinite(matrix).all():
+            raise ValidationError("Rotation parameters produced a nonfinite transform")
+        size = (width, height)
+        origin = None
+        if p["canvas_mode"] == "fit":
+            size, origin = fitted_rotation(matrix, width, height)
+        result = warped(source, matrix, size, p["interpolation"], p["border"], p["border_value"])
+        if origin is not None:
+            result.outputs["geometry"]["canvas_origin"] = origin
+        result.outputs["valid_mask"] = NO_VALUE
+        if p["emit_valid_mask"]:
+            result.outputs["valid_mask"] = cv2.warpAffine(
+                np.full((height, width), 255, np.uint8),
+                matrix,
+                size,
+                flags=cv2.INTER_NEAREST,
+                borderMode=cv2.BORDER_CONSTANT,
+            )
+        return result
 
 
 class CopyBorder(ImageTool):

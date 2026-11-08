@@ -36,7 +36,9 @@ The studies check known geometry, decisions, decoded text, or reconstruction
 error against original synthetic references. An adaptive foreground study
 compares GSoC and LSBP after learning an empty conveyor fixture. A resize
 study checks letterbox padding, source-coordinate round trips, and the
-effect of interpolation on categorical masks.
+effect of interpolation on categorical masks. A rotation and translation
+study compares clipped and fitted canvases and follows a region through the
+combined warp.
 
 ## Vision tool priorities
 

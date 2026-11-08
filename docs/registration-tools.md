@@ -8,7 +8,7 @@ graphs, layouts or parameters.
 | --- | --- | --- |
 | Image processing / Geometry | Warp affine | `warpAffine`; JSON 2×3 input-to-output matrix or optional transform input |
 | Image processing / Geometry | Warp perspective | `warpPerspective`; JSON 3×3 matrix or estimated image homography input |
-| Image processing / Geometry | Rotate arbitrary angle | `getRotationMatrix2D` and `warpAffine`; angle, scale and optional center |
+| Image processing / Geometry | Rotate arbitrary angle | `getRotationMatrix2D` and `warpAffine`; angle, scale, center, post-rotation offsets and canvas mode |
 | Image processing / Geometry | Add image border | `copyMakeBorder`; configurable widths and constant/replicate/reflect border |
 | Image processing / Geometry | Gaussian pyramid up/down | Repeated `pyrDown` or `pyrUp`, 1–6 levels |
 | Image processing / Filtering | Custom 2D filter | `filter2D`; finite JSON kernel, correlation/convolution, anchor, depth, delta and border mode |
@@ -24,9 +24,18 @@ graphs, layouts or parameters.
 Warp matrices describe **input/source pixels → output/target pixels**. The optional
 transform port accepts a raw matrix or an estimated transform dictionary containing
 `source_to_target`. Affine expects 2×3 and perspective expects 3×3. Matrices must
-be finite and invertible. Output width/height zero means the source dimension;
-rotation keeps the same canvas and can clip rotated corners. The automatic center
-is `((width-1)/2, (height-1)/2)`; positive angles follow OpenCV's rotation convention.
+be finite and invertible. Output width or height of zero uses the source
+dimension. The automatic rotation center is `((width-1)/2, (height-1)/2)`.
+Positive angles follow OpenCV's rotation convention.
+
+**Rotate arbitrary angle** applies the X and Y offsets after rotation in one warp.
+**Same size** keeps the original canvas. **Fit** sizes and centers the full
+transformed pixel footprint. Its `canvas_origin` reports the fitted grid's top-left
+pixel center in the fixed-canvas coordinates, so changing the pivot or offsets
+can change that origin while the fitted image stays centered.
+Enable **Emit valid mask** to select pixels covered by the source using nearest
+sampling. The mask excludes extrapolated border pixels. Other interpolation
+modes can still blend across the source boundary.
 
 Warp interpolation is nearest/linear/cubic. Borders are constant, replicated or
 `BORDER_REFLECT_101`. Geometry, filters and pyramids preserve channel encoding

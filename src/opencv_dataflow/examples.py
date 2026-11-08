@@ -445,6 +445,7 @@ def lena_registration_graph(registry):
         block = registry.create(type_id, block_id=key, parameters=parameters)
         block.name, block.position = name, position
         graph.add(block)
+    graph.blocks["registration_rotate"].exposed_outputs = ["image", "geometry"]
     for source, output, target, input in [
         ("registration_source", "image", "registration_rotate", "image"),
         ("registration_source", "image", "registration_query", "image"),
@@ -667,6 +668,7 @@ def transformed_regions_graph(registry):
         block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
         block.name, block.position = name, position
     graph.blocks["tracked_resize"].exposed_outputs = ["image", "geometry"]
+    graph.blocks["tracked_rotate"].exposed_outputs = ["image", "geometry"]
     graph.connect("tracked_source", "image", "tracked_shape", "image")
     previous_image, previous_region = "tracked_source", "tracked_shape"
     for image, region in [

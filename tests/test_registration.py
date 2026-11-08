@@ -4,6 +4,7 @@ import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.images import ImageArray, image_format
+from opencv_dataflow.payloads import metadata
 
 
 def run(type_id, inputs, parameters=None):
@@ -49,6 +50,56 @@ def test_rotation_zero_identity_and_border_geometry():
     np.testing.assert_allclose(
         np.array(bordered.last_result.outputs["geometry"]["output_to_input"]) @ [3, 2, 1], [0, 0, 1]
     )
+
+
+def test_fit_rotation_preserves_cardinal_pixels_and_reports_the_recentered_origin():
+    image = np.arange(15 * 20, dtype=np.uint16).reshape(15, 20)
+    block = run(
+        "cv.rotate", {"image": image},
+        {"angle_degrees": 90, "center": [0, 0], "canvas_mode": "fit",
+         "offset_x": 4, "offset_y": -3, "interpolation": "nearest", "emit_valid_mask": True},
+    )
+    output = block.last_result.outputs
+    np.testing.assert_array_equal(output["image"], np.rot90(image))
+    np.testing.assert_array_equal(output["valid_mask"], np.full((20, 15), 255, np.uint8))
+    geometry = output["geometry"]
+    np.testing.assert_allclose(geometry["canvas_origin"], [4, -22], atol=1e-12)
+    np.testing.assert_allclose(np.array(geometry["output_to_input"]) @ [0, 0, 1], [19, 0, 1],
+                               atol=1e-12)
+    assert metadata(output["image"])["spatial"] == metadata(output["valid_mask"])["spatial"]
+
+
+def test_rotation_translation_reports_source_coverage_with_a_replicated_border():
+    image = np.full((9, 11), 45, np.uint8)
+    block = run(
+        "cv.rotate", {"image": image},
+        {"angle_degrees": 0, "offset_x": 3, "offset_y": -2,
+         "border": "replicate", "emit_valid_mask": True},
+    )
+    outputs = block.last_result.outputs
+    assert np.all(outputs["image"] == 45)
+    expected = np.zeros_like(image)
+    expected[:-2, 3:] = 255
+    np.testing.assert_array_equal(outputs["valid_mask"], expected)
+    np.testing.assert_allclose(
+        np.array(outputs["geometry"]["output_to_input"]) @ [3, 0, 1], [0, 2, 1]
+    )
+
+
+def test_fit_rotation_contains_oblique_cell_corners_and_bounds_allocations():
+    image = np.full((31, 72), 77, np.uint8)
+    p = {"angle_degrees": 33, "scale": 1.15, "canvas_mode": "fit"}
+    block = run("cv.rotate", {"image": image}, p)
+    geometry = block.last_result.outputs["geometry"]
+    width, height = geometry["output_size"]
+    assert (width, height) == (89, 75)
+    corners = np.array([[-0.5, -0.5, 1], [71.5, -0.5, 1], [71.5, 30.5, 1], [-0.5, 30.5, 1]])
+    mapped = corners @ np.linalg.inv(geometry["output_to_input"]).T
+    assert (mapped[:, :2] >= -0.5).all()
+    assert (mapped[:, :2] <= [width - 0.5, height - 0.5]).all()
+    block.parameters["scale"] = 1000
+    assert block.execute({"image": image}) is None
+    assert "16,384 pixels per axis" in block.error
 
 
 def test_pyramids_filter_and_unsharp_native_results():
