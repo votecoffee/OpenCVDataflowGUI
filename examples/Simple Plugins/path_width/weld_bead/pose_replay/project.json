@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Moved weld image",
+      "parameters": {
+        "path": "assets/rotated-weld.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture",
+      "type": "cv.control_point_transform",
+      "name": "Known fixture move",
+      "parameters": {
+        "model": "affine",
+        "source_points": [
+          [
+            55.0,
+            50.0
+          ],
+          [
+            390.0,
+            70.0
+          ],
+          [
+            74.0,
+            370.0
+          ]
+        ],
+        "target_points": [
+          [
+            32.49329740047404,
+            110.13915758510856
+          ],
+          [
+            367.0165624481014,
+            83.32153013831805
+          ],
+          [
+            95.84378301378482,
+            424.3806506641698
+          ]
+        ],
+        "solver": "lu"
+      },
+      "position": [
+        0.0,
+        240.0
+      ],
+      "exposed_inputs": [
+        "source_points",
+        "target_points"
+      ],
+      "exposed_outputs": [
+        "transform",
+        "rms_pixels"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspection",
+      "type": "inspect.simple_path_width",
+      "name": "SimplePathWidth",
+      "parameters": {
+        "recipe_path": "assets/weld.spw",
+        "manifest_sha256": "d5015cf80ff914c53cf630dc2854ec97bd79420dbacb9453dbc8b5563006b441",
+        "reference_fixture": [],
+        "render_overlay": true,
+        "render_trend": true
+      },
+      "position": [
+        400.0,
+        65.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "mean_width",
+        "coverage",
+        "longest_gap",
+        "overlay",
+        "trend"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "inspection",
+      "input": "image"
+    },
+    {
+      "source": "fixture",
+      "output": "transform",
+      "target": "inspection",
+      "input": "pose"
+    }
+  ]
+}

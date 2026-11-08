@@ -22,3 +22,7 @@ replay. The dataset does not supply a quality verdict for these frames.
 
 The original masks are supplied for comparison. The graph takes only the
 inspection images as input. [Source and license](SOURCES.md)
+
+The [fixture pose replay](pose_replay/README.md) rotates and translates the
+second weld, then uses the supplied pose to align the inspection path. It
+also demonstrates the **Edge continuity** setting.

@@ -60,6 +60,30 @@ def test_real_weld_example_replays_with_edge_search_bands():
         graph.close()
 
 
+def test_moved_weld_project_uses_wired_affine_transform(tmp_path):
+    pytest.importorskip("opencv_simple_path_width.dataflow")
+    measurement = pytest.importorskip("opencv_simple_path_width.measurement")
+    if not hasattr(measurement.PathWidthSettings, "edge_continuity"):
+        pytest.skip("Fixture replay requires SimplePathWidth with edge continuity")
+    moved = tmp_path / "moved"
+    shutil.copytree(_EXAMPLE / "weld_bead/pose_replay", moved)
+    graph = Graph.load(moved / "project.json", builtin_registry())
+    try:
+        inspection = graph.blocks["inspection"]
+        graph.run()
+        assert inspection.state == "pass", inspection.error
+        result = inspection.last_result.outputs["measurements"]
+        assert len(result["stations"]) == 31 and result["coverage"] == 1
+        assert abs(result["path"][0][1] - result["path"][-1][1]) > 30
+
+        graph.connections = [wire for wire in graph.connections if wire.input != "pose"]
+        graph.run()
+        assert inspection.state == "fail", inspection.error
+        assert [item["code"] for item in inspection.last_result.fail_reasons] == ["station_out_of_tolerance"]
+    finally:
+        graph.close()
+
+
 def test_train_preview_stage_apply_and_restore(app, monkeypatch, tmp_path):
     trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
     original = pytest.importorskip("opencv_simple_path_width.recipe")
