@@ -42,6 +42,24 @@ def test_relocated_bead_project_reports_gaps_and_publishes_overlay(tmp_path):
         graph.close()
 
 
+def test_real_weld_example_replays_with_edge_search_bands():
+    pytest.importorskip("opencv_simple_path_width.dataflow")
+    measurement = pytest.importorskip("opencv_simple_path_width.measurement")
+    if not hasattr(measurement.PathWidthSettings, "nominal_width"):
+        pytest.skip("Weld example requires SimplePathWidth with edge search bands")
+    graph = Graph.load(_EXAMPLE / "weld_bead/project.json", builtin_registry())
+    graph.filmstrip_enabled = True
+    try:
+        inspection = graph.blocks["inspection"]
+        for state, stations in (("pass", 31), ("pass", 31), ("fail", 18)):
+            graph.run()
+            assert inspection.state == state, inspection.error
+            assert inspection.last_result.outputs["coverage"] == pytest.approx(stations / 31)
+        assert len(graph.filmstrip.snapshot()) == 3
+    finally:
+        graph.close()
+
+
 def test_train_preview_stage_apply_and_restore(app, monkeypatch, tmp_path):
     trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
     original = pytest.importorskip("opencv_simple_path_width.recipe")

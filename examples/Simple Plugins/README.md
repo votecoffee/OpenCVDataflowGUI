@@ -10,7 +10,7 @@ a project.
 | **SimpleSegmentation** | [Brick mortar, cup rim, PCB laminate, and ARMBench tote foreground](pixel_segmentation/README.md) |
 | **SimpleClassify** | [VegQual surface texture and color/layout classification](image_classification/README.md) |
 | **SimplePatternMatch** | [VisA PCB photographs](pattern_matching/visa_pcb2/README.md) for real board localization and [asymmetric brackets](pattern_matching/asymmetric_brackets/README.md) for generated multi-part scenes. |
-| **SimplePathWidth** | [Curved bead inspection](path_width/README.md) with paired edges, width and offset trends, and a gap. |
+| **SimplePathWidth** | [Synthetic curved bead](path_width/README.md) with a gap and [industrial weld bead](path_width/weld_bead/README.md) with separate edge search bands. |
 
 ## Set up SimplePatternMatch
 
