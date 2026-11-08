@@ -4136,6 +4136,22 @@ Inputs: `value` (any), `passed` (data, optional), `reasons` (data, optional).
 | `fail_reason` | `""` | Stable code assigned when the final decision is FAIL. |
 | `reason_message` | `""` | Human-readable explanation; defaults to the reason code. |
 
+## Find quadrilateral in mask (`inspect.find_quadrilateral`)
+
+Inspection / Segmentation
+
+Inputs: `image` (image).
+
+Input `image` — A uint8 monochrome mask. Nonzero pixels indicate foreground.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_area` | `100.0` | Value must be a finite number between 1 and 1.67772e+07. Minimum outer contour area in square pixels. |
+| `perimeter_fraction` | `0.02` | Value must be a finite number between 0 and 0.25. Approximation tolerance as a fraction of contour perimeter. |
+| `minimum_area_agreement` | `0.9` | Value must be a finite number between 0 and 1. Minimum ratio of the smaller area to the larger area. |
+| `border_margin` | `1` | Value must be a whole number between 0 and 16384. Reject contours closer than this many pixels to an image edge. |
+| `maximum_candidates` | `8` | Value must be a whole number between 1 and 128. Inspect up to this many contours, largest area first. |
+
 ## Fit line, ellipse or enclosing circle (`inspect.fit_shape`)
 
 Inspection / Measurements

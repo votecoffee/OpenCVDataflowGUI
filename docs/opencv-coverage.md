@@ -221,6 +221,16 @@ A foreground and background overlap at the same certainty is an error.
 Connect **Markers** to GrabCut's **Markers** input and select **Labels** mode.
 The builder reports each class count and can emit a color preview.
 [OpenCV GrabCut reference](https://docs.opencv.org/5.0/main_modules/imgproc_segmentation.html)
+**Find quadrilateral in mask** checks outer contours in descending area.
+It requires a convex four-vertex approximation and can reject contours
+near the image edge or whose area changes too much during approximation.
+It outputs clockwise corners starting at the smallest x+y, with an upper
+corner chosen on a tie. This is an image-space order. Use a separate
+orientation cue when the part can appear upside down.
+Connect **Corners** to **Transform from control points** with a known
+destination rectangle, then warp the original image with **Warp perspective**.
+Expose **Result graphics** and use **Overlay result graphics** to review
+the numbered corners.
 **Thin binary mask** exposes Zhang–Suen and Guo–Hall skeletonization.
 The optional scikit-image blocks expose Zhang, Lee, Guo–Hall, and medial-axis
 skeletonization, plus length-based pruning of terminal branches. See the

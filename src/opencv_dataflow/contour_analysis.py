@@ -1,5 +1,7 @@
 """Compare and measure ordered contours and detected object collections."""
 
+from heapq import nlargest
+
 import cv2
 import numpy as np
 
@@ -415,6 +417,110 @@ def _contour_preview(block, image, payload, points, *, closed, label, color):
     return overlay, drawings
 
 
+class FindQuadrilateral(Block):
+    type_id, title = "inspect.find_quadrilateral", "Find quadrilateral in mask"
+    category, block_type, subtype = "Inspection", "Inspection", "Segmentation"
+    inputs = (Port("image", visual_type="mask"),)
+    outputs = (Port("corners", "data", required=False), Port("measurements", "data"))
+    defaults = {
+        "minimum_area": 100.0,
+        "perimeter_fraction": 0.02,
+        "minimum_area_agreement": 0.90,
+        "border_margin": 1,
+        "maximum_candidates": 8,
+    }
+    parameter_ranges = {
+        "minimum_area": NumericRange(1, 16_777_216),
+        "perimeter_fraction": NumericRange(0, 0.25),
+        "minimum_area_agreement": NumericRange(0, 1),
+        "border_margin": NumericRange(0, 16_384, whole=True),
+        "maximum_candidates": NumericRange(1, 128, whole=True),
+    }
+    parameter_help = {
+        "minimum_area": "Minimum outer contour area in square pixels.",
+        "perimeter_fraction": "Approximation tolerance as a fraction of contour perimeter.",
+        "minimum_area_agreement": "Minimum ratio of the smaller area to the larger area.",
+        "border_margin": "Reject contours closer than this many pixels to an image edge.",
+        "maximum_candidates": "Inspect up to this many contours, largest area first.",
+    }
+    input_help = {"image": "A uint8 monochrome mask. Nonzero pixels indicate foreground."}
+    process_inputs_readonly = True
+    parallel_safe = True
+
+    def process(self, inputs):
+        image = inputs["image"]
+        if image.ndim != 2 or image.dtype != np.uint8:
+            raise ValidationError("Find quadrilateral requires a uint8 monochrome mask")
+        if image.size > 16_777_216:
+            raise ValidationError("Find quadrilateral is limited to 16,777,216 pixels")
+        height, width = image.shape
+        p = self.parameters
+        margin = int(p["border_margin"])
+        minimum_area = float(p["minimum_area"])
+        contours, _ = cv2.findContours(image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        candidates = nlargest(
+            int(p["maximum_candidates"]),
+            (
+                (area, contour)
+                for contour in contours
+                if (area := cv2.contourArea(contour)) >= minimum_area
+            ),
+            key=lambda item: item[0],
+        )
+        records, drawings = [], {}
+        corners = NO_VALUE
+        score = 0.0
+        for area, contour in candidates:
+            x, y, w, h = cv2.boundingRect(contour)
+            record = {"contour_area": area, "bounds": [x, y, w, h]}
+            records.append(record)
+            if min(x, y, width - x - w, height - y - h) < margin:
+                record["status"] = "border_margin"
+                continue
+            epsilon = float(p["perimeter_fraction"]) * cv2.arcLength(contour, True)
+            quad = cv2.approxPolyDP(contour, epsilon, True)
+            record["vertices"] = len(quad)
+            if len(quad) != 4 or not cv2.isContourConvex(quad):
+                record["status"] = "not_convex_quadrilateral"
+                continue
+            signed_area = cv2.contourArea(quad, oriented=True)
+            agreement = min(area, abs(signed_area)) / max(area, abs(signed_area))
+            record["area_agreement"] = agreement
+            if agreement < float(p["minimum_area_agreement"]):
+                record["status"] = "area_agreement"
+                continue
+            points = quad.reshape(4, 2)
+            if signed_area < 0:
+                points = points[::-1]
+            # Clockwise in the image grid. Break x+y ties using the upper vertex.
+            first = np.lexsort((points[:, 1], points.sum(axis=1)))[0]
+            corners = np.roll(points, -first, axis=0).tolist()
+            record["status"] = "accepted"
+            score = agreement
+            if self.generate_graphics:
+                outline = graphic_object("polyline", corners, ACCEPTED, closed=True)
+                labels = tuple(
+                    graphic_object("label", (point,), ACCEPTED, text=str(index))
+                    for index, point in enumerate(corners, 1)
+                )
+                drawings["quadrilateral corners"] = GraphicDrawing((outline, *labels))
+            break
+
+        passed = corners is not NO_VALUE
+        message = f"Area agreement {score:.1%}" if passed else "No valid quadrilateral"
+        return Result(
+            {
+                "corners": corners,
+                "measurements": {"contours": len(contours), "candidates": records},
+            },
+            drawings=drawings,
+            passed=passed,
+            score=score,
+            message=message,
+            fail_reasons=[] if passed else ["quadrilateral_not_found"],
+        )
+
+
 class ApproximateContour(Block):
     type_id, title = "inspect.approximate_contour", "Approximate contour"
     category, block_type, subtype = "Inspection", "Inspection", "Measurements"
@@ -743,6 +849,7 @@ CONTOUR_ANALYSIS_BLOCKS = (
     ContourHull,
     TestContourPoints,
     ApproximateContour,
+    FindQuadrilateral,
     ApproximateConvexContour,
     ContourHierarchy,
 )

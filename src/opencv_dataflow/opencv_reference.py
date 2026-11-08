@@ -118,6 +118,7 @@ BINDINGS = {
     "inspect.akaze": "xfeatures2d.AKAZE_create",
     "inspect.align_ecc": "findTransformECCMultiScale findTransformECCWithMask",
     "inspect.approximate_contour": "approxPolyDP",
+    "inspect.find_quadrilateral": "findContours approxPolyDP isContourConvex",
     "inspect.approximate_convex_contour": "approxPolyN",
     "inspect.aruco_markers": "aruco.ArucoDetector.detectMarkers",
     "inspect.blobs": "connectedComponentsWithStatsWithAlgorithm",
