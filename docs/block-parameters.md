@@ -5686,9 +5686,10 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `overflow` | `"error"` | `error`, `evict_oldest` |
 | `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
 | `max_gap_ms` | `1000.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. Pixels mapped to full brightness. Vectors retain pixel units. |
+| `consistency_tolerance` | `0.0` | Value must be a finite number at least 0. Maximum round-trip error in pixels. Zero disables the check. |
 | `preset` | `"fast"` | `ultrafast`, `fast`, `medium` OpenCV preset for the search and refinement defaults. |
 | `initial_flow` | `"none"` | `none`, `previous` Previous reuses the preceding unmasked vectors as the initial estimate. |
-| `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. Pixels mapped to full brightness. Vectors retain pixel units. |
 | `finest_scale` | `-1` | Value must be a whole number between -1 and 9. -1 uses the preset, reduced for small images. Zero uses full resolution. |
 | `coarsest_scale` | `-1` | Value must be a whole number between -1 and 9. -1 selects the coarsest level that fits the input and OpenCV limits. |
 | `patch_size` | `0` | Value must be zero or a whole number between 4 and 64. Square matching patch in level pixels. Zero uses the preset. |
@@ -5716,6 +5717,8 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `overflow` | `"error"` | `error`, `evict_oldest` |
 | `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
 | `max_gap_ms` | `1000.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `visual_max_motion` | `10.0` | Pixels mapped to full brightness; raw vectors are unchanged. |
+| `consistency_tolerance` | `0.0` | Value must be a finite number at least 0. Maximum round-trip error in pixels. Zero disables the check. |
 | `pyramid_scale` | `0.5` |  |
 | `levels` | `3` |  |
 | `window` | `15` |  |
@@ -5724,7 +5727,6 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `poly_sigma` | `1.2` |  |
 | `gaussian_window` | `false` |  |
 | `initial_flow` | `"none"` | `none`, `previous` |
-| `visual_max_motion` | `10.0` | Pixels mapped to full brightness; raw vectors are unchanged. |
 
 ## Image memory / trained reference (`sequence.image_memory`)
 
@@ -5767,6 +5769,30 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `squared_distance_threshold` | `400.0` | Squared distance used to decide if a sample matches. |
 | `samples` | `7` |  |
 | `neighbors` | `2` | Minimum matching samples required to classify a pixel as background. |
+
+## Dense-grid Lucas–Kanade optical flow (`sequence.lk_grid_flow`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `1000.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. |
+| `consistency_tolerance` | `0.0` | Value must be a finite number at least 0. Maximum round-trip error in pixels. Zero disables the check. |
+| `grid_step` | `8` | Value must be a whole number between 2 and 512. Approximate spacing between tracked nodes in pixels. |
+| `window` | `21` | Value must be a positive odd integer between 3 and 255. |
+| `levels` | `3` | Value must be a whole number between 0 and 8. Highest Lucas–Kanade pyramid level. Zero uses the original grid only. |
+| `iterations` | `30` | Value must be a whole number between 1 and 100. |
+| `epsilon` | `0.01` | Value must be a finite number between 1e-06 and 1. |
+| `min_eigenvalue` | `0.0001` | Value must be a finite number between 0 and 1. OpenCV threshold for accepting a trackable image patch. |
+| `minimum_support` | `0.5` | Value must be a finite number between 1e-06 and 1. Minimum bilinear weight contributed by valid tracks at a pixel. |
 
 ## MOG2 background subtraction (`sequence.mog2`)
 

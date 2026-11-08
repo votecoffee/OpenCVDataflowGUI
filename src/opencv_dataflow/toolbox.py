@@ -162,6 +162,7 @@ _NATIVE_NAMES = {
     "inspect.histogram": ("calcHist",),
     "sequence.dis": ("DISOpticalFlow",),
     "sequence.farneback": ("calcOpticalFlowFarneback",),
+    "sequence.lk_grid_flow": ("calcOpticalFlowPyrLK",),
     "sequence.track_points": ("calcOpticalFlowPyrLK",),
     "calibration.lens": ("calibrateCamera", "calib3d"),
     "inspect.homography": ("findHomography", "calib3d"),

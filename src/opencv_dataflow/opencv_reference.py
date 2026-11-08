@@ -166,6 +166,7 @@ BINDINGS = {
     "sequence.dis": "DISOpticalFlow.create DenseOpticalFlow.calc",
     "sequence.farneback": "calcOpticalFlowFarneback",
     "sequence.knn_background": "createBackgroundSubtractorKNN BackgroundSubtractor.apply",
+    "sequence.lk_grid_flow": "calcOpticalFlowPyrLK remap",
     "sequence.mog2": "createBackgroundSubtractorMOG2 BackgroundSubtractor.apply",
     "sequence.track_points": "calcOpticalFlowPyrLK",
 }

@@ -41,6 +41,7 @@ or consume primary outputs; a status event during warmup does not mean inspectio
 | Running background subtraction | Running mean/variance; foreground mask, background, masked foreground | Warmup, optional stability; absolute/variance threshold, rate, deviations, variance floor, foreground-learning policy, learn input |
 | Farneback optical flow | Previous frame and optional previous flow; dense float32 XY vectors, magnitude, angle, visualization | Needs previous frame and warmup; scale, levels, window, iterations, polynomial neighborhood/sigma, Gaussian window, warm-start flow, visualization scale |
 | DIS optical flow | Same dense flow, magnitude, angle and visualization outputs as Farneback | Needs previous frame and warmup. Select Ultrafast, Fast or Medium, then tune patch search, pyramid scales, propagation, refinement and warm start. |
+| Dense-grid Lucas–Kanade optical flow | Tracks a regular grid and interpolates dense vectors with a support mask | Needs previous frame and warmup. Tune grid spacing, LK search and termination, trackable texture threshold, and minimum interpolation support. |
 | Track points (Lucas-Kanade) | Previous grayscale image, feature positions, IDs and ages; track collection and overlay | Warmup plus minimum mature tracks; corner detector controls, LK window/levels/termination, patch error or minimum eigenvalue, forward/backward tolerance, reseeding and age limits |
 | Stabilize camera motion | Previous grayscale frame, background feature tracks and a smoothed global trajectory. Corrected image, coverage mask and forward/inverse transform. | Needs a usable fit after the anchor frame. Translation or similarity, smoothing, motion and coverage gates, re-anchoring on loss of fit. |
 | Image memory / trained reference | First/latest/mean image; reference, absolute difference, current image | Eligible learning count or validated trained seed; learn input, freeze after warmup, strict/shape-only reference context |
@@ -61,6 +62,23 @@ or patch stride is reported as invalid. Masks and regions zero the reported
 vectors outside the selection, while warm start uses the full preceding field.
 See the [OpenCV 5 DIS API](https://docs.opencv.org/5.0/main_modules/classcv_1_1DISOpticalFlow.html)
 and the [PCB photograph replay](<../examples/opencv tools/pcb_motion/README.md>).
+
+**Dense-grid Lucas–Kanade optical flow** interpolates tracked grid nodes in
+the previous image. Only valid tracks contribute displacement. The **Support
+mask** indicates where their combined bilinear weight meets the configured
+minimum. Pixels below that minimum have zero vectors. Use the support mask
+when zero motion and missing estimates need different treatment.
+
+Farneback, DIS and dense-grid Lucas–Kanade can compute a second flow in the
+reverse direction. Set **Consistency tolerance** above zero, then expose
+**Consistency mask** and **Consistency error** in the sidebar as needed.
+The check samples reverse flow at the forward endpoint and measures the
+return error in pixels. The error is NaN for samples outside the selection,
+outside the destination, or without grid support. The mask marks evaluable
+pixels whose error meets the tolerance. Status reports selected, evaluable,
+and consistent counts. The check adds a reverse solve and keeps the forward
+vectors unchanged. Agreement alone does not establish accuracy in ambiguous
+texture or occluded areas.
 
 All blocks accept optional circle/rectangle/polygon regions or masks. Background and
 flow retain full-image neighborhood/learning context and restrict reported foreground

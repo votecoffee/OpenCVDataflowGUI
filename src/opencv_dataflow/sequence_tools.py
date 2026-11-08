@@ -12,6 +12,7 @@ from .core import Block, Port, Result
 from .image_assets import decode_image, encode_image
 from .images import ImageArray, image_format, opencv_image
 from .parameter_validation import NumericRange, ValidationError
+from .payloads import NO_VALUE
 from .processing import finite, gray_image, integer
 from .selection import contains
 from .sequence import (
@@ -157,12 +158,68 @@ class DenseFlow:
         }
 
 
+def _flow_consistency(
+    forward, backward, selection, tolerance, forward_support=None, backward_support=None
+):
+    height, width = forward.shape[:2]
+    x = forward[..., 0] + np.arange(width, dtype=np.float32)
+    y = forward[..., 1] + np.arange(height, dtype=np.float32)[:, None]
+    inside = (0 <= x) & (x <= width - 1) & (0 <= y) & (y <= height - 1)
+    selected = inside.size
+    if selection is not None:
+        inside &= selection != 0
+        selected = int(np.count_nonzero(selection))
+    if forward_support is not None:
+        inside &= forward_support
+    if backward_support is not None:
+        supported = cv2.remap(
+            backward_support.astype(np.float32), x, y, cv2.INTER_LINEAR,
+            borderMode=cv2.BORDER_REPLICATE,
+        )
+        inside &= supported >= 1
+    returned = cv2.remap(backward, x, y, cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+    returned += forward
+    error = cv2.magnitude(returned[..., 0], returned[..., 1])
+    error[~inside] = np.nan
+    consistent = inside & (error <= tolerance)
+    report = {
+        "selected": selected,
+        "evaluable": int(np.count_nonzero(inside)),
+        "consistent": int(np.count_nonzero(consistent)),
+        "tolerance_pixels": tolerance,
+    }
+    return ImageArray(consistent.astype(np.uint8) * 255, "gray"), ImageArray(error, "gray"), report
+
+
 class _DenseFlowSequence(SequenceBlock, ABC):
-    data_outputs = (Port("flow", "any"), Port("magnitude"), Port("angle"), Port("visualization"))
+    data_outputs = (
+        Port("flow", "any"),
+        Port("magnitude"),
+        Port("angle"),
+        Port("visualization"),
+        Port("consistency_mask", required=False, visual_type="region"),
+        Port("consistency_error", required=False),
+    )
+    defaults = {
+        **SEQUENCE_DEFAULTS,
+        "max_gap_ms": 1000.0,
+        "visual_max_motion": 10.0,
+        "consistency_tolerance": 0.0,
+    }
+    parameter_ranges = {"consistency_tolerance": NumericRange(0)}
+    parameter_help = {
+        **SEQUENCE_HELP,
+        "consistency_tolerance": "Maximum round-trip error in pixels. Zero disables the check.",
+    }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.exposed_outputs.remove("consistency_mask")
+        self.exposed_outputs.remove("consistency_error")
 
     @abstractmethod
     def flow_calculator(self, shape):
-        """Return a callable accepting two contiguous grayscale frames and optional initial flow."""
+        """Return a callable that produces dense vectors and an optional support mask."""
 
     def step(self, inputs, state, mask):
         gray = np.ascontiguousarray(gray_image(inputs["image"], (np.uint8,)))
@@ -180,11 +237,32 @@ class _DenseFlowSequence(SequenceBlock, ABC):
                 True,
                 {"reason": "needs_previous_image"},
             )
-        initial = state.get("flow") if p["initial_flow"] == "previous" else None
-        flow = calculate(previous, gray, None if initial is None else initial.copy())
+        tolerance = float(p["consistency_tolerance"])
+        if tolerance and (max(gray.shape) >= 32767 or gray.size > 16_777_216):
+            raise ValidationError(
+                "Flow consistency is limited to 16,777,216 pixels and 32,766 per axis",
+                "consistency_tolerance",
+            )
+        warm_start = p.get("initial_flow") == "previous"
+        initial = state.get("flow") if warm_start else None
+        flow, support = calculate(previous, gray, None if initial is None else initial.copy())
         if not np.isfinite(flow).all():
             raise ValueError("Optical flow produced nonfinite vectors")
-        state["flow"] = flow.copy() if p["initial_flow"] == "previous" else None
+        state["flow"] = flow.copy() if warm_start else None
+        consistent, error = NO_VALUE, NO_VALUE
+        details = {}
+        if tolerance:
+            backward, backward_support = calculate(gray, previous, None)
+            if not np.isfinite(backward).all():
+                raise ValueError("Backward optical flow produced nonfinite vectors")
+            consistent, error, details["consistency"] = _flow_consistency(
+                flow, backward, mask, tolerance, support, backward_support
+            )
+        extra_outputs = {}
+        if support is not None:
+            if mask is not None:
+                support &= mask != 0
+            extra_outputs["support_mask"] = ImageArray(support.astype(np.uint8) * 255, "gray")
         if mask is not None:
             flow[mask == 0] = 0
         magnitude, angle = cv2.cartToPolar(flow[..., 0], flow[..., 1], angleInDegrees=True)
@@ -200,17 +278,19 @@ class _DenseFlowSequence(SequenceBlock, ABC):
                 "magnitude": ImageArray(magnitude, "gray"),
                 "angle": ImageArray(angle, "gray"),
                 "visualization": view,
+                "consistency_mask": consistent,
+                "consistency_error": error,
+                **extra_outputs,
             },
             graphics={"flow preview": view},
-            details={"coordinates": field.describe()["coordinates"]},
+            details={**details, "coordinates": field.describe()["coordinates"]},
         )
 
 
 class FarnebackSequence(_DenseFlowSequence):
     type_id, title = "sequence.farneback", "Farneback optical flow"
     defaults = {
-        **SEQUENCE_DEFAULTS,
-        "max_gap_ms": 1000.0,
+        **_DenseFlowSequence.defaults,
         "pyramid_scale": 0.5,
         "levels": 3,
         "window": 15,
@@ -219,7 +299,6 @@ class FarnebackSequence(_DenseFlowSequence):
         "poly_sigma": 1.2,
         "gaussian_window": False,
         "initial_flow": "none",
-        "visual_max_motion": 10.0,
     }
     parameter_choices = {
         **SEQUENCE_CHOICES,
@@ -227,7 +306,7 @@ class FarnebackSequence(_DenseFlowSequence):
         "initial_flow": ("none", "previous"),
     }
     parameter_help = {
-        **SEQUENCE_HELP,
+        **_DenseFlowSequence.parameter_help,
         "visual_max_motion": "Pixels mapped to full brightness; raw vectors are unchanged.",
     }
 
@@ -245,7 +324,7 @@ class FarnebackSequence(_DenseFlowSequence):
             flags = cv2.OPTFLOW_FARNEBACK_GAUSSIAN if p["gaussian_window"] else 0
             if initial is not None:
                 flags |= cv2.OPTFLOW_USE_INITIAL_FLOW
-            return cv2.calcOpticalFlowFarneback(
+            flow = cv2.calcOpticalFlowFarneback(
                 previous,
                 gray,
                 initial,
@@ -257,6 +336,7 @@ class FarnebackSequence(_DenseFlowSequence):
                 sigma,
                 flags,
             )
+            return flow, None
 
         return calculate
 
@@ -269,11 +349,9 @@ class DISSequence(_DenseFlowSequence):
         "medium": cv2.DISOpticalFlow_PRESET_MEDIUM,
     }
     defaults = {
-        **SEQUENCE_DEFAULTS,
-        "max_gap_ms": 1000.0,
+        **_DenseFlowSequence.defaults,
         "preset": "fast",
         "initial_flow": "none",
-        "visual_max_motion": 10.0,
         "finest_scale": -1,
         "coarsest_scale": -1,
         "patch_size": 0,
@@ -293,6 +371,7 @@ class DISSequence(_DenseFlowSequence):
         "initial_flow": ("none", "previous"),
     }
     parameter_ranges = {
+        **_DenseFlowSequence.parameter_ranges,
         "visual_max_motion": NumericRange(1e-6),
         "finest_scale": NumericRange(-1, 9, whole=True),
         "coarsest_scale": NumericRange(-1, 9, whole=True),
@@ -306,7 +385,7 @@ class DISSequence(_DenseFlowSequence):
         "refinement_epsilon": NumericRange(1e-6, 1e6),
     }
     parameter_help = {
-        **SEQUENCE_HELP,
+        **_DenseFlowSequence.parameter_help,
         "preset": "OpenCV preset for the search and refinement defaults.",
         "initial_flow": "Previous reuses the preceding unmasked vectors as the initial estimate.",
         "visual_max_motion": "Pixels mapped to full brightness. Vectors retain pixel units.",
@@ -375,7 +454,113 @@ class DISSequence(_DenseFlowSequence):
         solver.setVariationalRefinementDelta(float(p["refinement_delta"]))
         solver.setVariationalRefinementGamma(float(p["refinement_gamma"]))
         solver.setVariationalRefinementEpsilon(float(p["refinement_epsilon"]))
-        return solver.calc
+        def calculate(previous, gray, initial):
+            return solver.calc(previous, gray, initial), None
+
+        return calculate
+
+
+class LKGridFlowSequence(_DenseFlowSequence):
+    type_id, title = "sequence.lk_grid_flow", "Dense-grid Lucas–Kanade optical flow"
+    data_outputs = (
+        *_DenseFlowSequence.data_outputs,
+        Port("support_mask", visual_type="region"),
+    )
+    defaults = {
+        **_DenseFlowSequence.defaults,
+        "grid_step": 8,
+        "window": 21,
+        "levels": 3,
+        "iterations": 30,
+        "epsilon": 0.01,
+        "min_eigenvalue": 1e-4,
+        "minimum_support": 0.5,
+    }
+    parameter_ranges = {
+        **_DenseFlowSequence.parameter_ranges,
+        "visual_max_motion": NumericRange(1e-6),
+        "grid_step": NumericRange(2, 512, whole=True),
+        "window": NumericRange(3, 255, whole=True, odd=True),
+        "levels": NumericRange(0, 8, whole=True),
+        "iterations": NumericRange(1, 100, whole=True),
+        "epsilon": NumericRange(1e-6, 1),
+        "min_eigenvalue": NumericRange(0, 1),
+        "minimum_support": NumericRange(1e-6, 1),
+    }
+    parameter_help = {
+        **_DenseFlowSequence.parameter_help,
+        "grid_step": "Approximate spacing between tracked nodes in pixels.",
+        "levels": "Highest Lucas–Kanade pyramid level. Zero uses the original grid only.",
+        "min_eigenvalue": "OpenCV threshold for accepting a trackable image patch.",
+        "minimum_support": "Minimum bilinear weight contributed by valid tracks at a pixel.",
+    }
+
+    def flow_calculator(self, shape):
+        height, width = shape
+        p = self.parameters
+        step = int(p["grid_step"])
+        if min(shape) <= step:
+            raise ValidationError("Each image dimension must exceed the grid spacing", "grid_step")
+        rows, cols = 1 + (height - 1) // step, 1 + (width - 1) // step
+        if max(shape) >= 32767 or height * width > 16_777_216 or rows * cols > 500_000:
+            raise ValidationError(
+                "Dense-grid flow is limited to 16,777,216 pixels and 500,000 tracked nodes"
+            )
+        x = np.linspace(0, width - 1, cols, dtype=np.float32)
+        y = np.linspace(0, height - 1, rows, dtype=np.float32)
+        nodes = np.stack(np.meshgrid(x, y), axis=-1).reshape(-1, 1, 2)
+        window = (int(p["window"]),) * 2
+        criteria = (
+            cv2.TERM_CRITERIA_COUNT | cv2.TERM_CRITERIA_EPS,
+            int(p["iterations"]),
+            float(p["epsilon"]),
+        )
+        minimum_support = float(p["minimum_support"])
+
+        def calculate(previous, gray, _initial):
+            matched, status, _ = cv2.calcOpticalFlowPyrLK(
+                previous,
+                gray,
+                nodes,
+                None,
+                winSize=window,
+                maxLevel=int(p["levels"]),
+                criteria=criteria,
+                minEigThreshold=float(p["min_eigenvalue"]),
+            )
+            if status is None or matched is None:
+                raise ValidationError("Dense-grid flow found no trackable points")
+            xy = matched.reshape(-1, 2)
+            valid = (
+                status.reshape(-1).astype(bool)
+                & np.isfinite(xy).all(axis=1)
+                & ((xy >= 0) & (xy <= [width - 1, height - 1])).all(axis=1)
+            )
+            if not valid.any():
+                raise ValidationError("Dense-grid flow found no trackable points")
+
+            # Interpolate displacement and valid-track weights together, so holes in the
+            # sparse grid do not contribute zero displacement to neighboring estimates.
+            samples = np.zeros((len(nodes), 3), np.float32)
+            samples[valid, :2] = xy[valid] - nodes[valid, 0]
+            samples[valid, 2] = 1
+            xmap = np.broadcast_to(np.linspace(0, cols - 1, width, dtype=np.float32), shape)
+            ymap = np.broadcast_to(
+                np.linspace(0, rows - 1, height, dtype=np.float32)[:, None], shape
+            )
+            field = cv2.remap(samples.reshape(rows, cols, 3), xmap, ymap, cv2.INTER_LINEAR)
+            weights = field[..., 2]
+            support = weights >= minimum_support
+            flow = np.zeros((*shape, 2), np.float32)
+            np.divide(
+                field[..., :2],
+                weights[..., None],
+                out=flow,
+                where=support[..., None],
+            )
+            return flow, support
+
+        return calculate
 
 
 class TrackPointsSequence(SequenceBlock):
@@ -741,6 +926,7 @@ SEQUENCE_BLOCKS = (
     BackgroundSequence,
     FarnebackSequence,
     DISSequence,
+    LKGridFlowSequence,
     TrackPointsSequence,
     ImageMemory,
     SequenceDemo,
