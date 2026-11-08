@@ -9,6 +9,7 @@ import numpy as np
 
 from .core import validate_value
 from .payloads import (
+    NO_VALUE,
     ImagePyramid,
     ValuePacket,
     image_with_payload,
@@ -177,3 +178,22 @@ class PluginDialogContext:
         else:
             raise ValueError("Image input source must be connected or processed")
         return _snapshot(*entry, level=0 if level is None else level)
+
+    def snapshot_input_data(self, port):
+        """Copy the latest published value and payload on a wired data input."""
+        if self._graph is None:
+            raise RuntimeError("The plugin dialog has closed")
+        target = next((item for item in self._block.inputs if item.name == port), None)
+        if target is None or target.kind != "data":
+            raise ValueError(f"{port} is not a data input")
+        wire = self._input_wires.get(port)
+        if wire is None:
+            raise ValueError(f"Connect a source to {port} to capture its data")
+        source, output = wire
+        block = self._graph.blocks.get(source)
+        result = block.last_result if block is not None else None
+        if result is None or result.outputs.get(output, NO_VALUE) is NO_VALUE:
+            raise ValueError(f"No connected data is cached for {port}. Run the graph first.")
+        packet = ValuePacket(result.outputs[output], result.payloads.get(output, {}))
+        validate_value(target, packet)
+        return copy.deepcopy(packet)

@@ -53,6 +53,7 @@ The `context` argument is a `PluginDialogContext` with the following members.
 | `refresh_images()` | Refreshes the catalog from the latest completed outputs published to the editor and returns the new entries. |
 | `snapshot_image(block_id, port, *, level=0)` | Returns a private `ValuePacket` containing a copied image and copied wire payload. |
 | `snapshot_input_image(port, *, source="connected", level=None)` | Copies an image for a named input of the selected block. |
+| `snapshot_input_data(port)` | Returns a private `ValuePacket` for the latest published value and payload on a wired `data` input. |
 | `output_revision` | Number of result publications received by the editor since the popup opened. Starts at zero. |
 | `subscribe_outputs(callback)` | Calls `callback(revision)` on the GUI thread after a publication and returns an unsubscribe function. |
 
@@ -82,6 +83,12 @@ you can select a level with `level=N`.
 
 Both captures read the catalog at opening or the last `refresh_images()`.
 The method raises a `ValueError` when the input image is unavailable.
+
+For a wired pose or other data port, call `context.snapshot_input_data("pose")`
+on the GUI thread. It reads the latest published upstream result directly.
+A missing wire or absent output raises `ValueError`. When combining snapshots,
+check acquisition tickets and coordinate roots before treating the values as
+observations from the same image.
 
 ## Follow graph outputs
 

@@ -478,3 +478,39 @@ def test_processed_image_capture_supports_injected_depth_inputs():
     assert captured.value.units == "m" and captured.value.display_max == 2
     assert captured.payload["spatial"]["root_id"] == "depth camera"
     np.testing.assert_array_equal(captured.value, depth)
+
+
+def test_wired_data_capture_copies_latest_pose_and_payload():
+    class Target(Block):
+        inputs = (Port("pose", "data"), Port("other", "data", required=False))
+
+        def process(self, inputs):
+            return Result({})
+
+    registry = builtin_registry()
+    graph = Graph()
+    source = graph.add(registry.create("input.demo"))
+    pose = graph.add(registry.create("pose.define"))
+    target = graph.add(Target())
+    graph.connect(source.id, "image", pose.id, "image")
+    graph.connect(pose.id, "pose", target.id, "pose")
+    context = PluginDialogContext(graph, target)
+    try:
+        with pytest.raises(ValueError, match="No connected data"):
+            context.snapshot_input_data("pose")
+        with pytest.raises(ValueError, match="Connect a source"):
+            context.snapshot_input_data("other")
+        graph.run()
+        captured = context.snapshot_input_data("pose")
+        assert captured.value["model"] == "image_pose_v1"
+        assert captured.payload["ticket"] == captured.value["target_payload"]["ticket"]
+        captured.value["source_to_target"][0][2] = 100
+        captured.payload["spatial"]["image_size"][0] = 99
+        latest = context.snapshot_input_data("pose")
+        assert latest.value["source_to_target"][0][2] == 0
+        assert latest.payload["spatial"]["image_size"][0] != 99
+        graph.run()
+        assert context.snapshot_input_data("pose").payload["ticket"] != latest.payload["ticket"]
+    finally:
+        context._close()
+        graph.close()

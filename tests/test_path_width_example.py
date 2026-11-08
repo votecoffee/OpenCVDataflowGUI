@@ -1,3 +1,4 @@
+import copy
 import shutil
 import time
 from pathlib import Path
@@ -82,6 +83,87 @@ def test_moved_weld_project_uses_wired_affine_transform(tmp_path):
         assert [item["code"] for item in inspection.last_result.fail_reasons] == ["station_out_of_tolerance"]
     finally:
         graph.close()
+
+
+def test_fixture_capture_stages_matching_pose_and_preserves_bead_offset(app, monkeypatch, tmp_path):
+    trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
+    if not hasattr(trainer.PathWidthTrainingDialog, "_capture_fixture"):
+        pytest.skip("Fixture training requires a SimplePathWidth build with fixture capture")
+    moved = tmp_path / "fixture"
+    shutil.copytree(_EXAMPLE / "fixture_capture", moved)
+    project = moved / "project.json"
+    graph = Graph.load(project, builtin_registry())
+    block, fixture = graph.blocks["width"], graph.blocks["fixture"]
+    original_path = block.parameters["recipe_path"]
+    block.parameters["reference_fixture"] = []
+    graph.save(project)
+    window = MainWindow()
+    warnings = []
+    monkeypatch.setattr(window, "warn", warnings.append)
+    try:
+        window.replace_graph(graph, project)
+        window.inspector.select(block)
+        window.start_run(False)
+        deadline = time.monotonic() + 10
+        while window.runner is not None and time.monotonic() < deadline:
+            app.processEvents()
+            QTest.qWait(10)
+        assert window.runner is None and fixture.state == "pass", fixture.error
+        window.inspector.open_plugin_dialog()
+        dialog = window.inspector._plugin_dialog
+        original_reference = dialog.reference.copy()
+        original_result = fixture.last_result
+        stale_result = copy.deepcopy(original_result)
+        stale_result.outputs["pose"]["target_payload"]["ticket"]["sequence"] += 1
+        fixture.last_result = stale_result
+        dialog.capture_fixture_button.click()
+        assert "different acquisitions" in dialog.status.text()
+        assert dialog.reference_fixture == []
+        np.testing.assert_array_equal(dialog.reference, original_reference)
+
+        fixture.last_result = original_result
+        dialog.capture_fixture_button.click()
+        expected = [[1, 0, 35], [0, 1, 49]]
+        assert dialog.reference_fixture == expected
+        assert block.parameters["reference_fixture"] == []
+        dialog.reject()
+        assert block.parameters["reference_fixture"] == []
+        assert not (moved / "assets/path_width").exists()
+
+        window.inspector.open_plugin_dialog()
+        dialog = window.inspector._plugin_dialog
+        dialog.capture_fixture_button.click()
+        dialog.stage_button.click()
+        assert block.parameters["recipe_path"] == original_path
+        assert block.parameters["reference_fixture"] == []
+        window.inspector.apply()
+        assert not warnings
+        assert block.parameters["reference_fixture"] == expected
+        graph.save(project)
+        window.inspector.open_plugin_dialog()
+        restored = window.inspector._plugin_dialog
+        assert restored.reference_fixture == expected
+        assert "x 35.0, y 49.0" in restored.fixture_label.text()
+        restored.clear_fixture_button.click()
+        assert restored.reference_fixture == []
+        restored.reject()
+        assert block.parameters["reference_fixture"] == expected
+    finally:
+        window.dirty = False
+        window.close()
+        app.processEvents()
+
+    replay = Graph.load(project, builtin_registry())
+    try:
+        inspection = replay.blocks["width"]
+        for verdict, offset in (("pass", .5), ("pass", .5), ("fail", 4.5)):
+            replay.run()
+            assert inspection.state == verdict, inspection.error
+            result = inspection.last_result.outputs["measurements"]
+            assert result["coverage"] == 1
+            assert result["stations"][0]["center_offset_px"] == pytest.approx(offset, abs=.05)
+    finally:
+        replay.close()
 
 
 def test_train_preview_stage_apply_and_restore(app, monkeypatch, tmp_path):

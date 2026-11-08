@@ -4,6 +4,9 @@ The [project](project.json) measures a bright bead along a curved reference
 path. The example uses generated grayscale images. The clean reference
 passes. The second image has a gap and a section that is too narrow.
 
+For a moving part, open the [fixture capture example](fixture_capture/README.md)
+to train from a live fixture pose and measure bead offset after translation.
+
 ## Setup
 
 Install a local SimplePathWidth checkout or wheel into the Python environment
