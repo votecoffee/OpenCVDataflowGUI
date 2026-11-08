@@ -773,6 +773,7 @@ def builtin_registry():
         BoundingConvexPolygon,
         BoundingRotatedRectangle,
         FitShape,
+        InspectWorkplaneEllipse,
         InspectWorkplaneRectangle,
         RotatedRectangleOverlap,
     )
@@ -944,6 +945,7 @@ def builtin_registry():
         FitShape,
         BoundingRotatedRectangle,
         InspectWorkplaneRectangle,
+        InspectWorkplaneEllipse,
         BoundingConvexPolygon,
         DelaunayTriangulation,
         VoronoiCells,

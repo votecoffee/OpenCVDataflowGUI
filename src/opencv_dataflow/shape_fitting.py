@@ -213,18 +213,47 @@ class BoundingRotatedRectangle(Block):
         return Result(outputs, payloads=dict.fromkeys(outputs, payload), drawings=drawings)
 
 
-def _covered_rectangle(corners, mask):
+def _covered_footprint(vertices, mask):
     """Check the raster footprint plus one surrounding pixel for clipping."""
-    low = np.floor(corners.min(axis=0)).astype(int) - 1
-    high = np.ceil(corners.max(axis=0)).astype(int) + 1
+    low = np.floor(vertices.min(axis=0)).astype(int) - 1
+    high = np.ceil(vertices.max(axis=0)).astype(int) + 1
     if np.any(low < 0) or np.any(high >= mask.shape[::-1]):
         return False
     x, y = low
     right, bottom = high
     footprint = np.zeros((bottom - y + 1, right - x + 1), np.uint8)
-    cv2.fillConvexPoly(footprint, np.rint((corners - low) * 256).astype(np.int32), 1, shift=8)
+    cv2.fillConvexPoly(footprint, np.rint((vertices - low) * 256).astype(np.int32), 1, shift=8)
     selected = cv2.dilate(footprint, np.ones((3, 3), np.uint8)) != 0
     return bool(selected.any() and np.all(mask[y:bottom + 1, x:right + 1][selected] != 0))
+
+
+def _workplane_geometry(block, inputs, geometry_port):
+    image, scale, mask = (inputs[key] for key in ("image", "scale", "valid_mask"))
+    image_payload = block.input_payloads["image"]
+    units, step = require_workplane_scale(scale, image_payload, block.input_payloads["scale"])
+    if units != block.parameters["units"]:
+        raise ValidationError("Workplane scale units must match the dimension limits", "units")
+    for key in (geometry_port, "valid_mask"):
+        payload = block.input_payloads[key]
+        if payload.get("spatial") != image_payload["spatial"]:
+            raise ValidationError(f"{key} must share the workplane image frame")
+        first, second = image_payload.get("ticket"), payload.get("ticket")
+        if first is not None and second is not None and ticket_key(first) != ticket_key(second):
+            raise ValidationError(f"{key} and image must share one ticket")
+    if mask.dtype != np.uint8 or mask.ndim != 2 or mask.shape != image.shape[:2]:
+        raise ValidationError("Validity mask must be uint8 monochrome on the workplane grid")
+    if not 0 < mask.size <= 8_388_608:
+        raise ValidationError("Workplane measurement requires up to 8,388,608 pixels")
+    origin = np.asarray(scale.get("origin"), np.float64)
+    if origin.shape != (2,) or not np.isfinite(origin).all():
+        raise ValidationError("Workplane scale requires a finite physical origin")
+    return units, step, origin
+
+
+def _outside_limits(value, low, high):
+    below = value < low and not math.isclose(value, low, rel_tol=1e-12)
+    above = high and value > high and not math.isclose(value, high, rel_tol=1e-12)
+    return below or above
 
 
 class InspectWorkplaneRectangle(Block):
@@ -286,34 +315,15 @@ class InspectWorkplaneRectangle(Block):
             raise ValidationError("Check angle must be a checkbox value", "check_angle")
 
     def process(self, inputs):
-        image, rect, scale, mask = (inputs[key] for key in
-                                    ("image", "rectangle", "scale", "valid_mask"))
-        p = self.parameters
-        image_payload = self.input_payloads["image"]
-        units, step = require_workplane_scale(scale, image_payload, self.input_payloads["scale"])
-        if units != p["units"]:
-            raise ValidationError("Workplane scale units must match the dimension limits", "units")
-        for key in ("rectangle", "valid_mask"):
-            payload = self.input_payloads[key]
-            if payload.get("spatial") != image_payload["spatial"]:
-                raise ValidationError(f"{key} must share the workplane image frame")
-            first, second = image_payload.get("ticket"), payload.get("ticket")
-            if first is not None and second is not None and ticket_key(first) != ticket_key(second):
-                raise ValidationError(f"{key} and image must share one ticket")
-        if mask.dtype != np.uint8 or mask.ndim != 2 or mask.shape != image.shape[:2]:
-            raise ValidationError("Validity mask must be uint8 monochrome on the workplane grid")
-        if not 0 < mask.size <= 8_388_608:
-            raise ValidationError("Workplane measurement requires up to 8,388,608 pixels")
+        units, step, origin = _workplane_geometry(self, inputs, "rectangle")
+        p, rect = self.parameters, inputs["rectangle"]
         if not isinstance(rect, dict):
             raise ValidationError("Connect a minimum-area rotated rectangle")
         center, size, angle = _rectangle(
             rect.get("center"), rect.get("size"), rect.get("angle_degrees"), "Workplane rectangle"
         )
-        origin = np.asarray(scale.get("origin"), np.float64)
-        if origin.shape != (2,) or not np.isfinite(origin).all():
-            raise ValidationError("Workplane scale requires a finite physical origin")
         corners = cv2.boxPoints((center, size, angle))
-        covered = _covered_rectangle(corners, mask)
+        covered = _covered_footprint(corners, inputs["valid_mask"])
         dims = sorted(size, reverse=True)
         length, width = (value * step for value in dims)
         axis = angle if size[0] >= size[1] else angle + 90
@@ -334,9 +344,7 @@ class InspectWorkplaneRectangle(Block):
             )
             for key, value in (("length", length), ("width", width)):
                 low, high = float(p[f"minimum_{key}"]), float(p[f"maximum_{key}"])
-                below = value < low and not math.isclose(value, low, rel_tol=1e-12)
-                above = high and value > high and not math.isclose(value, high, rel_tol=1e-12)
-                if below or above:
+                if _outside_limits(value, low, high):
                     reasons.append({
                         "code": f"workplane_rectangle_{key}_out_of_range",
                         "message": f"Rectangle {key} {value:.4g} {units} is outside limits",
@@ -367,6 +375,117 @@ class InspectWorkplaneRectangle(Block):
              "width": width if covered else NO_VALUE,
              "angle": axis if covered and angle_known else NO_VALUE},
             passed=passed, fail_reasons=reasons, message=message, drawings=drawings,
+        )
+
+
+class InspectWorkplaneEllipse(Block):
+    type_id, title = "inspect.workplane_ellipse", "Inspect workplane ellipse"
+    category = block_type = "Inspection"
+    subtype = "Measurements"
+    inputs = (
+        Port("image"), Port("fit", "data"), Port("scale", "data"),
+        Port("valid_mask", visual_type="region"),
+    )
+    outputs = (
+        Port("measurements", "data"), Port("major_diameter", "number", required=False),
+        Port("minor_diameter", "number", required=False),
+        Port("axis_difference", "number", required=False),
+        Port("fit_rmse", "number", required=False),
+    )
+    payload_reference = "image"
+    process_inputs_readonly = True
+    parallel_safe = True
+    defaults = {
+        "units": "mm", "minimum_diameter": 0.0, "maximum_diameter": 0.0,
+        "maximum_axis_difference": 0.0, "maximum_fit_rmse": 0.0,
+    }
+    parameter_choices = {"units": LENGTH_UNITS}
+    parameter_ranges = {
+        "minimum_diameter": NumericRange(0), "maximum_diameter": NumericRange(0),
+        "maximum_axis_difference": NumericRange(0), "maximum_fit_rmse": NumericRange(0),
+    }
+    parameter_help = {
+        "units": "Expected units of the workplane scale and dimensional limits.",
+        "minimum_diameter": "Inclusive minimum of the minor diameter.",
+        "maximum_diameter": "Inclusive maximum of the major diameter. Zero disables this limit.",
+        "maximum_axis_difference": "Maximum major minus minor diameter. Zero disables this limit.",
+        "maximum_fit_rmse": "Maximum contour-to-ellipse RMS error. Zero disables this limit.",
+    }
+    input_help = {
+        "image": "Rectify workplane image used to measure and draw the ellipse.",
+        "fit": "Ellipse from Fit line, ellipse or enclosing circle on this same grid.",
+        "scale": "Physical scale from Rectify workplane for the current image.",
+        "valid_mask": "Rectify workplane validity mask. The footprint needs complete coverage.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        maximum = float(p["maximum_diameter"])
+        if maximum and maximum < float(p["minimum_diameter"]):
+            raise ValidationError(
+                "Maximum diameter must be at least the minimum or zero", "maximum_diameter"
+            )
+
+    def process(self, inputs):
+        units, step, origin = _workplane_geometry(self, inputs, "fit")
+        p, fit = self.parameters, inputs["fit"]
+        if not isinstance(fit, dict) or fit.get("shape") != "ellipse":
+            raise ValidationError("Connect an ellipse fit")
+        center, axes, angle = _rectangle(
+            fit.get("center"), fit.get("axis_lengths"),
+            fit.get("angle_degrees"), "Workplane ellipse"
+        )
+        error = NumericRange(0, 1e8).check(fit.get("rmse"), "Ellipse fit RMSE") * step
+        phase = np.linspace(0, 2 * np.pi, 720, endpoint=False)
+        rotation = math.radians(angle)
+        cosine, sine = math.cos(rotation), math.sin(rotation)
+        ellipse = np.column_stack((np.cos(phase), np.sin(phase))) * (np.asarray(axes) / 2)
+        outline = ellipse @ np.array([[cosine, sine], [-sine, cosine]]) + center
+        covered = _covered_footprint(outline, inputs["valid_mask"])
+        measurements = {"units": units, "status": "measured" if covered else "unmeasurable"}
+        outputs = dict.fromkeys(("major_diameter", "minor_diameter", "axis_difference", "fit_rmse"),
+                                NO_VALUE)
+        reasons = []
+        message = "Footprint is clipped"
+        if covered:
+            minor, major = (diameter * step for diameter in sorted(axes))
+            difference = major - minor
+            outputs.update(
+                major_diameter=major, minor_diameter=minor, axis_difference=difference,
+                fit_rmse=error,
+            )
+            measurements.update(center=(origin + np.asarray(center) * step).tolist(), **outputs)
+            message = f"{major:.4g} × {minor:.4g} {units}"
+            limits = (
+                ("minor_diameter", minor, float(p["minimum_diameter"]), 0),
+                ("major_diameter", major, 0, float(p["maximum_diameter"])),
+                ("axis_difference", difference, 0, float(p["maximum_axis_difference"])),
+                ("fit_rmse", error, 0, float(p["maximum_fit_rmse"])),
+            )
+            for key, value, low, high in limits:
+                if _outside_limits(value, low, high):
+                    label = key.replace("_", " ")
+                    reasons.append({
+                        "code": f"workplane_ellipse_{key}_out_of_range",
+                        "message": f"Ellipse {label} {value:.4g} {units} is outside limits",
+                    })
+        else:
+            reasons.append({
+                "code": "workplane_ellipse_unmeasurable",
+                "message": "The footprint touches invalid coverage or the workplane edge",
+            })
+        drawings = {}
+        if self.generate_graphics:
+            color = REJECTED if reasons else ACCEPTED
+            drawings["Workplane ellipse"] = GraphicDrawing((
+                graphic_object("polyline", outline, color, closed=True),
+                graphic_object("marker", [center], color),
+                graphic_object("label", [center], color, text=message),
+            ))
+        return Result(
+            {"measurements": measurements, **outputs}, passed=not reasons,
+            fail_reasons=reasons, message=message, drawings=drawings,
         )
 
 

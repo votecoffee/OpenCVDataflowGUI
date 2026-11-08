@@ -76,6 +76,7 @@ A held-out fiducial check gates the calibrated inspection if the camera shifts.
 A fit study uses disjoint ArUco IDs for estimating and verifying a planar mapping.
 A part study checks physical rectangle dimensions and orientation after rectification.
 A spacing study measures two detected centers on the original camera image.
+A bore study checks ellipse diameters, axis difference and fit error in millimeters.
 
 ## Vision tool priorities
 

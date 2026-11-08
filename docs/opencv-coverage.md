@@ -444,3 +444,9 @@ grid through a planar calibration and checks their physical distance. It
 withholds the distance when a usable pair is unavailable. It draws the
 endpoints and dimension on the camera image without rectifying the image.
 Both points must lie on the calibrated plane.
+
+**Inspect workplane ellipse** checks the fitted minor and major diameters,
+their difference, and the contour-to-ellipse RMS error in physical units.
+Wire an ellipse from the shape fit and the image, scale and validity mask
+from the same workplane. It withholds measurements if the fitted footprint
+touches the workplane edge or invalid coverage.

@@ -5638,6 +5638,28 @@ Input `background_points` — Overrides the saved background points.
 | `radius` | `2` | Value must be a whole number between 0 and 64. |
 | `background_mode` | `"border"` | `border`, `points` Border adds an inset ring. Points uses only specified points. |
 
+## Inspect workplane ellipse (`inspect.workplane_ellipse`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `fit` (data), `scale` (data), `valid_mask` (image).
+
+Input `image` — Rectify workplane image used to measure and draw the ellipse.
+
+Input `fit` — Ellipse from Fit line, ellipse or enclosing circle on this same grid.
+
+Input `scale` — Physical scale from Rectify workplane for the current image.
+
+Input `valid_mask` — Rectify workplane validity mask. The footprint needs complete coverage.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `units` | `"mm"` | `mm`, `cm`, `m`, `in` Expected units of the workplane scale and dimensional limits. |
+| `minimum_diameter` | `0.0` | Value must be a finite number at least 0. Inclusive minimum of the minor diameter. |
+| `maximum_diameter` | `0.0` | Value must be a finite number at least 0. Inclusive maximum of the major diameter. Zero disables this limit. |
+| `maximum_axis_difference` | `0.0` | Value must be a finite number at least 0. Maximum major minus minor diameter. Zero disables this limit. |
+| `maximum_fit_rmse` | `0.0` | Value must be a finite number at least 0. Maximum contour-to-ellipse RMS error. Zero disables this limit. |
+
 ## Inspect workplane rectangle (`inspect.workplane_rectangle`)
 
 Inspection / Measurements
