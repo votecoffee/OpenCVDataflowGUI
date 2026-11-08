@@ -144,6 +144,7 @@ _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
     "inspect.focus": ("Laplacian", "Sobel", "Tenengrad", "sharpness", "blur"),
     "inspect.local_binary_patterns": ("LBP", "local_binary_pattern"),
+    "inspect.gray_level_cooccurrence": ("GLCM", "Haralick", "graycoprops"),
     "cv.graph_segments": ("createGraphSegmentation",),
     "inspect.selective_search": ("createSelectiveSearchSegmentation",),
     "cv.calibrate_debevec": ("createCalibrateDebevec",),
@@ -207,7 +208,7 @@ def block_entry(block):
     elif file == "skeleton":
         family = "Graph" if type_id == "inspect.prune_skeleton" else "Morphology"
         path = ("scikit-image", family)
-    elif file == "local_binary_patterns":
+    elif file in ("local_binary_patterns", "gray_level_cooccurrence"):
         path = ("scikit-image", "Texture")
     elif type_id.startswith("gapi."):
         path = ("OpenCV", "Advanced", "G-API")

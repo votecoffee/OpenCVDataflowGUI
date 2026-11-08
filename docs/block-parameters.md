@@ -4439,6 +4439,32 @@ Input `probable_foreground` — A foreground hint that GrabCut may change.
 | `unmarked` | `"probable_background"` | `probable_background`, `probable_foreground` Initial class for pixels outside all supplied masks. |
 | `emit_preview` | `true` | Show definite background in blue and foreground in green, with gray and amber for the probable classes. |
 
+## Gray-level co-occurrence (`inspect.gray_level_cooccurrence`)
+
+Inspection / Texture
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale or color uint8/uint16, limited to 2.1 million pixels.
+
+Input `mask` — Both pixels of every counted pair must be selected.
+
+Input `region` — Both pixels must lie in the region and in any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `offsets` | `[[1, 0], [0, 1]]` | Up to 16 distinct nonzero [dx, dy] pixel offsets. Right and down are positive. |
+| `levels` | `32` | Value must be a whole number between 2 and 256. Quantization bins. Keep levels and intensity range fixed across captures. |
+| `range_mode` | `"dtype"` | `dtype`, `manual` Use the full integer depth or clamp to the manual endpoints before binning. |
+| `range_min` | `0` | Value must be a whole number between 0 and 65535. |
+| `range_max` | `255` | Value must be a whole number between 0 and 65535. |
+| `symmetric` | `true` | Count each pair in both directions. Pair counts stay undoubled. |
+| `offset_index` | `0` | Value must be a whole number between 0 and 15. Zero-based offset for the scalar output and probability matrix. |
+| `metric` | `"contrast"` | `contrast`, `dissimilarity`, `homogeneity`, `energy`, `correlation`, `asm`, `mean`, `variance`, `standard_deviation`, `entropy` Property to send to the Value output. Measurements contains all properties. |
+| `check_threshold` | `false` |  |
+| `threshold_mode` | `"maximum"` | `minimum`, `maximum` |
+| `threshold` | `1.0` | Value must be a finite number. Inclusive lower or upper limit for the selected value. |
+
 ## Find rotated and scaled Hough template (`inspect.guil_template`)
 
 Inspection / Matching

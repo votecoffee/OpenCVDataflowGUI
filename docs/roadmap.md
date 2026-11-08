@@ -58,7 +58,8 @@ across SLICO, LSC, and SEEDS at similar output region counts. A label
 measurement study checks the area and centroid of segmented coating regions.
 The follow-up converts the retained label back to its exact mask and counts
 the two disconnected marks. A texture study compares local binary pattern
-histograms for an unchanged surface under different brightness and a worn surface.
+histograms for an unchanged surface under different brightness and a worn surface. A
+co-occurrence study detects a rotated brushed pattern with the same intensity histogram.
 
 ## Vision tool priorities
 

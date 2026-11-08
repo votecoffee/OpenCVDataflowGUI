@@ -347,6 +347,11 @@ dependency with `python -m pip install -e ".[morphology]"`.
 reference and sample. The validity mask excludes centers whose neighborhood would cross
 the image border. Compare selected areas at the same image scale.
 
+**Gray-level co-occurrence** measures directional texture with the same dependency.
+Set pixel offsets as `[dx, dy]` pairs and keep quantization settings fixed for comparisons.
+Both pixels in each pair must be inside the selection. The matrix is a probability table
+indexed by the two gray levels.
+
 Additional tools include monochrome/per-channel color histograms, planar
 pixel-to-physical mapping, offline multi-view lens calibration, undistortion,
 white/color balance, reusable calibration ToolBlocks, and typed depth-image

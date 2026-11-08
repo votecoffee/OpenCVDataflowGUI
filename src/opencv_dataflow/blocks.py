@@ -676,6 +676,7 @@ def builtin_registry():
     from .generalized_hough import FindGuilTemplate, FindHoughTemplate
     from .geometry3d import GEOMETRY3D_BLOCKS
     from .gram_matrix import GramMatrix
+    from .gray_level_cooccurrence import GrayLevelCooccurrence
     from .hand_eye import HandEyeCalibration
     from .hdr import (
         CalibrateCameraResponse,
@@ -843,6 +844,7 @@ def builtin_registry():
         *PROCESSING_BLOCKS,
         LocalThreshold,
         LocalBinaryPatterns,
+        GrayLevelCooccurrence,
         JoinImages,
         StitchImagePair,
         StitchScanSequence,
