@@ -21,6 +21,7 @@ CONTOUR_APPROXIMATIONS = {
     "tc89_l1": cv2.CHAIN_APPROX_TC89_L1,
     "tc89_kcos": cv2.CHAIN_APPROX_TC89_KCOS,
 }
+LINEAR_FILTER_OPERATIONS = ("correlation", "convolution")
 OUTPUT_DEPTHS = {
     "same": -1,
     "uint8": cv2.CV_8U,
@@ -44,6 +45,14 @@ def anchor_value(value, width, height):
     x, y = map(int, values)
     if not (-1 <= x < width and -1 <= y < height):
         raise ValueError("Anchor must be -1 (centered) or inside the kernel")
+    return x, y
+
+
+def linear_filter_anchor(value, width, height, operation):
+    x, y = anchor_value(value, width, height)
+    if operation == "convolution":
+        x = width - 1 - (width // 2 if x == -1 else x)
+        y = height - 1 - (height // 2 if y == -1 else y)
     return x, y
 
 

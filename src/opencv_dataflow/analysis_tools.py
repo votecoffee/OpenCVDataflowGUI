@@ -8,7 +8,13 @@ from .fourier_correlation import MAX_TRANSFORM_PIXELS
 from .graphics_layers import GraphicDrawing, graphic_object
 from .images import ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
-from .parameters import BORDERS, OUTPUT_DEPTHS, anchor_value
+from .parameters import (
+    BORDERS,
+    LINEAR_FILTER_OPERATIONS,
+    OUTPUT_DEPTHS,
+    anchor_value,
+    linear_filter_anchor,
+)
 from .payloads import NO_VALUE, require_same_frame
 from .processing import ImageTool, encoded_result, finite, gray_image, image_value, integer
 from .registration import BORDERS as WARP_BORDERS
@@ -79,19 +85,32 @@ class SeparableFilter(RegionalOperation, ImageTool):
         "delta": 0.0,
         "output_depth": "same",
         "border": "reflect",
+        "operation": "correlation",
     }
-    parameter_choices = {"output_depth": tuple(OUTPUT_DEPTHS), "border": tuple(BORDERS)}
+    parameter_choices = {
+        "output_depth": tuple(OUTPUT_DEPTHS),
+        "border": tuple(BORDERS),
+        "operation": LINEAR_FILTER_OPERATIONS,
+    }
+    parameter_help = {
+        "operation": "Correlation uses the vectors as entered. Convolution reverses them.",
+        "anchor": "Kernel origin [x, y] before reversal. Use -1 on either axis to center it.",
+    }
 
     def process(self, inputs):
         source = inputs["image"]
         image = image_value(source)
         x, y = (kernel_vector(self.parameters[k], k) for k in ("kernel_x", "kernel_y"))
+        operation = self.parameters["operation"]
+        anchor = linear_filter_anchor(self.parameters["anchor"], len(x), len(y), operation)
+        if operation == "convolution":
+            x, y = x[::-1], y[::-1]
         output = cv2.sepFilter2D(
             image,
             OUTPUT_DEPTHS[self.parameters["output_depth"]],
             x,
             y,
-            anchor=anchor_value(self.parameters["anchor"], len(x), len(y)),
+            anchor=anchor,
             delta=finite(self.parameters["delta"], "Delta"),
             borderType=BORDERS[self.parameters["border"]],
         )

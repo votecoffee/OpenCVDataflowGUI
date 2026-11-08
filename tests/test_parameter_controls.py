@@ -64,6 +64,35 @@ def test_filter_anchor_depth_border_and_signed_preview():
 
 
 @pytest.mark.parametrize(
+    "kind,kernel",
+    [
+        ("cv.filter2d", {"kernel": [[-1, -2], [3, 6]]}),
+        ("cv.separable_filter", {"kernel_x": [1, 2], "kernel_y": [-1, 3]}),
+    ],
+)
+def test_convolution_reverses_even_kernel_and_preserves_its_original_anchor(kind, kernel):
+    image = np.array([[6, 17, 3], [10, 1, 14], [2, 8, 5]], np.uint8)
+    block = run(
+        kind,
+        image,
+        {
+            **kernel,
+            "operation": "convolution",
+            "anchor": [0, -1],
+            "border": "replicate",
+            "output_depth": "int16",
+            "delta": 2,
+        },
+    )
+    # At each pixel, x weights the current and left samples, and y weights
+    # the row below and the current row. The image boundary repeats its edge.
+    signed = image.astype(np.int16)
+    horizontal = signed + 2 * signed[:, [0, 0, 1]]
+    expected = 3 * horizontal - horizontal[[1, 2, 2]] + 2
+    np.testing.assert_array_equal(block.last_output_images["image"], expected)
+
+
+@pytest.mark.parametrize(
     "mode,flag",
     [
         ("binary_inv", cv2.THRESH_BINARY_INV),

@@ -1632,8 +1632,9 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `kernel` | `[[0.0, -1.0, 0.0], [-1.0, 5.0, -1.0], [0.0, -1.0, 0.0]]` |  |
 | `delta` | `0.0` |  |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
-| `anchor` | `[-1, -1]` |  |
+| `anchor` | `[-1, -1]` | Kernel origin [x, y] before reversal. Use -1 on either axis to center it. |
 | `output_depth` | `"same"` | `same`, `uint8`, `uint16`, `int16`, `float32`, `float64` |
+| `operation` | `"correlation"` | `correlation`, `convolution` Correlation applies the kernel as entered. Convolution reverses both axes. |
 
 ## Filter Fourier spectrum (`cv.filter_fourier_spectrum`)
 
@@ -2620,10 +2621,11 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | --- | --- | --- |
 | `kernel_x` | `[0.25, 0.5, 0.25]` |  |
 | `kernel_y` | `[0.25, 0.5, 0.25]` |  |
-| `anchor` | `[-1, -1]` |  |
+| `anchor` | `[-1, -1]` | Kernel origin [x, y] before reversal. Use -1 on either axis to center it. |
 | `delta` | `0.0` |  |
 | `output_depth` | `"same"` | `same`, `uint8`, `uint16`, `int16`, `float32`, `float64` |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
+| `operation` | `"correlation"` | `correlation`, `convolution` Correlation uses the vectors as entered. Convolution reverses them. |
 
 ## Solve linear program (`cv.solve_linear_program`)
 

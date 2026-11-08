@@ -11,7 +11,7 @@ graphs, layouts or parameters.
 | Image processing / Geometry | Rotate arbitrary angle | `getRotationMatrix2D` and `warpAffine`; angle, scale and optional center |
 | Image processing / Geometry | Add image border | `copyMakeBorder`; configurable widths and constant/replicate/reflect border |
 | Image processing / Geometry | Gaussian pyramid up/down | Repeated `pyrDown` or `pyrUp`, 1–6 levels |
-| Image processing / Filtering | Custom 2D filter | `filter2D`; finite JSON kernel, delta and border mode |
+| Image processing / Filtering | Custom 2D filter | `filter2D`; finite JSON kernel, correlation/convolution, anchor, depth, delta and border mode |
 | Image processing / Filtering | Unsharp mask | Gaussian blur plus weighted subtraction; kernel, sigma and amount |
 | Inspection / Features | FAST corners | `FastFeatureDetector`; pattern, threshold and nonmax suppression |
 | Inspection / Features | ORB keypoints and descriptors | `ORB.detectAndCompute`; keypoints, 32-byte descriptors, points and overlay |

@@ -30,9 +30,10 @@ detection, masked inpainting, QR label rectification, temporal median background
 estimation, checkerboard lens calibration, ArUco fixture rectification, camera
 projection, lens distortion, epipolar correspondence review, and metric stereo
 depth, optical flow through occlusion, contour retrieval, masked Otsu, and
-tolerant edge-map comparison. The studies check known geometry, decisions,
-decoded text, or reconstruction error against
-original synthetic references.
+tolerant edge-map comparison. A linear filtering study compares smoothing,
+sharpening, and the polarity of correlation and convolution at slot edges.
+The studies check known geometry, decisions, decoded text, or reconstruction
+error against original synthetic references.
 
 ## Vision tool priorities
 

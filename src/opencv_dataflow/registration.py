@@ -10,7 +10,12 @@ from .features import overlay_image
 from .graphics_layers import GraphicDrawing, graphic_object
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS as FILTER_BORDERS
-from .parameters import OUTPUT_DEPTHS, anchor_value, optional_mask
+from .parameters import (
+    LINEAR_FILTER_OPERATIONS,
+    OUTPUT_DEPTHS,
+    linear_filter_anchor,
+    optional_mask,
+)
 from .payloads import metadata, moved_payload
 from .processing import (
     ImageTool,
@@ -364,8 +369,17 @@ class Filter2D(RegionalOperation, ImageTool):
         "border": "reflect",
         "anchor": [-1, -1],
         "output_depth": "same",
+        "operation": "correlation",
     }
-    parameter_choices = {"border": tuple(FILTER_BORDERS), "output_depth": tuple(OUTPUT_DEPTHS)}
+    parameter_choices = {
+        "border": tuple(FILTER_BORDERS),
+        "output_depth": tuple(OUTPUT_DEPTHS),
+        "operation": LINEAR_FILTER_OPERATIONS,
+    }
+    parameter_help = {
+        "operation": "Correlation applies the kernel as entered. Convolution reverses both axes.",
+        "anchor": "Kernel origin [x, y] before reversal. Use -1 on either axis to center it.",
+    }
 
     def process(self, inputs):
         source = inputs["image"]
@@ -378,11 +392,16 @@ class Filter2D(RegionalOperation, ImageTool):
             or not np.isfinite(kernel).all()
         ):
             raise ValueError("Kernel must be a finite nonempty matrix with at most 31 rows/columns")
+        operation = self.parameters["operation"]
+        height, width = kernel.shape
+        anchor = linear_filter_anchor(self.parameters["anchor"], width, height, operation)
+        if operation == "convolution":
+            kernel = kernel[::-1, ::-1]
         output = cv2.filter2D(
             image,
             OUTPUT_DEPTHS[self.parameters["output_depth"]],
             kernel,
-            anchor=anchor_value(self.parameters["anchor"], kernel.shape[1], kernel.shape[0]),
+            anchor=anchor,
             delta=finite(self.parameters["delta"], "Delta"),
             borderType=BORDERS[self.parameters["border"]],
         )
