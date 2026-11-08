@@ -40,6 +40,8 @@ effect of interpolation on categorical masks. A rotation and translation
 study compares clipped and fitted canvases and follows a region through the
 combined warp. An annotation study draws named geometry and a measurement-driven
 label over a resized inspection image and compares two layer selections.
+A GrabCut study uses editable seed masks to isolate a label from a similar
+background patch and checks both segmentation branches against a known outline.
 
 ## Vision tool priorities
 

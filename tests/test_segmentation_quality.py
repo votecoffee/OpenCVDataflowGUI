@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from opencv_dataflow.blocks import builtin_registry
-from opencv_dataflow.payloads import NO_VALUE
+from opencv_dataflow.payloads import NO_VALUE, ValuePacket, frame
 
 
 def test_flood_fill_mask_is_a_barrier():
@@ -76,6 +76,67 @@ def test_grabcut_modes(mode):
     result = block.execute({"image": image, "markers": markers})
     assert result is not None, block.error
     np.testing.assert_array_equal(result.outputs["mask"] != 0, image == 220)
+
+
+def test_grabcut_seed_masks_override_probable_labels_and_keep_hard_seeds():
+    registry = builtin_registry()
+    image = np.full((64, 64), 20, np.uint8)
+    image[22:42, 20:40] = 220
+    expected = image == 220
+    likely = np.zeros_like(image)
+    likely[16:48, 14:46] = 255
+    core = np.zeros_like(image)
+    core[24:30, 22:28] = 255
+    hard_background = np.zeros_like(image)
+    hard_background[17:20, 16:19] = 255
+    seeds = registry.create("inspect.grabcut_mask_seeds")
+    result = seeds.execute({
+        "image": image, "probable_foreground": likely, "foreground": core,
+        "background": hard_background,
+    })
+    assert result is not None, seeds.error
+    markers = result.outputs["markers"]
+    assert result.outputs["counts"] == {
+        "background": 9, "foreground": 36, "probable_background": 3072,
+        "probable_foreground": 979,
+    }
+    assert np.all(markers[core != 0] == cv2.GC_FGD)
+    assert np.all(markers[hard_background != 0] == cv2.GC_BGD)
+    assert result.outputs["preview"].shape == (64, 64, 3)
+
+    block = registry.create("inspect.grabcut", parameters={"mode": "labels"})
+    original = markers.copy()
+    cut = block.execute({"image": image, "markers": markers})
+    assert cut is not None, block.error
+    np.testing.assert_array_equal(cut.outputs["mask"] != 0, expected)
+    assert np.all(cut.outputs["labels"][core != 0] == cv2.GC_FGD)
+    assert np.all(cut.outputs["labels"][hard_background != 0] == cv2.GC_BGD)
+    np.testing.assert_array_equal(markers, original)
+
+
+@pytest.mark.parametrize("prefix", ["", "probable_"])
+def test_grabcut_seed_masks_reject_equal_certainty_conflicts(prefix):
+    image = np.zeros((12, 15), np.uint8)
+    mask = image.copy()
+    mask[3:7, 3:7] = 255
+    seeds = builtin_registry().create("inspect.grabcut_mask_seeds")
+    assert seeds.execute({"image": image, prefix + "foreground": mask,
+                          prefix + "background": mask}) is None
+    assert "equal certainty overlap" in seeds.error
+
+
+def test_grabcut_seed_masks_require_same_frame_and_both_training_classes():
+    image = np.zeros((12, 15), np.uint8)
+    mask = image.copy()
+    mask[3:7, 3:7] = 255
+    seeds = builtin_registry().create("inspect.grabcut_mask_seeds")
+    assert seeds.execute({"image": image}) is None
+    assert "both foreground and background samples" in seeds.error
+    assert seeds.execute({
+        "image": ValuePacket(image, {"spatial": frame([15, 12], "camera_a")}),
+        "foreground": ValuePacket(mask, {"spatial": frame([15, 12], "camera_b")}),
+    }) is None
+    assert "image coordinate frame" in seeds.error
 
 
 @pytest.mark.parametrize("method", ["zhang_suen", "guo_hall"])

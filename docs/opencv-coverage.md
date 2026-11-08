@@ -214,6 +214,13 @@ It reports the number of geodesic steps and withholds the image when
 the iteration limit is reached before convergence.
 **GrabCut foreground** accepts a rectangle, a binary probable-foreground mask
 or native four-state markers. It initializes a new model for each activation.
+**GrabCut seeds from masks** builds those markers from aligned binary masks.
+Any nonzero pixel selects the class of its input. Unmarked pixels start in
+the configured probable class. Definite masks override probable masks.
+A foreground and background overlap at the same certainty is an error.
+Connect **Markers** to GrabCut's **Markers** input and select **Labels** mode.
+The builder reports each class count and can emit a color preview.
+[OpenCV GrabCut reference](https://docs.opencv.org/5.0/main_modules/imgproc_segmentation.html)
 **Thin binary mask** exposes Zhang–Suen and Guo–Hall skeletonization.
 The optional scikit-image blocks expose Zhang, Lee, Guo–Hall, and medial-axis
 skeletonization, plus length-based pruning of terminal branches. See the

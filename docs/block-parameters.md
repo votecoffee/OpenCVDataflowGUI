@@ -4197,7 +4197,28 @@ Inputs: `image` (image), `markers` (image, optional).
 | --- | --- | --- |
 | `mode` | `"rectangle"` | `rectangle`, `binary_mask`, `labels` Use a rectangle, a probable-foreground binary mask, or GrabCut labels 0–3. |
 | `rectangle` | `[10, 10, 100, 100]` | Initial foreground rectangle [x, y, width, height] in image pixels. |
-| `iterations` | `3` |  |
+| `iterations` | `3` | Value must be a whole number between 1 and 100. |
+
+## GrabCut seeds from masks (`inspect.grabcut_mask_seeds`)
+
+Inspection / Segmentation
+
+Inputs: `image` (image), `background` (image, optional), `foreground` (image, optional), `probable_background` (image, optional), `probable_foreground` (image, optional).
+
+Input `image` — Sets the size, coordinate frame, and ticket of the marker image.
+
+Input `background` — Definite background. Overrides either probable class.
+
+Input `foreground` — Definite foreground. Overrides either probable class.
+
+Input `probable_background` — A background hint that GrabCut may change.
+
+Input `probable_foreground` — A foreground hint that GrabCut may change.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `unmarked` | `"probable_background"` | `probable_background`, `probable_foreground` Initial class for pixels outside all supplied masks. |
+| `emit_preview` | `true` | Show definite background in blue and foreground in green, with gray and amber for the probable classes. |
 
 ## Find rotated and scaled Hough template (`inspect.guil_template`)
 

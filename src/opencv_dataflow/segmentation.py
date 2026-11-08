@@ -194,6 +194,90 @@ class Watershed(Block):
         )
 
 
+GRABCUT_CLASSES = {
+    "background": cv2.GC_BGD,
+    "foreground": cv2.GC_FGD,
+    "probable_background": cv2.GC_PR_BGD,
+    "probable_foreground": cv2.GC_PR_FGD,
+}
+GRABCUT_COLORS = np.array([(120, 60, 28), (70, 225, 95), (85, 85, 85), (36, 195, 245)], np.uint8)
+
+
+class GrabCutMaskSeeds(Block):
+    type_id, title = "inspect.grabcut_mask_seeds", "GrabCut seeds from masks"
+    category, block_type, subtype = "Inspection", "Inspection", "Segmentation"
+    inputs = (
+        Port("image"),
+        *(
+            Port(name, required=False, required_when_connected=True, visual_type="mask")
+            for name in GRABCUT_CLASSES
+        ),
+    )
+    outputs = (
+        Port("markers"),
+        Port("counts", "data"),
+        Port("preview", required=False),
+    )
+    defaults = {"unmarked": "probable_background", "emit_preview": True}
+    parameter_choices = {"unmarked": ("probable_background", "probable_foreground")}
+    parameter_help = {
+        "unmarked": "Initial class for pixels outside all supplied masks.",
+        "emit_preview": (
+            "Show definite background in blue and foreground in green, with "
+            "gray and amber for the probable classes."
+        ),
+    }
+    input_help = {
+        "image": "Sets the size, coordinate frame, and ticket of the marker image.",
+        "background": "Definite background. Overrides either probable class.",
+        "foreground": "Definite foreground. Overrides either probable class.",
+        "probable_background": "A background hint that GrabCut may change.",
+        "probable_foreground": "A foreground hint that GrabCut may change.",
+    }
+    process_inputs_readonly = True
+    parallel_safe = True
+
+    def process(self, inputs):
+        image = inputs["image"]
+        shape = image.shape[:2]
+        markers = np.full(shape, GRABCUT_CLASSES[self.parameters["unmarked"]], np.uint8)
+        for pair in (("probable_background", "probable_foreground"), ("background", "foreground")):
+            selected = {}
+            for name in pair:
+                if name not in inputs:
+                    continue
+                mask = inputs[name]
+                if mask.dtype != np.uint8 or mask.shape != shape:
+                    raise ValidationError("Use a matching uint8 monochrome seed mask", name)
+                try:
+                    require_same_frame((image, mask))
+                except ValueError as exc:
+                    raise ValidationError(
+                        "Seed mask must use the image coordinate frame", name
+                    ) from exc
+                selected[name] = np.asarray(mask) != 0
+            first, second = pair
+            if len(selected) == 2 and np.any(selected[first] & selected[second]):
+                raise ValidationError(
+                    "Foreground and background seeds of equal certainty overlap", first, second
+                )
+            for name, mask in selected.items():
+                markers[mask] = GRABCUT_CLASSES[name]
+
+        counts = {
+            name: int(np.count_nonzero(markers == code)) for name, code in GRABCUT_CLASSES.items()
+        }
+        background = counts["background"] + counts["probable_background"]
+        foreground = counts["foreground"] + counts["probable_foreground"]
+        if not background or not foreground:
+            raise ValidationError("GrabCut needs both foreground and background samples")
+        preview = GRABCUT_COLORS[markers] if self.parameters["emit_preview"] else NO_VALUE
+        return Result(
+            {"markers": markers, "counts": counts, "preview": preview},
+            message=f"{foreground:,} foreground seeds · {background:,} background seeds",
+        )
+
+
 class GrabCut(Block):
     type_id, title = "inspect.grabcut", "GrabCut foreground"
     category, block_type, subtype = "Inspection", "Inspection", "Segmentation"
@@ -201,6 +285,7 @@ class GrabCut(Block):
     outputs = (Port("mask"), Port("labels"))
     defaults = {"mode": "rectangle", "rectangle": [10, 10, 100, 100], "iterations": 3}
     parameter_choices = {"mode": ("rectangle", "binary_mask", "labels")}
+    parameter_ranges = {"iterations": NumericRange(1, 100, whole=True)}
     parameter_help = {
         "rectangle": "Initial foreground rectangle [x, y, width, height] in image pixels.",
         "mode": "Use a rectangle, a probable-foreground binary mask, or GrabCut labels 0–3.",
@@ -427,6 +512,7 @@ SEGMENTATION_BLOCKS = (
     FloodFill,
     Watershed,
     GrabCut,
+    GrabCutMaskSeeds,
     ThinMask,
     FillMaskHoles,
     DistancePeakMarkers,
