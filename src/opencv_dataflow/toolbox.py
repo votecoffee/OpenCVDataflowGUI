@@ -155,6 +155,8 @@ _NATIVE_NAMES = {
     "cv.adaptive_threshold": ("adaptiveThreshold",),
     "cv.local_threshold": ("niBlackThreshold", "Sauvola", "Wolf", "NICK"),
     "cv.slic_superpixels": ("createSuperpixelSLIC", "SLICO", "MSLIC"),
+    "cv.lsc_superpixels": ("createSuperpixelLSC", "Linear Spectral Clustering"),
+    "cv.seeds_superpixels": ("createSuperpixelSEEDS",),
     "cv.distance_labels": ("distanceTransformWithLabels",),
     "cv.demosaic_bayer": ("demosaicing",),
     "input.file": ("imread", "imdecode"),

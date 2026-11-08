@@ -2178,6 +2178,27 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `sauvola_range` | `128.0` | Value must be a finite number between 1 and 255. Standard-deviation reference used only for Sauvola. |
 | `max_value` | `255` | Value must be a whole number between 0 and 255. Foreground value in binary modes. |
 
+## LSC superpixels (`cv.lsc_superpixels`)
+
+Image processing / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale, BGR or RGB uint8 image with at most 2.1 million pixels.
+
+Input `mask` — Optional output selection. Zero marks unselected labels.
+
+Input `region` — Optional output selection. Segmentation uses the full image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `region_size` | `10` | Value must be a whole number between 3 and 512. Approximate spacing in pixels. Must leave room for a seed grid. |
+| `ratio` | `0.075` | Value must be a finite number between 0.001 and 10. Spatial compactness weight relative to color variation. |
+| `iterations` | `10` | Value must be a whole number between 1 and 50. Number of refinement iterations. |
+| `min_component_pixels` | `25` | Value must be a whole number between 0 and 10000. Merge small components by area in pixels. Zero skips this pass. |
+| `thick_boundaries` | `false` | Use OpenCV's thick contour-mask option. |
+| `color_space` | `"lab"` | `lab`, `bgr` Use Lab or BGR for color input. Grayscale stays grayscale. |
+
 ## Mask Fourier spectrum (`cv.mask_fourier_spectrum`)
 
 Image processing / Spectral
@@ -2726,6 +2747,29 @@ Input `region` — Optional rectangle, circle, or polygon in source coordinates.
 | `mode` | `"normal"` | `normal`, `mixed`, `monochrome_transfer`, `normal_wide`, `mixed_wide`, `monochrome_transfer_wide` Wide modes place the full source center. Other modes center the selected bounds. |
 | `center_x` | `-1` | Value must be a whole number at least -1. Destination column in pixels. Use -1 for the destination center. |
 | `center_y` | `-1` | Value must be a whole number at least -1. Destination row in pixels. Use -1 for the destination center. |
+
+## SEEDS superpixels (`cv.seeds_superpixels`)
+
+Image processing / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale, BGR or RGB uint8 image, from 6 × 6 to 2.1 million pixels.
+
+Input `mask` — Optional output selection. Zero marks unselected labels.
+
+Input `region` — Optional output selection. Segmentation uses the full image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `target_count` | `400` | Value must be a whole number between 10 and 10000. Requested number of regions. The native seed grid may yield fewer. |
+| `levels` | `4` | Value must be a whole number between 2 and 8. Maximum number of hierarchy levels. OpenCV can use fewer on a small image. |
+| `prior` | `2` | Value must be a whole number between 0 and 5. Shape smoothing from zero (disabled) to five. |
+| `histogram_bins` | `5` | Value must be a whole number between 2 and 16. Bins per channel. Histogram buffers are limited to 96 MiB. |
+| `double_step` | `false` | Make an additional refinement pass at every block level. |
+| `iterations` | `4` | Value must be a whole number between 1 and 50. Number of final pixel refinement iterations. |
+| `thick_boundaries` | `false` | Use OpenCV's thick contour-mask option. |
+| `color_space` | `"lab"` | `lab`, `hsv`, `bgr` Use Lab, HSV, or BGR for color input. Grayscale stays grayscale. |
 
 ## Separable 2D filter (`cv.separable_filter`)
 
