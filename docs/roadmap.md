@@ -24,6 +24,11 @@ projects under the ignored `examples/private/learnopencv` collection while
 upstream reuse permission is unclear. Publish independently authored tool
 implementations and tests.
 
+The local study index at `examples/private/learnopencv/README.md` now covers
+centroid measurement, convex hulls, Hu shape matching, Hough line and circle
+detection, and masked inpainting. The studies check known pixel geometry,
+shape decisions, or repair error against an original synthetic reference.
+
 ## Vision tool priorities
 
 | Order | Milestone | Next work | Exit criteria |

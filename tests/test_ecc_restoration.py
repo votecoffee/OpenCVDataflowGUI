@@ -9,6 +9,7 @@ import pytest
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.images import ImageArray, image_format
+from opencv_dataflow.parameter_validation import ValidationError
 from opencv_dataflow.payloads import ValuePacket, frame
 from opencv_dataflow.toolblocks import ToolBlock
 
@@ -72,6 +73,14 @@ def test_inpaint_uses_mask(method):
     output = result.outputs["image"]
     np.testing.assert_array_equal(output[mask == 0], image[mask == 0])
     assert np.abs(output[mask != 0].astype(float) - 120).max() <= 5
+
+
+@pytest.mark.parametrize("radius", [0.99, 100.01])
+def test_inpaint_radius_is_validated_before_configuration(radius):
+    block = builtin_registry().create("cv.inpaint")
+    with pytest.raises(ValidationError) as error:
+        block.validate_parameters({**block.parameters, "radius": radius})
+    assert error.value.fields == ("radius",)
 
 
 def test_inpaint_preserves_high_depth_color_and_alpha():

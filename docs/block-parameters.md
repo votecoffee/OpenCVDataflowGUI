@@ -1953,7 +1953,7 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `method` | `"telea"` | `telea`, `navier_stokes` |
-| `radius` | `3.0` |  |
+| `radius` | `3.0` | Value must be a finite number between 1 and 100. Neighborhood radius in pixels used to reconstruct masked samples. |
 
 ## Replace image channel (`cv.insert_channel`)
 

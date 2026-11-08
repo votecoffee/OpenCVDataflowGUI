@@ -277,6 +277,8 @@ class Inpaint(ImageTool):
     inputs = SELECTION_INPUTS
     defaults = {"method": "telea", "radius": 3.0}
     parameter_choices = {"method": ("telea", "navier_stokes")}
+    parameter_ranges = {"radius": NumericRange(1, 100)}
+    parameter_help = {"radius": "Neighborhood radius in pixels used to reconstruct masked samples."}
 
     def process(self, inputs):
         source = inputs["image"]
@@ -288,9 +290,7 @@ class Inpaint(ImageTool):
             raise ValueError("Connect an inpainting mask or region")
         if np.all(mask):
             raise ValueError("Inpainting needs unselected neighboring pixels")
-        radius = finite(self.parameters["radius"], "Radius", 1)
-        if radius > 100:
-            raise ValueError("Inpainting radius must be at most 100 pixels")
+        radius = float(self.parameters["radius"])
         method = cv2.INPAINT_TELEA if self.parameters["method"] == "telea" else cv2.INPAINT_NS
         if image.ndim == 2:
             return encoded_result(cv2.inpaint(image, mask, radius, method), source)
