@@ -86,7 +86,9 @@ def test_moved_weld_project_uses_wired_affine_transform(tmp_path):
 
 
 def test_calibrated_bead_reopens_with_portable_plane_profile(tmp_path):
-    pytest.importorskip("opencv_simple_path_width.calibration")
+    measurement = pytest.importorskip("opencv_simple_path_width.measurement")
+    if not hasattr(measurement.PathWidthSettings, "physical_units"):
+        pytest.skip("Calibrated example requires a SimplePathWidth build with physical limits")
     moved = tmp_path / "calibrated"
     shutil.copytree(_EXAMPLE / "calibrated_bead", moved)
     graph = Graph.load(moved / "project.json", builtin_registry())
@@ -101,8 +103,60 @@ def test_calibrated_bead_reopens_with_portable_plane_profile(tmp_path):
         assert report["units"] == "mm" and report["path_length"] == pytest.approx(40.)
         assert report["stations"][0]["center_offset"] == pytest.approx(1.3, abs=.04)
         assert outputs["physical_trend"].shape == (292, 630, 3)
+        assert outputs["longest_gap_physical"] == 0
+        for issue in ("width_below_minimum", "center_out_of_tolerance"):
+            graph.run()
+            assert block.state == "fail", block.error
+            result = block.last_result
+            assert [item["code"] for item in result.fail_reasons] == ["physical_station_out_of_tolerance"]
+            report = result.outputs["physical_measurements"]
+            assert report["stations"][0]["issues"] == (issue,)
+            overlay = result.outputs["overlay"]
+            assert np.any(overlay[..., 2] > overlay[..., 1])
+        block.execute({"image": graph.blocks["source"].last_result.outputs["image"]})
+        assert block.state == "error" and "Physical limits require a planar calibration" in block.error
+        assert block.last_result is None
     finally:
         graph.close()
+
+
+def test_physical_limits_can_be_edited_and_staged_in_trainer(app, monkeypatch, tmp_path):
+    trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
+    recipe_io = pytest.importorskip("opencv_simple_path_width.recipe")
+    if not hasattr(trainer.PathWidthSettings, "physical_units"):
+        pytest.skip("Physical tolerance training requires a build with physical limits")
+    moved = tmp_path / "calibrated_training"
+    shutil.copytree(_EXAMPLE / "calibrated_bead", moved)
+    project = moved / "project.json"
+    graph = Graph.load(project, builtin_registry())
+    block = graph.blocks["width"]
+    original_path = block.parameters["recipe_path"]
+    window = MainWindow()
+    warnings, previews = [], []
+    monkeypatch.setattr(window, "warn", warnings.append)
+    monkeypatch.setattr(trainer.MeasurementPreview, "exec", lambda self: previews.append(self.result))
+    try:
+        window.replace_graph(graph, project)
+        window.inspector.select(block)
+        window.inspector.open_plugin_dialog()
+        dialog = window.inspector._plugin_dialog
+        assert dialog.fields["physical_units"].text() == "mm"
+        assert float(dialog.fields["min_width_physical"].text()) == 5.8
+        dialog.fields["min_width_physical"].setText("5.9")
+        dialog.preview_button.click()
+        assert len(previews) == 1 and previews[0].physical_measurements is None
+        assert "Pixel preview" in dialog.status.text()
+        dialog.stage_button.click()
+        assert block.parameters["recipe_path"] == original_path
+        window.inspector.apply()
+        assert not warnings
+        assert block.parameters["recipe_path"] != original_path
+        settings = recipe_io.load_recipe(moved / block.parameters["recipe_path"]).settings
+        assert settings.physical_units == "mm" and settings.min_width_physical == 5.9
+    finally:
+        window.dirty = False
+        window.close()
+        app.processEvents()
 
 
 def test_fixture_capture_stages_matching_pose_and_preserves_bead_offset(app, monkeypatch, tmp_path):

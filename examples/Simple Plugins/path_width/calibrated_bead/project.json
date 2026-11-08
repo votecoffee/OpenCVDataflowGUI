@@ -4,11 +4,15 @@
     {
       "id": "source",
       "type": "input.file",
-      "name": "Tilted bead image",
+      "name": "Nominal, narrow, and off-path",
       "parameters": {
-        "path": "assets/bead.png",
-        "source_mode": "single",
-        "paths": [],
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/bead.png",
+          "assets/narrow.png",
+          "assets/offset.png"
+        ],
         "directory": "",
         "recursive": false,
         "repeat": "stop",
@@ -61,7 +65,7 @@
       "name": "Measure bead",
       "parameters": {
         "recipe_path": "assets/bead.spw",
-        "manifest_sha256": "9d8e7d754cbac93f357294dc2d17ad3dd876fd0f1d59072bdece2be5f67189e3",
+        "manifest_sha256": "d1b5efbedbd26af89a5d38aa81b199ecbe83b88ec84f69293be8671f54bc7c79",
         "reference_fixture": [],
         "render_overlay": true,
         "render_trend": true
@@ -86,7 +90,8 @@
         "trend",
         "physical_measurements",
         "mean_width_physical",
-        "physical_trend"
+        "physical_trend",
+        "longest_gap_physical"
       ],
       "thumbnail": true,
       "preview_output": "physical_trend"
