@@ -3678,6 +3678,34 @@ Input `image` — Optional aligned background for viewing the simplified contour
 | `convexity` | `"convex_hull"` | `convex_hull`, `require_convex` Start from the convex hull or require a strictly convex input contour. |
 | `max_added_area_percent` | `-1.0` | Value must be a finite number between -1 and 10000. Area added beyond the hull as a percentage of source contour area. Use a positive percentage or -1 for no limit. |
 
+## Detect ArUco markers (`inspect.aruco_markers`)
+
+Inspection / Fiducials
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `mask` — Keep markers whose projected center lies inside this mask.
+
+Input `region` — Keep markers whose projected center lies inside this region.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original` |
+| `corner_refinement` | `"subpixel"` | `none`, `subpixel`, `contour`, `apriltag` |
+| `adaptive_min` | `3` | Value must be a whole number between 3 and 255. |
+| `adaptive_max` | `23` | Value must be a whole number between 3 and 1000. |
+| `adaptive_step` | `10` | Value must be a whole number between 1 and 100. |
+| `adaptive_constant` | `7.0` | Value must be a finite number. |
+| `min_perimeter_rate` | `0.03` | Value must be a finite number at least 0.0001. |
+| `max_perimeter_rate` | `4.0` | Value must be a finite number at least 0.0001. |
+| `min_border_distance` | `3` | Value must be a whole number between 0 and 1000. |
+| `border_bits` | `1` | Value must be a whole number between 1 and 10. |
+| `error_correction_rate` | `0.6` | Value must be a finite number between 0 and 1. |
+| `required_ids` | `[]` | Emit points in this ID order. Empty emits all IDs in ascending order. |
+| `minimum_markers` | `1` | Value must be a whole number at least 1. Minimum number of unique selected IDs needed to pass. |
+| `point` | `"center"` | `center`, `corner_0`, `corner_1`, `corner_2`, `corner_3` Use the projected center or a corner in the marker's decoded orientation. |
+| `draw_overlay` | `true` |  |
+
 ## Paired-edge bead calipers (`inspect.bead_calipers`)
 
 Inspection / Measurements

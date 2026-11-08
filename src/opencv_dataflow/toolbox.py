@@ -73,7 +73,7 @@ IMPLEMENTATION_MODULES = {
     "triangulation voronoi",
     "video": "ecc_registration native_background sequence_tools",
     "videoio": "video_files",
-    "objdetect": "charuco code_readers",
+    "objdetect": "aruco_markers charuco code_readers",
     "xobjdetect": "hog",
     "dnn": "dnn_blocks ocr",
     "photo": "exposure hdr photo_filters restoration",

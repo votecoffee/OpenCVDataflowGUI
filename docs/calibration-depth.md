@@ -187,6 +187,29 @@ camera-to-gripper with the current gripper-to-base pose to locate
 the camera in base coordinates.
 [Hand–eye example](<../examples/opencv tools/hand_eye_calibration/README.md>)
 
+## Planar alignment with ArUco markers
+
+**Detect ArUco markers** in **OpenCV > Object Detection (objdetect)** reports
+marker IDs, canonical corners and projected centers in source-image pixels.
+A mask or region keeps markers whose centers lie inside it. The block can
+draw labeled outlines and provide those outlines as result graphics.
+
+Set **Required IDs** in the same order as your fixture coordinates. The
+**Points** output gives one point per requested ID. The default is the
+projected center where the diagonals meet. You can select a corner in the
+marker's decoded orientation instead. An empty ID list uses ascending ID
+order. Missing or ambiguous required markers fail the detection and withhold
+the point list so that downstream transforms wait.
+
+Wire **Points** to **Transform from control points**. Set three target points
+for an affine fit or four for perspective, then pass the transform to the
+corresponding image warp. Four anchors on one plane can rectify an inspection
+fixture without camera intrinsics. Validate with an independent feature on that
+plane. The planar warp assumes lens distortion is already corrected or small
+enough for the job's tolerance.
+
+[OpenCV ArUco detector](https://docs.opencv.org/5.0/main_modules/classcv_1_1aruco_1_1ArucoDetector.html)
+
 ## White and color balance
 
 White / color balance supports gray-world gains from the whole image or a JSON

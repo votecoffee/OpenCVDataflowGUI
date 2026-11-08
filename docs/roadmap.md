@@ -26,9 +26,10 @@ implementations and tests.
 
 The local study index at `examples/private/learnopencv/README.md` now covers
 centroid measurement, convex hulls, Hu shape matching, Hough line and circle
-detection, masked inpainting, QR label rectification, and temporal median
-background estimation. The studies check known pixel geometry, shape decisions,
-decoded text, or reconstruction error against original synthetic references.
+detection, masked inpainting, QR label rectification, temporal median background
+estimation, checkerboard lens calibration, and ArUco fixture rectification. The
+studies check known geometry, decisions, decoded text, or reconstruction error
+against original synthetic references.
 
 ## Vision tool priorities
 

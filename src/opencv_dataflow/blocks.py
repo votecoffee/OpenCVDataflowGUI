@@ -636,6 +636,7 @@ class WriteResults(Block):
 def builtin_registry():
     from .analysis_tools import ANALYSIS_BLOCKS
     from .annoy_blocks import ANNOY_BLOCKS
+    from .aruco_markers import DetectArucoMarkers
     from .basic_processing import BASIC_PROCESSING_BLOCKS
     from .blob_detection import SimpleBlobDetection
     from .calibration import (
@@ -806,6 +807,7 @@ def builtin_registry():
         Histogram,
         HOGFeatures,
         CalibrationGrid,
+        DetectArucoMarkers,
         DetectCharucoBoard,
         LensCalibration,
         ValidateLensCalibration,

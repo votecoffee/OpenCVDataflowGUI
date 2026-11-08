@@ -116,6 +116,7 @@ BINDINGS = {
     "inspect.align_ecc": "findTransformECCMultiScale findTransformECCWithMask",
     "inspect.approximate_contour": "approxPolyDP",
     "inspect.approximate_convex_contour": "approxPolyN",
+    "inspect.aruco_markers": "aruco.ArucoDetector.detectMarkers",
     "inspect.blobs": "connectedComponentsWithStatsWithAlgorithm",
     "inspect.bounding_convex_polygon": "convexHull",
     "inspect.bounding_rotated_rectangle": "minAreaRect boxPoints",
