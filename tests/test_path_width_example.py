@@ -159,6 +159,75 @@ def test_physical_limits_can_be_edited_and_staged_in_trainer(app, monkeypatch, t
         app.processEvents()
 
 
+def test_calibrated_preview_selects_plane_station_and_keeps_draft_uncommitted(app, monkeypatch, tmp_path):
+    trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
+    if not hasattr(trainer.PathWidthTrainingDialog, "_use_wired_calibration"):
+        pytest.skip("Calibrated preview requires SimplePathWidth with preview calibration")
+    moved = tmp_path / "calibrated_preview"
+    shutil.copytree(_EXAMPLE / "calibrated_bead", moved)
+    project = moved / "project.json"
+    graph = Graph.load(project, builtin_registry())
+    block = graph.blocks["width"]
+    original = dict(block.parameters)
+    window = MainWindow()
+    warnings, previews = [], []
+    monkeypatch.setattr(window, "warn", warnings.append)
+
+    def preview(view):
+        view.show()
+        app.processEvents()
+        report = view.result.physical_measurements
+        assert not view.result.passed and report.units == "mm"
+        assert view.tabs.currentIndex() == 1
+        # With perspective, the midpoint of the plane trend and the midpoint
+        # of the pixel trend correspond to different image stations.
+        index = min(range(len(report.stations)), key=lambda i: abs(report.stations[i].distance - 20))
+        pixel_middle = min(
+            range(len(view.result.stations)),
+            key=lambda i: abs(view.result.stations[i].distance_px - view.result.path_length_px / 2),
+        )
+        assert index != pixel_middle
+        position = view.physical_trend.mapFromScene(QPointF(342.5, 90.))
+        QTest.mouseClick(view.physical_trend.viewport(), Qt.MouseButton.LeftButton, pos=position)
+        assert view.selected_station == index
+        x, y = view.result.stations[index].point
+        assert view.marker.rect().center().x() == pytest.approx(x + .5)
+        assert view.marker.rect().center().y() == pytest.approx(y + .5)
+        assert "mm" in view.windowTitle() and "width below minimum" in view.windowTitle()
+        assert "width below minimum" in view.station_details.text()
+        view.tabs.setCurrentIndex(0)
+        assert view.selected_station == index and view.cursor.isVisible()
+        assert "px" in view.windowTitle()
+        previews.append(report)
+
+    monkeypatch.setattr(trainer.MeasurementPreview, "exec", preview)
+    try:
+        window.replace_graph(graph, project)
+        graph.run()
+        window.inspector.select(block)
+        window.inspector.open_plugin_dialog()
+        dialog = window.inspector._plugin_dialog
+        dialog.fields["min_width_physical"].setText("6.09")
+        dialog.wired_calibration_button.click()
+        assert "Wired · mm" in dialog.calibration_label.text()
+        dialog.preview_button.click()
+        assert len(previews) == 1 and "Calibrated preview · Fail" in dialog.status.text()
+        assert block.parameters == original
+
+        dialog.clear_calibration_button.click()
+        assert dialog.preview_calibration is None
+        monkeypatch.setattr(dialog, "_file", lambda *_: moved / "assets/calibration.json")
+        dialog.open_calibration_button.click()
+        assert "calibration.json · mm" in dialog.calibration_label.text()
+        dialog._capture_reference()
+        assert dialog.preview_calibration is None
+        assert not warnings and block.parameters == original
+    finally:
+        window.dirty = False
+        window.close()
+        app.processEvents()
+
+
 def test_fixture_capture_stages_matching_pose_and_preserves_bead_offset(app, monkeypatch, tmp_path):
     trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
     if not hasattr(trainer.PathWidthTrainingDialog, "_capture_fixture"):

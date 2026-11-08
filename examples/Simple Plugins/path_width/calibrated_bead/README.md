@@ -26,7 +26,15 @@ Run once per frame and select **Measure bead**.
 pixel coordinates. For a real camera, create a planar profile with a
 calibration target and use the same camera and preprocessing coordinates.
 To edit the limits, open **Train path width…** and scroll to **Physical
-units** and the physical tolerance fields. Reference preview uses pixels.
+units** and the physical tolerance fields. With SimplePathWidth
+0.1.0.dev7 or later, run the graph once, then select **Use wired** under
+**Preview calibration** and open **Preview on reference**. The preview
+starts on the physical trend. For a quick check, change **Min width
+physical** to 6.09 and preview again. The saved reference should now
+fail. Click the trend to see the station, then switch to **Pixels** to
+view the same station in image units.
+
+The preview uses draft settings until you stage the recipe and apply it.
 At runtime the physical limits require a profile with matching units.
-Any configured pixel limits still apply. The example uses exact synthetic
+Any configured pixel limits still apply. This example uses synthetic
 geometry to demonstrate measurement and judgment with a supplied mapping.
