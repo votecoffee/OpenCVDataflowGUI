@@ -10,16 +10,19 @@ import numpy as np
 
 from .calibration import camera_parameters
 from .core import Block, Port, Result
+from .geometry3d_common import matrix as finite_matrix
+from .geometry3d_common import points as finite_points
 from .graphics_layers import GraphicDrawing, graphic_object
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import COLORMAPS
-from .payloads import NO_VALUE, frame
+from .payloads import NO_VALUE, check_spatial, frame
 from .processing import finite, image_value
 
 _MAX_AXIS = 16_384
 _REMAP_MAX_AXIS = 32_766
 MAX_MAP_PIXELS = 64_000_000
 _TAG = "lens_remap_map"
+_CORRECTION_ID = "lens_correction_id"
 
 
 @dataclass(frozen=True)
@@ -84,15 +87,28 @@ def _signature(values):
     return hashlib.sha256(json.dumps(values, sort_keys=True, allow_nan=False).encode()).hexdigest()
 
 
+def _lens_identity(matrix, distortion, source, target, size, rotation):
+    return _signature(
+        [matrix.tolist(), distortion.tolist(), source, target.tolist(), size, rotation.tolist()]
+    )
+
+
+def _corrected_frame(source_frame, identity, size):
+    return frame(size, f"lens-remap:{_signature([source_frame, identity])}")
+
+
 def _map_frame(info):
     return frame(info["output_size"], f"lens-map:{info['id']}")
 
 
 def lens_map_payloads(info):
     spatial = _map_frame(info)
-    return {
-        f"map_{axis}": {"spatial": spatial, _TAG: {**info, "axis": axis}} for axis in ("x", "y")
+    payloads = {
+        f"map_{axis}": {"spatial": spatial, _TAG: {**info, "axis": axis}}
+        for axis in ("x", "y")
     }
+    payloads["rectified_calibration"] = {_CORRECTION_ID: info["id"]}
+    return payloads
 
 
 def _check_lens_map_grid(info, output_size, *spatials):
@@ -143,8 +159,7 @@ def lens_remap_payload(block, source_size, output_size, info):
     payload = dict(block.input_payloads["image"])
     spatial = payload["spatial"]
     source_frame = spatial if spatial["root_id"] is not None else [block.id, spatial]
-    identity = _signature([source_frame, info["id"]])
-    payload["spatial"] = frame(output_size, f"lens-remap:{identity}")
+    payload["spatial"] = _corrected_frame(source_frame, info["id"], output_size)
     payload.pop("pyramid", None)
     payload.pop(_TAG, None)
     return {"image": payload}
@@ -283,16 +298,7 @@ class BuildLensMaps(Block):
         )
         if not np.isfinite(map_x).all() or not np.isfinite(map_y).all():
             raise ValidationError("Lens correction produced nonfinite map coordinates")
-        identity = _signature(
-            [
-                matrix.tolist(),
-                distortion.tolist(),
-                source,
-                rectified["camera_matrix"],
-                size,
-                rectified["rectification_rotation"],
-            ]
-        )
+        identity = _lens_identity(matrix, distortion, source, target, size, rotation)
         info = {
             "id": identity,
             "source_size": source,
@@ -304,6 +310,114 @@ class BuildLensMaps(Block):
             {"map_x": map_x, "map_y": map_y, "rectified_calibration": rectified, "valid_roi": roi},
             payloads=lens_map_payloads(info),
             message=f"{size[0]} × {size[1]} lens correction maps",
+        )
+
+
+class UndistortLensPoints(Block):
+    type_id, title = "calibration.undistort_lens_points", "Undistort points onto lens map"
+    category, block_type, subtype = "Calibration", "Calibration", "Lens distortion"
+    inputs = (
+        Port("points", "data"),
+        Port("calibration", "data"),
+        Port("rectified_calibration", "data"),
+    )
+    outputs = (
+        Port("points", "data", required=False),
+        Port("inside", "data", required=False),
+        Port("roundtrip_max_error", "number"),
+    )
+    defaults = {"max_iterations": 30, "epsilon": 1e-8, "max_roundtrip_error": 0.05}
+    parameter_ranges = {
+        "max_iterations": NumericRange(1, 100, whole=True),
+        "epsilon": NumericRange(1e-12, 1),
+        "max_roundtrip_error": NumericRange(1e-9),
+    }
+    parameter_help = {
+        "epsilon": "OpenCV convergence tolerance for inverse distortion.",
+        "max_roundtrip_error": "Maximum reprojection error back on the raw grid, in pixels.",
+    }
+    input_help = {
+        "points": "Ordered [x, y] measurements in the original calibrated image grid.",
+        "calibration": "Original pinhole profile used to build the maps.",
+        "rectified_calibration": "Rectified calibration from Build or Load lens correction maps.",
+    }
+    process_inputs_readonly = True
+    payload_reference = "points"
+
+    def process(self, inputs):
+        profile = inputs["calibration"]
+        corrected = inputs["rectified_calibration"]
+        matrix, distortion = camera_parameters(profile)
+        target, zero = camera_parameters(corrected)
+        source, size = profile.get("image_size"), corrected.get("image_size")
+        if not valid_lens_size(source) or not valid_lens_size(size) or np.any(zero):
+            raise ValidationError("Use valid source and rectified lens profiles")
+        rotation = finite_matrix(corrected.get("rectification_rotation"), (3, 3), "Rotation")
+        identity = _lens_identity(matrix, distortion, source, target, size, rotation)
+        if self.input_payloads["rectified_calibration"].get(_CORRECTION_ID) != identity:
+            raise ValidationError("The rectified profile must come from maps for this calibration")
+
+        raw = finite_points(inputs["points"], 2)
+        if len(raw) > 100_000 or (raw < 0).any() or (raw >= source).any():
+            raise ValidationError("Use up to 100,000 points inside the original image")
+        payload = self.input_payloads["points"].copy()
+        spatial = payload.pop("spatial", None)
+        pyramid = payload.pop("pyramid", None)
+        if pyramid is not None:
+            raise ValidationError("Map point coordinates to the original image first")
+        if spatial is not None and spatial.get("root_id") is not None:
+            check_spatial({"spatial": spatial}, source)
+            if spatial["root_size"] != source or not np.allclose(spatial["to_root"], np.eye(3)):
+                raise ValidationError("Points must be in the original calibrated pixel grid")
+            payload["spatial"] = _corrected_frame(spatial, identity, size)
+
+        p = self.parameters
+        criteria = (
+            cv2.TERM_CRITERIA_COUNT | cv2.TERM_CRITERIA_EPS,
+            int(p["max_iterations"]),
+            float(p["epsilon"]),
+        )
+        normalized = cv2.undistortPoints(
+            raw[:, None, :], matrix, distortion, criteria=criteria
+        ).reshape(-1, 2)
+        rays = np.column_stack((normalized, np.ones(len(raw))))
+        if not np.isfinite(rays).all():
+            raise ValidationError("Lens correction produced nonfinite points")
+        origin = np.zeros(3)
+        reprojected = cv2.projectPoints(rays, origin, origin, matrix, distortion)[0].reshape(-1, 2)
+        error = float(np.linalg.norm(reprojected - raw, axis=1).max())
+        if not math.isfinite(error):
+            raise ValidationError("Lens correction produced nonfinite reprojection error")
+        projected = rays @ rotation.T @ target.T
+        in_front = projected[:, 2] > 1e-12
+        if not in_front.all() or error > float(p["max_roundtrip_error"]):
+            reason = (
+                "lens_points_outside_rectification"
+                if not in_front.all()
+                else ("lens_points_roundtrip_above_limit")
+            )
+            return Result(
+                {"points": NO_VALUE, "inside": NO_VALUE, "roundtrip_max_error": error},
+                passed=False,
+                fail_reasons=[reason],
+                message="Some points do not map reliably onto the corrected grid",
+            )
+
+        xy = projected[:, :2] / projected[:, 2, None]
+        if not np.isfinite(xy).all():
+            raise ValidationError("Lens correction produced nonfinite output coordinates")
+        inside = ((xy >= 0) & (xy < size)).all(axis=1)
+        drawings = {}
+        if self.generate_graphics and "spatial" in payload and inside.any():
+            objects = tuple(
+                graphic_object("marker", [point], (70, 220, 140)) for point in xy[inside][:256]
+            )
+            drawings["Corrected points"] = GraphicDrawing(objects, "points", from_output=True)
+        return Result(
+            {"points": xy.tolist(), "inside": inside.tolist(), "roundtrip_max_error": error},
+            payloads={"points": payload, "inside": payload},
+            drawings=drawings,
+            message=f"Corrected {len(raw)} points · max round-trip error {error:.4g} px",
         )
 
 

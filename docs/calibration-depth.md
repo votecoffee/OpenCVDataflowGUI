@@ -127,6 +127,22 @@ for a portable saved graph. Saving requires a new file name.
 
 Fisheye fitting and calibration dataset management remain open.
 
+## Correct measured points onto the remapped grid
+
+**Undistort points onto lens map** accepts the original pinhole calibration,
+the **Rectified calibration** output from **Build** or **Load lens correction
+maps**, and ordered `[x, y]` measurements from the original image. It checks
+that both profiles describe the same correction. Use the same map pair to
+remap the image. Points carrying the full source image's frame receive the
+same corrected frame as the remapped image, with their ticket preserved.
+Points without a named source frame can still be converted for numeric use.
+
+The block keeps point order and reports an **Inside** flag for each corrected
+coordinate. It checks the maximum error after projecting the recovered rays
+back into the raw image. If that error exceeds the configured limit, the block
+withholds the corrected points. **Result graphics** marks up to 256 points
+inside the corrected image when frame information is available.
+
 ## Validate a lens profile on another view
 
 Connect the fixed pinhole profile and a separate image to **Validate lens

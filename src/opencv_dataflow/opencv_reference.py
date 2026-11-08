@@ -24,6 +24,7 @@ BINDINGS = {
     "calibration.lens": "calibrateCameraExtended",
     "calibration.lens_maps": "initUndistortRectifyMap getOptimalNewCameraMatrix",
     "calibration.undistort": "undistort",
+    "calibration.undistort_lens_points": "undistortPoints projectPoints",
     "cv.absdiff": "absdiff",
     "cv.adaptive_threshold": "adaptiveThreshold",
     "cv.align_exposures": "createAlignMTB AlignMTB",

@@ -745,7 +745,7 @@ def builtin_registry():
     from .region_proposals import GraphSegments, SelectiveSearchProposals
     from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
-    from .remap_maps import BuildLensMaps, LensMapDisplacement
+    from .remap_maps import BuildLensMaps, LensMapDisplacement, UndistortLensPoints
     from .restoration import RESTORATION_BLOCKS
     from .scan_stitching import StitchScanSequence
     from .segmentation import SEGMENTATION_BLOCKS
@@ -817,6 +817,7 @@ def builtin_registry():
         HandEyeCalibration,
         BuildLensMaps,
         LensMapDisplacement,
+        UndistortLensPoints,
         LoadLensMaps,
         SaveLensMaps,
         Undistort,

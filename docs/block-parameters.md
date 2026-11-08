@@ -804,6 +804,24 @@ Inputs: `image` (image), `calibration` (data).
 | `max_rms_pixels` | `1.0` |  |
 | `new_camera_matrix` | `[]` |  |
 
+## Undistort points onto lens map (`calibration.undistort_lens_points`)
+
+Calibration / Lens distortion
+
+Inputs: `points` (data), `calibration` (data), `rectified_calibration` (data).
+
+Input `points` — Ordered [x, y] measurements in the original calibrated image grid.
+
+Input `calibration` — Original pinhole profile used to build the maps.
+
+Input `rectified_calibration` — Rectified calibration from Build or Load lens correction maps.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_iterations` | `30` | Value must be a whole number between 1 and 100. |
+| `epsilon` | `1e-08` | Value must be a finite number between 1e-12 and 1. OpenCV convergence tolerance for inverse distortion. |
+| `max_roundtrip_error` | `0.05` | Value must be a finite number at least 1e-09. Maximum reprojection error back on the raw grid, in pixels. |
+
 ## Validate lens calibration (`calibration.validate_lens`)
 
 Calibration / Lens distortion
