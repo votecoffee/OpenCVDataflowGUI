@@ -110,6 +110,15 @@ image; the graph will not connect cloud output directly to an image input.
 Ticket/recipe/outcome envelopes still work, and queue sizing counts array bytes.
 Headless reports summarize clouds rather than including all XYZ samples.
 
+Retained point clouds rotate in visible node thumbnails and in the inspector's
+**Results** tab. For a block that also emits an image, select its cloud output
+under **Block → Show advanced → Node preview** to put the cloud on the canvas.
+Double-click a **Cloud** preview or click **Pop out…** to open its live 3D viewer.
+Enable **Flyaround** to rotate continuously, and use **Yaw**, **Pitch**, and
+**Point size** to adjust the view. The viewer is also available under
+**Results → 3D point-cloud viewer…**. The previews use sampled points and are
+available in Debug and Balanced.
+
 - **Filter point cloud** selects XYZ bounds and can also use an image mask or
   region when pixel correspondence remains available. Regions retain source
   image frame checks. **Voxel-sample** can retain the first point per voxel or

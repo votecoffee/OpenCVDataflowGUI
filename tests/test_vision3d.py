@@ -6,6 +6,8 @@ from pathlib import Path
 import cv2
 import numpy as np
 import pytest
+from PySide6.QtCore import Qt
+from PySide6.QtTest import QSignalSpy, QTest
 
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
@@ -495,9 +497,64 @@ def test_offscreen_cloud_viewer_renders_retained_result(app, load_example):
     previous = viewer.image.pixmap().cacheKey()
     viewer.yaw.setValue(80)
     assert viewer.image.pixmap().cacheKey() != previous
+    viewer.flyaround.setChecked(True)
+    yaw_changed = QSignalSpy(viewer.yaw.valueChanged)
+    assert yaw_changed.wait(2000)
+    viewer.flyaround.setChecked(False)
+    assert not viewer.orbit_timer.isActive()
     viewer.close()
+    assert not viewer.timer.isActive()
     window.dirty = False
     window.close()
+
+
+@pytest.mark.local_examples
+def test_point_cloud_thumbnail_and_live_popout(app, load_example):
+    window = MainWindow()
+    try:
+        load_example(window, "rgbd_cloud")
+        window.graph.run()
+        window.show()
+        app.processEvents()
+        node = window.scene.nodes["project"]
+        assert isinstance(node.thumbnail_value(), PointCloud)
+        window.view.centerOn(node)
+        yaw = node._cloud_yaw
+        window.view.animate_cloud_thumbnails()
+        assert node._cloud_yaw != yaw
+
+        node.setSelected(True)
+        inspector = window.inspector
+        inspector.tabs.setCurrentWidget(inspector.results_page)
+        app.processEvents()
+        assert inspector.preview_choice.currentText() == "Cloud / cloud"
+        assert inspector.cloud_preview_timer.isActive()
+        previous = inspector.image.pixmap().toImage()
+        inspector.animate_cloud_preview()
+        assert inspector.image.pixmap().toImage() != previous
+
+        QTest.mouseDClick(inspector.image, Qt.MouseButton.LeftButton)
+        viewer, = inspector.image_popouts.values()
+        assert viewer.output_name == "cloud"
+        assert "Ticket 1" in viewer.windowTitle()
+        assert not viewer.image.pixmap().isNull()
+        first_cloud = viewer.cloud
+        viewer.flyaround.setChecked(True)
+        assert viewer.orbit_timer.isActive()
+
+        inspector.tabs.setCurrentWidget(inspector.parameters_page)
+        assert not inspector.cloud_preview_timer.isActive()
+        window.graph.run()
+        inspector.refresh_result()
+        assert viewer.cloud is not first_cloud
+        assert "Ticket 2" in viewer.windowTitle()
+        assert viewer.orbit_timer.isActive()
+        viewer.close()
+        assert not viewer.orbit_timer.isActive()
+        assert not inspector.image_popouts
+    finally:
+        window.dirty = False
+        window.close()
 
 
 @pytest.mark.parametrize("algorithm", ["bm", "sgbm"])

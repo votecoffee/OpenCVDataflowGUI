@@ -64,8 +64,9 @@ from the repository root.
    intensity where provided. A failed inspection still supplies results downstream;
    execution errors skip dependent blocks.
    The inspector and automatic node thumbnails prefer the result image, then an output image.
-   Double-click an output or graphic image, or click **Pop out…**, to watch it
-   in a separate window with a status-colored border and the ticket in its title.
+   Double-click an output image, graphic, or point-cloud preview, or click
+   **Pop out…**, to watch it in a separate window with a status-colored border
+   and the ticket in its title.
    In the **Debug** run profile, pattern matching, template instances, oriented
    edges, and collection filtering include review graphics with accepted items
    in green and rejected candidates in red.

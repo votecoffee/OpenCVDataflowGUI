@@ -107,7 +107,19 @@ class PointCloud:
         }
 
 
-def render_cloud(cloud, width=640, height=480, yaw=25.0, pitch=-20.0, limit=20000, point_size=2):
+def cloud_outputs(block):
+    if block.last_result is None or not block.run_profile.output_previews:
+        return {}
+    return {
+        name: value for name, value in block.last_result.outputs.items()
+        if isinstance(value, PointCloud)
+    }
+
+
+def render_cloud(
+    cloud, width=640, height=480, yaw=25.0, pitch=-20.0, limit=20000, point_size=2,
+    *, stable_scale=False,
+):
     """Orthographic preview with far-to-near drawing; no GPU/native viz dependency."""
     image = np.full((height, width, 3), (32, 25, 18), np.uint8)
     if not len(cloud.points):
@@ -115,13 +127,14 @@ def render_cloud(cloud, width=640, height=480, yaw=25.0, pitch=-20.0, limit=2000
     selected = np.linspace(0, len(cloud.points) - 1, min(len(cloud.points), limit), dtype=int)
     points = cloud.points[selected].astype(float)
     points -= (points.min(axis=0) + points.max(axis=0)) / 2
+    radius = np.linalg.norm(points, axis=1).max() if stable_scale else None
     a, b = np.deg2rad([yaw, pitch])
     rotation = np.array([[np.cos(a), 0, np.sin(a)], [0, 1, 0], [-np.sin(a), 0, np.cos(a)]])
     rotation = (
         np.array([[1, 0, 0], [0, np.cos(b), -np.sin(b)], [0, np.sin(b), np.cos(b)]]) @ rotation
     )
     points = points @ rotation.T
-    span = np.ptp(points[:, :2], axis=0)
+    span = (2 * radius, 2 * radius) if stable_scale else np.ptp(points[:, :2], axis=0)
     scale = min((width - 30) / max(span[0], 1e-6), (height - 30) / max(span[1], 1e-6))
     pixels = np.rint(points[:, :2] * [scale, -scale] + [width / 2, height / 2]).astype(int)
     colors = (

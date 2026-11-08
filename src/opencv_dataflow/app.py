@@ -49,7 +49,15 @@ from .activity_window import ActivityWindow
 from .block_xml import block_xml_suffix, load_block_xml, save_block_xml
 from .blocks import builtin_registry, demo_graph
 from .calibration import calibration_templates
-from .canvas import CanvasScene, CanvasView, Node, block_preview_images, pixmap
+from .canvas import (
+    CLOUD_THUMBNAIL_INTERVAL_MS,
+    CanvasScene,
+    CanvasView,
+    Node,
+    block_preview_images,
+    cloud_thumbnail,
+    pixmap,
+)
 from .cloud_viewer import CloudViewer
 from .core import DISPLAY_RESULT_FIELDS, Graph, block_display_title
 from .diagnostic_viewer import DiagnosticViewer
@@ -66,6 +74,7 @@ from .parameter_validation import ValidationError
 from .payloads import ValuePacket, describe_value, packet_for, prepare_inputs
 from .plugin_dialog import PluginDialogContext
 from .plugins import load_plugin
+from .pointclouds import cloud_outputs
 from .program_documentation import export_program_documentation
 from .project_compare import ProjectCompare
 from .project_xml import XML_FILTER, export_project_xml
@@ -305,6 +314,10 @@ class Inspector(QWidget):
         self._plugin_output_timer = QTimer(self)
         self._plugin_output_timer.setSingleShot(True)
         self._plugin_output_timer.timeout.connect(self._notify_plugin_outputs)
+        self._cloud_yaw = 25
+        self.cloud_preview_timer = QTimer(self)
+        self.cloud_preview_timer.setInterval(CLOUD_THUMBNAIL_INTERVAL_MS)
+        self.cloud_preview_timer.timeout.connect(self.animate_cloud_preview)
         self.preview_choice = QComboBox()
         self.preview_choice.currentTextChanged.connect(self.show_preview)
         self.preview_choice.textActivated.connect(self.remember_preview_selection)
@@ -313,7 +326,7 @@ class Inspector(QWidget):
         self.pop_out_image = QPushButton("Pop out…")
         self.pop_out_image.setEnabled(False)
         self.pop_out_image.setToolTip(
-            "Open a live window for the selected output or graphic. You can also double-click it."
+            "Open a live window for the selected preview. You can also double-click it."
         )
         self.pop_out_image.clicked.connect(self.open_image_popout)
         image_controls.addWidget(self.pop_out_image)
@@ -627,17 +640,17 @@ class Inspector(QWidget):
         )
         self.node_size.currentIndexChanged.connect(self.resize_selected_node)
         advanced_form.addRow("Block size", self.node_size)
-        self.thumb = QCheckBox("Show image on node")
+        self.thumb = QCheckBox("Show preview on node")
         self.thumb.setChecked(block.thumbnail)
         advanced_form.addRow(self.thumb)
         self.node_image = QComboBox()
         self.node_image.addItem("Automatic", "")
         for port in block.outputs:
-            if port.kind in ("image", "depth", "pyramid"):
+            if port.kind in ("image", "depth", "pyramid", "cloud"):
                 self.node_image.addItem(port.name, port.name)
         index = self.node_image.findData(block.preview_output)
         self.node_image.setCurrentIndex(max(0, index))
-        advanced_form.addRow("Node image", self.node_image)
+        advanced_form.addRow("Node preview", self.node_image)
         self.graphics_choice = QComboBox()
         self.graphics_choice.addItem("Use project default", "inherit")
         self.graphics_choice.addItem("On", "on")
@@ -1578,8 +1591,10 @@ class Inspector(QWidget):
         if b:
             if self.reference_capture is not None:
                 self.reference_capture.setEnabled("image" in b.last_inputs)
+            images = [f"{kind} / {name}" for kind, name, _ in block_preview_images(b)]
+            clouds = [f"Cloud / {name}" for name in cloud_outputs(b)]
             self.preview_choice.addItems(
-                [f"{kind} / {name}" for kind, name, _ in block_preview_images(b)]
+                images + clouds if b.last_output_images else clouds + images
             )
             self.preview_choice.addItems(
                 [
@@ -1632,33 +1647,52 @@ class Inspector(QWidget):
     def remember_preview_selection(self, choice):
         self._preview_selection = choice
 
+    def animate_cloud_preview(self):
+        self._cloud_yaw = (self._cloud_yaw + 12) % 360
+        self.show_preview(self.preview_choice.currentText())
+
     def show_preview(self, choice):
-        self.pop_out_image.setEnabled(choice.startswith(("Output / ", "Result / ", "Graphic / ")))
+        self.pop_out_image.setEnabled(False)
         self.image.clear()
         block = self._live_result or self.block
+        preview = None
+        animate = False
         if block and " / " in choice:
             prefix, name = choice.split(" / ", 1)
-            images = {
-                "Input": block.last_inputs,
-                "Output": block.last_output_images,
-                "Result": block.last_output_images,
-                "Graphic": block.last_graphics,
-            }[prefix]
-            if name in images:
-                self.image.setPixmap(
-                    pixmap(images[name]).scaled(
-                        max(100, self.image.width() - 12),
-                        max(100, self.image.height() - 12),
-                        Qt.AspectRatioMode.KeepAspectRatio,
-                        Qt.TransformationMode.SmoothTransformation,
-                    )
+            if prefix == "Cloud":
+                cloud = cloud_outputs(block).get(name)
+                if cloud is not None and self.image.isVisible():
+                    preview = cloud_thumbnail(cloud, self._cloud_yaw)
+                    animate = len(cloud.points) > 0
+            else:
+                images = {
+                    "Input": block.last_inputs,
+                    "Output": block.last_output_images,
+                    "Result": block.last_output_images,
+                    "Graphic": block.last_graphics,
+                }[prefix]
+                if name in images:
+                    preview = pixmap(images[name])
+            self.pop_out_image.setEnabled(preview is not None and prefix != "Input")
+        if animate and not self.cloud_preview_timer.isActive():
+            self.cloud_preview_timer.start()
+        elif not animate:
+            self.cloud_preview_timer.stop()
+        if preview is not None:
+            self.image.setPixmap(
+                preview.scaled(
+                    max(100, self.image.width() - 12),
+                    max(100, self.image.height() - 12),
+                    Qt.AspectRatioMode.KeepAspectRatio,
+                    Qt.TransformationMode.SmoothTransformation,
                 )
-                return
-        self.image.setText("Run to inspect images")
+            )
+        else:
+            self.image.setText("Run to inspect images")
 
     def open_image_popout(self):
         choice = self.preview_choice.currentText()
-        if self.block is None or not choice.startswith(("Output / ", "Result / ", "Graphic / ")):
+        if self.block is None or not self.pop_out_image.isEnabled():
             return
         kind, name = choice.split(" / ", 1)
         path = tuple(
@@ -1667,7 +1701,10 @@ class Inspector(QWidget):
         key = (path, self.block.id, kind, name)
         viewer = self.image_popouts.get(key)
         if viewer is None:
-            viewer = ResultImageWindow(kind, name, self.window)
+            viewer = (
+                CloudViewer(None, self.window, output_name=name) if kind == "Cloud"
+                else ResultImageWindow(kind, name, self.window)
+            )
             self.image_popouts[key] = viewer
             viewer.finished.connect(lambda: self.image_popouts.pop(key, None))
         viewer.refresh(self._live_result or self.block)
@@ -1695,8 +1732,10 @@ class Inspector(QWidget):
 
     def eventFilter(self, watched, event):
         if watched is self.image:
-            if event.type() == QEvent.Type.Resize:
+            if event.type() in (QEvent.Type.Resize, QEvent.Type.Show):
                 self.show_preview(self.preview_choice.currentText())
+            elif event.type() == QEvent.Type.Hide:
+                self.cloud_preview_timer.stop()
             elif (
                 event.type() == QEvent.Type.MouseButtonDblClick
                 and event.button() == Qt.MouseButton.LeftButton

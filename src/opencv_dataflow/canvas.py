@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from html import escape
+from weakref import ref
 
 import numpy as np
 from PySide6.QtCore import QPointF, QRectF, Qt, QTimer, Signal
@@ -30,6 +31,7 @@ from PySide6.QtWidgets import (
 )
 
 from .images import preview_rgb
+from .pointclouds import PointCloud, cloud_outputs, render_cloud
 from .port_types import connection_mode
 from .toolbox import TOOL_MIME
 from .visual_style import (
@@ -52,6 +54,16 @@ def pixmap(image):
         QImage(
             rgb.data, rgb.shape[1], rgb.shape[0], rgb.strides[0], QImage.Format.Format_RGB888
         ).copy()
+    )
+
+
+CLOUD_THUMBNAIL_INTERVAL_MS = 160
+CLOUD_THUMBNAILS_PER_TICK = 8
+
+
+def cloud_thumbnail(cloud, yaw, width=240, height=160):
+    return pixmap(
+        render_cloud(cloud, width, height, yaw, limit=1200, point_size=1, stable_scale=True)
     )
 
 
@@ -135,6 +147,7 @@ class Node(QGraphicsItem):
         self.category = block_type(block)
         self.border_color = QColor(BLOCK_COLORS[self.category])
         self._draft_issue = ""
+        self._cloud_yaw = 25
         self.refresh_issue_tooltip()
         self.sockets = {}
         self.setFlags(
@@ -156,6 +169,7 @@ class Node(QGraphicsItem):
         self.update_size()
 
     def update_size(self):
+        self._cloud_thumb = None
         self.width, spacing, thumbnail_height = NODE_SIZES[self.block.node_size]
         if self.block.layout_only:
             self.thumbnail_rect = QRectF()
@@ -236,6 +250,25 @@ class Node(QGraphicsItem):
         x = self.width / 2 if socket.output else 12
         return QRectF(x, socket.y() - 10, (self.width - 24) // 2, 20)
 
+    def thumbnail_value(self):
+        if self.thumbnail_rect.isEmpty():
+            return None
+        block = self.block
+        clouds = cloud_outputs(block)
+        name = block.preview_output
+        if name:
+            for values in (block.last_graphics, block.last_output_images, clouds):
+                if name in values:
+                    return values[name]
+        if not block.last_output_images and clouds:
+            return next(iter(clouds.values()))
+        return next((value for _, _, value in block_preview_images(block)), None)
+
+    def orbit_thumbnail(self):
+        self._cloud_yaw = (self._cloud_yaw + 12) % 360
+        self._cloud_thumb = None
+        self.update(self.thumbnail_rect)
+
     def paint(self, painter, option, widget=None):
         b = self.block
         if self.isSelected():
@@ -289,18 +322,21 @@ class Node(QGraphicsItem):
             )
         thumbnail = self.thumbnail_rect
         if not thumbnail.isEmpty():
-            image = None
-            if b.preview_output:
-                image = b.last_graphics.get(b.preview_output)
-                if image is None:
-                    image = b.last_output_images.get(b.preview_output)
-            if image is None:
-                image = next((value for _, _, value in block_preview_images(b)), None)
+            value = self.thumbnail_value()
             painter.setBrush(QColor("#152030"))
             painter.setPen(Qt.PenStyle.NoPen)
             painter.drawRoundedRect(thumbnail, 5, 5)
-            if image is not None:
-                thumb = pixmap(image).scaled(
+            if value is not None:
+                if isinstance(value, PointCloud):
+                    if self._cloud_thumb is None or self._cloud_thumb[0]() is not value:
+                        self._cloud_thumb = (
+                            ref(value), cloud_thumbnail(value, self._cloud_yaw, 144, 96)
+                        )
+                    thumb = self._cloud_thumb[1]
+                else:
+                    self._cloud_thumb = None
+                    thumb = pixmap(value)
+                thumb = thumb.scaled(
                     thumbnail.size().toSize(),
                     Qt.AspectRatioMode.KeepAspectRatio,
                     Qt.TransformationMode.SmoothTransformation,
@@ -310,6 +346,7 @@ class Node(QGraphicsItem):
                     int(center.x() - thumb.width() / 2), int(center.y() - thumb.height() / 2), thumb
                 )
             else:
+                self._cloud_thumb = None
                 painter.setPen(QColor("#74859b"))
                 painter.drawText(
                     thumbnail, Qt.AlignmentFlag.AlignCenter, "Run to preview"
@@ -668,6 +705,10 @@ class CanvasView(QGraphicsView):
         self.setMinimumWidth(380)
         self.pan_start = None
         self._restoring = False
+        self._cloud_cursor = 0
+        self.cloud_timer = QTimer(self)
+        self.cloud_timer.setInterval(CLOUD_THUMBNAIL_INTERVAL_MS)
+        self.cloud_timer.timeout.connect(self.animate_cloud_thumbnails)
         self.overview = Overview(self)
         scene.layout_changed.connect(self.overview.update)
         scene.changed.connect(self.overview.update)
@@ -677,6 +718,34 @@ class CanvasView(QGraphicsView):
             scrollbar.actionTriggered.connect(
                 lambda action: QTimer.singleShot(0, self.remember_view)
             )
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.cloud_timer.start()
+
+    def hideEvent(self, event):
+        self.cloud_timer.stop()
+        super().hideEvent(event)
+
+    def animate_cloud_thumbnails(self):
+        scene = self.scene()
+        if scene is None or not scene.graph.run_profile.output_previews:
+            return
+        zoom = self.transform().m11()
+        visible = self.mapToScene(self.viewport().rect()).boundingRect()
+        nodes = [
+            node for node in scene.items(visible)
+            if isinstance(node, Node)
+            and node.thumbnail_rect.height() * zoom >= 25
+            and node.mapRectToScene(node.thumbnail_rect).intersects(visible)
+            and isinstance(value := node.thumbnail_value(), PointCloud)
+            and len(value.points)
+        ]
+        if nodes:
+            count = min(len(nodes), CLOUD_THUMBNAILS_PER_TICK)
+            for offset in range(count):
+                nodes[(self._cloud_cursor + offset) % len(nodes)].orbit_thumbnail()
+            self._cloud_cursor = (self._cloud_cursor + count) % len(nodes)
 
     def accept_tool_drag(self, event):
         accepted = (
