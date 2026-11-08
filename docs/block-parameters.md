@@ -659,6 +659,28 @@ Inputs: `patches` (data), `reference` (data, optional).
 | `maximum_iterations` | `500` |  |
 | `epsilon` | `0.0001` |  |
 
+## Fit planar calibration (`calibration.fit_planar`)
+
+Calibration / Grid and coordinates
+
+Inputs: `image` (image), `points` (data).
+
+Input `image` — Camera image that the measured points describe.
+
+Input `points` — Ordered [x,y] pixel positions from this image. Detect ArUco markers can emit points in a configured ID order.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `physical_points` | `[[0, 0], [10, 0], [10, 10], [0, 10]]` | Known planar [x,y] positions in the order of the observed points. Use a separate set of points to validate the fit. |
+| `units` | `"mm"` | Physical units of the reference points and fit tolerances. |
+| `method` | `"ransac"` | `direct`, `ransac`, `lmeds`, `rho` |
+| `inlier_tolerance` | `0.25` | Value must be a finite number at least 1e-09. RANSAC and RHO reprojection threshold in destination physical units. |
+| `minimum_inliers` | `4` | Value must be a whole number between 4 and 4096. |
+| `minimum_inlier_fraction` | `0.75` | Value must be a finite number between 0 and 1. Minimum fraction of the supplied pairs used in the fit. |
+| `maximum_rms` | `0.25` | Value must be a finite number at least 0. Maximum physical RMS error over fitting inliers. |
+| `max_iterations` | `2000` | Value must be a whole number between 1 and 100000. |
+| `confidence` | `0.995` | Value must be a finite number between 0.0001 and 0.9999. |
+
 ## Calibration grid (`calibration.grid`)
 
 Calibration / Grid and coordinates

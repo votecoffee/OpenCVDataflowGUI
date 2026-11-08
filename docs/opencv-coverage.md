@@ -427,3 +427,8 @@ for overlays. This measurement applies on the calibrated plane.
 fixed planar mapping. It checks both physical RMS and worst-point error and
 emits the checked mapping only on pass. Connect that output to Rectify
 workplane to withhold calibrated measurements when validation fails.
+
+**Fit planar calibration** produces a planar mapping from ordered pixel and
+physical references. It supports direct and robust homography fits and reports
+fitting inliers and physical RMS. Configure ArUco IDs to establish point order.
+Use distinct IDs for held-out validation before rectification.

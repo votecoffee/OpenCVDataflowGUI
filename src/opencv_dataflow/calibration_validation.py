@@ -1,4 +1,4 @@
-"""Check fixed pinhole intrinsics against a separate grid observation."""
+"""Fit planar mappings and verify calibration against separate observations."""
 
 import cv2
 import numpy as np
@@ -282,6 +282,17 @@ def _noncollinear(points):
     )
 
 
+def _require_planar_observation(block):
+    image_payload = block.input_payloads["image"]
+    points_payload = block.input_payloads["points"]
+    if points_payload.get("spatial") != image_payload["spatial"]:
+        raise ValidationError("Observed points must share the image coordinate frame")
+    a, b = image_payload.get("ticket"), points_payload.get("ticket")
+    if a is not None and b is not None and _capture_key(a) != _capture_key(b):
+        raise ValidationError("Observed points must come from the current capture")
+    return points_payload
+
+
 class ValidatePlanarCalibration(Block):
     type_id, title = "calibration.validate_planar", "Validate planar calibration"
     category = block_type = "Calibration"
@@ -349,12 +360,7 @@ class ValidatePlanarCalibration(Block):
         observed = _check_points(inputs.get("points", p["pixel_points"]), "points")
         reason = ""
         if "points" in inputs:
-            points_payload = self.input_payloads["points"]
-            if points_payload.get("spatial") != image_payload["spatial"]:
-                raise ValidationError("Observed points must share the image coordinate frame")
-            a, b = image_payload.get("ticket"), points_payload.get("ticket")
-            if a is not None and b is not None and _capture_key(a) != _capture_key(b):
-                raise ValidationError("Observed points must come from the current capture")
+            points_payload = _require_planar_observation(self)
             if failed_input(ValuePacket(inputs["points"], points_payload)):
                 reason = "Fiducial detection failed for the current image"
         size = np.array(image.shape[:2][::-1])
@@ -428,4 +434,179 @@ class ValidatePlanarCalibration(Block):
              "rms": rms, "max_error": maximum},
             passed=passed, fail_reasons=reasons, drawings=drawings,
             message=f"{len(errors)} points · RMS {rms:.4g} {units} · maximum {maximum:.4g} {units}",
+        )
+
+
+_PLANAR_FIT_REPORT = "planar_fit_report_v1"
+_PLANAR_METHODS = {"direct": 0, "ransac": cv2.RANSAC, "lmeds": cv2.LMEDS, "rho": cv2.RHO}
+
+
+def _homography_support(pixels, physical):
+    if not _noncollinear(pixels) or not _noncollinear(physical) or len(pixels) < 4:
+        return False
+    # The normalized correspondence system must constrain all eight projective freedoms.
+    pixels = pixels - pixels.mean(axis=0)
+    physical = physical - physical.mean(axis=0)
+    source = np.column_stack((pixels / np.max(np.abs(pixels)), np.ones(len(pixels))))
+    u, v = (physical / np.max(np.abs(physical))).T
+    zeros = np.zeros_like(source)
+    equations = np.vstack((
+        np.column_stack((source, zeros, -u[:, None] * source)),
+        np.column_stack((zeros, source, -v[:, None] * source)),
+    ))
+    return np.linalg.matrix_rank(equations) >= 8
+
+
+def _fit_unavailable(code, message, report):
+    report.update(passed=False, status=code)
+    return Result(
+        {"report": report, "mapping": NO_VALUE, "rms": NO_VALUE, "inliers": 0},
+        passed=False, message=message, fail_reasons=[{"code": code, "message": message}],
+    )
+
+
+class FitPlanarCalibration(Block):
+    type_id, title = "calibration.fit_planar", "Fit planar calibration"
+    category = block_type = "Calibration"
+    subtype = "Grid and coordinates"
+    inputs = (Port("image"), Port("points", "data"))
+    outputs = (
+        Port("mapping", "data", required=False), Port("report", "data"),
+        Port("rms", "number", required=False), Port("inliers", "number"),
+    )
+    payload_reference = "image"
+    process_inputs_readonly = True
+    parallel_safe = True
+    defaults = {
+        "physical_points": [[0, 0], [10, 0], [10, 10], [0, 10]],
+        "units": "mm", "method": "ransac", "inlier_tolerance": 0.25,
+        "minimum_inliers": 4, "minimum_inlier_fraction": 0.75, "maximum_rms": 0.25,
+        "max_iterations": 2000, "confidence": 0.995,
+    }
+    parameter_choices = {"method": tuple(_PLANAR_METHODS)}
+    parameter_ranges = {
+        "inlier_tolerance": NumericRange(1e-9),
+        "minimum_inliers": NumericRange(4, 4096, whole=True),
+        "minimum_inlier_fraction": NumericRange(0, 1), "maximum_rms": NumericRange(0),
+        "max_iterations": NumericRange(1, 100_000, whole=True),
+        "confidence": NumericRange(0.0001, 0.9999),
+    }
+    parameter_help = {
+        "physical_points": "Known planar [x,y] positions in the order of the observed points. "
+        "Use a separate set of points to validate the fit.",
+        "units": "Physical units of the reference points and fit tolerances.",
+        "inlier_tolerance": "RANSAC and RHO reprojection threshold in destination physical units.",
+        "minimum_inlier_fraction": "Minimum fraction of the supplied pairs used in the fit.",
+        "maximum_rms": "Maximum physical RMS error over fitting inliers.",
+    }
+    input_help = {
+        "image": "Camera image that the measured points describe.",
+        "points": "Ordered [x,y] pixel positions from this image. "
+        "Detect ArUco markers can emit points in a configured ID order.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        physical = _check_points(p["physical_points"], "physical_points")
+        if not _homography_support(physical, physical):
+            raise ValidationError(
+                "Use at least four distinct physical references that constrain a homography",
+                "physical_points",
+            )
+        if int(p["minimum_inliers"]) > len(physical):
+            raise ValidationError("Minimum inliers exceeds the reference count", "minimum_inliers")
+        units = p["units"]
+        if not isinstance(units, str) or not units.strip() or len(units) > 24:
+            raise ValidationError("Enter the calibration's physical units", "units")
+
+    def process(self, inputs):
+        p = self.parameters
+        image = inputs["image"]
+        observed = _check_points(inputs["points"], "points")
+        physical = _check_points(p["physical_points"], "physical_points")
+        points_payload = _require_planar_observation(self)
+        report = {
+            "model": _PLANAR_FIT_REPORT, "units": p["units"], "method": p["method"],
+            "expected_count": len(physical), "observed_count": len(observed),
+        }
+        if (
+            failed_input(ValuePacket(inputs["points"], points_payload))
+            or len(observed) != len(physical)
+        ):
+            return _fit_unavailable(
+                "planar_fit_observation_unavailable",
+                f"Expected {len(physical)} valid ordered fiducials, observed {len(observed)}",
+                report,
+            )
+        image_size = list(image.shape[:2][::-1])
+        if (
+            np.any((observed < 0) | (observed > np.asarray(image_size) - 1))
+            or not _homography_support(observed, physical)
+        ):
+            return _fit_unavailable(
+                "planar_fit_geometry_invalid",
+                "Fiducial geometry is degenerate or extends outside the image", report,
+            )
+        matrix, mask = cv2.findHomography(
+            observed, physical, _PLANAR_METHODS[p["method"]], float(p["inlier_tolerance"]),
+            maxIters=int(p["max_iterations"]), confidence=float(p["confidence"]),
+        )
+        inliers = mask.ravel().astype(bool) if mask is not None else np.zeros(len(observed), bool)
+        if (
+            matrix is None or not np.isfinite(matrix).all() or np.linalg.matrix_rank(matrix) != 3
+            or not _homography_support(observed[inliers], physical[inliers])
+        ):
+            return _fit_unavailable(
+                "planar_fit_geometry_invalid",
+                "OpenCV could not fit a supported homography", report,
+            )
+        origin = np.linalg.solve(matrix, np.array([0.0, 0.0, 1.0]))
+        denominators = np.column_stack((observed[inliers], np.ones(inliers.sum()))) @ matrix[2]
+        if abs(origin[2]) < 1e-12 or not (
+            np.all(denominators > 1e-12) or np.all(denominators < -1e-12)
+        ):
+            return _fit_unavailable(
+                "planar_fit_horizon",
+                "Origin or fitting support crosses the projective horizon", report,
+            )
+        mapping = {
+            "model": "planar_homography_v1", "pixel_to_physical": matrix.tolist(),
+            "units": p["units"], "image_size": image_size,
+            "origin_pixel": (origin[:2] / origin[2]).tolist(), "plane_only": True,
+        }
+        deltas = map_points(mapping, observed[inliers]) - physical[inliers]
+        rms = float(np.sqrt(np.mean(np.sum(deltas**2, axis=1))))
+        if not np.isfinite(rms):
+            raise ValidationError("Planar fit produced a nonfinite residual")
+        mapping["rms_error"] = rms
+        count = int(inliers.sum())
+        fraction = count / len(inliers)
+        reasons = []
+        if count < int(p["minimum_inliers"]) or fraction < float(p["minimum_inlier_fraction"]):
+            reasons.append({
+                "code": "planar_fit_inliers_below_minimum",
+                "message": f"Only {count} of {len(inliers)} reference pairs support the mapping",
+            })
+        if rms > float(p["maximum_rms"]):
+            reasons.append({
+                "code": "planar_fit_rms_exceeds_limit",
+                "message": f"Fit RMS {rms:.4g} {p['units']} exceeds the configured limit",
+            })
+        passed = not reasons
+        report.update(passed=passed, status="measured", inlier_mask=inliers.tolist(),
+                      inlier_count=count, inlier_fraction=fraction, rms=rms)
+        drawings = {}
+        if self.generate_graphics:
+            drawings["Planar fit inliers"] = GraphicDrawing(tuple(
+                graphic_object(
+                    "marker", [observed[index]], ACCEPTED if inliers[index] else REJECTED
+                )
+                for index in np.argsort(inliers, kind="stable")[:64]
+            ))
+        return Result(
+            {"mapping": mapping if passed else NO_VALUE, "report": report,
+             "rms": rms, "inliers": count},
+            passed=passed, fail_reasons=reasons, drawings=drawings,
+            message=f"{count}/{len(inliers)} fit inliers · RMS {rms:.4g} {p['units']}",
         )

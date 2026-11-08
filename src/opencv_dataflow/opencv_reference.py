@@ -135,6 +135,7 @@ BINDINGS = {
     "cv.warp_perspective": "warpPerspective",
     "cv.warp_polar": "warpPolar",
     "calibration.rectify_workplane": "warpPerspective",
+    "calibration.fit_planar": "findHomography",
     "cv.unwrap_path_strip": "remap",
     "gapi.blur": "gapi.gaussianBlur",
     "gapi.canny": "gapi.Canny",
