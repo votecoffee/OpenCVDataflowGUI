@@ -1945,6 +1945,21 @@ Inputs: `image_a` (image), `image_b` (image, optional), `scalar_b` (number, opti
 | `output_depth` | `"float64"` | `float64`, `float32`, `same` Same keeps the source depth, rounding and saturating integer results. |
 | `preserve_alpha` | `true` | Copy the alpha channel through unchanged in the chosen output depth. |
 
+## Compute image hash (`cv.image_hash`)
+
+Image processing / Image hashes
+
+Inputs: `image` (image).
+
+Input `image` — 8-bit grayscale or color. Crop upstream to hash a selected window.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"perceptual"` | `average`, `perceptual`, `block_mean`, `marr_hildreth` OpenCV binary hash. Compare only hashes made with the same method and settings. |
+| `block_mode` | `"0"` | `0`, `1` 0 uses disjoint blocks. 1 uses overlapping blocks. |
+| `marr_alpha` | `2.0` | Value must be a finite number between 0.5 and 4. Marr–Hildreth wavelet scale factor. |
+| `marr_scale` | `1.0` | Value must be a finite number between 0 and 2. Marr–Hildreth wavelet scale level. |
+
 ## Measure image norm (`cv.image_norm`)
 
 Image processing / Statistics
@@ -3949,6 +3964,17 @@ Inputs: `reference` (data), `sample` (data).
 | `reduction` | `"mean"` | `mean`, `worst` |
 | `check_threshold` | `false` |  |
 | `threshold` | `0.1` | Minimum for correlation/intersection. Maximum for the distance metrics. |
+
+## Compare image hashes (`inspect.compare_image_hashes`)
+
+Inspection / Image hashes
+
+Inputs: `sample` (data), `reference` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `check_threshold` | `false` |  |
+| `maximum_distance` | `8` | Value must be a whole number between 0 and 961. Maximum number of differing bits when threshold checking is enabled. |
 
 ## Compare Lab colors (`inspect.compare_lab`)
 

@@ -70,6 +70,12 @@ BINDINGS = {
     "cv.guided_filter": "ximgproc.guidedFilter",
     "cv.idct": "idct",
     "cv.idft": "idft",
+    "cv.image_hash": (
+        "img_hash.AverageHash_create img_hash.PHash_create "
+        "img_hash.BlockMeanHash_create img_hash.MarrHildrethHash_create "
+        "img_hash.ImgHashBase.compute"
+    ),
+    "inspect.compare_image_hashes": "norm",
     "cv.image_arithmetic": "add subtract multiply divide min max absdiff",
     "cv.image_pyramid": "pyrDown",
     "cv.in_range": "inRange",
