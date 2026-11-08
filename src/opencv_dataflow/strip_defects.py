@@ -11,6 +11,7 @@ from .path_continuity import sample_runs
 from .payloads import NO_VALUE
 from .result_graphics import REJECTED
 from .tickets import ticket_key
+from .workplane import LENGTH_UNITS, read_length_scale
 
 _REPORT_MODEL = "strip_defect_report_v1"
 _COLORS = {
@@ -31,7 +32,7 @@ def _profile_data(profile):
                ("pass", "out_of_range", "missing", "unmeasurable") for s in raw_status)
         or any(value is not None and (isinstance(value, bool) or not isinstance(value, Real))
                for value in raw_widths)
-        or profile.get("units") not in ("source px", "strip px")
+        or profile.get("units") not in ("source px", "strip px", *LENGTH_UNITS)
     ):
         raise ValidationError(error)
     widths = np.asarray(raw_widths, dtype=np.float64)
@@ -80,11 +81,11 @@ class GroupStripDefects(Block):
     parameter_ranges = {"minimum_length": NumericRange(0)}
     parameter_help = {
         "minimum_length": "Shortest run to include in the report and overlay. "
-        "Uses source-path pixels with sampling, or strip pixels without it.",
+        "Uses calibrated units or source-path pixels with sampling, or strip pixels without it.",
     }
     input_help = {
         "profile": "Per-column profile from Inspect strip width.",
-        "sampling": "Unwrap path strip sampling data for source-path lengths and closed loops.",
+        "sampling": "Unwrap path strip sampling data for source or physical lengths.",
     }
 
     def _axis(self, count, center, sampling):
@@ -116,8 +117,14 @@ class GroupStripDefects(Block):
         length = NumericRange(np.finfo(float).tiny, 20_000_000_000).check(
             sampling.get("path_length"), "Sampling path length"
         )
+        units = "source px"
+        if "physical_scale" in sampling:
+            units, scale = read_length_scale(sampling["physical_scale"])
+            length = NumericRange(np.finfo(float).tiny, 20_000_000_000).check(
+                length * scale, "Physical path length"
+            )
         distances = np.linspace(0, length, count, endpoint=not closed)
-        return distances, length, closed, "source px"
+        return distances, length, closed, units
 
     def process(self, inputs):
         profile = inputs["profile"]
@@ -181,7 +188,7 @@ class JudgeStripDefects(Block):
     process_inputs_readonly = True
     parallel_safe = True
     defaults = {"length_units": "source px", "limits": {}}
-    parameter_choices = {"length_units": ("source px", "strip px")}
+    parameter_choices = {"length_units": ("source px", "strip px", *LENGTH_UNITS)}
     parameter_help = {
         "length_units": "Required units for defect lengths. Match the Group strip defects report.",
         "limits": 'Per-kind limits, for example {"narrow": {"max_count": 1, "max_length": 12}}. '

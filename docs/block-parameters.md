@@ -815,6 +815,28 @@ Inputs: `mapping` (data), `points` (data, optional).
 | `pixel_points` | `[[0.0, 0.0]]` |  |
 | `max_mapping_error` | `1.0` |  |
 
+## Rectify workplane (`calibration.rectify_workplane`)
+
+Calibration / Grid and coordinates
+
+Inputs: `image` (image), `mapping` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `mapping` — Planar calibration mapping from Calibration grid or Load calibration profile.
+
+Input `mask` — Only sample valid pixels selected by this source-grid mask.
+
+Input `region` — Only sample valid pixels inside this source-grid region.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `origin` | `[0.0, 0.0]` | Physical [x,y] at output pixel center (0,0). |
+| `width` | `256` | Value must be a whole number between 1 and 8192. |
+| `height` | `256` | Value must be a whole number between 1 and 8192. |
+| `units_per_pixel` | `0.25` | Value must be a finite number between 1e-06 and 1000. Spacing in the calibration's physical units, equal on both axes. |
+| `maximum_rms_error` | `1.0` | Value must be a finite number at least 0. Maximum allowed planar calibration error in its physical units. |
+| `registration` | `"same_frame"` | `same_frame`, `fixed_grid` Fixed grid uses a saved calibration on the same camera pixel grid. Same frame requires the calibration's frame metadata to match. |
+| `interpolation` | `"linear"` | `nearest`, `linear` |
+
 ## Undistort lens (`calibration.undistort`)
 
 Calibration / Lens distortion
@@ -3129,13 +3151,15 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 
 Image processing / Geometry
 
-Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `path` (data, optional).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `path` (data, optional), `scale` (data, optional).
 
 Input `mask` — Exclude source pixels from the strip. Invalid strip samples are zeroed.
 
 Input `region` — Exclude samples outside this source-grid region. Intersected with the mask.
 
 Input `path` — Ordered [x, y] vertices registered to the source image.
+
+Input `scale` — Optional Rectify workplane scale for this same input grid. The strip geometry controls still use input pixels.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -4755,7 +4779,7 @@ Input `inspection_report` — Complete inspection report from Group strip defect
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `length_units` | `"source px"` | `source px`, `strip px` Required units for defect lengths. Match the Group strip defects report. |
+| `length_units` | `"source px"` | `source px`, `strip px`, `mm`, `cm`, `m`, `in` Required units for defect lengths. Match the Group strip defects report. |
 | `limits` | `{}` | Per-kind limits, for example {"narrow": {"max_count": 1, "max_length": 12}}. Use narrow, wide, out_of_range, missing or unmeasurable. An unlisted kind is rejected. Set either or both inclusive limits for a listed kind. |
 
 ## KAZE keypoints and descriptors (`inspect.kaze`)
@@ -5402,11 +5426,11 @@ Inputs: `profile` (data), `sampling` (data, optional).
 
 Input `profile` — Per-column profile from Inspect strip width.
 
-Input `sampling` — Unwrap path strip sampling data for source-path lengths and closed loops.
+Input `sampling` — Unwrap path strip sampling data for source or physical lengths.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `minimum_length` | `0.0` | Value must be a finite number at least 0. Shortest run to include in the report and overlay. Uses source-path pixels with sampling, or strip pixels without it. |
+| `minimum_length` | `0.0` | Value must be a finite number at least 0. Shortest run to include in the report and overlay. Uses calibrated units or source-path pixels with sampling, or strip pixels without it. |
 
 ## Inspect strip width (`inspect.strip_width`)
 
@@ -5418,7 +5442,7 @@ Input `image` — 8-bit monochrome foreground mask. Nonzero pixels are foregroun
 
 Input `mask` — Validity mask from the same strip grid. Zero means the sample is unavailable.
 
-Input `sampling` — Optional Unwrap path strip sampling data for source-pixel widths. Also connect its validity mask.
+Input `sampling` — Optional Unwrap path strip sampling data for source or physical widths. Also connect its validity mask.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |

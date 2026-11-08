@@ -9,6 +9,7 @@ from .payloads import metadata
 from .projection import profile_plot
 from .result_graphics import REJECTED
 from .selection import selection_mask
+from .workplane import read_length_scale
 
 
 def _strip_scale(image, sampling):
@@ -22,7 +23,10 @@ def _strip_scale(image, sampling):
         sampling.get("center_row"), "Sampling center row"
     )
     step = NumericRange(0.0001, 1024).check(sampling.get("cross_step"), "Sampling cross step")
-    return center, step
+    if "physical_scale" in sampling:
+        units, scale = read_length_scale(sampling["physical_scale"])
+        return center, step * scale, units
+    return center, step, "source px"
 
 
 def _column_marks(columns, top, bottom, color):
@@ -78,7 +82,7 @@ class InspectStripWidth(Block):
     input_help = {
         "image": "8-bit monochrome foreground mask. Nonzero pixels are foreground.",
         "mask": "Validity mask from the same strip grid. Zero means the sample is unavailable.",
-        "sampling": "Optional Unwrap path strip sampling data for source-pixel widths. "
+        "sampling": "Optional Unwrap path strip sampling data for source or physical widths. "
         "Also connect its validity mask.",
     }
 
@@ -104,8 +108,7 @@ class InspectStripWidth(Block):
         if "sampling" in inputs:
             if "mask" not in inputs:
                 raise ValidationError("Connect the strip validity mask when using sampling data")
-            center, step = _strip_scale(image, inputs["sampling"])
-            units = "source px"
+            center, step, units = _strip_scale(image, inputs["sampling"])
         p = self.parameters
         if int(p["center_row"]) >= 0:
             center = int(p["center_row"])
