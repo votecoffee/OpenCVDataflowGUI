@@ -1,4 +1,6 @@
-"""Fit planar mappings and verify calibration against separate observations."""
+"""Fit and verify planar mappings and gauge spacing in calibrated images."""
+
+import math
 
 import cv2
 import numpy as np
@@ -291,6 +293,122 @@ def _require_planar_observation(block):
     if a is not None and b is not None and _capture_key(a) != _capture_key(b):
         raise ValidationError("Observed points must come from the current capture")
     return points_payload
+
+
+class InspectPlanarDistance(Block):
+    type_id, title = "calibration.inspect_planar_distance", "Inspect planar point spacing"
+    category = block_type = "Calibration"
+    subtype = "Grid and coordinates"
+    inputs = (Port("image"), Port("mapping", "data"), Port("points", "data"))
+    outputs = (Port("report", "data"), Port("distance", "number", required=False))
+    payload_reference = "image"
+    process_inputs_readonly = True
+    parallel_safe = True
+    defaults = {
+        "units": "mm", "registration": "same_frame", "maximum_mapping_rms": 1.0,
+        "minimum_distance": 0.0, "maximum_distance": 0.0,
+    }
+    parameter_choices = {"registration": PLANAR_REGISTRATION}
+    parameter_ranges = {
+        "maximum_mapping_rms": NumericRange(0),
+        "minimum_distance": NumericRange(0), "maximum_distance": NumericRange(0),
+    }
+    parameter_help = {
+        "units": "Physical units expected in the planar calibration and used for limits.",
+        "registration": "Fixed grid allows a saved mapping for the same camera grid.",
+        "maximum_mapping_rms": "Inclusive limit for the calibration RMS in physical units.",
+        "minimum_distance": "Inclusive minimum center-to-center distance.",
+        "maximum_distance": "Inclusive maximum distance. Zero disables the upper limit.",
+    }
+    input_help = {
+        "image": "Current camera image used for frame validation, graphics and ticket.",
+        "mapping": "Planar calibration for the camera grid. Wire a checked mapping to gate on "
+                   "held-out validation.",
+        "points": "Exactly two [x,y] endpoints in this camera image, such as blob centroids.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        units = p["units"]
+        if not isinstance(units, str) or not units.strip() or len(units) > 24:
+            raise ValidationError("Enter the calibration's physical units", "units")
+        maximum = float(p["maximum_distance"])
+        if maximum and maximum < float(p["minimum_distance"]):
+            raise ValidationError(
+                "Maximum distance must be at least the minimum or zero", "maximum_distance"
+            )
+
+    def process(self, inputs):
+        image, mapping = inputs["image"], inputs["mapping"]
+        p = self.parameters
+        image_payload = self.input_payloads["image"]
+        mapping_payload = self.input_payloads["mapping"]
+        require_planar_grid(
+            mapping, image.shape, image_payload["spatial"],
+            mapping_payload.get("spatial"), p["registration"],
+        )
+        image_ticket, mapping_ticket = image_payload.get("ticket"), mapping_payload.get("ticket")
+        if (
+            image_ticket is not None and mapping_ticket is not None
+            and _capture_key(image_ticket) != _capture_key(mapping_ticket)
+        ):
+            raise ValidationError("Ticketed calibration must come from the current capture")
+        units = p["units"]
+        if mapping["units"] != units:
+            raise ValidationError("Distance limits must use the planar calibration units", "units")
+        if float(mapping["rms_error"]) > float(p["maximum_mapping_rms"]):
+            raise ValidationError("Planar calibration exceeds the maximum RMS error")
+
+        points_payload = _require_planar_observation(self)
+        points = _check_points(inputs["points"], "points")
+        report = {"units": units, "observed_count": len(points)}
+        if (
+            failed_input(ValuePacket(inputs["points"], points_payload))
+            or len(points) != 2 or np.array_equal(points[0], points[1])
+            or np.any((points < 0) | (points > np.asarray(image.shape[:2][::-1]) - 1))
+        ):
+            message = "Spacing needs two distinct detected points inside the current image"
+            return Result(
+                {"report": {**report, "status": "unmeasurable"}, "distance": NO_VALUE},
+                passed=False, message=message,
+                fail_reasons=[{
+                    "code": "planar_distance_endpoints_unavailable", "message": message,
+                }],
+            )
+
+        physical = map_points(mapping, points, require_single_side=True)
+        distance = math.dist(*physical)
+        if not math.isfinite(distance):
+            raise ValidationError("Planar point spacing is not finite")
+        low, high = float(p["minimum_distance"]), float(p["maximum_distance"])
+        below = distance < low and not math.isclose(distance, low, rel_tol=1e-12)
+        above = bool(high) and distance > high and not math.isclose(distance, high, rel_tol=1e-12)
+        passed = not (below or above)
+        label = f"{distance:.4g} {units}"
+        reasons = []
+        if not passed:
+            limit = f"below the minimum {low:.4g}" if below else f"above the maximum {high:.4g}"
+            reasons.append({
+                "code": "planar_distance_out_of_range",
+                "message": f"Distance {label} is {limit} {units}",
+            })
+        drawings = {}
+        if self.generate_graphics:
+            color = ACCEPTED if passed else REJECTED
+            drawings["Point spacing"] = GraphicDrawing((
+                graphic_object("polyline", points, color),
+                *(graphic_object("marker", [point], color) for point in points),
+                graphic_object("label", [points.mean(axis=0)], color, text=label),
+            ))
+        report.update(
+            status="measured", distance=distance,
+            pixels=points.tolist(), physical=physical.tolist(),
+        )
+        return Result(
+            {"report": report, "distance": distance}, passed=passed,
+            message=label, fail_reasons=reasons, drawings=drawings,
+        )
 
 
 class ValidatePlanarCalibration(Block):

@@ -645,6 +645,7 @@ def builtin_registry():
     )
     from .calibration_validation import (
         FitPlanarCalibration,
+        InspectPlanarDistance,
         ValidateLensCalibration,
         ValidatePlanarCalibration,
     )
@@ -849,6 +850,7 @@ def builtin_registry():
         ColorBalance,
         *COLOR_CALIBRATION_BLOCKS,
         PixelToPhysical,
+        InspectPlanarDistance,
         FitPlanarCalibration,
         RectifyWorkplane,
         ValidatePlanarCalibration,

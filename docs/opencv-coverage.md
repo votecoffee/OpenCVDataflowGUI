@@ -438,3 +438,9 @@ rectangle using the workplane's physical scale. Its optional long-axis check
 is modulo 180 degrees and rejects ambiguous near-square fits. It withholds
 numeric measurements if the footprint touches invalid coverage or the image
 edge. The measured footprint can be drawn on the original camera image.
+
+**Inspect planar point spacing** maps two detected points from the camera
+grid through a planar calibration and checks their physical distance. It
+withholds the distance when a usable pair is unavailable. It draws the
+endpoints and dimension on the camera image without rectifying the image.
+Both points must lie on the calibrated plane.

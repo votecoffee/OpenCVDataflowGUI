@@ -737,6 +737,26 @@ Inputs: `gripper_poses` (any, optional), `target_poses` (any, optional).
 | `max_translation_rms_mm` | `2.0` | Value must be a finite number at least 0. Maximum RMS spread of target positions in base. Zero skips it. |
 | `max_rotation_rms_degrees` | `1.0` | Value must be a finite number between 0 and 180. Maximum RMS spread of target orientations. Zero skips it. |
 
+## Inspect planar point spacing (`calibration.inspect_planar_distance`)
+
+Calibration / Grid and coordinates
+
+Inputs: `image` (image), `mapping` (data), `points` (data).
+
+Input `image` — Current camera image used for frame validation, graphics and ticket.
+
+Input `mapping` — Planar calibration for the camera grid. Wire a checked mapping to gate on held-out validation.
+
+Input `points` — Exactly two [x,y] endpoints in this camera image, such as blob centroids.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `units` | `"mm"` | Physical units expected in the planar calibration and used for limits. |
+| `registration` | `"same_frame"` | `same_frame`, `fixed_grid` Fixed grid allows a saved mapping for the same camera grid. |
+| `maximum_mapping_rms` | `1.0` | Value must be a finite number at least 0. Inclusive limit for the calibration RMS in physical units. |
+| `minimum_distance` | `0.0` | Value must be a finite number at least 0. Inclusive minimum center-to-center distance. |
+| `maximum_distance` | `0.0` | Value must be a finite number at least 0. Inclusive maximum distance. Zero disables the upper limit. |
+
 ## Calibrate lens (`calibration.lens`)
 
 Calibration / Lens distortion

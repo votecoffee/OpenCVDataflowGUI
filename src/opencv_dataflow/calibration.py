@@ -219,7 +219,7 @@ class CalibrationGrid(GridCalibrationBlock):
         )
 
 
-def map_points(mapping, points):
+def map_points(mapping, points, *, require_single_side=False):
     if mapping.get("model") != "planar_homography_v1":
         raise ValueError("Expected a calibration-grid planar mapping")
     matrix = np.asarray(mapping["pixel_to_physical"], np.float64)
@@ -235,6 +235,10 @@ def map_points(mapping, points):
     homogeneous = np.column_stack((pixels, np.ones(len(pixels)))) @ matrix.T
     if np.any(np.abs(homogeneous[:, 2]) < 1e-12):
         raise ValueError("Point maps to infinity")
+    if require_single_side and np.any(
+        np.signbit(homogeneous[:, 2]) != np.signbit(homogeneous[0, 2])
+    ):
+        raise ValueError("Points straddle the calibration horizon")
     transformed = homogeneous[:, :2] / homogeneous[:, 2, None]
     if not np.isfinite(transformed).all():
         raise ValueError("Mapping produced nonfinite coordinates")
