@@ -721,6 +721,7 @@ def builtin_registry():
     )
     from .matrix_svd import MatrixSVD
     from .mqtt import MQTT_BLOCKS
+    from .multiscale_ridges import MultiscaleRidges
     from .native_background import NATIVE_BACKGROUND_BLOCKS
     from .native_trackers import NATIVE_TRACKER_BLOCKS
     from .nearest_rows import FindNearestRows
@@ -900,6 +901,7 @@ def builtin_registry():
         MaskFromLabelCollection,
         GraphSegments,
         RidgeResponse,
+        MultiscaleRidges,
         SuperpixelsSLIC,
         SuperpixelsLSC,
         SuperpixelsSEEDS,

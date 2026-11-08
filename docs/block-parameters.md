@@ -4968,6 +4968,28 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `max_regions` | `1000` | Value must be a whole number between 1 and 10000. Maximum number of retained regions in native detector order. |
 | `draw_overlay` | `true` |  |
 
+## Multiscale ridge response (`inspect.multiscale_ridges`)
+
+Image processing / Filtering
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale or color uint8, uint16 or float32. Response uses grayscale intensity units. Requires the morphology install extra.
+
+Input `mask` — Zero both outputs outside the mask while retaining full-image neighborhoods.
+
+Input `region` — Zero both outputs outside the region. Intersected with a wired mask.
+
+Selection writes: `image`, `scale`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sigmas` | `[1, 2, 4]` | One to eight distinct Gaussian scales from 1 to 12 pixels. The scale image reports the strongest response's sigma (zero where response is zero). Sigma is a filter setting, not a direct width measurement. |
+| `polarity` | `"dark"` | `dark`, `bright`, `both` Detect dark or bright ridges, or keep the stronger of both. |
+| `border` | `"reflect"` | `reflect`, `constant`, `nearest`, `mirror`, `wrap` How the filter samples beyond the image edge. |
+| `border_value` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. Original grayscale intensity outside the frame with constant border mode. |
+
 ## ORB keypoints and descriptors (`inspect.orb`)
 
 Inspection / Features

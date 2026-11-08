@@ -156,6 +156,7 @@ _NATIVE_NAMES = {
     "cv.morphology": ("morphologyEx", "erode", "dilate"),
     "cv.adaptive_threshold": ("adaptiveThreshold",),
     "cv.local_threshold": ("niBlackThreshold", "Sauvola", "Wolf", "NICK"),
+    "inspect.multiscale_ridges": ("Sato", "tubeness", "Hessian", "crack"),
     "cv.ridge_response": ("RidgeDetectionFilter_create", "Hessian", "crack"),
     "cv.slic_superpixels": ("createSuperpixelSLIC", "SLICO", "MSLIC"),
     "cv.lsc_superpixels": ("createSuperpixelLSC", "Linear Spectral Clustering"),
@@ -206,6 +207,8 @@ def block_entry(block):
         path = ("User", kind, subtype)
     elif kind == INDUSTRIAL:
         path = (INDUSTRIAL, subtype)
+    elif file == "multiscale_ridges":
+        path = ("scikit-image", "Filtering")
     elif file == "skeleton":
         family = "Graph" if type_id == "inspect.prune_skeleton" else "Morphology"
         path = ("scikit-image", family)
