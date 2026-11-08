@@ -56,6 +56,8 @@ adaptive thresholding against a known mark mask under uneven illumination.
 Superpixel studies compare boundary recall across SLICO region sizes and
 across SLICO, LSC, and SEEDS at similar output region counts. A label
 measurement study checks the area and centroid of segmented coating regions.
+The follow-up converts the retained label back to its exact mask and counts
+the two disconnected marks.
 
 ## Vision tool priorities
 

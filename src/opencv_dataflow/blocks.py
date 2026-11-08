@@ -701,7 +701,7 @@ def builtin_registry():
     from .image_stitching import StitchImagePair
     from .image_validity import CheckImageValidity, ReplaceNonfiniteSamples
     from .judgments import FinalJudgment
-    from .label_measurement import MeasureLabelRegions
+    from .label_measurement import MaskFromLabelCollection, MeasureLabelRegions
     from .lens_map_files import LoadLensMaps, SaveLensMaps
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .linear_program import SolveLinearProgram
@@ -892,6 +892,7 @@ def builtin_registry():
         VerifyText,
         *SEGMENTATION_BLOCKS,
         MeasureLabelRegions,
+        MaskFromLabelCollection,
         GraphSegments,
         SuperpixelsSLIC,
         SuperpixelsLSC,

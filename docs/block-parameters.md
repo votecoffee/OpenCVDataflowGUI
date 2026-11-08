@@ -4733,6 +4733,22 @@ Inputs: `model` (data), `samples` (data, optional).
 | `check_distance` | `false` | Fail when any row exceeds the distance limit. |
 | `distance_limit` | `3.0` | Value must be a finite number at least 0. Maximum Mahalanobis distance for an accepted row. |
 
+## Mask from filtered labels (`inspect.mask_from_labels`)
+
+Inspection / Segmentation
+
+Inputs: `labels` (image), `collection` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `labels` — The same label plane supplied to Measure label regions.
+
+Input `collection` — Measured labels, optionally passed through collection filters or sorting.
+
+Input `mask` — Use the same measurement mask here when one was supplied.
+
+Input `region` — Use the same measurement region here when one was supplied.
+
+No configurable algorithm parameters.
+
 ## Match AKAZE descriptors (`inspect.match_akaze`)
 
 Inspection / Matching

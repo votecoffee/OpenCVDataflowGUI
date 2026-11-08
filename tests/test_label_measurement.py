@@ -76,3 +76,78 @@ def test_measure_label_regions_rejects_wrong_grid_and_noninteger_labels():
     block.parameters["ignored_labels"] = [False]
     assert block.execute({"labels": labels}) is None
     assert "int32 IDs" in block.error
+
+
+def test_mask_from_filtered_labels_preserves_pixel_membership_and_measurement_scope():
+    labels = np.array([
+        [0, -1, 0, 4, -1],
+        [0, -1, 0, 4, -1],
+        [0, -1, -1, 4, -1],
+    ], np.int16)
+    spatial = frame([5, 3], "part")
+    ticket = TicketClock().issue("camera")
+    source = ValuePacket(labels, {"spatial": spatial, "ticket": ticket})
+    region = {
+        "model": "image_region_v1", "image_size": [5, 3],
+        "shape": "rectangle", "rectangle": [0, 0, 4, 2],
+    }
+    mask = np.ones((3, 5), np.uint8)
+    mask[1, 0] = 0
+    registry = builtin_registry()
+    measure = registry.create("inspect.measure_label_regions", parameters={"ignored_labels": [-1]})
+    measure.execute({"labels": source, "mask": mask, "region": region})
+    filtered = registry.create("collection.filter", parameters={"minimum": 3})
+    filtered.execute({"collection": measure.current_emissions["collection"][0]})
+    sort = registry.create("collection.sort")
+    sort.execute({"collection": filtered.current_emissions["collection"][0]})
+
+    block = registry.create("inspect.mask_from_labels")
+    data = sort.current_emissions["collection"][0]
+    result = block.execute({"labels": source, "collection": data, "mask": mask, "region": region})
+    assert result is not None, block.error
+    expected = np.array([[255, 0, 255, 0, 0], [0, 0, 255, 0, 0], [0, 0, 0, 0, 0]], np.uint8)
+    np.testing.assert_array_equal(result.outputs["mask"], expected)
+    assert result.outputs["pixel_count"] == 3
+    assert result.payloads["mask"]["ticket"] == ticket
+    assert result.payloads["mask"]["spatial"] == spatial
+
+    assert block.execute({"labels": source, "collection": data, "region": region}) is None
+    assert "same mask or region" in block.error
+    changed = labels.copy()
+    changed[0, 1] = 0
+    other = ValuePacket(changed, {"spatial": spatial, "ticket": ticket})
+    result = block.execute({"labels": other, "collection": data, "mask": mask, "region": region})
+    assert result is None
+    assert "original label plane" in block.error
+    empty = registry.create("collection.filter", parameters={"minimum": 100})
+    empty.execute({"collection": measure.current_emissions["collection"][0]})
+    result = block.execute({
+        "labels": source, "collection": empty.current_emissions["collection"][0],
+        "mask": mask, "region": region,
+    })
+    assert result is not None and result.outputs["pixel_count"] == 0
+    assert not result.outputs["mask"].any()
+
+
+def test_mask_from_labels_checks_frame_and_ticket_for_identical_rasters():
+    labels = np.array([[-1, 1], [1, 2]], np.int32)
+    spatial = frame([2, 2], "reference")
+    clock = TicketClock()
+    ticket = clock.issue("camera")
+    source = ValuePacket(labels, {"spatial": spatial, "ticket": ticket})
+    registry = builtin_registry()
+    measure = registry.create("inspect.measure_label_regions")
+    measure.execute({"labels": source})
+    packet = measure.current_emissions["collection"][0]
+    block = registry.create("inspect.mask_from_labels")
+    result = block.execute({
+        "labels": source, "collection": packet, "mask": np.ones((2, 2), np.uint8),
+    })
+    assert result is not None and result.outputs["pixel_count"] == 3
+
+    new_ticket = ValuePacket(labels, {"spatial": spatial, "ticket": clock.issue("camera")})
+    assert block.execute({"labels": new_ticket, "collection": packet}) is None
+    assert "same ticket" in block.error
+    new_frame = ValuePacket(labels, {"spatial": frame([2, 2], "other"), "ticket": ticket})
+    assert block.execute({"labels": new_frame, "collection": packet}) is None
+    assert "coordinate frames differ" in block.error
