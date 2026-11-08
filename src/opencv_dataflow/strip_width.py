@@ -52,6 +52,7 @@ class InspectStripWidth(Block):
     parallel_safe = True
     defaults = {
         "center_row": -1, "minimum_width": 1.0, "maximum_width": 0.0,
+        "enforce_limits": True,
         "minimum_valid_fraction": 1.0, "minimum_coverage": 1.0,
         "minimum_in_range_fraction": 1.0,
     }
@@ -71,6 +72,8 @@ class InspectStripWidth(Block):
         "minimum_coverage": "Minimum fraction of classifiable columns with a measurable "
         "foreground run. At least one run must be measurable.",
         "minimum_in_range_fraction": "Minimum fraction of measured widths within limits.",
+        "enforce_limits": "Turn off to report measurements and defect classifications "
+        "without assigning a width verdict.",
     }
     input_help = {
         "image": "8-bit monochrome foreground mask. Nonzero pixels are foreground.",
@@ -82,6 +85,8 @@ class InspectStripWidth(Block):
     def validate_parameters(self, parameters=None):
         super().validate_parameters(parameters)
         p = self.parameters if parameters is None else parameters
+        if type(p["enforce_limits"]) is not bool:
+            raise ValidationError("Enforce limits must be a checkbox value", "enforce_limits")
         high = float(p["maximum_width"])
         if high and high < float(p["minimum_width"]):
             raise ValidationError(
@@ -189,6 +194,8 @@ class InspectStripWidth(Block):
             ):
                 if mask.any():
                     drawings[name] = _column_marks(columns[mask], a, b, color)
+        if not p["enforce_limits"]:
+            reasons = []
         return Result(
             {"profile": profile, "measurements": measurements, "pass_fraction": fraction},
             graphics=graphics, drawings=drawings, passed=not reasons, score=fraction,

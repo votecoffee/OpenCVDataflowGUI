@@ -407,3 +407,10 @@ With strip sampling data, lengths follow the source centerline and runs of
 the same type can span the start of a closed path. A minimum report length
 filters short runs without changing the width verdict. Run graphics can be
 mapped back onto the source image.
+
+**Judge strip defects** checks the complete grouped report against per-kind
+maximum run counts and lengths. Unlisted kinds have a zero-run limit. At
+least one width must be measurable. Turn off **Enforce limits** on the width
+block to let this policy supply the upstream verdict for Final ticket judgment.
+Bind the policy's `limits` parameter to a versioned recipe field to switch
+acceptance criteria without changing measurement or report settings.

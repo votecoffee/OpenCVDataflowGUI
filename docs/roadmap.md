@@ -70,6 +70,7 @@ across the remapped strip. A follow-up checks width tolerance, missing material,
 and clipped edges with distinct ticket reasons. A source review study projects
 the strip-width annotations back onto the original curved bead. A defect
 report groups adjacent failed columns by type and estimates their length.
+A recipe study applies per-kind count and length limits to the complete report.
 
 ## Vision tool priorities
 

@@ -4745,6 +4745,19 @@ Input `image` — Grayscale, color or physical depth. Tests the stored sample va
 | `maximum` | `1.0` | Value must be a finite number. Exclusive upper bound, applied to every stored channel. |
 | `max_invalid_fraction` | `0.0` | Value must be a finite number between 0 and 1. Maximum fraction of selected pixels allowed to be invalid. |
 
+## Judge strip defects (`inspect.judge_strip_defects`)
+
+Inspection / Measurements
+
+Inputs: `inspection_report` (data).
+
+Input `inspection_report` — Complete inspection report from Group strip defects. The group's minimum report length does not affect this input.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `length_units` | `"source px"` | `source px`, `strip px` Required units for defect lengths. Match the Group strip defects report. |
+| `limits` | `{}` | Per-kind limits, for example {"narrow": {"max_count": 1, "max_length": 12}}. Use narrow, wide, out_of_range, missing or unmeasurable. An unlisted kind is rejected. Set either or both inclusive limits for a listed kind. |
+
 ## KAZE keypoints and descriptors (`inspect.kaze`)
 
 Inspection / Features
@@ -5412,6 +5425,7 @@ Input `sampling` — Optional Unwrap path strip sampling data for source-pixel w
 | `center_row` | `-1` | Value must be a whole number between -1 and 2.1e+06. Row the foreground run must cross. -1 uses the sampling center row or the middle row of an untagged mask. |
 | `minimum_width` | `1.0` | Value must be a finite number at least 0. Inclusive minimum. Measured as sample count times cross-strip step. |
 | `maximum_width` | `0.0` | Value must be a finite number at least 0. Inclusive maximum. Zero disables the upper limit. |
+| `enforce_limits` | `true` | Turn off to report measurements and defect classifications without assigning a width verdict. |
 | `minimum_valid_fraction` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of columns that can be classified. A clipped run or a masked-out center is unmeasurable. |
 | `minimum_coverage` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of classifiable columns with a measurable foreground run. At least one run must be measurable. |
 | `minimum_in_range_fraction` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of measured widths within limits. |
