@@ -4826,6 +4826,26 @@ Inputs: `model` (data), `samples` (data, optional).
 | `check_distance` | `false` | Fail when any row exceeds the distance limit. |
 | `distance_limit` | `3.0` | Value must be a finite number at least 0. Maximum Mahalanobis distance for an accepted row. |
 
+## Map strip graphics to source (`inspect.map_strip_graphics`)
+
+Image processing / Compositing
+
+Inputs: `image` (image), `map_x` (image), `map_y` (image), `sampling` (data), `graphics` (graphics).
+
+Input `image` — Original image used to unwrap the strip.
+
+Input `map_x` — Source X coordinates from Unwrap path strip.
+
+Input `map_y` — Source Y coordinates from the same strip.
+
+Input `sampling` — Unwrap path strip sampling data for frame validation.
+
+Input `graphics` — Strip result graphics. Maps outlines, labels, text and point markers.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sample_spacing` | `0.5` | Value must be a finite number between 0.25 and 1. Maximum spacing in strip pixels when projecting outline segments. |
+
 ## Mask clearance at reference (`inspect.mask_clearance`)
 
 Inspection / Measurements

@@ -67,7 +67,8 @@ along a nominal bead centerline. A path continuity study distinguishes short,
 scattered defects from a long gap, including across a closed path's start. A
 path strip study straightens a curved bead and measures foreground width
 across the remapped strip. A follow-up checks width tolerance, missing material,
-and clipped edges with distinct ticket reasons.
+and clipped edges with distinct ticket reasons. A source review study projects
+the strip-width annotations back onto the original curved bead.
 
 ## Vision tool priorities
 

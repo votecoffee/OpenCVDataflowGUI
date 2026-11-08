@@ -776,6 +776,7 @@ def builtin_registry():
     from .spectral import SPECTRAL_BLOCKS
     from .stabilization import StabilizeCameraMotion
     from .stereo3d import STEREO3D_BLOCKS
+    from .strip_graphics import MapStripGraphics
     from .strip_width import InspectStripWidth
     from .subpixel_crop import CropSubpixel
     from .superpixels import SuperpixelsLSC, SuperpixelsSEEDS, SuperpixelsSLIC
@@ -858,6 +859,7 @@ def builtin_registry():
         CropSubpixel,
         PolarImageWarp,
         UnwrapPathStrip,
+        MapStripGraphics,
         TileImage,
         *FEATURE_BLOCKS,
         *REGISTRATION_BLOCKS,

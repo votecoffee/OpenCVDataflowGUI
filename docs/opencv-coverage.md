@@ -393,3 +393,10 @@ background at the center is reported as missing. Connect the strip sampling
 data and validity mask for source-pixel widths. The width estimate is the
 sample count times the cross-step. Coverage and width tolerance have separate
 limits and ticket reasons.
+
+**Map strip graphics to source** projects outlines, labels and markers
+through the strip's X/Y maps into the original camera frame. It samples
+outlines along their length and splits them at invalid map samples. The
+output remains drawable objects for Overlay result graphics and filmstrip
+review. Layers from a different frame or ticket and unsupported primitives
+such as fills and arrows are counted as skipped.
