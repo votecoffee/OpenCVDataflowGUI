@@ -29,8 +29,9 @@ centroid measurement, convex hulls, Hu shape matching, Hough line and circle
 detection, masked inpainting, QR label rectification, temporal median background
 estimation, checkerboard lens calibration, ArUco fixture rectification, camera
 projection, lens distortion, epipolar correspondence review, and metric stereo
-depth, optical flow through occlusion, and contour retrieval. The studies check
-known geometry, decisions, decoded text, or reconstruction error against
+depth, optical flow through occlusion, contour retrieval, masked Otsu, and
+tolerant edge-map comparison. The studies check known geometry, decisions,
+decoded text, or reconstruction error against
 original synthetic references.
 
 ## Vision tool priorities

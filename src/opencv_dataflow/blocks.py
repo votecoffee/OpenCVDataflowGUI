@@ -668,6 +668,7 @@ def builtin_registry():
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
     from .dnn_blocks import DNN_BLOCKS
     from .ecc_registration import AlignECC
+    from .edge_agreement import CompareEdgeMaps
     from .epipolar import CheckEpipolarCorrespondences
     from .example_plugins import invert as invert_example
     from .examples3d import StereoDemo
@@ -875,6 +876,7 @@ def builtin_registry():
         HoughPointSetLines,
         HoughPolarLines,
         *CONTOUR_ANALYSIS_BLOCKS,
+        CompareEdgeMaps,
         *CODE_READER_BLOCKS,
         ReadZXingBarcode,
         VerifyText,

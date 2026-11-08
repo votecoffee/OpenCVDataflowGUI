@@ -27,7 +27,7 @@ The portable `examples/custom tools/trained_patterns/trained_patterns.json` job 
 | Filtering | Box blur | `blur`; odd square kernel |
 | Filtering | Median blur | `medianBlur`; odd kernel of at least 3 |
 | Filtering | Bilateral filter | `bilateralFilter`; diameter and color/spatial sigmas |
-| Segmentation | Automatic threshold | `threshold` with Otsu or Triangle; image and selected threshold outputs |
+| Segmentation | Automatic threshold | Otsu or Triangle using `threshold` or `thresholdWithMask`; image and selected threshold outputs |
 | Segmentation | Adaptive threshold | `adaptiveThreshold`; mean/Gaussian local threshold, neighborhood, offset and inverse option |
 | Segmentation | In range mask | `inRange`; scalar or per-channel inclusive lower/upper bounds |
 | Morphology | Morphology | `morphologyEx`; erode, dilate, open, close, gradient, top-hat or black-hat; visual editor for rectangle, ellipse, cross, diamond, and custom binary kernels |
@@ -97,6 +97,24 @@ Invalid kernels, ROI bounds, mismatched image math inputs, incompatible template
 and invalid numeric parameters fail the block and clear stale results. Dependents
 are skipped after execution errors. A valid negative inspection still supplies
 measurements downstream. These are standard native operations, not all of OpenCV.
+
+## Compare measured and reference edges
+
+**Compare edge maps** scores two equal-size monochrome edge maps. Nonzero
+pixels are edges. Precision measures the fraction of detected pixels near
+a reference edge. Recall measures the fraction of reference pixels near
+a detection. Both directions use the same inclusive Euclidean tolerance.
+The comparison uses nearest edges, so several nearby detections can match
+one reference edge. Use thin edge maps when edge thickness matters.
+
+Set minimum precision and recall for a pass/fail check. If both selected
+edge sets are empty, both scores are 1. If only one is empty, both are 0.
+The optional color map marks matched detections in green, unexpected
+detections in red, and missed reference pixels in amber.
+
+A mask or region restricts both edge sets before scoring. The default
+alignment checks their known coordinate frames. Use **Pixel grid** for a
+separately loaded reference that already uses the same pixel coordinates.
 
 ## Starter inspection
 

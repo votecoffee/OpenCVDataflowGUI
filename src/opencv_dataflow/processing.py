@@ -338,8 +338,13 @@ class BilateralFilter(RegionalOperation, ImageTool):
         )
 
 
-class AutoThreshold(RegionalOperation, ImageTool):
-    region_background = "zero"
+class AutoThreshold(ImageTool):
+    inputs = SELECTION_INPUTS
+    process_inputs_readonly = True
+    input_help = {
+        "mask": "Learn and write the threshold only on selected pixels. Elsewhere stays zero.",
+        "region": "Learn and write the threshold only inside this region. Elsewhere stays zero.",
+    }
     type_id, title, subtype = "cv.auto_threshold", "Automatic threshold", "Segmentation"
     outputs = (Port("image"), Port("threshold", "number"))
     defaults = {"method": "otsu", "invert": False, "max_value": -1.0}
@@ -359,12 +364,11 @@ class AutoThreshold(RegionalOperation, ImageTool):
         if selection is None:
             level, mask = cv2.threshold(image, 0, maximum, mode)
         else:
-            samples = image[selection != 0]
-            if not samples.size:
+            if not selection.any():
                 raise ValueError("Automatic threshold requires a nonempty selection")
-            level, _ = cv2.threshold(samples.reshape(-1, 1), 0, maximum, mode)
-            basic = cv2.THRESH_BINARY_INV if self.parameters["invert"] else cv2.THRESH_BINARY
-            _, mask = cv2.threshold(image, level, maximum, basic)
+            level, mask = cv2.thresholdWithMask(
+                image, np.zeros_like(image), selection, 0, maximum, mode
+            )
         return Result({"image": mask, "threshold": float(level)})
 
 

@@ -1062,8 +1062,9 @@ Image processing / Segmentation
 
 Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
-Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
-Neighborhood operations retain full-image context. See [regions](regions.md).
+Input `mask` — Learn and write the threshold only on selected pixels. Elsewhere stays zero.
+
+Input `region` — Learn and write the threshold only inside this region. Elsewhere stays zero.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -3849,6 +3850,28 @@ Inputs: `reference` (data), `sample` (data).
 | `sample_index` | `0` | Zero-based sample collection item. Ignored for point-list inputs. |
 | `check_distance` | `false` |  |
 | `maximum_distance` | `0.1` | Maximum Hu-moment distance. Smaller values indicate closer shapes. |
+
+## Compare edge maps (`inspect.compare_edge_maps`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reference` (image).
+
+Input `image` — Detected edges in an 8-bit monochrome image. Nonzero pixels are edges.
+
+Input `reference` — Known edge positions in an equal-size 8-bit monochrome image.
+
+Input `mask` — Restrict both edge sets to the selected pixels.
+
+Input `region` — Restrict both edge sets to the selected pixels.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `tolerance_pixels` | `1.0` | Value must be a finite number between 0 and 100000. Inclusive Euclidean distance to a nearest edge in the other map. |
+| `minimum_precision` | `0.0` | Value must be a finite number between 0 and 1. Minimum fraction of detected pixels near the reference. |
+| `minimum_recall` | `0.0` | Value must be a finite number between 0 and 1. Minimum fraction of reference pixels covered by detected edges. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid compares equal-size maps by index across frame IDs. |
+| `draw_map` | `true` | Emit a color map of matched, unexpected, and missed edges. |
 
 ## Compare histograms (`inspect.compare_histograms`)
 
