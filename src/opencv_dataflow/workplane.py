@@ -9,6 +9,7 @@ from .parameter_validation import NumericRange, ValidationError
 from .payloads import metadata, moved_payload
 from .processing import ImageTool, geometry_result, image_value
 from .selection import selection_mask
+from .tickets import ticket_key
 
 LENGTH_UNITS = ("mm", "cm", "m", "in")
 SCALE_MODEL = "rectified_workplane_v1"
@@ -21,6 +22,18 @@ def read_length_scale(scale):
         raise ValidationError("Workplane scale requires mm, cm, m or in")
     step = _STEP_RANGE.check(scale.get("units_per_pixel"), "Physical units per pixel")
     return scale["units"], step
+
+
+def require_workplane_scale(scale, image_payload, scale_payload):
+    if (
+        not isinstance(scale, dict) or scale.get("model") != SCALE_MODEL
+        or scale.get("spatial") != image_payload["spatial"]
+    ):
+        raise ValidationError("Workplane scale must describe the current input grid")
+    a, b = image_payload.get("ticket"), scale_payload.get("ticket")
+    if a is not None and b is not None and ticket_key(a) != ticket_key(b):
+        raise ValidationError("Workplane scale and image must share one ticket")
+    return read_length_scale(scale)
 
 
 class RectifyWorkplane(ImageTool):

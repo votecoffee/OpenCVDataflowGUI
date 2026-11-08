@@ -772,6 +772,7 @@ def builtin_registry():
         BoundingConvexPolygon,
         BoundingRotatedRectangle,
         FitShape,
+        InspectWorkplaneRectangle,
         RotatedRectangleOverlap,
     )
     from .simple_classifier.dataflow import ClassifyImage
@@ -940,6 +941,7 @@ def builtin_registry():
         HistogramBackProjection,
         FitShape,
         BoundingRotatedRectangle,
+        InspectWorkplaneRectangle,
         BoundingConvexPolygon,
         DelaunayTriangulation,
         VoronoiCells,

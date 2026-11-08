@@ -74,6 +74,7 @@ A recipe study applies per-kind count and length limits to the complete report.
 A calibrated follow-up rectifies a perspective view and applies millimeter limits.
 A held-out fiducial check gates the calibrated inspection if the camera shifts.
 A fit study uses disjoint ArUco IDs for estimating and verifying a planar mapping.
+A part study checks physical rectangle dimensions and orientation after rectification.
 
 ## Vision tool priorities
 

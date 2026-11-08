@@ -9,9 +9,11 @@ from .collection_tools import read_collection
 from .core import Block, Port, Result
 from .graphics_layers import GraphicDrawing, graphic_object
 from .parameter_validation import NumericRange, ValidationError
-from .payloads import ValuePacket, require_same_frame
+from .payloads import NO_VALUE, ValuePacket, require_same_frame
 from .processing import finite, integer
 from .result_graphics import ACCEPTED, REJECTED
+from .tickets import ticket_key
+from .workplane import LENGTH_UNITS, require_workplane_scale
 
 LINE_DISTANCES = {
     "l2": cv2.DIST_L2,
@@ -209,6 +211,163 @@ class BoundingRotatedRectangle(Block):
             outline = graphic_object("polyline", corners, ACCEPTED, closed=True)
             drawings["rectangle"] = GraphicDrawing((outline,), source)
         return Result(outputs, payloads=dict.fromkeys(outputs, payload), drawings=drawings)
+
+
+def _covered_rectangle(corners, mask):
+    """Check the raster footprint plus one surrounding pixel for clipping."""
+    low = np.floor(corners.min(axis=0)).astype(int) - 1
+    high = np.ceil(corners.max(axis=0)).astype(int) + 1
+    if np.any(low < 0) or np.any(high >= mask.shape[::-1]):
+        return False
+    x, y = low
+    right, bottom = high
+    footprint = np.zeros((bottom - y + 1, right - x + 1), np.uint8)
+    cv2.fillConvexPoly(footprint, np.rint((corners - low) * 256).astype(np.int32), 1, shift=8)
+    selected = cv2.dilate(footprint, np.ones((3, 3), np.uint8)) != 0
+    return bool(selected.any() and np.all(mask[y:bottom + 1, x:right + 1][selected] != 0))
+
+
+class InspectWorkplaneRectangle(Block):
+    type_id, title = "inspect.workplane_rectangle", "Inspect workplane rectangle"
+    category = block_type = "Inspection"
+    subtype = "Measurements"
+    inputs = (
+        Port("image"), Port("rectangle", "data"), Port("scale", "data"),
+        Port("valid_mask", visual_type="region"),
+    )
+    outputs = (
+        Port("measurements", "data"), Port("length", "number", required=False),
+        Port("width", "number", required=False), Port("angle", "number", required=False),
+    )
+    payload_reference = "image"
+    process_inputs_readonly = True
+    parallel_safe = True
+    defaults = {
+        "units": "mm", "minimum_length": 0.0, "maximum_length": 0.0,
+        "minimum_width": 0.0, "maximum_width": 0.0,
+        "check_angle": False, "target_angle": 0.0, "angle_tolerance": 5.0,
+        "minimum_orientation_aspect": 1.05,
+    }
+    parameter_choices = {"units": LENGTH_UNITS}
+    parameter_ranges = {
+        "minimum_length": NumericRange(0), "maximum_length": NumericRange(0),
+        "minimum_width": NumericRange(0), "maximum_width": NumericRange(0),
+        "target_angle": NumericRange(-180, 180), "angle_tolerance": NumericRange(0, 90),
+        "minimum_orientation_aspect": NumericRange(1, 1000),
+    }
+    parameter_help = {
+        "units": "Expected units of the workplane scale and dimensional limits.",
+        "minimum_length": "Inclusive minimum of the longer side.",
+        "maximum_length": "Inclusive maximum of the longer side. Zero disables the upper limit.",
+        "minimum_width": "Inclusive minimum of the shorter side.",
+        "maximum_width": "Inclusive maximum of the shorter side. Zero disables the upper limit.",
+        "target_angle": "Long-axis angle from workplane +X toward +Y. Equivalent modulo 180°.",
+        "angle_tolerance": "Maximum unsigned difference from the target long-axis angle.",
+        "minimum_orientation_aspect": "Angle is unavailable at or below this length/width ratio.",
+    }
+    input_help = {
+        "image": "Rectify workplane image used to measure and draw the rectangle.",
+        "rectangle": "Rectangle from Minimum-area rotated rectangle on this same grid.",
+        "scale": "Physical scale from Rectify workplane for the current image.",
+        "valid_mask": "Rectify workplane validity mask. The footprint needs complete coverage.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        for dimension in ("length", "width"):
+            high = float(p[f"maximum_{dimension}"])
+            if high and high < float(p[f"minimum_{dimension}"]):
+                raise ValidationError(
+                    f"Maximum {dimension} must be at least the minimum or zero",
+                    f"maximum_{dimension}",
+                )
+        if type(p["check_angle"]) is not bool:
+            raise ValidationError("Check angle must be a checkbox value", "check_angle")
+
+    def process(self, inputs):
+        image, rect, scale, mask = (inputs[key] for key in
+                                    ("image", "rectangle", "scale", "valid_mask"))
+        p = self.parameters
+        image_payload = self.input_payloads["image"]
+        units, step = require_workplane_scale(scale, image_payload, self.input_payloads["scale"])
+        if units != p["units"]:
+            raise ValidationError("Workplane scale units must match the dimension limits", "units")
+        for key in ("rectangle", "valid_mask"):
+            payload = self.input_payloads[key]
+            if payload.get("spatial") != image_payload["spatial"]:
+                raise ValidationError(f"{key} must share the workplane image frame")
+            first, second = image_payload.get("ticket"), payload.get("ticket")
+            if first is not None and second is not None and ticket_key(first) != ticket_key(second):
+                raise ValidationError(f"{key} and image must share one ticket")
+        if mask.dtype != np.uint8 or mask.ndim != 2 or mask.shape != image.shape[:2]:
+            raise ValidationError("Validity mask must be uint8 monochrome on the workplane grid")
+        if not 0 < mask.size <= 8_388_608:
+            raise ValidationError("Workplane measurement requires up to 8,388,608 pixels")
+        if not isinstance(rect, dict):
+            raise ValidationError("Connect a minimum-area rotated rectangle")
+        center, size, angle = _rectangle(
+            rect.get("center"), rect.get("size"), rect.get("angle_degrees"), "Workplane rectangle"
+        )
+        origin = np.asarray(scale.get("origin"), np.float64)
+        if origin.shape != (2,) or not np.isfinite(origin).all():
+            raise ValidationError("Workplane scale requires a finite physical origin")
+        corners = cv2.boxPoints((center, size, angle))
+        covered = _covered_rectangle(corners, mask)
+        dims = sorted(size, reverse=True)
+        length, width = (value * step for value in dims)
+        axis = angle if size[0] >= size[1] else angle + 90
+        axis = (axis + 90) % 180 - 90
+        angle_known = dims[0] / dims[1] > float(p["minimum_orientation_aspect"])
+        deviation = abs((axis - float(p["target_angle"]) + 90) % 180 - 90)
+        measurements = {"units": units, "status": "measured" if covered else "unmeasurable"}
+        reasons = []
+        if not covered:
+            reasons.append({
+                "code": "workplane_rectangle_unmeasurable",
+                "message": "The footprint touches invalid coverage or the workplane edge",
+            })
+        else:
+            measurements.update(
+                center=(origin + np.asarray(center) * step).tolist(),
+                length=length, width=width, angle_degrees=axis if angle_known else None,
+            )
+            for key, value in (("length", length), ("width", width)):
+                low, high = float(p[f"minimum_{key}"]), float(p[f"maximum_{key}"])
+                below = value < low and not math.isclose(value, low, rel_tol=1e-12)
+                above = high and value > high and not math.isclose(value, high, rel_tol=1e-12)
+                if below or above:
+                    reasons.append({
+                        "code": f"workplane_rectangle_{key}_out_of_range",
+                        "message": f"Rectangle {key} {value:.4g} {units} is outside limits",
+                    })
+            if p["check_angle"] and not angle_known:
+                reasons.append({
+                    "code": "workplane_rectangle_orientation_ambiguous",
+                    "message": "The footprint is too close to square for a long-axis check",
+                })
+            elif p["check_angle"] and deviation > float(p["angle_tolerance"]):
+                reasons.append({
+                    "code": "workplane_rectangle_angle_out_of_range",
+                    "message": f"Long-axis error {deviation:.4g}° exceeds the tolerance",
+                })
+        passed = not reasons
+        message = f"{length:.4g} × {width:.4g} {units}" if covered else "Footprint is clipped"
+        if covered and angle_known:
+            message += f" · {axis:.3g}°"
+        drawings = {}
+        if self.generate_graphics:
+            color = ACCEPTED if passed else REJECTED
+            drawings["Workplane rectangle"] = GraphicDrawing((
+                graphic_object("polyline", corners, color, closed=True),
+                graphic_object("label", [center], color, text=message),
+            ))
+        return Result(
+            {"measurements": measurements, "length": length if covered else NO_VALUE,
+             "width": width if covered else NO_VALUE,
+             "angle": axis if covered and angle_known else NO_VALUE},
+            passed=passed, fail_reasons=reasons, message=message, drawings=drawings,
+        )
 
 
 def _checked_enclosure(hull, hull_area, vertices, side_limit):

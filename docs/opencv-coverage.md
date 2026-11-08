@@ -432,3 +432,9 @@ workplane to withhold calibrated measurements when validation fails.
 physical references. It supports direct and robust homography fits and reports
 fitting inliers and physical RMS. Configure ArUco IDs to establish point order.
 Use distinct IDs for held-out validation before rectification.
+
+**Inspect workplane rectangle** checks the long and short sides of a fitted
+rectangle using the workplane's physical scale. Its optional long-axis check
+is modulo 180 degrees and rejects ambiguous near-square fits. It withholds
+numeric measurements if the footprint touches invalid coverage or the image
+edge. The measured footprint can be drawn on the original camera image.

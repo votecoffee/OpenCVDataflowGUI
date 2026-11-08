@@ -14,8 +14,7 @@ from .payloads import ValuePacket, frame, metadata, require_same_frame
 from .processing import ImageTool, image_value
 from .projection import read_path, sample_path
 from .selection import selection_mask
-from .tickets import ticket_key
-from .workplane import SCALE_MODEL, read_length_scale
+from .workplane import require_workplane_scale
 
 _INTERPOLATION = {"nearest": cv2.INTER_NEAREST, "linear": cv2.INTER_LINEAR}
 
@@ -139,20 +138,9 @@ class UnwrapPathStrip(ImageTool):
             "invalid_map_value": -1,
         }
         if "scale" in inputs:
-            scale = inputs["scale"]
-            if (
-                not isinstance(scale, dict) or scale.get("model") != SCALE_MODEL
-                or scale.get("spatial") != source_frame
-            ):
-                raise ValidationError("Workplane scale must describe the current input grid")
-            scale_ticket = self.input_payloads["scale"].get("ticket")
-            source_ticket = payload.get("ticket")
-            if (
-                scale_ticket is not None and source_ticket is not None
-                and ticket_key(scale_ticket) != ticket_key(source_ticket)
-            ):
-                raise ValidationError("Workplane scale and image must share one ticket")
-            units, step = read_length_scale(scale)
+            units, step = require_workplane_scale(
+                inputs["scale"], self.input_payloads["image"], self.input_payloads["scale"]
+            )
             sampling["physical_scale"] = {"units": units, "units_per_pixel": step}
         drawings = {}
         if self.generate_graphics:

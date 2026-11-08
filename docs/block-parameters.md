@@ -5618,6 +5618,32 @@ Input `background_points` — Overrides the saved background points.
 | `radius` | `2` | Value must be a whole number between 0 and 64. |
 | `background_mode` | `"border"` | `border`, `points` Border adds an inset ring. Points uses only specified points. |
 
+## Inspect workplane rectangle (`inspect.workplane_rectangle`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `rectangle` (data), `scale` (data), `valid_mask` (image).
+
+Input `image` — Rectify workplane image used to measure and draw the rectangle.
+
+Input `rectangle` — Rectangle from Minimum-area rotated rectangle on this same grid.
+
+Input `scale` — Physical scale from Rectify workplane for the current image.
+
+Input `valid_mask` — Rectify workplane validity mask. The footprint needs complete coverage.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `units` | `"mm"` | `mm`, `cm`, `m`, `in` Expected units of the workplane scale and dimensional limits. |
+| `minimum_length` | `0.0` | Value must be a finite number at least 0. Inclusive minimum of the longer side. |
+| `maximum_length` | `0.0` | Value must be a finite number at least 0. Inclusive maximum of the longer side. Zero disables the upper limit. |
+| `minimum_width` | `0.0` | Value must be a finite number at least 0. Inclusive minimum of the shorter side. |
+| `maximum_width` | `0.0` | Value must be a finite number at least 0. Inclusive maximum of the shorter side. Zero disables the upper limit. |
+| `check_angle` | `false` |  |
+| `target_angle` | `0.0` | Value must be a finite number between -180 and 180. Long-axis angle from workplane +X toward +Y. Equivalent modulo 180°. |
+| `angle_tolerance` | `5.0` | Value must be a finite number between 0 and 90. Maximum unsigned difference from the target long-axis angle. |
+| `minimum_orientation_aspect` | `1.05` | Value must be a finite number between 1 and 1000. Angle is unavailable at or below this length/width ratio. |
+
 ## Comment (`layout.comment`)
 
 Annotations / Layout
