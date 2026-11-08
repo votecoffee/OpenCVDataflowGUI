@@ -86,6 +86,49 @@ def test_composite_maps_drawing_objects_to_the_final_grid_and_skips_other_ticket
     assert np.count_nonzero(output != canvas) == 6
 
 
+def test_annotation_fill_reprojects_and_leaves_the_source_untouched():
+    registry = builtin_registry()
+    graph = Graph()
+    annotation = graph.add(registry.create("cv.annotation_layer", parameters={
+        "shape": "rectangle", "origin": [7, 5], "end": [10, 8],
+        "color_rgb": [200, 90, 30], "filled": True, "layer_name": "fixture",
+    }))
+    crop = graph.add(registry.create(
+        "cv.crop", parameters={"x": 6, "y": 4, "width": 7, "height": 7},
+    ))
+    overlay = graph.add(registry.create("cv.overlay_result_graphics"))
+    graph.connect(annotation.id, RESULT_GRAPHICS, overlay.id, "graphics_1")
+    graph.connect(crop.id, "image", overlay.id, "image")
+    context = {"spatial": frame([20, 16], "source")}
+    image = np.zeros((16, 20), np.uint16)
+    packet = ValuePacket(image, context)
+    graph.run(injected={(annotation.id, "image"): packet, (crop.id, "image"): packet})
+    assert annotation.last_result is not None, annotation.error
+    assert overlay.last_result is not None, overlay.error
+    layers = annotation.last_result.outputs[RESULT_GRAPHICS].layers
+    assert [layer.name for layer in layers] == ["fixture"]
+    assert layers[0].objects[0].kind == "filled_polygon"
+    expected = np.zeros((7, 7, 3), np.uint16)
+    expected[1:5, 1:5] = [30 * 257, 90 * 257, 200 * 257]
+    np.testing.assert_array_equal(overlay.last_result.outputs["image"], expected)
+    assert not image.any()
+
+
+def test_annotation_label_accepts_wired_text_and_rejects_foreign_coordinates():
+    block = builtin_registry().create("cv.annotation_layer", parameters={"shape": "label"})
+    context = {"spatial": frame([20, 16], "source")}
+    image = ValuePacket(np.zeros((16, 20), np.uint8), context)
+    result = block.execute({
+        "image": image, "points": ValuePacket([[5.25, 7.5]], context), "text": "Pass 42",
+    })
+    assert result is not None, block.error
+    item = result.outputs[RESULT_GRAPHICS].layers[0].objects[0]
+    assert item.kind == "label" and item.points == ((5.25, 7.5),) and item.text == "Pass 42"
+    foreign = ValuePacket([[5, 7]], {"spatial": frame([20, 16], "other")})
+    assert block.execute({"image": image, "points": foreign}) is None
+    assert "Transform annotation points" in block.error
+
+
 @pytest.mark.local_examples
 def test_inspector_layer_checklist_persists_the_exclusion(app, monkeypatch):
     window = MainWindow()

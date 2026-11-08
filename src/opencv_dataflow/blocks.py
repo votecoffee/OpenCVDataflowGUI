@@ -635,6 +635,7 @@ class WriteResults(Block):
 
 def builtin_registry():
     from .analysis_tools import ANALYSIS_BLOCKS
+    from .annotation import AnnotationLayer
     from .annoy_blocks import ANNOY_BLOCKS
     from .aruco_markers import DetectArucoMarkers
     from .basic_processing import BASIC_PROCESSING_BLOCKS
@@ -800,6 +801,7 @@ def builtin_registry():
         DecodePackedYuv,
         EncodeImage,
         DecodeImage,
+        AnnotationLayer,
         OverlayResultGraphics,
         SetFilmstripImage,
         Threshold,

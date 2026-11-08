@@ -30,10 +30,11 @@ def graphic_box(x, y, width, height, color):
     )
 
 
-def graphic_circle(x, y, radius, color, *, thickness=1):
+def graphic_circle(x, y, radius, color, *, thickness=1, filled=False):
     angles = np.linspace(0, 2 * np.pi, 64, endpoint=False)
     points = np.column_stack((x + radius * np.cos(angles), y + radius * np.sin(angles)))
-    return graphic_object("polyline", points, color, closed=True, thickness=thickness)
+    kind = "filled_polygon" if filled else "polyline"
+    return graphic_object(kind, points, color, closed=True, thickness=thickness)
 
 
 @dataclass(frozen=True)
@@ -140,6 +141,8 @@ def draw_object(image, graphic, transform):
         color = tuple(value / 255 for value in color)
     if graphic.kind == "polyline":
         cv2.polylines(image, [pixels], graphic.closed, color, graphic.thickness)
+    elif graphic.kind == "filled_polygon" and len(pixels) >= 3:
+        cv2.fillPoly(image, [pixels], color)
     elif graphic.kind == "marker":
         cv2.drawMarker(image, tuple(pixels[0]), color, cv2.MARKER_CROSS, 12, 1)
     elif graphic.kind == "arrow" and len(pixels) == 2:

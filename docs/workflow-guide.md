@@ -81,6 +81,14 @@ drawing objects. The overlay block draws them onto the final image to produce
 the result image. Standalone previews such as histograms remain available for
 inspection. [Try the overlay example](<../examples/custom tools/overlay_result_graphics/README.md>).
 
+Use **Add annotation layer** to author a line, rectangle, circle, or label
+in an image's pixel frame. Choose a shape, RGB color, and layer name. Set the
+points in the inspector or wire measured coordinates in the same frame.
+For labels, a text input can replace the configured text. Wire each layer's
+**Result graphics** output to **Overlay result graphics** to render it on a
+result image. Use a different layer name for each annotation you want to
+identify in the selector.
+
 The overlay block starts with two visible graphics inputs. Expose more in the
 inspector to connect up to eight sources. A ToolBlock's **Result graphics**
 collects drawings from its internal blocks. You can also map an internal block's

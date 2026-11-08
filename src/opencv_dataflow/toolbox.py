@@ -56,7 +56,8 @@ _MODULE_ORDER = {
 # use the overrides below. Unmapped built-in workflows belong under Custom.
 IMPLEMENTATION_MODULES = {
     "imgproc": (
-        "analysis_tools basic_processing blocks collection_tools features generalized_hough "
+        "analysis_tools annotation basic_processing blocks collection_tools features "
+        "generalized_hough "
         "histogram histogram_comparison image_blend image_colorize point_set_lines polar_image "
         "processing "
         "pyramids raster_hough_lines registration segmentation subpixel_crop template_instances "

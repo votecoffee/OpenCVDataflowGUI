@@ -1048,6 +1048,30 @@ Input `exposures` — Ordered batch of 2–16 uint8 gray, BGR or RGB exposures.
 | `exclude_range` | `4` | Value must be a whole number between 0 and 127. Ignore brightness values this close to the median when matching. |
 | `border_mode` | `"crop"` | `crop`, `zero_pad` Crop to the area shared by all exposures, or zero-pad the original canvas. |
 
+## Add annotation layer (`cv.annotation_layer`)
+
+Image processing / Drawing
+
+Inputs: `image` (image), `points` (data, optional), `text` (text, optional).
+
+Input `image` — Reference for the annotation's pixel frame and ticket.
+
+Input `points` — One [x, y] for a circle or label, or two for a line or rectangle.
+
+Input `text` — Optional label text from an upstream tool.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `shape` | `"rectangle"` | `line`, `rectangle`, `circle`, `label` |
+| `layer_name` | `"annotation"` |  |
+| `origin` | `[8.0, 8.0]` | Start, corner, circle center, or label anchor in source pixels. |
+| `end` | `[64.0, 42.0]` | Second endpoint for a line, or opposite corner for a rectangle. |
+| `radius` | `12.0` | Value must be a finite number between 0.5 and 100000. Circle radius in source pixels. |
+| `label` | `"Inspection"` | Text displayed by the label shape. A wired text input takes precedence. |
+| `color_rgb` | `[255, 197, 66]` | Three whole RGB values between 0 and 255. |
+| `thickness` | `2` | Value must be a whole number between 1 and 32. Stroke width in rendered pixels for lines and outlines. |
+| `filled` | `false` | Fill the rectangle or circle. |
+
 ## Apply mask (`cv.apply_mask`)
 
 Image processing / Image math

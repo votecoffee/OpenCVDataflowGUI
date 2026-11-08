@@ -29,6 +29,7 @@ BINDINGS = {
     "cv.absdiff": "absdiff",
     "cv.adaptive_threshold": "adaptiveThreshold",
     "cv.align_exposures": "createAlignMTB AlignMTB",
+    "cv.annotation_layer": "polylines fillPoly putText",
     "cv.calibrate_debevec": "createCalibrateDebevec CalibrateDebevec",
     "cv.apply_mask": "copyTo",
     "cv.auto_threshold": "threshold thresholdWithMask",

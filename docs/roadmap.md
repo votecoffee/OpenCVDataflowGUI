@@ -38,7 +38,8 @@ compares GSoC and LSBP after learning an empty conveyor fixture. A resize
 study checks letterbox padding, source-coordinate round trips, and the
 effect of interpolation on categorical masks. A rotation and translation
 study compares clipped and fitted canvases and follows a region through the
-combined warp.
+combined warp. An annotation study draws named geometry and a measurement-driven
+label over a resized inspection image and compares two layer selections.
 
 ## Vision tool priorities
 
