@@ -28,6 +28,7 @@ BINDINGS = {
     "calibration.undistort_lens_points": "undistortPoints projectPoints",
     "cv.absdiff": "absdiff",
     "cv.adaptive_threshold": "adaptiveThreshold",
+    "cv.local_threshold": "ximgproc.niBlackThreshold",
     "cv.align_exposures": "createAlignMTB AlignMTB",
     "cv.annotation_layer": "polylines fillPoly putText",
     "cv.calibrate_debevec": "createCalibrateDebevec CalibrateDebevec",

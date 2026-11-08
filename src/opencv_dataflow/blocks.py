@@ -19,7 +19,7 @@ from .image_metadata import decode_file_image
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 from .objects import collection, contour_item
 from .parameter_validation import NumericRange, ValidationError
-from .parameters import BORDERS, CONTOUR_APPROXIMATIONS, scalar_value
+from .parameters import BORDERS, CONTOUR_APPROXIMATIONS, THRESHOLD_MODES, scalar_value
 from .payloads import NO_VALUE, moved_payload
 from .replay import ReplaySource
 from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
@@ -406,7 +406,7 @@ class Threshold(RegionalOperation, Block):
     outputs = (Port("image"), Port("threshold", "number"))
     input_help = {"value": "Overrides the saved threshold, in grayscale pixel units."}
     defaults = {"value": 127.0, "invert": False, "max_value": 255.0, "mode": "binary"}
-    parameter_choices = {"mode": ("binary", "binary_inv", "trunc", "tozero", "tozero_inv")}
+    parameter_choices = {"mode": tuple(THRESHOLD_MODES)}
     parameter_ranges = {"value": NumericRange(), "max_value": NumericRange(0)}
 
     def __init__(self, **kwargs):
@@ -432,13 +432,7 @@ class Threshold(RegionalOperation, Block):
         name = self.parameters["mode"]
         if self.parameters["invert"]:
             name = "binary_inv"
-        mode = {
-            "binary": cv2.THRESH_BINARY,
-            "binary_inv": cv2.THRESH_BINARY_INV,
-            "trunc": cv2.THRESH_TRUNC,
-            "tozero": cv2.THRESH_TOZERO,
-            "tozero_inv": cv2.THRESH_TOZERO_INV,
-        }[name]
+        mode = THRESHOLD_MODES[name]
         level, mask = cv2.threshold(image, value, maximum, mode)
         return Result({"image": mask, "threshold": level})
 
@@ -711,6 +705,7 @@ def builtin_registry():
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .linear_program import SolveLinearProgram
     from .linear_system import SolveLinearSystem
+    from .local_threshold import LocalThreshold
     from .logix import LOGIX_BLOCKS
     from .match_review import ReviewFeatureMatches
     from .matrix_eigen import MatrixEigen
@@ -843,6 +838,7 @@ def builtin_registry():
         LoadCalibration,
         SaveCalibration,
         *PROCESSING_BLOCKS,
+        LocalThreshold,
         JoinImages,
         StitchImagePair,
         StitchScanSequence,

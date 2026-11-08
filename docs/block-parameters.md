@@ -2154,6 +2154,30 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `border` | `"crop"` | `crop`, `valid` Crop uses in-image samples. Valid suppresses windows crossing the image border. |
 | `selection_mode` | `"samples_and_centers"` | `samples_and_centers`, `centers` Limit both contributing samples and output centers, or only centers. |
 
+## Local threshold (Niblack family) (`cv.local_threshold`)
+
+Image processing / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale or color, converted to uint8 luminance. Up to 16,777,216 pixels.
+
+Input `mask` — Restrict where output is written. Neighborhoods still use the full source.
+
+Input `region` — Restrict where output is written. Intersected with a wired mask.
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"sauvola"` | `niblack`, `sauvola`, `wolf`, `nick` Local threshold formula. Wolf also uses image-wide intensity and variation. |
+| `mode` | `"binary"` | `binary`, `binary_inv`, `trunc`, `tozero`, `tozero_inv` Binary and inverse make masks. Trunc and to-zero modes retain grayscale values. |
+| `block_size` | `31` | Value must be a positive odd integer between 3 and 255. Odd width and height of the local neighborhood in pixels. |
+| `k` | `0.2` | Value must be a finite number between -10 and 10. Native OpenCV formula coefficient. Niblack adds k times local standard deviation. |
+| `sauvola_range` | `128.0` | Value must be a finite number between 1 and 255. Standard-deviation reference used only for Sauvola. |
+| `max_value` | `255` | Value must be a whole number between 0 and 255. Foreground value in binary modes. |
+
 ## Mask Fourier spectrum (`cv.mask_fourier_spectrum`)
 
 Image processing / Spectral

@@ -15,6 +15,13 @@ COLORMAPS = {
     for name in dir(cv2)
     if name.startswith("COLORMAP_")
 }
+THRESHOLD_MODES = {
+    "binary": cv2.THRESH_BINARY,
+    "binary_inv": cv2.THRESH_BINARY_INV,
+    "trunc": cv2.THRESH_TRUNC,
+    "tozero": cv2.THRESH_TOZERO,
+    "tozero_inv": cv2.THRESH_TOZERO_INV,
+}
 CONTOUR_APPROXIMATIONS = {
     "none": cv2.CHAIN_APPROX_NONE,
     "simple": cv2.CHAIN_APPROX_SIMPLE,

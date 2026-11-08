@@ -51,6 +51,8 @@ compares an exact repeat and a resampled repeat with a changed fixture.
 An HDR study compares Debevec and Robertson against a synthetic radiance
 reference and an assumed-linear baseline. A focus study compares regional
 and whole-frame sharpness when a part blurs against a sharp fixture.
+A local threshold study scores four neighborhood formulas and Gaussian
+adaptive thresholding against a known mark mask under uneven illumination.
 
 ## Vision tool priorities
 
