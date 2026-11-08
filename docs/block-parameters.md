@@ -65,6 +65,28 @@ Inputs: `calibration` (data, optional).
 
 No configurable algorithm parameters.
 
+## Check epipolar correspondences (`3d.check_epipolar`)
+
+3D vision / Reconstruction
+
+Inputs: `points_left` (data), `points_right` (data), `matrix` (data), `left_image` (image, optional), `right_image` (image, optional).
+
+Input `points_left` — First list of paired points in left-image pixels.
+
+Input `points_right` — Corresponding points in right-image pixels, in the same pair order.
+
+Input `matrix` — Fundamental matrix F for left-to-right mapping, where p_rightᵀ F p_left = 0.
+
+Input `left_image` — Optional left source image for diagnostics.
+
+Input `right_image` — Optional right source image for diagnostics.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_distance` | `1.5` | Value must be a finite number between 0 and 100000. Both point-to-line distances must be at or below this pixel tolerance. |
+| `minimum_inlier_ratio` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of all input pairs that must meet the tolerance. |
+| `max_drawn_pairs` | `32` | Value must be a whole number between 0 and 512. Draw this many pairs in input order. Zero hides epipolar graphics. |
+
 ## Filter point cloud (`3d.cloud_filter`)
 
 3D vision / Point clouds

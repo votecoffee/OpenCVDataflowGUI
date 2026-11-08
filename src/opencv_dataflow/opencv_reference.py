@@ -10,6 +10,7 @@ BINDINGS = {
     "3d.aruco_pose": "aruco.ArucoDetector.detectMarkers solvePnP",
     "3d.disparity": "StereoBM.create StereoSGBM.create",
     "3d.essential_pose": "findEssentialMat recoverPose",
+    "3d.check_epipolar": "computeCorrespondEpilines",
     "3d.fundamental": "findFundamentalMat",
     "3d.pnp": "solvePnP solvePnPRansac solvePnPRefineLM solvePnPRefineVVS",
     "3d.project": "projectPoints fisheye.projectPoints omnidir.projectPoints",

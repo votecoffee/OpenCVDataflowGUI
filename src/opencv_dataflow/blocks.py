@@ -668,6 +668,7 @@ def builtin_registry():
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
     from .dnn_blocks import DNN_BLOCKS
     from .ecc_registration import AlignECC
+    from .epipolar import CheckEpipolarCorrespondences
     from .example_plugins import invert as invert_example
     from .examples3d import StereoDemo
     from .exposure import AlignExposures, FuseExposures
@@ -949,6 +950,7 @@ def builtin_registry():
         *ANNOY_BLOCKS,
         *LIGHTGLUE_BLOCKS,
         *GEOMETRY3D_BLOCKS,
+        CheckEpipolarCorrespondences,
         *STEREO3D_BLOCKS,
         *CLOUD_BLOCKS,
         *CLOUD_IO_BLOCKS,

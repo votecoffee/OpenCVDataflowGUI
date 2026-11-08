@@ -350,6 +350,10 @@ class Fundamental3D(Tool3D):
             integer(p["iterations"], "Iterations", 1, 100000),
         )
         ok = f is not None and f.shape == (3, 3) and np.isfinite(f).all()
+        frames = {
+            side: self.input_payloads[f"points_{side}"].get("spatial")
+            for side in ("left", "right")
+        }
         return Result(
             {
                 "matrix": f.tolist() if ok else NO_VALUE,
@@ -357,6 +361,7 @@ class Fundamental3D(Tool3D):
             },
             passed=ok,
             fail_reasons=[] if ok else ["fundamental_matrix"],
+            payloads={"matrix": {"epipolar_frames": frames}} if ok else {},
         )
 
 

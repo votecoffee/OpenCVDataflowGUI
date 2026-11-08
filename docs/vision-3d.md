@@ -66,6 +66,21 @@ Cloud transforms reject unit or frame mismatches instead of guessing conversions
 - **ArUco 3D marker poses** detects markers and uses the specified physical edge
   length to return IDs, per-marker poses, reprojection errors and axes overlays.
 
+## Review sparse stereo correspondences
+
+**Check epipolar correspondences** accepts ordered left and right point
+lists and a fundamental matrix for those views. It predicts the matching
+line in each view and reports both perpendicular point-to-line distances
+in pixels. A pair qualifies only when both distances meet the configured
+tolerance. The **Inliers** list preserves the original pair order. Undefined
+lines at an epipole are rejected and reported as null.
+
+Use the **Minimum inlier ratio** to judge the pair set. Wire the source
+images to view accepted pairs in green and rejected pairs in red. Each
+overlay and graphics layer uses its own view's coordinate frame. A matrix
+from **Fundamental matrix** carries the source point frames, so the review
+can reject a mismatch such as using a raw-view matrix on rectified points.
+
 ## Stereo and depth
 
 1. Define a rig with left/right intrinsic models and a left-to-right rigid pose,
