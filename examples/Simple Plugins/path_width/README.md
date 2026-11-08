@@ -6,6 +6,7 @@ passes. The second image has a gap and a section that is too narrow.
 
 For a moving part, open the [fixture capture example](fixture_capture/README.md)
 to train from a live fixture pose and measure bead offset after translation.
+For measurements in millimeters, open the [calibrated bead example](calibrated_bead/README.md).
 
 ## Setup
 

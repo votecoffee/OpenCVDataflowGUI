@@ -85,6 +85,26 @@ def test_moved_weld_project_uses_wired_affine_transform(tmp_path):
         graph.close()
 
 
+def test_calibrated_bead_reopens_with_portable_plane_profile(tmp_path):
+    pytest.importorskip("opencv_simple_path_width.calibration")
+    moved = tmp_path / "calibrated"
+    shutil.copytree(_EXAMPLE / "calibrated_bead", moved)
+    graph = Graph.load(moved / "project.json", builtin_registry())
+    try:
+        graph.run()
+        block = graph.blocks["width"]
+        assert block.state == "pass", block.error
+        outputs = block.last_result.outputs
+        assert outputs["mean_width"] > 30
+        assert outputs["mean_width_physical"] == pytest.approx(6., abs=.09)
+        report = outputs["physical_measurements"]
+        assert report["units"] == "mm" and report["path_length"] == pytest.approx(40.)
+        assert report["stations"][0]["center_offset"] == pytest.approx(1.3, abs=.04)
+        assert outputs["physical_trend"].shape == (292, 630, 3)
+    finally:
+        graph.close()
+
+
 def test_fixture_capture_stages_matching_pose_and_preserves_bead_offset(app, monkeypatch, tmp_path):
     trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
     if not hasattr(trainer.PathWidthTrainingDialog, "_capture_fixture"):
