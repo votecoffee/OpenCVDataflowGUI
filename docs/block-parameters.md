@@ -2658,6 +2658,33 @@ Inputs: `image` (image).
 | `scale_y` | `1.0` |  |
 | `padding_value` | `0.0` | Letterbox padding in image units, applied to every channel. |
 
+## Ridge response (`cv.ridge_response`)
+
+Image processing / Filtering
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale or color uint8, uint16 or float32. Limited to 2.1 million pixels.
+
+Input `mask` — Zero the response outside this mask. Sobel uses the full neighborhood.
+
+Input `region` — Zero the response outside this region.
+
+Selection writes: `image`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `polarity` | `"dark"` | `dark`, `bright`, `both` Dark uses the native response. Bright inverts luminance before filtering. Both keeps the stronger response. |
+| `kernel_size` | `"3"` | `1`, `3`, `5`, `7` Native Sobel aperture. Size 1 uses a three-tap derivative axis. |
+| `dx` | `1` | Value must be a whole number between 1 and 6. Horizontal derivative order in each Sobel pass. |
+| `dy` | `1` | Value must be a whole number between 1 and 6. Vertical derivative order in each Sobel pass. |
+| `derivative_depth` | `"float32"` | `float32`, `float64` Precision of the native Sobel and ridge calculations. |
+| `output_depth` | `"float32"` | `uint8`, `uint16`, `int16`, `float32`, `float64` Use float to retain signed values. Integer depths clip to their range. |
+| `scale` | `1.0` | Value must be a finite number. Native scale applied in each Sobel pass. |
+| `delta` | `0.0` | Value must be a finite number. Native bias added in each Sobel pass. |
+| `border` | `"reflect_101"` | `constant`, `replicate`, `reflect_101`, `reflect_edge` Pixel extrapolation at the input image edge. |
+
 ## Rotate arbitrary angle (`cv.rotate`)
 
 Image processing / Geometry

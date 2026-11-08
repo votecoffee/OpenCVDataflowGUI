@@ -29,6 +29,9 @@ BINDINGS = {
     "cv.absdiff": "absdiff",
     "cv.adaptive_threshold": "adaptiveThreshold",
     "cv.local_threshold": "ximgproc.niBlackThreshold",
+    "cv.ridge_response": (
+        "ximgproc.RidgeDetectionFilter_create ximgproc.RidgeDetectionFilter.getRidgeFilteredImage"
+    ),
     "cv.lsc_superpixels": (
         "ximgproc.createSuperpixelLSC ximgproc.SuperpixelLSC.iterate "
         "ximgproc.SuperpixelLSC.enforceLabelConnectivity ximgproc.SuperpixelLSC.getLabels "

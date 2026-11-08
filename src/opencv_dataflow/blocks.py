@@ -756,6 +756,7 @@ def builtin_registry():
     from .registration import REGISTRATION_BLOCKS
     from .remap_maps import BuildLensMaps, LensMapDisplacement, UndistortLensPoints
     from .restoration import RESTORATION_BLOCKS
+    from .ridge_response import RidgeResponse
     from .scan_stitching import StitchScanSequence
     from .segmentation import SEGMENTATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
@@ -898,6 +899,7 @@ def builtin_registry():
         MeasureLabelRegions,
         MaskFromLabelCollection,
         GraphSegments,
+        RidgeResponse,
         SuperpixelsSLIC,
         SuperpixelsLSC,
         SuperpixelsSEEDS,

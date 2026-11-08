@@ -88,7 +88,7 @@ IMPLEMENTATION_MODULES = {
     "img_hash": "image_hash",
     "rgbd": "ptcloud3d",
     "tracking": "native_trackers",
-    "ximgproc": "local_threshold region_proposals superpixels",
+    "ximgproc": "local_threshold region_proposals ridge_response superpixels",
 }
 BLOCK_MODULES = {
     "core": (
@@ -156,6 +156,7 @@ _NATIVE_NAMES = {
     "cv.morphology": ("morphologyEx", "erode", "dilate"),
     "cv.adaptive_threshold": ("adaptiveThreshold",),
     "cv.local_threshold": ("niBlackThreshold", "Sauvola", "Wolf", "NICK"),
+    "cv.ridge_response": ("RidgeDetectionFilter_create", "Hessian", "crack"),
     "cv.slic_superpixels": ("createSuperpixelSLIC", "SLICO", "MSLIC"),
     "cv.lsc_superpixels": ("createSuperpixelLSC", "Linear Spectral Clustering"),
     "cv.seeds_superpixels": ("createSuperpixelSEEDS",),

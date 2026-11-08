@@ -60,6 +60,7 @@ The follow-up converts the retained label back to its exact mask and counts
 the two disconnected marks. A texture study compares local binary pattern
 histograms for an unchanged surface under different brightness and a worn surface. A
 co-occurrence study detects a rotated brushed pattern with the same intensity histogram.
+A ridge study checks dark and bright crack-like marks on a synthetic surface.
 
 ## Vision tool priorities
 
