@@ -194,6 +194,49 @@ def read_path(value, closed, *fields):
     return points
 
 
+def sample_path(vertices, closed, spacing, *, tangent_radius=None):
+    chain = np.vstack((vertices, vertices[0])) if closed else vertices
+    deltas = np.diff(chain, axis=0)
+    lengths = np.hypot(deltas[:, 0], deltas[:, 1])
+    active = lengths > 0
+    lengths = lengths[active]
+    starts, deltas = chain[:-1][active], deltas[active]
+    ends = lengths.cumsum()
+    length = float(ends[-1])
+    intervals = max(1, math.ceil(length / spacing))
+    count = intervals if closed else intervals + 1
+    if count > 8192:
+        raise ValidationError("Path exceeds 8192 samples. Increase Sample spacing.")
+
+    def position_at(distances):
+        indices = np.minimum(np.searchsorted(ends, distances, side="right"), len(ends) - 1)
+        fraction = (distances - (ends - lengths)[indices]) / lengths[indices]
+        return starts[indices] + deltas[indices] * fraction[:, None]
+
+    distances = np.linspace(0, length, count, endpoint=not closed)
+    points = position_at(distances)
+    points[0] = vertices[0]
+    if not closed:
+        points[-1] = vertices[-1]
+    if tangent_radius is None:
+        return length, distances, points, None
+
+    before, after = distances - tangent_radius, distances + tangent_radius
+    if closed:
+        if tangent_radius >= length / 2:
+            raise ValidationError("Closed paths require tangent radius below half their length",
+                                  "tangent_radius")
+        before, after = before % length, after % length
+    else:
+        before, after = np.maximum(0, before), np.minimum(length, after)
+    tangents = position_at(after) - position_at(before)
+    sizes = np.hypot(tangents[:, 0], tangents[:, 1])
+    if np.any(sizes < 1e-8):
+        raise ValidationError("The path doubles back or the tangent window is too short")
+    normals = np.column_stack((-tangents[:, 1], tangents[:, 0])) / sizes[:, None]
+    return length, distances, points, normals
+
+
 class PathIntensityProfile(Block):
     type_id, title = "cv.path_intensity_profile", "Path intensity profile"
     category, block_type, subtype = "Image processing", "Image processing", "Statistics"
@@ -240,25 +283,10 @@ class PathIntensityProfile(Block):
         )
         p = self.parameters
         vertices = read_path(inputs.get("path", p["vertices"]), p["closed"])
-        chain = np.vstack((vertices, vertices[0])) if p["closed"] else vertices
-        deltas = np.diff(chain, axis=0)
-        lengths = np.hypot(deltas[:, 0], deltas[:, 1])
-        active = lengths > 0
-        lengths = lengths[active]
-        ends = lengths.cumsum()
-        length = float(ends[-1])
-        intervals = max(1, math.ceil(length / float(p["sample_spacing"])))
-        count = intervals if p["closed"] else intervals + 1
-        if count > 8192:
-            raise ValidationError("Path exceeds 8192 samples. Increase Sample spacing.")
-        distances = np.linspace(0, length, count, endpoint=not p["closed"])
-        indices = np.minimum(np.searchsorted(ends, distances, side="right"), len(ends) - 1)
-        fraction = (distances - (ends - lengths)[indices]) / lengths[indices]
-        points = chain[:-1][active][indices] + deltas[active][indices] * fraction[:, None]
-
-        points[0] = vertices[0]
-        if not p["closed"]:
-            points[-1] = vertices[-1]
+        length, distances, points, _ = sample_path(
+            vertices, p["closed"], float(p["sample_spacing"])
+        )
+        count = len(points)
         valid = np.all((points >= 0) & (points <= [width - 1, height - 1]), axis=1)
         maps = np.where(valid[:, None], points, 0).astype(np.float32)[None, ...]
         method = _PATH_INTERPOLATION[p["interpolation"]]

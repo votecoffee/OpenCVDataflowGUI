@@ -134,6 +134,7 @@ BINDINGS = {
     "cv.rectify_quadrilateral": "getPerspectiveTransform warpPerspective",
     "cv.warp_perspective": "warpPerspective",
     "cv.warp_polar": "warpPolar",
+    "cv.unwrap_path_strip": "remap",
     "gapi.blur": "gapi.gaussianBlur",
     "gapi.canny": "gapi.Canny",
     "gapi.gray": "gapi.BGR2Gray",

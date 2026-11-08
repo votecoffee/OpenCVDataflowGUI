@@ -59,7 +59,8 @@ IMPLEMENTATION_MODULES = {
     "imgproc": (
         "analysis_tools annotation basic_processing blocks collection_tools features "
         "generalized_hough "
-        "histogram histogram_comparison image_blend image_colorize point_set_lines polar_image "
+        "histogram histogram_comparison image_blend image_colorize path_strip "
+        "point_set_lines polar_image "
         "processing "
         "pyramids raster_hough_lines registration segmentation subpixel_crop template_instances "
         "tilted_statistics"

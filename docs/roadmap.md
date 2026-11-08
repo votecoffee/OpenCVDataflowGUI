@@ -64,7 +64,9 @@ A ridge study checks dark and bright crack-like marks on a synthetic surface. A
 multiscale follow-up measures how a single-scale filter misses wider marks. A
 mask clearance study distinguishes missing material from a narrow section
 along a nominal bead centerline. A path continuity study distinguishes short,
-scattered defects from a long gap, including across a closed path's start.
+scattered defects from a long gap, including across a closed path's start. A
+path strip study straightens a curved bead and measures foreground width
+across the remapped strip.
 
 ## Vision tool priorities
 

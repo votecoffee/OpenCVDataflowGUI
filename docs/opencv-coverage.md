@@ -377,3 +377,11 @@ start. Each sample represents the interval between neighboring midpoints,
 clipped at open endpoints. Unavailable samples split runs and are checked
 separately. Gap lengths are estimates at the configured sampling resolution.
 The gap list includes every run, while the overlay draws the 256 longest.
+
+**Unwrap path strip** uses OpenCV remapping to straighten a band around an
+open or closed path. Columns advance along the centerline, and rows sample
+across its local normal. It emits a validity mask and X/Y source-coordinate
+maps on a distinct strip grid. Invalid coordinates are -1 and invalid pixels
+are zero. Closed paths include the closing segment without a duplicate end
+column. Keep the strip narrow on tight bends to limit overlap. Along-step
+spacing describes the centerline and cross-step spacing is in source pixels.

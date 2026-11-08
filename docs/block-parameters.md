@@ -3125,6 +3125,28 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `sigma_y` | `0.0` |  |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 
+## Unwrap path strip (`cv.unwrap_path_strip`)
+
+Image processing / Geometry
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `path` (data, optional).
+
+Input `mask` — Exclude source pixels from the strip. Invalid strip samples are zeroed.
+
+Input `region` — Exclude samples outside this source-grid region. Intersected with the mask.
+
+Input `path` — Ordered [x, y] vertices registered to the source image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `vertices` | `[[20, 30], [65, 42], [110, 30]]` | Ordered image-space [x, y] vertices. A wired path takes precedence. |
+| `closed` | `false` | Include the last-to-first segment and emit the first column only once. |
+| `sample_spacing` | `1.0` | Value must be a finite number at least 0.25. Maximum along-path step in source pixels. |
+| `half_width` | `16.0` | Value must be a finite number between 0.25 and 512. Maximum distance from the centerline on either side, in source pixels. |
+| `cross_samples` | `33` | Value must be a positive odd integer between 3 and 513. Odd row count. The middle row is the path and the outer rows are at ±Half width. |
+| `tangent_radius` | `2.0` | Value must be a finite number between 0.25 and 512. Arc-length window radius for estimating the local path direction. For closed paths, use less than half the total length. |
+| `interpolation` | `"linear"` | `nearest`, `linear` Nearest preserves labels and masks. Linear interpolates intensities. |
+
 ## Warp affine (`cv.warp_affine`)
 
 Image processing / Geometry
