@@ -53,6 +53,7 @@ reference and an assumed-linear baseline. A focus study compares regional
 and whole-frame sharpness when a part blurs against a sharp fixture.
 A local threshold study scores four neighborhood formulas and Gaussian
 adaptive thresholding against a known mark mask under uneven illumination.
+A superpixel study compares boundary recall at two region sizes.
 
 ## Vision tool priorities
 

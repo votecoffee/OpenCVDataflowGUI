@@ -2746,6 +2746,28 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 | `operation` | `"correlation"` | `correlation`, `convolution` Correlation uses the vectors as entered. Convolution reverses them. |
 
+## SLIC superpixels (`cv.slic_superpixels`)
+
+Image processing / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale, BGR or RGB uint8 image with at most 2.1 million pixels.
+
+Input `mask` — Optional output selection. Zero marks unselected labels.
+
+Input `region` — Optional output selection. Segmentation uses the full image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `algorithm` | `"slico"` | `slic`, `slico`, `mslic` SLIC uses fixed compactness. SLICO adapts it. MSLIC adapts region sizes. |
+| `region_size` | `10` | Value must be a whole number between 3 and 512. Approximate pixel spacing. Must fit the shorter dimension. MSLIC needs room for at least two starting regions. |
+| `ruler` | `10.0` | Value must be a finite number between 0.01 and 1000. Native compactness factor. Higher values favor regular shapes in SLIC. |
+| `iterations` | `10` | Value must be a whole number between 1 and 50. Number of native refinement iterations. |
+| `connectivity_percent` | `25` | Value must be a whole number between 0 and 100. Merge small components as a percentage of typical region area. Zero skips the final connectivity pass. |
+| `thick_boundaries` | `false` | Use OpenCV's thick contour-mask option. |
+| `color_space` | `"lab"` | `lab`, `bgr` Use Lab or BGR for color input. Grayscale stays grayscale. |
+
 ## Solve linear program (`cv.solve_linear_program`)
 
 Image processing / Statistics

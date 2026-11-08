@@ -29,6 +29,11 @@ BINDINGS = {
     "cv.absdiff": "absdiff",
     "cv.adaptive_threshold": "adaptiveThreshold",
     "cv.local_threshold": "ximgproc.niBlackThreshold",
+    "cv.slic_superpixels": (
+        "ximgproc.createSuperpixelSLIC ximgproc.SuperpixelSLIC.iterate "
+        "ximgproc.SuperpixelSLIC.enforceLabelConnectivity ximgproc.SuperpixelSLIC.getLabels "
+        "ximgproc.SuperpixelSLIC.getLabelContourMask"
+    ),
     "cv.align_exposures": "createAlignMTB AlignMTB",
     "cv.annotation_layer": "polylines fillPoly putText",
     "cv.calibrate_debevec": "createCalibrateDebevec CalibrateDebevec",

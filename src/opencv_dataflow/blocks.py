@@ -769,6 +769,7 @@ def builtin_registry():
     from .stabilization import StabilizeCameraMotion
     from .stereo3d import STEREO3D_BLOCKS
     from .subpixel_crop import CropSubpixel
+    from .superpixels import SuperpixelsSLIC
     from .table_sort import SortNumericTable
     from .template_instances import FindTemplateInstances
     from .text_rules import VerifyText
@@ -890,6 +891,7 @@ def builtin_registry():
         VerifyText,
         *SEGMENTATION_BLOCKS,
         GraphSegments,
+        SuperpixelsSLIC,
         SelectiveSearchProposals,
         Skeletonize,
         PruneSkeleton,
