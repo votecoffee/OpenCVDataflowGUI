@@ -312,7 +312,9 @@ class Inspector(QWidget):
         image_controls.addWidget(self.preview_choice, 1)
         self.pop_out_image = QPushButton("Pop out…")
         self.pop_out_image.setEnabled(False)
-        self.pop_out_image.setToolTip("Open a live window for the selected output or graphic.")
+        self.pop_out_image.setToolTip(
+            "Open a live window for the selected output or graphic. You can also double-click it."
+        )
         self.pop_out_image.clicked.connect(self.open_image_popout)
         image_controls.addWidget(self.pop_out_image)
         results_layout.addWidget(self.timing_label)
@@ -1692,8 +1694,17 @@ class Inspector(QWidget):
             viewer.close()
 
     def eventFilter(self, watched, event):
-        if watched is self.image and event.type() == QEvent.Type.Resize:
-            self.show_preview(self.preview_choice.currentText())
+        if watched is self.image:
+            if event.type() == QEvent.Type.Resize:
+                self.show_preview(self.preview_choice.currentText())
+            elif (
+                event.type() == QEvent.Type.MouseButtonDblClick
+                and event.button() == Qt.MouseButton.LeftButton
+                and self.pop_out_image.isEnabled()
+                and not self.image.pixmap().isNull()
+            ):
+                self.open_image_popout()
+                return True
         return super().eventFilter(watched, event)
 
 

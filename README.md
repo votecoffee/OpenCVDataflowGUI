@@ -44,8 +44,8 @@ results. To build your own small project:
    Run the graph, then adjust **Threshold**. Use **Live results** or **Run block**
    to preview eligible edits using the last input. Apply the changes to keep them.
 4. Run again and select **Find contours**. Use the **Results** tab to inspect
-   images and measurements. Click **Pop out…** to open an image for closer review.
-   Save the graph with **File → Save**.
+   images and measurements. Double-click a result image or use **Pop out…** for
+   closer review. Save the graph with **File → Save**.
 
 **Run all** replays recorded sequences once from the start, or runs the job once
 when there is no sequence. **Continuous** loops the recordings until **Stop**.

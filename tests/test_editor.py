@@ -374,13 +374,20 @@ def test_result_image_popouts_follow_ticket_state_and_block_previews(app):
         assert BLOCK_STATE_COLORS[state] in viewer.frame.styleSheet()
 
     try:
+        inspector.tabs.setCurrentWidget(inspector.results_page)
+        QTest.mouseDClick(inspector.image, Qt.MouseButton.LeftButton)
+        assert not inspector.image_popouts
         run_once()
         assert inspector.pop_out_image.isEnabled()
         inspector.preview_choice.setCurrentText("Input / image")
         assert not inspector.pop_out_image.isEnabled()
+        QTest.mouseDClick(inspector.image, Qt.MouseButton.LeftButton)
+        assert not inspector.image_popouts
         inspector.preview_choice.setCurrentText("Output / overlay")
-        inspector.pop_out_image.click()
-        output = next(iter(inspector.image_popouts.values()))
+        QTest.mouseDClick(inspector.image, Qt.MouseButton.RightButton)
+        assert not inspector.image_popouts
+        QTest.mouseDClick(inspector.image, Qt.MouseButton.LeftButton)
+        output, = inspector.image_popouts.values()
         assert not output.image.pixmap().isNull()
         check(output, 1, "pass")
         inspector.pop_out_image.click()
