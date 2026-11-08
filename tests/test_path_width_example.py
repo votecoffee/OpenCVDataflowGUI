@@ -228,6 +228,51 @@ def test_calibrated_preview_selects_plane_station_and_keeps_draft_uncommitted(ap
         app.processEvents()
 
 
+def test_calibrated_curve_replays_and_trainer_can_switch_scan_direction(app, monkeypatch, tmp_path):
+    trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
+    recipe_io = pytest.importorskip("opencv_simple_path_width.recipe")
+    if not hasattr(trainer.PathWidthSettings, "scan_mode"):
+        pytest.skip("Calibrated curve requires SimplePathWidth with plane-normal scans")
+    moved = tmp_path / "calibrated_curve"
+    shutil.copytree(_EXAMPLE / "calibrated_curve", moved)
+    project = moved / "project.json"
+    graph = Graph.load(project, builtin_registry())
+    baseline, plane = graph.blocks["image-normal"], graph.blocks["plane-normal"]
+    original_path = baseline.parameters["recipe_path"]
+    window = MainWindow()
+    warnings, previews = [], []
+    monkeypatch.setattr(window, "warn", warnings.append)
+    monkeypatch.setattr(trainer.MeasurementPreview, "exec", lambda view: previews.append(view.result))
+    try:
+        window.replace_graph(graph, project)
+        graph.run()
+        assert baseline.state == "fail" and plane.state == "pass", (baseline.error, plane.error)
+        for block in (baseline, plane):
+            outputs = block.last_result.outputs
+            assert outputs["coverage"] == 1
+            assert len(outputs["physical_measurements"]["stations"]) == 161
+        window.inspector.select(baseline)
+        window.inspector.open_plugin_dialog()
+        dialog = window.inspector._plugin_dialog
+        assert dialog.scan_mode.currentData() == "image_normal"
+        dialog.scan_mode.setCurrentIndex(dialog.scan_mode.findData("plane_normal"))
+        dialog.preview_button.click()
+        assert not previews and "Attach a preview calibration" in dialog.status.text()
+        dialog.wired_calibration_button.click()
+        dialog.preview_button.click()
+        assert len(previews) == 1 and previews[0].passed
+        dialog.stage_button.click()
+        assert baseline.parameters["recipe_path"] == original_path
+        window.inspector.apply()
+        assert not warnings
+        saved = recipe_io.load_recipe(moved / baseline.parameters["recipe_path"])
+        assert saved.settings.scan_mode == "plane_normal"
+    finally:
+        window.dirty = False
+        window.close()
+        app.processEvents()
+
+
 def test_fixture_capture_stages_matching_pose_and_preserves_bead_offset(app, monkeypatch, tmp_path):
     trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
     if not hasattr(trainer.PathWidthTrainingDialog, "_capture_fixture"):

@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Projected annular bead",
+      "parameters": {
+        "path": "assets/bead.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "calibration",
+      "type": "input.calibration",
+      "name": "Plane calibration",
+      "parameters": {
+        "path": "assets/calibration.json",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        235.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "image-normal",
+      "type": "inspect.simple_path_width",
+      "name": "Image-normal scans",
+      "parameters": {
+        "recipe_path": "assets/image-normal.spw",
+        "manifest_sha256": "b0e8ad2e620a4325c46f2c3ce1760597bb2a6904698ef3d0857c58db283e2eb6",
+        "reference_fixture": [],
+        "render_overlay": true,
+        "render_trend": true
+      },
+      "position": [
+        415.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose",
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "mean_width",
+        "coverage",
+        "longest_gap",
+        "overlay",
+        "trend",
+        "physical_measurements",
+        "mean_width_physical",
+        "longest_gap_physical",
+        "physical_trend"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "plane-normal",
+      "type": "inspect.simple_path_width",
+      "name": "Plane-normal scans",
+      "parameters": {
+        "recipe_path": "assets/plane-normal.spw",
+        "manifest_sha256": "70241c0b4d425a955244212cdfe173171faead483a308159cf70c0c67135d6ae",
+        "reference_fixture": [],
+        "render_overlay": true,
+        "render_trend": true
+      },
+      "position": [
+        415.0,
+        333.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose",
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "mean_width",
+        "coverage",
+        "longest_gap",
+        "overlay",
+        "trend",
+        "physical_measurements",
+        "mean_width_physical",
+        "longest_gap_physical",
+        "physical_trend"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "image-normal",
+      "input": "image"
+    },
+    {
+      "source": "calibration",
+      "output": "profile",
+      "target": "image-normal",
+      "input": "calibration"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "plane-normal",
+      "input": "image"
+    },
+    {
+      "source": "calibration",
+      "output": "profile",
+      "target": "plane-normal",
+      "input": "calibration"
+    }
+  ]
+}
