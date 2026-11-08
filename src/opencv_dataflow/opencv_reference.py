@@ -77,6 +77,7 @@ BINDINGS = {
         "img_hash.ImgHashBase.compute"
     ),
     "inspect.compare_image_hashes": "norm",
+    "inspect.focus": "Laplacian Sobel meanStdDev mean",
     "cv.image_arithmetic": "add subtract multiply divide min max absdiff",
     "cv.image_pyramid": "pyrDown",
     "cv.in_range": "inRange",

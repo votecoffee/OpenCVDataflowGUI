@@ -49,7 +49,8 @@ The BRISQUE study compares sharp, blurred, and compressed captures of the
 same surface with the OpenCV sample model. A frame hashing study
 compares an exact repeat and a resampled repeat with a changed fixture.
 An HDR study compares Debevec and Robertson against a synthetic radiance
-reference and an assumed-linear baseline.
+reference and an assumed-linear baseline. A focus study compares regional
+and whole-frame sharpness when a part blurs against a sharp fixture.
 
 ## Vision tool priorities
 

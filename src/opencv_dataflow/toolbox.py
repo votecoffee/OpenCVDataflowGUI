@@ -101,7 +101,7 @@ BLOCK_MODULES = {
     ),
     "imgproc": (
         "cv.hann_window cv.decode_yuv calibration.color_balance cv.pack_remap_map "
-        "inspect.contour_hierarchy"
+        "inspect.contour_hierarchy inspect.focus"
     ),
     "imgcodecs": "input.file input.depth_file input.raw_yuv output.image",
     "calib": (
@@ -142,6 +142,7 @@ _MODULE_BY_BLOCK = {
 }
 _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
+    "inspect.focus": ("Laplacian", "Sobel", "Tenengrad", "sharpness", "blur"),
     "cv.graph_segments": ("createGraphSegmentation",),
     "inspect.selective_search": ("createSelectiveSearchSegmentation",),
     "cv.calibrate_debevec": ("createCalibrateDebevec",),

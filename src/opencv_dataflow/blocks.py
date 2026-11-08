@@ -677,6 +677,7 @@ def builtin_registry():
     from .fanuc import FANUC_BLOCKS
     from .feature_covariance import FitFeatureCovariance, MahalanobisDistance
     from .features import FEATURE_BLOCKS
+    from .focus import MeasureFocus
     from .fourier_correlation import FourierCorrelation
     from .generalized_hough import FindGuilTemplate, FindHoughTemplate
     from .geometry3d import GEOMETRY3D_BLOCKS
@@ -901,6 +902,7 @@ def builtin_registry():
         FlatFieldCorrection,
         AdaptiveBackgroundCorrection,
         CompareImageQuality,
+        MeasureFocus,
         ComputeImageHash,
         CompareImageHashes,
         MeasureBRISQUE,

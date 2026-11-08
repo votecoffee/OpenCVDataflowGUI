@@ -4277,6 +4277,27 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `connectivity` | `"4"` | `4`, `8` |
 | `range_mode` | `"fixed"` | `fixed`, `floating` Compare with the seed (fixed) or an accepted adjacent pixel (floating). |
 
+## Measure image focus (`inspect.focus`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray or color uint8, uint16 or float32. Scores use squared luminance units.
+
+Input `mask` — Optional scoring mask. Derivatives still use the full image neighborhood.
+
+Input `region` — Optional scoring region, intersected with the mask when both are supplied.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"laplacian_variance"` | `laplacian_variance`, `tenengrad` Variance of the signed Laplacian, or mean squared Sobel gradient (Tenengrad). |
+| `aperture` | `"3"` | `1`, `3`, `5`, `7` Derivative kernel size. Keep this fixed when comparing scores. |
+| `border` | `"reflect_101"` | `constant`, `replicate`, `reflect_101`, `reflect_edge` Pixel extrapolation at the edge of the source image. |
+| `check_threshold` | `false` |  |
+| `minimum_sharpness` | `0.0` | Value must be a finite number at least 0. Inclusive lower limit when threshold checking is enabled. |
+| `emit_response` | `false` | Output absolute Laplacian or squared gradient; zero outside selection. |
+
 ## Fourier correlation (`inspect.fourier_correlation`)
 
 Inspection / Registration
