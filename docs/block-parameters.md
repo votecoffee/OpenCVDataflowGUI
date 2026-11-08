@@ -4828,6 +4828,25 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 No configurable algorithm parameters.
 
+## Measure label regions (`inspect.measure_label_regions`)
+
+Inspection / Segmentation
+
+Inputs: `labels` (image), `intensity_image` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `labels` — Integer label plane with up to 2.1 million pixels. Each ID yields one record.
+
+Input `intensity_image` — Optional aligned grayscale or color image for mean luminance.
+
+Input `mask` — Measure only selected pixels. Area and centroid reflect the clipped region.
+
+Input `region` — Optional region, intersected with a wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `ignored_labels` | `[-1, 0]` | Skip these IDs. For K-means, remove 0 to measure the first cluster. |
+| `preview_count` | `25` | Value must be a whole number between 0 and 250. Maximum regions to draw. Zero disables drawing. |
+
 ## Minimum spanning tree (`inspect.minimum_spanning_tree`)
 
 Inspection / Measurements

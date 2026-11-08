@@ -54,7 +54,8 @@ and whole-frame sharpness when a part blurs against a sharp fixture.
 A local threshold study scores four neighborhood formulas and Gaussian
 adaptive thresholding against a known mark mask under uneven illumination.
 Superpixel studies compare boundary recall across SLICO region sizes and
-across SLICO, LSC, and SEEDS at similar output region counts.
+across SLICO, LSC, and SEEDS at similar output region counts. A label
+measurement study checks the area and centroid of segmented coating regions.
 
 ## Vision tool priorities
 
