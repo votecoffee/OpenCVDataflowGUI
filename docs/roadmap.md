@@ -68,7 +68,8 @@ scattered defects from a long gap, including across a closed path's start. A
 path strip study straightens a curved bead and measures foreground width
 across the remapped strip. A follow-up checks width tolerance, missing material,
 and clipped edges with distinct ticket reasons. A source review study projects
-the strip-width annotations back onto the original curved bead.
+the strip-width annotations back onto the original curved bead. A defect
+report groups adjacent failed columns by type and estimates their length.
 
 ## Vision tool priorities
 

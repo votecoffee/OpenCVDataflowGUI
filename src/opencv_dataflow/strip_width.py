@@ -161,6 +161,7 @@ class InspectStripWidth(Block):
         status[passing] = "pass"
         profile = {
             "units": units, "center_row": center,
+            "width_limits": [low, high or None],
             "widths": [float(value) if keep else None
                        for value, keep in zip(widths, measured, strict=True)],
             "status": status.tolist(),

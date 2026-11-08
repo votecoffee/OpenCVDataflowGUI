@@ -776,6 +776,7 @@ def builtin_registry():
     from .spectral import SPECTRAL_BLOCKS
     from .stabilization import StabilizeCameraMotion
     from .stereo3d import STEREO3D_BLOCKS
+    from .strip_defects import GroupStripDefects
     from .strip_graphics import MapStripGraphics
     from .strip_width import InspectStripWidth
     from .subpixel_crop import CropSubpixel
@@ -942,6 +943,7 @@ def builtin_registry():
         BeadCalipers,
         MaskClearance,
         InspectStripWidth,
+        GroupStripDefects,
         TrainShapePattern,
         MatchShapePattern,
         TrainTexturePattern,

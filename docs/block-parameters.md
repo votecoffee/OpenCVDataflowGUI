@@ -5381,6 +5381,20 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `max_iterations` | `0` | Value must be a whole number between 0 and 10000. Guo–Hall only. Zero runs until stable. |
 | `medial_axis_seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Local random seed for breaking medial-axis ties. |
 
+## Group strip defects (`inspect.strip_defects`)
+
+Inspection / Measurements
+
+Inputs: `profile` (data), `sampling` (data, optional).
+
+Input `profile` — Per-column profile from Inspect strip width.
+
+Input `sampling` — Unwrap path strip sampling data for source-path lengths and closed loops.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_length` | `0.0` | Value must be a finite number at least 0. Shortest run to include in the report and overlay. Uses source-path pixels with sampling, or strip pixels without it. |
+
 ## Inspect strip width (`inspect.strip_width`)
 
 Inspection / Measurements

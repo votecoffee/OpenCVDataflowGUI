@@ -62,7 +62,7 @@ def _read_profile(profile, channel):
     return closed, length, distances, points, values, sampled
 
 
-def _gap_runs(failed, distances, length, closed):
+def sample_runs(failed, distances, length, closed):
     """Give each sample the arc-length cell between its neighboring midpoints."""
     changes = np.diff(np.r_[0, failed, 0])
     starts, stops = np.flatnonzero(changes == 1), np.flatnonzero(changes == -1)
@@ -135,7 +135,7 @@ class InspectPathContinuity(Block):
         if p["range_mode"] != "at_least":
             failed |= values > float(p["maximum_value"])
         sampled_fraction = float(sampled.mean())
-        runs = list(_gap_runs(failed, distances, length, closed))
+        runs = list(sample_runs(failed, distances, length, closed))
         gaps = [
             {"start_distance": start, "end_distance": end, "length": size,
              "sample_count": int(stop - first), "wraps_seam": wraps,

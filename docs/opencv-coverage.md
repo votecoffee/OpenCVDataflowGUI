@@ -400,3 +400,10 @@ outlines along their length and splits them at invalid map samples. The
 output remains drawable objects for Overlay result graphics and filmstrip
 review. Layers from a different frame or ticket and unsupported primitives
 such as fills and arrows are counted as skipped.
+
+**Group strip defects** turns adjacent columns of the same failure type
+into runs with column ranges, lengths, and width extrema when available.
+With strip sampling data, lengths follow the source centerline and runs of
+the same type can span the start of a closed path. A minimum report length
+filters short runs without changing the width verdict. Run graphics can be
+mapped back onto the source image.
