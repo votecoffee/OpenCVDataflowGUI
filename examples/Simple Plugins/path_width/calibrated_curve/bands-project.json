@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Projected annular bead",
+      "parameters": {
+        "path": "assets/bead.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "calibration",
+      "type": "input.calibration",
+      "name": "Plane calibration",
+      "parameters": {
+        "path": "assets/calibration.json",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        235.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pixel-bands",
+      "type": "inspect.simple_path_width",
+      "name": "Fixed pixel edge bands",
+      "parameters": {
+        "recipe_path": "assets/pixel-bands.spw",
+        "manifest_sha256": "34e0d8b5df65d43602c71a781a212e9846744bbf44b7a9a3c7222f4136f04ef3",
+        "reference_fixture": [],
+        "render_overlay": true,
+        "render_trend": true
+      },
+      "position": [
+        415.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose",
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "mean_width",
+        "coverage",
+        "longest_gap",
+        "overlay",
+        "trend",
+        "physical_measurements",
+        "mean_width_physical",
+        "longest_gap_physical",
+        "physical_trend"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "physical-bands",
+      "type": "inspect.simple_path_width",
+      "name": "Calibrated millimeter edge bands",
+      "parameters": {
+        "recipe_path": "assets/physical-bands.spw",
+        "manifest_sha256": "f3421d0cc2c4df7e404ec08fcc432ca3a48c0da9014ee096896b8f66fad89afb",
+        "reference_fixture": [],
+        "render_overlay": true,
+        "render_trend": true
+      },
+      "position": [
+        415.0,
+        333.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose",
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "mean_width",
+        "coverage",
+        "longest_gap",
+        "overlay",
+        "trend",
+        "physical_measurements",
+        "mean_width_physical",
+        "longest_gap_physical",
+        "physical_trend"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "pixel-bands",
+      "input": "image"
+    },
+    {
+      "source": "calibration",
+      "output": "profile",
+      "target": "pixel-bands",
+      "input": "calibration"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "physical-bands",
+      "input": "image"
+    },
+    {
+      "source": "calibration",
+      "output": "profile",
+      "target": "physical-bands",
+      "input": "calibration"
+    }
+  ]
+}

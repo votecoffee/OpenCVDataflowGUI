@@ -22,3 +22,22 @@ Stage the recipe and apply the inspector changes when ready.
 The normal is determined on the calibrated plane and projected into the
 image before edge detection. Search distances and sampling still use
 pixels. The example uses generated geometry and a known mapping.
+
+## Compare edge search bands
+
+Open [bands-project.json](bands-project.json) with SimplePathWidth
+0.1.0.dev10 or later. Both blocks use plane-normal scans and the same
+physical limits. The fixed pixel windows approximate the physical
+windows near one quarter of the loop. The projected windows follow
+the part's local image scale around the full loop.
+
+| Edge search bands | Stations measured | Verdict |
+| --- | ---: | --- |
+| Fixed pixel bands | 26 of 161 | Fail, low coverage |
+| Calibrated millimeter bands | 161 of 161 | Pass |
+
+Open **Train path width…** on the calibrated block to see **Nominal
+width physical** (6 mm) and **Edge search radius physical** (1.2 mm
+on each side of the expected edge). Run once, attach **Use wired**
+calibration, then select **Preview on reference** to try a different
+radius. The pixel scan span must contain both projected windows.

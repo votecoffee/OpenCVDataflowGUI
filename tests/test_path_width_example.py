@@ -273,6 +273,54 @@ def test_calibrated_curve_replays_and_trainer_can_switch_scan_direction(app, mon
         app.processEvents()
 
 
+def test_calibrated_edge_bands_replay_and_preview(app, monkeypatch, tmp_path):
+    trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
+    recipe_io = pytest.importorskip("opencv_simple_path_width.recipe")
+    if not hasattr(trainer.PathWidthSettings, "nominal_width_physical"):
+        pytest.skip("Calibrated bands require SimplePathWidth with physical edge search bands")
+    moved = tmp_path / "edge_bands"
+    shutil.copytree(_EXAMPLE / "calibrated_curve", moved)
+    project = moved / "bands-project.json"
+    graph = Graph.load(project, builtin_registry())
+    pixel, plane = graph.blocks["pixel-bands"], graph.blocks["physical-bands"]
+    original = plane.parameters["recipe_path"]
+    window = MainWindow()
+    warnings, previews = [], []
+    monkeypatch.setattr(window, "warn", warnings.append)
+    monkeypatch.setattr(trainer.MeasurementPreview, "exec", lambda view: previews.append(view.result))
+    try:
+        window.replace_graph(graph, project)
+        graph.run()
+        assert pixel.state == "fail", pixel.error
+        assert pixel.last_result.outputs["coverage"] == pytest.approx(26 / 161)
+        assert plane.state == "pass", plane.error
+        assert plane.last_result.outputs["coverage"] == 1.
+        assert plane.last_result.outputs["mean_width_physical"] == pytest.approx(6., abs=.05)
+
+        window.inspector.select(plane)
+        window.inspector.open_plugin_dialog()
+        dialog = window.inspector._plugin_dialog
+        assert float(dialog.fields["nominal_width_physical"].text()) == 6.
+        assert float(dialog.fields["edge_search_radius_physical"].text()) == 1.2
+        assert not dialog.fields["nominal_width"].text()
+        dialog.fields["edge_search_radius_physical"].setText("1.3")
+        dialog.preview_button.click()
+        assert not previews and "Attach a preview calibration" in dialog.status.text()
+        dialog.wired_calibration_button.click()
+        dialog.preview_button.click()
+        assert len(previews) == 1 and previews[0].coverage == 1.
+        dialog.stage_button.click()
+        assert plane.parameters["recipe_path"] == original
+        window.inspector.apply()
+        assert not warnings and plane.parameters["recipe_path"] != original
+        saved = recipe_io.load_recipe(moved / plane.parameters["recipe_path"])
+        assert saved.settings.edge_search_radius_physical == 1.3
+    finally:
+        window.dirty = False
+        window.close()
+        app.processEvents()
+
+
 def test_station_spacing_replay_and_calibrated_training_preview(app, monkeypatch, tmp_path):
     trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
     recipe_io = pytest.importorskip("opencv_simple_path_width.recipe")
