@@ -122,6 +122,7 @@ BINDINGS = {
     "inspect.find_quadrilateral": "findContours approxPolyDP isContourConvex",
     "inspect.approximate_convex_contour": "approxPolyN",
     "inspect.aruco_markers": "aruco.ArucoDetector.detectMarkers",
+    "inspect.brisque_quality": "quality.QualityBRISQUE_create quality.QualityBRISQUE.compute",
     "inspect.blobs": "connectedComponentsWithStatsWithAlgorithm",
     "inspect.bounding_convex_polygon": "convexHull",
     "inspect.bounding_rotated_rectangle": "minAreaRect boxPoints",

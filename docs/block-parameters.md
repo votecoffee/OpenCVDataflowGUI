@@ -3869,6 +3869,21 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `pattern_scale` | `1.0` | Value must be a finite number between 0.5 and 4. Scale the standard BRISK keypoint sampling pattern. |
 | `max_features` | `500` | Value must be a whole number between 1 and 10000. Keep up to this many of the strongest detected features. |
 
+## Measure BRISQUE quality (`inspect.brisque_quality`)
+
+Inspection / Measurements
+
+Inputs: `image` (image).
+
+Input `image` — An 8-bit grayscale or color image. Crop upstream to score a smaller area.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model_path` | `""` | Local 36-feature OpenCV BRISQUE SVM regression model. |
+| `range_path` | `""` | Matching OpenCV range file with a 2 × 36 float32 range matrix. |
+| `check_threshold` | `false` |  |
+| `maximum_score` | `50.0` | Value must be a finite number between 0 and 100. Pass at or below this score when threshold checking is enabled. |
+
 ## Classify Lab color (`inspect.classify_lab`)
 
 Inspection / Color measurements

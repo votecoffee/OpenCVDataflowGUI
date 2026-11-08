@@ -45,6 +45,8 @@ background patch and checks both segmentation branches against a known outline.
 The follow-up finds the label corners and rectifies the original image
 against a known destination size and a held-out landmark. A two-view
 study compares automatic edge-based sizing with a fixed inspection grid.
+The BRISQUE study compares sharp, blurred, and compressed captures of the
+same surface with the OpenCV sample model.
 
 ## Vision tool priorities
 

@@ -693,7 +693,7 @@ def builtin_registry():
     from .image_layout import JoinImages, PasteImagePatch, TileImage
     from .image_noise import AddImageNoise, RandomImage
     from .image_norm import MeasureImageNorm
-    from .image_quality import CompareImageQuality
+    from .image_quality import CompareImageQuality, MeasureBRISQUE
     from .image_queue import ImageQueue
     from .image_statistics import ImageSummaryStatistics
     from .image_stitching import StitchImagePair
@@ -892,6 +892,7 @@ def builtin_registry():
         FlatFieldCorrection,
         AdaptiveBackgroundCorrection,
         CompareImageQuality,
+        MeasureBRISQUE,
         CompareHistograms,
         *COLOR_MEASUREMENT_BLOCKS,
         ClassifyImage,

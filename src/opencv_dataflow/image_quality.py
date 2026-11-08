@@ -1,12 +1,13 @@
-"""Reference-image metrics and spatial similarity maps for registered views."""
+"""Image quality scores and spatial comparison maps."""
 
 import cv2
 import numpy as np
 
 from .core import Block, Port, Result
-from .parameter_validation import ValidationError
+from .ml_common import file_key, local_path
+from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE
-from .processing import finite, matching_images
+from .processing import finite, image_value, matching_images
 from .selection import selection_mask
 
 ABSOLUTE_ERROR_METRICS = ("mae", "rmse", "max_absolute_error")
@@ -116,4 +117,88 @@ class CompareImageQuality(Block):
             passed=passed,
             message=f"{metric.upper()} {value:.6g} {units}",
             fail_reasons=[] if passed else ["image_quality_out_of_tolerance"],
+        )
+
+
+class MeasureBRISQUE(Block):
+    type_id, title = "inspect.brisque_quality", "Measure BRISQUE quality"
+    category, block_type, subtype = "Inspection", "Inspection", "Measurements"
+    inputs = (Port("image"),)
+    outputs = (Port("value", "number"), Port("measurements", "data"))
+    defaults = {
+        "model_path": "",
+        "range_path": "",
+        "check_threshold": False,
+        "maximum_score": 50.0,
+    }
+    parameter_ranges = {"maximum_score": NumericRange(0, 100)}
+    parameter_help = {
+        "model_path": "Local 36-feature OpenCV BRISQUE SVM regression model.",
+        "range_path": "Matching OpenCV range file with a 2 × 36 float32 range matrix.",
+        "maximum_score": "Pass at or below this score when threshold checking is enabled.",
+    }
+    input_help = {
+        "image": "An 8-bit grayscale or color image. Crop upstream to score a smaller area.",
+    }
+    process_inputs_readonly = True
+    parallel_safe = True
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.reset_runtime()
+
+    def reset_runtime(self):
+        self._quality, self._artifact_key = None, None
+
+    close = reset_runtime
+
+    def _load_quality(self):
+        paths = [local_path(self, self.parameters[k]) for k in ("model_path", "range_path")]
+        key = tuple(file_key(path) for path in paths)
+        if key != self._artifact_key:
+            if key[0][1] > 16 * 1024 * 1024 or key[1][1] > 1024 * 1024:
+                raise ValidationError("BRISQUE model or range file exceeds its size limit")
+            storage = cv2.FileStorage(str(paths[1]), cv2.FILE_STORAGE_READ)
+            try:
+                ranges = storage.getNode("range").mat() if storage.isOpened() else None
+            finally:
+                storage.release()
+            if (
+                ranges is None or ranges.shape != (2, 36) or ranges.dtype != np.float32
+                or not np.isfinite(ranges).all() or np.any(ranges[0] >= ranges[1])
+            ):
+                raise ValidationError(
+                    "BRISQUE range must have 36 finite increasing intervals", "range_path"
+                )
+            model = cv2.ml.SVM_load(str(paths[0]))
+            if (
+                model is None or not model.isTrained() or model.getVarCount() != 36
+                or model.getType() not in (cv2.ml.SVM_EPS_SVR, cv2.ml.SVM_NU_SVR)
+            ):
+                raise ValidationError(
+                    "BRISQUE needs a trained 36-feature SVM regressor", "model_path"
+                )
+            self._quality = cv2.quality.QualityBRISQUE_create(model, ranges)
+            self._artifact_key = key
+        return self._quality
+
+    def process(self, inputs):
+        source = inputs["image"]
+        h, w = source.shape[:2]
+        if min(w, h) < 16 or w * h > 8_388_608:
+            raise ValidationError(
+                "BRISQUE needs at least 16 pixels per axis and at most 8,388,608 pixels"
+            )
+        image = image_value(source, (np.uint8,), canonical=True)
+        value = float(self._load_quality().compute(image)[0])
+        if not np.isfinite(value) or not 0 <= value <= 100:
+            raise ValidationError("OpenCV returned an invalid BRISQUE score")
+        maximum = float(self.parameters["maximum_score"])
+        passed = not self.parameters["check_threshold"] or value <= maximum
+        return Result(
+            {"value": value, "measurements": {"metric": "brisque", "value": value}},
+            score=1 - value / 100,
+            passed=passed,
+            message=f"BRISQUE {value:.2f} / 100",
+            fail_reasons=[] if passed else ["brisque_score_above_limit"],
         )
