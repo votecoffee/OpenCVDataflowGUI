@@ -5,14 +5,17 @@ import numpy as np
 
 from .calibration import (
     GRID_OPTIONS,
+    PLANAR_REGISTRATION,
     GridCalibrationBlock,
     GridNotFoundError,
     camera_parameters,
     find_grid,
     grid_settings,
+    map_points,
+    require_planar_grid,
 )
 from .charuco import observation_board, observation_points
-from .core import Port, Result
+from .core import Block, Port, Result
 from .geometry3d import PNP
 from .graphics_layers import GraphicDrawing, graphic_object
 from .outcomes import failed_input
@@ -251,4 +254,178 @@ class ValidateLensCalibration(GridCalibrationBlock):
             score=max(0.0, 1 - error_ratio),
             message=f"{len(errors)} points · RMS {rms:.4g} px · maximum {maximum:.4g} px",
             drawings=drawings,
+        )
+
+
+_PLANAR_REPORT = "planar_validation_v1"
+
+
+def _check_points(value, name):
+    try:
+        points = np.asarray(value, np.float64)
+    except (TypeError, ValueError, OverflowError):
+        raise ValidationError("Use a list of finite [x,y] points", name) from None
+    if points.shape == (0,):
+        return points.reshape(0, 2)
+    if (
+        points.ndim != 2 or points.shape[1] != 2 or len(points) > 4096
+        or not np.isfinite(points).all() or np.any(np.abs(points) > 1e9)
+    ):
+        raise ValidationError("Use up to 4096 finite [x,y] points within ±1 billion", name)
+    return points
+
+
+def _noncollinear(points):
+    return (
+        len(points) >= 3 and len(np.unique(points, axis=0)) == len(points)
+        and np.linalg.matrix_rank(points - points[0]) == 2
+    )
+
+
+class ValidatePlanarCalibration(Block):
+    type_id, title = "calibration.validate_planar", "Validate planar calibration"
+    category = block_type = "Calibration"
+    subtype = "Grid and coordinates"
+    inputs = (
+        Port("image"), Port("mapping", "data"),
+        Port("points", "data", required=False, required_when_connected=True),
+    )
+    outputs = (
+        Port("report", "data"), Port("checked_mapping", "data", required=False),
+        Port("rms", "number", required=False), Port("max_error", "number", required=False),
+    )
+    payload_reference = "image"
+    process_inputs_readonly = True
+    parallel_safe = True
+    defaults = {
+        "physical_points": [[0, 0], [10, 0], [0, 10]],
+        "pixel_points": [], "units": "mm", "registration": "same_frame",
+        "maximum_rms": 0.25, "maximum_point_error": 0.5,
+    }
+    parameter_choices = {"registration": PLANAR_REGISTRATION}
+    parameter_ranges = {
+        "maximum_rms": NumericRange(0), "maximum_point_error": NumericRange(0),
+    }
+    parameter_help = {
+        "physical_points": "Known [x,y] positions on the calibration plane, in observation order. "
+        "Use at least three distinct, non-collinear points held out from the fit.",
+        "pixel_points": "Measured [x,y] image locations. A wired points list takes precedence.",
+        "units": "Physical units expected in the mapping and used for the reference and limits.",
+        "registration": "Fixed grid allows a saved mapping for the same camera grid.",
+        "maximum_rms": "Inclusive limit for RMS physical point error.",
+        "maximum_point_error": "Inclusive limit for the largest physical point error.",
+    }
+    input_help = {
+        "image": "Current camera image for coordinate validation, graphics and ticket.",
+        "mapping": "Fixed planar calibration to check without refitting.",
+        "points": "Measured [x,y] fiducial locations in this image and in reference order.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        expected = _check_points(p["physical_points"], "physical_points")
+        if not _noncollinear(expected):
+            raise ValidationError(
+                "Physical points must be distinct and non-collinear", "physical_points"
+            )
+        _check_points(p["pixel_points"], "pixel_points")
+        units = p["units"]
+        if not isinstance(units, str) or not units.strip() or len(units) > 24:
+            raise ValidationError("Enter the calibration's physical units", "units")
+
+    def process(self, inputs):
+        image, mapping = inputs["image"], inputs["mapping"]
+        p = self.parameters
+        image_payload = self.input_payloads["image"]
+        require_planar_grid(
+            mapping, image.shape, image_payload["spatial"],
+            self.input_payloads["mapping"].get("spatial"), p["registration"],
+        )
+        units = p["units"]
+        if mapping["units"] != units:
+            raise ValidationError("Reference units must match the planar calibration", "units")
+        expected = _check_points(p["physical_points"], "physical_points")
+        observed = _check_points(inputs.get("points", p["pixel_points"]), "points")
+        reason = ""
+        if "points" in inputs:
+            points_payload = self.input_payloads["points"]
+            if points_payload.get("spatial") != image_payload["spatial"]:
+                raise ValidationError("Observed points must share the image coordinate frame")
+            a, b = image_payload.get("ticket"), points_payload.get("ticket")
+            if a is not None and b is not None and _capture_key(a) != _capture_key(b):
+                raise ValidationError("Observed points must come from the current capture")
+            if failed_input(ValuePacket(inputs["points"], points_payload)):
+                reason = "Fiducial detection failed for the current image"
+        size = np.array(image.shape[:2][::-1])
+        if not reason and len(observed) != len(expected):
+            reason = f"Expected {len(expected)} fiducials, observed {len(observed)}"
+        if not reason and (
+            not _noncollinear(observed)
+            or np.any((observed < 0) | (observed > size - 1))
+        ):
+            reason = "Fiducials must be distinct, non-collinear and inside the image"
+        report = {
+            "model": _PLANAR_REPORT, "units": units,
+            "expected_count": len(expected), "observed_count": len(observed),
+        }
+        if reason:
+            code = "planar_validation_observation_unavailable"
+            report.update(passed=False, status=code)
+            return Result(
+                {"report": report, "checked_mapping": NO_VALUE, "rms": NO_VALUE,
+                 "max_error": NO_VALUE},
+                passed=False, message=reason, fail_reasons=[{"code": code, "message": reason}],
+            )
+
+        measured = map_points(mapping, observed)
+        residuals = measured - expected
+        errors = np.hypot(residuals[:, 0], residuals[:, 1])
+        if not np.isfinite(errors).all():
+            raise ValidationError("Planar validation produced nonfinite residuals")
+        worst = int(np.argmax(errors))
+        maximum = float(errors[worst])
+        rms = maximum * float(np.sqrt(np.mean((errors / maximum) ** 2))) if maximum else 0.0
+        rms_limit = float(p["maximum_rms"])
+        point_limit = float(p["maximum_point_error"])
+        reasons = []
+        if rms > rms_limit:
+            reasons.append({
+                "code": "planar_validation_rms_exceeds_limit",
+                "message": f"RMS {rms:.4g} {units} exceeds {rms_limit:.4g} {units}",
+            })
+        if maximum > point_limit:
+            reasons.append({
+                "code": "planar_validation_point_exceeds_limit",
+                "message": f"Point {worst + 1}: {maximum:.4g} {units} exceeds "
+                           f"{point_limit:.4g} {units}",
+            })
+        passed = not reasons
+        report.update(
+            passed=passed, status="measured", rms=rms, max_error=maximum, worst_point_index=worst,
+            points=[
+                {"pixel": point.tolist(), "physical": actual.tolist(), "expected": target.tolist(),
+                 "residual": residual.tolist(), "error": float(error)}
+                for point, actual, target, residual, error
+                in zip(observed, measured, expected, residuals, errors, strict=True)
+            ],
+        )
+        drawings = {}
+        if self.generate_graphics:
+            # Always include the largest errors when the reference contains many points.
+            order = np.argsort(-errors, kind="stable")[:64]
+            objects = []
+            for index in order:
+                point = observed[index]
+                color = ACCEPTED if errors[index] <= point_limit else REJECTED
+                objects.append(graphic_object("marker", [point], color))
+                objects.append(graphic_object(
+                    "label", [point], color, text=f"{errors[index]:.3g} {units}"
+                ))
+            drawings["Planar validation errors"] = GraphicDrawing(tuple(objects))
+        return Result(
+            {"report": report, "checked_mapping": mapping if passed else NO_VALUE,
+             "rms": rms, "max_error": maximum},
+            passed=passed, fail_reasons=reasons, drawings=drawings,
+            message=f"{len(errors)} points · RMS {rms:.4g} {units} · maximum {maximum:.4g} {units}",
         )

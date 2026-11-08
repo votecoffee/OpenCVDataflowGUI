@@ -907,6 +907,27 @@ Input `observation` — Optional identified ChArUco points from the validation i
 | `max_point_error_pixels` | `0.0` | Value must be a finite number at least 0. Maximum error of any point. Zero skips this check. |
 | `residual_scale` | `12.0` | Value must be a finite number between 0 and 100. Display multiplier for residual vectors. Zero hides the vectors. |
 
+## Validate planar calibration (`calibration.validate_planar`)
+
+Calibration / Grid and coordinates
+
+Inputs: `image` (image), `mapping` (data), `points` (data, optional).
+
+Input `image` — Current camera image for coordinate validation, graphics and ticket.
+
+Input `mapping` — Fixed planar calibration to check without refitting.
+
+Input `points` — Measured [x,y] fiducial locations in this image and in reference order.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `physical_points` | `[[0, 0], [10, 0], [0, 10]]` | Known [x,y] positions on the calibration plane, in observation order. Use at least three distinct, non-collinear points held out from the fit. |
+| `pixel_points` | `[]` | Measured [x,y] image locations. A wired points list takes precedence. |
+| `units` | `"mm"` | Physical units expected in the mapping and used for the reference and limits. |
+| `registration` | `"same_frame"` | `same_frame`, `fixed_grid` Fixed grid allows a saved mapping for the same camera grid. |
+| `maximum_rms` | `0.25` | Value must be a finite number at least 0. Inclusive limit for RMS physical point error. |
+| `maximum_point_error` | `0.5` | Value must be a finite number at least 0. Inclusive limit for the largest physical point error. |
+
 ## Clip line segments (`collection.clip_lines`)
 
 Inspection / Collections

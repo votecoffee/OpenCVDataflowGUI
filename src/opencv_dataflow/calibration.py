@@ -19,7 +19,7 @@ from .circle_grid import (
 from .core import Block, Graph, Port, Result
 from .graphics_layers import GraphicDrawing, graphic_object
 from .images import opencv_image, preview_rgb
-from .parameter_validation import NumericRange
+from .parameter_validation import NumericRange, ValidationError
 from .processing import finite, integer
 from .toolblocks import Binding, ToolBlock
 
@@ -657,6 +657,19 @@ def validate_profile(profile):
         or not profile["units"].strip()
     ):
         raise ValueError("Invalid calibration image size, error or units")
+
+
+PLANAR_REGISTRATION = ("same_frame", "fixed_grid")
+
+
+def require_planar_grid(mapping, image_shape, image_spatial, mapping_spatial, registration):
+    if not isinstance(mapping, dict) or mapping.get("model") != "planar_homography_v1":
+        raise ValidationError("Use a calibration-grid planar mapping")
+    validate_profile(mapping)
+    if mapping["image_size"] != list(image_shape[:2][::-1]):
+        raise ValidationError("Calibration size must match the source camera grid")
+    if registration == "same_frame" and mapping_spatial != image_spatial:
+        raise ValidationError("Calibration and source must share the same coordinate frame")
 
 
 class LoadCalibration(Block):

@@ -422,3 +422,8 @@ length then use the calibration's mm, cm, m or in units. The strip geometry
 controls still use rectified pixels. Set the same units on **Judge strip
 defects**. The perspective transform preserves the link to the camera grid
 for overlays. This measurement applies on the calibrated plane.
+
+**Validate planar calibration** measures held-out fiducial errors against a
+fixed planar mapping. It checks both physical RMS and worst-point error and
+emits the checked mapping only on pass. Connect that output to Rectify
+workplane to withhold calibrated measurements when validation fails.

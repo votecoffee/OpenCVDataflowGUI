@@ -643,7 +643,7 @@ def builtin_registry():
         SaveCalibration,
         Undistort,
     )
-    from .calibration_validation import ValidateLensCalibration
+    from .calibration_validation import ValidateLensCalibration, ValidatePlanarCalibration
     from .calipers import BeadCalipers
     from .channel_transform import ChannelTransform, RouteChannels
     from .charuco import DetectCharucoBoard
@@ -845,6 +845,7 @@ def builtin_registry():
         *COLOR_CALIBRATION_BLOCKS,
         PixelToPhysical,
         RectifyWorkplane,
+        ValidatePlanarCalibration,
         DepthFile,
         RGBD,
         DepthSample,

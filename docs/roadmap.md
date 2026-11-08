@@ -72,6 +72,7 @@ the strip-width annotations back onto the original curved bead. A defect
 report groups adjacent failed columns by type and estimates their length.
 A recipe study applies per-kind count and length limits to the complete report.
 A calibrated follow-up rectifies a perspective view and applies millimeter limits.
+A held-out fiducial check gates the calibrated inspection if the camera shifts.
 
 ## Vision tool priorities
 

@@ -3,7 +3,7 @@
 import cv2
 import numpy as np
 
-from .calibration import validate_profile
+from .calibration import PLANAR_REGISTRATION, require_planar_grid
 from .core import Port
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import metadata, moved_payload
@@ -41,7 +41,7 @@ class RectifyWorkplane(ImageTool):
         "maximum_rms_error": 1.0, "registration": "same_frame", "interpolation": "linear",
     }
     parameter_choices = {
-        "registration": ("same_frame", "fixed_grid"),
+        "registration": PLANAR_REGISTRATION,
         "interpolation": tuple(_INTERPOLATION),
     }
     parameter_ranges = {
@@ -77,26 +77,20 @@ class RectifyWorkplane(ImageTool):
     def process(self, inputs):
         source, mapping = inputs["image"], inputs["mapping"]
         image = image_value(source, allow_labels=True)
-        if not isinstance(mapping, dict) or mapping.get("model") != "planar_homography_v1":
-            raise ValidationError("Use a calibration-grid planar mapping")
-        validate_profile(mapping)
         p = self.parameters
+        payload = metadata(source)
+        require_planar_grid(
+            mapping, image.shape, payload["spatial"],
+            self.input_payloads["mapping"].get("spatial"), p["registration"],
+        )
         units, step = read_length_scale({
             "units": mapping["units"], "units_per_pixel": p["units_per_pixel"],
         })
         height, width = image.shape[:2]
         if not 0 < image.size <= 67_108_864 or max(height, width) >= 32767:
             raise ValidationError("Source exceeds the workplane image limits")
-        if mapping["image_size"] != [width, height]:
-            raise ValidationError("Calibration size must match the source camera grid")
         if float(mapping["rms_error"]) > float(p["maximum_rms_error"]):
             raise ValidationError("Planar calibration exceeds the maximum RMS error")
-        payload = metadata(source)
-        if (
-            p["registration"] == "same_frame"
-            and self.input_payloads["mapping"].get("spatial") != payload["spatial"]
-        ):
-            raise ValidationError("Calibration and source must share the same coordinate frame")
         mode = _INTERPOLATION[p["interpolation"]]
         if image.dtype == np.int32 and mode != cv2.INTER_NEAREST:
             raise ValidationError("Use nearest interpolation with signed labels", "interpolation")
