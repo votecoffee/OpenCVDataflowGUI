@@ -146,6 +146,8 @@ _NATIVE_NAMES = {
     "inspect.selective_search": ("createSelectiveSearchSegmentation",),
     "cv.calibrate_debevec": ("createCalibrateDebevec",),
     "cv.merge_debevec": ("createMergeDebevec",),
+    "cv.calibrate_robertson": ("createCalibrateRobertson",),
+    "cv.merge_robertson": ("createMergeRobertson",),
     "cv.tonemap_hdr": ("createTonemap", "TonemapDrago", "TonemapReinhard", "TonemapMantiuk"),
     "cv.gaussian_blur": ("GaussianBlur",),
     "cv.morphology": ("morphologyEx", "erode", "dilate"),

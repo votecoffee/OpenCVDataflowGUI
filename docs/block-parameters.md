@@ -1212,6 +1212,23 @@ Input `times` — Optional list of exposure durations in seconds, in batch order
 | `smoothness` | `10.0` | Value must be a finite number between 0.001 and 1000. Penalty on curvature of the fitted log response. |
 | `random` | `false` | Sample random pixel locations. Off uses a repeatable rectangular grid. |
 
+## Calibrate camera response (Robertson) (`cv.calibrate_robertson`)
+
+Image processing / Exposure stacks
+
+Inputs: `exposures` (any), `times` (data, optional).
+
+Input `exposures` — Aligned uint8 exposures with midtone coverage in each channel, including level 128. Grayscale batches are limited to 8 million pixels.
+
+Input `times` — Optional list of exposure durations in seconds, in batch order.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_index` | `0` | Value must be a whole number between 0 and 15. Zero-based exposure that defines the output coordinate frame. |
+| `exposure_times` | `[]` | Exposure durations in seconds, in batch order. Times input overrides. |
+| `max_iterations` | `30` | Value must be a whole number between 1 and 100. Maximum number of solver iterations. |
+| `convergence_threshold` | `0.01` | Value must be a finite number between 1e-08 and 1. Native early-stop threshold. With unsampled levels the solver may run all iterations. |
+
 ## Canny edges (`cv.canny`)
 
 Image processing / Edges
@@ -2248,6 +2265,23 @@ Input `exposures` — Ordered batch of 2–16 aligned uint8 gray, BGR or RGB exp
 Input `times` — Optional list of exposure durations in seconds, in batch order.
 
 Input `response` — Optional camera response. If disconnected, assume linear response.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_index` | `0` | Value must be a whole number between 0 and 15. Zero-based exposure that defines the output coordinate frame. |
+| `exposure_times` | `[]` | Exposure durations in seconds, in batch order. Times input overrides. |
+
+## Merge HDR radiance (Robertson) (`cv.merge_robertson`)
+
+Image processing / Exposure stacks
+
+Inputs: `exposures` (any), `times` (data, optional), `response` (data, optional).
+
+Input `exposures` — Aligned uint8 exposures. Grayscale batches are limited to 8 million pixels.
+
+Input `times` — Optional list of exposure durations in seconds, in batch order.
+
+Input `response` — Optional Robertson response. If disconnected, assume linear response.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |

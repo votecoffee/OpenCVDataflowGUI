@@ -10,7 +10,10 @@ from opencv_dataflow.payloads import FlowGroup, ValuePacket, frame
 from opencv_dataflow.tickets import TicketClock
 
 
-def test_calibrated_merge_recovers_relative_radiance_on_the_reference_grid():
+@pytest.mark.parametrize(
+    ("method", "settings"), [("debevec", {"samples": 36}), ("robertson", {"max_iterations": 30})]
+)
+def test_calibrated_merge_recovers_relative_radiance_on_the_reference_grid(method, settings):
     registry = builtin_registry()
     ramp = np.linspace(0.025, 3.5, 32 * 48, dtype=np.float32).reshape(32, 48)
     reference = np.stack((ramp * 0.3, ramp * 0.8, ramp), axis=-1)
@@ -24,14 +27,14 @@ def test_calibrated_merge_recovers_relative_radiance_on_the_reference_grid():
     group = FlowGroup(tuple(entries), ("a", "b", "c", "d"))
     ticket = TicketClock().issue("batch")
     batch = ValuePacket(group, {"ticket": ticket})
-    calibration = registry.create("cv.calibrate_debevec", parameters={
-        "samples": 36, "exposure_times": times,
+    calibration = registry.create(f"cv.calibrate_{method}", parameters={
+        **settings, "exposure_times": times,
     })
     fitted = calibration.execute({"exposures": batch})
     assert fitted is not None, calibration.error
     response = fitted.outputs["response"]
     assert response["encoding"] == "bgr" and np.asarray(response["values"]).shape == (256, 3)
-    merge = registry.create("cv.merge_debevec", parameters={"reference_index": 1})
+    merge = registry.create(f"cv.merge_{method}", parameters={"reference_index": 1})
     linear = merge.execute({"exposures": batch, "times": times})
     hdr = merge.execute({"exposures": batch, "times": times, "response": response})
     assert linear is not None and hdr is not None, merge.error
@@ -52,6 +55,56 @@ def test_calibrated_merge_recovers_relative_radiance_on_the_reference_grid():
     }
     switched = merge.execute({"exposures": batch, "times": times, "response": rgb_response})
     np.testing.assert_array_equal(switched.outputs["image"], image)
+
+
+def test_robertson_preserves_gray_and_fills_unobserved_levels():
+    registry = builtin_registry()
+    base = np.tile(np.arange(16, 256, 8, dtype=np.uint8), (8, 1))
+    frames = [base // 2, base, (base.astype(np.int16) * 2).clip(0, 255).astype(np.uint8)]
+    times = np.float32([0.5, 1.0, 2.0])
+    batch = FlowGroup(tuple(ValuePacket(image, {}) for image in frames), ("low", "mid", "high"))
+    calibration = registry.create("cv.calibrate_robertson", parameters={"max_iterations": 12})
+    fitted = calibration.execute({"exposures": batch, "times": times.tolist()})
+    assert fitted is not None, calibration.error
+    response = fitted.outputs["response"]
+    assert response["encoding"] == "gray"
+    observed = np.unique(frames)
+    assert fitted.outputs["info"]["observed_levels"] == [len(observed)]
+    native = [cv2.cvtColor(image, cv2.COLOR_GRAY2BGR) for image in frames]
+    raw = cv2.createCalibrateRobertson(12, 0.01).process(native, times)[:, 0, 0]
+    lut = np.asarray(response["values"], dtype=np.float32)[:, 0]
+    np.testing.assert_array_equal(lut[observed], raw[observed])
+    np.testing.assert_allclose(lut, np.interp(np.arange(256), observed, raw[observed]))
+    assert lut[128] == 1
+
+    merge = registry.create("cv.merge_robertson")
+    merged = merge.execute({"exposures": batch, "times": times.tolist(), "response": response})
+    assert merged is not None, merge.error
+    image = merged.outputs["image"]
+    assert image.dtype == np.float32 and image.shape == base.shape and image.color_format == "gray"
+    expected = cv2.createMergeRobertson().process(
+        native, times, np.repeat(lut[:, None, None], 3, axis=2)
+    )
+    np.testing.assert_array_equal(image, expected[..., 0])
+
+    black_response = {**response, "values": [[0.0], *response["values"][1:]]}
+    assert merge.execute({"exposures": batch, "times": times.tolist(), "response": black_response})
+    bad_response = {**response, "model": "opencv_debevec_response_v1"}
+    result = merge.execute({"exposures": batch, "times": times.tolist(), "response": bad_response})
+    assert result is None
+    assert "Connect a Robertson camera response" in merge.error
+
+
+def test_robertson_requires_a_measured_midpoint_before_calling_native(monkeypatch):
+    def unexpected(*_args):
+        pytest.fail("Missing midpoint reached the native calibrator")
+
+    monkeypatch.setattr(cv2, "createCalibrateRobertson", unexpected)
+    dark = np.arange(64, dtype=np.uint8).reshape(8, 8)
+    batch = FlowGroup((ValuePacket(dark, {}), ValuePacket(dark + 40, {})), ("a", "b"))
+    block = builtin_registry().create("cv.calibrate_robertson")
+    assert block.execute({"exposures": batch, "times": [0.5, 1.0]}) is None
+    assert "needs intensity 128" in block.error
 
 
 def test_bad_times_and_response_fail_before_native_merge(monkeypatch):

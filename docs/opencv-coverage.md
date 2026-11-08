@@ -141,7 +141,7 @@ region selection.
 
 | Family | Outstanding capability |
 | --- | --- |
-| Photo and exposure | Robertson HDR calibration and merge, decolorization, motion deblur, `xphoto` white-balance variants and learning-based super-resolution. Exposure stacks support MTB alignment, Mertens fusion, Debevec response calibration and HDR merge, and four tone-mapping operators. Seamless clone and edge-aware photo filters have blocks. |
+| Photo and exposure | Decolorization, motion deblur, `xphoto` white-balance variants and learning-based super-resolution. Exposure stacks support MTB alignment, Mertens fusion, Debevec and Robertson response calibration and HDR merge, and four tone-mapping operators. Seamless clone and edge-aware photo filters have blocks. |
 | Recognition | WeChat QR, QR encoding, multiple-code layout, cascade and HOG detector workflows, face detection/recognition, saliency, line descriptors, image retrieval/vocabulary and OpenCV-specific OCR variants. |
 | Sequence | Additional tracker families, background subtractors in `bgsegm`, motion history and advanced video stabilization. |
 | Geometric utilities | Expanded robust estimators, graph matching, rectification variants, affine-invariant feature variants, panorama detail steps and coordinate-space diagnostics. |

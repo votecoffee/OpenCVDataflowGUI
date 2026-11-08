@@ -48,6 +48,8 @@ study compares automatic edge-based sizing with a fixed inspection grid.
 The BRISQUE study compares sharp, blurred, and compressed captures of the
 same surface with the OpenCV sample model. A frame hashing study
 compares an exact repeat and a resampled repeat with a changed fixture.
+An HDR study compares Debevec and Robertson against a synthetic radiance
+reference and an assumed-linear baseline.
 
 ## Vision tool priorities
 

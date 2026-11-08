@@ -682,7 +682,13 @@ def builtin_registry():
     from .geometry3d import GEOMETRY3D_BLOCKS
     from .gram_matrix import GramMatrix
     from .hand_eye import HandEyeCalibration
-    from .hdr import CalibrateCameraResponse, MergeHDR, ToneMapHDR
+    from .hdr import (
+        CalibrateCameraResponse,
+        CalibrateRobertson,
+        MergeHDR,
+        MergeRobertson,
+        ToneMapHDR,
+    )
     from .histogram import Histogram
     from .histogram_comparison import CompareHistograms, HistogramBackProjection
     from .hog import HOGFeatures
@@ -852,7 +858,9 @@ def builtin_registry():
         AlignExposures,
         FuseExposures,
         CalibrateCameraResponse,
+        CalibrateRobertson,
         MergeHDR,
+        MergeRobertson,
         ToneMapHDR,
         *SPECTRAL_BLOCKS,
         FourierCorrelation,

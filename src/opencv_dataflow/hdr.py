@@ -1,4 +1,4 @@
-"""Timed Debevec exposure stacks and OpenCV display tone mapping."""
+"""Timed HDR exposure stacks and OpenCV display tone mapping."""
 
 import math
 
@@ -11,7 +11,8 @@ from .images import ImageArray, convert_depth, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .processing import ImageTool, image_value
 
-_RESPONSE_MODEL = "opencv_debevec_response_v1"
+_DEBEVEC_RESPONSE = "opencv_debevec_response_v1"
+_ROBERTSON_RESPONSE = "opencv_robertson_response_v1"
 _TIME_LIMIT = NumericRange(1e-9, 86400)
 
 
@@ -103,20 +104,104 @@ class CalibrateCameraResponse(_TimedExposureStack):
             raise ValidationError("Camera response must contain finite positive values")
         return Result(
             {"response": {
-                "model": _RESPONSE_MODEL, "encoding": encoding, "values": values.tolist(),
+                "model": _DEBEVEC_RESPONSE, "encoding": encoding, "values": values.tolist(),
             }},
             message=f"Estimated 256 response levels for {channels} channel(s)",
         )
 
 
-def response_table(model, encoding):
+def robertson_frames(frames, encoding):
+    # OpenCV's calibration and merge implementations use three-channel LUTs.
+    if encoding == "gray":
+        if sum(image.size for image in frames) > 8_000_000:
+            raise ValidationError("Grayscale Robertson batches exceed 8 million pixels")
+        return [cv2.cvtColor(image, cv2.COLOR_GRAY2BGR) for image in frames]
+    return [np.ascontiguousarray(image) for image in frames]
+
+
+class CalibrateRobertson(_TimedExposureStack):
+    type_id, title = "cv.calibrate_robertson", "Calibrate camera response (Robertson)"
+    outputs = (Port("response", "data"), Port("info", "data"))
+    defaults = {
+        **_TimedExposureStack.defaults,
+        "max_iterations": 30,
+        "convergence_threshold": 0.01,
+    }
+    parameter_ranges = {
+        **_TimedExposureStack.parameter_ranges,
+        "max_iterations": NumericRange(1, 100, whole=True),
+        "convergence_threshold": NumericRange(1e-8, 1),
+    }
+    parameter_help = {
+        **_TimedExposureStack.parameter_help,
+        "max_iterations": "Maximum number of solver iterations.",
+        "convergence_threshold": (
+            "Native early-stop threshold. With unsampled levels the solver may run all iterations."
+        ),
+    }
+    input_help = {
+        **_TimedExposureStack.input_help,
+        "exposures": (
+            "Aligned uint8 exposures with midtone coverage in each channel, including level 128. "
+            "Grayscale batches are limited to 8 million pixels."
+        ),
+    }
+
+    def process(self, inputs):
+        frames, times, encoding, context = self.timed_stack(inputs)
+        channels = 1 if encoding == "gray" else 3
+        observed = np.zeros((256, channels), dtype=bool)
+        for image in frames:
+            for channel in range(channels):
+                histogram = cv2.calcHist([image], [channel], None, [256], [0, 256])
+                observed[:, channel] |= histogram.reshape(-1) > 0
+        if not observed[128].all():
+            raise ValidationError("Robertson calibration needs intensity 128 in every channel")
+        if np.any(observed[1:-1].sum(axis=0) < 2):
+            raise ValidationError(
+                "Robertson calibration needs multiple midrange levels per channel"
+            )
+
+        p = self.parameters
+        solver = cv2.createCalibrateRobertson(
+            int(p["max_iterations"]), float(p["convergence_threshold"])
+        )
+        response = solver.process(robertson_frames(frames, encoding), times)
+        if response is None or response.shape != (256, 1, 3):
+            raise ValidationError("OpenCV returned an incomplete Robertson camera response")
+        values = response[:, 0, :channels].copy()
+        measured = values[observed]
+        if not np.isfinite(measured).all() or np.any(measured < 0):
+            raise ValidationError("Robertson returned invalid values at observed intensities")
+        # Native fits leave unsampled levels undefined. Preserve the measured levels
+        # and use the nearest endpoints or linear interpolation for later captures.
+        for channel in range(channels):
+            missing = np.flatnonzero(~observed[:, channel])
+            known = np.flatnonzero(observed[:, channel])
+            values[missing, channel] = np.interp(missing, known, values[known, channel])
+        info = {"observed_levels": observed.sum(axis=0).tolist()}
+        return Result(
+            {
+                "response": {"model": _ROBERTSON_RESPONSE, "encoding": encoding,
+                             "values": values.tolist()},
+                "info": info,
+            },
+            payloads={"response": context, "info": context},
+            message=f"Estimated Robertson response for {channels} channel(s)",
+        )
+
+
+def response_table(model, encoding, expected_model):
     channels = 1 if encoding == "gray" else 3
     if model is None:
-        linear = np.maximum(np.arange(256, dtype=np.float32), 1) / 128
+        linear = np.arange(256, dtype=np.float32) / 128
+        if expected_model == _DEBEVEC_RESPONSE:
+            linear[0] = linear[1]
         values = np.repeat(linear[:, None], channels, axis=1)
     else:
-        if not isinstance(model, dict) or model.get("model") != _RESPONSE_MODEL:
-            raise ValidationError("Connect a Debevec camera response")
+        if not isinstance(model, dict) or model.get("model") != expected_model:
+            method = "Debevec" if expected_model == _DEBEVEC_RESPONSE else "Robertson"
+            raise ValidationError(f"Connect a {method} camera response")
         supplied_encoding = model.get("encoding")
         if supplied_encoding not in (("gray",) if channels == 1 else ("bgr", "rgb")):
             raise ValidationError("Camera response channel encoding differs from the image batch")
@@ -129,15 +214,17 @@ def response_table(model, encoding):
             raise ValidationError("Camera response entries must be numeric")
         with np.errstate(over="ignore", under="ignore"):
             values = np.asarray(data, dtype=np.float32)
-        if not np.isfinite(values).all() or np.any(values <= 0):
-            raise ValidationError("Camera response must contain finite positive values")
+        if expected_model == _DEBEVEC_RESPONSE:
+            if not np.isfinite(values).all() or np.any(values <= 0):
+                raise ValidationError("Camera response must contain finite positive values")
+        elif not np.isfinite(values).all() or np.any(values < 0):
+            raise ValidationError("Camera response must contain finite nonnegative values")
         if supplied_encoding != encoding:
             values = values[:, ::-1].copy()
     return values.reshape(256, 1) if channels == 1 else values.reshape(256, 1, channels)
 
 
-class MergeHDR(_TimedExposureStack):
-    type_id, title = "cv.merge_debevec", "Merge HDR radiance (Debevec)"
+class _MergeHDR(_TimedExposureStack):
     inputs = (
         *_TimedExposureStack.inputs,
         Port("response", "data", required=False, required_when_connected=True),
@@ -150,8 +237,8 @@ class MergeHDR(_TimedExposureStack):
 
     def process(self, inputs):
         frames, times, encoding, context = self.timed_stack(inputs)
-        table = response_table(inputs.get("response"), encoding)
-        image = cv2.createMergeDebevec().process(frames, times, table)
+        table = response_table(inputs.get("response"), encoding, self.response_model)
+        image = self.merge_radiance(frames, times, table, encoding)
         if image is None or image.shape != frames[0].shape or not np.isfinite(image).all():
             raise ValidationError("OpenCV returned invalid HDR radiance")
         info = {
@@ -164,6 +251,35 @@ class MergeHDR(_TimedExposureStack):
             payloads={"image": context, "info": context},
             message=f"Merged {len(frames)} exposures into float32 radiance",
         )
+
+
+class MergeHDR(_MergeHDR):
+    type_id, title = "cv.merge_debevec", "Merge HDR radiance (Debevec)"
+    response_model = _DEBEVEC_RESPONSE
+
+    def merge_radiance(self, frames, times, table, _encoding):
+        return cv2.createMergeDebevec().process(frames, times, table)
+
+
+class MergeRobertson(_MergeHDR):
+    type_id, title = "cv.merge_robertson", "Merge HDR radiance (Robertson)"
+    response_model = _ROBERTSON_RESPONSE
+    input_help = {
+        **_MergeHDR.input_help,
+        "exposures": (
+            "Aligned uint8 exposures. Grayscale batches are limited to 8 million pixels."
+        ),
+        "response": "Optional Robertson response. If disconnected, assume linear response.",
+    }
+
+    def merge_radiance(self, frames, times, table, encoding):
+        native = robertson_frames(frames, encoding)
+        if encoding == "gray":
+            table = cv2.merge((table, table, table))
+        image = cv2.createMergeRobertson().process(native, times, table)
+        if encoding == "gray" and image is not None:
+            image = np.ascontiguousarray(image[..., 0])
+        return image
 
 
 class ToneMapHDR(ImageTool):
