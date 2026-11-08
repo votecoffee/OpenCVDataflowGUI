@@ -666,6 +666,7 @@ def transformed_regions_graph(registry):
     for key, kind, name, position, parameters in specs:
         block = graph.add(registry.create(kind, block_id=key, parameters=parameters))
         block.name, block.position = name, position
+    graph.blocks["tracked_resize"].exposed_outputs = ["image", "geometry"]
     graph.connect("tracked_source", "image", "tracked_shape", "image")
     previous_image, previous_region = "tracked_source", "tracked_shape"
     for image, region in [

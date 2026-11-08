@@ -21,6 +21,7 @@ from .images import (
 from .objects import blob_item, collection
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS, OUTPUT_DEPTHS, anchor_value, optional_mask, scalar_value
+from .payloads import NO_VALUE
 from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
 
 
@@ -152,9 +153,21 @@ class Crop(ImageTool):
         )
 
 
+def letterbox_bounds(source_width, source_height, width, height):
+    scale = min(width / source_width, height / source_height)
+    content_width = max(1, round(source_width * scale))
+    content_height = max(1, round(source_height * scale))
+    x, y = (width - content_width) // 2, (height - content_height) // 2
+    return x, y, content_width, content_height
+
+
 class Resize(ImageTool):
     type_id, title, subtype = "cv.resize", "Resize", "Geometry"
-    outputs = (Port("image"), Port("geometry", "data"))
+    outputs = (
+        Port("image"),
+        Port("geometry", "data"),
+        Port("valid_mask", required=False, visual_type="mask"),
+    )
     defaults = {
         "width": 640,
         "height": 480,
@@ -162,6 +175,7 @@ class Resize(ImageTool):
         "size_mode": "absolute",
         "scale_x": 1.0,
         "scale_y": 1.0,
+        "padding_value": 0.0,
     }
     parameter_ranges = {key: NumericRange(1, 16384, whole=True) for key in ("width", "height")}
     parameter_choices = {
@@ -174,16 +188,31 @@ class Resize(ImageTool):
             "nearest_exact",
             "linear_exact",
         ),
-        "size_mode": ("absolute", "scale"),
+        "size_mode": ("absolute", "scale", "letterbox"),
+    }
+    parameter_help = {
+        "size_mode": "Letterbox fits the aspect ratio, centers the image, and emits a valid mask.",
+        "interpolation": "Use nearest or nearest_exact for discrete masks and signed labels.",
+        "padding_value": "Letterbox padding in image units, applied to every channel.",
     }
 
     def process(self, inputs):
-        source = inputs["image"]
-        image = image_value(source)
-        width, height = (int(self.parameters[key]) for key in ("width", "height"))
-        if self.parameters["size_mode"] == "scale":
-            fx, fy = (finite(self.parameters[k], k, 0) for k in ("scale_x", "scale_y"))
-            width, height = round(image.shape[1] * fx), round(image.shape[0] * fy)
+        source, p = inputs["image"], self.parameters
+        image = image_value(source, allow_labels=True)
+        sh, sw = image.shape[:2]
+        if not sw or not sh:
+            raise ValidationError("Resize needs a nonempty input image")
+        interpolation = p["interpolation"]
+        signed_labels = image.dtype == np.int32
+        if signed_labels and interpolation not in ("nearest", "nearest_exact"):
+            raise ValidationError(
+                "Signed labels require nearest-neighbor interpolation", "interpolation"
+            )
+        mode = p["size_mode"]
+        width, height = (int(p[key]) for key in ("width", "height"))
+        if mode == "scale":
+            fx, fy = (finite(p[k], k, 0) for k in ("scale_x", "scale_y"))
+            width, height = round(sw * fx), round(sh * fy)
             if width < 1 or height < 1:
                 raise ValidationError("Resize scales must produce nonempty dimensions")
         if width * height > 64_000_000:
@@ -196,12 +225,36 @@ class Resize(ImageTool):
             "lanczos4": cv2.INTER_LANCZOS4,
             "nearest_exact": cv2.INTER_NEAREST_EXACT,
             "linear_exact": cv2.INTER_LINEAR_EXACT,
-        }[self.parameters["interpolation"]]
-        output = cv2.resize(image, (width, height), interpolation=method)
-        sx, sy = image.shape[1] / width, image.shape[0] / height
-        return geometry_result(
-            output, source, [[sx, 0, (sx - 1) / 2], [0, sy, (sy - 1) / 2], [0, 0, 1]]
+        }[interpolation]
+        x, y, rw, rh = 0, 0, width, height
+        if mode == "letterbox":
+            x, y, rw, rh = letterbox_bounds(sw, sh, width, height)
+        output = cv2.resize(image, (rw, rh), interpolation=method)
+        valid = NO_VALUE
+        if mode == "letterbox":
+            value = finite(p["padding_value"], "Padding value")
+            if signed_labels and (not value.is_integer() or not -(2**31) <= value < 2**31):
+                raise ValidationError(
+                    "Padding label must be a signed 32-bit integer", "padding_value"
+                )
+            if image.dtype == np.float32 and abs(value) > np.finfo(np.float32).max:
+                raise ValidationError("Padding value exceeds Float32 range", "padding_value")
+            fill = (value,) * image.shape[2] if image.ndim == 3 else value
+            output = cv2.copyMakeBorder(
+                output, y, height - rh - y, x, width - rw - x, cv2.BORDER_CONSTANT, value=fill
+            )
+            valid = np.zeros((height, width), np.uint8)
+            valid[y : y + rh, x : x + rw] = 255
+        sx, sy = sw / rw, sh / rh
+        result = geometry_result(
+            output,
+            source,
+            [[sx, 0, (sx - 1) / 2 - sx * x], [0, sy, (sy - 1) / 2 - sy * y], [0, 0, 1]],
         )
+        result.outputs["valid_mask"] = valid
+        if mode == "letterbox":
+            result.outputs["geometry"]["content_bounds"] = [x, y, rw, rh]
+        return result
 
 
 class Flip(ImageTool):

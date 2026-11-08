@@ -21,7 +21,7 @@ The portable `examples/custom tools/trained_patterns/trained_patterns.json` job 
 | Edges | Canny edges | `Canny`; automatic uint8 grayscale working image, low/high thresholds, aperture and L2 gradient, optional mask/region |
 | Color and depth | Convert image | Color conversion and deterministic depth scaling; same choices as image-file input |
 | Geometry | Crop ROI | Validated array ROI; zero width/height means remainder of image |
-| Geometry | Resize | `resize`; explicit width/height and nearest, linear, area or cubic interpolation |
+| Geometry | Resize | `resize`; explicit size, scale or centered letterbox, with configurable interpolation |
 | Geometry | Flip | `flip`; horizontal, vertical or both |
 | Geometry | Rotate 90 / 180 | `rotate`; clockwise/counterclockwise quarter turn or half turn |
 | Filtering | Box blur | `blur`; odd square kernel |
@@ -58,6 +58,13 @@ Operation dropdowns expose further native variants.
   source-sample lookup used by a particular resize interpolation. For example,
   after a crop at `(35,65)`, add that offset to measured ROI centroids before using
   a calibration of the original image. Calibration mappings are not auto-adjusted.
+- Resize in **letterbox** mode fits a fixed canvas and reports
+  `content_bounds` as `[x,y,width,height]` in the output grid. Its
+  `valid_mask` selects the resized content for downstream measurements.
+  The transform uses the actual rounded content size and offset. If the
+  margins differ by one pixel, the extra pixel goes to the right or bottom.
+  Use nearest-neighbor interpolation for discrete masks and signed int32
+  label images. A signed label canvas can use a negative padding ID.
 - Components treat nonzero uint8 grayscale pixels as foreground. `min_area` and
   `max_area` use pixel counts; maximum zero means unlimited. Bounds and centroids
   refer to this block's input coordinates. The separate centroid-list output can

@@ -2517,10 +2517,11 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `width` | `640` | Value must be a whole number between 1 and 16384. |
 | `height` | `480` | Value must be a whole number between 1 and 16384. |
-| `interpolation` | `"linear"` | `nearest`, `linear`, `area`, `cubic`, `lanczos4`, `nearest_exact`, `linear_exact` |
-| `size_mode` | `"absolute"` | `absolute`, `scale` |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `area`, `cubic`, `lanczos4`, `nearest_exact`, `linear_exact` Use nearest or nearest_exact for discrete masks and signed labels. |
+| `size_mode` | `"absolute"` | `absolute`, `scale`, `letterbox` Letterbox fits the aspect ratio, centers the image, and emits a valid mask. |
 | `scale_x` | `1.0` |  |
 | `scale_y` | `1.0` |  |
+| `padding_value` | `0.0` | Letterbox padding in image units, applied to every channel. |
 
 ## Rotate arbitrary angle (`cv.rotate`)
 

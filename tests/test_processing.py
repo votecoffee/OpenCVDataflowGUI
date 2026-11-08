@@ -7,6 +7,7 @@ import pytest
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 from opencv_dataflow.images import ImageArray, image_format, preview_rgb
+from opencv_dataflow.payloads import metadata
 
 
 @pytest.fixture
@@ -88,6 +89,42 @@ def test_resize_dimensions_interpolation_and_pixel_center_geometry(registry):
     )
     matrix = np.array(block.last_result.outputs["geometry"]["output_to_input"])
     np.testing.assert_allclose(matrix @ [0.5, 0.5, 1], [0, 0, 1])
+
+
+def test_letterbox_centers_rounded_rgb_content_and_shares_the_mask_frame(registry):
+    image = ImageArray(np.arange(7 * 10 * 3, dtype=np.uint8).reshape(7, 10, 3), "rgb")
+    block = execute(
+        registry, "cv.resize", {"image": image},
+        {"width": 8, "height": 9, "size_mode": "letterbox", "padding_value": 9},
+    )
+    outputs = block.last_result.outputs
+    output, mask, geometry = (outputs[k] for k in ("image", "valid_mask", "geometry"))
+    expected = cv2.resize(np.asarray(image), (8, 6))
+    np.testing.assert_array_equal(output[1:7], expected)
+    assert np.all(output[:1] == 9) and np.all(output[7:] == 9)
+    assert image_format(output) == "rgb"
+    np.testing.assert_array_equal(mask[:, 0], [0, 255, 255, 255, 255, 255, 255, 0, 0])
+    assert geometry["content_bounds"] == [0, 1, 8, 6]
+    matrix = np.array(geometry["output_to_input"])
+    np.testing.assert_allclose(matrix @ [3.5, 3.5, 1], [4.5, 3, 1])
+    assert metadata(output)["spatial"] == metadata(mask)["spatial"]
+    np.testing.assert_allclose(metadata(mask)["spatial"]["to_root"], matrix)
+
+
+@pytest.mark.parametrize("interpolation", ["nearest", "nearest_exact"])
+def test_letterbox_preserves_signed_label_ids(registry, interpolation):
+    labels = np.array([[-2147483648, 1000000001], [2147483647, -17]], np.int32)
+    params = {"width": 4, "height": 6, "size_mode": "letterbox",
+              "padding_value": -1, "interpolation": interpolation}
+    block = execute(registry, "cv.resize", {"image": labels}, params)
+    image = block.last_result.outputs["image"]
+    assert image.dtype == np.int32
+    np.testing.assert_array_equal(image[1:5], np.repeat(np.repeat(labels, 2, axis=0), 2, axis=1))
+    assert np.all(image[[0, -1]] == -1)
+
+    block.parameters["interpolation"] = "linear"
+    assert block.execute({"image": labels}) is None
+    assert "Signed labels require nearest-neighbor" in block.error
 
 
 @pytest.mark.parametrize(

@@ -34,7 +34,9 @@ tolerant edge-map comparison. A linear filtering study compares smoothing,
 sharpening, and the polarity of correlation and convolution at slot edges.
 The studies check known geometry, decisions, decoded text, or reconstruction
 error against original synthetic references. An adaptive foreground study
-compares GSoC and LSBP after learning an empty conveyor fixture.
+compares GSoC and LSBP after learning an empty conveyor fixture. A resize
+study checks letterbox padding, source-coordinate round trips, and the
+effect of interpolation on categorical masks.
 
 ## Vision tool priorities
 

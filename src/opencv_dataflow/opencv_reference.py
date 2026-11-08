@@ -87,7 +87,7 @@ BINDINGS = {
     "cv.pyramid_up": "pyrUp",
     "cv.remap": "remap",
     "cv.remap_packed": "remap",
-    "cv.resize": "resize",
+    "cv.resize": "resize copyMakeBorder",
     "cv.rotate": "getRotationMatrix2D warpAffine",
     "cv.rotate90": "rotate",
     "cv.route_channels": "mixChannels",

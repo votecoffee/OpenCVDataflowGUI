@@ -6,7 +6,7 @@ import numpy as np
 from .core import Block, Port, Result
 from .images import format_image
 from .ml_common import file_key, local_path, selected_tensor, tensor_record
-from .processing import finite, image_value, integer
+from .processing import finite, image_value, integer, letterbox_bounds
 from .selection import SELECTION_INPUTS, selection_mask
 
 ENGINES = {
@@ -42,10 +42,8 @@ def preprocess(inputs, p):
     mode = p["resize_mode"]
     sx, sy, tx, ty = w / sw, h / sh, 0.0, 0.0
     if mode == "letterbox":
-        scale = min(w / sw, h / sh)
-        rw, rh = max(1, round(sw * scale)), max(1, round(sh * scale))
+        tx, ty, rw, rh = letterbox_bounds(sw, sh, w, h)
         sx, sy = rw / sw, rh / sh
-        tx, ty = (w - rw) // 2, (h - rh) // 2
         resized = cv2.resize(image, (rw, rh))
         shape = (h, w) if image.ndim == 2 else (h, w, image.shape[2])
         image = np.full(shape, finite(p["padding_value"], "Padding value"), np.float32)
