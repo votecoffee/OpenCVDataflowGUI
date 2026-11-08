@@ -11,7 +11,11 @@ from PySide6.QtWidgets import QFileDialog
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph, block_display_title
-from opencv_dataflow.plugins import GEOMETRIC_MATCHER_TYPES, PIXEL_SEGMENTATION_TYPES
+from opencv_dataflow.plugins import (
+    GEOMETRIC_MATCHER_TYPES,
+    PATH_WIDTH_TYPES,
+    PIXEL_SEGMENTATION_TYPES,
+)
 from opencv_dataflow.toolbox import block_entry
 
 
@@ -19,6 +23,7 @@ from opencv_dataflow.toolbox import block_entry
     ("module", "expected"),
     [
         (None, {"inspect.simple_classify_image": "SimpleClassify"}),
+        ("opencv_simple_path_width.dataflow", {"inspect.simple_path_width": "SimplePathWidth"}),
         ("opencv_geometric_pattern_match.dataflow", {
             "pattern.ogpm_recipe": "SimplePatternMatch",
             "pattern.ogpm_load_recipe": "SimplePatternMatch · Load recipe",
@@ -125,6 +130,12 @@ def test_installed_segmentation_opens_and_locates_boards_without_manual_plugin(a
 @pytest.mark.parametrize(
     ("module", "type_id", "known_types", "setup_path"),
     [
+        (
+            "opencv_simple_path_width",
+            "inspect.simple_path_width",
+            PATH_WIDTH_TYPES,
+            "examples/Simple Plugins/path_width/README.md",
+        ),
         (
             "opencv_geometric_pattern_match",
             "pattern.ogpm_recipe",

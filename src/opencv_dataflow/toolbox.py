@@ -7,7 +7,7 @@ from PySide6.QtCore import QMimeData, Qt
 from PySide6.QtWidgets import QAbstractItemView, QTreeWidget, QTreeWidgetItem
 
 from .core import block_display_title
-from .plugins import GEOMETRIC_MATCHER_TYPES, PIXEL_SEGMENTATION_TYPES
+from .plugins import GEOMETRIC_MATCHER_TYPES, PATH_WIDTH_TYPES, PIXEL_SEGMENTATION_TYPES
 from .visual_style import INDUSTRIAL
 
 TOOL_MIME = "application/x-opencv-dataflow-tool"
@@ -16,6 +16,7 @@ TOOL_SOURCES = ("OpenCV", "scikit-image", INDUSTRIAL, "Custom", SIMPLE_PLUGINS, 
 _OPTIONAL_SIMPLE_FAMILIES = {
     **dict.fromkeys(GEOMETRIC_MATCHER_TYPES, "Pattern matching"),
     **dict.fromkeys(PIXEL_SEGMENTATION_TYPES, "Segmentation"),
+    **dict.fromkeys(PATH_WIDTH_TYPES, "Measurements"),
 }
 _SIMPLE_FAMILIES = {**_OPTIONAL_SIMPLE_FAMILIES, "inspect.simple_classify_image": "Classification"}
 

@@ -17,6 +17,7 @@ PIXEL_SEGMENTATION_TYPES = (
     "inspection.ocv_segment_image",
     "inspection.ocv_segment_parts",
 )
+PATH_WIDTH_TYPES = ("inspect.simple_path_width",)
 
 
 def _register_blocks(register, registry):
@@ -51,6 +52,19 @@ def load_installed_pixel_segmentation(registry):
         raise ValueError(
             "Install OpenCV Pixel Segmentation in the Python environment running DataflowGUI. "
             "See examples/Simple Plugins/pixel_segmentation/README.md for setup."
+        ) from exc
+    _register_blocks(register, registry)
+
+
+def load_installed_path_width(registry):
+    try:
+        from opencv_simple_path_width.dataflow import register
+    except ModuleNotFoundError as exc:
+        if exc.name not in ("opencv_simple_path_width", "opencv_simple_path_width.dataflow"):
+            raise
+        raise ValueError(
+            "Install SimplePathWidth in the Python environment running DataflowGUI. "
+            "See examples/Simple Plugins/path_width/README.md for setup."
         ) from exc
     _register_blocks(register, registry)
 

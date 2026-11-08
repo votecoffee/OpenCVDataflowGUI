@@ -50,6 +50,7 @@ _PLUGIN_DISPLAY_TITLES = {
     "pattern.ogpm_load_recipe": "SimplePatternMatch · Load recipe",
     "pattern.ogpm_train_recipe": "SimplePatternMatch · Train recipe",
     "pattern.ogpm_match_model": "SimplePatternMatch · Match wired recipe",
+    "inspect.simple_path_width": "SimplePathWidth",
 }
 
 DISPLAY_RESULT_FIELDS = (

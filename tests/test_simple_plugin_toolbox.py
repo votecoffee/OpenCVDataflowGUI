@@ -13,6 +13,7 @@ MATCH_TITLE = Qt.MatchFlag.MatchExactly | Qt.MatchFlag.MatchRecursive
     [
         ("SimplePatternMatch", "pattern.ogpm_recipe", "opencv_geometric_pattern_match"),
         ("SimpleSegmentation", "inspection.ocv_segment_image", "opencv_defect_segmentation"),
+        ("SimplePathWidth", "inspect.simple_path_width", "opencv_simple_path_width"),
     ],
 )
 def test_optional_simple_tools_are_searchable_without_importing(
@@ -43,7 +44,7 @@ def test_optional_simple_tools_are_searchable_without_importing(
         window.add_block(item)
         assert imports == [f"{package}.dataflow"]
         assert len(window.graph.blocks) == before
-        assert len(warnings) == 1 and "Install OpenCV" in warnings[0]
+        assert len(warnings) == 1 and "Install " in warnings[0]
     finally:
         window.dirty = False
         window.close()
@@ -54,6 +55,7 @@ def test_optional_simple_tools_are_searchable_without_importing(
     [
         ("SimpleClassify", "inspect.simple_classify_image", None),
         ("SimplePatternMatch", "pattern.ogpm_recipe", "opencv_geometric_pattern_match.dataflow"),
+        ("SimplePathWidth", "inspect.simple_path_width", "opencv_simple_path_width.dataflow"),
         (
             "SimpleSegmentation", "inspection.ocv_segment_image",
             "opencv_defect_segmentation.dataflow",

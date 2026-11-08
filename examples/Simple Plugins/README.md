@@ -1,14 +1,16 @@
 # Simple Plugins
 
 In a new graph, expand **Simple Plugins** in the toolbox or search for the tool
-by name. SimpleClassify is bundled. SimplePatternMatch and SimpleSegmentation
-load their installed integrations when you add a block or open a project.
+by name. SimpleClassify is bundled. SimplePatternMatch, SimpleSegmentation, and
+SimplePathWidth load their installed integrations when you add a block or open
+a project.
 
 | Tool | Example projects |
 | --- | --- |
 | **SimpleSegmentation** | [Brick mortar, cup rim, PCB laminate, and ARMBench tote foreground](pixel_segmentation/README.md) |
 | **SimpleClassify** | [VegQual surface texture and color/layout classification](image_classification/README.md) |
 | **SimplePatternMatch** | [VisA PCB photographs](pattern_matching/visa_pcb2/README.md) for real board localization and [asymmetric brackets](pattern_matching/asymmetric_brackets/README.md) for generated multi-part scenes. |
+| **SimplePathWidth** | [Curved bead inspection](path_width/README.md) with paired edges, width and offset trends, and a gap. |
 
 ## Set up SimplePatternMatch
 
