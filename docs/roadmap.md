@@ -33,7 +33,8 @@ depth, optical flow through occlusion, contour retrieval, masked Otsu, and
 tolerant edge-map comparison. A linear filtering study compares smoothing,
 sharpening, and the polarity of correlation and convolution at slot edges.
 The studies check known geometry, decisions, decoded text, or reconstruction
-error against original synthetic references.
+error against original synthetic references. An adaptive foreground study
+compares GSoC and LSBP after learning an empty conveyor fixture.
 
 ## Vision tool priorities
 

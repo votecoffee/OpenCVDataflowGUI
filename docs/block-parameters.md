@@ -5753,6 +5753,39 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `gaussian_window` | `false` |  |
 | `initial_flow` | `"none"` | `none`, `previous` |
 
+## GSoC background subtraction (`sequence.gsoc_background`)
+
+Sequence / Foreground segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — 8-bit or normalized Float32 grayscale or color frames.
+
+Input `mask` — Restrict foreground outputs. Model updates still use the full frame.
+
+Input `region` — Restrict foreground outputs. Model updates still use the full frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `20` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `256.0` | Estimated retained CPU model budget. Processing uses extra buffers. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `camera_motion` | `"none"` | `none`, `lucas_kanade` Lucas–Kanade compensates between textured frames on a fixed-size grid. |
+| `samples` | `20` | Value must be a whole number between 2 and 1023. Native samples per pixel in each of two retained model buffers. |
+| `noise_background` | `0.0004` | Value must be a finite number between 0 and 0.499999. Remove small foreground components below this fraction of frame area. |
+| `noise_foreground` | `0.0008` | Value must be a finite number between 0 and 0.499999. Fill small background components below this fraction of frame area. |
+| `replace_rate` | `0.003` | Value must be a finite number between 0 and 1. Chance of adding an unmatched color to the sample bank. |
+| `propagation_rate` | `0.01` | Value must be a finite number between 0 and 1. Chance of copying a trusted sample to adjacent pixels. |
+| `hits_threshold` | `32` | Value must be a whole number between 0 and 2.14748e+09. Matches needed before a sample is eligible for propagation. |
+| `alpha` | `0.01` | Value must be a finite number between 0 and 100. Weight on the recent squared color error in the matching threshold. |
+| `beta` | `0.0022` | Value must be a finite number between 0 and 3. Additive matching threshold in normalized squared color units. |
+| `blink_decay` | `0.1` | Value must be a finite number between 1e-06 and 0.999999. Decay factor for the foreground toggling estimate. |
+| `blink_multiplier` | `0.1` | Value must be a finite number between 0 and 1. Strength of adaptation where pixels repeatedly toggle. |
+| `color_learning_rate` | `0.1` | Value must be a finite number between 0 and 1. Blend rate for matched colors and error. Other updates continue. |
+
 ## Image memory / trained reference (`sequence.image_memory`)
 
 Sequence / Image memory
@@ -5818,6 +5851,40 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `epsilon` | `0.01` | Value must be a finite number between 1e-06 and 1. |
 | `min_eigenvalue` | `0.0001` | Value must be a finite number between 0 and 1. OpenCV threshold for accepting a trackable image patch. |
 | `minimum_support` | `0.5` | Value must be a finite number between 1e-06 and 1. Minimum bilinear weight contributed by valid tracks at a pixel. |
+
+## LSBP background subtraction (`sequence.lsbp_background`)
+
+Sequence / Foreground segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — 8-bit or normalized Float32 grayscale or color frames.
+
+Input `mask` — Restrict foreground outputs. Model updates still use the full frame.
+
+Input `region` — Restrict foreground outputs. Model updates still use the full frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `20` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `256.0` | Estimated retained CPU model budget. Processing uses extra buffers. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `camera_motion` | `"none"` | `none`, `lucas_kanade` Lucas–Kanade compensates between textured frames on a fixed-size grid. |
+| `samples` | `20` | Value must be a whole number between 2 and 1023. Native samples per pixel in each of two retained model buffers. |
+| `noise_background` | `0.0004` | Value must be a finite number between 0 and 0.499999. Remove small foreground components below this fraction of frame area. |
+| `noise_foreground` | `0.0008` | Value must be a finite number between 0 and 0.499999. Fill small background components below this fraction of frame area. |
+| `descriptor_radius` | `16` | Value must be a whole number between 1 and 4096. Pixel radius of the local texture samples. |
+| `update_minimum` | `2.0` | Value must be a finite number between 1e-06 and 1e+06. Lower bound for the reciprocal update probability. |
+| `update_maximum` | `32.0` | Value must be a finite number between 1e-06 and 1e+06. Upper bound for the reciprocal update probability. |
+| `update_increase` | `1.0` | Value must be a finite number between 0 and 1e+06. Step toward slower updates on foreground pixels. |
+| `update_decrease` | `0.05` | Value must be a finite number between 0 and 1e+06. Step toward faster updates on background pixels. |
+| `distance_scale` | `10.0` | Value must be a finite number between 0 and 1e+06. Scale the mean sample error to target the adaptive color threshold. |
+| `distance_adaptation` | `0.005` | Value must be a finite number between 0 and 1. Fractional adjustment of the adaptive color threshold. |
+| `descriptor_threshold` | `8` | Value must be a whole number between 1 and 33. Exclusive Hamming distance limit for the 32-bit texture codes. |
+| `minimum_matches` | `2` | Value must be a whole number between 1 and 1023. Minimum matching samples required for a background pixel. |
 
 ## MOG2 background subtraction (`sequence.mog2`)
 

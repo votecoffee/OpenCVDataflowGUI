@@ -166,6 +166,8 @@ BINDINGS = {
     "output.video": "VideoWriter.open VideoWriter.write",
     "sequence.dis": "DISOpticalFlow.create DenseOpticalFlow.calc",
     "sequence.farneback": "calcOpticalFlowFarneback",
+    "sequence.gsoc_background": "bgsegm.createBackgroundSubtractorGSOC BackgroundSubtractor.apply",
+    "sequence.lsbp_background": "bgsegm.createBackgroundSubtractorLSBP BackgroundSubtractor.apply",
     "sequence.knn_background": "createBackgroundSubtractorKNN BackgroundSubtractor.apply",
     "sequence.lk_grid_flow": "calcOpticalFlowPyrLK remap",
     "sequence.mog2": "createBackgroundSubtractorMOG2 BackgroundSubtractor.apply",

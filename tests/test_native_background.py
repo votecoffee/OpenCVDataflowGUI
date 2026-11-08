@@ -90,6 +90,62 @@ def test_background_memory_eviction_happens_before_model_allocation():
     assert second.outputs["status"]["evicted"] == 1
 
 
+@pytest.mark.parametrize("kind", ["sequence.gsoc_background", "sequence.lsbp_background"])
+def test_sample_model_warmup_selection_and_stream_reset(kind):
+    block = builtin_registry().create(kind, parameters={"warmup": 3, "samples": 6})
+    baseline = np.full((48, 64), 0.25, np.float32)
+    frame = baseline.copy()
+    frame[13:35, 20:43] = 0.9
+    window = np.zeros(baseline.shape, np.uint8)
+    window[20:40, 25:47] = 255
+    for i in range(3):
+        result = block.execute({"image": baseline, "stream": "a"})
+        assert result is not None, block.error
+        assert result.outputs["ready"] == (i == 2)
+        if i < 2:
+            assert result.outputs["mask"] is NO_VALUE
+    result = block.execute({"image": frame, "mask": window, "stream": "a"})
+    assert result is not None, block.error
+    outputs = result.outputs
+    assert outputs["ready"]
+    assert outputs["mask"][25, 30] == 255
+    assert not np.any(outputs["mask"][window == 0])
+    assert outputs["foreground"][25, 30] == frame[25, 30]
+    assert outputs["foreground"][18, 26] == 0
+    assert outputs["background"].shape == frame.shape
+    assert outputs["background"].dtype == np.uint8
+    assert outputs["background"][0, 0] == 64
+    assert outputs["status"]["foreground_fraction"] == pytest.approx(
+        np.count_nonzero(outputs["mask"]) / np.count_nonzero(window)
+    )
+
+    other = block.execute({"image": frame, "stream": "b"})
+    assert other.outputs["mask"] is NO_VALUE
+    assert other.outputs["activations"] == 1
+    assert block.execute({"image": frame, "stream": "a"}).outputs["ready"]
+    restarted = block.execute({"image": frame, "reset": True, "stream": "a"})
+    assert restarted.outputs["mask"] is NO_VALUE
+    assert restarted.outputs["activations"] == 1
+
+
+@pytest.mark.parametrize("kind", ["sequence.gsoc_background", "sequence.lsbp_background"])
+def test_sample_model_budget_rejects_before_native_creation(kind, monkeypatch):
+    block = builtin_registry().create(kind, parameters={"max_bytes_mb": 0.5})
+    native_calls = []
+    monkeypatch.setattr(block, "new_model", lambda: native_calls.append(True))
+    assert block.execute({"image": np.zeros((48, 64), np.uint8)}) is None
+    assert "memory byte limit" in block.error
+    assert not native_calls
+
+
+def test_lsbp_validates_match_count_against_sample_bank():
+    block = builtin_registry().create(
+        "sequence.lsbp_background", parameters={"samples": 3, "minimum_matches": 4}
+    )
+    assert block.execute({"image": np.zeros((48, 64), np.uint8)}) is None
+    assert "Minimum matches cannot exceed samples" in block.error
+
+
 @pytest.mark.local_examples
 def test_native_background_example_reports_moving_foreground():
     path = (

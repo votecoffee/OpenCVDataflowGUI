@@ -168,6 +168,29 @@ with `opencv-dataflow-run "examples/opencv tools/native_background/native_backgr
 The synthetic target stays still during warmup, then moves.
 See the [OpenCV background subtraction tutorial](https://docs.opencv.org/5.0/tutorials/others/background_subtraction.html).
 
+## OpenCV GSoC and LSBP foreground masks
+
+Find both sample-based models under **OpenCV → Background and Foreground
+Segmentation (bgsegm)**. GSoC adapts a bank of pixel colors and can suppress
+repeated foreground toggles. LSBP also matches a local binary texture
+descriptor. Each stream keeps its own model. Start with an empty scene and
+let the configured warmup finish before using the binary **Mask**,
+**Foreground**, and **Background** outputs.
+
+Both accept uint8 or normalized Float32 images. The foreground keeps the
+input format. The native background estimate is uint8 gray or BGR.
+Mask and Region restrict the foreground outputs while the full frame
+updates the model. GSoC's color learning rate controls only its matched
+color and error averages. LSBP adapts through its own update parameters.
+
+The default camera-motion mode assumes a fixed camera. The Lucas–Kanade
+option needs sufficiently textured frames with successful feature tracking
+and at least 25 pixels on each axis. Model memory grows with the number of
+pixels and samples. OpenCV retains two sample buffers for each stream.
+Reset flow state to replay a training sequence from the first frame.
+
+[OpenCV bgsegm reference](https://docs.opencv.org/5.0/extra_modules/bgsegm.html)
+
 ## Track a seeded object box
 
 **Track object box (CSRT)** and **Track object box (KCF)** track one target
