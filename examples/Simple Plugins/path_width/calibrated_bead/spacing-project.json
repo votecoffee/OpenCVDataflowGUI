@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Nominal bead",
+      "parameters": {
+        "path": "assets/bead.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "calibration",
+      "type": "input.calibration",
+      "name": "Plane calibration",
+      "parameters": {
+        "path": "assets/calibration.json",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        240.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pixel-grid",
+      "type": "inspect.simple_path_width",
+      "name": "Uniform pixel spacing",
+      "parameters": {
+        "recipe_path": "assets/pixel-grid.spw",
+        "manifest_sha256": "49258159d68809b25bcc41313087d77d5d1d7ce8ec03fd3d29cd27af1e2eca33",
+        "reference_fixture": [],
+        "render_overlay": true,
+        "render_trend": true
+      },
+      "position": [
+        390.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose",
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "mean_width",
+        "coverage",
+        "longest_gap",
+        "overlay",
+        "trend",
+        "physical_measurements",
+        "mean_width_physical",
+        "physical_trend",
+        "longest_gap_physical"
+      ],
+      "thumbnail": true,
+      "preview_output": "physical_trend"
+    },
+    {
+      "id": "plane-grid",
+      "type": "inspect.simple_path_width",
+      "name": "Uniform millimeter spacing",
+      "parameters": {
+        "recipe_path": "assets/plane-grid.spw",
+        "manifest_sha256": "0d3532da64a30afa027d6f987ba8e16a31ac1689dfe1f257d7bd6d522b9187db",
+        "reference_fixture": [],
+        "render_overlay": true,
+        "render_trend": true
+      },
+      "position": [
+        390.0,
+        260.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose",
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "mean_width",
+        "coverage",
+        "longest_gap",
+        "overlay",
+        "trend",
+        "physical_measurements",
+        "mean_width_physical",
+        "physical_trend",
+        "longest_gap_physical"
+      ],
+      "thumbnail": true,
+      "preview_output": "physical_trend"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "pixel-grid",
+      "input": "image"
+    },
+    {
+      "source": "calibration",
+      "output": "profile",
+      "target": "pixel-grid",
+      "input": "calibration"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "plane-grid",
+      "input": "image"
+    },
+    {
+      "source": "calibration",
+      "output": "profile",
+      "target": "plane-grid",
+      "input": "calibration"
+    }
+  ]
+}

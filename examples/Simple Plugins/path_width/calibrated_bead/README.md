@@ -38,3 +38,21 @@ The preview uses draft settings until you stage the recipe and apply it.
 At runtime the physical limits require a profile with matching units.
 Any configured pixel limits still apply. This example uses synthetic
 geometry to demonstrate measurement and judgment with a supplied mapping.
+
+## Compare station spacing
+
+Open [spacing-project.json](spacing-project.json) with SimplePathWidth
+0.1.0.dev9 or later. Run once and compare **Uniform pixel spacing** and
+**Uniform millimeter spacing** on the nominal bead. Both recipes use 16
+stations across the same 40 mm path.
+
+| Recipe | Interval in the image | Interval on the plane |
+| --- | ---: | ---: |
+| Uniform pixel spacing | 9.09 px | 2.05–3.02 mm |
+| Uniform millimeter spacing | 7.47–11.00 px | 2.50 mm |
+
+Select **Result / overlay** to see station positions and
+**Result / physical_trend** to compare the spacing along the plane.
+To change it, open **Train path width…**, edit **Station spacing physical**,
+then select **Use wired** and **Preview on reference**. Clear the physical
+spacing field to use the pixel setting again.

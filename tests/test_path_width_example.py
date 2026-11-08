@@ -273,6 +273,71 @@ def test_calibrated_curve_replays_and_trainer_can_switch_scan_direction(app, mon
         app.processEvents()
 
 
+def test_station_spacing_replay_and_calibrated_training_preview(app, monkeypatch, tmp_path):
+    trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
+    recipe_io = pytest.importorskip("opencv_simple_path_width.recipe")
+    if not hasattr(trainer.PathWidthSettings, "station_spacing_physical"):
+        pytest.skip("Spacing comparison requires SimplePathWidth with physical station spacing")
+    moved = tmp_path / "station_spacing"
+    shutil.copytree(_EXAMPLE / "calibrated_bead", moved)
+    project = moved / "spacing-project.json"
+    graph = Graph.load(project, builtin_registry())
+    pixel, plane = graph.blocks["pixel-grid"], graph.blocks["plane-grid"]
+    original = plane.parameters["recipe_path"]
+    window = MainWindow()
+    warnings, previews = [], []
+    monkeypatch.setattr(window, "warn", warnings.append)
+
+    def preview(view):
+        report = view.result.physical_measurements
+        assert view.tabs.currentIndex() == 1
+        assert report.station_spacing == pytest.approx(2.)
+        view.select_station(.56, physical=True)
+        index = view.selected_station
+        assert report.stations[index].distance == pytest.approx(23.)
+        x, y = view.result.stations[index].point
+        assert view.marker.rect().center() == QPointF(x + .5, y + .5)
+        previews.append(report)
+
+    monkeypatch.setattr(trainer.MeasurementPreview, "exec", preview)
+    try:
+        window.replace_graph(graph, project)
+        graph.run()
+        for block in (pixel, plane):
+            assert block.state == "pass", block.error
+            outputs = block.last_result.outputs
+            pixels = outputs["measurements"]
+            physical = outputs["physical_measurements"]
+            assert len(pixels["stations"]) == 16 and physical["path_length"] == pytest.approx(40.)
+            intervals = np.diff([row["distance"] for row in physical["stations"]])
+            if block is plane:
+                assert pixels["station_spacing_px"] is None
+                assert physical["station_spacing"] == pytest.approx(2.5)
+                assert intervals == pytest.approx(np.full(15, 2.5))
+            else:
+                assert pixels["station_spacing_px"] == pytest.approx(9.09, abs=.01)
+                assert physical["station_spacing"] is None and np.ptp(intervals) > .9
+
+        window.inspector.select(plane)
+        window.inspector.open_plugin_dialog()
+        dialog = window.inspector._plugin_dialog
+        assert float(dialog.fields["station_spacing_physical"].text()) == 2.5
+        dialog.fields["station_spacing_physical"].setText("2")
+        dialog.preview_button.click()
+        assert not previews and "Attach a preview calibration" in dialog.status.text()
+        dialog.wired_calibration_button.click()
+        dialog.preview_button.click()
+        assert len(previews) == 1 and plane.parameters["recipe_path"] == original
+        dialog.stage_button.click()
+        window.inspector.apply()
+        assert not warnings and plane.parameters["recipe_path"] != original
+        assert recipe_io.load_recipe(moved / plane.parameters["recipe_path"]).settings.station_spacing_physical == 2.
+    finally:
+        window.dirty = False
+        window.close()
+        app.processEvents()
+
+
 def test_fixture_capture_stages_matching_pose_and_preserves_bead_offset(app, monkeypatch, tmp_path):
     trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
     if not hasattr(trainer.PathWidthTrainingDialog, "_capture_fixture"):
