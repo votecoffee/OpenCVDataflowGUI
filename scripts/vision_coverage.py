@@ -1,12 +1,14 @@
 """Calculate completion for the image, video and point-cloud roadmap capabilities."""
 
 import argparse
+import csv
 import re
 from collections import Counter
 from pathlib import Path
 
 CHECKLIST = Path(__file__).resolve().parents[1] / "docs/vision-coverage-checklist.md"
 SCOPE_MAP = CHECKLIST.with_name("opencv-scope-map.md")
+BINDING_INVENTORY = CHECKLIST.with_name("opencv-bindings.tsv")
 STAGES = {
     "1": "Core and baseline 2D",
     "2": "ML and DNN",
@@ -46,12 +48,14 @@ def stage_counts(text):
 
 def check_scope_map(text, item_ids):
     mapped = set()
+    declared_bindings = set()
     for line in text.splitlines():
         if not line.startswith("| `"):
             continue
         cells = [cell.strip() for cell in line.strip("|").split("|")]
         if len(cells) != 3 or not all(cells):
             raise ValueError(f"Invalid scope map row: {line}")
+        declared_bindings.update(re.findall(r"`(cv2\.[^`]+)`", cells[0]))
         if cells[2] == "—":
             continue
         for reference in cells[2].split(","):
@@ -73,6 +77,15 @@ def check_scope_map(text, item_ids):
         raise ValueError(f"Unknown scope map IDs: {', '.join(unknown)}")
     if missing:
         raise ValueError(f"Checklist IDs missing from scope map: {', '.join(missing)}")
+
+    with BINDING_INVENTORY.open(encoding="utf-8", newline="") as file:
+        reader = csv.DictReader(file, delimiter="\t")
+        if "binding" not in (reader.fieldnames or ()):
+            raise ValueError("OpenCV binding inventory has no binding column")
+        inventory = {row["binding"] for row in reader}
+    unknown_bindings = sorted(declared_bindings - inventory)
+    if unknown_bindings:
+        raise ValueError(f"Unknown scope map Python bindings: {', '.join(unknown_bindings)}")
 
 
 def summary_table(counts):

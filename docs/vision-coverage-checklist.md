@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 14 | 37 | 148 | 65.5% |
+| 1. Core and baseline 2D | 97 | 15 | 40 | 152 | 63.8% |
 | 2. ML and DNN | 9 | 9 | 34 | 52 | 17.3% |
-| 3. 3D imagery and point clouds | 33 | 21 | 45 | 99 | 33.3% |
-| 4. Selected contrib | 20 | 0 | 63 | 83 | 24.1% |
-| **Overall** | 159 | 44 | 179 | 382 | 41.6% |
+| 3. 3D imagery and point clouds | 33 | 23 | 56 | 112 | 29.5% |
+| 4. Selected contrib | 20 | 0 | 64 | 84 | 23.8% |
+| **Overall** | 159 | 47 | 194 | 400 | 39.8% |
 
 <!-- coverage-summary:end -->
 
@@ -49,7 +49,7 @@ native calls or graph blocks implement it.
 
 Run `python scripts/vision_coverage.py` to calculate progress. Use `--update`
 after changing the checklist to refresh the table, and `--check` to verify
-the saved counts and the scope map's ID references. The [block parameter reference](block-parameters.md) lists current ports
+the saved counts, scope IDs and declared Python bindings. The [block parameter reference](block-parameters.md) lists current ports
 and configuration. For planned or partial rows, the last column gives the
 fixture or result needed to close the item.
 
@@ -64,7 +64,7 @@ fixture or result needed to close the item.
 | S1-02 | Continuous centered stabilization | calcOpticalFlowPyrLK, estimateAffinePartial2D, warpAffine, bounded look-ahead | Partial | sequence.stabilize_batch smooths up to 64 frames. Stream a longer clip with bounded memory and latency, preserve frame timestamps and coverage, and verify reset and end-of-stream flush. |
 | S1-03 | Local still-image replay and save | imread, imwrite | Complete | input.file, output.image. Read typed image files, replay a list or folder with filename tickets, and save the result. |
 | S1-04 | Image encode/decode in memory | imencode, imdecode | Complete | cv.encode_image, cv.decode_image. PNG/JPEG buffer round trips with compression settings and spatial provenance. |
-| S1-05 | Multipage TIFF replay and save | imreadmulti, imwritemulti | Complete | input.tiff_file, output.tiff_file. Ordered, ticketed page ranges and lossless batch output. |
+| S1-05 | Multipage TIFF replay and save | imdecodemulti, imencodemulti on file-backed buffers | Complete | input.tiff_file, output.tiff_file. Ordered, ticketed page ranges and lossless batch output. |
 | S1-06 | JPEG/PNG metadata and orientation read | imreadWithMetadata, EXIF orientation transforms | Complete | input.file. Report metadata and exercise the saved-image orientation fixture. |
 | S1-07 | Image metadata write | imwriteWithMetadata, imencodeWithMetadata | Planned | Round-trip supported metadata types on JPEG/PNG. Verify output orientation semantics and reject unsupported chunks explicitly. |
 | S1-08 | Raw sensor color decoding | demosaicing, cvtColor | Complete | cv.demosaic_bayer, input.raw_yuv, cv.decode_yuv. Bayer phase at a crop and packed YUV layouts. |
@@ -228,6 +228,15 @@ fixture or result needed to close the item.
 | S1-146 | Correct lateral chromatic aberration | correctChromaticAberration, loadChromaticAberrationParams | Planned | Correct known color fringes with declared lens settings and measure channel alignment and invalid border coverage. |
 | S1-147 | Estimate and refine camera parameters for panoramas | detail rotation estimators, bundle adjustment and wave correction | Planned | Fit a rotating-camera image set with known focal length and yaw. Verify overlap consistency, residuals, and bad-view rejection. |
 | S1-148 | Fill stabilization borders for review | Video stabilization inpainting or neighboring-frame fill | Planned | Fill uncovered display pixels from aligned neighbors where possible and preserve a separate measured-coverage mask for inspection. Verify both outputs on known jitter. |
+
+### Buffer I/O, exposure and binary shape tools
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S1-149 | Multipage images on memory buffer ports | imdecodemulti and imencodemulti | Partial | input.tiff_file and output.tiff_file use native memory codecs internally. Expose ordered, typed pages on a buffer port and verify a lossless TIFF round trip and bounded decode. |
+| S1-150 | Moving-region rejection in HDR brackets | Exposure alignment, consistency masks and supported HDR merge | Planned | Use brackets with one moving part. Report rejected support and verify that static detail remains usable without treating reconstructed pixels as measured. |
+| S1-151 | Binary hit-or-miss morphology | morphologyEx with MORPH_HITMISS and a ternary kernel | Planned | Expose foreground, background and don't-care kernel cells. Verify corners or junctions and reject incompatible encodings. |
+| S1-152 | Memory-efficient contour extraction | findContoursLinkRuns | Planned | Compare contours and hierarchy with the supported dense-mask reference on large sparse masks. Verify the native binary input and topology limits. |
 
 ## Stage 2 — ML and DNN for images and video
 
@@ -422,6 +431,24 @@ fixture or result needed to close the item.
 | S3-98 | Oriented cloud extents and physical pose | Principal axes or fitted oriented box on XYZ points | Partial | 3d.cloud_measure reports bounds and PCA axes. Verify rotated object dimensions, ambiguous orientations, and a frame-aware pose. |
 | S3-99 | Inspection attributes on imported point clouds | Typed per-point intensity, confidence and source-index payloads | Planned | Preserve declared attributes through import, filtering, sampling, merging and export. Verify missing attributes and original scan indices. |
 
+### Scan replay, cloud metrology and mesh inspection
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S3-100 | Find multiple planes on an organized depth grid | findPlanes with a metric point grid and organized normals | Planned | Recover two or more known planes, return coefficients and per-pixel labels, and preserve invalid depth and unmatched foreground. |
+| S3-101 | Estimate a metric transform from matched 3D points | estimateAffine3D and estimateTranslation3D with explicit model choice | Planned | Recover a transform from matched cloud landmarks with outliers. Distinguish rigid, similarity and affine records, enforce units and reject degenerate correspondences. |
+| S3-102 | Project registered image texture onto a mesh | Camera projection, visibility and UV mapping | Planned | Transfer colors from a known calibrated view and verify texel positions, occlusion, invalid support and retained mesh geometry. |
+| S3-103 | Bounded tiled processing for large inspection clouds | Spatial tiling with query halos and streaming reduction | Planned | Process a recorded or synthetic scan beyond the single-cloud limit. Verify cross-tile neighborhood equivalence, output order, preserved IDs, and peak memory. |
+| S3-104 | Replay recorded point-cloud sequences | File-backed frame groups and scan timestamp provenance | Partial | input.cloud loads an individual scan. Replay an ordered manifest with explicit frames, units, timestamps and bounds, and verify malformed or missing scans and stop behavior. |
+| S3-105 | Virtual point-cloud sections and profiles | Plane-aligned slab selection and metric profile sampling | Planned | Extract sections at known locations and report distances, widths and coverage without losing point or frame provenance. |
+| S3-106 | Surface flatness and height against a datum | Plane residuals and signed metric deviation statistics | Planned | Evaluate a known planar reference and several raised or warped scans. Emit deviation and coverage maps with documented datum and tolerance semantics. |
+| S3-107 | Triangle mesh validity and measurement | Topology checks and geometric reductions | Planned | Report bad indices, nonmanifold edges, holes, area and volume on known fixtures. Emit volume only where topology makes it meaningful. |
+| S3-108 | Mesh simplification for bounded review | Qualified decimation with error and attribute checks | Planned | Reduce a dense scan mesh to a requested face budget and verify geometric deviation, preserved boundaries and attribute integrity. |
+| S3-109 | Refine imperfect calibration-target geometry | calibrateCameraROExtended | Planned | Fit known small target-coordinate deviations and verify held-out reprojection, scale anchors and reported target uncertainty. |
+| S3-110 | Marker-aware and oversized checkerboard detection | findChessboardCornersSBWithMeta | Partial | calibration.grid detects checkerboards. Verify native metadata for a partially visible oversized board and recover stable target ordering and origin. |
+| S3-111 | Reproducible perturbed cloud fixtures | ppf_match_3d.addNoisePC and getRandomPose or a seeded equivalent | Planned | Generate clouds with known pose and noise and report ground truth. Verify seed isolation and use the fixtures for sampling, registration and tolerance tests. |
+| S3-112 | Organize a scanner cloud into a range image | Calibrated angular projection and range conflict resolution | Planned | Map a known rotating or angular scan onto a declared grid, retaining intensity, source indices, invalid bins and multiple-return handling. |
+
 ## Stage 4 — Selected contrib functions for images and video
 
 [OpenCV extra modules](https://docs.opencv.org/5.0/) ·
@@ -532,6 +559,12 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S4-82 | Fourier contour descriptors and alignment | ximgproc.contourSampling, fourierDescriptor and createContourFitting | Planned | Verify periodic contour sampling, transform recovery, and shape matching under known rotation and scale. |
 | S4-83 | Run-length encoded binary morphology | ximgproc run-length mask encoding and morphology | Planned | Verify erosion and dilation parity with dense masks and measure memory on sparse large tiles. Check Python support or qualify an equivalent implementation. |
+
+### Additional sparse motion
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S4-84 | Sparse RLOF correspondence | optflow.calcOpticalFlowSparseRLOF | Planned | Track wired image points with configurable rejection and compare displacement, status and error on known motion. |
 
 ## Module scope boundaries
 

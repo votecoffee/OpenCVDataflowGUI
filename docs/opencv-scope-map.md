@@ -246,6 +246,50 @@ References for the family split include
 [RGB-D and volumetric APIs](https://docs.opencv.org/5.0/main_modules/ptcloud.html#topics),
 and [surface matching](https://docs.opencv.org/5.0/extra_modules/surface_matching.html).
 
+### Native point-cloud API crosswalk
+
+This crosswalk lists the function and class entry points in the OpenCV 5.0.0
+point-cloud and depth headers, the 3D sampling and segmentation header, and
+the installed wheel's PPF surface-matching namespace. Associated overloads,
+settings and instance methods follow the graph contract in the same row.
+An exposed Python API still needs a fixture before the capability is complete.
+
+| API | Disposition on the pinned Python wheel | Checklist IDs |
+| --- | --- | --- |
+| `cv2.loadPointCloud`, `cv2.savePointCloud` | Exposed. Qualify native OBJ and compare PLY interoperability with the shipped graph codecs. | S3-21, S3-85, S3-96, S3-99 |
+| `cv2.loadMesh`, `cv2.saveMesh` | Exposed. Mesh interchange owns index validation, supported topology and retained fields. | S3-86, S3-102, S3-107 |
+| `cv2.triangleRasterize`, `cv2.triangleRasterizeColor`, `cv2.triangleRasterizeDepth`, `cv2.TriangleRasterizeSettings` | Exposed. Depth and color modes, shading, culling and camera conventions are configuration of one graph rasterizer. | S3-87, S3-102 |
+| `cv2.Octree` | Exposed. Constructors, updates, extraction, and nearest and radius searches belong to the bounded spatial-index contract. The graph must keep stable scan indices when native queries return positions. | S3-77, S3-80–S3-81, S3-88, S3-103 |
+| `cv2.RgbdNormals` | Exposed. Organized depth normals are shipped. Normal settings and invalid-sample handling belong to that graph tool. | S3-20 |
+| `cv2.depthTo3d`, `cv2.depthTo3dSparse`, `cv2.rescaleDepth` | Exposed. Dense and sparse backprojection and typed depth conversion have independent contracts. | S3-59, S3-74–S3-75 |
+| `cv2.registerDepth`, `cv2.warpFrame` | Exposed. Align depth between cameras or warp a registered depth and color pair through a pose. | S3-18, S3-76 |
+| `cv2.findPlanes` | Exposed. Qualify multiple organized plane labels and coefficients separately from dominant-plane foreground separation. | S3-23, S3-100 |
+| `cv2.Odometry`, `cv2.OdometryFrame`, `cv2.OdometrySettings` | Exposed. Frame preparation, pyramids, settings and normals remain part of odometry. Qualify trajectory recovery on sequences separately from the shipped pairwise fit. | S3-25, S3-71 |
+| `cv2.Volume`, `cv2.VolumeSettings` | Exposed. Frame integration, color and depth, extraction, raycast and growth are grouped by graph workflow. Native volume state remains internal. | S3-26–S3-27, S3-93–S3-95 |
+| `cv::randomSampling`, `cv::farthestPointSampling`, `cv::voxelGridSampling` | C++ functions with no direct binding in the pinned wheel. Qualify a supported build or an equivalent sampler with point provenance. | S3-60, S3-78–S3-79 |
+| `cv::normalEstimate`, `cv::SACSegmentation`, `cv::RegionGrowing3D` | C++ APIs with no direct binding in the pinned wheel. Qualify fallback curvature, robust geometric fits and normal-based segmentation on explicit fixtures. | S3-82–S3-84 |
+| `cv2.ppf_match_3d.ICP`, `cv2.ppf_match_3d.PPF3DDetector`, `cv2.ppf_match_3d.Pose3D`, `cv2.ppf_match_3d.PoseCluster3D` | Exposed. Training, matching, refinement, votes and pose clusters belong to the graph surface-matching contract. Raw pose object mutation stays internal. | S3-22, S3-90–S3-91 |
+| `cv2.ppf_match_3d.computeNormalsPC3d`, `cv2.ppf_match_3d.samplePCByQuantization`, `cv2.ppf_match_3d.transformPCPose` | Exposed. The app already has typed normal, voxel and transform operations. Keep equivalent native variants in those contracts. | S3-50–S3-51, S3-60, S3-79, S3-84 |
+| `cv2.ppf_match_3d.loadPLYSimple`, `cv2.ppf_match_3d.writePLY`, `cv2.ppf_match_3d.writePLYVisibleNormals` | Exposed. Reuse cloud interchange for PLY. Normal-debug rendering helpers belong to review graphics. | S3-21, S3-85 |
+| `cv2.ppf_match_3d.addNoisePC`, `cv2.ppf_match_3d.getRandomPose` | Exposed. Keep native random helpers under a reproducible synthetic scan and pose fixture contract. | S3-111 |
+
+Sources for the crosswalk include the pinned
+[point-cloud header](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/ptcloud/include/opencv2/ptcloud.hpp),
+[depth header](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/ptcloud/include/opencv2/ptcloud/depth.hpp),
+[volume header](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/ptcloud/include/opencv2/ptcloud/volume.hpp),
+[segmentation header](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/geometry/include/opencv2/geometry/segment.hpp),
+and [surface-matching reference](https://docs.opencv.org/5.0/extra_modules/surface_matching.html).
+The installed Python surface is checked against the [binding inventory](opencv-bindings.tsv).
+
+### Remaining inspection workflows
+
+| Family | Roadmap disposition | Checklist IDs |
+| --- | --- | --- |
+| `Image I/O and reconstruction details` | Cover multipage buffer ports, HDR motion rejection, ternary morphology, and sparse contour extraction as distinct graph workflows. | S1-149–S1-152 |
+| `Camera calibration and image tracking` | Track release-object and metadata-aware board calibration plus sparse RLOF. | S3-109–S3-110, S4-84 |
+| `Point-cloud metrology and large-scan processing` | Cover matched-landmark transforms, stream/tile processing, recorded scan replay, cross-sections, datum measurements and calibrated range images. | S3-101, S3-103–S3-106, S3-112 |
+| `Mesh quality and processing` | Cover texture projection, topology/measurement checks and bounded simplification. Qualify a tested equivalent where OpenCV supplies no direct mesh-processing primitive. | S3-102, S3-107–S3-108 |
+
 ### Backlog decisions
 
 | Backlog family | Roadmap disposition | Checklist IDs |
@@ -261,6 +305,10 @@ and [surface matching](https://docs.opencv.org/5.0/extra_modules/surface_matchin
 When changing OpenCV versions, compare source modules and the binding inventory
 against this map. Add or update dispositions for changed families. When adding a
 roadmap capability, give it a stable ID and a measurable result, then add its
-owning family reference before refreshing the coverage table. The
+owning family reference before refreshing the coverage table. A new item
+needs a distinct inspection result or qualification check. Treat overloads,
+aliases and native helper methods as part of their owning graph workflow.
+Use exact `cv2.*` names for exposed Python symbols in crosswalk table keys.
+Use C++ names for source APIs that lack a binding. The
 [roadmap](roadmap.md) gives implementation order. The checklist describes
 graph coverage, while module mapping describes scope.

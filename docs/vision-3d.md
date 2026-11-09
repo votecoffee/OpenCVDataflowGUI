@@ -8,6 +8,8 @@ subgroups under **Custom > Input** and **Custom > Output**. The tested OpenCV
 
 See the [point-cloud API audit](opencv-scope-map.md#point-cloud-and-mesh-api-families)
 for planned tools for imported inspection scans, depth-derived clouds and meshes.
+The [native API crosswalk](opencv-scope-map.md#native-point-cloud-api-crosswalk)
+identifies the Python bindings and where a tested fallback is needed.
 
 ## Try the included jobs
 
