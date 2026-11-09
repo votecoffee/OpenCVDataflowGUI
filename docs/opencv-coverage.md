@@ -10,7 +10,8 @@ jobs and by how naturally inputs and results fit a graph.
 
 The [image and video coverage checklist](vision-coverage-checklist.md) selects
 the stage 1–4 commitments from this backlog. It provides the denominator and
-completed counts for roadmap percentages.
+completed counts for roadmap percentages. Its module scope boundaries
+record which APIs belong to separate backend or application work.
 
 ## Stage 1 — Existing array tools and deferred work
 
