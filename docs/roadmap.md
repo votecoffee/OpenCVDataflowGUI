@@ -85,7 +85,7 @@ the implementation scope and completion counts for stages 1–4. It assigns a
 stable ID to each capability and records its APIs, shipped evidence or exit
 check, and status. Tiled mosaics and continuous stabilization are the first
 two open Stage 1 items. The checklist separates independently testable
-functions and lists module scope boundaries for future coverage reviews.
+functions and links each capability to the [OpenCV scope map](opencv-scope-map.md).
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |

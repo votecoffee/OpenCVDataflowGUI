@@ -2,12 +2,10 @@
 
 This is the implementation scope for stages 1–4 of the [roadmap](roadmap.md).
 The [coverage backlog](opencv-coverage.md) keeps broader candidates and background.
-This revision expands the original 151-item scope by listing independently
-testable functions and auditing missing image/video families against the
-[OpenCV main modules](https://docs.opencv.org/5.0/main_modules/api_root.html),
-[extra modules](https://docs.opencv.org/5.0/extra_modules/api_root.html), and
-the Python bindings in the pinned wheel. Earlier IDs retain their stage and
-are narrowed where new rows capture distinct behavior.
+The [OpenCV scope map](opencv-scope-map.md) ties this checklist to the upstream
+source modules and the installed Python namespaces. It records the graph
+capabilities assigned to each family and why other APIs are deferred. Earlier
+checklist IDs retain their stage.
 The native API column names the main functions or building blocks for each job.
 Each row represents one independently verifiable capability, even when several
 native calls or graph blocks implement it.
@@ -16,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 10 | 16 | 123 | 78.9% |
-| 2. ML and DNN | 9 | 8 | 28 | 45 | 20.0% |
-| 3. 3D from camera imagery | 33 | 10 | 18 | 61 | 54.1% |
-| 4. Selected contrib | 20 | 0 | 50 | 70 | 28.6% |
-| **Overall** | 159 | 28 | 112 | 299 | 53.2% |
+| 1. Core and baseline 2D | 97 | 14 | 33 | 144 | 67.4% |
+| 2. ML and DNN | 9 | 9 | 34 | 52 | 17.3% |
+| 3. 3D from camera imagery | 33 | 13 | 26 | 72 | 45.8% |
+| 4. Selected contrib | 20 | 0 | 61 | 81 | 24.7% |
+| **Overall** | 159 | 36 | 154 | 349 | 45.6% |
 
 <!-- coverage-summary:end -->
 
@@ -50,8 +48,8 @@ native calls or graph blocks implement it.
   and aliases. This checklist defines the denominator for progress reporting.
 
 Run `python scripts/vision_coverage.py` to calculate progress. Use `--update`
-after editing statuses to refresh the table, and `--check` to check the saved
-table. The [block parameter reference](block-parameters.md) lists current ports
+after changing the checklist to refresh the table, and `--check` to verify
+the saved counts and the scope map's ID references. The [block parameter reference](block-parameters.md) lists current ports
 and configuration. For planned or partial rows, the last column gives the
 fixture or result needed to close the item.
 
@@ -196,6 +194,32 @@ fixture or result needed to close the item.
 | S1-122 | Native linear barcode decoding | barcode.BarcodeDetector | Complete | inspect.read_barcode. Verify EAN or UPC text, pose and outline. |
 | S1-123 | Variable-frame-rate and unreliable video timing diagnostics | VideoCapture properties and timestamp checks | Partial | input.video_file labels decoder timestamps and estimated timing. Qualify variable-frame-rate and missing or incorrect metadata fixtures. |
 
+### Precision, multiscale processing and video fidelity
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S1-124 | Laplacian image pyramids | pyrDown, pyrUp and detail Laplacian-pyramid routines | Planned | Expose signed residual levels and verify reconstruction across odd image dimensions and preserved source frames. |
+| S1-125 | Floating-point image codec round trips | imread, imwrite and format-specific float encoding | Planned | Verify float TIFF and Radiance HDR precision and channel order. Qualify OpenEXR on a build that provides it. |
+| S1-126 | Lossless high-bit-depth compressed images | JPEG 2000 and PNG codec options | Planned | Verify exact 16-bit round trips at supported settings and reject silent conversion or unavailable codecs. |
+| S1-127 | Packed high-bit-depth sensor frames | RAW10/RAW12 unpacking and demosaicing | Planned | Decode known sensor byte patterns with stride, Bayer phase and bit-depth checks. |
+| S1-128 | Affine-invariant image feature extraction | AffineFeature.create with a supported feature detector | Planned | Measure correspondence repeatability under known view tilts and preserve point scale, orientation and source frame. |
+| S1-129 | Local structure tensor and dominant orientation | cornerEigenValsAndVecs | Planned | Expose eigenvalue and orientation maps with controlled borders and verify edges, corners and low-confidence flat areas. |
+| S1-130 | Motion-compensated frame interpolation | Forward/backward flow and remap | Planned | Create intermediate frames for known motion, report occlusion coverage and preserve media timing. |
+| S1-131 | Intensity-weighted center and orientation | moments with intensity weights and region selection | Planned | Compare geometric and intensity-weighted centers and axes on a known asymmetric feature. |
+| S1-132 | Per-pixel alpha composition | Straight and premultiplied alpha, source-over composition | Planned | Verify transparent boundaries and float or integer results on foreground/background pairs. |
+| S1-133 | Rasterize selected contours with holes | drawContours, fillPoly and contour hierarchy | Planned | Convert selected contour collections into masks with topology intact and verify source-grid alignment. |
+| S1-134 | Ordered arc fitting and angular extent | Contour sampling, geometric fit and arc support | Planned | Fit partial round features and report angular coverage and uncertainty on controlled edge samples. |
+| S1-135 | Reconstruct features by local frequency and phase | DFT, magnitude and phase of image bands | Partial | cv.dft emits complex spectra. Qualify phase-only or magnitude-only reconstruction with declared channel and normalization behavior. |
+| S1-136 | Binary mask boundary distances | distanceTransform and directed boundary comparisons | Partial | inspect.contour_profile measures matched contour boundaries. Qualify a source-grid mask comparison with tolerance bands and missing-area statistics. |
+| S1-137 | Build a flat-field reference from image stacks | Selected frame averaging or median | Planned | Estimate dark and bright references from repeated captures and verify correction on a held-out image. |
+| S1-138 | Focus stacking and per-pixel focus selection | Local focus response, image alignment and masked blending | Planned | Fuse different focal planes on a synthetic or recorded stack and verify the focus-index and coverage maps. |
+| S1-139 | Log-polar rotation and scale registration | warpPolar and phaseCorrelate | Planned | Recover rotation and scale before translation and verify ambiguity handling on symmetric parts. |
+| S1-140 | Controlled video encoder qualification | VideoWriter, fourcc and decoder round trip | Partial | output.video writes tested local streams. Check representative lossless and lossy codecs for frame count, rate, color and invalid backend selection. |
+| S1-141 | Debounce foreground across consecutive frames | Temporal mask accumulation and connected components | Planned | Suppress single-frame foreground spikes and retain a sustained moving feature with bounded state and reset behavior. |
+| S1-142 | Synthetic fiducial-free image distortion fixtures | Geometric remap and seeded perturbations | Planned | Generate known shear, perspective and lens-like distortions and emit ground-truth maps for inspection regression. |
+| S1-143 | Image contrast and visibility between two regions | Selected image statistics and contrast-to-noise ratio | Planned | Report signal/background contrast, noise and invalid selections on a controlled inspection target. |
+| S1-144 | Unicode image annotation | FreeType or Qt glyph rasterization and frame-aware graphics | Partial | cv.annotation_layer draws existing image labels. Verify multilingual OCR or inspection text renders on the annotated output image with preserved coordinates. |
+
 ## Stage 2 — ML and DNN for images and video
 
 [Stage tracker](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) ·
@@ -253,6 +277,18 @@ fixture or result needed to close the item.
 | S2-43 | Image feature outlier detection | Image descriptors, covariance and Mahalanobis distance | Partial | cv.feature_covariance and inspect.mahalanobis_distance score feature tables. Qualify an image-only pipeline with known-good variation and held-out defects. |
 | S2-44 | Bag-of-visual-words image retrieval | SIFT/ORB quantization and per-image visual-word histograms | Planned | Build image-level signatures from a trained codebook and verify ranking on held-out views. |
 | S2-45 | Object landmark inference with model-specific skeleton | Keypoint decoding, confidence and source-coordinate graph | Planned | Decode and draw a configured skeleton and verify missing landmarks are suppressed. |
+
+### Classical detection and model qualification
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S2-46 | HOG sliding-window object detection | HOGDescriptor.detectMultiScale with configured detector weights | Planned | Detect objects at multiple scales with per-window confidence and verify suppression on known image boxes. |
+| S2-47 | Cascade-based image object detection | CascadeClassifier.detectMultiScale | Planned | Load a local configured cascade and verify detections, scale controls and output scores on a labeled fixture. |
+| S2-48 | Rotated crop classification | Model preprocessing from measured image poses | Partial | ml.dnn consumes an image or selected region. Qualify independent oriented part crops with source geometry and per-part ticket retention. |
+| S2-49 | Image-based regression | OpenCV SVM regression or ONNX scalar decoder | Planned | Estimate a continuous image-derived measurement on held-out captures and report residuals with model revision. |
+| S2-50 | Image-model anomaly maps | Local embeddings and nearest-reference or model-specific anomaly scores | Planned | Train a known-good image reference set, localize anomalies and verify threshold decisions on independent defect images. |
+| S2-51 | Detect image defects under input shifts | Model evaluation across exposure, blur and camera pose | Planned | Replay controlled image perturbations and report confidence, localization and false rejects against the reference results. |
+| S2-52 | Learned instance tracking masks | Image segmentation plus temporal association | Planned | Track per-instance masks through overlapping or occluded video frames with ticket and ID continuity. |
 
 ## Stage 3 — 3D from camera imagery
 
@@ -328,6 +364,22 @@ fixture or result needed to close the item.
 | S3-59 | Metric depth backprojection | Intrinsics and depth-to-point projection | Complete | 3d.depth_cloud. Verify XYZ, invalid depth and per-pixel color/provenance from an aligned image. |
 | S3-60 | Reconstructed cloud selection and voxel sampling | Spatial bounds, valid indices and voxel pooling | Complete | 3d.cloud_filter, 3d.cloud_voxel. Verify retained camera correspondence and bounded point density. |
 | S3-61 | Binary stereo correspondence | stereo.StereoBinaryBM or StereoBinarySGBM | Planned | Requires a build with the Python binding. Compare a known disparity image to the regular BM/SGBM path. |
+
+### Depth sequences and additional camera models
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S3-62 | Color and depth from a synchronized recorded stream | Timestamp pairing, explicit registration and depth confidence | Partial | image.rgbd pairs typed color and depth. Verify recorded streams with staggered timestamps and independent camera grids. |
+| S3-63 | Stereo exposure and color consistency | Pairwise color correction on rectified correspondence support | Planned | Reduce photometric mismatch on a calibrated pair and compare valid disparity coverage. |
+| S3-64 | Recover calibrated object dimensions from a depth silhouette | Depth backprojection and physical contour measurement | Planned | Measure known raised parts and report thickness, width and invalid boundary samples. |
+| S3-65 | Scene-scale recovery from multi-view observations | Multi-view triangulation with known metric anchors | Partial | 3d.essential_pose supplies unit-scale motion. Verify metric recovery and error with held-out 3D targets. |
+| S3-66 | Stereo-to-depth consistency across multiple baselines | Stereo reprojection and cross-view depth checks | Planned | Fuse valid baselines while identifying occlusion or outlier disparity on an independently measured depth fixture. |
+| S3-67 | Phase unwrapping for measured fringe images | phase_unwrapping.HistogramPhaseUnwrapping | Planned | Recover a known wrapped surface phase and report invalid regions and reliable connected support. |
+| S3-68 | Camera pose tracking against an object silhouette | rapid silhouette trackers and projected object geometry | Planned | Track a known metric object in video with reprojection checks and explicit loss and reset behavior. |
+| S3-69 | Three-dimensional model pose from image and depth templates | linemod image gradients and depth normal templates | Planned | Recover an object pose from matched RGB-D templates and verify confidence and image registration. |
+| S3-70 | Multi-view calibration with coded custom targets | ccalib and observed camera-target correspondences | Planned | Qualify a custom target across cameras with held-out frame closure. Confirm the relevant Python APIs or use a tested solver. |
+| S3-71 | Depth-fusion trajectory estimation | KinFu or equivalent depth tracking and fusion | Partial | 3d.odometry and 3d.tsdf_fuse support pairwise motion and posed depth. Verify drift, failure recovery and a bounded trajectory on a recorded sequence. |
+| S3-72 | Quasi-dense stereo correspondence | stereo.QuasiDenseStereo | Planned | Grow correspondences from stereo feature matches and compare disparity and support against known image pairs. |
 
 ## Stage 4 — Selected contrib functions for images and video
 
@@ -417,8 +469,25 @@ fixture or result needed to close the item.
 | S4-69 | Color-independent global image normalization | ximgproc.PeiLinNormalization | Planned | Return the normalization transform and verify alignment of equivalent shape images. |
 | S4-70 | Fuzzy image smoothing and inpainting | ft.filter and ft.inpaint | Planned | Verify local smoothing or fill quality on an image fixture, with bounded controls. |
 
+### Additional upstream image and video families
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S4-71 | Hierarchical feature-selection segmentation | hfs.HfsSegment | Planned | Compare boundaries and region IDs against a known segmented image with CPU execution. |
+| S4-72 | Mapper-based multiscale image registration | reg.MapperGradShift, MapperGradAffine, MapperGradProj and MapperPyramid | Planned | Recover translation, affine or projective changes from paired images and validate residual and coverage. |
+| S4-73 | Low-light enhancement | intensity_transform.BIMEF | Planned | Recover known shadow contrast and quantify noise and clipping against the baseline image. |
+| S4-74 | Boosted binary image descriptors | xfeatures2d.BoostDesc | Planned | Compare matching under illumination or viewpoint changes on a known registered pair. |
+| S4-75 | Contrib surface texture descriptors | xfeatures2d VGG or other supported local descriptors | Planned | Verify texture correspondence on pinned local descriptor assets and a known view pair. |
+| S4-76 | Background sequences for controlled tracking validation | bgsegm.createSyntheticSequenceGenerator | Planned | Emit synthetic moving-object frames with the native foreground reference masks and reproducible ticket order. |
+| S4-77 | Contrib optical flow interpolation with robust correspondence | ximgproc.RICInterpolator | Planned | Interpolate a known sparse field and validate deformation boundaries and unsupported regions. |
+| S4-78 | Variance-adaptive edge-preserving smoothing | ximgproc.edgePreservingFilter | Planned | Reduce noise while preserving the position and strength of a measured image edge. |
+| S4-79 | Edge Drawing segments and primitives | ximgproc.createEdgeDrawing | Planned | Verify ordered edge segments and fitted line or ellipse outputs against known geometry. |
+| S4-80 | Tree-based image regions | xfeatures2d.TBMR | Planned | Verify keypoint location and scale through a known image transform and compare repeatability with MSER. |
+| S4-81 | Classical multi-frame video super-resolution | superres BTV-L1 or equivalent reconstruction | Planned | Verify a usable backend and compare reconstructed moving detail with per-frame interpolation on an aligned sequence. |
+
 ## Module scope boundaries
 
+The [scope map](opencv-scope-map.md) details the owning module families.
 The following groups remain outside the percentage calculation. This makes it
 possible to review omissions without counting overloads, infrastructure and
 platform variants as separate image features.

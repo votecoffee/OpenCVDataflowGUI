@@ -10,8 +10,8 @@ jobs and by how naturally inputs and results fit a graph.
 
 The [image and video coverage checklist](vision-coverage-checklist.md) selects
 the stage 1–4 commitments from this backlog. It provides the denominator and
-completed counts for roadmap percentages. Its module scope boundaries
-record which APIs belong to separate backend or application work.
+completed counts for roadmap percentages. The [OpenCV scope map](opencv-scope-map.md)
+records the checklist owner or deferral for each upstream module family.
 
 ## Stage 1 — Existing array tools and deferred work
 
