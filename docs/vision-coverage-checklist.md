@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 15 | 40 | 152 | 63.8% |
+| 1. Core and baseline 2D | 97 | 16 | 45 | 158 | 61.4% |
 | 2. ML and DNN | 9 | 9 | 34 | 52 | 17.3% |
-| 3. 3D imagery and point clouds | 33 | 23 | 56 | 112 | 29.5% |
+| 3. 3D imagery and point clouds | 33 | 23 | 59 | 115 | 28.7% |
 | 4. Selected contrib | 20 | 0 | 64 | 84 | 23.8% |
-| **Overall** | 159 | 47 | 194 | 400 | 39.8% |
+| **Overall** | 159 | 48 | 202 | 409 | 38.9% |
 
 <!-- coverage-summary:end -->
 
@@ -66,7 +66,7 @@ fixture or result needed to close the item.
 | S1-04 | Image encode/decode in memory | imencode, imdecode | Complete | cv.encode_image, cv.decode_image. PNG/JPEG buffer round trips with compression settings and spatial provenance. |
 | S1-05 | Multipage TIFF replay and save | imdecodemulti, imencodemulti on file-backed buffers | Complete | input.tiff_file, output.tiff_file. Ordered, ticketed page ranges and lossless batch output. |
 | S1-06 | JPEG/PNG metadata and orientation read | imreadWithMetadata, EXIF orientation transforms | Complete | input.file. Report metadata and exercise the saved-image orientation fixture. |
-| S1-07 | Image metadata write | imwriteWithMetadata, imencodeWithMetadata | Planned | Round-trip supported metadata types on JPEG/PNG. Verify output orientation semantics and reject unsupported chunks explicitly. |
+| S1-07 | Image metadata write and buffer round trip | imwriteWithMetadata, imencodeWithMetadata, imdecodeWithMetadata | Planned | Round-trip supported metadata types through JPEG/PNG files and buffers. Verify orientation semantics and reject unsupported chunks explicitly. |
 | S1-08 | Raw sensor color decoding | demosaicing, cvtColor | Complete | cv.demosaic_bayer, input.raw_yuv, cv.decode_yuv. Bayer phase at a crop and packed YUV layouts. |
 | S1-09 | Camera image capture | VideoCapture.open, read, release | Complete | input.camera. Graph camera frame contract with backend and format settings. Physical backend qualification is tracked under acquisition. |
 | S1-10 | Video file replay and recording | VideoCapture, VideoWriter | Complete | input.video_file, output.video. Frame bounds, stride, stop/loop, frame timestamps, and a local round trip. |
@@ -107,7 +107,7 @@ fixture or result needed to close the item.
 | S1-45 | Template matching with multiple instances | matchTemplate, local-peak selection, subpixel refinement | Complete | inspect.match_template, inspect.template_instances. Multiple candidates with scores, locations and configurable suppression. |
 | S1-46 | Trainable shape and texture matching | Contour geometry, ORB/SIFT descriptors, homography | Complete | pattern.train_shape, pattern.match_shape, pattern.train_texture, pattern.match_texture. Reusable models and image poses. |
 | S1-47 | Generalized Hough shape search | createGeneralizedHoughBallard, createGeneralizedHoughGuil | Complete | inspect.hough_template, inspect.guil_template. Fixed or rotation/scale-aware search with votes. |
-| S1-48 | Registered reference alignment | phaseCorrelate, findTransformECC, estimateAffine2D, estimateAffinePartial2D, findHomography | Complete | inspect.phase_correlation, inspect.phase_correlation_iterative, inspect.align_ecc, inspect.affine, inspect.homography, inspect.translation. Robust alignment with residual or quality checks. |
+| S1-48 | Registered reference alignment | phaseCorrelate, findTransformECCMultiScale, findTransformECCWithMask, estimateAffine2D, estimateAffinePartial2D, findHomography | Complete | inspect.phase_correlation, inspect.phase_correlation_iterative, inspect.align_ecc, inspect.affine, inspect.homography, inspect.translation. Robust alignment with residual or quality checks. |
 | S1-49 | Bounded scan stitching | Local registration, warpPerspective, seam and exposure blending | Complete | cv.stitch_image_pair, cv.stitch_scan_sequence. Overlapping pairs and ordered short scans with masks, drift correction, and exposure compensation. |
 | S1-50 | Recorded and streaming motion baseline | calcOpticalFlowPyrLK, estimateAffinePartial2D, warpAffine | Complete | sequence.stabilize_camera, sequence.stabilize_batch. Causal and finite centered correction with coverage and validation. |
 | S1-51 | Sparse and dense optical flow | calcOpticalFlowPyrLK, calcOpticalFlowFarneback, DISOpticalFlow | Complete | sequence.track_points, sequence.lk_grid_flow, sequence.farneback, sequence.dis. Flow and consistency checks. |
@@ -188,7 +188,7 @@ fixture or result needed to close the item.
 | S1-116 | Robust differential exposure compensation | Local brightness and contrast agreement on aligned images | Planned | Verify a registered reference under changing illumination and report exposure-adjusted and unadjusted defect residuals. |
 | S1-117 | Multi-view exposure seams and blending | detail exposure compensators, GraphCutSeamFinder, MultiBandBlender | Partial | cv.stitch_scan_sequence uses gain/offset, feathering and graph-cut seams. Verify multiband blending across overlapping tiles with bounded memory and preserved image depth. |
 | S1-118 | Resample coverage masks conservatively | Area sampling, explicit coverage threshold | Planned | Resample a validity mask to a different pixel grid and verify partially covered pixels and source provenance. |
-| S1-119 | Correlation-based image comparison | masked normalized correlation on aligned image pairs | Planned | Compare supported image encodings with constant-region handling, per-channel results and a defect fixture. |
+| S1-119 | Correlation-based image comparison | computeECC and masked normalized correlation on aligned image pairs | Planned | Compare supported image encodings with constant-region handling, per-channel results and a defect fixture. |
 | S1-120 | Transport distance between image histograms | EMD on image histograms | Complete | inspect.compare_histograms. Compare histogram signatures using the native transport distance and known distributions. |
 | S1-121 | Curved QR decoding | QRCodeDetector.detectAndDecodeCurved | Partial | inspect.read_qr exposes curved mode. Qualify a known wrapped label and verify source and rectified module coordinates. |
 | S1-122 | Native linear barcode decoding | barcode.BarcodeDetector | Complete | inspect.read_barcode. Verify EAN or UPC text, pose and outline. |
@@ -237,6 +237,17 @@ fixture or result needed to close the item.
 | S1-150 | Moving-region rejection in HDR brackets | Exposure alignment, consistency masks and supported HDR merge | Planned | Use brackets with one moving part. Report rejected support and verify that static detail remains usable without treating reconstructed pixels as measured. |
 | S1-151 | Binary hit-or-miss morphology | morphologyEx with MORPH_HITMISS and a ternary kernel | Planned | Expose foreground, background and don't-care kernel cells. Verify corners or junctions and reject incompatible encodings. |
 | S1-152 | Memory-efficient contour extraction | findContoursLinkRuns | Planned | Compare contours and hierarchy with the supported dense-mask reference on large sparse masks. Verify the native binary input and topology limits. |
+
+### Codec preflight, random access and video tracking
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S1-153 | Probe image codec availability and page inventory | haveImageReader, haveImageWriter and imcount | Planned | Verify readable formats, encoder availability, page counts and invalid file diagnostics before decoding large inputs. |
+| S1-154 | Read and preserve optical-flow fields in files | readOpticalFlow and writeOpticalFlow | Planned | Round-trip a known signed flow field, validate the frame association and unsupported or invalid samples, and compare loaded motion against a computed reference. |
+| S1-155 | Reuse precomputed optical-flow pyramids | buildOpticalFlowPyramid with optional derivatives | Planned | Verify level geometry, border and derivative controls, and parity against direct tracking. Qualify the Python representation or keep the cache inside the tracker. |
+| S1-156 | Seeded MIL video tracking | TrackerMIL | Planned | Track an annotated part from a configured box and verify initialization, localization, failure reporting and reset over a recorded clip. |
+| S1-157 | Decode video from a bounded encoded stream | VideoCapture and IStreamReader where supported | Planned | Verify a recorded in-memory stream with known timestamps and frames. Qualify the backend for partial reads, limits and deterministic teardown. |
+| S1-158 | On-demand multipage image access | ImageCollection or indexed page decode | Partial | input.tiff_file replays selected page ranges. Qualify random page access on a large stack with bounded caching, identical decoded samples and stable page provenance. |
 
 ## Stage 2 — ML and DNN for images and video
 
@@ -289,7 +300,7 @@ fixture or result needed to close the item.
 | S2-37 | Learned monocular depth | ONNX dense depth inference and explicit relative/metric output | Planned | Verify model scale conventions, source alignment, invalid samples and error on known depth imagery. |
 | S2-38 | Learned stereo disparity | Paired-image ONNX inference and disparity scaling | Planned | Verify a known disparity plane and preserve masks, left/right frame and pixel units. |
 | S2-39 | Learned optical flow | Paired-frame ONNX flow inference | Planned | Verify displacement direction, scale and valid coverage on known frame shifts. |
-| S2-40 | Learned video object tracker | TrackerNano, TrackerVit or equivalent local ONNX model | Planned | Pin model assets and verify init, update, loss and reset on annotated video. |
+| S2-40 | Learned video object tracker | TrackerNano, TrackerVit, TrackerDaSiamRPN or equivalent local ONNX model | Planned | Pin model assets and verify init, update, loss and reset on annotated video. |
 | S2-41 | Image-descriptor dimensionality reduction | PCACompute/PCAProject on extracted image features | Partial | cv.fit_pca and cv.transform_pca implement numeric PCA. Qualify a persisted descriptor pipeline on held-out images and track the feature model revision. |
 | S2-42 | Texture and color mixture classification | ml.EM, per-pixel feature mixtures | Planned | Fit a probabilistic surface classifier from image samples, score held-out pixels and persist the model. |
 | S2-43 | Image feature outlier detection | Image descriptors, covariance and Mahalanobis distance | Partial | cv.feature_covariance and inspect.mahalanobis_distance score feature tables. Qualify an image-only pipeline with known-good variation and held-out defects. |
@@ -374,7 +385,7 @@ fixture or result needed to close the item.
 | S3-51 | Unorganized cloud normals from reconstructed points | Local neighborhood normals | Complete | 3d.cloud_normals. Recover normals of a known camera-derived surface with explicit neighbor support. |
 | S3-52 | Project camera clouds into a depth or color image | Intrinsic projection and a depth buffer | Partial | 3d.cloud_render provides an orthographic preview. Emit metric camera-aligned depth and coverage using declared intrinsics and occlusion rules. |
 | S3-53 | Evaluate camera depth against a reference | Unit-normalized depth error, validity overlap | Planned | Compare known depth planes and depth steps and report residual maps and missing regions. |
-| S3-54 | Calibrate a rig with three or more image streams | Shared target pose and camera-to-rig optimization | Planned | Recover a known multi-camera rig and verify independent image reprojections and frame closure. |
+| S3-54 | Calibrate a rig with three or more image streams | calibrateMultiview, calibrateMultiviewExtended | Planned | Recover a known same-lens-model rig from partial views with explicit visibility masks. Verify per-view residuals, independent reprojections and frame closure. |
 | S3-55 | Reproject a depth-backed region across wide-angle camera views | Camera rays, metric depth and target-camera projection | Planned | Map a physical patch between wide-angle cameras and verify it lands on the same scene area with coverage. |
 | S3-56 | Range image fusion with depth confidence | Weighted depth accumulation in camera coordinates | Planned | Fuse registered depth views and verify confidence, occlusion boundaries and preserved thin objects. |
 | S3-57 | Depth-derived foreground component measurement | Organized depth thresholding and connected components | Planned | Separate image-space parts at different depths and report physical size and source masks. |
@@ -448,6 +459,14 @@ fixture or result needed to close the item.
 | S3-110 | Marker-aware and oversized checkerboard detection | findChessboardCornersSBWithMeta | Partial | calibration.grid detects checkerboards. Verify native metadata for a partially visible oversized board and recover stable target ordering and origin. |
 | S3-111 | Reproducible perturbed cloud fixtures | ppf_match_3d.addNoisePC and getRandomPose or a seeded equivalent | Planned | Generate clouds with known pose and noise and report ground truth. Verify seed isolation and use the fixtures for sampling, registration and tolerance tests. |
 | S3-112 | Organize a scanner cloud into a range image | Calibrated angular projection and range conflict resolution | Planned | Map a known rotating or angular scan onto a declared grid, retaining intensity, source indices, invalid bins and multiple-return handling. |
+
+### Additional multi-camera and point-cloud geometry
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S3-113 | Register cameras with non-overlapping views | registerCameras and registerCamerasExtended | Planned | Recover the transform from two fixed cameras seeing different known parts of one calibration target. Verify mixed pinhole/fisheye models, per-view residuals and held-out frame closure. |
+| S3-114 | Rectify three collinear cameras | rectify3Collinear or a validated equivalent | Planned | Rectify a measured three-camera rig to common epipolar rows and verify depth across both baselines. The pinned Python wheel lacks this direct binding. |
+| S3-115 | Cylindrical surface and bore measurement from a point cloud | Robust 3D cylinder fit with radial residuals | Planned | Recover axis and diameter on known outer and inner surfaces with partial coverage and outliers. Report usable angular and axial support, units and degenerate fits. Use a qualified solver because OpenCV's native sample-consensus models cover planes and spheres. |
 
 ## Stage 4 — Selected contrib functions for images and video
 

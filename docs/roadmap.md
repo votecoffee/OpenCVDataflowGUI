@@ -89,9 +89,11 @@ functions and links each capability to the [OpenCV scope map](opencv-scope-map.m
 Its subgroup audit records which inspection workflows need a different build or
 a tested fallback. Point clouds include imported scans and reconstructed surfaces.
 The [native point-cloud API crosswalk](opencv-scope-map.md#native-point-cloud-api-crosswalk)
-groups exposed APIs and C++-only routines by their graph contracts. Use the
-checklist as the implementation baseline and add scope for independently
-testable inspection workflows.
+groups exposed APIs and C++-only routines by their graph contracts. The
+[native imaging, calibration and video API crosswalk](opencv-scope-map.md#native-imaging-calibration-and-video-api-crosswalk)
+adds named entry points for codecs, photo, video I/O, tracking, calibration and
+stereo. Use the checklist as the implementation baseline and add scope for
+independently testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |

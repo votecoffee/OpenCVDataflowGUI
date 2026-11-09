@@ -23,24 +23,24 @@ they can count as complete.
 
 | Module | Graph coverage and scope decisions | Checklist IDs |
 | --- | --- | --- |
-| `calib` | Camera targets, lens and planar maps, calibrated workplanes, stereo rig fitting and hand–eye geometry. Keep camera/robot transport with acquisition and industrial integration. | S1-69, S3-01–S3-09, S3-13–S3-14, S3-30–S3-32, S3-34–S3-41, S3-45, S3-54–S3-55, S3-70 |
+| `calib` | Camera targets, lens and planar maps, calibrated workplanes, stereo rig fitting and hand–eye geometry. Keep camera/robot transport with acquisition and industrial integration. Fit rigs with non-overlapping views as a separate workflow. | S1-69, S3-01–S3-09, S3-13–S3-14, S3-30–S3-32, S3-34–S3-41, S3-45, S3-54–S3-55, S3-70, S3-113 |
 | `core` | Pixel/channel operations, numeric image checks, spectral transforms, blending and synthetic noise. Defer general scalar, tensor, matrix and optimization APIs to internal implementation or user blocks. | S1-13–S1-18, S1-37, S1-41, S1-55, S1-70, S1-73, S1-78–S1-80, S1-96, S1-105, S1-119, S1-132, S1-135, S1-143 |
 | `dnn` | Inference contracts, preprocessing, output adapters, model evaluation and learned vision. Keep importer internals and backend engines behind the model contract. | S2-01–S2-13, S2-23–S2-40, S2-45, S2-48, S2-51–S2-52 |
 | `features` | Corner and descriptor pipelines, matching, affine-invariant features and review. Reuse a feature/matcher block for parameter variants with equivalent outputs. | S1-42–S1-44, S1-46, S1-64, S1-128, S2-14–S2-17, S2-44 |
 | `flann` | Descriptor-based matching and image retrieval. Generic nearest-neighbor search structures stay behind feature adapters. | S1-44, S2-18–S2-19, S2-44 |
 | `geometry` | 2D shape measurement and topology, robust image transforms, camera pose, triangulation and image-driven spatial fitting. | S1-30–S1-35, S1-38, S1-46–S1-48, S1-61, S1-63, S1-65, S1-99–S1-103, S1-131, S1-134, S1-136, S3-09–S3-12, S3-42–S3-44, S3-64–S3-65 |
 | `highgui` | Windowing, mouse input, and interactive display belong to the existing Qt editor and viewer. | — |
-| `imgcodecs` | Still images, buffers, TIFF pages, metadata, animation and precision-preserving codecs. The installed wheel reports JPEG 2000 enabled and AVIF and OpenEXR disabled. Qualify a supported build for additional codec variants. | S1-03–S1-08, S1-111, S1-125–S1-127, S3-49 |
+| `imgcodecs` | Still images, buffers, TIFF pages, metadata, animation and precision-preserving codecs. The installed wheel reports JPEG 2000 enabled and AVIF and OpenEXR disabled. Qualify a supported build for additional codec variants. Verify codec probes and bounded page access. | S1-03–S1-08, S1-111, S1-125–S1-127, S1-149, S1-153, S1-158, S3-49 |
 | `imgproc` | Raster transforms, filtering, thresholds, masks, morphology, histograms, gradients, labels, overlays and image features. Drawing primitives support the overlay contract. | S1-13, S1-19–S1-30, S1-34–S1-36, S1-38–S1-40, S1-42, S1-45, S1-47, S1-56, S1-62, S1-66–S1-68, S1-71–S1-77, S1-93–S1-94, S1-97–S1-98, S1-106, S1-118, S1-120, S1-124, S1-129, S1-131–S1-133, S1-136–S1-137, S1-142–S1-144 |
 | `java`, `js`, `objc`, `python` | Language bindings and packaging. Browser feasibility stays on the backend roadmap. | — |
 | `objdetect` | Fiducials, code reading and generation, cascades and sliding-window detectors. Narrow recognition applications stay with job packages. | S1-60, S1-112–S1-114, S1-121–S1-122, S2-46–S2-47, S3-01, S3-10, S3-36–S3-37 |
 | `photo` | Image restoration, exposure stacks, tone mapping, focus stacking, color transfer and photo filters. | S1-57–S1-59, S1-81–S1-92, S1-116, S1-138 |
 | `ptcloud` | Inspection cloud import, transforms, visibility, normals, sampling, segmentation, mesh and fusion. Vendor acquisition and unrelated GIS work have separate scope. | S3-20–S3-27, S3-50–S3-53, S3-56–S3-60, S3-64, S3-71 |
-| `stereo` | Calibrated and uncalibrated rectification, disparity, depth and comparison across baselines. | S3-13–S3-17, S3-44–S3-48, S3-61, S3-63, S3-66 |
+| `stereo` | Calibrated and uncalibrated rectification, disparity, depth and comparison across baselines. Verify three-camera rectification across two baselines. | S3-13–S3-17, S3-44–S3-48, S3-61, S3-63, S3-66, S3-114 |
 | `stitching` | Registered mosaics, loop/overlap checks, panorama projection and seam blending. Internal stages share the same image/frame contracts. | S1-01, S1-49, S1-104, S1-116–S1-117, S1-124, S1-139 |
 | `ts`, `world`, `HAL` | Native test support, monolithic packaging and hardware abstraction. Track qualified backend behavior separately. | — |
-| `video` | Motion estimation, stateful image references, background subtraction, tracking, flow warps and temporal validation. | S1-02, S1-50–S1-54, S1-95, S1-107–S1-109, S1-130, S1-141, S2-28, S2-39–S2-40, S2-52 |
-| `videoio` | Camera frames, video files and network streams, capture properties, playback, seeking and encoder qualification. Device SDKs and hardware sync stay on the acquisition roadmap. | S1-09–S1-12, S1-110, S1-115, S1-123, S1-140, S3-62 |
+| `video` | Motion estimation, stateful image references, background subtraction, tracking, flow warps and temporal validation. Track flow interchange, pyramid reuse and seeded MIL tracking. | S1-02, S1-50–S1-54, S1-95, S1-107–S1-109, S1-130, S1-141, S2-28, S2-39–S2-40, S2-52, S1-154–S1-156 |
+| `videoio` | Camera frames, video files and network streams, capture properties, playback, seeking and encoder qualification. Device SDKs and hardware sync stay on the acquisition roadmap. Qualify bounded encoded input streams. | S1-09–S1-12, S1-110, S1-115, S1-123, S1-140, S3-62, S1-157 |
 
 ## Contrib modules
 
@@ -281,13 +281,74 @@ Sources for the crosswalk include the pinned
 and [surface-matching reference](https://docs.opencv.org/5.0/extra_modules/surface_matching.html).
 The installed Python surface is checked against the [binding inventory](opencv-bindings.tsv).
 
+### Native imaging, calibration and video API crosswalk
+
+This crosswalk assigns named public functions and classes from the six pinned
+headers below to graph capabilities. Overloads, option flags, and instance
+methods follow their owning workflow. Python exposure and graph completion
+are tracked separately. The audit covers 115 names, including 110 exposed in
+Python and five C++ entries without a direct binding.
+
+| API | Disposition on the pinned Python wheel | Checklist IDs |
+| --- | --- | --- |
+| `cv2.imread`, `cv2.imwrite` | Exposed. Still-image file paths own format, depth and precision qualification. | S1-03, S1-125–S1-126 |
+| `cv2.imdecode`, `cv2.imencode` | Exposed. Encoded image buffers use the same typed-image contract. | S1-04, S1-125–S1-126 |
+| `cv2.imreadmulti`, `cv2.imwritemulti`, `cv2.imdecodemulti`, `cv2.imencodemulti` | Exposed. File replay and memory ports have separate acceptance checks. | S1-05, S1-149 |
+| `cv2.imreadWithMetadata`, `cv2.imdecodeWithMetadata`, `cv2.imwriteWithMetadata`, `cv2.imencodeWithMetadata` | Exposed. File read is shipped. Verify metadata through a buffer and on disk in a round-trip fixture. | S1-06–S1-07 |
+| `cv2.Animation`, `cv2.imreadanimation`, `cv2.imwriteanimation`, `cv2.imdecodeanimation`, `cv2.imencodeanimation` | Exposed. One animation contract owns timing, order and supported formats for both paths. | S1-111 |
+| `cv2.haveImageReader`, `cv2.haveImageWriter`, `cv2.imcount` | Exposed. Probe source readability, encoder availability and page count before replay. | S1-153 |
+| `cv::ImageCollection` | C++ class without a direct binding. Qualify random page access with native support or indexed decode. | S1-158 |
+| `cv2.inpaint` | Exposed. Telea and Navier–Stokes follow the masked restoration contract. | S1-57 |
+| `cv2.AlignExposures`, `cv2.AlignMTB`, `cv2.createAlignMTB` | Exposed. Align exposures and use valid overlap for subsequent HDR merge. | S1-59, S1-150 |
+| `cv2.MergeExposures`, `cv2.MergeMertens`, `cv2.createMergeMertens` | Exposed. Mertens owns uncalibrated exposure fusion. The base class stays internal. | S1-81–S1-82 |
+| `cv2.CalibrateCRF`, `cv2.CalibrateDebevec`, `cv2.CalibrateRobertson`, `cv2.createCalibrateDebevec`, `cv2.createCalibrateRobertson` | Exposed. Response fitting belongs with calibrated HDR reconstruction. | S1-82 |
+| `cv2.MergeDebevec`, `cv2.MergeRobertson`, `cv2.createMergeDebevec`, `cv2.createMergeRobertson` | Exposed. Qualify both calibrated merge choices and motion-rejected input. | S1-82, S1-150 |
+| `cv2.Tonemap`, `cv2.TonemapDrago`, `cv2.TonemapMantiuk`, `cv2.TonemapReinhard`, `cv2.createTonemap`, `cv2.createTonemapDrago`, `cv2.createTonemapMantiuk`, `cv2.createTonemapReinhard` | Exposed. Qualify HDR-to-display mapping across supported operators and controls. | S1-83 |
+| `cv2.detailEnhance`, `cv2.edgePreservingFilter` | Exposed. Qualify appearance restoration with retained defect boundaries. | S1-85 |
+| `cv2.pencilSketch`, `cv2.stylization` | Exposed. Use as diagnostic appearance transforms with an explicit output contract. | S1-86 |
+| `cv2.seamlessClone` | Exposed. Masked cloning belongs to reference preparation and fixture generation. | S1-87 |
+| `cv2.illuminationChange`, `cv2.textureFlattening` | Exposed. Qualify masked illumination and texture changes with localized checks. | S1-88 |
+| `cv2.colorChange`, `cv2.decolor` | Exposed. Local color transfer and contrast-preserving monochrome have separate checks. | S1-89–S1-90 |
+| `cv2.fastNlMeansDenoising`, `cv2.fastNlMeansDenoisingColored`, `cv2.fastNlMeansDenoisingMulti`, `cv2.fastNlMeansDenoisingColoredMulti`, `cv2.denoise_TVL1` | Exposed. Single-frame and temporal variants share restoration fixtures by algorithm. | S1-91–S1-92 |
+| `cv2.correctChromaticAberration`, `cv2.loadChromaticAberrationParams` | Exposed. Native parameter loading follows the fringe-correction workflow. | S1-146 |
+| `cv2.VideoCapture`, `cv2.VideoWriter` | Exposed. Test capture and replay separately from encoder round trips. Flags and backend selection are configuration. | S1-09–S1-12, S1-110, S1-115, S1-123, S1-140 |
+| `cv2.IStreamReader` | Exposed. Qualify bounded encoded input on a specific backend. | S1-157 |
+| `cv2.CamShift`, `cv2.meanShift` | Exposed. Both variants use the color-distribution tracking contract. | S1-108 |
+| `cv2.DenseOpticalFlow`, `cv2.SparseOpticalFlow`, `cv2.DISOpticalFlow`, `cv2.FarnebackOpticalFlow`, `cv2.SparsePyrLKOpticalFlow`, `cv2.calcOpticalFlowFarneback`, `cv2.calcOpticalFlowPyrLK` | Exposed. Algorithm objects and convenience calls share the same typed flow outputs. | S1-51 |
+| `cv2.VariationalRefinement`, `cv2.buildOpticalFlowPyramid` | Exposed. Qualify refinement accuracy and reusable pyramid geometry separately. | S1-109, S1-155 |
+| `cv2.ECCParameters`, `cv2.findTransformECC`, `cv2.findTransformECCMultiScale`, `cv2.findTransformECCWithMask` | Exposed. The graph exposes single-scale, multiscale and masked alignment through the same contract. | S1-48 |
+| `cv2.computeECC` | Exposed. Correlation without estimating a transform belongs to aligned-image comparison. | S1-119 |
+| `cv2.readOpticalFlow`, `cv2.writeOpticalFlow` | Exposed. Verify signed flow samples and frame association on import and export. | S1-154 |
+| `cv2.KalmanFilter`, `cv2.Tracker`, `cv2.TrackerMIL` | Exposed. The generic interfaces support seeded tracking and prediction. MIL has its own clip fixture. | S1-53–S1-54, S1-156 |
+| `cv2.TrackerDaSiamRPN`, `cv2.TrackerNano`, `cv2.TrackerVit` | Exposed. Qualify the model assets and lost-target behavior under learned tracking. | S2-40 |
+| `cv::estimateRigidTransform` | Deprecated C++ function. Maintain the supported affine estimators in the existing alignment contract. | S1-48 |
+| `cv2.calibrateCamera`, `cv2.calibrateCameraExtended`, `cv2.initCameraMatrix2D` | Exposed. Initial camera matrix and diagnostics belong to pinhole calibration. | S3-02 |
+| `cv2.calibrateCameraRO`, `cv2.calibrateCameraROExtended` | Exposed. Qualify refined target geometry and its residuals. | S3-109 |
+| `cv2.calibrateMultiview`, `cv2.calibrateMultiviewExtended` | Exposed. Shared target geometry and visibility belong to rig calibration. | S3-54 |
+| `cv2.registerCameras`, `cv2.registerCamerasExtended` | Exposed. Verify registration with fixed intrinsics on non-overlapping target observations. | S3-113 |
+| `cv2.stereoCalibrate`, `cv2.stereoCalibrateExtended`, `cv2.fisheye.calibrate`, `cv2.fisheye.stereoCalibrate` | Exposed. Track lens models and per-view stereo residuals in their owning workflows. | S3-04, S3-13–S3-14, S3-45 |
+| `cv::calibrateHandEye`, `cv::calibrateRobotWorldHandEye` | C++ functions without direct bindings. Eye-in-hand has an offline graph solver. Joint robot-world and fixed-camera checks remain open. | S3-31–S3-32 |
+| `cv2.stereoRectify`, `cv2.stereoRectifyUncalibrated`, `cv2.fisheye.stereoRectify` | Exposed. Qualify calibrated, uncalibrated and wide-angle image pairs separately. | S3-13–S3-14, S3-44 |
+| `cv::rectify3Collinear` | C++ function without a direct binding. Qualify a three-camera rig across two baselines. | S3-114 |
+| `cv2.StereoMatcher`, `cv2.StereoBM`, `cv2.StereoSGBM`, `cv2.validateDisparity` | Exposed. Matchers and consistency checks belong to disparity and confidence. | S3-15–S3-16 |
+| `cv2.getValidDisparityROI`, `cv2.filterSpeckles`, `cv2.reprojectImageTo3D` | Exposed. Shared support, speckle removal and metric reprojection each have acceptance checks. | S3-17, S3-46–S3-47 |
+
+Pinned OpenCV 5.0.0 sources include
+[imgcodecs.hpp](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/imgcodecs/include/opencv2/imgcodecs.hpp),
+[photo.hpp](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/photo/include/opencv2/photo.hpp),
+[videoio.hpp](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/videoio/include/opencv2/videoio.hpp),
+[tracking.hpp](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/video/include/opencv2/video/tracking.hpp),
+[calib.hpp](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/calib/include/opencv2/calib.hpp), and
+[stereo.hpp](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/stereo/include/opencv2/stereo.hpp).
+Python names are checked against the [binding inventory](opencv-bindings.tsv).
+
 ### Remaining inspection workflows
 
 | Family | Roadmap disposition | Checklist IDs |
 | --- | --- | --- |
 | `Image I/O and reconstruction details` | Cover multipage buffer ports, HDR motion rejection, ternary morphology, and sparse contour extraction as distinct graph workflows. | S1-149–S1-152 |
 | `Camera calibration and image tracking` | Track release-object and metadata-aware board calibration plus sparse RLOF. | S3-109–S3-110, S4-84 |
-| `Point-cloud metrology and large-scan processing` | Cover matched-landmark transforms, stream/tile processing, recorded scan replay, cross-sections, datum measurements and calibrated range images. | S3-101, S3-103–S3-106, S3-112 |
+| `Point-cloud metrology and large-scan processing` | Cover matched-landmark transforms, stream/tile processing, recorded scan replay, cross-sections, datum measurements and calibrated range images. Qualify cylinder and bore fits with a tested solver. | S3-101, S3-103–S3-106, S3-112, S3-115 |
 | `Mesh quality and processing` | Cover texture projection, topology/measurement checks and bounded simplification. Qualify a tested equivalent where OpenCV supplies no direct mesh-processing primitive. | S3-102, S3-107–S3-108 |
 
 ### Backlog decisions
