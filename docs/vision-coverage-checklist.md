@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 16 | 45 | 158 | 61.4% |
-| 2. ML and DNN | 9 | 9 | 34 | 52 | 17.3% |
-| 3. 3D imagery and point clouds | 33 | 23 | 59 | 115 | 28.7% |
+| 1. Core and baseline 2D | 97 | 16 | 50 | 163 | 59.5% |
+| 2. ML and DNN | 9 | 11 | 34 | 54 | 16.7% |
+| 3. 3D imagery and point clouds | 33 | 23 | 64 | 120 | 27.5% |
 | 4. Selected contrib | 20 | 0 | 64 | 84 | 23.8% |
-| **Overall** | 159 | 48 | 202 | 409 | 38.9% |
+| **Overall** | 159 | 50 | 212 | 421 | 37.8% |
 
 <!-- coverage-summary:end -->
 
@@ -249,6 +249,16 @@ fixture or result needed to close the item.
 | S1-157 | Decode video from a bounded encoded stream | VideoCapture and IStreamReader where supported | Planned | Verify a recorded in-memory stream with known timestamps and frames. Qualify the backend for partial reads, limits and deterministic teardown. |
 | S1-158 | On-demand multipage image access | ImageCollection or indexed page decode | Partial | input.tiff_file replays selected page ranges. Qualify random page access on a large stack with bounded caching, identical decoded samples and stable page provenance. |
 
+### Image smoothing, sequence statistics and code workflows
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S1-159 | Large-radius image smoothing | stackBlur | Planned | Compare against Gaussian smoothing on noisy, high-resolution images. Measure edge retention and runtime across odd kernel sizes and report the supported encodings. |
+| S1-160 | Temporal per-pixel noise and covariance | accumulate, accumulateSquare, accumulateProduct and accumulateWeighted | Planned | Compute masked mean, variance and paired-channel or paired-source covariance from a replay stack. Verify sample counts, overflow resistance, reset and known noise levels. |
+| S1-161 | ArUco-backed QR reading | QRCodeDetectorAruco | Planned | Compare both native QR backends on cluttered, rotated and small labels. Verify payload, rectified patch and corners on the original image, including multiple candidates. |
+| S1-162 | Structured-append QR payloads | QRCodeEncoder.encodeStructuredAppend and a qualified decoder | Planned | Generate and recover a split payload in sequence, even when symbols are presented out of order. Report missing, duplicated and mismatched fragments without treating a partial payload as valid. |
+| S1-163 | Keypoint repeatability and match accuracy | evaluateFeatureDetector, computeRecallPrecisionCurve or validated equivalents | Planned | Evaluate two registered images with known common support. Report repeatability and correspondence counts, then precision and recall versus match threshold with a held-out transform. |
+
 ## Stage 2 — ML and DNN for images and video
 
 [Stage tracker](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) ·
@@ -318,6 +328,13 @@ fixture or result needed to close the item.
 | S2-50 | Image-model anomaly maps | Local embeddings and nearest-reference or model-specific anomaly scores | Planned | Train a known-good image reference set, localize anomalies and verify threshold decisions on independent defect images. |
 | S2-51 | Detect image defects under input shifts | Model evaluation across exposure, blur and camera pose | Planned | Replay controlled image perturbations and report confidence, localization and false rejects against the reference results. |
 | S2-52 | Learned instance tracking masks | Image segmentation plus temporal association | Planned | Track per-instance masks through overlapping or occluded video frames with ticket and ID continuity. |
+
+### Native learned matching and retrieval
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S2-53 | Native ONNX LightGlue execution | LightGlueMatcher.create, setPairInfo and match | Partial | ml.lightglue has a PyTorch path. Qualify the native ONNX path on a pinned image pair with explicit keypoint/image context, scores, rejected matches, and pose parity. |
+| S2-54 | Native OpenCV embedding index | ANNIndex build, knnSearch, save, load and setOnDiskBuild | Partial | ml.annoy_search, ml.annoy_build use a separate Annoy package. Qualify native index persistence and bounded on-disk build, compare rankings by metric against exact search, and verify stable image IDs. |
 
 ## Stage 3 — 3D imagery and point clouds
 
@@ -467,6 +484,16 @@ fixture or result needed to close the item.
 | S3-113 | Register cameras with non-overlapping views | registerCameras and registerCamerasExtended | Planned | Recover the transform from two fixed cameras seeing different known parts of one calibration target. Verify mixed pinhole/fisheye models, per-view residuals and held-out frame closure. |
 | S3-114 | Rectify three collinear cameras | rectify3Collinear or a validated equivalent | Planned | Rectify a measured three-camera rig to common epipolar rows and verify depth across both baselines. The pinned Python wheel lacks this direct binding. |
 | S3-115 | Cylindrical surface and bore measurement from a point cloud | Robust 3D cylinder fit with radial residuals | Planned | Recover axis and diameter on known outer and inner surfaces with partial coverage and outliers. Report usable angular and axial support, units and degenerate fits. Use a qualified solver because OpenCV's native sample-consensus models cover planes and spheres. |
+
+### Projector geometry, camera profiles and fiducials
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S3-116 | Inverse rectification for projector patterns | initInverseRectificationMap and remap | Planned | Warp a known pattern into a calibrated projector grid. Verify forward and inverse correspondence, visible support and that projected features land on the expected target positions. |
+| S3-117 | Inspect a camera projection matrix | decomposeProjectionMatrix and calibrationMatrixValues | Planned | Recover intrinsics, camera center and orientation from a known camera projection matrix. Report field of view, principal point and focal length with explicit pixel or sensor units, and verify reprojection and degenerate input rejection. |
+| S3-118 | Recover planar camera motion from image pairs | decomposeHomographyMat and filterHomographyDecompByVisibleRefpoints | Planned | Use a calibrated image pair and planar matches to return valid motion and plane hypotheses. Reject negative-depth candidates and preserve translation scale ambiguity unless a metric anchor is provided. |
+| S3-119 | Create and qualify custom ArUco dictionaries | aruco.extendDictionary and Dictionary | Planned | Persist a seeded dictionary with declared bit size, ID ordering and Hamming separation. Verify save/load and render/detect round trips and the configured bit error tolerance. |
+| S3-120 | Recover partially visible ArUco boards | aruco.ArucoDetector.refineDetectedMarkers and Board.matchImagePoints | Planned | Recover valid rejected candidates on an occluded GridBoard, preserve per-ID correspondences and compare board pose against known geometry without accepting markers from another board. |
 
 ## Stage 4 — Selected contrib functions for images and video
 

@@ -342,6 +342,98 @@ Pinned OpenCV 5.0.0 sources include
 [stereo.hpp](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/stereo/include/opencv2/stereo.hpp).
 Python names are checked against the [binding inventory](opencv-bindings.tsv).
 
+### Native raster, feature, detection and camera geometry API crosswalk
+
+This audit maps 254 top-level functions, aliases and classes from 14 pinned
+headers. The Python wheel exposes 236 of these names. The other 18 are C++
+entries without direct bindings. Nested parameter types, constructors,
+flags and instance methods follow their owning workflow. A Python binding
+is evidence of exposure. Completion requires the checklist's graph fixture.
+
+#### Raster processing and annotation
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.GaussianBlur`, `cv2.getGaussianKernel` | Gaussian kernel generation is part of the existing smoothing tool contract. | S1-22 |
+| `cv2.filter2D`, `cv2.filter2Dp`, `cv::Filter2DParams`, `cv2.sepFilter2D` | Convolution settings belong to the editable kernel. The parameter class has no direct binding in this wheel. | S1-23 |
+| `cv2.Canny`, `cv2.Laplacian`, `cv2.Scharr`, `cv2.Sobel`, `cv2.spatialGradient`, `cv2.getDerivKernels` | Gradient kernels and filters belong to derivative, edge and focus tools. | S1-24 |
+| `cv2.blur`, `cv2.boxFilter`, `cv2.medianBlur`, `cv2.bilateralFilter` | Box, median and bilateral options have separate image fixtures. | S1-74–S1-76 |
+| `cv2.getGaborKernel` | Generate oriented texture kernels in the existing Gabor response workflow. | S1-77 |
+| `cv2.stackBlur` | Qualify large-radius smoothing and edge retention. | S1-159 |
+| `cv2.integral`, `cv2.integral2`, `cv2.integral3`, `cv2.sqrBoxFilter` | Sum, squared sum and tilted sum support local image statistics. | S1-20 |
+| `cv2.cvtColor`, `cv2.cvtColorTwoPlane`, `cv2.demosaicing` | Route sensor layouts and typed color conversions through the existing contracts. | S1-08, S1-13, S1-127 |
+| `cv2.CLAHE`, `cv2.createCLAHE`, `cv2.equalizeHist`, `cv2.applyColorMap` | Equalization and palettes use typed image inputs. | S1-21 |
+| `cv2.calcHist`, `cv2.calcBackProject`, `cv2.compareHist`, `cv2.EMD`, `cv::wrapperEMD` | Histogram reduction, projection and transport distance. The C++ EMD wrapper stays internal. | S1-19, S1-120 |
+| `cv2.blendLinear` | Use per-pixel weights within the blending contract. | S1-16, S1-132 |
+| `cv2.threshold`, `cv2.thresholdWithMask`, `cv2.adaptiveThreshold` | Test thresholds, selections and boundary behavior in one family. | S1-25 |
+| `cv2.dilate`, `cv2.erode`, `cv2.morphologyEx`, `cv2.getStructuringElement` | Group morphology by operator and kernel. Binary hit-or-miss has a separate fixture. | S1-26, S1-151 |
+| `cv2.floodFill`, `cv2.distanceTransform`, `cv2.distanceTransformWithLabels`, `cv2.grabCut`, `cv2.watershed` | Seeds, segmentation and distances retain image coordinates. | S1-27–S1-28, S1-98, S1-136 |
+| `cv2.connectedComponents`, `cv2.connectedComponentsWithAlgorithm`, `cv2.connectedComponentsWithStats`, `cv2.connectedComponentsWithStatsWithAlgorithm`, `cv2.SimpleBlobDetector` | Algorithm variants follow the label and measurement contract. Check label consistency where order differs. | S1-30, S1-97 |
+| `cv2.findContours`, `cv2.findContoursLinkRuns` | Verify contour hierarchy and compare sparse versus dense extraction. | S1-31, S1-152 |
+| `cv2.pyrUp`, `cv2.pyrDown`, `cv::buildPyramid`, `cv2.pyrMeanShiftFiltering` | Pyramid helpers stay in Gaussian and Laplacian processing. Mean-shift smoothing retains its own contract. | S1-40, S1-66, S1-124 |
+| `cv2.resize`, `cv2.getRectSubPix` | Distinguish resizing from fractional patch sampling and report source coordinates. | S1-36, S1-71 |
+| `cv2.remap`, `cv2.convertMaps`, `cv2.warpPolar` | Use typed maps and report coverage after resampling. | S1-39, S1-93–S1-95 |
+| `cv2.getAffineTransform`, `cv2.getPerspectiveTransform`, `cv2.invertAffineTransform`, `cv2.warpAffine`, `cv2.warpPerspective`, `cv2.getRotationMatrix2D`, `cv::getRotationMatrix2D_` | Inverse and matrix representation choices stay inside the graph warp contract. | S1-38, S1-72, S3-06 |
+| `cv2.arrowedLine`, `cv2.circle`, `cv2.clipLine`, `cv2.drawContours`, `cv2.drawFrameAxes`, `cv2.drawMarker`, `cv2.ellipse`, `cv2.ellipse2Poly`, `cv2.fillConvexPoly`, `cv2.fillPoly`, `cv2.line`, `cv2.polylines`, `cv2.rectangle`, `cv::LineIterator` | Drawing and C++ pixel traversal are internal to selections and result graphics. | S1-62, S1-106, S1-133, S3-10 |
+| `cv2.FontFace`, `cv2.getFontScaleFromHeight`, `cv2.getTextSize`, `cv2.putText` | Text styles and sizing stay in annotation. Qualify native glyph coverage for Unicode. | S1-106, S1-144 |
+| `cv2.BackgroundSubtractor`, `cv2.BackgroundSubtractorKNN`, `cv2.BackgroundSubtractorMOG2`, `cv2.createBackgroundSubtractorKNN`, `cv2.createBackgroundSubtractorMOG2` | Use the existing stateful warmup and reset contract. | S1-52 |
+| `cv2.accumulate`, `cv2.accumulateProduct`, `cv2.accumulateSquare`, `cv2.accumulateWeighted` | Reuse reference learning for means. Per-pixel variance and covariance need their own output and replay fixture. | S1-107, S1-137, S1-160 |
+
+#### Features, matching and 2D geometry
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.cornerHarris`, `cv2.cornerMinEigenVal`, `cv2.cornerSubPix`, `cv2.preCornerDetect`, `cv2.GFTTDetector`, `cv2.goodFeaturesToTrack`, `cv2.goodFeaturesToTrackWithQuality`, `cv2.FastFeatureDetector`, `cv::FAST` | Corner scores and subpixel coordinates are existing output families. Use the detector class for FAST. | S1-42 |
+| `cv2.cornerEigenValsAndVecs` | Report local dominant orientation and anisotropy. | S1-129 |
+| `cv2.LineSegmentDetector`, `cv2.createLineSegmentDetector`, `cv2.HoughCircles`, `cv2.HoughLines`, `cv2.HoughLinesP`, `cv2.HoughLinesPointSet` | Detected geometry uses existing line, segment and circle contracts. | S1-34 |
+| `cv2.GeneralizedHough`, `cv2.GeneralizedHoughBallard`, `cv2.GeneralizedHoughGuil`, `cv2.createGeneralizedHoughBallard`, `cv2.createGeneralizedHoughGuil` | Two variants share image-space pose, votes and result graphics. | S1-47 |
+| `cv2.matchTemplate` | Use the existing multipeak template detection workflow. | S1-45 |
+| `cv2.createHanningWindow`, `cv2.phaseCorrelate`, `cv2.phaseCorrelateIterative` | Use the window internally in spectral alignment. | S1-48, S1-80 |
+| `cv2.Feature2D`, `cv2.ORB`, `cv2.SIFT`, `cv::KeyPointsFilter` | Feature records own keypoint filtering, descriptors and source frame. | S1-42–S1-43, S1-63 |
+| `cv2.MSER`, `cv2.AffineFeature` | Stable regions and affine feature extraction have separate output and repeatability checks. | S1-64, S1-128 |
+| `cv2.DescriptorMatcher`, `cv2.BFMatcher`, `cv2.FlannBasedMatcher`, `cv::SL2`, `cv::Accumulator` | Match modes share the descriptor contract. Distance and accumulation types stay internal. | S1-44 |
+| `cv2.drawKeypoints`, `cv2.drawMatches`, `cv2.drawMatchesKnn` | Use correspondence and keypoint graphics without changing the typed feature results. | S1-44, S1-106 |
+| `cv::evaluateFeatureDetector`, `cv::computeRecallPrecisionCurve`, `cv::getRecall`, `cv::getNearestPoint` | Use a tested equivalent for image-pair benchmarking. These C++ functions lack direct Python bindings. | S1-163 |
+| `cv2.DISK`, `cv2.ALIKED`, `cv2.LightGlueMatcher`, `cv2.ANNIndex` | Existing workflows own learned features and embedding retrieval. Qualify native ONNX LightGlue and the native embedding index separately. | S2-14, S2-16–S2-18, S2-53–S2-54 |
+| `cv2.approxPolyDP`, `cv2.approxPolyN`, `cv2.arcLength`, `cv2.boundingRect`, `cv2.contourArea` | Contour simplification and measurements preserve source indices and hierarchy. | S1-30–S1-31, S1-99 |
+| `cv2.HuMoments`, `cv2.moments`, `cv2.convexHull`, `cv2.convexityDefects`, `cv2.isContourConvex`, `cv2.matchShapes`, `cv2.pointPolygonTest` | Reuse contour and image-weighted measurements. | S1-32, S1-131 |
+| `cv2.boxPoints`, `cv2.fitEllipse`, `cv2.fitEllipseAMS`, `cv2.fitEllipseDirect`, `cv2.fitLine`, `cv2.getClosestEllipsePoints`, `cv2.intersectConvexConvex`, `cv2.minAreaRect`, `cv2.minEnclosingCircle`, `cv2.rotatedRectangleIntersection` | Fitted geometry, residuals, and overlap follow the existing measurements. | S1-33, S3-07 |
+| `cv2.minEnclosingConvexPolygon`, `cv2.minEnclosingTriangle`, `cv2.Subdiv2D` | Distinguish minimum convex enclosures from image-space Delaunay and Voronoi outputs. | S1-65, S1-100 |
+
+#### Codes, camera targets and geometry
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.GraphicalCodeDetector`, `cv2.QRCodeDetector`, `cv2.QRCodeDetectorAruco`, `cv2.QRCodeEncoder`, `cv2.barcode.BarcodeDetector` | Use existing code records for detection and payload. Qualify the ArUco-backed QR detector and ordered structured-append payload separately. | S1-60, S1-112, S1-121–S1-122, S1-161–S1-162 |
+| `cv2.FaceDetectorYN`, `cv2.FaceRecognizerSF` | Face-specific model pipelines are deferred. Generic inference and detection belong to Stage 2. | — |
+| `cv2.aruco.ArucoDetector`, `cv2.aruco.DetectorParameters`, `cv2.aruco.RefineParameters`, `cv2.aruco.drawDetectedMarkers`, `cv2.aruco.getPredefinedDictionary` | Retain single marker results. Known-board recovery owns rejected candidate refinement and board correspondences. | S3-01, S3-120 |
+| `cv2.aruco.Board`, `cv2.aruco.GridBoard`, `cv2.aruco.CharucoBoard`, `cv2.aruco.CharucoDetector`, `cv2.aruco.CharucoParameters`, `cv2.aruco.drawDetectedCornersCharuco`, `cv2.aruco.drawDetectedDiamonds` | Group board generation, capture and pose inputs. Drawing is part of review graphics. | S3-36–S3-38, S3-120 |
+| `cv2.aruco.Dictionary`, `cv2.aruco.extendDictionary`, `cv2.aruco.generateImageMarker` | Fixed target printing and custom dictionary qualification have distinct acceptance checks. | S3-37, S3-119 |
+| `cv2.mcc.CChecker`, `cv2.mcc.CCheckerDetector`, `cv2.mcc.DetectorParametersMCC` | Chart detection keeps sample positions, chart type and review graphics. | S4-34 |
+| `cv2.CirclesGridFinderParameters`, `cv2.findCirclesGrid` | Grid topology and clustering options belong to calibration target detection. | S3-35 |
+| `cv2.checkChessboard`, `cv2.drawChessboardCorners`, `cv2.estimateChessboardSharpness`, `cv2.find4QuadCornerSubpix`, `cv2.findChessboardCorners`, `cv2.findChessboardCornersSB`, `cv2.findChessboardCornersSBWithMeta` | Check capture quality and refine corners. Oversized patterns need metadata-aware qualification. | S3-34, S3-110 |
+| `cv2.getDefaultNewCameraMatrix`, `cv2.getOptimalNewCameraMatrix`, `cv::getUndistortRectangles`, `cv2.initUndistortRectifyMap`, `cv2.undistort`, `cv::undistortImage` | Camera grid, valid crop and output intrinsics belong to rectification. | S1-69, S3-03, S3-40 |
+| `cv2.fisheye.estimateNewCameraMatrixForUndistortRectify`, `cv::initWideAngleProjMap` | Wide-angle projection follows the calibrated lens contract. Qualify an equivalent map for the C++-only initializer when needed. | S3-04–S3-05, S3-55 |
+| `cv2.initInverseRectificationMap` | Projector images need the inverse map with their own directional round-trip fixture. | S3-116 |
+| `cv2.fisheye.distortPoints`, `cv2.fisheye.projectPoints`, `cv2.fisheye.undistortPoints`, `cv2.projectPoints`, `cv2.projectPointsSepJ`, `cv2.undistortImagePoints`, `cv2.undistortPoints` | Lens model, point direction and distortion belong to calibrated projection. Jacobian details stay internal. | S3-09 |
+| `cv2.Rodrigues`, `cv2.fisheye.solvePnP`, `cv2.fisheye.solvePnPRansac`, `cv2.solveP3P`, `cv2.solvePnP`, `cv2.solvePnPGeneric`, `cv2.solvePnPRansac`, `cv2.solvePnPRefineLM`, `cv2.solvePnPRefineVVS` | Solver variants belong to pose estimation and explicit pose hypotheses. | S3-10, S3-42 |
+| `cv2.UsacParams`, `cv2.decomposeEssentialMat`, `cv2.findEssentialMat`, `cv2.findFundamentalMat`, `cv2.recoverPose`, `cv2.computeCorrespondEpilines` | Keep robust solver settings with epipolar fitting and relative camera pose. | S3-11, S3-33 |
+| `cv2.triangulatePoints`, `cv2.convertPointsFromHomogeneous`, `cv2.convertPointsToHomogeneous`, `cv::convertPointsHomogeneous` | Coordinate normalization belongs inside calibrated projection and triangulation. | S3-12, S3-65 |
+| `cv2.correctMatches`, `cv2.sampsonDistance` | Keep correspondence adjustment and error in the epipolar quality contract. | S3-43 |
+| `cv2.estimateAffine2D`, `cv2.estimateAffinePartial2D`, `cv2.estimateTranslation2D`, `cv2.findHomography` | Use typed inliers and geometry for reference alignment and planar mapping. | S1-48, S3-06 |
+| `cv2.estimateAffine3D`, `cv2.estimateTranslation3D`, `cv2.composeRT` | Keep relative pose composition and metric landmark transforms with their owning workflows. | S3-31, S3-50, S3-101 |
+| `cv2.calibrationMatrixValues`, `cv2.decomposeProjectionMatrix`, `cv2.RQDecomp3x3` | Recover an interpretable camera profile. Keep raw factorization internal. | S3-117 |
+| `cv2.decomposeHomographyMat`, `cv2.filterHomographyDecompByVisibleRefpoints` | Recover image-to-image motion hypotheses and reject candidates with invalid visibility. | S3-118 |
+| `cv::LevMarq`, `cv2.matMulDeriv` | Solver and matrix-derivative internals stay behind calibrated image workflows. | — |
+
+Pinned sources include the headers for
+[image processing](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/imgproc/include/opencv2/imgproc.hpp),
+[features](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/features/include/opencv2/features.hpp),
+[2D geometry](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/geometry/include/opencv2/geometry/2d.hpp),
+[3D geometry](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/geometry/include/opencv2/geometry/3d.hpp),
+[object detection](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/objdetect/include/opencv2/objdetect.hpp) and its eight detector and target headers,
+and [background subtraction](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/video/include/opencv2/video/background_segm.hpp).
+
 ### Remaining inspection workflows
 
 | Family | Roadmap disposition | Checklist IDs |
@@ -369,6 +461,13 @@ roadmap capability, give it a stable ID and a measurable result, then add its
 owning family reference before refreshing the coverage table. A new item
 needs a distinct inspection result or qualification check. Treat overloads,
 aliases and native helper methods as part of their owning graph workflow.
+Callable-level audit boundaries are the pinned headers named in each
+crosswalk. The module and subgroup map covers additional families. Entry-point
+reconciliation for DNN, stitching, general core image operations and selected
+contrib headers is still open. Reuse an existing ID for an equivalent graph
+operation and add an ID only when the inspection result or qualification
+check differs.
+
 Use exact `cv2.*` names for exposed Python symbols in crosswalk table keys.
 Use C++ names for source APIs that lack a binding. The
 [roadmap](roadmap.md) gives implementation order. The checklist describes
