@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 20 | 55 | 172 | 56.4% |
+| 1. Core and baseline 2D | 97 | 21 | 55 | 173 | 56.1% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 24 | 69 | 126 | 26.2% |
-| 4. Selected contrib | 20 | 1 | 79 | 100 | 20.0% |
-| **Overall** | 159 | 56 | 245 | 460 | 34.6% |
+| 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
+| **Overall** | 159 | 59 | 245 | 463 | 34.3% |
 
 <!-- coverage-summary:end -->
 
@@ -292,6 +292,12 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S1-171 | Predict oriented image tracks through missed detections | KalmanFilter, an unscented filter or a tested nonlinear predictor | Partial | sequence.track_conveyor predicts position from encoder motion. Predict image-space center, scale and orientation with uncertainty through gaps. Verify angle wraparound, timestamp intervals, reacquisition and explicit expiry on an annotated clip. |
 | S1-172 | Refresh tracked objects with a periodic full-frame detector | DetectionBasedTracker or a graph scheduler with local tracking | Planned | Run full-frame detection at a configured cadence and refine tracks locally between refreshes. Verify recovery from drift, discovery of entering parts, stale-track expiry and the detector call budget on replay. |
+
+### Image profile resampling
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S1-173 | Resample measured image profiles onto a common pitch | signal.resampleSignal with verified antialiasing or a tested equivalent | Partial | cv.path_intensity_profile supplies image-space profiles and sample coordinates. Align two profiles to a common pixel or physical pitch. Verify amplitude, peak position, antialiasing, invalid gaps and source-coordinate provenance for upsampling and decimation. |
 
 ## Stage 2 — ML and DNN for images and video
 
@@ -715,6 +721,13 @@ fixture or result needed to close the item.
 | S4-98 | Preserve local contrast in unevenly lit images | bioinspired.RetinaFastToneMapping or Retina.applyFastToneMapping | Planned | Enhance mixed bright and shadowed regions while preserving fine inspection features. Compare local contrast, clipping and false defect response against the original image. |
 | S4-99 | Register low-texture views from line correspondences | line_descriptor matches and a robust line-based image transform fit | Planned | Recover a source-to-reference transform from annotated lines with partial segments and false matches. Verify transferred geometry on independent marks and reject parallel or otherwise degenerate configurations. |
 | S4-100 | Recover masked image samples with explicit restoration support | ft.FT02D_iteration and its output support mask | Planned | Restore holes on a known image and report which samples each iteration can support. Verify convergence or bounded stop, unchanged measured samples, and unsupported regions when valid neighbors are insufficient. |
+
+### Reference spaces and color profile verification
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S4-101 | Fit camera color correction against measured reference spaces | ccm.ColorCorrectionModel custom Lab or wide-gamut RGB references | Partial | calibration.fit_ccm accepts sRGB and linear sRGB references. Qualify measured Lab and wide-gamut RGB with explicit numeric encoding, illuminant or white point, patch ordering, clipping and held-out correction error. |
+| S4-102 | Verify a color correction profile on independent captures | ColorCorrectionModel.correctImage, detected chart patches and per-patch Delta E | Partial | calibration.detect_color_chart, calibration.fit_ccm and calibration.apply_ccm provide chart samples and correction. Test a saved profile on independently captured patches, compare corrected and uncorrected error, and report per-patch exclusions and pass/fail thresholds tied to the profile revision. |
 
 ## Module scope boundaries
 

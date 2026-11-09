@@ -104,7 +104,8 @@ covers five further contrib families. The
 covers OCR, shape, hashing, foreground, saliency and both super-resolution
 modules. The [image ML, tracking, detection and restoration crosswalk](opencv-scope-map.md#native-image-ml-tracking-detection-and-restoration-crosswalk)
 adds classical image learning, contrib tracking and detectors, and additional
-restoration tools. The scope map records narrower audit boundaries.
+restoration tools. The [color calibration and profile crosswalk](opencv-scope-map.md#native-color-calibration-and-image-profile-resampling-crosswalk)
+covers camera color profiles and image-derived sample grids.
 Use the checklist as the implementation baseline and add scope for independently
 testable inspection workflows.
 

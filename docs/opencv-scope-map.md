@@ -76,7 +76,7 @@ they can count as complete.
 | `saliency` | Static and motion maps and ranked objectness proposals with separate fixtures. | S4-53–S4-54, S4-97 |
 | `sfm` | Image-derived multi-view reconstruction and metric anchors. Qualify the relevant bindings or a tested solver. | S3-33, S3-58, S3-65 |
 | `shape` | Shape context, appearance-assisted ranking, Hausdorff distance and spline registration. | S4-50–S4-52, S4-95 |
-| `signal` | General one-dimensional signal primitives stay internal. Image frequency-domain capabilities use the core image transforms. | — |
+| `signal` | Resample measured image profiles with explicit pitch and verified alias rejection. General signal utilities stay internal. | S1-173 |
 | `structured_light` | Gray code, phase shift and calibrated projector/camera reconstruction. | S3-28–S3-30, S3-67 |
 | `superres` | Classical multi-frame super-resolution. Qualify usable Python access before using the contrib backend. | S4-81 |
 | `surface_matching` | Image-derived surface registration and alignment diagnostics, including ICP and point-pair features. | S3-22, S3-58 |
@@ -101,7 +101,7 @@ callability and a representative fixture for each build-dependent commitment.
 | --- | --- | --- |
 | `aruco` | Marker and board generation/detection, camera pose and target validation. | S3-01, S3-10, S3-36–S3-38 |
 | `barcode` | Native linear barcode reading. | S1-122 |
-| `ccm`, `mcc` | Color chart detection, fitting and application. | S4-11, S4-34–S4-35 |
+| `ccm`, `mcc` | Color chart detection, fitting, correction and independent profile verification. | S4-11, S4-34–S4-35, S4-101–S4-102 |
 | `colored_kinfu`, `dynafu`, `kinfu`, `large_kinfu` | Depth tracking and fusion. Defer separate volume/backend variants until the bounded trajectory workflow has a fixture. | S3-25–S3-27, S3-71 |
 | `cuda`, `ipp`, `ocl`, `parallel`, `videoio_registry` | Backend setup and capability reporting. Individual image workflows retain backend qualification criteria. | — |
 | `detail` | Stitching internals and reusable Laplacian image pyramids. | S1-01, S1-49, S1-104, S1-117, S1-124 |
@@ -736,6 +736,28 @@ Pinned sources are [classical ML](https://github.com/opencv/opencv_contrib/tree/
 [fuzzy transforms](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/fuzzy/include/opencv2), [intensity transforms](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/intensity_transform/include/opencv2),
 and [hierarchical segmentation](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/hfs/include/opencv2).
 
+### Native color calibration and image-profile resampling crosswalk
+
+This audit maps 48 Python names from three pinned headers, including
+color-model methods and the chart interface previously listed by class.
+Image-profile resampling stays tied to an explicit image grid and sample pitch.
+General-purpose signal processing stays outside the graph checklist.
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.ccm.ColorCorrectionModel`, `cv2.ccm.ColorCorrectionModel.compute`, `cv2.ccm.ColorCorrectionModel.setCcmType`, `cv2.ccm.ColorCorrectionModel.setDistance`, `cv2.ccm.ColorCorrectionModel.setLinearization`, `cv2.ccm.ColorCorrectionModel.setLinearizationGamma`, `cv2.ccm.ColorCorrectionModel.setLinearizationDegree`, `cv2.ccm.ColorCorrectionModel.setSaturatedThreshold`, `cv2.ccm.ColorCorrectionModel.setWeightsList`, `cv2.ccm.ColorCorrectionModel.setWeightCoeff`, `cv2.ccm.ColorCorrectionModel.setInitialMethod`, `cv2.ccm.ColorCorrectionModel.setMaxCount`, `cv2.ccm.ColorCorrectionModel.setEpsilon` | Keep matrix form, linearization, fit weighting and convergence controls in model fitting. | S4-11, S4-101 |
+| `cv2.ccm.ColorCorrectionModel.setColorSpace`, `cv2.ccm.ColorCorrectionModel.setRGB`, `cv2.ccm.gammaCorrection` | Separate input channel order, reference encoding and output color space. Gamma is a typed intensity transform. | S1-17, S4-11, S4-35, S4-101 |
+| `cv2.ccm.ColorCorrectionModel.getColorCorrectionMatrix`, `cv2.ccm.ColorCorrectionModel.getLoss`, `cv2.ccm.ColorCorrectionModel.getSrcLinearRGB`, `cv2.ccm.ColorCorrectionModel.getRefLinearRGB`, `cv2.ccm.ColorCorrectionModel.getMask`, `cv2.ccm.ColorCorrectionModel.getWeights` | Expose useful fit evidence and distinguish it from errors measured on independent chart captures. | S4-11, S4-102 |
+| `cv2.ccm.ColorCorrectionModel.correctImage`, `cv2.ccm.ColorCorrectionModel.read`, `cv2.ccm.ColorCorrectionModel.write` | Model persistence and typed correction follow the application contract. Native free read and write helpers stay internal. | S4-35, S4-102 |
+| `cv2.mcc.CChecker`, `cv2.mcc.CChecker.getBox`, `cv2.mcc.CChecker.getCenter`, `cv2.mcc.CChecker.getColorCharts`, `cv2.mcc.CChecker.getChartsRGB`, `cv2.mcc.CChecker.getChartsYCbCr`, `cv2.mcc.CChecker.getCost`, `cv2.mcc.CChecker.getTarget` | Chart geometry and measurements stay with ordered patch records and independent verification. | S4-34, S4-102 |
+| `cv2.mcc.CCheckerDetector`, `cv2.mcc.DetectorParametersMCC`, `cv2.mcc.CCheckerDetector.getBestColorChecker`, `cv2.mcc.CCheckerDetector.getListColorChecker`, `cv2.mcc.CCheckerDetector.getColorChartType`, `cv2.mcc.CCheckerDetector.setColorChartType`, `cv2.mcc.CCheckerDetector.getDetectionParams`, `cv2.mcc.CCheckerDetector.setDetectionParams`, `cv2.mcc.CCheckerDetector.process`, `cv2.mcc.CCheckerDetector.processWithROI`, `cv2.mcc.CCheckerDetector.getUseDnnModel`, `cv2.mcc.CCheckerDetector.setUseDnnModel`, `cv2.mcc.CCheckerDetector.draw` | Native ROI, backend and review choices follow the same chart detection workflow. | S4-34 |
+| `cv2.mcc.CCheckerDetector.getRefColors` | Distinguish built-in references from measured color samples and their declared encoding. | S4-11, S4-101–S4-102 |
+| `cv2.signal.resampleSignal` | The native wrapper accepts a float32 row and integer rates of at least 1000. The pinned source applies its FIR only when input rate is less than twice output rate. Verify alias rejection or qualify another resampler for inspection profiles. | S1-173 |
+
+Pinned sources are [color correction](https://github.com/opencv/opencv/blob/5.0.0/modules/photo/include/opencv2/photo/ccm.hpp),
+[chart detection](https://github.com/opencv/opencv/blob/5.0.0/modules/objdetect/include/opencv2/objdetect/mcc_checker_detector.hpp), and
+[profile resampling](https://github.com/opencv/opencv_contrib/blob/5.0.0/modules/signal/include/opencv2/signal/signal_resample.hpp).
+
 ### Remaining inspection workflows
 
 | Family | Roadmap disposition | Checklist IDs |
@@ -764,11 +786,9 @@ owning family reference before refreshing the coverage table. A new item
 needs a distinct inspection result or qualification check. Treat overloads,
 aliases and native helper methods as part of their owning graph workflow.
 Callable-level audit boundaries are the pinned headers named in each
-crosswalk. The module and subgroup map covers additional families. Entry-point
-reconciliation for other inspection-relevant contrib families remains open.
-Future entry-point audits can cover narrower calibration and signal families,
-including color chart and correction model methods and image-specific uses of
-`signal`. The module map records other backend, platform and domain boundaries.
+crosswalk. Use the module and subgroup map to review additional APIs when
+a new inspection workflow or a supported build exposes a gap. The module map
+records backend, platform and domain boundaries.
 Model layer internals and general-purpose numerics stay outside the graph
 checklist unless a distinct inspection workflow needs them. Reuse an existing
 ID for equivalent operations.
