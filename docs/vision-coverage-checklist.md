@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 17 | 51 | 165 | 58.8% |
+| 1. Core and baseline 2D | 97 | 17 | 52 | 166 | 58.4% |
 | 2. ML and DNN | 9 | 11 | 37 | 57 | 15.8% |
-| 3. 3D imagery and point clouds | 33 | 23 | 64 | 120 | 27.5% |
-| 4. Selected contrib | 20 | 0 | 64 | 84 | 23.8% |
-| **Overall** | 159 | 51 | 216 | 426 | 37.3% |
+| 3. 3D imagery and point clouds | 33 | 24 | 66 | 123 | 26.8% |
+| 4. Selected contrib | 20 | 0 | 72 | 92 | 21.7% |
+| **Overall** | 159 | 52 | 227 | 438 | 36.3% |
 
 <!-- coverage-summary:end -->
 
@@ -266,6 +266,12 @@ fixture or result needed to close the item.
 | S1-164 | Reuse a calibrated mosaic layout | Stitcher.composePanorama and persisted camera or tile transforms | Partial | cv.stitch_image_pair accepts a supplied transform and cv.stitch_scan_sequence emits layout. Reuse a versioned layout on a new set of views without feature refitting. Verify seams, coverage and source-coordinate mapping when a view is absent or its grid changes. |
 | S1-165 | Replay registered views on a common canvas | detail.Timelapser, detail.TimelapserCrop and common valid support | Planned | Render each view as a separate timestamped frame on the same grid. Verify union and intersection crops, invalid borders, and per-frame source-to-canvas maps. |
 
+### Reference frequency response
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S1-166 | Measure image frequency response against a reference | dft and divSpectrums with a supported-band mask | Planned | Estimate relative gain and phase from aligned captures of a known target. Verify on a known blur or transfer function and suppress bins with insufficient reference energy. |
+
 ## Stage 2 — ML and DNN for images and video
 
 [Stage tracker](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) ·
@@ -510,6 +516,14 @@ fixture or result needed to close the item.
 | S3-119 | Create and qualify custom ArUco dictionaries | aruco.extendDictionary and Dictionary | Planned | Persist a seeded dictionary with declared bit size, ID ordering and Hamming separation. Verify save/load and render/detect round trips and the configured bit error tolerance. |
 | S3-120 | Recover partially visible ArUco boards | aruco.ArucoDetector.refineDetectedMarkers and Board.matchImagePoints | Planned | Recover valid rejected candidates on an occluded GridBoard, preserve per-ID correspondences and compare board pose against known geometry without accepting markers from another board. |
 
+### External disparity and deforming surfaces
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S3-121 | Filter independently supplied stereo disparity | ximgproc.createDisparityWLSFilterGeneric with optional paired disparity | Partial | 3d.disparity filters the disparity it computes. Accept an external disparity with explicit fixed-point scale and invalid samples. Verify guided edge preservation, occlusion support and confidence where a right disparity is available. |
+| S3-122 | Diagnose binary stereo correspondence costs | Census variants and Hamming cost or a tested equivalent | Planned | Compare correspondence costs across disparities at known textured, flat and occluded pixels. Report ambiguity and verify the same rectified grid, descriptor window and validity support. The pinned wheel lacks direct Census bindings. |
+| S3-123 | Reconstruct nonrigid surfaces from depth sequences | dynafu.DynaFu or a qualified equivalent | Planned | Recover a known deforming surface from recorded depth, report reconstruction error and tracking loss, and verify reset and cloud provenance. The pinned wheel exposes the class but its constructor rejects this build configuration. |
+
 ## Stage 4 — Selected contrib functions for images and video
 
 [OpenCV extra modules](https://docs.opencv.org/5.0/) ·
@@ -562,14 +576,14 @@ fixture or result needed to close the item.
 | S4-38 | Weighted median filtering | ximgproc.weightedMedianFilter | Planned | Remove impulse outliers with an aligned guide and verify edge localization. |
 | S4-39 | Anisotropic diffusion | ximgproc.anisotropicDiffusion | Planned | Preserve an intensity boundary across configured iterations while reducing seeded noise. |
 | S4-40 | L0 image smoothing | ximgproc.l0Smooth | Planned | Reduce low-amplitude texture while retaining larger boundaries, with stable output depth and range. |
-| S4-41 | Extended gradient operators | ximgproc.GradientDericheX and GradientDericheY | Planned | Verify signed axis response and localization on a step-edge fixture. |
+| S4-41 | Extended gradient operators | ximgproc GradientDeriche and GradientPaillou families | Planned | Verify signed axis response and localization on a step-edge fixture. |
 | S4-42 | Contour ellipse detection | ximgproc.findEllipses | Planned | Detect multiple rotated ellipses in clutter with scores and oriented image geometry. |
 | S4-43 | Fast Hough line transform | ximgproc.FastHoughTransform | Planned | Verify transformed bin geometry and recover lines with known angle and offset. |
 | S4-44 | Structured edge detection | ximgproc.createStructuredEdgeDetection | Planned | Use a revisioned local model and compare detected boundaries with marked reference edges. |
 | S4-45 | EdgeBoxes object proposals | ximgproc.createEdgeBoxes | Planned | Use oriented edge maps to rank region proposals and verify overlap against known objects. |
 | S4-46 | Line feature descriptors and matching | line_descriptor.BinaryDescriptor and BinaryDescriptorMatcher | Planned | Match line features across a known camera motion and retain segment endpoints and native distances. |
 | S4-47 | Grid motion statistics match filtering | xfeatures2d.matchGMS | Planned | Filter outlier image matches before pose fitting and compare against unfiltered geometry. |
-| S4-48 | Additional binary patch descriptors | xfeatures2d.LATCH | Planned | Compare repeatability and descriptor distance against a known transformed image pair. |
+| S4-48 | Additional binary patch descriptors | xfeatures2d LATCH, BEBLID and TEBLID | Planned | Compare repeatability and descriptor distance against a known transformed image pair. |
 | S4-49 | Scale-aware interest points | xfeatures2d.HarrisLaplaceFeatureDetector | Planned | Locate the same corners through a scale change and preserve size and response. |
 | S4-50 | Shape context contour comparison | createShapeContextDistanceExtractor | Planned | Match similar contours despite small deformation and report a distance with known variants. |
 | S4-51 | Hausdorff contour distance | createHausdorffDistanceExtractor | Planned | Verify configured rank, translation sensitivity and comparison against known offsets. |
@@ -626,6 +640,19 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S4-84 | Sparse RLOF correspondence | optflow.calcOpticalFlowSparseRLOF | Planned | Track wired image points with configurable rejection and compare displacement, status and error on known motion. |
+
+### Color templates, texture and spatial verification
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S4-85 | Joint color template correlation | ximgproc.colorMatchTemplate | Planned | Use a color template with equal-luminance distractors. Verify score peaks, source coordinates and typed color handling, and compare localization with the existing template matcher. |
+| S4-86 | Multiscale local-contrast edge maps | ximgproc.BrightEdges or a tested equivalent | Planned | Measure edge localization and continuity on low-contrast parts over an uneven background. Verify range and threshold controls and preserve the selected region. The pinned wheel lacks a direct binding. |
+| S4-87 | Angular projection profiles for inspection | ximgproc.RadonTransform | Planned | Verify angle and distance axes on synthetic stripes and tilted edges, retain projection precision for scoring, and map the strongest directions back to the inspected region. |
+| S4-88 | Smooth texture while retaining structural edges | ximgproc.bilateralTextureFilter | Planned | Use a known textured surface with a measured boundary. Verify texture attenuation, edge displacement, selected-region writes and parameter limits. |
+| S4-89 | Scan-based superpixel segmentation | ximgproc.createScanSegment | Planned | Measure target region count, boundary recall and runtime on a representative image. Verify integer labels, stable image coordinates and label-mask output. |
+| S4-90 | Spatial texture covariance from image patches | ximgproc.covarianceEstimation | Planned | Verify window dimensions, sample support and covariance against a direct patch reference. Compare normal and defective texture while bounding output memory. |
+| S4-91 | Distribution-based image texture signatures | xfeatures2d.PCTSignatures and PCTSignaturesSQFD | Planned | Generate seeded signatures and compare known-good and defective patches. Verify ranking, repeatability and persistence of the sampling and clustering settings. |
+| S4-92 | Spatial verification for visual-word matches | xfeatures2d.matchLOGOS with a pinned visual vocabulary | Planned | Match repeated parts against a trained vocabulary. Verify that spatial support suppresses look-alike outliers, and preserve image positions and correspondence IDs. |
 
 ## Module scope boundaries
 

@@ -95,9 +95,11 @@ adds named entry points for codecs, photo, video I/O, tracking, calibration and
 stereo. The [raster, feature, detection and camera geometry crosswalk](opencv-scope-map.md#native-raster-feature-detection-and-camera-geometry-api-crosswalk)
 maps another 254 native names to graph workflows. The
 [DNN and stitching crosswalk](opencv-scope-map.md#native-dnn-and-stitching-api-crosswalk)
-maps 151 more. The scope map records the remaining audit families. Use the
-checklist as the implementation baseline and add scope for independently
-testable inspection workflows.
+maps 151 more. The [core and contrib crosswalk](opencv-scope-map.md#native-core-and-selected-contrib-api-crosswalk)
+covers image arithmetic, extended filtering and features, flow, image quality,
+stereo, structured light and RGB-D. The scope map records the remaining audit
+families. Use the checklist as the implementation baseline and add scope for
+independently testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |

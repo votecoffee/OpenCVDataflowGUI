@@ -478,6 +478,108 @@ and [stitching detail headers](https://github.com/opencv/opencv/tree/5.0.0/modul
 The audit includes the public detail declarations and groups platform-specific
 variants. Inline implementation files stay under the owning headers.
 
+### Native core and selected contrib API crosswalk
+
+This audit maps 323 named declarations from `core.hpp` and the
+public headers reached directly from eight contrib module headers. It spans
+62 pinned headers. The Python wheel exposes 289 of the mapped names.
+Grouped entries include implementation helpers and unavailable bindings so
+their disposition remains explicit. Build qualification is separate from
+binding presence. For example, the wheel exposes DynaFu but rejects construction.
+
+#### Core image operations
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.absdiff`, `cv2.add`, `cv2.subtract`, `cv2.multiply`, `cv2.divide`, `cv2.scaleAdd`, `cv2.compare`, `cv2.min`, `cv2.max`, `cv2.inRange` | Typed image arithmetic, difference maps and range decisions own these operations. | S1-15, S1-55 |
+| `cv2.addWeighted`, `cv2.bitwise_and`, `cv2.bitwise_not`, `cv2.bitwise_or`, `cv2.bitwise_xor`, `cv2.copyTo` | Masks and blending own the per-pixel composition contract. | S1-16, S1-37, S1-132 |
+| `cv2.convertScaleAbs` | Preserve the distinction between signed conversion and absolute display scaling. | S1-13 |
+| `cv2.split`, `cv2.merge`, `cv2.mixChannels`, `cv2.extractChannel`, `cv2.insertChannel`, `cv2.transform` | Channel ordering, alpha and image-space mixing follow existing contracts. | S1-14, S1-96 |
+| `cv2.LUT`, `cv2.normalize`, `cv2.exp`, `cv2.log`, `cv2.pow`, `cv2.sqrt` | Intensity mapping and output encoding belong to existing image transforms. | S1-17 |
+| `cv2.countNonZero`, `cv2.findNonZero`, `cv2.hasNonZero`, `cv2.checkRange`, `cv2.finiteMask`, `cv2.patchNaNs`, `cv2.norm`, `cv2.mean`, `cv2.meanStdDev`, `cv::minMaxIdx`, `cv2.minMaxLoc`, `cv::sum`, `cv2.sumElems` | Image statistics, support, finite-sample checks and replacement share typed masks. | S1-18, S1-20, S1-143 |
+| `cv2.reduce`, `cv2.reduceArgMax`, `cv2.reduceArgMin` | Use named axes in image profiles and image-derived score decoding. Keep generic array reductions internal. | S1-20, S2-10, S2-12 |
+| `cv2.PSNR` | Pair with the reference-error map and selected support. | S1-55 |
+| `cv2.dft`, `cv2.idft`, `cv2.getOptimalDFTSize` | FFT padding is implementation detail of typed spectral outputs. | S1-41, S1-135 |
+| `cv2.dct`, `cv2.idct` | Preserve coefficient scaling and recover the input image. | S1-79 |
+| `cv2.mulSpectrums` | Spectrum products stay in filtering, restoration and correlation. | S1-58, S1-80, S1-84 |
+| `cv2.divSpectrums` | Verify supported-band gain and phase independently of filter application. | S1-166 |
+| `cv2.cartToPolar`, `cv2.polarToCart`, `cv2.phase`, `cv2.magnitude` | Use explicit vector units and angle conventions for gradients and spectral fields. | S1-78, S1-135 |
+| `cv2.borderInterpolate`, `cv2.copyMakeBorder` | Border indices are internal to typed padding. | S1-70 |
+| `cv2.hconcat`, `cv2.vconcat`, `cv2.repeat` | Use explicit image grids and layout provenance. | S1-37 |
+| `cv2.rotate`, `cv2.flip`, `cv2.transpose` | Track the corresponding coordinate transform. | S1-73 |
+| `cv2.randn`, `cv2.randu`, `cv2.randShuffle`, `cv2.setRNGSeed`, `cv::theRNG`, `cv::RNG`, `cv::RNG_MT19937` | Graph fixtures must preserve per-run determinism independently of native global RNG state. | S1-105 |
+| `cv2.perspectiveTransform` | Point transforms keep their image or workplane frame. | S1-38, S1-101, S3-06 |
+| `cv2.kmeans` | Use image clustering and vocabulary contracts. | S1-29, S2-19, S2-44 |
+| `cv::PCA`, `cv2.PCACompute`, `cv2.PCACompute2`, `cv2.PCABackProject`, `cv2.PCAProject` | Dimension reduction stays with the image descriptor pipeline. | S2-41 |
+| `cv2.Mahalanobis`, `cv2.calcCovarMatrix` | Classical feature scoring needs held-out image fixtures. | S2-43 |
+| `cv::LDA`, `cv2.batchDistance` | Treat basic class projections and descriptor distances as implementation options within image models. | S1-44, S2-20–S2-23 |
+| `cv2.broadcast`, `cv2.flipND`, `cv2.transposeND`, `cv2.Algorithm`, `cv::Formatted`, `cv::Formatter`, `cv2.SVBackSubst`, `cv::SVD`, `cv2.SVDecomp`, `cv2.completeSymm`, `cv2.determinant`, `cv2.eigen`, `cv2.eigenNonSymmetric`, `cv2.gemm`, `cv2.invert`, `cv2.mulTransposed`, `cv2.setIdentity`, `cv2.solve`, `cv2.solveCubic`, `cv2.solvePoly`, `cv2.sort`, `cv2.sortIdx`, `cv::swap`, `cv2.trace` | Keep generic array layout, scalar algebra and solver internals inside the image operations that use them. | — |
+
+#### Contrib filters, texture and feature tools
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.ximgproc.anisotropicDiffusion`, `cv2.ximgproc.niBlackThreshold`, `cv2.ximgproc.thinning` | Preserve threshold formula, skeleton and diffusion-specific image checks. | S4-02, S4-06, S4-39 |
+| `cv::ximgproc::BrightEdges` | Compare local-contrast edges with known reference geometry using a qualified build or fallback. | S4-86 |
+| `cv2.ximgproc.colorMatchTemplate`, `cv2.ximgproc.createQuaternionImage`, `cv2.ximgproc.qconj`, `cv2.ximgproc.qdft`, `cv2.ximgproc.qmultiply`, `cv2.ximgproc.qunitary` | Quaternion helpers stay inside the color-template workflow. | S4-85 |
+| `cv2.ximgproc.GradientDericheX`, `cv2.ximgproc.GradientDericheY`, `cv::ximgproc::GradientPaillouX`, `cv::ximgproc::GradientPaillouY` | Both gradient families use the signed-axis and localization fixture. | S4-41 |
+| `cv2.ximgproc.EdgeDrawing`, `cv2.ximgproc.EdgeDrawing.Params`, `cv2.ximgproc.createEdgeDrawing` | Group parameter records with edge and primitive detection. | S4-79 |
+| `cv2.ximgproc.AdaptiveManifoldFilter`, `cv2.ximgproc.amFilter`, `cv2.ximgproc.createAMFilter` | Qualify edge-preserving manifold smoothing on selected images. | S4-37 |
+| `cv2.ximgproc.DTFilter`, `cv2.ximgproc.dtFilter`, `cv2.ximgproc.createDTFilter` | Compare domain-transform modes on the same image and guide. | S4-27 |
+| `cv2.ximgproc.FastBilateralSolverFilter`, `cv2.ximgproc.createFastBilateralSolverFilter`, `cv2.ximgproc.fastBilateralSolverFilter` | Verify confidence-weighted smoothing and supported input build. | S4-36 |
+| `cv2.ximgproc.FastGlobalSmootherFilter`, `cv2.ximgproc.createFastGlobalSmootherFilter`, `cv2.ximgproc.fastGlobalSmootherFilter` | Separate guide handling and edge retention from alternate implementations. | S4-13 |
+| `cv2.ximgproc.GuidedFilter`, `cv2.ximgproc.createGuidedFilter`, `cv2.ximgproc.guidedFilter` | Qualify filter reuse and the single-call variant together. | S4-01 |
+| `cv2.ximgproc.jointBilateralFilter`, `cv2.ximgproc.rollingGuidanceFilter`, `cv2.ximgproc.l0Smooth`, `cv2.ximgproc.bilateralTextureFilter` | Keep distinct acceptance for guide-dependent, iterative and texture-specific smoothing. | S4-14–S4-15, S4-40, S4-88 |
+| `cv2.ximgproc.EdgeBoxes`, `cv2.ximgproc.createEdgeBoxes`, `cv2.ximgproc.RFFeatureGetter`, `cv2.ximgproc.StructuredEdgeDetection`, `cv2.ximgproc.createRFFeatureGetter`, `cv2.ximgproc.createStructuredEdgeDetection` | Use model edges and geometry for reproducible proposals. | S4-44–S4-45 |
+| `cv2.ximgproc.edgePreservingFilter`, `cv2.ximgproc.weightedMedianFilter` | Qualify separate weight or variance behavior on inspection edges. | S4-38, S4-78 |
+| `cv2.ximgproc.covarianceEstimation` | Qualify spatial patch covariance with bounded memory and a direct reference. | S4-90 |
+| `cv2.ximgproc.FastHoughTransform`, `cv2.ximgproc.HoughPoint2Line`, `cv2.ximgproc.RadonTransform` | Separate line-geometry and angular projection measurements. | S4-43, S4-87 |
+| `cv2.ximgproc.FastLineDetector`, `cv2.ximgproc.createFastLineDetector`, `cv2.ximgproc.findEllipses`, `cv2.ximgproc.RidgeDetectionFilter` | Preserve detector outputs and source geometry. | S4-05, S4-18, S4-42 |
+| `cv2.ximgproc.ContourFitting`, `cv2.ximgproc.contourSampling`, `cv2.ximgproc.createContourFitting`, `cv2.ximgproc.fourierDescriptor`, `cv2.ximgproc.transformFD`, `cv::ximgproc::rl::createRLEImage`, `cv::ximgproc::rl::dilate`, `cv::ximgproc::rl::erode`, `cv::ximgproc::rl::getStructuringElement`, `cv::ximgproc::rl::isRLMorphologyPossible`, `cv::ximgproc::rl::morphologyEx`, `cv::ximgproc::rl::paint`, `cv::ximgproc::rl::threshold` | Use spectral contour and sparse-mask contracts with explicit fixture parity. | S4-82–S4-83 |
+| `cv2.ximgproc.SuperpixelLSC`, `cv2.ximgproc.createSuperpixelLSC`, `cv2.ximgproc.ScanSegment`, `cv2.ximgproc.createScanSegment`, `cv2.ximgproc.SuperpixelSEEDS`, `cv2.ximgproc.createSuperpixelSEEDS`, `cv2.ximgproc.SuperpixelSLIC`, `cv2.ximgproc.createSuperpixelSLIC` | Compare native labels and boundary masks on a common segmentation fixture. | S4-03, S4-28–S4-30, S4-89 |
+| `cv2.ximgproc.segmentation.GraphSegmentation`, `cv2.ximgproc.segmentation.SelectiveSearchSegmentation`, `cv2.ximgproc.segmentation.SelectiveSearchSegmentationStrategy`, `cv2.ximgproc.segmentation.SelectiveSearchSegmentationStrategyColor`, `cv2.ximgproc.segmentation.SelectiveSearchSegmentationStrategyFill`, `cv2.ximgproc.segmentation.SelectiveSearchSegmentationStrategyMultiple`, `cv2.ximgproc.segmentation.SelectiveSearchSegmentationStrategySize`, `cv2.ximgproc.segmentation.SelectiveSearchSegmentationStrategyTexture`, `cv2.ximgproc.segmentation.createGraphSegmentation`, `cv2.ximgproc.segmentation.createSelectiveSearchSegmentation`, `cv2.ximgproc.segmentation.createSelectiveSearchSegmentationStrategyColor`, `cv2.ximgproc.segmentation.createSelectiveSearchSegmentationStrategyFill`, `cv2.ximgproc.segmentation.createSelectiveSearchSegmentationStrategyMultiple`, `cv2.ximgproc.segmentation.createSelectiveSearchSegmentationStrategySize`, `cv2.ximgproc.segmentation.createSelectiveSearchSegmentationStrategyTexture` | Group graph labels and selective-search strategies under their respective outputs. | S4-04, S4-31 |
+| `cv2.ximgproc.PeiLinNormalization`, `cv2.ximgproc.EdgeAwareInterpolator`, `cv2.ximgproc.RICInterpolator`, `cv2.ximgproc.SparseMatchInterpolator`, `cv2.ximgproc.createEdgeAwareInterpolator`, `cv2.ximgproc.createRICInterpolator` | Keep independent color normalization and motion interpolation checks. | S4-59, S4-69, S4-77 |
+| `cv2.xfeatures2d.FREAK`, `cv2.xfeatures2d.BriefDescriptorExtractor`, `cv2.xfeatures2d.DAISY`, `cv2.xfeatures2d.LATCH`, `cv2.xfeatures2d.BEBLID`, `cv2.xfeatures2d.TEBLID`, `cv2.xfeatures2d.BoostDesc`, `cv2.xfeatures2d.LUCID`, `cv2.xfeatures2d.VGG` | Use keypoint-aware descriptor records with matching fixtures for binary and float features. | S4-19–S4-20, S4-48, S4-74–S4-75 |
+| `cv2.xfeatures2d.HarrisLaplaceFeatureDetector`, `cv2.xfeatures2d.MSDDetector`, `cv2.xfeatures2d.StarDetector`, `cv2.xfeatures2d.TBMR`, `cv2.xfeatures2d.AffineFeature2D`, `cv::xfeatures2d::Elliptic_KeyPoint` | Map regional or scale-aware feature variants to an existing detection contract. | S4-49, S4-80, S1-128 |
+| `cv::xfeatures2d::AGAST`, `cv2.xfeatures2d.AgastFeatureDetector`, `cv::xfeatures2d::FASTForPointSet` | Share the feature detection and selected-point workflow. | S1-42 |
+| `cv2.xfeatures2d.AKAZE`, `cv2.xfeatures2d.KAZE`, `cv2.xfeatures2d.BRISK` | These descriptor classes are under xfeatures2d on the pinned wheel. | S1-43 |
+| `cv2.xfeatures2d.PCTSignatures`, `cv2.xfeatures2d.PCTSignaturesSQFD` | Qualify reusable patch signatures and distribution-distance scoring together. | S4-91 |
+| `cv2.xfeatures2d.matchGMS`, `cv2.xfeatures2d.matchLOGOS`, `cv2.xfeatures2d.BOWTrainer`, `cv2.xfeatures2d.BOWKMeansTrainer`, `cv2.xfeatures2d.BOWImgDescriptorExtractor` | Map vocabulary training and distinct geometric verification modes. | S2-44, S4-47, S4-92 |
+| `cv2.xfeatures2d.SURF` | Defer restricted SURF execution until an explicitly qualified build and inspection fixture justify it. | — |
+
+#### Contrib motion, restoration and image quality
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.optflow.DualTVL1OpticalFlow`, `cv2.optflow.calcOpticalFlowSF`, `cv2.optflow.calcOpticalFlowSparseToDense`, `cv2.optflow.createOptFlow_DeepFlow`, `cv2.optflow.createOptFlow_DualTVL1`, `cv2.optflow.createOptFlow_Farneback`, `cv2.optflow.createOptFlow_SimpleFlow`, `cv2.optflow.createOptFlow_SparseToDense` | Group factory and direct-call variants under the corresponding motion workflow. | S1-51, S4-22–S4-23, S4-57–S4-58 |
+| `cv2.optflow.DenseRLOFOpticalFlow`, `cv2.optflow.RLOFOpticalFlowParameter`, `cv2.optflow.SparseRLOFOpticalFlow`, `cv2.optflow.calcOpticalFlowDenseRLOF`, `cv2.optflow.calcOpticalFlowSparseRLOF`, `cv2.optflow.createOptFlow_DenseRLOF`, `cv2.optflow.createOptFlow_SparseRLOF` | Preserve sparse versus dense output contracts and motion-boundary checks. | S4-24, S4-84 |
+| `cv2.optflow.OpticalFlowPCAFlow`, `cv2.optflow.PCAPrior`, `cv2.optflow.createOptFlow_PCAFlow`, `cv2.motempl.calcGlobalOrientation`, `cv2.motempl.calcMotionGradient`, `cv2.motempl.segmentMotion`, `cv2.motempl.updateMotionHistory` | Keep trained prior options internal to PCAFlow and time-surface operations together. | S4-55, S4-58 |
+| `cv2.optflow.GPCDetails`, `cv2.optflow.GPCPatchDescriptor`, `cv2.optflow.GPCPatchSample`, `cv2.optflow.GPCTrainingSamples`, `cv2.optflow.GPCTree`, `cv::read`, `cv::write` | Defer GPC training and persistence helpers until a usable end-to-end matcher and pinned fixture are available. | — |
+| `cv2.xphoto.bm3dDenoising`, `cv2.xphoto.dctDenoising`, `cv2.xphoto.inpaint` | Separate restoration methods with damage, noise and mask fixtures. | S4-16–S4-17, S4-62 |
+| `cv2.xphoto.oilPainting`, `cv2.xphoto.TonemapDurand`, `cv2.xphoto.createTonemapDurand`, `cv2.xphoto.GrayworldWB`, `cv2.xphoto.LearningBasedWB`, `cv2.xphoto.SimpleWB`, `cv2.xphoto.WhiteBalancer`, `cv2.xphoto.applyChannelGains`, `cv2.xphoto.createGrayworldWB`, `cv2.xphoto.createLearningBasedWB`, `cv2.xphoto.createSimpleWB` | Group classes, factories and channel gains with the relevant photo workflow. | S4-12, S4-63–S4-66 |
+| `cv2.quality.QualityBase`, `cv2.quality.QualityMSE`, `cv2.quality.QualityPSNR`, `cv2.quality.QualitySSIM`, `cv2.quality.QualityGMSD`, `cv2.quality.QualityBRISQUE` | Share a quality contract with declared support, maps where available, and model assets for no-reference scoring. | S1-55, S4-07–S4-08, S4-32 |
+
+#### Contrib depth and surface reconstruction
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.ximgproc.DisparityFilter`, `cv2.ximgproc.DisparityWLSFilter`, `cv2.ximgproc.createDisparityWLSFilter`, `cv2.ximgproc.createDisparityWLSFilterGeneric`, `cv2.ximgproc.createRightMatcher` | Split built-in matcher filtering from filtering imported disparity with explicit scale and confidence. | S3-16, S3-121 |
+| `cv2.ximgproc.computeBadPixelPercent`, `cv2.ximgproc.computeMSE`, `cv2.ximgproc.getDisparityVis`, `cv2.ximgproc.readGT` | Ground-truth decoding, fixed-point metrics and review graphics belong to stereo evaluation. | S3-48 |
+| `cv::stereo::StereoBinaryBM`, `cv::stereo::StereoBinarySGBM`, `cv::stereo::censusTransform`, `cv::stereo::modifiedCensusTransform`, `cv::stereo::starCensusTransform`, `cv::stereo::symetricCensusTransform` | Binary matching and its cost diagnostics need qualified C++ access or a tested equivalent. | S3-61, S3-122 |
+| `cv2.stereo.MatchQuasiDense`, `cv2.stereo.PropagationParameters`, `cv2.stereo.QuasiDenseStereo` | Keep propagation, disparity and correspondence fields in the same calibrated pair. | S3-72 |
+| `cv2.structured_light.GrayCodePattern`, `cv::structured_light::GrayCodePattern::Params`, `cv2.structured_light.SinusoidalPattern`, `cv2.structured_light.SinusoidalPattern.Params`, `cv2.structured_light.StructuredLightPattern` | Group pattern and parameter types with decoding, confidence masks and projector correspondence. | S3-28–S3-30, S3-67 |
+| `cv2.colored_kinfu.ColoredKinFu`, `cv2.colored_kinfu.Params`, `cv2.kinfu.KinFu`, `cv2.kinfu.Params`, `cv2.kinfu.VolumeParams`, `cv2.large_kinfu.LargeKinfu`, `cv2.large_kinfu.Params`, `cv2.large_kinfu.VolumeParams` | Rigid tracking, color and volume size follow their respective fusion workflows. | S3-26–S3-27, S3-71, S3-93–S3-95 |
+| `cv2.dynafu.DynaFu` | The class is present but constructor execution is disabled in the pinned wheel. Use a qualified backend or equivalent before claiming support. | S3-123 |
+| `cv2.linemod.ColorGradient`, `cv2.linemod.DepthNormal`, `cv2.linemod.Detector`, `cv2.linemod.Feature`, `cv2.linemod.Match`, `cv2.linemod.Modality`, `cv2.linemod.QuantizedPyramid`, `cv2.linemod.Template`, `cv2.linemod.colormap`, `cv2.linemod.drawFeatures`, `cv2.linemod.getDefaultLINE`, `cv2.linemod.getDefaultLINEMOD` | Modalities, templates, match records and graphics stay with the trained RGB-D pose contract. | S3-69 |
+
+[Core source header](https://github.com/opencv/opencv/blob/5.0.0/modules/core/include/opencv2/core.hpp),
+[extended image processing](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/ximgproc/include/opencv2),
+[extended features](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/xfeatures2d/include/opencv2),
+[photo](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/xphoto/include/opencv2), [flow](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/optflow/include/opencv2),
+[quality](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/quality/include/opencv2), [stereo](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/xstereo/include/opencv2),
+[structured light](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/structured_light/include/opencv2), and
+[RGB-D reconstruction](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/rgbd/include/opencv2).
+
 ### Remaining inspection workflows
 
 | Family | Roadmap disposition | Checklist IDs |
@@ -507,11 +609,13 @@ needs a distinct inspection result or qualification check. Treat overloads,
 aliases and native helper methods as part of their owning graph workflow.
 Callable-level audit boundaries are the pinned headers named in each
 crosswalk. The module and subgroup map covers additional families. Entry-point
-reconciliation for general core image operations and selected contrib headers
-is still open. Model layer internals and general-purpose numerics stay outside
-the graph checklist unless a distinct inspection workflow needs them. Reuse an existing ID for an equivalent graph
-operation and add an ID only when the inspection result or qualification
-check differs.
+reconciliation for other inspection-relevant contrib families remains open.
+The next source families include multi-view reconstruction and calibration
+(`sfm`, `ccalib`), registration and stabilization (`reg`, `videostab`),
+and additional text and recognition (`text`, `shape`, `img_hash`).
+Model layer internals and general-purpose numerics stay outside the graph
+checklist unless a distinct inspection workflow needs them. Reuse an existing
+ID for equivalent operations.
 
 Use exact `cv2.*` names for exposed Python symbols in crosswalk table keys.
 Use C++ names for source APIs that lack a binding. The
