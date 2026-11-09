@@ -8,6 +8,10 @@ lists the tools that can be placed on a graph today. The
 [roadmap](roadmap.md#vision-tool-priorities) ranks work by value to inspection
 jobs and by how naturally inputs and results fit a graph.
 
+The [image and video coverage checklist](vision-coverage-checklist.md) selects
+the stage 1–4 commitments from this backlog. It provides the denominator and
+completed counts for roadmap percentages.
+
 ## Stage 1 — Existing array tools and deferred work
 
 The graph already covers common array arithmetic, range and mask operations,

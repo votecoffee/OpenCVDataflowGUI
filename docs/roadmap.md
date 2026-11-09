@@ -80,6 +80,12 @@ A bore study checks ellipse diameters, axis difference and fit error in millimet
 
 ## Vision tool priorities
 
+The [image and video coverage checklist](vision-coverage-checklist.md) defines
+the implementation scope and completion counts for stages 1–4. It assigns a
+stable ID to each capability and records its APIs, shipped evidence or exit
+check, and status. Tiled mosaics and continuous stabilization are the first
+two open Stage 1 items.
+
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
 | 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Track larger inspection mosaics and long-clip stabilization in the coverage backlog. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
