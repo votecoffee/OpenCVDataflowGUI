@@ -97,9 +97,11 @@ maps another 254 native names to graph workflows. The
 [DNN and stitching crosswalk](opencv-scope-map.md#native-dnn-and-stitching-api-crosswalk)
 maps 151 more. The [core and contrib crosswalk](opencv-scope-map.md#native-core-and-selected-contrib-api-crosswalk)
 covers image arithmetic, extended filtering and features, flow, image quality,
-stereo, structured light and RGB-D. The scope map records the remaining audit
-families. Use the checklist as the implementation baseline and add scope for
-independently testable inspection workflows.
+stereo, structured light and RGB-D. The
+[reconstruction, registration and stabilization crosswalk](opencv-scope-map.md#native-reconstruction-registration-and-stabilization-api-crosswalk)
+covers five further contrib families. The scope map records the remaining audits.
+Use the checklist as the implementation baseline and add scope for independently
+testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |

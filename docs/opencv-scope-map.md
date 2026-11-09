@@ -580,6 +580,48 @@ binding presence. For example, the wheel exposes DynaFu but rejects construction
 [structured light](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/structured_light/include/opencv2), and
 [RGB-D reconstruction](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/rgbd/include/opencv2).
 
+### Native reconstruction, registration and stabilization API crosswalk
+
+This audit maps 115 named declarations from 43 pinned headers across five
+contrib families. The wheel exposes 23 names, concentrated in omnidirectional
+calibration, phase unwrapping and image registration. The SfM, custom-target
+and video stabilization classes require a different backend or a tested equivalent.
+
+#### Calibration, reconstruction and phase
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv::ccalib::CustomPattern`, `cv::randpattern::RandomPatternCornerFinder`, `cv::randpattern::RandomPatternGenerator`, `cv::multicalib::MultiCameraCalibration` | Separate repeatable target preparation and partial-view detection from the rig fit. These source classes lack direct wheel bindings. | S3-70, S3-126 |
+| `cv2.omnidir.calibrate` | Fit a lens model with held-out edge reprojections. | S3-05 |
+| `cv2.omnidir.initUndistortRectifyMap`, `cv2.omnidir.projectPoints`, `cv2.omnidir.undistortImage`, `cv2.omnidir.undistortPoints` | Share the lens projection contract with camera rays, calibrated remap and coverage. | S3-05, S3-09, S3-55 |
+| `cv2.omnidir.stereoCalibrate`, `cv2.omnidir.stereoRectify` | Fit and rectify the wide-angle pair before disparity or depth validation. | S3-14 |
+| `cv2.omnidir.stereoReconstruct` | Qualify wide-angle disparity and metric cloud output together. | S3-124 |
+| `cv2.phase_unwrapping.HistogramPhaseUnwrapping`, `cv2.phase_unwrapping.HistogramPhaseUnwrapping.Params`, `cv2.phase_unwrapping.PhaseUnwrapping` | Keep phase output, shadow support and inverse reliability in a calibrated fringe workflow. | S3-67 |
+| `cv::sfm::applyTransformationToPoints`, `cv::sfm::isotropicPreconditionerFromPoints`, `cv::sfm::normalizeIsotropicPoints`, `cv::sfm::normalizePoints`, `cv::sfm::preconditionerFromPoints`, `cv::sfm::meanAndVarianceAlongRows`, `cv::sfm::skew` | Conditioning and solver numerics stay inside the fitted reconstruction. | S3-33 |
+| `cv::sfm::computeOrientation`, `cv::sfm::essentialFromFundamental`, `cv::sfm::essentialFromRt`, `cv::sfm::fundamentalFromEssential`, `cv::sfm::fundamentalFromProjections`, `cv::sfm::motionFromEssential`, `cv::sfm::motionFromEssentialChooseSolution`, `cv::sfm::normalizeFundamental`, `cv::sfm::normalizedEightPointSolver`, `cv::sfm::projectionsFromFundamental`, `cv::sfm::relativeCameraMotion`, `cv::sfm::fundamentalFromCorrespondences7PointRobust`, `cv::sfm::fundamentalFromCorrespondences8PointRobust` | Group fundamental fitting, outlier rejection and pose candidate selection by calibrated image correspondence. | S3-11, S3-33, S3-43 |
+| `cv::sfm::KRtFromProjection`, `cv::sfm::depth`, `cv::sfm::euclideanToHomogeneous`, `cv::sfm::homogeneousToEuclidean`, `cv::sfm::projectionFromKRt`, `cv::sfm::triangulatePoints` | Apply projection and metric triangulation in the owning graph tools with frame-aware outputs. | S3-09, S3-12, S3-65, S3-117 |
+| `cv::sfm::reconstruct`, `cv::sfm::BaseSFM`, `cv::sfm::SFMLibmvEuclideanReconstruction`, `cv::sfm::libmv_CameraIntrinsicsOptions`, `cv::sfm::libmv_ReconstructionOptions` | Qualify a reconstruction backend with a measured camera sequence. The pinned Python wheel lacks these native SfM bindings. | S3-33, S3-65 |
+| `cv::sfm::importReconstruction` | Bundler is the native documented import format. Verify camera and sparse point conventions together. | S3-125 |
+
+#### Registration and video stabilization
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.reg.Map`, `cv2.reg.MapAffine`, `cv2.reg.MapProjec`, `cv2.reg.MapShift`, `cv2.reg.Mapper`, `cv2.reg.MapperGradAffine`, `cv2.reg.MapperGradEuclid`, `cv2.reg.MapperGradProj`, `cv2.reg.MapperGradShift`, `cv2.reg.MapperGradSimilar`, `cv2.reg.MapTypeCaster`, `cv2.reg.MapperPyramid` | Share map application, inverse and coverage across registration variants. Retain each model's transform constraints. | S4-72 |
+| `cv::videostab::FromFileMotionReader`, `cv::videostab::ImageMotionEstimatorBase`, `cv::videostab::KeypointBasedMotionEstimator`, `cv::videostab::KeypointBasedMotionEstimatorGpu`, `cv::videostab::MotionEstimatorBase`, `cv::videostab::MotionEstimatorL1`, `cv::videostab::MotionEstimatorRansacL2`, `cv::videostab::ToFileMotionWriter`, `cv::videostab::estimateGlobalMotionLeastSquares`, `cv::videostab::estimateGlobalMotionRansac`, `cv::videostab::getMotion` | Robust motion estimation and reusable trajectories have separate fixtures. Track source frame indices and transform direction. | S1-02, S1-50, S1-167 |
+| `cv::videostab::OnePassStabilizer`, `cv::videostab::StabilizerBase`, `cv::videostab::TwoPassStabilizer`, `cv::videostab::GaussianMotionFilter`, `cv::videostab::IMotionStabilizer`, `cv::videostab::LpMotionStabilizer`, `cv::videostab::MotionFilterBase`, `cv::videostab::MotionStabilizationPipeline`, `cv::videostab::ensureInclusionConstraint`, `cv::videostab::estimateOptimalTrimRatio`, `cv::videostab::RansacParams`, `cv::videostab::IOutlierRejector`, `cv::videostab::NullOutlierRejector`, `cv::videostab::TranslationBasedLocalOutlierRejector` | Group path smoothing, correction bounds and outlier rejection in one- and two-pass stabilization. Keep memory, crop and coverage testable. | S1-02, S1-50 |
+| `cv::videostab::DensePyrLkOptFlowEstimatorGpu`, `cv::videostab::IDenseOptFlowEstimator`, `cv::videostab::ISparseOptFlowEstimator`, `cv::videostab::PyrLkOptFlowEstimatorBase`, `cv::videostab::SparsePyrLkOptFlowEstimator`, `cv::videostab::SparsePyrLkOptFlowEstimatorGpu` | Keep native estimator variants behind the existing optical-flow and pyramid workflows. | S1-51, S1-155 |
+| `cv::videostab::ColorAverageInpainter`, `cv::videostab::ColorInpainter`, `cv::videostab::ConsistentMosaicInpainter`, `cv::videostab::InpainterBase`, `cv::videostab::InpaintingPipeline`, `cv::videostab::MotionInpainter`, `cv::videostab::NullInpainter`, `cv::videostab::calcFlowMask`, `cv::videostab::completeFrameAccordingToFlow`, `cv::videostab::FastMarchingMethod` | Keep filled review pixels distinct from measured support. | S1-148 |
+| `cv::videostab::DeblurerBase`, `cv::videostab::NullDeblurer`, `cv::videostab::WeightingDeblurer`, `cv::videostab::calcBlurriness` | Recover detail from aligned neighboring frames with source support and motion checks. | S1-168 |
+| `cv::videostab::MoreAccurateMotionWobbleSuppressor`, `cv::videostab::MoreAccurateMotionWobbleSuppressorBase`, `cv::videostab::MoreAccurateMotionWobbleSuppressorGpu`, `cv::videostab::NullWobbleSuppressor`, `cv::videostab::WobbleSuppressorBase` | Qualify correction of row-dependent motion separately from global path smoothing. | S1-169 |
+| `cv::videostab::IFrameSource`, `cv::videostab::NullFrameSource`, `cv::videostab::VideoFileSource`, `cv::videostab::ILog`, `cv::videostab::LogToStdout`, `cv::videostab::NullLog` | Frame sources and logger utilities stay under application acquisition and diagnostics. | — |
+
+Pinned sources are [camera calibration](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/ccalib/include/opencv2),
+[structure from motion](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/sfm/include/opencv2),
+[phase unwrapping](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/phase_unwrapping/include/opencv2),
+[registration](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/reg/include/opencv2), and
+[video stabilization](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/videostab/include/opencv2).
+
 ### Remaining inspection workflows
 
 | Family | Roadmap disposition | Checklist IDs |
@@ -610,9 +652,9 @@ aliases and native helper methods as part of their owning graph workflow.
 Callable-level audit boundaries are the pinned headers named in each
 crosswalk. The module and subgroup map covers additional families. Entry-point
 reconciliation for other inspection-relevant contrib families remains open.
-The next source families include multi-view reconstruction and calibration
-(`sfm`, `ccalib`), registration and stabilization (`reg`, `videostab`),
-and additional text and recognition (`text`, `shape`, `img_hash`).
+The next source families include text and recognition (`text`, `shape`,
+`img_hash`), foreground and saliency (`bgsegm`, `saliency`), and selected
+restoration and vision model adapters (`superres`, `dnn_superres`, `ml`).
 Model layer internals and general-purpose numerics stay outside the graph
 checklist unless a distinct inspection workflow needs them. Reuse an existing
 ID for equivalent operations.

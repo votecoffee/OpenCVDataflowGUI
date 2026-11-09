@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 17 | 52 | 166 | 58.4% |
+| 1. Core and baseline 2D | 97 | 18 | 54 | 169 | 57.4% |
 | 2. ML and DNN | 9 | 11 | 37 | 57 | 15.8% |
-| 3. 3D imagery and point clouds | 33 | 24 | 66 | 123 | 26.8% |
+| 3. 3D imagery and point clouds | 33 | 24 | 69 | 126 | 26.2% |
 | 4. Selected contrib | 20 | 0 | 72 | 92 | 21.7% |
-| **Overall** | 159 | 52 | 227 | 438 | 36.3% |
+| **Overall** | 159 | 53 | 232 | 444 | 35.8% |
 
 <!-- coverage-summary:end -->
 
@@ -272,6 +272,14 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S1-166 | Measure image frequency response against a reference | dft and divSpectrums with a supported-band mask | Planned | Estimate relative gain and phase from aligned captures of a known target. Verify on a known blur or transfer function and suppress bins with insufficient reference energy. |
 
+### Video trajectories and restoration
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S1-167 | Persist and replay a video motion trajectory | videostab.FromFileMotionReader and ToFileMotionWriter or a typed trajectory record | Partial | sequence.stabilize_camera emits a transform. Save a versioned trajectory with frame timestamps, direction and validity, then apply it to the same clip without refitting. Verify transformed coordinates, mismatched clips and reset. |
+| S1-168 | Restore blurred frames from aligned neighbors | videostab.WeightingDeblurer or a tested equivalent | Planned | Use a recorded or synthetic clip with alternating sharp and motion-blurred frames. Verify sharper detail without introducing duplicate moving parts, preserve original coverage and report which neighbors contributed. |
+| S1-169 | Correct rolling-shutter wobble in video | videostab.MoreAccurateMotionWobbleSuppressor or a tested equivalent | Planned | Reduce line bending on a clip with known row-dependent distortion. Verify near-edge geometry, valid image support and behavior when there is insufficient motion evidence. |
+
 ## Stage 2 — ML and DNN for images and video
 
 [Stage tracker](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) ·
@@ -441,7 +449,7 @@ fixture or result needed to close the item.
 | S3-64 | Recover calibrated object dimensions from a depth silhouette | Depth backprojection and physical contour measurement | Planned | Measure known raised parts and report thickness, width and invalid boundary samples. |
 | S3-65 | Scene-scale recovery from multi-view observations | Multi-view triangulation with known metric anchors | Partial | 3d.essential_pose supplies unit-scale motion. Verify metric recovery and error with held-out 3D targets. |
 | S3-66 | Stereo-to-depth consistency across multiple baselines | Stereo reprojection and cross-view depth checks | Planned | Fuse valid baselines while identifying occlusion or outlier disparity on an independently measured depth fixture. |
-| S3-67 | Phase unwrapping for measured fringe images | phase_unwrapping.HistogramPhaseUnwrapping | Planned | Recover a known wrapped surface phase and report invalid regions and reliable connected support. |
+| S3-67 | Phase unwrapping for measured fringe images | phase_unwrapping.HistogramPhaseUnwrapping and getInverseReliabilityMap | Planned | Recover a known wrapped surface phase. Verify a shadow mask, per-pixel inverse reliability and separately referenced connected regions. |
 | S3-68 | Camera pose tracking against an object silhouette | rapid silhouette trackers and projected object geometry | Planned | Track a known metric object in video with reprojection checks and explicit loss and reset behavior. |
 | S3-69 | Three-dimensional model pose from image and depth templates | linemod image gradients and depth normal templates | Planned | Recover an object pose from matched RGB-D templates and verify confidence and image registration. |
 | S3-70 | Multi-view calibration with coded custom targets | ccalib and observed camera-target correspondences | Planned | Qualify a custom target across cameras with held-out frame closure. Confirm the relevant Python APIs or use a tested solver. |
@@ -523,6 +531,14 @@ fixture or result needed to close the item.
 | S3-121 | Filter independently supplied stereo disparity | ximgproc.createDisparityWLSFilterGeneric with optional paired disparity | Partial | 3d.disparity filters the disparity it computes. Accept an external disparity with explicit fixed-point scale and invalid samples. Verify guided edge preservation, occlusion support and confidence where a right disparity is available. |
 | S3-122 | Diagnose binary stereo correspondence costs | Census variants and Hamming cost or a tested equivalent | Planned | Compare correspondence costs across disparities at known textured, flat and occluded pixels. Report ambiguity and verify the same rectified grid, descriptor window and validity support. The pinned wheel lacks direct Census bindings. |
 | S3-123 | Reconstruct nonrigid surfaces from depth sequences | dynafu.DynaFu or a qualified equivalent | Planned | Recover a known deforming surface from recorded depth, report reconstruction error and tracking loss, and verify reset and cloud provenance. The pinned wheel exposes the class but its constructor rejects this build configuration. |
+
+### Wide-angle and external reconstructions
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S3-124 | Reconstruct metric surfaces from wide-angle stereo | omnidir.stereoReconstruct | Planned | Use a calibrated wide-angle pair with known depth. Verify projection mode, disparity scale and invalid support, and compare colored XYZ output and image provenance against the reference. |
+| S3-125 | Import an external sparse reconstruction | sfm.importReconstruction or a validated Bundler reader | Planned | Load known camera intrinsics, extrinsics and sparse points together. Verify camera-to-world convention, scale status and held-out reprojection, and reject unsupported formats explicitly. |
+| S3-126 | Generate and detect random-pattern calibration targets | randpattern.RandomPatternGenerator and RandomPatternCornerFinder or a tested equivalent | Planned | Render a repeatable target with known physical size, recover labeled correspondences from a cropped or tilted view, and verify their target coordinates and held-out reprojection. |
 
 ## Stage 4 — Selected contrib functions for images and video
 
@@ -617,7 +633,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S4-71 | Hierarchical feature-selection segmentation | hfs.HfsSegment | Planned | Compare boundaries and region IDs against a known segmented image with CPU execution. |
-| S4-72 | Mapper-based multiscale image registration | reg.MapperGradShift, MapperGradAffine, MapperGradProj and MapperPyramid | Planned | Recover translation, affine or projective changes from paired images and validate residual and coverage. |
+| S4-72 | Mapper-based multiscale image registration | reg MapperGrad variants, MapperPyramid and Map | Planned | Recover a declared shift, Euclidean, similarity, affine or projective mapping from paired images. Verify seeded refinement, source-frame maps and inverse round trips on valid coverage. |
 | S4-73 | Low-light enhancement | intensity_transform.BIMEF | Planned | Recover known shadow contrast and quantify noise and clipping against the baseline image. |
 | S4-74 | Boosted binary image descriptors | xfeatures2d.BoostDesc | Planned | Compare matching under illumination or viewpoint changes on a known registered pair. |
 | S4-75 | Contrib surface texture descriptors | xfeatures2d VGG or other supported local descriptors | Planned | Verify texture correspondence on pinned local descriptor assets and a known view pair. |
