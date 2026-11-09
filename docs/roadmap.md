@@ -93,9 +93,11 @@ groups exposed APIs and C++-only routines by their graph contracts. The
 [native imaging, calibration and video API crosswalk](opencv-scope-map.md#native-imaging-calibration-and-video-api-crosswalk)
 adds named entry points for codecs, photo, video I/O, tracking, calibration and
 stereo. The [raster, feature, detection and camera geometry crosswalk](opencv-scope-map.md#native-raster-feature-detection-and-camera-geometry-api-crosswalk)
-maps another 254 native names to graph workflows. The scope map records which
-families still need an entry-point audit. Use the checklist as the implementation
-baseline and add scope for independently testable inspection workflows.
+maps another 254 native names to graph workflows. The
+[DNN and stitching crosswalk](opencv-scope-map.md#native-dnn-and-stitching-api-crosswalk)
+maps 151 more. The scope map records the remaining audit families. Use the
+checklist as the implementation baseline and add scope for independently
+testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |

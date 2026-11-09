@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 16 | 50 | 163 | 59.5% |
-| 2. ML and DNN | 9 | 11 | 34 | 54 | 16.7% |
+| 1. Core and baseline 2D | 97 | 17 | 51 | 165 | 58.8% |
+| 2. ML and DNN | 9 | 11 | 37 | 57 | 15.8% |
 | 3. 3D imagery and point clouds | 33 | 23 | 64 | 120 | 27.5% |
 | 4. Selected contrib | 20 | 0 | 64 | 84 | 23.8% |
-| **Overall** | 159 | 50 | 212 | 421 | 37.8% |
+| **Overall** | 159 | 51 | 216 | 426 | 37.3% |
 
 <!-- coverage-summary:end -->
 
@@ -259,6 +259,13 @@ fixture or result needed to close the item.
 | S1-162 | Structured-append QR payloads | QRCodeEncoder.encodeStructuredAppend and a qualified decoder | Planned | Generate and recover a split payload in sequence, even when symbols are presented out of order. Report missing, duplicated and mismatched fragments without treating a partial payload as valid. |
 | S1-163 | Keypoint repeatability and match accuracy | evaluateFeatureDetector, computeRecallPrecisionCurve or validated equivalents | Planned | Evaluate two registered images with known common support. Report repeatability and correspondence counts, then precision and recall versus match threshold with a held-out transform. |
 
+### Reusable mosaic layouts and registered replay
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S1-164 | Reuse a calibrated mosaic layout | Stitcher.composePanorama and persisted camera or tile transforms | Partial | cv.stitch_image_pair accepts a supplied transform and cv.stitch_scan_sequence emits layout. Reuse a versioned layout on a new set of views without feature refitting. Verify seams, coverage and source-coordinate mapping when a view is absent or its grid changes. |
+| S1-165 | Replay registered views on a common canvas | detail.Timelapser, detail.TimelapserCrop and common valid support | Planned | Render each view as a separate timestamped frame on the same grid. Verify union and intersection crops, invalid borders, and per-frame source-to-canvas maps. |
+
 ## Stage 2 — ML and DNN for images and video
 
 [Stage tracker](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) ·
@@ -335,6 +342,14 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S2-53 | Native ONNX LightGlue execution | LightGlueMatcher.create, setPairInfo and match | Partial | ml.lightglue has a PyTorch path. Qualify the native ONNX path on a pinned image pair with explicit keypoint/image context, scores, rejected matches, and pose parity. |
 | S2-54 | Native OpenCV embedding index | ANNIndex build, knnSearch, save, load and setOnDiskBuild | Partial | ml.annoy_search, ml.annoy_build use a separate Annoy package. Qualify native index persistence and bounded on-disk build, compare rankings by metric against exact search, and verify stable image IDs. |
+
+### DNN performance and detection qualification
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S2-55 | Profile image model layers | dnn.Net.getPerfProfile and getLayerNames | Planned | Qualify per-layer and total inference timings on a pinned model. Record engine and target, distinguish fused layers from unavailable timings, and verify predictable behavior when profiling is disabled. |
+| S2-56 | Score-decay suppression for overlapping detections | dnn.softNMSBoxes | Planned | Verify linear and Gaussian score decay on overlapping parts. Keep class IDs, updated scores and original indices aligned and compare against hard suppression on adjacent detections. |
+| S2-57 | Qualify quantized image model inference | ONNX QuantizeLinear/DequantizeLinear models and DNN engine selection | Planned | Compare a pinned integer-quantized vision model with its floating-point reference. Verify scale and zero-point handling, classification or detection tolerances, and diagnostics for an unsupported operator or execution target. |
 
 ## Stage 3 — 3D imagery and point clouds
 

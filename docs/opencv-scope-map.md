@@ -434,6 +434,50 @@ Pinned sources include the headers for
 [object detection](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/objdetect/include/opencv2/objdetect.hpp) and its eight detector and target headers,
 and [background subtraction](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/video/include/opencv2/video/background_segm.hpp).
 
+### Native DNN and stitching API crosswalk
+
+This audit maps 151 named declarations from the DNN interface header and
+12 stitching headers. The wheel exposes 89 of these names. It also exposes
+instance methods such as DNN per-layer profiling, which follow their owning
+graph item. Engine, importer, warper and accelerator implementation variants
+stay with the corresponding inspection workflow.
+
+#### Model loading, image adapters and inference
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.dnn.Net`, `cv2.dnn.readNetFromONNX`, `cv2.dnn.getAvailableTargets`, `cv::dnn::getAvailableBackends` | Keep engine selection, named inputs and outputs, profiling and quantized model qualification in the model contract. | S2-01–S2-05, S2-55, S2-57 |
+| `cv2.dnn.readNet`, `cv2.dnn.readNetFromModelOptimizer`, `cv2.dnn.readNetFromTFLite`, `cv2.dnn.readNetFromTensorflow`, `cv2.dnn.readTensorFromONNX`, `cv2.dnn.writeTextGraph`, `cv::dnn::modelFormatToString` | Qualify additional import formats only for a pinned inspection model. Reference tensor loading can support reproducible fixtures. Legacy conversion helpers stay internal. | S2-01, S2-03, S2-05 |
+| `cv2.dnn.Image2BlobParams`, `cv2.dnn.blobFromImage`, `cv2.dnn.blobFromImageWithParams`, `cv2.dnn.blobFromImages`, `cv2.dnn.blobFromImagesWithParams`, `cv2.dnn.imagesFromBlob` | Keep typed model preprocessing, per-image batches and image/tensor coordinate maps together. | S2-04–S2-05, S2-24 |
+| `cv2.dnn.Model`, `cv2.dnn.ClassificationModel`, `cv2.dnn.DetectionModel`, `cv2.dnn.KeypointsModel`, `cv2.dnn.SegmentationModel` | Model convenience classes share typed graph decoders, confidence and source-coordinate mapping. | S2-06–S2-12, S2-25–S2-26, S2-45 |
+| `cv2.dnn.NMSBoxes`, `cv2.dnn.NMSBoxesBatched`, `cv2.dnn.NMSBoxesRotated`, `cv2.dnn.softNMSBoxes` | Select suppression by box type and class policy. Score decay has a separate fixture and result. | S2-08–S2-09, S2-27, S2-56 |
+| `cv2.dnn.TextDetectionModel`, `cv2.dnn.TextDetectionModel_DB`, `cv2.dnn.TextDetectionModel_EAST`, `cv2.dnn.TextRecognitionModel`, `cv2.dnn.Tokenizer` | DB and EAST follow the text region contract. Use a tokenizer only where a pinned image-to-text model requires it. | S2-13, S2-31–S2-34 |
+| `cv::dnn::ActivationLayer`, `cv::dnn::Arg`, `cv::dnn::ArgData`, `cv::dnn::Graph`, `cv2.dnn.Layer`, `cv::dnn::LayerParams`, `cv::dnn::argKindToString`, `cv::dnn::enableModelDiagnostics` | Layer, graph, argument and importer internals stay behind model fixtures. Keep diagnostic import details inside the runtime. | — |
+
+#### Registration, mosaics and registered replay
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.Stitcher` | Use configurable scan or panorama workflows. Qualify composition with reusable geometry and preserve camera and tile provenance. | S1-01, S1-49, S1-104, S1-164 |
+| `cv2.detail.AffineBestOf2NearestMatcher`, `cv2.detail.BestOf2NearestMatcher`, `cv2.detail.BestOf2NearestRangeMatcher`, `cv2.detail.FeaturesMatcher`, `cv2.detail.ImageFeatures`, `cv2.detail.LightGlueFeaturesMatcher`, `cv2.detail.MatchesInfo`, `cv2.detail.computeImageFeatures`, `cv2.detail.computeImageFeatures2` | Use native matchers as implementation choices and preserve confidence, inliers and disconnected views. | S1-44, S1-49, S1-104, S1-147, S2-53 |
+| `cv2.detail.calibrateRotatingCamera`, `cv::detail::estimateFocal`, `cv2.detail.focalsFromHomography` | Estimate rotating-camera intrinsics and report residuals on held-out overlaps. | S1-147 |
+| `cv2.detail.AffineBasedEstimator`, `cv2.detail.BundleAdjusterAffine`, `cv2.detail.BundleAdjusterAffinePartial`, `cv2.detail.BundleAdjusterBase`, `cv2.detail.BundleAdjusterRay`, `cv2.detail.BundleAdjusterReproj`, `cv2.detail.Estimator`, `cv2.detail.HomographyBasedEstimator`, `cv2.detail.NoBundleAdjuster`, `cv::detail::autoDetectWaveCorrectKind`, `cv::detail::findMaxSpanningTree`, `cv2.detail.leaveBiggestComponent`, `cv2.detail.matchesGraphAsString`, `cv2.detail.waveCorrect` | Separate affine scan fitting from rotating-camera fits. Keep solver, match-graph and wave correction choices in their registration contract. | S1-49, S1-104, S1-147 |
+| `cv2.detail.CameraParams` | Persist the calibrated camera or view layout with a declared output grid. | S1-147, S1-164 |
+| `cv2.detail.BlocksChannelsCompensator`, `cv2.detail.BlocksCompensator`, `cv2.detail.BlocksGainCompensator`, `cv2.detail.ChannelsCompensator`, `cv2.detail.ExposureCompensator`, `cv2.detail.GainCompensator`, `cv2.detail.NoExposureCompensator` | Gain, per-channel and block compensation share an exposure contract with overlap diagnostics. | S1-116–S1-117 |
+| `cv2.detail.DpSeamFinder`, `cv2.detail.GraphCutSeamFinder`, `cv::detail::GraphCutSeamFinderBase`, `cv::detail::GraphCutSeamFinderGpu`, `cv2.detail.NoSeamFinder`, `cv2.detail.PairwiseSeamFinder`, `cv2.detail.SeamFinder`, `cv2.detail.VoronoiSeamFinder` | Use selectable seam modes and retain coverage. GPU choices are backend qualification. | S1-49, S1-117 |
+| `cv2.detail.Blender`, `cv2.detail.FeatherBlender`, `cv2.detail.MultiBandBlender`, `cv2.detail.createLaplacePyr`, `cv2.detail.createLaplacePyrGpu`, `cv2.detail.createWeightMap`, `cv2.detail.normalizeUsingWeightMap`, `cv2.detail.restoreImageFromLaplacePyr`, `cv2.detail.restoreImageFromLaplacePyrGpu` | Blenders and weight maps share the seam composition contract. Pyramid construction and reconstruction also support image pyramid tools. | S1-117, S1-124 |
+| `cv2.detail.Timelapser`, `cv2.detail.TimelapserCrop` | Keep each registered input as a separate frame with common-grid coverage and time provenance. | S1-165 |
+| `cv::detail::DisjointSets`, `cv::detail::Graph`, `cv::detail::GraphEdge`, `cv2.detail.overlapRoi`, `cv2.detail.resultRoi`, `cv2.detail.resultRoiIntersection`, `cv2.detail.resultTl`, `cv2.detail.selectRandomSubset`, `cv2.detail.stitchingLogLevel` | Canvas bounds, overlap and internal graph utilities are part of layout, stitching and registered replay. | S1-01, S1-49, S1-164–S1-165 |
+| `cv::AffineWarper`, `cv::CompressedRectilinearPortraitWarper`, `cv::CompressedRectilinearWarper`, `cv::CylindricalWarper`, `cv::FisheyeWarper`, `cv::MercatorWarper`, `cv::PaniniPortraitWarper`, `cv::PaniniWarper`, `cv::PlaneWarper`, `cv2.PyRotationWarper`, `cv::SphericalWarper`, `cv::StereographicWarper`, `cv::TransverseMercatorWarper`, `cv2.WarperCreator` | The Python warper dispatches projection choices. C++ factory types follow the same map and coverage contract. | S1-38, S1-104, S1-164 |
+| `cv::detail::CompressedRectilinearPortraitProjector`, `cv::detail::CompressedRectilinearProjector`, `cv::detail::CylindricalPortraitProjector`, `cv::detail::CylindricalProjector`, `cv::detail::FisheyeProjector`, `cv::detail::MercatorProjector`, `cv::detail::PaniniPortraitProjector`, `cv::detail::PaniniProjector`, `cv::detail::PlanePortraitProjector`, `cv::detail::PlaneProjector`, `cv2.detail.ProjectorBase`, `cv::detail::SphericalPortraitProjector`, `cv2.detail.SphericalProjector`, `cv::detail::StereographicProjector`, `cv::detail::TransverseMercatorProjector` | Projection implementations remain internal to calibrated panorama and camera estimation. | S1-104, S1-147 |
+| `cv::detail::AffineWarper`, `cv::detail::CompressedRectilinearPortraitWarper`, `cv::detail::CompressedRectilinearWarper`, `cv::detail::CylindricalPortraitWarper`, `cv::detail::CylindricalWarper`, `cv::detail::CylindricalWarperGpu`, `cv::detail::FisheyeWarper`, `cv::detail::MercatorWarper`, `cv::detail::PaniniPortraitWarper`, `cv::detail::PaniniWarper`, `cv::detail::PlanePortraitWarper`, `cv::detail::PlaneWarper`, `cv::detail::PlaneWarperGpu`, `cv::detail::RotationWarper`, `cv::detail::RotationWarperBase`, `cv::detail::SphericalPortraitWarper`, `cv::detail::SphericalWarper`, `cv::detail::SphericalWarperGpu`, `cv::detail::StereographicWarper`, `cv::detail::TransverseMercatorWarper` | Map warping and platform variants to reusable layouts. Qualify source coordinates and invalid image support. | S1-38, S1-104, S1-164 |
+
+Sources are the pinned [DNN interface](https://github.com/opencv/opencv/blob/5.0.0/modules/dnn/include/opencv2/dnn/dnn.hpp),
+[stitching interface and warper factories](https://github.com/opencv/opencv/tree/5.0.0/modules/stitching/include/opencv2),
+and [stitching detail headers](https://github.com/opencv/opencv/tree/5.0.0/modules/stitching/include/opencv2/stitching/detail).
+The audit includes the public detail declarations and groups platform-specific
+variants. Inline implementation files stay under the owning headers.
+
 ### Remaining inspection workflows
 
 | Family | Roadmap disposition | Checklist IDs |
@@ -463,8 +507,9 @@ needs a distinct inspection result or qualification check. Treat overloads,
 aliases and native helper methods as part of their owning graph workflow.
 Callable-level audit boundaries are the pinned headers named in each
 crosswalk. The module and subgroup map covers additional families. Entry-point
-reconciliation for DNN, stitching, general core image operations and selected
-contrib headers is still open. Reuse an existing ID for an equivalent graph
+reconciliation for general core image operations and selected contrib headers
+is still open. Model layer internals and general-purpose numerics stay outside
+the graph checklist unless a distinct inspection workflow needs them. Reuse an existing ID for an equivalent graph
 operation and add an ID only when the inspection result or qualification
 check differs.
 
