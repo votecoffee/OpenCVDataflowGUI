@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 18 | 54 | 169 | 57.4% |
-| 2. ML and DNN | 9 | 11 | 37 | 57 | 15.8% |
+| 1. Core and baseline 2D | 97 | 19 | 54 | 170 | 57.1% |
+| 2. ML and DNN | 9 | 11 | 38 | 58 | 15.5% |
 | 3. 3D imagery and point clouds | 33 | 24 | 69 | 126 | 26.2% |
-| 4. Selected contrib | 20 | 0 | 72 | 92 | 21.7% |
-| **Overall** | 159 | 53 | 232 | 444 | 35.8% |
+| 4. Selected contrib | 20 | 1 | 76 | 97 | 20.6% |
+| **Overall** | 159 | 55 | 237 | 451 | 35.3% |
 
 <!-- coverage-summary:end -->
 
@@ -280,6 +280,12 @@ fixture or result needed to close the item.
 | S1-168 | Restore blurred frames from aligned neighbors | videostab.WeightingDeblurer or a tested equivalent | Planned | Use a recorded or synthetic clip with alternating sharp and motion-blurred frames. Verify sharper detail without introducing duplicate moving parts, preserve original coverage and report which neighbors contributed. |
 | S1-169 | Correct rolling-shutter wobble in video | videostab.MoreAccurateMotionWobbleSuppressor or a tested equivalent | Planned | Reduce line bending on a clip with known row-dependent distortion. Verify near-edge geometry, valid image support and behavior when there is insufficient motion evidence. |
 
+### Foreground references across restarts
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S1-170 | Restore a validated foreground reference after restart | BackgroundSubtractor.getBackgroundImage and versioned reference images or warmup replay | Partial | sequence.mog2 and sequence.knn_background emit background images. Save a camera-bound reference or verified warmup frames, reload them after a restart, and compare the first eligible foreground result. Reject mismatched calibration, size or encoding and keep known foreground out of relearning. |
+
 ## Stage 2 — ML and DNN for images and video
 
 [Stage tracker](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) ·
@@ -326,7 +332,7 @@ fixture or result needed to close the item.
 | S2-32 | Text detection with a pinned network | DNN text detector and DB-style score-map decoding | Partial | ml.text_regions decodes probability maps. Qualify a pinned detector with oriented labels and split/merged text fixtures. |
 | S2-33 | OCR recognition across an image batch | Rectified crops, batch inference and CTC sequence mapping | Partial | ml.recognize_text handles rectified regions. Verify batched results retain region order and individual confidence. |
 | S2-34 | OCR vocabulary and constrained decoding | CTC prefix search, alphabet and optional lexicon | Planned | Compare blank handling, repeats and industrial text constraints on known logits and image samples. |
-| S2-35 | Learned single-image super-resolution | dnn_superres.DnnSuperResImpl | Planned | Pin a model and compare detail and noise against interpolation on downsampled images. |
+| S2-35 | Learned single-image super-resolution | dnn_superres.DnnSuperResImpl | Planned | Pin a model and compare detail, noise and dimensional error against interpolation on downsampled images. Check for false or erased defects against a native-resolution reference. |
 | S2-36 | Learned image restoration | ONNX denoising or deblurring model and overlap-safe output mapping | Planned | Run a pinned restoration model on degraded/reference pairs and report improvement and introduced artifacts. |
 | S2-37 | Learned monocular depth | ONNX dense depth inference and explicit relative/metric output | Planned | Verify model scale conventions, source alignment, invalid samples and error on known depth imagery. |
 | S2-38 | Learned stereo disparity | Paired-image ONNX inference and disparity scaling | Planned | Verify a known disparity plane and preserve masks, left/right frame and pixel units. |
@@ -364,6 +370,12 @@ fixture or result needed to close the item.
 | S2-55 | Profile image model layers | dnn.Net.getPerfProfile and getLayerNames | Planned | Qualify per-layer and total inference timings on a pinned model. Record engine and target, distinguish fused layers from unavailable timings, and verify predictable behavior when profiling is disabled. |
 | S2-56 | Score-decay suppression for overlapping detections | dnn.softNMSBoxes | Planned | Verify linear and Gaussian score decay on overlapping parts. Keep class IDs, updated scores and original indices aligned and compare against hard suppression on adjacent detections. |
 | S2-57 | Qualify quantized image model inference | ONNX QuantizeLinear/DequantizeLinear models and DNN engine selection | Planned | Compare a pinned integer-quantized vision model with its floating-point reference. Verify scale and zero-point handling, classification or detection tolerances, and diagnostics for an unsupported operator or execution target. |
+
+### Multi-scale image reconstruction
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S2-58 | Produce several super-resolution scales from one inference | dnn_superres.DnnSuperResImpl.upsampleMultioutput or named DNN outputs | Planned | Qualify a pinned model with at least two named scales. Verify Python output delivery or a tested equivalent, output order, source-coordinate transforms, and feature localization against the native-resolution reference. |
 
 ## Stage 3 — 3D imagery and point clouds
 
@@ -556,7 +568,7 @@ fixture or result needed to close the item.
 | S4-07 | Structural similarity | quality.QualitySSIM_compute | Complete | inspect.image_quality. Compare aligned images with a similarity map and selected reductions. |
 | S4-08 | Gradient-based image quality | quality.QualityGMSD_compute | Planned | Compare spatial degradation of aligned images, emit the native map and verify score ordering with blur and noise. |
 | S4-09 | Binary perceptual hashes | img_hash.AverageHash/PHash/BlockMeanHash/MarrHildrethHash | Complete | cv.image_hash, inspect.compare_image_hashes. Exact and near-duplicate comparison with declared hash type. |
-| S4-10 | Color and radial perceptual hashes | img_hash.ColorMomentHash, RadialVarianceHash | Planned | Preserve native descriptor type and compare rotated/resampled and changed fixtures with metric-specific bounds. |
+| S4-10 | Color and radial perceptual hashes | img_hash.ColorMomentHash, RadialVarianceHash | Planned | Preserve native descriptor encoding and verify distance for color moments and similarity for radial variance. Check score direction and thresholds on rotated, resampled and changed fixtures. |
 | S4-11 | Fit a color correction model | ccm.ColorCorrectionModel fit | Complete | calibration.fit_ccm. Fit a correction on declared chart samples and report residuals. |
 | S4-12 | Gray-world white balance | xphoto.createGrayworldWB | Planned | Verify neutral patch recovery and saturation handling. |
 | S4-13 | Fast global edge-preserving smoothing | ximgproc.createFastGlobalSmootherFilter | Planned | Remove small intensity variations while preserving measured edges on a selected image. |
@@ -624,7 +636,7 @@ fixture or result needed to close the item.
 | S4-65 | Percentile white balance | xphoto.createSimpleWB | Planned | Verify independent channel stretch and clipping behavior with known channel extrema. |
 | S4-66 | Learned white balance | xphoto.createLearningBasedWB | Planned | Verify color correction on independent illuminant fixtures and record the model revision. |
 | S4-67 | Native text component detection | text.detectRegions and supported extremal-region grouping | Planned | Extract candidate regions from contrast-varied printed text and verify grouping against marked words. |
-| S4-68 | OCR through the contrib Tesseract adapter | text.OCRTesseract | Planned | Verify backend and language-data availability, recognition, confidence and source boxes on labeled crops. |
+| S4-68 | OCR through the contrib Tesseract adapter | text.OCRTesseract | Planned | Qualify a Tesseract-enabled backend and pinned language data. Verify recognition, confidence and source boxes on labeled crops. The pinned wheel reported Tesseract unavailable and returned empty text on a known label. |
 | S4-69 | Color-independent global image normalization | ximgproc.PeiLinNormalization | Planned | Return the normalization transform and verify alignment of equivalent shape images. |
 | S4-70 | Fuzzy image smoothing and inpainting | ft.filter and ft.inpaint | Planned | Verify local smoothing or fill quality on an image fixture, with bounded controls. |
 
@@ -642,7 +654,7 @@ fixture or result needed to close the item.
 | S4-78 | Variance-adaptive edge-preserving smoothing | ximgproc.edgePreservingFilter | Planned | Reduce noise while preserving the position and strength of a measured image edge. |
 | S4-79 | Edge Drawing segments and primitives | ximgproc.createEdgeDrawing | Planned | Verify ordered edge segments and fitted line or ellipse outputs against known geometry. |
 | S4-80 | Tree-based image regions | xfeatures2d.TBMR | Planned | Verify keypoint location and scale through a known image transform and compare repeatability with MSER. |
-| S4-81 | Classical multi-frame video super-resolution | superres BTV-L1 or equivalent reconstruction | Planned | Verify a usable backend and compare reconstructed moving detail with per-frame interpolation on an aligned sequence. |
+| S4-81 | Classical multi-frame video super-resolution | superres BTV-L1 or equivalent reconstruction | Planned | Qualify a native build or equivalent because the pinned wheel has no direct superres bindings. Verify temporal window, alignment, moving-detail recovery and artifacts against per-frame interpolation. |
 
 ### Contour spectra and sparse-mask operations
 
@@ -669,6 +681,16 @@ fixture or result needed to close the item.
 | S4-90 | Spatial texture covariance from image patches | ximgproc.covarianceEstimation | Planned | Verify window dimensions, sample support and covariance against a direct patch reference. Compare normal and defective texture while bounding output memory. |
 | S4-91 | Distribution-based image texture signatures | xfeatures2d.PCTSignatures and PCTSignaturesSQFD | Planned | Generate seeded signatures and compare known-good and defective patches. Verify ranking, repeatability and persistence of the sampling and clustering settings. |
 | S4-92 | Spatial verification for visual-word matches | xfeatures2d.matchLOGOS with a pinned visual vocabulary | Planned | Match repeated parts against a trained vocabulary. Verify that spatial support suppresses look-alike outliers, and preserve image positions and correspondence IDs. |
+
+### Text, appearance, image retrieval and object proposals
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S4-93 | Detect text by stroke width | text.detectTextSWT | Planned | Detect marked text regions on light and dark backgrounds with controlled stroke widths. Verify component and grouped-box outputs, polarity, selected-region coordinates, and rejection of non-text strokes. |
+| S4-94 | Recognize text with native HMM or beam search | text.OCRHMMDecoder and text.OCRBeamSearchDecoder with compatible classifiers | Planned | Pin classifiers, alphabet and transition data. Verify ambiguous characters and out-of-vocabulary text on labeled crops, and preserve per-read confidence, source boxes and method provenance. |
+| S4-95 | Use image appearance to distinguish similar contours | ShapeContextDistanceExtractor.setImages and appearance weighting | Planned | Rank otherwise similar outlines that have different markings or texture. Verify contour and image coordinate alignment, configured appearance and geometry weights, and ranking on known deformation. |
+| S4-96 | Search a saved image hash catalog | Versioned perceptual hashes and method-specific ranking | Partial | cv.image_hash and inspect.compare_image_hashes compute and compare binary hashes. Build and reload a reference catalog with stable image IDs. Verify near-duplicate ranking, score direction, settings compatibility and rejection thresholds for each supported hash family. |
+| S4-97 | Propose image regions using objectness scores | saliency.ObjectnessBING and pinned training assets | Planned | Return ranked source-grid boxes with their native scores. Verify proposal recall, score order and clipping on cluttered images with known parts, and diagnose missing or incompatible model assets. |
 
 ## Module scope boundaries
 

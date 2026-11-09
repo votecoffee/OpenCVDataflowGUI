@@ -39,7 +39,7 @@ they can count as complete.
 | `stereo` | Calibrated and uncalibrated rectification, disparity, depth and comparison across baselines. Verify three-camera rectification across two baselines. | S3-13–S3-17, S3-44–S3-48, S3-61, S3-63, S3-66, S3-114 |
 | `stitching` | Registered mosaics, loop/overlap checks, panorama projection and seam blending. Internal stages share the same image/frame contracts. | S1-01, S1-49, S1-104, S1-116–S1-117, S1-124, S1-139 |
 | `ts`, `world`, `HAL` | Native test support, monolithic packaging and hardware abstraction. Track qualified backend behavior separately. | — |
-| `video` | Motion estimation, stateful image references, background subtraction, tracking, flow warps and temporal validation. Track flow interchange, pyramid reuse and seeded MIL tracking. | S1-02, S1-50–S1-54, S1-95, S1-107–S1-109, S1-130, S1-141, S2-28, S2-39–S2-40, S2-52, S1-154–S1-156 |
+| `video` | Motion estimation, stateful image references, background subtraction, tracking, flow warps and temporal validation. Track flow interchange, pyramid reuse and seeded MIL tracking. | S1-02, S1-50–S1-54, S1-95, S1-107–S1-109, S1-130, S1-141, S2-28, S2-39–S2-40, S2-52, S1-154–S1-156, S1-170 |
 | `videoio` | Camera frames, video files and network streams, capture properties, playback, seeking and encoder qualification. Device SDKs and hardware sync stay on the acquisition roadmap. Qualify bounded encoded input streams. | S1-09–S1-12, S1-110, S1-115, S1-123, S1-140, S3-62, S1-157 |
 
 ## Contrib modules
@@ -47,7 +47,7 @@ they can count as complete.
 | Module | Graph coverage and scope decisions | Checklist IDs |
 | --- | --- | --- |
 | `alphamat` | Trimap matting with a supported Python build. | S4-60 |
-| `bgsegm` | Adaptive background models and foreground sequence fixtures. | S4-21, S4-33, S4-56, S4-76 |
+| `bgsegm` | Adaptive background models, replay fixtures and restart qualification. | S4-21, S4-33, S4-56, S4-76, S1-170 |
 | `bioinspired` | Retina image and motion processing. Specialized biological modeling stays outside inspection scope. | S4-61 |
 | `cannops`, `fastcv` | Vendor acceleration backends. Qualify the existing image workflow on the intended backend. | — |
 | `ccalib` | Custom calibration targets and omnidirectional rigs. Check Python exposure on the intended build. | S3-05, S3-14, S3-54–S3-55, S3-70 |
@@ -56,13 +56,13 @@ they can count as complete.
 | `cvv`, `ovis`, `plot`, `viz` | Debugging windows, graphing and native viewer APIs. The editor owns visual review and the reconstruction checklist covers camera-derived preview output. | — |
 | `datasets`, `hdf` | Dataset loaders and general-purpose array storage. Treat fixtures and training asset formats as part of their consuming workflow. | — |
 | `dnn_objdetect` | Object detection lives in the model-adapter contract. Defer standalone wrappers for retired, model-specific pipelines with no pinned fixture. | S2-08–S2-09, S2-25–S2-27 |
-| `dnn_superres` | Learned single-image upscaling with a pinned model and measured reference. | S2-35 |
+| `dnn_superres` | Learned single-image upscaling with pinned models and single-scale or multi-scale output. | S2-35, S2-58 |
 | `dnns_easily_fooled`, `dpm`, `face` | Defer specialized adversarial examples, legacy part-based detectors and face recognition. These need separate applications, model assets and acceptance data. | — |
 | `freetype` | Unicode annotation on source images. The Qt renderer or another supported backend can supply glyphs on builds without native FreeType. | S1-144 |
 | `fuzzy` | Fuzzy image smoothing and masked fill under the ft namespace. | S4-70 |
 | `gapi` | Legacy processing remains available where supported. Future compiled graph execution belongs to the backend roadmap. | — |
 | `hfs` | Hierarchical image segmentation and region output. | S4-71 |
-| `img_hash` | Perceptual hashes with explicit descriptor and distance contracts. | S4-09–S4-10 |
+| `img_hash` | Perceptual hashes, score semantics and persisted image catalogs. | S4-09–S4-10, S4-96 |
 | `intensity_transform` | Low-light enhancement. Shared gamma, log and linear intensity primitives belong to the baseline transform. | S1-17, S4-73 |
 | `julia`, `matlab` | Language binding and platform packaging work. | — |
 | `line_descriptor` | Line descriptors and matching with source-image endpoints. | S4-46 |
@@ -73,14 +73,14 @@ they can count as complete.
 | `rapid` | Metric object pose tracking against image silhouettes. | S3-68 |
 | `reg` | Image pair registration with configurable mapper and residual checks. | S4-72 |
 | `rgbd` | Typed depth and color, registration, pose tracking and depth fusion. Camera-frame acceptance is required before claiming a model or backend. | S3-18–S3-20, S3-23–S3-26, S3-49, S3-52–S3-53, S3-56–S3-57, S3-59, S3-62, S3-64, S3-66, S3-71 |
-| `saliency` | Static and motion saliency maps with separate fixtures. | S4-53–S4-54 |
+| `saliency` | Static and motion maps and ranked objectness proposals with separate fixtures. | S4-53–S4-54, S4-97 |
 | `sfm` | Image-derived multi-view reconstruction and metric anchors. Qualify the relevant bindings or a tested solver. | S3-33, S3-58, S3-65 |
-| `shape` | Shape context, Hausdorff distance and spline registration. | S4-50–S4-52 |
+| `shape` | Shape context, appearance-assisted ranking, Hausdorff distance and spline registration. | S4-50–S4-52, S4-95 |
 | `signal` | General one-dimensional signal primitives stay internal. Image frequency-domain capabilities use the core image transforms. | — |
 | `structured_light` | Gray code, phase shift and calibrated projector/camera reconstruction. | S3-28–S3-30, S3-67 |
 | `superres` | Classical multi-frame super-resolution. Qualify usable Python access before using the contrib backend. | S4-81 |
 | `surface_matching` | Image-derived surface registration and alignment diagnostics, including ICP and point-pair features. | S3-22, S3-58 |
-| `text` | Native text components and OCR adapters. Learned text models live in Stage 2. | S2-13, S2-31–S2-34, S4-67–S4-68 |
+| `text` | Native text regions and OCR adapters. Learned text models live in Stage 2. | S2-13, S2-31–S2-34, S4-67–S4-68, S4-93–S4-94 |
 | `tracking` | Seeded and learned image tracking. Legacy trackers without a distinct target workflow are deferred. | S1-53–S1-54, S2-28, S2-40, S2-52 |
 | `videostab` | Causal and look-ahead motion correction. Use the graph's bounded replay contracts and verify them across long clips. | S1-02, S1-50, S1-95 |
 | `wechat_qrcode` | Small and low-contrast QR decoding with verified local assets. | S4-25 |
@@ -622,6 +622,63 @@ Pinned sources are [camera calibration](https://github.com/opencv/opencv_contrib
 [registration](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/reg/include/opencv2), and
 [video stabilization](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/videostab/include/opencv2).
 
+### Native OCR, shape, hashing, foreground, saliency and super-resolution crosswalk
+
+This audit maps 99 named declarations from 26 pinned public headers.
+The installed Python wheel exposes 77. Constructors, settings and instance
+methods follow their owning workflow. Binding presence is separate from
+a working backend and reproducible graph result.
+
+#### Scene text
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.text.ERFilter`, `cv2.text.ERFilter.Callback`, `cv::text::ERStat`, `cv::text::MSERsToERStats`, `cv2.text.computeNMChannels`, `cv2.text.createERFilterNM1`, `cv2.text.createERFilterNM2`, `cv2.text.detectRegions`, `cv2.text.erGrouping`, `cv2.text.loadClassifierNM1`, `cv2.text.loadClassifierNM2` | Keep extremal-region extraction, classifier loading and grouping in the same text-region contract. | S4-67 |
+| `cv2.text.detectTextSWT` | Qualify stroke-width detection and its grouped boxes without trained detector assets. | S4-93 |
+| `cv2.text.TextDetector`, `cv2.text.TextDetectorCNN` | Use an image-to-text-region model contract and a pinned detection fixture. | S2-32 |
+| `cv2.text.BaseOCR`, `cv2.text.OCRTesseract` | Validate the linked backend and language data. The audited wheel reports Tesseract unavailable and returns empty text on a known label. | S4-68 |
+| `cv2.text.OCRHMMDecoder`, `cv2.text.OCRHMMDecoder.ClassifierCallback`, `cv2.text.OCRBeamSearchDecoder`, `cv2.text.OCRBeamSearchDecoder.ClassifierCallback`, `cv2.text.loadOCRHMMClassifier`, `cv2.text.loadOCRHMMClassifierNM`, `cv2.text.loadOCRHMMClassifierCNN`, `cv2.text.loadOCRBeamSearchClassifierCNN`, `cv2.text.createOCRHMMTransitionsTable` | Group native decoder helpers with their classifiers and calibrated output records. | S4-94 |
+| `cv::text::OCRHolisticWordRecognizer` | Defer this C++ recognizer pending a usable model and a distinct inspection requirement. | — |
+
+#### Contours and image hashing
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.ShapeDistanceExtractor`, `cv2.ShapeContextDistanceExtractor`, `cv2.createShapeContextDistanceExtractor` | Keep geometry-only scoring separate from appearance-assisted ranking with paired source images. | S4-50, S4-95 |
+| `cv2.HausdorffDistanceExtractor`, `cv2.createHausdorffDistanceExtractor` | Check the rank and metric settings on controlled contours. | S4-51 |
+| `cv2.ChiHistogramCostExtractor`, `cv2.EMDHistogramCostExtractor`, `cv2.EMDL1HistogramCostExtractor`, `cv2.HistogramCostExtractor`, `cv2.NormHistogramCostExtractor`, `cv2.createChiHistogramCostExtractor`, `cv2.createEMDHistogramCostExtractor`, `cv2.createEMDL1HistogramCostExtractor`, `cv2.createNormHistogramCostExtractor`, `cv::EMDL1` | Use histogram costs inside shape scoring and distribution comparison rather than exposing matrix utilities. | S1-120, S4-50 |
+| `cv2.AffineTransformer`, `cv2.ShapeTransformer`, `cv2.ThinPlateSplineShapeTransformer`, `cv2.createAffineTransformer`, `cv2.createThinPlateSplineShapeTransformer` | Affine choices belong to reference alignment and shape scoring. Thin-plate spline warping owns the nonrigid fixture. | S1-48, S4-50, S4-52, S4-95 |
+| `cv2.img_hash.ImgHashBase`, `cv2.img_hash.AverageHash`, `cv2.img_hash.averageHash`, `cv2.img_hash.BlockMeanHash`, `cv2.img_hash.blockMeanHash`, `cv2.img_hash.MarrHildrethHash`, `cv2.img_hash.marrHildrethHash`, `cv2.img_hash.PHash`, `cv2.img_hash.pHash` | Pairwise binary hash comparison is shipped. Catalog persistence and ranked retrieval need their own checks. | S4-09, S4-96 |
+| `cv2.img_hash.ColorMomentHash`, `cv2.img_hash.colorMomentHash`, `cv2.img_hash.RadialVarianceHash`, `cv2.img_hash.radialVarianceHash` | Preserve the native descriptor encoding and comparison semantics through catalog storage and retrieval. | S4-10, S4-96 |
+
+#### Foreground and saliency
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.bgsegm.BackgroundSubtractorGSOC`, `cv2.bgsegm.createBackgroundSubtractorGSOC` | Group model creation with warmup and foreground outputs. | S4-21 |
+| `cv2.bgsegm.BackgroundSubtractorLSBP`, `cv2.bgsegm.BackgroundSubtractorLSBPDesc`, `cv2.bgsegm.createBackgroundSubtractorLSBP` | Keep local descriptors internal to the LSBP foreground path. | S4-33 |
+| `cv2.bgsegm.BackgroundSubtractorCNT`, `cv2.bgsegm.BackgroundSubtractorGMG`, `cv2.bgsegm.BackgroundSubtractorMOG`, `cv2.bgsegm.createBackgroundSubtractorCNT`, `cv2.bgsegm.createBackgroundSubtractorGMG`, `cv2.bgsegm.createBackgroundSubtractorMOG` | Qualify alternative adaptive models on shared replay. Treat warm-start images and replay as graph data. | S1-170, S4-56 |
+| `cv2.bgsegm.SyntheticSequenceGenerator`, `cv2.bgsegm.createSyntheticSequenceGenerator` | Use seeded clips with reference masks for replay fixtures. | S4-76 |
+| `cv2.saliency.Saliency`, `cv2.saliency.StaticSaliency`, `cv2.saliency.StaticSaliencyFineGrained`, `cv2.saliency.StaticSaliencySpectralResidual` | Use typed saliency maps and a repeatable mask conversion. | S4-53 |
+| `cv2.saliency.MotionSaliency`, `cv2.saliency.MotionSaliencyBinWangApr2014` | Verify image size, warmup and reset on timestamped frames. | S4-54 |
+| `cv2.saliency.Objectness`, `cv2.saliency.ObjectnessBING` | Qualify ranked proposals and their training assets separately from saliency maps. | S4-97 |
+
+#### Super-resolution
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.dnn_superres.DnnSuperResImpl` | Use model-backed single-scale and multi-scale contracts. Multi-output symbol presence leaves Python result delivery and model execution to qualification. | S2-35, S2-58 |
+| `cv::superres::FrameSource`, `cv::superres::SuperResolution`, `cv::superres::createFrameSource_Camera`, `cv::superres::createFrameSource_Empty`, `cv::superres::createFrameSource_Video`, `cv::superres::createFrameSource_Video_CUDA`, `cv::superres::createSuperResolution_BTVL1`, `cv::superres::createSuperResolution_BTVL1_CUDA` | Frame sources and accelerator paths stay within sequence reconstruction. The pinned wheel exposes no direct Python bindings for these entry points. | S4-81 |
+| `cv::superres::BroxOpticalFlow`, `cv::superres::DenseOpticalFlowExt`, `cv::superres::DualTVL1OpticalFlow`, `cv::superres::FarnebackOpticalFlow`, `cv::superres::createOptFlow_Brox_CUDA`, `cv::superres::createOptFlow_DualTVL1`, `cv::superres::createOptFlow_DualTVL1_CUDA`, `cv::superres::createOptFlow_Farneback`, `cv::superres::createOptFlow_Farneback_CUDA`, `cv::superres::createOptFlow_PyrLK_CUDA` | Keep native motion estimation choices behind aligned-frame reconstruction and qualified backend variants. | S1-51, S4-81 |
+
+Pinned sources are [scene text](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/text/include/opencv2),
+[shape matching](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/shape/include/opencv2),
+[image hashing](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/img_hash/include/opencv2),
+[background segmentation](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/bgsegm/include/opencv2),
+[saliency](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/saliency/include/opencv2), and
+[classical](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/superres/include/opencv2) and
+[learned](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/dnn_superres/include/opencv2) super-resolution.
+
 ### Remaining inspection workflows
 
 | Family | Roadmap disposition | Checklist IDs |
@@ -652,9 +709,8 @@ aliases and native helper methods as part of their owning graph workflow.
 Callable-level audit boundaries are the pinned headers named in each
 crosswalk. The module and subgroup map covers additional families. Entry-point
 reconciliation for other inspection-relevant contrib families remains open.
-The next source families include text and recognition (`text`, `shape`,
-`img_hash`), foreground and saliency (`bgsegm`, `saliency`), and selected
-restoration and vision model adapters (`superres`, `dnn_superres`, `ml`).
+Remaining audits include image-derived learning (`ml`) and selected contrib
+restoration, tracking and detection modules beyond these crosswalks.
 Model layer internals and general-purpose numerics stay outside the graph
 checklist unless a distinct inspection workflow needs them. Reuse an existing
 ID for equivalent operations.

@@ -99,7 +99,10 @@ maps 151 more. The [core and contrib crosswalk](opencv-scope-map.md#native-core-
 covers image arithmetic, extended filtering and features, flow, image quality,
 stereo, structured light and RGB-D. The
 [reconstruction, registration and stabilization crosswalk](opencv-scope-map.md#native-reconstruction-registration-and-stabilization-api-crosswalk)
-covers five further contrib families. The scope map records the remaining audits.
+covers five further contrib families. The
+[recognition and restoration crosswalk](opencv-scope-map.md#native-ocr-shape-hashing-foreground-saliency-and-super-resolution-crosswalk)
+covers OCR, shape, hashing, foreground, saliency and both super-resolution
+modules. The scope map records remaining audits.
 Use the checklist as the implementation baseline and add scope for independently
 testable inspection workflows.
 
