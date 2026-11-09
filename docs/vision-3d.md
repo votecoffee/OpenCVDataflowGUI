@@ -6,6 +6,9 @@ or **RGB-D Processing (rgbd)**. Point-cloud file blocks are in the **Point cloud
 subgroups under **Custom > Input** and **Custom > Output**. The tested OpenCV
 5.0.0 contrib build provides the dependencies for these tools.
 
+See the [point-cloud API audit](opencv-scope-map.md#point-cloud-and-mesh-api-families)
+for planned tools for imported inspection scans, depth-derived clouds and meshes.
+
 ## Try the included jobs
 
 Open these projects with **File → Open…**.

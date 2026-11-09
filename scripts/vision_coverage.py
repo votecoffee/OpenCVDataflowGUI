@@ -1,4 +1,4 @@
-"""Calculate completion for the selected image and video roadmap capabilities."""
+"""Calculate completion for the image, video and point-cloud roadmap capabilities."""
 
 import argparse
 import re
@@ -10,7 +10,7 @@ SCOPE_MAP = CHECKLIST.with_name("opencv-scope-map.md")
 STAGES = {
     "1": "Core and baseline 2D",
     "2": "ML and DNN",
-    "3": "3D from camera imagery",
+    "3": "3D imagery and point clouds",
     "4": "Selected contrib",
 }
 STATES = ("Complete", "Partial", "Planned")

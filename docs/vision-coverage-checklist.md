@@ -1,4 +1,4 @@
-# Image and video coverage checklist
+# Image, video and point-cloud coverage checklist
 
 This is the implementation scope for stages 1–4 of the [roadmap](roadmap.md).
 The [coverage backlog](opencv-coverage.md) keeps broader candidates and background.
@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 14 | 33 | 144 | 67.4% |
+| 1. Core and baseline 2D | 97 | 14 | 37 | 148 | 65.5% |
 | 2. ML and DNN | 9 | 9 | 34 | 52 | 17.3% |
-| 3. 3D from camera imagery | 33 | 13 | 26 | 72 | 45.8% |
-| 4. Selected contrib | 20 | 0 | 61 | 81 | 24.7% |
-| **Overall** | 159 | 36 | 154 | 349 | 45.6% |
+| 3. 3D imagery and point clouds | 33 | 21 | 45 | 99 | 33.3% |
+| 4. Selected contrib | 20 | 0 | 63 | 83 | 24.1% |
+| **Overall** | 159 | 44 | 179 | 382 | 41.6% |
 
 <!-- coverage-summary:end -->
 
@@ -36,12 +36,12 @@ native calls or graph blocks implement it.
   document the added, removed, or split IDs and the corresponding denominator
   change in the commit.
 - Scope includes images, video, image-derived descriptors, camera geometry, and
-  depth or surfaces reconstructed from camera imagery. General matrix
+  depth, reconstructed surfaces, and imported inspection point clouds. General matrix
   operations, generic table ML, GUI/runtime infrastructure, PLC and robot
   transport, hardware qualification, and application-specific job packages
   are outside this denominator.
 - Assign overlaps to one stage. Stage 2 owns learned vision and image-feature
-  models, stage 3 owns camera geometry and depth, and stage 4 owns the remaining
+  models, stage 3 owns camera geometry, depth and point clouds, and stage 4 owns the remaining
   selected extra modules. For build-dependent rows, confirm the target Python
   binding and verify the supported fallback or backend before marking complete.
 - The [raw Python binding inventory](opencv-bindings.tsv) helps discover APIs
@@ -220,6 +220,15 @@ fixture or result needed to close the item.
 | S1-143 | Image contrast and visibility between two regions | Selected image statistics and contrast-to-noise ratio | Planned | Report signal/background contrast, noise and invalid selections on a controlled inspection target. |
 | S1-144 | Unicode image annotation | FreeType or Qt glyph rasterization and frame-aware graphics | Partial | cv.annotation_layer draws existing image labels. Verify multilingual OCR or inspection text renders on the annotated output image with preserved coordinates. |
 
+### Optical corrections and panorama refinement
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S1-145 | Hard-shadow detection and compensation | Illumination models, color ratios, masks and guided boundary handling | Planned | Replay the same part with a cast-shadow edge. Report the shadow mask and verify defect contrast and boundary preservation on both views. |
+| S1-146 | Correct lateral chromatic aberration | correctChromaticAberration, loadChromaticAberrationParams | Planned | Correct known color fringes with declared lens settings and measure channel alignment and invalid border coverage. |
+| S1-147 | Estimate and refine camera parameters for panoramas | detail rotation estimators, bundle adjustment and wave correction | Planned | Fit a rotating-camera image set with known focal length and yaw. Verify overlap consistency, residuals, and bad-view rejection. |
+| S1-148 | Fill stabilization borders for review | Video stabilization inpainting or neighboring-frame fill | Planned | Fill uncovered display pixels from aligned neighbors where possible and preserve a separate measured-coverage mask for inspection. Verify both outputs on known jitter. |
+
 ## Stage 2 — ML and DNN for images and video
 
 [Stage tracker](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) ·
@@ -290,7 +299,7 @@ fixture or result needed to close the item.
 | S2-51 | Detect image defects under input shifts | Model evaluation across exposure, blur and camera pose | Planned | Replay controlled image perturbations and report confidence, localization and false rejects against the reference results. |
 | S2-52 | Learned instance tracking masks | Image segmentation plus temporal association | Planned | Track per-instance masks through overlapping or occluded video frames with ticket and ID continuity. |
 
-## Stage 3 — 3D from camera imagery
+## Stage 3 — 3D imagery and point clouds
 
 [Camera and robot calibration](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2) ·
 [3D expansion](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6) ·
@@ -318,7 +327,7 @@ fixture or result needed to close the item.
 | S3-18 | RGB-D depth and color registration | registerDepth, intrinsic and pose transforms | Complete | image.rgbd, 3d.register_depth. Pair color and depth and transform metric depth to the declared camera grid. |
 | S3-19 | Depth cleanup and edge-aware smoothing | Invalid-depth masks, hole fill, joint bilateral or guided filtering | Partial | 3d.fill_depth_holes fills small gaps. Validate a depth-aware smoother at a foreground edge with invalid samples and confidence. |
 | S3-20 | Organized depth normals | RgbdNormals | Complete | 3d.depth_normals. Verify normal orientation, pixel correspondence and invalid samples on depth planes. |
-| S3-21 | Camera-derived cloud interchange and preview | PLY/PCD, pixel provenance and depth projection rendering | Complete | input.cloud, output.cloud, 3d.cloud_render. Round-trip camera-derived clouds and display a bounded sample. |
+| S3-21 | PLY and ASCII PCD cloud interchange and preview | PLY, ASCII PCD, point attributes and orthographic preview | Complete | input.cloud, output.cloud, 3d.cloud_render. Round-trip imported or camera-derived clouds and display a bounded sample. |
 | S3-22 | Camera surface registration | Point-to-plane ICP, point-pair feature detector | Complete | 3d.icp, 3d.ppf_train, 3d.ppf_match. Align two camera-derived surfaces and verify the recovered pose and score. |
 | S3-23 | Depth plane and foreground separation | Robust plane fitting on backprojected pixels, organized masks | Planned | Fit a plane under clutter and emit signed depth residuals and foreground masks on the camera grid. |
 | S3-24 | Image-space visibility of reconstructed surfaces | Project points and z-buffer on target intrinsics | Planned | Identify occluded versus visible surface samples and compare the predicted mask with known scene depth. |
@@ -380,6 +389,38 @@ fixture or result needed to close the item.
 | S3-70 | Multi-view calibration with coded custom targets | ccalib and observed camera-target correspondences | Planned | Qualify a custom target across cameras with held-out frame closure. Confirm the relevant Python APIs or use a tested solver. |
 | S3-71 | Depth-fusion trajectory estimation | KinFu or equivalent depth tracking and fusion | Partial | 3d.odometry and 3d.tsdf_fuse support pairwise motion and posed depth. Verify drift, failure recovery and a bounded trajectory on a recorded sequence. |
 | S3-72 | Quasi-dense stereo correspondence | stereo.QuasiDenseStereo | Planned | Grow correspondences from stereo feature matches and compare disparity and support against known image pairs. |
+
+### Depth cleanup, point-cloud processing and mesh workflows
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S3-73 | Time-of-flight depth cleanup | Depth confidence, neighborhood checks and edge-aware filtering | Planned | Use recorded depth with a range step and low-confidence samples. Flag flying pixels and multipath-like outliers while preserving real discontinuities and raw sample provenance. |
+| S3-74 | Sparse pixel-to-point backprojection | depthTo3dSparse | Planned | Backproject selected image points without constructing a full cloud. Verify XYZ, units, frame, invalid points, and original pixel indices. |
+| S3-75 | Normalize and quantize a metric depth image | rescaleDepth and typed depth conversion | Planned | Round-trip integer and float depth with explicit scale, invalid codes, clipping and quantization error. |
+| S3-76 | Warp a registered RGB-D frame by camera pose | warpFrame | Planned | Transform depth and color from a known moving view and verify destination depth, mask, and occlusion. |
+| S3-77 | Point-cloud octree and spatial queries | Octree.createWithDepth, createWithResolution, KNNSearch and radiusNNSearch | Planned | Index an imported or reconstructed cloud with explicit metric bounds. Compare query indices and distances against brute-force fixtures and verify memory bounds. |
+| S3-78 | Random and farthest-point cloud sampling | randomSampling, farthestPointSampling or validated fallbacks | Planned | Verify seeded reproducibility, sample spacing, point budget, and retained attributes. The pinned wheel lacks these geometry bindings. |
+| S3-79 | Representative-point voxel sampling | voxelGridSampling or equivalent voxel selection | Partial | 3d.cloud_voxel supports first point and centroid. Verify nearest-original-point representative selection, per-axis spacing, and associated attributes. The native geometry function is unavailable in the pinned Python wheel. |
+| S3-80 | Radius and statistical cloud outlier rejection | Spatial queries and local neighbor statistics | Planned | Recover a known surface from sparse noise and report removed indices, density settings, and retained edge detail. |
+| S3-81 | Euclidean cloud clustering | Radius-neighbor connected components in XYZ | Planned | Separate several imported parts with known clearances, retain source IDs, and reject clusters by physical size or count. |
+| S3-82 | Normal-based cloud region growing | RegionGrowing3D or equivalent neighborhood segmentation | Planned | Separate touching surfaces by normal and curvature with stable labels. Qualify an alternate build or a tested fallback because the pinned wheel lacks the native binding. |
+| S3-83 | Robust plane and sphere fitting on unorganized clouds | SACSegmentation RANSAC models or equivalent fitting | Planned | Fit known metric planes and spheres amid outliers and report coefficients, inliers, residuals, and failed degeneracy. The pinned wheel lacks the native class. |
+| S3-84 | Local cloud curvature and normal quality | normalEstimate or equivalent neighbor PCA | Partial | 3d.cloud_normals estimates normals. Verify curvature, invalid neighborhoods and normal orientation on planes and spheres. Use a validated fallback on the pinned wheel. |
+| S3-85 | Native OBJ point-cloud interchange | loadPointCloud and savePointCloud | Partial | input.cloud and output.cloud support PLY and PCD. Qualify the native OBJ path with aligned XYZ, normal and color fields and compare PLY behavior with the current path. |
+| S3-86 | Triangle mesh interchange | loadMesh and saveMesh | Planned | Round-trip supported triangulated OBJ/PLY files with topology, optional vertex fields, units and frame. Reject invalid indices and unsupported layouts. |
+| S3-87 | Project a mesh to color and depth images | triangleRasterize, triangleRasterizeColor, triangleRasterizeDepth | Planned | Rasterize known overlapping triangles with near/far clipping and culling. Verify camera convention, metric depth, colors and masks. |
+| S3-88 | Cloud-to-cloud dimensional comparison | Bidirectional nearest-neighbor distances and overlap checks | Planned | Compare aligned measured and reference clouds, report signed distances where normals are reliable, and verify overlap and tolerance failures. |
+| S3-89 | Compare an inspection scan to a reference mesh | Closest triangle distances and local reference normals | Planned | Measure a calibrated surface deviation on known geometry, with boundary and unsupported areas reported separately. |
+| S3-90 | ICP overlap and local registration diagnostics | Point-to-plane ICP and paired inlier residuals | Partial | 3d.icp returns a pose and residual. Verify overlap, inlier counts and rejection of poor or ambiguous alignment with a known partial-overlap pair. |
+| S3-91 | Refine and rank multiple surface-match hypotheses | PPF3DDetector candidates and ICP refinement | Partial | 3d.ppf_match returns candidates ranked by votes. Verify residual- and coverage-based ranking and suppress duplicate poses in cluttered and partially occluded scenes. |
+| S3-92 | Merge registered point-cloud scans | Rigid transforms, frame reconciliation and overlap-aware sampling | Planned | Merge multiple views in a named frame and verify unit conversion, per-scan provenance, attribute consistency and duplicate suppression. |
+| S3-93 | Fuse registered color into a TSDF | Volume ColorTSDF, integrateColor and fetchPointsNormalsColors | Planned | Recover a known colored surface from posed RGB-D frames and verify color/depth alignment, confidence, and memory limits. |
+| S3-94 | Raycast a fused volume into a new camera view | Volume.raycastEx and raycastExColor | Partial | 3d.tsdf_fuse raycasts the last input view. Verify an independent target pose and intrinsics with explicit depth, normal, color and validity outputs. |
+| S3-95 | Bounded hashed and growing TSDF volumes | Volume HashTSDF, setEnableGrowth and visible-block diagnostics | Planned | Reconstruct a longer sequence that exceeds a fixed volume, cap growth, and verify geometry and eviction or rejection behavior. |
+| S3-96 | Binary and organized PCD interchange | PCD binary layouts, dimensions and point fields | Partial | input.cloud and output.cloud support ASCII PCD. Verify binary layouts, declared organization, and invalid samples with external round trips. |
+| S3-97 | Generate a surface mesh from an organized depth grid | Adjacent depth samples and discontinuity-aware triangulation | Planned | Build triangles for known depth surfaces while leaving holes at depth jumps, preserving camera provenance and valid normals. |
+| S3-98 | Oriented cloud extents and physical pose | Principal axes or fitted oriented box on XYZ points | Partial | 3d.cloud_measure reports bounds and PCA axes. Verify rotated object dimensions, ambiguous orientations, and a frame-aware pose. |
+| S3-99 | Inspection attributes on imported point clouds | Typed per-point intensity, confidence and source-index payloads | Planned | Preserve declared attributes through import, filtering, sampling, merging and export. Verify missing attributes and original scan indices. |
 
 ## Stage 4 — Selected contrib functions for images and video
 
@@ -484,6 +525,13 @@ fixture or result needed to close the item.
 | S4-79 | Edge Drawing segments and primitives | ximgproc.createEdgeDrawing | Planned | Verify ordered edge segments and fitted line or ellipse outputs against known geometry. |
 | S4-80 | Tree-based image regions | xfeatures2d.TBMR | Planned | Verify keypoint location and scale through a known image transform and compare repeatability with MSER. |
 | S4-81 | Classical multi-frame video super-resolution | superres BTV-L1 or equivalent reconstruction | Planned | Verify a usable backend and compare reconstructed moving detail with per-frame interpolation on an aligned sequence. |
+
+### Contour spectra and sparse-mask operations
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S4-82 | Fourier contour descriptors and alignment | ximgproc.contourSampling, fourierDescriptor and createContourFitting | Planned | Verify periodic contour sampling, transform recovery, and shape matching under known rotation and scale. |
+| S4-83 | Run-length encoded binary morphology | ximgproc run-length mask encoding and morphology | Planned | Verify erosion and dilation parity with dense masks and measure memory on sparse large tiles. Check Python support or qualify an equivalent implementation. |
 
 ## Module scope boundaries
 
