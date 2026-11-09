@@ -102,7 +102,9 @@ stereo, structured light and RGB-D. The
 covers five further contrib families. The
 [recognition and restoration crosswalk](opencv-scope-map.md#native-ocr-shape-hashing-foreground-saliency-and-super-resolution-crosswalk)
 covers OCR, shape, hashing, foreground, saliency and both super-resolution
-modules. The scope map records remaining audits.
+modules. The [image ML, tracking, detection and restoration crosswalk](opencv-scope-map.md#native-image-ml-tracking-detection-and-restoration-crosswalk)
+adds classical image learning, contrib tracking and detectors, and additional
+restoration tools. The scope map records narrower audit boundaries.
 Use the checklist as the implementation baseline and add scope for independently
 testable inspection workflows.
 

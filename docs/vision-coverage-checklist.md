@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 19 | 54 | 170 | 57.1% |
-| 2. ML and DNN | 9 | 11 | 38 | 58 | 15.5% |
+| 1. Core and baseline 2D | 97 | 20 | 55 | 172 | 56.4% |
+| 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 24 | 69 | 126 | 26.2% |
-| 4. Selected contrib | 20 | 1 | 76 | 97 | 20.6% |
-| **Overall** | 159 | 55 | 237 | 451 | 35.3% |
+| 4. Selected contrib | 20 | 1 | 79 | 100 | 20.0% |
+| **Overall** | 159 | 56 | 245 | 460 | 34.6% |
 
 <!-- coverage-summary:end -->
 
@@ -113,7 +113,7 @@ fixture or result needed to close the item.
 | S1-51 | Sparse and dense optical flow | calcOpticalFlowPyrLK, calcOpticalFlowFarneback, DISOpticalFlow | Complete | sequence.track_points, sequence.lk_grid_flow, sequence.farneback, sequence.dis. Flow and consistency checks. |
 | S1-52 | Baseline background subtraction | createBackgroundSubtractorMOG2, createBackgroundSubtractorKNN, temporal median | Complete | sequence.mog2, sequence.knn_background, sequence.temporal_median. Learning and foreground masks on replay. |
 | S1-53 | Seeded object and conveyor tracking | TrackerCSRT, TrackerKCF, image-space association | Complete | sequence.track_csrt, sequence.track_kcf, sequence.track_conveyor. Seeded boxes and multi-part image/encoder tracking. |
-| S1-54 | Track across missed image detections | KalmanFilter and gated assignment | Partial | sequence.track_conveyor predicts with encoder motion. Add a reusable image-track predictor with confidence, bounded missed frames and crossing-part tests. |
+| S1-54 | Track across missed image detections | KalmanFilter and gated assignment | Partial | sequence.track_conveyor predicts with encoder motion. Add a reusable image-center predictor with confidence, bounded missed frames and crossing-part tests. |
 | S1-55 | Reference-based image error | absdiff, norm, PSNR | Complete | inspect.image_quality. Selected MAE, RMSE, maximum absolute error and PSNR on aligned frames. |
 | S1-56 | Illumination and color inspection | cvtColor, channel gains, flat-field/shading correction, Lab difference | Complete | calibration.color_balance, cv.flat_field, cv.adaptive_background, inspect.measure_lab, inspect.compare_lab. Selected Lab statistics and tolerance. |
 | S1-57 | Masked image inpainting | inpaint | Complete | cv.inpaint. Verify Telea and Navier–Stokes reconstruction over a selected region. |
@@ -286,6 +286,13 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S1-170 | Restore a validated foreground reference after restart | BackgroundSubtractor.getBackgroundImage and versioned reference images or warmup replay | Partial | sequence.mog2 and sequence.knn_background emit background images. Save a camera-bound reference or verified warmup frames, reload them after a restart, and compare the first eligible foreground result. Reject mismatched calibration, size or encoding and keep known foreground out of relearning. |
 
+### Track prediction and detector scheduling
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S1-171 | Predict oriented image tracks through missed detections | KalmanFilter, an unscented filter or a tested nonlinear predictor | Partial | sequence.track_conveyor predicts position from encoder motion. Predict image-space center, scale and orientation with uncertainty through gaps. Verify angle wraparound, timestamp intervals, reacquisition and explicit expiry on an annotated clip. |
+| S1-172 | Refresh tracked objects with a periodic full-frame detector | DetectionBasedTracker or a graph scheduler with local tracking | Planned | Run full-frame detection at a configured cadence and refine tracks locally between refreshes. Verify recovery from drift, discovery of entering parts, stale-track expiry and the detector call budget on replay. |
+
 ## Stage 2 — ML and DNN for images and video
 
 [Stage tracker](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) ·
@@ -325,7 +332,7 @@ fixture or result needed to close the item.
 | S2-25 | SSD-style detector tensor adapter | Decode class, score and corners from DetectionOutput records | Planned | Decode a pinned SSD-style model and reject invalid coordinates and labels. |
 | S2-26 | YOLO-style detector tensor adapter | Decode box/class outputs and apply class-aware NMS | Planned | Verify a pinned YOLO export, explicit axis layout, thresholds and inverse letterboxing. |
 | S2-27 | Object-detection box fusion across image tiles | Model coordinate transforms, IoU and cross-tile suppression | Planned | Merge overlapping tile detections onto one source grid and verify boundary objects occur once. |
-| S2-28 | Detection tracking across frames | Image detection association and optional re-identification embeddings | Planned | Verify stable object IDs on a short clip with occlusions and crossing tracks. |
+| S2-28 | Detection tracking across frames | Image detection association and optional re-identification embeddings | Planned | Verify stable object IDs and count identity switches and fragmented tracks on clips with occlusions, crossing parts and re-entry. |
 | S2-29 | Prompted image segmentation | Image embedding and point/box prompt model inputs | Planned | Use one pinned ONNX model to verify prompt coordinate mapping and output masks on a controlled image. |
 | S2-30 | Image segmentation over tiles | Per-tile inference and overlap-aware label or score fusion | Planned | Match full-frame labels on a shared fixture and preserve object edges across seams. |
 | S2-31 | Text-region decoding from a probability map | Threshold, contour candidates and rotated rectangles | Complete | ml.text_regions. Verify oriented text boxes and coordinates on the original image. |
@@ -376,6 +383,15 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S2-58 | Produce several super-resolution scales from one inference | dnn_superres.DnnSuperResImpl.upsampleMultioutput or named DNN outputs | Planned | Qualify a pinned model with at least two named scales. Verify Python output delivery or a tested equivalent, output order, source-coordinate transforms, and feature localization against the native-resolution reference. |
+
+### Train and qualify image classifiers and detectors
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S2-59 | Calibrate classifier confidence and abstain on uncertain images | ml.NormalBayesClassifier.predictProb, classifier scores and a held-out calibration set | Planned | Map scores from image descriptors to calibrated class probabilities using a separate split. Verify class order, uncertainty rejection and probability reliability on held-out known and ambiguous parts. |
+| S2-60 | Learn an image anomaly score from known-good examples | ml.SVM with ONE_CLASS and a verified decision-score convention | Planned | Train and reload a model on known-good image descriptors. Verify inlier and outlier decisions and raw score direction on independent normal and defective parts. Preserve preprocessing and the threshold revision. |
+| S2-61 | Train a HOG sliding-window detector from image crops | HOGDescriptor.compute, linear ml.SVM and HOGDescriptor.setSVMDetector | Planned | Train from labeled windows, mine false positives from separate backgrounds, and reload the detector vector with its HOG geometry. Verify score orientation and recall on held-out full images. |
+| S2-62 | Consolidate repeated detections by spatial votes | groupRectangles and class-aware grouping | Planned | Merge repeated candidates into a representative box and vote count. Verify grouping tolerance, singleton policy, stable source IDs and separation of adjacent parts and different classes. |
 
 ## Stage 3 — 3D imagery and point clouds
 
@@ -622,13 +638,13 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S4-53 | Static saliency image maps | saliency.StaticSaliencySpectralResidual and StaticSaliencyFineGrained | Planned | Compare ranked foreground prominence on controlled images and emit a selected mask. |
-| S4-54 | Motion saliency maps | saliency.MotionSaliencyBinWangApr2014 | Planned | Verify warmup, reset and localization on a short moving-part sequence. |
+| S4-54 | Motion saliency maps | saliency.MotionSaliencyBinWangApr2014 and bioinspired transient-area segmentation | Planned | Verify warmup, reset and localization on moving parts and transient changes in a short clip. |
 | S4-55 | Motion history and time surfaces | motempl.updateMotionHistory, calcMotionGradient, segmentMotion | Planned | Recover motion age and dominant direction with explicit frame timestamps and reset behavior. |
 | S4-56 | Additional adaptive foreground models | bgsegm MOG, GMG and CNT | Planned | Compare warmup and foreground response using the existing empty-conveyor fixture. |
 | S4-57 | Sparse-to-dense flow interpolation | optflow.calcOpticalFlowSparseToDense | Planned | Verify displacement, sparse sampling controls and behavior at motion boundaries. |
 | S4-58 | PCAFlow and SimpleFlow | optflow.createOptFlow_PCAFlow and createOptFlow_SimpleFlow | Planned | Compare each estimator on a known displacement and preserve vector units. |
 | S4-59 | Edge-aware interpolation of image matches | ximgproc.EdgeAwareInterpolator | Planned | Turn sparse matches into a dense field and verify preservation of known motion edges. |
-| S4-60 | Image matting from a trimap | alphamat.infoFlow or equivalent | Planned | Requires a build with the Python binding. Recover a soft alpha channel with known opaque, transparent and mixed regions. |
+| S4-60 | Image matting from a trimap | alphamat.infoFlow or equivalent | Planned | The pinned Python wheel has no direct binding. Qualify another backend or tested equivalent and recover a soft alpha channel with known opaque, transparent and mixed regions. |
 | S4-61 | Retina-inspired contrast and motion preprocessing | bioinspired.Retina | Planned | Verify image enhancement and motion output on a short exposure-change sequence with reset. |
 | S4-62 | Block-matching 3D denoising of images | xphoto.bm3dDenoising | Planned | Measure denoising and edge retention on seeded noise. Verify that the target build enables the algorithm. |
 | S4-63 | Additional HDR tone mapping | xphoto.createTonemapDurand | Planned | Compare local contrast against baseline tone mapping. Verify that the target build enables the algorithm. |
@@ -646,7 +662,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S4-71 | Hierarchical feature-selection segmentation | hfs.HfsSegment | Planned | Compare boundaries and region IDs against a known segmented image with CPU execution. |
 | S4-72 | Mapper-based multiscale image registration | reg MapperGrad variants, MapperPyramid and Map | Planned | Recover a declared shift, Euclidean, similarity, affine or projective mapping from paired images. Verify seeded refinement, source-frame maps and inverse round trips on valid coverage. |
-| S4-73 | Low-light enhancement | intensity_transform.BIMEF | Planned | Recover known shadow contrast and quantify noise and clipping against the baseline image. |
+| S4-73 | Low-light enhancement | intensity_transform.BIMEF and BIMEF2 | Planned | Recover known shadow contrast with automatic and explicit exposure settings. Quantify noise and clipping against the baseline. |
 | S4-74 | Boosted binary image descriptors | xfeatures2d.BoostDesc | Planned | Compare matching under illumination or viewpoint changes on a known registered pair. |
 | S4-75 | Contrib surface texture descriptors | xfeatures2d VGG or other supported local descriptors | Planned | Verify texture correspondence on pinned local descriptor assets and a known view pair. |
 | S4-76 | Background sequences for controlled tracking validation | bgsegm.createSyntheticSequenceGenerator | Planned | Emit synthetic moving-object frames with the native foreground reference masks and reproducible ticket order. |
@@ -691,6 +707,14 @@ fixture or result needed to close the item.
 | S4-95 | Use image appearance to distinguish similar contours | ShapeContextDistanceExtractor.setImages and appearance weighting | Planned | Rank otherwise similar outlines that have different markings or texture. Verify contour and image coordinate alignment, configured appearance and geometry weights, and ranking on known deformation. |
 | S4-96 | Search a saved image hash catalog | Versioned perceptual hashes and method-specific ranking | Partial | cv.image_hash and inspect.compare_image_hashes compute and compare binary hashes. Build and reload a reference catalog with stable image IDs. Verify near-duplicate ranking, score direction, settings compatibility and rejection thresholds for each supported hash family. |
 | S4-97 | Propose image regions using objectness scores | saliency.ObjectnessBING and pinned training assets | Planned | Return ranked source-grid boxes with their native scores. Verify proposal recall, score order and clipping on cluttered images with known parts, and diagnose missing or incompatible model assets. |
+
+### Local contrast, line registration and restoration support
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S4-98 | Preserve local contrast in unevenly lit images | bioinspired.RetinaFastToneMapping or Retina.applyFastToneMapping | Planned | Enhance mixed bright and shadowed regions while preserving fine inspection features. Compare local contrast, clipping and false defect response against the original image. |
+| S4-99 | Register low-texture views from line correspondences | line_descriptor matches and a robust line-based image transform fit | Planned | Recover a source-to-reference transform from annotated lines with partial segments and false matches. Verify transferred geometry on independent marks and reject parallel or otherwise degenerate configurations. |
+| S4-100 | Recover masked image samples with explicit restoration support | ft.FT02D_iteration and its output support mask | Planned | Restore holes on a known image and report which samples each iteration can support. Verify convergence or bounded stop, unchanged measured samples, and unsupported regions when valid neighbors are insufficient. |
 
 ## Module scope boundaries
 

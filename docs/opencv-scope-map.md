@@ -48,7 +48,7 @@ they can count as complete.
 | --- | --- | --- |
 | `alphamat` | Trimap matting with a supported Python build. | S4-60 |
 | `bgsegm` | Adaptive background models, replay fixtures and restart qualification. | S4-21, S4-33, S4-56, S4-76, S1-170 |
-| `bioinspired` | Retina image and motion processing. Specialized biological modeling stays outside inspection scope. | S4-61 |
+| `bioinspired` | Retina image and motion processing. Specialized biological modeling stays outside inspection scope. | S4-61, S4-54, S4-98 |
 | `cannops`, `fastcv` | Vendor acceleration backends. Qualify the existing image workflow on the intended backend. | — |
 | `ccalib` | Custom calibration targets and omnidirectional rigs. Check Python exposure on the intended build. | S3-05, S3-14, S3-54–S3-55, S3-70 |
 | `cnn_3dobj` | Specialized research model and training interfaces. Camera object pose and learned image inference have separate graph contracts. | — |
@@ -59,14 +59,14 @@ they can count as complete.
 | `dnn_superres` | Learned single-image upscaling with pinned models and single-scale or multi-scale output. | S2-35, S2-58 |
 | `dnns_easily_fooled`, `dpm`, `face` | Defer specialized adversarial examples, legacy part-based detectors and face recognition. These need separate applications, model assets and acceptance data. | — |
 | `freetype` | Unicode annotation on source images. The Qt renderer or another supported backend can supply glyphs on builds without native FreeType. | S1-144 |
-| `fuzzy` | Fuzzy image smoothing and masked fill under the ft namespace. | S4-70 |
+| `fuzzy` | Fuzzy image smoothing and masked fill under the ft namespace. | S4-70, S4-100 |
 | `gapi` | Legacy processing remains available where supported. Future compiled graph execution belongs to the backend roadmap. | — |
 | `hfs` | Hierarchical image segmentation and region output. | S4-71 |
 | `img_hash` | Perceptual hashes, score semantics and persisted image catalogs. | S4-09–S4-10, S4-96 |
 | `intensity_transform` | Low-light enhancement. Shared gamma, log and linear intensity primitives belong to the baseline transform. | S1-17, S4-73 |
 | `julia`, `matlab` | Language binding and platform packaging work. | — |
-| `line_descriptor` | Line descriptors and matching with source-image endpoints. | S4-46 |
-| `ml` | Classical model training, validation and scoring on image-derived features. Generic tabular estimators remain outside the roadmap. | S2-19–S2-23, S2-41–S2-44, S2-49–S2-51 |
+| `line_descriptor` | Line descriptors and matching with source-image endpoints. | S4-46, S4-99 |
+| `ml` | Classical model training, validation and scoring on image-derived features. Generic tabular estimators remain outside the roadmap. | S2-19–S2-23, S2-41–S2-44, S2-49–S2-51, S2-59–S2-61 |
 | `optflow` | Dense and interpolated flow with known motion and consistency checks. | S4-22–S4-24, S4-57–S4-58, S4-77 |
 | `phase_unwrapping` | Standalone unwrapping of measured fringe images. | S3-67 |
 | `quality` | Full-reference error, similarity, gradient degradation and no-reference scoring. | S1-55, S1-119, S1-143, S4-07–S4-08, S4-32 |
@@ -81,12 +81,12 @@ they can count as complete.
 | `superres` | Classical multi-frame super-resolution. Qualify usable Python access before using the contrib backend. | S4-81 |
 | `surface_matching` | Image-derived surface registration and alignment diagnostics, including ICP and point-pair features. | S3-22, S3-58 |
 | `text` | Native text regions and OCR adapters. Learned text models live in Stage 2. | S2-13, S2-31–S2-34, S4-67–S4-68, S4-93–S4-94 |
-| `tracking` | Seeded and learned image tracking. Legacy trackers without a distinct target workflow are deferred. | S1-53–S1-54, S2-28, S2-40, S2-52 |
+| `tracking` | Seeded and learned image tracking. Legacy trackers without a distinct target workflow are deferred. | S1-53–S1-54, S2-28, S2-40, S2-52, S1-171 |
 | `videostab` | Causal and look-ahead motion correction. Use the graph's bounded replay contracts and verify them across long clips. | S1-02, S1-50, S1-95 |
 | `wechat_qrcode` | Small and low-contrast QR decoding with verified local assets. | S4-25 |
 | `xfeatures2d` | Extended feature extraction and match filtering. Defer algorithms that lack a usable pinned build or transferable fixture until a specific workflow needs them. | S4-19–S4-20, S4-47–S4-49, S4-74–S4-75, S4-80 |
 | `ximgproc` | Guided and adaptive filtering, superpixels, graph segmentation, thinning, line/ellipse detection and dense field interpolation. Depth-specific filters belong to Stage 3. | S3-16, S3-19, S4-01–S4-06, S4-13–S4-15, S4-18, S4-27–S4-31, S4-36–S4-45, S4-59, S4-69, S4-77–S4-79 |
-| `xobjdetect` | HOG and configurable sliding-window detection. Legacy model-specific detectors stay under the existing model contracts. | S2-46, S4-26 |
+| `xobjdetect` | HOG and configurable sliding-window detection. Legacy model-specific detectors stay under the existing model contracts. | S2-46, S4-26, S1-172, S2-61–S2-62 |
 | `xphoto` | White balance, denoising, tone mapping and selected restoration. | S4-12, S4-16–S4-17, S4-62–S4-66 |
 | `xstereo` | Extra stereo correspondence models and confidence. Validate the desired variant on the pinned or explicitly supported wheel. | S3-16, S3-61, S3-72 |
 
@@ -679,6 +679,63 @@ Pinned sources are [scene text](https://github.com/opencv/opencv_contrib/tree/5.
 [classical](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/superres/include/opencv2) and
 [learned](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/dnn_superres/include/opencv2) super-resolution.
 
+### Native image ML, tracking, detection and restoration crosswalk
+
+This audit maps 123 named declarations from 33 pinned public headers in
+13 contrib modules. The installed Python wheel exposes 77 mapped names.
+Nested settings, instance methods and implementation-only utilities follow
+their owning graph workflows. Generic tabular learning remains outside scope.
+
+#### Image-derived classical learning
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.ml.SVM`, `cv2.ml.SVMSGD` | Keep classification, regression, one-class and linear detector training distinct by their image contracts. SGD is an optional linear trainer. | S2-20, S2-49, S2-60–S2-61 |
+| `cv2.ml.KNearest`, `cv2.ml.EM` | Verify held-out image or pixel features and persisted model parameters. | S2-21, S2-42 |
+| `cv2.ml.DTrees`, `cv2.ml.RTrees`, `cv2.ml.Boost` | Group tree-based classification, score checks and model variants by the same image validation contract. | S2-22–S2-23 |
+| `cv2.ml.NormalBayesClassifier`, `cv2.ml.LogisticRegression`, `cv2.ml.ANN_MLP` | Use typed image descriptors and qualify score semantics and calibration. Native Bayes scores on a synthetic fixture did not sum to one. | S2-06, S2-23, S2-59 |
+| `cv2.ml.TrainData`, `cv2.ml.StatModel`, `cv2.ml.ParamGrid` | Keep model training, selection, reload and held-out splits under the image model workflow. | S2-20–S2-23, S2-59–S2-61 |
+| `cv::ml::createConcentricSpheresTestSet`, `cv::ml::randMVNormal` | Generic numerical test-data generators stay outside the inspection graph checklist. | — |
+
+#### Tracking and detection
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.TrackerCSRT`, `cv2.TrackerKCF` | CSRT and KCF box tracking are shipped. CSRT already consumes an optional initial mask. | S1-53 |
+| `cv::detail::tracking::kalman_filters::AugmentedUnscentedKalmanFilterParams`, `cv::detail::tracking::kalman_filters::UkfSystemModel`, `cv::detail::tracking::kalman_filters::UnscentedKalmanFilter`, `cv::detail::tracking::kalman_filters::UnscentedKalmanFilterParams`, `cv::detail::tracking::kalman_filters::createAugmentedUnscentedKalmanFilter`, `cv::detail::tracking::kalman_filters::createUnscentedKalmanFilter` | Keep linear track prediction separate from qualified nonlinear orientation and scale prediction. These native contrib declarations have no direct wheel bindings. | S1-54, S1-171 |
+| `cv2.legacy.MultiTracker`, `cv::legacy::MultiTrackerTLD`, `cv::legacy::MultiTracker_Alt`, `cv2.legacy.Tracker`, `cv2.legacy.TrackerBoosting`, `cv2.legacy.TrackerCSRT`, `cv2.legacy.TrackerKCF`, `cv2.legacy.TrackerMIL`, `cv2.legacy.TrackerMOSSE`, `cv2.legacy.TrackerMedianFlow`, `cv2.legacy.TrackerTLD`, `cv2.legacy.upgradeTrackingAPI` | Keep legacy tracker choices and multi-object containers behind seeded tracking or detection association. Require a distinct fixture before promoting a separate variant. | S1-53, S1-156, S2-28 |
+| `cv::detail::tracking::tbm::CosDistance`, `cv::detail::tracking::tbm::IDescriptorDistance`, `cv::detail::tracking::tbm::IImageDescriptor`, `cv::detail::tracking::tbm::ITrackerByMatching`, `cv::detail::tracking::tbm::MatchTemplateDistance`, `cv::detail::tracking::tbm::ResizedImageDescriptor`, `cv::detail::tracking::tbm::Track`, `cv::detail::tracking::tbm::TrackedObject`, `cv::detail::tracking::tbm::TrackerParams`, `cv::detail::tracking::tbm::createTrackerByMatching` | Descriptor association and track history follow the multi-object identity contract. The native interfaces lack direct bindings in the pinned wheel. | S2-28 |
+| `cv::detail::tracking::TrackerContribFeature`, `cv::detail::tracking::TrackerContribFeatureHAAR`, `cv::detail::tracking::TrackerContribFeatureSet`, `cv::detail::tracking::TrackerContribSampler`, `cv::detail::tracking::TrackerContribSamplerAlgorithm`, `cv::detail::tracking::TrackerContribSamplerCSC`, `cv::detail::tracking::TrackerFeatureFeature2d`, `cv::detail::tracking::TrackerFeatureHOG`, `cv::detail::tracking::TrackerFeatureLBP`, `cv::detail::tracking::TrackerSamplerCS`, `cv::detail::tracking::TrackerSamplerPF`, `cv::detail::tracking::TrackerStateEstimatorAdaBoosting`, `cv::detail::tracking::TrackerStateEstimatorSVM`, `cv::detail::tracking::tld::tld_InitDataset`, `cv::detail::tracking::tld::tld_getNextDatasetFrame` | Tracker samplers, classifiers and legacy dataset glue stay internal. | — |
+| `cv::detail::tracking::computeInteractionMatrix`, `cv::detail::tracking::computeTwist`, `cv2.rapid.GOSTracker`, `cv2.rapid.OLSTracker`, `cv2.rapid.Rapid`, `cv2.rapid.Tracker`, `cv2.rapid.convertCorrespondencies`, `cv2.rapid.drawCorrespondencies`, `cv2.rapid.drawSearchLines`, `cv2.rapid.drawWireframe`, `cv2.rapid.extractControlPoints`, `cv2.rapid.extractLineBundle`, `cv2.rapid.findCorrespondencies`, `cv2.rapid.rapid` | Keep pose iteration, line correspondences and drawing in the metric silhouette tracking workflow. | S3-68 |
+| `cv::DetectionBasedTracker` | Periodic full-frame search and local refinement have their own detector budget and recovery fixture. No direct Python binding is exposed. | S1-172 |
+| `cv2.BaseCascadeClassifier`, `cv2.CascadeClassifier` | Expose inspection cascades through the existing model input and detection contract. | S2-47 |
+| `cv2.HOGDescriptor` | Separate extracting descriptors, training a detector and running multi-scale inference. | S2-46, S2-61, S4-26 |
+| `cv2.groupRectangles`, `cv::groupRectangles_meanshift`, `cv::SimilarRects` | Preserve vote counts and output geometry. Alternative clustering remains a backend choice. | S2-62 |
+| `cv::createFaceDetectionMaskGenerator`, `cv::xobjdetect::WBDetector`, `cv2.dpm.DPMDetector`, `cv::dnn_objdetect::InferBbox` | Domain-specific, legacy and unbound detector helpers remain deferred. Reuse the standard detector adapter when a pinned inspection model needs equivalent behavior. | — |
+| `cv2.line_descriptor.BinaryDescriptor`, `cv2.line_descriptor.BinaryDescriptorMatcher`, `cv2.line_descriptor.DrawLinesMatchesFlags`, `cv::line_descriptor::EDLineDetector`, `cv::line_descriptor::EDLineParam`, `cv2.line_descriptor.KeyLine`, `cv2.line_descriptor.LSDDetector`, `cv2.line_descriptor.LSDParam`, `cv2.line_descriptor.drawKeylines`, `cv2.line_descriptor.drawLineMatches` | Group line extraction and descriptors with matched geometry. Line-based registration needs a separate alignment fixture. | S4-46, S4-99 |
+| `cv2.wechat_qrcode.WeChatQRCode` | Qualify local models and known small or low-contrast symbols through the existing code result contract. | S4-25 |
+
+#### Restoration and segmentation
+
+| API | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv::alphamat::infoFlow` | Trimap matting needs a qualified backend. The installed wheel has no direct binding. | S4-60 |
+| `cv2.bioinspired.Retina`, `cv2.bioinspired.TransientAreasSegmentationModule` | Group transient-area and retina motion output with warmup, reset and exposure-change checks. | S4-54, S4-61 |
+| `cv2.bioinspired.RetinaFastToneMapping` | Verify tone mapping on mixed illumination separately from stateful video processing. | S4-98 |
+| `cv2.ft.createKernel`, `cv2.ft.createKernel1`, `cv2.ft.filter`, `cv2.ft.inpaint`, `cv2.ft.FT02D_FL_process`, `cv2.ft.FT02D_FL_process_float`, `cv2.ft.FT02D_components`, `cv2.ft.FT02D_inverseFT`, `cv2.ft.FT02D_iteration`, `cv2.ft.FT02D_process`, `cv2.ft.FT12D_components`, `cv2.ft.FT12D_createPolynomMatrixHorizontal`, `cv2.ft.FT12D_createPolynomMatrixVertical`, `cv2.ft.FT12D_inverseFT`, `cv2.ft.FT12D_polynomial`, `cv2.ft.FT12D_process` | Keep transforms and kernels internal to restoration. Qualify support-mask propagation separately from image-only fill. | S4-70, S4-100 |
+| `cv2.intensity_transform.autoscaling`, `cv2.intensity_transform.contrastStretching`, `cv2.intensity_transform.gammaCorrection`, `cv2.intensity_transform.logTransform` | These variants follow the typed intensity transform contract. | S1-17 |
+| `cv2.intensity_transform.BIMEF`, `cv2.intensity_transform.BIMEF2` | Qualify automatic and explicit exposure settings with the low-light fixture. | S4-73 |
+| `cv2.hfs.HfsSegment` | Keep CPU and accelerator choices under the same image segmentation contract. | S4-71 |
+
+Pinned sources are [classical ML](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/ml/include/opencv2),
+[tracking](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/tracking/include/opencv2), [silhouette tracking](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/rapid/include/opencv2),
+[object detection](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/xobjdetect/include/opencv2),
+[legacy DNN detection](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/dnn_objdetect/include/opencv2), [deformable part models](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/dpm/include/opencv2),
+[line descriptors](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/line_descriptor/include/opencv2), [WeChat QR](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/wechat_qrcode/include/opencv2),
+[matting](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/alphamat/include/opencv2), [retina](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/bioinspired/include/opencv2),
+[fuzzy transforms](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/fuzzy/include/opencv2), [intensity transforms](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/intensity_transform/include/opencv2),
+and [hierarchical segmentation](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/hfs/include/opencv2).
+
 ### Remaining inspection workflows
 
 | Family | Roadmap disposition | Checklist IDs |
@@ -709,8 +766,9 @@ aliases and native helper methods as part of their owning graph workflow.
 Callable-level audit boundaries are the pinned headers named in each
 crosswalk. The module and subgroup map covers additional families. Entry-point
 reconciliation for other inspection-relevant contrib families remains open.
-Remaining audits include image-derived learning (`ml`) and selected contrib
-restoration, tracking and detection modules beyond these crosswalks.
+Future entry-point audits can cover narrower calibration and signal families,
+including color chart and correction model methods and image-specific uses of
+`signal`. The module map records other backend, platform and domain boundaries.
 Model layer internals and general-purpose numerics stay outside the graph
 checklist unless a distinct inspection workflow needs them. Reuse an existing
 ID for equivalent operations.
