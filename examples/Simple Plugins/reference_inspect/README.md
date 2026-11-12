@@ -30,17 +30,34 @@ pose from the recipe reference grid into the current image.
    The recipe restores all eight good samples and both masks.
 2. Review **Reference mean**, **Normal variation**, **Inspection mask**,
    and **Normalization mask** in the view selector.
-3. Remove a sample from the filmstrip or edit a threshold, then select
+3. Open **Edit inspection mask…** or **Edit normalization mask…** to draw
+   or refine a mask on the reference image. Mask editing requires
+   SimpleReferenceInspect 0.1.0.dev1 or later.
+4. Remove a sample from the filmstrip or edit a threshold, then select
    **Train references**. The training health display reports the remaining
    samples and learned variation.
-4. Open `assets/nominal.png` or `assets/changed.png` with **Test image…**,
+5. Open `assets/nominal.png` or `assets/changed.png` with **Test image…**,
    then select **Inspect test / selected image**. Review the overlay and
    deviation map. Scroll to zoom and drag to pan.
-5. **Stage recipe** proposes a new trained recipe. **Apply** commits it to
+6. **Stage recipe** proposes a new trained recipe. **Apply** commits it to
    the block. Save the graph to retain the revision.
 
 The popup takes aligned images. The inspection and normalization masks
 can be imported from nonzero grayscale mask images.
+
+## Edit masks
+
+In either mask editor, choose a rectangle, circle, or polygon and select
+**Draw shape**. Drag a rectangle or circle, or click polygon vertices and
+press Enter. Drag handles to refine the shape. Shift-click an edge to add
+a polygon point and right-click a point to remove it. Scroll to zoom and
+middle-drag or Alt-drag to pan.
+
+Choose **Replace mask**, **Add to mask**, or **Exclude from mask**, then
+select **Apply shape**. Repeat to combine regions and holes. **Undo**
+reverses edits. **Use mask** accepts the pixels into the trainer, while
+**Cancel** keeps the existing training. Retrain after changing a mask.
+The saved recipe stores the resulting binary masks.
 
 ## Outputs
 
