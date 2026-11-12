@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 97 | 22 | 56 | 175 | 55.4% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
-| 3. 3D imagery and point clouds | 33 | 25 | 71 | 129 | 25.6% |
+| 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 159 | 61 | 248 | 468 | 34.0% |
+| **Overall** | 159 | 63 | 248 | 470 | 33.8% |
 
 <!-- coverage-summary:end -->
 
@@ -208,7 +208,7 @@ fixture or result needed to close the item.
 | S1-131 | Intensity-weighted center and orientation | moments with intensity weights and region selection | Planned | Compare geometric and intensity-weighted centers and axes on a known asymmetric feature. |
 | S1-132 | Per-pixel alpha composition | Straight and premultiplied alpha, source-over composition | Planned | Verify transparent boundaries and float or integer results on foreground/background pairs. |
 | S1-133 | Rasterize selected contours with holes | drawContours, fillPoly and contour hierarchy | Planned | Convert selected contour collections into masks with topology intact and verify source-grid alignment. |
-| S1-134 | Ordered arc fitting and angular extent | Contour sampling, geometric fit and arc support | Planned | Fit partial round features and report angular coverage and uncertainty on controlled edge samples. |
+| S1-134 | Ordered circle/arc fitting and angular extent | Least-squares or robust circle/arc fitting from ordered image edge points | Planned | Fit known partial circles amid noise and outliers. Report center, radius, residual, angular coverage and uncertainty, and check outlier bias and short-arc degeneracy. Minimum enclosing circles do not establish this fit. |
 | S1-135 | Reconstruct features by local frequency and phase | DFT, magnitude and phase of image bands | Partial | cv.dft emits complex spectra. Qualify phase-only or magnitude-only reconstruction with declared channel and normalization behavior. |
 | S1-136 | Binary mask boundary distances | distanceTransform and directed boundary comparisons | Partial | inspect.contour_profile measures matched contour boundaries. Qualify a source-grid mask comparison with tolerance bands and missing-area statistics. |
 | S1-137 | Build a flat-field reference from image stacks | Selected frame averaging or median | Planned | Estimate dark and bright references from repeated captures and verify correction on a held-out image. |
@@ -423,9 +423,9 @@ fixture or result needed to close the item.
 | S3-07 | Physical dimensions from calibrated 2D images | Planar point mapping and scaled shape fitting | Complete | calibration.inspect_planar_distance, inspect.workplane_rectangle, inspect.workplane_ellipse, inspect.strip_width. Ticketed dimensions and tolerance reasons with source-aligned graphics. |
 | S3-08 | Versioned camera and rig profiles | Versioned intrinsics, map and extrinsic records tied to an image grid | Partial | input.calibration, output.calibration, input.lens_maps and output.lens_maps cover profiles and maps. Add explicit revision selection and reject mismatched capture or grid metadata. |
 | S3-09 | Project camera points and rays | projectPoints, undistortPoints and lens-family variants | Complete | 3d.project, 3d.undistort_points, 3d.rectify_camera. Pixel projection and ray/rectification fixtures for declared lens families. |
-| S3-10 | Estimate object pose and fiducial pose | solvePnP, solvePnPRansac, solvePnPRefineLM/VVS, Rodrigues | Complete | 3d.pnp, 3d.aruco_pose. Known poses, inlier and reprojection checks, and camera-relative frames. |
-| S3-11 | Relative pose and epipolar geometry | findFundamentalMat, findEssentialMat, recoverPose, computeCorrespondEpilines | Complete | 3d.fundamental, 3d.essential_pose, 3d.check_epipolar. Reject outlier pairs and report per-view residuals. |
-| S3-12 | Sparse triangulation | triangulatePoints | Complete | 3d.triangulate. Recover 3D positions with cheirality and reprojection bounds from camera correspondences. |
+| S3-10 | Pinhole object and fiducial pose | solvePnP, solvePnPRansac, solvePnPRefineLM/VVS, Rodrigues | Complete | 3d.pnp, 3d.aruco_pose. Known pinhole poses, inlier and reprojection checks, and camera-relative frames. Wide-angle object pose remains S3-130. |
+| S3-11 | Shared-pinhole relative pose and epipolar geometry | findFundamentalMat, findEssentialMat, recoverPose, computeCorrespondEpilines | Complete | 3d.fundamental, 3d.essential_pose, 3d.check_epipolar. Relative pose uses one shared pinhole camera model; fundamental fitting and epipolar checks operate on image correspondences. Reject outliers and report residuals. Separate camera models remain S3-131. |
+| S3-12 | Two-view sparse triangulation | triangulatePoints | Complete | 3d.triangulate. Recover 3D positions from two supplied projection matrices and paired image points with cheirality and reprojection bounds. More than two views remain S3-33. |
 | S3-13 | Stereo rig calibration and rectification | stereoCalibrate, stereoRectify, initUndistortRectifyMap | Complete | 3d.stereo_calibrate, 3d.stereo_rectify. Matched pinhole target observations and a rectified pair with projection and Q matrices. |
 | S3-14 | Wide-angle stereo fitting and rectification | fisheye.stereoCalibrate/stereoRectify, omnidir.stereoCalibrate and rectification maps | Planned | Fit and rectify a wide-angle rig and check held-out vertical disparity and depth scale. |
 | S3-15 | Stereo disparity | StereoBM, StereoSGBM | Complete | 3d.disparity. Known pixel shift, invalid mask and fixed-point scaling. |
@@ -446,7 +446,7 @@ fixture or result needed to close the item.
 | S3-30 | Camera-projector calibration and reconstruction | Projector as inverse camera, stereo calibration and triangulation | Partial | 3d.graycode_decode supplies correspondences. Validate calibrated depth against a known stepped target from an offline capture or simulation. |
 | S3-31 | Eye-in-hand calibration from camera observations | calibrateHandEye, target reprojection and pose composition | Complete | calibration.hand_eye, 3d.pnp, 3d.compose. Offline target-to-camera and gripper-to-base fixture with held-out target consistency. |
 | S3-32 | Fixed-camera and robot-world calibration | Eye-to-hand frame arrangement and joint robot-world/hand–eye solver | Partial | calibration.hand_eye supports eye-in-hand. Verify fixed-camera and joint solutions against held-out image-derived target observations. Confirm Python solver availability or validate a tested offline solver. |
-| S3-33 | Sparse multi-view reconstruction | Feature tracks, recoverPose, triangulatePoints, bundle adjustment | Partial | 3d.essential_pose and 3d.triangulate handle a pair. Verify tracks across three or more views and measure reprojection and scale behavior after refinement. |
+| S3-33 | Sparse multi-view reconstruction | Feature tracks, recoverPose, multi-view triangulation, bundle adjustment | Partial | 3d.essential_pose and 3d.triangulate handle a pair. Verify tracks across three or more supplied or estimated camera views with missing observations and stable landmark IDs. Measure reprojection and scale behavior after refinement; qualify a tested triangulator because native sfm bindings are absent from the pinned wheel. |
 
 ### Calibration, stereo and depth extensions
 
@@ -588,6 +588,13 @@ fixture or result needed to close the item.
 | S3-127 | Assess calibration capture coverage and parameter stability | calibrateCameraExtended diagnostics and target observation geometry | Partial | calibration.lens reports per-view error and parameter deviations and rejects duplicate views. Assess image coverage and target-pose diversity across a capture set. Flag weak geometry and compare fitted parameters against repeat captures and held-out image points. |
 | S3-128 | Estimate uncertainty on calibrated image measurements | projectPoints Jacobians and covariance propagation or measured perturbation trials | Planned | Propagate declared pixel, pose and calibration uncertainty into physical dimensions or target positions. Preserve units and parameter correlations, report modeling assumptions, and compare predicted intervals with repeated synthetic and recorded observations. |
 | S3-129 | Fit a spatial line or axis to measured 3D points | fitLine on XYZ with a robust distance choice | Planned | Fit a known axis amid noise and outliers, report direction, anchor, residuals and retained point IDs, and preserve physical units and frame. Verify direction-sign ambiguity and reject coincident or otherwise underconstrained samples. |
+
+### Lens-aware object and relative pose
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S3-130 | Estimate object pose with wide-angle lens models | fisheye.solvePnP, fisheye.solvePnPRansac and qualified normalized-ray fallback | Partial | 3d.pnp accepts pinhole cameras while 3d.project and 3d.undistort_points understand fisheye and omnidirectional models. Qualify lens-aware pose and outlier rejection against known targets at image centers and edges. Reproject with the source lens model and verify pixel residuals, solver criteria, units and frames. Declare the supported ray domain for an omnidirectional fallback. |
+| S3-131 | Recover relative pose from separately calibrated views | findEssentialMat/recoverPose with per-camera intrinsics and distortion, or lens-normalized correspondences | Partial | 3d.essential_pose uses a shared pinhole camera. Accept independent camera models and image grids, and verify unequal focal lengths, distortion, a mixed-lens pair, outliers, cheirality and baseline direction. Keep translation scale unknown without a metric anchor. |
 
 ## Stage 4 — Selected contrib functions for images and video
 

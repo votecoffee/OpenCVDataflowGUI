@@ -28,7 +28,7 @@ they can count as complete.
 | `dnn` | Inference contracts, preprocessing, output adapters, model evaluation and learned vision. Keep importer internals and backend engines behind the model contract. | S2-01–S2-13, S2-23–S2-40, S2-45, S2-48, S2-51–S2-52 |
 | `features` | Corner and descriptor pipelines, matching, affine-invariant features and review. Reuse a feature/matcher block for parameter variants with equivalent outputs. | S1-42–S1-44, S1-46, S1-64, S1-128, S2-14–S2-17, S2-44 |
 | `flann` | Descriptor-based matching and image retrieval. Generic nearest-neighbor search structures stay behind feature adapters. | S1-44, S2-18–S2-19, S2-44 |
-| `geometry` | 2D shape measurement and topology, robust image transforms, camera pose, triangulation and image-driven spatial fitting. | S1-30–S1-35, S1-38, S1-46–S1-48, S1-61, S1-63, S1-65, S1-99–S1-103, S1-131, S1-134, S1-136, S3-09–S3-12, S3-42–S3-44, S3-64–S3-65, S1-174, S3-128–S3-129 |
+| `geometry` | 2D shape measurement and topology, robust image transforms, camera pose, triangulation and image-driven spatial fitting. | S1-30–S1-35, S1-38, S1-46–S1-48, S1-61, S1-63, S1-65, S1-99–S1-103, S1-131, S1-134, S1-136, S3-09–S3-12, S3-42–S3-44, S3-64–S3-65, S1-174, S3-128–S3-131 |
 | `highgui` | Windowing, mouse input, and interactive display belong to the existing Qt editor and viewer. | — |
 | `imgcodecs` | Still images, buffers, TIFF pages, metadata, animation and precision-preserving codecs. The installed wheel reports JPEG 2000 enabled and AVIF and OpenEXR disabled. Qualify a supported build for additional codec variants. Verify codec probes and bounded page access. | S1-03–S1-08, S1-111, S1-125–S1-127, S1-149, S1-153, S1-158, S3-49 |
 | `imgproc` | Raster transforms, filtering, thresholds, masks, morphology, histograms, gradients, labels, overlays and image features. Drawing primitives support the overlay contract. | S1-13, S1-19–S1-30, S1-34–S1-36, S1-38–S1-40, S1-42, S1-45, S1-47, S1-56, S1-62, S1-66–S1-68, S1-71–S1-77, S1-93–S1-94, S1-97–S1-98, S1-106, S1-118, S1-120, S1-124, S1-129, S1-131–S1-133, S1-136–S1-137, S1-142–S1-144 |
@@ -416,8 +416,9 @@ is evidence of exposure. Completion requires the checklist's graph fixture.
 | `cv2.fisheye.estimateNewCameraMatrixForUndistortRectify`, `cv::initWideAngleProjMap` | Wide-angle projection follows the calibrated lens contract. Qualify an equivalent map for the C++-only initializer when needed. | S3-04–S3-05, S3-55 |
 | `cv2.initInverseRectificationMap` | Projector images need the inverse map with their own directional round-trip fixture. | S3-116 |
 | `cv2.fisheye.distortPoints`, `cv2.fisheye.projectPoints`, `cv2.fisheye.undistortPoints`, `cv2.projectPoints`, `cv2.projectPointsSepJ`, `cv2.undistortImagePoints`, `cv2.undistortPoints` | Lens model, point direction and distortion belong to calibrated projection. Jacobian details stay internal. | S3-09 |
-| `cv2.Rodrigues`, `cv2.fisheye.solvePnP`, `cv2.fisheye.solvePnPRansac`, `cv2.solveP3P`, `cv2.solvePnP`, `cv2.solvePnPGeneric`, `cv2.solvePnPRansac`, `cv2.solvePnPRefineLM`, `cv2.solvePnPRefineVVS` | Solver variants belong to pose estimation and explicit pose hypotheses. | S3-10, S3-42 |
-| `cv2.UsacParams`, `cv2.decomposeEssentialMat`, `cv2.findEssentialMat`, `cv2.findFundamentalMat`, `cv2.recoverPose`, `cv2.computeCorrespondEpilines` | Keep robust solver settings with epipolar fitting and relative camera pose. | S3-11, S3-33 |
+| `cv2.Rodrigues`, `cv2.solveP3P`, `cv2.solvePnP`, `cv2.solvePnPGeneric`, `cv2.solvePnPRansac`, `cv2.solvePnPRefineLM`, `cv2.solvePnPRefineVVS` | Pinhole solver variants belong to pose estimation and explicit pose hypotheses. | S3-10, S3-42 |
+| `cv2.fisheye.solvePnP`, `cv2.fisheye.solvePnPRansac` | These native solvers are available in the pinned wheel. The graph object-pose block still requires a pinhole camera; qualify wide-angle pose and source-lens reprojection. | S3-130 |
+| `cv2.UsacParams`, `cv2.decomposeEssentialMat`, `cv2.findEssentialMat`, `cv2.findFundamentalMat`, `cv2.recoverPose`, `cv2.computeCorrespondEpilines` | Keep robust solver settings with epipolar fitting and relative camera pose. The shipped relative-pose path uses one shared pinhole camera; independent intrinsics and lens models need qualification. | S3-11, S3-33, S3-131 |
 | `cv2.triangulatePoints`, `cv2.convertPointsFromHomogeneous`, `cv2.convertPointsToHomogeneous`, `cv::convertPointsHomogeneous` | Coordinate normalization belongs inside calibrated projection and triangulation. | S3-12, S3-65 |
 | `cv2.correctMatches`, `cv2.sampsonDistance` | Keep correspondence adjustment and error in the epipolar quality contract. | S3-43 |
 | `cv2.estimateAffine2D`, `cv2.estimateAffinePartial2D`, `cv2.estimateTranslation2D`, `cv2.findHomography` | Use typed inliers and geometry for reference alignment and planar mapping. | S1-48, S3-06 |
@@ -599,7 +600,7 @@ and video stabilization classes require a different backend or a tested equivale
 | `cv2.phase_unwrapping.HistogramPhaseUnwrapping`, `cv2.phase_unwrapping.HistogramPhaseUnwrapping.Params`, `cv2.phase_unwrapping.PhaseUnwrapping` | Keep phase output, shadow support and inverse reliability in a calibrated fringe workflow. | S3-67 |
 | `cv::sfm::applyTransformationToPoints`, `cv::sfm::isotropicPreconditionerFromPoints`, `cv::sfm::normalizeIsotropicPoints`, `cv::sfm::normalizePoints`, `cv::sfm::preconditionerFromPoints`, `cv::sfm::meanAndVarianceAlongRows`, `cv::sfm::skew` | Conditioning and solver numerics stay inside the fitted reconstruction. | S3-33 |
 | `cv::sfm::computeOrientation`, `cv::sfm::essentialFromFundamental`, `cv::sfm::essentialFromRt`, `cv::sfm::fundamentalFromEssential`, `cv::sfm::fundamentalFromProjections`, `cv::sfm::motionFromEssential`, `cv::sfm::motionFromEssentialChooseSolution`, `cv::sfm::normalizeFundamental`, `cv::sfm::normalizedEightPointSolver`, `cv::sfm::projectionsFromFundamental`, `cv::sfm::relativeCameraMotion`, `cv::sfm::fundamentalFromCorrespondences7PointRobust`, `cv::sfm::fundamentalFromCorrespondences8PointRobust` | Group fundamental fitting, outlier rejection and pose candidate selection by calibrated image correspondence. | S3-11, S3-33, S3-43 |
-| `cv::sfm::KRtFromProjection`, `cv::sfm::depth`, `cv::sfm::euclideanToHomogeneous`, `cv::sfm::homogeneousToEuclidean`, `cv::sfm::projectionFromKRt`, `cv::sfm::triangulatePoints` | Apply projection and metric triangulation in the owning graph tools with frame-aware outputs. | S3-09, S3-12, S3-65, S3-117 |
+| `cv::sfm::KRtFromProjection`, `cv::sfm::depth`, `cv::sfm::euclideanToHomogeneous`, `cv::sfm::homogeneousToEuclidean`, `cv::sfm::projectionFromKRt`, `cv::sfm::triangulatePoints` | Apply projection and metric triangulation with frame-aware outputs. The shipped triangulator takes two views; more views need a qualified solver because native sfm bindings are absent. | S3-09, S3-12, S3-33, S3-65, S3-117 |
 | `cv::sfm::reconstruct`, `cv::sfm::BaseSFM`, `cv::sfm::SFMLibmvEuclideanReconstruction`, `cv::sfm::libmv_CameraIntrinsicsOptions`, `cv::sfm::libmv_ReconstructionOptions` | Qualify a reconstruction backend with a measured camera sequence. The pinned Python wheel lacks these native SfM bindings. | S3-33, S3-65 |
 | `cv::sfm::importReconstruction` | Bundler is the native documented import format. Verify camera and sparse point conventions together. | S3-125 |
 
@@ -786,6 +787,27 @@ The metrology items are planned workflows composed from these primitives.
 Native solver parameter deviations are retained with their parameter order and
 fixed-parameter flags. Measurement uncertainty needs a declared joint covariance
 or empirically checked perturbation model.
+
+### Camera model compatibility audit
+
+Projection support does not establish pose-estimation support for the same
+lens. The camera record accepts pinhole, fisheye and omnidirectional models.
+The graph's projection and point-undistortion paths dispatch by lens, while
+object and relative pose currently require pinhole input.
+
+| API or workflow | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.fisheye.solvePnP`, `cv2.fisheye.solvePnPRansac` | Qualify wide-angle object pose on known 3D targets, including outliers. Evaluate the resulting pose through the original lens model, with declared pixel residuals and supported ray domain. | S3-130 |
+| `cv2.findEssentialMat`, `cv2.recoverPose` | Qualify the independent-camera overload or per-lens normalized correspondences. Retain each image grid and calibration; preserve the unitless translation direction until scale is anchored. | S3-131 |
+| `cv::sfm::triangulatePoints` | Extend existing reconstruction work to three or more supplied or estimated cameras, with missing observations and persistent landmark IDs. Keep two-view baseline coverage separate. | S3-12, S3-33 |
+| `cv2.minEnclosingCircle` | The shipped enclosing circle bounds its input points. Circle/arc metrology requires a fit with residual, angular coverage and noise/outlier checks. | S1-33, S1-134 |
+
+The pinned [3D geometry header](https://github.com/opencv/opencv/blob/5.0.0/modules/geometry/include/opencv2/geometry/3d.hpp)
+declares the fisheye solvers and separate-camera essential/recovery overloads.
+The [multi-view triangulation header](https://github.com/opencv/opencv_contrib/blob/5.0.0/modules/sfm/include/opencv2/sfm/triangulation.hpp)
+takes observations and projection matrices across views. Its Python binding is
+absent from the pinned wheel. These are extensions of the existing pose and
+reconstruction contracts; no additional generic matrix tools are needed.
 
 ### Remaining inspection workflows
 

@@ -108,7 +108,9 @@ restoration tools. The [color calibration and profile crosswalk](opencv-scope-ma
 covers camera color profiles and image-derived sample grids. The
 [metrology and residual API review](opencv-scope-map.md#inspection-metrology-and-residual-image-api-review)
 links remaining image API variants and adds line-pair, spatial-axis and
-calibration-evidence workflows.
+calibration-evidence workflows. The [camera model compatibility audit](opencv-scope-map.md#camera-model-compatibility-audit)
+records wide-angle object pose and independently calibrated relative pose as
+extensions of the shipped pinhole paths, and lists the multiview triangulation checks.
 Use the checklist as the implementation baseline and add scope for independently
 testable inspection workflows.
 
