@@ -710,6 +710,7 @@ def builtin_registry():
     from .label_measurement import MaskFromLabelCollection, MeasureLabelRegions
     from .lens_map_files import LoadLensMaps, SaveLensMaps
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
+    from .line_pair import MeasureLinePair
     from .linear_program import SolveLinearProgram
     from .linear_system import SolveLinearSystem
     from .local_binary_patterns import LocalBinaryPatterns
@@ -952,6 +953,7 @@ def builtin_registry():
         BoundingRotatedRectangle,
         InspectWorkplaneRectangle,
         InspectWorkplaneEllipse,
+        MeasureLinePair,
         BoundingConvexPolygon,
         DelaunayTriangulation,
         VoronoiCells,

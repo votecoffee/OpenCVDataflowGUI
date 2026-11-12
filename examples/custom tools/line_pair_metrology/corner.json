@@ -1,0 +1,397 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Pass and fail fixtures",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/corner-pass.png",
+          "assets/corner-fail.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "crop_a",
+      "type": "cv.crop",
+      "name": "Crop ROI",
+      "parameters": {
+        "x": 90,
+        "y": 45,
+        "width": 170,
+        "height": 30
+      },
+      "position": [
+        280.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect_a",
+      "type": "inspect.hough_lines",
+      "name": "Hough line segments",
+      "parameters": {
+        "votes": 30,
+        "min_length": 40.0,
+        "max_gap": 3.0,
+        "rho": 1.0,
+        "theta_degrees": 1.0
+      },
+      "position": [
+        545.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "segments",
+        "count",
+        "overlay",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sort_a",
+      "type": "collection.sort",
+      "name": "Sort object collection",
+      "parameters": {
+        "metric": "length",
+        "direction": "descending",
+        "secondary_metric": "none",
+        "secondary_direction": "ascending",
+        "missing": "last",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        810.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "collection"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit_a",
+      "type": "inspect.fit_shape",
+      "name": "Fit line, ellipse or enclosing circle",
+      "parameters": {
+        "shape": "line",
+        "item_index": 0,
+        "line_distance": "l2",
+        "line_distance_parameter": 0.0,
+        "line_radius_epsilon": 0.01,
+        "line_angle_epsilon": 0.01,
+        "ellipse_method": "standard",
+        "check_rmse": false,
+        "maximum_rmse": 1.0
+      },
+      "position": [
+        1075.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "points",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "fit",
+        "points",
+        "rmse"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "crop_b",
+      "type": "cv.crop",
+      "name": "Crop ROI",
+      "parameters": {
+        "x": 25,
+        "y": 90,
+        "width": 95,
+        "height": 120
+      },
+      "position": [
+        280.0,
+        270.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect_b",
+      "type": "inspect.hough_lines",
+      "name": "Hough line segments",
+      "parameters": {
+        "votes": 30,
+        "min_length": 40.0,
+        "max_gap": 3.0,
+        "rho": 1.0,
+        "theta_degrees": 1.0
+      },
+      "position": [
+        545.0,
+        270.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "segments",
+        "count",
+        "overlay",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sort_b",
+      "type": "collection.sort",
+      "name": "Sort object collection",
+      "parameters": {
+        "metric": "length",
+        "direction": "descending",
+        "secondary_metric": "none",
+        "secondary_direction": "ascending",
+        "missing": "last",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        810.0,
+        270.0
+      ],
+      "exposed_inputs": [
+        "collection"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit_b",
+      "type": "inspect.fit_shape",
+      "name": "Fit line, ellipse or enclosing circle",
+      "parameters": {
+        "shape": "line",
+        "item_index": 0,
+        "line_distance": "l2",
+        "line_distance_parameter": 0.0,
+        "line_radius_epsilon": 0.01,
+        "line_angle_epsilon": 0.01,
+        "ellipse_method": "standard",
+        "check_rmse": false,
+        "maximum_rmse": 1.0
+      },
+      "position": [
+        1075.0,
+        270.0
+      ],
+      "exposed_inputs": [
+        "points",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "fit",
+        "points",
+        "rmse"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "inspect.line_pair",
+      "name": "Measure line pair",
+      "parameters": {
+        "mode": "corner",
+        "angle_mode": "acute",
+        "units": "px",
+        "index_a": 0,
+        "index_b": 0,
+        "minimum_intersection_angle": 1.0,
+        "maximum_extension": 80.0,
+        "require_vertex_in_image": true,
+        "maximum_parallel_angle": 1.0,
+        "minimum_overlap": 0.0,
+        "check_angle": true,
+        "target_angle": 90.0,
+        "angle_tolerance": 2.0,
+        "check_gap": false,
+        "minimum_gap": 0.0,
+        "maximum_gap": 0.0
+      },
+      "position": [
+        1400.0,
+        120.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "line_a",
+        "line_b",
+        "scale",
+        "valid_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "measurements",
+        "vertex",
+        "vertex_pixels",
+        "angle",
+        "gap"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture_note",
+      "type": "layout.comment",
+      "name": "Original synthetic inspection fixtures",
+      "description": "Original synthetic images, generator and projects under this repository's MIT license. Run all to compare a passing and a failing fixture. Each edge is detected, sorted and fitted in a separate crop. Measure line pair maps those crop coordinates back to the original image. Open the measurement result image to inspect its overlays.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -260.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "crop_a",
+      "input": "image"
+    },
+    {
+      "source": "crop_a",
+      "output": "image",
+      "target": "detect_a",
+      "input": "image"
+    },
+    {
+      "source": "detect_a",
+      "output": "collection",
+      "target": "sort_a",
+      "input": "collection"
+    },
+    {
+      "source": "sort_a",
+      "output": "collection",
+      "target": "fit_a",
+      "input": "collection"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "crop_b",
+      "input": "image"
+    },
+    {
+      "source": "crop_b",
+      "output": "image",
+      "target": "detect_b",
+      "input": "image"
+    },
+    {
+      "source": "detect_b",
+      "output": "collection",
+      "target": "sort_b",
+      "input": "collection"
+    },
+    {
+      "source": "sort_b",
+      "output": "collection",
+      "target": "fit_b",
+      "input": "collection"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "measure",
+      "input": "image"
+    },
+    {
+      "source": "fit_a",
+      "output": "fit",
+      "target": "measure",
+      "input": "line_a"
+    },
+    {
+      "source": "fit_b",
+      "output": "fit",
+      "target": "measure",
+      "input": "line_b"
+    }
+  ]
+}

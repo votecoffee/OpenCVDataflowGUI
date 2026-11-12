@@ -4924,6 +4924,43 @@ Input `initial_labels` — Optional single-channel integer label image for the f
 | `max_iterations` | `50` | Value must be a whole number between 2 and 100. Used by the both and iterations modes. |
 | `epsilon` | `0.01` | Value must be a finite number at least 0. Center movement tolerance in feature units, used by both and epsilon modes. |
 
+## Measure line pair (`inspect.line_pair`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `line_a` (data), `line_b` (data), `scale` (data, optional), `valid_mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grid for geometry, coverage and graphics; pixels are passed through.
+
+Input `line_a` — Line fit from Fit shape, or a lines collection with a selected index.
+
+Input `line_b` — Second fit or collection. Compatible frame transforms are applied.
+
+Input `scale` — Uniform physical scale and origin from Rectify workplane.
+
+Input `valid_mask` — Optional coverage mask; required for physical measurements.
+
+Input `region` — Optional inspection region containing all measured paths.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"corner"` | `corner`, `angle`, `parallel_gap` Measure a corner, angle alone, or transverse gap over common support. |
+| `angle_mode` | `"acute"` | `acute`, `obtuse` Acute reports 0..90 degrees; Obtuse reports the 90..180 supplement. |
+| `units` | `"px"` | `px`, `mm`, `cm`, `m`, `in` Physical units require a matching Rectify workplane scale and validity mask. |
+| `index_a` | `0` | Value must be a whole number between 0 and 99999. Zero-based entry when Line A receives a lines collection. |
+| `index_b` | `0` | Value must be a whole number between 0 and 99999. Zero-based entry when Line B receives a lines collection. |
+| `minimum_intersection_angle` | `1.0` | Value must be a finite number between 1e-06 and 90. Reject nearly parallel, poorly conditioned corner fits. |
+| `maximum_extension` | `0.0` | Value must be a finite number between 0 and 1e+09. Maximum segment extension in selected units; zero disables. |
+| `require_vertex_in_image` | `true` | Reject a corner outside the current image. |
+| `maximum_parallel_angle` | `1.0` | Value must be a finite number between 0 and 45. Maximum acute angle allowed for gap measurement, in degrees. |
+| `minimum_overlap` | `0.0` | Value must be a finite number between 0 and 1e+09. Minimum shared longitudinal support, in the selected length units. |
+| `check_angle` | `false` | Apply target-angle tolerance after geometric qualification. |
+| `target_angle` | `90.0` | Value must be a finite number between 0 and 180. Target for the selected acute or obtuse angle, in degrees. |
+| `angle_tolerance` | `2.0` | Value must be a finite number between 0 and 180. Inclusive absolute deviation from the target angle. |
+| `check_gap` | `false` | Require the entire measured overlap to meet the gap limits. |
+| `minimum_gap` | `0.0` | Value must be a finite number between 0 and 1e+09. Inclusive minimum separation in the selected length units. |
+| `maximum_gap` | `0.0` | Value must be a finite number between 0 and 1e+09. Inclusive maximum separation. Zero disables the upper limit. |
+
 ## Find line segments (LSD) (`inspect.line_segments`)
 
 Inspection / Features

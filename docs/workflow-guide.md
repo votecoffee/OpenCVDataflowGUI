@@ -930,6 +930,14 @@ Use these blocks for canvases beyond the dense stitcher's limits.
 The [tiled mosaic example](<../examples/custom tools/tiled_scan_mosaic/README.md>)
 runs twelve views and displays three windows from an 18,850-pixel-wide strip.
 
+**Measure line pair** consumes two line fits or selected line-collection entries.
+It measures a corner, an acute/obtuse angle, or a transverse gap over common
+support. Compatible crop or pyramid frames map into the selected image grid.
+Select physical units and connect Rectify workplane's Scale and Valid mask
+for calibrated measurements. Coverage or conditioning failures withhold numeric
+results; tolerance failures retain the measured values and supply fail reasons.
+Try the [corner and gap examples](<../examples/custom tools/line_pair_metrology/README.md>).
+
 ## Industrial integration, 3D and machine learning
 
 Browse the [example catalog](../examples/README.md) for runnable projects organized

@@ -771,7 +771,7 @@ measurements that need new outputs and validation.
 | `cv2.HoughLinesWithAccumulator`, `cv2.HoughCirclesWithAccumulator` | Shipped Hough tools already emit native vote or strength data for filtering and review. | S1-34 |
 | `cv2.fisheye.initUndistortRectifyMap`, `cv2.fisheye.undistortImage` | Map construction and direct resampling follow the existing declared fisheye camera and rectification contracts. Fitting the profile remains separate. | S3-04, S3-09, S3-14 |
 | `cv2.rectangleIntersectionArea` | Axis-aligned intersection is a geometry helper within footprint overlap and detection evaluation. | S1-33, S2-23 |
-| `cv2.fitLine` | The shipped image fit supplies individual lines. Line-pair metrology and a frame-aware spatial axis require distinct outputs and fixtures. | S1-33, S1-174, S3-129 |
+| `cv2.fitLine` | The image fit supplies individual lines. Line-pair metrology now measures frame-aware corners, angles and gaps; spatial-axis fitting remains a separate planned workflow. | S1-33, S1-174, S3-129 |
 | `cv2.calibrateCameraExtended` | Shipped fit diagnostics support capture-set assessment. Add coverage, pose diversity and repeatability checks on the set. | S3-02, S3-127 |
 | `cv2.projectPoints`, `cv2.projectPointsSepJ` | Use projection derivatives or perturbation trials within calibrated uncertainty measurement. Preserve covariance assumptions and output units. | S3-09, S3-128 |
 | `Edge-spread and spatial-frequency response` | Derive a measurement from a selected slanted edge with a known sampling grid and validated frequency axis. | S1-175 |

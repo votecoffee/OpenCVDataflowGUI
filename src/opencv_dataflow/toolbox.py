@@ -80,8 +80,8 @@ IMPLEMENTATION_MODULES = {
     ),
     "imgcodecs": "image_codecs tiff_files",
     "calib": "calibration calibration_validation chessboard_quality hand_eye remap_maps workplane",
-    "geometry": "contour_analysis convex_overlap geometry3d shape_fitting translation_registration "
-    "triangulation voronoi",
+    "geometry": "contour_analysis convex_overlap geometry3d line_pair shape_fitting "
+    "translation_registration triangulation voronoi",
     "video": "ecc_registration native_background sequence_tools",
     "videoio": "video_files",
     "objdetect": "aruco_markers charuco code_readers",
