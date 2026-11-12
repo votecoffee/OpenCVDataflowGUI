@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 22 | 56 | 175 | 55.4% |
+| 1. Core and baseline 2D | 98 | 21 | 56 | 175 | 56.0% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 159 | 63 | 248 | 470 | 33.8% |
+| **Overall** | 160 | 62 | 248 | 470 | 34.0% |
 
 <!-- coverage-summary:end -->
 
@@ -60,7 +60,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S1-01 | Tiled inspection mosaic | Registered tile windows, warpPerspective, remap, seam and coverage masks | Partial | cv.stitch_scan_sequence handles up to eight views in a bounded canvas. Render a scan beyond those limits as bounded tiles, verify overlap and source transforms, and compare against the existing renderer on a shared fixture. |
+| S1-01 | Tiled inspection mosaic | Registered tile windows, warpPerspective, feather halos and coverage masks | Complete | cv.register_scan_layout, cv.render_mosaic_tile. Register up to 64 views and render individual bounded windows beyond dense-canvas limits. A 12-view example and dense-render comparisons verify coverage, overlap, pixel depth, tile boundaries and source transforms; allocation guards are tested on a large virtual canvas. |
 | S1-02 | Continuous centered stabilization | calcOpticalFlowPyrLK, estimateAffinePartial2D, warpAffine, bounded look-ahead | Partial | sequence.stabilize_batch smooths up to 64 frames. Stream a longer clip with bounded memory and latency, preserve frame timestamps and coverage, and verify reset and end-of-stream flush. |
 | S1-03 | Local still-image replay and save | imread, imwrite | Complete | input.file, output.image. Read typed image files, replay a list or folder with filename tickets, and save the result. |
 | S1-04 | Image encode/decode in memory | imencode, imdecode | Complete | cv.encode_image, cv.decode_image. PNG/JPEG buffer round trips with compression settings and spatial provenance. |
@@ -263,7 +263,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S1-164 | Reuse a calibrated mosaic layout | Stitcher.composePanorama and persisted camera or tile transforms | Partial | cv.stitch_image_pair accepts a supplied transform and cv.stitch_scan_sequence emits layout. Reuse a versioned layout on a new set of views without feature refitting. Verify seams, coverage and source-coordinate mapping when a view is absent or its grid changes. |
+| S1-164 | Reuse a calibrated mosaic layout | Stitcher.composePanorama and persisted camera or tile transforms | Partial | cv.register_scan_layout emits versioned geometry and cv.render_mosaic_tile reuses it without feature fitting, validating source order and grids. Qualify reuse with missing views identified by stable source IDs, and verify seams, coverage and source-coordinate mapping; reject incompatible grid changes. |
 | S1-165 | Replay registered views on a common canvas | detail.Timelapser, detail.TimelapserCrop and common valid support | Planned | Render each view as a separate timestamped frame on the same grid. Verify union and intersection crops, invalid borders, and per-frame source-to-canvas maps. |
 
 ### Reference frequency response

@@ -2686,6 +2686,30 @@ Input `corners` — Four clockwise image points. The first becomes the top-left 
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
 | `border_value` | `0.0` |  |
 
+## Register scan layout (`cv.register_scan_layout`)
+
+Image processing / Geometry
+
+Inputs: `views` (any), `masks` (any, optional).
+
+Input `views` — Two to 64 ordered overlapping images, at most 128 MiB total.
+
+Input `masks` — Optional uint8 source masks for feature detection and tile validity.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `motion_model` | `"translation"` | `translation`, `similarity` Similarity additionally fits rotation and uniform scale. |
+| `max_features` | `900` | Value must be a whole number between 12 and 2500. |
+| `match_ratio` | `0.75` | Value must be a finite number between 1e-06 and 0.999999. Require a distinctive nearest descriptor in both matching directions. |
+| `max_descriptor_distance` | `250.0` | Value must be a finite number between 0 and 8192. |
+| `inlier_pixels` | `2.0` | Value must be a finite number between 1e-06 and 100. Fit threshold and maximum adjacent RMS after optional loop adjustment. |
+| `min_inliers` | `12` | Value must be a whole number between 3 and 2500. Minimum distinct correspondences supporting each adjacent transform. |
+| `min_inlier_ratio` | `0.5` | Value must be a finite number between 0 and 1. |
+| `max_scale_ratio` | `1.15` | Value must be a finite number between 1 and 2. Similarity scale range is the reciprocal of this ratio to the ratio. |
+| `max_rotation_degrees` | `15.0` | Value must be a finite number between 0 and 180. |
+| `loop_closure` | `false` | Require an independent match from the last view back to the first. |
+| `max_loop_drift_pixels` | `8.0` | Value must be a finite number between 0 and 512. Maximum allowed corner adjustment in first-view pixels. |
+
 ## Remap image coordinates (`cv.remap`)
 
 Image processing / Geometry
@@ -2711,6 +2735,28 @@ Input `packed_map` — Map from Pack remap coordinates. Match Nearest or Subpixe
 | `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
 | `border_value` | `0.0` |  |
+
+## Render mosaic tile (`cv.render_mosaic_tile`)
+
+Image processing / Geometry
+
+Inputs: `views` (any), `layout` (data), `masks` (any, optional), `tile_index` (number, optional).
+
+Input `views` — The same ordered source grids and labels used for registration.
+
+Input `layout` — Versioned layout from Register scan layout; no feature refitting is performed.
+
+Input `masks` — Optional ordered uint8 validity masks in source coordinates.
+
+Input `tile_index` — Optional row-major tile index for a loop or per-tile inspection.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `tile_size` | `512` | Value must be a whole number between 16 and 2048. Maximum width and height. Edge tiles are cropped to the mosaic bounds. |
+| `tile_index` | `0` | Value must be a whole number between 0 and 1e+12. Zero-based tile in row-major order. A connected input overrides this value. |
+| `interpolation` | `"linear"` | `nearest`, `linear` Linear output requires every contributing source pixel to be valid. |
+| `blend` | `"prefer_first"` | `prefer_first`, `prefer_last`, `feather` Choose source priority or feather edges. Feather halos preserve tile boundaries. |
+| `feather_width` | `32` | Value must be a whole number between 1 and 512. Distance from valid source edges, in mosaic pixels, to full weight. |
 
 ## Replace nonfinite samples (`cv.replace_nonfinite`)
 

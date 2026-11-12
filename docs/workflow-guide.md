@@ -914,6 +914,17 @@ shows how to correct accumulated drift within configured limits.
 For scans with uneven lighting, the [exposure example](<../examples/custom tools/stitch_scan_exposure/README.md>)
 shows optional gain correction and feathered blending.
 
+**Register scan layout** accepts up to 64 ordered views and emits geometry
+without allocating a mosaic. **Render mosaic tile** reuses that layout to
+produce one selected window with coverage, overlap and source mappings.
+Tile index is zero-based and advances in row-major order; a connected numeric
+input overrides its parameter. Feathering renders a halo around the requested
+window to retain edge weights across tile boundaries. Source images remain a
+bounded resident batch, and each output window has a workspace guard.
+Use these blocks for canvases beyond the dense stitcher's limits.
+The [tiled mosaic example](<../examples/custom tools/tiled_scan_mosaic/README.md>)
+runs twelve views and displays three windows from an 18,850-pixel-wide strip.
+
 ## Industrial integration, 3D and machine learning
 
 Browse the [example catalog](../examples/README.md) for runnable projects organized

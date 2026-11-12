@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Twelve overlapping inspection views",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/tile-01.png",
+          "assets/tile-02.png",
+          "assets/tile-03.png",
+          "assets/tile-04.png",
+          "assets/tile-05.png",
+          "assets/tile-06.png",
+          "assets/tile-07.png",
+          "assets/tile-08.png",
+          "assets/tile-09.png",
+          "assets/tile-10.png",
+          "assets/tile-11.png",
+          "assets/tile-12.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 12,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        300.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "register",
+      "type": "cv.register_scan_layout",
+      "name": "Register scan layout",
+      "parameters": {
+        "motion_model": "translation",
+        "max_features": 900,
+        "match_ratio": 0.75,
+        "max_descriptor_distance": 250.0,
+        "inlier_pixels": 2.0,
+        "min_inliers": 12,
+        "min_inlier_ratio": 0.5,
+        "max_scale_ratio": 1.15,
+        "max_rotation_degrees": 15.0,
+        "loop_closure": false,
+        "max_loop_drift_pixels": 8.0
+      },
+      "position": [
+        600.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "views",
+        "masks"
+      ],
+      "exposed_outputs": [
+        "layout"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "first_tile",
+      "type": "cv.render_mosaic_tile",
+      "name": "Inspect mosaic tile 0",
+      "parameters": {
+        "tile_size": 512,
+        "tile_index": 0,
+        "interpolation": "nearest",
+        "blend": "feather",
+        "feather_width": 32
+      },
+      "position": [
+        930.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "views",
+        "layout"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "tile"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "middle_tile",
+      "type": "cv.render_mosaic_tile",
+      "name": "Inspect mosaic tile 18",
+      "parameters": {
+        "tile_size": 512,
+        "tile_index": 18,
+        "interpolation": "nearest",
+        "blend": "feather",
+        "feather_width": 32
+      },
+      "position": [
+        930.0,
+        260.0
+      ],
+      "exposed_inputs": [
+        "views",
+        "layout"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "tile"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "last_tile",
+      "type": "cv.render_mosaic_tile",
+      "name": "Inspect mosaic tile 36",
+      "parameters": {
+        "tile_size": 512,
+        "tile_index": 36,
+        "interpolation": "nearest",
+        "blend": "feather",
+        "feather_width": 32
+      },
+      "position": [
+        930.0,
+        520.0
+      ],
+      "exposed_inputs": [
+        "views",
+        "layout"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "tile"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture_note",
+      "type": "layout.comment",
+      "name": "Original synthetic fixture",
+      "description": "Original synthetic image strip and project, provided under this repository's MIT license. Run all 12 views. Registration computes a layout wider than 16,384 pixels; each renderer produces one 512-pixel tile. Change Tile index to inspect other windows. The tile payload maps measurements back to the first source frame.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -270.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "register",
+      "input": "views"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "first_tile",
+      "input": "views"
+    },
+    {
+      "source": "register",
+      "output": "layout",
+      "target": "first_tile",
+      "input": "layout"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "middle_tile",
+      "input": "views"
+    },
+    {
+      "source": "register",
+      "output": "layout",
+      "target": "middle_tile",
+      "input": "layout"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "last_tile",
+      "input": "views"
+    },
+    {
+      "source": "register",
+      "output": "layout",
+      "target": "last_tile",
+      "input": "layout"
+    }
+  ]
+}

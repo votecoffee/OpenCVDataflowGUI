@@ -88,7 +88,7 @@ IMPLEMENTATION_MODULES = {
     "xobjdetect": "hog",
     "dnn": "dnn_blocks ocr",
     "photo": "exposure hdr photo_filters restoration",
-    "stitching": "image_stitching scan_stitching",
+    "stitching": "image_stitching scan_stitching tiled_mosaic",
     "stereo": "stereo3d",
     "ccm": "color_calibration",
     "quality": "image_quality",

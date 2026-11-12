@@ -209,6 +209,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Stitch overlapping inspection views](<custom tools/stitch_image_pair/README.md>) | Reconstruct a scan from two crops and verify covered pixels against the original. |
 | [Subpixel template locations](<custom tools/subpixel_template/README.md>) | Compare integer and refined template matches against two known fractional placements. |
 | [Tile image](<custom tools/tile_image/README.md>) | Repeat a reference in a 2 × 3 grid and find all six copies with template matching. |
+| [Tiled inspection mosaic](<custom tools/tiled_scan_mosaic/README.md>) | Register twelve views and render bounded windows beyond dense-canvas limits, preserving source coordinates. |
 | [Tilted window statistics](<custom tools/tilted_statistics/README.md>) | Measure two diagonal patches using batched 45-degree windows. |
 | [Trained patterns and oriented edges](<custom tools/trained_patterns/README.md>) | Train geometric and ORB references, match them in a synthetic scene, and measure oriented edges. |
 | [TSDF depth fusion](<custom tools/tsdf_fusion/README.md>) | Fuse posed synthetic depth frames into a volume and render the extracted point cloud. |

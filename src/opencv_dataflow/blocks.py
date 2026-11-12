@@ -795,6 +795,7 @@ def builtin_registry():
     from .text_rules import VerifyText
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
     from .tiff_files import TiffFile, WriteTiffFile
+    from .tiled_mosaic import RegisterScanLayout, RenderMosaicTile
     from .tilted_statistics import TiltedWindowStatistics
     from .translation_registration import EstimateTranslation
     from .triangulation import DelaunayTriangulation
@@ -870,6 +871,8 @@ def builtin_registry():
         JoinImages,
         StitchImagePair,
         StitchScanSequence,
+        RegisterScanLayout,
+        RenderMosaicTile,
         PasteImagePatch,
         CropSubpixel,
         PolarImageWarp,

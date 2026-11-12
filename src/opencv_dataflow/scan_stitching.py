@@ -30,9 +30,10 @@ _INTERPOLATION = {"nearest": cv2.INTER_NEAREST, "linear": cv2.INTER_LINEAR}
 _DEPTHS = (np.uint8, np.uint16, np.float32, np.float64)
 
 
-def _unpack(group, mask_group):
-    if not isinstance(group, FlowGroup) or not 2 <= len(group.items) <= _MAX_VIEWS:
-        raise ValidationError("Views requires an ordered group of two to eight images")
+def _unpack(group, mask_group, *, max_views=_MAX_VIEWS):
+    if not isinstance(group, FlowGroup) or not 2 <= len(group.items) <= max_views:
+        maximum = "eight" if max_views == _MAX_VIEWS else str(max_views)
+        raise ValidationError(f"Views requires an ordered group of two to {maximum} images")
     if mask_group is not None and (
         not isinstance(mask_group, FlowGroup) or len(mask_group.items) != len(group.items)
     ):
@@ -203,6 +204,47 @@ def _distribute_loop_drift(pixels, transforms, closing, adjacent, settings, layo
     return adjusted
 
 
+def register_scan(images, pixels, masks, settings):
+    """Fit a bounded ordered scan independently of its output renderer."""
+    p = settings
+    close_loop = p["loop_closure"]
+    if close_loop and len(images) < 3:
+        raise ValidationError("Loop closure requires at least three views", "loop_closure")
+    maximum = int(p["max_features"])
+    detector = cv2.SIFT_create(maximum)
+    matcher = cv2.BFMatcher(cv2.NORM_L2)
+    layout = {"model": "scan_mosaic_v1", "view_count": len(images), "pairs": []}
+    transforms = [np.eye(3)]
+    adjacent = []
+    previous = _features(detector, images[0], masks[0], maximum)
+    first = previous if close_loop else None
+    for index in range(1, len(images)):
+        current = _features(detector, images[index], masks[index], maximum)
+        report = {"view_index": index, "previous_index": index - 1}
+        layout["pairs"].append(report)
+        fit = _register(matcher, current, previous, p, report)
+        if fit is None:
+            return layout, None, (report, "scan_registration_failed")
+        transform, points = fit
+        report["source_to_previous"] = transform.tolist()
+        transforms.append(transforms[-1] @ transform)
+        if close_loop:
+            adjacent.append(points)
+        previous = current
+    closure = None
+    if close_loop:
+        closure = {"view_index": len(images) - 1, "previous_index": 0}
+        layout["closure"] = closure
+        fit = _register(matcher, previous, first, p, closure)
+        if fit is None:
+            return layout, None, (closure, "scan_loop_closure_failed")
+        closing, _ = fit
+        transforms = _distribute_loop_drift(pixels, transforms, closing, adjacent, p, layout)
+        if transforms is None:
+            return layout, None, (closure, "scan_loop_closure_failed")
+    return layout, transforms, None
+
+
 class StitchScanSequence(ImageTool):
     type_id, title, subtype = "cv.stitch_scan_sequence", "Stitch scan sequence", "Geometry"
     process_inputs_readonly = True
@@ -310,40 +352,10 @@ class StitchScanSequence(ImageTool):
         images, pixels, masks, contexts = _unpack(group, inputs.get("masks"))
         p = self.parameters
         close_loop = p["loop_closure"]
-        if close_loop and len(images) < 3:
-            raise ValidationError("Loop closure requires at least three views", "loop_closure")
-        maximum = int(p["max_features"])
-        detector = cv2.SIFT_create(maximum)
-        matcher = cv2.BFMatcher(cv2.NORM_L2)
-        layout = {"model": "scan_mosaic_v1", "view_count": len(images), "pairs": []}
-        transforms = [np.eye(3)]
-        adjacent = []
-        previous = _features(detector, images[0], masks[0], maximum)
-        first = previous if close_loop else None
-        for index in range(1, len(images)):
-            current = _features(detector, images[index], masks[index], maximum)
-            report = {"view_index": index, "previous_index": index - 1}
-            layout["pairs"].append(report)
-            fit = _register(matcher, current, previous, p, report)
-            if fit is None:
-                return self._reject(layout, report, "scan_registration_failed")
-            transform, points = fit
-            report["source_to_previous"] = transform.tolist()
-            transforms.append(transforms[-1] @ transform)
-            if close_loop:
-                adjacent.append(points)
-            previous = current
-        closure = None
-        if close_loop:
-            closure = {"view_index": len(images) - 1, "previous_index": 0}
-            layout["closure"] = closure
-            fit = _register(matcher, previous, first, p, closure)
-            if fit is None:
-                return self._reject(layout, closure, "scan_loop_closure_failed")
-            closing, _ = fit
-            transforms = _distribute_loop_drift(pixels, transforms, closing, adjacent, p, layout)
-            if transforms is None:
-                return self._reject(layout, closure, "scan_loop_closure_failed")
+        layout, transforms, failure = register_scan(images, pixels, masks, p)
+        if failure is not None:
+            return self._reject(layout, *failure)
+        closure = layout.get("closure")
 
         dtype = pixels[0].dtype
         channels = 1 if pixels[0].ndim == 2 else pixels[0].shape[2]

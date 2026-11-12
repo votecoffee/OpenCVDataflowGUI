@@ -83,9 +83,9 @@ A bore study checks ellipse diameters, axis difference and fit error in millimet
 The [image, video and point-cloud coverage checklist](vision-coverage-checklist.md) defines
 the implementation scope and completion counts for stages 1–4. It assigns a
 stable ID to each capability and records its APIs, shipped evidence or exit
-check, and status. Tiled mosaics and continuous stabilization are the first
-two open Stage 1 items. The checklist separates independently testable
-functions and links each capability to the [OpenCV scope map](opencv-scope-map.md).
+check, and status. Tiled mosaics now render bounded windows from registered
+layouts. Continuous centered stabilization is the next open Stage 1 item.
+The checklist separates independently testable functions and links each capability to the [OpenCV scope map](opencv-scope-map.md).
 Its subgroup audit records which inspection workflows need a different build or
 a tested fallback. Point clouds include imported scans and reconstructed surfaces.
 The [native point-cloud API crosswalk](opencv-scope-map.md#native-point-cloud-api-crosswalk)
@@ -116,7 +116,7 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Track larger inspection mosaics and long-clip stabilization in the coverage backlog. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Finish continuous centered stabilization and follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and reusable classical ML train/predict blocks. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |
@@ -188,6 +188,9 @@ demonstrates graph-cut selection of individual source samples in an overlap,
 with a bounded seam work grid for larger overlaps.
 [Stitch an ordered inspection scan](<../examples/custom tools/stitch_scan_sequence/README.md>)
 automatically registers adjacent views and checks the fit and coverage of each join.
+[Tiled inspection mosaics](<../examples/custom tools/tiled_scan_mosaic/README.md>)
+separate registration from rendering, accept up to 64 bounded source views, and
+produce selected windows with coverage and source-coordinate metadata.
 [Close the loop on an inspection scan](<../examples/custom tools/stitch_scan_loop/README.md>)
 demonstrates bounded drift correction when the last view overlaps the first.
 [Correct exposure in an inspection scan](<../examples/custom tools/stitch_scan_exposure/README.md>)

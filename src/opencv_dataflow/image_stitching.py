@@ -48,7 +48,8 @@ def _project_edges(image, to_anchor):
         return projected[:, :2] / denominator[:, None]
 
 
-def mosaic_canvas(images, transforms, *, extra_bytes_per_pixel=0):
+def mosaic_geometry(images, transforms):
+    """Find the output grid without allocating or imposing a dense-canvas limit."""
     edges = np.concatenate(
         [_project_edges(image, matrix) for image, matrix in zip(images, transforms, strict=True)]
     )
@@ -67,17 +68,24 @@ def mosaic_canvas(images, transforms, *, extra_bytes_per_pixel=0):
             )
         )
         size = upper - lower + 1
-    if not np.isfinite(size).all() or np.any(size > _MAX_SIDE):
+    if not np.isfinite(size).all() or np.any(size < 1):
+        raise ValidationError("Mosaic bounds must be finite and nonempty")
+    a_to_mosaic = np.eye(3)
+    a_to_mosaic[:2, 2] = -lower
+    return tuple(map(int, size)), a_to_mosaic
+
+
+def mosaic_canvas(images, transforms, *, extra_bytes_per_pixel=0):
+    size, a_to_mosaic = mosaic_geometry(images, transforms)
+    if max(size) > _MAX_SIDE:
         raise ValidationError(f"Mosaic exceeds the {_MAX_SIDE:,}-pixel dimension limit")
-    width, height = map(int, size)
+    width, height = size
     first = images[0]
     channels = 1 if first.ndim == 2 else first.shape[2]
     bytes_per_pixel = 5 * channels * first.itemsize + 10 + extra_bytes_per_pixel
     if width * height * bytes_per_pixel > _MAX_WORKSPACE:
         raise ValidationError("Mosaic exceeds the 256 MiB workspace limit")
-    a_to_mosaic = np.eye(3)
-    a_to_mosaic[:2, 2] = -lower
-    return (width, height), a_to_mosaic
+    return size, a_to_mosaic
 
 
 def _selected(inputs, side):
