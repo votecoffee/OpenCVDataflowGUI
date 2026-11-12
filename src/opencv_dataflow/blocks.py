@@ -745,9 +745,11 @@ def builtin_registry():
         GEOMETRIC_MATCHER_TYPES,
         PATH_WIDTH_TYPES,
         PIXEL_SEGMENTATION_TYPES,
+        REFERENCE_INSPECT_TYPES,
         load_installed_geometric_matcher,
         load_installed_path_width,
         load_installed_pixel_segmentation,
+        load_installed_reference_inspect,
     )
     from .point_set_lines import HoughPointSetLines
     from .polar_image import PolarImageWarp
@@ -1018,6 +1020,7 @@ def builtin_registry():
     registry.add_provider(GEOMETRIC_MATCHER_TYPES, load_installed_geometric_matcher)
     registry.add_provider(PIXEL_SEGMENTATION_TYPES, load_installed_pixel_segmentation)
     registry.add_provider(PATH_WIDTH_TYPES, load_installed_path_width)
+    registry.add_provider(REFERENCE_INSPECT_TYPES, load_installed_reference_inspect)
     registry.add_provider((invert_example.Invert.type_id,), invert_example.register)
     return registry
 

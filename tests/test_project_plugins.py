@@ -15,6 +15,7 @@ from opencv_dataflow.plugins import (
     GEOMETRIC_MATCHER_TYPES,
     PATH_WIDTH_TYPES,
     PIXEL_SEGMENTATION_TYPES,
+    REFERENCE_INSPECT_TYPES,
 )
 from opencv_dataflow.toolbox import block_entry
 
@@ -24,6 +25,7 @@ from opencv_dataflow.toolbox import block_entry
     [
         (None, {"inspect.simple_classify_image": "SimpleClassify"}),
         ("opencv_simple_path_width.dataflow", {"inspect.simple_path_width": "SimplePathWidth"}),
+        ("opencv_simple_reference_inspect.dataflow", {"inspect.simple_reference": "SimpleReferenceInspect"}),
         ("opencv_geometric_pattern_match.dataflow", {
             "pattern.ogpm_recipe": "SimplePatternMatch",
             "pattern.ogpm_load_recipe": "SimplePatternMatch · Load recipe",
@@ -130,6 +132,12 @@ def test_installed_segmentation_opens_and_locates_boards_without_manual_plugin(a
 @pytest.mark.parametrize(
     ("module", "type_id", "known_types", "setup_path"),
     [
+        (
+            "opencv_simple_reference_inspect",
+            "inspect.simple_reference",
+            REFERENCE_INSPECT_TYPES,
+            "examples/Simple Plugins/reference_inspect/README.md",
+        ),
         (
             "opencv_simple_path_width",
             "inspect.simple_path_width",

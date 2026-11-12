@@ -18,6 +18,7 @@ PIXEL_SEGMENTATION_TYPES = (
     "inspection.ocv_segment_parts",
 )
 PATH_WIDTH_TYPES = ("inspect.simple_path_width",)
+REFERENCE_INSPECT_TYPES = ("inspect.simple_reference",)
 
 
 def _register_blocks(register, registry):
@@ -65,6 +66,19 @@ def load_installed_path_width(registry):
         raise ValueError(
             "Install SimplePathWidth in the Python environment running DataflowGUI. "
             "See examples/Simple Plugins/path_width/README.md for setup."
+        ) from exc
+    _register_blocks(register, registry)
+
+
+def load_installed_reference_inspect(registry):
+    try:
+        from opencv_simple_reference_inspect.dataflow import register
+    except ModuleNotFoundError as exc:
+        if exc.name not in ("opencv_simple_reference_inspect", "opencv_simple_reference_inspect.dataflow"):
+            raise
+        raise ValueError(
+            "Install SimpleReferenceInspect in the Python environment running DataflowGUI. "
+            "See examples/Simple Plugins/reference_inspect/README.md for setup."
         ) from exc
     _register_blocks(register, registry)
 
