@@ -29,6 +29,22 @@ class ToolBlock(Block):
     block_type, subtype = "ToolBlocks", "Reusable"
 
     @property
+    def buffered_stream(self):
+        return self.graph.buffered_stream
+
+    @property
+    def pending_output(self):
+        return self.graph.pending_output
+
+    @property
+    def pending_tickets(self):
+        return self.graph.pending_tickets
+
+    @property
+    def stream_inputs(self):
+        return tuple(p.name for p in self.inputs if p.kind in ("image", "any"))
+
+    @property
     def poll_without_input(self):
         return any(
             getattr(block, "queue_boundary", False) or getattr(block, "poll_without_input", False)
@@ -135,7 +151,9 @@ class ToolBlock(Block):
             )
         self.graph._inherit_graphics_from(self)
         self.graph.run(
-            self._cancelled, injected, filmstrip_capture=getattr(self, "_filmstrip_capture", None)
+            self._cancelled, injected,
+            filmstrip_capture=getattr(self, "_filmstrip_capture", None),
+            end_of_input=getattr(self, "end_of_input", False),
         )
         children = list(self.graph.processing_blocks())
         unavailable = [b for b in children if b.state in ("error", "skipped")]

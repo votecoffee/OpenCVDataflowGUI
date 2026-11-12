@@ -92,6 +92,15 @@ class ImageQueue(FlowBlock):
             self.preloaded_events = []
             self.condition.notify_all()
 
+    @property
+    def pending_tickets(self):
+        with self.condition:
+            return tuple(
+                copy.deepcopy(capture.frame.payload["ticket"])
+                for capture, _ in self.runtime["pending"]
+                if "ticket" in capture.frame.payload
+            )
+
     def snapshot_runtime(self):
         with self.condition:
             return copy.deepcopy(self.runtime)

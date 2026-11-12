@@ -16,7 +16,7 @@ Farneback flow, point tracking and a learned reference. No camera or download is
 
 ## Readiness and events
 
-Each block exposes `ready`, `activations` and `status`. The status includes eligible
+Causal sequence blocks expose `ready`, `activations` and `status`. The status includes eligible
 learning activations, required count, stream/context/generation, current and previous
 tickets, and algorithm diagnostics. Before readiness, primary image/measurement
 outputs emit **no events**; control/status outputs still emit. Nodes show Waiting
@@ -27,12 +27,67 @@ can additionally require consecutive stable frames. Tracking requires enough tra
 of sufficient age, and can become unready again when features disappear. Readiness
 is separate from inspection pass/fail and never assigns a final ticket judgment.
 
-Downstream primary outputs carry the current input ticket and `sequence` provenance;
+Causal primary outputs carry the current input ticket and `sequence` provenance;
 older frames are model history, not new events for their old tickets. A frozen reference
 records its learning ticket in status rather than replacing the current image ticket.
 Existing input `reject_failed` policies run before learning: rejected inputs neither
 advance state nor replace retained previews. To make final decisions, gate on readiness
 or consume primary outputs; a status event during warmup does not mean inspection finished.
+
+## Continuous centered stabilization
+
+**Stabilize continuous stream** accepts one ordered camera stream and delays
+each image by up to Radius frames to smooth with past and future observations.
+Before that look-ahead is available, image outputs wait; Ready, Buffered and
+Status report the current state. At most 2 × radius + 1 source images are
+retained, subject to the stored-state budget. Native work buffers, result
+snapshots and GUI copies use additional memory. Latency is measured in future
+frame arrivals; a paused live source needs a Flush pulse to release its tail.
+
+Each delayed image, coverage mask, transform and report keeps the original
+ticket, timestamp and upstream outcome. The report identifies its smoothing
+window, segment, observed/smoothed pose and coverage. A coverage rejection
+emits the affected ticket's failed report and withholds that image. It does not
+assign the failure to the newer frame that triggered processing.
+
+Finite Run all/CLI playback flushes the final tail automatically, including
+chained buffered blocks, ToolBlocks and background acquisition queues.
+Place the background acquisition queue before buffered inspection.
+Flush also works as an explicit boolean pulse for live sources. Reset is
+different: it discards pending frames and history. Settings, grid, source,
+recipe, recording-loop and configured gap changes start a new segment after
+flushing the old tail. Rejected tracking starts a separate coordinate segment,
+so scene cuts never share a smoothing window.
+
+The corrected image uses a segment reference frame. Transform records retain
+the original input frame and both correction directions. Use the transform
+to map between raw and corrected coordinates; coverage excludes unsupported
+border samples. The block preserves gray/RGB/BGR/alpha encoding and uint8,
+uint16, float32 or float64 samples; motion fitting uses an 8-bit working image.
+
+Try the [144-frame example](<../examples/custom tools/continuous_camera_stabilization/README.md>).
+One block handles one ordered stream; use separate blocks for independent
+cameras.
+
+### Buffered plugin lifecycle
+
+Plugins with delayed output can subclass `BufferedStreamBlock` from
+`opencv_dataflow.buffered_stream`. Implement the abstract `pending_output`
+and `pending_tickets` properties, private bounded runtime snapshots, and `process`. Declare
+`stream_inputs` for the primary image/set input names. These inputs should be
+optional with `required_when_connected=True` to allow an empty drain call.
+
+The scheduler sets `end_of_input` only on the final call when image ancestors
+have ended. If pending output remains, finite playback continues with
+`process({})` until it is drained. ToolBlocks forward the signal and preserve
+per-packet emissions. Independent scalar controls do not keep an image stream
+open. Preserve original packet payloads in `Result.emissions`, including a
+valid per-packet outcome when one activation emits different judgments.
+Pending ticket identities keep production completion and end-to-end timing
+open until delayed work is emitted.
+The base reports emitted tickets rather than attributing a delayed judgment
+to the current trigger. Reset/close and `copy_runtime_from` remain explicit
+plugin responsibilities.
 
 ## Included blocks
 

@@ -6702,6 +6702,45 @@ Input `validation_region` — Static area to validate against the anchor. Exclud
 | `min_validation_inlier_ratio` | `0.8` | Value must be a finite number between 1e-06 and 1. Fraction of check tracks that must meet the error limit. |
 | `interpolation` | `"linear"` | `nearest`, `linear` |
 
+## Stabilize continuous stream (`sequence.stabilize_stream`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image, optional), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `flush` (data, optional).
+
+Input `image` — One ordered camera stream. Each output keeps its original ticket and timestamp.
+
+Input `mask` — Optional static-background selection for tracking.
+
+Input `region` — Optional static-background region in the raw image grid.
+
+Input `reset` — Boolean pulse discarding buffered history before accepting this input.
+
+Input `flush` — Boolean pulse emitting the tail. Finite playback flushes automatically.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `radius_frames` | `4` | Value must be a whole number between 1 and 63. Look-ahead in frames. Retain at most 2 × radius + 1 source frames. |
+| `sigma_frames` | `2.0` | Value must be a finite number between 0.1 and 63. Standard deviation of the centered Gaussian weights, in frames. |
+| `motion_model` | `"similarity"` | `translation`, `similarity` Translation shifts the view. Similarity also tracks rotation and scale. |
+| `max_features` | `240` | Value must be a whole number between 3 and 5000. |
+| `feature_quality` | `0.01` | Value must be a finite number between 1e-06 and 1. |
+| `feature_spacing` | `8.0` | Value must be a finite number between 0 and 512. |
+| `tracking_window` | `21` | Value must be a positive odd integer between 3 and 255. |
+| `max_pyramid_level` | `3` | Value must be a whole number between 0 and 8. |
+| `forward_backward_pixels` | `1.0` | Value must be a finite number between 1e-06 and 100. Maximum error when a tracked point is mapped back. |
+| `max_patch_error` | `30.0` | Value must be a finite number between 0 and 255. Maximum mean patch error on the 8-bit tracking image. |
+| `inlier_pixels` | `2.0` | Value must be a finite number between 1e-06 and 100. Reprojection tolerance for a track to support the motion estimate. |
+| `min_inliers` | `12` | Value must be a whole number between 3 and 5000. |
+| `min_inlier_ratio` | `0.5` | Value must be a finite number between 0 and 1. |
+| `max_step_pixels` | `40.0` | Value must be a finite number between 1e-06 and 16384. Largest accepted center displacement between consecutive frames. |
+| `max_step_degrees` | `12.0` | Value must be a finite number between 0 and 180. Largest accepted rotation between consecutive frames. |
+| `max_step_scale_ratio` | `1.15` | Value must be a finite number between 1 and 2. Allowed scale range is the reciprocal of this ratio to the ratio. |
+| `min_coverage_fraction` | `0.65` | Value must be a finite number between 0 and 1. Reject the affected frame, retaining its ticket in Report. |
+| `interpolation` | `"linear"` | `nearest`, `linear` |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.01 and 1024. State budget; native work buffers and GUI snapshots use extra memory. |
+| `max_gap_ms` | `0.0` | Value must be a finite number between 0 and 8.64e+07. Start a new segment after this arrival gap. Zero disables the gap limit. |
+
 ## Temporal median background (`sequence.temporal_median`)
 
 Sequence / Temporal processing

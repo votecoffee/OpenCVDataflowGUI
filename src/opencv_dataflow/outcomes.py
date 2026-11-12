@@ -207,9 +207,14 @@ def publish_result(block, values, result=None, kind="tool_result", message=""):
         if result and result.final_judgment is not None
         else None
     )
-    candidates.extend(
-        (v, False) for name, v in values.items() if primary is None or name == primary
+    emitted_only = (
+        result is not None and kind == "tool_result"
+        and getattr(block, "report_emitted_tickets_only", False)
     )
+    if not emitted_only:
+        candidates.extend(
+            (v, False) for name, v in values.items() if primary is None or name == primary
+        )
     tickets = {}
     for value, stamped in candidates:
         context = metadata(value).get("coordination")
@@ -267,7 +272,7 @@ def publish_result(block, values, result=None, kind="tool_result", message=""):
                 "fail_reasons": []
                 if result and result.final_judgment is True
                 else merge_reasons(
-                    result.fail_reasons if result else [],
+                    result.fail_reasons if result and not (emitted_only and stamped) else [],
                     outcome.get("fail_reasons", []),
                     [{"code": "execution.error", "message": str(message)[:512]}]
                     if kind == "error"

@@ -146,6 +146,13 @@ Stopping is cooperative between blocks; it cannot interrupt a blocking camera
 driver, OpenCV call or custom Python function. Closing waits for that work to return.
 Camera handles are reused within a continuous session and released on worker exit.
 
+Buffered image operators implement the `BufferedStreamBlock` lifecycle.
+The scheduler signals the end of finite image ancestors on the final call,
+and playback remains active while buffered output or queued images remain.
+ToolBlocks forward this signal. Delayed emissions retain their original
+packet tickets, timestamps and per-packet judgments. See
+[continuous stabilization and buffered plugins](sequence-memory.md#continuous-centered-stabilization).
+
 ## Projects and plugins
 
 Version 1 JSON projects persist type identifiers, instance IDs, names, parameters,

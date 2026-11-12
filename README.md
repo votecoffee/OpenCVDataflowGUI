@@ -59,6 +59,7 @@ Explore the [example catalog](examples/README.md) for runnable projects and the
 - **Graph and scheduling.** Blocks declare typed input and output ports. The
   scheduler runs a block when its dependencies are ready. Independent branches
   can run concurrently, with serial execution available for predictable ordering.
+  Buffered stream blocks drain their remaining output before finite playback stops.
 - **Branching and merging.** One output can feed multiple consumers. Split and
   decision blocks route work, while Join and input coordination can match
   ticketed results before a downstream block runs. A ToolBlock packages a

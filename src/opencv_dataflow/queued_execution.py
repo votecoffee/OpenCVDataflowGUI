@@ -71,6 +71,7 @@ def check_upstream(block):
     if (
         getattr(block, "queue_boundary", False)
         or getattr(block, "owns_workers", False)
+        or getattr(block, "buffered_stream", False)
         or (not isinstance(block, ToolBlock) and getattr(block, "accept_events", False))
     ):
         raise ValueError(
@@ -227,6 +228,15 @@ class QueuedExecution:
         cancelled = self.cancelled if cancelled is None else cancelled
         capture = self.queue.take(cancelled, wait_for_frame=True)
         if capture is None:
+            if (
+                not cancelled() and not self.stopped()
+                and self.producer.sources_exhausted() and self.graph.pending_output
+            ):
+                # The last retained capture may predate EOF when overflow drops
+                # newer frames. Advance source cursors before draining, not replaying them.
+                self.graph.copy_source_runtime_from(self.producer)
+                self.graph.run(cancelled)
+                return True
             return False
         self.queue.use_lease = True
         try:

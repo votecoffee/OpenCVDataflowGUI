@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 98 | 21 | 56 | 175 | 56.0% |
+| 1. Core and baseline 2D | 99 | 20 | 56 | 175 | 56.6% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 160 | 62 | 248 | 470 | 34.0% |
+| **Overall** | 161 | 61 | 248 | 470 | 34.3% |
 
 <!-- coverage-summary:end -->
 
@@ -61,7 +61,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S1-01 | Tiled inspection mosaic | Registered tile windows, warpPerspective, feather halos and coverage masks | Complete | cv.register_scan_layout, cv.render_mosaic_tile. Register up to 64 views and render individual bounded windows beyond dense-canvas limits. A 12-view example and dense-render comparisons verify coverage, overlap, pixel depth, tile boundaries and source transforms; allocation guards are tested on a large virtual canvas. |
-| S1-02 | Continuous centered stabilization | calcOpticalFlowPyrLK, estimateAffinePartial2D, warpAffine, bounded look-ahead | Partial | sequence.stabilize_batch smooths up to 64 frames. Stream a longer clip with bounded memory and latency, preserve frame timestamps and coverage, and verify reset and end-of-stream flush. |
+| S1-02 | Continuous centered stabilization | calcOpticalFlowPyrLK, estimateAffinePartial2D, warpAffine, bounded look-ahead | Complete | sequence.stabilize_stream. A 144-frame example and longer synthetic streams verify fixed look-ahead/state bounds, original tickets and timestamps, coverage, reset, scene boundaries and automatic tail flush, including chained ToolBlocks and acquisition queues. CPU fixtures match the batch smoother across supported pixel depths. |
 | S1-03 | Local still-image replay and save | imread, imwrite | Complete | input.file, output.image. Read typed image files, replay a list or folder with filename tickets, and save the result. |
 | S1-04 | Image encode/decode in memory | imencode, imdecode | Complete | cv.encode_image, cv.decode_image. PNG/JPEG buffer round trips with compression settings and spatial provenance. |
 | S1-05 | Multipage TIFF replay and save | imdecodemulti, imencodemulti on file-backed buffers | Complete | input.tiff_file, output.tiff_file. Ordered, ticketed page ranges and lossless batch output. |

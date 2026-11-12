@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.video_file",
+      "name": "144-frame inspection clip",
+      "parameters": {
+        "path": "assets/inspection-jitter.avi",
+        "path_base": "project",
+        "backend": "auto",
+        "start_frame": 0,
+        "end_frame": -1,
+        "stride": 1,
+        "repeat": "stop",
+        "frame_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "smooth",
+      "type": "sequence.stabilize_stream",
+      "name": "Stabilize continuous stream",
+      "parameters": {
+        "radius_frames": 4,
+        "sigma_frames": 2.0,
+        "motion_model": "translation",
+        "max_features": 240,
+        "feature_quality": 0.01,
+        "feature_spacing": 8.0,
+        "tracking_window": 21,
+        "max_pyramid_level": 3,
+        "forward_backward_pixels": 1.0,
+        "max_patch_error": 30.0,
+        "inlier_pixels": 2.0,
+        "min_inliers": 12,
+        "min_inlier_ratio": 0.5,
+        "max_step_pixels": 40.0,
+        "max_step_degrees": 12.0,
+        "max_step_scale_ratio": 1.15,
+        "min_coverage_fraction": 0.65,
+        "interpolation": "linear",
+        "max_bytes_mb": 128.0,
+        "max_gap_ms": 0.0
+      },
+      "position": [
+        330.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "flush"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "transform",
+        "report",
+        "ready",
+        "buffered"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture_note",
+      "type": "layout.comment",
+      "name": "Original synthetic fixture",
+      "description": "Original synthetic clip, generator and project under this repository's MIT license. Run all 144 frames. The stabilizer waits for four future frames, then emits in order with each original ticket and timestamp. The final tail flushes automatically. Stored images remain bounded by the configured smoothing window.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -270.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "smooth",
+      "input": "image"
+    }
+  ]
+}

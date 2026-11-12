@@ -905,6 +905,11 @@ exercises the check on near and far patches from a camera recording.
 **Stabilize recorded sequence** adds centered look-ahead smoothing for
 finite batches and preserves per-frame tickets, coverage, and transforms.
 Try the [offline smoothing example](<../examples/custom tools/offline_camera_stabilization/README.md>).
+**Stabilize continuous stream** applies the same centered smoothing to individual
+frames with bounded look-ahead. Run all flushes the final tail automatically;
+a live source can pulse Flush. Outputs keep their original frame tickets and
+timestamps. See the [144-frame example](<../examples/custom tools/continuous_camera_stabilization/README.md>)
+and [buffered stream contract](sequence-memory.md#continuous-centered-stabilization).
 
 **Stitch scan sequence** automatically registers two to eight ordered views.
 Each adjacent pair must meet the fit and overlap thresholds before the graph

@@ -944,6 +944,81 @@ class Graph:
             if hasattr(block, "graph") and hasattr(source, "graph"):
                 block.graph.copy_source_runtime_from(source.graph)
 
+    @property
+    def buffered_stream(self):
+        return any(getattr(b, "buffered_stream", False) for b in self.blocks.values())
+
+    @property
+    def pending_output(self):
+        for block in self.blocks.values():
+            if block.state in ("error", "skipped"):
+                continue
+            try:
+                if getattr(block, "pending_output", False) or (
+                    getattr(block, "queue_boundary", False) and block.stats()["queued"]
+                ):
+                    return True
+            except (Exception, SystemExit) as exc:
+                block._record_execution_error(exc, {})
+        return False
+
+    @property
+    def pending_tickets(self):
+        from .tickets import validate_ticket
+
+        tickets = []
+        for block in self.blocks.values():
+            if block.state in ("error", "skipped"):
+                continue
+            try:
+                pending = tuple(getattr(block, "pending_tickets", ()))
+                for ticket in pending:
+                    validate_ticket(ticket)
+                tickets.extend(pending)
+            except (Exception, SystemExit) as exc:
+                block._record_execution_error(exc, {})
+        return tuple(tickets)
+
+    def _upstream_ended(self, key, external_end=False):
+        """Follow image/set ancestors; scalar controls do not keep a stream open."""
+        seen = set()
+
+        def visit(node):
+            if node in seen:
+                return False, True
+            seen.add(node)
+            block = self.blocks[node]
+            if getattr(block, "buffered_stream", False):
+                return True, bool(
+                    getattr(block, "end_of_input", False) and not block.pending_output
+                )
+            if getattr(block, "queue_boundary", False) and block.stats()["queued"]:
+                return True, False
+            if hasattr(block, "graph") and block.graph.pending_output:
+                return True, False
+            if getattr(block, "file_source", False):
+                return True, bool(block.finite_source and block.exhausted)
+            if block.ticket_source:
+                return True, False
+            if hasattr(block, "graph") and block.graph.has_finite_sources():
+                return True, block.graph.sources_exhausted()
+            return ancestors(node)
+
+        def ancestors(node):
+            statuses = []
+            for edge in self.connections:
+                if edge.target != node:
+                    continue
+                source = self.blocks[edge.source]
+                port = next(p for p in source.output_ports if p.name == edge.output)
+                if port.kind in ("image", "any"):
+                    statuses.append(visit(edge.source))
+            found = [done for present, done in statuses if present]
+            return bool(found), all(found)
+
+        found, done = ancestors(key)
+        return done if found else external_end
+
     def sources_exhausted(self):
         sources = []
         for block in self.blocks.values():
@@ -951,7 +1026,7 @@ class Graph:
                 sources.append(block.exhausted)
             if hasattr(block, "graph") and block.graph.has_finite_sources():
                 sources.append(block.graph.sources_exhausted())
-        return bool(sources) and all(sources)
+        return bool(sources) and all(sources) and not self.pending_output
 
     def has_finite_sources(self):
         return any(
@@ -1027,14 +1102,19 @@ class Graph:
             )
         self.branch_workers = value
 
-    def run(self, cancelled=lambda: False, injected=None, provided=None, *, filmstrip_capture=None):
+    def run(
+        self, cancelled=lambda: False, injected=None, provided=None, *,
+        filmstrip_capture=None, end_of_input=False,
+    ):
         if self.filmstrip_enabled and self.production_completion and not self._event_prefix:
             from .filmstrip import FilmstripCapture
 
             filmstrip_capture = FilmstripCapture(self.filmstrip.max_bytes)
         failed = False
         try:
-            return self._run_iteration(cancelled, injected, provided, filmstrip_capture)
+            return self._run_iteration(
+                cancelled, injected, provided, filmstrip_capture, end_of_input
+            )
         except BaseException:
             failed = True
             raise
@@ -1075,6 +1155,7 @@ class Graph:
             for b in self.blocks.values()
         ):
             return
+        pending = {ticket_key(ticket) for ticket in self.pending_tickets}
         observed = {}
         for block in self.blocks.values():
             for packets in block.current_emissions.values():
@@ -1097,11 +1178,13 @@ class Graph:
                 ticket = block._source_ticket
                 observed[ticket_key(ticket)] = (ticket, False, None)
         for ticket, passed, timing in observed.values():
+            if ticket_key(ticket) in pending:
+                continue
             self.ticket_results.complete(
                 ticket, passed, timing, summary=not self.run_profile.ticket_details
             )
 
-    def _run_iteration(self, cancelled, injected, provided, filmstrip_capture):
+    def _run_iteration(self, cancelled, injected, provided, filmstrip_capture, end_of_input=False):
         from .toolblocks import ToolBlock
 
         if provided is None and not cancelled():
@@ -1186,7 +1269,15 @@ class Graph:
             streams = {c.input: emitted.get((c.source, c.output), []) for c in incoming}
             constants = {name: value for (target, name), value in injected.items() if target == key}
             outputs = {p.name: [] for p in block.execution_outputs}
-            if getattr(block, "queue_inputs", {}):
+            buffered = getattr(block, "buffered_stream", False)
+            stream_ended = buffered and self._upstream_ended(key, end_of_input)
+            draining = stream_ended and not any(
+                streams.get(name) or name in constants
+                for name in getattr(block, "stream_inputs", ())
+            )
+            if draining:
+                calls = [constants]
+            elif getattr(block, "queue_inputs", {}):
                 queued_inputs = block.queue_inputs
                 block._queued_public_events = {
                     name: [
@@ -1340,7 +1431,9 @@ class Graph:
             failed = False
             had_result = False
             last_processed_state = "inactive"
-            for values in calls:
+            for call_index, values in enumerate(calls):
+                if buffered:
+                    block.end_of_input = bool(stream_ended and call_index == len(calls) - 1)
                 if cancelled():
                     block.state, block.error = "skipped", "Run stopped"
                     return

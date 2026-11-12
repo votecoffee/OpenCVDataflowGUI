@@ -84,7 +84,9 @@ The [image, video and point-cloud coverage checklist](vision-coverage-checklist.
 the implementation scope and completion counts for stages 1–4. It assigns a
 stable ID to each capability and records its APIs, shipped evidence or exit
 check, and status. Tiled mosaics now render bounded windows from registered
-layouts. Continuous centered stabilization is the next open Stage 1 item.
+layouts. Continuous centered stabilization now runs across long streams with
+bounded look-ahead. Next, prioritize line-pair metrology and slanted-edge
+sharpness measurements among the remaining common inspection gaps.
 The checklist separates independently testable functions and links each capability to the [OpenCV scope map](opencv-scope-map.md).
 Its subgroup audit records which inspection workflows need a different build or
 a tested fallback. Point clouds include imported scans and reconstructed surfaces.
@@ -116,7 +118,7 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Finish continuous centered stabilization and follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize line-pair metrology and slanted-edge sharpness, then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and reusable classical ML train/predict blocks. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |
@@ -209,6 +211,9 @@ tracks an independent area from the anchor and rejects accumulated drift.
 verifies rejection and recovery on depth-separated patches of a recorded scene.
 [Smooth a recorded camera path](<../examples/custom tools/offline_camera_stabilization/README.md>)
 uses centered look-ahead within finite segments and preserves frame tickets.
+[Continuous centered stabilization](<../examples/custom tools/continuous_camera_stabilization/README.md>)
+extends the same smoothing to a bounded rolling window, retains each frame's
+ticket and timestamp, and flushes the remaining tail when playback ends.
 The [coverage backlog](opencv-coverage.md) tracks the remaining inspection
 workflows. Specialized array formats and additional matrix utilities are
 deferred until a concrete workflow needs them.

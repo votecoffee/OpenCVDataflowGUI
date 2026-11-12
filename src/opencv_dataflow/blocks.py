@@ -785,6 +785,7 @@ def builtin_registry():
     from .spectral import SPECTRAL_BLOCKS
     from .stabilization import StabilizeCameraMotion
     from .stereo3d import STEREO3D_BLOCKS
+    from .stream_stabilization import StabilizeStream
     from .strip_defects import GroupStripDefects, JudgeStripDefects
     from .strip_graphics import MapStripGraphics
     from .strip_width import InspectStripWidth
@@ -982,6 +983,7 @@ def builtin_registry():
         *SEQUENCE_BLOCKS,
         StabilizeCameraMotion,
         StabilizeRecordedSequence,
+        StabilizeStream,
         *NATIVE_BACKGROUND_BLOCKS,
         *NATIVE_TRACKER_BLOCKS,
         TrackConveyorParts,

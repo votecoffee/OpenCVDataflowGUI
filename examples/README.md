@@ -172,6 +172,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Coffee histograms](<custom tools/coffee_histograms/README.md>) | Compare hue, saturation, and value with a grayscale histogram and percentile markers. |
 | [Combined inspection regions](<custom tools/combined_regions/README.md>) | Subtract the center of a circle and union the resulting ring with a second part region. |
 | [Convex polygon overlap](<custom tools/convex_overlap/README.md>) | Compare a detected part hull with an editable polygon and display the intersection. |
+| [Continuous centered stabilization](<custom tools/continuous_camera_stabilization/README.md>) | Smooth a 144-frame camera path with bounded look-ahead and automatic tail flush while retaining frame tickets. |
 | [Correct exposure in an inspection scan](<custom tools/stitch_scan_exposure/README.md>) | Compare raw and exposure-matched 16-bit mosaics with feathered seams. |
 | [Depth hole filling](<custom tools/depth_hole_filling/README.md>) | Fill small enclosed depth gaps and mark estimated samples before point-cloud reconstruction. |
 | [Editable inspection regions](<custom tools/regions/README.md>) | Use circular, rectangular, and polygon regions to restrict measurements and image processing. |
