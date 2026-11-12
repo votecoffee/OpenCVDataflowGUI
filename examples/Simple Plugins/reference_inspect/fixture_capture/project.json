@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/nominal.png",
+          "assets/moved-nominal.png",
+          "assets/moved-changed.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "threshold",
+      "type": "cv.in_range",
+      "name": "In range mask",
+      "parameters": {
+        "lower": [
+          250
+        ],
+        "upper": [
+          255
+        ]
+      },
+      "position": [
+        310.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "blob",
+      "type": "inspect.blobs",
+      "name": "Find blobs",
+      "parameters": {
+        "connectivity": 8,
+        "min_area": 25,
+        "max_area": 80,
+        "expected_count": 1,
+        "algorithm": "default",
+        "region_mode": "center",
+        "check_count": true
+      },
+      "position": [
+        620.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "centroids",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture",
+      "type": "pose.from_feature",
+      "name": "Pose from feature",
+      "parameters": {
+        "index": 0,
+        "angle_mode": "fixed",
+        "angle_degrees": 0.0,
+        "pose_offset_x": 0.0,
+        "pose_offset_y": 0.0,
+        "pose_offset_angle": 0.0
+      },
+      "position": [
+        930.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "features"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "points",
+        "angle_degrees",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspection",
+      "type": "inspect.simple_reference",
+      "name": "SimpleReferenceInspect",
+      "parameters": {
+        "recipe_path": "assets/reference.sri",
+        "sha256": "b29114a05b9c1b47693a3f561882b70e3c8ff515a1274741aa5c5bd62f5b2e7f",
+        "render_overlay": true
+      },
+      "position": [
+        1240.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "inspection",
+        "defect_mask",
+        "inspected_mask",
+        "deviation_map",
+        "residual",
+        "defect_area",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "threshold",
+      "input": "image"
+    },
+    {
+      "source": "threshold",
+      "output": "image",
+      "target": "blob",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "fixture",
+      "input": "image"
+    },
+    {
+      "source": "blob",
+      "output": "collection",
+      "target": "fixture",
+      "input": "features"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "inspection",
+      "input": "image"
+    },
+    {
+      "source": "fixture",
+      "output": "pose",
+      "target": "inspection",
+      "input": "pose"
+    }
+  ]
+}

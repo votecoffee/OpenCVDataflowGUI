@@ -5,6 +5,8 @@ generated good images. Normal variation in one small feature is learned.
 A separate stable-feature mask is used to estimate exposure correction and
 check reference agreement.
 
+For a moving part, open the [paired fixture capture example](fixture_capture/README.md).
+
 ## Setup
 
 Install SimpleReferenceInspect into the environment running DataflowGUI.
