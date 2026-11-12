@@ -181,19 +181,26 @@ class PluginDialogContext:
 
     def snapshot_input_data(self, port):
         """Copy the latest published value and payload on a wired data input."""
+        return self._snapshot_input_value(port, "data")
+
+    def snapshot_input_cloud(self, port):
+        """Copy the latest published point cloud and payload on a wired cloud input."""
+        return self._snapshot_input_value(port, "cloud")
+
+    def _snapshot_input_value(self, port, kind):
         if self._graph is None:
             raise RuntimeError("The plugin dialog has closed")
         target = next((item for item in self._block.inputs if item.name == port), None)
-        if target is None or target.kind != "data":
-            raise ValueError(f"{port} is not a data input")
+        if target is None or target.kind != kind:
+            raise ValueError(f"{port} is not a {kind} input")
         wire = self._input_wires.get(port)
         if wire is None:
-            raise ValueError(f"Connect a source to {port} to capture its data")
+            raise ValueError(f"Connect a source to {port} to capture its {kind}")
         source, output = wire
         block = self._graph.blocks.get(source)
         result = block.last_result if block is not None else None
         if result is None or result.outputs.get(output, NO_VALUE) is NO_VALUE:
-            raise ValueError(f"No connected data is cached for {port}. Run the graph first.")
+            raise ValueError(f"No connected {kind} is cached for {port}. Run the graph first.")
         packet = ValuePacket(result.outputs[output], result.payloads.get(output, {}))
         validate_value(target, packet)
         return copy.deepcopy(packet)

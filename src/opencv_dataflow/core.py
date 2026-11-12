@@ -52,6 +52,7 @@ _PLUGIN_DISPLAY_TITLES = {
     "pattern.ogpm_match_model": "SimplePatternMatch · Match wired recipe",
     "inspect.simple_path_width": "SimplePathWidth",
     "inspect.simple_reference": "SimpleReferenceInspect",
+    "3d.simple_locate": "Simple3DLocate",
 }
 
 DISPLAY_RESULT_FIELDS = (

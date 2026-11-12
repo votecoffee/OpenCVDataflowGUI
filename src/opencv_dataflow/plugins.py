@@ -19,6 +19,7 @@ PIXEL_SEGMENTATION_TYPES = (
 )
 PATH_WIDTH_TYPES = ("inspect.simple_path_width",)
 REFERENCE_INSPECT_TYPES = ("inspect.simple_reference",)
+LOCATE_3D_TYPES = ("3d.simple_locate",)
 
 
 def _register_blocks(register, registry):
@@ -74,11 +75,26 @@ def load_installed_reference_inspect(registry):
     try:
         from opencv_simple_reference_inspect.dataflow import register
     except ModuleNotFoundError as exc:
-        if exc.name not in ("opencv_simple_reference_inspect", "opencv_simple_reference_inspect.dataflow"):
+        if exc.name not in (
+            "opencv_simple_reference_inspect", "opencv_simple_reference_inspect.dataflow"
+        ):
             raise
         raise ValueError(
             "Install SimpleReferenceInspect in the Python environment running DataflowGUI. "
             "See examples/Simple Plugins/reference_inspect/README.md for setup."
+        ) from exc
+    _register_blocks(register, registry)
+
+
+def load_installed_3d_locate(registry):
+    try:
+        from opencv_simple_3d_locate.dataflow import register
+    except ModuleNotFoundError as exc:
+        if exc.name not in ("opencv_simple_3d_locate", "opencv_simple_3d_locate.dataflow"):
+            raise
+        raise ValueError(
+            "Install Simple3DLocate in the Python environment running DataflowGUI. "
+            "See examples/Simple Plugins/3d_locate/README.md for setup."
         ) from exc
     _register_blocks(register, registry)
 

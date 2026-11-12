@@ -13,6 +13,7 @@ from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph, block_display_title
 from opencv_dataflow.plugins import (
     GEOMETRIC_MATCHER_TYPES,
+    LOCATE_3D_TYPES,
     PATH_WIDTH_TYPES,
     PIXEL_SEGMENTATION_TYPES,
     REFERENCE_INSPECT_TYPES,
@@ -25,7 +26,11 @@ from opencv_dataflow.toolbox import block_entry
     [
         (None, {"inspect.simple_classify_image": "SimpleClassify"}),
         ("opencv_simple_path_width.dataflow", {"inspect.simple_path_width": "SimplePathWidth"}),
-        ("opencv_simple_reference_inspect.dataflow", {"inspect.simple_reference": "SimpleReferenceInspect"}),
+        (
+            "opencv_simple_reference_inspect.dataflow",
+            {"inspect.simple_reference": "SimpleReferenceInspect"},
+        ),
+        ("opencv_simple_3d_locate.dataflow", {"3d.simple_locate": "Simple3DLocate"}),
         ("opencv_geometric_pattern_match.dataflow", {
             "pattern.ogpm_recipe": "SimplePatternMatch",
             "pattern.ogpm_load_recipe": "SimplePatternMatch · Load recipe",
@@ -132,6 +137,12 @@ def test_installed_segmentation_opens_and_locates_boards_without_manual_plugin(a
 @pytest.mark.parametrize(
     ("module", "type_id", "known_types", "setup_path"),
     [
+        (
+            "opencv_simple_3d_locate",
+            "3d.simple_locate",
+            LOCATE_3D_TYPES,
+            "examples/Simple Plugins/3d_locate/README.md",
+        ),
         (
             "opencv_simple_reference_inspect",
             "inspect.simple_reference",

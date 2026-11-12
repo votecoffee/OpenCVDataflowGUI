@@ -54,6 +54,7 @@ The `context` argument is a `PluginDialogContext` with the following members.
 | `snapshot_image(block_id, port, *, level=0)` | Returns a private `ValuePacket` containing a copied image and copied wire payload. |
 | `snapshot_input_image(port, *, source="connected", level=None)` | Copies an image for a named input of the selected block. |
 | `snapshot_input_data(port)` | Returns a private `ValuePacket` for the latest published value and payload on a wired `data` input. |
+| `snapshot_input_cloud(port)` | Returns a private `ValuePacket` for the latest published point cloud and payload on a wired `cloud` input. |
 | `output_revision` | Number of result publications received by the editor since the popup opened. Starts at zero. |
 | `subscribe_outputs(callback)` | Calls `callback(revision)` on the GUI thread after a publication and returns an unsubscribe function. |
 
@@ -89,6 +90,12 @@ on the GUI thread. It reads the latest published upstream result directly.
 A missing wire or absent output raises `ValueError`. When combining snapshots,
 check acquisition tickets and coordinate roots before treating the values as
 observations from the same image.
+
+For a point-cloud input, use `context.snapshot_input_cloud("scene")` on the
+GUI thread. It copies XYZ, colors, normals, units, coordinate frame, and payload
+metadata from the latest published upstream result. It validates the target
+cloud port and rejects missing or absent values. Editing the captured cloud
+does not modify the graph's cached cloud.
 
 ## Follow graph outputs
 
