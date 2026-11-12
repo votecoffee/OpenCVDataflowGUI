@@ -23,12 +23,12 @@ they can count as complete.
 
 | Module | Graph coverage and scope decisions | Checklist IDs |
 | --- | --- | --- |
-| `calib` | Camera targets, lens and planar maps, calibrated workplanes, stereo rig fitting and hand–eye geometry. Keep camera/robot transport with acquisition and industrial integration. Fit rigs with non-overlapping views as a separate workflow. | S1-69, S3-01–S3-09, S3-13–S3-14, S3-30–S3-32, S3-34–S3-41, S3-45, S3-54–S3-55, S3-70, S3-113 |
+| `calib` | Camera targets, lens and planar maps, calibrated workplanes, stereo rig fitting and hand–eye geometry. Keep camera/robot transport with acquisition and industrial integration. Fit rigs with non-overlapping views as a separate workflow. | S1-69, S3-01–S3-09, S3-13–S3-14, S3-30–S3-32, S3-34–S3-41, S3-45, S3-54–S3-55, S3-70, S3-113, S3-127–S3-128 |
 | `core` | Pixel/channel operations, numeric image checks, spectral transforms, blending and synthetic noise. Defer general scalar, tensor, matrix and optimization APIs to internal implementation or user blocks. | S1-13–S1-18, S1-37, S1-41, S1-55, S1-70, S1-73, S1-78–S1-80, S1-96, S1-105, S1-119, S1-132, S1-135, S1-143 |
 | `dnn` | Inference contracts, preprocessing, output adapters, model evaluation and learned vision. Keep importer internals and backend engines behind the model contract. | S2-01–S2-13, S2-23–S2-40, S2-45, S2-48, S2-51–S2-52 |
 | `features` | Corner and descriptor pipelines, matching, affine-invariant features and review. Reuse a feature/matcher block for parameter variants with equivalent outputs. | S1-42–S1-44, S1-46, S1-64, S1-128, S2-14–S2-17, S2-44 |
 | `flann` | Descriptor-based matching and image retrieval. Generic nearest-neighbor search structures stay behind feature adapters. | S1-44, S2-18–S2-19, S2-44 |
-| `geometry` | 2D shape measurement and topology, robust image transforms, camera pose, triangulation and image-driven spatial fitting. | S1-30–S1-35, S1-38, S1-46–S1-48, S1-61, S1-63, S1-65, S1-99–S1-103, S1-131, S1-134, S1-136, S3-09–S3-12, S3-42–S3-44, S3-64–S3-65 |
+| `geometry` | 2D shape measurement and topology, robust image transforms, camera pose, triangulation and image-driven spatial fitting. | S1-30–S1-35, S1-38, S1-46–S1-48, S1-61, S1-63, S1-65, S1-99–S1-103, S1-131, S1-134, S1-136, S3-09–S3-12, S3-42–S3-44, S3-64–S3-65, S1-174, S3-128–S3-129 |
 | `highgui` | Windowing, mouse input, and interactive display belong to the existing Qt editor and viewer. | — |
 | `imgcodecs` | Still images, buffers, TIFF pages, metadata, animation and precision-preserving codecs. The installed wheel reports JPEG 2000 enabled and AVIF and OpenEXR disabled. Qualify a supported build for additional codec variants. Verify codec probes and bounded page access. | S1-03–S1-08, S1-111, S1-125–S1-127, S1-149, S1-153, S1-158, S3-49 |
 | `imgproc` | Raster transforms, filtering, thresholds, masks, morphology, histograms, gradients, labels, overlays and image features. Drawing primitives support the overlay contract. | S1-13, S1-19–S1-30, S1-34–S1-36, S1-38–S1-40, S1-42, S1-45, S1-47, S1-56, S1-62, S1-66–S1-68, S1-71–S1-77, S1-93–S1-94, S1-97–S1-98, S1-106, S1-118, S1-120, S1-124, S1-129, S1-131–S1-133, S1-136–S1-137, S1-142–S1-144 |
@@ -119,7 +119,7 @@ callability and a representative fixture for each build-dependent commitment.
 
 | Family | Graph coverage and scope decisions | Checklist IDs |
 | --- | --- | --- |
-| `Inspection measurements` | Image-space sampling, calipers, edge differences, usable pick support and curved-strip defects. Recipe delivery and production acceptance remain in Stage 5. | S1-35, S1-55–S1-56, S1-61, S1-63, S1-67–S1-68, S1-97, S1-101–S1-103, S1-119, S1-131, S1-134, S1-136–S1-137, S1-143, S3-07 |
+| `Inspection measurements` | Image-space sampling, calipers, edge differences, usable pick support and curved-strip defects. Recipe delivery and production acceptance remain in Stage 5. | S1-35, S1-55–S1-56, S1-61, S1-63, S1-67–S1-68, S1-97, S1-101–S1-103, S1-119, S1-131, S1-134, S1-136–S1-137, S1-143, S3-07, S1-174–S1-175, S3-127–S3-129 |
 | `Model and decoder adapters` | Explicit image workflows for LightGlue, Annoy and ZXing. General-purpose external libraries stay outside the denominator. | S1-114, S2-14–S2-18, S2-48–S2-50 |
 | `Measurement fixtures` | Synthetic camera, video and model input variants are counted only when the workflow has a concrete fidelity check. | S1-105, S1-142, S2-23, S2-51, S3-48, S3-53, S4-76 |
 
@@ -757,6 +757,35 @@ General-purpose signal processing stays outside the graph checklist.
 Pinned sources are [color correction](https://github.com/opencv/opencv/blob/5.0.0/modules/photo/include/opencv2/photo/ccm.hpp),
 [chart detection](https://github.com/opencv/opencv/blob/5.0.0/modules/objdetect/include/opencv2/objdetect/mcc_checker_detector.hpp), and
 [profile resampling](https://github.com/opencv/opencv_contrib/blob/5.0.0/modules/signal/include/opencv2/signal/signal_resample.hpp).
+
+### Inspection metrology and residual image API review
+
+This pass checks the remaining top-level image names in the pinned wheel against
+existing graph tools and the inspection backlog. Hough accumulator wrappers are
+already used by the polar-line and circle blocks. Separate metrology rows cover
+measurements that need new outputs and validation.
+
+| API or workflow | Graph disposition | Checklist IDs |
+| --- | --- | --- |
+| `cv2.HoughLinesWithAccumulator`, `cv2.HoughCirclesWithAccumulator` | Shipped Hough tools already emit native vote or strength data for filtering and review. | S1-34 |
+| `cv2.fisheye.initUndistortRectifyMap`, `cv2.fisheye.undistortImage` | Map construction and direct resampling follow the existing declared fisheye camera and rectification contracts. Fitting the profile remains separate. | S3-04, S3-09, S3-14 |
+| `cv2.rectangleIntersectionArea` | Axis-aligned intersection is a geometry helper within footprint overlap and detection evaluation. | S1-33, S2-23 |
+| `cv2.fitLine` | The shipped image fit supplies individual lines. Line-pair metrology and a frame-aware spatial axis require distinct outputs and fixtures. | S1-33, S1-174, S3-129 |
+| `cv2.calibrateCameraExtended` | Shipped fit diagnostics support capture-set assessment. Add coverage, pose diversity and repeatability checks on the set. | S3-02, S3-127 |
+| `cv2.projectPoints`, `cv2.projectPointsSepJ` | Use projection derivatives or perturbation trials within calibrated uncertainty measurement. Preserve covariance assumptions and output units. | S3-09, S3-128 |
+| `Edge-spread and spatial-frequency response` | Derive a measurement from a selected slanted edge with a known sampling grid and validated frequency axis. | S1-175 |
+| `Custom BRISK sampling layouts` | Treat custom radii, sample counts and comparison ordering as extensions of the existing descriptor contract. Qualify persisted settings and matching compatibility before claiming support for the extension. | S1-43 |
+| `Array and feature record types` | Mat, rotated rectangles, keypoints, matches and file-storage objects remain representations inside graph tools. | — |
+| `Python bootstrap, HighGUI and platform utilities` | Keep package initialization, windowing, timings and hardware controls under packaging and runtime qualification. | — |
+
+Sources include the pinned [image processing header](https://github.com/opencv/opencv/blob/5.0.0/modules/imgproc/include/opencv2/imgproc.hpp),
+[2D geometry header](https://github.com/opencv/opencv/blob/5.0.0/modules/geometry/include/opencv2/geometry/2d.hpp),
+[3D geometry header](https://github.com/opencv/opencv/blob/5.0.0/modules/geometry/include/opencv2/geometry/3d.hpp),
+and [calibration header](https://github.com/opencv/opencv/blob/5.0.0/modules/calib/include/opencv2/calib.hpp).
+The metrology items are planned workflows composed from these primitives.
+Native solver parameter deviations are retained with their parameter order and
+fixed-parameter flags. Measurement uncertainty needs a declared joint covariance
+or empirically checked perturbation model.
 
 ### Remaining inspection workflows
 

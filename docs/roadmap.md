@@ -105,7 +105,10 @@ covers OCR, shape, hashing, foreground, saliency and both super-resolution
 modules. The [image ML, tracking, detection and restoration crosswalk](opencv-scope-map.md#native-image-ml-tracking-detection-and-restoration-crosswalk)
 adds classical image learning, contrib tracking and detectors, and additional
 restoration tools. The [color calibration and profile crosswalk](opencv-scope-map.md#native-color-calibration-and-image-profile-resampling-crosswalk)
-covers camera color profiles and image-derived sample grids.
+covers camera color profiles and image-derived sample grids. The
+[metrology and residual API review](opencv-scope-map.md#inspection-metrology-and-residual-image-api-review)
+links remaining image API variants and adds line-pair, spatial-axis and
+calibration-evidence workflows.
 Use the checklist as the implementation baseline and add scope for independently
 testable inspection workflows.
 

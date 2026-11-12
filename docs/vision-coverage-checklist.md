@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 97 | 21 | 55 | 173 | 56.1% |
+| 1. Core and baseline 2D | 97 | 22 | 56 | 175 | 55.4% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
-| 3. 3D imagery and point clouds | 33 | 24 | 69 | 126 | 26.2% |
+| 3. 3D imagery and point clouds | 33 | 25 | 71 | 129 | 25.6% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 159 | 59 | 245 | 463 | 34.3% |
+| **Overall** | 159 | 61 | 248 | 468 | 34.0% |
 
 <!-- coverage-summary:end -->
 
@@ -93,7 +93,7 @@ fixture or result needed to close the item.
 | S1-31 | Contour retrieval, holes and approximations | findContours, contourArea, arcLength, approxPolyDP, approxPolyN | Complete | inspect.contours, inspect.contour_hierarchy, inspect.approximate_contour, inspect.approximate_convex_contour. Retain nesting and bounded polygon fits. |
 | S1-32 | Contour comparison, containment and hulls | moments, HuMoments, matchShapes, convexHull, convexityDefects, pointPolygonTest | Complete | inspect.compare_contours, inspect.contour_points, inspect.contour_hull, inspect.contour_profile. Shape comparison and defects with measurable tolerances. |
 | S1-33 | Shape fitting and overlap | fitLine, fitEllipse/AMS/Direct, minEnclosingCircle, minAreaRect, rotatedRectangleIntersection, intersectConvexConvex | Complete | inspect.fit_shape, inspect.bounding_rotated_rectangle, inspect.rotated_rectangle_overlap, inspect.convex_polygon_overlap. Fits, intersections and IoU. |
-| S1-34 | Line and circle detection | HoughLines/P/PointSet, HoughCircles, createLineSegmentDetector | Complete | inspect.hough_polar_lines, inspect.hough_lines, inspect.hough_point_lines, inspect.hough_circles, inspect.line_segments. Geometry, strengths where native, and overlays. |
+| S1-34 | Line and circle detection | HoughLines/P/PointSet and accumulator variants, HoughCircles, createLineSegmentDetector | Complete | inspect.hough_polar_lines, inspect.hough_lines, inspect.hough_point_lines, inspect.hough_circles, inspect.line_segments. Geometry, strengths where native, and overlays. |
 | S1-35 | Calipers and oriented edge checks | Sobel or sampled derivatives, remap | Complete | inspect.oriented_edges, inspect.bead_calipers, cv.unwrap_path_strip, inspect.strip_width. Edge direction, paired widths and curved-path width. |
 | S1-36 | Image resize and integer crops | resize and integer ROI extraction | Complete | cv.resize, cv.crop. Verify interpolation, supported sample types and coordinate round trips. |
 | S1-37 | Image composition | hconcat, vconcat, repeat, masked copy | Complete | cv.join_images, cv.tile_image, cv.paste_patch. Bound composition size and retain panel or placement coordinates. |
@@ -298,6 +298,13 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S1-173 | Resample measured image profiles onto a common pitch | signal.resampleSignal with verified antialiasing or a tested equivalent | Partial | cv.path_intensity_profile supplies image-space profiles and sample coordinates. Align two profiles to a common pixel or physical pitch. Verify amplitude, peak position, antialiasing, invalid gaps and source-coordinate provenance for upsampling and decimation. |
+
+### Image metrology and edge sharpness
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S1-174 | Measure corners and angles from fitted image lines | fitLine with frame-aware line intersection and angle measurement | Partial | inspect.fit_shape fits individual image lines. Measure the vertex and included angle of a line pair, preserve source frames or physical workplane units, and reject parallel or poorly conditioned intersections on known corner fixtures. |
+| S1-175 | Measure sharpness from a slanted image edge | Subpixel edge sampling, edge-spread derivative and dft | Planned | Estimate an edge-spread curve and spatial-frequency response from a selected edge. Verify known blur levels, sample pitch, edge polarity and windowing, and report insufficient edge support or clipping. |
 
 ## Stage 2 — ML and DNN for images and video
 
@@ -573,6 +580,14 @@ fixture or result needed to close the item.
 | S3-124 | Reconstruct metric surfaces from wide-angle stereo | omnidir.stereoReconstruct | Planned | Use a calibrated wide-angle pair with known depth. Verify projection mode, disparity scale and invalid support, and compare colored XYZ output and image provenance against the reference. |
 | S3-125 | Import an external sparse reconstruction | sfm.importReconstruction or a validated Bundler reader | Planned | Load known camera intrinsics, extrinsics and sparse points together. Verify camera-to-world convention, scale status and held-out reprojection, and reject unsupported formats explicitly. |
 | S3-126 | Generate and detect random-pattern calibration targets | randpattern.RandomPatternGenerator and RandomPatternCornerFinder or a tested equivalent | Planned | Render a repeatable target with known physical size, recover labeled correspondences from a cropped or tilted view, and verify their target coordinates and held-out reprojection. |
+
+### Calibration evidence and spatial measurements
+
+| ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
+| --- | --- | --- | --- | --- |
+| S3-127 | Assess calibration capture coverage and parameter stability | calibrateCameraExtended diagnostics and target observation geometry | Partial | calibration.lens reports per-view error and parameter deviations and rejects duplicate views. Assess image coverage and target-pose diversity across a capture set. Flag weak geometry and compare fitted parameters against repeat captures and held-out image points. |
+| S3-128 | Estimate uncertainty on calibrated image measurements | projectPoints Jacobians and covariance propagation or measured perturbation trials | Planned | Propagate declared pixel, pose and calibration uncertainty into physical dimensions or target positions. Preserve units and parameter correlations, report modeling assumptions, and compare predicted intervals with repeated synthetic and recorded observations. |
+| S3-129 | Fit a spatial line or axis to measured 3D points | fitLine on XYZ with a robust distance choice | Planned | Fit a known axis amid noise and outliers, report direction, anchor, residuals and retained point IDs, and preserve physical units and frame. Verify direction-sign ambiguity and reject coincident or otherwise underconstrained samples. |
 
 ## Stage 4 — Selected contrib functions for images and video
 
