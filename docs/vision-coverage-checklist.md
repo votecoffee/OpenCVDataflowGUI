@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 103 | 20 | 52 | 175 | 58.9% |
+| 1. Core and baseline 2D | 104 | 20 | 51 | 175 | 59.4% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 165 | 61 | 244 | 470 | 35.1% |
+| **Overall** | 166 | 61 | 243 | 470 | 35.3% |
 
 <!-- coverage-summary:end -->
 
@@ -63,7 +63,7 @@ fixture or result needed to close the item.
 | S1-01 | Tiled inspection mosaic | Registered tile windows, warpPerspective, feather halos and coverage masks | Complete | cv.register_scan_layout, cv.render_mosaic_tile. Register up to 64 views and render individual bounded windows beyond dense-canvas limits. A 12-view example and dense-render comparisons verify coverage, overlap, pixel depth, tile boundaries and source transforms; allocation guards are tested on a large virtual canvas. |
 | S1-02 | Continuous centered stabilization | calcOpticalFlowPyrLK, estimateAffinePartial2D, warpAffine, bounded look-ahead | Complete | sequence.stabilize_stream. A 144-frame example and longer synthetic streams verify fixed look-ahead/state bounds, original tickets and timestamps, coverage, reset, scene boundaries and automatic tail flush, including chained ToolBlocks and acquisition queues. CPU fixtures match the batch smoother across supported pixel depths. |
 | S1-03 | Local still-image replay and save | imread, imwrite | Complete | input.file, output.image. Read typed image files, replay a list or folder with filename tickets, and save the result. |
-| S1-04 | Image encode/decode in memory | imencode, imdecode | Complete | cv.encode_image, cv.decode_image. PNG/JPEG and floating TIFF/HDR buffers, shared file/memory codec settings and spatial provenance. OpenEXR selection reports an unavailable codec on this build; native qualification remains in S1-125. |
+| S1-04 | Image encode/decode in memory | imencode, imdecode | Complete | cv.encode_image, cv.decode_image. PNG/JPEG/JPEG 2000 and floating TIFF/HDR buffers, shared file/memory codec settings and spatial provenance. OpenEXR selection reports an unavailable codec on this build; native qualification remains in S1-125. |
 | S1-05 | Multipage TIFF replay and save | imdecodemulti, imencodemulti on file-backed buffers | Complete | input.tiff_file, output.tiff_file. Ordered, ticketed page ranges and lossless batch output. |
 | S1-06 | JPEG/PNG metadata and orientation read | imreadWithMetadata, EXIF orientation transforms | Complete | input.file. Report metadata and exercise the saved-image orientation fixture. |
 | S1-07 | Image metadata write and buffer round trip | imwriteWithMetadata, imencodeWithMetadata, imdecodeWithMetadata | Planned | Round-trip supported metadata types through JPEG/PNG files and buffers. Verify orientation semantics and reject unsupported chunks explicitly. |
@@ -200,7 +200,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S1-124 | Laplacian image pyramids | pyrDown, pyrUp, detail.createLaplacePyr and detail.restoreImageFromLaplacePyr (CPU) | Complete | cv.laplacian_pyramid, cv.reconstruct_laplacian_pyramid. Signed float32/64 or native-detail int16 bands reuse the pyramid connector and level selector. Odd-size reconstruction, gray/color/alpha and high-bit depths, native in-place isolation, source frames/tickets, band gains, saturation reports and invalid sets are covered by focused tests. Original 16-bit round-trip/detail-edit example. GPU helpers remain unqualified. |
 | S1-125 | Floating-point image codec round trips | imread, imwrite and format-specific float encoding | Partial | cv.encode_image, cv.decode_image, input.file and output.image now preserve float32/64 TIFF values and channel order, with explicit lossless compression. Multipage TIFF supports floating pages. Radiance HDR has qualified RGBE error bounds and range checks. Original float32/HDR and float64/RGBA projects run headlessly. EXR controls and unavailable-codec handling ship, but this build reports OpenEXR: NO and native EXR tests skip. Float64 multichannel TIFF has exact OpenCV sample readback but emits a native photometric/ExtraSamples warning; cross-reader metadata qualification also remains open. |
-| S1-126 | Lossless high-bit-depth compressed images | JPEG 2000 and PNG codec options | Planned | Verify exact 16-bit round trips at supported settings and reject silent conversion or unavailable codecs. |
+| S1-126 | Lossless high-bit-depth compressed images | JPEG 2000 and PNG codec options | Complete | cv.encode_image, cv.decode_image, input.file and output.image. JP2 defaults to explicit lossless coding; lossy target rate is opt-in. PNG exposes compression, strategy, filter and libpng buffer controls. Real PNG/OpenJPEG tests verify exact uint8/uint16 gray, RGB and RGBA file/memory round trips, full-range values, alpha and wire payloads. Rejects floating JP2, undersized images and unavailable codecs before file publication. Original 16-bit color/grayscale examples verify zero error. |
 | S1-127 | Packed high-bit-depth sensor frames | RAW10/RAW12 unpacking and demosaicing | Planned | Decode known sensor byte patterns with stride, Bayer phase and bit-depth checks. |
 | S1-128 | Affine-invariant image feature extraction | AffineFeature.create with a supported feature detector | Planned | Measure correspondence repeatability under known view tilts and preserve point scale, orientation and source frame. |
 | S1-129 | Local structure tensor and dominant orientation | cornerEigenValsAndVecs | Planned | Expose eigenvalue and orientation maps with controlled borders and verify edges, corners and low-confidence flat areas. |

@@ -28,18 +28,48 @@ CODEC_DEFAULTS = {
     "png_compression": -1,
     "png_strategy": "native",
     "png_bilevel": False,
+    "png_filter": "native",
+    "png_zlib_buffer_size": 0,
+    "jpeg2000_mode": "lossless",
+    "jpeg2000_rate_x1000": 250,
     "webp_quality": -1,
     **FLOAT_CODEC_DEFAULTS,
 }
 CODEC_CHOICES = {
     "png_strategy": ("native", "default", "filtered", "huffman", "rle", "fixed"),
+    "png_filter": ("native", "none", "sub", "up", "avg", "paeth", "fast", "all"),
+    "jpeg2000_mode": ("lossless", "lossy"),
     **FLOAT_CODEC_CHOICES,
 }
 CODEC_HELP = {
     "jpeg_quality": "-1 preserves the codec default; otherwise 0..100. JPEG only.",
     "png_compression": "-1 preserves the codec default; otherwise 0..9. PNG only.",
     "webp_quality": "-1 preserves the codec default; otherwise 1..100. WebP only.",
+    "png_filter": "PNG filter or adaptive filter set; native keeps the backend default.",
+    "png_zlib_buffer_size": (
+        "PNG libpng buffer in bytes: zero for native, otherwise 6..1048576. SPNG does not use it."
+    ),
+    "jpeg2000_mode": (
+        "JP2 lossless uses reversible coding. Lossy mode explicitly enables target-rate"
+        " compression."
+    ),
+    "jpeg2000_rate_x1000": (
+        "Lossy JP2 only: target rate times 1000, from 1 to 999. It is not a quality "
+        "score or a guaranteed byte count."
+    ),
     **FLOAT_CODEC_HELP,
+}
+
+
+CODEC_RANGES = {
+    "jpeg_quality": NumericRange(-1, 100, whole=True),
+    "jpeg_luma_quality": NumericRange(-1, 100, whole=True),
+    "jpeg_chroma_quality": NumericRange(-1, 100, whole=True),
+    "jpeg_restart_interval": NumericRange(0, 65535, whole=True),
+    "png_compression": NumericRange(-1, 9, whole=True),
+    "png_zlib_buffer_size": NumericRange(6, 1048576, whole=True, zero_allowed=True),
+    "jpeg2000_rate_x1000": NumericRange(1, 999, whole=True),
+    **FLOAT_CODEC_RANGES,
 }
 
 
@@ -80,6 +110,29 @@ def codec_options(ext, parameters):
             options.extend([cv2.IMWRITE_PNG_STRATEGY, value])
         if parameters["png_bilevel"]:
             options.extend([cv2.IMWRITE_PNG_BILEVEL, 1])
+        filter_name = parameters["png_filter"]
+        if filter_name != "native":
+            flag = {
+                "none": cv2.IMWRITE_PNG_FILTER_NONE,
+                "sub": cv2.IMWRITE_PNG_FILTER_SUB,
+                "up": cv2.IMWRITE_PNG_FILTER_UP,
+                "avg": cv2.IMWRITE_PNG_FILTER_AVG,
+                "paeth": cv2.IMWRITE_PNG_FILTER_PAETH,
+                "fast": cv2.IMWRITE_PNG_FAST_FILTERS,
+                "all": cv2.IMWRITE_PNG_ALL_FILTERS,
+            }[filter_name]
+            options.extend([cv2.IMWRITE_PNG_FILTER, flag])
+        if parameters["png_zlib_buffer_size"]:
+            options.extend(
+                [cv2.IMWRITE_PNG_ZLIBBUFFER_SIZE, int(parameters["png_zlib_buffer_size"])]
+            )
+    elif ext == ".jp2":
+        rate = (
+            1000
+            if parameters["jpeg2000_mode"] == "lossless"
+            else int(parameters["jpeg2000_rate_x1000"])
+        )
+        options.extend([cv2.IMWRITE_JPEG2000_COMPRESSION_X1000, rate])
     elif ext == ".webp":
         quality = integer(parameters["webp_quality"], "WebP quality", -1, 100)
         if quality >= 0:
@@ -90,13 +143,21 @@ def codec_options(ext, parameters):
     return options
 
 
-FORMATS = {"png": ".png", "jpeg": ".jpg", "tiff": ".tiff", "hdr": ".hdr", "exr": ".exr"}
+FORMATS = {
+    "png": ".png",
+    "jpeg": ".jpg",
+    "tiff": ".tiff",
+    "hdr": ".hdr",
+    "exr": ".exr",
+    "jpeg2000": ".jp2",
+}
 MAGIC_BYTES = {
     "png": b"\x89PNG\r\n\x1a\n",
     "jpeg": b"\xff\xd8\xff",
     "tiff": (b"II*\0", b"MM\0*", b"II+\0", b"MM\0+"),
     "hdr": (b"#?RADIANCE", b"#?RGBE"),
     "exr": b"\x76\x2f\x31\x01",
+    "jpeg2000": b"\x00\x00\x00\x0cjP  \r\n\x87\n",
 }
 MAX_ENCODED_BYTES = 128 * 1024 * 1024
 MAX_IMAGE_PIXELS = 16_777_216
@@ -115,6 +176,16 @@ def encode_image_buffer(source, extension, p, *, allow_signed_tiff=False):
         raise ValidationError("Color conversion produced nonfinite samples")
     if extension in (".jpg", ".jpeg") and (image.dtype != np.uint8 or image.shape[2:] == (4,)):
         raise ValidationError("JPEG requires uint8 grayscale or RGB/BGR without alpha")
+    if extension == ".jp2":
+        if image.dtype not in (np.uint8, np.uint16):
+            raise ValidationError(
+                "JPEG 2000 requires uint8 or uint16; convert floating samples explicitly"
+            )
+        if min(image.shape[:2]) < 32:
+            raise ValidationError(
+                "This JPEG 2000 backend requires at least 32 pixels in each dimension; "
+                "use PNG for smaller images"
+            )
     if extension == ".png":
         if image.dtype not in (np.uint8, np.uint16):
             raise ValidationError("PNG requires uint8 or uint16; use TIFF for floating samples")
@@ -191,14 +262,7 @@ class EncodeImage(Block):
         **{key: value for key, value in CODEC_DEFAULTS.items() if key != "webp_quality"},
     }
     parameter_choices = {"codec": tuple(FORMATS), **CODEC_CHOICES}
-    parameter_ranges = {
-        "jpeg_quality": NumericRange(-1, 100, whole=True),
-        "jpeg_luma_quality": NumericRange(-1, 100, whole=True),
-        "jpeg_chroma_quality": NumericRange(-1, 100, whole=True),
-        "jpeg_restart_interval": NumericRange(0, 65535, whole=True),
-        "png_compression": NumericRange(-1, 9, whole=True),
-        **FLOAT_CODEC_RANGES,
-    }
+    parameter_ranges = CODEC_RANGES
     parameter_help = {
         key: description for key, description in CODEC_HELP.items() if key != "webp_quality"
     }

@@ -1699,7 +1699,7 @@ Inputs: `image` (image).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `codec` | `"png"` | `png`, `jpeg`, `tiff`, `hdr`, `exr` |
+| `codec` | `"png"` | `png`, `jpeg`, `tiff`, `hdr`, `exr`, `jpeg2000` |
 | `jpeg_quality` | `-1` | Value must be a whole number between -1 and 100. -1 preserves the codec default; otherwise 0..100. JPEG only. |
 | `jpeg_progressive` | `false` |  |
 | `jpeg_optimize` | `false` |  |
@@ -1709,6 +1709,10 @@ Inputs: `image` (image).
 | `png_compression` | `-1` | Value must be a whole number between -1 and 9. -1 preserves the codec default; otherwise 0..9. PNG only. |
 | `png_strategy` | `"native"` | `native`, `default`, `filtered`, `huffman`, `rle`, `fixed` |
 | `png_bilevel` | `false` |  |
+| `png_filter` | `"native"` | `native`, `none`, `sub`, `up`, `avg`, `paeth`, `fast`, `all` PNG filter or adaptive filter set; native keeps the backend default. |
+| `png_zlib_buffer_size` | `0` | Value must be zero or a whole number between 6 and 1.04858e+06. PNG libpng buffer in bytes: zero for native, otherwise 6..1048576. SPNG does not use it. |
+| `jpeg2000_mode` | `"lossless"` | `lossless`, `lossy` JP2 lossless uses reversible coding. Lossy mode explicitly enables target-rate compression. |
+| `jpeg2000_rate_x1000` | `250` | Value must be a whole number between 1 and 999. Lossy JP2 only: target rate times 1000, from 1 to 999. It is not a quality score or a guaranteed byte count. |
 | `tiff_compression` | `"none"` | `none`, `lzw`, `deflate`, `packbits` TIFF only. Explicit lossless compression avoids the native float32-color LogLuv default. |
 | `tiff_predictor` | `"native"` | `native`, `none`, `horizontal`, `floating` TIFF LZW/deflate only. Floating prediction requires floating samples; horizontal requires integer samples. |
 | `tiff_rows_per_strip` | `0` | Value must be a whole number between 0 and 1.67772e+07. TIFF strip height; zero keeps the native default. |
@@ -6147,15 +6151,19 @@ Inputs: `image` (image).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `path` | `"output.png"` |  |
-| `jpeg_quality` | `-1` | -1 preserves the codec default; otherwise 0..100. JPEG only. |
+| `jpeg_quality` | `-1` | Value must be a whole number between -1 and 100. -1 preserves the codec default; otherwise 0..100. JPEG only. |
 | `jpeg_progressive` | `false` |  |
 | `jpeg_optimize` | `false` |  |
-| `jpeg_restart_interval` | `0` |  |
-| `jpeg_luma_quality` | `-1` |  |
-| `jpeg_chroma_quality` | `-1` |  |
-| `png_compression` | `-1` | -1 preserves the codec default; otherwise 0..9. PNG only. |
+| `jpeg_restart_interval` | `0` | Value must be a whole number between 0 and 65535. |
+| `jpeg_luma_quality` | `-1` | Value must be a whole number between -1 and 100. |
+| `jpeg_chroma_quality` | `-1` | Value must be a whole number between -1 and 100. |
+| `png_compression` | `-1` | Value must be a whole number between -1 and 9. -1 preserves the codec default; otherwise 0..9. PNG only. |
 | `png_strategy` | `"native"` | `native`, `default`, `filtered`, `huffman`, `rle`, `fixed` |
 | `png_bilevel` | `false` |  |
+| `png_filter` | `"native"` | `native`, `none`, `sub`, `up`, `avg`, `paeth`, `fast`, `all` PNG filter or adaptive filter set; native keeps the backend default. |
+| `png_zlib_buffer_size` | `0` | Value must be zero or a whole number between 6 and 1.04858e+06. PNG libpng buffer in bytes: zero for native, otherwise 6..1048576. SPNG does not use it. |
+| `jpeg2000_mode` | `"lossless"` | `lossless`, `lossy` JP2 lossless uses reversible coding. Lossy mode explicitly enables target-rate compression. |
+| `jpeg2000_rate_x1000` | `250` | Value must be a whole number between 1 and 999. Lossy JP2 only: target rate times 1000, from 1 to 999. It is not a quality score or a guaranteed byte count. |
 | `webp_quality` | `-1` | -1 preserves the codec default; otherwise 1..100. WebP only. |
 | `tiff_compression` | `"none"` | `none`, `lzw`, `deflate`, `packbits` TIFF only. Explicit lossless compression avoids the native float32-color LogLuv default. |
 | `tiff_predictor` | `"native"` | `native`, `none`, `horizontal`, `floating` TIFF LZW/deflate only. Floating prediction requires floating samples; horizontal requires integer samples. |

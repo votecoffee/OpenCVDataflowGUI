@@ -13,9 +13,14 @@ import cv2
 import numpy as np
 
 from .core import Block, Graph, Port, Registry, Result
-from .float_codecs import FLOAT_CODEC_RANGES
 from .graphics_layers import GraphicDrawing, graphic_object
-from .image_codecs import CODEC_CHOICES, CODEC_DEFAULTS, CODEC_HELP, encode_image_buffer
+from .image_codecs import (
+    CODEC_CHOICES,
+    CODEC_DEFAULTS,
+    CODEC_HELP,
+    CODEC_RANGES,
+    encode_image_buffer,
+)
 from .image_metadata import decode_file_image
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 from .objects import collection, contour_item
@@ -575,7 +580,7 @@ class SaveImage(Block):
     defaults = {"path": "output.png", **CODEC_DEFAULTS}
     parameter_choices = CODEC_CHOICES
     parameter_help = CODEC_HELP
-    parameter_ranges = FLOAT_CODEC_RANGES
+    parameter_ranges = CODEC_RANGES
 
     def process(self, inputs):
         path = Path(self.parameters["path"])

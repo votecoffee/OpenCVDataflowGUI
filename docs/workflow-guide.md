@@ -1116,3 +1116,24 @@ The supported OpenCV 5 wheel reports **OpenEXR: NO**. EXR output fails clearly
 without creating a file, and its native round-trip tests remain skipped. The app
 does not change global codec environment settings. This qualification remains
 open in S1-125. Try the [TIFF/HDR and float64 examples](<../examples/opencv tools/float_image_codecs/README.md>).
+
+## Lossless high-bit-depth image codecs
+
+Choose **Encode image in memory → codec → jpeg2000** for JP2 packets, or use a
+`.jp2` path in **Save image**. Both share the same controls. Lossless is the
+default and preserves uint8/uint16 gray, RGB/BGR and RGBA/BGRA samples on the
+supported OpenCV 5/OpenJPEG backend. Decoding restores the logical channel order;
+encoded connections retain tickets, coordinates and other payloads.
+
+Lossy mode must be selected explicitly. Its rate ×1000 is a target (1–999), not
+a quality percentage or guaranteed file size. Lossless mode always uses the native
+1000 setting. Floating JP2 input and images below 32 pixels in either dimension
+are rejected before publication. A missing backend produces an explicit codec
+error. No padding, depth fallback or alternate file type is silently substituted.
+
+PNG compression/strategy controls also expose native, individual, fast and
+all/adaptive filters. Its libpng buffer accepts zero for the native default or
+6–1,048,576 bytes; this setting does not apply to SPNG. These controls affect
+encoding work and file size while preserving samples. Bilevel PNG remains an
+8-bit monochrome mask option. Select **Load image → pixel depth → unchanged**
+when checking file round trips. Try the [16-bit color/alpha and grayscale examples](<../examples/opencv tools/high_bit_depth_codecs/README.md>).
