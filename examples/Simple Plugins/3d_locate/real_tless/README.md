@@ -43,6 +43,10 @@ The [rendered CAD scoring example](projective_scoring/README.md) uses plugin
 dev11 to resolve two retained isolated-view ranking failures. It compares
 the same candidates and fit gates using calibrated dense depth agreement.
 
+The [regional candidate example](regional_candidates/README.md) uses plugin
+dev12 to search real clutter with proposal-only support-plane removal and local
+PPF, retaining original verification data. It compares added recall and cost.
+
 ## Measured scope and failures
 
 With default training/execution settings, capture 230's isolated object has

@@ -1,0 +1,505 @@
+{
+  "case": "isolated_000347",
+  "segmentation_supplied": true,
+  "validation": {
+    "matched": 1,
+    "missed": 0,
+    "extra": 0,
+    "max_position_error": 3.8334150632801047,
+    "max_angle_error_degrees": 2.5664351313768266
+  },
+  "result": {
+    "model": "simple_3d_locate_v1",
+    "units": "mm",
+    "source_frame": "tless_object29",
+    "target_frame": "camera",
+    "matches": [
+      {
+        "source_to_target": [
+          [
+            0.8470203520675769,
+            -0.036778075460364,
+            -0.5302866171691973,
+            -27.612233848522386
+          ],
+          [
+            -0.27402205583519373,
+            0.8246222746626082,
+            -0.4948838419731651,
+            -72.28227105572543
+          ],
+          [
+            0.455487031757407,
+            0.564486915079259,
+            0.6883938455601774,
+            829.3821382670725
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "coverage": 0.5835616438356165,
+        "score": 0.74918447996152,
+        "score_type": "projective_depth_fit_not_probability",
+        "projective_scoring": {
+          "model": "cad_projective_score_v1",
+          "status": "checked",
+          "reason": null,
+          "score": 0.74918447996152,
+          "score_type": "projective_depth_fit_not_probability",
+          "render_stride": 2,
+          "rendered_rays": 4327,
+          "known_rays": 4315,
+          "depth_coverage": 0.9972267159694939,
+          "free_space_rays": 24,
+          "occluded_rays": 920,
+          "consistent_rays": 3371,
+          "geometric_score": 0.508345381154434
+        },
+        "rmse": 1.0856096757345381,
+        "normal_spread": 0.3644328989945636,
+        "votes": 132,
+        "model_inliers": 426,
+        "unique_scene_inliers": 350,
+        "refined": true,
+        "candidate_source": "regions",
+        "pose_alternatives": {
+          "model": "geometric_pose_alternatives_v1",
+          "status": "alternatives_observed",
+          "count": 1,
+          "suppressed_candidates": 15,
+          "score_gap": 0.009827494449688445,
+          "relative_score_margin": 0.013117589475683224,
+          "margin_type": "geometric_score_gap_not_probability",
+          "score_type": "projective_depth_fit_not_probability",
+          "minimum_center_separation": 3.7147711835093293,
+          "minimum_orientation_separation_degrees": 12.0,
+          "alternatives": [
+            {
+              "source_to_target": [
+                [
+                  -0.8546299389035483,
+                  -0.041124997895190155,
+                  0.5176064161868914,
+                  -28.147118614510166
+                ],
+                [
+                  0.2750550659970346,
+                  0.8096458478288248,
+                  0.5184769153616293,
+                  -73.67485882174392
+                ],
+                [
+                  -0.4404002477282269,
+                  0.5854761614631836,
+                  -0.680635942453271,
+                  829.6669459649961
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.7393569855118316,
+              "score_type": "projective_depth_fit_not_probability",
+              "coverage": 0.664364640883978,
+              "rmse": 1.1798179589859183,
+              "candidate_source": "ppf",
+              "center_displacement": 1.5187224314359513,
+              "orientation_difference_degrees": 179.20975626609024,
+              "overlap": 0.9648697164448822
+            }
+          ],
+          "truncated": false,
+          "exhaustive": false
+        },
+        "depth_verification": {
+          "mode": "auto",
+          "status": "checked",
+          "reason": null,
+          "source": "depth_scene",
+          "input_points": 378341,
+          "visible_model_points": 730,
+          "known_points": 721,
+          "unique_known_rays": 717,
+          "consistent_points": 543,
+          "occluded_points": 177,
+          "free_space_points": 1,
+          "unknown_points": 9,
+          "depth_coverage": 0.9876712328767123,
+          "free_space_fraction": 0.0013869625520110957,
+          "maximum_free_space": 0.1,
+          "minimum_depth_coverage": 0.8,
+          "minimum_known_rays": 20,
+          "limit_exceeded": false,
+          "applied": true
+        },
+        "visible_model_points": 730
+      }
+    ],
+    "candidate_count": 74,
+    "tested_candidates": 24,
+    "sampled_scene_points": 995,
+    "search_model_points": 384,
+    "search_scene_points": 995,
+    "passed": true,
+    "execution": {
+      "sampling": "uniform",
+      "candidate_backend": "ppf_regions",
+      "plane_search": {
+        "model_patches": 0,
+        "scene_patches": 0,
+        "coarse_proposals": 0
+      },
+      "feature_search": {
+        "coarse_proposals": 0
+      },
+      "region_search": {
+        "input_points": 995,
+        "background_planes": 0,
+        "proposal_only_removed_points": 0,
+        "components": 2,
+        "largest_component_sizes": [
+          941,
+          38
+        ],
+        "region_points": [
+          941,
+          38
+        ],
+        "window_regions": 0,
+        "skipped_global_duplicates": 0,
+        "region_limit": 12,
+        "enabled": true,
+        "search_region_points": [
+          941,
+          38
+        ],
+        "native_failures": 0,
+        "malformed_hypotheses": 0,
+        "detector_compilations": 0,
+        "coarse_proposals": 35,
+        "selected_proposals": 12,
+        "seconds": {
+          "analysis": 0.008570299996790709,
+          "native_and_compile": 0.07602100000076462,
+          "model_compile": 0.0,
+          "coarse_ranking": 0.03018520000114222
+        }
+      },
+      "refinement": "legacy",
+      "pose_scoring": {
+        "requested": "projective",
+        "active": "projective",
+        "fallback_reason": null,
+        "rejected_candidates": []
+      },
+      "observation_mode": "surface",
+      "projection": "pinhole",
+      "input_points": 14306,
+      "first_surface_points": 14306,
+      "depth_verification": {
+        "mode": "auto",
+        "status": "available",
+        "reason": null,
+        "source": "depth_scene",
+        "input_points": 378341
+      },
+      "depth_rejected": 5,
+      "depth_rejected_candidates": [
+        {
+          "source_to_target": [
+            [
+              0.8455284179126971,
+              -0.53223196792238,
+              0.04255381091656185,
+              -32.57309578246177
+            ],
+            [
+              -0.2852638433176075,
+              -0.5176755212146276,
+              -0.80662047731931,
+              -85.22386960072673
+            ],
+            [
+              0.4513382702560456,
+              0.6698814723939114,
+              -0.5895359011507664,
+              830.3299301447676
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "candidate_source": "regions",
+          "score": 0.5466623282076396,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "checked",
+            "reason": null,
+            "source": "depth_scene",
+            "input_points": 378341,
+            "visible_model_points": 736,
+            "known_points": 733,
+            "unique_known_rays": 729,
+            "consistent_points": 546,
+            "occluded_points": 105,
+            "free_space_points": 82,
+            "unknown_points": 3,
+            "depth_coverage": 0.9959239130434783,
+            "free_space_fraction": 0.11186903137789904,
+            "maximum_free_space": 0.1,
+            "minimum_depth_coverage": 0.8,
+            "minimum_known_rays": 20,
+            "limit_exceeded": true,
+            "applied": true
+          }
+        },
+        {
+          "source_to_target": [
+            [
+              0.8481935065122798,
+              -0.5276954155800512,
+              0.04588380854070832,
+              -32.438015983443336
+            ],
+            [
+              -0.28187397179898904,
+              -0.5230120674820767,
+              -0.8043664844400136,
+              -85.37328825347872
+            ],
+            [
+              0.44845829185406527,
+              0.6693249776034961,
+              -0.5923590421555266,
+              830.4129643401211
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "candidate_source": "regions",
+          "score": 0.5459489316128449,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "checked",
+            "reason": null,
+            "source": "depth_scene",
+            "input_points": 378341,
+            "visible_model_points": 730,
+            "known_points": 728,
+            "unique_known_rays": 723,
+            "consistent_points": 543,
+            "occluded_points": 104,
+            "free_space_points": 81,
+            "unknown_points": 2,
+            "depth_coverage": 0.9972602739726028,
+            "free_space_fraction": 0.11126373626373626,
+            "maximum_free_space": 0.1,
+            "minimum_depth_coverage": 0.8,
+            "minimum_known_rays": 20,
+            "limit_exceeded": true,
+            "applied": true
+          }
+        },
+        {
+          "source_to_target": [
+            [
+              0.8442854953701888,
+              -0.5342887347700386,
+              0.04144333728533836,
+              -32.499904380615995
+            ],
+            [
+              -0.2870859617154261,
+              -0.5162429899811716,
+              -0.806892078211968,
+              -85.24430137486834
+            ],
+            [
+              0.45250817991882075,
+              0.6693494776222146,
+              -0.5892432637828157,
+              830.3829791103433
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "candidate_source": "regions",
+          "score": 0.5383019499038976,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "checked",
+            "reason": null,
+            "source": "depth_scene",
+            "input_points": 378341,
+            "visible_model_points": 740,
+            "known_points": 737,
+            "unique_known_rays": 733,
+            "consistent_points": 545,
+            "occluded_points": 111,
+            "free_space_points": 81,
+            "unknown_points": 3,
+            "depth_coverage": 0.995945945945946,
+            "free_space_fraction": 0.10990502035278155,
+            "maximum_free_space": 0.1,
+            "minimum_depth_coverage": 0.8,
+            "minimum_known_rays": 20,
+            "limit_exceeded": true,
+            "applied": true
+          }
+        },
+        {
+          "source_to_target": [
+            [
+              -0.8498559048024592,
+              -0.5243874874268724,
+              -0.05256143170164059,
+              -32.50910242104536
+            ],
+            [
+              0.28509865559909114,
+              -0.5413338834409904,
+              0.7909970816724217,
+              -86.2380956383346
+            ],
+            [
+              -0.44324225616245694,
+              0.6572483470263192,
+              0.6095579649903583,
+              830.2713086129442
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "candidate_source": "regions",
+          "score": 0.46787239800851754,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "checked",
+            "reason": null,
+            "source": "depth_scene",
+            "input_points": 378341,
+            "visible_model_points": 729,
+            "known_points": 727,
+            "unique_known_rays": 721,
+            "consistent_points": 532,
+            "occluded_points": 92,
+            "free_space_points": 103,
+            "unknown_points": 2,
+            "depth_coverage": 0.9972565157750343,
+            "free_space_fraction": 0.14167812929848694,
+            "maximum_free_space": 0.1,
+            "minimum_depth_coverage": 0.8,
+            "minimum_known_rays": 20,
+            "limit_exceeded": true,
+            "applied": true
+          }
+        },
+        {
+          "source_to_target": [
+            [
+              -0.8489960066193887,
+              -0.5259986994320076,
+              -0.05031052514303075,
+              -32.4314056471764
+            ],
+            [
+              0.28857169380698583,
+              -0.5413113377116808,
+              0.7897521213635064,
+              -86.25400081156214
+            ],
+            [
+              -0.4426422463770243,
+              0.6559782037999641,
+              0.6113594996903825,
+              830.3702959504105
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "candidate_source": "ppf",
+          "score": 0.46597215167292155,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "checked",
+            "reason": null,
+            "source": "depth_scene",
+            "input_points": 378341,
+            "visible_model_points": 719,
+            "known_points": 717,
+            "unique_known_rays": 714,
+            "consistent_points": 519,
+            "occluded_points": 94,
+            "free_space_points": 104,
+            "unknown_points": 2,
+            "depth_coverage": 0.9972183588317107,
+            "free_space_fraction": 0.14504881450488144,
+            "maximum_free_space": 0.1,
+            "minimum_depth_coverage": 0.8,
+            "minimum_known_rays": 20,
+            "limit_exceeded": true,
+            "applied": true
+          }
+        }
+      ],
+      "overlap_metric": "combined",
+      "overlap_threshold": 0.6,
+      "overlap_rejected": 15,
+      "verified_candidates": 16,
+      "match_limit_discarded": 0,
+      "coarse_rejected": 0,
+      "icp_calls": 48,
+      "execution_workers": 4,
+      "active_candidate_workers": 4,
+      "candidate_timing_aggregation": "worker_intervals_may_overlap",
+      "model_levels": [
+        1804
+      ],
+      "scene_levels": [
+        995
+      ],
+      "seconds": {
+        "preprocess": 0.057362399998964975,
+        "candidate_search": 0.15734570000131498,
+        "ppf_search": 0.042366300000139745,
+        "plane_search": 0.0,
+        "feature_search": 0.0,
+        "region_search": 0.11479010000039125,
+        "depth_prepare": 0.03661170000123093,
+        "depth_verify": 0.05978400000822148,
+        "projective_score_sum": 0.255811500002892,
+        "worker_index_prepare_sum": 0.0007011999987298623,
+        "suppression": 0.02097449999928358,
+        "pose_alternatives": 0.0004503999989537988,
+        "refine_verify": 0.4037434999991092,
+        "total": 0.6184517000001506
+      }
+    }
+  }
+}

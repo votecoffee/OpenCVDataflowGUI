@@ -1,0 +1,146 @@
+{
+  "models": [
+    {
+      "geometry": "curved",
+      "recommended": "parallel",
+      "profiles": [
+        {
+          "profile": "current",
+          "compatible": true,
+          "mean_scene_median_seconds": 0.7059587500007183,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "geometry",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.0169581499985725,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "pyramid",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.0974837249996199,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "compact",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.0000554250000278,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "planes",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.288263275000645,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "features",
+          "compatible": true,
+          "mean_scene_median_seconds": 2.129233574999489,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "parallel",
+          "compatible": true,
+          "mean_scene_median_seconds": 0.2702348749999146,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "projective",
+          "compatible": true,
+          "mean_scene_median_seconds": 0.8559818750009072,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "regions",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.105928724999103,
+          "missed": 0,
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "geometry": "cad",
+      "recommended": "parallel",
+      "profiles": [
+        {
+          "profile": "current",
+          "compatible": true,
+          "mean_scene_median_seconds": 3.2651959249997162,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "geometry",
+          "compatible": true,
+          "mean_scene_median_seconds": 2.828725750000558,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "pyramid",
+          "compatible": true,
+          "mean_scene_median_seconds": 2.458319150000534,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "compact",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.9674408000000767,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "planes",
+          "compatible": true,
+          "mean_scene_median_seconds": 3.695705724999243,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "features",
+          "compatible": true,
+          "mean_scene_median_seconds": 5.352758725000058,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "parallel",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.2292522249990725,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "projective",
+          "compatible": true,
+          "mean_scene_median_seconds": 3.366730550000284,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "regions",
+          "compatible": true,
+          "mean_scene_median_seconds": 3.3102522500003033,
+          "missed": 0,
+          "extra": 0
+        }
+      ]
+    }
+  ],
+  "positive_scenes": 6,
+  "negative_scenes": 2,
+  "expected_instances_per_repeat": 12,
+  "scope": "Generated fused surfaces with missing slices, noise and clutter. Real sensor qualification remains open."
+}

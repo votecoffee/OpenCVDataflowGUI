@@ -463,3 +463,56 @@ def test_projective_scoring_example_ranks_correct_pose_with_cached_locator():
                 )
     finally:
         graph.close()
+
+
+@pytest.mark.local_examples
+def test_regional_candidate_example_recovers_full_scene_with_original_depth():
+    tool = pytest.importorskip("opencv_simple_3d_locate")
+    try:
+        tool.Settings(candidate_backend="ppf_regions")
+    except ValueError:
+        pytest.skip("Regional example requires Simple3DLocate 0.1.0.dev12 or later")
+    from opencv_simple_3d_locate.optimization import pose_agreement
+
+    root = (
+        Path(__file__).resolve().parents[1]
+        / "examples/Simple Plugins/3d_locate/real_tless/regional_candidates"
+    )
+    graph = Graph.load(root / "project.json", builtin_registry())
+    try:
+        graph.run()
+        block = graph.blocks["locate"]
+        assert block.state == "pass", block.error
+        cached = block._locator
+        outputs = block.last_result.outputs
+        assert outputs["count"] == 1
+        assert outputs["report"]["matches"][0]["candidate_source"] == "regions"
+        execution = outputs["report"]["execution"]
+        assert execution["candidate_backend"] == "ppf_regions"
+        assert execution["region_search"]["proposal_only_removed_points"] > 0
+        assert execution["depth_verification"]["source"] == "depth_scene"
+        assert execution["pose_scoring"]["active"] == "projective"
+        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        checked = pose_agreement(
+            [np.asarray(outputs["pose"]["source_to_target"])],
+            [truth],
+            position_tolerance=5,
+            angle_degrees=5,
+            symmetries=(np.diag([-1.0, -1.0, 1.0, 1.0]),),
+        )
+        assert checked["matched"] == 1 and checked["missed"] == checked["extra"] == 0
+        graph.run()
+        assert block._locator is cached and block.last_result.outputs["count"] == 1
+        comparison = json.loads((root / "comparison_projective.json").read_bytes())
+        assert comparison["repeats"] == 3 and comparison["recommended"] is None
+        for profile, expected in zip(comparison["profiles"], ((3, 5, 0), (5, 3, 1))):
+            for repeat in range(3):
+                assert (
+                    tuple(
+                        sum(s["runs"][repeat][k] for s in profile["scenes"])
+                        for k in ("matched", "missed", "extra")
+                    )
+                    == expected
+                )
+    finally:
+        graph.close()
