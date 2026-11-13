@@ -1,0 +1,19 @@
+{
+  "source_displacement_pixels": [
+    8,
+    4
+  ],
+  "fraction": 0.5,
+  "source_times_ms": [
+    0,
+    40
+  ],
+  "expected_timestamp_ms": 20,
+  "truth_method": "Direct integer crop from the original larger texture",
+  "quality_rectangle": [
+    32,
+    24,
+    192,
+    144
+  ]
+}

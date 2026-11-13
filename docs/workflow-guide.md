@@ -177,6 +177,19 @@ The status bar shows the active run mode.
 validation-set window. [Workspace and image-set details](workspaces-image-sets.md)
 cover ordering, queue behavior, filename identity, retention and Lean mode.
 
+## Paired-frame motion interpolation
+
+[Motion-compensated frame interpolation](<../examples/opencv tools/frame_interpolation/README.md>)
+creates an intermediate image from two equally registered frames. Estimate
+bidirectional Farneback flow, refine wired initial fields or use provided fields.
+Configure inverse convergence, consistency and optional appearance checks; inspect
+the support mask and set an acceptable coverage limit. Hole fill remains unsupported.
+Masks/regions select output centers; other pixels stay from A. Numeric output
+retains pixel encoding/depth and A-owned ticket/grid/pyramid context, with both
+source identities in lineage. Compatible video metadata or explicit timestamps
+produce a synthetic media time, separate from ticket processing time. This block
+emits one image per pair; sequence pacing and rate expansion remain separate.
+
 ## Pattern matching and pose inspection
 
 Train geometric and texture patterns with **Match shape pattern** and **Match

@@ -27,6 +27,7 @@ BINDINGS = {
     "calibration.undistort": "undistort",
     "calibration.undistort_lens_points": "undistortPoints projectPoints",
     "cv.absdiff": "absdiff",
+    "cv.interpolate_frames": "calcOpticalFlowFarneback remap",
     "cv.adaptive_threshold": "adaptiveThreshold",
     "cv.local_threshold": "ximgproc.niBlackThreshold",
     "cv.ridge_response": (
@@ -168,6 +169,8 @@ BINDINGS = {
     "inspect.contours": "findContours contourArea moments",
     "inspect.corner_response": "cornerHarris cornerMinEigenVal",
     "inspect.corners": "goodFeaturesToTrack",
+    "inspect.affine_features": "AffineFeature_create SIFT_create ORB_create",
+    "inspect.structure_tensor": "cornerEigenValsAndVecs",
     "inspect.fast": "FastFeatureDetector_create",
     "inspect.flood_fill": "floodFill",
     "inspect.grabcut": "grabCut",

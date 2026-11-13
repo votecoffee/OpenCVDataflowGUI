@@ -2231,6 +2231,58 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `output_depth` | `"float64"` | `float64`, `float32`, `same` Same keeps the source depth, rounding and saturating integer results. |
 | `preserve_alpha` | `true` | Copy the alpha channel through unchanged in the chosen output depth. |
 
+## Motion-compensated frame interpolation (`cv.interpolate_frames`)
+
+Image processing / Video processing
+
+Inputs: `image_a` (image), `image_b` (image), `forward` (any, optional), `backward` (any, optional), `support_a` (image, optional), `support_b` (image, optional), `mask` (image, optional), `region` (data, optional), `time_a_ms` (number, optional), `time_b_ms` (number, optional).
+
+Input `image_a` — First frame and output job ticket/grid. Same shape, encoding and depth as B.
+
+Input `image_b` — Later frame; its ticket and media identity are retained in interpolation lineage.
+
+Input `forward` — A-to-B DenseFlow or float HxWx2 array. Needed for refine/provided modes.
+
+Input `backward` — B-to-A field on B's grid. Needed for refine/provided modes.
+
+Input `support_a` — Optional uint8 known-flow support on A; connect for masked/sparse fields.
+
+Input `support_b` — Optional uint8 known-flow support on B.
+
+Input `mask` — Optional uint8 selection of output centers on A's grid; outside stays A.
+
+Input `region` — Optional circle/rectangle/polygon intersected with the output selection.
+
+Input `time_a_ms` — Optional explicit A timestamp; supply both times in one clock domain.
+
+Input `time_b_ms` — Optional explicit B timestamp, strictly later than A.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `fraction` | `0.5` | Value must be a finite number between 0 and 1. Time fraction A to B. Zero/one copy exact selected endpoint pixels without flow. |
+| `flow_mode` | `"estimate"` | `estimate`, `refine`, `provided` Estimate Farneback, refine wired initial fields, or use provided fields directly. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Same frame checks coordinate identity. Pixel grid explicitly pairs equal grids. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Image sampling kernel; cubic/Lanczos coverage excludes a 2/4-pixel rim. |
+| `roundtrip_tolerance` | `1.0` | Value must be a finite number between 0 and 100. Maximum forward/backward closure error in source pixels. |
+| `appearance_tolerance` | `0.0` | Value must be a finite number between 0 and 1. Optional matched-luminance difference limit on an 8-bit normalized copy. Zero disables it; illumination changes can also fail this occlusion proxy. |
+| `inverse_iterations` | `6` | Value must be a whole number between 1 and 20. Fixed-point steps to invert each source-to-intermediate motion map. |
+| `inverse_tolerance` | `0.25` | Value must be a finite number between 0 and 10. Maximum inverse-map closure error in pixels before rejecting support. |
+| `maximum_motion` | `256.0` | Value must be a finite number between 0.01 and 4096. Reject flow fields exceeding this per-axis source-pixel displacement. |
+| `uncovered` | `"zero"` | `zero`, `nearest_endpoint`, `crossfade` Hole fill has no motion support and never increases the coverage mask. |
+| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Fail below this supported fraction of selected output centers. |
+| `timing_policy` | `"if_available"` | `if_available`, `required` Require compatible video timing/explicit times, or report unknown timing. |
+| `timing_source` | `"media"` | `media`, `explicit` Use compatible source video metadata or the configured explicit times. |
+| `time_a_ms` | `0.0` | Value must be a finite number at least 0. Configured A time in milliseconds, used with explicit timing source. |
+| `time_b_ms` | `40.0` | Value must be a finite number at least 0. Configured B time, later than A. Wired times override configured timing. |
+| `emit_flows` | `false` | Retain both DenseFlow outputs for inspection/reuse; otherwise no flow events. |
+| `pyramid_scale` | `0.5` | Value must be a finite number between 0.01 and 0.99. Farneback pyramid scale ratio; used in estimate/refine modes. |
+| `levels` | `3` | Value must be a whole number between 1 and 8. Maximum Farneback pyramid layers, including the input image. |
+| `window` | `15` | Value must be a positive odd integer between 3 and 255. Odd Farneback averaging window in pixels. |
+| `iterations` | `3` | Value must be a whole number between 1 and 100. Farneback iterations per pyramid level. |
+| `poly_n` | `"5"` | `5`, `7` Farneback polynomial neighborhood size. |
+| `poly_sigma` | `1.2` | Value must be a finite number between 0.01 and 100. Farneback polynomial smoothing sigma. |
+| `gaussian_window` | `false` | Use Gaussian weighting in the Farneback averaging window. |
+
 ## Invert matrix (`cv.invert_matrix`)
 
 Image processing / Statistics

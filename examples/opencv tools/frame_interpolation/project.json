@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "first",
+      "type": "input.file",
+      "name": "Original first frame \u2014 uint16",
+      "parameters": {
+        "path": "assets/first.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "last",
+      "type": "input.file",
+      "name": "Original last frame \u2014 uint16",
+      "parameters": {
+        "path": "assets/last.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        250.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "middle",
+      "type": "input.file",
+      "name": "Original middle frame \u2014 uint16",
+      "parameters": {
+        "path": "assets/middle.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        500.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "interpolate",
+      "type": "cv.interpolate_frames",
+      "name": "Motion-compensated frame interpolation",
+      "parameters": {
+        "fraction": 0.5,
+        "flow_mode": "estimate",
+        "alignment": "pixel_grid",
+        "interpolation": "linear",
+        "roundtrip_tolerance": 1.0,
+        "appearance_tolerance": 0.0,
+        "inverse_iterations": 6,
+        "inverse_tolerance": 0.25,
+        "maximum_motion": 256.0,
+        "uncovered": "zero",
+        "minimum_coverage": 0.8,
+        "timing_policy": "required",
+        "timing_source": "explicit",
+        "time_a_ms": 0.0,
+        "time_b_ms": 40.0,
+        "emit_flows": false,
+        "pyramid_scale": 0.5,
+        "levels": 4,
+        "window": 25,
+        "iterations": 5,
+        "poly_n": "7",
+        "poly_sigma": 1.5,
+        "gaussian_window": false
+      },
+      "position": [
+        340.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "forward",
+        "backward",
+        "support_a",
+        "support_b",
+        "mask",
+        "region",
+        "time_a_ms",
+        "time_b_ms"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "info",
+        "timestamp_ms"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "quality_region",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          32,
+          24,
+          192,
+          144
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        680.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify",
+      "type": "inspect.image_quality",
+      "name": "Compare to independent middle frame",
+      "parameters": {
+        "metric": "mae",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 100.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1020.0,
+        200.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original frame interpolation fixture \u2014 MIT",
+      "description": "Original synthetic images, code and project under the repository MIT license. Endpoint displacement is 8 right/4 down pixels over 40 ms. The middle reference is independently cropped at 20 ms. Estimate both flow directions, invert the motion maps, and compare supported interior pixels to that reference. Missing motion support stays black by default and remains excluded from the quality check. Coverage colors distinguish both/one/neither source. This generated translation does not qualify arbitrary real video or physical synchronization.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -300.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "first",
+      "output": "image",
+      "target": "interpolate",
+      "input": "image_a"
+    },
+    {
+      "source": "last",
+      "output": "image",
+      "target": "interpolate",
+      "input": "image_b"
+    },
+    {
+      "source": "interpolate",
+      "output": "image",
+      "target": "quality_region",
+      "input": "image"
+    },
+    {
+      "source": "interpolate",
+      "output": "image",
+      "target": "verify",
+      "input": "image_a"
+    },
+    {
+      "source": "middle",
+      "output": "image",
+      "target": "verify",
+      "input": "image_b"
+    },
+    {
+      "source": "interpolate",
+      "output": "coverage",
+      "target": "verify",
+      "input": "mask"
+    },
+    {
+      "source": "quality_region",
+      "output": "region",
+      "target": "verify",
+      "input": "region"
+    }
+  ]
+}

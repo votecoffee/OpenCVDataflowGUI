@@ -685,6 +685,7 @@ def builtin_registry():
     from .features import FEATURE_BLOCKS
     from .focus import MeasureFocus
     from .fourier_correlation import FourierCorrelation
+    from .frame_interpolation import InterpolateFrames
     from .generalized_hough import FindGuilTemplate, FindHoughTemplate
     from .geometry3d import GEOMETRY3D_BLOCKS
     from .gram_matrix import GramMatrix
@@ -914,6 +915,7 @@ def builtin_registry():
         FourierCorrelation,
         *ANALYSIS_BLOCKS,
         BlendWeightMaps,
+        InterpolateFrames,
         AddImageNoise,
         ColorizeScalar,
         FindHoughTemplate,

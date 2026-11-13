@@ -287,6 +287,36 @@ class _DenseFlowSequence(SequenceBlock, ABC):
         )
 
 
+def farneback_calculator(p):
+    scale = finite(p["pyramid_scale"], "Pyramid scale", 0)
+    sigma = finite(p["poly_sigma"], "Polynomial sigma", 0)
+    levels = integer(p["levels"], "Pyramid levels", 1, 8)
+    window = integer(p["window"], "Window", 3, 255, odd=True)
+    iterations = integer(p["iterations"], "Iterations", 1, 100)
+    if not 0 < scale < 1 or sigma <= 0:
+        raise ValueError("Invalid Farneback scale or sigma")
+
+    def calculate(previous, gray, initial):
+        flags = cv2.OPTFLOW_FARNEBACK_GAUSSIAN if p["gaussian_window"] else 0
+        if initial is not None:
+            flags |= cv2.OPTFLOW_USE_INITIAL_FLOW
+        flow = cv2.calcOpticalFlowFarneback(
+            previous,
+            gray,
+            initial,
+            scale,
+            levels,
+            window,
+            iterations,
+            int(p["poly_n"]),
+            sigma,
+            flags,
+        )
+        return flow, None
+
+    return calculate
+
+
 class FarnebackSequence(_DenseFlowSequence):
     type_id, title = "sequence.farneback", "Farneback optical flow"
     defaults = {
@@ -311,34 +341,7 @@ class FarnebackSequence(_DenseFlowSequence):
     }
 
     def flow_calculator(self, shape):
-        p = self.parameters
-        scale = finite(p["pyramid_scale"], "Pyramid scale", 0)
-        sigma = finite(p["poly_sigma"], "Polynomial sigma", 0)
-        levels = integer(p["levels"], "Pyramid levels", 1, 8)
-        window = integer(p["window"], "Window", 3, 255, odd=True)
-        iterations = integer(p["iterations"], "Iterations", 1, 100)
-        if not 0 < scale < 1 or sigma <= 0:
-            raise ValueError("Invalid Farneback scale or sigma")
-
-        def calculate(previous, gray, initial):
-            flags = cv2.OPTFLOW_FARNEBACK_GAUSSIAN if p["gaussian_window"] else 0
-            if initial is not None:
-                flags |= cv2.OPTFLOW_USE_INITIAL_FLOW
-            flow = cv2.calcOpticalFlowFarneback(
-                previous,
-                gray,
-                initial,
-                scale,
-                levels,
-                window,
-                iterations,
-                int(p["poly_n"]),
-                sigma,
-                flags,
-            )
-            return flow, None
-
-        return calculate
+        return farneback_calculator(self.parameters)
 
 
 class DISSequence(_DenseFlowSequence):

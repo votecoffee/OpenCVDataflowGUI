@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 107 | 20 | 48 | 175 | 61.1% |
+| 1. Core and baseline 2D | 108 | 20 | 47 | 175 | 61.7% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 169 | 61 | 240 | 470 | 36.0% |
+| **Overall** | 170 | 61 | 239 | 470 | 36.2% |
 
 <!-- coverage-summary:end -->
 
@@ -204,7 +204,7 @@ fixture or result needed to close the item.
 | S1-127 | Packed high-bit-depth sensor frames | MIPI RAW10/RAW12 unpacking and demosaicing | Complete | cv.decode_raw_sensor and input.raw_sensor decode specified MIPI byte groups, headers and padded rows to uint16 ADC counts or left-aligned values. Golden bytes, limits, exact/trailing policies, tickets, explicit pixel frames and generated files are tested. cv.demosaic_bayer optionally consumes sensor phase and follows crops/flips/right-angle rotations, rejecting resampled/consumed mosaics. RAW10/12 examples verify exact counts. PFNC/vendor-specific packing and physical SDK acquisition remain outside this MIPI baseline. |
 | S1-128 | Affine-invariant image feature extraction | AffineFeature.create with SIFT/ORB | Complete | inspect.affine_features supplies bounded generated/custom tilt-roll schedules, full backend controls, mask/region intersection and existing matcher-compatible descriptors. Source centers, equal-area scale, exact support ellipses and mapped orientation retain virtual-view provenance and frame/ticket/pyramid payloads. Focused tests cover descriptor alignment, invalid budgets, blank selections and graphics disabled. Original tilted-view project measures repeatability against an independent generating transform (97.9% within 3 px on the pinned build). |
 | S1-129 | Local structure tensor and dominant orientation | cornerEigenValsAndVecs | Complete | inspect.structure_tensor exposes sorted eigenvalues, energy, coherence, unsigned normal/tangent angles, unit vectors and validity maps, with an axial summary and optional drawable/color previews. Sobel/Scharr, neighborhood, borders and confidence limits are configurable. Mask/region output-center selection preserves full neighborhoods, source pixels/encoding/depth and ticket/frame/pyramid payloads. Analytic directions, corners, flat/weak signals, eigenpair ordering and native zero-vector recovery, borders, limits, contained exceptions and graphics disabled have focused tests. Original 16-bit six-probe example verifies known angles and undefined regions. |
-| S1-130 | Motion-compensated frame interpolation | Forward/backward flow and remap | Planned | Create intermediate frames for known motion, report occlusion coverage and preserve media timing. |
+| S1-130 | Motion-compensated frame interpolation | Bidirectional Farneback or supplied fields, inverse motion maps and remap | Complete | cv.interpolate_frames supports estimate/refine/provided flow, validated inverse convergence and round-trip/optional appearance checks, conservative sampling support, explicit hole fill and coverage judgments. Preserves image encoding/depth, A-owned ticket/grid/pyramid context and both source identities; compatible media or explicit times yield a synthetic timestamp without an invented frame index. Masks/regions select target centers. Focused tests cover known motion, kernels, occlusion proxies, missing support, nonconvergence, endpoints, timing, failure containment and graphics disabled. Original 16-bit pair example verifies an independent 20 ms midpoint and reports 94.8% full/100% interior support. This paired-frame baseline does not provide automatic paced video-rate expansion or visibility ground truth. |
 | S1-131 | Intensity-weighted center and orientation | moments with intensity weights and region selection | Planned | Compare geometric and intensity-weighted centers and axes on a known asymmetric feature. |
 | S1-132 | Per-pixel alpha composition | Straight and premultiplied alpha, source-over composition | Planned | Verify transparent boundaries and float or integer results on foreground/background pairs. |
 | S1-133 | Rasterize selected contours with holes | drawContours, fillPoly and contour hierarchy | Planned | Convert selected contour collections into masks with topology intact and verify source-grid alignment. |
