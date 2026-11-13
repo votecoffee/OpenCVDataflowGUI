@@ -119,8 +119,8 @@ class _Canvas(QWidget):
             return
         here = self.position(event)
         if self.face is not None:
-            box = next(b for b in editor.boxes if b.name == self.original.name)
-            if box != self.original:
+            box = next((b for b in editor.boxes if b.name == self.original.name), None)
+            if box is not None and box != self.original:
                 editor.box_changed.emit(box)
         elif event.button() == Qt.MouseButton.LeftButton:
             if editor.mode.currentData() == "draw":

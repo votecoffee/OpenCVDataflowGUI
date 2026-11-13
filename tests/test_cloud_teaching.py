@@ -91,6 +91,13 @@ def test_widget_point_and_region_proposals_preserve_camera_and_do_not_reproject_
     app.processEvents()
     widget.set_cloud(PointCloud(np.c_[xy, np.ones(len(xy))], "mm", "part"))
     assert widget.last_pick is None and widget.boxes == () and widget.segments == ()
+    region = CloudBox("region", (-6, -6, -1), (6, 6, 2))
+    widget.set_boxes([region], "region")
+    widget.mode.setCurrentIndex(widget.mode.findData("orbit"))
+    handle, _ = widget.projection.project(region.faces)
+    widget.canvas.mousePressEvent(event(handle[0]))
+    widget.set_boxes(())  # A consumer can remove a region while its drag is active.
+    widget.canvas.mouseReleaseEvent(event(handle[0]))
     widget.close()
 
 
