@@ -30,3 +30,7 @@ After downloading the pinned archive, run this command from the repository root.
 ```powershell
 python "examples/Simple Plugins/pixel_segmentation/armbench_tote/build_example.py" path/to/armbench-segmentation-tiny.tar.gz path/to/new-example
 ```
+
+The `result_views/` PNGs are derived from the same loaded/empty validation
+photos after the saved blue-dominance transform. Added colors display the
+unchanged foreground mask, inspected region and fixed-scale forest votes.

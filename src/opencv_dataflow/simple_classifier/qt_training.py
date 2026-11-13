@@ -27,15 +27,19 @@ from PySide6.QtWidgets import (
 
 from ..images import opencv_image
 from ..plugin_image_picker import PluginImagePicker
+from .graphics import draw_assessment
 from .model import (
     PROFILES,
     Example,
     image_pixels,
     load_assignments,
+    load_classifier,
     pixel_digest,
+    read_image,
     stage_classifier,
     train_classifier,
 )
+from .qt_review import SampleReview
 
 _TRAINERS = ThreadPoolExecutor(max_workers=1, thread_name_prefix="image-classifier")
 _THUMBNAIL = QSize(112, 84)
@@ -60,6 +64,8 @@ class ClassifierTrainer(QDialog):
         self.candidate = None
         self.future = None
         self.predictions = {}
+        self._review_model = None
+        self._review_window = None
         self.capture_directory = None
         self.capture_paths = {}
         self.timer = QTimer(self, interval=60)
@@ -117,6 +123,7 @@ class ClassifierTrainer(QDialog):
             "With no marked images, splitting is automatic."
         )
         self.move_button = self._button(edits, "Move to class…", self._move_selected)
+        self.review_button = self._button(edits, "Review selected…", self._review_selected)
         self.remove_button = self._button(edits, "Remove selected", self.remove_selected)
 
         self.image_picker = PluginImagePicker(context, self, input_port="image")
@@ -148,6 +155,7 @@ class ClassifierTrainer(QDialog):
                     self.add_class(label, samples)
                 self.profile.setCurrentIndex(self.profile.findData(health.profile))
                 self._show_health(health)
+                self._review_model = load_classifier(self.project_dir, parameters["model"])
             except (KeyError, OSError, TypeError, ValueError) as exc:
                 self.status.setText(f"Could not open training assignments. {exc}")
         elif self.project_dir is None:
@@ -178,6 +186,7 @@ class ClassifierTrainer(QDialog):
         for button in (self.split_button, self.remove_button):
             button.setEnabled(idle and selected)
         self.move_button.setEnabled(idle and selected and self.tabs.count() > 1)
+        self.review_button.setEnabled(idle and selected)
         self.train_button.setEnabled(idle and self.tabs.count() >= 2)
         self.stage_button.setEnabled(
             idle and self.candidate is not None and self.project_dir is not None
@@ -185,6 +194,10 @@ class ClassifierTrainer(QDialog):
 
     def _invalidate(self):
         self.candidate = None
+        self._review_model = None
+        if self._review_window is not None:
+            self._review_window.close()
+            self._review_window = None
         if self.predictions:
             self.predictions.clear()
             self.review_filter.setCurrentIndex(_ALL_IMAGES)
@@ -221,6 +234,7 @@ class ClassifierTrainer(QDialog):
         strip.setIconSize(_THUMBNAIL)
         strip.setGridSize(QSize(150, 122))
         strip.itemSelectionChanged.connect(self._refresh_controls)
+        strip.itemDoubleClicked.connect(lambda item: self._review_sample(item))
         delete = QShortcut(QKeySequence(Qt.Key.Key_Delete), strip)
         delete.setContext(Qt.ShortcutContext.WidgetShortcut)
         delete.activated.connect(self.remove_selected)
@@ -395,10 +409,13 @@ class ClassifierTrainer(QDialog):
             self.status.setText(f"Training failed. {exc}")
         else:
             self.candidate = self.training_assignments, model, health
+            self._review_model = model
             self._show_health(health)
         self._refresh_controls()
 
     def _close_training(self):
+        if self._review_window is not None:
+            self._review_window.close()
         self.timer.stop()
         directory, self.capture_directory = self.capture_directory, None
         if self.future is not None:
@@ -407,6 +424,41 @@ class ClassifierTrainer(QDialog):
                 self.future.add_done_callback(lambda _: directory.cleanup())
         elif directory is not None:
             directory.cleanup()
+
+    def _review_selected(self):
+        strip = self.tabs.currentWidget()
+        if strip is not None and strip.selectedItems():
+            self._review_sample(strip.selectedItems()[0])
+
+    def _review_sample(self, item):
+        if self.future is not None:
+            return
+        example = item.data(_EXAMPLE)
+        expected = self.tabs.tabText(self.tabs.currentIndex())
+        description = f"Assigned class: {expected}\n{item.toolTip()}"
+        try:
+            image = read_image(example.path)
+            chart = None
+            if self._review_model is not None:
+                prediction = self._review_model.predict(image)
+                chart = draw_assessment(image, prediction)
+                description += (f"\nPredicted {prediction['label']} ({prediction['score']:.2f}%)"
+                                f"; confusion {prediction['confusion']:.2f}%")
+            else:
+                description += "\nTrain current assignments to review candidate scores."
+            if self._review_window is not None:
+                self._review_window.close()
+            self._review_window = SampleReview(self, image, chart, description)
+            window = self._review_window
+
+            def forget_window(_):
+                if self._review_window is window:
+                    self._review_window = None
+
+            window.finished.connect(forget_window)
+            self._review_window.show()
+        except (OSError, ValueError) as exc:
+            self.status.setText(f"Could not review sample. {exc}")
 
     def _show_health(self, health):
         labels = [self.tabs.tabText(i) for i in range(self.tabs.count())]

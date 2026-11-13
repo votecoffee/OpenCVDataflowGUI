@@ -2,6 +2,8 @@
 
 from ..core import Block, Port, Result
 from ..images import opencv_image
+from ..payloads import NO_VALUE, frame
+from .graphics import draw_assessment
 from .model import load_classifier
 
 
@@ -9,15 +11,21 @@ class ClassifyImage(Block):
     type_id, title, category = "inspect.simple_classify_image", "SimpleClassify", "Inspection"
     block_type, subtype = "Inspection", "Classification"
     parallel_safe = True
+    process_inputs_readonly = True
     inputs = (Port("image"),)
     outputs = (
         Port("label", "text"),
         Port("score", "number"),
         Port("confusion", "number"),
         Port("probabilities", "data"),
+        Port("overlay", required=False),
     )
-    defaults = {"model": ""}
-    parameter_help = {"model": "Project-relative manifest staged by the classifier trainer."}
+    defaults = {"model": "", "render_overlay": True}
+    parameter_help = {
+        "model": "Project-relative manifest staged by the classifier trainer.",
+        "render_overlay": "Show the input, ranked scores and confusion in a result chart. "
+                          "Disable to skip rendering; scores do not change.",
+    }
     plugin_dialog_label = "Train image classifier…"
     plugin_dialog_modeless = True
 
@@ -31,6 +39,18 @@ class ClassifyImage(Block):
 
         return ClassifierTrainer(parent, parameters, context)
 
+    @property
+    def preview_image_port(self):
+        return "overlay" if self.parameters["render_overlay"] else None
+
+    filmstrip_output = preview_image_port
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        values = self.parameters if parameters is None else parameters
+        if type(values["render_overlay"]) is not bool:
+            raise ValueError("render_overlay must be boolean.")
+
     def process(self, inputs):
         manifest = self.parameters["model"]
         if not manifest or self.project_dir is None:
@@ -41,7 +61,21 @@ class ClassifyImage(Block):
             self._model_key = key
         prediction = self._model.predict(opencv_image(inputs["image"]))
         label, score = prediction["label"], prediction["score"]
-        return Result(prediction, score=score / 100, message=f"{label} ({score:.2f}%)")
+        image = NO_VALUE
+        payloads = {}
+        if self.parameters["render_overlay"]:
+            image = draw_assessment(opencv_image(inputs["image"]), prediction)
+            # Even if input and chart sizes happen to match, calibration and
+            # source pixel coordinates do not apply to this dashboard.
+            payloads["overlay"] = {
+                "spatial": frame(list(image.shape[1::-1]), f"{self.id}:class_scores")
+            }
+        return Result(
+            {**prediction, "overlay": image}, score=score / 100,
+            message=f"{label} ({score:.2f}%) · confusion {prediction['confusion']:.2f}%",
+            payloads=payloads,
+            event_data={"filmstrip_priority": -1} if self.parameters["render_overlay"] else {},
+        )
 
 
 def register(registry):

@@ -33,3 +33,25 @@ The [optional plugin entry point](classifier_plugin.py) can also be loaded
 through **File → Load Python plugin…**.
 
 [VegQual results and commands](vegqual/README.md) · [Image and label attribution](vegqual/SOURCES.md)
+
+## Result and sample review
+
+SimpleClassify now selects **Overlay** in the result filmstrip: the input
+image, ranked class scores, winning score and confusion appear together.
+Set **Render overlay** off to skip chart generation; numeric outputs stay
+the same. The chart has its own display coordinates, not the source grid.
+Scores sum to 100% but are not calibrated confidence. Full labels and all
+classes remain in **Probabilities**; the chart shows up to 20 rows.
+
+In training, double-click a filmstrip image or choose **Review selected…**
+to zoom/pan the original alongside its scores. **100%** shows source pixels.
+Editing the assignments clears the preview model until training completes.
+
+The VegQual [correct](vegqual/result_views/correct.png) and
+[incorrect](vegqual/result_views/incorrect.png) examples use unchanged
+held-out predictions. The latter is a fresh potato predicted as defective;
+the new chart does not fix that error. Exact scores and source filenames
+are in [predictions.json](vegqual/result_views/predictions.json).
+These derived views retain the [VegQual attribution](vegqual/SOURCES.md).
+
+Regenerate these previews with the host Python: `python "examples/Simple Plugins/build_result_views.py"`.

@@ -134,6 +134,15 @@ def test_filmstrip_stage_and_remove_assignment(app, assignments, tmp_path, monke
         QTest.qWait(100)
         assert dialog.stage_button.isEnabled(), dialog.status.text()
         assert dialog.report.rowCount() == 3
+        strip.item(0).setSelected(True)
+        dialog.review_button.click()
+        review = dialog._review_window
+        assert len(review.views) == 2
+        assert "Predicted" in review.description.text()
+        review.views[0].actual_size()
+        assert review.views[0].transform().m11() == 1
+        review.close()
+        assert dialog._review_window is None
         assert draft["model"] == ""
         dialog.stage_button.click()
         assert dialog.result() == QDialog.DialogCode.Accepted
@@ -143,6 +152,10 @@ def test_filmstrip_stage_and_remove_assignment(app, assignments, tmp_path, monke
             assert reopened.profile.currentData() == profile
             assert len(reopened.assignments()["Light"]) == 5
             assert reopened.report.rowCount() == 3
+            first_strip = reopened.tabs.currentWidget()
+            first_strip.item(0).setSelected(True)
+            reopened.review_button.click()
+            assert len(reopened._review_window.views) == 2
             reopened.tabs.setCurrentIndex(0)
             reopened.review_filter.setCurrentIndex(2)
             strip = reopened.tabs.currentWidget()
@@ -154,6 +167,8 @@ def test_filmstrip_stage_and_remove_assignment(app, assignments, tmp_path, monke
             monkeypatch.setattr(QInputDialog, "getItem", lambda *args, **kwargs: ("Light", True))
             reopened.move_button.click()
             assert not reopened.review_filter.isEnabled()
+            assert reopened._review_model is None
+            assert reopened._review_window is None
             assert reopened.report.rowCount() == 0
             assert reopened.assignments()["Light"][-1] == Example(mislabeled, validation=True)
             assert mislabeled.is_file()

@@ -27,3 +27,7 @@ python "examples/Simple Plugins/image_classification/vegqual/build_example.py" p
 
 The archive MD5 is `de19cbfe7d9792c5db37b6c3af0458e1`, as published by
 [Figshare](https://api.figshare.com/v2/articles/30596084).
+
+The `result_views/` PNGs are derived from the same held-out crops with a
+resized image and generated class-score chart. `predictions.json` records
+the crop, expected label and unchanged prediction for each preview.

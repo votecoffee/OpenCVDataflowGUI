@@ -60,3 +60,27 @@ ocv-segment evaluate "examples/Simple Plugins/pixel_segmentation/pcb_laminate/mo
 - **Brick** reuses the unchanged scikit-image `brick.png`. The original texture is from CC0Textures, distributed under CC0 1.0. [Source and credit](../../assets/photograph-sources.md)
 - **Cup** uses an OpenCV BGR-to-grayscale conversion of Rachel Michetti's coffee photograph, courtesy of Pikolo Espresso Bar, distributed under CC0 1.0. [Source and credit](../../assets/photograph-sources.md)
 - **PCB** uses VisA PCB2 normal photographs 0000 and 0621 by Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang, and Onkar Dabeer, distributed under CC BY 4.0. The inputs were resized to 650 × 495 pixels with area interpolation and converted to a grayscale blue-excess channel using saturating `B - R`. [Source and credit](../../assets/photograph-sources.md#visual-anomaly-visa-pcb-photographs)
+
+## Result-view colors
+
+New segmentation blocks select **Overlay** in the result filmstrip. Red
+shows foreground; lightly green background was inspected. Gold outlines
+the inspected area, including mask holes. Gray checks were excluded or
+unobserved. Previously saved explicit **Render overlay** off settings remain
+off. This tool can segment materials or parts as well as defects.
+
+Enable **Render heatmap** to inspect the source-aligned foreground vote
+fraction. Its Viridis scale is fixed from 0 (purple) to 1 (yellow), with
+gray checks for pixels without a score. These votes are not calibrated
+confidence. If **Render overlay** is off, the heatmap becomes the filmstrip
+preview. Disable both settings to skip rendering. **Score map** remains the
+separate raw float32 output controlled by **Emit score map**.
+
+Saved examples: [loaded overlay](armbench_tote/result_views/loaded_overlay.png),
+[loaded heatmap](armbench_tote/result_views/loaded_heatmap.png),
+[empty overlay](armbench_tote/result_views/empty_overlay.png), and
+[empty heatmap](armbench_tote/result_views/empty_heatmap.png). These views
+reuse the existing model and settings; model accuracy has not changed.
+The images retain the [ARMBench attribution](armbench_tote/SOURCES.md).
+
+Regenerate these previews with the host Python: `python "examples/Simple Plugins/build_result_views.py"`.

@@ -1,0 +1,56 @@
+{
+  "correct": {
+    "image": "images/test/fresh_potato/01.jpg",
+    "expected": "fresh_potato",
+    "prediction": {
+      "label": "fresh_potato",
+      "score": 50.54324430436878,
+      "confusion": 63.27660975550494,
+      "probabilities": [
+        {
+          "label": "fresh_potato",
+          "score": 50.54324430436878
+        },
+        {
+          "label": "defected_Potato",
+          "score": 31.98205145624691
+        },
+        {
+          "label": "fresh_capsicum",
+          "score": 13.424524145954393
+        },
+        {
+          "label": "defected_capsicum",
+          "score": 4.050180093429916
+        }
+      ]
+    }
+  },
+  "incorrect": {
+    "image": "images/test/fresh_potato/03.jpg",
+    "expected": "fresh_potato",
+    "prediction": {
+      "label": "defected_Potato",
+      "score": 43.90867707451586,
+      "confusion": 77.83625147133655,
+      "probabilities": [
+        {
+          "label": "defected_Potato",
+          "score": 43.90867707451586
+        },
+        {
+          "label": "fresh_potato",
+          "score": 34.17686830545726
+        },
+        {
+          "label": "fresh_capsicum",
+          "score": 17.98089681879462
+        },
+        {
+          "label": "defected_capsicum",
+          "score": 3.9335578012322734
+        }
+      ]
+    }
+  }
+}
