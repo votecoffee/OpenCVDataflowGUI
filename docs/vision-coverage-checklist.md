@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 118 | 17 | 40 | 175 | 67.4% |
+| 1. Core and baseline 2D | 119 | 17 | 39 | 175 | 68.0% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 180 | 58 | 232 | 470 | 38.3% |
+| **Overall** | 181 | 58 | 231 | 470 | 38.5% |
 
 <!-- coverage-summary:end -->
 
@@ -215,7 +215,7 @@ fixture or result needed to close the item.
 | S1-138 | Focus stacking and per-pixel focus selection | Sobel/Laplacian local energy with upstream registration and bounded blending | Complete | cv.focus_stack fuses registered batches with hard or weighted selection, optional weight smoothing, capture coverage masks, scoring halos, energy/ambiguity/support gates and anchor fallback. Qualify original level indices, coverage/confidence, dtype/encoding/alpha, selection, grids, pyramid/capture/cohort identity, HDR/tiny values, bounds and graphics disabled. Original 16-bit RGB projects reconstruct independent sharp truth exactly, including an inspectable ECC registration step using a shared sharp region. Focus indices are not calibrated depth or visibility. |
 | S1-139 | Log-polar rotation and scale registration | DFT magnitude, warpPolar, phaseCorrelate and spatial similarity verification | Complete | inspect.logpolar_registration proposes rotation/scale and 180-degree alternatives, estimates translation, optionally projects affine ECC to a similarity, then checks supported-pixel correlation and distinct-pose margin. Qualify original-grid geometry, masks, color/depth/alpha, ticket/frame/pyramid ownership, HDR/tiny data, native failures and bounded work. Independent sine/cosine fixtures verify inverse geometry, odd/rectangular/reduced canvases, symmetric rejection and an explicit orientation prior. Failed/ambiguous results withhold primary geometry and image. This is conditional whole-image registration, not multi-part or occlusion matching. |
 | S1-140 | Controlled video encoder qualification | VideoWriter, fourcc and decoder round trip | Complete | Six native cases qualify FFmpeg FFV1/MJPG BGR and gray at 12.5 FPS, mp4v BGR MP4, and OpenCV MJPEG BGR at integer FPS. Finalized streams verify count, EOF, order, color, media time and exact lossless pixels or bounded lossy error. Writer reports actual backend/submission status and rejects known corrupt grayscale or rounded fractional-FPS OpenCV MJPEG combinations, including automatic selection. Unsupported combinations preserve files and recover. Original recording/replay graphs and a headless qualification report are included. |
-| S1-141 | Debounce foreground across consecutive frames | Temporal mask accumulation and connected components | Planned | Suppress single-frame foreground spikes and retain a sustained moving feature with bounded state and reset behavior. |
+| S1-141 | Debounce foreground across consecutive frames | connectedComponentsWithStats and consecutive component association | Complete | sequence.foreground_debounce confirms mutually unique current/previous components using centroid displacement, area ratio and optional bounding-box IoU. Missing/ambiguous observations restart capped hit counts; only current confirmed pixels are emitted. Explicit threshold, area/connectivity controls, mask/region context resets, bounded streams/components/state and copyable worker memory are qualified. Original labeled-mask replay verifies disjoint moving parts, intermittent glints, shadow exclusion, missing-frame reconfirmation and exact independent masks. |
 | S1-142 | Synthetic fiducial-free image distortion fixtures | Geometric remap and seeded perturbations | Planned | Generate known shear, perspective and lens-like distortions and emit ground-truth maps for inspection regression. |
 | S1-143 | Image contrast and visibility between two regions | Selected image statistics and contrast-to-noise ratio | Planned | Report signal/background contrast, noise and invalid selections on a controlled inspection target. |
 | S1-144 | Unicode image annotation | FreeType or Qt glyph rasterization and frame-aware graphics | Partial | cv.annotation_layer draws existing image labels. Verify multilingual OCR or inspection text renders on the annotated output image with preserved coordinates. |

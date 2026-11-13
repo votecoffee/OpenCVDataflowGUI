@@ -7104,6 +7104,32 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `gaussian_window` | `false` |  |
 | `initial_flow` | `"none"` | `none`, `previous` |
 
+## Debounce foreground components (`sequence.foreground_debounce`)
+
+Sequence / Foreground masks
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Single-channel foreground image; numeric samples are thresholded explicitly.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `3` | Value must be a whole number between 1 and 10000. Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` | Value must be a whole number between 1 and 64. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.001 and 4096. Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `consecutive_hits` | `3` | Value must be a whole number between 1 and 10000. Required consecutive eligible unambiguous observations. Missing or ambiguous matches restart confirmation. |
+| `foreground_threshold` | `0.0` | Value must be a finite number. Samples strictly above this raw-value threshold are foreground. Use 127 to exclude 127-valued shadow labels. |
+| `connectivity` | `"8"` | `4`, `8` |
+| `minimum_area` | `4` | Value must be a whole number between 1 and 6.4e+07. |
+| `maximum_area` | `0` | Value must be a whole number between 0 and 6.4e+07. Zero disables the upper area limit. Area is measured after selection. |
+| `maximum_displacement` | `10.0` | Value must be a finite number between 0 and 32768. Maximum centroid motion per activation in current-grid pixels. No prediction or gap bridging. |
+| `minimum_area_ratio` | `0.5` | Value must be a finite number between 0 and 1. Smaller/larger area must meet this ratio; zero disables the gate. |
+| `minimum_iou` | `0.0` | Value must be a finite number between 0 and 1. Minimum bounding-box intersection over union. Zero disables overlap gating and allows disjoint moving masks. |
+| `maximum_components` | `256` | Value must be a whole number between 1 and 512. Eligible components per frame. Exceeding the bound fails and clears sequence memory. |
+
 ## GSoC background subtraction (`sequence.gsoc_background`)
 
 Sequence / Foreground segmentation

@@ -146,6 +146,7 @@ BLOCK_MODULES = {
         "calibration.pixel_to_physical "
         "calibration.lens_map_displacement collection.filter collection.sort collection.draw "
         "core.attach_payload core.read_payload sequence.background sequence.image_memory "
+        "sequence.foreground_debounce "
         "input.sequence_demo cv.paste_patch cv.filter_fourier_spectrum cv.mask_fourier_spectrum "
         "inspect.contour_profile"
     ),

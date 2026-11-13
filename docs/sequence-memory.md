@@ -94,6 +94,7 @@ plugin responsibilities.
 | Block | State and outputs | Readiness / controls |
 | --- | --- | --- |
 | Running background subtraction | Running mean/variance; foreground mask, background, masked foreground | Warmup, optional stability; absolute/variance threshold, rate, deviations, variance floor, foreground-learning policy, learn input |
+| Debounce foreground components | Current confirmed/rejected masks, current-grid blob collection, count and observation diagnostics | Separate global warmup and consecutive component hits; threshold, connectivity, area, displacement, area-ratio, optional box IoU and component limit |
 | Farneback optical flow | Previous frame and optional previous flow; dense float32 XY vectors, magnitude, angle, visualization | Needs previous frame and warmup; scale, levels, window, iterations, polynomial neighborhood/sigma, Gaussian window, warm-start flow, visualization scale |
 | DIS optical flow | Same dense flow, magnitude, angle and visualization outputs as Farneback | Needs previous frame and warmup. Select Ultrafast, Fast or Medium, then tune patch search, pyramid scales, propagation, refinement and warm start. |
 | Dense-grid Lucas–Kanade optical flow | Tracks a regular grid and interpolates dense vectors with a support mask | Needs previous frame and warmup. Tune grid spacing, LK search and termination, trackable texture threshold, and minimum interpolation support. |
@@ -150,6 +151,62 @@ The transform reports the mapping to and from the current raw input.
 For sequence plugins that change the grid, a sequence step can provide an
 output frame per primary port. The port retains its current ticket and sequence
 status and uses the supplied frame in place of the input spatial and pyramid grid.
+
+## Foreground component debounce
+
+**Custom > Sequence > Foreground masks > Debounce foreground components** consumes
+single-channel uint8, uint16, float32 or float64 foreground images. Samples
+strictly greater than **Foreground threshold** become foreground. For raw
+MOG2/KNN masks, threshold 127 excludes 127-valued shadow labels. Threshold units
+are the input's raw samples; normalized floating masks typically use 0.5.
+Connect the existing background block's binary mask with threshold zero instead
+when its shadow policy has already been applied.
+
+A component must meet the pixel-area limits after mask/region selection. It
+inherits confirmation only if it and exactly one previous component are each
+other's sole candidates under the centroid-distance, smaller/larger area-ratio
+and optional bounding-box IoU gates. Zero IoU disables overlap gating so a
+moving part can cross disjoint pixel locations. An empty frame, absent match
+or ambiguous association restarts that component's hit count. There is no
+prediction, gap bridging or emission of historical pixels. Crowding, touching
+parts, merges/splits and motion beyond the gates can prevent confirmation;
+this is conditional temporal filtering rather than general identity tracking.
+
+The **Mask** contains only currently confirmed pixels. **Rejected mask** contains
+current thresholded pixels removed by area or temporal checks. **Components**
+is a normal blob collection with shape metrics, current-grid geometry and
+confirmation metadata. **Observations** reports eligible current candidates,
+hit counts, conditional generation-scoped association IDs and gate outcomes.
+Numbers are current-grid pixels; spatial/pyramid payloads retain rescaling
+context without silently multiplying coordinates. Current ticket, acquisition
+start time and companion payload data remain attached. Old tickets are model
+provenance, never new output identities.
+
+Default global warmup is three eligible activations and the default component
+requirement is three consecutive hits. Warmup emits status but no primary data.
+Hits count consecutive eligible activations in the same stream/context. Inputs
+rejected by the common failure policy or skipped upstream do not advance or
+clear history. Ticket values are not interpreted as frame counters. Use the
+reset input or a time-gap limit when an upstream discontinuity must break evidence.
+After warmup, an empty mask/count zero is an ordinary successful filtering result,
+not an inspection failure. Green result-graphics objects mark confirmed boxes;
+amber marks pending boxes, annotated with capped hit counts. Global/per-block
+graphics-off settings skip creating these objects. No graphics are emitted
+during warmup, when primary observation data is withheld.
+
+Only current component summaries and capped streak counters are retained, with
+configurable stream, component and byte limits. Exceeding a bound fails safely
+and clears runtime evidence; native labeling/intermediate images need extra
+memory beyond the retained-state budget. With the default reset policy, changing
+the rasterized selection starts a fresh context, as do grid, recipe, parameter
+and time-gap boundaries. The separate-context policy can resume a cached context,
+as described below. Worker/editor copies own independent summary data. Runtime
+memory is transient; saved JSON/XML stores controls and layout.
+
+Try the [original nine-frame replay](<../examples/custom tools/foreground_debounce/README.md>),
+which checks exact expected masks for disjoint motion, glints, shadow labels,
+disappearance and reconfirmation. Native measurements use
+[OpenCV connected components and shape descriptors](https://docs.opencv.org/5.0/main_modules/imgproc_shape.html).
 
 ## Streams, resets and execution
 

@@ -44,6 +44,14 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Foreground component debounce](<../examples/custom tools/foreground_debounce/README.md>)
+(S1-141) now confirms consecutive, mutually unique component observations,
+including disjoint moving masks. Explicit threshold, connectivity, area, centroid
+motion, area-ratio and optional box-IoU gates control association. Missing or
+ambiguous evidence restarts confirmation; no old masks/tickets are emitted.
+Bounded sequence state, selection/context reset, drawable confirmation graphics
+and current-grid blob collections are qualified against independent replay pixels.
+
 [Controlled video encoder qualification](<../examples/opencv tools/video_codec_roundtrip/README.md>)
 (S1-140) now checks finalized lossless and lossy streams for frame count, EOF,
 order, FPS, media time and color. Six native cases cover FFmpeg FFV1/MJPG

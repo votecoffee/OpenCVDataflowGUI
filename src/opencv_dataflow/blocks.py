@@ -689,6 +689,7 @@ def builtin_registry():
     from .flat_field_reference import BuildFlatFieldReference
     from .focus import MeasureFocus
     from .focus_stacking import FocusStack
+    from .foreground_debounce import ForegroundDebounce
     from .fourier_components import FourierComponents, ReconstructFourierImage
     from .fourier_correlation import FourierCorrelation
     from .frame_interpolation import InterpolateFrames
@@ -1024,6 +1025,7 @@ def builtin_registry():
         RecipeSelect,
         RecipeField,
         *SEQUENCE_BLOCKS,
+        ForegroundDebounce,
         StabilizeCameraMotion,
         StabilizeRecordedSequence,
         StabilizeStream,

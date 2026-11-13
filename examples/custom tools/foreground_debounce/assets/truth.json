@@ -1,0 +1,57 @@
+{
+  "origin": "Original synthetic labeled masks, analytic motion and expected pixels; MIT",
+  "frame_count": 9,
+  "image_size": [
+    112,
+    64
+  ],
+  "expected_counts": [
+    null,
+    null,
+    1,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0
+  ],
+  "null_means": "Warmup: no primary output event, not an empty emitted mask",
+  "part_area_pixels": 24,
+  "part_centers": [
+    [
+      11.5,
+      30.5
+    ],
+    [
+      17.5,
+      30.5
+    ],
+    [
+      23.5,
+      30.5
+    ],
+    [
+      29.5,
+      30.5
+    ],
+    null,
+    [
+      41.5,
+      30.5
+    ],
+    [
+      47.5,
+      30.5
+    ],
+    [
+      53.5,
+      30.5
+    ],
+    null
+  ],
+  "required_consecutive_hits": 3,
+  "maximum_displacement_pixels": 8,
+  "shadow_label": 127,
+  "maximum_expected_mask_error": 0
+}

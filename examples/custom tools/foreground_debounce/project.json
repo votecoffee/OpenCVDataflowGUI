@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Part, glints and shadow labels",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/inputs/frame-00.png",
+          "assets/inputs/frame-01.png",
+          "assets/inputs/frame-02.png",
+          "assets/inputs/frame-03.png",
+          "assets/inputs/frame-04.png",
+          "assets/inputs/frame-05.png",
+          "assets/inputs/frame-06.png",
+          "assets/inputs/frame-07.png",
+          "assets/inputs/frame-08.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        20
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "debounce",
+      "type": "sequence.foreground_debounce",
+      "name": "Require three consecutive observations",
+      "parameters": {
+        "warmup": 3,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "consecutive_hits": 3,
+        "foreground_threshold": 127,
+        "connectivity": "8",
+        "minimum_area": 4,
+        "maximum_area": 0,
+        "maximum_displacement": 8,
+        "minimum_area_ratio": 0.5,
+        "minimum_iou": 0.0,
+        "maximum_components": 256
+      },
+      "position": [
+        440,
+        20
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "components",
+        "count",
+        "ready",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original foreground fixtures - MIT",
+      "description": "Original labeled-mask images, expected masks, generator and graph under the repository's MIT license. Run all for nine acquisitions. Two warmup activations emit no primary data. Counts from frame 2 onward are 1,1,0,0,0,1,0. A disjoint moving part confirms after three consecutive unambiguous observations. Missing frame 4 resets it; reappearance requires confirmation again. Glints in frames 1 and 3 never confirm. Label 127 is excluded by threshold 127; isolated pixels are below minimum area. Green boxes mean confirmed; amber boxes mean pending. All geometry is current-grid pixels. No old mask or old ticket is re-emitted. This is component debounce, not general identity tracking or occlusion recovery. API: https://docs.opencv.org/5.0/main_modules/imgproc_shape.html",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "debounce",
+      "input": "image"
+    }
+  ]
+}
