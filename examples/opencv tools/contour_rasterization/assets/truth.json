@@ -1,0 +1,14 @@
+{
+  "reference": "Original axis-aligned pixel slices; areas from rectangle arithmetic",
+  "image_size": [
+    256,
+    176
+  ],
+  "foreground_pixels": {
+    "all": 15168,
+    "part": 12032,
+    "solid": 21568
+  },
+  "part_contour_id": 1,
+  "maximum_allowed_pixel_error": 0
+}

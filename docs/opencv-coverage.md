@@ -305,6 +305,17 @@ The standard contour path remains the supported option for hierarchy.
 [Approximate convex contour](<../examples/opencv tools/convex_contour_approximation/README.md>)
 exposes fixed-side reduction with an added-area budget and verifies enclosure.
 
+[Rasterize contours with holes](<../examples/opencv tools/contour_rasterization/README.md>)
+(S1-133) converts contour or blob collections to binary masks. Select by current
+index or detection ID and keep descendant holes/islands. Independent subtrees
+union; explicit solid and even-odd modes support other polygon semantics.
+Missing or inconsistent hierarchy links raise validation errors. Filled and
+outline modes expose binary connectivity, fixed-point precision, offsets,
+mask/region clipping and optional pixel-count judgments. Collection origins,
+frames, tickets and pyramid context are retained; the optional source image
+keeps its pixels, depth and encoding. Original cutout references verify exact
+topology and selected areas. This is a raster mask, not fractional alpha coverage.
+
 
 ## Available alignment and restoration
 

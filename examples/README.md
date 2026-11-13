@@ -77,6 +77,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Colorize scalar image](<opencv tools/colorize_scalar/README.md>) | Show how far each foreground pixel lies from the edge of a synthetic part. |
 | [Contour approximation](<opencv tools/contour_approximation/README.md>) | Simplify the dense outline of a chamfered part into six polygon vertices. |
 | [Contour hierarchy](<opencv tools/contour_hierarchy/README.md>) | Follow parent and child links through nested outlines, holes, and islands. |
+| [Contour rasterization](<opencv tools/contour_rasterization/README.md>) | Select a part with its holes and islands, compare explicit solid filling, and verify exact source-grid masks. |
 | [Convex contour approximation](<opencv tools/convex_contour_approximation/README.md>) | Compare a four-sided footprint with a six-sided approximation under an area budget. |
 | [Delaunay triangulation](<opencv tools/delaunay_triangulation/README.md>) | Connect five detected dot centers and overlay their four triangles and eight edges. |
 | [Derivative-fed Canny](<opencv tools/canny_derivatives/README.md>) | Inspect both Sobel derivatives and compare the resulting edges with ordinary Canny. |

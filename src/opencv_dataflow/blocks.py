@@ -669,6 +669,7 @@ def builtin_registry():
     from .color_calibration import COLOR_CALIBRATION_BLOCKS
     from .color_measurement import COLOR_MEASUREMENT_BLOCKS
     from .contour_analysis import CONTOUR_ANALYSIS_BLOCKS
+    from .contour_raster import RasterizeContours
     from .control_flow import CONTROL_BLOCKS
     from .convex_overlap import ConvexPolygonOverlap
     from .conveyor_tracking import ConveyorDemo, TrackConveyorParts
@@ -943,6 +944,7 @@ def builtin_registry():
         HoughPointSetLines,
         HoughPolarLines,
         *CONTOUR_ANALYSIS_BLOCKS,
+        RasterizeContours,
         CompareEdgeMaps,
         *CODE_READER_BLOCKS,
         ReadZXingBarcode,

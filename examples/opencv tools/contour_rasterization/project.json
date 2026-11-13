@@ -1,0 +1,483 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Original nested cutouts",
+      "parameters": {
+        "path": "assets/scene.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        -420.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "hierarchy",
+      "type": "inspect.contour_hierarchy",
+      "name": "Contour hierarchy",
+      "parameters": {
+        "approximation": "simple",
+        "draw_overlay": true
+      },
+      "position": [
+        -90.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "hierarchy",
+        "collection",
+        "count",
+        "hole_count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "all",
+      "type": "collection.rasterize_contours",
+      "name": "Preserve all topology",
+      "description": "Expected foreground area: 15,168 pixels.",
+      "documentation": "<p>Rasterize each related contour subtree as a group, then union independent roots. This preserves holes and islands without XOR cancellation between independent parts. A selected hole is treated as a new foreground root. Missing hierarchy links are reported; no absent holes are invented.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/imgproc_draw.html\">OpenCV drawing reference</a>. Subpixel fills use fillPoly; whole-pixel fills use drawContours. Outlines use polylines. Masks are binary, not alpha coverage.</p>",
+      "parameters": {
+        "selection": "all",
+        "items": [],
+        "topology": "hierarchy",
+        "include_descendants": true,
+        "maximum_depth": -1,
+        "mode": "filled",
+        "thickness": 1,
+        "line_type": "8_connected",
+        "subpixel_bits": 0,
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "invert": false,
+        "alignment": "same_frame",
+        "check_pixels": true,
+        "minimum_pixels": 15168,
+        "maximum_pixels": 15168
+      },
+      "position": [
+        250.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "collection",
+        "image",
+        "items",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "count",
+        "pixel_count",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "truth_all",
+      "type": "input.file",
+      "name": "Independent all reference",
+      "parameters": {
+        "path": "assets/all.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        590.0,
+        980.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify_all",
+      "type": "inspect.image_quality",
+      "name": "Verify all: zero pixel error",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        630.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "part",
+      "type": "collection.rasterize_contours",
+      "name": "Select one part with holes",
+      "description": "Expected foreground area: 12,032 pixels.",
+      "documentation": "<p>Rasterize each related contour subtree as a group, then union independent roots. This preserves holes and islands without XOR cancellation between independent parts. A selected hole is treated as a new foreground root. Missing hierarchy links are reported; no absent holes are invented.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/imgproc_draw.html\">OpenCV drawing reference</a>. Subpixel fills use fillPoly; whole-pixel fills use drawContours. Outlines use polylines. Masks are binary, not alpha coverage.</p>",
+      "parameters": {
+        "selection": "ids",
+        "items": [
+          1
+        ],
+        "topology": "hierarchy",
+        "include_descendants": true,
+        "maximum_depth": -1,
+        "mode": "filled",
+        "thickness": 1,
+        "line_type": "8_connected",
+        "subpixel_bits": 0,
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "invert": false,
+        "alignment": "same_frame",
+        "check_pixels": true,
+        "minimum_pixels": 12032,
+        "maximum_pixels": 12032
+      },
+      "position": [
+        250.0,
+        360.0
+      ],
+      "exposed_inputs": [
+        "collection",
+        "image",
+        "items",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "count",
+        "pixel_count",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "truth_part",
+      "type": "input.file",
+      "name": "Independent part reference",
+      "parameters": {
+        "path": "assets/part.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        590.0,
+        1320.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify_part",
+      "type": "inspect.image_quality",
+      "name": "Verify part: zero pixel error",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        630.0,
+        360.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "solid",
+      "type": "collection.rasterize_contours",
+      "name": "Explicitly fill all holes",
+      "description": "Expected foreground area: 21,568 pixels.",
+      "documentation": "<p>Rasterize each related contour subtree as a group, then union independent roots. This preserves holes and islands without XOR cancellation between independent parts. A selected hole is treated as a new foreground root. Missing hierarchy links are reported; no absent holes are invented.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/imgproc_draw.html\">OpenCV drawing reference</a>. Subpixel fills use fillPoly; whole-pixel fills use drawContours. Outlines use polylines. Masks are binary, not alpha coverage.</p>",
+      "parameters": {
+        "selection": "all",
+        "items": [],
+        "topology": "solid",
+        "include_descendants": true,
+        "maximum_depth": -1,
+        "mode": "filled",
+        "thickness": 1,
+        "line_type": "8_connected",
+        "subpixel_bits": 0,
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "invert": false,
+        "alignment": "same_frame",
+        "check_pixels": true,
+        "minimum_pixels": 21568,
+        "maximum_pixels": 21568
+      },
+      "position": [
+        250.0,
+        720.0
+      ],
+      "exposed_inputs": [
+        "collection",
+        "image",
+        "items",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "count",
+        "pixel_count",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "truth_solid",
+      "type": "input.file",
+      "name": "Independent solid reference",
+      "parameters": {
+        "path": "assets/solid.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        590.0,
+        1660.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify_solid",
+      "type": "inspect.image_quality",
+      "name": "Verify solid: zero pixel error",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        630.0,
+        720.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original contour rasterization fixture \u2014 MIT",
+      "description": "Original nested cutout images, generator, references and project under this repository's MIT license. Three branches preserve all topology, select one outer contour with its holes/islands, or deliberately fill holes. Pixel areas are independent rectangle arithmetic; all comparison errors must be zero. Contour IDs are local to this fixture/run, not persistent part identities. OpenCV reference: https://docs.opencv.org/5.0/main_modules/imgproc_draw.html",
+      "parameters": {},
+      "position": [
+        -420.0,
+        -350.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "hierarchy",
+      "input": "image"
+    },
+    {
+      "source": "hierarchy",
+      "output": "collection",
+      "target": "all",
+      "input": "collection"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "all",
+      "input": "image"
+    },
+    {
+      "source": "all",
+      "output": "mask",
+      "target": "verify_all",
+      "input": "image_a"
+    },
+    {
+      "source": "truth_all",
+      "output": "image",
+      "target": "verify_all",
+      "input": "image_b"
+    },
+    {
+      "source": "hierarchy",
+      "output": "collection",
+      "target": "part",
+      "input": "collection"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "part",
+      "input": "image"
+    },
+    {
+      "source": "part",
+      "output": "mask",
+      "target": "verify_part",
+      "input": "image_a"
+    },
+    {
+      "source": "truth_part",
+      "output": "image",
+      "target": "verify_part",
+      "input": "image_b"
+    },
+    {
+      "source": "hierarchy",
+      "output": "collection",
+      "target": "solid",
+      "input": "collection"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "solid",
+      "input": "image"
+    },
+    {
+      "source": "solid",
+      "output": "mask",
+      "target": "verify_solid",
+      "input": "image_a"
+    },
+    {
+      "source": "truth_solid",
+      "output": "image",
+      "target": "verify_solid",
+      "input": "image_b"
+    }
+  ]
+}

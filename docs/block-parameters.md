@@ -1017,6 +1017,40 @@ Inputs: `collection` (data), `mask` (image, optional), `region` (data, optional)
 | `missing` | `"reject"` | `reject`, `keep`, `error` Undefined metrics (e.g. Hu moments on lines) use this policy. |
 | `reference_point` | `[0.0, 0.0]` | [x,y] in reported collection coordinates; used for distance. |
 
+## Rasterize contours with holes (`collection.rasterize_contours`)
+
+Image processing / Regions
+
+Inputs: `collection` (data), `image` (image, optional), `items` (data, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `collection` — Contour tree or blobs. Use the full tree and select here to retain holes.
+
+Input `image` — Optional equal-sized frame reference and unchanged image output.
+
+Input `items` — Optional replacement item indices/IDs when selection is not all.
+
+Input `mask` — Optional uint8 selection in the output frame; nonzero pixels are eligible.
+
+Input `region` — Optional region intersected with the mask; rasterize first, then clip.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `selection` | `"all"` | `all`, `indices`, `ids` All items, zero-based positions in the current order, or stable item IDs. |
+| `items` | `[]` | Selected indices/IDs; a wired items input overrides this list. Ignored for all. |
+| `topology` | `"hierarchy"` | `hierarchy`, `solid`, `even_odd` Hierarchy preserves selected subtrees; solid unions polygons; even_odd uses parity. |
+| `include_descendants` | `true` | Hierarchy only: include child holes and nested islands. |
+| `maximum_depth` | `-1` | Value must be a whole number between -1 and 100000. Hierarchy only: -1 includes all descendants; 0 draws roots only. |
+| `mode` | `"filled"` | `filled`, `outline` Fill interiors or draw closed outlines. Both emit binary uint8 masks. |
+| `thickness` | `1` | Value must be a whole number between 1 and 128. Outline width in pixels. Ignored for filled masks. |
+| `line_type` | `"8_connected"` | `8_connected`, `4_connected` Binary boundary connectivity. Antialiasing is excluded to keep masks binary. |
+| `subpixel_bits` | `0` | Value must be a whole number between 0 and 8. 0 rounds to whole pixels; 1–8 retain fixed-point fractional bits. |
+| `offset` | `[0.0, 0.0]` | Additional [x,y] shift in output pixels, after subtracting collection origin. |
+| `invert` | `false` | Complement the raster before clipping to the supplied mask/region. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Match the image frame or use its pixel grid. Known tickets must match. |
+| `check_pixels` | `false` | Judge the final selected foreground pixel count against inclusive limits. |
+| `minimum_pixels` | `0` | Value must be a whole number between 0 and 6.4e+07. Smallest accepted count after inversion and selection clipping. |
+| `maximum_pixels` | `64000000` | Value must be a whole number between 0 and 6.4e+07. Largest accepted count after inversion and selection clipping. |
+
 ## Sort object collection (`collection.sort`)
 
 Inspection / Collections

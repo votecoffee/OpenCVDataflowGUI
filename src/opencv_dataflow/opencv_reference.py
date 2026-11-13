@@ -26,6 +26,7 @@ BINDINGS = {
     "calibration.lens_maps": "initUndistortRectifyMap getOptimalNewCameraMatrix",
     "calibration.undistort": "undistort",
     "calibration.undistort_lens_points": "undistortPoints projectPoints",
+    "collection.rasterize_contours": "drawContours fillPoly polylines",
     "cv.absdiff": "absdiff",
     "cv.interpolate_frames": "calcOpticalFlowFarneback remap",
     "cv.adaptive_threshold": "adaptiveThreshold",
