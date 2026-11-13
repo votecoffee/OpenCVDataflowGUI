@@ -4,6 +4,10 @@ This generated example locates two rigid surfaces with independent point
 sampling, rotation/translation, partial occlusion, measurement noise, and
 unrelated clutter. All coordinates are in millimeters.
 
+For STL CAD training, retained-mesh resampling and bounded candidate search,
+open the [CAD surface example](cad_surface/README.md), which requires
+Simple3DLocate 0.1.0.dev1 or later.
+
 ## Setup and run
 
 Install the Simple3DLocate wheel or source folder into the Python environment

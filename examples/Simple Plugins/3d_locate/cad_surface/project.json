@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/scene.ply",
+        "units": "mm",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "locate",
+      "type": "3d.simple_locate",
+      "name": "Simple3DLocate",
+      "parameters": {
+        "recipe_path": "assets/part.s3l",
+        "sha256": "1650e96e333a37a67cec2e5ed34bd440fd5f89330fe98f6d7cf0cfbbf5d1166f",
+        "render_overlay": true
+      },
+      "position": [
+        370.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "scene"
+      ],
+      "exposed_outputs": [
+        "poses",
+        "pose",
+        "count",
+        "report",
+        "aligned_model",
+        "fit",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "cloud",
+      "target": "locate",
+      "input": "scene"
+    }
+  ]
+}
