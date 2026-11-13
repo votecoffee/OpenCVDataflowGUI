@@ -203,7 +203,8 @@ def make_project(folder, recipe, capture):
         graph.connect("scene", "cloud", "locate", "scene")
         graph.connect("depth", "cloud", "locate", "depth_scene")
         graph.connect("camera", "camera", "locate", "camera")
-        locate.preview_output = "overlay"
+        locate.preview_output = "fit"
+        locate.parameters["render_overlay"] = True  # Secondary documentation image.
         graph.save(folder / "project.json")
         graph.run()
         if locate.error:

@@ -5,6 +5,10 @@ corresponding Simple Plugins, open a project and run once per frame.
 Saved inputs, result images, measurements and 3D result clouds are included.
 The generated examples elsewhere remain useful regression fixtures.
 
+The 3D project opens its native **Cloud / fit** flyaround preview. The PNGs
+on this documentation page are secondary static exports; native result
+clouds remain available to orbit in the app and as PLY files.
+
 ![Six tools on real public data](samples/overview.png)
 
 | Tool | Runnable project | Data/license | Recorded scope |

@@ -84,7 +84,7 @@
         "overlay"
       ],
       "thumbnail": true,
-      "preview_output": "overlay"
+      "preview_output": "fit"
     },
     {
       "id": "depth_scene",

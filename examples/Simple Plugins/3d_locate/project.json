@@ -52,7 +52,7 @@
         "overlay"
       ],
       "thumbnail": true,
-      "preview_output": "overlay"
+      "preview_output": "fit"
     }
   ],
   "connections": [

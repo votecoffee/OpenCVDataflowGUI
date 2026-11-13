@@ -315,7 +315,8 @@ def _host(output, data, camera, pin, *, depth=None):
             )
             evidence.position = (0, 400)
             graph.connect(evidence.id, "cloud", locate.id, "depth_scene")
-        locate.preview_output = "overlay"
+        locate.preview_output = "fit"
+        locate.parameters["render_overlay"] = True  # Secondary documentation image.
         graph.save(output / "project.json")
         graph.run()
         if locate.error:

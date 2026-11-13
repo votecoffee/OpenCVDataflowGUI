@@ -28,8 +28,9 @@ running DataflowGUI, then restart the application.
 ```
 
 Open [project.json](project.json) and run once. Expect two accepted instances.
-Select Simple3DLocate and inspect its overlay in the result filmstrip or its
-`fit` cloud in the 3D viewer. Green model samples have geometric support, red
+Select Simple3DLocate and use **Cloud / fit**. The node thumbnail and inspector
+orbit the native colored point cloud; double-click the preview for the
+interactive flyaround viewer. Green model samples have geometric support, red
 samples are unsupported or occluded, and gray points belong to the scene.
 RGB axes mark each taught model origin and orientation.
 
@@ -42,6 +43,13 @@ With plugin **0.1.0.dev8**, run in Debug and use **Capture last processed
 inputs** to review the scene and any camera/depth consumed in one completed
 run. The trained model is preserved. Acquisition pairing remains explicit;
 see [completed-input capture](CAPTURE.md). Older hosts keep manual captures.
+
+With **dev15**, new blocks and all shipped 3D projects select the native fit
+cloud by default. RGB point colors and pose axes remain in 3D while rotating.
+The optional bitmap assessment remains available as **Result / overlay**
+when **Render overlay** is enabled. Example builders enable that secondary
+image for offline documentation; new blocks leave it off to skip rendering.
+Existing custom graphs keep their saved preview choices.
 
 ## Outputs
 

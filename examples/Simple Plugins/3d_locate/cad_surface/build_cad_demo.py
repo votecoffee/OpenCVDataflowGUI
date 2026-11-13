@@ -161,7 +161,8 @@ def host_project(folder, *, optimize=False):
             )
         )
         source.position, locate.position = (0.0, 0.0), (370.0, 0.0)
-        locate.preview_output = "overlay"
+        locate.preview_output = "fit"
+        locate.parameters["render_overlay"] = True  # Secondary documentation image.
         graph.connect(source.id, "cloud", locate.id, "scene")
         graph.save(folder / "project.json")
         timings = {}

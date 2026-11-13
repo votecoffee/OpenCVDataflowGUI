@@ -212,7 +212,8 @@ def _host(output, data, camera, pin):
         scene.position, calibration.position, locate.position = (0, 0), (0, 200), (380, 0)
         graph.connect(scene.id, "cloud", locate.id, "scene")
         graph.connect(calibration.id, "camera", locate.id, "camera")
-        locate.preview_output = "overlay"
+        locate.preview_output = "fit"
+        locate.parameters["render_overlay"] = True  # Secondary documentation image.
         graph.save(output / "project.json")
         graph.run()
         if locate.error:

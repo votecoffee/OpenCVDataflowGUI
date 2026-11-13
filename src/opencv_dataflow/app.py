@@ -1604,6 +1604,12 @@ class Inspector(QWidget):
                 ]
             )
         index = self.preview_choice.findText(self._preview_selection or "")
+        if index < 0 and b and b.preview_output:
+            for candidate in range(self.preview_choice.count()):
+                kind, _, name = self.preview_choice.itemText(candidate).partition(" / ")
+                if kind != "Input" and name == b.preview_output:
+                    index = candidate
+                    break
         self.preview_choice.setCurrentIndex(index if index >= 0 else 0)
         self.preview_choice.blockSignals(False)
         self.show_preview(self.preview_choice.currentText())
