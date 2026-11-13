@@ -6,7 +6,7 @@
       "type": "input.file",
       "name": "Scene with fractional target locations",
       "parameters": {
-        "path": "../../custom tools/subpixel_template/assets/scene.png",
+        "path": "../../opencv tools/subpixel_template/assets/scene.png",
         "path_base": "project",
         "color_format": "gray"
       },
@@ -20,7 +20,7 @@
       "type": "input.file",
       "name": "Reference template",
       "parameters": {
-        "path": "../../custom tools/subpixel_template/assets/template.png",
+        "path": "../../opencv tools/subpixel_template/assets/template.png",
         "path_base": "project",
         "color_format": "gray"
       },

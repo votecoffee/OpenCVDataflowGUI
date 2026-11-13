@@ -3,7 +3,7 @@
 ## Optional Lena test image
 
 Run `python scripts/prepare_lena.py` from the repository to fetch the image needed
-by the [Lena inspection](../demos/lena/README.md), [features](../demos/lena_features/README.md),
+by the [Lena inspection](../opencv tools/lena/README.md), [features](../opencv tools/lena_features/README.md),
 and [registration](<../opencv tools/lena_registration/README.md>) examples. The download is
 explicit and the image is ignored by Git.
 
@@ -24,7 +24,7 @@ and is not bundled into the Python package or committed in this repository.
   Annoy examples. It is generated with `scripts/prepare_ml_assets.py`.
 - `validation/` contains the synthetic pass, fail, and unknown images shared
   by the validation and image-set workspace examples.
-- The [recorded stabilization fixtures](<../custom tools/recorded_camera_stabilization/README.md>)
+- The [recorded stabilization fixtures](<../opencv tools/recorded_camera_stabilization/README.md>)
   use a trimmed, grayscale TUM RGB-D recording under CC BY 4.0.
-- The [recorded depth variation fixtures](<../custom tools/recorded_stabilization_validation/README.md>)
+- The [recorded depth variation fixtures](<../opencv tools/recorded_stabilization_validation/README.md>)
   use eight reduced TUM RGB-D frames and two registered depth images under CC BY 4.0.

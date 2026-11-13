@@ -12,7 +12,7 @@ from opencv_dataflow.images import ImageArray, image_format
 from opencv_dataflow.payloads import NO_VALUE, frame, metadata
 
 TYPE = "sequence.stabilize_camera"
-VALIDATION_EXAMPLE = Path(__file__).parents[1] / "examples/custom tools/stabilization_validation"
+VALIDATION_EXAMPLE = Path(__file__).parents[1] / "examples/opencv tools/stabilization_validation"
 
 
 def _texture():
@@ -33,7 +33,7 @@ def _shift(image, x, y):
 def test_synthetic_camera_replay_recovers_rotation_and_translation():
     project = (
         Path(__file__).parents[1]
-        / "examples/custom tools/camera_stabilization/camera_stabilization.json"
+        / "examples/opencv tools/camera_stabilization/camera_stabilization.json"
     )
     poses = [(0, 0, 0), (5, -3, 1.6), (-4, 4, -1.2), (2, 6, 0.8), (-6, -4, -1.6), (3, -1, 1)]
     points = np.array([[28, 36, 1], [110, 90, 1], [160, 110, 1]])
@@ -152,7 +152,7 @@ def test_image_quality_mask_alignment_requires_an_explicit_pixel_grid_choice():
 def test_recorded_camera_replay_reduces_matched_error_and_reanchors_on_coverage_loss():
     project = (
         Path(__file__).parents[1]
-        / "examples/custom tools/recorded_camera_stabilization/recorded_camera_stabilization.json"
+        / "examples/opencv tools/recorded_camera_stabilization/recorded_camera_stabilization.json"
     )
     graph = Graph.load(project, builtin_registry())
     try:

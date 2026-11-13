@@ -409,7 +409,7 @@ def test_background_acquisition_keeps_the_complete_stabilized_tail(hold_until_en
     graph = Graph()
     path = (
         Path(__file__).parents[1]
-        / "examples/custom tools/continuous_camera_stabilization"
+        / "examples/opencv tools/continuous_camera_stabilization"
         / "assets/inspection-jitter.avi"
     )
     source = graph.add(
@@ -453,7 +453,7 @@ def test_background_acquisition_keeps_the_complete_stabilized_tail(hold_until_en
 
 @pytest.mark.local_examples
 def test_saved_streaming_project_runs_all_frames_and_smooths_the_path():
-    folder = Path(__file__).parents[1] / "examples/custom tools/continuous_camera_stabilization"
+    folder = Path(__file__).parents[1] / "examples/opencv tools/continuous_camera_stabilization"
     graph = Graph.load(folder / "continuous_camera_stabilization.json", builtin_registry())
     graph.set_run_profile("lean")
     raw, smoothed, indices = [], [], []

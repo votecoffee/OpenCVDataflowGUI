@@ -13,7 +13,7 @@ from opencv_dataflow.tickets import TicketClock, ticket_key
 
 _PROJECT = (
     Path(__file__).parents[1]
-    / "examples/custom tools/validate_charuco_calibration/validate_charuco_calibration.json"
+    / "examples/opencv tools/validate_charuco_calibration/validate_charuco_calibration.json"
 )
 
 

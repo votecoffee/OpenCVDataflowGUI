@@ -29,7 +29,7 @@ def test_brick_edges_project(tmp_path, monkeypatch):
 def test_coffee_histograms_project(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     graph = Graph.load(
-        EXAMPLES / "custom tools/coffee_histograms/coffee_histograms.json", builtin_registry()
+        EXAMPLES / "opencv tools/coffee_histograms/coffee_histograms.json", builtin_registry()
     )
     try:
         graph.run()

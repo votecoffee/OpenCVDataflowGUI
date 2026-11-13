@@ -5,13 +5,13 @@ Use them for temporal operations or learning a reference image. Native flow and
 background models are under **OpenCV > Video Analysis (video)**. Built-in
 sequence workflows and reference memory are under **Custom > Sequence**.
 
-Open [sequence memory](<../examples/custom tools/sequence_memory/sequence_memory.json>).
+Open [sequence memory](<../examples/demos/sequence_memory/sequence_memory.json>).
 Run continuously, or press F5 several times. The source initially holds a textured
 patch still and then moves it. The example compares background subtraction,
 Farneback flow, point tracking and a learned reference. No camera or download is needed.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run "examples/custom tools/sequence_memory/sequence_memory.json" --repeat 8
+.\.venv\Scripts\opencv-dataflow-run "examples/demos/sequence_memory/sequence_memory.json" --repeat 8
 ```
 
 ## Readiness and events
@@ -65,7 +65,7 @@ to map between raw and corrected coordinates; coverage excludes unsupported
 border samples. The block preserves gray/RGB/BGR/alpha encoding and uint8,
 uint16, float32 or float64 samples; motion fitting uses an 8-bit working image.
 
-Try the [144-frame example](<../examples/custom tools/continuous_camera_stabilization/README.md>).
+Try the [144-frame example](<../examples/opencv tools/continuous_camera_stabilization/README.md>).
 One block handles one ordered stream; use separate blocks for independent
 cameras.
 
@@ -143,7 +143,7 @@ difference output. Point tracking seeds and retains points inside the selection.
 Background supports uint8/uint16/float32; flow and point tracking require uint8
 (color converts to grayscale). Reference memory preserves supported image depth and encoding.
 
-The [camera stabilization example](<../examples/custom tools/camera_stabilization/README.md>)
+The [camera stabilization example](<../examples/opencv tools/camera_stabilization/README.md>)
 replays measured shifts and rotations. The background selection controls
 feature centers. The correction applies to the whole frame. Corrected pixels
 and their coverage mask share a new coordinate frame for each anchor.

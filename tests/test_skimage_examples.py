@@ -10,7 +10,7 @@ from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 
 pytest.importorskip("skimage")
-EXAMPLES = Path(__file__).resolve().parents[1] / "examples" / "custom tools"
+EXAMPLES = Path(__file__).resolve().parents[1] / "examples" / "skimage tools"
 
 
 @pytest.mark.parametrize("profile", ["debug", "lean"])

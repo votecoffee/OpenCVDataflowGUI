@@ -14,7 +14,7 @@ from opencv_dataflow.core import Graph
 from opencv_dataflow.images import ImageArray
 from opencv_dataflow.payloads import FlowGroup, ValuePacket, frame, metadata
 
-EXAMPLE = Path(__file__).parents[1] / "examples/custom tools/tiled_scan_mosaic"
+EXAMPLE = Path(__file__).parents[1] / "examples/opencv tools/tiled_scan_mosaic"
 
 
 def _scene(width, height=128):

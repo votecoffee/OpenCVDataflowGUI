@@ -18,6 +18,7 @@ dist/
 !/examples/industrial integration/
 !/examples/Simple Plugins/
 !/examples/opencv tools/
+!/examples/skimage tools/
 !/examples/user_tools/
 # Local examples and downloaded images with separate rights.
 /examples/private/

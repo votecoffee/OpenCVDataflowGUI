@@ -1428,7 +1428,7 @@ def test_inspector_advanced_visibility_and_unapplied_drafts(app):
 @pytest.mark.local_examples
 def test_file_menu_opens_example_from_disk(app, monkeypatch):
     window = MainWindow()
-    project = Path(__file__).resolve().parents[1] / "examples/custom tools/regions/regions.json"
+    project = Path(__file__).resolve().parents[1] / "examples/demos/regions/regions.json"
     file_menu = window.menuBar().actions()[0].menu()
     entries = {action.text(): action for action in file_menu.actions()}
     try:

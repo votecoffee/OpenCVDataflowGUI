@@ -227,13 +227,13 @@ public terminals; hide unused ports with the inspector's exposure controls.
 
 ## Example
 
-Use [regions](<../examples/custom tools/regions/regions.json>). It contains
+Use [regions](<../examples/demos/regions/regions.json>). It contains
 circle, rectangle and polygon overlays, a one-part component measurement, a
 one-part contour inspection, a selected histogram and a circular blur. It runs
 without a camera or external assets:
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run "examples/custom tools/regions/regions.json" --repeat 3
+.\.venv\Scripts\opencv-dataflow-run "examples/demos/regions/regions.json" --repeat 3
 ```
 
 For Lena, open an existing Lena example, add Shape region, connect the source image

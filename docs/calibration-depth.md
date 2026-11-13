@@ -39,7 +39,7 @@ plot markers and scalar threshold outputs.
 
 ## Grid origin and physical coordinates
 
-Use [Check chessboard quality](<../examples/custom tools/chessboard_quality/README.md>) to
+Use [Check chessboard quality](<../examples/opencv tools/chessboard_quality/README.md>) to
 measure blur and exposure and forward only accepted checkerboard images.
 
 1. Load a calibration target image. For chessboards, set **columns and rows of
@@ -102,7 +102,7 @@ Pose diversity beyond exact-duplicate rejection remains the user's responsibilit
 estimated standard deviations. The report names each image and retains
 the input order. Set **Max view RMS pixels** to apply a separate limit
 to the worst view. Zero leaves that check off. The overall and worst-view
-checks emit distinct failure reasons. [Lens fit report example](<../examples/custom tools/lens_fit_report/README.md>)
+checks emit distinct failure reasons. [Lens fit report example](<../examples/opencv tools/lens_fit_report/README.md>)
 
 Connect the calibration output to Undistort lens along with the image. The tool
 checks matrix validity, image dimensions and its reprojection-error limit. Save
@@ -117,7 +117,7 @@ in a zero-distortion profile. [Lens correction maps example](<../examples/opencv
 
 Wire the map pair to **Inspect lens map displacement** to see correction
 strength and direction, measure displacement in source pixels, and identify
-samples outside the source. [Lens map displacement example](<../examples/custom tools/lens_map_displacement/README.md>)
+samples outside the source. [Lens map displacement example](<../examples/opencv tools/lens_map_displacement/README.md>)
 
 Connect both maps to **Save lens correction maps** to publish a versioned
 `.npz` file. **Load lens correction maps** restores the pair, its coordinate
@@ -155,14 +155,14 @@ and the observed and projected coordinates in image pixels.
 Set the overall and optional worst-point limits for the job. Wire
 **Result graphics** to **Overlay result graphics** along with the
 validation image to see the measured points and residual directions.
-The bundled example uses rendered targets. [Lens validation example](<../examples/custom tools/validate_lens_calibration/README.md>)
+The bundled example uses rendered targets. [Lens validation example](<../examples/opencv tools/validate_lens_calibration/README.md>)
 
 For a partial ChArUco board, feed the same image to **Detect ChArUco board**
 and **Validate lens calibration**. Wire the detected **Observation** to
 the validator. It uses the board definition and visible corner IDs in the
 observation. It checks capture and frame metadata when supplied and keeps
 the lens profile fixed while estimating the board pose.
-[ChArUco validation example](<../examples/custom tools/validate_charuco_calibration/README.md>)
+[ChArUco validation example](<../examples/opencv tools/validate_charuco_calibration/README.md>)
 
 ## Observe a ChArUco board
 

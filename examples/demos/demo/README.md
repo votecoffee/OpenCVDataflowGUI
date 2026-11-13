@@ -1,9 +1,14 @@
-# Quick-start demo
+# Quick-start graph
 
-Inspect two synthetic parts with grayscale conversion, Gaussian blur, thresholding,
-and contour detection. This is the graph the editor opens by default.
+Learn the basic run/select/results cycle using the editor's default two-part
+inspection. Open [demo.json](demo.json) with **File → Open…**.
 
-Open [`demo.json`](demo.json) with **File → Open…**.
-Press **Run once** and inspect **Find contours**. The expected count is two.
+1. Press **Run once** (F5). Select **Find contours** and inspect its result image
+   and count; the expected contour count is two.
+2. Select **Grayscale**, **Gaussian blur** and **Threshold** to follow the images
+   along their wires. Hover connectors to see their full names and simple values.
+3. Move a node, choose **Workspace → Auto arrange blocks**, then save the project.
+   Reopen it to retain the saved layout.
 
-[All examples](../../README.md)
+Next: [build a small inspection](../starter_inspection/README.md).
+[Demos tour](../README.md) · [All examples](../../README.md)

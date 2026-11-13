@@ -77,7 +77,7 @@ The configurable defaults are lower. Budget violations fail before publishing
 a partial collection. This block measures 2D images, not volumetric labels.
 
 [Native regionprops reference](https://scikit-image.org/docs/0.26.x/api/skimage.measure.html#skimage.measure.regionprops)
-· [Runnable region example](<../examples/custom tools/skimage_region_properties/README.md>)
+· [Runnable region example](<../examples/skimage tools/skimage_region_properties/README.md>)
 
 ## Multi-Otsu
 
@@ -136,4 +136,4 @@ Median additionally bounds pixel-window work to 100M. Arbitrary generic local
 functions and regionprops extra-property Python callables belong in user blocks.
 
 [Native threshold reference](https://scikit-image.org/docs/0.26.x/api/skimage.filters.html)
-· [Runnable threshold example](<../examples/custom tools/skimage_thresholding/README.md>)
+· [Runnable threshold example](<../examples/skimage tools/skimage_thresholding/README.md>)

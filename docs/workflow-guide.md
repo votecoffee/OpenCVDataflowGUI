@@ -79,7 +79,7 @@ configuration** and run again. Image-aligned layers follow crop, resize, and
 other recorded transforms in the same coordinate frame. Result graphics are
 drawing objects. The overlay block draws them onto the final image to produce
 the result image. Standalone previews such as histograms remain available for
-inspection. [Try the overlay example](<../examples/custom tools/overlay_result_graphics/README.md>).
+inspection. [Try the overlay example](<../examples/demos/overlay_result_graphics/README.md>).
 
 Use **Add annotation layer** to author a line, rectangle, circle, or label
 in an image's pixel frame. Choose a shape, RGB color, and layer name. Set the
@@ -230,7 +230,7 @@ It needs no external assets: expected results are one geometric match, one textu
 match and two vertical edges. See [training and edge workflows](patterns-edges.md)
 for training regions, pose coordinates, controls and current algorithm limits.
 Use **Subpixel** on template match blocks to refine centers and poses.
-[Compare pixel-grid and subpixel matches](<../examples/custom tools/subpixel_template/README.md>).
+[Compare pixel-grid and subpixel matches](<../examples/opencv tools/subpixel_template/README.md>).
 
 The [SIFT registration example](<../examples/opencv tools/sift_registration/README.md>) detects and
 matches keypoints before estimating an image homography. The
@@ -365,7 +365,7 @@ The [watershed example](<../examples/opencv tools/watershed/README.md>) separate
 using automatic distance peaks or editable point seeds. A separate block accepts
 foreground and background seed masks.
 
-The [histogram thresholds example](<../examples/custom tools/histogram_thresholds/README.md>) wires
+The [histogram thresholds example](<../examples/opencv tools/histogram_thresholds/README.md>) wires
 measured cutoffs into lower-tail, middle-range, and upper-tail masks. Histograms
 also report per-channel mean, median, standard deviation, and extrema.
 
@@ -390,7 +390,7 @@ and from a packed buffer in the graph. The
 [EXIF orientation example](<../examples/opencv tools/exif_orientation/README.md>) compares
 metadata-only loading with an explicitly oriented JPEG.
 
-The [skeleton pruning example](<../examples/custom tools/skeleton_pruning/README.md>) extracts
+The [skeleton pruning example](<../examples/skimage tools/skeleton_pruning/README.md>) extracts
 centerlines from a binary mask and removes short spurs. Install the optional
 dependency with `python -m pip install -e ".[morphology]"`.
 
@@ -415,7 +415,7 @@ calibration profiles as JSON for subsequent measurement jobs.
 
 **Check chessboard quality** measures edge width, contrast, and brightness
 before forwarding accepted calibration images.
-[Checkerboard quality example](<../examples/custom tools/chessboard_quality/README.md>)
+[Checkerboard quality example](<../examples/opencv tools/chessboard_quality/README.md>)
 
 **Build lens correction maps** creates reusable pinhole correction maps
 for **Remap image coordinates**, with output intrinsics and a separate
@@ -428,7 +428,7 @@ coordinates**. Lens maps retain their rectified frame. The
 
 **Inspect lens map displacement** shows correction strength and direction
 and reports how much of the output samples inside the source image.
-[Lens map displacement example](<../examples/custom tools/lens_map_displacement/README.md>)
+[Lens map displacement example](<../examples/opencv tools/lens_map_displacement/README.md>)
 
 **Save lens correction maps** and **Load lens correction maps** preserve
 the map pair, output intrinsics, and pixel-grid metadata in one file.
@@ -437,11 +437,11 @@ the map pair, output intrinsics, and pixel-grid metadata in one file.
 **Calibrate lens** reports per-view reprojection errors, board poses,
 and estimated parameter uncertainty. A worst-view limit can catch a poor
 view even when the overall fit passes.
-[Lens fit report example](<../examples/custom tools/lens_fit_report/README.md>)
+[Lens fit report example](<../examples/opencv tools/lens_fit_report/README.md>)
 
 **Validate lens calibration** checks a fixed profile on a separate grid
 image and shows the measured reprojection residuals.
-[Lens validation example](<../examples/custom tools/validate_lens_calibration/README.md>)
+[Lens validation example](<../examples/opencv tools/validate_lens_calibration/README.md>)
 
 **Detect ChArUco board** pairs identified image corners with physical
 board coordinates. A partial view can feed the existing PnP pose block.
@@ -454,7 +454,7 @@ reprojection RMS for each image.
 
 **Validate lens calibration** also accepts identified ChArUco points from
 a separate partial view and reports residuals by board corner ID.
-[ChArUco validation example](<../examples/custom tools/validate_charuco_calibration/README.md>)
+[ChArUco validation example](<../examples/opencv tools/validate_charuco_calibration/README.md>)
 
 **Calibrate hand–eye** fits a camera-to-gripper transform from paired
 robot and target poses. The output composes with the current gripper
@@ -499,7 +499,7 @@ new wrappers use eager OpenCV calls; legacy native G-API tools live under Advanc
 Additional wrappers include histogram equalization, CLAHE, normalization, gamma,
 channel split/merge, masking, absolute difference, corner detection, Hough lines/
 circles and distance transform. See [additional tools](additional-tools.md).
-After preparing the optional Lena asset, open `examples/demos/lena_features/lena_features.json` to try
+After preparing the optional Lena asset, open `examples/opencv tools/lena_features/lena_features.json` to try
 CLAHE → corners, edges → line segments, and a histogram in one project.
 
 **Find Hough template** locates translated copies of a shape from its edges.
@@ -535,8 +535,8 @@ links to the full Python binding inventory for the pinned contrib build. The
 [roadmap](roadmap.md) puts core vision coverage first and tracks editor,
 acquisition and deployment work separately. The [DCT example](<../examples/opencv tools/dct_round_trip/README.md>)
 displays cosine coefficients and verifies image reconstruction. The
-[Fourier filter example](<../examples/custom tools/fourier_filter/README.md>) removes a periodic
-stripe pattern with a band-stop filter. The [Fourier gain example](<../examples/custom tools/fourier_gain/README.md>)
+[Fourier filter example](<../examples/opencv tools/fourier_filter/README.md>) removes a periodic
+stripe pattern with a band-stop filter. The [Fourier gain example](<../examples/opencv tools/fourier_gain/README.md>)
 suppresses only a chosen pair of frequency bins. The
 [Fourier correlation example](<../examples/opencv tools/fourier_correlation/README.md>)
 finds the signed displacement between two images. The [intensity lookup example](<../examples/opencv tools/intensity_lut/README.md>)
@@ -547,20 +547,20 @@ The [intensity transform example](<../examples/opencv tools/intensity_transform/
 a ramp and reconstructs it through log and exponential blocks. The
 [image arithmetic example](<../examples/opencv tools/image_arithmetic/README.md>) subtracts
 a blurred background and scales the signed residual. The
-[weight-map blend example](<../examples/custom tools/blend_weight_maps/README.md>) feathers
+[weight-map blend example](<../examples/opencv tools/blend_weight_maps/README.md>) feathers
 between two aligned images using a per-pixel weight. The
 [pixel comparison example](<../examples/opencv tools/pixel_comparison/README.md>) turns the
 background difference into a binary texture mask. The [nonzero pixels example](<../examples/opencv tools/nonzero_pixels/README.md>)
 extracts coordinates from that mask and outlines its full bounds. The
-[intensity profile example](<../examples/custom tools/intensity_profile/README.md>) plots per-column
+[intensity profile example](<../examples/opencv tools/intensity_profile/README.md>) plots per-column
 mean intensity inside an inspection region and locates the maximum in each column. The
 [image statistics example](<../examples/opencv tools/image_statistics/README.md>) reports
 selected-region measurements and marks the darkest and brightest pixels. The
-[absolute image error example](<../examples/custom tools/absolute_image_error/README.md>) compares
+[absolute image error example](<../examples/opencv tools/absolute_image_error/README.md>) compares
 average, RMS, and worst-case deviations from a reference image. The
 [Earth Mover's Distance example](<../examples/opencv tools/earth_movers_distance/README.md>)
 measures a seven-level intensity shift between histograms. The
-[tilted statistics example](<../examples/custom tools/tilted_statistics/README.md>) measures
+[tilted statistics example](<../examples/opencv tools/tilted_statistics/README.md>) measures
 diagonal patches with 45-degree integral-image windows.
 
 The rotated rectangle overlap example fits a part footprint from a contour
@@ -569,7 +569,7 @@ area, intersection-over-union and the fraction of each footprint covered.
 [Rotated rectangle overlap example](<../examples/opencv tools/rotated_rectangle_overlap/README.md>)
 
 **Convex polygon overlap** measures intersection area and IoU for polygon
-footprints. The [example](<../examples/custom tools/convex_overlap/README.md>) wires a detected
+footprints. The [example](<../examples/opencv tools/convex_overlap/README.md>) wires a detected
 contour into the block and compares its convex hull with a reference.
 
 **Enclosing convex polygon** fits a footprint under a side-count limit.
@@ -611,7 +611,7 @@ built-in or wired palette. See the [distance-map example](<../examples/opencv to
 returns its region or pixel label. See the [nearest-seed example](<../examples/opencv tools/labeled_distance/README.md>).
 
 **Compare pixels** and **In range mask** accept signed label planes. The
-[label-mask example](<../examples/custom tools/label_masks/README.md>) selects watershed
+[label-mask example](<../examples/opencv tools/label_masks/README.md>) selects watershed
 boundaries and region interiors.
 
 **Gabor texture response** isolates stripes by orientation and wavelength.
@@ -620,7 +620,7 @@ Compare two responses to map the dominant texture direction.
 
 **Gabor orientation bank** compares several angles in one block and outputs
 the strongest response, winning angle, confidence, and valid-pixel mask.
-[Gabor orientation bank example](<../examples/custom tools/gabor_orientation_bank/README.md>)
+[Gabor orientation bank example](<../examples/opencv tools/gabor_orientation_bank/README.md>)
 
 **Pyramid mean-shift filter** flattens fine color texture before segmentation.
 [Mean-shift filtering example](<../examples/opencv tools/mean_shift_filter/README.md>)
@@ -682,10 +682,10 @@ registration `transform`. Forward/inverse direction and mask sampling use dropdo
 Try [transformed regions](<../examples/custom tools/transformed_regions/transformed_regions.json>) for a 12-block crop → resize →
 rotation pipeline whose inspection region follows each image operation.
 
-Open [regions](<../examples/custom tools/regions/regions.json>) for a working
+Open [regions](<../examples/demos/regions/regions.json>) for a working
 10-block project that inspects each synthetic part separately, computes a polygon
 histogram and blurs only the circular selection. No image download is required.
-Run it headlessly with `opencv-dataflow-run "examples/custom tools/regions/regions.json" --repeat 3`.
+Run it headlessly with `opencv-dataflow-run "examples/demos/regions/regions.json" --repeat 3`.
 
 Selections support filters, segmentation, gradients, image math, histogram and
 contrast tools, corner/ORB detectors, contours/components and template search.
@@ -731,7 +731,7 @@ Use **Contour hull and convexity defects** to measure edge notches and judge the
 Use **Contour profile tolerance** to check a measured outline against an aligned reference.
 [Contour profile example](../examples/applications/contour_profile/README.md)
 
-Try [object collections](<../examples/custom tools/object_collections/object_collections.json>).
+Try [object collections](<../examples/demos/object_collections/object_collections.json>).
 This 16-block project orders two parts left-to-right, selects the round contour and
 isolates two long vertical lines. See [collection tools and measurement conventions](object-collections.md).
 
@@ -741,7 +741,7 @@ Use **Split three channels / Merge three channels**, or the four-channel alpha
 variants, to process planes independently. **Extract image channel** and **Replace
 image channel** use channel-index dropdowns and preserve coordinate payloads.
 **Route image channels** assembles channels from one or two images with a
-configurable or wired index map. See the [false-color example](<../examples/custom tools/route_channels/README.md>).
+configurable or wired index map. See the [false-color example](<../examples/opencv tools/route_channels/README.md>).
 
 **Gaussian image pyramid set** sends all levels together on its `images` port.
 Connect it to an ordinary image input: the largest level is used by default.
@@ -847,7 +847,7 @@ graph.close()
 flow, Lucas-Kanade point tracking and first/latest/mean image references. They report
 readiness and activation counts, suppress primary outputs during warmup, and support
 bounded per-stream state, resets and trained references stored in projects or recipes.
-Try [sequence memory](<../examples/custom tools/sequence_memory/sequence_memory.json>), then run continuously. See
+Try [sequence memory](<../examples/demos/sequence_memory/sequence_memory.json>), then run continuously. See
 [sequence memory](sequence-memory.md) for training, masks, ticket provenance and limits.
 
 ## Measurements, stitching and stabilization
@@ -881,16 +881,16 @@ checks their residuals. See the [eigendecomposition example](<../examples/opencv
 
 **Check image samples** detects nonfinite and optionally out-of-range pixels.
 It emits aligned validity masks for downstream analysis. See the
-[image validity example](<../examples/custom tools/image_validity/README.md>).
+[image validity example](<../examples/opencv tools/image_validity/README.md>).
 **Replace nonfinite samples** substitutes configured values for NaN and
 infinity and emits a mask of changed pixels. See the
-[nonfinite replacement example](<../examples/custom tools/nonfinite_replacement/README.md>).
+[nonfinite replacement example](<../examples/opencv tools/nonfinite_replacement/README.md>).
 
 **Join images** assembles a side-by-side or stacked view without resampling.
 Its layout output records each panel's source frame. See the
-[image join example](<../examples/custom tools/join_images/README.md>).
+[image join example](<../examples/opencv tools/join_images/README.md>).
 **Paste image patch** copies selected pixels onto a canvas and reports
-their placement. See the [masked paste example](<../examples/custom tools/paste_patch/README.md>).
+their placement. See the [masked paste example](<../examples/opencv tools/paste_patch/README.md>).
 **Crop subpixel patch** samples around a fractional point or pose origin
 and carries the patch-to-source transform. See the
 [subpixel crop example](<../examples/opencv tools/subpixel_crop/README.md>).
@@ -898,7 +898,7 @@ and carries the patch-to-source transform. See the
 and carries a mapping for rewrapping the result. See the
 [circular inspection example](<../examples/opencv tools/polar_image_warp/README.md>).
 **Tile image** repeats an image in a row-and-column grid. The
-[tiling example](<../examples/custom tools/tile_image/README.md>) uses the grid as a synthetic
+[tiling example](<../examples/opencv tools/tile_image/README.md>) uses the grid as a synthetic
 fixture for template matching.
 **Transpose image** swaps rows and columns without interpolation. The
 [transpose example](<../examples/opencv tools/transpose_image/README.md>) maps points from
@@ -908,10 +908,10 @@ the transposed crop back to the original image.
 centering offset across batches. See the [Gram matrix example](<../examples/opencv tools/gram_matrix/README.md>).
 
 **Find nearest rows** compares numeric feature tables and returns exact nearest
-reference indices and distances. See the [nearest rows example](<../examples/custom tools/nearest_rows/README.md>).
+reference indices and distances. See the [nearest rows example](<../examples/opencv tools/nearest_rows/README.md>).
 
 **Sort numeric table** ranks records or sorts values within each row or column
-and returns their source indices. See the [numeric table sort example](<../examples/custom tools/numeric_table_sort/README.md>).
+and returns their source indices. See the [numeric table sort example](<../examples/opencv tools/numeric_table_sort/README.md>).
 
 **Fit principal components** reduces numeric feature tables by count or
 retained variance. **Transform principal components** projects rows or
@@ -938,8 +938,8 @@ Try the [matrix structure example](<../examples/opencv tools/matrix_structure/RE
 
 **Stitch image pair** combines overlapping inspection views in a shared frame
 or with a wired registration. It reports coverage, overlap, and the mappings
-from both inputs. Try the [stitching example](<../examples/custom tools/stitch_image_pair/README.md>).
-For overlapping views with different content, the [graph-cut example](<../examples/custom tools/stitch_seam/README.md>)
+from both inputs. Try the [stitching example](<../examples/opencv tools/stitch_image_pair/README.md>).
+For overlapping views with different content, the [graph-cut example](<../examples/opencv tools/stitch_seam/README.md>)
 compares averaging with a seam that selects individual source samples.
 It includes a larger overlap that uses a smaller seam work grid and keeps
 the full mosaic resolution.
@@ -947,28 +947,28 @@ the full mosaic resolution.
 **Stabilize camera motion** tracks stable background features to reduce
 translation or similarity jitter before measuring a frame. It publishes
 corrected pixels, a coverage mask, and the mapping back to the raw image.
-Try the [camera stabilization example](<../examples/custom tools/camera_stabilization/README.md>).
-The [recorded camera example](<../examples/custom tools/recorded_camera_stabilization/README.md>)
+Try the [camera stabilization example](<../examples/opencv tools/camera_stabilization/README.md>).
+The [recorded camera example](<../examples/opencv tools/recorded_camera_stabilization/README.md>)
 compares raw and corrected error over the same covered pixels on a bundled clip.
-The [two-plane example](<../examples/custom tools/stabilization_validation/README.md>)
+The [two-plane example](<../examples/opencv tools/stabilization_validation/README.md>)
 shows how a separate validation area can catch drift that the background fit misses.
-The [recorded depth example](<../examples/custom tools/recorded_stabilization_validation/README.md>)
+The [recorded depth example](<../examples/opencv tools/recorded_stabilization_validation/README.md>)
 exercises the check on near and far patches from a camera recording.
 **Stabilize recorded sequence** adds centered look-ahead smoothing for
 finite batches and preserves per-frame tickets, coverage, and transforms.
-Try the [offline smoothing example](<../examples/custom tools/offline_camera_stabilization/README.md>).
+Try the [offline smoothing example](<../examples/opencv tools/offline_camera_stabilization/README.md>).
 **Stabilize continuous stream** applies the same centered smoothing to individual
 frames with bounded look-ahead. Run all flushes the final tail automatically;
 a live source can pulse Flush. Outputs keep their original frame tickets and
-timestamps. See the [144-frame example](<../examples/custom tools/continuous_camera_stabilization/README.md>)
+timestamps. See the [144-frame example](<../examples/opencv tools/continuous_camera_stabilization/README.md>)
 and [buffered stream contract](sequence-memory.md#continuous-centered-stabilization).
 
 **Stitch scan sequence** automatically registers two to eight ordered views.
 Each adjacent pair must meet the fit and overlap thresholds before the graph
-receives a mosaic. Try the [ordered scan example](<../examples/custom tools/stitch_scan_sequence/README.md>).
-When the last view returns to the first, the [loop closure example](<../examples/custom tools/stitch_scan_loop/README.md>)
+receives a mosaic. Try the [ordered scan example](<../examples/opencv tools/stitch_scan_sequence/README.md>).
+When the last view returns to the first, the [loop closure example](<../examples/opencv tools/stitch_scan_loop/README.md>)
 shows how to correct accumulated drift within configured limits.
-For scans with uneven lighting, the [exposure example](<../examples/custom tools/stitch_scan_exposure/README.md>)
+For scans with uneven lighting, the [exposure example](<../examples/opencv tools/stitch_scan_exposure/README.md>)
 shows optional gain correction and feathered blending.
 
 **Register scan layout** accepts up to 64 ordered views and emits geometry
@@ -979,7 +979,7 @@ input overrides its parameter. Feathering renders a halo around the requested
 window to retain edge weights across tile boundaries. Source images remain a
 bounded resident batch, and each output window has a workspace guard.
 Use these blocks for canvases beyond the dense stitcher's limits.
-The [tiled mosaic example](<../examples/custom tools/tiled_scan_mosaic/README.md>)
+The [tiled mosaic example](<../examples/opencv tools/tiled_scan_mosaic/README.md>)
 runs twelve views and displays three windows from an 18,850-pixel-wide strip.
 
 **Measure line pair** consumes two line fits or selected line-collection entries.

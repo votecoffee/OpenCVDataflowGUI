@@ -114,7 +114,7 @@ def test_nonfinite_preview_marks_pixels_without_changing_source(color):
 def test_synthetic_depth_graph_measures_only_valid_source_pixels(profile):
     project = (
         Path(__file__).parents[1]
-        / "examples/custom tools"
+        / "examples/opencv tools"
         / "image_validity"
         / "image_validity.json"
     )

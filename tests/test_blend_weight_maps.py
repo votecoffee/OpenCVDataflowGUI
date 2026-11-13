@@ -120,7 +120,7 @@ def test_frame_policy_and_ticket_identity_cover_weight_maps():
 def test_example_keeps_both_endpoints_and_feathers_the_transition(profile):
     project = (
         Path(__file__).parents[1]
-        / "examples/custom tools"
+        / "examples/opencv tools"
         / "blend_weight_maps"
         / "blend_weight_maps.json"
     )

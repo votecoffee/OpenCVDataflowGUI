@@ -159,13 +159,13 @@ level selections pass through nested ToolBlocks and save/load with normal projec
 
 ## Example
 
-Use [object collections](<../examples/custom tools/object_collections/object_collections.json>). Its 16 blocks threshold synthetic parts, filter
+Use [object collections](<../examples/demos/object_collections/object_collections.json>). Its 16 blocks threshold synthetic parts, filter
 and sort two blobs left-to-right, isolate a round contour by circularity, and select
 two long vertical LSD segments by length and angle. Each branch has a ranked
 overlay. No camera or optional image download is required.
 
 ```powershell
-.\.venv\Scripts\opencv-dataflow-run "examples/custom tools/object_collections/object_collections.json" --repeat 3
+.\.venv\Scripts\opencv-dataflow-run "examples/demos/object_collections/object_collections.json" --repeat 3
 ```
 
 Native references: [shape descriptors and Hu moments](https://docs.opencv.org/4.x/d3/dc0/group__imgproc__shape.html)
