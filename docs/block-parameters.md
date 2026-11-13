@@ -1947,6 +1947,27 @@ Input `metadata` — Optional ImageMetadata chunks for PNG/JPEG; readback verifi
 | `exr_compression` | `"zip"` | `no`, `rle`, `zips`, `zip`, `piz`, `pxr24`, `b44`, `b44a`, `dwaa`, `dwab` EXR codec. PXR24, B44/B44A and DWA variants can be lossy; ZIP is the default. |
 | `exr_dwa_level` | `45` | Value must be a whole number between 0 and 1000. EXR DWAA/DWAB compression level; unused by other compression modes. |
 
+## Generate QR labels (`cv.encode_qr`)
+
+Image processing / Code generation
+
+Inputs: `text` (text, optional).
+
+Input `text` — Optional text with ticket/companion payload; generated labels get new grids.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `text` | `"PART-0042/LOT-A"` | Default payload; a wired Text input overrides it. No truncation or NUL padding. |
+| `version` | `0` | Value must be a whole number between 0 and 40. Native version 1..40, or zero for automatic sizing; capacity errors fail. |
+| `correction_level` | `"M"` | `L`, `M`, `Q`, `H` Native L/M/Q/H error-correction level, not a print-quality grade. |
+| `mode` | `"auto"` | `auto`, `numeric`, `alphanumeric`, `byte`, `eci_utf8`, `kanji`, `structured_append` Native mode; ECI uses UTF-8. Kanji converts validated double-byte Shift-JIS. |
+| `structure_number` | `2` | Value must be a whole number between 1 and 16. Native structured_append part count; retained when inactive. |
+| `pixels_per_module` | `8` | Value must be a whole number between 1 and 32. Integer nearest-neighbor scaling; no interpolation of module edges. |
+| `quiet_zone` | `4` | Value must be a whole number between 0 and 64. Total blank modules per edge, replacing the native border; default four. |
+| `sheet_columns` | `0` | Value must be a whole number between 0 and 16. Contact-sheet columns; zero chooses a compact grid. |
+| `sheet_gap` | `4` | Value must be a whole number between 0 and 64. Additional white modules between labels on a contact sheet. |
+| `maximum_output_pixels` | `16777216` | Value must be a whole number between 1 and 3.2e+07. Symbol/sheet pixel budget before scaling; copies add memory. |
+
 ## Equalize histogram (`cv.equalize`)
 
 Image processing / Contrast

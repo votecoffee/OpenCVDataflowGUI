@@ -826,6 +826,7 @@ def builtin_registry():
     from .projection import IntensityProfile, PathIntensityProfile
     from .ptcloud3d import PTCLOUD3D_BLOCKS
     from .pyramids import PYRAMID_BLOCKS
+    from .qr_encoding import EncodeQRCode
     from .raster_hough_lines import HoughPolarLines
     from .raw_sensor import RAW_SENSOR_BLOCKS
     from .recipe_blocks import RecipeField, RecipeSelect
@@ -1013,6 +1014,7 @@ def builtin_registry():
         FitCircleArc,
         CompareEdgeMaps,
         *CODE_READER_BLOCKS,
+        EncodeQRCode,
         ReadZXingBarcode,
         VerifyText,
         *SEGMENTATION_BLOCKS,

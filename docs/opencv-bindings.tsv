@@ -41,10 +41,10 @@ P1	class	cv2.QRCodeDetectorAruco_Params	no static reference	-
 P1	class	cv2.QRCodeEncoder	no static reference	-
 P1	method	cv2.QRCodeEncoder.create	method name only	-
 P1	method	cv2.QRCodeEncoder.encode	method name only	-
-P1	method	cv2.QRCodeEncoder.encodeStructuredAppend	no static reference	-
+P1	method	cv2.QRCodeEncoder.encodeStructuredAppend	method name only	-
 P1	method	cv2.QRCodeEncoder.Params	method name only	-
-P1	function	cv2.QRCodeEncoder_create	no static reference	-
-P1	class	cv2.QRCodeEncoder_Params	no static reference	-
+P1	function	cv2.QRCodeEncoder_create	literal reference	-
+P1	class	cv2.QRCodeEncoder_Params	literal reference	-
 P1	class	cv2.quality.QualityBase	no static reference	-
 P1	method	cv2.quality.QualityBase.clear	method name only	-
 P1	method	cv2.quality.QualityBase.compute	method name only	-
@@ -5959,7 +5959,7 @@ P4	method	cv2.ocl.Device.singleFPConfig	no static reference	-
 P4	method	cv2.ocl.Device.type	method name only	-
 P4	method	cv2.ocl.Device.vendorID	no static reference	-
 P4	method	cv2.ocl.Device.vendorName	no static reference	-
-P4	method	cv2.ocl.Device.version	no static reference	-
+P4	method	cv2.ocl.Device.version	method name only	-
 P4	function	cv2.ocl.Device_getDefault	no static reference	-
 P4	function	cv2.ocl.finish	no static reference	-
 P4	function	cv2.ocl.haveAmdBlas	no static reference	-

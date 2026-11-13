@@ -92,7 +92,15 @@ canonical metadata on readback; unsupported chunks fail before publication.
 EXIF orientation, ICC compatibility, source ticket/grid ownership and explicit
 fresh metadata after geometry changes have controlled references. Exact RGBA16
 copies and repeated XMP framing are qualified; opaque tag repair remains outside
-this baseline. The next priority is native QR encoding (S1-112).
+this baseline.
+
+[Native QR label generation](<../examples/opencv tools/qr_encoding/README.md>)
+(S1-112) now wraps native modes, correction, version and structured count. It
+normalizes native borders, preserves integer module edges, bounds rendering and
+supplies distinct sheet/symbol grids with source ticket/companion payloads.
+Known ASCII/UTF-8 labels read back natively; optional ZXing checks Kanji. Native
+structured-append generation yields a group, while S1-162 ordered recovery remains
+planned. The next priority is animated image codec round trips (S1-111).
 
 [Lateral chromatic aberration correction](<../examples/opencv tools/chromatic_aberration/README.md>)
 (S1-146) now loads or defines a versioned native polynomial and aligns red/blue
