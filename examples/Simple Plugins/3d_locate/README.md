@@ -56,6 +56,19 @@ Neither measurement is a class probability.
 Rebuild the example with `build_demo.py . --host-project` when the tool and
 host Python packages are available.
 
+## Result assessment and candidate review
+
+With dev14, results keep the cloud separate from its status, legend and
+measurement panel. In training, **Result selection** chooses an instance or
+rejected candidate, with toggles for the scene, axes and fit layers. Orange
+rejected poses are never accepted detections. No-match results explain the
+failed stage and original gate measurements. **Render overlay** off still
+skips image rendering.
+
+The [result review examples](result_review/README.md) include generated and
+real positive cases plus a known zero-match case, each with image, report
+and separately labeled accepted/rejected PLY clouds.
+
 ## Provenance and limitations
 
 The analytic surface generator and these generated clouds use the MIT license

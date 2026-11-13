@@ -1,0 +1,55 @@
+{
+  "generated": {
+    "project": "project.json",
+    "input_sha256": {
+      "project.json": "d2152c08cfe469dd6fe2884d3242c548955091efe00c751fc747c8d764e94adf",
+      "assets/part.s3l": "8183afa88ce68a7508605d911eb0ebfdb287241da755c40e6a8087dabf031be9",
+      "assets/scene.ply": "0451b9805990817a23b81ba08c745aa3fedf95716f37a4987e5942737ab687cd"
+    },
+    "accepted_count": 2,
+    "assessment": {
+      "status": "located",
+      "message": "2 accepted 3D instances",
+      "rejection_counts": {
+        "geometry": 5
+      }
+    },
+    "note": "Rejected candidate display is not an accepted detection."
+  },
+  "real_positive": {
+    "project": "real_tless/depth_verified/project.json",
+    "input_sha256": {
+      "real_tless/depth_verified/project.json": "2715f32549d7586f47cdb8965f59485e8323826e9152e51ec977490b9d64f383",
+      "real_tless/depth_verified/assets/object29.s3l": "c6af5c5b5d50149c1b25be20004054d6ab06258d033727583531449f570d1298",
+      "real_tless/depth_verified/assets/scene.ply": "151113eee38052d452f1a9ff96e0dcc8dd5c1f331f8e2d9700099480ab3a724f"
+    },
+    "accepted_count": 1,
+    "assessment": {
+      "status": "located",
+      "message": "1 accepted 3D instances",
+      "rejection_counts": {
+        "depth": 6,
+        "geometry": 15
+      }
+    },
+    "note": "Rejected candidate display is not an accepted detection."
+  },
+  "real_no_match": {
+    "project": "novel_models/object_000006/project.json",
+    "input_sha256": {
+      "novel_models/object_000006/project.json": "02e4ecde358df5c1a9f4cd28c0597502cfdbd1868d8165498e8317314f3b83a8",
+      "novel_models/object_000006/assets/model.s3l": "1ec5838c8bb166ef25ae15f9394a81b68e744787b90f1b6d21c5217414bbdad1",
+      "novel_models/object_000006/assets/scene.ply": "5f4775fe266fe63caedd0c537adbcad619e8699709cb7dfae4d7e8193c65dbec",
+      "novel_models/object_000006/assets/depth.ply": "0a8db38d7329aaaec447187d833dce2dd4a7eac0bdf7a12dc8b9586987f890a7"
+    },
+    "accepted_count": 0,
+    "assessment": {
+      "status": "verification_failed",
+      "message": "Not located: none of 24 tested candidates passed",
+      "rejection_counts": {
+        "geometry": 24
+      }
+    },
+    "note": "Rejected candidate display is not an accepted detection."
+  }
+}
