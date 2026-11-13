@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 105 | 20 | 50 | 175 | 60.0% |
+| 1. Core and baseline 2D | 106 | 20 | 49 | 175 | 60.6% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 167 | 61 | 242 | 470 | 35.5% |
+| **Overall** | 168 | 61 | 241 | 470 | 35.7% |
 
 <!-- coverage-summary:end -->
 
@@ -202,7 +202,7 @@ fixture or result needed to close the item.
 | S1-125 | Floating-point image codec round trips | imread, imwrite and format-specific float encoding | Partial | cv.encode_image, cv.decode_image, input.file and output.image now preserve float32/64 TIFF values and channel order, with explicit lossless compression. Multipage TIFF supports floating pages. Radiance HDR has qualified RGBE error bounds and range checks. Original float32/HDR and float64/RGBA projects run headlessly. EXR controls and unavailable-codec handling ship, but this build reports OpenEXR: NO and native EXR tests skip. Float64 multichannel TIFF has exact OpenCV sample readback but emits a native photometric/ExtraSamples warning; cross-reader metadata qualification also remains open. |
 | S1-126 | Lossless high-bit-depth compressed images | JPEG 2000 and PNG codec options | Complete | cv.encode_image, cv.decode_image, input.file and output.image. JP2 defaults to explicit lossless coding; lossy target rate is opt-in. PNG exposes compression, strategy, filter and libpng buffer controls. Real PNG/OpenJPEG tests verify exact uint8/uint16 gray, RGB and RGBA file/memory round trips, full-range values, alpha and wire payloads. Rejects floating JP2, undersized images and unavailable codecs before file publication. Original 16-bit color/grayscale examples verify zero error. |
 | S1-127 | Packed high-bit-depth sensor frames | MIPI RAW10/RAW12 unpacking and demosaicing | Complete | cv.decode_raw_sensor and input.raw_sensor decode specified MIPI byte groups, headers and padded rows to uint16 ADC counts or left-aligned values. Golden bytes, limits, exact/trailing policies, tickets, explicit pixel frames and generated files are tested. cv.demosaic_bayer optionally consumes sensor phase and follows crops/flips/right-angle rotations, rejecting resampled/consumed mosaics. RAW10/12 examples verify exact counts. PFNC/vendor-specific packing and physical SDK acquisition remain outside this MIPI baseline. |
-| S1-128 | Affine-invariant image feature extraction | AffineFeature.create with a supported feature detector | Planned | Measure correspondence repeatability under known view tilts and preserve point scale, orientation and source frame. |
+| S1-128 | Affine-invariant image feature extraction | AffineFeature.create with SIFT/ORB | Complete | inspect.affine_features supplies bounded generated/custom tilt-roll schedules, full backend controls, mask/region intersection and existing matcher-compatible descriptors. Source centers, equal-area scale, exact support ellipses and mapped orientation retain virtual-view provenance and frame/ticket/pyramid payloads. Focused tests cover descriptor alignment, invalid budgets, blank selections and graphics disabled. Original tilted-view project measures repeatability against an independent generating transform (97.9% within 3 px on the pinned build). |
 | S1-129 | Local structure tensor and dominant orientation | cornerEigenValsAndVecs | Planned | Expose eigenvalue and orientation maps with controlled borders and verify edges, corners and low-confidence flat areas. |
 | S1-130 | Motion-compensated frame interpolation | Forward/backward flow and remap | Planned | Create intermediate frames for known motion, report occlusion coverage and preserve media timing. |
 | S1-131 | Intensity-weighted center and orientation | moments with intensity weights and region selection | Planned | Compare geometric and intensity-weighted centers and axes on a known asymmetric feature. |

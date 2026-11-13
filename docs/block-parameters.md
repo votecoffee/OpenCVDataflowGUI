@@ -4111,6 +4111,44 @@ Inputs: `matches` (data).
 | `min_inliers` | `3` |  |
 | `min_inlier_ratio` | `0.5` |  |
 
+## Affine-invariant image features (`inspect.affine_features`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Original image passes through unchanged; detection uses an 8-bit gray copy.
+
+Input `mask` — Optional uint8 mask intersected with region, in the input image's frame.
+
+Input `region` — Optional circle, rectangle or polygon in the input image's frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `backend` | `"sift"` | `sift`, `orb` SIFT outputs match existing SIFT matchers; ORB outputs match ORB matchers. |
+| `view_mode` | `"generated"` | `generated`, `custom` Generate tilt/roll samples or use the explicit custom view list. |
+| `min_tilt` | `0` | Value must be a whole number between 0 and 6. First exponent of tilt_step; zero includes the unwarped image once. |
+| `max_tilt` | `2` | Value must be a whole number between 0 and 6. Last exponent of tilt_step, inclusive. Tilt factors are limited to eight. |
+| `tilt_step` | `1.4142135623730951` | Value must be a finite number between 1.01 and 2. Multiplicative tilt factor between generated levels; not an angle. |
+| `rotate_step_base` | `72.0` | Value must be a finite number between 1 and 180. Generated roll spacing in degrees divided by each tilt factor. |
+| `custom_views` | `[[1.0, 0.0], [2.0, 0.0], [2.0, 90.0]]` | Explicit [tilt_factor, roll_degrees] pairs; 1..64 views, tilt 1..8. |
+| `features_per_view` | `400` | Value must be a whole number between 1 and 2000. Requested detector limit per sampled view, before combining results. |
+| `max_features` | `4000` | Value must be a whole number between 1 and 10000. Keep strongest selected results; descriptor rows follow the same order. |
+| `sift_octave_layers` | `3` | Value must be a whole number between 1 and 16. SIFT sublevels per octave; used only with SIFT. |
+| `sift_contrast_threshold` | `0.04` | Value must be a finite number between 0 and 1. Larger values reject more low-contrast keypoints. |
+| `sift_edge_threshold` | `10.0` | Value must be a finite number between 0.01 and 1000. Larger values keep more edge-like keypoints. |
+| `sift_sigma` | `1.6` | Value must be a finite number between 0.01 and 100. Initial SIFT Gaussian sigma; used only with SIFT. |
+| `sift_descriptor_depth` | `"float32"` | `float32`, `uint8` SIFT descriptor storage; uint8 still uses L1/L2 matching. |
+| `sift_precise_upscale` | `false` | Use OpenCV's precise initial upscale to reduce localization bias. |
+| `orb_scale_factor` | `1.2` | Value must be a finite number between 1 and 4. ORB pyramid scale ratio; used only with ORB. |
+| `orb_levels` | `8` | Value must be a whole number between 1 and 32. ORB pyramid level count; first level must be smaller. |
+| `orb_fast_threshold` | `20` | Value must be a whole number between 0 and 255. ORB FAST detector intensity threshold. |
+| `orb_edge_threshold` | `31` | Value must be a whole number between 0 and 1024. ORB image-border exclusion in sampled-view pixels. |
+| `orb_first_level` | `0` | Value must be a whole number between 0 and 31. ORB pyramid level containing the input sampled view. |
+| `orb_wta_k` | `"2"` | `2`, `3`, `4` ORB descriptor comparisons; 3/4 require Hamming2 matching. |
+| `orb_score_type` | `"harris"` | `harris`, `fast` ORB feature ranking method. |
+| `orb_patch_size` | `31` | Value must be a positive odd integer between 3 and 255. Odd ORB descriptor patch width in sampled-view pixels. |
+
 ## AKAZE keypoints and descriptors (`inspect.akaze`)
 
 Inspection / Features

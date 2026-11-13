@@ -207,6 +207,13 @@ binary descriptors and Hamming distance. The [descriptor radius example](<../exa
 retains multiple candidates per query keypoint within a distance limit.
 The [MSER example](<../examples/opencv tools/mser_regions/README.md>)
 shows stable bright and dark regions in an image.
+[Affine-invariant features](<../examples/opencv tools/affine_features/README.md>)
+sample synthetic tilt/roll views with SIFT or ORB and reuse the existing matchers.
+Controls expose generated or explicit view schedules and all backend parameters.
+Input masks/regions select source centers. Source scale, orientation and support
+ellipses retain the sampled-view provenance; frames, tickets and pyramid metadata
+travel on the wires. Graphics disabled skips previews and ellipse drawing.
+The example compares correspondences with the known image-generating transform.
 
 Pattern matchers also return a configurable **pose**: set local x/y/angular offsets
 to locate an inspection origin on the part. **Pose from feature** creates a frame

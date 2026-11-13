@@ -119,6 +119,7 @@ BLOCK_MODULES = {
     ),
     "geometry": "inspect.affine inspect.homography collection.clip_lines",
     "features": (
+        "inspect.affine_features "
         "inspect.fast inspect.orb inspect.sift inspect.akaze inspect.kaze inspect.brisk "
         "inspect.mser inspect.simple_blob_detector "
         "inspect.match_orb inspect.match_sift inspect.match_akaze inspect.match_brisk "
@@ -151,6 +152,7 @@ _MODULE_BY_BLOCK = {
 }
 _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
+    "inspect.affine_features": ("AffineFeature", "ASIFT", "tilt", "SIFT", "ORB"),
     "cv.decode_raw_sensor": ("MIPI", "RAW10", "RAW12", "unpack", "Bayer", "row stride"),
     "input.raw_sensor": ("MIPI", "RAW10", "RAW12", "sensor frame"),
     "cv.laplacian_pyramid": ("createLaplacePyr", "pyrDown", "pyrUp", "signed bands"),

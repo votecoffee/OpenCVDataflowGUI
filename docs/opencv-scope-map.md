@@ -390,7 +390,7 @@ is evidence of exposure. Completion requires the checklist's graph fixture.
 | `cv2.matchTemplate` | Use the existing multipeak template detection workflow. | S1-45 |
 | `cv2.createHanningWindow`, `cv2.phaseCorrelate`, `cv2.phaseCorrelateIterative` | Use the window internally in spectral alignment. | S1-48, S1-80 |
 | `cv2.Feature2D`, `cv2.ORB`, `cv2.SIFT`, `cv::KeyPointsFilter` | Feature records own keypoint filtering, descriptors and source frame. | S1-42–S1-43, S1-63 |
-| `cv2.MSER`, `cv2.AffineFeature` | Stable regions and affine feature extraction have separate output and repeatability checks. | S1-64, S1-128 |
+| `cv2.MSER`, `cv2.AffineFeature` | Stable regions have separate output checks. inspect.affine_features uses native AffineFeature with SIFT/ORB, explicit bounded schedules, source-space support geometry and a known-tilt correspondence test. Contrib AffineFeature2D variants remain separate build-dependent candidates. | S1-64, S1-128 |
 | `cv2.DescriptorMatcher`, `cv2.BFMatcher`, `cv2.FlannBasedMatcher`, `cv::SL2`, `cv::Accumulator` | Match modes share the descriptor contract. Distance and accumulation types stay internal. | S1-44 |
 | `cv2.drawKeypoints`, `cv2.drawMatches`, `cv2.drawMatchesKnn` | Use correspondence and keypoint graphics without changing the typed feature results. | S1-44, S1-106 |
 | `cv::evaluateFeatureDetector`, `cv::computeRecallPrecisionCurve`, `cv::getRecall`, `cv::getNearestPoint` | Use a tested equivalent for image-pair benchmarking. These C++ functions lack direct Python bindings. | S1-163 |

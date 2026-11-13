@@ -63,6 +63,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | --- | --- |
 | [25 template instances](<opencv tools/template_instances/README.md>) | Find a repeated fixed-scale template in a 25-part synthetic scene and emit a pose for each match. |
 | [3D pose and triangulation](<opencv tools/pose_3d/README.md>) | Project synthetic 3D points into two cameras, recover a pose with PnP, and triangulate points. |
+| [Affine-invariant features](<opencv tools/affine_features/README.md>) | Match an original tilted inspection fixture using SIFT/ORB affine views, retain source-space support geometry, and verify against a known transform. |
 | [AKAZE registration](<opencv tools/akaze_registration/README.md>) | Match binary AKAZE descriptors and recover a known image translation. |
 | [Bayer demosaicing](<opencv tools/bayer_demosaicing/README.md>) | Decode a synthetic 16-bit camera mosaic with bilinear and edge-aware interpolation. |
 | [Brick edges](<opencv tools/brick_edges/README.md>) | Reduce surface texture with Gaussian blur and find mortar edges with Canny. |

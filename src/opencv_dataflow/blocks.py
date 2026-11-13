@@ -634,6 +634,7 @@ class WriteResults(Block):
 
 
 def builtin_registry():
+    from .affine_features import AffineFeatures
     from .analysis_tools import ANALYSIS_BLOCKS
     from .annotation import AnnotationLayer
     from .annoy_blocks import ANNOY_BLOCKS
@@ -896,6 +897,7 @@ def builtin_registry():
         TileImage,
         *FEATURE_BLOCKS,
         *REGISTRATION_BLOCKS,
+        AffineFeatures,
         ReviewFeatureMatches,
         AlignECC,
         *RESTORATION_BLOCKS,

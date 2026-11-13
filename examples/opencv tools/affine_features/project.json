@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Original synthetic reference view",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_features",
+      "type": "inspect.affine_features",
+      "name": "Affine SIFT \u2014 reference",
+      "parameters": {
+        "backend": "sift",
+        "view_mode": "generated",
+        "min_tilt": 0,
+        "max_tilt": 3,
+        "tilt_step": 1.4142135623730951,
+        "rotate_step_base": 72.0,
+        "custom_views": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ],
+          [
+            2.0,
+            90.0
+          ]
+        ],
+        "features_per_view": 400,
+        "max_features": 4000,
+        "sift_octave_layers": 3,
+        "sift_contrast_threshold": 0.04,
+        "sift_edge_threshold": 10.0,
+        "sift_sigma": 1.6,
+        "sift_descriptor_depth": "float32",
+        "sift_precise_upscale": false,
+        "orb_scale_factor": 1.2,
+        "orb_levels": 8,
+        "orb_fast_threshold": 20,
+        "orb_edge_threshold": 31,
+        "orb_first_level": 0,
+        "orb_wta_k": "2",
+        "orb_score_type": "harris",
+        "orb_patch_size": 31
+      },
+      "position": [
+        330.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "points",
+        "count",
+        "sampling",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tilted",
+      "type": "input.file",
+      "name": "Original synthetic tilted view",
+      "parameters": {
+        "path": "assets/tilted.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        300.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tilted_features",
+      "type": "inspect.affine_features",
+      "name": "Affine SIFT \u2014 tilted",
+      "parameters": {
+        "backend": "sift",
+        "view_mode": "generated",
+        "min_tilt": 0,
+        "max_tilt": 3,
+        "tilt_step": 1.4142135623730951,
+        "rotate_step_base": 72.0,
+        "custom_views": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ],
+          [
+            2.0,
+            90.0
+          ]
+        ],
+        "features_per_view": 400,
+        "max_features": 4000,
+        "sift_octave_layers": 3,
+        "sift_contrast_threshold": 0.04,
+        "sift_edge_threshold": 10.0,
+        "sift_sigma": 1.6,
+        "sift_descriptor_depth": "float32",
+        "sift_precise_upscale": false,
+        "orb_scale_factor": 1.2,
+        "orb_levels": 8,
+        "orb_fast_threshold": 20,
+        "orb_edge_threshold": 31,
+        "orb_first_level": 0,
+        "orb_wta_k": "2",
+        "orb_score_type": "harris",
+        "orb_patch_size": 31
+      },
+      "position": [
+        330.0,
+        300.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "points",
+        "count",
+        "sampling",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match",
+      "type": "inspect.match_sift",
+      "name": "Match SIFT descriptors",
+      "parameters": {
+        "ratio": 0.75,
+        "max_distance": 250.0,
+        "mode": "ratio",
+        "norm": "l2"
+      },
+      "position": [
+        660.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit",
+      "type": "inspect.homography",
+      "name": "Estimate image homography",
+      "parameters": {
+        "ransac_pixels": 3.0,
+        "min_inliers": 30,
+        "min_inlier_ratio": 0.8,
+        "method": "ransac",
+        "max_iterations": 2000,
+        "confidence": 0.995
+      },
+      "position": [
+        980.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "matches"
+      ],
+      "exposed_outputs": [
+        "transform",
+        "inliers"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "review",
+      "type": "inspect.review_matches",
+      "name": "Review feature matches",
+      "parameters": {
+        "show": "all",
+        "max_pairs": 160,
+        "gap": 16,
+        "line_width": 1,
+        "endpoints": true
+      },
+      "position": [
+        1300.0,
+        160.0
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "matches",
+        "fit"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "canvas",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original affine inspection fixture \u2014 MIT",
+      "description": "Original synthetic images and generator under the repository MIT license. Affine SIFT matches an X-compressed/sheared view. Fit uses RANSAC; green pairs agree with that fit, red pairs disagree. assets/truth.json is the independent transform used to generate the tilted image. See README for expected accuracy. This demonstrates synthetic repeatability; it does not qualify real viewpoint changes.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -310.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_features",
+      "input": "image"
+    },
+    {
+      "source": "tilted",
+      "output": "image",
+      "target": "tilted_features",
+      "input": "image"
+    },
+    {
+      "source": "reference_features",
+      "output": "features",
+      "target": "match",
+      "input": "query"
+    },
+    {
+      "source": "tilted_features",
+      "output": "features",
+      "target": "match",
+      "input": "train"
+    },
+    {
+      "source": "match",
+      "output": "matches",
+      "target": "fit",
+      "input": "matches"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "review",
+      "input": "query_image"
+    },
+    {
+      "source": "tilted",
+      "output": "image",
+      "target": "review",
+      "input": "train_image"
+    },
+    {
+      "source": "match",
+      "output": "matches",
+      "target": "review",
+      "input": "matches"
+    },
+    {
+      "source": "fit",
+      "output": "transform",
+      "target": "review",
+      "input": "fit"
+    }
+  ]
+}
