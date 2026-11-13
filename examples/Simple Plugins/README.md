@@ -2,7 +2,7 @@
 
 In a new graph, expand **Simple Plugins** in the toolbox or search for the tool
 by name. SimpleClassify is bundled. SimplePatternMatch, SimpleSegmentation, and
-SimplePathWidth, SimpleReferenceInspect, and Simple3DLocate load their installed integrations when you add a block or open
+SimplePathWidth, SimpleReferenceInspect, Simple3DLocate and Simple3DMeasure load their installed integrations when you add a block or open
 a project.
 
 | Tool | Example projects |
@@ -13,6 +13,7 @@ a project.
 | **SimplePathWidth** | [Real industrial weld bead](path_width/weld_bead/README.md), plus a [generated curved bead](path_width/README.md) for controlled gap/width regression. |
 | **SimpleReferenceInspect** | [Real clear-tote inspection](reference_inspect/armbench_tote/README.md), [posed PCB hard case](reference_inspect/visa_pcb2/README.md), and [generated reference inspection](reference_inspect/README.md). |
 | **Simple3DLocate** | [Real T-LESS clutter with depth verification](3d_locate/real_tless/depth_verified/README.md), plus [generated rigid surfaces](3d_locate/README.md) for controlled regression. |
+| **Simple3DMeasure** | [Real T-LESS measurement review and generated known/raised/missing surfaces](3d_measure/README.md), with native RGB flyaround, retained reference recipes and explicit dimensional qualification limits. |
 
 ## Start with real public data
 
@@ -22,6 +23,10 @@ native 3D fit clouds. It includes dataset licenses, attribution and retained
 errors. The new [clear-tote reference inspection](reference_inspect/armbench_tote/README.md)
 uses separate empty/loaded captures; the [posed PCB reference example](reference_inspect/visa_pcb2/README.md)
 keeps real held-out defect masks and known false alarms visible.
+
+The newer [Simple3DMeasure examples](3d_measure/README.md) add three real
+first-return captures with supplied annotation fixtures. They demonstrate the
+measurement/review workflow; independent physical accuracy remains unqualified.
 
 ## Set up SimplePatternMatch
 

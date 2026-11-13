@@ -20,6 +20,7 @@ PIXEL_SEGMENTATION_TYPES = (
 PATH_WIDTH_TYPES = ("inspect.simple_path_width",)
 REFERENCE_INSPECT_TYPES = ("inspect.simple_reference",)
 LOCATE_3D_TYPES = ("3d.simple_locate",)
+MEASURE_3D_TYPES = ("3d.simple_measure",)
 
 
 def _register_blocks(register, registry):
@@ -95,6 +96,19 @@ def load_installed_3d_locate(registry):
         raise ValueError(
             "Install Simple3DLocate in the Python environment running DataflowGUI. "
             "See examples/Simple Plugins/3d_locate/README.md for setup."
+        ) from exc
+    _register_blocks(register, registry)
+
+
+def load_installed_3d_measure(registry):
+    try:
+        from opencv_simple_3d_measure.dataflow import register
+    except ModuleNotFoundError as exc:
+        if exc.name not in ("opencv_simple_3d_measure", "opencv_simple_3d_measure.dataflow"):
+            raise
+        raise ValueError(
+            "Install Simple3DMeasure in the Python environment running DataflowGUI. "
+            "See examples/Simple Plugins/3d_measure/README.md for setup."
         ) from exc
     _register_blocks(register, registry)
 

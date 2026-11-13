@@ -1,0 +1,55 @@
+# Simple3DMeasure
+
+Train plane datums and inspect step heights, plane angles, signed probe
+distances and surface residual ranges. Requires the optional
+`opencv-simple-3d-measure` plugin **0.1.0.dev0** and the host integration.
+
+Install the wheel/source package in the Python environment running the app,
+then restart the app and its runners:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install --no-deps C:\path\to\opencv_simple_3d_measure-0.1.0.dev0-py3-none-any.whl
+```
+
+| Project | Evidence |
+| --- | --- |
+| [Known step](generated/good/project.json) | Independent noisy sampling of a generated 5 mm step. |
+| [Raised feature](generated/raised_feature/project.json) | High points are excluded from plane fitting but still make surface range fail. |
+| [Missing surface](generated/missing_surface/project.json) | Missing height/angle/range stay unavailable. A valid datum probe remains available. |
+| [Real T-LESS captures](real_tless/README.md) | Three measured first-return captures with explicit supplied annotation fixtures and accuracy limits. |
+
+Run a project and select **Simple3DMeasure → Cloud / fit**. Its thumbnail and
+popout use the native flyaround point-cloud viewer. Green shows fitting
+inliers, red exclusions, magenta unavailable region samples, gray scene,
+blue plane grids, violet trained region boxes, yellow dimensions/angle arcs
+and RGB datum axes. Blue datum Z follows the signed normal. Grids, boxes and
+dimension lines are derived graphics. Inspect **measurements**, **planes** and
+**report** for values, units, limits, fit coverage and extrapolation evidence.
+
+Open **Review measurement recipe…** to restore the retained training cloud.
+Choose a region or toggle cached graphic layers. After a Debug execution,
+**Capture completed run** freezes scene and fixture from that completed
+execution. **Export visible review…** saves the selected native PLY, raw report,
+hashes and capture identity. **Import trained recipe…** loads a CLI/API-trained
+`.s3m`; **Stage recipe** edits the inspector draft and **Apply** activates it.
+Cancel preserves the active parameters. Native graphical region teaching is
+still pending; this release provides review/import and CLI/API training.
+
+`surface_range` is peak-to-valley residual over **all selected samples** about
+the robustly fitted least-squares plane. It is not minimum-zone flatness.
+Step height uses a signed target inlier centroid with a 5-degree parallel
+guard. Missing/degenerate fits produce unavailable measurements, never zeros.
+Turn off `render_graphics` to skip graphic composition without changing values.
+
+Rebuild into fresh folders with the plugin and host installed:
+
+```powershell
+python build_demo.py new_generated --host-projects
+python build_tless.py real_tless/source new_tless
+```
+
+Generated surfaces use the MIT-licensed builder and contain one visible surface
+per XY sample; they are numerical controls. Real raw/derived T-LESS material
+uses CC BY 4.0 with [author attribution](real_tless/ATTRIBUTION.md).
+The manifest pins sample assets; PLY display sampling is separate from raw
+numerical measurement. These examples do not establish production accuracy.

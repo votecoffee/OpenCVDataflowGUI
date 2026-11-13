@@ -16,6 +16,7 @@ MATCH_TITLE = Qt.MatchFlag.MatchExactly | Qt.MatchFlag.MatchRecursive
         ("SimplePathWidth", "inspect.simple_path_width", "opencv_simple_path_width"),
         ("SimpleReferenceInspect", "inspect.simple_reference", "opencv_simple_reference_inspect"),
         ("Simple3DLocate", "3d.simple_locate", "opencv_simple_3d_locate"),
+        ("Simple3DMeasure", "3d.simple_measure", "opencv_simple_3d_measure"),
     ],
 )
 def test_optional_simple_tools_are_searchable_without_importing(
@@ -63,6 +64,7 @@ def test_optional_simple_tools_are_searchable_without_importing(
             "opencv_simple_reference_inspect.dataflow",
         ),
         ("Simple3DLocate", "3d.simple_locate", "opencv_simple_3d_locate.dataflow"),
+        ("Simple3DMeasure", "3d.simple_measure", "opencv_simple_3d_measure.dataflow"),
         (
             "SimpleSegmentation", "inspection.ocv_segment_image",
             "opencv_defect_segmentation.dataflow",

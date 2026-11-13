@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/scene.ply",
+        "units": "mm",
+        "frame": "camera",
+        "max_points": 2000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "3d.simple_measure",
+      "name": "Simple3DMeasure",
+      "description": "Real T-LESS first returns; supplied annotation fixture. No detection or independent dimensional accuracy claim; independent capture with frozen reference recipe.",
+      "parameters": {
+        "recipe_path": "assets/measurement.s3m",
+        "sha256": "0f680ff602b02e9e39eef5c7748e390b7a03ec8f02df5c7b7e953e32c817714c",
+        "primary_measurement": "",
+        "render_graphics": true
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "scene",
+        "fixture"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "planes",
+        "report",
+        "value",
+        "count",
+        "fit"
+      ],
+      "thumbnail": true,
+      "preview_output": "fit"
+    },
+    {
+      "id": "fixture",
+      "type": "3d.pose",
+      "name": "Supplied annotation fixture (not a detected pose)",
+      "parameters": {
+        "rvec": [
+          2.249854235896913,
+          1.8268975754867736,
+          -0.260480112655586
+        ],
+        "translation": [
+          -33.03962683,
+          -69.78034692,
+          786.28778032
+        ],
+        "source_frame": "object6",
+        "target_frame": "camera",
+        "units": "mm"
+      },
+      "position": [
+        0,
+        250
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "cloud",
+      "target": "measure",
+      "input": "scene"
+    },
+    {
+      "source": "fixture",
+      "output": "transform",
+      "target": "measure",
+      "input": "fixture"
+    }
+  ]
+}

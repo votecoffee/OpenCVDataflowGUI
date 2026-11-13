@@ -31,6 +31,7 @@ from opencv_dataflow.toolbox import block_entry
             {"inspect.simple_reference": "SimpleReferenceInspect"},
         ),
         ("opencv_simple_3d_locate.dataflow", {"3d.simple_locate": "Simple3DLocate"}),
+        ("opencv_simple_3d_measure.dataflow", {"3d.simple_measure": "Simple3DMeasure"}),
         ("opencv_geometric_pattern_match.dataflow", {
             "pattern.ogpm_recipe": "SimplePatternMatch",
             "pattern.ogpm_load_recipe": "SimplePatternMatch · Load recipe",

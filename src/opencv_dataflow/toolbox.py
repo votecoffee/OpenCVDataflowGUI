@@ -10,6 +10,7 @@ from .core import block_display_title
 from .plugins import (
     GEOMETRIC_MATCHER_TYPES,
     LOCATE_3D_TYPES,
+    MEASURE_3D_TYPES,
     PATH_WIDTH_TYPES,
     PIXEL_SEGMENTATION_TYPES,
     REFERENCE_INSPECT_TYPES,
@@ -25,6 +26,7 @@ _OPTIONAL_SIMPLE_FAMILIES = {
     **dict.fromkeys(PATH_WIDTH_TYPES, "Measurements"),
     **dict.fromkeys(REFERENCE_INSPECT_TYPES, "Reference inspection"),
     **dict.fromkeys(LOCATE_3D_TYPES, "3D localization"),
+    **dict.fromkeys(MEASURE_3D_TYPES, "3D measurements"),
 }
 _SIMPLE_FAMILIES = {**_OPTIONAL_SIMPLE_FAMILIES, "inspect.simple_classify_image": "Classification"}
 

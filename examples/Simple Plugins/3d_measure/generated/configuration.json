@@ -1,0 +1,98 @@
+{
+  "units": "mm",
+  "frame": "part",
+  "settings": {
+    "min_points": 30,
+    "min_inlier_fraction": 0.5,
+    "max_trials": 256,
+    "fit_sample_limit": 20000,
+    "seed": 0,
+    "execution_workers": 1
+  },
+  "planes": [
+    {
+      "name": "datum",
+      "minimum": [
+        -16.0,
+        -11.0,
+        -1.0
+      ],
+      "maximum": [
+        -1.0,
+        11.0,
+        1.0
+      ],
+      "normal_hint": [
+        8.613908044884731e-05,
+        -0.0002909282908380271,
+        0.9999999539703932
+      ],
+      "tolerance": null
+    },
+    {
+      "name": "top",
+      "minimum": [
+        1.0,
+        -11.0,
+        3.0
+      ],
+      "maximum": [
+        16.0,
+        11.0,
+        7.0
+      ],
+      "normal_hint": [
+        -0.0003403028231311797,
+        -0.00026665394243688157,
+        0.9999999065448274
+      ],
+      "tolerance": null
+    }
+  ],
+  "measurements": [
+    {
+      "name": "height",
+      "kind": "step_height",
+      "plane": "datum",
+      "other": "top",
+      "point": null,
+      "lower": 4.9,
+      "upper": 5.1,
+      "max_angle_degrees": 5.0
+    },
+    {
+      "name": "angle",
+      "kind": "plane_angle",
+      "plane": "datum",
+      "other": "top",
+      "point": null,
+      "lower": null,
+      "upper": 1.0,
+      "max_angle_degrees": 5.0
+    },
+    {
+      "name": "surface",
+      "kind": "surface_range",
+      "plane": "top",
+      "other": null,
+      "point": null,
+      "lower": null,
+      "upper": 0.4,
+      "max_angle_degrees": 5.0
+    },
+    {
+      "name": "probe",
+      "kind": "point_plane_distance",
+      "plane": "datum",
+      "other": null,
+      "point": [
+        0.0,
+        0.0,
+        3.0
+      ],
+      "lower": null,
+      "upper": null,
+      "max_angle_degrees": 5.0
+    }
+  ]
+}
