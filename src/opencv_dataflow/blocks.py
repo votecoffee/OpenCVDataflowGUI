@@ -807,6 +807,9 @@ def builtin_registry():
     )
     from .simple_classifier.dataflow import ClassifyImage
     from .skeleton import PruneSkeleton, Skeletonize
+    from .skimage_regions import RegionProperties
+    from .skimage_thresholds import GlobalThreshold, MultiOtsu
+    from .skimage_thresholds import LocalThreshold as SkimageLocalThreshold
     from .slanted_edge import MeasureSlantedEdge
     from .spanning_tree import MinimumSpanningTree
     from .spectral import SPECTRAL_BLOCKS
@@ -967,6 +970,10 @@ def builtin_registry():
         VerifyText,
         *SEGMENTATION_BLOCKS,
         MeasureLabelRegions,
+        RegionProperties,
+        MultiOtsu,
+        GlobalThreshold,
+        SkimageLocalThreshold,
         MaskFromLabelCollection,
         GraphSegments,
         RidgeResponse,

@@ -1,0 +1,32 @@
+{
+  "regions": [
+    {
+      "label": 1000,
+      "area_pixels": 1200,
+      "centroid_xy": [
+        29.5,
+        26.5
+      ],
+      "euler_number": 1
+    },
+    {
+      "label": 4000,
+      "area_pixels": 1520,
+      "centroid_xy": [
+        95,
+        65
+      ],
+      "euler_number": 0
+    },
+    {
+      "label": 10000,
+      "area_pixels": 531,
+      "centroid_xy": [
+        148,
+        30
+      ],
+      "euler_number": 1
+    }
+  ],
+  "retained_label": 4000
+}

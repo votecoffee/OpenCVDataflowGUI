@@ -1,0 +1,25 @@
+{
+  "width": 180,
+  "height": 96,
+  "material_bands_x": [
+    [
+      0,
+      60
+    ],
+    [
+      60,
+      120
+    ],
+    [
+      120,
+      180
+    ]
+  ],
+  "material_base_intensities": [
+    1000,
+    7000,
+    22000
+  ],
+  "minimum_classification_accuracy": 0.97,
+  "native_sample_units": "uint16"
+}

@@ -43,6 +43,8 @@ def _local_collection_payload(data, payload):
 
 
 def metric_value(item, name, reference):
+    if isinstance(name, tuple):
+        return item["metrics"].get(name[1])
     if name != "distance":
         return item["metrics"].get(name)
     x, y = item["metrics"].get("center_x"), item["metrics"].get("center_y")
@@ -51,6 +53,16 @@ def metric_value(item, name, reference):
         if x is not None and y is not None
         else None
     )
+
+
+def selected_metric(parameters, key="metric"):
+    if parameters[key] != "custom":
+        return parameters[key]
+    field = "custom_metric" if key == "metric" else "secondary_custom_metric"
+    value = parameters[field]
+    if not isinstance(value, str) or not value.strip() or len(value) > 128:
+        raise ValidationError("Custom metric requires a field name (1..128 characters)", field)
+    return ("custom", value)
 
 
 def reference_point(value):
@@ -221,6 +233,7 @@ class FilterCollection(Block):
     )
     defaults = {
         "metric": "area",
+        "custom_metric": "",
         "use_minimum": True,
         "minimum": 0.0,
         "include_minimum": True,
@@ -231,12 +244,18 @@ class FilterCollection(Block):
         "missing": "reject",
         "reference_point": [0.0, 0.0],
     }
-    parameter_choices = {"metric": METRICS, "missing": ("reject", "keep", "error")}
+    parameter_choices = {"metric": (*METRICS, "custom"), "missing": ("reject", "keep", "error")}
     parameter_help = {
+        "custom_metric": "Metric key when Metric is custom, e.g. regionprops.eccentricity or "
+        "regionprops.intensity_mean.0. Supports metrics from user blocks too.",
         "reference_point": "[x,y] in reported collection coordinates; used for distance.",
         "missing": "Undefined metrics (e.g. Hu moments on lines) use this policy.",
         "invert_range": "Invert numeric range only; the optional region/mask still intersects it.",
     }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        selected_metric(self.parameters if parameters is None else parameters)
 
     def process(self, inputs):
         data, payload = read_collection(self, inputs)
@@ -252,8 +271,9 @@ class FilterCollection(Block):
         image = image_with_payload(dummy, local_payload)
         selection = selection_mask({**inputs, "image": image}, image)
         accepted, rejected = [], []
+        metric = selected_metric(p)
         for item in data["items"]:
-            value = metric_value(item, p["metric"], reference)
+            value = metric_value(item, metric, reference)
             if value is None:
                 if p["missing"] == "error":
                     raise ValueError(f"Item {item['id']} has no {p['metric']} metric")
@@ -301,26 +321,39 @@ class SortCollection(Block):
     outputs = (Port("collection", "data"), Port("count", "number"), Port("points", "data"))
     defaults = {
         "metric": "area",
+        "custom_metric": "",
         "direction": "descending",
         "secondary_metric": "none",
+        "secondary_custom_metric": "",
         "secondary_direction": "ascending",
         "missing": "last",
         "reference_point": [0.0, 0.0],
     }
     parameter_choices = {
-        "metric": METRICS,
+        "metric": (*METRICS, "custom"),
         "direction": ("ascending", "descending"),
-        "secondary_metric": ("none", *METRICS),
+        "secondary_metric": ("none", *METRICS, "custom"),
         "secondary_direction": ("ascending", "descending"),
         "missing": ("last", "first", "error"),
     }
+    parameter_help = {
+        "custom_metric": "Primary metric key when Metric is custom, e.g. regionprops.area.",
+        "secondary_custom_metric": "Secondary metric key when Secondary metric is custom.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        selected_metric(p)
+        if p["secondary_metric"] != "none":
+            selected_metric(p, "secondary_metric")
 
     def process(self, inputs):
         data, payload = read_collection(self, inputs)
         p, reference = self.parameters, reference_point(self.parameters["reference_point"])
-        criteria = [(p["metric"], p["direction"])]
+        criteria = [(selected_metric(p), p["direction"])]
         if p["secondary_metric"] != "none":
-            criteria.append((p["secondary_metric"], p["secondary_direction"]))
+            criteria.append((selected_metric(p, "secondary_metric"), p["secondary_direction"]))
         if p["missing"] == "error" and any(
             metric_value(item, metric, reference) is None
             for item in data["items"]

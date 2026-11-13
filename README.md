@@ -31,6 +31,9 @@ On macOS or Linux, create the environment with `python3.14 -m venv .venv`,
 install with `.venv/bin/python -m pip install -e .`, and launch
 `.venv/bin/opencv-dataflow`.
 
+Optional [scikit-image measurements and thresholding](docs/scikit-image.md)
+use `python -m pip install -e ".[skimage]"` in the application environment.
+
 ## Usage
 
 The editor opens a synthetic inspection demo. Press **Run once** (F5) to see its

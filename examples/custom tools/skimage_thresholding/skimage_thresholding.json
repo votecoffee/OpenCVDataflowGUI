@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Original inspection fixture",
+      "parameters": {
+        "path": "assets/three_materials_u16.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint16",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        200
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "scikit-image inspection example",
+      "description": "Three original 16-bit material bands. Compare Multi-Otsu labels with Yen/Li and local Gaussian/Niblack/Sauvola masks. Inspect thresholds and statistics in Results. Increase class count only with a suitable bin count; bounded work prevents accidental long searches.\nOriginal synthetic fixture and graph: OpenCVDataflowGUI (MIT). No external images. Algorithm reference: scikit-image.org/docs/stable/",
+      "parameters": {},
+      "position": [
+        0,
+        -180
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "multi",
+      "type": "skimage.multi_otsu",
+      "name": "Three material classes",
+      "parameters": {
+        "classes": 3,
+        "bins": 128,
+        "selected_classes": [
+          2
+        ]
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "labels",
+        "preview",
+        "thresholds",
+        "statistics"
+      ],
+      "thumbnail": true,
+      "preview_output": "preview"
+    },
+    {
+      "id": "measure",
+      "type": "skimage.region_properties",
+      "name": "Measure all three classes",
+      "parameters": {
+        "input_mode": "labels",
+        "connectivity": 8,
+        "ignored_labels": [
+          -1
+        ],
+        "property_set": "custom",
+        "properties": [
+          "label",
+          "area",
+          "centroid",
+          "intensity_mean"
+        ],
+        "include_coordinates": false,
+        "include_images": false,
+        "spacing_yx": [
+          1.0,
+          1.0
+        ],
+        "offset_yx": [
+          0,
+          0
+        ],
+        "units": "pixels",
+        "include_alpha": false,
+        "intensity_alignment": "same_frame",
+        "cache": true,
+        "unavailable": "report",
+        "maximum_regions": 1000,
+        "maximum_values": 1000000,
+        "preview_count": 25
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "labels",
+        "intensity_image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "labels",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": "labels"
+    },
+    {
+      "id": "global_yen",
+      "type": "skimage.global_threshold",
+      "name": "Yen global mask",
+      "parameters": {
+        "method": "yen",
+        "polarity": "bright",
+        "bins": 256,
+        "maximum_iterations": 1000,
+        "li_tolerance": 0.0,
+        "li_initial": "mean",
+        "li_initial_value": 127.0,
+        "li_quantile": 0.5,
+        "isodata_threshold": "lowest"
+      },
+      "position": [
+        320,
+        330
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "threshold",
+        "statistics"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "global_li",
+      "type": "skimage.global_threshold",
+      "name": "Li global mask",
+      "parameters": {
+        "method": "li",
+        "polarity": "bright",
+        "bins": 256,
+        "maximum_iterations": 1000,
+        "li_tolerance": 0.0,
+        "li_initial": "mean",
+        "li_initial_value": 127.0,
+        "li_quantile": 0.5,
+        "isodata_threshold": "lowest"
+      },
+      "position": [
+        320,
+        630
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "threshold",
+        "statistics"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "local_gaussian",
+      "type": "skimage.local_threshold",
+      "name": "Gaussian local mask",
+      "parameters": {
+        "method": "gaussian",
+        "polarity": "bright",
+        "window_yx": [
+          15,
+          25
+        ],
+        "offset": 0.0,
+        "border": "reflect",
+        "border_value": 0.0,
+        "sigma_yx": [
+          0.0,
+          0.0
+        ],
+        "k": 0.2,
+        "sauvola_range": 32768
+      },
+      "position": [
+        1000,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "threshold_map",
+        "statistics"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "local_niblack",
+      "type": "skimage.local_threshold",
+      "name": "Niblack local mask",
+      "parameters": {
+        "method": "niblack",
+        "polarity": "bright",
+        "window_yx": [
+          15,
+          25
+        ],
+        "offset": 0.0,
+        "border": "reflect",
+        "border_value": 0.0,
+        "sigma_yx": [
+          0.0,
+          0.0
+        ],
+        "k": 0.2,
+        "sauvola_range": 32768
+      },
+      "position": [
+        1000,
+        300
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "threshold_map",
+        "statistics"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "local_sauvola",
+      "type": "skimage.local_threshold",
+      "name": "Sauvola local mask",
+      "parameters": {
+        "method": "sauvola",
+        "polarity": "bright",
+        "window_yx": [
+          15,
+          25
+        ],
+        "offset": 0.0,
+        "border": "reflect",
+        "border_value": 0.0,
+        "sigma_yx": [
+          0.0,
+          0.0
+        ],
+        "k": 0.2,
+        "sauvola_range": 32768
+      },
+      "position": [
+        1000,
+        600
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "threshold_map",
+        "statistics"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Class visualization",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        660,
+        -280
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "multi",
+      "input": "image"
+    },
+    {
+      "source": "multi",
+      "output": "labels",
+      "target": "measure",
+      "input": "labels"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "measure",
+      "input": "intensity_image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "global_yen",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "global_li",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "local_gaussian",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "local_niblack",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "local_sauvola",
+      "input": "image"
+    },
+    {
+      "source": "multi",
+      "output": "preview",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

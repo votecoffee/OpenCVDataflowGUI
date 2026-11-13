@@ -229,6 +229,8 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Signal/background contrast](<custom tools/region_contrast/README.md>) | Compare known 16-bit RGB patches, verify channel CNR and expected strong/weak outcomes, and inspect an intentional overlap error. |
 | [Reference-guided cast shadows](<custom tools/reference_shadows/README.md>) | Restore a clear/shadow pair with exact 16-bit RGB pixel and defect-contrast truth; inspect a deliberately rejected nonuniform model. |
 | [Skeletonization and spur pruning](<custom tools/skeleton_pruning/README.md>) | Extract a binary centerline and visualize the short branches removed from it. |
+| [scikit-image region measurements](<custom tools/skimage_region_properties/README.md>) | Measure shape, topology, moments and channel intensities; select a ring and reconstruct its mask. |
+| [scikit-image advanced thresholding](<custom tools/skimage_thresholding/README.md>) | Compare Multi-Otsu classes, global estimators and local thresholds without reducing 16-bit intensity units. |
 | [Smooth a recorded camera path](<custom tools/offline_camera_stabilization/README.md>) | Apply centered look-ahead to a recorded batch and replay corrected frames with their source tickets. |
 | [Sort numeric table](<custom tools/numeric_table_sort/README.md>) | Rank complete part records by score and compare that with independent column sorting. |
 | [Stitch an ordered inspection scan](<custom tools/stitch_scan_sequence/README.md>) | Automatically register a three-tile scan and measure only covered pixels. |

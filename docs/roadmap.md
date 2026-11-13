@@ -20,12 +20,23 @@ The last broad checkpoint is `43afa2e` (S1-139): **2,859 passed and 13
 skipped** in the offscreen suite. It completes the 20-increment cycle following
 `0c8c6e9`. Skips cover 11 unavailable optional-plugin checks and two native
 OpenEXR round trips; those paths remain unqualified on this environment.
-The current cycle has **8 targeted increments of about 20** completed
-(S1-140–S1-145, the local mosaic/stabilization studies and S2-20 HOG/SVM).
+The current cycle has **10 targeted increments of about 20** completed
+(S1-140–S1-145, the local mosaic/stabilization studies, S2-20 HOG/SVM,
+scikit-image region properties and advanced thresholding).
 Update the count as implementation continues and reset it after the next
 broader check.
 
 ## Short-term focus
+
+The requested [scikit-image inspection expansion](scikit-image.md) adds the
+44-property standard 2D regionprops catalog, custom collection metric filters
+and sorts, Multi-Otsu, seven global and five local threshold methods. Two original
+public examples cover measurements and 16-bit thresholding. These are separate
+from the OpenCV coverage denominator; existing OpenCV counts do not change.
+Validation: 90 focused tests passed, including native-property/threshold parity,
+known geometry and material-band truth, collection interoperability, XML presets
+and contained errors. Both public examples also passed installed CLI runs in
+Debug and Lean profiles. No broad regression run was needed for this increment.
 
 Work through older [LearnOpenCV tutorials](https://github.com/spmallick/learnopencv)
 that teach reusable OpenCV workflows. Build and run a graph for each selected

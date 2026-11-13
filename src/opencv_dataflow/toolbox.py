@@ -241,6 +241,10 @@ def block_entry(block):
         path = (INDUSTRIAL, subtype)
     elif file == "multiscale_ridges":
         path = ("scikit-image", "Filtering")
+    elif file == "skimage_regions":
+        path = ("scikit-image", "Measurements")
+    elif file == "skimage_thresholds":
+        path = ("scikit-image", "Thresholding")
     elif file == "skeleton":
         family = "Graph" if type_id == "inspect.prune_skeleton" else "Morphology"
         path = ("scikit-image", family)

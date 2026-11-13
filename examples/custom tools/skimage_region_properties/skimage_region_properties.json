@@ -1,0 +1,331 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Original inspection fixture",
+      "parameters": {
+        "path": "assets/labelled_parts_rgb16.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "uint16",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        200
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "scikit-image inspection example",
+      "description": "R stores label IDs; G/B provide intensity variation. Extract R, measure comprehensive properties, retain the ring by Euler number, reconstruct its exact mask and overlay its bounds. Native properties use 0.1 mm spacing; collection geometry stays in image pixels.\nOriginal synthetic fixture and graph: OpenCVDataflowGUI (MIT). No external images. Algorithm reference: scikit-image.org/docs/stable/",
+      "parameters": {},
+      "position": [
+        0,
+        -180
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "labels",
+      "type": "cv.extract_channel",
+      "name": "Extract R label IDs",
+      "parameters": {
+        "channel": "0"
+      },
+      "position": [
+        300,
+        200
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "skimage.region_properties",
+      "name": "All numeric region properties",
+      "parameters": {
+        "input_mode": "labels",
+        "connectivity": 8,
+        "ignored_labels": [
+          -1,
+          0
+        ],
+        "property_set": "comprehensive",
+        "properties": [],
+        "include_coordinates": false,
+        "include_images": false,
+        "spacing_yx": [
+          0.1,
+          0.1
+        ],
+        "offset_yx": [
+          0,
+          0
+        ],
+        "units": "mm",
+        "include_alpha": false,
+        "intensity_alignment": "same_frame",
+        "cache": true,
+        "unavailable": "report",
+        "maximum_regions": 1000,
+        "maximum_values": 1000000,
+        "preview_count": 25
+      },
+      "position": [
+        620,
+        200
+      ],
+      "exposed_inputs": [
+        "labels",
+        "intensity_image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "labels",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": "labels"
+    },
+    {
+      "id": "rings",
+      "type": "collection.filter",
+      "name": "Keep rings (Euler = 0)",
+      "parameters": {
+        "metric": "custom",
+        "custom_metric": "regionprops.euler_number",
+        "use_minimum": true,
+        "minimum": 0,
+        "include_minimum": true,
+        "use_maximum": true,
+        "maximum": 0,
+        "include_maximum": true,
+        "invert_range": false,
+        "missing": "reject",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        960,
+        30
+      ],
+      "exposed_inputs": [
+        "collection",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "rejected",
+        "rejected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rank",
+      "type": "collection.sort",
+      "name": "Rank by physical area",
+      "parameters": {
+        "metric": "custom",
+        "custom_metric": "regionprops.area",
+        "direction": "descending",
+        "secondary_metric": "none",
+        "secondary_custom_metric": "",
+        "secondary_direction": "ascending",
+        "missing": "last",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        960,
+        400
+      ],
+      "exposed_inputs": [
+        "collection"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ring_mask",
+      "type": "inspect.mask_from_labels",
+      "name": "Exact ring pixels",
+      "parameters": {},
+      "position": [
+        1300,
+        0
+      ],
+      "exposed_inputs": [
+        "labels",
+        "collection",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "pixel_count"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "overlay",
+      "type": "collection.draw",
+      "name": "Ring selection on original",
+      "parameters": {
+        "color": [
+          80,
+          230,
+          140
+        ],
+        "thickness": 2,
+        "draw_bounds": true,
+        "draw_centers": true,
+        "labels": "id"
+      },
+      "position": [
+        1300,
+        340
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Final annotated image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1630,
+        340
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "labels",
+      "input": "image"
+    },
+    {
+      "source": "labels",
+      "output": "image",
+      "target": "measure",
+      "input": "labels"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "measure",
+      "input": "intensity_image"
+    },
+    {
+      "source": "measure",
+      "output": "collection",
+      "target": "rings",
+      "input": "collection"
+    },
+    {
+      "source": "measure",
+      "output": "collection",
+      "target": "rank",
+      "input": "collection"
+    },
+    {
+      "source": "measure",
+      "output": "labels",
+      "target": "ring_mask",
+      "input": "labels"
+    },
+    {
+      "source": "rings",
+      "output": "collection",
+      "target": "ring_mask",
+      "input": "collection"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "rings",
+      "output": "collection",
+      "target": "overlay",
+      "input": "collection"
+    },
+    {
+      "source": "overlay",
+      "output": "overlay",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

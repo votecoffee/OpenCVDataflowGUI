@@ -1035,7 +1035,8 @@ Inputs: `collection` (data), `mask` (image, optional), `region` (data, optional)
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `radius`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
+| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `radius`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7`, `custom` |
+| `custom_metric` | `""` | Metric key when Metric is custom, e.g. regionprops.eccentricity or regionprops.intensity_mean.0. Supports metrics from user blocks too. |
 | `use_minimum` | `true` |  |
 | `minimum` | `0.0` |  |
 | `include_minimum` | `true` |  |
@@ -1088,9 +1089,11 @@ Inputs: `collection` (data).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `radius`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
+| `metric` | `"area"` | `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `radius`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7`, `custom` |
+| `custom_metric` | `""` | Primary metric key when Metric is custom, e.g. regionprops.area. |
 | `direction` | `"descending"` | `ascending`, `descending` |
-| `secondary_metric` | `"none"` | `none`, `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `radius`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7` |
+| `secondary_metric` | `"none"` | `none`, `area`, `width`, `height`, `x`, `y`, `center_x`, `center_y`, `aspect_ratio`, `angle`, `length`, `perimeter`, `major_size`, `minor_size`, `rotated_aspect_ratio`, `extent`, `solidity`, `circularity`, `radius`, `distance`, `line_width`, `precision`, `nfa`, `thickness`, `continuous_length`, `strength`, `intensity`, `coverage`, `contrast`, `hu_1`, `hu_2`, `hu_3`, `hu_4`, `hu_5`, `hu_6`, `hu_7`, `hu_log_1`, `hu_log_2`, `hu_log_3`, `hu_log_4`, `hu_log_5`, `hu_log_6`, `hu_log_7`, `custom` |
+| `secondary_custom_metric` | `""` | Secondary metric key when Secondary metric is custom. |
 | `secondary_direction` | `"ascending"` | `ascending`, `descending` |
 | `missing` | `"last"` | `last`, `first`, `error` |
 | `reference_point` | `[0.0, 0.0]` |  |
@@ -7712,3 +7715,103 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `reseed_below` | `50` |  |
 | `min_tracks` | `3` |  |
 | `min_track_age` | `2` |  |
+
+## Advanced global threshold (`skimage.global_threshold`)
+
+Image processing / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray or RGB/BGR(A), uint8/uint16/int16/float32/float64. Raw units are retained; color uses weighted luminance without rescaling. Up to 2.1M pixels.
+
+Input `mask` — Global/Multi-Otsu learn from selected pixels; local neighborhoods use the full image. All masks are zero outside selection; Multi-Otsu labels use -1 there.
+
+Input `region` — Rectangle/circle/polygon selection, intersected with a wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"yen"` | `otsu`, `yen`, `li`, `isodata`, `minimum`, `triangle`, `mean` Histogram or raw-sample global estimator. Algorithm failures are reported; there is no silent fallback to another method. |
+| `polarity` | `"bright"` | `bright`, `dark` Bright selects image > threshold; dark selects image <= threshold. |
+| `bins` | `256` | Value must be a whole number between 8 and 1024. Bounded histogram bins for Otsu, Yen, Isodata, Minimum, Triangle. Exact integer levels when the range fits. Mean and Li use the selected raw samples. |
+| `maximum_iterations` | `1000` | Value must be a whole number between 1 and 10000. Minimum smoothing iterations or Li threshold updates; reaching the limit raises a block error instead of publishing an unconverged result. |
+| `li_tolerance` | `0.0` | Value must be a finite number between 0 and 1e+12. Li convergence tolerance in raw intensity units; 0 uses native automatic. |
+| `li_initial` | `"mean"` | `mean`, `median`, `quantile`, `value` Li start: sample mean, median, quantile or an explicit intensity. |
+| `li_initial_value` | `127.0` | Value must be a finite number between -1e+12 and 1e+12. Explicit Li starting intensity, strictly inside the sample range. |
+| `li_quantile` | `0.5` | Value must be a finite number between 0 and 1. Quantile (0..1) for the Li starting estimate. |
+| `isodata_threshold` | `"lowest"` | `lowest`, `middle`, `highest` Select lowest, middle or highest of all valid Isodata cutoffs. All candidates remain in statistics. |
+
+## Advanced local threshold (`skimage.local_threshold`)
+
+Image processing / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray or RGB/BGR(A), uint8/uint16/int16/float32/float64. Raw units are retained; color uses weighted luminance without rescaling. Up to 2.1M pixels.
+
+Input `mask` — Global/Multi-Otsu learn from selected pixels; local neighborhoods use the full image. All masks are zero outside selection; Multi-Otsu labels use -1 there.
+
+Input `region` — Rectangle/circle/polygon selection, intersected with a wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"sauvola"` | `gaussian`, `mean`, `median`, `niblack`, `sauvola` Local Gaussian/mean/median, or native scikit-image Niblack/Sauvola. Generic Python neighborhood callables belong in user blocks. |
+| `polarity` | `"bright"` | `bright`, `dark` Bright selects image > local threshold; dark uses <=. |
+| `window_yx` | `[31, 31]` | Odd [height, width] from 1 to 255 pixels. Median has a bounded pixel-window work limit. Neighborhoods always use the full input image. |
+| `offset` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. Subtract from the computed threshold, in original intensity units. |
+| `border` | `"reflect"` | `reflect`, `constant`, `nearest`, `mirror`, `wrap` Border mode for Gaussian/mean/median only; Niblack/Sauvola use native reflect. |
+| `border_value` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. Constant border intensity for Gaussian/mean/median. |
+| `sigma_yx` | `[0.0, 0.0]` | Gaussian [row, column] sigmas, or [0, 0] for native window-derived values. |
+| `k` | `0.2` | Value must be a finite number between -10 and 10. Niblack subtracts k times local deviation (OpenCV's sign convention differs). Sauvola uses mean * (1 + k * (std/range - 1)). |
+| `sauvola_range` | `128.0` | Value must be a finite number between 1e-12 and 1e+12. Positive standard-deviation reference in original units; 128 for ordinary uint8, often 0.5 for normalized [0,1] images. No implicit rescaling. |
+
+## Multi-Otsu threshold (`skimage.multi_otsu`)
+
+Image processing / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray or RGB/BGR(A), uint8/uint16/int16/float32/float64. Raw units are retained; color uses weighted luminance without rescaling. Up to 2.1M pixels.
+
+Input `mask` — Global/Multi-Otsu learn from selected pixels; local neighborhoods use the full image. All masks are zero outside selection; Multi-Otsu labels use -1 there.
+
+Input `region` — Rectangle/circle/polygon selection, intersected with a wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `classes` | `3` | Value must be a whole number between 2 and 8. Number of ordered intensity classes (0 is darkest). Work is limited to 2 million candidate bin partitions; reduce bins for larger class counts. |
+| `bins` | `256` | Value must be a whole number between 8 and 1024. Histogram bins, including for uint16. Integer levels are exact if their range fits; otherwise cutoffs are bin centers in original units. More bins costs more work. |
+| `selected_classes` | `[1, 2]` | Class IDs combined into the binary mask; an empty list selects none. Labels retain all classes, with -1 outside scope. Equality joins the upper class. |
+
+## Region properties (scikit-image) (`skimage.region_properties`)
+
+Inspection / Measurements
+
+Inputs: `labels` (image), `intensity_image` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `labels` — Integer label plane (up to 2.1M pixels); binary mode uses nonzero pixels.
+
+Input `intensity_image` — Optional same-grid gray/RGB/BGR image, retained in raw sample units.
+
+Input `mask` — Clip measured pixels. Reuse this scope when reconstructing masks from labels.
+
+Input `region` — Optional rectangle, circle or polygon, intersected with a wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `input_mode` | `"labels"` | `labels`, `binary` Measure each label ID, or label connected nonzero binary pixels first. |
+| `connectivity` | `8` | `4`, `8` 4 or 8 neighbors for binary labeling; existing label IDs are not split. |
+| `ignored_labels` | `[-1, 0]` | IDs excluded after selection. Remove 0 to measure a class-zero region. |
+| `property_set` | `"standard"` | `standard`, `comprehensive`, `custom` Standard measurements, all numeric/moment/tensor properties, or custom. |
+| `properties` | `[]` | Custom names from the documented regionprops catalog. Extra Python callables belong in user blocks; this field does not execute code. |
+| `include_coordinates` | `false` | Also return coords and coords_scaled; may be large. |
+| `include_images` | `false` | Return cropped binary/convex/filled/intensity arrays as data. |
+| `spacing_yx` | `[1.0, 1.0]` | Positive [row, column] spacing for native properties. Collection geometry and ordinary metrics stay in image pixels. Units are descriptive, not a calibration fit. |
+| `offset_yx` | `[0, 0]` | Native regionprops [row, column] origin offset. Does not move GUI graphics. |
+| `units` | `"pixels"` | Label for native property units; choose consistently with spacing. |
+| `include_alpha` | `false` | Include alpha in intensity channels; default excludes it. |
+| `intensity_alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Same frame checks known grids and tickets; pixel grid explicitly accepts separately captured/exported aligned intensity data. |
+| `cache` | `true` | Cache native intermediate properties during this invocation only. |
+| `unavailable` | `"report"` | `report`, `error` Report null/reason for missing intensity, nonfinite or unsupported properties (e.g. anisotropic perimeters), or fail the block. |
+| `maximum_regions` | `1000` | Value must be a whole number between 1 and 10000. Maximum distinct measured label IDs, even for sparse large IDs. |
+| `maximum_values` | `1000000` | Value must be a whole number between 100 and 2e+06. Total property-value budget, including opted-in coordinates/images. |
+| `preview_count` | `25` | Value must be a whole number between 0 and 250. Maximum boxes/centroids to draw. Zero disables these optional graphics. |
