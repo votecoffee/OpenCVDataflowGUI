@@ -44,6 +44,13 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Focus stacking and level selection](<../examples/opencv tools/focus_stack/README.md>)
+(S1-138) now fuse registered image batches with local energy, hard or weighted
+selection, captured-neighborhood coverage, ambiguity fallback and original
+focus-level indices. Original color examples verify independent sharp pixels,
+including upstream ECC registration on a shared sharp region. These diagnostics
+do not establish physical depth or part visibility.
+
 [Capture-stack flat-field references](<../examples/custom tools/flat_field_reference/README.md>)
 (S1-137) now estimate bright/dark maps using mean or median, per-pixel capture
 support, optional saturation/noise rejection and calibration selections. Floating

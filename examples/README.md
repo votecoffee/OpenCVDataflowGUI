@@ -96,6 +96,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [FLANN feature registration](<opencv tools/flann_registration/README.md>) | Match SIFT descriptors through a KD-tree and recover a known translation. |
 | [Binary mask boundary and area inspection](<opencv tools/mask_boundary/README.md>) | Compare full mask boundaries and missing/extra areas using tab/notch pass/fail fixtures. |
 | [Fourier component reconstruction](<opencv tools/fourier_components/README.md>) | Compare full, phase-only and magnitude-only color reconstruction, verify independent impulse truth, and inspect typed spectral diagnostics. |
+| [Focus stacking](<opencv tools/focus_stack/README.md>) | Fuse complementary focal captures, inspect level/coverage maps and verify sharp truth after optional ECC registration. |
 | [Fourier correlation](<opencv tools/fourier_correlation/README.md>) | Recover a known signed shift and inspect the lag map. |
 | [Aligned image comparison](<opencv tools/aligned_image_comparison/README.md>) | Compare an intact part and a missing-bore fixture with a reference, per-channel correlation and normalized residuals. |
 | [Laplacian pyramids](<opencv tools/laplacian_pyramid/README.md>) | Decompose an odd-sized 16-bit color image into signed bands, verify exact reconstruction, and remove the finest detail. |

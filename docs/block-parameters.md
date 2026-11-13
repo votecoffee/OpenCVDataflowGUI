@@ -1952,6 +1952,39 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `direction` | `"horizontal"` | `horizontal`, `vertical`, `both` |
 
+## Focus stack images (`cv.focus_stack`)
+
+Image processing / Image fusion
+
+Inputs: `images` (any), `coverage` (any, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `images` — Batch of 2–16 registered uint8/16 or float32/64 intensity images.
+
+Input `coverage` — Optional same-order batch of uint8 support masks, before derivative erosion.
+
+Input `mask` — Output-center selection on the anchor grid; outside pixels retain the anchor.
+
+Input `region` — Anchor-grid selection intersected with the mask. Does not cut neighborhoods.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `anchor_index` | `0` | Value must be a whole number between 0 and 15. Defines the output grid, alpha and fallback pixels. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Check known grids, or declare equal pixel indices registered upstream. |
+| `method` | `"tenengrad"` | `tenengrad`, `laplacian_energy` Local mean squared Sobel gradients or squared Laplacian of luminance. |
+| `aperture` | `"3"` | `1`, `3`, `5`, `7` Derivative kernel size. Keep it fixed when comparing energy thresholds. |
+| `window` | `9` | Value must be a positive odd integer between 1 and 101. Odd local energy averaging window; neighborhoods retain full-image context. |
+| `prefilter` | `"off"` | `off`, `3`, `5`, `7`, `9`, `15`, `31` Optional Gaussian kernel before derivatives; Off performs no prefiltering. |
+| `prefilter_sigma` | `0.0` | Value must be a finite number between 0 and 50. Gaussian sigma; zero derives it from the selected kernel size. |
+| `border` | `"reflect_101"` | `constant`, `replicate`, `reflect_101`, `reflect_edge` Native filter extrapolation at image boundaries. |
+| `support` | `"strict"` | `strict`, `extrapolate` Require captured neighborhoods, or permit image-edge filter padding. |
+| `minimum_contributors` | `2` | Value must be a whole number between 1 and 16. Required number of captures with supported scoring neighborhoods. |
+| `minimum_energy` | `1e-06` | Value must be a finite number at least 0. Inclusive energy floor after shared scaling; positive energy required. |
+| `minimum_confidence` | `0.05` | Value must be a finite number between 0 and 1. Inclusive (best-second)/best contrast; not a probability or depth. |
+| `minimum_valid_fraction` | `0.0` | Value must be a finite number between 0 and 1. Required reliable selected fraction; at least one pixel. |
+| `blend` | `"hard"` | `hard`, `weighted` Copy the winning capture exactly, or blend with relative focus-energy weights. |
+| `blend_power` | `2.0` | Value must be a finite number between 0.1 and 16. Weighted mode only: exponent applied to each score relative to the best. |
+| `weight_radius` | `0` | Value must be a whole number between 0 and 31. Weighted mode only: box-smooth weights with radius 0–31 pixels. |
+
 ## Fourier magnitude and phase components (`cv.fourier_components`)
 
 Image processing / Spectral

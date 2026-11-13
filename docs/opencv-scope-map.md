@@ -356,7 +356,7 @@ is evidence of exposure. Completion requires the checklist's graph fixture.
 | --- | --- | --- |
 | `cv2.GaussianBlur`, `cv2.getGaussianKernel` | Gaussian kernel generation is part of the existing smoothing tool contract. | S1-22 |
 | `cv2.filter2D`, `cv2.filter2Dp`, `cv::Filter2DParams`, `cv2.sepFilter2D` | Convolution settings belong to the editable kernel. The parameter class has no direct binding in this wheel. | S1-23 |
-| `cv2.Canny`, `cv2.Laplacian`, `cv2.Scharr`, `cv2.Sobel`, `cv2.spatialGradient`, `cv2.getDerivKernels` | Gradient kernels and filters belong to derivative, edge and focus tools. | S1-24 |
+| `cv2.Canny`, `cv2.Laplacian`, `cv2.Scharr`, `cv2.Sobel`, `cv2.spatialGradient`, `cv2.getDerivKernels` | Gradient kernels and filters belong to derivative, edge and focus tools. S1-138 now uses local Sobel/Laplacian energy for hard/weighted registered-stack fusion, with captured-neighborhood halos, original level indices, coverage and ambiguity fallback. Independent sharp-image and upstream ECC examples qualify the workflow. | S1-24, S1-138 |
 | `cv2.blur`, `cv2.boxFilter`, `cv2.medianBlur`, `cv2.bilateralFilter` | Box, median and bilateral options have separate image fixtures. | S1-74–S1-76 |
 | `cv2.getGaborKernel` | Generate oriented texture kernels in the existing Gabor response workflow. | S1-77 |
 | `cv2.stackBlur` | Qualify large-radius smoothing and edge retention. | S1-159 |

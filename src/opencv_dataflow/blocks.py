@@ -688,6 +688,7 @@ def builtin_registry():
     from .features import FEATURE_BLOCKS
     from .flat_field_reference import BuildFlatFieldReference
     from .focus import MeasureFocus
+    from .focus_stacking import FocusStack
     from .fourier_components import FourierComponents, ReconstructFourierImage
     from .fourier_correlation import FourierCorrelation
     from .frame_interpolation import InterpolateFrames
@@ -978,6 +979,7 @@ def builtin_registry():
         CompareMaskBoundary,
         CompareAlignedImages,
         MeasureFocus,
+        FocusStack,
         MeasureSlantedEdge,
         ComputeImageHash,
         CompareImageHashes,

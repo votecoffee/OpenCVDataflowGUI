@@ -1,0 +1,470 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "left",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/left_focus.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -500.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/shifted_right.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -500.0,
+        300.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "truth",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/sharp_truth.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -500.0,
+        600.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "alignment_region",
+      "type": "region.shape",
+      "name": "Shared sharp registration region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          84,
+          16,
+          28,
+          96
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        -100.0,
+        600.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "align",
+      "type": "inspect.align_ecc",
+      "name": "Register shifted focus capture",
+      "parameters": {
+        "motion": "translation",
+        "pyramid_levels": 1,
+        "max_iterations": 100,
+        "iterations_per_level": [],
+        "epsilon": 1e-06,
+        "gaussian_size": 7,
+        "min_coefficient": 0.5,
+        "interpolation": "nearest",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        -100.0,
+        300.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reference",
+        "reference_mask",
+        "initial_transform"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry",
+        "transform",
+        "coefficient"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 2,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        300.0,
+        100.0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          12,
+          12,
+          168,
+          104
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        -100.0,
+        -200.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "focus",
+      "type": "cv.focus_stack",
+      "name": "Focus stack images",
+      "documentation": "<p>Fuse registered captures using local luminance focus energy. Align images upstream with registration/warp blocks, supplying coverage masks for resampling gaps. Focus indices are original zero-based batch indices, with -1 where no reliable fusion occurs. Exact ties prefer the anchor, then batch order. Flat/ambiguous pixels retain the anchor; they do not silently acquire an invented focus level.</p><p>Unsigned images share integer full scale; floating images share one batch peak. Scores use this scale, not independent per-frame normalization. Strict support erodes coverage by the prefilter/derivative/window halo. Alpha is excluded from scoring and retained from the anchor; transparent samples cannot supply neighborhoods. Weighted fusion may soften detail, while hard fusion retains original pixel values. Focus level/confidence are diagnostics, not surface depth or visibility proof.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/imgproc_filter.html\">OpenCV filter reference</a>.</p>",
+      "parameters": {
+        "anchor_index": 0,
+        "alignment": "pixel_grid",
+        "method": "tenengrad",
+        "aperture": "3",
+        "window": 9,
+        "prefilter": "off",
+        "prefilter_sigma": 0.0,
+        "border": "reflect_101",
+        "support": "strict",
+        "minimum_contributors": 2,
+        "minimum_energy": 1e-06,
+        "minimum_confidence": 0.05,
+        "minimum_valid_fraction": 0.3,
+        "blend": "hard",
+        "blend_power": 2.0,
+        "weight_radius": 0
+      },
+      "position": [
+        700.0,
+        100.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "images",
+        "coverage",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "focus_index",
+        "valid_mask",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "before",
+      "type": "inspect.image_quality",
+      "name": "Anchor error before fusion",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": false,
+        "threshold": 0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1100.0,
+        450.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify",
+      "type": "inspect.image_quality",
+      "name": "Verify sharp pixel truth",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1100.0,
+        100.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original focus fixtures \u2014 MIT",
+      "description": "Original 16-bit RGB coupon, projects and generator under the repository's MIT license. Complementary captures share an equally sharp overlap. Independent truth is the unblurred coupon. Reliable pixels fuse; ambiguous pixels keep the anchor and index -1. The selected interior must match truth exactly. The registration project shifts the second capture by [2,-1] and applies ordinary ECC using the shared sharp registration region. Its evaluation region excludes resampling gaps and scoring halos. Focus index is not calibrated depth. OpenCV reference: https://docs.opencv.org/5.0/main_modules/imgproc_filter.html",
+      "parameters": {},
+      "position": [
+        -500.0,
+        -350.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "left",
+      "output": "image",
+      "target": "alignment_region",
+      "input": "image"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "align",
+      "input": "image"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "align",
+      "input": "reference"
+    },
+    {
+      "source": "alignment_region",
+      "output": "mask",
+      "target": "align",
+      "input": "reference_mask"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "align",
+      "output": "image",
+      "target": "batch",
+      "input": "item_2"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "focus",
+      "input": "images"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "focus",
+      "input": "region"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "before",
+      "input": "image_a"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "before",
+      "input": "image_b"
+    },
+    {
+      "source": "region",
+      "output": "mask",
+      "target": "before",
+      "input": "mask"
+    },
+    {
+      "source": "focus",
+      "output": "image",
+      "target": "verify",
+      "input": "image_a"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "verify",
+      "input": "image_b"
+    },
+    {
+      "source": "region",
+      "output": "mask",
+      "target": "verify",
+      "input": "mask"
+    }
+  ]
+}

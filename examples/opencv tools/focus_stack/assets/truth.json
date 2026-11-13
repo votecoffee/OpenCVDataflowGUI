@@ -1,0 +1,33 @@
+{
+  "reference": "Direct texture, holes and slot; truth is not a blurred capture",
+  "image_size": [
+    192,
+    128
+  ],
+  "channel_order": "RGB",
+  "input_depth": "uint16",
+  "left_sharp_columns": [
+    0,
+    120
+  ],
+  "right_sharp_columns": [
+    72,
+    192
+  ],
+  "evaluation_xywh": [
+    12,
+    12,
+    168,
+    104
+  ],
+  "moving_source_shift_xy": [
+    2,
+    -1
+  ],
+  "expected_source_to_target_shift_xy": [
+    -2,
+    1
+  ],
+  "maximum_error": 0,
+  "ambiguity": "Equal sharp levels keep anchor pixels with focus index -1"
+}
