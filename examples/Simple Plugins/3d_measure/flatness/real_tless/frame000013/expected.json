@@ -1,0 +1,358 @@
+{
+  "model": "simple_3d_measure_v1",
+  "units": "mm",
+  "measurement_frame": "object6",
+  "scene_frame": "camera",
+  "measurement_to_scene": [
+    [
+      0.20638003167178787,
+      0.978442250456641,
+      0.007618730110430183,
+      -33.03962683
+    ],
+    [
+      0.9373236555353782,
+      -0.19546074471854533,
+      -0.2884778363199977,
+      -69.78034692
+    ],
+    [
+      -0.28076974071460675,
+      0.06667728095397588,
+      -0.9574562616138855,
+      786.28778032
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "scene_points": 387412,
+  "passed": true,
+  "measurements": [
+    {
+      "name": "table_zone",
+      "kind": "minimum_zone_flatness",
+      "plane": "table",
+      "other": null,
+      "value": 6.596113934423429,
+      "units": "mm",
+      "lower": null,
+      "upper": null,
+      "status": "measured",
+      "reason": null,
+      "angle_degrees": null,
+      "probe_point": null,
+      "definition": "minimum_width_two_parallel_planes_all_selected_points",
+      "flatness": {
+        "method": "convex_hull_minkowski_difference",
+        "status": "resolved",
+        "selected_points": 17725,
+        "hull_vertices": 79,
+        "difference_points": 6241,
+        "difference_facets": 552,
+        "max_hull_vertices": 256,
+        "max_difference_points": 65536,
+        "max_difference_facets": 131072,
+        "numeric_resolution": 1.65523755786028e-08,
+        "verification_gap": 0.0,
+        "candidate_upper_bound": 6.853678748150414,
+        "support_lower_count": 2,
+        "support_upper_count": 2,
+        "population": "all_selected_points_including_datum_fit_exclusions",
+        "datum_fit_residual_range": 6.847991702071274,
+        "origin": [
+          -136.8545054805125,
+          -119.9992636721711,
+          -33.02558923451236
+        ],
+        "normal": [
+          -0.019054947118740385,
+          0.009255872678651841,
+          0.9997755937265416
+        ],
+        "offsets": [
+          -3.575892433464564,
+          3.0202215009588653
+        ],
+        "datum_normal_angle_degrees": 0.17599997095838993,
+        "support_lower_rows": [
+          819,
+          88664
+        ],
+        "support_upper_rows": [
+          169,
+          73520
+        ],
+        "support_lower_points": [
+          [
+            -189.8456903555661,
+            -154.4382791869258,
+            -37.29342047885307
+          ],
+          [
+            -82.03251187732593,
+            -164.524232787268,
+            -35.14520968990158
+          ]
+        ],
+        "support_upper_points": [
+          [
+            -175.49116422567548,
+            -98.71851355408451,
+            -30.938090688617073
+          ],
+          [
+            -100.16620660588879,
+            -179.1572101299886,
+            -28.757757990171644
+          ]
+        ]
+      },
+      "dimension_endpoints": [
+        [
+          -189.8456903555661,
+          -154.4382791869258,
+          -37.29342047885307
+        ],
+        [
+          -189.97137895777573,
+          -154.3772263961749,
+          -30.698786753776975
+        ]
+      ]
+    },
+    {
+      "name": "table_range",
+      "kind": "surface_range",
+      "plane": "table",
+      "other": null,
+      "value": 6.847991702071274,
+      "units": "mm",
+      "lower": null,
+      "upper": null,
+      "status": "measured",
+      "reason": null,
+      "angle_degrees": null,
+      "probe_point": null,
+      "definition": "least_squares_plane_residual_range_all_selected_points"
+    },
+    {
+      "name": "part_surface_zone",
+      "kind": "minimum_zone_flatness",
+      "plane": "part_surface",
+      "other": null,
+      "value": 20.25806944396671,
+      "units": "mm",
+      "lower": null,
+      "upper": null,
+      "status": "measured",
+      "reason": null,
+      "angle_degrees": null,
+      "probe_point": null,
+      "definition": "minimum_width_two_parallel_planes_all_selected_points",
+      "flatness": {
+        "method": "convex_hull_minkowski_difference",
+        "status": "resolved",
+        "selected_points": 7340,
+        "hull_vertices": 76,
+        "difference_points": 5776,
+        "difference_facets": 472,
+        "max_hull_vertices": 256,
+        "max_difference_points": 65536,
+        "max_difference_facets": 131072,
+        "numeric_resolution": 1.1146505613229416e-08,
+        "verification_gap": 0.0,
+        "candidate_upper_bound": 21.071107136127928,
+        "support_lower_count": 3,
+        "support_upper_count": 1,
+        "population": "all_selected_points_including_datum_fit_exclusions",
+        "datum_fit_residual_range": 21.051655047517624,
+        "origin": [
+          1.0930283850904736,
+          -0.00205825966321882,
+          18.2025509452115
+        ],
+        "normal": [
+          0.0014760717183939346,
+          -0.005660112042497404,
+          0.999982892025633
+        ],
+        "offsets": [
+          -10.029256767884846,
+          10.228812676081867
+        ],
+        "datum_normal_angle_degrees": 1.386582064828792,
+        "support_lower_rows": [
+          109404,
+          153916,
+          158903
+        ],
+        "support_upper_rows": [
+          131565
+        ],
+        "support_lower_points": [
+          [
+            -8.243484980942283,
+            -15.73185120647971,
+            8.09787027955258
+          ],
+          [
+            48.58203332979585,
+            19.76664269753855,
+            8.214919194397512
+          ],
+          [
+            45.989275651233996,
+            -18.175891441034274,
+            8.00398368759964
+          ]
+        ],
+        "support_upper_points": [
+          [
+            28.542054385241304,
+            1.7817996575019448,
+            28.40111820282336
+          ]
+        ]
+      },
+      "dimension_endpoints": [
+        [
+          -8.243484980942283,
+          -15.73185120647971,
+          8.09787027955258
+        ],
+        [
+          -8.213582617566782,
+          -15.846514149297255,
+          28.355593148986518
+        ]
+      ]
+    },
+    {
+      "name": "part_surface_range",
+      "kind": "surface_range",
+      "plane": "part_surface",
+      "other": null,
+      "value": 21.051655047517624,
+      "units": "mm",
+      "lower": null,
+      "upper": null,
+      "status": "measured",
+      "reason": null,
+      "angle_degrees": null,
+      "probe_point": null,
+      "definition": "least_squares_plane_residual_range_all_selected_points"
+    }
+  ],
+  "planes": {
+    "table": {
+      "status": "fit",
+      "selected_points": 17725,
+      "fit_sample_points": 17725,
+      "inlier_points": 17711,
+      "excluded_fit_points": 14,
+      "inlier_fraction": 0.9992101551480959,
+      "distance_tolerance": 3.1734466320559815,
+      "ransac_trials": 16,
+      "origin": [
+        -130.4642738348679,
+        -122.71821081945556,
+        -32.97051759756427
+      ],
+      "normal": [
+        -0.016837452666666062,
+        0.0071309578052727585,
+        0.9998328108381307
+      ],
+      "inlier_bounds": [
+        [
+          -193.7027985035249,
+          -179.9958104829477,
+          -36.23677317453238
+        ],
+        [
+          -80.00621245750008,
+          -60.002716861394504,
+          -28.980716900180838
+        ]
+      ],
+      "orthogonal_rmse": 1.023509929669154,
+      "inlier_residual_range": 6.228716785228848,
+      "all_selected_residual_range": 6.847991702071274,
+      "frame": "object6",
+      "units": "mm",
+      "region_minimum": [
+        -200.0,
+        -180.0,
+        -40.0
+      ],
+      "region_maximum": [
+        -80.0,
+        -60.0,
+        -10.0
+      ],
+      "tolerance_source": "reference_noise"
+    },
+    "part_surface": {
+      "status": "fit",
+      "selected_points": 7340,
+      "fit_sample_points": 7340,
+      "inlier_points": 4761,
+      "excluded_fit_points": 2579,
+      "inlier_fraction": 0.6486376021798365,
+      "distance_tolerance": 3.3083094201947056,
+      "ransac_trials": 32,
+      "origin": [
+        -0.018249537279375172,
+        0.6735449058691954,
+        16.388735227381346
+      ],
+      "normal": [
+        -0.015813004711784432,
+        -0.02258901748758535,
+        0.9996197702981521
+      ],
+      "inlier_bounds": [
+        [
+          -47.66864623846191,
+          -24.990115375866687,
+          12.03683244493954
+        ],
+        [
+          49.36841197556499,
+          24.98599885654025,
+          20.366815682974917
+        ]
+      ],
+      "orthogonal_rmse": 1.4986105496915536,
+      "inlier_residual_range": 6.613038259915031,
+      "all_selected_residual_range": 21.051655047517624,
+      "frame": "object6",
+      "units": "mm",
+      "region_minimum": [
+        -50.0,
+        -25.0,
+        8.0
+      ],
+      "region_maximum": [
+        50.0,
+        25.0,
+        30.0
+      ],
+      "tolerance_source": "reference_noise"
+    }
+  },
+  "settings": {
+    "min_points": 30,
+    "min_inlier_fraction": 0.5,
+    "max_trials": 256,
+    "fit_sample_limit": 20000,
+    "seed": 0,
+    "execution_workers": 1
+  },
+  "surface_range_definition": "max_minus_min_signed_distance_all_selected_points",
+  "qualification": "fit_evidence_not_independent_dimensional_accuracy"
+}

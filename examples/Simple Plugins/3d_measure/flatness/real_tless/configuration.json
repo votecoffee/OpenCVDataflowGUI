@@ -1,0 +1,96 @@
+{
+  "units": "mm",
+  "frame": "object6",
+  "settings": {
+    "min_points": 30,
+    "min_inlier_fraction": 0.5,
+    "max_trials": 256,
+    "fit_sample_limit": 20000,
+    "seed": 0,
+    "execution_workers": 1
+  },
+  "planes": [
+    {
+      "name": "table",
+      "minimum": [
+        -200.0,
+        -180.0,
+        -40.0
+      ],
+      "maximum": [
+        -80.0,
+        -60.0,
+        -10.0
+      ],
+      "normal_hint": [
+        -0.0038900965615821007,
+        0.034504911269774285,
+        0.9993969572932503
+      ],
+      "tolerance": null
+    },
+    {
+      "name": "part_surface",
+      "minimum": [
+        -50.0,
+        -25.0,
+        8.0
+      ],
+      "maximum": [
+        50.0,
+        25.0,
+        30.0
+      ],
+      "normal_hint": [
+        -0.03244223650788719,
+        -0.044927531309897246,
+        0.9984633284306262
+      ],
+      "tolerance": null
+    }
+  ],
+  "measurements": [
+    {
+      "name": "table_zone",
+      "kind": "minimum_zone_flatness",
+      "plane": "table",
+      "other": null,
+      "point": null,
+      "lower": null,
+      "upper": null,
+      "max_angle_degrees": 5.0,
+      "zone_max_vertices": 256
+    },
+    {
+      "name": "table_range",
+      "kind": "surface_range",
+      "plane": "table",
+      "other": null,
+      "point": null,
+      "lower": null,
+      "upper": null,
+      "max_angle_degrees": 5.0
+    },
+    {
+      "name": "part_surface_zone",
+      "kind": "minimum_zone_flatness",
+      "plane": "part_surface",
+      "other": null,
+      "point": null,
+      "lower": null,
+      "upper": null,
+      "max_angle_degrees": 5.0,
+      "zone_max_vertices": 256
+    },
+    {
+      "name": "part_surface_range",
+      "kind": "surface_range",
+      "plane": "part_surface",
+      "other": null,
+      "point": null,
+      "lower": null,
+      "upper": null,
+      "max_angle_degrees": 5.0
+    }
+  ]
+}

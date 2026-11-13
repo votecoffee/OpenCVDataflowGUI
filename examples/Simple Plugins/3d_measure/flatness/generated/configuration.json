@@ -1,0 +1,56 @@
+{
+  "units": "mm",
+  "frame": "part",
+  "settings": {
+    "min_points": 30,
+    "min_inlier_fraction": 0.5,
+    "max_trials": 256,
+    "fit_sample_limit": 20000,
+    "seed": 0,
+    "execution_workers": 1
+  },
+  "planes": [
+    {
+      "name": "patch",
+      "minimum": [
+        -11.0,
+        -11.0,
+        -1.0
+      ],
+      "maximum": [
+        11.0,
+        11.0,
+        1.0
+      ],
+      "normal_hint": [
+        -0.018003780697103695,
+        7.1234292663424625e-06,
+        0.9998379187797728
+      ],
+      "tolerance": null
+    }
+  ],
+  "measurements": [
+    {
+      "name": "flatness",
+      "kind": "minimum_zone_flatness",
+      "plane": "patch",
+      "other": null,
+      "point": null,
+      "lower": null,
+      "upper": 0.45,
+      "max_angle_degrees": 5.0,
+      "zone_max_vertices": 256
+    },
+    {
+      "name": "datum_range",
+      "kind": "surface_range",
+      "plane": "patch",
+      "other": null,
+      "point": null,
+      "lower": null,
+      "upper": null,
+      "max_angle_degrees": 5.0
+    }
+  ]
+}

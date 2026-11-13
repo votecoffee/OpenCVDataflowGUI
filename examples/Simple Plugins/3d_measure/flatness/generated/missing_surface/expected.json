@@ -1,0 +1,105 @@
+{
+  "model": "simple_3d_measure_v1",
+  "units": "mm",
+  "measurement_frame": "part",
+  "scene_frame": "part",
+  "measurement_to_scene": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "scene_points": 10,
+  "passed": false,
+  "measurements": [
+    {
+      "name": "flatness",
+      "kind": "minimum_zone_flatness",
+      "plane": "patch",
+      "other": null,
+      "value": null,
+      "units": "mm",
+      "lower": null,
+      "upper": 0.45,
+      "status": "unavailable",
+      "reason": "plane_unavailable: patch",
+      "angle_degrees": null,
+      "probe_point": null
+    },
+    {
+      "name": "datum_range",
+      "kind": "surface_range",
+      "plane": "patch",
+      "other": null,
+      "value": null,
+      "units": "mm",
+      "lower": null,
+      "upper": null,
+      "status": "unavailable",
+      "reason": "plane_unavailable: patch",
+      "angle_degrees": null,
+      "probe_point": null
+    }
+  ],
+  "planes": {
+    "patch": {
+      "status": "insufficient_points",
+      "selected_points": 10,
+      "fit_sample_points": 10,
+      "inlier_points": 0,
+      "excluded_fit_points": 10,
+      "inlier_fraction": 0.0,
+      "distance_tolerance": 0.0036903004245065706,
+      "ransac_trials": 0,
+      "origin": null,
+      "normal": null,
+      "inlier_bounds": null,
+      "orthogonal_rmse": null,
+      "inlier_residual_range": null,
+      "all_selected_residual_range": null,
+      "frame": "part",
+      "units": "mm",
+      "region_minimum": [
+        -11.0,
+        -11.0,
+        -1.0
+      ],
+      "region_maximum": [
+        11.0,
+        11.0,
+        1.0
+      ],
+      "tolerance_source": "reference_noise"
+    }
+  },
+  "settings": {
+    "min_points": 30,
+    "min_inlier_fraction": 0.5,
+    "max_trials": 256,
+    "fit_sample_limit": 20000,
+    "seed": 0,
+    "execution_workers": 1
+  },
+  "surface_range_definition": "max_minus_min_signed_distance_all_selected_points",
+  "qualification": "fit_evidence_not_independent_dimensional_accuracy"
+}

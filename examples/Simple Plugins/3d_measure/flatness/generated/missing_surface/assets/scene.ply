@@ -1,0 +1,10 @@
+ply
+format binary_little_endian 1.0
+comment dataflow_metadata {"units": "mm", "frame": "part"}
+element vertex 10
+property float x
+property float y
+property float z
+end_header
+/‡Àšó@K¿ ½|©À)w®À)!Á½R#Àç•’ÀƒÉ9½éq9@–eÑÀÖ"Y=¡—×@¯ÒÂ@Õqø=&;Áóu4?RÀ¾wßÕÀ)¬ƒÀQ~ö½Õ´¿ÖÜI¿xÆ¼D 
+¿°‘è@=@/¼:ƒÀ¨É©ÀpU—½

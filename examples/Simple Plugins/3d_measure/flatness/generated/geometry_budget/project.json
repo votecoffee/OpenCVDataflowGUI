@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/scene.ply",
+        "units": "mm",
+        "frame": "part",
+        "max_points": 2000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "3d.simple_measure",
+      "name": "Simple3DMeasure",
+      "description": "Known single-visible height samples; all selected extremes count. No least-squares substitution on budget/missing failure.",
+      "parameters": {
+        "recipe_path": "assets/measurement.s3m",
+        "sha256": "464f24a061a4d6c64f19ef1860ce73be5f2ba83f146c6dd460af5adbb86290c1",
+        "primary_measurement": "",
+        "render_graphics": true
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "scene",
+        "fixture"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "planes",
+        "report",
+        "value",
+        "count",
+        "fit",
+        "lines"
+      ],
+      "thumbnail": true,
+      "preview_output": "fit"
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "cloud",
+      "target": "measure",
+      "input": "scene"
+    }
+  ]
+}

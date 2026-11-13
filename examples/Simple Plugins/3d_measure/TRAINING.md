@@ -1,6 +1,7 @@
 # Teach a new 3D measurement
 
-Requires Simple3DMeasure `0.1.0.dev1` (planes) or `0.1.0.dev2` (lines) and an OpenCVDataflowGUI build containing
+Requires Simple3DMeasure `0.1.0.dev1` (planes), `0.1.0.dev2` (lines), or
+`0.1.0.dev3` with optional SciPy (minimum-zone flatness), and an OpenCVDataflowGUI build containing
 the native cloud-teaching API. Older hosts explicitly fall back to recipe
 review/import. Keep `mm` or `m` and coordinate frames explicit; units are never
 inferred from object size.
@@ -19,6 +20,10 @@ inferred from object size.
    axes. Draw a datum and any target surface regions; name them clearly.
 3. **Add measurement…**. Select the datum/target and a measurement type.
    A surface range needs one region; step height and angle need two.
+   **Minimum-zone flatness (all selected)** also uses one plane region. Its
+   geometry budget bounds hull work; exceeding it leaves the value unavailable.
+   This measurement includes samples excluded from the datum fit. In review,
+   orange/violet zone planes and support markers show which points limit it.
    For a point-to-plane/line measurement, choose Pick source point in the viewer,
    click the desired visible point and use it in the measurement dialog.
    Optional lower/upper limits use the displayed physical units or degrees.
@@ -60,3 +65,4 @@ Closing a trainer detaches its bounded worker and discards its result;
 interrupting an already-running NumPy fit remains future work. Additional
 primitives, oriented regions and sections remain in the roadmap.
 See [line-specific definitions and observed-support limits](LINES.md).
+See [minimum-zone definitions, dependencies and numerical limits](FLATNESS.md).
