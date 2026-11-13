@@ -308,3 +308,49 @@ def test_real_tless_training_captures_completed_inputs_without_changing_recipe(a
         if context is not None:
             context._close()
         graph.close()
+
+
+@pytest.mark.local_examples
+def test_pose_alternatives_example_keeps_annotation_failure_and_reports_competitors():
+    pytest.importorskip("opencv_simple_3d_locate.alternatives")
+    from opencv_simple_3d_locate.optimization import pose_agreement
+
+    root = (
+        Path(__file__).resolve().parents[1]
+        / "examples/Simple Plugins/3d_locate/real_tless/pose_alternatives"
+    )
+    graph = Graph.load(root / "project.json", builtin_registry())
+    try:
+        graph.run()
+        block = graph.blocks["locate"]
+        assert block.state == "pass", block.error
+        output = block.last_result.outputs
+        assert output["count"] == 1
+        report = output["report"]
+        info = report["matches"][0]["pose_alternatives"]
+        assert output["pose"]["pose_alternatives"] == info
+        assert info["status"] == "alternatives_observed" and info["count"] >= 1
+        assert 0 <= info["relative_score_margin"] < 0.2
+        assert len(info["alternatives"]) <= 3 and not info["exhaustive"]
+        assert report["execution"]["seconds"]["pose_alternatives"] >= 0
+        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        options = dict(
+            position_tolerance=5, angle_degrees=5, symmetries=(np.diag([-1.0, -1.0, 1.0, 1.0]),)
+        )
+        checked = pose_agreement(
+            [np.asarray(output["pose"]["source_to_target"])], [truth], **options
+        )
+        assert checked["matched"] == 0 and checked["missed"] == checked["extra"] == 1
+        alternative = pose_agreement(
+            [np.asarray(row["source_to_target"]) for row in info["alternatives"]],
+            [truth],
+            **options,
+        )
+        assert alternative["matched"] == 1
+        saved = json.loads((root / "isolated_000220.json").read_bytes())
+        assert saved["validation"]["matched"] == 0
+        assert saved["validation"]["missed"] == saved["validation"]["extra"] == 1
+        assert saved["segmentation_supplied"]
+        assert (root / "competing_result.png").is_file()
+    finally:
+        graph.close()

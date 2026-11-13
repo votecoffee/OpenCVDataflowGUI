@@ -31,6 +31,10 @@ For the optional local-descriptor/RANSAC route, see the
 [feature candidates example](feature_candidates/README.md), including the
 three-backend comparison and retained real-scene failures.
 
+The [competing-orientations example](pose_alternatives/README.md) reproduces
+a wrong selected orientation and exposes verified alternatives and score
+margins with plugin dev9. Its annotation failure remains counted.
+
 ## Measured scope and failures
 
 With default training/execution settings, capture 230's isolated object has
