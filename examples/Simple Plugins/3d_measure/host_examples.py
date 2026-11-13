@@ -64,4 +64,6 @@ def manifest(folder):
     root = Path(folder)
     write_json(root / "sha256.json", {
         path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
-        for path in sorted(root.rglob("*")) if path.is_file() and path.name != "sha256.json"})
+        for path in sorted(root.rglob("*"))
+        if path.is_file() and path.name != "sha256.json"
+        and "__pycache__" not in path.parts and path.suffix not in (".pyc", ".pyo")})

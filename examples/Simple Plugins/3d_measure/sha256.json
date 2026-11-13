@@ -1,6 +1,5 @@
 {
   ".gitattributes": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
-  "__pycache__/host_examples.cpython-314.pyc": "a868bc1011c23838cde8696b78a54ca831d397ed5ac0bc858f24517868315bdd",
   "build_demo.py": "6eb2e2a5f91fdaea593dda8cf5b55f8e1bdbf0b6681f17029c0d02d0bbb6be6f",
   "build_tless.py": "72565a45d3ef492b31d98005a45da08bebf861d0c673f82e00e5f0629c89552e",
   "generated/configuration.json": "fbaf5559522cb3a722f7a036c3248a283d7fc8d33d0b45d067093a1fde23214b",
@@ -30,7 +29,7 @@
   "generated/raised_feature.json": "afd07bf35da0740e4c6b6d863f22edac821f7f3c6b99df1a08af79f8a5652d7a",
   "generated/raised_feature.npz": "b5d04f5784efe8aa4ab99b0600f501efdd9923c42601a97c15336e8be3b90291",
   "generated/reference.npz": "b8c31354c3876c5bcc89b1838f1924cc6d4c719eb8566d0bb43ead4f46b8c4ef",
-  "host_examples.py": "b9eab46a696daf70a214f33478f682eb1e557a4a156e0cf66a1f2ead4511b2b4",
+  "host_examples.py": "8caee58cad7e63d91118efc9260e664635cef62f80adef0fa28aef516c760016",
   "LICENSE": "e1e2d2d0f228c8956d1f5e3e108c35919c88e37e76b4243f21b7ef5307ec3367",
   "README.md": "4afa142d3288c62be65dba803e0627753acbb19a7d193de950b5b809465ec670",
   "real_tless/ATTRIBUTION.md": "111b0c122fd9ba38c893c88304e89cf77b59f3c336d9be069b77782a32e8d342",
