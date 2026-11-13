@@ -1133,6 +1133,34 @@ Input `exposures` — Ordered batch of 2–16 uint8 gray, BGR or RGB exposures.
 | `exclude_range` | `4` | Value must be a whole number between 0 and 127. Ignore brightness values this close to the median when matching. |
 | `border_mode` | `"crop"` | `crop`, `zero_pad` Crop to the area shared by all exposures, or zero-pad the original canvas. |
 
+## Source-over alpha composition (`cv.alpha_over`)
+
+Image processing / Image math
+
+Inputs: `foreground` (image), `background` (image), `alpha` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `foreground` — Top layer; gray/RGB(A)/BGR(A) uint8/16 or float32/64, registered with background.
+
+Input `background` — Canvas layer and output coordinate/ticket reference. Mixed depths/orders are converted.
+
+Input `alpha` — Optional matching uint8/16 or floating [0,1] map multiplying foreground alpha.
+
+Input `mask` — Optional uint8 selection of output centers; other pixels represent the background.
+
+Input `region` — Optional circle, rectangle or polygon intersected with the selection mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `foreground_representation` | `"auto"` | `auto`, `straight`, `premultiplied` Auto reads alpha_representation metadata; untagged RGBA is straight. |
+| `background_representation` | `"auto"` | `auto`, `straight`, `premultiplied` Association of background colors with its embedded alpha. |
+| `output_representation` | `"straight"` | `straight`, `premultiplied` Premultiplied output requires BGRA/RGBA and carries association metadata. |
+| `output_format` | `"background"` | `background`, `gray`, `bgr`, `rgb`, `bgra`, `rgba` Preserve the background encoding, or explicitly convert the result. |
+| `output_depth` | `"background"` | `background`, `uint8`, `uint16`, `float32`, `float64` Preserve background depth or choose a depth; integer colors use full-scale units. |
+| `blend_space` | `"stored"` | `stored`, `linear_srgb` Blend stored component values or decode/encode unit-range sRGB around blending. |
+| `opacity` | `1.0` | Value must be a finite number between 0 and 1. Multiply foreground embedded alpha, optional alpha map, and associated colors. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Same frame validates identity; pixel grid explicitly pairs equal-size image grids. |
+| `ticket_policy` | `"same_ticket"` | `same_ticket`, `background` Require matching known tickets, or explicitly use background ownership across sources. |
+
 ## Add annotation layer (`cv.annotation_layer`)
 
 Image processing / Drawing

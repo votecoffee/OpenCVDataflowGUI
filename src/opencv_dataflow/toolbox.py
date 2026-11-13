@@ -109,7 +109,7 @@ BLOCK_MODULES = {
         "cv.merge_channels cv.extract_channel cv.insert_channel cv.apply_mask "
         "cv.find_nonzero_pixels "
         "cv.absdiff cv.flip cv.rotate90 cv.transpose_image cv.bitwise cv.blend cv.copy_border "
-        "cv.transform_points"
+        "cv.transform_points cv.alpha_over"
     ),
     "imgproc": (
         "cv.hann_window cv.decode_yuv calibration.color_balance cv.pack_remap_map "
@@ -157,6 +157,7 @@ _MODULE_BY_BLOCK = {
 }
 _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
+    "cv.alpha_over": ("alpha", "premultiplied", "source over", "opacity", "transparency"),
     "inspect.intensity_moments": ("moments", "centroid", "center of mass", "principal axis"),
     "cv.interpolate_frames": ("Farneback", "optical flow", "remap", "intermediate frame"),
     "inspect.structure_tensor": ("cornerEigenValsAndVecs", "tensor", "orientation", "coherence"),

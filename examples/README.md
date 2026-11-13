@@ -144,6 +144,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Rotated and scaled Hough matching](<opencv tools/generalized_hough_guil/README.md>) | Find a template with a different rotation and scale, and inspect its oriented outline. |
 | [Rotated rectangle overlap](<opencv tools/rotated_rectangle_overlap/README.md>) | Fit a part footprint and measure overlap against a reference. |
 | [Scale absolute to 8-bit](<opencv tools/scale_absolute/README.md>) | Convert signed Sobel responses to magnitudes and threshold both edge polarities. |
+| [Source-over alpha composition](<opencv tools/alpha_composition/README.md>) | Compare straight, premultiplied and external-map alpha on original 16-bit layers against an exact-rational reference, including transparent backgrounds. |
 | [SIFT registration](<opencv tools/sift_registration/README.md>) | Match SIFT descriptors and recover a known image translation. |
 | [Single template match](<opencv tools/template_matching/README.md>) | Crop a synthetic reference patch and locate it in the full image. |
 | [Singular value decomposition](<opencv tools/matrix_svd/README.md>) | Keep the dominant measurement mode, inspect its retained energy, and apply the reconstructed matrix. |

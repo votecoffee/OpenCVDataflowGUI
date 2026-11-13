@@ -1,0 +1,7 @@
+{
+  "operator": "source_over",
+  "sample_depth": "uint16",
+  "maximum": 65535,
+  "reference_method": "Scalar equations evaluated with exact rational arithmetic",
+  "maximum_allowed_error": 1
+}

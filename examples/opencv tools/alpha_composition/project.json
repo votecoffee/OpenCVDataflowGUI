@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "background",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/background.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -330.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        820.0,
+        900.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "foreground",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/foreground.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "associated",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/premultiplied.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        320.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rgb",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/foreground.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        640.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "matte",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/alpha.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        920.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "straight",
+      "type": "cv.alpha_over",
+      "name": "Source over \u2014 straight alpha",
+      "documentation": "<p>Source-over composition uses Ao = Af + Ab(1-Af) and associated color Co = Cf Af + Cb Ab(1-Af). Straight output divides Co by Ao where Ao is positive. Fully transparent selected pixels have zero color.</p><p><a href=\"https://www.w3.org/TR/compositing-1/#porterduffcompositingoperators\">W3C source-over reference</a>. This CPU implementation handles alpha association, pixel depths, color order and optional linear sRGB blending explicitly.</p>",
+      "parameters": {
+        "foreground_representation": "straight",
+        "background_representation": "auto",
+        "output_representation": "straight",
+        "output_format": "background",
+        "output_depth": "background",
+        "blend_space": "stored",
+        "opacity": 1.0,
+        "alignment": "pixel_grid",
+        "ticket_policy": "background"
+      },
+      "position": [
+        400.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "foreground",
+        "background",
+        "alpha",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "alpha",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify_straight",
+      "type": "inspect.image_quality",
+      "name": "Verify straight against rational reference",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 1.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        820.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "premultiplied",
+      "type": "cv.alpha_over",
+      "name": "Source over \u2014 premultiplied alpha",
+      "documentation": "<p>Source-over composition uses Ao = Af + Ab(1-Af) and associated color Co = Cf Af + Cb Ab(1-Af). Straight output divides Co by Ao where Ao is positive. Fully transparent selected pixels have zero color.</p><p><a href=\"https://www.w3.org/TR/compositing-1/#porterduffcompositingoperators\">W3C source-over reference</a>. This CPU implementation handles alpha association, pixel depths, color order and optional linear sRGB blending explicitly.</p>",
+      "parameters": {
+        "foreground_representation": "premultiplied",
+        "background_representation": "auto",
+        "output_representation": "straight",
+        "output_format": "background",
+        "output_depth": "background",
+        "blend_space": "stored",
+        "opacity": 1.0,
+        "alignment": "pixel_grid",
+        "ticket_policy": "background"
+      },
+      "position": [
+        400.0,
+        320.0
+      ],
+      "exposed_inputs": [
+        "foreground",
+        "background",
+        "alpha",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "alpha",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify_premultiplied",
+      "type": "inspect.image_quality",
+      "name": "Verify premultiplied against rational reference",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 1.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        820.0,
+        320.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "external",
+      "type": "cv.alpha_over",
+      "name": "Source over \u2014 external alpha",
+      "documentation": "<p>Source-over composition uses Ao = Af + Ab(1-Af) and associated color Co = Cf Af + Cb Ab(1-Af). Straight output divides Co by Ao where Ao is positive. Fully transparent selected pixels have zero color.</p><p><a href=\"https://www.w3.org/TR/compositing-1/#porterduffcompositingoperators\">W3C source-over reference</a>. This CPU implementation handles alpha association, pixel depths, color order and optional linear sRGB blending explicitly.</p>",
+      "parameters": {
+        "foreground_representation": "straight",
+        "background_representation": "auto",
+        "output_representation": "straight",
+        "output_format": "background",
+        "output_depth": "background",
+        "blend_space": "stored",
+        "opacity": 1.0,
+        "alignment": "pixel_grid",
+        "ticket_policy": "background"
+      },
+      "position": [
+        400.0,
+        640.0
+      ],
+      "exposed_inputs": [
+        "foreground",
+        "background",
+        "alpha",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "alpha",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify_external",
+      "type": "inspect.image_quality",
+      "name": "Verify external against rational reference",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 1.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        820.0,
+        640.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original source-over fixtures \u2014 MIT",
+      "description": "Original 16-bit background, transparent overlay, associated image, alpha map, generator and project under the repository MIT license. Three branches compare straight, premultiplied and separate-map representations against an independent exact-rational reference. Premultiplied PNG is an intentional processing fixture; its block explicitly declares that association. The standard output is straight BGRA. Checkerboard previews show real transparency. W3C source-over equations: https://www.w3.org/TR/compositing-1/#porterduffcompositingoperators",
+      "parameters": {},
+      "position": [
+        -330.0,
+        -350.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "foreground",
+      "output": "image",
+      "target": "straight",
+      "input": "foreground"
+    },
+    {
+      "source": "background",
+      "output": "image",
+      "target": "straight",
+      "input": "background"
+    },
+    {
+      "source": "straight",
+      "output": "image",
+      "target": "verify_straight",
+      "input": "image_a"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "verify_straight",
+      "input": "image_b"
+    },
+    {
+      "source": "associated",
+      "output": "image",
+      "target": "premultiplied",
+      "input": "foreground"
+    },
+    {
+      "source": "background",
+      "output": "image",
+      "target": "premultiplied",
+      "input": "background"
+    },
+    {
+      "source": "premultiplied",
+      "output": "image",
+      "target": "verify_premultiplied",
+      "input": "image_a"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "verify_premultiplied",
+      "input": "image_b"
+    },
+    {
+      "source": "rgb",
+      "output": "image",
+      "target": "external",
+      "input": "foreground"
+    },
+    {
+      "source": "background",
+      "output": "image",
+      "target": "external",
+      "input": "background"
+    },
+    {
+      "source": "matte",
+      "output": "image",
+      "target": "external",
+      "input": "alpha"
+    },
+    {
+      "source": "external",
+      "output": "image",
+      "target": "verify_external",
+      "input": "image_a"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "verify_external",
+      "input": "image_b"
+    }
+  ]
+}

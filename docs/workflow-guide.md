@@ -177,6 +177,18 @@ The status bar shows the active run mode.
 validation-set window. [Workspace and image-set details](workspaces-image-sets.md)
 cover ordering, queue behavior, filename identity, retention and Lean mode.
 
+## Alpha composition
+
+[Source-over alpha composition](<../examples/opencv tools/alpha_composition/README.md>)
+combines registered foreground/background layers with embedded or external alpha.
+Set alpha association explicitly or use its metadata-aware Auto mode. Choose
+stored or linear-sRGB blending and an output format/depth. Masks/regions select
+foreground application; the remaining canvas represents the background. Ticket
+and frame checks are strict by default, with explicit cross-source/grid options
+for static overlays. Output association metadata supports chained composition,
+and checkerboard previews expose transparency. The 16-bit example compares three
+alpha representations with an independently computed reference.
+
 ## Paired-frame motion interpolation
 
 [Motion-compensated frame interpolation](<../examples/opencv tools/frame_interpolation/README.md>)

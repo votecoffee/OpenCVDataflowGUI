@@ -635,6 +635,7 @@ class WriteResults(Block):
 
 def builtin_registry():
     from .affine_features import AffineFeatures
+    from .alpha_composition import AlphaOver
     from .analysis_tools import ANALYSIS_BLOCKS
     from .annotation import AnnotationLayer
     from .annoy_blocks import ANNOY_BLOCKS
@@ -916,6 +917,7 @@ def builtin_registry():
         FourierCorrelation,
         *ANALYSIS_BLOCKS,
         BlendWeightMaps,
+        AlphaOver,
         InterpolateFrames,
         AddImageNoise,
         ColorizeScalar,

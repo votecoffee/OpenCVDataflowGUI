@@ -364,7 +364,7 @@ is evidence of exposure. Completion requires the checklist's graph fixture.
 | `cv2.cvtColor`, `cv2.cvtColorTwoPlane`, `cv2.demosaicing` | Route sensor layouts and typed color conversions through existing contracts. `cv.decode_raw_sensor`/`input.raw_sensor` qualify MIPI RAW10/12 groups and strides; `cv.demosaic_bayer` optionally follows captured phase through integer pixel geometry. Other vendor packing and camera SDKs require separate adapters. | S1-08, S1-13, S1-127 |
 | `cv2.CLAHE`, `cv2.createCLAHE`, `cv2.equalizeHist`, `cv2.applyColorMap` | Equalization and palettes use typed image inputs. | S1-21 |
 | `cv2.calcHist`, `cv2.calcBackProject`, `cv2.compareHist`, `cv2.EMD`, `cv::wrapperEMD` | Histogram reduction, projection and transport distance. The C++ EMD wrapper stays internal. | S1-19, S1-120 |
-| `cv2.blendLinear` | Use per-pixel weights within the blending contract. | S1-16, S1-132 |
+| `cv2.blendLinear` | Use per-pixel weights within the blending contract. cv.alpha_over separately implements CPU source-over equations with straight/premultiplied association, typed storage and transparency checks against scalar rational truth; its alpha treatment is distinct from normalized two-weight blending. | S1-16, S1-132 |
 | `cv2.threshold`, `cv2.thresholdWithMask`, `cv2.adaptiveThreshold` | Test thresholds, selections and boundary behavior in one family. | S1-25 |
 | `cv2.dilate`, `cv2.erode`, `cv2.morphologyEx`, `cv2.getStructuringElement` | Group morphology by operator and kernel. Binary hit-or-miss has a separate fixture. | S1-26, S1-151 |
 | `cv2.floodFill`, `cv2.distanceTransform`, `cv2.distanceTransformWithLabels`, `cv2.grabCut`, `cv2.watershed` | Seeds, segmentation and distances retain image coordinates. | S1-27–S1-28, S1-98, S1-136 |
