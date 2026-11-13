@@ -1,0 +1,1310 @@
+{
+  "scope": "Fixed model-source development comparison, not production qualification.",
+  "sources": {
+    "cad": {
+      "matched": 0,
+      "missed": 16,
+      "extra": 0,
+      "negative_extra": 0
+    },
+    "reconstructed": {
+      "matched": 2,
+      "missed": 14,
+      "extra": 18,
+      "negative_extra": 7
+    },
+    "captured": {
+      "matched": 2,
+      "missed": 14,
+      "extra": 25,
+      "negative_extra": 10
+    }
+  },
+  "cases": [
+    {
+      "source": "cad",
+      "object_id": 6,
+      "group": "near",
+      "case": "scene000002_frame000013_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000006__scene000002_frame000013_isolated.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 6,
+      "group": "near",
+      "case": "scene000002_frame000013_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000006__scene000002_frame000013_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 6,
+      "group": "near",
+      "case": "scene000002_frame000024_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000006__scene000002_frame000024_isolated.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 6,
+      "group": "near",
+      "case": "scene000002_frame000024_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000006__scene000002_frame000024_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 6,
+      "group": "far",
+      "case": "scene000002_frame000255_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000006__scene000002_frame000255_isolated.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 6,
+      "group": "far",
+      "case": "scene000002_frame000255_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000006__scene000002_frame000255_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 6,
+      "group": "far",
+      "case": "scene000002_frame000494_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000006__scene000002_frame000494_isolated.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 6,
+      "group": "far",
+      "case": "scene000002_frame000494_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000006__scene000002_frame000494_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 6,
+      "group": "absent",
+      "case": "scene000003_frame000005_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000006__scene000003_frame000005_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 6,
+      "group": "absent",
+      "case": "scene000003_frame000261_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000006__scene000003_frame000261_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 6,
+      "group": "absent",
+      "case": "scene000003_frame000493_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000006__scene000003_frame000493_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "group": "near",
+      "case": "scene000002_frame000013_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000006__scene000002_frame000013_isolated.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "group": "near",
+      "case": "scene000002_frame000013_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000006__scene000002_frame000013_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "group": "near",
+      "case": "scene000002_frame000024_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000006__scene000002_frame000024_isolated.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "group": "near",
+      "case": "scene000002_frame000024_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000006__scene000002_frame000024_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "group": "far",
+      "case": "scene000002_frame000255_isolated",
+      "matched": 1,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000006__scene000002_frame000255_isolated.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "group": "far",
+      "case": "scene000002_frame000255_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000006__scene000002_frame000255_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "group": "far",
+      "case": "scene000002_frame000494_isolated",
+      "matched": 1,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000006__scene000002_frame000494_isolated.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "group": "far",
+      "case": "scene000002_frame000494_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000006__scene000002_frame000494_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "group": "absent",
+      "case": "scene000003_frame000005_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000006__scene000003_frame000005_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "group": "absent",
+      "case": "scene000003_frame000261_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000006__scene000003_frame000261_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "group": "absent",
+      "case": "scene000003_frame000493_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000006__scene000003_frame000493_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "group": "near",
+      "case": "scene000002_frame000013_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000006__scene000002_frame000013_isolated.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "group": "near",
+      "case": "scene000002_frame000013_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000006__scene000002_frame000013_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "group": "near",
+      "case": "scene000002_frame000024_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000006__scene000002_frame000024_isolated.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "group": "near",
+      "case": "scene000002_frame000024_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000006__scene000002_frame000024_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "group": "far",
+      "case": "scene000002_frame000255_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000006__scene000002_frame000255_isolated.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "group": "far",
+      "case": "scene000002_frame000255_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000006__scene000002_frame000255_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "group": "far",
+      "case": "scene000002_frame000494_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000006__scene000002_frame000494_isolated.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "group": "far",
+      "case": "scene000002_frame000494_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000006__scene000002_frame000494_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "group": "absent",
+      "case": "scene000003_frame000005_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000006__scene000003_frame000005_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "group": "absent",
+      "case": "scene000003_frame000261_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000006__scene000003_frame000261_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "group": "absent",
+      "case": "scene000003_frame000493_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000006__scene000003_frame000493_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "group": "near",
+      "case": "scene000003_frame000010_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000008__scene000003_frame000010_isolated.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "group": "near",
+      "case": "scene000003_frame000010_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000008__scene000003_frame000010_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "group": "near",
+      "case": "scene000003_frame000016_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000008__scene000003_frame000016_isolated.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "group": "near",
+      "case": "scene000003_frame000016_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000008__scene000003_frame000016_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "group": "far",
+      "case": "scene000003_frame000261_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000008__scene000003_frame000261_isolated.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "group": "far",
+      "case": "scene000003_frame000261_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000008__scene000003_frame000261_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "group": "far",
+      "case": "scene000003_frame000493_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000008__scene000003_frame000493_isolated.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "group": "far",
+      "case": "scene000003_frame000493_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000008__scene000003_frame000493_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "group": "absent",
+      "case": "scene000002_frame000003_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000008__scene000002_frame000003_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "group": "absent",
+      "case": "scene000002_frame000255_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000008__scene000002_frame000255_full.json"
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "group": "absent",
+      "case": "scene000002_frame000494_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/cad_object000008__scene000002_frame000494_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "group": "near",
+      "case": "scene000003_frame000010_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000008__scene000003_frame000010_isolated.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "group": "near",
+      "case": "scene000003_frame000010_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 4,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000008__scene000003_frame000010_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "group": "near",
+      "case": "scene000003_frame000016_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000008__scene000003_frame000016_isolated.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "group": "near",
+      "case": "scene000003_frame000016_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 5,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000008__scene000003_frame000016_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "group": "far",
+      "case": "scene000003_frame000261_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000008__scene000003_frame000261_isolated.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "group": "far",
+      "case": "scene000003_frame000261_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 2,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000008__scene000003_frame000261_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "group": "far",
+      "case": "scene000003_frame000493_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000008__scene000003_frame000493_isolated.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "group": "far",
+      "case": "scene000003_frame000493_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000008__scene000003_frame000493_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "group": "absent",
+      "case": "scene000002_frame000003_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 5,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000008__scene000002_frame000003_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "group": "absent",
+      "case": "scene000002_frame000255_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 2,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000008__scene000002_frame000255_full.json"
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "group": "absent",
+      "case": "scene000002_frame000494_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/reconstructed_object000008__scene000002_frame000494_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "group": "near",
+      "case": "scene000003_frame000010_isolated",
+      "matched": 1,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000008__scene000003_frame000010_isolated.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "group": "near",
+      "case": "scene000003_frame000010_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 5,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000008__scene000003_frame000010_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "group": "near",
+      "case": "scene000003_frame000016_isolated",
+      "matched": 1,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000008__scene000003_frame000016_isolated.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "group": "near",
+      "case": "scene000003_frame000016_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 5,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000008__scene000003_frame000016_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "group": "far",
+      "case": "scene000003_frame000261_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000008__scene000003_frame000261_isolated.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "group": "far",
+      "case": "scene000003_frame000261_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 5,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000008__scene000003_frame000261_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "group": "far",
+      "case": "scene000003_frame000493_isolated",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000008__scene000003_frame000493_isolated.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "group": "far",
+      "case": "scene000003_frame000493_full",
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000008__scene000003_frame000493_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "group": "absent",
+      "case": "scene000002_frame000003_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 5,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000008__scene000002_frame000003_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "group": "absent",
+      "case": "scene000002_frame000255_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 5,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000008__scene000002_frame000255_full.json"
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "group": "absent",
+      "case": "scene000002_frame000494_full",
+      "matched": 0,
+      "missed": 0,
+      "extra": 0,
+      "repeatable_matches": true,
+      "report": "reports/captured_object000008__scene000002_frame000494_full.json"
+    }
+  ],
+  "training_controls": [
+    {
+      "source": "cad",
+      "object_id": 6,
+      "case": "scene000002_frame000003_isolated",
+      "training_replay_only": true,
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "max_position_error": 0.0,
+      "max_angle_error_degrees": 0.0
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "case": "scene000002_frame000003_isolated",
+      "training_replay_only": true,
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "max_position_error": 0.0,
+      "max_angle_error_degrees": 0.0
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "case": "scene000002_frame000003_isolated",
+      "training_replay_only": true,
+      "matched": 1,
+      "missed": 0,
+      "extra": 0,
+      "max_position_error": 0.03737231844802712,
+      "max_angle_error_degrees": 0.2717860749122045
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "case": "scene000003_frame000005_isolated",
+      "training_replay_only": true,
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "max_position_error": 0.0,
+      "max_angle_error_degrees": 0.0
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "case": "scene000003_frame000005_isolated",
+      "training_replay_only": true,
+      "matched": 0,
+      "missed": 1,
+      "extra": 0,
+      "max_position_error": 0.0,
+      "max_angle_error_degrees": 0.0
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "case": "scene000003_frame000005_isolated",
+      "training_replay_only": true,
+      "matched": 1,
+      "missed": 0,
+      "extra": 0,
+      "max_position_error": 1.1254668087763204,
+      "max_angle_error_degrees": 0.30611879104648565
+    }
+  ],
+  "models": [
+    {
+      "source": "cad",
+      "object_id": 6,
+      "recipe_sha256": "0c9d686e44cbdacaa3f449e6225e637d07a230b81d9adb0bcedd38ef12f7d28d",
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 116.50154622504867,
+        "normal_spread": 0.3471155502250107,
+        "units": "mm",
+        "frame": "tless_object6",
+        "sampling_budget": {
+          "voxel_points": 2482,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.8058017727639001,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 5700,
+          "surface_area": 36036.615293433126,
+          "discarded_triangles": 0
+        }
+      },
+      "settings": {
+        "sampling_distance": 0.03,
+        "ppf_distance": 0.05,
+        "angle_bins": 30,
+        "scene_reference_step": 0.1,
+        "normal_neighbors": 20,
+        "model_viewpoint": [
+          185.64014867060806,
+          -176.92500189898723,
+          733.9368390810067
+        ],
+        "scene_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_candidates": 24,
+        "global_model_points": 384,
+        "global_scene_points": 2048,
+        "search_sampling": "uniform",
+        "refinement": "legacy",
+        "icp_iterations": 60,
+        "icp_levels": 4,
+        "distance_tolerance": 0.025,
+        "max_rmse": 0.015,
+        "min_coverage": 0.5,
+        "normal_angle": 30.0,
+        "min_normal_spread": 0.01,
+        "min_unique_support": 20,
+        "max_matches": 5,
+        "overlap_threshold": 0.6,
+        "overlap_metric": "combined",
+        "observation_mode": "surface",
+        "candidate_backend": "ppf",
+        "depth_verification": "auto",
+        "max_free_space": 0.1,
+        "min_depth_coverage": 0.8,
+        "execution_workers": 4,
+        "pose_scoring": "geometric",
+        "boundary_verification": "auto"
+      },
+      "training_frame": 3
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 6,
+      "recipe_sha256": "99fb272c5aaa6c1e13a08269b63c3e76a9a44492d5af1d42d47b89462d2e9136",
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 121.1984059935475,
+        "normal_spread": 0.32342407072027735,
+        "units": "mm",
+        "frame": "tless_object6",
+        "sampling_budget": {
+          "voxel_points": 2447,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.8173273395995097,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 49159,
+          "surface_area": 34474.17209951689,
+          "discarded_triangles": 0
+        }
+      },
+      "settings": {
+        "sampling_distance": 0.03,
+        "ppf_distance": 0.05,
+        "angle_bins": 30,
+        "scene_reference_step": 0.1,
+        "normal_neighbors": 20,
+        "model_viewpoint": [
+          185.64014867060806,
+          -176.92500189898723,
+          733.9368390810067
+        ],
+        "scene_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_candidates": 24,
+        "global_model_points": 384,
+        "global_scene_points": 2048,
+        "search_sampling": "uniform",
+        "refinement": "legacy",
+        "icp_iterations": 60,
+        "icp_levels": 4,
+        "distance_tolerance": 0.025,
+        "max_rmse": 0.015,
+        "min_coverage": 0.5,
+        "normal_angle": 30.0,
+        "min_normal_spread": 0.01,
+        "min_unique_support": 20,
+        "max_matches": 5,
+        "overlap_threshold": 0.6,
+        "overlap_metric": "combined",
+        "observation_mode": "surface",
+        "candidate_backend": "ppf",
+        "depth_verification": "auto",
+        "max_free_space": 0.1,
+        "min_depth_coverage": 0.8,
+        "execution_workers": 4,
+        "pose_scoring": "geometric",
+        "boundary_verification": "auto"
+      },
+      "training_frame": 3
+    },
+    {
+      "source": "captured",
+      "object_id": 6,
+      "recipe_sha256": "1dc52afec7c291593bd0d83f24bb235571b4bc82979d9b198f07d2fbc0958ecb",
+      "health": {
+        "reference_points": 10078,
+        "sample_points": 705,
+        "bounding_diagonal": 141.8738526005796,
+        "normal_spread": 0.2481804051591723,
+        "units": "mm",
+        "frame": "tless_object6",
+        "sampling_budget": {
+          "voxel_points": 705,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        }
+      },
+      "settings": {
+        "sampling_distance": 0.03,
+        "ppf_distance": 0.05,
+        "angle_bins": 30,
+        "scene_reference_step": 0.1,
+        "normal_neighbors": 20,
+        "model_viewpoint": [
+          185.64014867060806,
+          -176.92500189898723,
+          733.9368390810067
+        ],
+        "scene_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_candidates": 24,
+        "global_model_points": 384,
+        "global_scene_points": 2048,
+        "search_sampling": "uniform",
+        "refinement": "legacy",
+        "icp_iterations": 60,
+        "icp_levels": 4,
+        "distance_tolerance": 0.025,
+        "max_rmse": 0.015,
+        "min_coverage": 0.5,
+        "normal_angle": 30.0,
+        "min_normal_spread": 0.01,
+        "min_unique_support": 20,
+        "max_matches": 5,
+        "overlap_threshold": 0.6,
+        "overlap_metric": "combined",
+        "observation_mode": "surface",
+        "candidate_backend": "ppf",
+        "depth_verification": "auto",
+        "max_free_space": 0.1,
+        "min_depth_coverage": 0.8,
+        "execution_workers": 4,
+        "pose_scoring": "geometric",
+        "boundary_verification": "auto"
+      },
+      "training_frame": 3
+    },
+    {
+      "source": "cad",
+      "object_id": 8,
+      "recipe_sha256": "f6fe4df61a72d4992033e8add4e506046a1dc83cd5f248a54be148afdd015db1",
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 222.0529032227413,
+        "normal_spread": 0.3326042664600977,
+        "units": "mm",
+        "frame": "tless_object8",
+        "sampling_budget": {
+          "voxel_points": 2662,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.7513148009015778,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 22812,
+          "surface_area": 185714.41694560446,
+          "discarded_triangles": 0
+        }
+      },
+      "settings": {
+        "sampling_distance": 0.03,
+        "ppf_distance": 0.05,
+        "angle_bins": 30,
+        "scene_reference_step": 0.1,
+        "normal_neighbors": 20,
+        "model_viewpoint": [
+          -119.4440616098241,
+          -710.5321546432581,
+          -211.7939307150466
+        ],
+        "scene_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_candidates": 24,
+        "global_model_points": 384,
+        "global_scene_points": 2048,
+        "search_sampling": "uniform",
+        "refinement": "legacy",
+        "icp_iterations": 60,
+        "icp_levels": 4,
+        "distance_tolerance": 0.025,
+        "max_rmse": 0.015,
+        "min_coverage": 0.5,
+        "normal_angle": 30.0,
+        "min_normal_spread": 0.01,
+        "min_unique_support": 20,
+        "max_matches": 5,
+        "overlap_threshold": 0.6,
+        "overlap_metric": "combined",
+        "observation_mode": "surface",
+        "candidate_backend": "ppf",
+        "depth_verification": "auto",
+        "max_free_space": 0.1,
+        "min_depth_coverage": 0.8,
+        "execution_workers": 4,
+        "pose_scoring": "geometric",
+        "boundary_verification": "auto"
+      },
+      "training_frame": 5
+    },
+    {
+      "source": "reconstructed",
+      "object_id": 8,
+      "recipe_sha256": "7554676c2884d4551cfd3c9677b99f38886ed13acb80b5a9ff0485c3e179d54a",
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 220.65047872252072,
+        "normal_spread": 0.3618098063719614,
+        "units": "mm",
+        "frame": "tless_object8",
+        "sampling_budget": {
+          "voxel_points": 2159,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.9263547938860583,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 145512,
+          "surface_area": 103836.05267547476,
+          "discarded_triangles": 0
+        }
+      },
+      "settings": {
+        "sampling_distance": 0.03,
+        "ppf_distance": 0.05,
+        "angle_bins": 30,
+        "scene_reference_step": 0.1,
+        "normal_neighbors": 20,
+        "model_viewpoint": [
+          -119.4440616098241,
+          -710.5321546432581,
+          -211.7939307150466
+        ],
+        "scene_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_candidates": 24,
+        "global_model_points": 384,
+        "global_scene_points": 2048,
+        "search_sampling": "uniform",
+        "refinement": "legacy",
+        "icp_iterations": 60,
+        "icp_levels": 4,
+        "distance_tolerance": 0.025,
+        "max_rmse": 0.015,
+        "min_coverage": 0.5,
+        "normal_angle": 30.0,
+        "min_normal_spread": 0.01,
+        "min_unique_support": 20,
+        "max_matches": 5,
+        "overlap_threshold": 0.6,
+        "overlap_metric": "combined",
+        "observation_mode": "surface",
+        "candidate_backend": "ppf",
+        "depth_verification": "auto",
+        "max_free_space": 0.1,
+        "min_depth_coverage": 0.8,
+        "execution_workers": 4,
+        "pose_scoring": "geometric",
+        "boundary_verification": "auto"
+      },
+      "training_frame": 5
+    },
+    {
+      "source": "captured",
+      "object_id": 8,
+      "recipe_sha256": "68f2b7cf7d0f7c94f99b05c48d89d95fbc9ffd7c3a36e3e031f301872e01149b",
+      "health": {
+        "reference_points": 25356,
+        "sample_points": 372,
+        "bounding_diagonal": 266.5647756754309,
+        "normal_spread": 0.02687473766634285,
+        "units": "mm",
+        "frame": "tless_object8",
+        "sampling_budget": {
+          "voxel_points": 372,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        }
+      },
+      "settings": {
+        "sampling_distance": 0.03,
+        "ppf_distance": 0.05,
+        "angle_bins": 30,
+        "scene_reference_step": 0.1,
+        "normal_neighbors": 20,
+        "model_viewpoint": [
+          -119.4440616098241,
+          -710.5321546432581,
+          -211.7939307150466
+        ],
+        "scene_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_candidates": 24,
+        "global_model_points": 384,
+        "global_scene_points": 2048,
+        "search_sampling": "uniform",
+        "refinement": "legacy",
+        "icp_iterations": 60,
+        "icp_levels": 4,
+        "distance_tolerance": 0.025,
+        "max_rmse": 0.015,
+        "min_coverage": 0.5,
+        "normal_angle": 30.0,
+        "min_normal_spread": 0.01,
+        "min_unique_support": 20,
+        "max_matches": 5,
+        "overlap_threshold": 0.6,
+        "overlap_metric": "combined",
+        "observation_mode": "surface",
+        "candidate_backend": "ppf",
+        "depth_verification": "auto",
+        "max_free_space": 0.1,
+        "min_depth_coverage": 0.8,
+        "execution_workers": 4,
+        "pose_scoring": "geometric",
+        "boundary_verification": "auto"
+      },
+      "training_frame": 5
+    }
+  ],
+  "projects": [
+    {
+      "source": "cad",
+      "outcome": "missed",
+      "project": "project_cad_object000006__missed.json",
+      "expected": {
+        "matched": 0,
+        "missed": 1,
+        "extra": 0
+      },
+      "accepted_count": 0
+    },
+    {
+      "source": "reconstructed",
+      "outcome": "missed",
+      "project": "project_reconstructed_object000006__missed.json",
+      "expected": {
+        "matched": 0,
+        "missed": 1,
+        "extra": 0
+      },
+      "accepted_count": 0
+    },
+    {
+      "source": "reconstructed",
+      "outcome": "correct",
+      "project": "project_reconstructed_object000006__correct.json",
+      "expected": {
+        "matched": 1,
+        "missed": 0,
+        "extra": 0
+      },
+      "accepted_count": 1
+    },
+    {
+      "source": "captured",
+      "outcome": "missed",
+      "project": "project_captured_object000006__missed.json",
+      "expected": {
+        "matched": 0,
+        "missed": 1,
+        "extra": 0
+      },
+      "accepted_count": 0
+    },
+    {
+      "source": "reconstructed",
+      "outcome": "false_positive",
+      "project": "project_reconstructed_object000008__false_positive.json",
+      "expected": {
+        "matched": 0,
+        "missed": 0,
+        "extra": 5
+      },
+      "accepted_count": 5
+    },
+    {
+      "source": "captured",
+      "outcome": "correct",
+      "project": "project_captured_object000008__correct.json",
+      "expected": {
+        "matched": 1,
+        "missed": 0,
+        "extra": 0
+      },
+      "accepted_count": 1
+    },
+    {
+      "source": "captured",
+      "outcome": "false_positive",
+      "project": "project_captured_object000008__false_positive.json",
+      "expected": {
+        "matched": 0,
+        "missed": 0,
+        "extra": 5
+      },
+      "accepted_count": 5
+    }
+  ],
+  "repeats": 2,
+  "teaching_captures_excluded_from_test_totals": true,
+  "runtime_pose_seeds": false,
+  "gate_settings_tuned": false,
+  "boundary_verification": "auto",
+  "gallery_selection": "First correct, missed-positive and target-absent false-positive outcome per model-source kind; all cases retained in reports."
+}

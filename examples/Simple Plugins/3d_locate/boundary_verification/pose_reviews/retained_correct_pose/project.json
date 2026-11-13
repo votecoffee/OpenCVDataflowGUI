@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "boundary",
+      "type": "input.cloud",
+      "name": "Accepted correct isolated pose - limited development example",
+      "parameters": {
+        "path": "boundary_evidence.ply",
+        "units": "mm",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Cached pose evidence only",
+      "description": "No localization runs here. Orange measured surfaces continue beyond the predicted outline; green depth changes; magenta is unknown. Gray is measured scene, RGB axes mark the cached pose. Unknown pairs count as possible support. This experimental check does not fix the overall detection counts. T-LESS by Hodan et al., WACV 2017, CC BY 4.0. See source/ATTRIBUTION.md and https://cmp.felk.cvut.cz/t-less/.",
+      "parameters": {},
+      "position": [
+        0,
+        -200
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

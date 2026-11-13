@@ -1,0 +1,88 @@
+{
+  "model": "measured_boundary_continuation_v1",
+  "status": "checked",
+  "reason": null,
+  "render_stride": 2,
+  "probe_step_pixels": 26,
+  "probe_distance": 17.65203829780166,
+  "distance_tolerance": 5.516261968063018,
+  "total_boundary_pairs": 461,
+  "sampled_boundary_pairs": 461,
+  "pair_budget": 8192,
+  "unique_known_outer_rays": 207,
+  "minimum_known_rays": 20,
+  "counts": {
+    "unknown": 254,
+    "continued": 207,
+    "discontinuous": 0
+  },
+  "distinct_support_upper_bound": 0.5509761388286334,
+  "minimum_support": 0.5,
+  "limit_exceeded": false,
+  "scope": "sampled_mesh_silhouette_not_a_pose_probability",
+  "source_to_target": [
+    [
+      -0.28211254791305596,
+      0.959209176435717,
+      -0.018173226227560953,
+      -161.00027583549445
+    ],
+    [
+      -0.9089352721749011,
+      -0.26116897651175225,
+      0.3250037487539846,
+      109.93460327097975
+    ],
+    [
+      0.30700029528706135,
+      0.10820592196972537,
+      0.9455380992558364,
+      791.6697541457238
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "camera": {
+    "model": "camera_model_v1",
+    "camera_matrix": [
+      [
+        1075.65091572,
+        0.0,
+        374.06888344
+      ],
+      [
+        0.0,
+        1073.90347929,
+        254.72159802
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "image_size": [
+      720,
+      540
+    ],
+    "units": "mm",
+    "frame": "camera",
+    "lens": "pinhole",
+    "distortion": []
+  },
+  "state_codes": {
+    "0": "unknown",
+    "1": "continued",
+    "2": "discontinuous"
+  },
+  "review_only": true,
+  "search_executed": false,
+  "runtime_accepted": true,
+  "selection": "Accepted wrong pose - target absent; remaining limitation",
+  "runtime_record_sha256": "b42a3c578340d9814618de114b9f6c0a3f45b7dd1b129e91e701d13f592ef701",
+  "source": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0; source/ATTRIBUTION.md"
+}

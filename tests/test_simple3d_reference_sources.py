@@ -12,12 +12,13 @@ from opencv_dataflow.pointclouds import PointCloud
 
 
 @pytest.mark.local_examples
-def test_real_reference_sources_keep_hashes_native_fit_and_known_false_positives():
+@pytest.mark.parametrize("folder", ("reference_sources", "boundary_verification"))
+def test_real_reference_sources_keep_hashes_native_fit_and_known_false_positives(folder):
     pytest.importorskip("opencv_simple_3d_locate")
     from opencv_simple_3d_locate.optimization import pose_agreement
 
     root = (Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_locate"
-            / "reference_sources")
+            / folder)
     for name, digest in json.loads((root / "artifact_hashes.json").read_bytes()).items():
         assert hashlib.sha256((root / name).read_bytes()).hexdigest() == digest
     for name, digest in json.loads((root / "source_hashes.json").read_bytes()).items():
@@ -33,6 +34,11 @@ def test_real_reference_sources_keep_hashes_native_fit_and_known_false_positives
         "captured": {"matched": 2, "missed": 14, "extra": 25, "negative_extra": 10},
     }
     assert len(summary["projects"]) == 7
+    if folder == "boundary_verification":
+        assert summary["boundary_verification"] == "auto"
+        assert any(json.loads((root / row["report"]).read_bytes())["runs"][0]["result"]
+                   ["execution"]["rejection_counts"].get("boundary", 0)
+                   for row in summary["cases"])
     metadata = json.loads((root / "source/models_cad/models_info.json").read_bytes())
     for item in summary["projects"]:
         path = root / item["project"]

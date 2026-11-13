@@ -24,6 +24,12 @@ poses with native flyaround output. All 66 fixed comparison reports remain
 available; model-source choice alone does not resolve the accuracy gap.
 The trainer now imports triangle PLY as well as STL meshes.
 
+With dev19, [experimental boundary evidence](boundary_verification/README.md)
+adds native cached-pose views for a rejected wrong candidate, its accepted
+wrong replacement and an accepted correct isolated pose. The full comparison
+keeps the same detection counts; the new verification route remains off by
+default. Use **Review boundary evidence…** in the trainer to inspect it.
+
 For a controlled explanation of those failures, open the
 [supplied-pose geometry diagnostics](geometry_diagnostics/README.md). Six real
 captures compare model budgets, normals and triangle self-visibility with

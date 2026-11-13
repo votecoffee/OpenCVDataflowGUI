@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "dataset": "T-LESS",
+  "revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1",
+  "license": "CC-BY-4.0",
+  "selection_rule": "First unique non-continuously-symmetric object ID in each of scenes 2 and 3; first/middle/last of 50 BOP19 depth filenames; cross-scene target-absent negatives. Selection uses metadata, never matching outcomes.",
+  "models": [
+    {
+      "object_id": 6,
+      "positive_scene": 2,
+      "positive_frames": [
+        3,
+        255,
+        494
+      ],
+      "negative_scene": 3,
+      "negative_frames": [
+        5,
+        261,
+        493
+      ]
+    },
+    {
+      "object_id": 8,
+      "positive_scene": 3,
+      "positive_frames": [
+        5,
+        261,
+        493
+      ],
+      "negative_scene": 2,
+      "negative_frames": [
+        3,
+        255,
+        494
+      ]
+    }
+  ],
+  "search_input": "all measured positive depth pixels; isolated cases use supplied visible masks",
+  "recipe": {
+    "pose_scoring": "projective",
+    "execution_workers": 4
+  },
+  "profiles": [
+    "current",
+    "planes",
+    "features",
+    "regions"
+  ],
+  "position_tolerance_mm": 5,
+  "angle_tolerance_degrees": 5,
+  "selection_frozen_before_matching": true
+}

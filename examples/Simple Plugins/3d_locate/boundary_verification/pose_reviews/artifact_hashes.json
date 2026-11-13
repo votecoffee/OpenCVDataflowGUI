@@ -1,0 +1,15 @@
+{
+  "rejected_false_pose/boundary_evidence.ply": "0678452d0a173ca315b13de3cb91d3e4f42c7791a1d543443bf5a156f618ca7a",
+  "rejected_false_pose/boundary_pairs.npz": "69a46e664fd40cbe32037257aaec7fe588548191bf50f7614d970811baf52e7c",
+  "rejected_false_pose/project.json": "c6b0fc12a94789ed7c275f66efe4cb0af67760fed48a3c84211918846763b3f8",
+  "rejected_false_pose/report.json": "1d0bb94306d78f9859048b1d9731e93532e7abd96249b50c2d457dd0454833b7",
+  "retained_correct_pose/boundary_evidence.ply": "54989718cc50cf8fe8d99e5c3046a32cb27d5aa3e5fdaa04b8838a9e20ee3896",
+  "retained_correct_pose/boundary_pairs.npz": "9a912d250837b087aa9a21d23a33a321b905c2506c9f252f56f48e9cf588a34f",
+  "retained_correct_pose/project.json": "f52742d213a181edee36afbb8b993e16ac8c9064a20d008e817f181719985759",
+  "retained_correct_pose/report.json": "72548bcdaf2774ed9eee1c504a486fa31f4dae737bb15563a66be305ba158a28",
+  "retained_false_pose/boundary_evidence.ply": "571483b73e61e3dbc2c441f816108469b3b985f682568cc74f82e5dab2cbd5e3",
+  "retained_false_pose/boundary_pairs.npz": "d061497e8d5f182156e7e9680780dc91792edde1fa057cf985d158982400e680",
+  "retained_false_pose/project.json": "4d2f8d52ed1f97726d94d534912470045ddcc4fd9ae9551442fac13533b4c874",
+  "retained_false_pose/report.json": "bd03aa658db1cf92f626192f21e5892839e770afd306c670b9bae167b60082fd",
+  "summary.json": "6c41fa8a8bb510ef4a622937e78761d3a4009af3c887b9c44463ee5ec8f2ae20"
+}

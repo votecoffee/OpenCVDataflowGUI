@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "inputs/scene000002_frame000003_full.ply",
+        "units": "mm",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "inputs/scene000002_frame000003_full.ply",
+        "units": "mm",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        200
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 1075.65091572,
+        "fy": 1073.90347929,
+        "cx": 374.06888344,
+        "cy": 254.72159802,
+        "width": 720,
+        "height": 540,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "mm",
+        "frame": "camera"
+      },
+      "position": [
+        0,
+        400
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "locate",
+      "type": "3d.simple_locate",
+      "name": "Simple3DLocate",
+      "parameters": {
+        "recipe_path": "models/captured_object000008.s3l",
+        "sha256": "68f2b7cf7d0f7c94f99b05c48d89d95fbc9ffd7c3a36e3e031f301872e01149b",
+        "render_overlay": false
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "scene",
+        "camera",
+        "depth_scene"
+      ],
+      "exposed_outputs": [
+        "poses",
+        "pose",
+        "count",
+        "report",
+        "aligned_model",
+        "fit",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "fit"
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "captured reference - false positive",
+      "description": "Actual unseeded localization with fixed settings. Green model support is not ground-truth correctness. The report distinguishes correct, missed and extra poses. Known false-positive examples intentionally retain accepted wrong poses. Evaluation annotations are not connected to any runtime port. Supplied masks isolate a target only where documented; full scenes use all returns. T-LESS by Hodan et al., WACV 2017, CC BY 4.0. See source/ATTRIBUTION.md and https://cmp.felk.cvut.cz/t-less/. Model sources have distinct capability limits.",
+      "parameters": {},
+      "position": [
+        400,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "cloud",
+      "target": "locate",
+      "input": "scene"
+    },
+    {
+      "source": "depth",
+      "output": "cloud",
+      "target": "locate",
+      "input": "depth_scene"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "locate",
+      "input": "camera"
+    }
+  ]
+}
