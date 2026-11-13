@@ -3751,6 +3751,43 @@ Inputs: `image` (image), `transform` (data, optional).
 | `border_value` | `0.0` |  |
 | `inverse_map` | `false` |  |
 
+## Warp image with dense flow (`cv.warp_flow`)
+
+Image processing / Video processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `flow` (any), `target` (image, optional), `reverse_flow` (any, optional), `flow_support` (image, optional), `reverse_support` (image, optional).
+
+Input `image` — Finite gray/color u8/u16/i16/f32/f64; same-size grids, up to 2.1M pixels.
+
+Input `flow` — DenseFlow or floating H×W×2 array; indexed by the grid declared in Direction.
+
+Input `target` — Optional output-grid anchor; pixels unused, source ticket stays primary.
+
+Input `mask` — Source donor support, intersected with region; source coordinates only.
+
+Input `region` — Source-grid selection; unsupported donors lose coverage.
+
+Input `reverse_flow` — Opposite displacement on the opposite grid; used for round-trip checks.
+
+Input `flow_support` — Optional uint8 support in the primary field's index grid.
+
+Input `reverse_support` — Optional uint8 support in the reverse field's index grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `direction` | `"target_to_source"` | `target_to_source`, `source_to_target` Pull samples target + flow; forward flow is inverted before sampling. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Cubic/Lanczos coverage has a conservative 2/4-pixel halo. |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` Native extrapolation is for display and never adds valid coverage. |
+| `border_value` | `0` | Finite scalar or stored-channel list within the source sample range. |
+| `invalid_fill` | `"constant"` | `constant`, `native_border` Constant fills unsupported pixels; native_border keeps native sampling. |
+| `consistency` | `"if_connected"` | `off`, `if_connected`, `required` Reverse-field agreement is an occlusion proxy, not visibility proof. |
+| `consistency_tolerance` | `1.0` | Value must be a finite number between 0 and 100. Maximum reverse/forward return error in local pixels. |
+| `maximum_motion` | `4096.0` | Value must be a finite number between 0 and 16384. Per-axis limit; nonfinite or larger vectors are invalid. |
+| `inverse_iterations` | `12` | Value must be a whole number between 1 and 50. Fixed-point source-to-target iterations; ignored in pull mode. |
+| `inverse_tolerance` | `0.1` | Value must be a finite number between 0 and 10. Maximum residual of source + flow(source) = target, in pixels. |
+| `maximum_work` | `64000000` | Value must be a whole number between 1 and 2.56e+08. Pixel/iteration budget for inversion and field checks. |
+| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Minimum valid fraction. Zero valid donors always withholds the image. |
+
 ## Warp perspective (`cv.warp_perspective`)
 
 Image processing / Geometry
@@ -4289,6 +4326,18 @@ Ticket mode and fixed value are common inspector controls.
 | `color_format` | `"bgr"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` |
 | `pixel_depth` | `"uint8"` | `unchanged`, `uint8`, `uint16`, `float32` |
 | `path_base` | `"working_directory"` | `working_directory`, `project` |
+
+## Load dense flow file (`input.flow_file`)
+
+Input / Motion fields
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Middlebury .flo: float32 dx/dy; source/target identity is not stored. |
+| `path_base` | `"project"` | `project`, `working_directory` Resolve relative file paths from this saved project or working directory. |
 
 ## Load lens correction maps (`input.lens_maps`)
 

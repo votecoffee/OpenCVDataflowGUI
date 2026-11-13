@@ -689,6 +689,7 @@ def builtin_registry():
     from .feature_covariance import FitFeatureCovariance, MahalanobisDistance
     from .features import FEATURE_BLOCKS
     from .flat_field_reference import BuildFlatFieldReference
+    from .flow_warp import LoadFlowFile, WarpDenseFlow
     from .focus import MeasureFocus
     from .focus_stacking import FocusStack
     from .foreground_debounce import ForegroundDebounce
@@ -937,6 +938,8 @@ def builtin_registry():
         BlendWeightMaps,
         AlphaOver,
         InterpolateFrames,
+        LoadFlowFile,
+        WarpDenseFlow,
         AddImageNoise,
         DistortImageFixture,
         ColorizeScalar,

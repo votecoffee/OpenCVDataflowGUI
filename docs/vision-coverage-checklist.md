@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 127 | 16 | 32 | 175 | 72.6% |
+| 1. Core and baseline 2D | 128 | 16 | 31 | 175 | 73.1% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 190 | 57 | 223 | 470 | 40.4% |
+| **Overall** | 191 | 57 | 222 | 470 | 40.6% |
 
 <!-- coverage-summary:end -->
 
@@ -159,7 +159,7 @@ fixture or result needed to close the item.
 | S1-92 | TV-L1 denoising | denoise_TVL1 | Complete | cv.denoise_tvl1. Verify noise reduction on single images and aligned observations. |
 | S1-93 | Image remapping to polar and log-polar coordinates | warpPolar and inverse map | Complete | cv.warp_polar. Verify circular geometry and source coverage through rewrap. |
 | S1-94 | Packed remap conversion and reuse | convertMaps, remap | Complete | cv.pack_remap_map, cv.remap_packed. Compare fixed-point and floating-map output and retain calibration provenance. |
-| S1-95 | Warp a video frame using a dense flow field | remap and flow-to-sample coordinates | Planned | Warp a frame through known motion and report invalid, occluded and uncovered pixels. |
+| S1-95 | Warp a video frame using a dense flow field | remap and flow-to-sample coordinates | Complete | cv.warp_flow, input.flow_file. Explicit pull/forward direction, bounded inverse residuals, source support, separate invalid/uncovered/round-trip-disagreement masks and a coverage gate. An independent RGB16 translation verifies 11,439 exact donor pixels; controlled invalid/inconsistent fields verify mask partitions. Target frame/pyramid ownership, source tickets, reusable donor maps, sampling limits, native-flow interoperability and strict .flo input are qualified. Occlusion remains an explicitly labeled proxy, not physical visibility proof. |
 
 ### Selections, measurement, video and decoding
 

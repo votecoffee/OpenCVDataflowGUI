@@ -58,8 +58,15 @@ constant-boundary step. [Contrast-preserving decolorization](<../examples/opencv
 (S1-90) exposes both native outputs, ordinary grayscale, selected writes and
 source payloads. Equal-gray patches separate in a controlled fitting context;
 a two-color-only native collapsed map fails with processed images withheld.
-Both retain explicit uint8/color, selection and alpha contracts. Next priorities
-are dense-flow image warping and color-distribution region tracking.
+Both retain explicit uint8/color, selection and alpha contracts.
+
+[Dense-flow frame warping](<../examples/opencv tools/dense_flow_warp/README.md>)
+(S1-95) now qualifies pull and bounded forward-field inversion, native sampling
+controls, source support and independently checked RGB16 pixels. Separate invalid,
+uncovered and round-trip-disagreement masks accompany an optional coverage gate.
+Source tickets, target grid/pyramid metadata and reusable donor-map provenance are
+explicit; arbitrary invertibility and physical occlusion are not claimed.
+The next priority is color-distribution region tracking (S1-108).
 
 [Lateral chromatic aberration correction](<../examples/opencv tools/chromatic_aberration/README.md>)
 (S1-146) now loads or defines a versioned native polynomial and aligns red/blue

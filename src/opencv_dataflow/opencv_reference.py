@@ -82,6 +82,7 @@ BINDINGS = {
     "cv.dct": "dct",
     "cv.decode_image": "imdecode",
     "cv.decolor": "decolor",
+    "cv.warp_flow": "remap",
     "cv.demosaic_bayer": "demosaicing",
     "cv.detail_enhance": "detailEnhance",
     "cv.illumination_change": "illuminationChange",

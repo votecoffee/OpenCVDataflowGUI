@@ -1,0 +1,26 @@
+{
+  "image_size": [
+    128,
+    96
+  ],
+  "translation": [
+    5,
+    3
+  ],
+  "translation_coverage": 11439,
+  "invalid_rectangle": [
+    20,
+    16,
+    5,
+    4
+  ],
+  "occlusion_proxy_rectangle": [
+    40,
+    30,
+    18,
+    12
+  ],
+  "invalid_count": 20,
+  "occlusion_proxy_count": 216,
+  "scope": "Known motion and deliberately inconsistent fields; no physical occlusion truth"
+}
