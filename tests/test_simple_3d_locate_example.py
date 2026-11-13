@@ -56,6 +56,41 @@ def test_simple_3d_locate_example_roundtrip(variant):
 
 
 @pytest.mark.local_examples
+def test_cropped_search_uses_separate_full_frame_depth():
+    tool = pytest.importorskip("opencv_simple_3d_locate")
+    if not hasattr(tool, "DepthScene"):
+        pytest.skip("Separate depth example requires Simple3DLocate 0.1.0.dev6 or later")
+    from opencv_simple_3d_locate.optimization import pose_agreement
+
+    root = (
+        Path(__file__).resolve().parents[1]
+        / "examples/Simple Plugins/3d_locate/real_tless/cropped_search_depth"
+    )
+    graph = Graph.load(root / "project.json", builtin_registry())
+    try:
+        graph.run()
+        block = graph.blocks["locate"]
+        assert block.state == "pass", block.error
+        report = block.last_result.outputs["report"]
+        assert block.last_result.outputs["count"] == 1
+        depth = report["execution"]["depth_verification"]
+        assert depth["source"] == "depth_scene"
+        assert depth["input_points"] > report["execution"]["input_points"]
+        assert report["matches"][0]["depth_verification"]["applied"]
+        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        checked = pose_agreement(
+            [np.asarray(report["matches"][0]["source_to_target"])],
+            [truth],
+            position_tolerance=5,
+            angle_degrees=5,
+            symmetries=(np.diag([-1.0, -1.0, 1.0, 1.0]),),
+        )
+        assert checked["matched"] == 1 and checked["extra"] == checked["missed"] == 0
+    finally:
+        graph.close()
+
+
+@pytest.mark.local_examples
 def test_depth_verified_full_scene_has_one_correct_pose_and_records_rejection():
     tool = pytest.importorskip("opencv_simple_3d_locate")
     if not hasattr(tool.Settings(), "depth_verification"):
@@ -167,7 +202,10 @@ def test_real_tless_first_surface_camera_example():
         assert sum(case["segmentation_supplied"] for case in benchmark["cases"]) == 4
         restored = Graph.from_dict(graph.to_dict(), builtin_registry())
         try:
-            assert {p.name for p in restored.blocks["locate"].inputs} == {"scene", "camera"}
+            expected = {"scene", "camera"}
+            if hasattr(tool, "DepthScene"):
+                expected.add("depth_scene")
+            assert {p.name for p in restored.blocks["locate"].inputs} == expected
         finally:
             restored.close()
     finally:

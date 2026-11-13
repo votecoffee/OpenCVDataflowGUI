@@ -56,6 +56,10 @@ The [depth-verified full-scene example](depth_verified/README.md) uses dev5
 camera-ray evidence to reject the extra pose in capture 230. The wider dataset
 still contains misses and incorrect orientations.
 
+The [cropped search with full-frame depth example](cropped_search_depth/README.md)
+uses dev6 to retain background verification while searching an isolated cloud.
+Its search segmentation is supplied by the dataset.
+
 ## License and attribution
 
 Real images, depth, masks, CAD, annotations and derivatives retain
