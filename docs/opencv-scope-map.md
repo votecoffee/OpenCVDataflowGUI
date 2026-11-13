@@ -313,7 +313,7 @@ Python and five C++ entries without a direct binding.
 | `cv2.correctChromaticAberration`, `cv2.loadChromaticAberrationParams` | Exposed. Native parameter loading follows the fringe-correction workflow. | S1-146 |
 | `cv2.VideoCapture`, `cv2.VideoWriter` | Exposed. Test capture and replay separately from encoder round trips. Flags and backend selection are configuration. | S1-09–S1-12, S1-110, S1-115, S1-123, S1-140 |
 | `cv2.IStreamReader` | Exposed. Qualify bounded encoded input on a specific backend. | S1-157 |
-| `cv2.CamShift`, `cv2.meanShift` | Exposed. Both variants use the color-distribution tracking contract. | S1-108 |
+| `cv2.CamShift`, `cv2.meanShift` | Qualified baseline. Explicit histogram teaching, native controls, color/work-area filters, current-ticket geometry, loss gates and explicit reseed after expiry; independent translation/scale fixtures. Color-mass geometry is not physical metrology or guaranteed identity. | S1-108 |
 | `cv2.DenseOpticalFlow`, `cv2.SparseOpticalFlow`, `cv2.DISOpticalFlow`, `cv2.FarnebackOpticalFlow`, `cv2.SparsePyrLKOpticalFlow`, `cv2.calcOpticalFlowFarneback`, `cv2.calcOpticalFlowPyrLK` | Exposed. Algorithm objects and convenience calls share the same typed flow outputs. | S1-51 |
 | `cv2.VariationalRefinement`, `cv2.buildOpticalFlowPyramid` | Exposed. Qualify refinement accuracy and reusable pyramid geometry separately. | S1-109, S1-155 |
 | `cv2.ECCParameters`, `cv2.findTransformECC`, `cv2.findTransformECCMultiScale`, `cv2.findTransformECCWithMask` | Exposed. The graph exposes single-scale, multiscale and masked alignment through the same contract. | S1-48 |

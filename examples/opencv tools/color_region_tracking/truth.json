@@ -1,0 +1,232 @@
+{
+  "translation": [
+    {
+      "index": 0,
+      "present": true,
+      "center": [
+        41.5,
+        37.5
+      ]
+    },
+    {
+      "index": 1,
+      "present": true,
+      "center": [
+        43.5,
+        38.5
+      ]
+    },
+    {
+      "index": 2,
+      "present": true,
+      "center": [
+        45.5,
+        39.5
+      ]
+    },
+    {
+      "index": 3,
+      "present": true,
+      "center": [
+        47.5,
+        40.5
+      ]
+    },
+    {
+      "index": 4,
+      "present": true,
+      "center": [
+        49.5,
+        41.5
+      ]
+    },
+    {
+      "index": 5,
+      "present": true,
+      "center": [
+        51.5,
+        42.5
+      ]
+    },
+    {
+      "index": 6,
+      "present": true,
+      "center": [
+        53.5,
+        43.5
+      ]
+    },
+    {
+      "index": 7,
+      "present": true,
+      "center": [
+        55.5,
+        44.5
+      ]
+    }
+  ],
+  "scale": [
+    {
+      "index": 0,
+      "present": true,
+      "center": [
+        45,
+        42
+      ]
+    },
+    {
+      "index": 1,
+      "present": true,
+      "center": [
+        47,
+        43
+      ]
+    },
+    {
+      "index": 2,
+      "present": true,
+      "center": [
+        49,
+        44
+      ]
+    },
+    {
+      "index": 3,
+      "present": true,
+      "center": [
+        51,
+        45
+      ]
+    },
+    {
+      "index": 4,
+      "present": true,
+      "center": [
+        53,
+        46
+      ]
+    },
+    {
+      "index": 5,
+      "present": true,
+      "center": [
+        55,
+        47
+      ]
+    },
+    {
+      "index": 6,
+      "present": true,
+      "center": [
+        57,
+        48
+      ]
+    },
+    {
+      "index": 7,
+      "present": true,
+      "center": [
+        59,
+        49
+      ]
+    }
+  ],
+  "loss": [
+    {
+      "index": 0,
+      "present": true,
+      "center": [
+        45,
+        42
+      ]
+    },
+    {
+      "index": 1,
+      "present": true,
+      "center": [
+        47,
+        43
+      ]
+    },
+    {
+      "index": 2,
+      "present": true,
+      "center": [
+        49,
+        44
+      ]
+    },
+    {
+      "index": 3,
+      "present": true,
+      "center": [
+        51,
+        45
+      ]
+    },
+    {
+      "index": 4,
+      "present": true,
+      "center": [
+        53,
+        46
+      ]
+    },
+    {
+      "index": 5,
+      "present": true,
+      "center": [
+        55,
+        47
+      ]
+    },
+    {
+      "index": 6,
+      "present": true,
+      "center": [
+        57,
+        48
+      ]
+    },
+    {
+      "index": 7,
+      "present": true,
+      "center": [
+        59,
+        49
+      ]
+    },
+    {
+      "index": 8,
+      "present": false,
+      "center": null
+    },
+    {
+      "index": 9,
+      "present": false,
+      "center": null
+    },
+    {
+      "index": 10,
+      "present": false,
+      "center": null
+    },
+    {
+      "index": 11,
+      "present": true,
+      "center": [
+        67,
+        53
+      ]
+    }
+  ],
+  "center_tolerance_pixels": 3.0,
+  "camshift_minimum_scale_growth": 1.4,
+  "loss_indices": [
+    8,
+    9,
+    10
+  ],
+  "expired_index": 11,
+  "scope": "Original MIT image-space fixtures; no physical identity or dimension claim"
+}

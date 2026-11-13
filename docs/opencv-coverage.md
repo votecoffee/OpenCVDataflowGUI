@@ -66,7 +66,15 @@ controls, source support and independently checked RGB16 pixels. Separate invali
 uncovered and round-trip-disagreement masks accompany an optional coverage gate.
 Source tickets, target grid/pyramid metadata and reusable donor-map provenance are
 explicit; arbitrary invertibility and physical occlusion are not claimed.
-The next priority is color-distribution region tracking (S1-108).
+
+[Color-distribution region tracking](<../examples/opencv tools/color_region_tracking/README.md>)
+(S1-108) qualifies MeanShift/CamShift with explicit teaching, native termination
+controls, hue/HS models and HSV/alpha/work-area support. Original translation and
+growing-ellipse references check centers and scale. Misses withhold primary events;
+expiry requires explicit reseeding. Copyable stream memory, current-ticket poses,
+optional model export and Debug/Lean replay are checked. CamShift describes color
+mass with an ambiguous principal axis; production identity reliability remains
+unqualified. The next priority is flow refinement (S1-109).
 
 [Lateral chromatic aberration correction](<../examples/opencv tools/chromatic_aberration/README.md>)
 (S1-146) now loads or defines a versioned native polynomial and aligns red/blue

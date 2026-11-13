@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 128 | 16 | 31 | 175 | 73.1% |
+| 1. Core and baseline 2D | 129 | 16 | 30 | 175 | 73.7% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 191 | 57 | 222 | 470 | 40.6% |
+| **Overall** | 192 | 57 | 221 | 470 | 40.9% |
 
 <!-- coverage-summary:end -->
 
@@ -177,7 +177,7 @@ fixture or result needed to close the item.
 | S1-105 | Deterministic image and noise generation | Seeded Gaussian and uniform noise | Complete | input.random_image, cv.add_image_noise. Verify reproducible frames and selected noise with preserved sample types. |
 | S1-106 | Image annotation and reusable overlays | polylines, markers and text rasterization | Complete | cv.annotation_layer, cv.overlay_result_graphics. Compose selected image-frame layers and preserve geometry on resampling. |
 | S1-107 | Stateful image references | Ticketed image memory, running background estimate | Complete | sequence.image_memory, sequence.background. Verify learning, reset, and reference reuse across replay frames. |
-| S1-108 | Region tracking by color distribution | meanShift, CamShift, histogram backprojection | Planned | Track an object across translation and scale change with a lost-track rule. |
+| S1-108 | Region tracking by color distribution | meanShift, CamShift, histogram backprojection | Complete | sequence.color_tracker. Explicit rectangle/shape teaching, hue/HS bins, native termination controls, HSV/alpha/work-area filtering, frozen or accepted-update learning, current-ticket region/pose/probability outputs and confidence/support/scale/motion gates. Original translation and growing-ellipse fixtures verify centers within 3 pixels and scale growth; disappearance withholds primary events and expires after bounded misses until explicit reseeding. Native parity, stream/context isolation, copyable bounded state, XML and Debug/Lean replay are checked. Color-mass geometry and axial ambiguity are explicit; captured-scene identity reliability is unqualified. |
 | S1-109 | Robust keypoint-free motion refinement | VariationalRefinement | Planned | Refine an initial flow on a known motion field and verify residuals and invalid borders. |
 | S1-110 | Video seeking by media time | VideoCapture CAP_PROP_POS_MSEC and timestamped replay | Planned | Seek by time on fixtures with known frame timing and report the effective position. |
 | S1-111 | Animated image decoding and encoding | imreadanimation, imwriteanimation, imdecodeanimation, imencodeanimation | Planned | Round-trip a supported animation with per-frame durations, frame order and format checks. |

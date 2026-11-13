@@ -86,7 +86,7 @@ IMPLEMENTATION_MODULES = {
     "geometry": "circle_fitting contour_analysis convex_overlap geometry3d line_pair shape_fitting "
     "translation_registration triangulation voronoi",
     "video": (
-        "ecc_registration flow_warp frame_interpolation image_correlation "
+        "color_tracking ecc_registration flow_warp frame_interpolation image_correlation "
         "native_background sequence_tools"
     ),
     "videoio": "video_files",

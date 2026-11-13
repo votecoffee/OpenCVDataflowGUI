@@ -215,6 +215,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Multiply matrices](<opencv tools/matrix_multiply/README.md>) | Use fitted calibration coefficients to predict new readings and apply offsets. |
 | [Native background subtraction](<opencv tools/native_background/README.md>) | Compare OpenCV MOG2 and KNN foreground masks on a synthetic sequence. |
 | [Native box tracking](<opencv tools/native_box_tracking/README.md>) | Compare CSRT and KCF tracking of a box in a synthetic image sequence. |
+| [Color-distribution region tracking](<opencv tools/color_region_tracking/README.md>) | Teach MeanShift/CamShift from a box or editable region; follow translation/scale and inspect explicit loss, expiry and reseed behavior. |
 | [Packed RAW10/RAW12 sensors](<opencv tools/packed_raw_sensor/README.md>) | Decode original MIPI byte fixtures with headers and padded rows, verify ADC counts, and demosaic an odd-origin crop using phase metadata. |
 | [Packed remap coordinates](<opencv tools/packed_remap/README.md>) | Straighten a grid with floating and fixed-point maps, then compare pixel differences. |
 | [Paste image patch](<opencv tools/paste_patch/README.md>) | Copy a masked crop onto the inspection image, clipping at the canvas edge. |

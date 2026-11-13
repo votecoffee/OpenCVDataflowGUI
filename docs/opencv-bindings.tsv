@@ -1993,7 +1993,7 @@ P3	method	cv2.CalibrateRobertson.getThreshold	no static reference	-
 P3	method	cv2.CalibrateRobertson.setMaxIter	no static reference	-
 P3	method	cv2.CalibrateRobertson.setThreshold	no static reference	-
 P3	function	cv2.calibrationMatrixValues	no static reference	-
-P3	function	cv2.CamShift	no static reference	-
+P3	function	cv2.CamShift	literal reference	-
 P3	function	cv2.Canny	literal reference	-
 P3	function	cv2.cartToPolar	literal reference	-
 P3	class	cv2.CascadeClassifier	no static reference	-
@@ -2048,7 +2048,7 @@ P3	method	cv2.CLAHE.setBitShift	no static reference	-
 P3	method	cv2.CLAHE.setClipLimit	no static reference	-
 P3	method	cv2.CLAHE.setTilesGridSize	no static reference	-
 P3	function	cv2.clipLine	literal reference	-
-P3	function	cv2.colorChange	no static reference	-
+P3	function	cv2.colorChange	literal reference	-
 P3	class	cv2.colored_kinfu.ColoredKinFu	no static reference	-
 P3	method	cv2.colored_kinfu.ColoredKinFu.create	method name only	-
 P3	method	cv2.colored_kinfu.ColoredKinFu.getCloud	no static reference	-
@@ -2146,7 +2146,7 @@ P3	function	cv2.CV_BoolC	no static reference	-
 P3	function	cv2.CV_MAKETYPE	no static reference	-
 P3	function	cv2.cvtColor	literal reference	-
 P3	function	cv2.cvtColorTwoPlane	no static reference	-
-P3	function	cv2.decolor	no static reference	-
+P3	function	cv2.decolor	literal reference	-
 P3	function	cv2.decomposeEssentialMat	no static reference	-
 P3	function	cv2.decomposeHomographyMat	no static reference	-
 P3	function	cv2.decomposeProjectionMatrix	no static reference	-
@@ -3022,7 +3022,7 @@ P3	function	cv2.HoughLinesWithAccumulator	literal reference	-
 P3	function	cv2.HuMoments	literal reference	-
 P3	function	cv2.idct	literal reference	-
 P3	function	cv2.idft	literal reference	-
-P3	function	cv2.illuminationChange	no static reference	-
+P3	function	cv2.illuminationChange	literal reference	-
 P3	function	cv2.imcount	no static reference	-
 P3	function	cv2.imdecode	literal reference	-
 P3	function	cv2.imdecodeanimation	no static reference	-
@@ -3087,7 +3087,7 @@ P3	class	cv2.IStreamReader	no static reference	-
 P3	method	cv2.IStreamReader.read	method name only	-
 P3	method	cv2.IStreamReader.seek	method name only	-
 P3	class	cv2.KalmanFilter	no static reference	-
-P3	method	cv2.KalmanFilter.correct	no static reference	-
+P3	method	cv2.KalmanFilter.correct	method name only	-
 P3	method	cv2.KalmanFilter.predict	method name only	-
 P3	class	cv2.KeyPoint	no static reference	-
 P3	method	cv2.KeyPoint.convert	no static reference	-
@@ -3442,7 +3442,7 @@ P3	method	cv2.mcc_CCheckerDetector.setDetectionParams	alias	cv2.mcc.CCheckerDete
 P3	method	cv2.mcc_CCheckerDetector.setUseDnnModel	alias	cv2.mcc.CCheckerDetector.setUseDnnModel
 P3	class	cv2.mcc_DetectorParametersMCC	alias	cv2.mcc.DetectorParametersMCC
 P3	function	cv2.mean	literal reference	-
-P3	function	cv2.meanShift	no static reference	-
+P3	function	cv2.meanShift	literal reference	-
 P3	function	cv2.meanStdDev	literal reference	-
 P3	function	cv2.medianBlur	literal reference	-
 P3	function	cv2.merge	literal reference	-
@@ -4624,7 +4624,7 @@ P3	method	cv2.text_TextDetector.detect	alias	cv2.text.TextDetector.detect
 P3	class	cv2.text_TextDetectorCNN	alias	cv2.text.TextDetectorCNN
 P3	method	cv2.text_TextDetectorCNN.create	alias	cv2.text.TextDetectorCNN.create
 P3	method	cv2.text_TextDetectorCNN.detect	alias	cv2.text.TextDetectorCNN.detect
-P3	function	cv2.textureFlattening	no static reference	-
+P3	function	cv2.textureFlattening	literal reference	-
 P3	class	cv2.ThinPlateSplineShapeTransformer	no static reference	-
 P3	method	cv2.ThinPlateSplineShapeTransformer.getRegularizationParameter	no static reference	-
 P3	method	cv2.ThinPlateSplineShapeTransformer.setRegularizationParameter	no static reference	-

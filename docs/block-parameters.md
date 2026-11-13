@@ -7367,6 +7367,54 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `stable_activations` | `0` | Optional consecutive low-foreground frames before readiness. |
 | `max_foreground_fraction` | `0.05` |  |
 
+## Track region by color (`sequence.color_tracker`)
+
+Sequence / Object tracking
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `seed` (data, optional), `reseed` (data, optional).
+
+Input `image` — uint8 BGR/RGB/BGRA/RGBA or native HSV, up to 2.1M pixels.
+
+Input `seed` — Initial [x,y,w,h] or image_region_v1 shape on this grid; read when teaching.
+
+Input `reseed` — Rising edge teaches from current seed; held true does not repeat.
+
+Input `mask` — Current image work area, intersected with region for teaching and probability.
+
+Input `region` — Current work area; use a separate shape on Seed for the taught target.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `method` | `"cam_shift"` | `mean_shift`, `cam_shift` MeanShift keeps window size; CamShift estimates a color-mass ellipse and scale. |
+| `initial_bounds` | `[]` | Initial [x,y,w,h]; read before teaching or after reset/reseed. |
+| `histogram_channels` | `"hue_saturation"` | `hue`, `hue_saturation` Hue or joint hue/saturation, peak-normalized to 255. |
+| `hue_bins` | `32` | Value must be a whole number between 2 and 180. Hue bin count over [0,180), in native 8-bit HSV units. |
+| `saturation_bins` | `32` | Value must be a whole number between 2 and 256. Saturation bins over [0,256), ignored by hue-only models. |
+| `minimum_saturation` | `40` | Value must be a whole number between 0 and 255. Discard lower-saturation pixels in teaching and backprojection. |
+| `minimum_value` | `32` | Value must be a whole number between 0 and 255. Inclusive minimum native HSV value; reject dark unreliable hue. |
+| `maximum_value` | `255` | Value must be a whole number between 0 and 255. Inclusive maximum HSV value; optionally exclude clipped highlights. |
+| `minimum_alpha` | `1` | Value must be a whole number between 0 and 255. For BGRA/RGBA, reject lower stored opacity; ignored without alpha. |
+| `minimum_seed_pixels` | `16` | Value must be a whole number between 1 and 2.1e+06. Minimum eligible pixels in the seed selection before teaching. |
+| `termination` | `"count_and_epsilon"` | `count_and_epsilon`, `count`, `epsilon` Native TermCriteria flags; inactive controls retain their values. |
+| `max_iterations` | `20` | Value must be a whole number between 1 and 100. Native count limit when enabled; OpenCV caps MeanShift at 100. |
+| `epsilon` | `1.0` | Value must be a finite number between 0 and 10. Native convergence displacement in pixels when enabled. |
+| `minimum_confidence` | `0.1` | Value must be a finite number between 0 and 1. Mean backprojection/255; not an accuracy probability. |
+| `support_threshold` | `32` | Value must be a whole number between 1 and 255. Count box pixels meeting this backprojection threshold. |
+| `minimum_support_fraction` | `0.05` | Value must be a finite number between 0 and 1. Minimum fraction of the box meeting Support threshold. |
+| `minimum_area_ratio` | `0.25` | Value must be a finite number between 0.001 and 1000. Minimum area relative to the original seed box. |
+| `maximum_area_ratio` | `4.0` | Value must be a finite number between 0.001 and 1000. Maximum relative area; CamShift uses equivalent-ellipse area. |
+| `maximum_center_jump` | `0.0` | Value must be a finite number between 0 and 32766. Maximum center motion from last accepted update; zero disables. |
+| `max_misses` | `3` | Value must be a whole number between 1 and 1000. Misses before expiry; reset/reseed is then required to teach again. |
+| `learning_rate` | `0.0` | Value must be a finite number between 0 and 1. Blend accepted updates; zero freezes. Lost frames never learn. |
+| `pose_mode` | `"center_only"` | `center_only`, `principal_axis` Zero-angle center pose, or elongated CamShift principal axis. |
+| `minimum_axis_ratio` | `1.1` | Value must be a finite number between 1 and 100. Minimum axial pose ratio; orientation has 180° ambiguity. |
+
 ## DIS optical flow (`sequence.dis`)
 
 Sequence / Temporal processing

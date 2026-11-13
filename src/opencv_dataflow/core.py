@@ -483,7 +483,7 @@ class Block:
             }
             self.last_graphics = self.last_result.graphics
             self.state = "pass" if result.passed else "fail"
-            if self.outputs and all(
+            if result.passed and self.outputs and all(
                 result.outputs[name] is NO_VALUE
                 for name in getattr(self, "flow_primary", tuple(p.name for p in self.outputs))
             ):

@@ -670,6 +670,7 @@ def builtin_registry():
     from .collection_tools import COLLECTION_BLOCKS
     from .color_calibration import COLOR_CALIBRATION_BLOCKS
     from .color_measurement import COLOR_MEASUREMENT_BLOCKS
+    from .color_tracking import ColorDistributionTracker
     from .contour_analysis import CONTOUR_ANALYSIS_BLOCKS
     from .contour_raster import RasterizeContours
     from .control_flow import CONTROL_BLOCKS
@@ -1052,6 +1053,7 @@ def builtin_registry():
         StabilizeStream,
         *NATIVE_BACKGROUND_BLOCKS,
         *NATIVE_TRACKER_BLOCKS,
+        ColorDistributionTracker,
         TrackConveyorParts,
         ConveyorDemo,
         FinalJudgment,

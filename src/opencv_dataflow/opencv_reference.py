@@ -7,6 +7,7 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "sequence.color_tracker": "meanShift CamShift calcHist calcBackProject",
     "cv.correct_chromatic_aberration": "correctChromaticAberration",
     "input.chromatic_calibration": "loadChromaticAberrationParams",
     "ml.svm_train": "ml.SVM_create ml.SVM.train ml.SVM.write",
