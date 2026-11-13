@@ -29,7 +29,8 @@ trainer integration, but the plugin's existing capture buttons remain separate.
 Model signatures are cached. Runtime work is bounded to 64 descriptor
 neighbors, 2048 correspondences, 4096 guided RANSAC trials and 128 coarse
 feature proposals. Features reserve at most half the existing refinement
-budget; PPF retains the remainder or all of it if no features propose poses.
+budget (one feature slot when the total budget is one); PPF retains the
+remainder or all of it if no features propose poses.
 The full trained geometry and all acceptance thresholds stay unchanged.
 The implementation uses NumPy/OpenCV and adds no dependency.
 
