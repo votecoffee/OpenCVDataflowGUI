@@ -44,6 +44,15 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Signal/background contrast](<../examples/custom tools/region_contrast/README.md>)
+(S1-143) now reports selected means/noise, quadrature or background-only CNR,
+signed mean-based normalized contrasts and optional selected-channel limits.
+Explicit/complement selections, overlap policies and raw-unit noise floors
+avoid ambiguous evidence. Undefined values are withheld with reasons, while
+stable centered/scaled reductions retain HDR, tiny and low-contrast samples.
+Original 16-bit RGB captures verify separate channel values and expected
+strong/weak outcomes; an overlap-error project verifies invalid-selection events.
+
 [Controlled distortion fixtures](<../examples/custom tools/distortion_fixture/README.md>)
 (S1-142) now generate shear/projective and lens-like stress with explicit
 output-to-input maps, continuous analytic probes, private seeded bounds and

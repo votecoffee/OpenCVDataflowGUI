@@ -180,6 +180,7 @@ BINDINGS = {
     "inspect.affine_features": "AffineFeature_create SIFT_create ORB_create",
     "inspect.structure_tensor": "cornerEigenValsAndVecs",
     "inspect.intensity_moments": "moments",
+    "inspect.region_contrast": "meanStdDev mean findContours",
     "inspect.fast": "FastFeatureDetector_create",
     "inspect.flood_fill": "floodFill",
     "inspect.grabcut": "grabCut",

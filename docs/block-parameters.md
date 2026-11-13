@@ -5978,6 +5978,40 @@ Inputs: `image` (image), `points` (data).
 | `max_iterations` | `30` |  |
 | `epsilon` | `0.01` |  |
 
+## Measure signal/background contrast (`inspect.region_contrast`)
+
+Inspection / Visibility
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `signal_mask` (image, optional), `signal_region` (data, optional), `background_mask` (image, optional), `background_region` (data, optional).
+
+Input `mask` — Optional valid/work mask applied to both selections.
+
+Input `region` — Optional work region applied to both selections.
+
+Input `signal_mask` — Signal mask; intersects Signal region when both are connected.
+
+Input `signal_region` — Region on the image grid. Use an editable Shape region block.
+
+Input `background_mask` — Background mask; intersects Background region in Explicit mode.
+
+Input `background_region` — Region on the image grid, used only with Explicit background mode.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `channel_mode` | `"gray"` | `gray`, `native` Gray uses floating BT.601 intensity without depth conversion. Native reports every stored channel. |
+| `channel` | `"auto"` | `auto`, `Gray`, `B`, `G`, `R`, `A`, `H`, `S`, `V`, `L`, `a`, `b` Channel used for Value and decisions. Auto chooses the first reported channel. |
+| `include_alpha` | `false` | Native mode may measure alpha as a numeric channel. Alpha never weights selections. |
+| `background_mode` | `"explicit"` | `explicit`, `outside_signal` Explicit requires a background selector. Outside signal uses the remaining work selection. |
+| `overlap` | `"reject"` | `reject`, `exclude_signal`, `allow` Reject, exclude signal pixels from background, or allow shared samples. |
+| `minimum_pixels` | `4` | Value must be a whole number between 1 and 1.67772e+07. Minimum final pixel counts. Sample deviation also needs at least two. |
+| `deviation` | `"population"` | `population`, `sample` |
+| `noise_model` | `"quadrature"` | `quadrature`, `background` Quadrature uses hypot(signal_stddev, background_stddev). Background uses background_stddev. |
+| `noise_floor` | `0.0` | Value must be a finite number at least 0. Minimum denominator in raw sample units. Zero noise without a positive floor leaves CNR undefined. |
+| `metric` | `"cnr"` | `cnr`, `absolute_difference`, `weber`, `michelson` Value is the magnitude of the selected metric. Signed differences and contrasts remain in the report. |
+| `check_threshold` | `false` | Require minimum Value and requested polarity on the selected channel. |
+| `minimum_value` | `3.0` | Value must be a finite number at least 0. |
+| `polarity` | `"either"` | `either`, `bright`, `dark` Bright/dark checks the sign of signal minus background. Equal means satisfy only Either. |
+
 ## Review feature matches (`inspect.review_matches`)
 
 Inspection / Registration

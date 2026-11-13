@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "branch_workers": 2,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Original strong / weak patches",
+      "parameters": {
+        "path": "assets/strong.png",
+        "source_mode": "files",
+        "paths": [
+          "assets/strong.png",
+          "assets/weak.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        180
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "signal",
+      "type": "region.shape",
+      "name": "Signal selection",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          20,
+          24,
+          40,
+          32
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        430,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region",
+        "mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "background",
+      "type": "region.shape",
+      "name": "Background selection",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          88,
+          24,
+          40,
+          32
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        430,
+        320
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region",
+        "mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "contrast",
+      "type": "inspect.region_contrast",
+      "name": "Require red-channel CNR >= 5",
+      "parameters": {
+        "channel_mode": "native",
+        "channel": "R",
+        "include_alpha": false,
+        "background_mode": "explicit",
+        "overlap": "reject",
+        "minimum_pixels": 4,
+        "deviation": "population",
+        "noise_model": "quadrature",
+        "noise_floor": 0.0,
+        "metric": "cnr",
+        "check_threshold": true,
+        "minimum_value": 5,
+        "polarity": "bright"
+      },
+      "position": [
+        900,
+        170
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "signal_region",
+        "background_region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "value",
+        "valid",
+        "measurements",
+        "cnr"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original contrast fixtures - MIT",
+      "description": "Original 16-bit RGB patches, analytic truth, generator and graph under the repository's MIT license. Run all in project.json: strong.png passes and weak.png fails the R-channel CNR minimum of 5. Each 40x32 selection has 1,280 pixels and balanced +/-400 samples, so population noise is exactly 400 counts. CNR is abs(signal_mean-background_mean)/hypot(signal_stddev,background_stddev): strong R is 7.0710678119 and weak R is 2.8284271247. G/B results also appear in Measurements; the decision uses R only. Invalid_selection.json overlaps both selectors and must fail without a Value event. Cyan outlines signal and orange outlines background on the unmodified input. This is a descriptive spatial contrast ratio, not detection probability or a final ticket judgment. API: https://docs.opencv.org/5.0/main_modules/core_array.html",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "signal",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "background",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "contrast",
+      "input": "image"
+    },
+    {
+      "source": "signal",
+      "output": "region",
+      "target": "contrast",
+      "input": "signal_region"
+    },
+    {
+      "source": "background",
+      "output": "region",
+      "target": "contrast",
+      "input": "background_region"
+    }
+  ]
+}

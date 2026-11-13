@@ -147,6 +147,7 @@ BLOCK_MODULES = {
         "calibration.lens_map_displacement collection.filter collection.sort collection.draw "
         "core.attach_payload core.read_payload sequence.background sequence.image_memory "
         "cv.distortion_fixture "
+        "inspect.region_contrast "
         "sequence.foreground_debounce "
         "input.sequence_demo cv.paste_patch cv.filter_fourier_spectrum cv.mask_fourier_spectrum "
         "inspect.contour_profile"
@@ -162,6 +163,7 @@ _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
     "cv.alpha_over": ("alpha", "premultiplied", "source over", "opacity", "transparency"),
     "inspect.intensity_moments": ("moments", "centroid", "center of mass", "principal axis"),
+    "inspect.region_contrast": ("CNR", "meanStdDev", "Weber", "Michelson", "visibility"),
     "cv.interpolate_frames": ("Farneback", "optical flow", "remap", "intermediate frame"),
     "inspect.structure_tensor": ("cornerEigenValsAndVecs", "tensor", "orientation", "coherence"),
     "inspect.affine_features": ("AffineFeature", "ASIFT", "tilt", "SIFT", "ORB"),

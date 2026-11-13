@@ -1,0 +1,56 @@
+{
+  "origin": "Original 16-bit RGB patches, balanced +/-400 checker texture; MIT",
+  "signal_rectangle": [
+    20,
+    24,
+    40,
+    32
+  ],
+  "background_rectangle": [
+    88,
+    24,
+    40,
+    32
+  ],
+  "pixels_per_selection": 1280,
+  "population_stddev": 400,
+  "minimum_cnr": 5,
+  "strong": {
+    "signal_means": [
+      24000,
+      22000,
+      20000
+    ],
+    "background_means": [
+      20000,
+      20000,
+      20000
+    ],
+    "channel_cnr": [
+      7.071067811865475,
+      3.5355339059327373,
+      0.0
+    ],
+    "cnr": 7.071067811865475,
+    "passed": true
+  },
+  "weak": {
+    "signal_means": [
+      21600,
+      20800,
+      20000
+    ],
+    "background_means": [
+      20000,
+      20000,
+      20000
+    ],
+    "channel_cnr": [
+      2.82842712474619,
+      1.414213562373095,
+      0.0
+    ],
+    "cnr": 2.82842712474619,
+    "passed": false
+  }
+}

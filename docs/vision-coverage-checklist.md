@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 120 | 17 | 38 | 175 | 68.6% |
+| 1. Core and baseline 2D | 121 | 17 | 37 | 175 | 69.1% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 182 | 58 | 230 | 470 | 38.7% |
+| **Overall** | 183 | 58 | 229 | 470 | 38.9% |
 
 <!-- coverage-summary:end -->
 
@@ -217,7 +217,7 @@ fixture or result needed to close the item.
 | S1-140 | Controlled video encoder qualification | VideoWriter, fourcc and decoder round trip | Complete | Six native cases qualify FFmpeg FFV1/MJPG BGR and gray at 12.5 FPS, mp4v BGR MP4, and OpenCV MJPEG BGR at integer FPS. Finalized streams verify count, EOF, order, color, media time and exact lossless pixels or bounded lossy error. Writer reports actual backend/submission status and rejects known corrupt grayscale or rounded fractional-FPS OpenCV MJPEG combinations, including automatic selection. Unsupported combinations preserve files and recover. Original recording/replay graphs and a headless qualification report are included. |
 | S1-141 | Debounce foreground across consecutive frames | connectedComponentsWithStats and consecutive component association | Complete | sequence.foreground_debounce confirms mutually unique current/previous components using centroid displacement, area ratio and optional bounding-box IoU. Missing/ambiguous observations restart capped hit counts; only current confirmed pixels are emitted. Explicit threshold, area/connectivity controls, mask/region context resets, bounded streams/components/state and copyable worker memory are qualified. Original labeled-mask replay verifies disjoint moving parts, intermittent glints, shadow exclusion, missing-frame reconfirmation and exact independent masks. |
 | S1-142 | Synthetic fiducial-free image distortion fixtures | Geometric remap and seeded perturbations | Complete | cv.distortion_fixture emits deterministic or private-PCG64 bounded shear/projective/radial/tangential warps, float32 output-to-input maps, analytic donor probes and conservative source support. Typed map provenance retains output frames through floating/packed remappers and rejects incompatible grids. Original 16-bit RGB branches match independent donor equations and golden resampling; horizons, sampled folds, excessive ranges and the native float64 cubic boundary bug fail explicitly. Packed interpolation is qualified against its own native reference with bounded quantization differences. |
-| S1-143 | Image contrast and visibility between two regions | Selected image statistics and contrast-to-noise ratio | Planned | Report signal/background contrast, noise and invalid selections on a controlled inspection target. |
+| S1-143 | Image contrast and visibility between two regions | Selected image statistics and contrast-to-noise ratio | Complete | inspect.region_contrast measures explicit/complement signal/background selections, stable population/sample statistics, quadrature/background CNR and signed mean-based Weber/Michelson contrasts. Native channel reports, raw-unit noise floors, overlap policies and optional magnitude/polarity limits are exposed. Invalid selections or undefined metrics withhold numeric evidence with diagnostic reasons. Original 16-bit RGB strong/weak and overlap-error projects verify analytic means, deviations, channel ratios, expected pass/fail and current coordinate/ticket ownership. |
 | S1-144 | Unicode image annotation | FreeType or Qt glyph rasterization and frame-aware graphics | Partial | cv.annotation_layer draws existing image labels. Verify multilingual OCR or inspection text renders on the annotated output image with preserved coordinates. |
 
 ### Optical corrections and panorama refinement

@@ -786,6 +786,7 @@ def builtin_registry():
     from .raster_hough_lines import HoughPolarLines
     from .raw_sensor import RAW_SENSOR_BLOCKS
     from .recipe_blocks import RecipeField, RecipeSelect
+    from .region_contrast import MeasureRegionContrast
     from .region_proposals import GraphSegments, SelectiveSearchProposals
     from .regions import REGION_BLOCKS
     from .registration import REGISTRATION_BLOCKS
@@ -941,6 +942,7 @@ def builtin_registry():
         PathIntensityProfile,
         InspectPathContinuity,
         ImageSummaryStatistics,
+        MeasureRegionContrast,
         IntensityMoments,
         MeasureImageNorm,
         CheckImageValidity,
