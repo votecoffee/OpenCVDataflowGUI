@@ -74,7 +74,17 @@ growing-ellipse references check centers and scale. Misses withhold primary even
 expiry requires explicit reseeding. Copyable stream memory, current-ticket poses,
 optional model export and Debug/Lean replay are checked. CamShift describes color
 mass with an ambiguous principal axis; production identity reliability remains
-unqualified. The next priority is flow refinement (S1-109).
+unqualified.
+
+[Variational flow refinement](<../examples/opencv tools/flow_refinement/README.md>)
+(S1-109) adds a paired-image block for an explicit A-to-B seed, all seven native
+controls and independent motion/residual references. Source/donor support,
+intersected output selections, border exclusions and optional quality gates keep
+invalid sampling out of statistics. Source tickets/grids and both pair identities
+are retained; the supported field feeds existing forward warping. This is local,
+single-scale refinement; masks do not restrict the native energy and diagnostic
+support is not confidence or visibility proof. The next priority is image metadata
+write/buffer round trips (S1-07).
 
 [Lateral chromatic aberration correction](<../examples/opencv tools/chromatic_aberration/README.md>)
 (S1-146) now loads or defines a versioned native polynomial and aligns red/blue

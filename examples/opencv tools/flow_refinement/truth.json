@@ -1,0 +1,21 @@
+{
+  "translation": [
+    2.0,
+    1.0
+  ],
+  "initial_translation": [
+    1.25,
+    0.5
+  ],
+  "evaluation_border": 16,
+  "maximum_mean_endpoint_error": 0.6,
+  "maximum_error_ratio": 0.65,
+  "maximum_residual_ratio": 0.6,
+  "selection_rectangle": [
+    20,
+    20,
+    80,
+    50
+  ],
+  "scope": "Original MIT image-space texture; no real-scene accuracy or occlusion claim"
+}

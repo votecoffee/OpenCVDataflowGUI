@@ -4754,7 +4754,7 @@ P3	method	cv2.VariationalRefinement.setFixedPointIterations	no static reference	
 P3	method	cv2.VariationalRefinement.setGamma	method name only	-
 P3	method	cv2.VariationalRefinement.setOmega	no static reference	-
 P3	method	cv2.VariationalRefinement.setSorIterations	no static reference	-
-P3	function	cv2.VariationalRefinement_create	no static reference	-
+P3	function	cv2.VariationalRefinement_create	literal reference	-
 P3	function	cv2.vconcat	literal reference	-
 P3	class	cv2.Volume	literal reference	-
 P3	method	cv2.Volume.fetchNormals	no static reference	-

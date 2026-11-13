@@ -3123,6 +3123,45 @@ Input `fit_mask` — Optional uint8 same-grid mask of trusted unchanged material
 | `clip_policy` | `"reject"` | `reject`, `clip` Reject withholds Image/Gain if correction exceeds output depth. Clip explicitly permits saturation and reports the affected pixels. |
 | `maximum_components` | `256` | Value must be a whole number between 1 and 4096. Bound retained shadow components and per-component reports. |
 
+## Refine dense optical flow (`cv.refine_flow`)
+
+Image processing / Video processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `target` (image), `flow` (any), `source_support` (image, optional), `target_support` (image, optional).
+
+Input `image` — Source A: uint8 gray/color, 8+ pixels per axis and at most 2.1M pixels.
+
+Input `target` — Target B on an equal-size grid; sampled at source + flow.
+
+Input `flow` — Finite float32/64 H×W×2 A-to-B seed, indexed by A; copied before refinement.
+
+Input `mask` — Source-grid output selection; intersected with region, not a solver cost mask.
+
+Input `region` — Source-grid output selection; full-frame context still feeds the solver.
+
+Input `source_support` — Trusted uint8 A support; restricts diagnostics, not the native energy.
+
+Input `target_support` — Trusted uint8 B support sampled at the displaced donor position.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `fixed_point_iterations` | `5` | Value must be a whole number between 1 and 50. Native outer iterations; this is a local, single-scale solver. |
+| `sor_iterations` | `5` | Value must be a whole number between 1 and 100. Native inner successive over-relaxation iterations per outer step. |
+| `alpha` | `20.0` | Value must be a finite number between 0 and 10000. Native smoothness weight; zero disables the smoothness term. |
+| `delta` | `5.0` | Value must be a finite number between 0 and 10000. Native brightness-constancy weight; delta or gamma must be positive. |
+| `gamma` | `10.0` | Value must be a finite number between 0 and 10000. Native gradient-constancy weight; delta or gamma must be positive. |
+| `omega` | `1.6` | Value must be a finite number between 0.001 and 1.999. Native SOR relaxation factor, strictly between zero and two. |
+| `epsilon` | `0.001` | Value must be a finite number between 1e-06 and 10. Native robust-penalty norm shift, not a convergence threshold. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Check known coordinate frames, or explicitly pair matching pixel grids. |
+| `border_margin` | `4` | Value must be a whole number between 0 and 64. Exclude source/donor edge bands and support holes from diagnostics. |
+| `maximum_motion` | `256.0` | Value must be a finite number between 1 and 16384. Maximum per-axis seed/output displacement in local pixels. |
+| `maximum_work` | `64000000` | Value must be a whole number between 1 and 2.56e+08. Bound pixels × (outer × inner + 3) before invoking the solver. |
+| `minimum_valid_fraction` | `0.0` | Value must be a finite number between 0 and 1. Valid/selected fraction gate; no valid support always fails. |
+| `maximum_mean_residual` | `0.0` | Value must be a finite number between 0 and 255. Maximum mean supported gray difference [0,255]; zero disables. |
+| `reject_residual_increase` | `false` | Reject higher mean residual on common before/after support. |
+| `visual_max_motion` | `10.0` | Value must be a finite number between 0.001 and 16384. Motion mapped to full brightness in the optional HSV flow view. |
+| `arrow_spacing` | `16` | Value must be a whole number between 8 and 128. Minimum preview spacing; large frames cap the arrow count at 2048. |
+
 ## Register scan layout (`cv.register_scan_layout`)
 
 Image processing / Geometry

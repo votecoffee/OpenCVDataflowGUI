@@ -315,7 +315,8 @@ Python and five C++ entries without a direct binding.
 | `cv2.IStreamReader` | Exposed. Qualify bounded encoded input on a specific backend. | S1-157 |
 | `cv2.CamShift`, `cv2.meanShift` | Qualified baseline. Explicit histogram teaching, native controls, color/work-area filters, current-ticket geometry, loss gates and explicit reseed after expiry; independent translation/scale fixtures. Color-mass geometry is not physical metrology or guaranteed identity. | S1-108 |
 | `cv2.DenseOpticalFlow`, `cv2.SparseOpticalFlow`, `cv2.DISOpticalFlow`, `cv2.FarnebackOpticalFlow`, `cv2.SparsePyrLKOpticalFlow`, `cv2.calcOpticalFlowFarneback`, `cv2.calcOpticalFlowPyrLK` | Exposed. Algorithm objects and convenience calls share the same typed flow outputs. | S1-51 |
-| `cv2.VariationalRefinement`, `cv2.buildOpticalFlowPyramid` | Exposed. Qualify refinement accuracy and reusable pyramid geometry separately. | S1-109, S1-155 |
+| `cv2.VariationalRefinement` | Qualified paired-image baseline. All native controls, independent motion/residual improvement, source/donor support, border exclusions, frame/ticket ownership and withheld-flow quality failures. Local single-scale refinement needs a suitable seed; diagnostic support does not prove visibility or accuracy. | S1-109 |
+| `cv2.buildOpticalFlowPyramid` | Exposed. Qualify reusable Python pyramid/derivative representation, geometry and tracking parity. | S1-155 |
 | `cv2.ECCParameters`, `cv2.findTransformECC`, `cv2.findTransformECCMultiScale`, `cv2.findTransformECCWithMask` | Exposed. The graph exposes single-scale, multiscale and masked alignment through the same contract. | S1-48 |
 | `cv2.computeECC` | Exposed via `inspect.image_correlation`: selected aligned-image similarity, per-channel results and explicit constant-region policy. No transform is estimated. | S1-119 |
 | `cv2.readOpticalFlow`, `cv2.writeOpticalFlow` | Exposed. Verify signed flow samples and frame association on import and export. | S1-154 |

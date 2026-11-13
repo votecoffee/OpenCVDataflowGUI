@@ -221,6 +221,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Paste image patch](<opencv tools/paste_patch/README.md>) | Copy a masked crop onto the inspection image, clipping at the canvas edge. |
 | [PCB motion](<opencv tools/pcb_motion/README.md>) | Replay two PCB photographs through DIS to estimate apparent motion. |
 | [Dense-flow frame warping](<opencv tools/dense_flow_warp/README.md>) | Verify exact RGB16 motion, forward/pull direction, target/source ownership, invalid and occlusion-proxy masks, and a coverage gate. |
+| [Variational optical-flow refinement](<opencv tools/flow_refinement/README.md>) | Improve a biased seed on known image motion; inspect residuals, source/donor support, selections and a deliberate quality failure before downstream warping. |
 | [Pixel comparison](<opencv tools/pixel_comparison/README.md>) | Compare a background difference with a scalar to build a texture mask. |
 | [Polar field rotation](<opencv tools/polar_fields/README.md>) | Rotate a Sobel gradient field by 90 degrees while preserving its magnitude. |
 | [Polar image warp](<opencv tools/polar_image_warp/README.md>) | Unwrap a circular edge with a simulated defect and rewrap it into the source frame. |

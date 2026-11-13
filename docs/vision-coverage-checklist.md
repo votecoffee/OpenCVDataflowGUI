@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 129 | 16 | 30 | 175 | 73.7% |
+| 1. Core and baseline 2D | 130 | 16 | 29 | 175 | 74.3% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 192 | 57 | 221 | 470 | 40.9% |
+| **Overall** | 193 | 57 | 220 | 470 | 41.1% |
 
 <!-- coverage-summary:end -->
 
@@ -178,7 +178,7 @@ fixture or result needed to close the item.
 | S1-106 | Image annotation and reusable overlays | polylines, markers and text rasterization | Complete | cv.annotation_layer, cv.overlay_result_graphics. Compose selected image-frame layers and preserve geometry on resampling. |
 | S1-107 | Stateful image references | Ticketed image memory, running background estimate | Complete | sequence.image_memory, sequence.background. Verify learning, reset, and reference reuse across replay frames. |
 | S1-108 | Region tracking by color distribution | meanShift, CamShift, histogram backprojection | Complete | sequence.color_tracker. Explicit rectangle/shape teaching, hue/HS bins, native termination controls, HSV/alpha/work-area filtering, frozen or accepted-update learning, current-ticket region/pose/probability outputs and confidence/support/scale/motion gates. Original translation and growing-ellipse fixtures verify centers within 3 pixels and scale growth; disappearance withholds primary events and expires after bounded misses until explicit reseeding. Native parity, stream/context isolation, copyable bounded state, XML and Debug/Lean replay are checked. Color-mass geometry and axial ambiguity are explicit; captured-scene identity reliability is unqualified. |
-| S1-109 | Robust keypoint-free motion refinement | VariationalRefinement | Planned | Refine an initial flow on a known motion field and verify residuals and invalid borders. |
+| S1-109 | Robust keypoint-free motion refinement | VariationalRefinement | Complete | cv.refine_flow. Explicit paired uint8 gray/color images and copied A-to-B seed field, all seven native solver controls, intersected output selections, source/donor support, border exclusions and comparable before/after residuals. Independent (+2,+1)-pixel translation reduces mean interior endpoint error below 0.6 pixels and 65% of the biased seed error; residual drops below 60%. Native parity, frame/ticket/pyramid ownership, bounds, exceptions, quality gates, XML, Debug/Lean and downstream flow warping are checked. This local single-scale baseline requires a suitable seed; diagnostic support is not visibility or accuracy confidence, and selections do not mask the native optimization energy. |
 | S1-110 | Video seeking by media time | VideoCapture CAP_PROP_POS_MSEC and timestamped replay | Planned | Seek by time on fixtures with known frame timing and report the effective position. |
 | S1-111 | Animated image decoding and encoding | imreadanimation, imwriteanimation, imdecodeanimation, imencodeanimation | Planned | Round-trip a supported animation with per-frame durations, frame order and format checks. |
 | S1-112 | Native QR encoding | QRCodeEncoder | Planned | Generate plain and multi-segment labels where supported and round-trip them through the native reader. |
