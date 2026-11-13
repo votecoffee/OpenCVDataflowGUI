@@ -16,14 +16,15 @@ plugins for specialized operations with job-specific interfaces.
 Use targeted tests and a runnable example for each implementation increment.
 Run a broader regression check after roughly 20 increments, or earlier when a
 specific concern involves shared execution, persistence or plugin contracts.
-The last broad checkpoint is `0c8c6e9`. This cycle has **12 targeted increments
+The last broad checkpoint is `0c8c6e9`. This cycle has **13 targeted increments
 of about 20** completed: S1-174 (line-pair metrology), S1-175
 (slanted-edge sharpness), S1-119 (aligned image comparison), S1-124
 (Laplacian pyramids), the TIFF/HDR portion of S1-125 (EXR remains open),
 S1-126 (lossless high-bit-depth codecs), S1-127 (packed MIPI sensor frames),
 S1-128 (affine-invariant image features), S1-129 (structure tensors),
 S1-130 (paired-frame motion interpolation), S1-131 (intensity-weighted moments)
-and S1-132 (source-over alpha composition).
+and S1-132 (source-over alpha composition), plus coherent processed-input
+bundles for plugin trainers.
 Update the cycle count as implementation continues and reset it after the next
 broader check.
 
@@ -285,6 +286,7 @@ subset. [Current 3D workflows](vision-3d.md#motion-fusion-and-structured-light)
 - Opt-in modeless plugin dialogs for capturing outputs across graph runs.
 - Plugin output subscriptions for preview and capture tools.
 - Plugin input captures that follow graph wires and preserve processed-image provenance.
+- Single-call plugin captures of retained image, cloud and data inputs from one completed execution.
 - Reusable image and pyramid-level picker for plugin dialogs.
 - Acquisition, basic processing, contour inspection, image and structured result sinks.
 - Reusable nested ToolBlocks, public-terminal mapping, editor navigation and JSON definitions.

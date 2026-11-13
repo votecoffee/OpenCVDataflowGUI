@@ -190,9 +190,15 @@ def test_modeless_dialog_captures_two_runs_and_stages_during_execution(
         assert any(row.block_id == source.id for row in context.refresh_images())
         image = context.snapshot_image(source.id, "image")
         assert np.all(image.value == expected)
+        bundle = context.snapshot_processed_inputs(["image"])
+        assert bundle.output_revision == revision and bundle.passed
+        assert bundle.inputs["image"].payload["ticket"] == image.payload["ticket"]
+        assert np.all(bundle.inputs["image"].value == expected)
         if expected == 23:
             reference = image
+            reference_bundle = bundle
     assert np.all(reference.value == 23)
+    assert np.all(reference_bundle.inputs["image"].value == 23)
     assert reference.payload["ticket"] != image.payload["ticket"]
     assert "Previous" in summary.text() and "Latest" in summary.text()
 
@@ -208,6 +214,7 @@ def test_modeless_dialog_captures_two_runs_and_stages_during_execution(
     assert np.all(reference.value == 23)
     with pytest.raises(RuntimeError, match="closed"):
         context.refresh_images()
+    assert np.all(reference_bundle.inputs["image"].value == 23)
 
 
 @pytest.mark.local_examples

@@ -1,9 +1,11 @@
 """Context for plugin dialogs, independent of Qt and the execution loop."""
 
 import copy
+import uuid
 from collections.abc import Callable
 from dataclasses import dataclass
 from operator import index
+from threading import get_ident
 
 import numpy as np
 
@@ -46,6 +48,18 @@ class PluginImageOutput:
     level_count: int
 
 
+@dataclass(frozen=True)
+class PluginProcessedInputs:
+    """Private packets from one completed execution, copied on the dialog thread."""
+
+    snapshot_id: str
+    block_id: str
+    output_revision: int
+    execution_count: int
+    passed: bool
+    inputs: dict[str, ValuePacket]
+
+
 class PluginDialogContext:
     """Catalog cached image outputs published to the editor graph."""
 
@@ -54,6 +68,7 @@ class PluginDialogContext:
         self.project_dir = graph.project_dir
         self._graph = graph
         self._block = block
+        self._thread_id = get_ident()
         self._input_levels = dict(block.input_levels if input_levels is None else input_levels)
         self._input_wires = {
             wire.input: (wire.source, wire.output)
@@ -186,6 +201,61 @@ class PluginDialogContext:
     def snapshot_input_cloud(self, port):
         """Copy the latest published point cloud and payload on a wired cloud input."""
         return self._snapshot_input_value(port, "cloud")
+
+    def snapshot_processed_inputs(self, ports=None):
+        """Copy retained inputs together; never combine separately read upstream outputs.
+
+        Call on the context's owning GUI thread before handing the bundle to a worker.
+        The snapshot ID identifies this private copy, not a synchronized acquisition.
+        """
+        if self._graph is None:
+            raise RuntimeError("The plugin dialog has closed")
+        if get_ident() != self._thread_id:
+            raise RuntimeError("Capture processed inputs on the plugin dialog's owning thread")
+        block = self._block
+        if not block._execution_lock.acquire(blocking=False):
+            raise RuntimeError("The block is active; capture after its execution finishes")
+        try:
+            if block.timing.started is not None:
+                raise RuntimeError("The block is active; capture after its execution finishes")
+            if block.last_result is None or block.timing.count == 0:
+                raise ValueError("No completed block execution is available to capture")
+            if not block.run_profile.input_previews:
+                raise ValueError("Processed inputs were not retained. Run again in Debug profile.")
+            if (block.inputs and not block.last_inputs) or any(
+                port.required and port.name not in block.last_inputs for port in block.inputs
+            ):
+                raise ValueError("Processed inputs are unavailable. Run again in Debug profile.")
+            declared = {port.name for port in block.inputs}
+            if ports is None:
+                names = tuple(port.name for port in block.inputs if port.name in block.last_inputs)
+            else:
+                if isinstance(ports, str):
+                    raise TypeError("Pass input names as a collection, not a single string")
+                names = tuple(ports)
+                if any(not isinstance(name, str) or name not in declared for name in names):
+                    raise ValueError("Processed capture must name declared block inputs")
+                if len(set(names)) != len(names):
+                    raise ValueError("Processed capture input names must be unique")
+                missing = [name for name in names if name not in block.last_inputs]
+                if missing:
+                    raise ValueError(f"No processed input is retained for: {', '.join(missing)}")
+            packets = copy.deepcopy(
+                {
+                    name: ValuePacket(block.last_inputs[name], block.input_payloads.get(name, {}))
+                    for name in names
+                }
+            )
+            return PluginProcessedInputs(
+                snapshot_id=uuid.uuid4().hex,
+                block_id=block.id,
+                output_revision=self.output_revision,
+                execution_count=block.timing.count,
+                passed=bool(block.last_result.passed),
+                inputs=packets,
+            )
+        finally:
+            block._execution_lock.release()
 
     def _snapshot_input_value(self, port, kind):
         if self._graph is None:

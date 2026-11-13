@@ -55,6 +55,7 @@ The `context` argument is a `PluginDialogContext` with the following members.
 | `snapshot_input_image(port, *, source="connected", level=None)` | Copies an image for a named input of the selected block. |
 | `snapshot_input_data(port)` | Returns a private `ValuePacket` for the latest published value and payload on a wired `data` input. |
 | `snapshot_input_cloud(port)` | Returns a private `ValuePacket` for the latest published point cloud and payload on a wired `cloud` input. |
+| `snapshot_processed_inputs(ports=None)` | Copies selected retained inputs from one completed execution of the dialog's block into a `PluginProcessedInputs` bundle. |
 | `output_revision` | Number of result publications received by the editor since the popup opened. Starts at zero. |
 | `subscribe_outputs(callback)` | Calls `callback(revision)` on the GUI thread after a publication and returns an unsubscribe function. |
 
@@ -96,6 +97,48 @@ GUI thread. It copies XYZ, colors, normals, units, coordinate frame, and payload
 metadata from the latest published upstream result. It validates the target
 cloud port and rejects missing or absent values. Editing the captured cloud
 does not modify the graph's cached cloud.
+
+### Capture several consumed inputs together
+
+Use `snapshot_processed_inputs` for a trainer that needs an image, point cloud,
+camera model, pose, or other inputs from the same block execution. Call it on
+the GUI thread, then hand the returned private bundle to a worker. It reads the
+latest completed execution published to the selected block, independently of
+`refresh_images()`. It does not read newer upstream outputs, select a new
+pyramid level, run the block, or alter the inspector draft.
+
+```python
+bundle = context.snapshot_processed_inputs(["scene", "depth_scene", "camera"])
+scene = bundle.inputs["scene"]       # ValuePacket: value and payload
+depth = bundle.inputs["depth_scene"]
+camera = bundle.inputs["camera"]
+# Hand bundle to a plugin worker; retain its snapshot_id with a training asset.
+```
+
+Omit `ports` to copy every provided, retained input. Explicit names must be
+unique declared inputs; requesting an absent optional input raises `ValueError`
+without returning a partial bundle. Images keep their encoding, depth and
+consumed pyramid level. Point clouds keep units, frame, colors, normals,
+pixel indices and metadata. The packets, arrays and nested payloads belong to
+the caller and can outlive the popup. Request only needed ports to limit copies.
+
+The bundle also contains `block_id`, `passed` from the completed result,
+`execution_count`, `output_revision`, and a fresh `snapshot_id` for this copy.
+The execution count is a diagnostic counter that can reset with runtime state.
+The output revision counts editor publications; another block can advance it.
+Neither field nor the snapshot ID is an acquisition identity. A block using
+latest-input coordination can consume values from different acquisitions in
+one execution. Check each packet's tickets, timestamps and coordinate frames,
+and use graph input coordination when acquisition pairing is required.
+
+A failed inspection can still provide a completed capture. If a newer input
+was rejected, the bundle retains the previous completed execution's inputs
+and judgment. An exception without a completed result is unavailable.
+Missing history raises `ValueError`; run again with input retention, such as
+the Debug profile. Switching profiles alone does not recreate history. Captures
+on another thread, after popup closure, or while the selected block object is
+executing raise `RuntimeError` without waiting for work to finish. During a
+modeless graph run, the editor's last completed publication remains available.
 
 ## Follow graph outputs
 

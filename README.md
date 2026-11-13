@@ -111,6 +111,10 @@ open directly after setup. **SimpleClassify** is bundled with DataflowGUI. See t
 
 [Runnable plugin example](examples/user_tools/custom_invert/README.md) · [Plugin dialog API](docs/plugin-dialogs.md)
 
+Plugins can provide their own configuration or training dialogs. The dialog API
+can capture several processed inputs together, preserving their images, point
+clouds and metadata for training in a plugin worker.
+
 ## Maintainers
 
 [@votecoffee](https://github.com/votecoffee)
