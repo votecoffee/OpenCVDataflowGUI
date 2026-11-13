@@ -10,7 +10,7 @@ from .core import Port, Result
 from .graphics_layers import GraphicDrawing, graphic_box, graphic_object
 from .images import ImageArray, image_format, opencv_image
 from .parameter_validation import NumericRange, ValidationError
-from .payloads import metadata
+from .payloads import NO_VALUE, metadata
 from .processing import ImageTool, image_value
 from .selection import SELECTION_INPUTS, RegionalOperation, selection_mask
 
@@ -100,6 +100,24 @@ class StylizePhoto(_PhotoFilter):
         return Result({"image": self.color_output(output, source)})
 
 
+def _photo_color_input(source):
+    samples = image_value(source, (np.uint8,))
+    encoding = image_format(source)
+    if (
+        encoding not in ("bgr", "rgb", "bgra", "rgba")
+        or samples.ndim != 3
+        or samples.shape[2] != (4 if encoding.endswith("a") else 3)
+    ):
+        raise ValidationError("Use uint8 BGR/RGB color, optionally with straight alpha")
+    height, width = samples.shape[:2]
+    if min(height, width) < 8 or height * width > 2_100_000:
+        raise ValidationError("Photo correction requires at least 8×8 and at most 2.1M pixels")
+    incoming = metadata(source)
+    if samples.shape[2] == 4 and incoming.get("alpha_representation", "straight") != "straight":
+        raise ValidationError("Unassociate premultiplied alpha before photo correction")
+    return samples, encoding, incoming
+
+
 class _MaskedPhotoCorrection(ImageTool, ABC):
     """Use the selection in the native solve and restrict writes to that selection."""
 
@@ -125,20 +143,8 @@ class _MaskedPhotoCorrection(ImageTool, ABC):
 
     def process(self, inputs):
         source = inputs["image"]
-        samples = image_value(source, (np.uint8,))
-        encoding = image_format(source)
-        if (
-            encoding not in ("bgr", "rgb", "bgra", "rgba")
-            or samples.ndim != 3
-            or samples.shape[2] != (4 if encoding.endswith("a") else 3)
-        ):
-            raise ValidationError("Use uint8 BGR/RGB color, optionally with straight alpha")
+        samples, encoding, incoming = _photo_color_input(source)
         height, width = samples.shape[:2]
-        if min(height, width) < 8 or height * width > 2_100_000:
-            raise ValidationError("Photo correction requires at least 8×8 and at most 2.1M pixels")
-        incoming = metadata(source)
-        if samples.shape[2] == 4 and incoming.get("alpha_representation", "straight") != "straight":
-            raise ValidationError("Unassociate premultiplied alpha before photo correction")
         mask = selection_mask(inputs, source)
         if mask is None:
             mask = np.full((height, width), 255, np.uint8)
@@ -261,6 +267,121 @@ class TextureFlattening(_MaskedPhotoCorrection):
         )
 
 
+class ColorChange(_MaskedPhotoCorrection):
+    type_id, title = "cv.color_change", "Change selected color"
+    subtype = "Color and depth"
+    native_binding = "cv2.colorChange"
+    defaults = {"red_mul": 1.0, "green_mul": 1.0, "blue_mul": 1.0}
+    parameter_ranges = {name: NumericRange(0.5, 2.5) for name in defaults}
+    parameter_help = {
+        "red_mul": "Native red gradient multiplier (0.5..2.5), rather than direct pixel scaling.",
+        "green_mul": "Native green gradient multiplier (0.5..2.5).",
+        "blue_mul": "Native blue gradient multiplier (0.5..2.5).",
+    }
+
+    def correct(self, image, mask):
+        return cv2.colorChange(image, mask, **{k: float(v) for k, v in self.parameters.items()})
+
+
+class Decolor(ImageTool):
+    type_id, title, subtype = "cv.decolor", "Contrast-preserving grayscale", "Color and depth"
+    inputs = SELECTION_INPUTS
+    outputs = (
+        Port("image"),
+        Port("color_boost"),
+        Port("ordinary_gray"),
+        Port("selected_mask", visual_type="region"),
+        Port("change"),
+        Port("report", "data"),
+    )
+    process_inputs_readonly = parallel_safe = True
+    input_help = {
+        **_MaskedPhotoCorrection.input_help,
+        "mask": "Write selection only: the whole color image fits the native decolor mapping.",
+        "region": "Intersect with mask. Outside: ordinary gray and original color boost samples.",
+    }
+
+    def process(self, inputs):
+        source = inputs["image"]
+        samples, encoding, incoming = _photo_color_input(source)
+        color = samples[..., :3]
+        native = np.ascontiguousarray(color[..., ::-1] if encoding.startswith("rgb") else color)
+        ordinary = cv2.cvtColor(native, cv2.COLOR_BGR2GRAY)
+        mask = selection_mask(inputs, source)
+        if mask is None:
+            mask = np.full(samples.shape[:2], 255, np.uint8)
+        selected = mask != 0
+        count = int(np.count_nonzero(selected))
+        uniform = not np.ptp(native.reshape(-1, 3), axis=0).any()
+        achromatic = np.array_equal(native[..., 0], native[..., 1]) and np.array_equal(
+            native[..., 1], native[..., 2]
+        )
+        skip = (
+            "empty_selection"
+            if not count
+            else "uniform_color"
+            if uniform
+            else "achromatic_input"
+            if achromatic
+            else None
+        )
+        gray, boost = ordinary.copy(), samples.copy()
+        native_range = None
+        passed = True
+        if skip is None:
+            solved, enhanced = cv2.decolor(native)
+            native_range = int(np.ptp(solved))
+            passed = native_range > 0
+            if passed:
+                gray[selected] = solved[selected]
+                if encoding.startswith("rgb"):
+                    enhanced = enhanced[..., ::-1]
+                boost[..., :3][selected] = enhanced[selected]
+        change = cv2.absdiff(gray, ordinary) if passed else NO_VALUE
+        report = {
+            "native_binding": "cv2.decolor",
+            "mapping_context": "full_image",
+            "selected_pixels": count,
+            "native_gray_range": native_range,
+            "mean_absolute_change": float(change[selected].mean()) if passed and count else None,
+            "outside_gray": "ordinary_grayscale",
+            "outside_color_boost": "original_samples",
+            "skip_reason": skip,
+            "status": "ok" if passed else "degenerate_native_mapping",
+            "passed": passed,
+        }
+        outputs = {
+            "image": ImageArray(gray, "gray") if passed else NO_VALUE,
+            "color_boost": ImageArray(boost, encoding) if passed else NO_VALUE,
+            "ordinary_gray": ImageArray(ordinary, "gray"),
+            "selected_mask": mask,
+            "change": change,
+            "report": report,
+        }
+        payloads = {key: copy.deepcopy(incoming) for key in outputs}
+        for key in outputs.keys() - {"color_boost"}:
+            payloads[key].pop("alpha_representation", None)
+            payloads[key].pop("raw_sensor", None)
+        drawings = {}
+        if self.generate_graphics and count:
+            x, y, w, h = cv2.boundingRect(mask)
+            color = (60, 210, 120) if passed else (60, 160, 240)
+            drawings["decolor write bounds"] = GraphicDrawing((graphic_box(x, y, w, h, color),))
+        return Result(
+            outputs,
+            payloads=payloads,
+            drawings=drawings,
+            passed=passed,
+            message=(
+                f"Unchanged: {skip}"
+                if skip
+                else "Decolor mapping fitted on full image"
+                if passed
+                else "Native decolor collapsed nonuniform color; output withheld"
+            ),
+        )
+
+
 PHOTO_FILTER_BLOCKS = (
     EdgePreservingPhotoFilter,
     DetailEnhance,
@@ -268,4 +389,6 @@ PHOTO_FILTER_BLOCKS = (
     StylizePhoto,
     IlluminationChange,
     TextureFlattening,
+    ColorChange,
+    Decolor,
 )

@@ -50,7 +50,16 @@ exact original surroundings/alpha, explicit native erosion masks and change maps
 An independently measured synthetic surface checks reduced variation/texture,
 boundary location and the accompanying contrast loss. These uint8 appearance
 edits preserve source coordinates and tickets; they do not recover clipped glare
-or provide radiometric calibration. Color transfer and decolorization remain next.
+or provide radiometric calibration.
+
+[Masked color editing](<../examples/opencv tools/masked_color_change/README.md>)
+(S1-89) now qualifies native channel-gradient controls against an independent
+constant-boundary step. [Contrast-preserving decolorization](<../examples/opencv tools/contrast_preserving_gray/README.md>)
+(S1-90) exposes both native outputs, ordinary grayscale, selected writes and
+source payloads. Equal-gray patches separate in a controlled fitting context;
+a two-color-only native collapsed map fails with processed images withheld.
+Both retain explicit uint8/color, selection and alpha contracts. Next priorities
+are dense-flow image warping and color-distribution region tracking.
 
 [Lateral chromatic aberration correction](<../examples/opencv tools/chromatic_aberration/README.md>)
 (S1-146) now loads or defines a versioned native polynomial and aligns red/blue

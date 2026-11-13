@@ -1,0 +1,34 @@
+{
+  "source_bgr": [
+    80,
+    110,
+    150
+  ],
+  "background_bgr": [
+    40,
+    40,
+    40
+  ],
+  "expected_center_bgr": [
+    68,
+    110,
+    194
+  ],
+  "maximum_center_error_dn": 2,
+  "left_edge_x": 50,
+  "right_edge_x": 142,
+  "edge_tolerance_pixels": 1,
+  "measurement_rectangle": [
+    65,
+    40,
+    62,
+    48
+  ],
+  "selected_rectangle": [
+    20,
+    12,
+    152,
+    104
+  ],
+  "scope": "Original MIT constant-boundary fixture with independently scaled color steps"
+}

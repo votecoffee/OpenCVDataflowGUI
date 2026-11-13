@@ -1,0 +1,27 @@
+{
+  "patch_a_bgr": [
+    220,
+    70,
+    85
+  ],
+  "patch_b_bgr": [
+    25,
+    125,
+    54
+  ],
+  "ordinary_gray_dn": 92,
+  "patch_a_rectangle": [
+    28,
+    28,
+    52,
+    68
+  ],
+  "patch_b_rectangle": [
+    112,
+    28,
+    52,
+    68
+  ],
+  "minimum_decolor_separation_dn": 50,
+  "scope": "Original synthetic equal-BT.601 patches; mapping depends on full image context"
+}

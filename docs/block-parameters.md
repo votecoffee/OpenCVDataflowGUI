@@ -1497,6 +1497,24 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `tiles_x` | `8` |  |
 | `tiles_y` | `8` |  |
 
+## Change selected color (`cv.color_change`)
+
+Image processing / Color and depth
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8 BGR/RGB, optionally with straight alpha; at least 8×8, up to 2.1M pixels.
+
+Input `mask` — Optional uint8 binary selection in the image frame; intersected with region.
+
+Input `region` — Optional region on the same grid. No mask/region means the full image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `red_mul` | `1.0` | Value must be a finite number between 0.5 and 2.5. Native red gradient multiplier (0.5..2.5), rather than direct pixel scaling. |
+| `green_mul` | `1.0` | Value must be a finite number between 0.5 and 2.5. Native green gradient multiplier (0.5..2.5). |
+| `blue_mul` | `1.0` | Value must be a finite number between 0.5 and 2.5. Native blue gradient multiplier (0.5..2.5). |
+
 ## Colorize scalar image (`cv.colorize_scalar`)
 
 Image processing / Color and depth
@@ -1728,6 +1746,20 @@ Input `image` — Packed 2D uint8 byte matrix with no row padding.
 | `layout` | `"NV12"` | `NV12`, `NV21`, `I420`, `YV12`, `YUY2`, `UYVY`, `YVYU` Byte order and chroma subsampling of the input buffer. |
 | `color_format` | `"bgr"` | `gray`, `bgr`, `rgb`, `bgra`, `rgba` Gray extracts the stored luma samples. |
 | `algorithm_hint` | `"default"` | `default`, `accurate`, `approximate` |
+
+## Contrast-preserving grayscale (`cv.decolor`)
+
+Image processing / Color and depth
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8 BGR/RGB, optionally with straight alpha; at least 8×8, up to 2.1M pixels.
+
+Input `mask` — Write selection only: the whole color image fits the native decolor mapping.
+
+Input `region` — Intersect with mask. Outside: ordinary gray and original color boost samples.
+
+No configurable algorithm parameters.
 
 ## Demosaic Bayer image (`cv.demosaic_bayer`)
 

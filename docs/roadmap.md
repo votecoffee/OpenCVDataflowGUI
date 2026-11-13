@@ -27,9 +27,10 @@ The last broad checkpoint is `43afa2e` (S1-139): **2,859 passed and 13
 skipped** in the offscreen suite. It completes the 20-increment cycle following
 `0c8c6e9`. Skips cover 11 unavailable optional-plugin checks and two native
 OpenEXR round trips; those paths remain unqualified on this environment.
-The current cycle has **13 targeted increments of about 20** completed:
-the previously recorded eleven, followed by the expanded block editor and
-masked photo correction (S1-88). The editor increment passed 16 focused Qt
+The current cycle has **15 targeted increments of about 20** completed:
+the previously recorded eleven, followed by the expanded block editor,
+masked photo correction (S1-88), masked color editing (S1-89), and
+contrast-preserving decolorization (S1-90). The editor increment passed 16 focused Qt
 checks. Example reorganizations and frozen third-party reviews do not add
 vision capability completions.
 Update the count as implementation continues and reset it after the next
@@ -135,7 +136,21 @@ Aligned image comparison now covers selected ECC/normalized correlation and
 constant-region policy. Signed Laplacian bands now support odd-size reconstruction
 and multiscale edits. Floating TIFF and Radiance HDR round trips are qualified;
 S1-125 remains partial until native EXR runs on a capable build. Prioritize
-masked color transfer and contrast-preserving decolorization (S1-89/S1-90) next.
+dense-flow frame warping (S1-95), then color-distribution region tracking (S1-108).
+[Masked color editing](<../examples/opencv tools/masked_color_change/README.md>)
+(S1-89) now exposes all three native gradient multipliers. An independent
+colored-step reference checks interior BGR values and unchanged boundaries;
+unselected samples, alpha, image grids and ticket payloads remain intact.
+[Contrast-preserving decolorization](<../examples/opencv tools/contrast_preserving_gray/README.md>)
+(S1-90) now exposes native grayscale and color-boost images alongside the
+ordinary baseline. Controlled equal-gray patches separate by 77 DN with full-image
+fitting context; selected writes preserve the defined backgrounds. A native
+two-color-only collapse fails explicitly and withholds processed images.
+These are content-dependent appearance edits, not colorimetric calibration.
+Validation: 78 focused checks and installed Debug/Lean replay of all three
+projects cover native parity, independent color/contrast references, alpha/order,
+selection holes and frames, no-ops, failed mapping containment, graphics-off and XML.
+No broad suite was repeated.
 [Masked photo correction](<../examples/opencv tools/masked_photo_correction/README.md>)
 (S1-88) now exposes native illumination and texture controls, intersected
 mask/region selection, gradient/change maps and source ticket/frame ownership.
@@ -243,7 +258,7 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize masked color transfer and decolorization (S1-89/S1-90). S1-88 masked illumination/texture correction is qualified on a controlled surface. Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize dense-flow frame warping (S1-95), then color-distribution region tracking (S1-108). S1-88–S1-90 photo/color edits are qualified with controlled references and explicit failure evidence. Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and K-nearest/random-forest image classifiers. Native SVM training, prediction and model I/O are available in [the classical ML workflow](classical-ml.md) (S2-20). | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |

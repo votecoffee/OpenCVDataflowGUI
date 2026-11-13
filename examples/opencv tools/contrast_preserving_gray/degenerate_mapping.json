@@ -1,0 +1,312 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Two equal-gray color patches",
+      "parameters": {
+        "path": "two_color_degenerate.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decolor",
+      "type": "cv.decolor",
+      "name": "Preserve color separation in gray",
+      "parameters": {},
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "color_boost",
+        "ordinary_gray",
+        "selected_mask",
+        "change",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "a_region",
+      "type": "region.shape",
+      "name": "Measure patch A",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          28,
+          28,
+          52,
+          68
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        320,
+        600
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "b_region",
+      "type": "region.shape",
+      "name": "Measure patch B",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          112,
+          28,
+          52,
+          68
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        320,
+        900
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "before",
+      "type": "inspect.region_contrast",
+      "name": "Ordinary grayscale: equal means",
+      "parameters": {
+        "channel_mode": "gray",
+        "channel": "auto",
+        "include_alpha": false,
+        "background_mode": "explicit",
+        "overlap": "reject",
+        "minimum_pixels": 4,
+        "deviation": "population",
+        "noise_model": "quadrature",
+        "noise_floor": 0.0,
+        "metric": "absolute_difference",
+        "check_threshold": false,
+        "minimum_value": 3.0,
+        "polarity": "either"
+      },
+      "position": [
+        740,
+        550
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "signal_mask",
+        "signal_region",
+        "background_mask",
+        "background_region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "value",
+        "valid",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "after",
+      "type": "inspect.region_contrast",
+      "name": "Decolor: at least 50 DN apart",
+      "parameters": {
+        "channel_mode": "gray",
+        "channel": "auto",
+        "include_alpha": false,
+        "background_mode": "explicit",
+        "overlap": "reject",
+        "minimum_pixels": 4,
+        "deviation": "population",
+        "noise_model": "quadrature",
+        "noise_floor": 0.0,
+        "metric": "absolute_difference",
+        "check_threshold": true,
+        "minimum_value": 50,
+        "polarity": "either"
+      },
+      "position": [
+        740,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "signal_mask",
+        "signal_region",
+        "background_mask",
+        "background_region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "value",
+        "valid",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Source and fitting context",
+      "description": "Original project fixture and graph (MIT), generated with PCG64 seed 42 and Gaussian context. Both designed patches convert to ordinary 8-bit gray 92. Native decolor separates them with the whole image as fitting context. Gray levels and polarity can change with image content. No calibrated luminance or real-part accuracy is claimed. The two-color-only companion records a native collapsed mapping; its primary outputs are withheld rather than presenting black as a successful conversion.",
+      "parameters": {},
+      "position": [
+        0,
+        -470
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "decolor",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "a_region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "b_region",
+      "input": "image"
+    },
+    {
+      "source": "decolor",
+      "output": "ordinary_gray",
+      "target": "before",
+      "input": "image"
+    },
+    {
+      "source": "a_region",
+      "output": "region",
+      "target": "before",
+      "input": "background_region"
+    },
+    {
+      "source": "b_region",
+      "output": "region",
+      "target": "before",
+      "input": "signal_region"
+    },
+    {
+      "source": "decolor",
+      "output": "image",
+      "target": "after",
+      "input": "image"
+    },
+    {
+      "source": "a_region",
+      "output": "region",
+      "target": "after",
+      "input": "background_region"
+    },
+    {
+      "source": "b_region",
+      "output": "region",
+      "target": "after",
+      "input": "signal_region"
+    }
+  ]
+}

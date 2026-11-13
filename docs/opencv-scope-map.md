@@ -308,7 +308,7 @@ Python and five C++ entries without a direct binding.
 | `cv2.pencilSketch`, `cv2.stylization` | Exposed. Use as diagnostic appearance transforms with an explicit output contract. | S1-86 |
 | `cv2.seamlessClone` | Exposed. Masked cloning belongs to reference preparation and fixture generation. | S1-87 |
 | `cv2.illuminationChange`, `cv2.textureFlattening` | Exposed. Masked photo edits qualify localized variation/texture reduction and boundary position; report contrast loss and retain exact unselected samples. | S1-88 |
-| `cv2.colorChange`, `cv2.decolor` | Exposed. Local color transfer and contrast-preserving monochrome have separate checks. | S1-89–S1-90 |
+| `cv2.colorChange`, `cv2.decolor` | Exposed. Colored-step reference qualifies masked color editing; equal-gray patches qualify contextual decolorization. Native collapsed mappings withhold processed outputs. | S1-89–S1-90 |
 | `cv2.fastNlMeansDenoising`, `cv2.fastNlMeansDenoisingColored`, `cv2.fastNlMeansDenoisingMulti`, `cv2.fastNlMeansDenoisingColoredMulti`, `cv2.denoise_TVL1` | Exposed. Single-frame and temporal variants share restoration fixtures by algorithm. | S1-91–S1-92 |
 | `cv2.correctChromaticAberration`, `cv2.loadChromaticAberrationParams` | Exposed. Native parameter loading follows the fringe-correction workflow. | S1-146 |
 | `cv2.VideoCapture`, `cv2.VideoWriter` | Exposed. Test capture and replay separately from encoder round trips. Flags and backend selection are configuration. | S1-09–S1-12, S1-110, S1-115, S1-123, S1-140 |
