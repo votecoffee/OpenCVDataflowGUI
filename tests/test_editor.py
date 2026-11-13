@@ -896,7 +896,7 @@ def test_regions_example_editor_load_save_and_shape_dropdown(
     app.processEvents()
 
     load_example(window, folder)
-    assert len(window.graph.blocks) == count
+    assert sum(1 for _ in window.graph.processing_blocks()) == count
     circle = window.graph.blocks[shape_id]
     window.scene.nodes[circle.id].setSelected(True)
     assert isinstance(window.inspector.fields["shape"], QComboBox)
@@ -907,7 +907,7 @@ def test_regions_example_editor_load_save_and_shape_dropdown(
     assert restored.to_dict() == window.graph.to_dict()
     window.start_run(False)
     pump_until(app, lambda: window.runner is None)
-    assert all(b.state == "pass" for b in window.graph.blocks.values())
+    assert all(b.state == "pass" for b in window.graph.processing_blocks())
     window.dirty = False
     window.close()
     app.processEvents()
@@ -1145,27 +1145,29 @@ def test_starter_project_editor_run_edit_save_and_template_example(app, load_exa
     window = MainWindow()
     window.show()
     load_example(window, "starter_inspection")
-    assert len(window.graph.blocks) == 9
+    assert sum(1 for _ in window.graph.processing_blocks()) == 9
     components = window.graph.blocks["starter_components"]
+    expected_count = components.parameters["expected_count"]
+    assert expected_count > 0
     window.scene.nodes[components.id].setSelected(True)
     window.start_run(False)
     pump_until(app, lambda: window.runner is None)
-    assert components.state == "pass" and components.last_result.outputs["count"] == 2
+    assert components.state == "pass" and components.last_result.outputs["count"] == expected_count
     window.inspector.preview_choice.setCurrentText("Output / overlay")
     assert not window.inspector.image.pixmap().isNull()
-    window.inspector.fields["expected_count"].setText("3")
+    window.inspector.fields["expected_count"].setText(str(expected_count + 1))
     window.inspector.apply()
     window.start_run(False)
     pump_until(app, lambda: window.runner is None)
-    assert components.state == "fail" and components.last_result.outputs["count"] == 2
-    window.inspector.fields["expected_count"].setText("2")
+    assert components.state == "fail" and components.last_result.outputs["count"] == expected_count
+    window.inspector.fields["expected_count"].setText(str(expected_count))
     window.inspector.apply()
     window.path = tmp_path / "edited-project.json"
     assert window.save_project()
     window.replace_graph(Graph.load(window.path, window.registry), window.path)
     window.start_run(False)
     pump_until(app, lambda: window.runner is None)
-    assert all(b.state == "pass" for b in window.graph.blocks.values())
+    assert all(b.state == "pass" for b in window.graph.processing_blocks())
     load_example(window, "template_matching")
     window.start_run(False)
     pump_until(app, lambda: window.runner is None)
@@ -1318,10 +1320,12 @@ def test_object_collection_editor_filter_sort_preview_worker_and_save(app, load_
     load_example(window, "object_collections")
     window.scene.nodes["objects_blob_filter"].setSelected(True)
     assert isinstance(window.inspector.fields["metric"], QComboBox)
-    assert window.inspector.fields["metric"].currentText() == "height"
+    assert window.inspector.fields["metric"].currentText() == (
+        window.graph.blocks["objects_blob_filter"].parameters["metric"]
+    )
     window.start_run(False)
     pump_until(app, lambda: window.runner is None)
-    assert all(block.state == "pass" for block in window.graph.blocks.values())
+    assert all(block.state == "pass" for block in window.graph.processing_blocks())
     window.scene.clearSelection()
     window.scene.nodes["objects_blob_draw"].setSelected(True)
     window.inspector.preview_choice.setCurrentText("Output / overlay")

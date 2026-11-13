@@ -162,6 +162,16 @@ ports, positions, and graph topology before replacing the current project. Write
 use a neighboring temporary file and replace the destination on success. Treat
 project paths and parameters as configuration that may point to input/output files.
 
+Save As rebases project-relative asset references, including nested graphs and
+validation-set images, before serialization; a failed save restores the original
+parameters. Built-ins using `path_base="project"` preserve input fields `path`,
+`paths`, `image_paths`, `directory`, and `icc_path`. Relative output destinations
+retain their configured values. Plugins declare additional always-project-relative
+asset fields with `project_path_parameters = ("recipe_path", "training_images")`;
+the base declaration includes `recipe_path`. Values may be strings or lists of
+strings. Absolute paths and URLs retain their values. Ordinary text parameters
+are never interpreted as paths. Assets are referenced, never moved or copied.
+
 Python plugin modules export `register(registry)` and add `Block` subclasses. Load
 plugins explicitly from a trusted local `.py` file; registration is staged so a
 failure does not partially update the registry. This is not process isolation or a

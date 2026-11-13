@@ -105,6 +105,11 @@ exposed graphics to a separate public terminal.
 
 ## Project exports and workspace
 
+**Save As** preserves references to existing project-relative input images,
+calibration files, plugin assets, and validation sets when you choose another
+folder. Assets remain in their original locations. Relative output paths continue
+to resolve from the newly saved project's folder.
+
 Use **File → Export program documentation…** to generate a self-contained HTML
 guide from the current applied configuration. It includes a simplified graph,
 a linked block index, wiring and port tables, applied parameters, and each

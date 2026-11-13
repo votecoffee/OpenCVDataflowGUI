@@ -150,11 +150,12 @@ def test_inspector_accept_cancel_cache_and_saved_project(app, load_example, monk
     block = window.graph.blocks["roi_circle"]
     window.scene.nodes[block.id].setSelected(True)
     original = window.graph.to_dict()
+    source_shape = block.last_inputs["image"].shape[:2]
     window.inspector.fields["radius"].setText("61")
     calls = []
 
     def cancel(dialog):
-        assert dialog.canvas.image_shape == (360, 480)
+        assert dialog.canvas.image_shape == source_shape
         assert dialog.parameters["radius"] == 61
         calls.append("cancel")
         return QDialog.DialogCode.Rejected
@@ -184,7 +185,7 @@ def test_inspector_accept_cancel_cache_and_saved_project(app, load_example, monk
     restored = Graph.load(window.path, window.registry)
     assert restored.blocks[block.id].parameters == block.parameters
     restored.run()
-    assert all(b.state == "pass" for b in restored.blocks.values())
+    assert all(b.state == "pass" for b in restored.processing_blocks())
     window.dirty = False
     window.close()
 

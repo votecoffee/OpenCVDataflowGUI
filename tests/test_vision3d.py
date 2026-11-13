@@ -66,11 +66,24 @@ def test_saved_3d_examples_roundtrip_and_execute(name, factory, profile):
     registry = builtin_registry()
     (project,) = Path("examples").glob(f"*/{name}/{name}.json")
     graph = Graph.load(project, registry)
-    assert graph.to_dict() == factory(registry).to_dict()
+    if name == "rgbd_cloud":
+        # The public showcase uses a recorded capture; retain the synthetic fixture separately.
+        assert graph.blocks["rgb"].type_id == "input.file"
+        snapshot = graph.to_dict()
+        restored = Graph.from_dict(snapshot, registry)
+        assert restored.to_dict() == snapshot
+        restored.close()
+        synthetic = factory(registry)
+        synthetic.set_run_profile(profile)
+        synthetic.run()
+        assert all(b.state == "pass" for b in synthetic.processing_blocks())
+        synthetic.close()
+    else:
+        assert graph.to_dict() == factory(registry).to_dict()
     graph.set_run_profile(profile)
     graph.run()
-    assert all(b.state == "pass" for b in graph.blocks.values()), [
-        (b.name, b.error) for b in graph.blocks.values()
+    assert all(b.state == "pass" for b in graph.processing_blocks()), [
+        (b.name, b.error) for b in graph.processing_blocks()
     ]
     graph.close()
 
@@ -517,6 +530,7 @@ def test_point_cloud_thumbnail_and_live_popout(app, load_example):
         window.show()
         app.processEvents()
         node = window.scene.nodes["project"]
+        first_ticket = node.block.last_result.payloads["cloud"]["ticket"]["value"]
         assert isinstance(node.thumbnail_value(), PointCloud)
         window.view.centerOn(node)
         yaw = node._cloud_yaw
@@ -536,7 +550,7 @@ def test_point_cloud_thumbnail_and_live_popout(app, load_example):
         QTest.mouseDClick(inspector.image, Qt.MouseButton.LeftButton)
         viewer, = inspector.image_popouts.values()
         assert viewer.output_name == "cloud"
-        assert "Ticket 1" in viewer.windowTitle()
+        assert f"Ticket {first_ticket}" in viewer.windowTitle()
         assert not viewer.image.pixmap().isNull()
         first_cloud = viewer.cloud
         viewer.flyaround.setChecked(True)
@@ -547,7 +561,9 @@ def test_point_cloud_thumbnail_and_live_popout(app, load_example):
         window.graph.run()
         inspector.refresh_result()
         assert viewer.cloud is not first_cloud
-        assert "Ticket 2" in viewer.windowTitle()
+        next_ticket = node.block.last_result.payloads["cloud"]["ticket"]["value"]
+        assert next_ticket != first_ticket
+        assert f"Ticket {next_ticket}" in viewer.windowTitle()
         assert viewer.orbit_timer.isActive()
         viewer.close()
         assert not viewer.orbit_timer.isActive()
