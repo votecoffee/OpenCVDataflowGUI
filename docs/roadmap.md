@@ -16,20 +16,12 @@ plugins for specialized operations with job-specific interfaces.
 Use targeted tests and a runnable example for each implementation increment.
 Run a broader regression check after roughly 20 increments, or earlier when a
 specific concern involves shared execution, persistence or plugin contracts.
-The last broad checkpoint is `0c8c6e9`. This cycle has **20 targeted increments
-of about 20** completed: S1-174 (line-pair metrology), S1-175
-(slanted-edge sharpness), S1-119 (aligned image comparison), S1-124
-(Laplacian pyramids), the TIFF/HDR portion of S1-125 (EXR remains open),
-S1-126 (lossless high-bit-depth codecs), S1-127 (packed MIPI sensor frames),
-S1-128 (affine-invariant image features), S1-129 (structure tensors),
-S1-130 (paired-frame motion interpolation), S1-131 (intensity-weighted moments),
-S1-132 (source-over alpha composition), coherent processed-input bundles for
-plugin trainers, S1-133 (contour rasterization with holes), S1-134
-(ordered circle/arc fitting), S1-135 (Fourier component reconstruction),
-S1-136 (binary mask boundary/area inspection), S1-137 (capture-stack
-flat-field references), S1-138 (focus stacking and focus-level coverage), and
-S1-139 (log-polar similarity registration). The broader checkpoint is due now.
-Update the cycle count as implementation continues and reset it after the next
+The last broad checkpoint is `43afa2e` (S1-139): **2,859 passed and 13
+skipped** in the offscreen suite. It completes the 20-increment cycle following
+`0c8c6e9`. Skips cover 11 unavailable optional-plugin checks and two native
+OpenEXR round trips; those paths remain unqualified on this environment.
+The current cycle has **0 targeted increments of about 20** completed.
+Update the count as implementation continues and reset it after the next
 broader check.
 
 ## Short-term focus
