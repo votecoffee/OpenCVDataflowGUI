@@ -40,3 +40,13 @@ python "examples/Simple Plugins/pattern_matching/visa_pcb2/build_example.py" pat
 ```
 
 [Photograph attribution, license, and changes](SOURCES.md)
+
+## Selected fit review
+
+With SimplePatternMatch dev1, the trainer's **Inspect** view can zoom/pan,
+focus one accepted/rejected candidate, toggle expected/found/missing edge
+layers, inspect score/contrast limits, and export a cropped assessment plus
+working-grid fit and JSON. Review uses cached preview results. See the
+[selected-result gallery](../result_review/README.md) for examples from this
+saved recipe without retuning. Matching and default runtime overlays stay
+unchanged; source photos retain their existing attribution.

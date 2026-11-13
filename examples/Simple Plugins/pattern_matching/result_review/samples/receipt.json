@@ -1,0 +1,158 @@
+{
+  "asymmetric_brackets_0_accepted": {
+    "project": "asymmetric_brackets/project.json",
+    "frame_index": 0,
+    "accepted_count": 6,
+    "rejection_counts": {
+      "score_cutoff": 21,
+      "overlap": 84
+    },
+    "recipe_sha256": "776278a4590b4968580117bd7b0d5b873a2dffd255d3af6dda8895055c72f50c",
+    "native_pixels_sha256": "b5ae3d0a911b89eea5d61482b2bac2429825d4f8ab4fad09e96899d13d8910b8",
+    "working_pixels_sha256": "b5ae3d0a911b89eea5d61482b2bac2429825d4f8ab4fad09e96899d13d8910b8",
+    "native_size": [
+      440,
+      290
+    ],
+    "working_size": [
+      440,
+      290
+    ]
+  },
+  "asymmetric_brackets_0_rejected": {
+    "project": "asymmetric_brackets/project.json",
+    "frame_index": 0,
+    "accepted_count": 6,
+    "rejection_counts": {
+      "score_cutoff": 21,
+      "overlap": 84
+    },
+    "recipe_sha256": "776278a4590b4968580117bd7b0d5b873a2dffd255d3af6dda8895055c72f50c",
+    "native_pixels_sha256": "b5ae3d0a911b89eea5d61482b2bac2429825d4f8ab4fad09e96899d13d8910b8",
+    "working_pixels_sha256": "b5ae3d0a911b89eea5d61482b2bac2429825d4f8ab4fad09e96899d13d8910b8",
+    "native_size": [
+      440,
+      290
+    ],
+    "working_size": [
+      440,
+      290
+    ]
+  },
+  "asymmetric_brackets_1_accepted": {
+    "project": "asymmetric_brackets/project.json",
+    "frame_index": 1,
+    "accepted_count": 4,
+    "rejection_counts": {
+      "score_cutoff": 43,
+      "overlap": 47
+    },
+    "recipe_sha256": "776278a4590b4968580117bd7b0d5b873a2dffd255d3af6dda8895055c72f50c",
+    "native_pixels_sha256": "1b1e2680710cf1b1ae911099f7f63c7c430d28d2d846db4b081949b4c775862d",
+    "working_pixels_sha256": "1b1e2680710cf1b1ae911099f7f63c7c430d28d2d846db4b081949b4c775862d",
+    "native_size": [
+      440,
+      290
+    ],
+    "working_size": [
+      440,
+      290
+    ]
+  },
+  "asymmetric_brackets_1_rejected": {
+    "project": "asymmetric_brackets/project.json",
+    "frame_index": 1,
+    "accepted_count": 4,
+    "rejection_counts": {
+      "score_cutoff": 43,
+      "overlap": 47
+    },
+    "recipe_sha256": "776278a4590b4968580117bd7b0d5b873a2dffd255d3af6dda8895055c72f50c",
+    "native_pixels_sha256": "1b1e2680710cf1b1ae911099f7f63c7c430d28d2d846db4b081949b4c775862d",
+    "working_pixels_sha256": "1b1e2680710cf1b1ae911099f7f63c7c430d28d2d846db4b081949b4c775862d",
+    "native_size": [
+      440,
+      290
+    ],
+    "working_size": [
+      440,
+      290
+    ]
+  },
+  "visa_pcb2_0_accepted": {
+    "project": "visa_pcb2/project.json",
+    "frame_index": 0,
+    "accepted_count": 1,
+    "rejection_counts": {
+      "score_cutoff": 10
+    },
+    "recipe_sha256": "e883f26a2875f2a08fa8dfe772499ffd62870d45707d5494803ae2fdb45d7b02",
+    "native_pixels_sha256": "a04b10038623e09fb03ac34df8e9e1c6a77709e0f450cd3c1b0dfd3d8e288f8e",
+    "working_pixels_sha256": "a04b10038623e09fb03ac34df8e9e1c6a77709e0f450cd3c1b0dfd3d8e288f8e",
+    "native_size": [
+      702,
+      535
+    ],
+    "working_size": [
+      702,
+      535
+    ]
+  },
+  "visa_pcb2_0_rejected": {
+    "project": "visa_pcb2/project.json",
+    "frame_index": 0,
+    "accepted_count": 1,
+    "rejection_counts": {
+      "score_cutoff": 10
+    },
+    "recipe_sha256": "e883f26a2875f2a08fa8dfe772499ffd62870d45707d5494803ae2fdb45d7b02",
+    "native_pixels_sha256": "a04b10038623e09fb03ac34df8e9e1c6a77709e0f450cd3c1b0dfd3d8e288f8e",
+    "working_pixels_sha256": "a04b10038623e09fb03ac34df8e9e1c6a77709e0f450cd3c1b0dfd3d8e288f8e",
+    "native_size": [
+      702,
+      535
+    ],
+    "working_size": [
+      702,
+      535
+    ]
+  },
+  "visa_pcb2_1_accepted": {
+    "project": "visa_pcb2/project.json",
+    "frame_index": 1,
+    "accepted_count": 1,
+    "rejection_counts": {
+      "score_cutoff": 11
+    },
+    "recipe_sha256": "e883f26a2875f2a08fa8dfe772499ffd62870d45707d5494803ae2fdb45d7b02",
+    "native_pixels_sha256": "9089cf024846089ebcd1f130bc357255ba3f1256ec14754299ff2afa8db013c7",
+    "working_pixels_sha256": "9089cf024846089ebcd1f130bc357255ba3f1256ec14754299ff2afa8db013c7",
+    "native_size": [
+      702,
+      535
+    ],
+    "working_size": [
+      702,
+      535
+    ]
+  },
+  "visa_pcb2_1_rejected": {
+    "project": "visa_pcb2/project.json",
+    "frame_index": 1,
+    "accepted_count": 1,
+    "rejection_counts": {
+      "score_cutoff": 11
+    },
+    "recipe_sha256": "e883f26a2875f2a08fa8dfe772499ffd62870d45707d5494803ae2fdb45d7b02",
+    "native_pixels_sha256": "9089cf024846089ebcd1f130bc357255ba3f1256ec14754299ff2afa8db013c7",
+    "working_pixels_sha256": "9089cf024846089ebcd1f130bc357255ba3f1256ec14754299ff2afa8db013c7",
+    "native_size": [
+      702,
+      535
+    ],
+    "working_size": [
+      702,
+      535
+    ]
+  }
+}
