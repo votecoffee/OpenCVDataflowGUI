@@ -1,0 +1,717 @@
+{
+  "schema_version": 1,
+  "branch_workers": 2,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/source.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        350
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "shear",
+      "type": "cv.distortion_fixture",
+      "name": "Shear fixture",
+      "parameters": {
+        "coefficient_mode": "fixed",
+        "seed": 0,
+        "shear_x": 0.125,
+        "shear_y": 0.0,
+        "perspective_x": 0.0,
+        "perspective_y": 0.0,
+        "k1": 0.0,
+        "k2": 0.0,
+        "p1": 0.0,
+        "p2": 0.0,
+        "center_x": 0.5,
+        "center_y": 0.0,
+        "radius_scale": 0.5,
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0,
+        "probe_points": []
+      },
+      "position": [
+        420,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "seed",
+        "points"
+      ],
+      "exposed_outputs": [
+        "image",
+        "map_x",
+        "map_y",
+        "valid_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reuse_shear",
+      "type": "cv.remap",
+      "name": "Reuse shear maps",
+      "parameters": {
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        860,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "map_x",
+        "map_y"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "golden_shear",
+      "type": "input.file",
+      "name": "Independent shear reference",
+      "parameters": {
+        "path": "assets/shear.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        860,
+        250
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify_shear",
+      "type": "inspect.image_quality",
+      "name": "Require exact shear pixels",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1300,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "perspective",
+      "type": "cv.distortion_fixture",
+      "name": "Perspective fixture",
+      "parameters": {
+        "coefficient_mode": "fixed",
+        "seed": 0,
+        "shear_x": 0.0,
+        "shear_y": 0.0,
+        "perspective_x": 0.06,
+        "perspective_y": -0.04,
+        "k1": 0.0,
+        "k2": 0.0,
+        "p1": 0.0,
+        "p2": 0.0,
+        "center_x": 0.5,
+        "center_y": 0.5,
+        "radius_scale": 0.5,
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0,
+        "probe_points": []
+      },
+      "position": [
+        420,
+        480
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "seed",
+        "points"
+      ],
+      "exposed_outputs": [
+        "image",
+        "map_x",
+        "map_y",
+        "valid_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reuse_perspective",
+      "type": "cv.remap",
+      "name": "Reuse perspective maps",
+      "parameters": {
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        860,
+        480
+      ],
+      "exposed_inputs": [
+        "image",
+        "map_x",
+        "map_y"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "golden_perspective",
+      "type": "input.file",
+      "name": "Independent perspective reference",
+      "parameters": {
+        "path": "assets/perspective.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        860,
+        730
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify_perspective",
+      "type": "inspect.image_quality",
+      "name": "Require exact perspective pixels",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1300,
+        480
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "lens",
+      "type": "cv.distortion_fixture",
+      "name": "Lens fixture",
+      "parameters": {
+        "coefficient_mode": "fixed",
+        "seed": 0,
+        "shear_x": 0.0,
+        "shear_y": 0.0,
+        "perspective_x": 0.0,
+        "perspective_y": 0.0,
+        "k1": 0.08,
+        "k2": 0.015,
+        "p1": 0.002,
+        "p2": -0.003,
+        "center_x": 0.5,
+        "center_y": 0.5,
+        "radius_scale": 0.5,
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0,
+        "probe_points": []
+      },
+      "position": [
+        420,
+        960
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "seed",
+        "points"
+      ],
+      "exposed_outputs": [
+        "image",
+        "map_x",
+        "map_y",
+        "valid_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reuse_lens",
+      "type": "cv.remap",
+      "name": "Reuse lens maps",
+      "parameters": {
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        860,
+        960
+      ],
+      "exposed_inputs": [
+        "image",
+        "map_x",
+        "map_y"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "golden_lens",
+      "type": "input.file",
+      "name": "Independent lens reference",
+      "parameters": {
+        "path": "assets/lens.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        860,
+        1210
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify_lens",
+      "type": "inspect.image_quality",
+      "name": "Require exact lens pixels",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1300,
+        960
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "seeded",
+      "type": "cv.distortion_fixture",
+      "name": "Seeded fixture",
+      "parameters": {
+        "coefficient_mode": "uniform_bounds",
+        "seed": 23,
+        "shear_x": 0.08,
+        "shear_y": 0.0,
+        "perspective_x": 0.0,
+        "perspective_y": 0.02,
+        "k1": 0.03,
+        "k2": 0.0,
+        "p1": 0.0,
+        "p2": 0.0,
+        "center_x": 0.5,
+        "center_y": 0.5,
+        "radius_scale": 0.5,
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0,
+        "probe_points": []
+      },
+      "position": [
+        420,
+        1440
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "seed",
+        "points"
+      ],
+      "exposed_outputs": [
+        "image",
+        "map_x",
+        "map_y",
+        "valid_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reuse_seeded",
+      "type": "cv.remap",
+      "name": "Reuse seeded maps",
+      "parameters": {
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        860,
+        1440
+      ],
+      "exposed_inputs": [
+        "image",
+        "map_x",
+        "map_y"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "golden_seeded",
+      "type": "input.file",
+      "name": "Independent seeded reference",
+      "parameters": {
+        "path": "assets/seeded.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        860,
+        1690
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify_seeded",
+      "type": "inspect.image_quality",
+      "name": "Require exact seeded pixels",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1300,
+        1440
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original distortion fixtures - MIT",
+      "description": "Original 16-bit RGB target, fixture equations, references and project under the repository's MIT license. Four branches generate shear, perspective, lens-like and seeded distortions, then reuse their typed maps through ordinary Remap blocks. Each comparison must have zero maximum pixel error. Truth maps are output-to-input sampling coordinates, not estimated registration or a guessed forward transform. Probes and effective coefficients are in assets/truth.json. Validity excludes source borders and selections conservatively for interpolation support. Fixed-point maps can introduce extra quantization; float64 cubic remap is rejected because the pinned native build corrupts boundary samples. This is a synthetic stress model, not a camera calibration. API: https://docs.opencv.org/5.0/main_modules/imgproc_transform.html",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "shear",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "reuse_shear",
+      "input": "image"
+    },
+    {
+      "source": "shear",
+      "output": "map_x",
+      "target": "reuse_shear",
+      "input": "map_x"
+    },
+    {
+      "source": "shear",
+      "output": "map_y",
+      "target": "reuse_shear",
+      "input": "map_y"
+    },
+    {
+      "source": "reuse_shear",
+      "output": "image",
+      "target": "verify_shear",
+      "input": "image_a"
+    },
+    {
+      "source": "golden_shear",
+      "output": "image",
+      "target": "verify_shear",
+      "input": "image_b"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "perspective",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "reuse_perspective",
+      "input": "image"
+    },
+    {
+      "source": "perspective",
+      "output": "map_x",
+      "target": "reuse_perspective",
+      "input": "map_x"
+    },
+    {
+      "source": "perspective",
+      "output": "map_y",
+      "target": "reuse_perspective",
+      "input": "map_y"
+    },
+    {
+      "source": "reuse_perspective",
+      "output": "image",
+      "target": "verify_perspective",
+      "input": "image_a"
+    },
+    {
+      "source": "golden_perspective",
+      "output": "image",
+      "target": "verify_perspective",
+      "input": "image_b"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "lens",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "reuse_lens",
+      "input": "image"
+    },
+    {
+      "source": "lens",
+      "output": "map_x",
+      "target": "reuse_lens",
+      "input": "map_x"
+    },
+    {
+      "source": "lens",
+      "output": "map_y",
+      "target": "reuse_lens",
+      "input": "map_y"
+    },
+    {
+      "source": "reuse_lens",
+      "output": "image",
+      "target": "verify_lens",
+      "input": "image_a"
+    },
+    {
+      "source": "golden_lens",
+      "output": "image",
+      "target": "verify_lens",
+      "input": "image_b"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "seeded",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "reuse_seeded",
+      "input": "image"
+    },
+    {
+      "source": "seeded",
+      "output": "map_x",
+      "target": "reuse_seeded",
+      "input": "map_x"
+    },
+    {
+      "source": "seeded",
+      "output": "map_y",
+      "target": "reuse_seeded",
+      "input": "map_y"
+    },
+    {
+      "source": "reuse_seeded",
+      "output": "image",
+      "target": "verify_seeded",
+      "input": "image_a"
+    },
+    {
+      "source": "golden_seeded",
+      "output": "image",
+      "target": "verify_seeded",
+      "input": "image_b"
+    }
+  ]
+}

@@ -121,6 +121,7 @@ BINDINGS = {
     "cv.pencil_sketch": "pencilSketch",
     "cv.pyramid_down": "pyrDown",
     "cv.pyramid_up": "pyrUp",
+    "cv.distortion_fixture": "remap erode",
     "cv.remap": "remap",
     "cv.remap_packed": "remap",
     "cv.resize": "resize copyMakeBorder",

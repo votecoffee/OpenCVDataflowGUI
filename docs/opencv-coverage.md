@@ -44,6 +44,15 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Controlled distortion fixtures](<../examples/custom tools/distortion_fixture/README.md>)
+(S1-142) now generate shear/projective and lens-like stress with explicit
+output-to-input maps, continuous analytic probes, private seeded bounds and
+conservative support. Typed maps retain the new coordinate frame through
+ordinary and packed remappers. Independent 16-bit color branches verify donor
+equations and resampling; unsafe fields and native float64 cubic boundary
+corruption fail explicitly. Fixed-map quantization is reported rather than
+assuming identical pixels across map representations.
+
 [Foreground component debounce](<../examples/custom tools/foreground_debounce/README.md>)
 (S1-141) now confirms consecutive, mutually unique component observations,
 including disjoint moving masks. Explicit threshold, connectivity, area, centroid

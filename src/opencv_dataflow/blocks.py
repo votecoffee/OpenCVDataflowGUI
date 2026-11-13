@@ -676,6 +676,7 @@ def builtin_registry():
     from .conveyor_tracking import ConveyorDemo, TrackConveyorParts
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
+    from .distortion_fixture import DistortImageFixture
     from .dnn_blocks import DNN_BLOCKS
     from .ecc_registration import AlignECC
     from .edge_agreement import CompareEdgeMaps
@@ -930,6 +931,7 @@ def builtin_registry():
         AlphaOver,
         InterpolateFrames,
         AddImageNoise,
+        DistortImageFixture,
         ColorizeScalar,
         FindHoughTemplate,
         FindGuilTemplate,

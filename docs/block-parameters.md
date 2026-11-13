@@ -1773,6 +1773,38 @@ Inputs: `image` (image).
 | `distance_type` | `"l2"` | `l1`, `l2`, `chessboard` |
 | `output_depth` | `"float32"` | `float32`, `uint8` |
 
+## Generate image distortion fixture (`cv.distortion_fixture`)
+
+Image processing / Test fixtures
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `seed` (number, optional), `points` (data, optional).
+
+Input `mask` — Optional source support; filters validity, not the full-image warp.
+
+Input `region` — Optional source support; filters validity, not the full-image warp.
+
+Input `points` — Optional output-grid probes override Probe points; wired empty means none.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `coefficient_mode` | `"fixed"` | `fixed`, `uniform_bounds` Fixed uses signed coefficients. Uniform bounds draws each coefficient once from [-value,+value]; configured bounds must be nonnegative. |
+| `seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Private PCG64 generator. Same seed repeats the draw; wired Seed takes precedence. |
+| `shear_x` | `0.0` | Value must be a finite number between -0.75 and 0.75. Normalized donor X includes shear_x times destination Y before perspective. |
+| `shear_y` | `0.0` | Value must be a finite number between -0.75 and 0.75. Normalized donor Y includes shear_y times destination X before perspective. |
+| `perspective_x` | `0.0` | Value must be a finite number between -0.5 and 0.5. Denominator is 1 + perspective_x*u + perspective_y*v. |
+| `perspective_y` | `0.0` | Value must be a finite number between -0.5 and 0.5. Denominator coefficient for normalized destination Y. |
+| `k1` | `0.0` | Value must be a finite number between -1 and 1. Radial multiplier includes k1*r^2 after projective/shear mapping. |
+| `k2` | `0.0` | Value must be a finite number between -1 and 1. Radial multiplier includes k2*r^4 after projective/shear mapping. |
+| `p1` | `0.0` | Value must be a finite number between -1 and 1. Tangential coefficient: X adds 2*p1*a*b; Y adds p1*(r^2+2*b^2). |
+| `p2` | `0.0` | Value must be a finite number between -1 and 1. Tangential coefficient: X adds p2*(r^2+2*a^2); Y adds 2*p2*a*b. |
+| `center_x` | `0.5` | Value must be a finite number between 0 and 1. Center X as a fraction of width-1. 0.5 is the image center. |
+| `center_y` | `0.5` | Value must be a finite number between 0 and 1. Center Y as a fraction of height-1. 0.5 is the image center. |
+| `radius_scale` | `0.5` | Value must be a finite number between 0.1 and 4. Normalization radius = radius_scale * max(width,height), in pixels. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Validity reserves the full source halo. Float64 cubic is rejected because of native boundary truncation. |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
+| `border_value` | `0.0` | Value must be a finite number. Constant border sample in every channel, including alpha. |
+| `probe_points` | `[]` | Output-grid [x,y] pairs, at most 256. Empty chooses nine grid probes. |
+
 ## Domain transform filter (`cv.domain_transform_filter`)
 
 Image processing / Filters
@@ -3003,7 +3035,7 @@ Inputs: `image` (image), `map_x` (image), `map_y` (image).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Float64 cubic is rejected because native boundary sampling truncates fractions. Use linear or convert to float32. |
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
 | `border_value` | `0.0` |  |
 
@@ -3017,7 +3049,7 @@ Input `packed_map` — Map from Pack remap coordinates. Match Nearest or Subpixe
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Float64 cubic is rejected because native boundary sampling truncates fractions. Use linear or convert to float32. |
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
 | `border_value` | `0.0` |  |
 
@@ -6086,6 +6118,7 @@ Inputs: `image` (image).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `model` | `""` | Project-relative manifest staged by the classifier trainer. |
+| `render_overlay` | `true` | Show the input, ranked scores and confusion in a result chart. Disable to skip rendering; scores do not change. |
 
 ## Skeletonize mask (scikit-image) (`inspect.skeletonize`)
 

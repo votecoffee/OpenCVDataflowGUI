@@ -1,5 +1,6 @@
 """Reusable destination-to-source maps and pinhole lens correction."""
 
+import copy
 import hashlib
 import json
 import math
@@ -23,6 +24,43 @@ _REMAP_MAX_AXIS = 32_766
 MAX_MAP_PIXELS = 64_000_000
 _TAG = "lens_remap_map"
 _CORRECTION_ID = "lens_correction_id"
+COORDINATE_MAP_TAG = "coordinate_remap"
+
+
+def coordinate_map_info(block, output_size):
+    """Optional general remap provenance, independent of a camera/lens model."""
+    names = ("packed_map",) if "packed_map" in block.input_payloads else ("map_x", "map_y")
+    payloads = [block.input_payloads[name] for name in names]
+    tags = [payload.get(COORDINATE_MAP_TAG) for payload in payloads]
+    if all(tag is None for tag in tags):
+        return None
+    first = tags[0]
+    axes = ("packed",) if len(names) == 1 else ("x", "y")
+    if (
+        not isinstance(first, dict)
+        or first.get("model") != "image_coordinate_map_v1"
+        or not isinstance(first.get("id"), str)
+        or first.get("output_size") != output_size
+        or any(
+            not isinstance(tag, dict) or tag != {**first, "axis": axis}
+            for tag, axis in zip(tags, axes, strict=True)
+        )
+        or any(payload.get("spatial") != first.get("output_spatial") for payload in payloads)
+    ):
+        raise ValidationError("Connect matching coordinate maps on their original output grid")
+    for name in ("source", "output"):
+        size = first.get(f"{name}_size")
+        if (
+            not isinstance(size, list)
+            or len(size) != 2
+            or any(type(axis) is not int or not 1 <= axis < 32767 for axis in size)
+            or math.prod(size) > MAX_MAP_PIXELS
+        ):
+            raise ValidationError("Invalid coordinate map dimensions")
+        check_spatial({"spatial": first.get(f"{name}_spatial")}, size)
+        if first.get(f"{name}_spatial") is None:
+            raise ValidationError("Coordinate maps require source and output frames")
+    return first
 
 
 @dataclass(frozen=True)
@@ -153,7 +191,20 @@ def packed_lens_info(payload, output_size):
 
 def lens_remap_payload(block, source_size, output_size, info):
     if info is None:
-        return {}
+        coordinate = coordinate_map_info(block, output_size)
+        if coordinate is None:
+            return {}
+        source = block.input_payloads["image"]
+        if (
+            source_size != coordinate["source_size"]
+            or source.get("spatial") != coordinate["source_spatial"]
+        ):
+            raise ValidationError("Source coordinate frame differs from the coordinate maps")
+        payload = copy.deepcopy(source)
+        payload["spatial"] = copy.deepcopy(coordinate["output_spatial"])
+        payload.pop("pyramid", None)
+        payload.pop(COORDINATE_MAP_TAG, None)
+        return {"image": payload}
     if info["source_size"] != source_size:
         raise ValidationError("Source image dimensions do not match the lens map calibration")
     payload = dict(block.input_payloads["image"])
@@ -190,6 +241,7 @@ class PackRemapMap(Block):
             if low < -32768 or high > maximum:
                 raise ValidationError("Remap coordinates exceed the fixed-point range")
         info = lens_map_pair(self, list(size))
+        coordinate = coordinate_map_info(self, list(size))
         coordinates, fractions = cv2.convertMaps(x, y, cv2.CV_16SC2, nninterpolation=nearest)
         packed = PackedRemapMap(
             size, coordinates.tobytes(), None if fractions is None else fractions.tobytes()
@@ -197,6 +249,8 @@ class PackRemapMap(Block):
         payload = dict(self.input_payloads["map_x"])
         if info is not None:
             payload[_TAG] = {**info, "axis": "packed"}
+        if coordinate is not None:
+            payload[COORDINATE_MAP_TAG] = {**coordinate, "axis": "packed"}
         return Result(
             {"packed_map": packed},
             payloads={"packed_map": payload},
