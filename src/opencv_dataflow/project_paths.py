@@ -5,6 +5,8 @@ import os
 from contextlib import contextmanager
 from pathlib import Path
 
+from .project_assets import AssetCopies
+
 STANDARD_FIELDS = ("path", "paths", "image_paths", "directory", "icc_path")
 
 
@@ -21,12 +23,13 @@ def relocated(value, original, destination):
 
 
 @contextmanager
-def rebase_project_paths(graph, destination):
+def rebase_project_paths(graph, destination, project_path=None):
     """Commit relocated asset references only when saving succeeds; never move assets."""
     from .core import Graph
 
     destination = Path(destination)
     snapshots, visited = [], set()
+    assets = AssetCopies(destination, project_path)
 
     def visit(current):
         if id(current) in visited:
@@ -35,7 +38,9 @@ def rebase_project_paths(graph, destination):
         original = current.project_dir
         for block in current.blocks.values():
             if original is not None and Path(original) != destination:
-                fields = set(block.project_path_parameters)
+                for relative in block.project_assets():
+                    assets.copy(original, relative)
+                fields = set(block.project_path_parameters) - set(block.project_asset_parameters)
                 if block.parameters.get("path_base") == "project" and block.block_type != "Output":
                     fields.update(STANDARD_FIELDS)
                 parameters = copy.deepcopy(block.parameters)
@@ -62,4 +67,5 @@ def rebase_project_paths(graph, destination):
     except BaseException:
         for owner, field, value in reversed(snapshots):
             setattr(owner, field, value)
+        assets.rollback()
         raise

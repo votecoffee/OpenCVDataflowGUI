@@ -4,10 +4,11 @@ from ..core import Block, Port, Result
 from ..images import opencv_image
 from ..payloads import NO_VALUE, frame
 from .graphics import draw_assessment
-from .model import load_classifier
+from .model import SURFACE_TEXTURE, load_classifier, read_manifest
 
 
 class ClassifyImage(Block):
+    project_asset_parameters = ("model",)
     type_id, title, category = "inspect.simple_classify_image", "SimpleClassify", "Inspection"
     block_type, subtype = "Inspection", "Classification"
     parallel_safe = True
@@ -28,6 +29,15 @@ class ClassifyImage(Block):
     }
     plugin_dialog_label = "Train image classifier…"
     plugin_dialog_modeless = True
+
+    def project_assets(self):
+        assets = super().project_assets()
+        if self.parameters["model"]:
+            path, root, data = read_manifest(self.project_dir, self.parameters["model"])
+            model = "surface.npz" if data["profile"] == SURFACE_TEXTURE else "forest.yml"
+            assets.append((path.parent / model).relative_to(root).as_posix())
+            assets.extend(row["path"] for entry in data["classes"] for row in entry["images"])
+        return assets
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

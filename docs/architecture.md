@@ -167,10 +167,19 @@ validation-set images, before serialization; a failed save restores the original
 parameters. Built-ins using `path_base="project"` preserve input fields `path`,
 `paths`, `image_paths`, `directory`, and `icc_path`. Relative output destinations
 retain their configured values. Plugins declare additional always-project-relative
-asset fields with `project_path_parameters = ("recipe_path", "training_images")`;
-the base declaration includes `recipe_path`. Values may be strings or lists of
-strings. Absolute paths and URLs retain their values. Ordinary text parameters
-are never interpreted as paths. Assets are referenced, never moved or copied.
+references with `project_path_parameters = ("training_images",)`. Values may be
+strings or lists of strings. Absolute paths and URLs retain their values.
+Ordinary text parameters are never interpreted as paths.
+
+Sealed assets use `project_asset_parameters` (the base declaration includes
+`recipe_path`). Their relative names stay unchanged, and Save As copies the files
+byte-for-byte inside the destination project. Override `project_assets()` to list
+bundle dependencies; SimpleClassify includes its native model and training images.
+All copied files must remain inside the original and destination project folders.
+The total copy budget is 256 MiB. Identical existing files are reused; conflicting
+files stop the save without overwriting them. A failed save removes only unchanged
+copies and empty directories created by that operation. Original files and pinned
+recipe hashes stay intact.
 
 Python plugin modules export `register(registry)` and add `Block` subclasses. Load
 plugins explicitly from a trusted local `.py` file; registration is staged so a

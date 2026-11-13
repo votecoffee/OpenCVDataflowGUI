@@ -17,6 +17,8 @@ def assets(tmp_path):
     original = tmp_path / "original"
     images = original / "images"
     images.mkdir(parents=True)
+    (original / "recipes").mkdir()
+    (original / "recipes/model.json").write_bytes(b'{"model":"original"}\n')
     pixels = np.arange(48, dtype=np.uint8).reshape(6, 8)
     assert cv2.imwrite(str(images / "part.png"), pixels)
     return original, pixels
@@ -120,7 +122,7 @@ class PluginAssets(Block):
         "documentation": "images/part.png",
         "endpoint": "https://example.org/model",
     }
-    project_path_parameters = ("recipe_path", "training_images", "endpoint")
+    project_path_parameters = ("training_images", "endpoint")
 
 
 def test_save_as_keeps_declared_plugin_calibration_and_profile_assets(tmp_path, assets):
@@ -142,9 +144,10 @@ def test_save_as_keeps_declared_plugin_calibration_and_profile_assets(tmp_path, 
     graph.save(original / "program.json")
     graph.save(tmp_path / "relocated.json")
     reopened = Graph.load(tmp_path / "relocated.json", registry)
-    assert (graph.project_dir / plugin.parameters["recipe_path"]).resolve() == (
+    assert plugin.parameters["recipe_path"] == "recipes/model.json"
+    assert (graph.project_dir / plugin.parameters["recipe_path"]).read_bytes() == (
         original / "recipes/model.json"
-    )
+    ).read_bytes()
     assert (graph.project_dir / plugin.parameters["training_images"][0]).resolve().is_file()
     assert plugin.parameters["documentation"] == "images/part.png"
     assert plugin.parameters["endpoint"] == "https://example.org/model"

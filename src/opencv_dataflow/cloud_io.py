@@ -214,6 +214,7 @@ def write_cloud(path, cloud, binary=False):
 
 
 class LoadCloud(Block):
+    project_path_parameters = ("path",)
     type_id, title, category = "input.cloud", "Load PLY / PCD point cloud", "Input"
     block_type, subtype = "Input", "Point clouds"
     outputs = (Port("cloud", "cloud"), Port("count", "number"))

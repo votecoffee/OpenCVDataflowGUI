@@ -126,11 +126,21 @@ class Block:
     parameter_choices: ClassVar[dict[str, tuple]] = {}
     parameter_help: ClassVar[dict[str, str]] = {}
     input_help: ClassVar[dict[str, str]] = {}
-    project_path_parameters: ClassVar[tuple[str, ...]] = ("recipe_path",)
+    project_path_parameters: ClassVar[tuple[str, ...]] = ()
+    project_asset_parameters: ClassVar[tuple[str, ...]] = ("recipe_path",)
     preview_safe: ClassVar[bool | None] = None
     parameter_ranges: ClassVar[dict[str, NumericRange]] = {}
     plugin_dialog_label: ClassVar[str] = ""
     plugin_dialog_modeless: ClassVar[bool] = False
+
+    def project_assets(self):
+        """Return project-contained files to copy on Save As; override for bundle dependencies."""
+        assets = []
+        for name in self.project_asset_parameters:
+            value = self.parameters.get(name)
+            if value:
+                assets.extend(value if isinstance(value, list) else [value])
+        return assets
 
     def create_plugin_dialog(self, parent, parameters, context):
         """Return a fresh QDialog that edits the supplied inspector draft."""
@@ -1553,7 +1563,7 @@ class Graph:
         from .project_paths import rebase_project_paths
 
         path = Path(path)
-        with rebase_project_paths(self, path.resolve().parent):
+        with rebase_project_paths(self, path.resolve().parent, path.resolve()):
             content = json.dumps(self.to_dict(), indent=2, allow_nan=False) + "\n"
             temporary = path.with_suffix(path.suffix + ".tmp")
             temporary.write_text(content, encoding="utf-8")
