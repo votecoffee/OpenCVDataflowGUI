@@ -110,7 +110,7 @@ BLOCK_MODULES = {
     ),
     "imgproc": (
         "cv.hann_window cv.decode_yuv calibration.color_balance cv.pack_remap_map "
-        "inspect.contour_hierarchy inspect.focus"
+        "inspect.contour_hierarchy inspect.focus inspect.slanted_edge"
     ),
     "imgcodecs": "input.file input.depth_file input.raw_yuv output.image",
     "calib": (
@@ -152,6 +152,7 @@ _MODULE_BY_BLOCK = {
 _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
     "inspect.focus": ("Laplacian", "Sobel", "Tenengrad", "sharpness", "blur"),
+    "inspect.slanted_edge": ("ESF", "LSF", "SFR", "MTF50", "MTF10", "edge spread", "sharpness"),
     "inspect.local_binary_patterns": ("LBP", "local_binary_pattern"),
     "inspect.gray_level_cooccurrence": ("GLCM", "Haralick", "graycoprops"),
     "cv.graph_segments": ("createGraphSegmentation",),

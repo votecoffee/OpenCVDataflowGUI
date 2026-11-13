@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 100 | 19 | 56 | 175 | 57.1% |
+| 1. Core and baseline 2D | 101 | 19 | 55 | 175 | 57.7% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 162 | 60 | 248 | 470 | 34.5% |
+| **Overall** | 163 | 60 | 247 | 470 | 34.7% |
 
 <!-- coverage-summary:end -->
 
@@ -304,7 +304,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S1-174 | Measure corners and angles from fitted image lines | fitLine with frame-aware line intersection and angle measurement | Complete | inspect.line_pair consumes fitted lines or selected line detections, aligns compatible frames and reports corners, acute/obtuse angles or overlap-based gaps in pixels or calibrated workplane units. Known corner/gap fixtures verify conditioning, extrapolation, coverage, tickets, tolerance reasons and result graphics. |
-| S1-175 | Measure sharpness from a slanted image edge | Subpixel edge sampling, edge-spread derivative and dft | Planned | Estimate an edge-spread curve and spatial-frequency response from a selected edge. Verify known blur levels, sample pitch, edge polarity and windowing, and report insufficient edge support or clipping. |
+| S1-175 | Measure sharpness from a slanted image edge | Subpixel edge sampling, edge-spread derivative and dft | Complete | inspect.slanted_edge. Selected straight-edge ESF/LSF/SFR, MTF50/10 and 10–90% width with native Nyquist bounds, sample pitch, gamma, windowing and derivative correction. Analytic Gaussian fixtures verify blur levels, gray/color depths, orientation, polarity, ticket/frame preservation and explicit support, fit, sampling and clipping failures. Ships a sharp/blurred replay example; engineering estimate, not ISO certification. |
 
 ## Stage 2 — ML and DNN for images and video
 

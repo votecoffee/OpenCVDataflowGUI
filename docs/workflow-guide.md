@@ -1011,3 +1011,26 @@ connections carry source-start/output-finish UTC timestamps and monotonic elapse
 including queue waits. **Results > Ticket results…** shows the overall observed span
 and per-tool durations. See [execution and ticket timing](timing.md) for measurement
 boundaries, parallel work and explicit final-decision timestamps.
+
+## Slanted-edge sharpness
+
+Use **OpenCV → Image Processing (imgproc) → Measurements → Measure slanted-edge sharpness**
+(`inspect.slanted_edge`) for one clean near-vertical or near-horizontal edge.
+An optional mask/region limits the support. Include flat plateaus on both sides,
+use linear luminance or a known gamma correction, and avoid saturation. The
+original image encoding and ticket/frame payload remain attached to the output.
+
+The report contains sampled ESF and LSF arrays, the SFR frequency axis, MTF50/10,
+10–90% width, fit quality and all measurement settings. Frequencies are cycles
+per selected length unit; sample pitch is length per **current input pixel**.
+Set it again after resizing. The block does not infer a physical calibration.
+Crossings above native Nyquist have no scalar output and are reported as bounds.
+The optional minimum MTF50 uses an inclusive limit in the selected units. The
+node score is MTF50 relative to native Nyquist, capped at one for a bound.
+
+The result chart is diagnostic; fitted-edge, sampling-band and status annotations
+are drawable result graphics on the original image. Both honor graphics settings.
+Low contrast, clipping, curvature, incomplete support or unfilled subpixel bins
+produce a failed report with a reason, rather than an invented measurement.
+This is an engineering estimate, not an ISO 12233 compliance instrument. Try the
+[sharp/blurred example](<../examples/custom tools/slanted_edge_sharpness/README.md>).

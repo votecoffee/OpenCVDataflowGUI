@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Original sharp and blurred edges",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/sharp.png",
+          "assets/blurred.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint16",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "inspect.slanted_edge",
+      "name": "Measure slanted-edge sharpness",
+      "parameters": {
+        "orientation": "auto",
+        "half_width": 16,
+        "oversampling": "4",
+        "fit_method": "huber",
+        "minimum_rows": 32,
+        "minimum_coverage": 0.8,
+        "minimum_contrast": 0.1,
+        "minimum_slant": 1.0,
+        "maximum_slant": 15.0,
+        "maximum_fit_rms": 0.35,
+        "plateau_samples": 4,
+        "maximum_plateau_drift": 0.01,
+        "window": "hann",
+        "derivative_correction": true,
+        "gamma": 1.0,
+        "reject_clipping": true,
+        "maximum_clipped_fraction": 0.01,
+        "sample_pitch": 1.0,
+        "length_unit": "pixel",
+        "check_threshold": true,
+        "minimum_mtf50": 0.15
+      },
+      "position": [
+        330.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mtf50",
+        "mtf10",
+        "measurements",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture_note",
+      "type": "layout.comment",
+      "name": "Original fixtures: Gaussian edge sharpness",
+      "description": "Original synthetic images, project and generator under this repository's MIT license. Run all: sigma 0.8 passes; sigma 2.0 fails a 0.15 cycles/pixel MTF50 limit. Open the measurement's result tab for the ESF and SFR chart. This engineering estimate is not an ISO 12233 conformance instrument.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -270.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "measure",
+      "input": "image"
+    }
+  ]
+}

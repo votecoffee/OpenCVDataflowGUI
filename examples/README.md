@@ -190,6 +190,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Lens map files](<custom tools/lens_map_files/README.md>) | Reload a saved map pair and straighten a synthetic grid using the restored maps. |
 | [LightGlue feature matching](<custom tools/lightglue_match/README.md>) | Match a synthetic textured reference into a scene using SIFT features and LightGlue. |
 | [Line-pair metrology](<custom tools/line_pair_metrology/README.md>) | Detect cropped edges, align fitted lines to the original image, and judge corner angles or parallel gaps. |
+| [Slanted-edge sharpness](<custom tools/slanted_edge_sharpness/README.md>) | Compare original sharp/blurred edges using ESF/SFR, MTF50 and an inclusive inspection limit. |
 | [Masks from signed labels](<custom tools/label_masks/README.md>) | Select watershed boundaries and interiors directly from the label image. |
 | [Minimum spanning tree](<custom tools/minimum_spanning_tree/README.md>) | Find and overlay the shortest network connecting five detected centers using Delaunay edges. |
 | [Motion deblur](<custom tools/motion_deblur/README.md>) | Restore a frame blurred by an eight-pixel horizontal motion path. |

@@ -774,7 +774,7 @@ measurements that need new outputs and validation.
 | `cv2.fitLine` | The image fit supplies individual lines. Line-pair metrology now measures frame-aware corners, angles and gaps; spatial-axis fitting remains a separate planned workflow. | S1-33, S1-174, S3-129 |
 | `cv2.calibrateCameraExtended` | Shipped fit diagnostics support capture-set assessment. Add coverage, pose diversity and repeatability checks on the set. | S3-02, S3-127 |
 | `cv2.projectPoints`, `cv2.projectPointsSepJ` | Use projection derivatives or perturbation trials within calibrated uncertainty measurement. Preserve covariance assumptions and output units. | S3-09, S3-128 |
-| `Edge-spread and spatial-frequency response` | Derive a measurement from a selected slanted edge with a known sampling grid and validated frequency axis. | S1-175 |
+| `Edge-spread and spatial-frequency response` | `inspect.slanted_edge` derives selected ESF/LSF/SFR and MTF50/10 on the current pixel grid, with explicit sample pitch, windowing, derivative correction, Nyquist bounds and unsupported-edge reports. Qualified against analytic Gaussian edges; no ISO compliance claim. | S1-175 |
 | `Custom BRISK sampling layouts` | Treat custom radii, sample counts and comparison ordering as extensions of the existing descriptor contract. Qualify persisted settings and matching compatibility before claiming support for the extension. | S1-43 |
 | `Array and feature record types` | Mat, rotated rectangles, keypoints, matches and file-storage objects remain representations inside graph tools. | — |
 | `Python bootstrap, HighGUI and platform utilities` | Keep package initialization, windowing, timings and hardware controls under packaging and runtime qualification. | — |

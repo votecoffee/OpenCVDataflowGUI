@@ -784,6 +784,7 @@ def builtin_registry():
     )
     from .simple_classifier.dataflow import ClassifyImage
     from .skeleton import PruneSkeleton, Skeletonize
+    from .slanted_edge import MeasureSlantedEdge
     from .spanning_tree import MinimumSpanningTree
     from .spectral import SPECTRAL_BLOCKS
     from .stabilization import StabilizeCameraMotion
@@ -944,6 +945,7 @@ def builtin_registry():
         AdaptiveBackgroundCorrection,
         CompareImageQuality,
         MeasureFocus,
+        MeasureSlantedEdge,
         ComputeImageHash,
         CompareImageHashes,
         MeasureBRISQUE,

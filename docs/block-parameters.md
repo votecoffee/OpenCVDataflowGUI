@@ -5564,6 +5564,42 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `max_iterations` | `0` | Value must be a whole number between 0 and 10000. Guo–Hall only. Zero runs until stable. |
 | `medial_axis_seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Local random seed for breaking medial-axis ties. |
 
+## Measure slanted-edge sharpness (`inspect.slanted_edge`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray/color uint8 or uint16, or float32 on [0,1]. Original output image is preserved.
+
+Input `mask` — Optional edge support mask; intersects the region. Sampling bands need continuous support.
+
+Input `region` — Optional image-space ROI around one straight edge, with both plateaus included.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `orientation` | `"auto"` | `auto`, `vertical`, `horizontal` Select one near-vertical or near-horizontal straight edge in the ROI. |
+| `half_width` | `16` | Value must be a whole number between 4 and 128. Perpendicular sampling distance on each side, in current input pixels; include flat plateaus. |
+| `oversampling` | `"4"` | `2`, `4`, `8` ESF bins per pixel. A long slanted edge must populate every bin. |
+| `fit_method` | `"huber"` | `huber`, `l2` Native fitLine distance metric for the scanline gradient centroids. |
+| `minimum_rows` | `32` | Value must be a whole number between 8 and 4096. Minimum number of complete, contrasting scanlines along the edge. |
+| `minimum_coverage` | `0.8` | Value must be a finite number between 0.1 and 1. Fraction of selected scanlines required to contain a supported edge. |
+| `minimum_contrast` | `0.1` | Value must be a finite number between 0.001 and 1. Minimum plateau difference after range normalization and gamma, on [0,1]. |
+| `minimum_slant` | `1.0` | Value must be a finite number between 0.1 and 15. Absolute angle from vertical/horizontal; avoid axis-aligned edges with no subpixel diversity. |
+| `maximum_slant` | `15.0` | Value must be a finite number between 0.1 and 30. Maximum absolute slant from the chosen orientation, in degrees. |
+| `maximum_fit_rms` | `0.35` | Value must be a finite number between 0.01 and 5. Maximum scanline centroid residual, in current input pixels. |
+| `plateau_samples` | `4` | Value must be a whole number between 2 and 32. Samples at each selected scanline end used to find edge contrast/polarity. |
+| `maximum_plateau_drift` | `0.01` | Value must be a finite number between 0.001 and 1. Allowed end-plateau drift as a fraction of edge contrast. |
+| `window` | `"hann"` | `hann`, `hamming`, `none` Taper the line-spread function before the DFT; keep fixed for comparisons. |
+| `derivative_correction` | `true` | Compensate the central-difference frequency response through native Nyquist. |
+| `gamma` | `1.0` | Value must be a finite number between 0.1 and 5. Raise normalized luminance to this power before measuring. 1 assumes linear light; this is not an sRGB decoder. |
+| `reject_clipping` | `true` | Fail when luminance samples at 0 or full scale exceed the configured fraction. |
+| `maximum_clipped_fraction` | `0.01` | Value must be a finite number between 0 and 1. Maximum fraction at normalized luminance range limits. |
+| `sample_pitch` | `1.0` | Value must be a finite number between 1e-09 and 1e+09. Length per current input pixel at the measurement plane. No calibration is inferred. |
+| `length_unit` | `"pixel"` | `pixel`, `mm`, `um`, `in` Frequency outputs are cycles per this unit; sample pitch uses the same unit. |
+| `check_threshold` | `false` | Apply an inclusive minimum MTF50, expressed in cycles per selected length unit. |
+| `minimum_mtf50` | `0.15` | Value must be a finite number between 0 and 1e+09. Inclusive sharpness limit. A crossing above Nyquist is reported as a bound, not invented. |
+
 ## Group strip defects (`inspect.strip_defects`)
 
 Inspection / Measurements
