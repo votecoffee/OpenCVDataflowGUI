@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/pcb2-0000.jpg",
+          "assets/pcb2-0621.jpg"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspection",
+      "type": "inspect.simple_reference",
+      "name": "SimpleReferenceInspect",
+      "parameters": {
+        "recipe_path": "assets/reference.sri",
+        "sha256": "0a19af29f25de7a25c8507c55a04e9de5175f9d5bef6e39bae752ba3b236e47b",
+        "render_overlay": true,
+        "render_assessment": true
+      },
+      "position": [
+        370.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "inspection",
+        "defect_mask",
+        "inspected_mask",
+        "deviation_map",
+        "residual",
+        "defect_area",
+        "overlay",
+        "assessment"
+      ],
+      "thumbnail": true,
+      "preview_output": "assessment"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "inspection",
+      "input": "image"
+    }
+  ]
+}

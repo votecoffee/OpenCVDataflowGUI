@@ -1,0 +1,76 @@
+{
+  "aligned_0": {
+    "project": "project.json",
+    "frame_index": 0,
+    "recipe_sha256": "213df47636a7b41dcf80fa45a4b8cff71f9ae52575fa4ebe703609a05d56fb0f",
+    "state": "pass",
+    "input_pixels_sha256": "0af25401d27e4582a865f9e8e5b00925faa9b5e032f4cc3304b965d75a4c8e23",
+    "reference_mean_sha256": "ce4e067ec9359e05c8eeb8bb0bc163f4aa01fd372611dc46b9ba100897b2593e",
+    "report_sha256": "56332cfd8073f49f7eb64bc648ad108d77fdf243fc9859d14d86d0fcf266489b"
+  },
+  "aligned_1": {
+    "project": "project.json",
+    "frame_index": 1,
+    "recipe_sha256": "213df47636a7b41dcf80fa45a4b8cff71f9ae52575fa4ebe703609a05d56fb0f",
+    "state": "fail",
+    "input_pixels_sha256": "4102481b975b37a04433634f8e7adcd237647b0cb395f74e91b3ed31693a0824",
+    "reference_mean_sha256": "ce4e067ec9359e05c8eeb8bb0bc163f4aa01fd372611dc46b9ba100897b2593e",
+    "report_sha256": "32f11e0969a8ea78f27aeefbcebb4a57d1211f9003a622673ac3fb8d74d1d7fe"
+  },
+  "unsupported_reference": {
+    "description": "Explicit off-image pose; unchanged saved recipe settings.",
+    "state": "not_evaluated",
+    "input_pixels_sha256": "4102481b975b37a04433634f8e7adcd237647b0cb395f74e91b3ed31693a0824",
+    "reference_mean_sha256": "ce4e067ec9359e05c8eeb8bb0bc163f4aa01fd372611dc46b9ba100897b2593e",
+    "report_sha256": "493285641cd9e697765509e0a3c446c9535c81d787d0625cbb0c9febaa16a68f"
+  },
+  "fixture_capture_0": {
+    "project": "fixture_capture/project.json",
+    "frame_index": 0,
+    "recipe_sha256": "b29114a05b9c1b47693a3f561882b70e3c8ff515a1274741aa5c5bd62f5b2e7f",
+    "state": "pass",
+    "input_pixels_sha256": "aa4feb39da4fcbe360a867521ca317332ed4fd012f7297609fbfd8557e5408b5",
+    "reference_mean_sha256": "09009e516b3297f824f4bcb16ebddfbab964faf13bd5dcae5859dec163273dab",
+    "report_sha256": "007ec832eb036fc53f3680f42f4fa7ea33267b2026c873e677c6621dde6380a9"
+  },
+  "fixture_capture_1": {
+    "project": "fixture_capture/project.json",
+    "frame_index": 1,
+    "recipe_sha256": "b29114a05b9c1b47693a3f561882b70e3c8ff515a1274741aa5c5bd62f5b2e7f",
+    "state": "pass",
+    "input_pixels_sha256": "0c3981e69eec5131a884215630a0530e081a08c1875ff04ac64ecaf2b21c99b4",
+    "reference_mean_sha256": "09009e516b3297f824f4bcb16ebddfbab964faf13bd5dcae5859dec163273dab",
+    "report_sha256": "007ec832eb036fc53f3680f42f4fa7ea33267b2026c873e677c6621dde6380a9"
+  },
+  "fixture_capture_2": {
+    "project": "fixture_capture/project.json",
+    "frame_index": 2,
+    "recipe_sha256": "b29114a05b9c1b47693a3f561882b70e3c8ff515a1274741aa5c5bd62f5b2e7f",
+    "state": "fail",
+    "input_pixels_sha256": "212a34c6198f5db5fb74961426c78612a32dd953da50de126ee2da244a43be88",
+    "reference_mean_sha256": "09009e516b3297f824f4bcb16ebddfbab964faf13bd5dcae5859dec163273dab",
+    "report_sha256": "c48b1381b28cb01bfc558b45c0a6b457b8459bc1e2ebfc73d8a6957a3baca414"
+  },
+  "visa_pcb2_0": {
+    "source": "pattern_matching/visa_pcb2/assets/pcb2-0000.jpg",
+    "source_file_sha256": "9cad63a1fbf0890e28773ab847a2f32f360bc819eff3432bdba8309fa2a600a4",
+    "training_sample_count": 1,
+    "source_ground_truth": "normal",
+    "description": "Default settings; one good reference; no pose alignment.",
+    "state": "pass",
+    "input_pixels_sha256": "a04b10038623e09fb03ac34df8e9e1c6a77709e0f450cd3c1b0dfd3d8e288f8e",
+    "reference_mean_sha256": "297445bddfa62fd7f079ef2d141bea8904c7c62a852a6157dd41974042fbba20",
+    "report_sha256": "1e4b3547f4a915c3c59c77a16f51f3c4ab8f1d699665a3d7c7e4f449c83ced3b"
+  },
+  "visa_pcb2_1": {
+    "source": "pattern_matching/visa_pcb2/assets/pcb2-0621.jpg",
+    "source_file_sha256": "b9bf6245b8408151d2053a6cb4d51e788eefd0ee9e0f52265e2fbb91196b2067",
+    "training_sample_count": 1,
+    "source_ground_truth": "normal",
+    "description": "Default settings; one good reference; no pose alignment.",
+    "state": "not_evaluated",
+    "input_pixels_sha256": "9089cf024846089ebcd1f130bc357255ba3f1256ec14754299ff2afa8db013c7",
+    "reference_mean_sha256": "297445bddfa62fd7f079ef2d141bea8904c7c62a852a6157dd41974042fbba20",
+    "report_sha256": "96c374b2fe3918a051afefd6fc411dc026cc98981205b2cc7380205a869a3dbd"
+  }
+}

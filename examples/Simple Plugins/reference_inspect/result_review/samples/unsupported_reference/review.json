@@ -1,0 +1,217 @@
+{
+  "model": "simple_reference_inspect_review_v1",
+  "state": "not_evaluated",
+  "inspection": {
+    "model": "simple_reference_inspect_v1",
+    "passed": false,
+    "evaluated": false,
+    "failures": [
+      "reference_coverage_below_minimum",
+      "normalization_support_below_minimum",
+      "no_inspection_pixels"
+    ],
+    "coverage": 0.0,
+    "exposure": {
+      "gain": null,
+      "offset": null,
+      "correlation": null
+    },
+    "inspected_pixels": 0,
+    "defect_area": 0,
+    "defects": [],
+    "area_units": "reference_pixels",
+    "max_deviation": null,
+    "settings": {
+      "absolute_threshold": 12,
+      "variation_multiplier": 3,
+      "edge_tolerance_px": 0.75,
+      "normalization": "gain_offset",
+      "min_gain": 0.5,
+      "max_gain": 2.0,
+      "min_correlation": 0.85,
+      "min_coverage": 0.98,
+      "min_defect_area": 12,
+      "max_total_defect_area": 0
+    }
+  },
+  "metrics": [
+    {
+      "name": "Geometric support",
+      "value": 0.0,
+      "units": "fraction",
+      "minimum": 0.98,
+      "maximum": null,
+      "status": "outside limits"
+    },
+    {
+      "name": "Exposure gain",
+      "value": null,
+      "units": "ratio",
+      "minimum": 0.5,
+      "maximum": 2.0,
+      "status": "unavailable"
+    },
+    {
+      "name": "Reference correlation",
+      "value": null,
+      "units": "correlation",
+      "minimum": 0.85,
+      "maximum": null,
+      "status": "unavailable"
+    },
+    {
+      "name": "Accepted change area",
+      "value": null,
+      "units": "reference pixels",
+      "minimum": null,
+      "maximum": 0,
+      "status": "unavailable"
+    },
+    {
+      "name": "Maximum deviation",
+      "value": null,
+      "units": "tolerance ratio",
+      "minimum": null,
+      "maximum": null,
+      "status": "unavailable"
+    }
+  ],
+  "expected_inspection_pixels": 24576,
+  "inspected_reference_pixels": 0,
+  "reference_size": [
+    256,
+    192
+  ],
+  "input_size": [
+    256,
+    192
+  ],
+  "input_dtype": "uint8",
+  "input_pixels_sha256": "4102481b975b37a04433634f8e7adcd237647b0cb395f74e91b3ed31693a0824",
+  "reference_mean_sha256": "ce4e067ec9359e05c8eeb8bb0bc163f4aa01fd372611dc46b9ba100897b2593e",
+  "reference_tolerance_sha256": "4ce74975e632342ed75ec5872467f1a4fc90ea6baab34c64a652747a8d70be59",
+  "inspection_region_sha256": "f1e8804658a998aecac556871458b2a62a92fdf1214d2ea0c176c970e7852190",
+  "normalization_region_sha256": "ba08e6bed258bc9085215be92fa264a75208eb4a66ba40fd7953b3415e5da47a",
+  "reference_to_image": [
+    [
+      1.0,
+      0.0,
+      1000.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0
+    ]
+  ],
+  "display": {
+    "intensity_range": [
+      28.87030601501465,
+      179.03150939941406
+    ],
+    "signed_residual_range": [
+      -89.23947143554688,
+      89.23947143554688
+    ],
+    "deviation_range": [
+      0.0,
+      2.0
+    ],
+    "tolerance_boundary": 1.0
+  },
+  "training_health": {
+    "sample_count": 8,
+    "samples": [
+      {
+        "gain": 1.0,
+        "offset": 0.0,
+        "correlation": 1.0
+      },
+      {
+        "gain": 0.9528400360155448,
+        "offset": -0.6828231117079753,
+        "correlation": 0.9982264402949956
+      },
+      {
+        "gain": 0.9095208444776995,
+        "offset": -1.2380789008404918,
+        "correlation": 0.9972011953179938
+      },
+      {
+        "gain": 0.869152029232691,
+        "offset": -1.6728663635849301,
+        "correlation": 0.9959820939772609
+      },
+      {
+        "gain": 0.8398042153986786,
+        "offset": -3.1853668061061313,
+        "correlation": 0.9976565995294413
+      },
+      {
+        "gain": 0.808293328154277,
+        "offset": -3.914061235212472,
+        "correlation": 0.9981774688209705
+      },
+      {
+        "gain": 0.7783304325347632,
+        "offset": -4.449857544161205,
+        "correlation": 0.9982893798326438
+      },
+      {
+        "gain": 0.7508755155341652,
+        "offset": -5.0545117587004285,
+        "correlation": 0.9983530490945292
+      }
+    ],
+    "warnings": [],
+    "mean_standard_deviation": 0.9922160506248474
+  },
+  "arrays": {
+    "residual": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "3381de4ca9f3a477f25989dfc8b744e7916046b7aa369f61a9a2f7dc0963ec9e"
+    },
+    "deviation_map": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "3381de4ca9f3a477f25989dfc8b744e7916046b7aa369f61a9a2f7dc0963ec9e"
+    },
+    "inspected_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "2aae7dc846aaf25f1cadf55f1666862046c6db9d65d84bdc07fa039dac405606"
+    },
+    "defect_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "2aae7dc846aaf25f1cadf55f1666862046c6db9d65d84bdc07fa039dac405606"
+    }
+  },
+  "images": {
+    "0_reference_mean.png": {
+      "view": "Reference mean",
+      "grid": "reference"
+    },
+    "1_normalized_current.png": {
+      "view": "Normalized current",
+      "grid": "reference"
+    },
+    "2_signed_residual.png": {
+      "view": "Signed residual",
+      "grid": "reference"
+    },
+    "3_deviation_tolerance.png": {
+      "view": "Deviation / tolerance",
+      "grid": "reference"
+    },
+    "4_inspected_coverage.png": {
+      "view": "Inspected coverage",
+      "grid": "reference"
+    },
+    "5_input_overlay.png": {
+      "view": "Input overlay",
+      "grid": "input"
+    }
+  }
+}

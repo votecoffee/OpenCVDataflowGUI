@@ -7,6 +7,11 @@ check reference agreement.
 
 For a moving part, open the [paired fixture capture example](fixture_capture/README.md).
 
+The [result review gallery](result_review/README.md) adds synchronized comparison
+views, an optional assessment image, native-map exports and real VisA PCB gate
+diagnostics. Open [assessment-project.json](assessment-project.json) to publish
+the assessment in the result filmstrip with the original recipe unchanged.
+
 ## Setup
 
 Install SimpleReferenceInspect into the environment running DataflowGUI.
