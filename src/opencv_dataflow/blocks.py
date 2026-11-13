@@ -796,6 +796,7 @@ def builtin_registry():
     from .scan_stitching import StitchScanSequence
     from .segmentation import SEGMENTATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
+    from .shadow_compensation import CompensateReferenceShadows
     from .shape_fitting import (
         BoundingConvexPolygon,
         BoundingRotatedRectangle,
@@ -979,6 +980,7 @@ def builtin_registry():
         WatershedPointSeeds,
         WatershedMaskSeeds,
         FlatFieldCorrection,
+        CompensateReferenceShadows,
         BuildFlatFieldReference,
         AdaptiveBackgroundCorrection,
         CompareImageQuality,

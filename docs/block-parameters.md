@@ -3008,6 +3008,33 @@ Input `corners` — Four clockwise image points. The first becomes the top-left 
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
 | `border_value` | `0.0` |  |
 
+## Detect and compensate reference shadows (`cv.reference_shadows`)
+
+Image processing / Illumination
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reference` (image), `fit_mask` (image, optional).
+
+Input `reference` — Aligned unshadowed reference, matching intensity encoding/depth; alpha may be omitted. Changes in material or geometry can be confused with shadows.
+
+Input `fit_mask` — Optional uint8 same-grid mask of trusted unchanged material for gain fitting. It limits estimation only; correction still covers the complete detected region.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_alignment` | `"pixel_grid"` | `pixel_grid`, `same_frame` Pixel-aligned captures may have different roots/tickets. Same frame additionally checks known coordinate grids; no registration is performed. |
+| `min_reference` | `0.01` | Value must be a finite number at least 0. Minimum reference mean: integer full-scale fraction, or float raw units. |
+| `min_ratio` | `0.2` | Value must be a finite number between 1e-06 and 0.999999. Minimum current/reference mean ratio for candidate shadow pixels. |
+| `max_ratio` | `0.9` | Value must be a finite number between 1e-06 and 0.999999. Maximum attenuation ratio; must exceed minimum and be below one. |
+| `max_chroma_error` | `0.05` | Value must be a finite number between 0 and 1. Maximum absolute channel-fraction difference; ignored for gray. |
+| `minimum_area` | `128` | Value must be a whole number between 1 and 4.1943e+06. Discard smaller candidate components as possible local defects. |
+| `connectivity` | `8` | `4`, `8` 4 or 8 connected shadow neighbors; hole topology uses the complement. |
+| `fill_holes_area` | `0` | Value must be a whole number between 0 and 4.1943e+06. Fill enclosed holes up to this area, including possible defects. Zero disables it. Cannot cross selection or invalid reference pixels. |
+| `fit_erosion` | `1` | Value must be a whole number between 0 and 32. Erode component fit support by this radius, not the output mask. |
+| `minimum_fit_pixels` | `32` | Value must be a whole number between 1 and 4.1943e+06. Minimum original candidate pixels in eroded support and Fit mask. |
+| `max_ratio_spread` | `0.15` | Value must be a finite number between 0 and 10. Reject if (90th-10th percentile)/median ratio exceeds this limit. |
+| `max_gain` | `8.0` | Value must be a finite number between 1 and 64. Reject a component needing a larger reciprocal-median gain. |
+| `clip_policy` | `"reject"` | `reject`, `clip` Reject withholds Image/Gain if correction exceeds output depth. Clip explicitly permits saturation and reports the affected pixels. |
+| `maximum_components` | `256` | Value must be a whole number between 1 and 4096. Bound retained shadow components and per-component reports. |
+
 ## Register scan layout (`cv.register_scan_layout`)
 
 Image processing / Geometry

@@ -7,6 +7,7 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "cv.reference_shadows": "connectedComponentsWithStats erode",
     "inspect.logpolar_registration": (
         "dft warpPolar phaseCorrelate findTransformECCWithMask warpAffine"
     ),

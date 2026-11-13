@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Clear / shadow replay",
+      "parameters": {
+        "path": "assets/clear.png",
+        "source_mode": "files",
+        "paths": [
+          "assets/clear.png",
+          "assets/shadow.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Unshadowed nominal reference",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [
+          "assets/clear.png",
+          "assets/shadow.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        280
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "clear",
+      "type": "input.file",
+      "name": "Independent expected pixels",
+      "parameters": {
+        "path": "assets/clear.png",
+        "source_mode": "single",
+        "paths": [
+          "assets/clear.png",
+          "assets/shadow.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        560
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "shadows",
+      "type": "cv.reference_shadows",
+      "name": "Constant gain per qualified shadow",
+      "parameters": {
+        "reference_alignment": "pixel_grid",
+        "min_reference": 0.01,
+        "min_ratio": 0.2,
+        "max_ratio": 0.9,
+        "max_chroma_error": 0.05,
+        "minimum_area": 256,
+        "connectivity": 8,
+        "fill_holes_area": 0,
+        "fit_erosion": 1,
+        "minimum_fit_pixels": 32,
+        "max_ratio_spread": 0.15,
+        "max_gain": 8.0,
+        "clip_policy": "reject",
+        "maximum_components": 256
+      },
+      "position": [
+        450,
+        150
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "reference",
+        "mask",
+        "fit_mask"
+      ],
+      "exposed_outputs": [
+        "image",
+        "shadow_mask",
+        "gain_map",
+        "valid",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        900,
+        150
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original shadow and defect fixtures - MIT",
+      "description": "Original synthetic images, truth, generator and projects: repository MIT. Run all: clear.png has no shadow candidates and retains the 48-pixel dark defect. shadow.png has exactly 9,984 shadow pixels (x < 104), attenuation 0.5 and gain 2. Both corrected outputs equal the independent clear.png pixel for pixel, including the sharp part boundary, cast-shadow boundary, texture and real dark defect. Defect contrast against the nominal reference remains R/G/B = 8000/7000/6000. Minimum shadow area 256 rejects the smaller isolated defect in the clear frame. The reference supplies a robust regional gain, never replacement image pixels. Invalid_fit.json has joined attenuation 0.4/0.7 and must withhold Image/Gain. This is a neutral constant-attenuation hypothesis; similar dark material changes can be confused with shadows. Use trusted Fit mask support and validate your job. No registration, penumbra model or final inspection judgment is implied. API: https://docs.opencv.org/5.0/main_modules/imgproc_shape.html",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "shadows",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "shadows",
+      "input": "reference"
+    },
+    {
+      "source": "shadows",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

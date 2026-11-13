@@ -44,6 +44,14 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Reference-guided shadow correction](<../examples/custom tools/reference_shadows/README.md>)
+(S1-145) now detects neutral darker components and applies one qualified robust
+gain per region. Trusted fit support, chromatic agreement, area/hole policies,
+spread and clipping limits keep the hypothesis explicit. Invalid models withhold
+corrected pixels while retaining masks and reasons. Original 16-bit RGB replay
+verifies exact clear/shadow recovery, defect contrast and hard-edge preservation;
+spatially varying or chromatic shadows remain outside this qualified model.
+
 [Unicode inspection annotations](<../examples/opencv tools/unicode_annotations/README.md>)
 (S1-144) now compose FreeType glyph coverage on uint8/uint16/float images,
 with selectable font/face, size, outline and direction. Frame-aware graphics

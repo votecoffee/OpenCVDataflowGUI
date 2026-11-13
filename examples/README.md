@@ -227,6 +227,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Debounce foreground components](<custom tools/foreground_debounce/README.md>) | Confirm a moving part, reject intermittent glints/shadows, and require reconfirmation after a missed acquisition using exact expected masks. |
 | [Controlled image distortion fixtures](<custom tools/distortion_fixture/README.md>) | Generate reproducible shear, perspective and lens-like warps, inspect analytic donor probes and reuse typed maps against independent 16-bit RGB references. |
 | [Signal/background contrast](<custom tools/region_contrast/README.md>) | Compare known 16-bit RGB patches, verify channel CNR and expected strong/weak outcomes, and inspect an intentional overlap error. |
+| [Reference-guided cast shadows](<custom tools/reference_shadows/README.md>) | Restore a clear/shadow pair with exact 16-bit RGB pixel and defect-contrast truth; inspect a deliberately rejected nonuniform model. |
 | [Skeletonization and spur pruning](<custom tools/skeleton_pruning/README.md>) | Extract a binary centerline and visualize the short branches removed from it. |
 | [Smooth a recorded camera path](<custom tools/offline_camera_stabilization/README.md>) | Apply centered look-ahead to a recorded batch and replay corrected frames with their source tickets. |
 | [Sort numeric table](<custom tools/numeric_table_sort/README.md>) | Rank complete part records by score and compare that with independent column sorting. |

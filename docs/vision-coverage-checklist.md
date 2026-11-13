@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 122 | 16 | 37 | 175 | 69.7% |
+| 1. Core and baseline 2D | 123 | 16 | 36 | 175 | 70.3% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 184 | 57 | 229 | 470 | 39.1% |
+| **Overall** | 185 | 57 | 228 | 470 | 39.4% |
 
 <!-- coverage-summary:end -->
 
@@ -224,7 +224,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S1-145 | Hard-shadow detection and compensation | Illumination models, color ratios, masks and guided boundary handling | Planned | Replay the same part with a cast-shadow edge. Report the shadow mask and verify defect contrast and boundary preservation on both views. |
+| S1-145 | Hard-shadow detection and compensation | Aligned reference ratios, chromatic agreement, connected components and robust regional gains | Complete | cv.reference_shadows detects neutral darker regions, fits reciprocal-median attenuation on eroded/trusted support, and preserves local image samples and hard boundaries. Exposes selection, topology/hole, gain/spread and clipping policies with diagnostic masks/data; invalid evidence withholds Image/Gain. Original 16-bit RGB clear/shadow replay restores exact independent pixels and retains defect contrast; inconsistent attenuation is rejected. Qualifies a region-constant neutral-shadow hypothesis, not universal shadow/material separation, registration or penumbra correction. |
 | S1-146 | Correct lateral chromatic aberration | correctChromaticAberration, loadChromaticAberrationParams | Planned | Correct known color fringes with declared lens settings and measure channel alignment and invalid border coverage. |
 | S1-147 | Estimate and refine camera parameters for panoramas | detail rotation estimators, bundle adjustment and wave correction | Planned | Fit a rotating-camera image set with known focal length and yaw. Verify overlap consistency, residuals, and bad-view rejection. |
 | S1-148 | Fill stabilization borders for review | Video stabilization inpainting or neighboring-frame fill | Planned | Fill uncovered display pixels from aligned neighbors where possible and preserve a separate measured-coverage mask for inspection. Verify both outputs on known jitter. |
