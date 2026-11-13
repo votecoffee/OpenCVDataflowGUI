@@ -859,6 +859,7 @@ def builtin_registry():
     from .spanning_tree import MinimumSpanningTree
     from .spectral import SPECTRAL_BLOCKS
     from .stabilization import StabilizeCameraMotion
+    from .stack_blur import StackBlur
     from .stereo3d import STEREO3D_BLOCKS
     from .stream_stabilization import StabilizeStream
     from .strip_defects import GroupStripDefects, JudgeStripDefects
@@ -905,6 +906,7 @@ def builtin_registry():
         Blur,
         Canny,
         *BASIC_PROCESSING_BLOCKS,
+        StackBlur,
         DecodePackedYuv,
         EncodeImage,
         DecodeImage,
