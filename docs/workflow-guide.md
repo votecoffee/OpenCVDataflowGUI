@@ -1061,3 +1061,28 @@ ticket and frame; its score label is drawable result graphics. Correlation ignor
 positive gain/offset and is a global score: use absolute-error metrics or local
 regions when brightness differences or small defects must fail. Try the
 [intact/missing-bore example](<../examples/opencv tools/aligned_image_comparison/README.md>).
+
+## Laplacian image pyramids
+
+Use **OpenCV → Image Processing (imgproc) → Pyramids → Laplacian image pyramid
+set** (`cv.laplacian_pyramid`) to produce largest-first signed detail bands and
+one coarse base. The set uses the existing pyramid connector. **Select pyramid
+level** preserves a band's signed samples and local coordinates; its diagnostic
+preview maps zero to neutral gray. Ordinary image inputs can also select a level.
+A Laplacian level is a coefficient image, rather than a lower-resolution original.
+
+The default floating backend uses raw-unit float64 bands; float32 is optional.
+Gray, RGB/BGR and RGBA/BGRA uint8, uint16, int16 and floating inputs are supported.
+Convert HSV/Lab or split their channels first. Native detail wraps the CPU stitching
+helpers for uint8 three-channel images, signed int16 bands and reflect-101 borders.
+Both backends record exact dimensions so odd widths/heights reconstruct correctly.
+
+**Reconstruct Laplacian pyramid** (`cv.reconstruct_laplacian_pyramid`) restores the
+source frame, source pyramid context and original dtype by default. Integer output
+rounds and saturates, reporting clipped samples. Floating output retains raw sample
+units, including a 0–65535 scale when the source was uint16. Floating pyramids also
+accept a largest-first detail-gain list; zero removes that band and an empty list
+uses unit gains. Native detail reconstruction requires unit gains and copies bands
+before its in-place native call. Incomplete, Gaussian or incompatible sets fail
+validation. The CPU paths are qualified; GPU detail helpers are not included.
+Try the [16-bit round-trip and band-edit example](<../examples/opencv tools/laplacian_pyramid/README.md>).

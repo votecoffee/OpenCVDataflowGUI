@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 102 | 19 | 54 | 175 | 58.3% |
+| 1. Core and baseline 2D | 103 | 19 | 53 | 175 | 58.9% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 164 | 60 | 246 | 470 | 34.9% |
+| **Overall** | 165 | 60 | 245 | 470 | 35.1% |
 
 <!-- coverage-summary:end -->
 
@@ -198,7 +198,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S1-124 | Laplacian image pyramids | pyrDown, pyrUp and detail Laplacian-pyramid routines | Planned | Expose signed residual levels and verify reconstruction across odd image dimensions and preserved source frames. |
+| S1-124 | Laplacian image pyramids | pyrDown, pyrUp, detail.createLaplacePyr and detail.restoreImageFromLaplacePyr (CPU) | Complete | cv.laplacian_pyramid, cv.reconstruct_laplacian_pyramid. Signed float32/64 or native-detail int16 bands reuse the pyramid connector and level selector. Odd-size reconstruction, gray/color/alpha and high-bit depths, native in-place isolation, source frames/tickets, band gains, saturation reports and invalid sets are covered by focused tests. Original 16-bit round-trip/detail-edit example. GPU helpers remain unqualified. |
 | S1-125 | Floating-point image codec round trips | imread, imwrite and format-specific float encoding | Planned | Verify float TIFF and Radiance HDR precision and channel order. Qualify OpenEXR on a build that provides it. |
 | S1-126 | Lossless high-bit-depth compressed images | JPEG 2000 and PNG codec options | Planned | Verify exact 16-bit round trips at supported settings and reject silent conversion or unavailable codecs. |
 | S1-127 | Packed high-bit-depth sensor frames | RAW10/RAW12 unpacking and demosaicing | Planned | Decode known sensor byte patterns with stride, Bayer phase and bit-depth checks. |

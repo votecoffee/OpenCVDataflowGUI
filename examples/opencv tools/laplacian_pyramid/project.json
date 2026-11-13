@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Original 193 x 129, 16-bit part",
+      "parameters": {
+        "path": "assets/original-16bit.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint16",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "build",
+      "type": "cv.laplacian_pyramid",
+      "name": "Laplacian image pyramid set",
+      "parameters": {
+        "levels": 4,
+        "backend": "floating",
+        "working_depth": "float64",
+        "border": "reflect_101"
+      },
+      "position": [
+        290.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "images",
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detail",
+      "type": "cv.pyramid_level",
+      "name": "Select pyramid level",
+      "parameters": {
+        "level": "1"
+      },
+      "position": [
+        600.0,
+        -210.0
+      ],
+      "exposed_inputs": [
+        "images"
+      ],
+      "exposed_outputs": [
+        "image",
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "restore",
+      "type": "cv.reconstruct_laplacian_pyramid",
+      "name": "Reconstruct Laplacian pyramid",
+      "parameters": {
+        "output_depth": "source",
+        "detail_gains": []
+      },
+      "position": [
+        600.0,
+        40.0
+      ],
+      "exposed_inputs": [
+        "images"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "suppress_fine",
+      "type": "cv.reconstruct_laplacian_pyramid",
+      "name": "Remove finest detail band",
+      "parameters": {
+        "output_depth": "source",
+        "detail_gains": [
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      "position": [
+        600.0,
+        310.0
+      ],
+      "exposed_inputs": [
+        "images"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify",
+      "type": "inspect.image_quality",
+      "name": "Verify exact 16-bit round trip",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        930.0,
+        40.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture_note",
+      "type": "layout.comment",
+      "name": "Original multiscale fixture \u2014 MIT",
+      "description": "Original synthetic image, generator and project under this repository's MIT license. Run once: the exact round trip has zero error. Select the detail block to see a signed band with zero shown as gray. The lower branch removes the finest detail while preserving output size, dtype and coordinates.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -310.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "build",
+      "input": "image"
+    },
+    {
+      "source": "build",
+      "output": "images",
+      "target": "detail",
+      "input": "images"
+    },
+    {
+      "source": "build",
+      "output": "images",
+      "target": "restore",
+      "input": "images"
+    },
+    {
+      "source": "build",
+      "output": "images",
+      "target": "suppress_fine",
+      "input": "images"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "verify",
+      "input": "image_a"
+    },
+    {
+      "source": "restore",
+      "output": "image",
+      "target": "verify",
+      "input": "image_b"
+    }
+  ]
+}

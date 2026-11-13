@@ -1,4 +1,4 @@
-"""Gaussian image sets and optional port-payload tools."""
+"""Gaussian image sets, shared level selection and optional port-payload tools."""
 
 import copy
 
@@ -78,11 +78,16 @@ class SelectPyramidLevel(Block):
             "source_size": [image.shape[1], image.shape[0]],
             "target_size": payload["pyramid"]["largest_size"],
         }
-        return Result(
+        result = Result(
             {"image": image, "transform": transform},
             payloads={"image": payload, "transform": payload},
             message=f"Selected pyramid level {index}",
         )
+        if "laplacian_pyramid" in payload and self.capture_graphics:
+            from .laplacian_pyramids import laplacian_preview
+
+            result.graphics["Laplacian band preview"] = laplacian_preview(image)
+        return result
 
 
 class AttachPayload(Block):

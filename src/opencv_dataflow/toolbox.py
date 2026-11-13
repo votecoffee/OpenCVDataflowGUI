@@ -69,7 +69,7 @@ IMPLEMENTATION_MODULES = {
         "generalized_hough "
         "histogram histogram_comparison image_blend image_colorize path_strip "
         "point_set_lines polar_image "
-        "processing "
+        "laplacian_pyramids processing "
         "pyramids raster_hough_lines registration segmentation subpixel_crop template_instances "
         "tilted_statistics"
     ),
@@ -151,6 +151,8 @@ _MODULE_BY_BLOCK = {
 }
 _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
+    "cv.laplacian_pyramid": ("createLaplacePyr", "pyrDown", "pyrUp", "signed bands"),
+    "cv.reconstruct_laplacian_pyramid": ("restoreImageFromLaplacePyr", "band gains"),
     "inspect.focus": ("Laplacian", "Sobel", "Tenengrad", "sharpness", "blur"),
     "inspect.image_correlation": ("computeECC", "Pearson", "NCC", "reference comparison"),
     "inspect.slanted_edge": ("ESF", "LSF", "SFR", "MTF50", "MTF10", "edge spread", "sharpness"),

@@ -709,6 +709,7 @@ def builtin_registry():
     from .image_validity import CheckImageValidity, ReplaceNonfiniteSamples
     from .judgments import FinalJudgment
     from .label_measurement import MaskFromLabelCollection, MeasureLabelRegions
+    from .laplacian_pyramids import LAPLACIAN_PYRAMID_BLOCKS
     from .lens_map_files import LoadLensMaps, SaveLensMaps
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .line_pair import MeasureLinePair
@@ -919,6 +920,7 @@ def builtin_registry():
         EstimateTranslation,
         *REGION_BLOCKS,
         *PYRAMID_BLOCKS,
+        *LAPLACIAN_PYRAMID_BLOCKS,
         *COLLECTION_BLOCKS,
         SimpleBlobDetection,
         HoughPointSetLines,

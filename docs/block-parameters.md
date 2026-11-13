@@ -2225,6 +2225,21 @@ Input `image_b` — Right or bottom image. When both inputs have tickets, they m
 | `gap` | `0` | Value must be a whole number between 0 and 16384. Number of fill pixels between images along the join. |
 | `fill_value` | `0.0` | Value must be a finite number. Use this value for all channels in the gap and padding, in stored units. |
 
+## Laplacian image pyramid set (`cv.laplacian_pyramid`)
+
+Image processing / Pyramids
+
+Inputs: `image` (image).
+
+Input `image` — Gray/RGB/BGR/RGBA/BGRA uint8, uint16, int16 or float32/64. Convert HSV/Lab or split channels first.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `levels` | `4` | Value must be a whole number between 1 and 9. Total levels including the final coarse base, from 1 to 9. |
+| `backend` | `"floating"` | `floating`, `native_detail` Floating uses pyrDown/pyrUp; native_detail uses createLaplacePyr on uint8 three-channel images with signed int16 bands. |
+| `working_depth` | `"float64"` | `float64`, `float32` Floating coefficient depth; raw sample units are retained. Native detail always uses int16. |
+| `border` | `"reflect_101"` | `reflect_101`, `reflect_edge`, `replicate` Downsampling border. Upsampling uses OpenCV's required reflect_101. Native detail requires reflect_101 for both. |
+
 ## Local window statistics (`cv.local_statistics`)
 
 Image processing / Intensity
@@ -2668,6 +2683,19 @@ Inputs: `image` (image).
 | `border` | `"reflect"` | `reflect`, `reflect_101` PyrUp supports only reflect/reflect_101; PyrDown also supports other choices. |
 | `output_width` | `0` | 0 uses native sizing. Explicit dimensions apply to the final level. |
 | `output_height` | `0` |  |
+
+## Reconstruct Laplacian pyramid (`cv.reconstruct_laplacian_pyramid`)
+
+Image processing / Pyramids
+
+Inputs: `images` (pyramid).
+
+Input `images` — Complete compatible Laplacian set. The last level is the coarse base. Gaussian sets are rejected.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_depth` | `"source"` | `source`, `float32`, `float64` Source restores the original dtype without intensity rescaling; integers round and saturate. Floating output retains raw sample units. |
+| `detail_gains` | `[]` | Floating backend only: optional largest-first list, one finite gain in [-16,16] per detail level. Empty means all ones; zero removes that band. Native detail requires unit gains. |
 
 ## Rectify quadrilateral (`cv.rectify_quadrilateral`)
 
