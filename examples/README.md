@@ -168,6 +168,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [TV-L1 denoising](<opencv tools/tvl1_denoising/README.md>) | Fuse three aligned views to suppress impulse noise. |
 | [Voronoi cells](<opencv tools/voronoi_cells/README.md>) | Divide an image around five detected centers and measure intensities inside the selected cell. |
 | [Watershed separation](<opencv tools/watershed/README.md>) | Separate touching parts using distance-peak seeds or points placed on the image. |
+| [Unicode inspection labels](<opencv tools/unicode_annotations/README.md>) | Compose Latin, Greek and Cyrillic labels over an original 16-bit fixture with selectable drawing layers, preserved tickets and a bundled licensed font. |
 
 ## Custom tools
 

@@ -127,3 +127,6 @@ conventions, and the [roadmap](docs/roadmap.md) for planned work.
 ## License
 
 [MIT](LICENSE) © 2026 votecoffee.
+
+The bundled [Noto Sans font](src/opencv_dataflow/fonts/README.md) uses the
+SIL Open Font License 1.1.

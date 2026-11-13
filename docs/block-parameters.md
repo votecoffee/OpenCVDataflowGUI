@@ -1247,6 +1247,11 @@ Input `text` — Optional label text from an upstream tool.
 | `color_rgb` | `[255, 197, 66]` | Three whole RGB values between 0 and 255. |
 | `thickness` | `2` | Value must be a whole number between 1 and 32. Stroke width in rendered pixels for lines and outlines. |
 | `filled` | `false` | Fill the rectangle or circle. |
+| `font_file` | `""` | Optional project-relative TTF/OTF/TTC font; empty uses bundled Noto Sans (Latin, Greek, Cyrillic). Select a font covering other scripts. |
+| `font_size` | `18` | Value must be a whole number between 8 and 128. Label size in rendered pixels; frame transforms move its anchor only. |
+| `font_index` | `0` | Value must be a whole number between 0 and 255. Face index in a font collection (TTC); normally zero. |
+| `text_direction` | `"auto"` | `auto`, `ltr`, `rtl` Auto uses available shaping. Explicit ltr/rtl requires Pillow Raqm; complex scripts also need a Raqm-capable build and a suitable font. |
+| `text_outline` | `1` | Value must be a whole number between 0 and 8. Black outline width in rendered pixels; zero disables it. |
 
 ## Apply mask (`cv.apply_mask`)
 

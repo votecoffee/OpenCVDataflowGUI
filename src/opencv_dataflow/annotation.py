@@ -1,9 +1,12 @@
 """Author reusable annotations in the coordinate frame of an inspection image."""
 
+from pathlib import Path
+
 from .core import Block, Port, Result
 from .graphics_layers import RESULT_GRAPHICS, GraphicDrawing, graphic_circle, graphic_object
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import ValuePacket, require_same_frame
+from .unicode_text import TextStyle, text_masks
 
 COORDINATE = NumericRange(-500_000, 500_000)
 COLOR_BYTE = NumericRange(0, 255, whole=True)
@@ -44,9 +47,20 @@ class AnnotationLayer(Block):
         "color_rgb": [255, 197, 66],
         "thickness": 2,
         "filled": False,
+        "font_file": "",
+        "font_size": 18,
+        "font_index": 0,
+        "text_direction": "auto",
+        "text_outline": 1,
     }
-    parameter_choices = {"shape": ("line", "rectangle", "circle", "label")}
+    parameter_choices = {
+        "shape": ("line", "rectangle", "circle", "label"),
+        "text_direction": ("auto", "ltr", "rtl"),
+    }
     parameter_ranges = {
+        "font_size": NumericRange(8, 128, whole=True),
+        "font_index": NumericRange(0, 255, whole=True),
+        "text_outline": NumericRange(0, 8, whole=True),
         "radius": NumericRange(0.5, 100_000),
         "thickness": NumericRange(1, 32, whole=True),
     }
@@ -58,6 +72,13 @@ class AnnotationLayer(Block):
         "color_rgb": "Three whole RGB values between 0 and 255.",
         "thickness": "Stroke width in rendered pixels for lines and outlines.",
         "filled": "Fill the rectangle or circle.",
+        "font_file": "Optional project-relative TTF/OTF/TTC font; empty uses bundled Noto Sans "
+        "(Latin, Greek, Cyrillic). Select a font covering other scripts.",
+        "font_size": "Label size in rendered pixels; frame transforms move its anchor only.",
+        "font_index": "Face index in a font collection (TTC); normally zero.",
+        "text_direction": "Auto uses available shaping. Explicit ltr/rtl requires Pillow Raqm; "
+        "complex scripts also need a Raqm-capable build and a suitable font.",
+        "text_outline": "Black outline width in rendered pixels; zero disables it.",
     }
     input_help = {
         "image": "Reference for the annotation's pixel frame and ticket.",
@@ -70,6 +91,8 @@ class AnnotationLayer(Block):
     def validate_parameters(self, parameters=None):
         super().validate_parameters(parameters)
         p = self.parameters if parameters is None else parameters
+        if not isinstance(p["font_file"], str) or len(p["font_file"]) > 4096:
+            raise ValidationError("Font file must be a path string", "font_file")
         annotation_point(p["origin"], "origin")
         annotation_point(p["end"], "end")
         annotation_text(p["layer_name"], "layer_name")
@@ -122,7 +145,18 @@ class AnnotationLayer(Block):
             )
         elif shape == "label":
             label = annotation_text(inputs.get("text", p["label"]), "text")
-            item = graphic_object("label", (origin,), color, text=label)
+            font_file = p["font_file"]
+            if font_file:
+                font_file = str(((self.project_dir or Path.cwd()) / font_file).resolve())
+            style = TextStyle(
+                font_file, int(p["font_size"]), int(p["font_index"]),
+                p["text_direction"], int(p["text_outline"]),
+            )
+            try:
+                text_masks(label, style)
+            except (OSError, ValueError, UnicodeError) as exc:
+                raise ValidationError(f"Cannot render annotation: {exc}", "font_file") from exc
+            item = graphic_object("label", (origin,), color, text=label, text_style=style)
         else:
             item = graphic_object("polyline", (origin, end), color, thickness=thickness)
         return Result(

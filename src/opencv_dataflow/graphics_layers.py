@@ -5,6 +5,8 @@ from dataclasses import dataclass
 import cv2
 import numpy as np
 
+from .unicode_text import TextStyle, draw_unicode
+
 RESULT_GRAPHICS = "result_graphics"
 
 
@@ -16,6 +18,7 @@ class GraphicObject:
     thickness: int = 2
     closed: bool = False
     text: str = ""
+    text_style: TextStyle | None = None
 
 
 def graphic_object(kind, points, color, **options):
@@ -148,6 +151,13 @@ def draw_object(image, graphic, transform):
     elif graphic.kind == "arrow" and len(pixels) == 2:
         cv2.arrowedLine(image, tuple(pixels[0]), tuple(pixels[1]), color,
                         graphic.thickness, tipLength=0.3)
+    elif graphic.kind in ("label", "text") and (
+        graphic.text_style is not None or not graphic.text.isascii()
+    ):
+        draw_unicode(
+            image, graphic.text, pixels[0], color, graphic.text_style,
+            label=graphic.kind == "label",
+        )
     elif graphic.kind == "label":
         _draw_label(image, graphic.text, pixels[0], color)
     elif graphic.kind == "text":

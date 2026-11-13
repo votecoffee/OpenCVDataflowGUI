@@ -8,8 +8,8 @@ version = "0.1.0"
 description = "Visual OpenCV development and execution with extensible Python blocks"
 readme = "README.md"
 requires-python = ">=3.14"
-license = "MIT"
-dependencies = ["numpy>=2,<3", "opencv-contrib-python>=5.0.0.93,<6", "PySide6>=6.8,<7"]
+license = "MIT AND OFL-1.1"
+dependencies = ["numpy>=2,<3", "opencv-contrib-python>=5.0.0.93,<6", "PySide6>=6.8,<7", "Pillow>=12,<14"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "ruff>=0.9"]
@@ -27,6 +27,9 @@ opencv-dataflow-run = "opencv_dataflow.runner:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+opencv_dataflow = ["fonts/*.ttf", "fonts/*.txt", "fonts/*.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

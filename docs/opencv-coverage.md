@@ -44,6 +44,14 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Unicode inspection annotations](<../examples/opencv tools/unicode_annotations/README.md>)
+(S1-144) now compose FreeType glyph coverage on uint8/uint16/float images,
+with selectable font/face, size, outline and direction. Frame-aware graphics
+retain coordinates, tickets, sample depth and alpha in headless and parallel
+execution. The bundled licensed Noto Sans qualifies Latin, Greek and Cyrillic;
+other scripts need a covering font, and complex shaping requires Pillow Raqm.
+Existing ASCII result labels keep their Hershey rendering.
+
 [Signal/background contrast](<../examples/custom tools/region_contrast/README.md>)
 (S1-143) now reports selected means/noise, quadrature or background-only CNR,
 signed mean-based normalized contrasts and optional selected-channel limits.

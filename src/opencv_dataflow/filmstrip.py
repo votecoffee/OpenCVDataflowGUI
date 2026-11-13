@@ -151,6 +151,8 @@ class FilmstripCapture:
                     cost = self.max_bytes + 1
                     break
                 cost += 128 + 80 * len(obj.points) + 4 * len(obj.text)
+                if obj.text_style is not None:
+                    cost += 128 + 4 * len(obj.text_style.font_file)
                 if cost > self.max_bytes:
                     break
             with self.lock:
