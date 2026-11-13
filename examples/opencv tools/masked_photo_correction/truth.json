@@ -1,0 +1,33 @@
+{
+  "image_size": [
+    192,
+    128
+  ],
+  "step_boundary_x": 96,
+  "selected_rectangle": [
+    16,
+    12,
+    160,
+    104
+  ],
+  "profile_y_range": [
+    40,
+    88
+  ],
+  "profile_x_range": [
+    30,
+    83
+  ],
+  "texture_rectangle": [
+    38,
+    35,
+    44,
+    59
+  ],
+  "illumination_max_span_ratio": 0.7,
+  "texture_max_rms_ratio": 0.3,
+  "boundary_tolerance_pixels": 1,
+  "illumination_min_step_dn": 5,
+  "texture_min_step_dn": 35,
+  "scope": "Original synthetic samples; no physical illumination or defect ground truth"
+}

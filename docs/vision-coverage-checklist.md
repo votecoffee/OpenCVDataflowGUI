@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 124 | 16 | 35 | 175 | 70.9% |
+| 1. Core and baseline 2D | 125 | 16 | 34 | 175 | 71.4% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 187 | 57 | 226 | 470 | 39.8% |
+| **Overall** | 188 | 57 | 225 | 470 | 40.0% |
 
 <!-- coverage-summary:end -->
 
@@ -152,7 +152,7 @@ fixture or result needed to close the item.
 | S1-85 | Photo detail and edge-aware smoothing | detailEnhance, edgePreservingFilter | Complete | cv.detail_enhance, cv.edge_preserving_photo. Verify the available photo smoothing modes and detail enhancement. |
 | S1-86 | Photo stylization and sketching | stylization, pencilSketch | Complete | cv.stylize_photo, cv.pencil_sketch. Expose image parameters and both sketch outputs. |
 | S1-87 | Seamless image patch composition | seamlessClone | Complete | cv.seamless_clone. Verify masked placement and preserved surroundings on a synthetic patch. |
-| S1-88 | Illumination and texture correction | illuminationChange, textureFlattening | Planned | Reduce a known glare gradient or texture while retaining a measured boundary inside the mask. |
+| S1-88 | Illumination and texture correction | illuminationChange, textureFlattening | Complete | cv.illumination_change, cv.texture_flattening. A controlled surface reduces broad intensity variation and weak texture while retaining the known boundary position; tests quantify contrast loss. Native controls, intersected mask/region selection, exact surroundings/alpha, erosion/change maps, source frame/ticket payloads, empty/thin no-ops and explicit uint8/resource constraints are qualified. |
 | S1-89 | Masked color transfer | colorChange | Planned | Adjust a selected surface's color while retaining original surroundings and edge structure. |
 | S1-90 | Contrast-preserving decolorization | decolor | Planned | Separate equal-luminance color features and compare against ordinary grayscale. |
 | S1-91 | Non-local means denoising | fastNlMeansDenoising, fastNlMeansDenoisingColored, multi-frame variants | Complete | cv.non_local_means, cv.temporal_nlm. Verify single-frame and aligned-stack restoration with bounded memory. |

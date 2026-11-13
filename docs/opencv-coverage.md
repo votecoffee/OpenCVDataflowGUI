@@ -44,6 +44,14 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Masked illumination and texture correction](<../examples/opencv tools/masked_photo_correction/README.md>)
+(S1-88) exposes native gradient-domain edits with intersected selections,
+exact original surroundings/alpha, explicit native erosion masks and change maps.
+An independently measured synthetic surface checks reduced variation/texture,
+boundary location and the accompanying contrast loss. These uint8 appearance
+edits preserve source coordinates and tickets; they do not recover clipped glare
+or provide radiometric calibration. Color transfer and decolorization remain next.
+
 [Lateral chromatic aberration correction](<../examples/opencv tools/chromatic_aberration/README.md>)
 (S1-146) now loads or defines a versioned native polynomial and aligns red/blue
 to green's unchanged pixel grid. Color depth/order, straight alpha and acquisition

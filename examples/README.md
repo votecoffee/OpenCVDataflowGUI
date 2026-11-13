@@ -130,6 +130,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Checkerboard capture quality](<opencv tools/chessboard_quality/README.md>) | Measure blur and contrast across a sharp checkerboard and a defocused copy. |
 | [Choose a content-aware seam](<opencv tools/stitch_seam/README.md>) | Compare averaging with graph-cut selection on 16-bit views and try automatic seam scaling for larger overlaps. |
 | [Chromatic aberration correction](<opencv tools/chromatic_aberration/README.md>) | Load or define a native calibration, restore exact 16-bit RGB reference pixels, inspect conservative support and test a failed coverage limit. |
+| [Masked photo correction](<opencv tools/masked_photo_correction/README.md>) | Change selected illumination and flatten weak texture; measure known boundary position and contrast, native gradient support and exact surroundings. |
 | [Circle and arc fitting](<opencv tools/circle_arc_fitting/README.md>) | Compare robust and ordinary circle fits with outliers, build a circle-relative region, and reject a five-degree arc. |
 | [Circle grid calibration](<opencv tools/circle_grid_calibration/README.md>) | Detect a staggered dot target and map its centers to physical coordinates. |
 | [Close the loop on an inspection scan](<opencv tools/stitch_scan_loop/README.md>) | Compare adjacent registration with a bounded correction when the scan returns to its first view. |

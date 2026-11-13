@@ -2286,6 +2286,23 @@ Inputs: `spectrum` (dft).
 | --- | --- | --- |
 | `output_depth` | `"unchanged"` | `unchanged`, `float32`, `float64` Use floating point to retain signed or out-of-range filtered samples. |
 
+## Change selected illumination (`cv.illumination_change`)
+
+Image processing / Illumination and texture
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8 BGR/RGB, optionally with straight alpha; at least 8×8, up to 2.1M pixels.
+
+Input `mask` — Optional uint8 binary selection in the image frame; intersected with region.
+
+Input `region` — Optional region on the same grid. No mask/region means the full image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alpha` | `0.2` | Value must be a finite number between 0 and 2. Native gradient scale (0..2), not a direct brightness gain. |
+| `beta` | `0.4` | Value must be a finite number between 0 and 2. Native gradient exponent (0..2). Alters apparent illumination in the selection. |
+
 ## Image arithmetic (`cv.image_arithmetic`)
 
 Image processing / Image math
@@ -3530,6 +3547,24 @@ Input `frames` — Ordered batch of aligned frames of the same scene.
 | `search_window` | `21` | Value must be a positive odd integer between 1 and 127. |
 | `target_index` | `-1` | Value must be a whole number between -1 and 63. Zero-based frame to denoise. −1 chooses the earlier middle frame. |
 | `temporal_window` | `3` | Value must be a positive odd integer between 1 and 31. Odd number of frames centered on the target. |
+
+## Flatten selected texture (`cv.texture_flattening`)
+
+Image processing / Illumination and texture
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8 BGR/RGB, optionally with straight alpha; at least 8×8, up to 2.1M pixels.
+
+Input `mask` — Optional uint8 binary selection in the image frame; intersected with region.
+
+Input `region` — Optional region on the same grid. No mask/region means the full image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `low_threshold` | `30.0` | Value must be a finite number between 0 and 65535. Native Canny low gradient threshold; no greater than high_threshold. |
+| `high_threshold` | `45.0` | Value must be a finite number between 0 and 65535. Canny high threshold; retain strong edges and suppress weaker texture. |
+| `kernel_size` | `3` | `3`, `5`, `7` Native Sobel/Canny aperture. Threshold sensitivity changes with aperture. |
 
 ## Threshold (`cv.threshold`)
 
