@@ -39,6 +39,10 @@ The [parallel verification example](parallel_verification/README.md) compares
 one and four workers on unchanged models and inputs. Plugin dev10 adds the
 worker limit and parallel comparison profile; legacy recipes stay serial.
 
+The [rendered CAD scoring example](projective_scoring/README.md) uses plugin
+dev11 to resolve two retained isolated-view ranking failures. It compares
+the same candidates and fit gates using calibrated dense depth agreement.
+
 ## Measured scope and failures
 
 With default training/execution settings, capture 230's isolated object has

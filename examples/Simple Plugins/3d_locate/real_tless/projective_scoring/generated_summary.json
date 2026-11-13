@@ -1,0 +1,132 @@
+{
+  "models": [
+    {
+      "geometry": "curved",
+      "recommended": "parallel",
+      "profiles": [
+        {
+          "profile": "current",
+          "compatible": true,
+          "mean_scene_median_seconds": 0.7017883749995235,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "geometry",
+          "compatible": true,
+          "mean_scene_median_seconds": 0.973827275001895,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "pyramid",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.1612734499994986,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "compact",
+          "compatible": true,
+          "mean_scene_median_seconds": 0.9547689000009996,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "planes",
+          "compatible": true,
+          "mean_scene_median_seconds": 0.9362535250002111,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "features",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.559909150000749,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "parallel",
+          "compatible": true,
+          "mean_scene_median_seconds": 0.2639212999993106,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "projective",
+          "compatible": true,
+          "mean_scene_median_seconds": 0.5473025249993952,
+          "missed": 0,
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "geometry": "cad",
+      "recommended": "parallel",
+      "profiles": [
+        {
+          "profile": "current",
+          "compatible": true,
+          "mean_scene_median_seconds": 2.2686942500013174,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "geometry",
+          "compatible": true,
+          "mean_scene_median_seconds": 2.2147055750001527,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "pyramid",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.7206169999999474,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "compact",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.3142443999986426,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "planes",
+          "compatible": true,
+          "mean_scene_median_seconds": 2.521973099999741,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "features",
+          "compatible": true,
+          "mean_scene_median_seconds": 3.7269170750005287,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "parallel",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.0457433499996114,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "projective",
+          "compatible": true,
+          "mean_scene_median_seconds": 3.278027975000441,
+          "missed": 0,
+          "extra": 0
+        }
+      ]
+    }
+  ],
+  "positive_scenes": 6,
+  "negative_scenes": 2,
+  "expected_instances_per_repeat": 12,
+  "scope": "Generated fused surfaces with missing slices, noise and clutter. Real sensor qualification remains open."
+}

@@ -408,3 +408,58 @@ def test_parallel_verification_example_keeps_poses_and_caches_compiled_model():
                 )
     finally:
         graph.close()
+
+
+@pytest.mark.local_examples
+def test_projective_scoring_example_ranks_correct_pose_with_cached_locator():
+    tool = pytest.importorskip("opencv_simple_3d_locate")
+    if not hasattr(tool.Settings(), "pose_scoring"):
+        pytest.skip("Projective example requires Simple3DLocate 0.1.0.dev11 or later")
+    from opencv_simple_3d_locate.optimization import pose_agreement
+
+    root = (
+        Path(__file__).resolve().parents[1]
+        / "examples/Simple Plugins/3d_locate/real_tless/projective_scoring"
+    )
+    graph = Graph.load(root / "project.json", builtin_registry())
+    try:
+        graph.run()
+        block = graph.blocks["locate"]
+        assert block.state == "pass", block.error
+        cached = block._locator
+        output = block.last_result.outputs
+        assert output["count"] == 1
+        pose = output["pose"]
+        assert pose["score_type"] == "projective_depth_fit_not_probability"
+        assert pose["projective_scoring"]["known_rays"] >= 20
+        assert output["report"]["execution"]["pose_scoring"]["active"] == "projective"
+        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        check = pose_agreement(
+            [np.asarray(pose["source_to_target"])],
+            [truth],
+            position_tolerance=5,
+            angle_degrees=5,
+            symmetries=(np.diag([-1.0, -1.0, 1.0, 1.0]),),
+        )
+        assert check["matched"] == 1 and check["missed"] == check["extra"] == 0
+        graph.run()
+        assert block._locator is cached
+        np.testing.assert_allclose(
+            block.last_result.outputs["pose"]["source_to_target"],
+            pose["source_to_target"],
+            atol=1e-6,
+        )
+        report = json.loads((root / "comparison_ppf.json").read_bytes())
+        assert report["repeats"] == 3 and report["recommended"] is None
+        expected = ((1, 7, 2), (3, 5, 0))
+        for profile, totals in zip(report["profiles"], expected):
+            for repeat in range(3):
+                assert (
+                    tuple(
+                        sum(s["runs"][repeat][key] for s in profile["scenes"])
+                        for key in ("matched", "missed", "extra")
+                    )
+                    == totals
+                )
+    finally:
+        graph.close()
