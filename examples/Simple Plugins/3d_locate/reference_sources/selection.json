@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "dataset": "T-LESS",
+  "revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1",
+  "license": "CC-BY-4.0",
+  "selection_rule": "Train captured surface on first original capture. Near tests are next two available capture IDs; far tests are original middle/last. Cross-scene negatives retained. Fixed before acquiring added images or matching them.",
+  "models": [
+    {
+      "object_id": 6,
+      "positive_scene": 2,
+      "positive_frames": [
+        3,
+        255,
+        494
+      ],
+      "negative_scene": 3,
+      "negative_frames": [
+        5,
+        261,
+        493
+      ],
+      "training_frame": 3,
+      "near_frames": [
+        13,
+        24
+      ],
+      "far_frames": [
+        255,
+        494
+      ]
+    },
+    {
+      "object_id": 8,
+      "positive_scene": 3,
+      "positive_frames": [
+        5,
+        261,
+        493
+      ],
+      "negative_scene": 2,
+      "negative_frames": [
+        3,
+        255,
+        494
+      ],
+      "training_frame": 5,
+      "near_frames": [
+        10,
+        16
+      ],
+      "far_frames": [
+        261,
+        493
+      ]
+    }
+  ],
+  "search_input": "all measured positive depth pixels; isolated cases use supplied visible masks",
+  "recipe": {
+    "execution_workers": 4
+  },
+  "profiles": [
+    "current",
+    "planes",
+    "features",
+    "regions"
+  ],
+  "position_tolerance_mm": 5,
+  "angle_tolerance_degrees": 5,
+  "selection_frozen_before_matching": true
+}

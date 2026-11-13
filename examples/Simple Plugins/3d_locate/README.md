@@ -18,6 +18,12 @@ For automatic bounded training on new CAD models, open the
 dev13. They retain twelve positive matching failures and target-absent negatives
 while demonstrating successful model preparation and full-reference restoration.
 
+With dev18, compare [CAD, reconstructed and captured references](reference_sources/README.md).
+Seven runnable real-data projects retain correct, missed and accepted wrong
+poses with native flyaround output. All 66 fixed comparison reports remain
+available; model-source choice alone does not resolve the accuracy gap.
+The trainer now imports triangle PLY as well as STL meshes.
+
 For a controlled explanation of those failures, open the
 [supplied-pose geometry diagnostics](geometry_diagnostics/README.md). Six real
 captures compare model budgets, normals and triangle self-visibility with

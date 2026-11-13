@@ -1,0 +1,1241 @@
+{
+  "source": "reconstructed",
+  "object_id": 8,
+  "group": "far",
+  "case": "scene000003_frame000261_full",
+  "runs": [
+    {
+      "matched": 0,
+      "missed": 1,
+      "extra": 2,
+      "max_position_error": 0.0,
+      "max_angle_error_degrees": 0.0,
+      "result": {
+        "model": "simple_3d_locate_v1",
+        "units": "mm",
+        "source_frame": "tless_object8",
+        "target_frame": "camera",
+        "matches": [
+          {
+            "source_to_target": [
+              [
+                0.07735145972493325,
+                -0.9968641348058264,
+                -0.01669276538664763,
+                80.5272334560727
+              ],
+              [
+                0.6809713495715025,
+                0.040595948969183705,
+                0.731183964532906,
+                -161.21287133559585
+              ],
+              [
+                -0.7282134115361983,
+                -0.06792544195751003,
+                0.681976071129837,
+                1010.3157426319614
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "coverage": 0.5188118811881188,
+            "score": 0.4794934971656553,
+            "score_type": "geometric_fit_not_probability",
+            "projective_scoring": null,
+            "rmse": 1.2113106887583773,
+            "normal_spread": 0.010046450563990696,
+            "votes": 9,
+            "model_inliers": 262,
+            "unique_scene_inliers": 235,
+            "refined": true,
+            "candidate_source": "ppf",
+            "pose_alternatives": {
+              "model": "geometric_pose_alternatives_v1",
+              "status": "none_observed",
+              "count": 0,
+              "suppressed_candidates": 0,
+              "score_gap": null,
+              "relative_score_margin": null,
+              "margin_type": "geometric_score_gap_not_probability",
+              "score_type": "geometric_fit_not_probability",
+              "minimum_center_separation": 5.516261968063018,
+              "minimum_orientation_separation_degrees": 12.0,
+              "alternatives": [],
+              "truncated": false,
+              "exhaustive": false
+            },
+            "depth_verification": {
+              "mode": "auto",
+              "status": "checked",
+              "reason": null,
+              "source": "depth_scene",
+              "input_points": 385693,
+              "visible_model_points": 505,
+              "known_points": 478,
+              "unique_known_rays": 477,
+              "consistent_points": 303,
+              "occluded_points": 175,
+              "free_space_points": 0,
+              "unknown_points": 27,
+              "depth_coverage": 0.9465346534653465,
+              "free_space_fraction": 0.0,
+              "maximum_free_space": 0.1,
+              "minimum_depth_coverage": 0.8,
+              "minimum_known_rays": 20,
+              "limit_exceeded": false,
+              "applied": true
+            },
+            "visible_model_points": 505
+          },
+          {
+            "source_to_target": [
+              [
+                -0.004440230472665916,
+                -0.9999780140189677,
+                -0.004925021018323572,
+                -14.898523479761607
+              ],
+              [
+                0.6771350234037116,
+                -0.006630754224369921,
+                0.7358289156987996,
+                -169.60034430450207
+              ],
+              [
+                -0.7358453943821384,
+                -6.765424835185068e-05,
+                0.6771495780028943,
+                1019.0040294289089
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "coverage": 0.5177453027139874,
+            "score": 0.47451028679865065,
+            "score_type": "geometric_fit_not_probability",
+            "projective_scoring": null,
+            "rmse": 1.278691847294903,
+            "normal_spread": 0.010564966587134034,
+            "votes": 17,
+            "model_inliers": 248,
+            "unique_scene_inliers": 208,
+            "refined": true,
+            "candidate_source": "ppf",
+            "pose_alternatives": {
+              "model": "geometric_pose_alternatives_v1",
+              "status": "none_observed",
+              "count": 0,
+              "suppressed_candidates": 0,
+              "score_gap": null,
+              "relative_score_margin": null,
+              "margin_type": "geometric_score_gap_not_probability",
+              "score_type": "geometric_fit_not_probability",
+              "minimum_center_separation": 5.516261968063018,
+              "minimum_orientation_separation_degrees": 12.0,
+              "alternatives": [],
+              "truncated": false,
+              "exhaustive": false
+            },
+            "depth_verification": {
+              "mode": "auto",
+              "status": "checked",
+              "reason": null,
+              "source": "depth_scene",
+              "input_points": 385693,
+              "visible_model_points": 479,
+              "known_points": 449,
+              "unique_known_rays": 448,
+              "consistent_points": 287,
+              "occluded_points": 162,
+              "free_space_points": 0,
+              "unknown_points": 30,
+              "depth_coverage": 0.9373695198329853,
+              "free_space_fraction": 0.0,
+              "maximum_free_space": 0.1,
+              "minimum_depth_coverage": 0.8,
+              "minimum_known_rays": 20,
+              "limit_exceeded": false,
+              "applied": true
+            },
+            "visible_model_points": 479
+          }
+        ],
+        "candidate_count": 47,
+        "tested_candidates": 24,
+        "sampled_scene_points": 16593,
+        "search_model_points": 384,
+        "search_scene_points": 2048,
+        "passed": true,
+        "execution": {
+          "sampling": "uniform",
+          "candidate_backend": "ppf",
+          "plane_search": {
+            "model_patches": 0,
+            "scene_patches": 0,
+            "coarse_proposals": 0
+          },
+          "feature_search": {
+            "coarse_proposals": 0
+          },
+          "region_search": {
+            "enabled": false,
+            "coarse_proposals": 0
+          },
+          "refinement": "legacy",
+          "pose_scoring": {
+            "requested": "geometric",
+            "active": "geometric",
+            "fallback_reason": "geometric_requested",
+            "rejected_candidates": []
+          },
+          "observation_mode": "surface",
+          "projection": "pinhole",
+          "input_points": 385693,
+          "first_surface_points": 385693,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "available",
+            "reason": null,
+            "source": "depth_scene",
+            "input_points": 385693
+          },
+          "depth_rejected": 0,
+          "depth_rejected_candidates": [],
+          "overlap_metric": "combined",
+          "overlap_threshold": 0.6,
+          "overlap_rejected": 0,
+          "verified_candidates": 2,
+          "rejection_counts": {
+            "geometry": 22
+          },
+          "candidate_review": [
+            {
+              "candidate_index": 10,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  -0.6976801753871154,
+                  -0.7159790387357567,
+                  -0.024827181934835005,
+                  187.58950565704143
+                ],
+                [
+                  0.4838781305456862,
+                  -0.4965007143892866,
+                  0.7206587232459895,
+                  127.89041872673192
+                ],
+                [
+                  -0.52830325349312,
+                  0.490775974047171,
+                  0.6928453042683013,
+                  702.312720295229
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.6586312282278027,
+              "coverage": 0.686046511627907,
+              "rmse": 0.8401260822978253,
+              "normal_spread": 0.006129494427573004,
+              "unique_support": 160,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "normal_spread"
+              ]
+            },
+            {
+              "candidate_index": 8,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  -0.32504666507344526,
+                  0.9456822129177365,
+                  -0.005460558180715682,
+                  -198.53353937335694
+                ],
+                [
+                  -0.6344498233495769,
+                  -0.2137817802542231,
+                  0.7428127436191612,
+                  81.63117475143805
+                ],
+                [
+                  0.7012974313202084,
+                  0.2449132552606095,
+                  0.6694769676555942,
+                  744.0542029000662
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.5177932124071278,
+              "coverage": 0.5460385438972163,
+              "rmse": 0.9920609426143129,
+              "normal_spread": 0.007960861695506371,
+              "unique_support": 233,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "normal_spread"
+              ]
+            },
+            {
+              "candidate_index": 17,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  0.9737001380252559,
+                  0.2261690349533545,
+                  -0.02748834003475494,
+                  123.49570243974725
+                ],
+                [
+                  -0.1334820486418914,
+                  0.6640757849797521,
+                  0.7356533793124926,
+                  113.4835442514896
+                ],
+                [
+                  0.18463635584565077,
+                  -0.712636597033716,
+                  0.676800189618948,
+                  715.2546101274866
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.5012141949556381,
+              "coverage": 0.5285714285714286,
+              "rmse": 0.9729849855208379,
+              "normal_spread": 0.008299097286545511,
+              "unique_support": 229,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "normal_spread"
+              ]
+            },
+            {
+              "candidate_index": 12,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  0.5711806450613468,
+                  -0.8198386419954172,
+                  -0.040215317957392596,
+                  -185.72790929211672
+                ],
+                [
+                  0.5597445170916774,
+                  0.35320233075997054,
+                  0.7496226978497449,
+                  60.32931239952796
+                ],
+                [
+                  -0.600365510579271,
+                  -0.4506802798401931,
+                  0.6606425198774721,
+                  767.9674886755546
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.47279028125186545,
+              "coverage": 0.5,
+              "rmse": 0.9894714777911726,
+              "normal_spread": 0.009574957294671529,
+              "unique_support": 231,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "normal_spread"
+              ]
+            },
+            {
+              "candidate_index": 9,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  0.12015409807830343,
+                  -0.992562047674604,
+                  -0.019585051212247625,
+                  182.28255512100364
+                ],
+                [
+                  0.6761225021064213,
+                  0.0673703829521824,
+                  0.7337026602420281,
+                  -12.20582324124709
+                ],
+                [
+                  -0.7269259624338242,
+                  -0.10139927522854011,
+                  0.6791883627704354,
+                  850.5405960227451
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.4559821282632882,
+              "coverage": 0.4805194805194805,
+              "rmse": 0.9827387870522991,
+              "normal_spread": 0.008748628529608959,
+              "unique_support": 226,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "coverage",
+                "normal_spread"
+              ]
+            },
+            {
+              "candidate_index": 6,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  0.6884067350367246,
+                  -0.7243423778582884,
+                  -0.037739724358787204,
+                  -202.72309235898274
+                ],
+                [
+                  0.49881486884315324,
+                  0.4350105478066489,
+                  0.7496329434582953,
+                  56.531899407894215
+                ],
+                [
+                  -0.5265737306181014,
+                  -0.5348775027382996,
+                  0.6607769391310315,
+                  771.4572918443861
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.44589931285965395,
+              "coverage": 0.47035573122529645,
+              "rmse": 0.9624775245783088,
+              "normal_spread": 0.010154823525584819,
+              "unique_support": 213,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "coverage"
+              ]
+            },
+            {
+              "candidate_index": 1,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  -0.9804882916654428,
+                  -0.19655902806370434,
+                  0.0026941406112727336,
+                  -89.87961235185197
+                ],
+                [
+                  0.13439890999741266,
+                  -0.6602896469748971,
+                  0.7388873493904692,
+                  -150.204261993056
+                ],
+                [
+                  -0.14345606609163933,
+                  0.724832484498603,
+                  0.6738235870887079,
+                  998.1300663148211
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.43058880858683246,
+              "coverage": 0.4749536178107607,
+              "rmse": 1.3486827120866045,
+              "normal_spread": 0.011391779594666042,
+              "unique_support": 227,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "coverage"
+              ]
+            },
+            {
+              "candidate_index": 14,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  0.8065791719122258,
+                  -0.5910446960393622,
+                  -0.009808502491542725,
+                  177.4226895139839
+                ],
+                [
+                  0.40720124127205815,
+                  0.5435129277016242,
+                  0.7340169252324531,
+                  -105.513663098436
+                ],
+                [
+                  -0.4285057625562152,
+                  -0.5960367981131262,
+                  0.6790603410236599,
+                  951.5255704981091
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.42773310359767247,
+              "coverage": 0.4593128390596745,
+              "rmse": 1.1404582787503428,
+              "normal_spread": 0.008426292856614583,
+              "unique_support": 229,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "coverage",
+                "normal_spread"
+              ]
+            }
+          ],
+          "candidate_review_limit": 8,
+          "match_limit_discarded": 0,
+          "coarse_rejected": 0,
+          "icp_calls": 43,
+          "execution_workers": 4,
+          "active_candidate_workers": 4,
+          "candidate_timing_aggregation": "worker_intervals_may_overlap",
+          "model_levels": [
+            2000
+          ],
+          "scene_levels": [
+            16593
+          ],
+          "seconds": {
+            "preprocess": 0.9928684000005887,
+            "candidate_search": 0.011604499999521067,
+            "ppf_search": 0.008755799999562441,
+            "plane_search": 0.0,
+            "feature_search": 0.0,
+            "region_search": 0.0,
+            "depth_prepare": 0.05164540000077977,
+            "depth_verify": 0.009402899999258807,
+            "projective_score_sum": 0.0,
+            "worker_index_prepare_sum": 0.010423699999591918,
+            "suppression": 0.001582099999723141,
+            "pose_alternatives": 8.060000072873663e-05,
+            "refine_verify": 0.33331060000091384,
+            "total": 1.3377837000007275
+          }
+        },
+        "assessment": {
+          "status": "located",
+          "message": "2 accepted 3D instances",
+          "rejection_counts": {
+            "geometry": 22
+          }
+        }
+      }
+    },
+    {
+      "matched": 0,
+      "missed": 1,
+      "extra": 2,
+      "max_position_error": 0.0,
+      "max_angle_error_degrees": 0.0,
+      "result": {
+        "model": "simple_3d_locate_v1",
+        "units": "mm",
+        "source_frame": "tless_object8",
+        "target_frame": "camera",
+        "matches": [
+          {
+            "source_to_target": [
+              [
+                0.07735145972493325,
+                -0.9968641348058264,
+                -0.01669276538664763,
+                80.5272334560727
+              ],
+              [
+                0.6809713495715025,
+                0.040595948969183705,
+                0.731183964532906,
+                -161.21287133559585
+              ],
+              [
+                -0.7282134115361983,
+                -0.06792544195751003,
+                0.681976071129837,
+                1010.3157426319614
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "coverage": 0.5188118811881188,
+            "score": 0.4794934971656553,
+            "score_type": "geometric_fit_not_probability",
+            "projective_scoring": null,
+            "rmse": 1.2113106887583773,
+            "normal_spread": 0.010046450563990696,
+            "votes": 9,
+            "model_inliers": 262,
+            "unique_scene_inliers": 235,
+            "refined": true,
+            "candidate_source": "ppf",
+            "pose_alternatives": {
+              "model": "geometric_pose_alternatives_v1",
+              "status": "none_observed",
+              "count": 0,
+              "suppressed_candidates": 0,
+              "score_gap": null,
+              "relative_score_margin": null,
+              "margin_type": "geometric_score_gap_not_probability",
+              "score_type": "geometric_fit_not_probability",
+              "minimum_center_separation": 5.516261968063018,
+              "minimum_orientation_separation_degrees": 12.0,
+              "alternatives": [],
+              "truncated": false,
+              "exhaustive": false
+            },
+            "depth_verification": {
+              "mode": "auto",
+              "status": "checked",
+              "reason": null,
+              "source": "depth_scene",
+              "input_points": 385693,
+              "visible_model_points": 505,
+              "known_points": 478,
+              "unique_known_rays": 477,
+              "consistent_points": 303,
+              "occluded_points": 175,
+              "free_space_points": 0,
+              "unknown_points": 27,
+              "depth_coverage": 0.9465346534653465,
+              "free_space_fraction": 0.0,
+              "maximum_free_space": 0.1,
+              "minimum_depth_coverage": 0.8,
+              "minimum_known_rays": 20,
+              "limit_exceeded": false,
+              "applied": true
+            },
+            "visible_model_points": 505
+          },
+          {
+            "source_to_target": [
+              [
+                -0.004440230472665916,
+                -0.9999780140189677,
+                -0.004925021018323572,
+                -14.898523479761607
+              ],
+              [
+                0.6771350234037116,
+                -0.006630754224369921,
+                0.7358289156987996,
+                -169.60034430450207
+              ],
+              [
+                -0.7358453943821384,
+                -6.765424835185068e-05,
+                0.6771495780028943,
+                1019.0040294289089
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "coverage": 0.5177453027139874,
+            "score": 0.47451028679865065,
+            "score_type": "geometric_fit_not_probability",
+            "projective_scoring": null,
+            "rmse": 1.278691847294903,
+            "normal_spread": 0.010564966587134034,
+            "votes": 17,
+            "model_inliers": 248,
+            "unique_scene_inliers": 208,
+            "refined": true,
+            "candidate_source": "ppf",
+            "pose_alternatives": {
+              "model": "geometric_pose_alternatives_v1",
+              "status": "none_observed",
+              "count": 0,
+              "suppressed_candidates": 0,
+              "score_gap": null,
+              "relative_score_margin": null,
+              "margin_type": "geometric_score_gap_not_probability",
+              "score_type": "geometric_fit_not_probability",
+              "minimum_center_separation": 5.516261968063018,
+              "minimum_orientation_separation_degrees": 12.0,
+              "alternatives": [],
+              "truncated": false,
+              "exhaustive": false
+            },
+            "depth_verification": {
+              "mode": "auto",
+              "status": "checked",
+              "reason": null,
+              "source": "depth_scene",
+              "input_points": 385693,
+              "visible_model_points": 479,
+              "known_points": 449,
+              "unique_known_rays": 448,
+              "consistent_points": 287,
+              "occluded_points": 162,
+              "free_space_points": 0,
+              "unknown_points": 30,
+              "depth_coverage": 0.9373695198329853,
+              "free_space_fraction": 0.0,
+              "maximum_free_space": 0.1,
+              "minimum_depth_coverage": 0.8,
+              "minimum_known_rays": 20,
+              "limit_exceeded": false,
+              "applied": true
+            },
+            "visible_model_points": 479
+          }
+        ],
+        "candidate_count": 47,
+        "tested_candidates": 24,
+        "sampled_scene_points": 16593,
+        "search_model_points": 384,
+        "search_scene_points": 2048,
+        "passed": true,
+        "execution": {
+          "sampling": "uniform",
+          "candidate_backend": "ppf",
+          "plane_search": {
+            "model_patches": 0,
+            "scene_patches": 0,
+            "coarse_proposals": 0
+          },
+          "feature_search": {
+            "coarse_proposals": 0
+          },
+          "region_search": {
+            "enabled": false,
+            "coarse_proposals": 0
+          },
+          "refinement": "legacy",
+          "pose_scoring": {
+            "requested": "geometric",
+            "active": "geometric",
+            "fallback_reason": "geometric_requested",
+            "rejected_candidates": []
+          },
+          "observation_mode": "surface",
+          "projection": "pinhole",
+          "input_points": 385693,
+          "first_surface_points": 385693,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "available",
+            "reason": null,
+            "source": "depth_scene",
+            "input_points": 385693
+          },
+          "depth_rejected": 0,
+          "depth_rejected_candidates": [],
+          "overlap_metric": "combined",
+          "overlap_threshold": 0.6,
+          "overlap_rejected": 0,
+          "verified_candidates": 2,
+          "rejection_counts": {
+            "geometry": 22
+          },
+          "candidate_review": [
+            {
+              "candidate_index": 10,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  -0.6976801753871154,
+                  -0.7159790387357567,
+                  -0.024827181934835005,
+                  187.58950565704143
+                ],
+                [
+                  0.4838781305456862,
+                  -0.4965007143892866,
+                  0.7206587232459895,
+                  127.89041872673192
+                ],
+                [
+                  -0.52830325349312,
+                  0.490775974047171,
+                  0.6928453042683013,
+                  702.312720295229
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.6586312282278027,
+              "coverage": 0.686046511627907,
+              "rmse": 0.8401260822978253,
+              "normal_spread": 0.006129494427573004,
+              "unique_support": 160,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "normal_spread"
+              ]
+            },
+            {
+              "candidate_index": 8,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  -0.32504666507344526,
+                  0.9456822129177365,
+                  -0.005460558180715682,
+                  -198.53353937335694
+                ],
+                [
+                  -0.6344498233495769,
+                  -0.2137817802542231,
+                  0.7428127436191612,
+                  81.63117475143805
+                ],
+                [
+                  0.7012974313202084,
+                  0.2449132552606095,
+                  0.6694769676555942,
+                  744.0542029000662
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.5177932124071278,
+              "coverage": 0.5460385438972163,
+              "rmse": 0.9920609426143129,
+              "normal_spread": 0.007960861695506371,
+              "unique_support": 233,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "normal_spread"
+              ]
+            },
+            {
+              "candidate_index": 17,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  0.9737001380252559,
+                  0.2261690349533545,
+                  -0.02748834003475494,
+                  123.49570243974725
+                ],
+                [
+                  -0.1334820486418914,
+                  0.6640757849797521,
+                  0.7356533793124926,
+                  113.4835442514896
+                ],
+                [
+                  0.18463635584565077,
+                  -0.712636597033716,
+                  0.676800189618948,
+                  715.2546101274866
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.5012141949556381,
+              "coverage": 0.5285714285714286,
+              "rmse": 0.9729849855208379,
+              "normal_spread": 0.008299097286545511,
+              "unique_support": 229,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "normal_spread"
+              ]
+            },
+            {
+              "candidate_index": 12,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  0.5711806450613468,
+                  -0.8198386419954172,
+                  -0.040215317957392596,
+                  -185.72790929211672
+                ],
+                [
+                  0.5597445170916774,
+                  0.35320233075997054,
+                  0.7496226978497449,
+                  60.32931239952796
+                ],
+                [
+                  -0.600365510579271,
+                  -0.4506802798401931,
+                  0.6606425198774721,
+                  767.9674886755546
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.47279028125186545,
+              "coverage": 0.5,
+              "rmse": 0.9894714777911726,
+              "normal_spread": 0.009574957294671529,
+              "unique_support": 231,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "normal_spread"
+              ]
+            },
+            {
+              "candidate_index": 9,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  0.12015409807830343,
+                  -0.992562047674604,
+                  -0.019585051212247625,
+                  182.28255512100364
+                ],
+                [
+                  0.6761225021064213,
+                  0.0673703829521824,
+                  0.7337026602420281,
+                  -12.20582324124709
+                ],
+                [
+                  -0.7269259624338242,
+                  -0.10139927522854011,
+                  0.6791883627704354,
+                  850.5405960227451
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.4559821282632882,
+              "coverage": 0.4805194805194805,
+              "rmse": 0.9827387870522991,
+              "normal_spread": 0.008748628529608959,
+              "unique_support": 226,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "coverage",
+                "normal_spread"
+              ]
+            },
+            {
+              "candidate_index": 6,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  0.6884067350367246,
+                  -0.7243423778582884,
+                  -0.037739724358787204,
+                  -202.72309235898274
+                ],
+                [
+                  0.49881486884315324,
+                  0.4350105478066489,
+                  0.7496329434582953,
+                  56.531899407894215
+                ],
+                [
+                  -0.5265737306181014,
+                  -0.5348775027382996,
+                  0.6607769391310315,
+                  771.4572918443861
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.44589931285965395,
+              "coverage": 0.47035573122529645,
+              "rmse": 0.9624775245783088,
+              "normal_spread": 0.010154823525584819,
+              "unique_support": 213,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "coverage"
+              ]
+            },
+            {
+              "candidate_index": 1,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  -0.9804882916654428,
+                  -0.19655902806370434,
+                  0.0026941406112727336,
+                  -89.87961235185197
+                ],
+                [
+                  0.13439890999741266,
+                  -0.6602896469748971,
+                  0.7388873493904692,
+                  -150.204261993056
+                ],
+                [
+                  -0.14345606609163933,
+                  0.724832484498603,
+                  0.6738235870887079,
+                  998.1300663148211
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.43058880858683246,
+              "coverage": 0.4749536178107607,
+              "rmse": 1.3486827120866045,
+              "normal_spread": 0.011391779594666042,
+              "unique_support": 227,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "coverage"
+              ]
+            },
+            {
+              "candidate_index": 14,
+              "stage": "geometry",
+              "candidate_source": "ppf",
+              "source_to_target": [
+                [
+                  0.8065791719122258,
+                  -0.5910446960393622,
+                  -0.009808502491542725,
+                  177.4226895139839
+                ],
+                [
+                  0.40720124127205815,
+                  0.5435129277016242,
+                  0.7340169252324531,
+                  -105.513663098436
+                ],
+                [
+                  -0.4285057625562152,
+                  -0.5960367981131262,
+                  0.6790603410236599,
+                  951.5255704981091
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "score": 0.42773310359767247,
+              "coverage": 0.4593128390596745,
+              "rmse": 1.1404582787503428,
+              "normal_spread": 0.008426292856614583,
+              "unique_support": 229,
+              "limits": {
+                "min_coverage": 0.5,
+                "min_unique_support": 20,
+                "max_rmse": 3.309757180837811,
+                "min_normal_spread": 0.01
+              },
+              "failed_checks": [
+                "coverage",
+                "normal_spread"
+              ]
+            }
+          ],
+          "candidate_review_limit": 8,
+          "match_limit_discarded": 0,
+          "coarse_rejected": 0,
+          "icp_calls": 43,
+          "execution_workers": 4,
+          "active_candidate_workers": 4,
+          "candidate_timing_aggregation": "worker_intervals_may_overlap",
+          "model_levels": [
+            2000
+          ],
+          "scene_levels": [
+            16593
+          ],
+          "seconds": {
+            "preprocess": 0.8983244999999442,
+            "candidate_search": 0.011951599999520113,
+            "ppf_search": 0.008393899999646237,
+            "plane_search": 0.0,
+            "feature_search": 0.0,
+            "region_search": 0.0,
+            "depth_prepare": 0.04542829999991227,
+            "depth_verify": 0.007034399999611196,
+            "projective_score_sum": 0.0,
+            "worker_index_prepare_sum": 0.011293699999441742,
+            "suppression": 0.002310199999556062,
+            "pose_alternatives": 0.00010590000056254212,
+            "refine_verify": 0.33259739999994054,
+            "total": 1.2428736999991088
+          }
+        },
+        "assessment": {
+          "status": "located",
+          "message": "2 accepted 3D instances",
+          "rejection_counts": {
+            "geometry": 22
+          }
+        }
+      }
+    }
+  ],
+  "repeatable_matches": true
+}
