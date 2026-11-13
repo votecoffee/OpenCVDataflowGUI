@@ -53,3 +53,45 @@ def test_simple_3d_locate_example_roundtrip(variant):
             restored.close()
     finally:
         graph.close()
+
+
+@pytest.mark.local_examples
+def test_real_tless_first_surface_camera_example():
+    tool = pytest.importorskip("opencv_simple_3d_locate")
+    if not hasattr(tool, "Camera"):
+        pytest.skip("Real T-LESS example requires Simple3DLocate 0.1.0.dev3 or later")
+    from opencv_simple_3d_locate.optimization import pose_agreement
+
+    root = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_locate/real_tless"
+    graph = Graph.load(root / "project.json", builtin_registry())
+    try:
+        graph.run()
+        block = graph.blocks["locate"]
+        assert block.state == "pass", block.error
+        report = block.last_result.outputs["report"]
+        assert report["execution"]["projection"] == "pinhole"
+        assert report["execution"]["observation_mode"] == "surface"
+        assert block.last_result.outputs["count"] == 1
+        pose = block.last_result.outputs["pose"]
+        assert 0 < pose["score"] <= 1
+        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        checked = pose_agreement(
+            [np.asarray(pose["source_to_target"])],
+            [truth],
+            position_tolerance=5,
+            angle_degrees=5,
+            symmetries=(np.diag([-1.0, -1.0, 1.0, 1.0]),),
+        )
+        assert checked["matched"] == 1 and checked["extra"] == 0
+        colors = block.last_result.outputs["fit"].colors
+        assert np.any(np.all(colors == [90, 115, 175], axis=1))
+        benchmark = json.loads((root / "benchmark.json").read_bytes())
+        assert len(benchmark["cases"]) == 8
+        assert sum(case["segmentation_supplied"] for case in benchmark["cases"]) == 4
+        restored = Graph.from_dict(graph.to_dict(), builtin_registry())
+        try:
+            assert {p.name for p in restored.blocks["locate"].inputs} == {"scene", "camera"}
+        finally:
+            restored.close()
+    finally:
+        graph.close()

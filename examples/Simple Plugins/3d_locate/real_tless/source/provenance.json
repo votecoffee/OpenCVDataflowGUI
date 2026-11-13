@@ -1,0 +1,25 @@
+{
+  "dataset": "T-LESS",
+  "revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1",
+  "license": "CC-BY-4.0",
+  "source": "https://huggingface.co/datasets/bop-benchmark/tless",
+  "sha256": {
+    "models_cad/obj_000029.ply": "df03e55cf223b9dae258b27fa69101b4784a257b3ca7b95fe46dda4dc2429a87",
+    "models_cad/models_info.json": "48a13b6e4532c20954dbe014a082439b05984d12ff13da1da62635a8dee59925",
+    "test_primesense/000001/scene_camera.json": "0f4e972b56ef220fe2d4efbbd4767f77ca0e54fe76093d46f952d515700f1ce1",
+    "test_primesense/000001/scene_gt.json": "742c77860d984760a67b352159007b04dd260b8a27b7029574be7d845fcda1b2",
+    "test_primesense/000001/scene_gt_info.json": "b0965f6e8a1e63139f4fa613a86167d56ca64f113fce160ed9b3629d718dd372",
+    "test_primesense/000001/rgb/000220.png": "debde75c45f98e9fac60316a0d0aa3be40b3f6d2ed78f17cef39793c32210f38",
+    "test_primesense/000001/depth/000220.png": "f8d331b5e236219d942f6fa3e5f03b8fdb081f5616e5a9a910bb213c01919ae6",
+    "test_primesense/000001/mask_visib/000220_000002.png": "2b3d382f0e90846697d243fa8e0643ba51764abd245532a60eae92535c26ccf1",
+    "test_primesense/000001/rgb/000230.png": "256d2ebd4818f77ea3cddd0f6a769be512163e63fdabbd4723041358360ce6bf",
+    "test_primesense/000001/depth/000230.png": "5b709eab052751ac94cf33c12a3dba1d3899408ae0bce1b47faef09e30c801a6",
+    "test_primesense/000001/mask_visib/000230_000002.png": "3bbdb50d35f6a35dfaf7b41c6662712067f144c705af4886047b7c803ce7cf38",
+    "test_primesense/000001/rgb/000347.png": "ad89349fc8e7dc3bdc12f8ac1d7c1366d9cdef2ca553a205a5be3d306e147483",
+    "test_primesense/000001/depth/000347.png": "79b66636e6a4b6eba0d391e314dc2d16fde1d24a7c92d968d00c14f19da45699",
+    "test_primesense/000001/mask_visib/000347_000002.png": "f15cbd8ec570488e9457d8d9f87d65f64efe831141fc2cf1ae28bfddb2aa100f",
+    "test_primesense/000001/rgb/000488.png": "7d31e8cf226a64038fe35a975502649d262b9b0e0b855c31c7887c00b212b107",
+    "test_primesense/000001/depth/000488.png": "9b7148cc10f523ab1505cd1af625c3a2c27fcc0e7c70a6f3fbef3c39e14f9d21",
+    "test_primesense/000001/mask_visib/000488_000002.png": "8338c769364f33b304118a4292500c5a28526c655492dd8da23ea3defdff2027"
+  }
+}

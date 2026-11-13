@@ -1,0 +1,49 @@
+{
+  "case": "full_000488",
+  "segmentation_supplied": false,
+  "validation": {
+    "matched": 0,
+    "missed": 1,
+    "extra": 0,
+    "max_position_error": 0.0,
+    "max_angle_error_degrees": 0.0
+  },
+  "result": {
+    "model": "simple_3d_locate_v1",
+    "units": "mm",
+    "source_frame": "tless_object29",
+    "target_frame": "camera",
+    "matches": [],
+    "candidate_count": 56,
+    "tested_candidates": 24,
+    "sampled_scene_points": 2265,
+    "search_model_points": 384,
+    "search_scene_points": 2048,
+    "passed": false,
+    "execution": {
+      "sampling": "uniform",
+      "refinement": "legacy",
+      "observation_mode": "surface",
+      "projection": "pinhole",
+      "input_points": 70077,
+      "first_surface_points": 70077,
+      "overlap_metric": "combined",
+      "overlap_threshold": 0.6,
+      "overlap_rejected": 0,
+      "coarse_rejected": 0,
+      "icp_calls": 41,
+      "model_levels": [
+        1804
+      ],
+      "scene_levels": [
+        2265
+      ],
+      "seconds": {
+        "preprocess": 0.08789189999970404,
+        "candidate_search": 0.013891800000237708,
+        "refine_verify": 0.3686367000000246,
+        "total": 0.4704204999998183
+      }
+    }
+  }
+}

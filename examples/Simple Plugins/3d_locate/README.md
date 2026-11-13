@@ -1,5 +1,10 @@
 # Simple3DLocate
 
+For a **real single-view depth capture**, open [T-LESS](real_tless/README.md).
+It uses attributed CC BY 4.0 industrial RGB-D data and requires plugin dev3.
+This older generated example deliberately uses **complete/fused observations**;
+it does not simulate first-surface depth-camera sensing.
+
 This generated example locates two rigid surfaces with independent point
 sampling, rotation/translation, partial occlusion, measurement noise, and
 unrelated clutter. All coordinates are in millimeters.

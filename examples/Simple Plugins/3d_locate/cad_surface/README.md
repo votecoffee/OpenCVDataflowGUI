@@ -1,5 +1,10 @@
 # Simple3DLocate · CAD surface
 
+For a **real single-view depth capture**, open [T-LESS](../real_tless/README.md).
+It uses attributed CC BY 4.0 industrial RGB-D data and requires plugin dev3.
+This older generated example deliberately uses **complete/fused observations**;
+it does not simulate first-surface depth-camera sensing.
+
 Train from a generated STL CAD part and locate two rotated copies with
 independent surface sampling, measurement noise, clutter, and a missing slice.
 Use Simple3DLocate **0.1.0.dev2 or later** in the DataflowGUI environment.
