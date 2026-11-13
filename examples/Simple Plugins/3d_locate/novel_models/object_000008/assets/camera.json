@@ -1,0 +1,28 @@
+{
+  "model": "camera_model_v1",
+  "camera_matrix": [
+    [
+      1075.65091572,
+      0.0,
+      375.06888344
+    ],
+    [
+      0.0,
+      1073.90347929,
+      258.72159802
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "image_size": [
+    720,
+    540
+  ],
+  "units": "mm",
+  "frame": "camera",
+  "lens": "pinhole",
+  "distortion": []
+}

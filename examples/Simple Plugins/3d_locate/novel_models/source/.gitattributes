@@ -1,0 +1,4 @@
+# Preserve upstream bytes and recorded hashes on every checkout.
+* -text
+models_cad/** binary
+test_primesense/** binary

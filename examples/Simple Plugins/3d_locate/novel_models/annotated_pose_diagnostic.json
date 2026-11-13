@@ -1,0 +1,71 @@
+{
+  "scope": "Annotated poses supplied only to evidence diagnostics. No search is run; no diagnostic pose counts as a detection.",
+  "cases": [
+    {
+      "object_id": 6,
+      "case": "scene000002_frame000003_isolated",
+      "diagnostic": "ANNOTATED_POSE_ONLY_NOT_DETECTION",
+      "coverage": 0.20747663551401868,
+      "physical_rmse": 1.3863777630653502,
+      "normal_spread": 0.1972482642086645,
+      "unique_support": 96,
+      "geometric_pass": false,
+      "ray_score": 0.577737898812021
+    },
+    {
+      "object_id": 6,
+      "case": "scene000002_frame000255_isolated",
+      "diagnostic": "ANNOTATED_POSE_ONLY_NOT_DETECTION",
+      "coverage": 0.2037914691943128,
+      "physical_rmse": 1.6947392788545337,
+      "normal_spread": 0.4650788151754609,
+      "unique_support": 110,
+      "geometric_pass": false,
+      "ray_score": 0.6108975159649442
+    },
+    {
+      "object_id": 6,
+      "case": "scene000002_frame000494_isolated",
+      "diagnostic": "ANNOTATED_POSE_ONLY_NOT_DETECTION",
+      "coverage": 0.40217391304347827,
+      "physical_rmse": 1.1988498043579086,
+      "normal_spread": 0.23255921538638638,
+      "unique_support": 192,
+      "geometric_pass": false,
+      "ray_score": 0.7448669353089108
+    },
+    {
+      "object_id": 8,
+      "case": "scene000003_frame000005_isolated",
+      "diagnostic": "ANNOTATED_POSE_ONLY_NOT_DETECTION",
+      "coverage": 0.21568627450980393,
+      "physical_rmse": 1.971697758253966,
+      "normal_spread": 0.027203325303023877,
+      "unique_support": 77,
+      "geometric_pass": false,
+      "ray_score": 0.8812073928379643
+    },
+    {
+      "object_id": 8,
+      "case": "scene000003_frame000261_isolated",
+      "diagnostic": "ANNOTATED_POSE_ONLY_NOT_DETECTION",
+      "coverage": 0.412,
+      "physical_rmse": 2.057164839527023,
+      "normal_spread": 0.38586383334681196,
+      "unique_support": 191,
+      "geometric_pass": false,
+      "ray_score": 0.8322621462806022
+    },
+    {
+      "object_id": 8,
+      "case": "scene000003_frame000493_isolated",
+      "diagnostic": "ANNOTATED_POSE_ONLY_NOT_DETECTION",
+      "coverage": 0.10273972602739725,
+      "physical_rmse": 1.6387905122227673,
+      "normal_spread": 0.3319620047209633,
+      "unique_support": 27,
+      "geometric_pass": false,
+      "ray_score": 0.6994180942518959
+    }
+  ]
+}

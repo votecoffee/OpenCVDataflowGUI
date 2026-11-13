@@ -516,3 +516,39 @@ def test_regional_candidate_example_recovers_full_scene_with_original_depth():
                 )
     finally:
         graph.close()
+
+
+@pytest.mark.local_examples
+@pytest.mark.parametrize("object_id", (6, 8))
+def test_novel_training_examples_restore_budget_and_retain_known_misses(object_id):
+    tool = pytest.importorskip("opencv_simple_3d_locate")
+    model = pytest.importorskip("opencv_simple_3d_locate.model")
+    if not hasattr(model, "MODEL_CANDIDATE_BUDGET"):
+        pytest.skip("Automatic training budget requires Simple3DLocate dev13")
+    from opencv_simple_3d_locate.optimization import read_validation_scenes
+
+    root = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_locate/novel_models"
+    folder = root / f"object_{object_id:06}"
+    graph = Graph.load(folder / "project.json", builtin_registry())
+    try:
+        graph.run()
+        block = graph.blocks["locate"]
+        assert not block.error
+        assert block.state == "fail" and block.last_result.outputs["count"] == 0
+        recipe = block._locator.recipe
+        assert len(recipe.reference) == 6000 and len(recipe.samples) == 2000
+        assert recipe.settings.sampling_distance == tool.Settings().sampling_distance
+        assert recipe.health["sampling_budget"]["reference_exceeds_budget"]
+        assert recipe.cad is not None
+        scenes = read_validation_scenes(root / f"validation_object{object_id:06}.json")
+        assert len(scenes) == 9 and sum(bool(s.truth) for s in scenes) == 6
+        assert all(s.depth_scene is not None and s.camera is not None for s in scenes)
+        comparison = json.loads((folder / "comparison.json").read_bytes())
+        assert comparison["recommended"] is None and comparison["repeats"] == 2
+        assert all(not p["compatible"] for p in comparison["profiles"])
+        assert all(
+            sum(s["runs"][0]["matched"] for s in p["scenes"]) == 0 for p in comparison["profiles"]
+        )
+        assert (folder / "result.png").is_file()
+    finally:
+        graph.close()

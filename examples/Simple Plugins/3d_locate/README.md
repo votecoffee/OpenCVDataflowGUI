@@ -13,6 +13,11 @@ For STL CAD training, retained-mesh resampling and bounded candidate search,
 open the [CAD surface example](cad_surface/README.md), which requires
 Simple3DLocate 0.1.0.dev1 or later.
 
+For automatic bounded training on new CAD models, open the
+[novel-model validation examples](novel_models/README.md), requiring plugin
+dev13. They retain twelve positive matching failures and target-absent negatives
+while demonstrating successful model preparation and full-reference restoration.
+
 ## Setup and run
 
 Install the Simple3DLocate wheel or source folder into the Python environment
