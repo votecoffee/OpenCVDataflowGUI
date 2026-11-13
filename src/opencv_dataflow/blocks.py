@@ -732,6 +732,7 @@ def builtin_registry():
     from .local_binary_patterns import LocalBinaryPatterns
     from .local_threshold import LocalThreshold
     from .logix import LOGIX_BLOCKS
+    from .logpolar_registration import LogPolarRegistration
     from .mask_boundary import CompareMaskBoundary
     from .mask_clearance import MaskClearance
     from .match_review import ReviewFeatureMatches
@@ -979,6 +980,7 @@ def builtin_registry():
         CompareMaskBoundary,
         CompareAlignedImages,
         MeasureFocus,
+        LogPolarRegistration,
         FocusStack,
         MeasureSlantedEdge,
         ComputeImageHash,

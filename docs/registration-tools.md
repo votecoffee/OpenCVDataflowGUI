@@ -78,6 +78,14 @@ do not automatically correct gamma or change color spaces.
 
 ## Feature and registration contracts
 
+[Log-polar similarity registration](<../examples/opencv tools/logpolar_registration/README.md>)
+proposes rotation/scale from Fourier magnitude, estimates translation and verifies
+the result against selected reference pixels. It tests 180-degree alternatives
+and additional polar peaks. Failed or ambiguous fits withhold primary geometry
+and images. An explicit orientation prior narrows the searched alternatives.
+Transform and Geometry expose both source/target contexts for point conversion;
+the aligned grid belongs to the reference and its active ticket to the moving image.
+
 FAST and ORB require uint8 input and interpret color encodings before grayscale
 conversion. ORB outputs a JSON-compatible feature record with keypoint metadata,
 descriptor rows, algorithm identifier and image size. Its binary descriptor uses

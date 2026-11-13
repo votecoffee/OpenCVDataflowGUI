@@ -5444,6 +5444,56 @@ Input `region` — Restrict code centers. Intersected with a wired mask.
 | `neighbors` | `8` | Value must be a whole number between 4 and 24. Samples per circle. Default and ror support up to 12 to bound bin counts. |
 | `radius` | `1.0` | Value must be a finite number between 0.5 and 32. Sampling radius in pixels. The border is excluded from the histogram. |
 
+## Register rotation and scale (log-polar) (`inspect.logpolar_registration`)
+
+Inspection / Registration
+
+Inputs: `image` (image), `reference` (image), `mask` (image, optional), `region` (data, optional), `moving_mask` (image, optional).
+
+Input `image` — Moving gray/RGB(A)/BGR(A) uint8/16/float32/64 image; owns the result ticket.
+
+Input `reference` — Reference of equal pixel dimensions; owns the aligned coordinate grid.
+
+Input `mask` — Reference-grid verification selection; does not crop the Fourier proposal.
+
+Input `region` — Reference-grid scoring region intersected with the mask.
+
+Input `moving_mask` — Optional captured support on the moving grid for spatial verification.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `work_size` | `256` | Value must be a whole number between 64 and 1024. Maximum square canvas; isotropic sampling maps back to original pixels. |
+| `angular_bins` | `"720"` | `360`, `720`, `1440` Full-circle polar rows; correlation uses the conjugate-symmetric half. |
+| `radial_bins` | `"256"` | `128`, `256`, `512` Log-radius columns before the inner-frequency band is removed. |
+| `minimum_radius` | `3.0` | Value must be a finite number between 1 and 256. Inner frequency radius in working DFT bins, at least one. |
+| `radius_fraction` | `0.45` | Value must be a finite number between 0.1 and 0.49. Outer frequency radius as a fraction of the square working canvas. |
+| `spectrum` | `"log"` | `log`, `magnitude` Log-compressed or linear DFT magnitude for the polar proposal. |
+| `spatial_window` | `true` | Apply Hann taper before DFT to reduce image-edge effects. |
+| `angular_centering` | `true` | Subtract each radius column's angular mean. |
+| `radial_window` | `true` | Apply radial Hann taper; angular coordinates remain periodic. |
+| `polar_peaks` | `3` | Value must be a whole number between 1 and 6. Additional polar peaks; each also tests its 180-degree alternative. |
+| `peak_radius` | `7` | Value must be a whole number between 1 and 31. Wrapped nonmaximum suppression radius in polar correlation bins. |
+| `minimum_scale` | `0.5` | Value must be a finite number between 0.25 and 4. Minimum moving-to-reference scale; must be below Maximum scale. |
+| `maximum_scale` | `2.0` | Value must be a finite number between 0.25 and 4. Maximum moving-to-reference isotropic scale. |
+| `minimum_angle` | `-180.0` | Value must be a finite number between -180 and 180. Minimum moving-to-reference angle in OpenCV degrees, within [-180,180]. |
+| `maximum_angle` | `180.0` | Value must be a finite number between -180 and 180. Must exceed Minimum angle; no wrapping interval is inferred. |
+| `maximum_translation` | `0.0` | Value must be a finite number between 0 and 32768. Center displacement in original pixels; zero uses 40% of size. |
+| `minimum_polar_response` | `0.05` | Value must be a finite number between 0 and 1. Minimum native polar phase response; not a probability. |
+| `minimum_score` | `0.8` | Value must be a finite number between 0 and 1. Minimum supported-pixel normalized correlation. |
+| `minimum_margin` | `0.03` | Value must be a finite number between 0 and 1. Required best-minus-runner-up score for distinct eligible poses. |
+| `pose_separation` | `3.0` | Value must be a finite number between 0.1 and 1000. Merge poses within this mapped-corner RMS distance in original pixels. |
+| `minimum_overlap` | `0.5` | Value must be a finite number between 0 and 1. Minimum supported fraction of the selected reference scoring region. |
+| `minimum_pixels` | `64` | Value must be a whole number between 16 and 1.04858e+06. Minimum supported working-grid pixels for a spatial score. |
+| `minimum_stddev` | `1e-05` | Value must be a finite number between 0 and 1. Minimum working luminance variation after common-channel scaling. |
+| `ecc_iterations` | `60` | Value must be a whole number between 0 and 500. Affine ECC iterations before similarity projection; zero disables it. |
+| `ecc_epsilon` | `1e-06` | Value must be a finite number between 0 and 0.1. ECC convergence epsilon; zero uses iteration count only. |
+| `ecc_gaussian` | `5` | Value must be a positive odd integer between 1 and 31. Odd Gaussian kernel for native ECC refinement. |
+| `maximum_anisotropy` | `1.05` | Value must be a finite number between 1 and 2. Maximum singular-value ratio of the ECC affine proposal. |
+| `refinement_failure` | `"reject"` | `reject`, `coarse` Reject failed refinement, or allow verified coarse output. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Final resampling; spatial verification always uses linear sampling. |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect_101` Final image extrapolation; the validity mask excludes extrapolated pixels. |
+| `border_value` | `0.0` | Value must be a finite number. Final constant border sample value; ignored by other border modes. |
+
 ## Mahalanobis distance (`inspect.mahalanobis_distance`)
 
 Inspection / Measurements

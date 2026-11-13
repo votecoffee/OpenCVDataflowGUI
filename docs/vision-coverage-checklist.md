@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 116 | 18 | 41 | 175 | 66.3% |
+| 1. Core and baseline 2D | 117 | 18 | 40 | 175 | 66.9% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 178 | 59 | 233 | 470 | 37.9% |
+| **Overall** | 179 | 59 | 232 | 470 | 38.1% |
 
 <!-- coverage-summary:end -->
 
@@ -213,7 +213,7 @@ fixture or result needed to close the item.
 | S1-136 | Binary mask boundary distances | distanceTransform, inner erosion boundaries and directed comparisons | Complete | inspect.mask_boundary compares source-grid masks, including holes and disconnected parts, with directed/combined distance statistics, tolerance bands, raw/beyond-tolerance missing/extra area and independent judgments. Qualify metric, neighborhood, border, selection, empty-set, frame/ticket/pyramid, floating precision and bounded drawable graphics behavior against brute-force pixel references. Original tab/notch projects demonstrate known pass/fail geometry. inspect.contour_profile remains available for continuous contour sampling. |
 | S1-137 | Build a flat-field reference from image stacks | Tiled mean/median of accepted capture samples | Complete | calibration.flat_field_reference estimates bright/dark references with per-pixel support counts, saturation rejection, optional temporal-noise checks, selections and published-response validity. Original 16-bit RGB mean/median projects correct a separate held-out image to exact independent reflectance pixels, including a median outlier case. Qualify raw units, floating/rounded precision, HDR/tiny samples, alpha omission, grids, pyramid/capture/batch identity, bounded work and graphics disabled. cv.flat_field accepts explicit floating raw-unit references and optional same-frame checks while preserving inspected image depth/encoding/alpha. |
 | S1-138 | Focus stacking and per-pixel focus selection | Sobel/Laplacian local energy with upstream registration and bounded blending | Complete | cv.focus_stack fuses registered batches with hard or weighted selection, optional weight smoothing, capture coverage masks, scoring halos, energy/ambiguity/support gates and anchor fallback. Qualify original level indices, coverage/confidence, dtype/encoding/alpha, selection, grids, pyramid/capture/cohort identity, HDR/tiny values, bounds and graphics disabled. Original 16-bit RGB projects reconstruct independent sharp truth exactly, including an inspectable ECC registration step using a shared sharp region. Focus indices are not calibrated depth or visibility. |
-| S1-139 | Log-polar rotation and scale registration | warpPolar and phaseCorrelate | Planned | Recover rotation and scale before translation and verify ambiguity handling on symmetric parts. |
+| S1-139 | Log-polar rotation and scale registration | DFT magnitude, warpPolar, phaseCorrelate and spatial similarity verification | Complete | inspect.logpolar_registration proposes rotation/scale and 180-degree alternatives, estimates translation, optionally projects affine ECC to a similarity, then checks supported-pixel correlation and distinct-pose margin. Qualify original-grid geometry, masks, color/depth/alpha, ticket/frame/pyramid ownership, HDR/tiny data, native failures and bounded work. Independent sine/cosine fixtures verify inverse geometry, odd/rectangular/reduced canvases, symmetric rejection and an explicit orientation prior. Failed/ambiguous results withhold primary geometry and image. This is conditional whole-image registration, not multi-part or occlusion matching. |
 | S1-140 | Controlled video encoder qualification | VideoWriter, fourcc and decoder round trip | Partial | output.video writes tested local streams. Check representative lossless and lossy codecs for frame count, rate, color and invalid backend selection. |
 | S1-141 | Debounce foreground across consecutive frames | Temporal mask accumulation and connected components | Planned | Suppress single-frame foreground spikes and retain a sustained moving feature with bounded state and reset behavior. |
 | S1-142 | Synthetic fiducial-free image distortion fixtures | Geometric remap and seeded perturbations | Planned | Generate known shear, perspective and lens-like distortions and emit ground-truth maps for inspection regression. |

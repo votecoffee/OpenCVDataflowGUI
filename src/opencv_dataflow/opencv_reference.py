@@ -7,6 +7,9 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "inspect.logpolar_registration": (
+        "dft warpPolar phaseCorrelate findTransformECCWithMask warpAffine"
+    ),
     "cv.focus_stack": "Sobel Laplacian GaussianBlur boxFilter erode",
     "inspect.mask_boundary": "distanceTransform erode findContours",
     "3d.aruco_pose": "aruco.ArucoDetector.detectMarkers solvePnP",

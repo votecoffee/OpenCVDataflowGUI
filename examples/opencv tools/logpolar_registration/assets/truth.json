@@ -1,0 +1,70 @@
+{
+  "reference": "Original textured part; transform derived directly from sine/cosine",
+  "image_size": [
+    192,
+    192
+  ],
+  "channel_order": "RGB",
+  "input_depth": "uint16",
+  "reference_to_moving": [
+    [
+      -0.7618114011887626,
+      0.5334260858064728,
+      114.31079761900867
+    ],
+    [
+      -0.5334260858064728,
+      -0.7618114011887626,
+      225.19518000804499
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "moving_to_reference": [
+    [
+      -0.8808086497731097,
+      -0.6167488562914472,
+      239.57480901759453
+    ],
+    [
+      0.616748856291447,
+      -0.8808086497731094,
+      127.85280874501174
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "generated_angle": 145.0,
+  "generated_scale": 0.93,
+  "generated_offset": [
+    -3.0,
+    6.0
+  ],
+  "controls_reference": [
+    [
+      50,
+      60
+    ],
+    [
+      120,
+      60
+    ],
+    [
+      120,
+      120
+    ],
+    [
+      50,
+      120
+    ]
+  ],
+  "maximum_control_error_pixels": 0.3,
+  "maximum_image_rmse_counts": 2000,
+  "symmetric": "Exactly invariant under array reversal (180-degree rotation)"
+}

@@ -68,7 +68,7 @@ IMPLEMENTATION_MODULES = {
         "analysis_tools annotation basic_processing blocks collection_tools contour_raster "
         "features focus_stacking generalized_hough "
         "histogram histogram_comparison image_blend image_colorize path_strip "
-        "mask_boundary point_set_lines polar_image "
+        "logpolar_registration mask_boundary point_set_lines polar_image "
         "laplacian_pyramids processing "
         "pyramids raster_hough_lines registration segmentation subpixel_crop template_instances "
         "tilted_statistics"

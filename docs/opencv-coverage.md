@@ -44,6 +44,12 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Log-polar similarity registration](<../examples/opencv tools/logpolar_registration/README.md>)
+(S1-139) now verifies rotation, isotropic scale and translation after spectral
+proposals. Symmetric near-equal poses withhold primary geometry; an explicit
+orientation prior can resolve the permitted search. Original color examples
+check independent inverse geometry and supported image residuals.
+
 [Focus stacking and level selection](<../examples/opencv tools/focus_stack/README.md>)
 (S1-138) now fuse registered image batches with local energy, hard or weighted
 selection, captured-neighborhood coverage, ambiguity fallback and original

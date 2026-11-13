@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -350.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "moving",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/moving.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -350.0,
+        320.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "register",
+      "type": "inspect.logpolar_registration",
+      "name": "Require a distinct verified similarity",
+      "documentation": "<p>Estimate an orientation-preserving moving-to-reference similarity using Fourier magnitude, semilog polar remapping and phase proposals, then translation and spatial verification. Both 180-degree alternatives and additional polar peaks are evaluated. Optional affine ECC is projected to isotropic scale/rotation before verification. Distinct near-equal verified poses withhold primary geometry and aligned images.</p><p>Selections affect reference-grid verification. The Fourier seed sees the whole image; use upstream cropping/masking for unrelated clutter. Candidate uniqueness is conditional on the searched ranges and finite proposal budget. This is whole-image registration. It does not perform multi-part matching. Outputs keep moving depth/encoding and use the reference frame. The moving ticket and both source grids remain explicit. Scores are correlations, not probabilities.</p>",
+      "parameters": {
+        "work_size": 256,
+        "angular_bins": "720",
+        "radial_bins": "256",
+        "minimum_radius": 3.0,
+        "radius_fraction": 0.45,
+        "spectrum": "log",
+        "spatial_window": true,
+        "angular_centering": true,
+        "radial_window": true,
+        "polar_peaks": 3,
+        "peak_radius": 7,
+        "minimum_scale": 0.5,
+        "maximum_scale": 2.0,
+        "minimum_angle": -180.0,
+        "maximum_angle": 180.0,
+        "maximum_translation": 0.0,
+        "minimum_polar_response": 0.05,
+        "minimum_score": 0.8,
+        "minimum_margin": 0.03,
+        "pose_separation": 3.0,
+        "minimum_overlap": 0.5,
+        "minimum_pixels": 64,
+        "minimum_stddev": 1e-05,
+        "ecc_iterations": 60,
+        "ecc_epsilon": 1e-06,
+        "ecc_gaussian": 5,
+        "maximum_anisotropy": 1.05,
+        "refinement_failure": "reject",
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        50.0,
+        80.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "reference",
+        "mask",
+        "region",
+        "moving_mask"
+      ],
+      "exposed_outputs": [
+        "image",
+        "transform",
+        "info",
+        "valid_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "before",
+      "type": "inspect.image_quality",
+      "name": "Before registration RMSE",
+      "parameters": {
+        "metric": "rmse",
+        "mask_alignment": "same_frame",
+        "check_threshold": false,
+        "threshold": 2000.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        500.0,
+        400.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify",
+      "type": "inspect.image_quality",
+      "name": "Registered image RMSE",
+      "parameters": {
+        "metric": "rmse",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 2000.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        500.0,
+        80.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original similarity fixtures \u2014 MIT",
+      "description": "Original 16-bit RGB part, projects and generator under the repository's MIT license. Sine/cosine geometry defines a 145-degree, 0.93-scale forward warp with offset [-3,6]. Registration recovers its inverse and verifies the 180-degree spectral alternative spatially. The symmetric project fails and withholds its transform; a [-45,45] orientation prior resolves that fixture. Pixel scores are not probabilities or occlusion measurements. OpenCV references: https://docs.opencv.org/5.0/main_modules/imgproc_transform.html and https://docs.opencv.org/5.0/main_modules/imgproc_motion.html",
+      "parameters": {},
+      "position": [
+        -350.0,
+        -340.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "register",
+      "input": "reference"
+    },
+    {
+      "source": "moving",
+      "output": "image",
+      "target": "register",
+      "input": "image"
+    },
+    {
+      "source": "moving",
+      "output": "image",
+      "target": "before",
+      "input": "image_a"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "before",
+      "input": "image_b"
+    },
+    {
+      "source": "register",
+      "output": "image",
+      "target": "verify",
+      "input": "image_a"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "verify",
+      "input": "image_b"
+    },
+    {
+      "source": "register",
+      "output": "valid_mask",
+      "target": "verify",
+      "input": "mask"
+    }
+  ]
+}
