@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 133 | 16 | 26 | 175 | 76.0% |
+| 1. Core and baseline 2D | 134 | 16 | 25 | 175 | 76.6% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 196 | 58 | 216 | 470 | 41.7% |
+| **Overall** | 197 | 58 | 215 | 470 | 41.9% |
 
 <!-- coverage-summary:end -->
 
@@ -253,7 +253,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S1-159 | Large-radius image smoothing | stackBlur | Planned | Compare against Gaussian smoothing on noisy, high-resolution images. Measure edge retention and runtime across odd kernel sizes and report the supported encodings. |
+| S1-159 | Large-radius image smoothing | stackBlur | Complete | cv.stack_blur exposes independent odd sizes, explicit native clamping/rejection, float32/native arithmetic and alpha policy. uint8/uint16/int16/float32 image depths, RGB tags, masks/regions, provenance, bounds, XML and failure containment are checked. Float32 work restores integer output depth; observed high-depth/native-large-integer artifacts are guarded. Independent triangular references and five original projects qualify processing. A 1920x1080 matched-variance Gaussian comparison records noise, edge center/width and local single-thread timings at 31/127/255; native-call observations exclude graph overhead and are not speed guarantees. |
 | S1-160 | Temporal per-pixel noise and covariance | accumulate, accumulateSquare, accumulateProduct and accumulateWeighted | Planned | Compute masked mean, variance and paired-channel or paired-source covariance from a replay stack. Verify sample counts, overflow resistance, reset and known noise levels. |
 | S1-161 | ArUco-backed QR reading | QRCodeDetectorAruco | Planned | Compare both native QR backends on cluttered, rotated and small labels. Verify payload, rectified patch and corners on the original image, including multiple candidates. |
 | S1-162 | Structured-append QR payloads | QRCodeEncoder.encodeStructuredAppend and a qualified decoder | Planned | Generate and recover a split payload in sequence, even when symbols are presented out of order. Report missing, duplicated and mismatched fragments without treating a partial payload as valid. |

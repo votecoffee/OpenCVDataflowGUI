@@ -111,8 +111,18 @@ explicit, changed native frame counts are rejected, and file publication
 preserves existing outputs. Grayscale/BGRA APNG posters are separate from timed
 frames. AVIF remains unavailable and native RGB posters are guarded. Six examples
 include ordinary per-frame inspection and an intentional timing error.
-See [the animation contract](animation-codecs.md). Next: large-radius image
-smoothing (S1-159), with edge-retention and runtime comparisons against Gaussian blur.
+See [the animation contract](animation-codecs.md).
+
+[Large-radius stack smoothing](<../examples/opencv tools/stack_blur/README.md>)
+(S1-159) adds independent odd X/Y sizes, explicit clamp/reject sizing, float32
+working arithmetic, original-depth output, selected writes and alpha policy.
+Controlled probes exclude this build's problematic native integer paths.
+Known triangular impulse/border references and matched-variance Gaussian fixtures
+measure noise, edge position and edge broadening. The recorded 1920x1080 benchmark
+compares single-thread native-call medians over 31/127/255 kernels; graph copies,
+validation and graphics remain outside those timings. See [the block contract](stack-blur.md).
+Next, qualify conservative mask resampling (S1-118) on top of the existing resize
+and region-warp tools, with explicit area coverage, thresholds and source mappings.
 
 [Lateral chromatic aberration correction](<../examples/opencv tools/chromatic_aberration/README.md>)
 (S1-146) now loads or defines a versioned native polynomial and aligns red/blue

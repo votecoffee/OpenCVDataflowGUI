@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/noisy.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        100
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "stack",
+      "type": "cv.stack_blur",
+      "name": "Stack blur",
+      "parameters": {
+        "kernel": 127,
+        "kernel_y": 0,
+        "oversize_policy": "clamp",
+        "arithmetic": "float32",
+        "alpha_mode": "preserve",
+        "maximum_pixels": 16777216
+      },
+      "position": [
+        450,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selection",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "circle",
+        "rectangle": [
+          0,
+          0,
+          100,
+          100
+        ],
+        "center": [
+          512,
+          384
+        ],
+        "radius": 220,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        0,
+        500
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "difference",
+      "type": "cv.absdiff",
+      "name": "Absolute difference",
+      "parameters": {},
+      "position": [
+        900,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original MIT fixture and smoothing limits",
+      "description": "Original MIT step/noise data and projects from build_example.py; no customer or third-party imagery. The 1024x768 target has levels 60/180 DN, an ideal edge at x=511.5 and fixed noise seed 159. Comparison uses the same 127x127 support and a Gaussian sigma chosen to match the stack kernel's variance. Both filters widen edges; neither is an edge-preserving denoiser. Profiles and raw differences show the result. Selection affects writes while full-source pixels supply neighborhoods. Float32 working arithmetic restores integer output depth by rounding/clipping and avoids observed high-depth native integer artifacts. Unsafe native mode is an intentional validation failure. Kernel clamp records 127x95 on the 128x96 input. See truth.json for independent design and noise/edge measurements. Benchmark results are separate local native-call timings, excluding graph and display overhead.",
+      "parameters": {},
+      "position": [
+        0,
+        -420
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "stack",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "selection",
+      "input": "image"
+    },
+    {
+      "source": "selection",
+      "output": "region",
+      "target": "stack",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "difference",
+      "input": "image_a"
+    },
+    {
+      "source": "stack",
+      "output": "image",
+      "target": "difference",
+      "input": "image_b"
+    }
+  ]
+}

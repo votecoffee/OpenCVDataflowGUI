@@ -1,0 +1,42 @@
+{
+  "license": "MIT",
+  "creator": "OpenCVDataflowGUI contributors",
+  "noise_seed": 159,
+  "clean_levels_dn": [
+    60,
+    180
+  ],
+  "edge_center_px": 511.5,
+  "source_width": 1024,
+  "source_height": 768,
+  "reference": {
+    "kernel": 127,
+    "matched_gaussian_sigma": 28.30700968320607,
+    "triangular_variance": 682.5,
+    "input": {
+      "flat_rms_dn": 18.044257348264647,
+      "edge_center_px": 511.50726010896886,
+      "center_error_px": 0.0072601089688646425,
+      "edge_10_90_width_px": 0.7953569475468498,
+      "peak_gradient_dn_per_px": 120.70052357761597,
+      "flat_sample_count": 283776
+    },
+    "stack": {
+      "flat_rms_dn": 0.17117116781864708,
+      "edge_center_px": 511.56938629850885,
+      "center_error_px": 0.06938629850884581,
+      "edge_10_90_width_px": 70.70991019976213,
+      "peak_gradient_dn_per_px": 1.8746954889502376,
+      "flat_sample_count": 283776
+    },
+    "gaussian": {
+      "flat_rms_dn": 0.1719797907742142,
+      "edge_center_px": 511.57260643020095,
+      "center_error_px": 0.07260643020094903,
+      "edge_10_90_width_px": 69.41295202386499,
+      "peak_gradient_dn_per_px": 1.7333638540003449,
+      "flat_sample_count": 283776
+    }
+  },
+  "scope": "Known synthetic step and noise; software checks without optical qualification"
+}

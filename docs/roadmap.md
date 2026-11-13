@@ -41,11 +41,18 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **1 targeted increment of about 20** completed:
-animated image codec round trips (S1-111). Its **108 targeted checks** cover
+The current cycle has **2 targeted increments of about 20** completed:
+animated image codec round trips (S1-111) and large-radius smoothing (S1-159).
+The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
 including the deliberate GIF timing rejection. No broad suite was repeated.
+The smoothing increment passed **76 targeted checks** for native/independent
+references, data types, selections, payloads, controls, XML, examples and contained
+failures. Its benchmark records native-call timing and noise/edge tradeoffs on a
+1920x1080 float32 fixture; it excludes graph overhead and makes no speed guarantee.
+All **10 installed Debug/Lean CLI runs** reproduced their expected outcomes,
+including guarded native high-depth arithmetic. No broad suite was repeated.
 Update the count as implementation continues. Example reorganizations and frozen
 third-party reviews do not add vision capability completions.
 
@@ -149,7 +156,17 @@ Aligned image comparison now covers selected ECC/normalized correlation and
 constant-region policy. Signed Laplacian bands now support odd-size reconstruction
 and multiscale edits. Floating TIFF and Radiance HDR round trips are qualified;
 S1-125 remains partial until native EXR runs on a capable build. Prioritize
-large-radius image smoothing (S1-159), with measured edge retention and runtime.
+coverage-aware mask resampling (S1-118), building on existing resize and transformed
+region tools with explicit area coverage, thresholds and provenance qualification.
+[Large-radius stack smoothing](<../examples/opencv tools/stack_blur/README.md>)
+(S1-159) now has bounded independent kernels, selected writes, high-depth-safe
+float32 work and original-depth output. Five projects cover Gaussian comparison,
+selection, uint16 processing, unsafe native rejection and explicit clamping.
+Independent triangular references and matched-variance Gaussian measurements
+record noise, edge position/width and local native-call time. The 127x127 fixture
+reduces flat-area RMS error from 18.044 to 0.171 DN while broadening its edge to
+70.71 pixels; it is not an edge-preserving filter. Native integer artifacts on
+this build are guarded rather than emitted as valid results.
 [Animated image codecs](<../examples/opencv tools/animation_codecs/README.md>)
 (S1-111) now qualify APNG/GIF/WebP file and buffer paths, per-frame timing and
 contexts, explicit GIF quantization, protected output and native readback checks.
@@ -342,7 +359,7 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize large-radius image smoothing (S1-159). S1-111 now has verified APNG/GIF/WebP frame/timing transport across file and buffer APIs. S1-112 QR label generation now has checked native controls, text recovery and bounded grouped outputs. S1-07 metadata file/buffer round trips now have verified native chunk transport and explicit orientation semantics. S1-109 paired flow refinement now has independent motion/residual references and explicit support/failure evidence. S1-108 color-distribution tracking now has controlled translation/scale/loss evidence. S1-95 dense-flow warping and S1-88–S1-90 photo/color edits have controlled references and explicit support/failure evidence. Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize coverage-aware mask resampling (S1-118) over the existing resize/region-warp baseline. S1-159 now has bounded stack smoothing and measured Gaussian noise/edge/runtime comparisons. S1-111 now has verified APNG/GIF/WebP frame/timing transport across file and buffer APIs. S1-112 QR label generation now has checked native controls, text recovery and bounded grouped outputs. S1-07 metadata file/buffer round trips now have verified native chunk transport and explicit orientation semantics. S1-109 paired flow refinement now has independent motion/residual references and explicit support/failure evidence. S1-108 color-distribution tracking now has controlled translation/scale/loss evidence. S1-95 dense-flow warping and S1-88–S1-90 photo/color edits have controlled references and explicit support/failure evidence. Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and K-nearest/random-forest image classifiers. Native SVM training, prediction and model I/O are available in [the classical ML workflow](classical-ml.md) (S2-20). | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |

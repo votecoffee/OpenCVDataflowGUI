@@ -3604,6 +3604,23 @@ Inputs: `image` (image).
 
 No configurable algorithm parameters.
 
+## Stack blur (`cv.stack_blur`)
+
+Image processing / Filtering
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8, uint16, int16 or float32 gray/RGB/BGR/RGBA/BGRA. A mask and region intersect the write selection; neighborhoods use the full image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `kernel` | `31` | Value must be a positive odd integer between 1 and 2047. Positive odd X size, 1..2047. Stack blur uses replicated image borders. |
+| `kernel_y` | `0` | Value must be zero or a positive odd integer between 1 and 2047. Zero uses X; otherwise an independent positive odd Y size. |
+| `oversize_policy` | `"clamp"` | `clamp`, `reject` Clamp follows native odd-size limits; Info records the effective size. Reject reports a kernel larger than its image axis. |
+| `arithmetic` | `"float32"` | `float32`, `native` Float32 avoids observed native integer artifacts and restores input depth by rounding/clipping. Native permits uint8 kernels up to 255 or float32. |
+| `alpha_mode` | `"preserve"` | `preserve`, `filter` Preserve keeps alpha exactly; filter smooths all channels independently. No alpha association conversion is performed. |
+| `maximum_pixels` | `16777216` | Value must be a whole number between 1 and 1.67772e+07. Whole-image work limit, including when only a region is written. Native scratch storage also has a fixed 128 MiB limit. |
+
 ## Stitch image pair (`cv.stitch_image_pair`)
 
 Image processing / Geometry

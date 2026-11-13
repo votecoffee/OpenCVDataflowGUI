@@ -4478,7 +4478,7 @@ P3	function	cv2.spatialGradient	literal reference	-
 P3	function	cv2.split	literal reference	-
 P3	function	cv2.sqrBoxFilter	no static reference	-
 P3	function	cv2.sqrt	literal reference	-
-P3	function	cv2.stackBlur	no static reference	-
+P3	function	cv2.stackBlur	literal reference	-
 P3	function	cv2.startWindowThread	no static reference	-
 P3	class	cv2.stereo_MatchQuasiDense	alias	cv2.stereo.MatchQuasiDense
 P3	method	cv2.stereo_MatchQuasiDense.apply	alias	cv2.stereo.MatchQuasiDense.apply
@@ -5879,7 +5879,7 @@ P4	method	cv2.gapi_wip_GOutputs.getGScalar	alias	cv2.gapi.wip.GOutputs.getGScala
 P4	class	cv2.gapi_wip_gst_GStreamerPipeline	alias	cv2.gapi.wip.gst.GStreamerPipeline
 P4	class	cv2.gapi_wip_IStreamSource	alias	cv2.gapi.wip.IStreamSource
 P4	function	cv2.getBuildInformation	no static reference	-
-P4	function	cv2.getNumThreads	no static reference	-
+P4	function	cv2.getNumThreads	literal reference	-
 P4	function	cv2.getTickCount	no static reference	-
 P4	function	cv2.ipp.getIppVersion	no static reference	-
 P4	function	cv2.ipp.setUseIPP	no static reference	-

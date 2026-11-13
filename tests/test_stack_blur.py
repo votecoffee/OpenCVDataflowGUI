@@ -203,6 +203,8 @@ def test_scratch_limit_and_native_exception_are_contained(monkeypatch):
         patch.setattr(module, "MAX_SCRATCH_BYTES", 1)
         patch.setattr(cv2, "stackBlur", lambda *a, **k: pytest.fail("Unexpected native call"))
         assert block.execute({"image": image}) is None and "scratch" in block.error
+        empty = successful(block, {"image": image, "mask": np.zeros_like(image)})
+        assert empty.outputs["info"]["scratch_estimate_bytes"] == 0
 
     def broken(*args, **kwargs):
         raise cv2.error("Controlled native failure")

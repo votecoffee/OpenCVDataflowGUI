@@ -112,6 +112,8 @@ class StackBlur(ImageTool):
         row_scratch = threads * channels * (width + kernel[0] + 2) * 4
         column_scratch = width * channels * (kernel[1] * itemsize + 12)
         scratch = max(row_scratch, column_scratch)
+        if count == 0 or kernel == (1, 1):
+            scratch = 0
         if scratch > MAX_SCRATCH_BYTES:
             raise ValidationError(
                 "Stack blur native scratch estimate exceeds 128 MiB", "kernel", "kernel_y"
