@@ -5427,7 +5427,7 @@ P4	method	cv2.cuda.GpuMat.copyTo	method name only	-
 P4	method	cv2.cuda.GpuMat.create	method name only	-
 P4	method	cv2.cuda.GpuMat.cudaPtr	no static reference	-
 P4	method	cv2.cuda.GpuMat.defaultAllocator	no static reference	-
-P4	method	cv2.cuda.GpuMat.depth	no static reference	-
+P4	method	cv2.cuda.GpuMat.depth	method name only	-
 P4	method	cv2.cuda.GpuMat.download	no static reference	-
 P4	method	cv2.cuda.GpuMat.elemSize	no static reference	-
 P4	method	cv2.cuda.GpuMat.elemSize1	no static reference	-
@@ -5458,7 +5458,7 @@ P4	method	cv2.cuda.HostMem.channels	no static reference	-
 P4	method	cv2.cuda.HostMem.clone	method name only	-
 P4	method	cv2.cuda.HostMem.create	method name only	-
 P4	method	cv2.cuda.HostMem.createMatHeader	no static reference	-
-P4	method	cv2.cuda.HostMem.depth	no static reference	-
+P4	method	cv2.cuda.HostMem.depth	method name only	-
 P4	method	cv2.cuda.HostMem.elemSize	no static reference	-
 P4	method	cv2.cuda.HostMem.elemSize1	no static reference	-
 P4	method	cv2.cuda.HostMem.empty	method name only	-

@@ -23,22 +23,27 @@ pose, calibration or encoder evidence. See the [example data policy](../examples
 Use targeted tests and a runnable example for each implementation increment.
 Run a broader regression check after roughly 20 increments, or earlier when a
 specific concern involves shared execution, persistence or plugin contracts.
-The last broad checkpoint is `43afa2e` (S1-139): **2,859 passed and 13
-skipped** in the offscreen suite. It completes the 20-increment cycle following
-`0c8c6e9`. Skips cover 11 unavailable optional-plugin checks and two native
-OpenEXR round trips; those paths remain unqualified on this environment.
-The current cycle has **20 targeted increments of about 20** completed:
-the previously recorded eleven, followed by the expanded block editor,
-masked photo correction (S1-88), masked color editing (S1-89),
-contrast-preserving decolorization (S1-90), dense-flow warping (S1-95),
-color-distribution region tracking (S1-108), variational flow refinement (S1-109),
-image metadata round trips (S1-07), and native QR generation (S1-112).
-The QR increment completes this cycle; the next broader offscreen checkpoint is pending.
-The editor increment passed 16 focused Qt
-checks. Example reorganizations and frozen third-party reviews do not add
-vision capability completions.
-Update the count as implementation continues and reset it after the next
-broader check.
+The latest broad checkpoint is `6cd14f3`: **3,689 passed and 2 skipped**
+in the offscreen suite, using Python 3.14.3, OpenCV 5.0.0 and the installed
+Simple3DMeasure 0.1.0.dev2 plugin. Source and package versions stayed unchanged
+throughout the run. The two skips are native OpenEXR round trips; EXR remains
+unqualified on this build. Installed optional-plugin checks ran successfully.
+
+This completes the 20-increment cycle ending with native QR generation (S1-112).
+The checkpoint also covers the Save As fixes for project-relative input assets,
+nested ToolBlocks, validation sets, sealed recipes and classifier dependencies.
+Original source files and pinned recipe hashes remain intact, and destination
+conflicts and failed writes have regression checks. Tests for the updated public
+image examples retain their original execution and editor assertions.
+The previous checkpoint was `43afa2e` (2,859 passed, 13 skipped).
+
+The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
+recipe Save As regression. Seventeen focused line/asset checks passed after that
+integration; the broad suite was not repeated for these examples.
+
+The current cycle has **0 targeted increments of about 20** completed.
+Update the count as implementation continues. Example reorganizations and frozen
+third-party reviews do not add vision capability completions.
 
 ## Short-term focus
 
@@ -150,8 +155,8 @@ readback, grouped structured-append generation and an intentional capacity failu
 Validation: 57 targeted checks including existing code readers; native matrices,
 independent rendering, optional ZXing Kanji recovery, XML and graphics-off are
 covered. Installed Debug/Lean CLI checks exercise all four projects. Structured
-generation does not close S1-162 recovery or qualify print grading. The broader
-20-increment offscreen regression checkpoint follows this implementation.
+generation does not close S1-162 recovery or qualify print grading. The completed
+offscreen checkpoint is recorded under [Validation cadence](#validation-cadence).
 [Image metadata round trips](<../examples/opencv tools/metadata_roundtrip/README.md>)
 (S1-07) now preserve bounded EXIF/XMP/ICC/CICP packets through qualified PNG
 and JPEG buffer/file APIs. Existing encoder, decoder, file source and writer
@@ -329,6 +334,14 @@ testable inspection workflows.
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |
 | 5 | Application-specific ToolBlocks | Package reusable tray orientation, conveyor pick selection, depth-assisted bin picking, surface and bead inspection, OCR/code grading, color checks and robot-frame measurements. | Each package has documented ports and calibration assumptions, known-good and known-bad validation sets, and repeatable ticket verdicts and reasons. Hardware-dependent acceptance is tracked separately. |
+
+The optional Simple3DMeasure 0.1.0.dev2 plugin supplies observed line fitting,
+angle, separation, probe distance and span measurements, with
+[generated and recorded section examples](<../examples/Simple Plugins/3d_measure/lines/README.md>).
+This is the partial baseline for S3-129. A native XYZ `fitLine` path with selectable
+robust distances and retained-point identity qualification remains open. Recorded
+sections use supplied fixture poses; automatic edge detection and independent
+dimensional accuracy remain separate work.
 
 Stage 1 is in progress. Cosine and Fourier transforms, inverse reconstruction,
 radial Fourier filtering, custom spectrum masks, complex spectrum products, Fourier correlation,

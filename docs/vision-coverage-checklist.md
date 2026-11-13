@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 132 | 16 | 27 | 175 | 75.4% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
-| 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
+| 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 195 | 57 | 218 | 470 | 41.5% |
+| **Overall** | 195 | 58 | 217 | 470 | 41.5% |
 
 <!-- coverage-summary:end -->
 
@@ -587,7 +587,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S3-127 | Assess calibration capture coverage and parameter stability | calibrateCameraExtended diagnostics and target observation geometry | Partial | calibration.lens reports per-view error and parameter deviations and rejects duplicate views. Assess image coverage and target-pose diversity across a capture set. Flag weak geometry and compare fitted parameters against repeat captures and held-out image points. |
 | S3-128 | Estimate uncertainty on calibrated image measurements | projectPoints Jacobians and covariance propagation or measured perturbation trials | Planned | Propagate declared pixel, pose and calibration uncertainty into physical dimensions or target positions. Preserve units and parameter correlations, report modeling assumptions, and compare predicted intervals with repeated synthetic and recorded observations. |
-| S3-129 | Fit a spatial line or axis to measured 3D points | fitLine on XYZ with a robust distance choice | Planned | Fit a known axis amid noise and outliers, report direction, anchor, residuals and retained point IDs, and preserve physical units and frame. Verify direction-sign ambiguity and reject coincident or otherwise underconstrained samples. |
+| S3-129 | Fit a spatial line or axis to measured 3D points | fitLine on XYZ with a robust distance choice | Partial | Optional Simple3DMeasure 0.1.0.dev2 supplies bounded deterministic consensus/TLS lines, radial residuals, frame/unit-aware angle, separation, probe and observed-span measurements, plus generated controls and recorded section examples with unchanged failure guards. Qualify a native XYZ fitLine adapter with selectable robust distances, retained point IDs, sign ambiguity and coincident/underconstrained rejection. Recorded sections use supplied fixtures and do not establish dimensional accuracy. |
 
 ### Lens-aware object and relative pose
 
