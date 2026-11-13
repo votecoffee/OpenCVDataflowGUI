@@ -15,7 +15,8 @@ ROOT = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_measure
 
 
 @pytest.mark.local_examples
-@pytest.mark.parametrize("case", ["generated/good", "generated/wrong_gap", "generated/missing_target",
+@pytest.mark.parametrize("case", ["generated/good", "generated/wrong_gap",
+                                  "generated/missing_target",
                                   "generated/nonparallel", "generated/shortened",
                                   "real_sections/frame000003", "real_sections/frame000013",
                                   "real_sections/frame000024"])
