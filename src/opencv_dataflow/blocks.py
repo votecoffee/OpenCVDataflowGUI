@@ -673,6 +673,7 @@ def builtin_registry():
     from .affine_features import AffineFeatures
     from .alpha_composition import AlphaOver
     from .analysis_tools import ANALYSIS_BLOCKS
+    from .animation_blocks import ANIMATION_BLOCKS
     from .annotation import AnnotationLayer
     from .annoy_blocks import ANNOY_BLOCKS
     from .aruco_markers import DetectArucoMarkers
@@ -887,6 +888,7 @@ def builtin_registry():
 
     registry = Registry()
     for block in (
+        *ANIMATION_BLOCKS,
         Comment,
         DemoImage,
         RandomImage,

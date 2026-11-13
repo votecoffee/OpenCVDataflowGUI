@@ -83,7 +83,7 @@ IMPLEMENTATION_MODULES = {
         "matrix_inverse matrix_multiply matrix_structure matrix_svd nearest_rows polynomial_roots "
         "principal_components spectral"
     ),
-    "imgcodecs": "image_codecs metadata_blocks tiff_files",
+    "imgcodecs": "animation_blocks image_codecs metadata_blocks tiff_files",
     "calib": "calibration calibration_validation chessboard_quality hand_eye remap_maps workplane",
     "geometry": "circle_fitting contour_analysis convex_overlap geometry3d line_pair shape_fitting "
     "translation_registration triangulation voronoi",

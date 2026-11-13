@@ -7,6 +7,10 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "input.animation_file": "Animation imreadanimation",
+    "cv.decode_animation": "Animation imdecodeanimation",
+    "cv.encode_animation": "Animation imencodeanimation imdecodeanimation",
+    "output.animation_file": "Animation imwriteanimation imdecodeanimation",
     "cv.encode_qr": (
         "QRCodeEncoder_create QRCodeEncoder.encode QRCodeEncoder.encodeStructuredAppend"
     ),
