@@ -1,0 +1,123 @@
+{
+  "model": "simple_3d_residual_review_v1",
+  "units": "mm",
+  "measurement_frame": "part",
+  "scene_frame": "part",
+  "range_multiple": 3.0,
+  "scale_source": "retained_fit_band_not_frame_minimum_maximum",
+  "qualification": "fit_residual_not_reference_deviation_or_measurement_uncertainty",
+  "regions": {
+    "datum": {
+      "kind": "plane",
+      "status": "fit",
+      "definition": "signed_distance_to_current_fitted_plane",
+      "population": "all_selected_points_including_fit_exclusions",
+      "selected_points": 900,
+      "residual_points": 900,
+      "unavailable_points": 0,
+      "fit_band": 0.07497847688713416,
+      "color_range": [
+        -0.22493543066140248,
+        0.22493543066140248
+      ],
+      "histogram": {
+        "edges": [
+          -0.22493543066140248,
+          -0.20619081143961893,
+          -0.1874461922178354,
+          -0.16870157299605187,
+          -0.14995695377426832,
+          -0.13121233455248477,
+          -0.11246771533070124,
+          -0.09372309610891771,
+          -0.07497847688713416,
+          -0.056233857665350606,
+          -0.03748923844356708,
+          -0.018744619221783554,
+          0.0,
+          0.018744619221783554,
+          0.03748923844356705,
+          0.056233857665350606,
+          0.07497847688713416,
+          0.09372309610891771,
+          0.11246771533070127,
+          0.13121233455248477,
+          0.14995695377426832,
+          0.16870157299605187,
+          0.18744619221783537,
+          0.20619081143961893,
+          0.22493543066140248
+        ],
+        "counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          15,
+          50,
+          133,
+          243,
+          247,
+          156,
+          47,
+          6,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "below_range": 0,
+        "above_range": 0,
+        "scale": "counts_not_probability",
+        "upper_edge_inclusive": true
+      },
+      "minimum": -0.07376101497881886,
+      "median": 0.0009480408855231633,
+      "maximum": 0.09350782608873565,
+      "rmse": 0.02526014872575092,
+      "absolute_p95": 0.048738465434297315,
+      "inlier_points": 897,
+      "excluded_fit_points": 3,
+      "origin": [
+        -8.382058501110693,
+        0.15530952850695165,
+        -0.0006463290415994001
+      ],
+      "axis": [
+        0.0001726961847392753,
+        9.25848554705691e-05,
+        0.999999980802036
+      ]
+    },
+    "top": {
+      "kind": "plane",
+      "status": "insufficient_points",
+      "definition": "signed_distance_to_current_fitted_plane",
+      "population": "all_selected_points_including_fit_exclusions",
+      "selected_points": 0,
+      "residual_points": 0,
+      "unavailable_points": 0,
+      "fit_band": 0.07594029944972347,
+      "color_range": [
+        -0.2278208983491704,
+        0.2278208983491704
+      ],
+      "histogram": null,
+      "minimum": null,
+      "median": null,
+      "maximum": null,
+      "rmse": null,
+      "absolute_p95": null,
+      "inlier_points": 0,
+      "excluded_fit_points": 0
+    }
+  }
+}

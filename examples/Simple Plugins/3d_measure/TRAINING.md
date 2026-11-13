@@ -42,6 +42,10 @@ inferred from object size.
    Scene/fixture inputs are copied from the same completed block execution.
    Change layers/regions without refitting; export the visible PLY, portable
    recipe, raw report, hashes and capture identity.
+   With dev5, choose **Residuals / all selected** for signed plane/radial line
+   colors. Double-click a region row for its histogram and physical fit-band
+   markers. The fixed scale and tail counts support comparison with the
+   reference; these are current-fit residuals rather than reference deviations.
 6. **Stage recipe**, then inspector **Apply**. Stage only edits the inspector
    draft; Cancel leaves active settings intact. Reopening restores the complete
    reference XYZ, regions, measurements, normal orientation and fit bands.

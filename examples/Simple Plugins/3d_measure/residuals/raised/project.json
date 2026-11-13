@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/scene.ply",
+        "units": "mm",
+        "frame": "part",
+        "max_points": 2000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "3d.simple_measure",
+      "name": "Simple3DMeasure",
+      "description": "Generated first-visible height surfaces; known 5 mm step. Independent sample/noise; reference fit bands are frozen.",
+      "parameters": {
+        "recipe_path": "assets/measurement.s3m",
+        "sha256": "15ce6586b3119349a8ed36129d815e78cd32f577af34ceb5774bdeaadf6e5da0",
+        "primary_measurement": "",
+        "render_graphics": true,
+        "residual_graphics": true
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "scene",
+        "fixture"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "planes",
+        "report",
+        "value",
+        "count",
+        "fit",
+        "residuals",
+        "residual_report"
+      ],
+      "thumbnail": true,
+      "preview_output": "residuals"
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "cloud",
+      "target": "measure",
+      "input": "scene"
+    }
+  ]
+}
