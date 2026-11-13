@@ -210,3 +210,50 @@ def test_real_tless_first_surface_camera_example():
             restored.close()
     finally:
         graph.close()
+
+
+@pytest.mark.local_examples
+def test_feature_candidate_example_uses_full_scene_and_retains_failed_qualification():
+    pytest.importorskip("opencv_simple_3d_locate")
+    from opencv_simple_3d_locate.optimization import PROFILES, pose_agreement
+
+    if "features" not in PROFILES:
+        pytest.skip("Feature example requires Simple3DLocate 0.1.0.dev7 or later")
+    root = (
+        Path(__file__).resolve().parents[1]
+        / "examples/Simple Plugins/3d_locate/real_tless/feature_candidates"
+    )
+    graph = Graph.load(root / "project.json", builtin_registry())
+    try:
+        graph.run()
+        block = graph.blocks["locate"]
+        assert block.state == "pass", block.error
+        outputs = block.last_result.outputs
+        assert outputs["count"] == 1
+        report = outputs["report"]
+        assert report["execution"]["candidate_backend"] == "ppf_features"
+        assert report["matches"][0]["candidate_source"] == "features"
+        feature = report["execution"]["feature_search"]
+        assert 0 < feature["correspondences"] <= 2048
+        assert feature["trial_limit"] == 4096
+        assert 0 < feature["coarse_proposals"] <= 128
+        assert feature["seconds"]["scene_descriptors"] > 0
+        assert report["matches"][0]["depth_verification"]["applied"]
+        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        checked = pose_agreement(
+            [np.asarray(outputs["pose"]["source_to_target"])],
+            [truth],
+            position_tolerance=5,
+            angle_degrees=5,
+            symmetries=(np.diag([-1.0, -1.0, 1.0, 1.0]),),
+        )
+        assert checked["matched"] == 1 and checked["missed"] == checked["extra"] == 0
+        comparison = json.loads((root / "comparison.json").read_bytes())
+        assert comparison["recommended"] is None
+        assert all(not row["compatible"] for row in comparison["profiles"])
+        benchmark = json.loads((root / "benchmark.json").read_bytes())
+        full = next(row for row in benchmark["cases"] if row["case"] == "full_000230")
+        assert not full["segmentation_supplied"]
+        assert len(benchmark["cases"]) == 8
+    finally:
+        graph.close()

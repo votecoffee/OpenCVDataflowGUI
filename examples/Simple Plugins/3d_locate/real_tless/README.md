@@ -25,6 +25,10 @@ score when either 3D box overlap or shared scene support exceeds 60%. The traine
 exposes the threshold and metric. Set observation mode to `complete` for fused
 or volumetric observations that intentionally contain hidden surfaces.
 
+For the optional local-descriptor/RANSAC route, see the
+[feature candidates example](feature_candidates/README.md), including the
+three-backend comparison and retained real-scene failures.
+
 ## Measured scope and failures
 
 With default training/execution settings, capture 230's isolated object has
