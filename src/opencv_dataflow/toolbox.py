@@ -110,7 +110,8 @@ BLOCK_MODULES = {
     ),
     "imgproc": (
         "cv.hann_window cv.decode_yuv calibration.color_balance cv.pack_remap_map "
-        "inspect.contour_hierarchy inspect.focus inspect.slanted_edge cv.decode_raw_sensor"
+        "inspect.contour_hierarchy inspect.focus inspect.slanted_edge cv.decode_raw_sensor "
+        "inspect.structure_tensor"
     ),
     "imgcodecs": "input.file input.depth_file input.raw_yuv input.raw_sensor output.image",
     "calib": (
@@ -152,6 +153,7 @@ _MODULE_BY_BLOCK = {
 }
 _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
+    "inspect.structure_tensor": ("cornerEigenValsAndVecs", "tensor", "orientation", "coherence"),
     "inspect.affine_features": ("AffineFeature", "ASIFT", "tilt", "SIFT", "ORB"),
     "cv.decode_raw_sensor": ("MIPI", "RAW10", "RAW12", "unpack", "Bayer", "row stride"),
     "input.raw_sensor": ("MIPI", "RAW10", "RAW12", "sensor frame"),

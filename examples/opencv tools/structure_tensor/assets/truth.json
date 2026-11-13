@@ -1,0 +1,59 @@
+{
+  "probes": {
+    "vertical": {
+      "rectangle": [
+        28,
+        52,
+        136,
+        96
+      ],
+      "tangent_degrees": 90
+    },
+    "diagonal": {
+      "rectangle": [
+        220,
+        52,
+        136,
+        96
+      ],
+      "tangent_degrees": 135
+    },
+    "horizontal": {
+      "rectangle": [
+        412,
+        52,
+        136,
+        96
+      ],
+      "tangent_degrees": 0
+    },
+    "corner": {
+      "rectangle": [
+        96,
+        276,
+        1,
+        1
+      ],
+      "tangent_degrees": null
+    },
+    "flat": {
+      "rectangle": [
+        220,
+        228,
+        136,
+        96
+      ],
+      "tangent_degrees": null
+    },
+    "weak": {
+      "rectangle": [
+        412,
+        228,
+        136,
+        96
+      ],
+      "tangent_degrees": null
+    }
+  },
+  "units": "unsigned current-grid tangent degrees"
+}

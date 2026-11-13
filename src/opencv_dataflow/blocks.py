@@ -803,6 +803,7 @@ def builtin_registry():
     from .strip_defects import GroupStripDefects, JudgeStripDefects
     from .strip_graphics import MapStripGraphics
     from .strip_width import InspectStripWidth
+    from .structure_tensor import StructureTensor
     from .subpixel_crop import CropSubpixel
     from .superpixels import SuperpixelsLSC, SuperpixelsSEEDS, SuperpixelsSLIC
     from .table_sort import SortNumericTable
@@ -945,6 +946,7 @@ def builtin_registry():
         MaskFromLabelCollection,
         GraphSegments,
         RidgeResponse,
+        StructureTensor,
         MultiscaleRidges,
         SuperpixelsSLIC,
         SuperpixelsLSC,

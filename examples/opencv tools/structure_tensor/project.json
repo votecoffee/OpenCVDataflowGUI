@@ -1,0 +1,696 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Original 16-bit orientation fixture",
+      "parameters": {
+        "path": "assets/orientation-fixture.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        250.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overview",
+      "type": "inspect.structure_tensor",
+      "name": "All local orientations",
+      "parameters": {
+        "block_size": 9,
+        "gradient_size": "3",
+        "border": "reflect_101",
+        "orientation_basis": "tangent",
+        "min_energy": 1e-06,
+        "min_coherence": 0.25,
+        "glyph_step": 16,
+        "glyph_length": 12.0,
+        "max_glyphs": 1000
+      },
+      "position": [
+        330.0,
+        -310.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "orientation",
+        "coherence",
+        "valid",
+        "dominant_angle",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vertical_region",
+      "type": "region.shape",
+      "name": "Vertical probe region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          28,
+          52,
+          136,
+          96
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        330.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vertical",
+      "type": "inspect.structure_tensor",
+      "name": "Vertical: 90 deg",
+      "description": "Expected tangent from the analytic texture generator: 90 degrees.",
+      "parameters": {
+        "block_size": 9,
+        "gradient_size": "3",
+        "border": "reflect_101",
+        "orientation_basis": "tangent",
+        "min_energy": 1e-06,
+        "min_coherence": 0.25,
+        "glyph_step": 10,
+        "glyph_length": 12.0,
+        "max_glyphs": 1000
+      },
+      "position": [
+        660.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "orientation",
+        "coherence",
+        "valid",
+        "dominant_angle",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "diagonal_region",
+      "type": "region.shape",
+      "name": "Diagonal probe region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          220,
+          52,
+          136,
+          96
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        330.0,
+        240.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "diagonal",
+      "type": "inspect.structure_tensor",
+      "name": "Diagonal: 135 deg",
+      "description": "Expected tangent from the analytic texture generator: 135 degrees.",
+      "parameters": {
+        "block_size": 9,
+        "gradient_size": "3",
+        "border": "reflect_101",
+        "orientation_basis": "tangent",
+        "min_energy": 1e-06,
+        "min_coherence": 0.25,
+        "glyph_step": 10,
+        "glyph_length": 12.0,
+        "max_glyphs": 1000
+      },
+      "position": [
+        660.0,
+        240.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "orientation",
+        "coherence",
+        "valid",
+        "dominant_angle",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "horizontal_region",
+      "type": "region.shape",
+      "name": "Horizontal probe region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          412,
+          52,
+          136,
+          96
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        330.0,
+        480.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "horizontal",
+      "type": "inspect.structure_tensor",
+      "name": "Horizontal: 0 deg",
+      "description": "Expected tangent from the analytic texture generator: 0 degrees.",
+      "parameters": {
+        "block_size": 9,
+        "gradient_size": "3",
+        "border": "reflect_101",
+        "orientation_basis": "tangent",
+        "min_energy": 1e-06,
+        "min_coherence": 0.25,
+        "glyph_step": 10,
+        "glyph_length": 12.0,
+        "max_glyphs": 1000
+      },
+      "position": [
+        660.0,
+        480.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "orientation",
+        "coherence",
+        "valid",
+        "dominant_angle",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "corner_region",
+      "type": "region.shape",
+      "name": "Corner probe region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          96,
+          276,
+          1,
+          1
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        330.0,
+        720.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "corner",
+      "type": "inspect.structure_tensor",
+      "name": "Corner: no reliable direction",
+      "description": "Expected tangent from the analytic texture generator: undefined.",
+      "parameters": {
+        "block_size": 9,
+        "gradient_size": "3",
+        "border": "reflect_101",
+        "orientation_basis": "tangent",
+        "min_energy": 1e-06,
+        "min_coherence": 0.25,
+        "glyph_step": 10,
+        "glyph_length": 12.0,
+        "max_glyphs": 1000
+      },
+      "position": [
+        660.0,
+        720.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "orientation",
+        "coherence",
+        "valid",
+        "dominant_angle",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flat_region",
+      "type": "region.shape",
+      "name": "Flat probe region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          220,
+          228,
+          136,
+          96
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        330.0,
+        960.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flat",
+      "type": "inspect.structure_tensor",
+      "name": "Flat: no reliable direction",
+      "description": "Expected tangent from the analytic texture generator: undefined.",
+      "parameters": {
+        "block_size": 9,
+        "gradient_size": "3",
+        "border": "reflect_101",
+        "orientation_basis": "tangent",
+        "min_energy": 1e-06,
+        "min_coherence": 0.25,
+        "glyph_step": 10,
+        "glyph_length": 12.0,
+        "max_glyphs": 1000
+      },
+      "position": [
+        660.0,
+        960.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "orientation",
+        "coherence",
+        "valid",
+        "dominant_angle",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "weak_region",
+      "type": "region.shape",
+      "name": "Weak probe region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          412,
+          228,
+          136,
+          96
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        330.0,
+        1200.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "weak",
+      "type": "inspect.structure_tensor",
+      "name": "Weak: no reliable direction",
+      "description": "Expected tangent from the analytic texture generator: undefined.",
+      "parameters": {
+        "block_size": 9,
+        "gradient_size": "3",
+        "border": "reflect_101",
+        "orientation_basis": "tangent",
+        "min_energy": 1e-06,
+        "min_coherence": 0.25,
+        "glyph_step": 10,
+        "glyph_length": 12.0,
+        "max_glyphs": 1000
+      },
+      "position": [
+        660.0,
+        1200.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "orientation",
+        "coherence",
+        "valid",
+        "dominant_angle",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original orientation and ambiguity fixture \u2014 MIT",
+      "description": "Original generated 16-bit image, graph and code under the repository MIT license. Top row: vertical, diagonal and horizontal textures with 90/135/0 degree tangents. Bottom row: a corner-center probe, uniform patch and weak texture, each without a reliable direction at default limits. Select a tensor and inspect orientation, coherence, validity and eigenvalues. Zero orientation is meaningful only where valid is nonzero. Overview includes panel boundaries and text; selected probes exclude those. assets/truth.json stores generator-defined expectations.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -310.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overview",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "vertical_region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "vertical",
+      "input": "image"
+    },
+    {
+      "source": "vertical_region",
+      "output": "region",
+      "target": "vertical",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "diagonal_region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "diagonal",
+      "input": "image"
+    },
+    {
+      "source": "diagonal_region",
+      "output": "region",
+      "target": "diagonal",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "horizontal_region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "horizontal",
+      "input": "image"
+    },
+    {
+      "source": "horizontal_region",
+      "output": "region",
+      "target": "horizontal",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "corner_region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "corner",
+      "input": "image"
+    },
+    {
+      "source": "corner_region",
+      "output": "region",
+      "target": "corner",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "flat_region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "flat",
+      "input": "image"
+    },
+    {
+      "source": "flat_region",
+      "output": "region",
+      "target": "flat",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "weak_region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "weak",
+      "input": "image"
+    },
+    {
+      "source": "weak_region",
+      "output": "region",
+      "target": "weak",
+      "input": "region"
+    }
+  ]
+}

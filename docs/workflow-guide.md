@@ -215,6 +215,14 @@ ellipses retain the sampled-view provenance; frames, tickets and pyramid metadat
 travel on the wires. Graphics disabled skips previews and ellipse drawing.
 The example compares correspondences with the known image-generating transform.
 
+[Local structure tensor and orientation](<../examples/opencv tools/structure_tensor/README.md>)
+reports eigenvalue, energy, coherence, normal/tangent angle and validity maps.
+Set the neighborhood, Sobel/Scharr aperture, border mode and confidence limits.
+Always check validity when using an angle: corners, flat patches and weak signals
+can have no reliable direction. The selected-region example verifies known
+unsigned axes and ambiguous probes. Source pixels and coordinate/ticket payloads
+remain available; graphics disabled skips previews and drawable direction marks.
+
 Pattern matchers also return a configurable **pose**: set local x/y/angular offsets
 to locate an inspection origin on the part. **Pose from feature** creates a frame
 from a ranked blob, line, contour or pattern match, and **Offset pose** composes

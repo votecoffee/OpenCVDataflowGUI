@@ -384,7 +384,7 @@ is evidence of exposure. Completion requires the checklist's graph fixture.
 | API | Graph disposition | Checklist IDs |
 | --- | --- | --- |
 | `cv2.cornerHarris`, `cv2.cornerMinEigenVal`, `cv2.cornerSubPix`, `cv2.preCornerDetect`, `cv2.GFTTDetector`, `cv2.goodFeaturesToTrack`, `cv2.goodFeaturesToTrackWithQuality`, `cv2.FastFeatureDetector`, `cv::FAST` | Corner scores and subpixel coordinates are existing output families. Use the detector class for FAST. | S1-42 |
-| `cv2.cornerEigenValsAndVecs` | Report local dominant orientation and anisotropy. | S1-129 |
+| `cv2.cornerEigenValsAndVecs` | inspect.structure_tensor supplies sorted eigenpairs, normal/tangent orientation, coherence, validity and an axial summary with Sobel/Scharr and border controls. Analytic ramps and a 16-bit six-probe fixture verify orientations, ambiguous corners, flat/weak signals and source-frame selection. | S1-129 |
 | `cv2.LineSegmentDetector`, `cv2.createLineSegmentDetector`, `cv2.HoughCircles`, `cv2.HoughLines`, `cv2.HoughLinesP`, `cv2.HoughLinesPointSet` | Detected geometry uses existing line, segment and circle contracts. | S1-34 |
 | `cv2.GeneralizedHough`, `cv2.GeneralizedHoughBallard`, `cv2.GeneralizedHoughGuil`, `cv2.createGeneralizedHoughBallard`, `cv2.createGeneralizedHoughGuil` | Two variants share image-space pose, votes and result graphics. | S1-47 |
 | `cv2.matchTemplate` | Use the existing multipeak template detection workflow. | S1-45 |

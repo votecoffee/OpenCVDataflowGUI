@@ -5793,6 +5793,30 @@ Input `sampling` — Optional Unwrap path strip sampling data for source or phys
 | `minimum_coverage` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of classifiable columns with a measurable foreground run. At least one run must be measurable. |
 | `minimum_in_range_fraction` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of measured widths within limits. |
 
+## Local structure tensor and orientation (`inspect.structure_tensor`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray/color uint8, uint16, float32/64 up to 2.1 MP; passes through unchanged.
+
+Input `mask` — Optional uint8 output-center selection in the same pixel frame.
+
+Input `region` — Optional circle, rectangle or polygon intersected with the mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `block_size` | `9` | Value must be a whole number between 1 and 63. Neighborhood width/height for derivative products; odd sizes are centered. |
+| `gradient_size` | `"3"` | `1`, `3`, `5`, `7`, `scharr` Sobel derivative aperture, or Scharr. Output tensors use float32. |
+| `border` | `"reflect_101"` | `constant`, `replicate`, `reflect_101`, `reflect_edge` Extrapolation at the full image boundary; masks do not create new borders. |
+| `orientation_basis` | `"tangent"` | `tangent`, `normal` Tangent follows an edge; normal follows the strongest gradient axis. |
+| `min_energy` | `1e-06` | Value must be a finite number at least 0. Require eigenvalue sum strictly above this limit. Integers use full-scale luminance; floats retain their supplied intensity units. |
+| `min_coherence` | `0.25` | Value must be a finite number between 0 and 1. Inclusive minimum (largest-smallest)/(largest+smallest). Flat/equal-eigenvalue pixels have no direction even when this limit is zero. |
+| `glyph_step` | `16` | Value must be a whole number between 1 and 256. Spacing of direction marks in input pixels; graphics only. |
+| `glyph_length` | `12.0` | Value must be a finite number between 1 and 256. Full length of each unsigned direction mark in input pixels. |
+| `max_glyphs` | `1000` | Value must be a whole number between 1 and 2000. Bounded, evenly subsampled marks across the selected sampling grid. |
+
 ## Find template instances (`inspect.template_instances`)
 
 Inspection / Matching
