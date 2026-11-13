@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.raw_sensor",
+      "name": "Packed RAW10 / RAW12 file",
+      "parameters": {
+        "path": "assets/fixture.raw12",
+        "path_base": "project",
+        "filename_ticket": true,
+        "packing": "mipi_raw12",
+        "width": 98,
+        "height": 65,
+        "row_stride": 152,
+        "byte_offset": 10,
+        "size_policy": "exact",
+        "alignment": "right",
+        "bayer_pattern": "RGGB",
+        "column_offset": "odd",
+        "row_offset": "even"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "pixel_frame",
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference-raw12.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        280.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify",
+      "type": "inspect.image_quality",
+      "name": "Verify exact ADC counts",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        600.0,
+        270.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "crop",
+      "type": "cv.crop",
+      "name": "Odd-origin crop changes Bayer phase",
+      "parameters": {
+        "x": 1,
+        "y": 1,
+        "width": 94,
+        "height": 61
+      },
+      "position": [
+        300.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "demosaic",
+      "type": "cv.demosaic_bayer",
+      "name": "Demosaic Bayer image",
+      "parameters": {
+        "pattern": "RGGB",
+        "algorithm": "bilinear",
+        "color_format": "rgb",
+        "column_offset": "even",
+        "row_offset": "even",
+        "use_sensor_metadata": true
+      },
+      "position": [
+        600.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture_note",
+      "type": "layout.comment",
+      "name": "Original packed sensor fixtures \u2014 MIT",
+      "description": "Original synthetic assets, generator and projects under the MIT license. Run once: unpacked ADC counts must match the reference with zero error. The Bayer block uses captured phase metadata and follows the odd-origin crop. Previews stretch counts for viewing; outputs retain right-aligned uint16 ADC counts. Packing reference: Linux V4L2 packed 10/12-bit Bayer documentation at docs.kernel.org.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -300.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "verify",
+      "input": "image_a"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "verify",
+      "input": "image_b"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "crop",
+      "input": "image"
+    },
+    {
+      "source": "crop",
+      "output": "image",
+      "target": "demosaic",
+      "input": "image"
+    }
+  ]
+}

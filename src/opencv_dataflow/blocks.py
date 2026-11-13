@@ -772,6 +772,7 @@ def builtin_registry():
     from .ptcloud3d import PTCLOUD3D_BLOCKS
     from .pyramids import PYRAMID_BLOCKS
     from .raster_hough_lines import HoughPolarLines
+    from .raw_sensor import RAW_SENSOR_BLOCKS
     from .recipe_blocks import RecipeField, RecipeSelect
     from .region_proposals import GraphSegments, SelectiveSearchProposals
     from .regions import REGION_BLOCKS
@@ -832,6 +833,7 @@ def builtin_registry():
         VideoFile,
         TiffFile,
         RawYuvFile,
+        *RAW_SENSOR_BLOCKS,
         Camera,
         Grayscale,
         Blur,

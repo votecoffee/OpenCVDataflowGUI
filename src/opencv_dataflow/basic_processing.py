@@ -7,7 +7,7 @@ from .core import Port, Result
 from .images import ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS, scalar_value
-from .payloads import require_same_frame
+from .payloads import metadata, require_same_frame
 from .processing import ImageTool, encoded_result, gray_image, image_value
 from .selection import SELECTION_INPUTS, RegionalOperation
 
@@ -182,6 +182,7 @@ class DemosaicBayer(ImageTool):
         "color_format": "bgr",
         "column_offset": "even",
         "row_offset": "even",
+        "use_sensor_metadata": False,
     }
     parameter_choices = {
         "pattern": ("RGGB", "BGGR", "GRBG", "GBRG"),
@@ -192,6 +193,10 @@ class DemosaicBayer(ImageTool):
     }
     parameter_help = {
         "pattern": "Sensor's 2 by 2 tile in row order, starting at its original top-left pixel.",
+        "use_sensor_metadata": (
+            "Use sensor phase metadata, following integer crops/flips/rotations."
+            " Resampled mosaics are rejected."
+        ),
         "algorithm": "VNG requires uint8 and at least eight pixels on both axes.",
         "color_format": "Grayscale and opaque alpha outputs use bilinear interpolation.",
         "column_offset": "Parity of the first input column relative to the sensor origin.",
@@ -217,13 +222,43 @@ class DemosaicBayer(ImageTool):
         tile = p["pattern"]
         ox = int(p["column_offset"] == "odd")
         oy = int(p["row_offset"] == "odd")
+        if p["use_sensor_metadata"]:
+            from .raw_sensor import bayer_pattern_from_sensor
+
+            tile = bayer_pattern_from_sensor(self.input_payloads["image"])
+            ox = oy = 0
         pattern = "".join(
             tile[2 * ((y + oy) % 2) + (x + ox) % 2] for y in range(2) for x in range(2)
         )
         encoding = p["color_format"]
         suffix = BAYER_ALGORITHMS[p["algorithm"]]
         code = getattr(cv2, f"COLOR_Bayer{pattern}2{encoding.upper()}{suffix}")
-        return Result({"image": ImageArray(cv2.demosaicing(image, code), encoding)})
+        output = ImageArray(cv2.demosaicing(image, code), encoding)
+        result = Result({"image": output})
+        raw = self.input_payloads["image"].get("raw_sensor")
+        if isinstance(raw, dict) and raw.get("model") == "raw_sensor_v1":
+            payload = metadata(inputs["image"])
+            raw = payload["raw_sensor"]
+            raw["mosaic"] = False
+            raw["demosaicing"] = {
+                "pattern": pattern,
+                "algorithm": p["algorithm"],
+                "color_format": encoding,
+            }
+            result.payloads["image"] = payload
+            maximum = raw.get("max_code")
+            if isinstance(maximum, int):
+                maximum = min(maximum, int(np.iinfo(image.dtype).max))
+            if (
+                self.capture_graphics
+                and isinstance(maximum, int)
+                and 0 < maximum <= 65535
+                and image.max() <= maximum
+            ):
+                result.graphics["sensor color preview"] = ImageArray(
+                    cv2.convertScaleAbs(output, alpha=255 / maximum), encoding
+                )
+        return result
 
 
 BASIC_PROCESSING_BLOCKS = (

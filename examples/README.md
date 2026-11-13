@@ -96,6 +96,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Laplacian pyramids](<opencv tools/laplacian_pyramid/README.md>) | Decompose an odd-sized 16-bit color image into signed bands, verify exact reconstruction, and remove the finest detail. |
 | [Floating-point image codecs](<opencv tools/float_image_codecs/README.md>) | Verify exact float32/64 TIFF storage and bounded Radiance HDR loss while preserving raw sample units and channel order. |
 | [High-bit-depth codecs](<opencv tools/high_bit_depth_codecs/README.md>) | Verify exact 16-bit PNG and JPEG 2000 color/alpha or grayscale round trips, with explicit codec controls. |
+| [Packed RAW10/RAW12 sensors](<opencv tools/packed_raw_sensor/README.md>) | Decode original MIPI byte fixtures with headers and padded rows, verify ADC counts, and demosaic an odd-origin crop using phase metadata. |
 | [Fourier spectrum product](<opencv tools/spectrum_product/README.md>) | Combine two DFT spectra and recover a known wrapped shift from the reconstructed lag map. |
 | [Gabor texture direction](<opencv tools/gabor_texture/README.md>) | Compare two oriented texture responses on vertical and horizontal stripes. |
 | [Generalized Hough matching](<opencv tools/generalized_hough/README.md>) | Locate two copies of a template shape, then restrict the search results to a region. |

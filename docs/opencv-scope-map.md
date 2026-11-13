@@ -361,7 +361,7 @@ is evidence of exposure. Completion requires the checklist's graph fixture.
 | `cv2.getGaborKernel` | Generate oriented texture kernels in the existing Gabor response workflow. | S1-77 |
 | `cv2.stackBlur` | Qualify large-radius smoothing and edge retention. | S1-159 |
 | `cv2.integral`, `cv2.integral2`, `cv2.integral3`, `cv2.sqrBoxFilter` | Sum, squared sum and tilted sum support local image statistics. | S1-20 |
-| `cv2.cvtColor`, `cv2.cvtColorTwoPlane`, `cv2.demosaicing` | Route sensor layouts and typed color conversions through the existing contracts. | S1-08, S1-13, S1-127 |
+| `cv2.cvtColor`, `cv2.cvtColorTwoPlane`, `cv2.demosaicing` | Route sensor layouts and typed color conversions through existing contracts. `cv.decode_raw_sensor`/`input.raw_sensor` qualify MIPI RAW10/12 groups and strides; `cv.demosaic_bayer` optionally follows captured phase through integer pixel geometry. Other vendor packing and camera SDKs require separate adapters. | S1-08, S1-13, S1-127 |
 | `cv2.CLAHE`, `cv2.createCLAHE`, `cv2.equalizeHist`, `cv2.applyColorMap` | Equalization and palettes use typed image inputs. | S1-21 |
 | `cv2.calcHist`, `cv2.calcBackProject`, `cv2.compareHist`, `cv2.EMD`, `cv::wrapperEMD` | Histogram reduction, projection and transport distance. The C++ EMD wrapper stays internal. | S1-19, S1-120 |
 | `cv2.blendLinear` | Use per-pixel weights within the blending contract. | S1-16, S1-132 |

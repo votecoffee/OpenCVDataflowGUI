@@ -1557,6 +1557,29 @@ Inputs: `encoded` (encoded_image).
 | `color_format` | `"unchanged"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` Unchanged restores the encoder's logical channel order. |
 | `pixel_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` Unchanged preserves the bit depth stored by the codec. |
 
+## Unpack RAW10 / RAW12 sensor frame (`cv.decode_raw_sensor`)
+
+Image processing / Color and depth
+
+Inputs: `buffer` (any), `pixel_frame` (data, optional).
+
+Input `buffer` — Bytes, bytearray, or uint8 vector/matrix. Convert SDK memoryviews to bytes before connecting; geometry is byte storage.
+
+Input `pixel_frame` — Optional decoded-pixel spatial frame; byte-grid coordinates are not reused.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `packing` | `"mipi_raw10"` | `mipi_raw10`, `mipi_raw12` MIPI RAW10: four high bytes plus packed low 2-bit fields; RAW12: two high bytes plus low nibbles. Other vendor/PFNC layouts are not inferred. |
+| `width` | `640` | Value must be a whole number between 1 and 16384. Decoded pixels per row; RAW10 needs a multiple of four, RAW12 a multiple of two. |
+| `height` | `480` | Value must be a whole number between 1 and 16384. Decoded image rows. |
+| `row_stride` | `0` | Value must be a whole number between 0 and 1.04858e+06. Bytes per stored row, including padding on the final row. Zero uses tightly packed rows. |
+| `byte_offset` | `0` | Value must be a whole number between 0 and 1.34218e+08. Bytes to skip before the first row, such as a known file header. |
+| `size_policy` | `"exact"` | `exact`, `at_least` Exact rejects extra bytes. At least selects this frame from a buffer/file with trailing data. |
+| `alignment` | `"right"` | `right`, `left` Right retains ADC counts (0..1023 or 0..4095). Left shifts into uint16; it does not stretch the maximum to 65535. |
+| `bayer_pattern` | `"RGGB"` | `monochrome`, `RGGB`, `BGGR`, `GRBG`, `GBRG` Sensor tile at its original origin. Monochrome disables metadata-driven demosaicing. |
+| `column_offset` | `"even"` | `even`, `odd` Parity of the captured first column relative to the sensor tile origin. |
+| `row_offset` | `"even"` | `even`, `odd` Parity of the captured first row relative to the sensor tile origin. |
+
 ## Decode packed YUV (`cv.decode_yuv`)
 
 Image processing / Color and depth
@@ -1584,6 +1607,7 @@ Inputs: `image` (image).
 | `color_format` | `"bgr"` | `bgr`, `rgb`, `bgra`, `rgba`, `gray` Grayscale and opaque alpha outputs use bilinear interpolation. |
 | `column_offset` | `"even"` | `even`, `odd` Parity of the first input column relative to the sensor origin. |
 | `row_offset` | `"even"` | `even`, `odd` Parity of the first input row relative to the sensor origin. |
+| `use_sensor_metadata` | `false` | Use sensor phase metadata, following integer crops/flips/rotations. Resampled mosaics are rejected. |
 
 ## TV-L1 denoise (`cv.denoise_tvl1`)
 
@@ -3957,6 +3981,33 @@ Input `seed` — Optional whole-number seed between 0 and 4,294,967,295.
 | `height` | `240` | Value must be a whole number between 1 and 8192. |
 | `color_format` | `"gray"` | `gray`, `bgr`, `rgb` |
 | `output_depth` | `"uint8"` | `uint8`, `uint16`, `int16`, `float32`, `float64` Integer output rounds and saturates Gaussian samples. Uniform integers are drawn inclusively between the configured bounds. |
+
+## Packed RAW10 / RAW12 file (`input.raw_sensor`)
+
+Input / Files
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+Inputs: `pixel_frame` (data, optional).
+
+Input `pixel_frame` — Optional decoded-pixel spatial frame; byte-grid coordinates are not reused.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | One headerless/offset packed sensor frame, with explicit byte layout. |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
+| `filename_ticket` | `true` | Use the filename as the automatic source ticket. |
+| `packing` | `"mipi_raw10"` | `mipi_raw10`, `mipi_raw12` MIPI RAW10: four high bytes plus packed low 2-bit fields; RAW12: two high bytes plus low nibbles. Other vendor/PFNC layouts are not inferred. |
+| `width` | `640` | Value must be a whole number between 1 and 16384. Decoded pixels per row; RAW10 needs a multiple of four, RAW12 a multiple of two. |
+| `height` | `480` | Value must be a whole number between 1 and 16384. Decoded image rows. |
+| `row_stride` | `0` | Value must be a whole number between 0 and 1.04858e+06. Bytes per stored row, including padding on the final row. Zero uses tightly packed rows. |
+| `byte_offset` | `0` | Value must be a whole number between 0 and 1.34218e+08. Bytes to skip before the first row, such as a known file header. |
+| `size_policy` | `"exact"` | `exact`, `at_least` Exact rejects extra bytes. At least selects this frame from a buffer/file with trailing data. |
+| `alignment` | `"right"` | `right`, `left` Right retains ADC counts (0..1023 or 0..4095). Left shifts into uint16; it does not stretch the maximum to 65535. |
+| `bayer_pattern` | `"RGGB"` | `monochrome`, `RGGB`, `BGGR`, `GRBG`, `GBRG` Sensor tile at its original origin. Monochrome disables metadata-driven demosaicing. |
+| `column_offset` | `"even"` | `even`, `odd` Parity of the captured first column relative to the sensor tile origin. |
+| `row_offset` | `"even"` | `even`, `odd` Parity of the captured first row relative to the sensor tile origin. |
 
 ## Raw YUV frame (`input.raw_yuv`)
 

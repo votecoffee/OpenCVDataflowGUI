@@ -110,9 +110,9 @@ BLOCK_MODULES = {
     ),
     "imgproc": (
         "cv.hann_window cv.decode_yuv calibration.color_balance cv.pack_remap_map "
-        "inspect.contour_hierarchy inspect.focus inspect.slanted_edge"
+        "inspect.contour_hierarchy inspect.focus inspect.slanted_edge cv.decode_raw_sensor"
     ),
-    "imgcodecs": "input.file input.depth_file input.raw_yuv output.image",
+    "imgcodecs": "input.file input.depth_file input.raw_yuv input.raw_sensor output.image",
     "calib": (
         "3d.camera 3d.project 3d.undistort_points 3d.stereo_rig 3d.stereo_calibrate "
         "3d.stereo_rectify 3d.rectify_camera 3d.check_epipolar"
@@ -151,6 +151,8 @@ _MODULE_BY_BLOCK = {
 }
 _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
+    "cv.decode_raw_sensor": ("MIPI", "RAW10", "RAW12", "unpack", "Bayer", "row stride"),
+    "input.raw_sensor": ("MIPI", "RAW10", "RAW12", "sensor frame"),
     "cv.laplacian_pyramid": ("createLaplacePyr", "pyrDown", "pyrUp", "signed bands"),
     "cv.reconstruct_laplacian_pyramid": ("restoreImageFromLaplacePyr", "band gains"),
     "inspect.focus": ("Laplacian", "Sobel", "Tenengrad", "sharpness", "blur"),

@@ -1137,3 +1137,32 @@ all/adaptive filters. Its libpng buffer accepts zero for the native default or
 encoding work and file size while preserving samples. Bilevel PNG remains an
 8-bit monochrome mask option. Select **Load image → pixel depth → unchanged**
 when checking file round trips. Try the [16-bit color/alpha and grayscale examples](<../examples/opencv tools/high_bit_depth_codecs/README.md>).
+
+## Packed RAW10 / RAW12 sensor data
+
+Use **OpenCV → Image Codecs (imgcodecs) → Files → Packed RAW10 / RAW12 file**
+(`input.raw_sensor`) for a stored frame, or **Unpack RAW10 / RAW12 sensor frame**
+(`cv.decode_raw_sensor`) for bytes/bytearray/uint8 buffers from a plugin. SDK
+memoryviews should be converted to bytes before entering graph history.
+
+Choose the actual MIPI packing, pixel width/height, header byte offset and row
+stride (including final-row padding). Zero stride uses tight rows. Exact size
+rejects extra bytes; `at_least` explicitly selects a frame from larger storage.
+RAW10 width must be divisible by four and RAW12 by two. Outputs are uint16:
+right alignment keeps ADC counts, while left alignment shifts their bit positions.
+Previews stretch the declared range for viewing without changing those values.
+PFNC/vendor bitstreams, 16-bit containers and CSI packet transport need adapters.
+
+Choose Bayer tile and capture-origin parity, then enable **Demosaic Bayer image →
+Use sensor metadata**. Phase follows integer crops, flips and right-angle rotations
+through the recorded pixel frame. Automatic mode rejects geometrically resampled,
+monochrome or already-consumed mosaics; manual settings remain available. Apply
+demosaicing before spatial filters or resizing that mix CFA samples. VNG still
+requires uint8; bilinear and edge-aware processing accept uint16.
+
+Byte-grid coordinates are discarded. The optional `pixel_frame` input describes
+the decoded image grid and must match its dimensions; it does not infer CFA origin.
+Otherwise a local frame is assigned. Tickets and arbitrary companion payloads
+survive decoding, and files can use filename tickets. The supported layouts are
+qualified with offline known bytes and generated images; camera SDK transport is
+separate. Try the [RAW10/RAW12 projects](<../examples/opencv tools/packed_raw_sensor/README.md>).
