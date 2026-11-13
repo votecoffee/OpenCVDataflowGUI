@@ -52,6 +52,10 @@ An additional [experimental plane-candidate comparison](plane_candidates/README.
 uses the full scene without an object mask. It recovers the correct best pose
 in capture 230 but retains false extra poses and is not the default route.
 
+The [depth-verified full-scene example](depth_verified/README.md) uses dev5
+camera-ray evidence to reject the extra pose in capture 230. The wider dataset
+still contains misses and incorrect orientations.
+
 ## License and attribution
 
 Real images, depth, masks, CAD, annotations and derivatives retain

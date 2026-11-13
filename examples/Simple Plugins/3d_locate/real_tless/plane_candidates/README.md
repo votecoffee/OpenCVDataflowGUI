@@ -19,6 +19,11 @@ refinement budget for plane proposals. PPF supplies the remainder. Full-model
 fit thresholds, visibility checks and overlap rejection are unchanged.
 The report identifies candidate sources, patch counts and separate search times.
 
+The saved recipe keeps depth verification off when reopened. Current builder
+scripts require dev5; pass `--depth-verification off` to reproduce this older
+case. The [depth-verified example](../depth_verified/README.md) removes the extra
+pose in capture 230 using the same candidate route and geometric thresholds.
+
 ## Comparison results
 
 [comparison.json](comparison.json) compares PPF and the hybrid across all eight
@@ -43,8 +48,8 @@ Review extra poses as well as the best pose before choosing a route.
 Reproduce with both Python packages installed:
 
 ```powershell
-python build_tless_demo.py ../source . --backend ppf_planes --project-scene full --host-project
-python benchmark_candidates.py ../source comparison.json
+python build_tless_demo.py ../source . --backend ppf_planes --project-scene full --depth-verification off --host-project
+python benchmark_candidates.py ../source comparison.json --depth-verification off
 ```
 
 ## Attribution and license

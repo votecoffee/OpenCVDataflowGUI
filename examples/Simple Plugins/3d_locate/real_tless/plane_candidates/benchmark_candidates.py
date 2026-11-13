@@ -5,13 +5,16 @@ import json
 from pathlib import Path
 
 from build_tless_demo import FRAMES, SYMMETRY, source_frame, tless_mesh, write_json
-from opencv_simple_3d_locate import ValidationScene, compare_profiles, train_cad
+from opencv_simple_3d_locate import Settings, ValidationScene, compare_profiles, train_cad
 
 
-def benchmark(source, output, *, repeats=1):
+def benchmark(source, output, *, repeats=1, depth_verification="auto"):
     source, output = Path(source), Path(output)
     recipe = train_cad(
-        tless_mesh(source / "models_cad/obj_000029.ply"), units="mm", frame="tless_object29"
+        tless_mesh(source / "models_cad/obj_000029.ply"),
+        units="mm",
+        frame="tless_object29",
+        settings=Settings(depth_verification=depth_verification),
     )
     scenes = []
     for isolated in (True, False):
@@ -38,6 +41,7 @@ def benchmark(source, output, *, repeats=1):
         progress=print,
     )
     report["dataset"] = json.loads((source / "provenance.json").read_bytes())
+    report["depth_verification"] = depth_verification
     report["scope"] += (
         " Real T-LESS development subset. Isolated cases use supplied masks; "
         "full cases use a fixed depth workspace only. No input pose seeds."
@@ -51,5 +55,8 @@ if __name__ == "__main__":
     parser.add_argument("source", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--repeats", type=int, default=1)
+    parser.add_argument("--depth-verification", choices=("auto", "report", "off"), default="auto")
     args = parser.parse_args()
-    benchmark(args.source, args.output, repeats=args.repeats)
+    benchmark(
+        args.source, args.output, repeats=args.repeats, depth_verification=args.depth_verification
+    )

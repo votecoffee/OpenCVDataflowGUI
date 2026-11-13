@@ -96,6 +96,13 @@ def image_overlay(image, recipe, result, camera):
             for u, v in pixels:
                 if 0 <= u < image.shape[1] and 0 <= v < image.shape[0]:
                     cv2.circle(image, (int(u), int(v)), 1, color, -1)
+        if match.free_space_model is not None:
+            selected = match.free_space_model & (xyz[:, 2] > 0)
+            pixels = xyz[selected] @ camera.matrix.T
+            pixels = np.rint(pixels[:, :2] / pixels[:, 2:]).astype(int)
+            for u, v in pixels:
+                if 0 <= u < image.shape[1] and 0 <= v < image.shape[0]:
+                    cv2.circle(image, (int(u), int(v)), 2, (220, 50, 235), -1)
         origin = np.zeros((4, 3))
         origin[1:] = np.eye(3) * recipe.diameter * 0.2
         origin = origin @ match.pose[:3, :3].T + match.pose[:3, 3]
@@ -104,7 +111,9 @@ def image_overlay(image, recipe, result, camera):
             pixels = np.rint(pixels[:, :2] / pixels[:, 2:]).astype(int)
             for axis, color in enumerate(((0, 0, 255), (0, 255, 0), (255, 0, 0)), 1):
                 cv2.line(image, tuple(pixels[0]), tuple(pixels[axis]), color, 2)
-    text = f"{len(result.matches)} poses | green fit / red missing | T-LESS CC BY 4.0"
+    text = (
+        f"{len(result.matches)} poses | green fit / red missing / magenta free | T-LESS CC BY 4.0"
+    )
     cv2.rectangle(image, (0, 0), (image.shape[1], 28), (20, 20, 20), -1)
     cv2.putText(
         image, text, (8, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (240, 240, 240), 1, cv2.LINE_AA
@@ -112,14 +121,22 @@ def image_overlay(image, recipe, result, camera):
     return image
 
 
-def build(source, output, *, host_project=False, backend="ppf", project_scene="isolated"):
+def build(
+    source,
+    output,
+    *,
+    host_project=False,
+    backend="ppf",
+    project_scene="isolated",
+    depth_verification="auto",
+):
     source, output = Path(source), Path(output)
     output.mkdir(parents=True, exist_ok=True)
     recipe = train_cad(
         tless_mesh(source / "models_cad/obj_000029.ply"),
         units="mm",
         frame="tless_object29",
-        settings=Settings(candidate_backend=backend),
+        settings=Settings(candidate_backend=backend, depth_verification=depth_verification),
     )
     assets = output / "assets"
     assets.mkdir(exist_ok=True)
@@ -160,6 +177,7 @@ def build(source, output, *, host_project=False, backend="ppf", project_scene="i
         output / "benchmark.json",
         {
             "candidate_backend": backend,
+            "depth_verification": depth_verification,
             "scope": "Four selected real T-LESS captures, not full-dataset qualification. "
             "Isolated cases use supplied segmentation; full cases do not. "
             "Fit thresholds unchanged. Position 5 mm / angle 5 degrees, discrete symmetry allowed.",
@@ -234,6 +252,7 @@ if __name__ == "__main__":
     parser.add_argument("--host-project", action="store_true")
     parser.add_argument("--backend", choices=("ppf", "ppf_planes"), default="ppf")
     parser.add_argument("--project-scene", choices=("isolated", "full"), default="isolated")
+    parser.add_argument("--depth-verification", choices=("auto", "report", "off"), default="auto")
     args = parser.parse_args()
     build(
         args.source,
@@ -241,4 +260,5 @@ if __name__ == "__main__":
         host_project=args.host_project,
         backend=args.backend,
         project_scene=args.project_scene,
+        depth_verification=args.depth_verification,
     )

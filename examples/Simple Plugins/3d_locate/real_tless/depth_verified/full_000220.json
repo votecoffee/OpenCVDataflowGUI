@@ -1,0 +1,420 @@
+{
+  "case": "full_000220",
+  "segmentation_supplied": false,
+  "validation": {
+    "matched": 0,
+    "missed": 1,
+    "extra": 1,
+    "max_position_error": 0.0,
+    "max_angle_error_degrees": 0.0
+  },
+  "result": {
+    "model": "simple_3d_locate_v1",
+    "units": "mm",
+    "source_frame": "tless_object29",
+    "target_frame": "camera",
+    "matches": [
+      {
+        "source_to_target": [
+          [
+            0.632007139037082,
+            -0.012970215898549133,
+            -0.774854018319391,
+            57.88861420282031
+          ],
+          [
+            0.5356304401876052,
+            -0.7152805868666772,
+            0.44885823329431546,
+            -45.31179448876937
+          ],
+          [
+            -0.5600598251531657,
+            -0.6987170067711296,
+            -0.4451151948633055,
+            784.4949038839202
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "coverage": 0.8456284153005464,
+        "score": 0.7355366093698997,
+        "score_type": "geometric_fit_not_probability",
+        "rmse": 1.1032658624643872,
+        "normal_spread": 0.36092656337321843,
+        "votes": 0,
+        "model_inliers": 619,
+        "unique_scene_inliers": 516,
+        "refined": true,
+        "candidate_source": "planes",
+        "depth_verification": {
+          "mode": "auto",
+          "status": "checked",
+          "reason": null,
+          "visible_model_points": 732,
+          "known_points": 730,
+          "unique_known_rays": 730,
+          "consistent_points": 705,
+          "occluded_points": 18,
+          "free_space_points": 7,
+          "unknown_points": 2,
+          "depth_coverage": 0.9972677595628415,
+          "free_space_fraction": 0.009589041095890411,
+          "maximum_free_space": 0.1,
+          "minimum_depth_coverage": 0.8,
+          "minimum_known_rays": 20,
+          "limit_exceeded": false,
+          "applied": true
+        },
+        "visible_model_points": 732
+      }
+    ],
+    "candidate_count": 622,
+    "tested_candidates": 24,
+    "sampled_scene_points": 21506,
+    "search_model_points": 384,
+    "search_scene_points": 2048,
+    "passed": true,
+    "execution": {
+      "sampling": "uniform",
+      "candidate_backend": "ppf_planes",
+      "plane_search": {
+        "model_patches": 7,
+        "scene_patches": 29,
+        "coarse_proposals": 512
+      },
+      "refinement": "legacy",
+      "observation_mode": "surface",
+      "projection": "pinhole",
+      "input_points": 347504,
+      "first_surface_points": 347504,
+      "depth_verification": {
+        "mode": "auto",
+        "status": "available",
+        "reason": null
+      },
+      "depth_rejected": 6,
+      "depth_rejected_candidates": [
+        {
+          "source_to_target": [
+            [
+              -0.6320840972847885,
+              -0.7741518747327464,
+              -0.034037755617075394,
+              64.4143325968988
+            ],
+            [
+              -0.5342817912176558,
+              0.4672070078313377,
+              -0.7044576491220329,
+              -55.21422266023796
+            ],
+            [
+              0.5612598876927932,
+              -0.42709072418054445,
+              -0.7089293700969163,
+              782.4718236175869
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "candidate_source": "planes",
+          "score": 0.6785568652730797,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "checked",
+            "reason": null,
+            "visible_model_points": 751,
+            "known_points": 749,
+            "unique_known_rays": 747,
+            "consistent_points": 641,
+            "occluded_points": 17,
+            "free_space_points": 91,
+            "unknown_points": 2,
+            "depth_coverage": 0.9973368841544608,
+            "free_space_fraction": 0.12149532710280374,
+            "maximum_free_space": 0.1,
+            "minimum_depth_coverage": 0.8,
+            "minimum_known_rays": 20,
+            "limit_exceeded": true,
+            "applied": true
+          }
+        },
+        {
+          "source_to_target": [
+            [
+              -0.6319695223148432,
+              -0.774244948991781,
+              -0.03404822794014821,
+              64.40641549722154
+            ],
+            [
+              -0.5347145975972598,
+              0.4674140921605428,
+              -0.7039917368592733,
+              -55.2366753097154
+            ],
+            [
+              0.5609766679475627,
+              -0.42669523715463537,
+              -0.7093915368877751,
+              782.4798434546358
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "candidate_source": "planes",
+          "score": 0.6775195012085786,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "checked",
+            "reason": null,
+            "visible_model_points": 751,
+            "known_points": 749,
+            "unique_known_rays": 747,
+            "consistent_points": 641,
+            "occluded_points": 17,
+            "free_space_points": 91,
+            "unknown_points": 2,
+            "depth_coverage": 0.9973368841544608,
+            "free_space_fraction": 0.12149532710280374,
+            "maximum_free_space": 0.1,
+            "minimum_depth_coverage": 0.8,
+            "minimum_known_rays": 20,
+            "limit_exceeded": true,
+            "applied": true
+          }
+        },
+        {
+          "source_to_target": [
+            [
+              0.6343521549308544,
+              0.7725429753924785,
+              -0.0278333380376441,
+              64.46335529578084
+            ],
+            [
+              0.5337060501223551,
+              -0.4637168258037729,
+              -0.7071948511755921,
+              -55.43604754578154
+            ],
+            [
+              -0.5592452016757725,
+              0.43375575689345053,
+              -0.7064706276728105,
+              782.5990561389204
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "candidate_source": "planes",
+          "score": 0.675465462517312,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "checked",
+            "reason": null,
+            "visible_model_points": 747,
+            "known_points": 740,
+            "unique_known_rays": 738,
+            "consistent_points": 640,
+            "occluded_points": 14,
+            "free_space_points": 86,
+            "unknown_points": 7,
+            "depth_coverage": 0.9906291834002677,
+            "free_space_fraction": 0.11621621621621622,
+            "maximum_free_space": 0.1,
+            "minimum_depth_coverage": 0.8,
+            "minimum_known_rays": 20,
+            "limit_exceeded": true,
+            "applied": true
+          }
+        },
+        {
+          "source_to_target": [
+            [
+              0.633712573097269,
+              0.7730875897167488,
+              -0.027275507775047732,
+              64.43486097501716
+            ],
+            [
+              0.534002126749396,
+              -0.4626967109062139,
+              -0.7076393730875167,
+              -55.43354598950232
+            ],
+            [
+              -0.5596875050647107,
+              0.43387478878418323,
+              -0.7060471403043282,
+              782.5787335641736
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "candidate_source": "planes",
+          "score": 0.6720201996182923,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "checked",
+            "reason": null,
+            "visible_model_points": 745,
+            "known_points": 738,
+            "unique_known_rays": 734,
+            "consistent_points": 639,
+            "occluded_points": 12,
+            "free_space_points": 87,
+            "unknown_points": 7,
+            "depth_coverage": 0.9906040268456375,
+            "free_space_fraction": 0.11788617886178862,
+            "maximum_free_space": 0.1,
+            "minimum_depth_coverage": 0.8,
+            "minimum_known_rays": 20,
+            "limit_exceeded": true,
+            "applied": true
+          }
+        },
+        {
+          "source_to_target": [
+            [
+              0.6368466359682625,
+              -0.7699663265060689,
+              0.03972679577637232,
+              64.31666114107516
+            ],
+            [
+              0.532268504244511,
+              0.47635311956385673,
+              0.699841371220003,
+              -56.40944377234449
+            ],
+            [
+              -0.5577782728335867,
+              -0.4245463008065577,
+              0.7131927066552551,
+              782.2465935054463
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "candidate_source": "planes",
+          "score": 0.5606279874764093,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "checked",
+            "reason": null,
+            "visible_model_points": 719,
+            "known_points": 715,
+            "unique_known_rays": 713,
+            "consistent_points": 590,
+            "occluded_points": 17,
+            "free_space_points": 108,
+            "unknown_points": 4,
+            "depth_coverage": 0.9944367176634215,
+            "free_space_fraction": 0.15104895104895105,
+            "maximum_free_space": 0.1,
+            "minimum_depth_coverage": 0.8,
+            "minimum_known_rays": 20,
+            "limit_exceeded": true,
+            "applied": true
+          }
+        },
+        {
+          "source_to_target": [
+            [
+              0.6348590274346279,
+              -0.7714774783689518,
+              0.04214873253422861,
+              64.38672260046675
+            ],
+            [
+              0.5326749525326369,
+              0.4765558074670021,
+              0.6993939929065924,
+              -56.39061596796736
+            ],
+            [
+              -0.5596529373005302,
+              -0.421565016028319,
+              0.7134924856170042,
+              782.2270138184573
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "candidate_source": "planes",
+          "score": 0.556174400620302,
+          "depth_verification": {
+            "mode": "auto",
+            "status": "checked",
+            "reason": null,
+            "visible_model_points": 721,
+            "known_points": 717,
+            "unique_known_rays": 715,
+            "consistent_points": 588,
+            "occluded_points": 18,
+            "free_space_points": 111,
+            "unknown_points": 4,
+            "depth_coverage": 0.9944521497919556,
+            "free_space_fraction": 0.15481171548117154,
+            "maximum_free_space": 0.1,
+            "minimum_depth_coverage": 0.8,
+            "minimum_known_rays": 20,
+            "limit_exceeded": true,
+            "applied": true
+          }
+        }
+      ],
+      "overlap_metric": "combined",
+      "overlap_threshold": 0.6,
+      "overlap_rejected": 5,
+      "coarse_rejected": 0,
+      "icp_calls": 48,
+      "model_levels": [
+        1804
+      ],
+      "scene_levels": [
+        21506
+      ],
+      "seconds": {
+        "preprocess": 0.6185547999994014,
+        "candidate_search": 1.0838785000014468,
+        "ppf_search": 0.04812800000036077,
+        "plane_search": 1.032938299998932,
+        "depth_prepare": 0.031418399999893154,
+        "depth_verify": 0.012813899998945999,
+        "refine_verify": 1.0719728999993094,
+        "total": 2.774406300000919
+      }
+    }
+  }
+}
