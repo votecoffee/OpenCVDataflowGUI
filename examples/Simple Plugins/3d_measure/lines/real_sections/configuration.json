@@ -1,0 +1,85 @@
+{
+  "units": "mm",
+  "frame": "object6",
+  "settings": {
+    "min_points": 30,
+    "min_inlier_fraction": 0.5,
+    "max_trials": 256,
+    "fit_sample_limit": 20000,
+    "seed": 0,
+    "execution_workers": 1
+  },
+  "planes": [],
+  "measurements": [
+    {
+      "name": "section_gap",
+      "kind": "line_separation",
+      "plane": "section_a",
+      "other": "section_b",
+      "point": null,
+      "lower": null,
+      "upper": null,
+      "max_angle_degrees": 5.0
+    },
+    {
+      "name": "section_angle",
+      "kind": "line_angle",
+      "plane": "section_a",
+      "other": "section_b",
+      "point": null,
+      "lower": null,
+      "upper": null,
+      "max_angle_degrees": 5.0
+    },
+    {
+      "name": "observed_span",
+      "kind": "line_span",
+      "plane": "section_a",
+      "other": null,
+      "point": null,
+      "lower": null,
+      "upper": null,
+      "max_angle_degrees": 5.0
+    }
+  ],
+  "lines": [
+    {
+      "name": "section_a",
+      "minimum": [
+        -200.0,
+        -151.0,
+        -40.0
+      ],
+      "maximum": [
+        -80.0,
+        -149.0,
+        -10.0
+      ],
+      "direction_hint": [
+        0.9997188895485107,
+        -0.00022027194888580084,
+        0.02370850818084574
+      ],
+      "tolerance": null
+    },
+    {
+      "name": "section_b",
+      "minimum": [
+        -200.0,
+        -101.0,
+        -40.0
+      ],
+      "maximum": [
+        -80.0,
+        -99.0,
+        -10.0
+      ],
+      "direction_hint": [
+        0.9998218160886136,
+        -0.000813492055614484,
+        -0.018859329360876698
+      ],
+      "tolerance": null
+    }
+  ]
+}

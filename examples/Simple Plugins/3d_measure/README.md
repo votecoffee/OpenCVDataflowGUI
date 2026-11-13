@@ -8,7 +8,7 @@ Install the wheel/source package in the Python environment running the app,
 then restart the app and its runners:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install --no-deps C:\path\to\opencv_simple_3d_measure-0.1.0.dev1-py3-none-any.whl
+.\.venv\Scripts\python.exe -m pip install --no-deps C:\path\to\opencv_simple_3d_measure-0.1.0.dev2-py3-none-any.whl
 ```
 
 | Project | Evidence |
@@ -17,6 +17,7 @@ then restart the app and its runners:
 | [Raised feature](generated/raised_feature/project.json) | High points are excluded from plane fitting but still make surface range fail. |
 | [Missing surface](generated/missing_surface/project.json) | Missing height/angle/range stay unavailable. A valid datum probe remains available. |
 | [Real T-LESS captures](real_tless/README.md) | Three measured first-return captures with explicit supplied annotation fixtures and accuracy limits. |
+| [Line measurements](lines/README.md) | Five generated controls and three measured T-LESS section examples, including missing/short support and a retained angle-guard failure. Requires dev2. |
 
 Run a project and select **Simple3DMeasure → Cloud / fit**. Its thumbnail and
 popout use the native flyaround point-cloud viewer. Green shows fitting
@@ -42,6 +43,13 @@ hashes, a portable recipe and capture identity. **Import recipe…** loads a CLI
 `.s3m`; **Stage recipe** edits the inspector draft and **Apply** activates it.
 Cancel preserves the active parameters. Older hosts explicitly fall back to
 recipe review/import; update the host to use graphical teaching.
+
+With **dev2**, choose **New line region** before drawing. Add guarded parallel
+separation, acute line angle, point-to-line distance or observed axial span.
+The new `lines` output and Lines graphic layer retain axis/span/radial evidence.
+**Flip axis** changes the retained direction. [Definitions and compatibility](LINES.md).
+Plane-only archives and numerical reports remain compatible; line archives
+require dev2. A fitted line is not automatically a detected physical edge.
 
 `surface_range` is peak-to-valley residual over **all selected samples** about
 the robustly fitted least-squares plane. It is not minimum-zone flatness.

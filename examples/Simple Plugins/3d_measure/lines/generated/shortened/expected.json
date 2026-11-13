@@ -1,0 +1,327 @@
+{
+  "model": "simple_3d_measure_v1",
+  "units": "mm",
+  "measurement_frame": "part",
+  "scene_frame": "part",
+  "measurement_to_scene": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "scene_points": 1680,
+  "passed": false,
+  "measurements": [
+    {
+      "name": "gap",
+      "kind": "line_separation",
+      "plane": "datum",
+      "other": "target",
+      "value": 3.998398585653822,
+      "units": "mm",
+      "lower": 3.9,
+      "upper": 4.1,
+      "status": "within_limits",
+      "reason": null,
+      "angle_degrees": 0.006625298351607761,
+      "probe_point": [
+        0.001085073274253031,
+        3.999478859901428,
+        -0.0005845577194001333
+      ],
+      "maximum_angle_degrees": 5.0,
+      "definition": "target_inlier_centroid_distance_to_datum_line",
+      "datum_projection": [
+        0.0015016284982311175,
+        0.0010802968276700355,
+        -0.0006685216083945984
+      ],
+      "dimension_endpoints": [
+        [
+          0.0015016284982311175,
+          0.0010802968276700355,
+          -0.0006685216083945984
+        ],
+        [
+          0.001085073274253031,
+          3.999478859901428,
+          -0.0005845577194001333
+        ]
+      ],
+      "datum_extrapolated": false,
+      "support_assessment": "observed_inlier_axial_interval_not_visibility"
+    },
+    {
+      "name": "angle",
+      "kind": "line_angle",
+      "plane": "datum",
+      "other": "angled",
+      "value": 29.99999485843922,
+      "units": "deg",
+      "lower": null,
+      "upper": null,
+      "status": "measured",
+      "reason": null,
+      "angle_degrees": 29.99999485843922,
+      "probe_point": null,
+      "definition": "acute_angle_between_line_directions"
+    },
+    {
+      "name": "probe",
+      "kind": "point_line_distance",
+      "plane": "datum",
+      "other": null,
+      "value": 4.999886830451389,
+      "units": "mm",
+      "lower": null,
+      "upper": null,
+      "status": "measured",
+      "reason": null,
+      "angle_degrees": null,
+      "probe_point": [
+        0.0,
+        3.0,
+        4.0
+      ],
+      "definition": "perpendicular_probe_distance_to_infinite_line",
+      "datum_projection": [
+        0.00010755877206457612,
+        0.0010801515912679987,
+        -0.000668450218349556
+      ],
+      "dimension_endpoints": [
+        [
+          0.00010755877206457612,
+          0.0010801515912679987,
+          -0.000668450218349556
+        ],
+        [
+          0.0,
+          3.0,
+          4.0
+        ]
+      ],
+      "datum_extrapolated": false,
+      "support_assessment": "observed_inlier_axial_interval_not_visibility"
+    },
+    {
+      "name": "span",
+      "kind": "line_span",
+      "plane": "datum",
+      "other": null,
+      "value": 13.987200127735477,
+      "units": "mm",
+      "lower": 19.5,
+      "upper": 20.5,
+      "status": "out_of_limits",
+      "reason": null,
+      "angle_degrees": null,
+      "probe_point": null,
+      "definition": "observed_inlier_axial_span_not_hidden_object_length",
+      "dimension_endpoints": [
+        [
+          -6.9950928097891785,
+          0.00035138048750802905,
+          -0.0003102273403837074
+        ],
+        [
+          6.992107223698805,
+          0.0018085892406310064,
+          -0.0010265091888921633
+        ]
+      ]
+    }
+  ],
+  "planes": {},
+  "settings": {
+    "min_points": 30,
+    "min_inlier_fraction": 0.5,
+    "max_trials": 256,
+    "fit_sample_limit": 20000,
+    "seed": 0,
+    "execution_workers": 1
+  },
+  "surface_range_definition": "max_minus_min_signed_distance_all_selected_points",
+  "qualification": "fit_evidence_not_independent_dimensional_accuracy",
+  "lines": {
+    "datum": {
+      "model": "fitted_line_3d_v1",
+      "status": "fit",
+      "selected_points": 480,
+      "fit_sample_points": 480,
+      "inlier_points": 422,
+      "excluded_fit_points": 58,
+      "inlier_fraction": 0.8791666666666667,
+      "distance_tolerance": 0.05815658863284506,
+      "ransac_trials": 16,
+      "origin": [
+        0.020418483646967328,
+        0.001082267615736146,
+        -0.0006694903369422322
+      ],
+      "direction": [
+        0.9999999932618757,
+        0.00010418159029793613,
+        -5.120980910883855e-05
+      ],
+      "parameter_bounds": [
+        -7.015511340707533,
+        6.971688787027944
+      ],
+      "endpoints": [
+        [
+          -6.9950928097891785,
+          0.00035138048750802905,
+          -0.0003102273403837074
+        ],
+        [
+          6.992107223698805,
+          0.0018085892406310064,
+          -0.0010265091888921633
+        ]
+      ],
+      "observed_inlier_span": 13.987200127735477,
+      "orthogonal_rmse": 0.02137779850247546,
+      "all_selected_max_radial_residual": 0.49492739847179157,
+      "frame": "part",
+      "units": "mm",
+      "region_minimum": [
+        -12.0,
+        -0.5,
+        -0.5
+      ],
+      "region_maximum": [
+        12.0,
+        0.5,
+        0.5
+      ],
+      "tolerance_source": "reference_noise"
+    },
+    "target": {
+      "model": "fitted_line_3d_v1",
+      "status": "fit",
+      "selected_points": 600,
+      "fit_sample_points": 600,
+      "inlier_points": 600,
+      "excluded_fit_points": 0,
+      "inlier_fraction": 1.0,
+      "distance_tolerance": 0.051314578429344754,
+      "ransac_trials": 16,
+      "origin": [
+        0.001085073274253031,
+        3.999478859901428,
+        -0.0005845577194001333
+      ],
+      "direction": [
+        0.9999999999040315,
+        -4.936842198644215e-06,
+        -1.2944672880097947e-05
+      ],
+      "parameter_bounds": [
+        -9.994467681700629,
+        10.005606980983426
+      ],
+      "endpoints": [
+        [
+          -9.993382607467224,
+          3.9995282010112323,
+          -0.0004551826046498078
+        ],
+        [
+          10.006692053297456,
+          3.9994294637986614,
+          -0.0007140770287357882
+        ]
+      ],
+      "observed_inlier_span": 20.000074662684057,
+      "orthogonal_rmse": 0.021098245660353086,
+      "all_selected_max_radial_residual": 0.04884390300231115,
+      "frame": "part",
+      "units": "mm",
+      "region_minimum": [
+        -12.0,
+        3.4,
+        -0.5
+      ],
+      "region_maximum": [
+        12.0,
+        4.6,
+        0.5
+      ],
+      "tolerance_source": "reference_noise"
+    },
+    "angled": {
+      "model": "fitted_line_3d_v1",
+      "status": "fit",
+      "selected_points": 600,
+      "fit_sample_points": 600,
+      "inlier_points": 599,
+      "excluded_fit_points": 1,
+      "inlier_fraction": 0.9983333333333333,
+      "distance_tolerance": 0.05412033815152965,
+      "ransac_trials": 16,
+      "origin": [
+        0.002615831293265694,
+        8.000834276361736,
+        2.999899098391525
+      ],
+      "direction": [
+        0.8659733513610042,
+        0.5000901433093601,
+        -5.7423116841188724e-05
+      ],
+      "parameter_bounds": [
+        -6.991181017230692,
+        6.979153113598114
+      ],
+      "endpoints": [
+        [
+          -6.05156062416943,
+          4.504613559553162,
+          3.000300553795935
+        ],
+        [
+          6.046376442737412,
+          11.491039957118984,
+          2.99949833366683
+        ]
+      ],
+      "observed_inlier_span": 13.970334130828807,
+      "orthogonal_rmse": 0.021240654328224716,
+      "all_selected_max_radial_residual": 0.05687804442711719,
+      "frame": "part",
+      "units": "mm",
+      "region_minimum": [
+        -8.0,
+        4.2,
+        2.5
+      ],
+      "region_maximum": [
+        8.0,
+        11.8,
+        3.5
+      ],
+      "tolerance_source": "reference_noise"
+    }
+  }
+}

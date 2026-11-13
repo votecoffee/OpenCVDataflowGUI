@@ -1,6 +1,6 @@
 # Teach a new 3D measurement
 
-Requires Simple3DMeasure `0.1.0.dev1` and an OpenCVDataflowGUI build containing
+Requires Simple3DMeasure `0.1.0.dev1` (planes) or `0.1.0.dev2` (lines) and an OpenCVDataflowGUI build containing
 the native cloud-teaching API. Older hosts explicitly fall back to recipe
 review/import. Keep `mm` or `m` and coordinate frames explicit; units are never
 inferred from object size.
@@ -11,20 +11,22 @@ inferred from object size.
    uses the scene's declared frame. For existing tools, **Completed scene +
    fixture** captures consumed inputs together and preserves the recipe's
    measurement frame. No fixture is estimated by this editor.
-2. Choose **Draw region**, then draw around a visible planar patch. The cyan
+2. Choose **New plane region** or **New line region**, then **Draw region**
+   around a planar patch or narrow line samples. The cyan
    points show the samples inside the proposed XYZ volume. Orbit, zoom with
    the wheel, and pan with middle/right drag to inspect it. Drag colored XYZ
    face handles to extend or trim the volume. XY/XZ/YZ views help separate
    axes. Draw a datum and any target surface regions; name them clearly.
 3. **Add measurement…**. Select the datum/target and a measurement type.
    A surface range needs one region; step height and angle need two.
-   For a point-to-plane measurement, choose Pick source point in the viewer,
+   For a point-to-plane/line measurement, choose Pick source point in the viewer,
    click the desired visible point and use it in the measurement dialog.
    Optional lower/upper limits use the displayed physical units or degrees.
 4. **Train / preview reference**. Training runs on one frozen draft in a
    background worker. The selected region shows green fit inliers and red
    fitting exclusions, its counts and learned physical band, and RGB datum
-   axes. Blue datum Z follows the signed normal. **Flip normal** changes its
+   axes. Blue plane datum Z follows the signed normal; a line's +X follows
+   its direction. **Flip axis** changes the normal/direction
    sign, then requires retraining. The table shows training-reference values;
    they are not independent accuracy or acceptance evidence.
 5. **Review trained / completed run…** opens the native flyaround evidence
@@ -57,3 +59,4 @@ the teaching editor. Keep them upstream when needed for qualification.
 Closing a trainer detaches its bounded worker and discards its result;
 interrupting an already-running NumPy fit remains future work. Additional
 primitives, oriented regions and sections remain in the roadmap.
+See [line-specific definitions and observed-support limits](LINES.md).

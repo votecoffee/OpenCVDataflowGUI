@@ -1,0 +1,118 @@
+{
+  "units": "mm",
+  "frame": "part",
+  "settings": {
+    "min_points": 30,
+    "min_inlier_fraction": 0.5,
+    "max_trials": 256,
+    "fit_sample_limit": 20000,
+    "seed": 0,
+    "execution_workers": 1
+  },
+  "planes": [],
+  "measurements": [
+    {
+      "name": "gap",
+      "kind": "line_separation",
+      "plane": "datum",
+      "other": "target",
+      "point": null,
+      "lower": 3.9,
+      "upper": 4.1,
+      "max_angle_degrees": 5.0
+    },
+    {
+      "name": "angle",
+      "kind": "line_angle",
+      "plane": "datum",
+      "other": "angled",
+      "point": null,
+      "lower": null,
+      "upper": null,
+      "max_angle_degrees": 5.0
+    },
+    {
+      "name": "probe",
+      "kind": "point_line_distance",
+      "plane": "datum",
+      "other": null,
+      "point": [
+        0.0,
+        3.0,
+        4.0
+      ],
+      "lower": null,
+      "upper": null,
+      "max_angle_degrees": 5.0
+    },
+    {
+      "name": "span",
+      "kind": "line_span",
+      "plane": "datum",
+      "other": null,
+      "point": null,
+      "lower": 19.5,
+      "upper": 20.5,
+      "max_angle_degrees": 5.0
+    }
+  ],
+  "lines": [
+    {
+      "name": "datum",
+      "minimum": [
+        -12.0,
+        -0.5,
+        -0.5
+      ],
+      "maximum": [
+        12.0,
+        0.5,
+        0.5
+      ],
+      "direction_hint": [
+        0.9999999542602225,
+        7.123399328120939e-05,
+        0.00029394773559019067
+      ],
+      "tolerance": null
+    },
+    {
+      "name": "target",
+      "minimum": [
+        -12.0,
+        3.4,
+        -0.5
+      ],
+      "maximum": [
+        12.0,
+        4.6,
+        0.5
+      ],
+      "direction_hint": [
+        0.9999999623681772,
+        -4.8044632524700114e-05,
+        -0.00027010249453876935
+      ],
+      "tolerance": null
+    },
+    {
+      "name": "angled",
+      "minimum": [
+        -8.0,
+        4.2,
+        2.5
+      ],
+      "maximum": [
+        8.0,
+        11.8,
+        3.5
+      ],
+      "direction_hint": [
+        0.8659954503275301,
+        0.5000518740929134,
+        -5.68171037409195e-05
+      ],
+      "tolerance": null
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/scene.ply",
+        "units": "mm",
+        "frame": "camera",
+        "max_points": 2000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "3d.simple_measure",
+      "name": "Simple3DMeasure",
+      "description": "Real T-LESS table sections; supplied pose fixture. Observed section axes, not detected physical edges or independent dimensional qualification.",
+      "parameters": {
+        "recipe_path": "assets/measurement.s3m",
+        "sha256": "e8e98c005cebbd34e5b6d1c70d6c101cdbc2b959c810ae6a99144b5291c3532a",
+        "primary_measurement": "",
+        "render_graphics": true
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "scene",
+        "fixture"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "planes",
+        "report",
+        "value",
+        "count",
+        "fit",
+        "lines"
+      ],
+      "thumbnail": true,
+      "preview_output": "fit"
+    },
+    {
+      "id": "fixture",
+      "type": "3d.pose",
+      "name": "Supplied annotation fixture (not a detected pose)",
+      "parameters": {
+        "rvec": [
+          2.7698178756865452,
+          0.7042450646663264,
+          -0.09020882149741623
+        ],
+        "translation": [
+          -85.26493987,
+          -24.90805178,
+          772.35824095
+        ],
+        "source_frame": "object6",
+        "target_frame": "camera",
+        "units": "mm"
+      },
+      "position": [
+        0,
+        250
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "cloud",
+      "target": "measure",
+      "input": "scene"
+    },
+    {
+      "source": "fixture",
+      "output": "transform",
+      "target": "measure",
+      "input": "fixture"
+    }
+  ]
+}
