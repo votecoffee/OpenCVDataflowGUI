@@ -35,6 +35,10 @@ The [competing-orientations example](pose_alternatives/README.md) reproduces
 a wrong selected orientation and exposes verified alternatives and score
 margins with plugin dev9. Its annotation failure remains counted.
 
+The [parallel verification example](parallel_verification/README.md) compares
+one and four workers on unchanged models and inputs. Plugin dev10 adds the
+worker limit and parallel comparison profile; legacy recipes stay serial.
+
 ## Measured scope and failures
 
 With default training/execution settings, capture 230's isolated object has

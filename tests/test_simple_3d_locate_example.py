@@ -354,3 +354,57 @@ def test_pose_alternatives_example_keeps_annotation_failure_and_reports_competit
         assert (root / "competing_result.png").is_file()
     finally:
         graph.close()
+
+
+@pytest.mark.local_examples
+def test_parallel_verification_example_keeps_poses_and_caches_compiled_model():
+    tool = pytest.importorskip("opencv_simple_3d_locate")
+    if not hasattr(tool.Settings(), "execution_workers"):
+        pytest.skip("Parallel example requires Simple3DLocate 0.1.0.dev10 or later")
+    from opencv_simple_3d_locate.optimization import pose_agreement
+
+    root = (
+        Path(__file__).resolve().parents[1]
+        / "examples/Simple Plugins/3d_locate/real_tless/parallel_verification"
+    )
+    graph = Graph.load(root / "project.json", builtin_registry())
+    try:
+        graph.run()
+        block = graph.blocks["locate"]
+        assert block.state == "pass", block.error
+        cached = block._locator
+        output = block.last_result.outputs
+        report = output["report"]
+        assert output["count"] == 1
+        assert report["execution"]["execution_workers"] == 4
+        assert 1 < report["execution"]["active_candidate_workers"] <= 4
+        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        checked = pose_agreement(
+            [np.asarray(output["pose"]["source_to_target"])],
+            [truth],
+            position_tolerance=5,
+            angle_degrees=5,
+            symmetries=(np.diag([-1.0, -1.0, 1.0, 1.0]),),
+        )
+        assert checked["matched"] == 1 and checked["missed"] == checked["extra"] == 0
+        graph.run()
+        assert block._locator is cached and block.last_result.outputs["count"] == 1
+        np.testing.assert_allclose(
+            block.last_result.outputs["pose"]["source_to_target"],
+            output["pose"]["source_to_target"],
+            atol=1e-6,
+        )
+        comparison = json.loads((root / "comparison.json").read_bytes())
+        assert comparison["repeats"] == 3 and comparison["recommended"] is None
+        serial, parallel = comparison["profiles"]
+        assert serial["settings"]["execution_workers"] == 1
+        assert parallel["settings"]["execution_workers"] == 4
+        for a, b in zip(serial["scenes"], parallel["scenes"]):
+            for x, y in zip(a["runs"], b["runs"]):
+                assert (x["matched"], x["missed"], x["extra"]) == (
+                    y["matched"],
+                    y["missed"],
+                    y["extra"],
+                )
+    finally:
+        graph.close()
