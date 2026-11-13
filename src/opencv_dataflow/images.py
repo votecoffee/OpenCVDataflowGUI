@@ -84,7 +84,21 @@ def format_image(image, color_format="bgr", pixel_depth="uint8"):
     if target == source_format:
         return ImageArray(result, target)
     if result.dtype == np.float64:
-        raise ValueError("Color conversion requires uint8, uint16 or float32 depth")
+        if target in ("hsv", "lab"):
+            raise ValueError("HSV and Lab color conversion requires uint8 or float32 depth")
+        bgr = (
+            np.repeat(result[..., None], 3, axis=2) if source_format == "gray" else result[..., :3]
+        )
+        if target == "gray":
+            converted = bgr[..., 0] * 0.114 + bgr[..., 1] * 0.587 + bgr[..., 2] * 0.299
+        else:
+            converted = bgr[..., ::-1] if target in ("rgb", "rgba") else bgr
+            if target in ("bgra", "rgba"):
+                alpha = result[..., 3] if source_format == "bgra" else np.ones(result.shape[:2])
+                converted = np.dstack((converted, alpha))
+        if not np.isfinite(converted).all():
+            raise ValueError("Color conversion produced nonfinite values")
+        return ImageArray(converted.copy(), target)
     if target in ("hsv", "lab") and result.dtype == np.uint16:
         raise ValueError("HSV and Lab require uint8 or float32; select a supported pixel depth")
     if source_format == "gray":

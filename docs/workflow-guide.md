@@ -1086,3 +1086,33 @@ uses unit gains. Native detail reconstruction requires unit gains and copies ban
 before its in-place native call. Incomplete, Gaussian or incompatible sets fail
 validation. The CPU paths are qualified; GPU detail helpers are not included.
 Try the [16-bit round-trip and band-edit example](<../examples/opencv tools/laplacian_pyramid/README.md>).
+
+## Floating-point image storage
+
+**Encode image in memory** now offers TIFF, HDR and capability-dependent EXR,
+alongside PNG/JPEG. **Save image** shares the same controls. TIFF explicitly uses
+lossless compression (none by default), avoiding the native float32 color LogLuv
+default. Choose LZW/deflate and a predictor for compressed files; floating
+prediction requires float data, horizontal prediction requires integer data.
+Strip height is configurable. Multipage TIFF output/replay also supports floats.
+
+TIFF preserves finite float32/float64 gray/color/alpha values, including negatives
+and values above one. Set **Load image → pixel depth → unchanged** to retain them.
+Float64 RGB/RGBA permutations retain double precision; HSV/Lab still require a
+supported explicit depth. Multichannel float64 TIFF emits a native photometric/ExtraSamples
+warning on this build despite exact OpenCV readback; cross-reader metadata
+interpretation remains unqualified. Memory packets keep spatial/ticket payloads, while
+external image files do not serialize graph payloads. Storage retains raw sample
+units; normalize a separate branch for viewing HDR ranges.
+
+Radiance HDR requires nonnegative float32 RGB/BGR, no alpha, and values below
+2**127. RLE and uncompressed modes both use lossy RGBE shared exponents; tiny
+values can underflow and dim channels lose precision beside bright channels.
+PNG/JPEG reject unsupported float input instead of silently saving 8-bit samples.
+The file saver still preserves an existing output path.
+
+EXR offers float32/half storage and compression options for a capable build.
+The supported OpenCV 5 wheel reports **OpenEXR: NO**. EXR output fails clearly
+without creating a file, and its native round-trip tests remain skipped. The app
+does not change global codec environment settings. This qualification remains
+open in S1-125. Try the [TIFF/HDR and float64 examples](<../examples/opencv tools/float_image_codecs/README.md>).

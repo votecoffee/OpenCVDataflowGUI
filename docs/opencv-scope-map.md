@@ -291,8 +291,8 @@ Python and five C++ entries without a direct binding.
 
 | API | Disposition on the pinned Python wheel | Checklist IDs |
 | --- | --- | --- |
-| `cv2.imread`, `cv2.imwrite` | Exposed. Still-image file paths own format, depth and precision qualification. | S1-03, S1-125–S1-126 |
-| `cv2.imdecode`, `cv2.imencode` | Exposed. Encoded image buffers use the same typed-image contract. | S1-04, S1-125–S1-126 |
+| `cv2.imread`, `cv2.imwrite` | Exposed. Still-image paths share precision-aware TIFF/HDR settings with memory codecs. Floating TIFF and HDR are qualified in S1-125; native EXR round trips remain open on an EXR-capable build. | S1-03, S1-125–S1-126 |
+| `cv2.imdecode`, `cv2.imencode` | Exposed. PNG/JPEG and floating TIFF/HDR buffers use the typed packet contract and retain wire payloads. EXR options are capability guarded; this wheel has no EXR codec. | S1-04, S1-125–S1-126 |
 | `cv2.imreadmulti`, `cv2.imwritemulti`, `cv2.imdecodemulti`, `cv2.imencodemulti` | Exposed. File replay and memory ports have separate acceptance checks. | S1-05, S1-149 |
 | `cv2.imreadWithMetadata`, `cv2.imdecodeWithMetadata`, `cv2.imwriteWithMetadata`, `cv2.imencodeWithMetadata` | Exposed. File read is shipped. Verify metadata through a buffer and on disk in a round-trip fixture. | S1-06–S1-07 |
 | `cv2.Animation`, `cv2.imreadanimation`, `cv2.imwriteanimation`, `cv2.imdecodeanimation`, `cv2.imencodeanimation` | Exposed. One animation contract owns timing, order and supported formats for both paths. | S1-111 |

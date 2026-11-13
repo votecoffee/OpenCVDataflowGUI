@@ -177,7 +177,7 @@ def test_tiff_writer_replays_an_ordered_batch_through_normal_graph_execution(sta
 def test_tiff_writer_rejects_invalid_batch_and_predictor_before_publication(tmp_path):
     path = tmp_path / "invalid.tiff"
     block = builtin_registry().create("output.tiff_file", parameters={"path": str(path)})
-    assert block.execute({"pages": tiff_group(np.ones((5, 5), np.float32))}) is None
+    assert block.execute({"pages": tiff_group(np.ones((5, 5), np.int32))}) is None
     assert block.error_kind == "invalid"
     block.parameters.update(compression="packbits", predictor="horizontal")
     assert block.execute({"pages": tiff_group(np.ones((5, 5), np.uint8))}) is None

@@ -1699,7 +1699,7 @@ Inputs: `image` (image).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `codec` | `"png"` | `png`, `jpeg` |
+| `codec` | `"png"` | `png`, `jpeg`, `tiff`, `hdr`, `exr` |
 | `jpeg_quality` | `-1` | Value must be a whole number between -1 and 100. -1 preserves the codec default; otherwise 0..100. JPEG only. |
 | `jpeg_progressive` | `false` |  |
 | `jpeg_optimize` | `false` |  |
@@ -1709,6 +1709,13 @@ Inputs: `image` (image).
 | `png_compression` | `-1` | Value must be a whole number between -1 and 9. -1 preserves the codec default; otherwise 0..9. PNG only. |
 | `png_strategy` | `"native"` | `native`, `default`, `filtered`, `huffman`, `rle`, `fixed` |
 | `png_bilevel` | `false` |  |
+| `tiff_compression` | `"none"` | `none`, `lzw`, `deflate`, `packbits` TIFF only. Explicit lossless compression avoids the native float32-color LogLuv default. |
+| `tiff_predictor` | `"native"` | `native`, `none`, `horizontal`, `floating` TIFF LZW/deflate only. Floating prediction requires floating samples; horizontal requires integer samples. |
+| `tiff_rows_per_strip` | `0` | Value must be a whole number between 0 and 1.67772e+07. TIFF strip height; zero keeps the native default. |
+| `hdr_compression` | `"rle"` | `rle`, `none` Radiance HDR RLE or no compression. Both use lossy shared-exponent RGBE samples. |
+| `exr_storage` | `"float32"` | `float32`, `float16` EXR needs a capable OpenCV build. Float32 retains sample precision; float16 quantizes and requires values within Â±65504. |
+| `exr_compression` | `"zip"` | `no`, `rle`, `zips`, `zip`, `piz`, `pxr24`, `b44`, `b44a`, `dwaa`, `dwab` EXR codec. PXR24, B44/B44A and DWA variants can be lossy; ZIP is the default. |
+| `exr_dwa_level` | `45` | Value must be a whole number between 0 and 1000. EXR DWAA/DWAB compression level; unused by other compression modes. |
 
 ## Equalize histogram (`cv.equalize`)
 
@@ -6150,6 +6157,13 @@ Inputs: `image` (image).
 | `png_strategy` | `"native"` | `native`, `default`, `filtered`, `huffman`, `rle`, `fixed` |
 | `png_bilevel` | `false` |  |
 | `webp_quality` | `-1` | -1 preserves the codec default; otherwise 1..100. WebP only. |
+| `tiff_compression` | `"none"` | `none`, `lzw`, `deflate`, `packbits` TIFF only. Explicit lossless compression avoids the native float32-color LogLuv default. |
+| `tiff_predictor` | `"native"` | `native`, `none`, `horizontal`, `floating` TIFF LZW/deflate only. Floating prediction requires floating samples; horizontal requires integer samples. |
+| `tiff_rows_per_strip` | `0` | Value must be a whole number between 0 and 1.67772e+07. TIFF strip height; zero keeps the native default. |
+| `hdr_compression` | `"rle"` | `rle`, `none` Radiance HDR RLE or no compression. Both use lossy shared-exponent RGBE samples. |
+| `exr_storage` | `"float32"` | `float32`, `float16` EXR needs a capable OpenCV build. Float32 retains sample precision; float16 quantizes and requires values within Â±65504. |
+| `exr_compression` | `"zip"` | `no`, `rle`, `zips`, `zip`, `piz`, `pxr24`, `b44`, `b44a`, `dwaa`, `dwab` EXR codec. PXR24, B44/B44A and DWA variants can be lossy; ZIP is the default. |
+| `exr_dwa_level` | `45` | Value must be a whole number between 0 and 1000. EXR DWAA/DWAB compression level; unused by other compression modes. |
 
 ## Save lens correction maps (`output.lens_maps`)
 
@@ -6186,7 +6200,7 @@ Input `pages` — Ordered image group from Batch serial entries or a compatible 
 | `path` | `"output.tiff"` | Choose a new .tif or .tiff filename for this batch. |
 | `path_base` | `"working_directory"` | `working_directory`, `project` |
 | `compression` | `"lzw"` | `none`, `lzw`, `deflate`, `packbits` Lossless compression applied to every page. |
-| `predictor` | `"native"` | `native`, `none`, `horizontal` Horizontal prediction is available with LZW or Deflate. |
+| `predictor` | `"native"` | `native`, `none`, `horizontal`, `floating` LZW/Deflate prediction: horizontal for integers, floating for float pages. |
 | `x_dpi` | `0` | Value must be a whole number between 0 and 1e+06. Horizontal resolution. Set both DPI fields to zero to use the codec defaults. |
 | `y_dpi` | `0` | Value must be a whole number between 0 and 1e+06. Vertical resolution. Set both DPI fields to zero to use the codec defaults. |
 

@@ -9,6 +9,7 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
+from .float_codecs import TIFF_COMPRESSIONS, TIFF_PREDICTORS, validate_float_codec
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, opencv_image
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, FlowGroup, frame
@@ -209,18 +210,6 @@ class TiffFile(ReplaySource):
         )
 
 
-TIFF_COMPRESSIONS = {
-    "none": cv2.IMWRITE_TIFF_COMPRESSION_NONE,
-    "lzw": cv2.IMWRITE_TIFF_COMPRESSION_LZW,
-    "deflate": cv2.IMWRITE_TIFF_COMPRESSION_ADOBE_DEFLATE,
-    "packbits": cv2.IMWRITE_TIFF_COMPRESSION_PACKBITS,
-}
-TIFF_PREDICTORS = {
-    "none": cv2.IMWRITE_TIFF_PREDICTOR_NONE,
-    "horizontal": cv2.IMWRITE_TIFF_PREDICTOR_HORIZONTAL,
-}
-
-
 class WriteTiffFile(Block):
     type_id, title, category = "output.tiff_file", "Write multipage TIFF", "Output"
     block_type, subtype = "Output", "Images"
@@ -243,7 +232,7 @@ class WriteTiffFile(Block):
     parameter_help = {
         "path": "Choose a new .tif or .tiff filename for this batch.",
         "compression": "Lossless compression applied to every page.",
-        "predictor": "Horizontal prediction is available with LZW or Deflate.",
+        "predictor": "LZW/Deflate prediction: horizontal for integers, floating for float pages.",
         "x_dpi": "Horizontal resolution. Set both DPI fields to zero to use the codec defaults.",
         "y_dpi": "Vertical resolution. Set both DPI fields to zero to use the codec defaults.",
     }
@@ -252,8 +241,12 @@ class WriteTiffFile(Block):
     def validate_parameters(self, parameters=None):
         super().validate_parameters(parameters)
         p = self.parameters if parameters is None else parameters
-        if p["predictor"] == "horizontal" and p["compression"] not in ("lzw", "deflate"):
-            raise ValidationError("Horizontal prediction requires LZW or Deflate", "predictor")
+        if p["predictor"] in ("horizontal", "floating") and p["compression"] not in (
+            "lzw",
+            "deflate",
+        ):
+            kind = "Horizontal" if p["predictor"] == "horizontal" else "Floating"
+            raise ValidationError(f"{kind} prediction requires LZW or Deflate", "predictor")
         if bool(p["x_dpi"]) != bool(p["y_dpi"]):
             raise ValidationError("Set both DPI values, or leave both at zero", "x_dpi", "y_dpi")
 
@@ -281,9 +274,18 @@ class WriteTiffFile(Block):
             page = packet.value
             if not isinstance(page, np.ndarray):
                 raise ValidationError(f"Page {index} is not an image")
-            image = image_value(page, (np.uint8, np.uint16))
+            image = image_value(page, (np.uint8, np.uint16, np.float32, np.float64))
             if image.size == 0 or image_format(page) not in ("gray", "bgr", "rgb", "bgra", "rgba"):
                 raise ValidationError(f"Page {index} needs a nonempty grayscale or RGB/BGR image")
+            validate_float_codec(
+                image,
+                ".tiff",
+                {
+                    "tiff_compression": p["compression"],
+                    "tiff_predictor": p["predictor"],
+                },
+                predictor_field="predictor",
+            )
             images.append(page)
         if sum(image.nbytes for image in images) > MAX_FILE_BYTES:
             raise ValidationError("Uncompressed TIFF pages exceed the 128 MiB batch limit")
