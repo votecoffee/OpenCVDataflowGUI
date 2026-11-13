@@ -1,0 +1,3 @@
+# Generated evidence hashes refer to exact bytes on every platform.
+*.json -text
+ATTRIBUTION.md -text

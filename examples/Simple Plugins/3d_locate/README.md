@@ -18,6 +18,12 @@ For automatic bounded training on new CAD models, open the
 dev13. They retain twelve positive matching failures and target-absent negatives
 while demonstrating successful model preparation and full-reference restoration.
 
+For a controlled explanation of those failures, open the
+[supplied-pose geometry diagnostics](geometry_diagnostics/README.md). Six real
+captures compare model budgets, normals and triangle self-visibility with
+native colored flyaround clouds. These supplied annotations are not detections;
+the unseeded matching failures remain open. Rebuilding requires plugin dev16.
+
 ## Setup and run
 
 Install the Simple3DLocate wheel or source folder into the Python environment

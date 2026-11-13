@@ -1,0 +1,31 @@
+{
+  "scope": "ANNOTATED_POSE_ONLY_NOT_A_DETECTION",
+  "search_executed": false,
+  "annotation_inputs_never_count_as_detections": true,
+  "cases": 6,
+  "variants": {
+    "runtime_baseline": {
+      "geometry_pass": 0
+    },
+    "full_model_voxels": {
+      "geometry_pass": 0
+    },
+    "dense_scene_normals": {
+      "geometry_pass": 0
+    },
+    "six_normal_neighbors": {
+      "geometry_pass": 0
+    },
+    "dense_scene": {
+      "geometry_pass": 0
+    },
+    "triangle_visibility": {
+      "geometry_pass": 1
+    },
+    "triangle_visibility_full_model": {
+      "geometry_pass": 1
+    }
+  },
+  "matching_results_unchanged": true,
+  "note": "Offline diagnostics explain pose feasibility only. No runtime algorithm, recipe or acceptance gate was changed. These are development cases."
+}

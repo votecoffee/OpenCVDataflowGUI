@@ -1,5 +1,6 @@
-"""Rebuild result views from the saved public projects using Simple3DLocate dev14."""
+"""Rebuild result views from saved public projects into a fresh output folder."""
 
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -14,9 +15,13 @@ from opencv_dataflow.cloud_io import write_cloud
 from opencv_dataflow.core import Graph
 
 
-def build():
-    target = Path(__file__).resolve().parent
-    root = target.parent
+def build(output=None):
+    source = Path(__file__).resolve().parent
+    root = source.parent
+    target = source if output is None else Path(output)
+    if any(target.glob("*_accepted_fit.ply")):
+        raise ValueError("Result clouds already exist; use --output with a fresh folder.")
+    target.mkdir(parents=True, exist_ok=True)
     cases = [("generated", ""), ("real_positive", "real_tless/depth_verified"),
              ("real_no_match", "novel_models/object_000006")]
     receipt = {}
@@ -69,4 +74,6 @@ def build():
 
 
 if __name__ == "__main__":
-    build()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, help="Use a fresh folder to preserve existing views")
+    build(parser.parse_args().output)

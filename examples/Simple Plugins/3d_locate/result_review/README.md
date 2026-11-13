@@ -30,7 +30,8 @@ and pose axes. For the zero-match case this cloud contains only the measured
 scene. `*_REJECTED_candidate.ply` is a separate, explicitly rejected-pose
 display with the transformed full model in orange. These model samples are
 expected geometry, not additional sensor returns. Units are millimeters;
-the frame is `camera`. PLY does not retain the unit/frame fields itself.
+the frame is `camera`. Dataflow metadata in the PLY header retains units/frame
+when reopened through the host's cloud importer.
 
 The corresponding JSON report retains the model-to-camera poses, stage
 counts, gate measurements and limits. [receipt.json](receipt.json) records
@@ -41,8 +42,12 @@ within each stage. A rejected pose is not known to be physically correct.
 Rebuild from the host repository root with its Python environment:
 
 ```powershell
-python "examples/Simple Plugins/3d_locate/result_review/build_views.py"
+python "examples/Simple Plugins/3d_locate/result_review/build_views.py" --output .local/simple3d-result-review
 ```
+
+Use a fresh output folder to preserve previous evidence. The receipts were
+refreshed after switching saved projects to native cloud previews; the three
+accepted-count sequences, poses, scores, PNG images and PLY clouds are unchanged.
 
 ## Attribution
 

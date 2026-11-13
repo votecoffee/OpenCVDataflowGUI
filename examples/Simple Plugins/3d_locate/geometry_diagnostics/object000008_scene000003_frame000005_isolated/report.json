@@ -1,0 +1,563 @@
+{
+  "scope": "ANNOTATED_POSE_ONLY_NOT_A_DETECTION",
+  "object_id": 8,
+  "case": "scene000003_frame000005_isolated",
+  "settings": {
+    "sampling_distance": 0.03,
+    "ppf_distance": 0.05,
+    "angle_bins": 30,
+    "scene_reference_step": 0.1,
+    "normal_neighbors": 20,
+    "model_viewpoint": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scene_viewpoint": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "max_candidates": 24,
+    "global_model_points": 384,
+    "global_scene_points": 2048,
+    "search_sampling": "uniform",
+    "refinement": "legacy",
+    "icp_iterations": 60,
+    "icp_levels": 4,
+    "distance_tolerance": 0.025,
+    "max_rmse": 0.015,
+    "min_coverage": 0.5,
+    "normal_angle": 30.0,
+    "min_normal_spread": 0.01,
+    "min_unique_support": 20,
+    "max_matches": 5,
+    "overlap_threshold": 0.6,
+    "overlap_metric": "combined",
+    "observation_mode": "surface",
+    "candidate_backend": "ppf",
+    "depth_verification": "auto",
+    "max_free_space": 0.1,
+    "min_depth_coverage": 0.8,
+    "execution_workers": 1,
+    "pose_scoring": "geometric"
+  },
+  "reports": [
+    {
+      "scope": "SUPPLIED_POSE_ONLY_NOT_A_DETECTION",
+      "variant": "runtime_baseline",
+      "search_executed": false,
+      "units": "mm",
+      "source_to_target": [
+        [
+          0.94726181,
+          -0.00704968,
+          -0.32038431,
+          40.28032132
+        ],
+        [
+          -0.3054339,
+          0.28270204,
+          -0.90927945,
+          -28.1932448
+        ],
+        [
+          0.09698336,
+          0.95918199,
+          0.2656403,
+          749.37473577
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "gates_unchanged": true,
+      "geometry_pass": false,
+      "gates": {
+        "coverage": {
+          "value": 0.21568627450980393,
+          "minimum": 0.5
+        },
+        "rmse": {
+          "value": 1.971697758253966,
+          "maximum": 3.330793548341119
+        },
+        "normal_spread": {
+          "value": 0.027203325303023877,
+          "minimum": 0.01
+        },
+        "unique_support": {
+          "value": 77,
+          "minimum": 20
+        }
+      },
+      "model_points": 2000,
+      "scene_points": 524,
+      "visible_model_points": 408,
+      "distance_only_coverage": 0.38480392156862747,
+      "distance_tolerance": 5.551322580568533,
+      "normal_angle_degrees": 30.0,
+      "categories": {
+        "supported": 88,
+        "distance_rejected": 251,
+        "normal_rejected": 69,
+        "hidden": 1592,
+        "visibility_unresolved": 0
+      },
+      "visibility": {
+        "method": "runtime_sampled_points",
+        "triangle_ray_pairs": 0
+      }
+    },
+    {
+      "scope": "SUPPLIED_POSE_ONLY_NOT_A_DETECTION",
+      "variant": "full_model_voxels",
+      "search_executed": false,
+      "units": "mm",
+      "source_to_target": [
+        [
+          0.94726181,
+          -0.00704968,
+          -0.32038431,
+          40.28032132
+        ],
+        [
+          -0.3054339,
+          0.28270204,
+          -0.90927945,
+          -28.1932448
+        ],
+        [
+          0.09698336,
+          0.95918199,
+          0.2656403,
+          749.37473577
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "gates_unchanged": true,
+      "geometry_pass": false,
+      "gates": {
+        "coverage": {
+          "value": 0.3029661016949153,
+          "minimum": 0.5
+        },
+        "rmse": {
+          "value": 1.920566986612902,
+          "maximum": 3.330793548341119
+        },
+        "normal_spread": {
+          "value": 0.021139493644215353,
+          "minimum": 0.01
+        },
+        "unique_support": {
+          "value": 117,
+          "minimum": 20
+        }
+      },
+      "model_points": 2662,
+      "scene_points": 524,
+      "visible_model_points": 472,
+      "distance_only_coverage": 0.4809322033898305,
+      "distance_tolerance": 5.551322580568533,
+      "normal_angle_degrees": 30.0,
+      "categories": {
+        "supported": 143,
+        "distance_rejected": 245,
+        "normal_rejected": 84,
+        "hidden": 2190,
+        "visibility_unresolved": 0
+      },
+      "visibility": {
+        "method": "runtime_sampled_points",
+        "triangle_ray_pairs": 0
+      }
+    },
+    {
+      "scope": "SUPPLIED_POSE_ONLY_NOT_A_DETECTION",
+      "variant": "dense_scene_normals",
+      "search_executed": false,
+      "units": "mm",
+      "source_to_target": [
+        [
+          0.94726181,
+          -0.00704968,
+          -0.32038431,
+          40.28032132
+        ],
+        [
+          -0.3054339,
+          0.28270204,
+          -0.90927945,
+          -28.1932448
+        ],
+        [
+          0.09698336,
+          0.95918199,
+          0.2656403,
+          749.37473577
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "gates_unchanged": true,
+      "geometry_pass": false,
+      "gates": {
+        "coverage": {
+          "value": 0.21323529411764705,
+          "minimum": 0.5
+        },
+        "rmse": {
+          "value": 2.0542813869498464,
+          "maximum": 3.330793548341119
+        },
+        "normal_spread": {
+          "value": 0.056648492921807986,
+          "minimum": 0.01
+        },
+        "unique_support": {
+          "value": 77,
+          "minimum": 20
+        }
+      },
+      "model_points": 2000,
+      "scene_points": 524,
+      "visible_model_points": 408,
+      "distance_only_coverage": 0.38480392156862747,
+      "distance_tolerance": 5.551322580568533,
+      "normal_angle_degrees": 30.0,
+      "categories": {
+        "supported": 87,
+        "distance_rejected": 251,
+        "normal_rejected": 70,
+        "hidden": 1592,
+        "visibility_unresolved": 0
+      },
+      "visibility": {
+        "method": "runtime_sampled_points",
+        "triangle_ray_pairs": 0
+      }
+    },
+    {
+      "scope": "SUPPLIED_POSE_ONLY_NOT_A_DETECTION",
+      "variant": "six_normal_neighbors",
+      "search_executed": false,
+      "units": "mm",
+      "source_to_target": [
+        [
+          0.94726181,
+          -0.00704968,
+          -0.32038431,
+          40.28032132
+        ],
+        [
+          -0.3054339,
+          0.28270204,
+          -0.90927945,
+          -28.1932448
+        ],
+        [
+          0.09698336,
+          0.95918199,
+          0.2656403,
+          749.37473577
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "gates_unchanged": true,
+      "geometry_pass": false,
+      "gates": {
+        "coverage": {
+          "value": 0.22549019607843138,
+          "minimum": 0.5
+        },
+        "rmse": {
+          "value": 1.9124993994015258,
+          "maximum": 3.330793548341119
+        },
+        "normal_spread": {
+          "value": 0.06587538569100798,
+          "minimum": 0.01
+        },
+        "unique_support": {
+          "value": 80,
+          "minimum": 20
+        }
+      },
+      "model_points": 2000,
+      "scene_points": 524,
+      "visible_model_points": 408,
+      "distance_only_coverage": 0.38480392156862747,
+      "distance_tolerance": 5.551322580568533,
+      "normal_angle_degrees": 30.0,
+      "categories": {
+        "supported": 92,
+        "distance_rejected": 251,
+        "normal_rejected": 65,
+        "hidden": 1592,
+        "visibility_unresolved": 0
+      },
+      "visibility": {
+        "method": "runtime_sampled_points",
+        "triangle_ray_pairs": 0
+      }
+    },
+    {
+      "scope": "SUPPLIED_POSE_ONLY_NOT_A_DETECTION",
+      "variant": "dense_scene",
+      "search_executed": false,
+      "units": "mm",
+      "source_to_target": [
+        [
+          0.94726181,
+          -0.00704968,
+          -0.32038431,
+          40.28032132
+        ],
+        [
+          -0.3054339,
+          0.28270204,
+          -0.90927945,
+          -28.1932448
+        ],
+        [
+          0.09698336,
+          0.95918199,
+          0.2656403,
+          749.37473577
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "gates_unchanged": true,
+      "geometry_pass": false,
+      "gates": {
+        "coverage": {
+          "value": 0.22549019607843138,
+          "minimum": 0.5
+        },
+        "rmse": {
+          "value": 1.8021578607351296,
+          "maximum": 3.330793548341119
+        },
+        "normal_spread": {
+          "value": 0.11316640246335222,
+          "minimum": 0.01
+        },
+        "unique_support": {
+          "value": 91,
+          "minimum": 20
+        }
+      },
+      "model_points": 2000,
+      "scene_points": 25356,
+      "visible_model_points": 408,
+      "distance_only_coverage": 0.42401960784313725,
+      "distance_tolerance": 5.551322580568533,
+      "normal_angle_degrees": 30.0,
+      "categories": {
+        "supported": 92,
+        "distance_rejected": 235,
+        "normal_rejected": 81,
+        "hidden": 1592,
+        "visibility_unresolved": 0
+      },
+      "visibility": {
+        "method": "runtime_sampled_points",
+        "triangle_ray_pairs": 0
+      }
+    },
+    {
+      "scope": "SUPPLIED_POSE_ONLY_NOT_A_DETECTION",
+      "variant": "triangle_visibility",
+      "search_executed": false,
+      "units": "mm",
+      "source_to_target": [
+        [
+          0.94726181,
+          -0.00704968,
+          -0.32038431,
+          40.28032132
+        ],
+        [
+          -0.3054339,
+          0.28270204,
+          -0.90927945,
+          -28.1932448
+        ],
+        [
+          0.09698336,
+          0.95918199,
+          0.2656403,
+          749.37473577
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "gates_unchanged": true,
+      "geometry_pass": false,
+      "gates": {
+        "coverage": {
+          "value": 0.24571428571428572,
+          "minimum": 0.5
+        },
+        "rmse": {
+          "value": 1.9480837644235536,
+          "maximum": 3.330793548341119
+        },
+        "normal_spread": {
+          "value": 0.027400033196974375,
+          "minimum": 0.01
+        },
+        "unique_support": {
+          "value": 76,
+          "minimum": 20
+        }
+      },
+      "model_points": 2000,
+      "scene_points": 524,
+      "visible_model_points": 350,
+      "distance_only_coverage": 0.41714285714285715,
+      "distance_tolerance": 5.551322580568533,
+      "normal_angle_degrees": 30.0,
+      "categories": {
+        "supported": 86,
+        "distance_rejected": 204,
+        "normal_rejected": 60,
+        "hidden": 1650,
+        "visibility_unresolved": 0
+      },
+      "visibility": {
+        "method": "all_triangle_sample_rays",
+        "triangle_ray_pairs": 45624000,
+        "unresolved_rays": 0,
+        "sampled_false_visible": 135,
+        "sampled_false_hidden": 77
+      }
+    },
+    {
+      "scope": "SUPPLIED_POSE_ONLY_NOT_A_DETECTION",
+      "variant": "triangle_visibility_full_model",
+      "search_executed": false,
+      "units": "mm",
+      "source_to_target": [
+        [
+          0.94726181,
+          -0.00704968,
+          -0.32038431,
+          40.28032132
+        ],
+        [
+          -0.3054339,
+          0.28270204,
+          -0.90927945,
+          -28.1932448
+        ],
+        [
+          0.09698336,
+          0.95918199,
+          0.2656403,
+          749.37473577
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "gates_unchanged": true,
+      "geometry_pass": false,
+      "gates": {
+        "coverage": {
+          "value": 0.25585585585585585,
+          "minimum": 0.5
+        },
+        "rmse": {
+          "value": 1.9234190051520859,
+          "maximum": 3.330793548341119
+        },
+        "normal_spread": {
+          "value": 0.021284988659811446,
+          "minimum": 0.01
+        },
+        "unique_support": {
+          "value": 117,
+          "minimum": 20
+        }
+      },
+      "model_points": 2662,
+      "scene_points": 524,
+      "visible_model_points": 555,
+      "distance_only_coverage": 0.409009009009009,
+      "distance_tolerance": 5.551322580568533,
+      "normal_angle_degrees": 30.0,
+      "categories": {
+        "supported": 142,
+        "distance_rejected": 328,
+        "normal_rejected": 85,
+        "hidden": 2107,
+        "visibility_unresolved": 0
+      },
+      "visibility": {
+        "method": "all_triangle_sample_rays",
+        "triangle_ray_pairs": 60725544,
+        "unresolved_rays": 0,
+        "sampled_false_visible": 102,
+        "sampled_false_hidden": 185
+      }
+    }
+  ],
+  "palette_rgb": {
+    "supported": [
+      45,
+      235,
+      100
+    ],
+    "distance_rejected": [
+      245,
+      65,
+      65
+    ],
+    "normal_rejected": [
+      255,
+      170,
+      35
+    ],
+    "hidden": [
+      90,
+      115,
+      175
+    ],
+    "visibility_unresolved": [
+      235,
+      50,
+      220
+    ]
+  }
+}

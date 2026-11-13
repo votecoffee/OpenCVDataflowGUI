@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "diagnostic_scope",
+      "type": "layout.comment",
+      "name": "ANNOTATED POSE ONLY - NOT A DETECTION",
+      "description": "T-LESS object 6, scene000002_frame000255_isolated. Stored supplied-pose diagnostics; this graph runs no locator. Orbit the native RGB clouds to compare sampled and all-triangle visibility. Green: supported; red: distance rejected; orange: normal rejected; blue-gray: hidden; magenta: unresolved; gray: measured scene; RGB: pose axes. Full gate values, ablations and hashes are in report.json. T-LESS by Tomas Hodan, Pavel Haluza, Stepan Obdrzalek, Jiri Matas, Manolis Lourakis and Xenophon Zabulis, WACV 2017, CC BY 4.0. https://cmp.felk.cvut.cz/t-less/ ; see ../ATTRIBUTION.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "runtime_baseline",
+      "type": "input.cloud",
+      "name": "runtime_baseline",
+      "parameters": {
+        "path": "runtime_baseline.ply",
+        "units": "mm",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        80
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "triangle_visibility",
+      "type": "input.cloud",
+      "name": "triangle_visibility",
+      "parameters": {
+        "path": "triangle_visibility.ply",
+        "units": "mm",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        420,
+        80
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    }
+  ],
+  "connections": []
+}
