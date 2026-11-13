@@ -8,7 +8,10 @@ inferred from object size.
 
 1. Add Simple3DMeasure, connect a calibrated point cloud and save the project.
    Open **Train 3D measurements…**. Import a PLY/PCD/NPZ reference, or run the
-   source once and use **Capture reference… → Connected scene**. That choice
+   source once and use **Capture reference… → Connected scene**. With dev4,
+   RGB, source pixel rows/size and bounded JSON context are retained when supplied.
+   **Show source RGB** changes point appearance; **Reference context…** shows
+   read-only source metadata. That capture choice
    uses the scene's declared frame. For existing tools, **Completed scene +
    fixture** captures consumed inputs together and preserves the recipe's
    measurement frame. No fixture is estimated by this editor.
@@ -58,9 +61,11 @@ Picking returns an original sensor row, independently of wireframes, axes and
 display colors. Replacing a source clears the pick. The editor does not infer
 missing surfaces, physical accuracy, object identity, or dimension uncertainty.
 
-The current recipe retains reference XYZ and units/frame. Optional source RGB,
-camera calibration and acquisition tickets are not added to this archive by
-the teaching editor. Keep them upstream when needed for qualification.
+With dev4, the recipe also retains supplied source RGB, pixel rows and bounded
+calibration/acquisition metadata. Completed captures retain source/measurement
+frames and fixture/snapshot identity. These descriptive fields do not apply
+calibration or establish synchronized acquisition. Older XYZ-only recipes
+explicitly lack this context. See [reference context and exports](REFERENCE_CONTEXT.md).
 Closing a trainer detaches its bounded worker and discards its result;
 interrupting an already-running NumPy fit remains future work. Additional
 primitives, oriented regions and sections remain in the roadmap.

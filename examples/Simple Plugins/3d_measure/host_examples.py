@@ -23,8 +23,11 @@ def project(folder, recipe, scene, *, scene_frame=None, fixture=None, descriptio
     assets = folder / "assets"
     assets.mkdir(parents=True, exist_ok=False)
     digest = save_recipe(assets / "measurement.s3m", recipe)
-    write_cloud(assets / "scene.ply", PointCloud(scene, recipe.units, scene_frame or recipe.frame),
-                binary=True)
+    cloud = (scene if isinstance(scene, PointCloud) else
+             PointCloud(scene, recipe.units, scene_frame or recipe.frame))
+    if cloud.units != recipe.units or cloud.frame != (scene_frame or recipe.frame):
+        raise ValueError("Scene cloud must match the declared units/frame")
+    write_cloud(assets / "scene.ply", cloud, binary=True)
     registry = builtin_registry()
     register(registry)
     graph = Graph()

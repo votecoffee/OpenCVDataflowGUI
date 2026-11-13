@@ -8,7 +8,7 @@ Install the wheel/source package in the Python environment running the app,
 then restart the app and its runners:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install --no-deps C:\path\to\opencv_simple_3d_measure-0.1.0.dev3-py3-none-any.whl
+.\.venv\Scripts\python.exe -m pip install --no-deps C:\path\to\opencv_simple_3d_measure-0.1.0.dev4-py3-none-any.whl
 ```
 
 | Project | Evidence |
@@ -19,6 +19,7 @@ then restart the app and its runners:
 | [Real T-LESS captures](real_tless/README.md) | Three measured first-return captures with explicit supplied annotation fixtures and accuracy limits. |
 | [Line measurements](lines/README.md) | Five generated controls and three measured T-LESS section examples, including missing/short support and a retained angle-guard failure. Requires dev2. |
 | [Minimum-zone flatness](flatness/README.md) | Four generated controls and three real T-LESS captures distinguish all-selected minimum-zone width from datum residual range. Requires dev3 and optional SciPy. |
+| [Retained source context](reference_context/README.md) | Real T-LESS RGB/pixel/calibration context and source appearance review with unchanged earlier plane values. Requires dev4. |
 
 Run a project and select **Simple3DMeasure → Cloud / fit**. Its thumbnail and
 popout use the native flyaround point-cloud viewer. Green shows fitting
@@ -56,6 +57,13 @@ With **dev3**, add **Minimum-zone flatness (all selected)** on a plane region.
 Zones/Supports layers show the enclosing planes and source witnesses, including
 points excluded from the datum fit. Geometry budgets or failed checks make it
 unavailable; there is no least-squares substitute. [Details and dependencies](FLATNESS.md).
+
+With **dev4**, source RGB, original pixel rows/size and bounded JSON context
+can travel with the trained reference. Toggle source colors in training or
+switch cached review to source appearance. Completed captures retain fixture/
+execution identity; exports include portable source NPZ when context is present.
+Metadata remains descriptive and does not recalibrate points.
+[Context conventions and limits](REFERENCE_CONTEXT.md).
 
 `surface_range` is peak-to-valley residual over **all selected samples** about
 the robustly fitted least-squares plane. `minimum_zone_flatness` is the separate

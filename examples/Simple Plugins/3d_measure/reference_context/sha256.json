@@ -1,0 +1,14 @@
+{
+  "assets/measurement.s3m": "74901641473e6e0a87251200366432012923f181cd81f68a2cfc6db2c1afa226",
+  "assets/scene.ply": "d3539db7ad94e7c71bbc3abb3490514aed22d1ffc5ba9b41ddf15931267adb86",
+  "configuration.json": "5a624bcc3e32f7cd807a13a2615e8caa955e744f06d973c0bc4561f347b84a5d",
+  "expected.json": "e149c6938a8b7c7dfb042998166d7528424d40d95438f933e451352f04a0f545",
+  "project.json": "dd10027ecdd820dcec8b9a0bfaa99db42001b3996e71e3f31445c474e427c0a9",
+  "README.md": "a43cbeeaaca891704b884cc39e8d17646e56149f5b974bce7671acee8ba90034",
+  "reference_context.json": "e8a6e468e7f63aed89edd97202e9fb51f21c394afe215c0f01814e1e50b4836c",
+  "reference_fit.png": "5a03d1b03f7ab7b6f1ee318d84ad66a50ec8fd715f66ef0dc2b02d9a5fde26cd",
+  "reference_source.png": "7de08708666129701072b51efd6dbcff4d336bed25f434223a5dcda2a0f82857",
+  "result.ply": "e444916f7fe2e74f76e8fbd16989a8d8f9e0700e01c323cf9dabf87e09409151",
+  "result.png": "6cb0847418eeb4b4e5c0f7f6341c8d14ae851d84ced838014306225efc30caea",
+  "source_provenance.json": "89318db5e8102534ff142f17916ddf3b7edd34990b95a00152ac0e57f4e90980"
+}

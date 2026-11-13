@@ -1,0 +1,89 @@
+{
+  "rows": 388080,
+  "colors": true,
+  "pixels": true,
+  "source_size": [
+    720,
+    540
+  ],
+  "sha256": "16a94fbf25e64e6795a815ac8d1392add03bd9cd7f544f997fdd0de20aedb3d3",
+  "metadata_role": "descriptive_evidence_not_automatically_applied_calibration",
+  "metadata": {
+    "camera": {
+      "cam_K": [
+        1075.65091572,
+        0.0,
+        374.06888344,
+        0.0,
+        1073.90347929,
+        254.72159802,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "cam_R_w2c": [
+        0.30832,
+        -0.951243,
+        0.00867902,
+        -0.91106,
+        -0.297896,
+        -0.285003,
+        0.273693,
+        0.0799651,
+        -0.958487
+      ],
+      "cam_t_w2c": [
+        -10.6079,
+        18.2176,
+        788.902
+      ],
+      "depth_scale": 0.1,
+      "elev": 75,
+      "mode": 0
+    },
+    "cloud_units": "mm",
+    "dataset": "T-LESS",
+    "license": "CC-BY-4.0",
+    "pixel_convention": "zero_based_integer_image_centers",
+    "qualification": "supplied_fixture_and_metadata_not_independent_gauge_truth",
+    "reference_frame": "object6",
+    "reference_frame_id": 3,
+    "reference_to_source": [
+      [
+        0.8791272253471225,
+        0.47650812796191455,
+        0.008679034491317699,
+        -85.26493987
+      ],
+      [
+        0.4589360986469511,
+        -0.8415169479231567,
+        -0.285003304747175,
+        -24.90805178
+      ],
+      [
+        -0.12850283659198175,
+        0.254537286746612,
+        -0.9584872407306668,
+        772.35824095
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1",
+    "source": "https://cmp.felk.cvut.cz/t-less/",
+    "source_frame": "camera",
+    "source_hashes": {
+      "test_primesense/000002/depth/000003.png": "9540ddfbc5eb52c705b0599743602f401d9490ad1334c59d34364c674712f275",
+      "test_primesense/000002/depth/000013.png": "a14fed87d6dd90bcf3da9153a3100a81322634853e47278714f21e685cde34d5",
+      "test_primesense/000002/rgb/000003.png": "ee7fbaa11e8942b8ae13f9c853f72df83f293ba104dfb992b3c92c7f283bb9dd",
+      "test_primesense/000002/rgb/000013.png": "9c944d42913491bf0d9a1e59f10c262a6492071543e92a1a20675bb8cdcaaefd",
+      "test_primesense/000002/scene_camera.json": "84d4a7b2106ed19c59d11da0fa406a763bd408c8585a77b8f44e5d3d7b300d9b",
+      "test_primesense/000002/scene_gt.json": "a04b5aabc88dab06280670270b4954e5e353e490f5e661a92b42aa730726316f"
+    }
+  }
+}
