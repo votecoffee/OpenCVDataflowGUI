@@ -35,9 +35,21 @@
     },
     {
       "id": "capture",
-      "type": "input.demo",
-      "name": "Synthetic image on PLC ticket",
-      "parameters": {},
+      "type": "input.file",
+      "name": "Real PCB image on PLC ticket",
+      "parameters": {
+        "path": "../../assets/showcase/visa-pcb2-0000.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
       "position": [
         320,
         0
@@ -47,6 +59,7 @@
       ],
       "exposed_outputs": [
         "image",
+        "info",
         "ticket"
       ],
       "thumbnail": true,
@@ -108,9 +121,9 @@
       "name": "Count parts",
       "parameters": {
         "connectivity": 8,
-        "min_area": 1000,
+        "min_area": 5000,
         "max_area": 0,
-        "expected_count": 2,
+        "expected_count": 1,
         "algorithm": "default",
         "region_mode": "center"
       },
@@ -184,6 +197,22 @@
       ],
       "thumbnail": true,
       "preview_output": ""
+    },
+    {
+      "id": "showcase_source",
+      "type": "layout.comment",
+      "name": "Real data: source and scope",
+      "parameters": {},
+      "position": [
+        0,
+        -680
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": "",
+      "description": "VisA, CC BY 4.0. Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang, Onkar Dabeer; SPot-the-Difference, ECCV 2022. registry.opendata.aws/visa/. Resized/letterboxed for this example; no defects were added. Saved photo replay. PLC reader/writer remain disabled with blank routes. No live-controller operation is performed.",
+      "node_size": "large"
     }
   ],
   "connections": [

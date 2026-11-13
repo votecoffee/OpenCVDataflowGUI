@@ -3,9 +3,21 @@
   "blocks": [
     {
       "id": "roi_source",
-      "type": "input.demo",
-      "name": "Two synthetic parts",
-      "parameters": {},
+      "type": "input.file",
+      "name": "Real VisA PCB photograph",
+      "parameters": {
+        "path": "../../assets/showcase/visa-pcb2-0000.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
       "position": [
         0,
         0
@@ -15,6 +27,7 @@
       ],
       "exposed_outputs": [
         "image",
+        "info",
         "ticket"
       ],
       "thumbnail": true,
@@ -70,7 +83,7 @@
     {
       "id": "roi_circle",
       "type": "region.shape",
-      "name": "Circle selects left part",
+      "name": "Circle selects left PCB area",
       "parameters": {
         "shape": "circle",
         "rectangle": [
@@ -80,10 +93,10 @@
           100
         ],
         "center": [
-          140,
-          180
+          130,
+          155
         ],
-        "radius": 80,
+        "radius": 65,
         "vertices": [
           [
             0,
@@ -118,14 +131,14 @@
     {
       "id": "roi_rectangle",
       "type": "region.shape",
-      "name": "Rectangle selects right part",
+      "name": "Rectangle selects right PCB area",
       "parameters": {
         "shape": "rectangle",
         "rectangle": [
-          260,
-          95,
-          150,
-          170
+          285,
+          120,
+          80,
+          90
         ],
         "center": [
           100,
@@ -166,7 +179,7 @@
     {
       "id": "roi_polygon",
       "type": "region.shape",
-      "name": "Polygon excludes text",
+      "name": "Polygon selects the board",
       "parameters": {
         "shape": "polygon",
         "rectangle": [
@@ -182,20 +195,20 @@
         "radius": 50,
         "vertices": [
           [
-            50,
-            60
+            75,
+            85
           ],
           [
-            420,
-            70
+            370,
+            85
           ],
           [
-            420,
-            280
+            370,
+            230
           ],
           [
-            50,
-            280
+            75,
+            230
           ]
         ],
         "invert": false
@@ -218,14 +231,14 @@
     {
       "id": "roi_left",
       "type": "inspect.components",
-      "name": "Measure left part",
+      "name": "Measure left PCB area",
       "parameters": {
         "connectivity": 8,
-        "min_area": 100,
+        "min_area": 500,
         "max_area": 0,
-        "expected_count": 1,
+        "expected_count": 2,
         "algorithm": "default",
-        "region_mode": "center"
+        "region_mode": "clip"
       },
       "position": [
         900,
@@ -250,9 +263,9 @@
     {
       "id": "roi_right",
       "type": "inspect.contours",
-      "name": "Inspect right part",
+      "name": "Inspect right PCB area",
       "parameters": {
-        "min_area": 100.0,
+        "min_area": 500,
         "expected_count": 1,
         "retrieval": "external",
         "approximation": "simple",
@@ -260,7 +273,7 @@
           0,
           0
         ],
-        "region_mode": "center"
+        "region_mode": "clip"
       },
       "position": [
         900,
@@ -339,6 +352,22 @@
       ],
       "thumbnail": true,
       "preview_output": ""
+    },
+    {
+      "id": "showcase_source",
+      "type": "layout.comment",
+      "name": "Real data: source and scope",
+      "parameters": {},
+      "position": [
+        0,
+        -680
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": "",
+      "description": "VisA, CC BY 4.0. Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang, Onkar Dabeer; SPot-the-Difference, ECCV 2022. registry.opendata.aws/visa/. Resized/letterboxed for this example; no defects were added. Thresholded regions illustrate graph editing and overlays. No calibrated defect labels are supplied.",
+      "node_size": "large"
     }
   ],
   "connections": [

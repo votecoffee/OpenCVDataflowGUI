@@ -16,7 +16,7 @@ from opencv_dataflow.toolblocks import encapsulate
 def test_saved_starter_matches_builder_and_runs_repeatedly():
     registry = builtin_registry()
     graph = Graph.load(
-        "examples/demos/starter_inspection/starter_inspection.json", registry
+        "examples/assets/synthetic_graphs/starter_inspection.json", registry
     )
     assert graph.to_dict() == starter_graph(registry).to_dict()
     previous = None
@@ -78,7 +78,7 @@ def test_headless_report_repeats_and_preserves_existing_receipt(tmp_path):
     assert (
         main(
             [
-                "examples/demos/starter_inspection/starter_inspection.json",
+                "examples/assets/synthetic_graphs/starter_inspection.json",
                 "--repeat",
                 "3",
                 "--report",
@@ -97,7 +97,7 @@ def test_headless_report_repeats_and_preserves_existing_receipt(tmp_path):
     assert (
         main(
             [
-                "examples/demos/starter_inspection/starter_inspection.json",
+                "examples/assets/synthetic_graphs/starter_inspection.json",
                 "--report",
                 str(report),
             ]

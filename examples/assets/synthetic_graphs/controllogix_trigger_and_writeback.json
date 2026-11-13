@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "read",
+      "type": "input.logix_tags",
+      "name": "Read request and part sequence",
+      "parameters": {
+        "route": "",
+        "timeout_seconds": 2.0,
+        "enabled": false,
+        "tags": [
+          "Program:Vision.PartSequence"
+        ],
+        "trigger_tag": "Program:Vision.InspectRequest",
+        "trigger_mode": "rising",
+        "ticket_tag": "Program:Vision.PartSequence",
+        "value_tag": "Program:Vision.PartSequence"
+      },
+      "position": [
+        0,
+        225
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "values",
+        "value",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "capture",
+      "type": "input.demo",
+      "name": "Synthetic image on PLC ticket",
+      "parameters": {},
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "external",
+        "value": 1
+      }
+    },
+    {
+      "id": "gray",
+      "type": "cv.gray",
+      "name": "Convert to grayscale",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "threshold",
+      "type": "cv.threshold",
+      "name": "Threshold the image",
+      "parameters": {
+        "value": 100,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        960,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "count",
+      "type": "inspect.components",
+      "name": "Count parts",
+      "parameters": {
+        "connectivity": 8,
+        "min_area": 1000,
+        "max_area": 0,
+        "expected_count": 2,
+        "algorithm": "default",
+        "region_mode": "center"
+      },
+      "position": [
+        1280,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "centroids",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "judge",
+      "type": "inspect.final_judgment",
+      "name": "Assign ticket verdict",
+      "parameters": {
+        "mode": "upstream",
+        "data": {},
+        "fail_reason": "",
+        "reason_message": ""
+      },
+      "position": [
+        1600,
+        0
+      ],
+      "exposed_inputs": [
+        "value",
+        "passed",
+        "reasons"
+      ],
+      "exposed_outputs": [
+        "value",
+        "judgment"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "write",
+      "type": "industrial.logix_write",
+      "name": "Write part count and verify readback",
+      "parameters": {
+        "route": "",
+        "timeout_seconds": 2.0,
+        "tag": "Program:Vision.ResultCount",
+        "write_enabled": false
+      },
+      "position": [
+        1920,
+        225
+      ],
+      "exposed_inputs": [
+        "value",
+        "enable"
+      ],
+      "exposed_outputs": [
+        "written",
+        "readback"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "read",
+      "output": "ticket",
+      "target": "capture",
+      "input": "ticket"
+    },
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "gray",
+      "input": "image"
+    },
+    {
+      "source": "gray",
+      "output": "image",
+      "target": "threshold",
+      "input": "image"
+    },
+    {
+      "source": "threshold",
+      "output": "image",
+      "target": "count",
+      "input": "image"
+    },
+    {
+      "source": "count",
+      "output": "count",
+      "target": "judge",
+      "input": "value"
+    },
+    {
+      "source": "judge",
+      "output": "value",
+      "target": "write",
+      "input": "value"
+    },
+    {
+      "source": "read",
+      "output": "trigger",
+      "target": "write",
+      "input": "enable"
+    }
+  ]
+}

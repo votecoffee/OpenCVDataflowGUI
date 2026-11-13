@@ -3,9 +3,21 @@
   "blocks": [
     {
       "id": "source",
-      "type": "input.demo",
-      "name": "Demo image",
-      "parameters": {},
+      "type": "input.file",
+      "name": "Real blue PCB substrate",
+      "parameters": {
+        "path": "../../assets/showcase/visa-pcb2-0000.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
       "position": [
         0.0,
         0.0
@@ -15,6 +27,7 @@
       ],
       "exposed_outputs": [
         "image",
+        "info",
         "ticket"
       ],
       "thumbnail": true,
@@ -27,10 +40,10 @@
       "parameters": {
         "shape": "rectangle",
         "rectangle": [
-          112,
-          169,
-          16,
-          16
+          285,
+          204,
+          14,
+          8
         ],
         "center": [
           100,
@@ -96,28 +109,23 @@
       "name": "Classify Lab color",
       "parameters": {
         "metric": "ciede2000",
-        "maximum_delta_e": 3,
+        "maximum_delta_e": 15,
         "lightness_weight": 1.0,
         "chroma_weight": 1.0,
         "hue_weight": 1.0,
         "references": {
-          "blue disk": [
-            71.319580078125,
-            -26.859375,
-            -19.796875
+          "blue PCB substrate": [
+            32.14563751220703,
+            -6.255440711975098,
+            -25.222097396850586
           ],
-          "green rectangle": [
-            77.11181640625,
-            -32.765625,
-            51.640625
-          ],
-          "gray background": [
-            10.260009765625,
-            0.125,
-            0.0625
+          "gray IC package": [
+            44.8881950378418,
+            -0.2863020896911621,
+            -0.948437511920929
           ]
         },
-        "minimum_margin": 2
+        "minimum_margin": 1
       },
       "position": [
         990,
@@ -135,6 +143,22 @@
       ],
       "thumbnail": true,
       "preview_output": "swatches"
+    },
+    {
+      "id": "showcase_source",
+      "type": "layout.comment",
+      "name": "Real data: source and scope",
+      "parameters": {},
+      "position": [
+        0,
+        -680
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": "",
+      "description": "VisA, CC BY 4.0. Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang, Onkar Dabeer; SPot-the-Difference, ECCV 2022. registry.opendata.aws/visa/. Resized/letterboxed for this example; no defects were added. Uncalibrated photographic Lab comparison. Regions and palette are example-authored. No colorimeter ground truth is supplied.",
+      "node_size": "large"
     }
   ],
   "connections": [

@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.file",
+      "name": "Real PCB image on PLC ticket",
+      "parameters": {
+        "path": "../../assets/showcase/visa-pcb2-0000.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray",
+      "type": "cv.gray",
+      "name": "Convert to grayscale",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "threshold",
+      "type": "cv.threshold",
+      "name": "Threshold the image",
+      "parameters": {
+        "value": 100,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        960,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "count",
+      "type": "inspect.components",
+      "name": "Count parts",
+      "parameters": {
+        "connectivity": 8,
+        "min_area": 5000,
+        "max_area": 0,
+        "expected_count": 1,
+        "algorithm": "default",
+        "region_mode": "center"
+      },
+      "position": [
+        1280,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "centroids",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "judge",
+      "type": "inspect.final_judgment",
+      "name": "Assign ticket verdict",
+      "parameters": {
+        "mode": "upstream",
+        "data": {},
+        "fail_reason": "",
+        "reason_message": ""
+      },
+      "position": [
+        1600,
+        0
+      ],
+      "exposed_inputs": [
+        "value",
+        "passed",
+        "reasons"
+      ],
+      "exposed_outputs": [
+        "value",
+        "judgment"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "showcase_source",
+      "type": "layout.comment",
+      "name": "Real data: source and scope",
+      "parameters": {},
+      "position": [
+        0,
+        -680
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": "",
+      "description": "VisA, CC BY 4.0. Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang, Onkar Dabeer; SPot-the-Difference, ECCV 2022. registry.opendata.aws/visa/. Resized/letterboxed for this example; no defects were added. Saved photo replay. PLC reader/writer remain disabled with blank routes. No live-controller operation is performed.",
+      "node_size": "large"
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "gray",
+      "input": "image"
+    },
+    {
+      "source": "gray",
+      "output": "image",
+      "target": "threshold",
+      "input": "image"
+    },
+    {
+      "source": "threshold",
+      "output": "image",
+      "target": "count",
+      "input": "image"
+    },
+    {
+      "source": "count",
+      "output": "count",
+      "target": "judge",
+      "input": "value"
+    }
+  ]
+}

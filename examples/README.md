@@ -6,6 +6,28 @@ Commands run from the repository root. Shared fixtures are in [assets](assets/RE
 See [image sources and licenses](assets/photograph-sources.md) for bundled photographs.
 Third-party examples retain their attribution and on-canvas comments.
 
+## Image policy
+
+**Demos, applications and industrial integration should lead with real captures
+from openly licensed collections**, preferably industrial or workshop scenes.
+Record the publisher, creators, license, source revision, file hashes and any
+resize/crop/color changes. Credit the source in the README and on the canvas.
+Use a source that supports the demonstrated task; preserve relevant depth,
+intrinsics, timing and pose metadata.
+
+OpenCV tools, Custom tools, Control flow tools, skimage tools and user_tools may
+use synthetic inputs when they make a tool's behavior clear or give exact
+reference measurements. Original generated fixtures remain useful automated
+regressions. Data-only integration and controlled calibration/encoder examples
+can retain explicitly labeled synthetic data until suitable paired captures
+are available. Real photographs alone do not establish robot pose, physical
+width, encoder or calibration ground truth.
+
+The [showcase source record](assets/showcase/SOURCES.md) covers the real images
+now used by all nine Demos, the Lab color applications and PLC photo replay.
+The [application guide](applications/README.md) identifies real-photo workflows
+and the remaining controlled fixtures.
+
 ## Choosing a category
 
 Classify examples by their primary learning goal:
@@ -31,15 +53,15 @@ Start with the [guided application tour](demos/README.md). These bundled project
 
 | Example | Demonstrates |
 | --- | --- |
-| [Quick-start demo](demos/demo/README.md) | Run the default graph, select a node and inspect its images and values. |
-| [Starter inspection](demos/starter_inspection/README.md) | Follow a complete small inspection, edit parameters and trace intermediate results. |
+| [Quick-start demo](demos/demo/README.md) | Inspect a real PCB photograph, select a node and inspect its images and values. |
+| [Starter inspection](demos/starter_inspection/README.md) | Process a real PCB photograph, edit parameters and trace intermediate results. |
 | [Editable inspection regions](<demos/regions/README.md>) | Use region editors and see one shared region control several processing branches. |
-| [Object collections](<demos/object_collections/README.md>) | Inspect structured outputs, filter/sort objects and compare linked collection views. |
+| [Object collections](<demos/object_collections/README.md>) | Inspect real tote foreground collections, filter/sort regions and compare linked views. |
 | [Overlay result graphics](<demos/overlay_result_graphics/README.md>) | Combine drawable layers on the original image and choose which results to display. |
 | [Image-set workspace](demos/image_set_workspace/README.md) | Use grouped layouts, filename tickets, Run all and verdict filmstrips. |
 | [Validation image set](demos/validation_images/README.md) | Run labeled pass/fail/unknown cases and inspect validation scoring/reporting. |
-| [Sequence memory](<demos/sequence_memory/README.md>) | Observe warmup, retained state and results across repeated acquisitions. |
-| [RGB-D point cloud](<demos/rgbd_cloud/README.md>) | Follow typed RGB-D data into a cloud, then inspect native 3D previews and popouts. |
+| [Sequence memory](<demos/sequence_memory/README.md>) | Observe warmup and retained state on real recorded camera frames. |
+| [RGB-D point cloud](<demos/rgbd_cloud/README.md>) | Project measured T-LESS RGB-D into a cloud and inspect native 3D previews/popouts. |
 
 ## Applications
 

@@ -3,9 +3,21 @@
   "blocks": [
     {
       "id": "source",
-      "type": "input.demo",
-      "name": "Synthetic color targets",
-      "parameters": {},
+      "type": "input.file",
+      "name": "Real blue PCB substrate",
+      "parameters": {
+        "path": "../../assets/showcase/visa-pcb2-0000.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
       "position": [
         0,
         140
@@ -15,6 +27,7 @@
       ],
       "exposed_outputs": [
         "image",
+        "info",
         "ticket"
       ],
       "thumbnail": true,
@@ -31,7 +44,7 @@
           0.0
         ],
         "metric": "ciede2000",
-        "maximum_delta_e": 2.0,
+        "maximum_delta_e": 15,
         "lightness_weight": 1.0,
         "chroma_weight": 1.0,
         "hue_weight": 1.0
@@ -58,10 +71,10 @@
       "parameters": {
         "shape": "rectangle",
         "rectangle": [
-          112,
-          169,
-          16,
-          16
+          180,
+          204,
+          14,
+          8
         ],
         "center": [
           100,
@@ -128,10 +141,10 @@
       "parameters": {
         "shape": "rectangle",
         "rectangle": [
-          145,
-          169,
-          16,
-          16
+          285,
+          204,
+          14,
+          8
         ],
         "center": [
           100,
@@ -190,6 +203,22 @@
       ],
       "thumbnail": true,
       "preview_output": "swatch"
+    },
+    {
+      "id": "showcase_source",
+      "type": "layout.comment",
+      "name": "Real data: source and scope",
+      "parameters": {},
+      "position": [
+        0,
+        -680
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": "",
+      "description": "VisA, CC BY 4.0. Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang, Onkar Dabeer; SPot-the-Difference, ECCV 2022. registry.opendata.aws/visa/. Resized/letterboxed for this example; no defects were added. Uncalibrated photographic Lab comparison. Regions and palette are example-authored. No colorimeter ground truth is supplied.",
+      "node_size": "large"
     }
   ],
   "connections": [

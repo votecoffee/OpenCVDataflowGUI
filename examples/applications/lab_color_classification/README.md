@@ -1,27 +1,16 @@
-# Lab color classification
+# Lab color classification on a real PCB photograph
 
-Open [lab_color_classification.json](lab_color_classification.json) with
-**File → Open…**, then click **Run once**. The graph measures a patch
-inside the blue disk and compares its mean Lab value with three named
-references. The accepted label is **blue disk** and its ΔE is zero.
-The preview shows the measured color on the left and the closest
-reference on the right.
+Open [lab_color_classification.json](lab_color_classification.json) and run once. The input is a real VisA PCB2
+photograph, with reference and inspected substrate regions on the board.
+The measured CIEDE2000 difference is approximately **5.353**, below the illustrative
+maximum of 15. Classification selects **blue PCB substrate** from an example-authored
+substrate/gray-package palette. The companion [match graph](../lab_color_match/README.md) exposes both measured Lab values.
 
-Set **References** to a JSON object mapping names to Lab triplets, such as
-`{"dark gray": [30, 0, 0], "light gray": [70, 0, 0]}`. A wired palette on
-the optional `references` port takes precedence. Choose CIE76 or CIEDE2000.
-[CIEDE2000 implementation notes](https://hajim.rochester.edu/ece/sites/gsharma/ciede2000/)
+Edit the regions to inspect another material on the board. Illumination and camera
+response affect these values; the image has no colorimeter calibration or
+manufacturing pass/fail ground truth. The original synthetic color graph is retained
+under [regression fixtures](../../assets/synthetic_graphs/README.md).
 
-**Maximum delta E** limits the nearest-reference distance.
-**Minimum margin** sets the required ΔE gap between the two best references.
-A single reference only needs to meet the distance limit. Set the margin to
-zero to allow equal distances, with ties resolved in label order.
-An out-of-tolerance or ambiguous sample emits no **Label**. The
-**Classification** output still includes the closest candidate, margin,
-and complete ranking.
-
-```powershell
-opencv-dataflow-run examples/applications/lab_color_classification/lab_color_classification.json
-```
-
-[All examples](../../README.md)
+VisA, CC BY 4.0: Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and
+Onkar Dabeer, ECCV 2022. The image was resized/letterboxed; source/hash/change
+details are in [showcase attribution](../../assets/showcase/SOURCES.md).

@@ -20,37 +20,37 @@
   "validation_sets": [
     {
       "id": "validation_smoke",
-      "name": "One-part regression",
+      "name": "Real tote occupancy regression",
       "source": "validation_source",
       "judgment": "validation_final",
       "state_mode": "isolated",
       "allow_outputs": false,
       "cases": [
         {
-          "id": "known_pass",
-          "path": "../../assets/validation/pass.png",
+          "id": "empty_reference",
+          "path": "../../assets/showcase/armbench-LO95CK8OLH.png",
           "expectation": "must_pass"
         },
         {
-          "id": "known_fail",
-          "path": "../../assets/validation/fail.png",
-          "expectation": "must_fail",
-          "preferred_fail_reason": "part_count"
-        },
-        {
-          "id": "likely_pass",
-          "path": "../../assets/validation/pass.png",
+          "id": "empty_capture",
+          "path": "../../assets/showcase/armbench-EZ5895NGB8.png",
           "expectation": "should_pass"
         },
         {
-          "id": "likely_fail",
-          "path": "../../assets/validation/fail.png",
-          "expectation": "should_fail",
-          "preferred_fail_reason": "part_count"
+          "id": "mixed_inventory",
+          "path": "../../assets/showcase/armbench-P2S0835EOA.png",
+          "expectation": "must_fail",
+          "preferred_fail_reason": "tote_occupied"
         },
         {
-          "id": "unclassified",
-          "path": "../../assets/validation/unknown.png",
+          "id": "packages",
+          "path": "../../assets/showcase/armbench-9TARTKRF1X.png",
+          "expectation": "should_fail",
+          "preferred_fail_reason": "tote_occupied"
+        },
+        {
+          "id": "bagged_items",
+          "path": "../../assets/showcase/armbench-OAR1KXNIME.png",
           "expectation": "unknown"
         }
       ]
@@ -60,19 +60,20 @@
     {
       "id": "validation_source",
       "type": "input.file",
-      "name": "Image file",
+      "name": "Real tote photographs",
       "parameters": {
-        "path": "../../assets/validation/pass.png",
+        "path": "../../assets/showcase/armbench-EZ5895NGB8.png",
         "source_mode": "files",
         "paths": [
-          "../../assets/validation/pass.png",
-          "../../assets/validation/fail.png",
-          "../../assets/validation/unknown.png"
+          "../../assets/showcase/armbench-EZ5895NGB8.png",
+          "../../assets/showcase/armbench-P2S0835EOA.png",
+          "../../assets/showcase/armbench-9TARTKRF1X.png"
         ],
         "directory": "",
         "recursive": false,
         "repeat": "stop",
         "filename_ticket": true,
+        "metadata_mode": "off",
         "color_format": "bgr",
         "pixel_depth": "uint8",
         "path_base": "project"
@@ -93,23 +94,131 @@
       "preview_output": ""
     },
     {
+      "id": "blue",
+      "type": "cv.channel_transform",
+      "name": "Blue-plastic signal",
+      "parameters": {
+        "matrix": [
+          [
+            2.0,
+            -1.0,
+            -1.0
+          ]
+        ]
+      },
+      "position": [
+        300,
+        80
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "matrix"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cavity",
+      "type": "region.shape",
+      "name": "Inspected tote cavity",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          105,
+          40,
+          290,
+          245
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        300,
+        400
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "foreground",
+      "type": "cv.compare_pixels",
+      "name": "Non-blue foreground",
+      "parameters": {
+        "operation": "less",
+        "scalar": 25,
+        "alignment": "same_frame",
+        "tolerance": 0.0,
+        "channel_rule": "all",
+        "include_alpha": false
+      },
+      "position": [
+        580,
+        80
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "scalar_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "count",
+        "fraction"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
       "id": "validation_inspect",
       "type": "inspect.contours",
-      "name": "Find contours",
+      "name": "Inspect clear tote cavity",
       "parameters": {
-        "min_area": 20.0,
-        "expected_count": 1,
+        "min_area": 400,
+        "expected_count": 0,
         "retrieval": "external",
         "approximation": "simple",
         "offset": [
           0,
           0
         ],
-        "region_mode": "center"
+        "region_mode": "clip"
       },
       "position": [
-        340,
-        0
+        850,
+        200
       ],
       "exposed_inputs": [
         "image",
@@ -121,7 +230,8 @@
         "mask",
         "count",
         "data",
-        "collection"
+        "collection",
+        "result_graphics"
       ],
       "thumbnail": true,
       "preview_output": ""
@@ -133,12 +243,12 @@
       "parameters": {
         "mode": "upstream",
         "data": {},
-        "fail_reason": "part_count",
-        "reason_message": "Expected exactly one part"
+        "fail_reason": "tote_occupied",
+        "reason_message": "Non-blue foreground in the inspected tote cavity"
       },
       "position": [
-        680,
-        0
+        1150,
+        200
       ],
       "exposed_inputs": [
         "value",
@@ -151,20 +261,120 @@
       ],
       "thumbnail": true,
       "preview_output": ""
+    },
+    {
+      "id": "photo_overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Inspection on the real photograph",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1450,
+        200
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Ticketed photo result",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1780,
+        200
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "showcase_source",
+      "type": "layout.comment",
+      "name": "Real data: source and scope",
+      "parameters": {},
+      "position": [
+        0,
+        -680
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": "",
+      "description": "ARMBench, CC BY 4.0. Amazon.com, Inc.; Chaitanya Mitash, Fan Wang, Shiyang Lu, Vikedo Terhuja, Tyler Garaas, Felipe Polido, Manikantan Nambi; ICRA 2023. armbench.com. Resized/letterboxed; occupancy labels are example-authored. Native fixed-color cavity check, not item counting or trained instance segmentation. Touching items can merge; colors, pose and lighting affect the rule. Labels are scoped to these photographs.",
+      "node_size": "large"
     }
   ],
   "connections": [
     {
       "source": "validation_source",
       "output": "image",
+      "target": "blue",
+      "input": "image"
+    },
+    {
+      "source": "validation_source",
+      "output": "image",
+      "target": "cavity",
+      "input": "image"
+    },
+    {
+      "source": "blue",
+      "output": "image",
+      "target": "foreground",
+      "input": "image_a"
+    },
+    {
+      "source": "cavity",
+      "output": "region",
+      "target": "foreground",
+      "input": "region"
+    },
+    {
+      "source": "foreground",
+      "output": "mask",
       "target": "validation_inspect",
       "input": "image"
     },
     {
       "source": "validation_inspect",
-      "output": "overlay",
+      "output": "count",
       "target": "validation_final",
       "input": "value"
+    },
+    {
+      "source": "validation_source",
+      "output": "image",
+      "target": "photo_overlay",
+      "input": "image"
+    },
+    {
+      "source": "validation_inspect",
+      "output": "result_graphics",
+      "target": "photo_overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "photo_overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
     }
   ]
 }

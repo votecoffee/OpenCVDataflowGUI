@@ -24,7 +24,7 @@ from opencv_dataflow.validation_editor import ValidationManager
 @pytest.fixture
 def program():
     registry = builtin_registry()
-    graph = Graph.load("examples/demos/validation_images/validation_images.json", registry)
+    graph = Graph.load("examples/assets/synthetic_graphs/validation_images.json", registry)
     return registry, graph
 
 
@@ -227,7 +227,7 @@ def test_manifest_roundtrip_and_cli_report_preserves_existing_file(program, tmp_
     assert (
         main(
             [
-                "examples/demos/validation_images/validation_images.json",
+                "examples/assets/synthetic_graphs/validation_images.json",
                 "--set",
                 "validation_smoke",
                 "--report",
@@ -240,7 +240,7 @@ def test_manifest_roundtrip_and_cli_report_preserves_existing_file(program, tmp_
     assert (
         main(
             [
-                "examples/demos/validation_images/validation_images.json",
+                "examples/assets/synthetic_graphs/validation_images.json",
                 "--set",
                 "validation_smoke",
                 "--report",

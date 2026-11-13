@@ -1,5 +1,7 @@
 # Contour defect inspection
 
+**Data:** controlled synthetic fixture with explicit reference geometry or labels.
+
 Open [contour_defects.json](contour_defects.json) with **File → Open…**.
 Click **Run once** for each of the two images. **Find contours** extracts
 the part boundary, and **Contour hull and convexity defects** checks for
@@ -31,3 +33,10 @@ opencv-dataflow-run examples/applications/contour_defects/contour_defects.json -
 The command reports one pass and one failure and returns exit code 1.
 
 [All examples](../../README.md)
+
+
+## Controlled fixture
+
+Controlled generated notches provide known missing-edge geometry. Real VisA defect comparisons are available in the [reference-inspection collection](<../../Simple Plugins/reference_inspect/visa_pcb2/README.md>).
+
+New application showcase variants should prefer suitable, attributed real captures.

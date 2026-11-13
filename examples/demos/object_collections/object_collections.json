@@ -3,9 +3,21 @@
   "blocks": [
     {
       "id": "objects_source",
-      "type": "input.demo",
-      "name": "Synthetic parts",
-      "parameters": {},
+      "type": "input.file",
+      "name": "Real warehouse inventory",
+      "parameters": {
+        "path": "../../assets/showcase/armbench-P2S0835EOA.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
       "position": [
         0,
         -330
@@ -15,6 +27,7 @@
       ],
       "exposed_outputs": [
         "image",
+        "info",
         "ticket"
       ],
       "thumbnail": true,
@@ -23,12 +36,12 @@
     {
       "id": "objects_roi",
       "type": "cv.crop",
-      "name": "Exclude caption",
+      "name": "Full photograph",
       "parameters": {
         "x": 0,
         "y": 0,
         "width": 480,
-        "height": 290
+        "height": 320
       },
       "position": [
         0,
@@ -46,11 +59,16 @@
     },
     {
       "id": "objects_gray",
-      "type": "cv.convert",
-      "name": "Grayscale",
+      "type": "cv.channel_transform",
+      "name": "Blue-plastic signal",
       "parameters": {
-        "color_format": "gray",
-        "pixel_depth": "unchanged"
+        "matrix": [
+          [
+            2.0,
+            -1.0,
+            -1.0
+          ]
+        ]
       },
       "position": [
         300,
@@ -67,26 +85,23 @@
     },
     {
       "id": "objects_threshold",
-      "type": "cv.threshold",
-      "name": "Segment shapes",
+      "type": "cv.compare_pixels",
+      "name": "Non-blue foreground",
       "parameters": {
-        "value": 127.0,
-        "invert": false,
-        "max_value": 255.0,
-        "mode": "binary"
+        "operation": "less",
+        "scalar": 25
       },
       "position": [
         600,
         0
       ],
       "exposed_inputs": [
-        "image",
-        "mask",
+        "image_a",
         "region"
       ],
       "exposed_outputs": [
-        "image",
-        "threshold"
+        "mask",
+        "count"
       ],
       "thumbnail": true,
       "preview_output": ""
@@ -97,7 +112,7 @@
       "name": "Find all blobs",
       "parameters": {
         "connectivity": 8,
-        "min_area": 100,
+        "min_area": 400,
         "max_area": 0,
         "expected_count": 2,
         "algorithm": "default",
@@ -127,11 +142,11 @@
     {
       "id": "objects_blob_filter",
       "type": "collection.filter",
-      "name": "Keep tall parts",
+      "name": "Keep larger foreground regions",
       "parameters": {
-        "metric": "height",
+        "metric": "area",
         "use_minimum": true,
-        "minimum": 80.0,
+        "minimum": 1000,
         "include_minimum": true,
         "use_maximum": false,
         "maximum": 0.0,
@@ -228,8 +243,8 @@
       "type": "inspect.contours",
       "name": "Find contours",
       "parameters": {
-        "min_area": 100.0,
-        "expected_count": 2,
+        "min_area": 400,
+        "expected_count": 4,
         "retrieval": "external",
         "approximation": "simple",
         "offset": [
@@ -264,7 +279,7 @@
       "parameters": {
         "metric": "circularity",
         "use_minimum": true,
-        "minimum": 0.85,
+        "minimum": 0.4,
         "include_minimum": true,
         "use_maximum": false,
         "maximum": 0.0,
@@ -365,7 +380,7 @@
       "parameters": {
         "metric": "length",
         "use_minimum": true,
-        "minimum": 100.0,
+        "minimum": 50,
         "include_minimum": true,
         "use_maximum": false,
         "maximum": 0.0,
@@ -494,6 +509,70 @@
       ],
       "thumbnail": true,
       "preview_output": "overlay"
+    },
+    {
+      "id": "cavity",
+      "type": "region.shape",
+      "name": "Tote cavity",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          105,
+          40,
+          290,
+          245
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        300,
+        -350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "showcase_source",
+      "type": "layout.comment",
+      "name": "Real data: source and scope",
+      "parameters": {},
+      "position": [
+        0,
+        -680
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": "",
+      "description": "ARMBench, CC BY 4.0. Amazon.com, Inc.; Chaitanya Mitash, Fan Wang, Shiyang Lu, Vikedo Terhuja, Tyler Garaas, Felipe Polido, Manikantan Nambi; ICRA 2023. armbench.com. Resized/letterboxed; occupancy labels are example-authored. Connected foreground regions can merge touching objects. This example demonstrates collections, sorting and overlays.",
+      "node_size": "large"
     }
   ],
   "connections": [
@@ -513,11 +592,11 @@
       "source": "objects_gray",
       "output": "image",
       "target": "objects_threshold",
-      "input": "image"
+      "input": "image_a"
     },
     {
       "source": "objects_threshold",
-      "output": "image",
+      "output": "mask",
       "target": "objects_blobs",
       "input": "image"
     },
@@ -541,7 +620,7 @@
     },
     {
       "source": "objects_threshold",
-      "output": "image",
+      "output": "mask",
       "target": "objects_contours",
       "input": "image"
     },
@@ -604,6 +683,18 @@
       "output": "image",
       "target": "objects_line_draw",
       "input": "image"
+    },
+    {
+      "source": "objects_source",
+      "output": "image",
+      "target": "cavity",
+      "input": "image"
+    },
+    {
+      "source": "cavity",
+      "output": "region",
+      "target": "objects_threshold",
+      "input": "region"
     }
   ]
 }

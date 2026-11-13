@@ -3,11 +3,19 @@
   "blocks": [
     {
       "id": "sequence_source",
-      "type": "input.sequence_demo",
-      "name": "Sequence demo frames",
+      "type": "input.video_file",
+      "name": "Real TUM camera frames",
       "parameters": {
-        "stationary_frames": 5,
-        "step_pixels": 2
+        "path": "../../opencv tools/recorded_camera_stabilization/assets/fr1-rpy-0384-0443.mkv",
+        "path_base": "project",
+        "backend": "auto",
+        "start_frame": 0,
+        "end_frame": 12,
+        "stride": 1,
+        "repeat": "stop",
+        "frame_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8"
       },
       "position": [
         0,
@@ -18,6 +26,7 @@
       ],
       "exposed_outputs": [
         "image",
+        "info",
         "ticket"
       ],
       "thumbnail": true,
@@ -199,6 +208,22 @@
       ],
       "thumbnail": true,
       "preview_output": ""
+    },
+    {
+      "id": "showcase_source",
+      "type": "layout.comment",
+      "name": "Real data: source and scope",
+      "parameters": {},
+      "position": [
+        0,
+        -680
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": "",
+      "description": "TUM RGB-D, CC BY 4.0. J. Sturm, N. Engelhard, F. Endres, W. Burgard, D. Cremers; IROS 2012. cvg.cit.tum.de/data/datasets/rgbd-dataset. freiburg1_rpy RGB frames 384-443, resized to 320x240 grayscale FFV1; replayed here without injected motion. Camera motion contributes to optical flow and background change. No encoder or robot pose is supplied.",
+      "node_size": "large"
     }
   ],
   "connections": [

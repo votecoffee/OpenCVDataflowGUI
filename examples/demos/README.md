@@ -1,12 +1,14 @@
 # Guided application demos
 
-These projects introduce the editor and runtime with bundled synthetic inputs.
+These projects introduce the editor and runtime with real, openly licensed
+PCB and warehouse photographs, recorded camera frames and measured RGB-D data.
 They run without a camera, controller, optional model download or user plugin.
+See the [sources, licenses and transformations](../assets/showcase/SOURCES.md).
 Start the application, choose **File → Open…**, and open a project below.
 
 | Order | Demo | What to learn |
 | --- | --- | --- |
-| 1 | [Quick-start graph](demo/README.md) | Run once, select blocks, trace wires and inspect images/values. |
+| 1 | [Quick-start graph](demo/README.md) | Inspect a real PCB photo, select blocks, trace wires and inspect images/values. |
 | 2 | [Build an inspection](starter_inspection/README.md) | Follow a small program and preview parameter changes using retained inputs. |
 | 3 | [Editable regions](regions/README.md) | Draw/select a region and reuse it across inspection branches. |
 | 4 | [Object collections](object_collections/README.md) | Inspect data outputs and use collection filters, sorting and overlays. |

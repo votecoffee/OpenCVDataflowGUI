@@ -19,7 +19,7 @@ from opencv_dataflow.payloads import ValuePacket, frame, moved_payload
 from opencv_dataflow.tickets import TicketClock
 from opencv_dataflow.toolblocks import encapsulate
 
-EXAMPLE = Path("examples/demos/overlay_result_graphics/overlay_result_graphics.json")
+EXAMPLE = Path("examples/assets/synthetic_graphs/overlay_result_graphics.json")
 
 
 @pytest.mark.local_examples

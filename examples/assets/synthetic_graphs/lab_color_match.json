@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Synthetic color targets",
+      "parameters": {},
+      "position": [
+        0,
+        140
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "compare",
+      "type": "inspect.compare_lab",
+      "name": "Compare against reference",
+      "parameters": {
+        "reference_lab": [
+          50.0,
+          0.0,
+          0.0
+        ],
+        "metric": "ciede2000",
+        "maximum_delta_e": 2.0,
+        "lightness_weight": 1.0,
+        "chroma_weight": 1.0,
+        "hue_weight": 1.0
+      },
+      "position": [
+        1010,
+        140
+      ],
+      "exposed_inputs": [
+        "sample",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "delta_e",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_region",
+      "type": "region.shape",
+      "name": "Reference patch",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          112,
+          169,
+          16,
+          16
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        335,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "inspect.measure_lab",
+      "name": "Reference Lab",
+      "parameters": {},
+      "position": [
+        665,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "lab",
+        "statistics",
+        "swatch"
+      ],
+      "thumbnail": true,
+      "preview_output": "swatch"
+    },
+    {
+      "id": "sample_region",
+      "type": "region.shape",
+      "name": "Sample patch",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          145,
+          169,
+          16,
+          16
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        335,
+        270
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample",
+      "type": "inspect.measure_lab",
+      "name": "Sample Lab",
+      "parameters": {},
+      "position": [
+        665,
+        270
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "lab",
+        "statistics",
+        "swatch"
+      ],
+      "thumbnail": true,
+      "preview_output": "swatch"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "reference_region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "reference",
+      "input": "image"
+    },
+    {
+      "source": "reference_region",
+      "output": "region",
+      "target": "reference",
+      "input": "region"
+    },
+    {
+      "source": "reference",
+      "output": "lab",
+      "target": "compare",
+      "input": "reference"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "sample_region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "sample",
+      "input": "image"
+    },
+    {
+      "source": "sample_region",
+      "output": "region",
+      "target": "sample",
+      "input": "region"
+    },
+    {
+      "source": "sample",
+      "output": "lab",
+      "target": "compare",
+      "input": "sample"
+    }
+  ]
+}

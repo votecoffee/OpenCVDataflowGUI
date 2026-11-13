@@ -354,7 +354,7 @@ def test_saved_example_repeats_nested_and_headless_receipts_preserve_descriptors
     from opencv_dataflow.toolblocks import encapsulate
 
     registry = builtin_registry()
-    graph = Graph.load("examples/demos/object_collections/object_collections.json", registry)
+    graph = Graph.load("examples/assets/synthetic_graphs/object_collections.json", registry)
     assert graph.to_dict() == object_collections_graph(registry).to_dict()
     for _ in range(3):
         graph.run()
@@ -380,7 +380,7 @@ def test_saved_example_repeats_nested_and_headless_receipts_preserve_descriptors
     assert (
         main(
             [
-                "examples/demos/object_collections/object_collections.json",
+                "examples/assets/synthetic_graphs/object_collections.json",
                 "--report",
                 str(report),
             ]

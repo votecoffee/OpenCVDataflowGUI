@@ -16,6 +16,9 @@ pytestmark = pytest.mark.local_examples
 
 
 def load(name):
+    if name == "controllogix_trigger_and_writeback":
+        fixture = EXAMPLES.parents[1] / "examples/assets/synthetic_graphs" / f"{name}.json"
+        return Graph.load(fixture, builtin_registry())
     return Graph.load(EXAMPLES / name / f"{name}.json", builtin_registry())
 
 

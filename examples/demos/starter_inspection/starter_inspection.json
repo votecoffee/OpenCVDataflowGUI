@@ -3,9 +3,21 @@
   "blocks": [
     {
       "id": "starter_source",
-      "type": "input.demo",
-      "name": "Synthetic parts",
-      "parameters": {},
+      "type": "input.file",
+      "name": "Real VisA PCB photograph",
+      "parameters": {
+        "path": "../../assets/showcase/visa-pcb2-0000.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
       "position": [
         0,
         0
@@ -15,6 +27,7 @@
       ],
       "exposed_outputs": [
         "image",
+        "info",
         "ticket"
       ],
       "thumbnail": true,
@@ -25,10 +38,10 @@
       "type": "cv.crop",
       "name": "Inspection ROI",
       "parameters": {
-        "x": 35,
-        "y": 65,
-        "width": 400,
-        "height": 220
+        "x": 60,
+        "y": 45,
+        "width": 325,
+        "height": 195
       },
       "position": [
         285,
@@ -117,9 +130,9 @@
       "type": "cv.morphology",
       "name": "Clean mask",
       "parameters": {
-        "operation": "open",
+        "operation": "close",
         "shape": "ellipse",
-        "kernel": 3,
+        "kernel": 5,
         "iterations": 1,
         "kernel_y": 0,
         "anchor": [
@@ -151,12 +164,12 @@
     {
       "id": "starter_components",
       "type": "inspect.components",
-      "name": "Measure two parts",
+      "name": "Measure the PCB foreground",
       "parameters": {
         "connectivity": 8,
-        "min_area": 1000,
+        "min_area": 5000,
         "max_area": 0,
-        "expected_count": 2,
+        "expected_count": 1,
         "algorithm": "default",
         "region_mode": "center"
       },
@@ -231,6 +244,22 @@
       ],
       "thumbnail": true,
       "preview_output": ""
+    },
+    {
+      "id": "showcase_source",
+      "type": "layout.comment",
+      "name": "Real data: source and scope",
+      "parameters": {},
+      "position": [
+        0,
+        -680
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": "",
+      "description": "VisA, CC BY 4.0. Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang, Onkar Dabeer; SPot-the-Difference, ECCV 2022. registry.opendata.aws/visa/. Resized/letterboxed for this example; no defects were added. Thresholded regions illustrate graph editing and overlays. No calibrated defect labels are supplied.",
+      "node_size": "large"
     }
   ],
   "connections": [

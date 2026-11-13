@@ -444,7 +444,7 @@ def test_background_queue_drains_finite_source_without_hanging(tmp_path):
 @pytest.mark.local_examples
 def test_filmstrip_actual_verdicts_bounded_and_validation(app):
     registry = builtin_registry()
-    graph = Graph.load("examples/demos/validation_images/validation_images.json", registry)
+    graph = Graph.load("examples/assets/synthetic_graphs/validation_images.json", registry)
     strip = Filmstrip(capacity=3)
     report = run_set(
         graph.to_dict(), graph.validation_sets[0], registry, graph.project_dir, filmstrip=strip
@@ -816,13 +816,13 @@ def test_image_set_example_cli_finite_guard_and_report(tmp_path):
     from opencv_dataflow.runner import main
 
     registry = builtin_registry()
-    graph = Graph.load("examples/demos/image_set_workspace/image_set_workspace.json", registry)
+    graph = Graph.load("examples/assets/synthetic_graphs/image_set_workspace.json", registry)
     assert graph.to_dict() == image_set_workspace_graph(registry).to_dict()
     receipt = tmp_path / "receipt.json"
     assert (
         main(
             [
-                "examples/demos/image_set_workspace/image_set_workspace.json",
+                "examples/assets/synthetic_graphs/image_set_workspace.json",
                 "--all-images",
                 "--report",
                 str(receipt),
@@ -845,7 +845,7 @@ def test_directory_picker_and_validation_filmstrip_worker(app, monkeypatch):
     window = MainWindow()
     registry = window.registry
     window.replace_graph(
-        Graph.load("examples/demos/validation_images/validation_images.json", registry)
+        Graph.load("examples/assets/synthetic_graphs/validation_images.json", registry)
     )
     source = window.graph.blocks["validation_source"]
     window.scene.nodes[source.id].setSelected(True)

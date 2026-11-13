@@ -11,6 +11,13 @@ inputs, parameters, and results fit a graph and recur across jobs. Numeric and
 control-flow tools qualify when they support those workflows. Use Python
 plugins for specialized operations with job-specific interfaces.
 
+Application-facing [Demos](../examples/demos/README.md), applications and
+industrial integration examples should prefer openly licensed real captures.
+Keep source/creator/license/hash/change records and on-canvas attribution.
+Use controlled synthetic inputs for focused tool examples and exact regression
+fixtures. Image-dependent robot or conveyor claims need the corresponding
+pose, calibration or encoder evidence. See the [example data policy](../examples/README.md#image-policy).
+
 ## Validation cadence
 
 Use targeted tests and a runnable example for each implementation increment.

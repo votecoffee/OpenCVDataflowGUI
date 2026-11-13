@@ -1,0 +1,180 @@
+{
+  "license_checked": "2026-11-13",
+  "images": [
+    {
+      "dataset": "VisA",
+      "source": "examples/assets/visa-pcb2-normal-0000.jpg",
+      "source_sha256": "b3f01fc1c1bd43df2c5a1afa63348097f7ecbcc9ebe2fd43bed6f2d074531a37",
+      "file": "visa-pcb2-0000.png",
+      "sha256": "f0bde89a9c4adc33c69d601e00f1ad4bd2de5d4b224c0f62c13cbe26875aa196",
+      "source_size": [
+        1404,
+        1070
+      ],
+      "resized_size": [
+        420,
+        320
+      ],
+      "padding_left_top": [
+        30,
+        0
+      ],
+      "changes": "aspect-preserving area resize and black letterbox to 480x320",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "dataset": "VisA",
+      "source": "examples/assets/visa-pcb2-normal-0621.jpg",
+      "source_sha256": "d258d60936443d62745e0c208a78ada21227df6b1405bda0967e105b045c4720",
+      "file": "visa-pcb2-0621.png",
+      "sha256": "13daf00298a1da4792230c28f011b37f5203d775837fab75afde514d07e5f248",
+      "source_size": [
+        1404,
+        1070
+      ],
+      "resized_size": [
+        420,
+        320
+      ],
+      "padding_left_top": [
+        30,
+        0
+      ],
+      "changes": "aspect-preserving area resize and black letterbox to 480x320",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "dataset": "ARMBench",
+      "source": "examples/Simple Plugins/reference_inspect/armbench_tote/assets/LO95CK8OLH.jpg",
+      "source_sha256": "6c909ad2c1d51a0879805f36c9a13eb11dde7f70dab77055a1ab6c2310b604b8",
+      "file": "armbench-LO95CK8OLH.png",
+      "sha256": "1975d0578d7f772a3260958b259b9d25d33b77e54079e4d1c04546e70887d471",
+      "source_size": [
+        612,
+        512
+      ],
+      "resized_size": [
+        382,
+        320
+      ],
+      "padding_left_top": [
+        49,
+        0
+      ],
+      "changes": "aspect-preserving area resize and black letterbox to 480x320",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "dataset": "ARMBench",
+      "source": "examples/Simple Plugins/reference_inspect/armbench_tote/assets/EZ5895NGB8.jpg",
+      "source_sha256": "7e5348d1a7aa3cccfb67154e457746e24c64d20f9e945103d5caeb983148bafc",
+      "file": "armbench-EZ5895NGB8.png",
+      "sha256": "25fd93bb852315e5e743cdcea90d13c50a5c431c6af8eee9d98546e9a3e312f9",
+      "source_size": [
+        612,
+        512
+      ],
+      "resized_size": [
+        382,
+        320
+      ],
+      "padding_left_top": [
+        49,
+        0
+      ],
+      "changes": "aspect-preserving area resize and black letterbox to 480x320",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "dataset": "ARMBench",
+      "source": "examples/Simple Plugins/reference_inspect/armbench_tote/assets/P2S0835EOA.jpg",
+      "source_sha256": "7609e883131b428fcdff0b196ccfea4da0bb2476d05696b468a673b1397d40c6",
+      "file": "armbench-P2S0835EOA.png",
+      "sha256": "11aa251202820116f6761c3335fd66eb6210281150215cd6e04597a4ada6f8b6",
+      "source_size": [
+        612,
+        512
+      ],
+      "resized_size": [
+        382,
+        320
+      ],
+      "padding_left_top": [
+        49,
+        0
+      ],
+      "changes": "aspect-preserving area resize and black letterbox to 480x320",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "dataset": "ARMBench",
+      "source": "examples/Simple Plugins/reference_inspect/armbench_tote/assets/9TARTKRF1X.jpg",
+      "source_sha256": "48f09d0a044c0f6b0cb2178cc9b06fb89815d5c6a56f43a185bba5419ad7121e",
+      "file": "armbench-9TARTKRF1X.png",
+      "sha256": "40b3e37db5ffbe090cfc1cb6c41adf300196e6ca90584d6257a497e499e4cd06",
+      "source_size": [
+        612,
+        512
+      ],
+      "resized_size": [
+        382,
+        320
+      ],
+      "padding_left_top": [
+        49,
+        0
+      ],
+      "changes": "aspect-preserving area resize and black letterbox to 480x320",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "dataset": "ARMBench",
+      "source": "examples/Simple Plugins/reference_inspect/armbench_tote/assets/OAR1KXNIME.jpg",
+      "source_sha256": "7f4d546306841aad78a9a64a49b6947b9421c8e91a02ce32738e199866409ba2",
+      "file": "armbench-OAR1KXNIME.png",
+      "sha256": "3b14d2eeec55ffab2d2124a063f7bf3fee7c02ee709c63e654c6f806d4ec67ba",
+      "source_size": [
+        612,
+        512
+      ],
+      "resized_size": [
+        382,
+        320
+      ],
+      "padding_left_top": [
+        49,
+        0
+      ],
+      "changes": "aspect-preserving area resize and black letterbox to 480x320",
+      "license": "CC-BY-4.0"
+    }
+  ],
+  "datasets": {
+    "VisA": {
+      "publisher": "https://registry.opendata.aws/visa/",
+      "credit": "VisA, CC BY 4.0. Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang, Onkar Dabeer; SPot-the-Difference, ECCV 2022. registry.opendata.aws/visa/. Resized/letterboxed for this example; no defects were added.",
+      "release": "VisA_20220922",
+      "license": "CC-BY-4.0"
+    },
+    "ARMBench": {
+      "publisher": "https://www.armbench.com/",
+      "credit": "ARMBench, CC BY 4.0. Amazon.com, Inc.; Chaitanya Mitash, Fan Wang, Shiyang Lu, Vikedo Terhuja, Tyler Garaas, Felipe Polido, Manikantan Nambi; ICRA 2023. armbench.com. Resized/letterboxed; occupancy labels are example-authored.",
+      "license": "CC-BY-4.0",
+      "archive_sha256": "30f2539a2c8ae32ae25000ee9025657e2c49529cf9e513196597f9a94e7ca0d7"
+    },
+    "TUM RGB-D": {
+      "publisher": "https://cvg.cit.tum.de/data/datasets/rgbd-dataset",
+      "credit": "TUM RGB-D, CC BY 4.0. J. Sturm, N. Engelhard, F. Endres, W. Burgard, D. Cremers; IROS 2012. cvg.cit.tum.de/data/datasets/rgbd-dataset. freiburg1_rpy RGB frames 384-443, resized to 320x240 grayscale FFV1; replayed here without injected motion.",
+      "clip_sha256": "724d3f8da27615050468a4cd29c412570da3624b65ed19229e7ba74f0c6665a0"
+    },
+    "T-LESS": {
+      "publisher": "https://cmp.felk.cvut.cz/t-less/",
+      "credit": "T-LESS, CC BY 4.0. Tomas Hodan, Pavel Haluza, Stepan Obdrzalek, Jiri Matas, Manolis Lourakis, Xenophon Zabulis; WACV 2017. cmp.felk.cvut.cz/t-less/. Real Primesense scene 1, frame 220; original depth and intrinsics retained.",
+      "license": "CC-BY-4.0",
+      "camera_sha256": "0f4e972b56ef220fe2d4efbbd4767f77ca0e54fe76093d46f952d515700f1ce1",
+      "revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1",
+      "rgb_sha256": "debde75c45f98e9fac60316a0d0aa3be40b3f6d2ed78f17cef39793c32210f38",
+      "depth_sha256": "f8d331b5e236219d942f6fa3e5f03b8fdb081f5616e5a9a910bb213c01919ae6"
+    }
+  }
+}

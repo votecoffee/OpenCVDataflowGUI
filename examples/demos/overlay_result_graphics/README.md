@@ -15,3 +15,12 @@ measurements appear on a final image. Optional graphics can be disabled by a run
 profile, so use Debug for this tour.
 Next: [run an image set](../image_set_workspace/README.md).
 [Demos tour](../README.md) · [All examples](../../README.md)
+
+
+## Source and scope
+
+Real VisA PCB photograph (CC BY 4.0), resized and letterboxed to 480×320.
+Thresholded components illustrate the workflow; their count is not a defect label.
+
+[Full creator attribution, source hashes and changes](../../assets/showcase/SOURCES.md).
+The original synthetic graph remains in [regression fixtures](../../assets/synthetic_graphs/README.md).

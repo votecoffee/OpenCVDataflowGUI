@@ -22,3 +22,11 @@ Both JPEGs were copied byte for byte from `VisA_20220922.tar` and renamed.
 | --- | --- | --- |
 | `visa-pcb2-normal-0000.jpg` | `pcb2/Data/Images/Normal/0000.JPG` | `b3f01fc1c1bd43df2c5a1afa63348097f7ecbcc9ebe2fd43bed6f2d074531a37` |
 | `visa-pcb2-normal-0621.jpg` | `pcb2/Data/Images/Normal/0621.JPG` | `d258d60936443d62745e0c208a78ada21227df6b1405bda0967e105b045c4720` |
+
+
+## Real application/demo derivatives
+
+The [showcase source record](showcase/SOURCES.md) documents the VisA and ARMBench
+480×320 photo derivatives and the reused TUM video/T-LESS measured depth.
+Their CC BY 4.0 credits, hashes and transformation details are retained there
+and in the corresponding on-canvas Comments.

@@ -1,5 +1,7 @@
 # Contour profile tolerance
 
+**Data:** controlled synthetic fixture with explicit reference geometry or labels.
+
 Open [contour_profile.json](contour_profile.json) with **File → Open…**,
 then click **Run once**. The project compares a nominal outline with
 a sample that has a 6-pixel notch and a 9-pixel protrusion. The maximum
@@ -35,3 +37,10 @@ opencv-dataflow-run examples/applications/contour_profile/contour_profile.json
 ```
 
 [All examples](../../README.md)
+
+
+## Controlled fixture
+
+Generated aligned outlines provide exact missing/excess profile truth.
+
+New application showcase variants should prefer suitable, attributed real captures.

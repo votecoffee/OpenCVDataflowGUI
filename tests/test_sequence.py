@@ -447,7 +447,7 @@ def test_editor_f5_retains_memory_training_and_runtime_reset(app):
 def test_synthetic_example_matches_saved_and_runs():
     registry = builtin_registry()
     built = sequence_graph(registry)
-    saved = Graph.load("examples/demos/sequence_memory/sequence_memory.json", registry)
+    saved = Graph.load("examples/assets/synthetic_graphs/sequence_memory.json", registry)
     assert saved.to_dict() == built.to_dict()
     for _ in range(8):
         saved.run()
