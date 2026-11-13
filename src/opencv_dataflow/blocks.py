@@ -820,6 +820,7 @@ def builtin_registry():
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
     from .voronoi import VoronoiCells
     from .watershed_seeds import WatershedMaskSeeds, WatershedPointSeeds
+    from .weighted_moments import IntensityMoments
     from .workplane import RectifyWorkplane
     from .yuv_formats import DecodePackedYuv, RawYuvFile
     from .zxing_reader import ReadZXingBarcode
@@ -926,6 +927,7 @@ def builtin_registry():
         PathIntensityProfile,
         InspectPathContinuity,
         ImageSummaryStatistics,
+        IntensityMoments,
         MeasureImageNorm,
         CheckImageValidity,
         ReplaceNonfiniteSamples,

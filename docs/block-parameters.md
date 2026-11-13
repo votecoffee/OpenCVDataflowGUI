@@ -5087,6 +5087,37 @@ Input `image` — Grayscale, color or physical depth. Tests the stored sample va
 | `maximum` | `1.0` | Value must be a finite number. Exclusive upper bound, applied to every stored channel. |
 | `max_invalid_fraction` | `0.0` | Value must be a finite number between 0 and 1. Maximum fraction of selected pixels allowed to be invalid. |
 
+## Intensity-weighted center and orientation (`inspect.intensity_moments`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray/color uint8, uint16 or float32/64, up to 4.2 MP and 16,384 per axis.
+
+Input `mask` — Optional uint8 selection in the image's coordinate frame.
+
+Input `region` — Optional circle, rectangle or polygon intersected with the mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `weighting` | `"intensity"` | `intensity`, `uniform_foreground`, `uniform_selection` Intensity uses positive contrast weights. Uniform foreground weights qualifying pixels equally. Uniform selection measures the entire mask/region. |
+| `channel` | `"luminance"` | `luminance`, `Gray`, `B`, `G`, `R`, `A`, `H`, `S`, `V`, `L`, `a`, `b` Use floating luminance (alpha ignored) or an explicit stored color channel. |
+| `intensity_units` | `"native"` | `native`, `normalized` Native sample units, or integer full scale mapped to [0,1]; floats unchanged. |
+| `polarity` | `"bright"` | `bright`, `dark`, `absolute` Bright: value-background; dark: background-value; absolute: their magnitude. |
+| `background` | `0.0` | Value must be a finite number. Constant baseline in the chosen intensity units; negative contrast is clipped. |
+| `minimum_signal` | `0.0` | Value must be a finite number at least 0. Keep contrast strictly above this value; surviving weights are not reduced. |
+| `minimum_support` | `1` | Value must be a whole number between 1 and 4.1943e+06. Minimum number of qualifying pixels for a valid center. |
+| `minimum_mass` | `0.0` | Value must be a finite number at least 0. Require total weight strictly above this value; uniform modes use pixel count. |
+| `minimum_variance` | `1e-09` | Value must be a finite number at least 0. Require major-axis variance above this pixel-squared value for orientation. |
+| `minimum_anisotropy` | `0.05` | Value must be a finite number between 0 and 1. Inclusive minimum (major-minor)/(major+minor) for an unsigned principal axis. |
+| `require_orientation` | `false` | Fail an otherwise valid center when its principal axis is ambiguous. |
+| `pose_orientation` | `"principal_axis"` | `principal_axis`, `translation_only` Principal axis requires valid orientation; translation only defines zero angle. |
+| `missing_center` | `"fail"` | `fail`, `report` Fail missing/below-limit centers, or emit an informational report without a center. |
+| `emit_weights` | `false` | Emit the peak-normalized floating weight image and its scale metadata. |
+| `show_geometric` | `true` | Draw a uniform-support center and covariance ellipse for comparison. |
+| `ellipse_sigma` | `2.0` | Value must be a finite number between 0.1 and 10. Drawing radius in standard deviations; it is not a fitted part boundary. |
+
 ## Judge strip defects (`inspect.judge_strip_defects`)
 
 Inspection / Measurements

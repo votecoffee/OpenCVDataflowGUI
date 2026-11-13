@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Original 16-bit asymmetric brightness",
+      "parameters": {
+        "path": "assets/asymmetric-brightness.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selection",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          40,
+          40,
+          176,
+          112
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        0.0,
+        310.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "weighted",
+      "type": "inspect.intensity_moments",
+      "name": "Intensity-weighted datum",
+      "parameters": {
+        "weighting": "intensity",
+        "channel": "luminance",
+        "intensity_units": "native",
+        "polarity": "bright",
+        "background": 1000.0,
+        "minimum_signal": 0.0,
+        "minimum_support": 1,
+        "minimum_mass": 0.0,
+        "minimum_variance": 1e-09,
+        "minimum_anisotropy": 0.05,
+        "require_orientation": true,
+        "pose_orientation": "principal_axis",
+        "missing_center": "fail",
+        "emit_weights": true,
+        "show_geometric": true,
+        "ellipse_sigma": 2.0
+      },
+      "position": [
+        400.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "center",
+        "angle_degrees",
+        "pose",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "geometric",
+      "type": "inspect.intensity_moments",
+      "name": "Geometric datum",
+      "parameters": {
+        "weighting": "uniform_foreground",
+        "channel": "luminance",
+        "intensity_units": "native",
+        "polarity": "bright",
+        "background": 1000.0,
+        "minimum_signal": 0.0,
+        "minimum_support": 1,
+        "minimum_mass": 0.0,
+        "minimum_variance": 1e-09,
+        "minimum_anisotropy": 0.05,
+        "require_orientation": true,
+        "pose_orientation": "principal_axis",
+        "missing_center": "fail",
+        "emit_weights": true,
+        "show_geometric": true,
+        "ellipse_sigma": 2.0
+      },
+      "position": [
+        400.0,
+        340.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "center",
+        "angle_degrees",
+        "pose",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "follow",
+      "type": "region.pose",
+      "name": "Inspection region follows weighted pose",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          -8,
+          -5,
+          17,
+          11
+        ],
+        "center": [
+          0,
+          0
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            -20,
+            -20
+          ],
+          [
+            20,
+            -20
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        800.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original weighted moments fixture \u2014 MIT",
+      "description": "Original synthetic 16-bit image, generator and graph under the repository MIT license. The bright patch moves the weighted center from the geometric center and rotates its principal axis. Analytic rectangle-mixture truth is stored in assets/truth.json. Green marks/ellipses show the chosen measurement; blue marks show uniform-support reference geometry. Ellipses are covariance displays. The final region follows the reusable weighted pose in the same pixel grid.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -310.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "selection",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "weighted",
+      "input": "image"
+    },
+    {
+      "source": "selection",
+      "output": "region",
+      "target": "weighted",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "geometric",
+      "input": "image"
+    },
+    {
+      "source": "selection",
+      "output": "region",
+      "target": "geometric",
+      "input": "region"
+    },
+    {
+      "source": "weighted",
+      "output": "image",
+      "target": "follow",
+      "input": "image"
+    },
+    {
+      "source": "weighted",
+      "output": "pose",
+      "target": "follow",
+      "input": "pose"
+    }
+  ]
+}

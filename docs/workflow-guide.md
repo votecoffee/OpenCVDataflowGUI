@@ -190,6 +190,18 @@ source identities in lineage. Compatible video metadata or explicit timestamps
 produce a synthetic media time, separate from ticket processing time. This block
 emits one image per pair; sequence pacing and rate expansion remain separate.
 
+## Intensity-weighted centers and axes
+
+[Intensity-weighted center and orientation](<../examples/opencv tools/weighted_moments/README.md>)
+measures selected brightness/contrast or uniform support. Set a baseline, polarity
+and signal limit, or choose a stored channel. Compare its center and covariance
+with the uniform-support reference. Center and principal-axis validity have
+separate criteria; a round spot can have a center without an axis. Wire its
+image_pose_v1 output to pose-relative regions, choosing principal-axis or explicit
+translation-only orientation. Pixels, encoding/depth and coordinate/ticket
+payloads are preserved. Peak-normalized moment/weight outputs declare their
+scale, while reported mass uses the selected intensity units.
+
 ## Pattern matching and pose inspection
 
 Train geometric and texture patterns with **Match shape pattern** and **Match

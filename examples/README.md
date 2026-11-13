@@ -122,6 +122,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Lens correction maps](<opencv tools/lens_correction_maps/README.md>) | Load a lens profile, build reusable coordinate maps, and straighten a synthetic distorted grid. |
 | [Linear channel transform](<opencv tools/channel_transform/README.md>) | Mix BGR channels and derive a grayscale difference image inside a region. |
 | [Local window statistics](<opencv tools/local_statistics/README.md>) | Distinguish a flat patch from a checker texture using local standard deviation. |
+| [Intensity-weighted center and orientation](<opencv tools/weighted_moments/README.md>) | Compare a 16-bit asymmetric brightness feature with analytic geometric/weighted centers, axes and covariance, then position an inspection region from its pose. |
 | [Local structure tensor and orientation](<opencv tools/structure_tensor/README.md>) | Measure eigenvalues, confidence and unsigned normal/tangent directions on a 16-bit fixture; verify known axes and ambiguous corner/flat/weak probes. |
 | [Motion-compensated frame interpolation](<opencv tools/frame_interpolation/README.md>) | Generate a 16-bit intermediate frame, check independent image truth and coverage, and retain explicit source timing and lineage. |
 | [Matched-feature translation](<opencv tools/translation_registration/README.md>) | Fit a translation from SIFT matches and reproduce a known shifted view. |

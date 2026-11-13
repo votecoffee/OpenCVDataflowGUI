@@ -1,0 +1,25 @@
+{
+  "method": "Analytic mixture of two discrete uniform rectangles",
+  "background": 1000,
+  "mass": 122880000,
+  "geometric_center": [
+    127.5,
+    95.5
+  ],
+  "geometric_angle_degrees": 0,
+  "weighted_center": [
+    139.5,
+    102.0
+  ],
+  "weighted_covariance": [
+    [
+      2053.25,
+      234.0
+    ],
+    [
+      234.0,
+      711.0
+    ]
+  ],
+  "weighted_angle_degrees": 170.38897846996443
+}

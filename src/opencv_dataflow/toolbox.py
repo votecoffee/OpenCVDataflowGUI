@@ -113,6 +113,7 @@ BLOCK_MODULES = {
     ),
     "imgproc": (
         "cv.hann_window cv.decode_yuv calibration.color_balance cv.pack_remap_map "
+        "inspect.intensity_moments "
         "inspect.contour_hierarchy inspect.focus inspect.slanted_edge cv.decode_raw_sensor "
         "inspect.structure_tensor"
     ),
@@ -156,6 +157,7 @@ _MODULE_BY_BLOCK = {
 }
 _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
+    "inspect.intensity_moments": ("moments", "centroid", "center of mass", "principal axis"),
     "cv.interpolate_frames": ("Farneback", "optical flow", "remap", "intermediate frame"),
     "inspect.structure_tensor": ("cornerEigenValsAndVecs", "tensor", "orientation", "coherence"),
     "inspect.affine_features": ("AffineFeature", "ASIFT", "tilt", "SIFT", "ORB"),
