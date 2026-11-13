@@ -9,6 +9,9 @@ to train from a live fixture pose and measure bead offset after translation.
 For measurements in millimeters, open the [calibrated bead example](calibrated_bead/README.md).
 The [calibrated curve comparison](calibrated_curve/README.md) shows how
 scan direction affects edge placement on a curved bead.
+The [station review gallery](station_review/README.md) includes selected
+profiles, values/limits and assessment pages from these recipes and real
+weld photographs.
 
 ## Setup
 
