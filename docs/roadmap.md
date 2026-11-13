@@ -27,11 +27,12 @@ The last broad checkpoint is `43afa2e` (S1-139): **2,859 passed and 13
 skipped** in the offscreen suite. It completes the 20-increment cycle following
 `0c8c6e9`. Skips cover 11 unavailable optional-plugin checks and two native
 OpenEXR round trips; those paths remain unqualified on this environment.
-The current cycle has **18 targeted increments of about 20** completed:
+The current cycle has **19 targeted increments of about 20** completed:
 the previously recorded eleven, followed by the expanded block editor,
-masked photo correction (S1-88), masked color editing (S1-89), and
-contrast-preserving decolorization (S1-90), dense-flow warping (S1-95), and
-color-distribution region tracking (S1-108), and variational flow refinement (S1-109).
+masked photo correction (S1-88), masked color editing (S1-89),
+contrast-preserving decolorization (S1-90), dense-flow warping (S1-95),
+color-distribution region tracking (S1-108), variational flow refinement (S1-109),
+and image metadata round trips (S1-07).
 The editor increment passed 16 focused Qt
 checks. Example reorganizations and frozen third-party reviews do not add
 vision capability completions.
@@ -138,7 +139,21 @@ Aligned image comparison now covers selected ECC/normalized correlation and
 constant-region policy. Signed Laplacian bands now support odd-size reconstruction
 and multiscale edits. Floating TIFF and Radiance HDR round trips are qualified;
 S1-125 remains partial until native EXR runs on a capable build. Prioritize
-image metadata write/buffer round trips (S1-07).
+native QR encoding (S1-112).
+[Image metadata round trips](<../examples/opencv tools/metadata_roundtrip/README.md>)
+(S1-07) now preserve bounded EXIF/XMP/ICC/CICP packets through qualified PNG
+and JPEG buffer/file APIs. Existing encoder, decoder, file source and writer
+gain optional metadata ports; a fresh-metadata tool creates common tags with
+orientation dropdowns. Canonical chunk contents survive native readback before
+buffers or files are published. Existing files remain protected. All eight
+orientation transforms preserve source coordinate/ticket semantics; raw chunks
+after orientation are read-only and a fresh-metadata project verifies one rotation.
+Validation: 80 targeted checks passed; two existing native EXR checks remain
+skipped on this build. Four original public projects run through installed
+Debug/Lean CLI checks, including intentional unsupported JPEG CICP. RGBA16
+pixels, native file/buffer parity, repeated XMP framing, ICC compatibility,
+bounded/invalid data, XML presets and contained failures are qualified.
+Opaque camera tags are not generally rewritten after processing.
 [Variational flow refinement](<../examples/opencv tools/flow_refinement/README.md>)
 (S1-109) now provides a paired-image block with all seven native controls and an
 explicit copied A-to-B seed. A (+2,+1)-pixel translation checks endpoint error
@@ -297,7 +312,7 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize image metadata write/buffer round trips (S1-07). S1-109 paired flow refinement now has independent motion/residual references and explicit support/failure evidence. S1-108 color-distribution tracking now has controlled translation/scale/loss evidence. S1-95 dense-flow warping and S1-88–S1-90 photo/color edits have controlled references and explicit support/failure evidence. Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize native QR encoding (S1-112). S1-07 metadata file/buffer round trips now have verified native chunk transport and explicit orientation semantics. S1-109 paired flow refinement now has independent motion/residual references and explicit support/failure evidence. S1-108 color-distribution tracking now has controlled translation/scale/loss evidence. S1-95 dense-flow warping and S1-88–S1-90 photo/color edits have controlled references and explicit support/failure evidence. Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and K-nearest/random-forest image classifiers. Native SVM training, prediction and model I/O are available in [the classical ML workflow](classical-ml.md) (S2-20). | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |

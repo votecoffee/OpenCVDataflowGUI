@@ -83,8 +83,16 @@ intersected output selections, border exclusions and optional quality gates keep
 invalid sampling out of statistics. Source tickets/grids and both pair identities
 are retained; the supported field feeds existing forward warping. This is local,
 single-scale refinement; masks do not restrict the native energy and diagnostic
-support is not confidence or visibility proof. The next priority is image metadata
-write/buffer round trips (S1-07).
+support is not confidence or visibility proof.
+
+[Image metadata round trips](<../examples/opencv tools/metadata_roundtrip/README.md>)
+(S1-07) now expose optional raw-chunk connections on existing file and memory
+codecs plus fresh tag creation. Native PNG/JPEG file and buffer writes verify
+canonical metadata on readback; unsupported chunks fail before publication.
+EXIF orientation, ICC compatibility, source ticket/grid ownership and explicit
+fresh metadata after geometry changes have controlled references. Exact RGBA16
+copies and repeated XMP framing are qualified; opaque tag repair remains outside
+this baseline. The next priority is native QR encoding (S1-112).
 
 [Lateral chromatic aberration correction](<../examples/opencv tools/chromatic_aberration/README.md>)
 (S1-146) now loads or defines a versioned native polynomial and aligns red/blue

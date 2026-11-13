@@ -2,3 +2,4 @@
 *.raw10 binary
 *.raw12 binary
 *.flo binary
+*.icc binary

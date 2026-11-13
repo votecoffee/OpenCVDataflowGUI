@@ -3031,7 +3031,7 @@ P3	function	cv2.imdecodeWithMetadata	literal reference	-
 P3	function	cv2.imencode	literal reference	-
 P3	function	cv2.imencodeanimation	no static reference	-
 P3	function	cv2.imencodemulti	literal reference	-
-P3	function	cv2.imencodeWithMetadata	no static reference	-
+P3	function	cv2.imencodeWithMetadata	literal reference	-
 P3	class	cv2.img_hash_AverageHash	alias	cv2.img_hash.AverageHash
 P3	method	cv2.img_hash_AverageHash.create	alias	cv2.img_hash.AverageHash.create
 P3	class	cv2.img_hash_BlockMeanHash	alias	cv2.img_hash.BlockMeanHash
@@ -3064,7 +3064,7 @@ P3	function	cv2.imshow	no static reference	-
 P3	function	cv2.imwrite	no static reference	-
 P3	function	cv2.imwriteanimation	no static reference	-
 P3	function	cv2.imwritemulti	no static reference	-
-P3	function	cv2.imwriteWithMetadata	no static reference	-
+P3	function	cv2.imwriteWithMetadata	literal reference	-
 P3	function	cv2.initCameraMatrix2D	no static reference	-
 P3	function	cv2.initInverseRectificationMap	no static reference	-
 P3	function	cv2.initUndistortRectifyMap	literal reference	-

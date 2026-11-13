@@ -1709,6 +1709,7 @@ Inputs: `encoded` (encoded_image).
 | --- | --- | --- |
 | `color_format` | `"unchanged"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` Unchanged restores the encoder's logical channel order. |
 | `pixel_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` Unchanged preserves the bit depth stored by the codec. |
+| `metadata_mode` | `"off"` | `off`, `read`, `apply_orientation` Read chunks, or also orient pixels. Oriented raw chunks are read-only. |
 
 ## Unpack RAW10 / RAW12 sensor frame (`cv.decode_raw_sensor`)
 
@@ -1918,7 +1919,9 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 
 Image processing / Codecs
 
-Inputs: `image` (image).
+Inputs: `image` (image), `metadata` (any, optional).
+
+Input `metadata` — Optional ImageMetadata chunks for PNG/JPEG; readback verifies every chunk.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -2365,6 +2368,21 @@ Input `image` — 8-bit grayscale or color. Crop upstream to hash a selected win
 | `block_mode` | `"0"` | `0`, `1` 0 uses disjoint blocks. 1 uses overlapping blocks. |
 | `marr_alpha` | `2.0` | Value must be a finite number between 0.5 and 4. Marr–Hildreth wavelet scale factor. |
 | `marr_scale` | `1.0` | Value must be a finite number between 0 and 2. Marr–Hildreth wavelet scale level. |
+
+## Create image metadata (`cv.image_metadata`)
+
+Image processing / Codecs
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `include_exif` | `true` | Create fresh EXIF fields; disable to create other chunk types only. |
+| `exif_orientation` | `"normal"` | `normal`, `mirror_horizontal`, `rotate_180`, `mirror_vertical`, `transpose`, `rotate_clockwise`, `transverse`, `rotate_counterclockwise` EXIF display hint; writing does not rotate stored pixels. |
+| `software` | `"OpenCVDataflowGUI"` | ASCII EXIF Software tag; blank omits it. |
+| `description` | `""` | ASCII EXIF ImageDescription tag; use XMP for Unicode text. |
+| `xmp` | `""` | UTF-8 XML; native JPEG/PNG framing is handled automatically. |
+| `icc_path` | `""` | Optional ICC profile up to 1 MiB; tags pixels without color conversion. |
+| `path_base` | `"project"` | `project`, `working_directory` ICC path base: saved project or working directory. |
+| `cicp` | `[]` | PNG [primaries, transfer, matrix, full_range] bytes; [] omits CICP. |
 
 ## Measure image norm (`cv.image_norm`)
 
@@ -6995,7 +7013,9 @@ Input `image` — Ticketed image to display in the filmstrip and its pop-out.
 
 Output / Images
 
-Inputs: `image` (image).
+Inputs: `image` (image), `metadata` (any, optional).
+
+Input `metadata` — PNG/JPEG ImageMetadata; verified before publishing, existing files preserved.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |

@@ -1,0 +1,23 @@
+{
+  "source_size": [
+    48,
+    32
+  ],
+  "oriented_size": [
+    32,
+    48
+  ],
+  "exif_orientation": 6,
+  "scope": "Original MIT synthetic RGBA16 fixture; source ICC generated with LittleCMS",
+  "png_chunk_types": [
+    "exif",
+    "xmp",
+    "icc",
+    "cicp"
+  ],
+  "jpeg_chunk_types": [
+    "exif",
+    "xmp",
+    "icc"
+  ]
+}

@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 130 | 16 | 29 | 175 | 74.3% |
+| 1. Core and baseline 2D | 131 | 16 | 28 | 175 | 74.9% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 193 | 57 | 220 | 470 | 41.1% |
+| **Overall** | 194 | 57 | 219 | 470 | 41.3% |
 
 <!-- coverage-summary:end -->
 
@@ -66,7 +66,7 @@ fixture or result needed to close the item.
 | S1-04 | Image encode/decode in memory | imencode, imdecode | Complete | cv.encode_image, cv.decode_image. PNG/JPEG/JPEG 2000 and floating TIFF/HDR buffers, shared file/memory codec settings and spatial provenance. OpenEXR selection reports an unavailable codec on this build; native qualification remains in S1-125. |
 | S1-05 | Multipage TIFF replay and save | imdecodemulti, imencodemulti on file-backed buffers | Complete | input.tiff_file, output.tiff_file. Ordered, ticketed page ranges and lossless batch output. |
 | S1-06 | JPEG/PNG metadata and orientation read | imreadWithMetadata, EXIF orientation transforms | Complete | input.file. Report metadata and exercise the saved-image orientation fixture. |
-| S1-07 | Image metadata write and buffer round trip | imwriteWithMetadata, imencodeWithMetadata, imdecodeWithMetadata | Planned | Round-trip supported metadata types through JPEG/PNG files and buffers. Verify orientation semantics and reject unsupported chunks explicitly. |
+| S1-07 | Image metadata write and buffer round trip | imwriteWithMetadata, imencodeWithMetadata, imdecodeWithMetadata | Complete | cv.image_metadata plus optional metadata ports on input.file, cv.encode_image, cv.decode_image and output.image. PNG EXIF/XMP/ICC/CICP and JPEG EXIF/XMP/ICC survive verified native file/buffer round trips; canonical XMP handles codec framing and bounded immutable chunks reject unsupported or duplicate types. Native file output is verified before exclusive destination creation. All eight EXIF transforms preserve source ticket/grid semantics; oriented raw metadata is read-only and the fresh-metadata example rotates only once. Exact RGBA16 pixels, color/profile validation, repeated copies, XML presets, failure containment and Debug/Lean examples are checked. Opaque camera tags are not generally rewritten after processing. |
 | S1-08 | Raw sensor color decoding | demosaicing, cvtColor | Complete | cv.demosaic_bayer, input.raw_yuv, cv.decode_yuv. Bayer phase at a crop and packed YUV layouts. |
 | S1-09 | Camera image capture | VideoCapture.open, read, release | Complete | input.camera. Graph camera frame contract with backend and format settings. Physical backend qualification is tracked under acquisition. |
 | S1-10 | Video file replay and recording | VideoCapture, VideoWriter | Complete | input.video_file, output.video. Frame bounds, stride, stop/loop, frame timestamps, and a local round trip. |

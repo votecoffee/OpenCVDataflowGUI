@@ -88,13 +88,13 @@ def orient_image(image, orientation):
     return image
 
 
-def decode_image_metadata(buffer, apply_orientation):
+def decode_image_metadata(buffer, apply_orientation, *, include_chunks=False):
     image, types, chunks = cv2.imdecodeWithMetadata(
         np.frombuffer(buffer, np.uint8), cv2.IMREAD_UNCHANGED
     )
     summary = {"chunks": [], "exif": {}, "orientation_applied": False}
     if image is None or not image.size:
-        return image, summary
+        return (image, summary, None) if include_chunks else (image, summary)
     for kind, chunk in zip(types, chunks, strict=True):
         name = METADATA_NAMES.get(int(kind), "unknown")
         summary["chunks"].append({"type": name, "byte_count": int(chunk.nbytes)})
@@ -110,11 +110,22 @@ def decode_image_metadata(buffer, apply_orientation):
     ):
         image = orient_image(image, orientation)
         summary["orientation_applied"] = True
+    if include_chunks:
+        from .codec_metadata import ImageMetadata
+
+        packet = ImageMetadata(
+            tuple((int(kind), chunk.tobytes()) for kind, chunk in zip(types, chunks, strict=True)),
+            tuple(summary["decoded_size"]),
+            summary["orientation_applied"],
+        )
+        return image, summary, packet
     return image, summary
 
 
-def decode_file_image(buffer, metadata_mode):
+def decode_file_image(buffer, metadata_mode, *, include_chunks=False):
     if metadata_mode == "off":
         image = cv2.imdecode(np.frombuffer(buffer, np.uint8), cv2.IMREAD_UNCHANGED)
-        return image, None
-    return decode_image_metadata(buffer, metadata_mode == "apply_orientation")
+        return (image, None, None) if include_chunks else (image, None)
+    return decode_image_metadata(
+        buffer, metadata_mode == "apply_orientation", include_chunks=include_chunks
+    )

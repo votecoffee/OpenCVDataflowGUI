@@ -12,6 +12,7 @@ from xml.etree import ElementTree as ET
 import cv2
 import numpy as np
 
+from .codec_metadata import write_metadata_file
 from .core import Block, Graph, Port, Registry, Result
 from .graphics_layers import GraphicDrawing, graphic_object
 from .image_codecs import (
@@ -19,6 +20,9 @@ from .image_codecs import (
     CODEC_DEFAULTS,
     CODEC_HELP,
     CODEC_RANGES,
+    MAX_ENCODED_BYTES,
+    codec_image,
+    codec_options,
     encode_image_buffer,
 )
 from .image_metadata import decode_file_image
@@ -26,7 +30,7 @@ from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format, ope
 from .objects import collection, contour_item
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS, CONTOUR_APPROXIMATIONS, THRESHOLD_MODES, scalar_value
-from .payloads import NO_VALUE, moved_payload
+from .payloads import NO_VALUE, ValuePacket, moved_payload, require_same_frame
 from .replay import ReplaySource
 from .selection import SELECTION_INPUTS, RegionalOperation, contains, selection_mask
 
@@ -55,7 +59,7 @@ class DemoImage(Block):
 class ImageFile(ReplaySource):
     block_type, subtype = "Input", "Files"
     type_id, title, category = "input.file", "Image file", "Input"
-    outputs = (Port("image"), Port("info", "data"))
+    outputs = (Port("image"), Port("info", "data"), Port("metadata", "any", required=False))
     defaults = {
         "path": "",
         "source_mode": "single",
@@ -103,6 +107,7 @@ class ImageFile(ReplaySource):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.exposed_outputs = [name for name in self.exposed_outputs if name != "metadata"]
         self.reset_runtime()
 
     def reset_runtime(self):
@@ -200,10 +205,18 @@ class ImageFile(ReplaySource):
     def process(self, inputs):
         selected = self._sequence["selected"]
         if selected is None:
-            return Result({"image": NO_VALUE, "info": NO_VALUE}, message="Image sequence complete")
+            return Result(
+                {"image": NO_VALUE, "info": NO_VALUE, "metadata": NO_VALUE},
+                message="Image sequence complete",
+            )
         path = Path(selected)
         buffer = self.read_bytes(path)
-        image, metadata = decode_file_image(buffer, self.parameters["metadata_mode"])
+        include_chunks = "metadata" in self.exposed_outputs
+        decoded = decode_file_image(
+            buffer, self.parameters["metadata_mode"], include_chunks=include_chunks
+        )
+        image, metadata = decoded[:2]
+        chunks = decoded[2] if include_chunks else None
         if image is None:
             raise ValueError(f"Unable to decode image: {path}")
         output = format_image(
@@ -224,7 +237,7 @@ class ImageFile(ReplaySource):
         if metadata is not None:
             info["metadata"] = metadata
         return Result(
-            {"image": output, "info": info},
+            {"image": output, "info": info, "metadata": chunks if chunks is not None else NO_VALUE},
             graphics={"decoded source": image},
             message=f"{path.name} · {info['color_format']} / {output.dtype}",
         )
@@ -576,16 +589,39 @@ class Contours(Block):
 class SaveImage(Block):
     block_type, subtype = "Output", "Images"
     type_id, title, category = "output.image", "Save image", "Output"
-    inputs = (Port("image"),)
+    inputs = (Port("image"), Port("metadata", "any", required=False, required_when_connected=True))
     defaults = {"path": "output.png", **CODEC_DEFAULTS}
     parameter_choices = CODEC_CHOICES
     parameter_help = CODEC_HELP
     parameter_ranges = CODEC_RANGES
+    input_help = {
+        "metadata": "PNG/JPEG ImageMetadata; verified before publishing, existing files preserved.",
+    }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.exposed_inputs = ["image"]
 
     def process(self, inputs):
         path = Path(self.parameters["path"])
         if path.exists():
             raise FileExistsError("Choose a new path; existing images are preserved")
+        if "metadata" in inputs:
+            try:
+                require_same_frame(
+                    [inputs["image"],
+                     ValuePacket(inputs["metadata"], self.input_payloads["metadata"])]
+                )
+            except ValueError as exc:
+                raise ValidationError("Metadata and image coordinate frames differ") from exc
+            image = codec_image(
+                inputs["image"], path.suffix.lower(), self.parameters, allow_signed_tiff=True
+            )
+            write_metadata_file(
+                path, image, codec_options(path.suffix.lower(), self.parameters),
+                inputs["metadata"], MAX_ENCODED_BYTES,
+            )
+            return Result(message=f"Saved {path.name} with verified metadata")
         encoded = encode_image_buffer(
             inputs["image"], path.suffix.lower(), self.parameters, allow_signed_tiff=True
         )
@@ -751,6 +787,7 @@ def builtin_registry():
         MeasureMatrixDiagonal,
     )
     from .matrix_svd import MatrixSVD
+    from .metadata_blocks import CreateImageMetadata
     from .mqtt import MQTT_BLOCKS
     from .multiscale_ridges import MultiscaleRidges
     from .native_background import NATIVE_BACKGROUND_BLOCKS
@@ -868,6 +905,7 @@ def builtin_registry():
         DecodePackedYuv,
         EncodeImage,
         DecodeImage,
+        CreateImageMetadata,
         AnnotationLayer,
         OverlayResultGraphics,
         SetFilmstripImage,

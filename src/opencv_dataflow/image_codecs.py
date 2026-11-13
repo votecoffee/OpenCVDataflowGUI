@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import cv2
 import numpy as np
 
+from .codec_metadata import ImageMetadata, native_chunks, verify_metadata
 from .core import Block, Port, Result
 from .float_codecs import (
     FLOAT_CODEC_CHOICES,
@@ -14,8 +15,10 @@ from .float_codecs import (
     float_codec_options,
     validate_float_codec,
 )
+from .image_metadata import decode_image_metadata
 from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format
 from .parameter_validation import NumericRange, ValidationError
+from .payloads import NO_VALUE, ValuePacket, moved_payload, require_same_frame
 from .processing import ImageTool, image_value, integer
 
 CODEC_DEFAULTS = {
@@ -164,7 +167,7 @@ MAX_IMAGE_PIXELS = 16_777_216
 ENCODED_FORMATS = ("gray", "bgr", "rgb", "bgra", "rgba")
 
 
-def encode_image_buffer(source, extension, p, *, allow_signed_tiff=False):
+def codec_image(source, extension, p, *, allow_signed_tiff=False):
     """Use one depth/availability policy for file and in-memory image output."""
     depths = (np.uint8, np.uint16, np.float32, np.float64)
     if allow_signed_tiff and extension in (".tif", ".tiff"):
@@ -204,14 +207,27 @@ def encode_image_buffer(source, extension, p, *, allow_signed_tiff=False):
         ) from exc
     if not available:
         raise ValidationError(f"Image codec {extension} is unavailable in this OpenCV build")
+    return image
+
+
+def encode_image_buffer(source, extension, p, *, allow_signed_tiff=False, metadata=None):
+    image = codec_image(source, extension, p, allow_signed_tiff=allow_signed_tiff)
     try:
-        ok, encoded = cv2.imencode(extension, image, codec_options(extension, p))
+        if metadata is None:
+            ok, encoded = cv2.imencode(extension, image, codec_options(extension, p))
+        else:
+            types, chunks = native_chunks(metadata, extension, image)
+            ok, encoded = cv2.imencodeWithMetadata(
+                extension, image, types, chunks, codec_options(extension, p)
+            )
     except cv2.error as exc:
         raise ValidationError(f"OpenCV could not encode {extension}: {exc}") from exc
     if not ok or encoded.size == 0:
         raise ValidationError("OpenCV could not encode the image")
     if encoded.nbytes > MAX_ENCODED_BYTES:
         raise ValidationError("Encoded image exceeds the 128 MiB codec limit")
+    if metadata is not None:
+        verify_metadata(encoded.tobytes(), metadata, image.shape[:2])
     return encoded
 
 
@@ -252,7 +268,7 @@ class EncodedImage:
 class EncodeImage(Block):
     type_id, title, category = "cv.encode_image", "Encode image in memory", "Image processing"
     block_type, subtype = "Image processing", "Codecs"
-    inputs = (Port("image"),)
+    inputs = (Port("image"), Port("metadata", "any", required=False, required_when_connected=True))
     outputs = (
         Port("encoded", "encoded_image", visual_type="data"),
         Port("byte_count", "number"),
@@ -263,9 +279,16 @@ class EncodeImage(Block):
     }
     parameter_choices = {"codec": tuple(FORMATS), **CODEC_CHOICES}
     parameter_ranges = CODEC_RANGES
+    input_help = {
+        "metadata": "Optional ImageMetadata chunks for PNG/JPEG; readback verifies every chunk.",
+    }
     parameter_help = {
         key: description for key, description in CODEC_HELP.items() if key != "webp_quality"
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.exposed_inputs = ["image"]
 
     def process(self, inputs):
         source = inputs["image"]
@@ -275,7 +298,18 @@ class EncodeImage(Block):
             raise ValidationError("Encode a grayscale, RGB/BGR, or RGBA/BGRA image")
         height, width = source.shape[:2]
         extension = FORMATS[codec]
-        encoded = encode_image_buffer(source, extension, self.parameters)
+        if "metadata" in inputs:
+            if not isinstance(inputs["metadata"], ImageMetadata):
+                raise ValidationError("Metadata requires an ImageMetadata packet")
+            try:
+                require_same_frame(
+                    [source, ValuePacket(inputs["metadata"], self.input_payloads["metadata"])]
+                )
+            except ValueError as exc:
+                raise ValidationError("Metadata and image coordinate frames differ") from exc
+        encoded = encode_image_buffer(
+            source, extension, self.parameters, metadata=inputs.get("metadata")
+        )
         packet = EncodedImage(codec, encoded.tobytes(), (width, height), color)
         return Result(
             {"encoded": packet, "byte_count": len(packet.buffer)},
@@ -286,23 +320,65 @@ class EncodeImage(Block):
 class DecodeImage(ImageTool):
     type_id, title, subtype = "cv.decode_image", "Decode image from memory", "Codecs"
     inputs = EncodeImage.outputs[:1]
-    defaults = {"color_format": "unchanged", "pixel_depth": "unchanged"}
-    parameter_choices = {"color_format": COLOR_FORMATS, "pixel_depth": PIXEL_DEPTHS}
+    outputs = (Port("image"), Port("metadata", "any", required=False), Port("info", "data"))
+    defaults = {"color_format": "unchanged", "pixel_depth": "unchanged", "metadata_mode": "off"}
+    parameter_choices = {
+        "color_format": COLOR_FORMATS,
+        "pixel_depth": PIXEL_DEPTHS,
+        "metadata_mode": ("off", "read", "apply_orientation"),
+    }
     parameter_help = {
         "color_format": "Unchanged restores the encoder's logical channel order.",
         "pixel_depth": "Unchanged preserves the bit depth stored by the codec.",
+        "metadata_mode": "Read chunks, or also orient pixels. Oriented raw chunks are read-only.",
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.exposed_outputs = ["image"]
 
     def process(self, inputs):
         packet = inputs["encoded"]
-        decoded = cv2.imdecode(np.frombuffer(packet.buffer, np.uint8), cv2.IMREAD_UNCHANGED)
+        p = self.parameters
+        chunks, summary = None, None
+        if p["metadata_mode"] == "off":
+            decoded = cv2.imdecode(np.frombuffer(packet.buffer, np.uint8), cv2.IMREAD_UNCHANGED)
+        else:
+            decoded, summary, chunks = decode_image_metadata(
+                packet.buffer, p["metadata_mode"] == "apply_orientation", include_chunks=True
+            )
         if decoded is None or decoded.size == 0:
             raise ValidationError("OpenCV could not decode the image packet")
-        if decoded.shape[:2] != packet.image_size[::-1]:
+        stored_size = summary["decoded_size"] if summary else [decoded.shape[1], decoded.shape[0]]
+        if stored_size != list(packet.image_size):
             raise ValidationError("Decoded image size differs from the packet")
         canonical = {"rgb": "bgr", "rgba": "bgra"}.get(packet.color_format, packet.color_format)
         if image_format(decoded) != canonical:
             raise ValidationError("Decoded channel layout differs from the packet")
-        p = self.parameters
         color = packet.color_format if p["color_format"] == "unchanged" else p["color_format"]
-        return Result({"image": format_image(decoded, color, p["pixel_depth"])})
+        payloads = {}
+        if summary and summary["orientation_applied"]:
+            w, h = packet.image_size
+            orientation = summary["exif"]["orientation"]
+            matrix = {
+                2: [[-1, 0, w - 1], [0, 1, 0], [0, 0, 1]],
+                3: [[-1, 0, w - 1], [0, -1, h - 1], [0, 0, 1]],
+                4: [[1, 0, 0], [0, -1, h - 1], [0, 0, 1]],
+                5: [[0, 1, 0], [1, 0, 0], [0, 0, 1]],
+                6: [[0, 1, 0], [-1, 0, h - 1], [0, 0, 1]],
+                7: [[0, -1, w - 1], [-1, 0, h - 1], [0, 0, 1]],
+                8: [[0, -1, w - 1], [1, 0, 0], [0, 0, 1]],
+            }[orientation]
+            payloads["image"] = moved_payload(
+                self.input_payloads["encoded"],
+                np.asarray(matrix),
+                [decoded.shape[1], decoded.shape[0]],
+            )
+        return Result(
+            {
+                "image": format_image(decoded, color, p["pixel_depth"]),
+                "metadata": chunks if chunks is not None else NO_VALUE,
+                "info": {"codec": packet.codec, "metadata": summary},
+            },
+            payloads=payloads,
+        )
