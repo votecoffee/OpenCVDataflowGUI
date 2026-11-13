@@ -16,7 +16,7 @@ plugins for specialized operations with job-specific interfaces.
 Use targeted tests and a runnable example for each implementation increment.
 Run a broader regression check after roughly 20 increments, or earlier when a
 specific concern involves shared execution, persistence or plugin contracts.
-The last broad checkpoint is `0c8c6e9`. This cycle has **15 targeted increments
+The last broad checkpoint is `0c8c6e9`. This cycle has **16 targeted increments
 of about 20** completed: S1-174 (line-pair metrology), S1-175
 (slanted-edge sharpness), S1-119 (aligned image comparison), S1-124
 (Laplacian pyramids), the TIFF/HDR portion of S1-125 (EXR remains open),
@@ -24,8 +24,8 @@ S1-126 (lossless high-bit-depth codecs), S1-127 (packed MIPI sensor frames),
 S1-128 (affine-invariant image features), S1-129 (structure tensors),
 S1-130 (paired-frame motion interpolation), S1-131 (intensity-weighted moments),
 S1-132 (source-over alpha composition), coherent processed-input bundles for
-plugin trainers, S1-133 (contour rasterization with holes), and S1-134
-(ordered circle/arc fitting).
+plugin trainers, S1-133 (contour rasterization with holes), S1-134
+(ordered circle/arc fitting), and S1-135 (Fourier component reconstruction).
 Update the cycle count as implementation continues and reset it after the next
 broader check.
 
@@ -109,7 +109,10 @@ Aligned image comparison now covers selected ECC/normalized correlation and
 constant-region policy. Signed Laplacian bands now support odd-size reconstruction
 and multiscale edits. Floating TIFF and Radiance HDR round trips are qualified;
 S1-125 remains partial until native EXR runs on a capable build. Prioritize
-phase/magnitude reconstruction (S1-135) next. Geometric circle/arc fitting
+binary mask boundary distances (S1-136) next. Phase/magnitude reconstruction
+(S1-135) now covers signed grayscale/color images, row/2D transforms, explicit
+phase floors and normalization, source windows and zero-phase coordinate grids.
+Geometric circle/arc fitting
 (S1-134) now reports stable radial consensus, ordered angular extent and
 conditional uncertainty, with explicit short-arc and conditioning gates.
 Contour rasterization (S1-133)
@@ -158,7 +161,7 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize phase/magnitude reconstruction (S1-135). Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize binary mask boundary distances (S1-136). Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and reusable classical ML train/predict blocks. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |

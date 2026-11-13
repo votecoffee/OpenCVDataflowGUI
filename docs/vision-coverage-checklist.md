@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 112 | 20 | 43 | 175 | 64.0% |
+| 1. Core and baseline 2D | 113 | 19 | 43 | 175 | 64.6% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 174 | 61 | 235 | 470 | 37.0% |
+| **Overall** | 175 | 60 | 235 | 470 | 37.2% |
 
 <!-- coverage-summary:end -->
 
@@ -209,7 +209,7 @@ fixture or result needed to close the item.
 | S1-132 | Per-pixel alpha composition | CPU source-over composition with explicit alpha association | Complete | cv.alpha_over handles straight/premultiplied inputs and metadata-aware chaining, embedded/external alpha and opacity, gray/RGB(A)/BGR(A), mixed depths, stored or linear-sRGB working space and explicit output storage. Selection preserves background semantics and compatible endpoints exactly. Frame/ticket policies retain background ownership and source identities. Focused tests cover rational pixels, transparent boundaries, integer zero-alpha cleanup, HDR, clipping, chaining, validation and graphics disabled. Original 16-bit straight/premultiplied/external-map branches match an independent exact-rational reference within one sample unit. |
 | S1-133 | Rasterize selected contours with holes | drawContours, fillPoly, polylines and contour hierarchy | Complete | collection.rasterize_contours. Selected contour/blob subtrees retain holes and islands; independent roots union. Verify ID/index selection, incomplete-tree errors, filled/outline/subpixel modes, origin/frame/pyramid/ticket context, selection clipping and exact reference masks. |
 | S1-134 | Ordered circle/arc fitting and angular extent | Conditioned CPU geometric least squares with SVD steps and optional RANSAC | Complete | inspect.fit_circle_arc fits ordered point lists or contour/blob boundaries. Verify radial residuals, stable consensus, signed angular extent, observed-support envelopes, conditioning, conditional radial-IID uncertainty, duplicate handling, selection and source-grid/pyramid/ticket context. Short or unstable arcs withhold primary geometry. Geometric circles feed region.fitted_shape. Original pass and short-arc failure projects use independent polar truth. This is distinct from minimum enclosing circles. |
-| S1-135 | Reconstruct features by local frequency and phase | DFT, magnitude and phase of image bands | Partial | cv.dft emits complex spectra. Qualify phase-only or magnitude-only reconstruction with declared channel and normalization behavior. |
+| S1-135 | Reconstruct features by frequency magnitude and phase | Native DFT/IDFT with conjugate component algebra | Complete | cv.fourier_components edits typed spectra; cv.reconstruct_fourier_image reconstructs full, phase-only or zero-phase magnitude images with declared channel, depth, DC, padding, phase-floor and normalization policies. Independent color impulses verify position/amplitude, row/2D scaling and floating signed output. Mask/region windows select source samples; magnitude-only starts a new coordinate grid. |
 | S1-136 | Binary mask boundary distances | distanceTransform and directed boundary comparisons | Partial | inspect.contour_profile measures matched contour boundaries. Qualify a source-grid mask comparison with tolerance bands and missing-area statistics. |
 | S1-137 | Build a flat-field reference from image stacks | Selected frame averaging or median | Planned | Estimate dark and bright references from repeated captures and verify correction on a held-out image. |
 | S1-138 | Focus stacking and per-pixel focus selection | Local focus response, image alignment and masked blending | Planned | Fuse different focal planes on a synthetic or recorded stack and verify the focus-index and coverage maps. |

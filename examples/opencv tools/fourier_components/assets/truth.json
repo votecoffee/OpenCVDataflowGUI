@@ -1,0 +1,31 @@
+{
+  "reference": "Direct pixel assignments; expected images do not use a transform",
+  "image_size": [
+    23,
+    17
+  ],
+  "channel_order": "RGB",
+  "positions_yx": [
+    [
+      3,
+      5
+    ],
+    [
+      8,
+      11
+    ],
+    [
+      12,
+      17
+    ]
+  ],
+  "unsigned_amplitudes": [
+    16384,
+    32768,
+    49152
+  ],
+  "unsigned_maximum": 65535,
+  "phase_only": "Unit impulses at original positions",
+  "magnitude_only": "Original unit-range amplitudes at the zero-phase origin [0,0]",
+  "maximum_error": 1e-12
+}

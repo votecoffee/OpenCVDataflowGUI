@@ -72,6 +72,7 @@ BINDINGS = {
     "cv.demosaic_bayer": "demosaicing",
     "cv.detail_enhance": "detailEnhance",
     "cv.dft": "dft",
+    "cv.reconstruct_fourier_image": "dft idft getOptimalDFTSize",
     "cv.distance_labels": "distanceTransformWithLabels",
     "cv.distance_transform": "distanceTransform",
     "cv.domain_transform_filter": "ximgproc.dtFilter",

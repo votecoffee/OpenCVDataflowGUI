@@ -687,6 +687,7 @@ def builtin_registry():
     from .feature_covariance import FitFeatureCovariance, MahalanobisDistance
     from .features import FEATURE_BLOCKS
     from .focus import MeasureFocus
+    from .fourier_components import FourierComponents, ReconstructFourierImage
     from .fourier_correlation import FourierCorrelation
     from .frame_interpolation import InterpolateFrames
     from .generalized_hough import FindGuilTemplate, FindHoughTemplate
@@ -916,6 +917,8 @@ def builtin_registry():
         MergeRobertson,
         ToneMapHDR,
         *SPECTRAL_BLOCKS,
+        FourierComponents,
+        ReconstructFourierImage,
         FourierCorrelation,
         *ANALYSIS_BLOCKS,
         BlendWeightMaps,

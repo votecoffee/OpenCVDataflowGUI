@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/part.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -330.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dft",
+      "type": "cv.dft",
+      "name": "Discrete Fourier transform (DFT)",
+      "parameters": {
+        "mode": "2d",
+        "size": "optimal"
+      },
+      "position": [
+        30.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "spectrum"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "full",
+      "type": "cv.fourier_components",
+      "name": "Fourier magnitude and phase components",
+      "documentation": "<p>Phase-only uses F/|F| where phase exceeds both floors, and zero elsewhere. Magnitude-only uses |F| + 0i. Full retains both components. DC removal precedes thresholding. Outputs retain conjugate symmetry for a real inverse.</p><p>The typed spectrum requests floating inverse output. Magnitude-only receives a new spatial frame; it has no source-position mapping. Diagnostic images are frequency-bin grids, with invalid phase values zero and a separate validity mask.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/core_array.html\">OpenCV DFT reference</a>.</p>",
+      "parameters": {
+        "components": "full",
+        "dc": "keep",
+        "relative_floor": 1e-06,
+        "absolute_floor": 0.0,
+        "symmetry": "require",
+        "precision": "auto",
+        "layout": "centered"
+      },
+      "position": [
+        390.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "spectrum"
+      ],
+      "exposed_outputs": [
+        "spectrum",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inverse_full",
+      "type": "cv.idft",
+      "name": "Inverse discrete Fourier transform (IDFT)",
+      "parameters": {
+        "output_depth": "unchanged"
+      },
+      "position": [
+        750.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "spectrum"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "phase_only",
+      "type": "cv.fourier_components",
+      "name": "Fourier magnitude and phase components",
+      "documentation": "<p>Phase-only uses F/|F| where phase exceeds both floors, and zero elsewhere. Magnitude-only uses |F| + 0i. Full retains both components. DC removal precedes thresholding. Outputs retain conjugate symmetry for a real inverse.</p><p>The typed spectrum requests floating inverse output. Magnitude-only receives a new spatial frame; it has no source-position mapping. Diagnostic images are frequency-bin grids, with invalid phase values zero and a separate validity mask.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/core_array.html\">OpenCV DFT reference</a>.</p>",
+      "parameters": {
+        "components": "phase_only",
+        "dc": "keep",
+        "relative_floor": 1e-06,
+        "absolute_floor": 0.0,
+        "symmetry": "require",
+        "precision": "auto",
+        "layout": "centered"
+      },
+      "position": [
+        390.0,
+        340.0
+      ],
+      "exposed_inputs": [
+        "spectrum"
+      ],
+      "exposed_outputs": [
+        "spectrum",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inverse_phase_only",
+      "type": "cv.idft",
+      "name": "Inverse discrete Fourier transform (IDFT)",
+      "parameters": {
+        "output_depth": "unchanged"
+      },
+      "position": [
+        750.0,
+        340.0
+      ],
+      "exposed_inputs": [
+        "spectrum"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "magnitude_only",
+      "type": "cv.fourier_components",
+      "name": "Fourier magnitude and phase components",
+      "documentation": "<p>Phase-only uses F/|F| where phase exceeds both floors, and zero elsewhere. Magnitude-only uses |F| + 0i. Full retains both components. DC removal precedes thresholding. Outputs retain conjugate symmetry for a real inverse.</p><p>The typed spectrum requests floating inverse output. Magnitude-only receives a new spatial frame; it has no source-position mapping. Diagnostic images are frequency-bin grids, with invalid phase values zero and a separate validity mask.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/core_array.html\">OpenCV DFT reference</a>.</p>",
+      "parameters": {
+        "components": "magnitude_only",
+        "dc": "keep",
+        "relative_floor": 1e-06,
+        "absolute_floor": 0.0,
+        "symmetry": "require",
+        "precision": "auto",
+        "layout": "centered"
+      },
+      "position": [
+        390.0,
+        680.0
+      ],
+      "exposed_inputs": [
+        "spectrum"
+      ],
+      "exposed_outputs": [
+        "spectrum",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inverse_magnitude_only",
+      "type": "cv.idft",
+      "name": "Inverse discrete Fourier transform (IDFT)",
+      "parameters": {
+        "output_depth": "unchanged"
+      },
+      "position": [
+        750.0,
+        680.0
+      ],
+      "exposed_inputs": [
+        "spectrum"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original Fourier component fixtures \u2014 MIT",
+      "description": "Original part illustration, color impulses, reference images, generator and projects under this repository's MIT license. The typed monochrome path exposes magnitude, phase and phase-validity maps on frequency grids. Components retain native spectrum ordering and padded size. IDFT uses the component packet's floating depth to keep signed samples. OpenCV DFT reference: https://docs.opencv.org/5.0/main_modules/core_array.html",
+      "parameters": {},
+      "position": [
+        -330.0,
+        -350.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "dft",
+      "input": "image"
+    },
+    {
+      "source": "dft",
+      "output": "spectrum",
+      "target": "full",
+      "input": "spectrum"
+    },
+    {
+      "source": "full",
+      "output": "spectrum",
+      "target": "inverse_full",
+      "input": "spectrum"
+    },
+    {
+      "source": "dft",
+      "output": "spectrum",
+      "target": "phase_only",
+      "input": "spectrum"
+    },
+    {
+      "source": "phase_only",
+      "output": "spectrum",
+      "target": "inverse_phase_only",
+      "input": "spectrum"
+    },
+    {
+      "source": "dft",
+      "output": "spectrum",
+      "target": "magnitude_only",
+      "input": "spectrum"
+    },
+    {
+      "source": "magnitude_only",
+      "output": "spectrum",
+      "target": "inverse_magnitude_only",
+      "input": "spectrum"
+    }
+  ]
+}

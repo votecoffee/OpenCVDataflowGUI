@@ -24,6 +24,11 @@ L1, L2, squared L2, infinity, Hamming and Hamming2.
 [Combine Fourier spectra](<../examples/opencv tools/spectrum_product/README.md>)
 exposes complex bin multiplication and conjugation for custom filters,
 circular convolution and circular correlation.
+[Fourier component reconstruction](<../examples/opencv tools/fourier_components/README.md>)
+(S1-135) adds full, phase-only and zero-phase magnitude reconstruction for
+grayscale/color images and typed spectra. It exposes phase validity, DC and
+normalization controls, with independent impulse references and explicit
+source-window and coordinate behavior.
 [Seeded random images and noise](<../examples/custom tools/seeded_noise/README.md>)
 provide Gaussian and uniform fixtures and selected perturbations using a
 private generator per activation.

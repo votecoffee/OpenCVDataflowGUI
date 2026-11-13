@@ -1921,6 +1921,24 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `direction` | `"horizontal"` | `horizontal`, `vertical`, `both` |
 
+## Fourier magnitude and phase components (`cv.fourier_components`)
+
+Image processing / Spectral
+
+Inputs: `spectrum` (dft).
+
+Input `spectrum` — Monochrome real-image DFT, including its mode, padding and source grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `components` | `"phase_only"` | `full`, `phase_only`, `magnitude_only` Full spectrum, phase with unit magnitudes, or magnitudes with zero phase. |
+| `dc` | `"keep"` | `keep`, `remove` Keep or remove zero frequency before thresholding, per transformed signal. |
+| `relative_floor` | `1e-06` | Value must be a finite number between 0 and 1. Strict phase floor relative to peak magnitude; per row in Rows mode. |
+| `absolute_floor` | `0.0` | Value must be a finite number at least 0. Additional strict phase floor in native, unscaled DFT magnitude units. |
+| `symmetry` | `"require"` | `require`, `average` Require conjugate pairs within native precision, or explicitly average them. |
+| `precision` | `"auto"` | `auto`, `float32`, `float64` Auto follows the spectrum; image input uses float64 for uint16/float64. |
+| `layout` | `"centered"` | `centered`, `native` Magnitude, phase and validity image layout. The typed spectrum stays native. |
+
 ## Fuse exposures (Mertens) (`cv.fuse_exposures`)
 
 Image processing / Exposure stacks
@@ -2832,6 +2850,32 @@ Inputs: `image` (image).
 | `border` | `"reflect"` | `reflect`, `reflect_101` PyrUp supports only reflect/reflect_101; PyrDown also supports other choices. |
 | `output_width` | `0` | 0 uses native sizing. Explicit dimensions apply to the final level. |
 | `output_height` | `0` |  |
+
+## Reconstruct Fourier image components (`cv.reconstruct_fourier_image`)
+
+Image processing / Spectral
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray or RGB(A)/BGR(A), uint8/16/float32/64; Source retains original data.
+
+Input `mask` — Optional uint8 selection: zero other source samples before the global transform.
+
+Input `region` — Source region intersected with the mask. Reconstruction can extend outside it.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `components` | `"phase_only"` | `full`, `phase_only`, `magnitude_only` Full spectrum, phase with unit magnitudes, or magnitudes with zero phase. |
+| `dc` | `"keep"` | `keep`, `remove` Keep or remove zero frequency before thresholding, per transformed signal. |
+| `relative_floor` | `1e-06` | Value must be a finite number between 0 and 1. Strict phase floor relative to peak magnitude; per row in Rows mode. |
+| `absolute_floor` | `0.0` | Value must be a finite number at least 0. Additional strict phase floor in native, unscaled DFT magnitude units. |
+| `symmetry` | `"require"` | `require`, `average` Require conjugate pairs within native precision, or explicitly average them. |
+| `precision` | `"auto"` | `auto`, `float32`, `float64` Auto follows the spectrum; image input uses float64 for uint16/float64. |
+| `mode` | `"2d"` | `2d`, `rows` Transform the whole plane or each row independently. |
+| `size` | `"exact"` | `exact`, `optimal` Exact size or efficient zero-padding on transformed axes, followed by cropping. |
+| `channels` | `"independent"` | `independent`, `grayscale` Independent color channels or grayscale. Alpha remains on Source only. |
+| `normalization` | `"none"` | `none`, `unit_rms`, `minmax` Signed raw inverse, unit RMS, or range [0,1]. Flat min/max becomes zero. |
+| `normalization_scope` | `"per_channel"` | `per_channel`, `shared` Normalize each color channel separately or share one color scale. |
 
 ## Reconstruct Laplacian pyramid (`cv.reconstruct_laplacian_pyramid`)
 

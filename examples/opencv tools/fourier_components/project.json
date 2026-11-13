@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/part.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -330.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "full",
+      "type": "cv.reconstruct_fourier_image",
+      "name": "Full reconstruction",
+      "documentation": "<p>Reconstruct full, phase-only or zero-phase magnitude components per color channel or in grayscale. Unsigned input maps to [0,1]; floating input retains its values. Output stays floating and signed unless explicit intensity normalization is chosen. Color output has three channels; original alpha remains on Source.</p><p>Selections zero input samples before the global transform. Native inverse scaling uses the padded transform length; the result is cropped back. Magnitude-only images use a new origin-based grid, while phase/full images retain source coordinates.</p>",
+      "parameters": {
+        "components": "full",
+        "dc": "keep",
+        "relative_floor": 1e-06,
+        "absolute_floor": 0.0,
+        "symmetry": "require",
+        "precision": "auto",
+        "mode": "2d",
+        "size": "exact",
+        "channels": "independent",
+        "normalization": "none",
+        "normalization_scope": "per_channel"
+      },
+      "position": [
+        80.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "phase_only",
+      "type": "cv.reconstruct_fourier_image",
+      "name": "Phase retains structure",
+      "documentation": "<p>Reconstruct full, phase-only or zero-phase magnitude components per color channel or in grayscale. Unsigned input maps to [0,1]; floating input retains its values. Output stays floating and signed unless explicit intensity normalization is chosen. Color output has three channels; original alpha remains on Source.</p><p>Selections zero input samples before the global transform. Native inverse scaling uses the padded transform length; the result is cropped back. Magnitude-only images use a new origin-based grid, while phase/full images retain source coordinates.</p>",
+      "parameters": {
+        "components": "phase_only",
+        "dc": "keep",
+        "relative_floor": 1e-06,
+        "absolute_floor": 0.0,
+        "symmetry": "require",
+        "precision": "auto",
+        "mode": "2d",
+        "size": "exact",
+        "channels": "independent",
+        "normalization": "none",
+        "normalization_scope": "per_channel"
+      },
+      "position": [
+        80.0,
+        360.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "magnitude_only",
+      "type": "cv.reconstruct_fourier_image",
+      "name": "Zero phase loses source positions",
+      "documentation": "<p>Reconstruct full, phase-only or zero-phase magnitude components per color channel or in grayscale. Unsigned input maps to [0,1]; floating input retains its values. Output stays floating and signed unless explicit intensity normalization is chosen. Color output has three channels; original alpha remains on Source.</p><p>Selections zero input samples before the global transform. Native inverse scaling uses the padded transform length; the result is cropped back. Magnitude-only images use a new origin-based grid, while phase/full images retain source coordinates.</p>",
+      "parameters": {
+        "components": "magnitude_only",
+        "dc": "keep",
+        "relative_floor": 1e-06,
+        "absolute_floor": 0.0,
+        "symmetry": "require",
+        "precision": "auto",
+        "mode": "2d",
+        "size": "exact",
+        "channels": "independent",
+        "normalization": "none",
+        "normalization_scope": "per_channel"
+      },
+      "position": [
+        80.0,
+        720.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original Fourier component fixtures \u2014 MIT",
+      "description": "Original part illustration, color impulses, reference images, generator and projects under this repository's MIT license. The 16-bit bracket illustration shows component effects. Full reconstruction retains unit-range source samples; phase-only whitens reliable bins; magnitude-only uses a new zero-phase grid. Raw outputs are signed floating images. Preview contrast does not alter raw values; alpha remains on the original Source output. OpenCV DFT reference: https://docs.opencv.org/5.0/main_modules/core_array.html",
+      "parameters": {},
+      "position": [
+        -330.0,
+        -350.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "full",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "phase_only",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "magnitude_only",
+      "input": "image"
+    }
+  ]
+}

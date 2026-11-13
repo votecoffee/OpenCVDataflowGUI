@@ -500,11 +500,11 @@ binding presence. For example, the wheel exposes DynaFu but rejects construction
 | `cv2.countNonZero`, `cv2.findNonZero`, `cv2.hasNonZero`, `cv2.checkRange`, `cv2.finiteMask`, `cv2.patchNaNs`, `cv2.norm`, `cv2.mean`, `cv2.meanStdDev`, `cv::minMaxIdx`, `cv2.minMaxLoc`, `cv::sum`, `cv2.sumElems` | Image statistics, support, finite-sample checks and replacement share typed masks. | S1-18, S1-20, S1-143 |
 | `cv2.reduce`, `cv2.reduceArgMax`, `cv2.reduceArgMin` | Use named axes in image profiles and image-derived score decoding. Keep generic array reductions internal. | S1-20, S2-10, S2-12 |
 | `cv2.PSNR` | Pair with the reference-error map and selected support. | S1-55 |
-| `cv2.dft`, `cv2.idft`, `cv2.getOptimalDFTSize` | FFT padding is implementation detail of typed spectral outputs. | S1-41, S1-135 |
+| `cv2.dft`, `cv2.idft`, `cv2.getOptimalDFTSize` | Typed spectra retain mode, padding and original size. S1-135 now qualifies full/phase-only/magnitude-only reconstruction, signed color output, phase floors, normalization and source-window behavior. Zero-phase results receive a new coordinate grid. | S1-41, S1-135 |
 | `cv2.dct`, `cv2.idct` | Preserve coefficient scaling and recover the input image. | S1-79 |
 | `cv2.mulSpectrums` | Spectrum products stay in filtering, restoration and correlation. | S1-58, S1-80, S1-84 |
 | `cv2.divSpectrums` | Verify supported-band gain and phase independently of filter application. | S1-166 |
-| `cv2.cartToPolar`, `cv2.polarToCart`, `cv2.phase`, `cv2.magnitude` | Use explicit vector units and angle conventions for gradients and spectral fields. | S1-78, S1-135 |
+| `cv2.cartToPolar`, `cv2.polarToCart`, `cv2.phase`, `cv2.magnitude` | Use explicit vector units and angle conventions for gradients and spectral fields. S1-135 uses NumPy hypot/atan2 and conjugate component algebra around native DFT/IDFT, with radians and explicit undefined-phase validity; it does not claim these individual bindings are wrapped. | S1-78, S1-135 |
 | `cv2.borderInterpolate`, `cv2.copyMakeBorder` | Border indices are internal to typed padding. | S1-70 |
 | `cv2.hconcat`, `cv2.vconcat`, `cv2.repeat` | Use explicit image grids and layout provenance. | S1-37 |
 | `cv2.rotate`, `cv2.flip`, `cv2.transpose` | Track the corresponding coordinate transform. | S1-73 |
