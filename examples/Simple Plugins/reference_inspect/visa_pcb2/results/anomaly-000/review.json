@@ -1,0 +1,1782 @@
+{
+  "model": "simple_reference_inspect_review_v1",
+  "state": "fail",
+  "inspection": {
+    "model": "simple_reference_inspect_v1",
+    "passed": false,
+    "evaluated": true,
+    "failures": [
+      "defect_area_above_maximum"
+    ],
+    "coverage": 1.0,
+    "exposure": {
+      "gain": 0.885430107317141,
+      "offset": 17.519739894316942,
+      "correlation": 0.9498752858365888
+    },
+    "inspected_pixels": 182871,
+    "defect_area": 3743,
+    "defects": [
+      {
+        "reference_bounds": [
+          91,
+          74,
+          4,
+          6
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          93,
+          79,
+          5,
+          4
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          234,
+          88,
+          6,
+          3
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          287,
+          95,
+          5,
+          4
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          274,
+          107,
+          9,
+          35
+        ],
+        "area": 90
+      },
+      {
+        "reference_bounds": [
+          290,
+          126,
+          1,
+          17
+        ],
+        "area": 17
+      },
+      {
+        "reference_bounds": [
+          371,
+          128,
+          1,
+          15
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          273,
+          144,
+          10,
+          11
+        ],
+        "area": 52
+      },
+      {
+        "reference_bounds": [
+          289,
+          149,
+          2,
+          11
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          297,
+          160,
+          7,
+          4
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          373,
+          160,
+          10,
+          2
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          279,
+          162,
+          3,
+          8
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          387,
+          164,
+          6,
+          2
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          395,
+          164,
+          8,
+          2
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          432,
+          165,
+          6,
+          3
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          457,
+          165,
+          9,
+          5
+        ],
+        "area": 23
+      },
+      {
+        "reference_bounds": [
+          465,
+          165,
+          16,
+          1
+        ],
+        "area": 16
+      },
+      {
+        "reference_bounds": [
+          484,
+          165,
+          13,
+          2
+        ],
+        "area": 14
+      },
+      {
+        "reference_bounds": [
+          508,
+          166,
+          19,
+          1
+        ],
+        "area": 19
+      },
+      {
+        "reference_bounds": [
+          267,
+          174,
+          3,
+          16
+        ],
+        "area": 30
+      },
+      {
+        "reference_bounds": [
+          212,
+          180,
+          5,
+          6
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          549,
+          182,
+          5,
+          3
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          260,
+          189,
+          2,
+          20
+        ],
+        "area": 21
+      },
+      {
+        "reference_bounds": [
+          511,
+          188,
+          5,
+          4
+        ],
+        "area": 16
+      },
+      {
+        "reference_bounds": [
+          246,
+          192,
+          5,
+          2
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          294,
+          192,
+          5,
+          3
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          304,
+          192,
+          3,
+          6
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          323,
+          193,
+          8,
+          4
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          427,
+          192,
+          1,
+          19
+        ],
+        "area": 19
+      },
+      {
+        "reference_bounds": [
+          354,
+          197,
+          4,
+          5
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          303,
+          201,
+          5,
+          7
+        ],
+        "area": 19
+      },
+      {
+        "reference_bounds": [
+          329,
+          203,
+          4,
+          4
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          354,
+          203,
+          8,
+          8
+        ],
+        "area": 32
+      },
+      {
+        "reference_bounds": [
+          276,
+          205,
+          4,
+          7
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          328,
+          206,
+          6,
+          7
+        ],
+        "area": 16
+      },
+      {
+        "reference_bounds": [
+          470,
+          207,
+          4,
+          6
+        ],
+        "area": 14
+      },
+      {
+        "reference_bounds": [
+          449,
+          208,
+          6,
+          4
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          260,
+          212,
+          2,
+          21
+        ],
+        "area": 24
+      },
+      {
+        "reference_bounds": [
+          427,
+          213,
+          1,
+          20
+        ],
+        "area": 20
+      },
+      {
+        "reference_bounds": [
+          226,
+          214,
+          7,
+          17
+        ],
+        "area": 29
+      },
+      {
+        "reference_bounds": [
+          324,
+          214,
+          5,
+          5
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          467,
+          215,
+          4,
+          9
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          385,
+          217,
+          3,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          149,
+          219,
+          5,
+          4
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          222,
+          218,
+          1,
+          9
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          90,
+          229,
+          4,
+          6
+        ],
+        "area": 16
+      },
+      {
+        "reference_bounds": [
+          102,
+          229,
+          6,
+          5
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          182,
+          229,
+          3,
+          5
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          96,
+          232,
+          9,
+          4
+        ],
+        "area": 18
+      },
+      {
+        "reference_bounds": [
+          176,
+          232,
+          4,
+          4
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          310,
+          233,
+          4,
+          4
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          337,
+          233,
+          5,
+          4
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          365,
+          232,
+          5,
+          5
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          490,
+          233,
+          5,
+          9
+        ],
+        "area": 22
+      },
+      {
+        "reference_bounds": [
+          543,
+          233,
+          7,
+          5
+        ],
+        "area": 21
+      },
+      {
+        "reference_bounds": [
+          396,
+          235,
+          9,
+          1
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          430,
+          235,
+          11,
+          6
+        ],
+        "area": 35
+      },
+      {
+        "reference_bounds": [
+          504,
+          234,
+          5,
+          10
+        ],
+        "area": 24
+      },
+      {
+        "reference_bounds": [
+          518,
+          234,
+          4,
+          10
+        ],
+        "area": 24
+      },
+      {
+        "reference_bounds": [
+          530,
+          234,
+          6,
+          4
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          558,
+          235,
+          6,
+          3
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          227,
+          239,
+          1,
+          14
+        ],
+        "area": 14
+      },
+      {
+        "reference_bounds": [
+          365,
+          239,
+          4,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          392,
+          238,
+          2,
+          17
+        ],
+        "area": 22
+      },
+      {
+        "reference_bounds": [
+          531,
+          239,
+          4,
+          5
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          559,
+          239,
+          3,
+          5
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          545,
+          240,
+          4,
+          3
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          101,
+          242,
+          6,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          438,
+          244,
+          6,
+          4
+        ],
+        "area": 14
+      },
+      {
+        "reference_bounds": [
+          491,
+          245,
+          4,
+          6
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          505,
+          245,
+          3,
+          5
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          532,
+          245,
+          4,
+          6
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          100,
+          246,
+          4,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          177,
+          246,
+          6,
+          4
+        ],
+        "area": 18
+      },
+      {
+        "reference_bounds": [
+          149,
+          252,
+          3,
+          5
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          429,
+          252,
+          18,
+          11
+        ],
+        "area": 123
+      },
+      {
+        "reference_bounds": [
+          98,
+          257,
+          9,
+          4
+        ],
+        "area": 14
+      },
+      {
+        "reference_bounds": [
+          116,
+          258,
+          4,
+          6
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          96,
+          260,
+          9,
+          4
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          148,
+          260,
+          5,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          392,
+          264,
+          1,
+          13
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          149,
+          266,
+          4,
+          6
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          99,
+          270,
+          7,
+          2
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          115,
+          270,
+          4,
+          5
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          155,
+          272,
+          6,
+          5
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          158,
+          284,
+          4,
+          6
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          506,
+          288,
+          8,
+          15
+        ],
+        "area": 39
+      },
+      {
+        "reference_bounds": [
+          521,
+          289,
+          5,
+          15
+        ],
+        "area": 34
+      },
+      {
+        "reference_bounds": [
+          496,
+          293,
+          3,
+          6
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          357,
+          295,
+          4,
+          5
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          100,
+          297,
+          7,
+          6
+        ],
+        "area": 14
+      },
+      {
+        "reference_bounds": [
+          467,
+          296,
+          4,
+          4
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          89,
+          298,
+          3,
+          6
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          155,
+          298,
+          6,
+          7
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          431,
+          300,
+          9,
+          9
+        ],
+        "area": 45
+      },
+      {
+        "reference_bounds": [
+          280,
+          303,
+          5,
+          3
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          455,
+          304,
+          6,
+          3
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          487,
+          304,
+          4,
+          3
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          515,
+          304,
+          4,
+          3
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          131,
+          306,
+          14,
+          16
+        ],
+        "area": 57
+      },
+      {
+        "reference_bounds": [
+          446,
+          307,
+          6,
+          5
+        ],
+        "area": 19
+      },
+      {
+        "reference_bounds": [
+          172,
+          309,
+          5,
+          4
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          101,
+          311,
+          7,
+          6
+        ],
+        "area": 17
+      },
+      {
+        "reference_bounds": [
+          321,
+          315,
+          11,
+          11
+        ],
+        "area": 70
+      },
+      {
+        "reference_bounds": [
+          536,
+          314,
+          5,
+          9
+        ],
+        "area": 17
+      },
+      {
+        "reference_bounds": [
+          96,
+          316,
+          7,
+          2
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          491,
+          316,
+          6,
+          5
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          499,
+          319,
+          11,
+          5
+        ],
+        "area": 14
+      },
+      {
+        "reference_bounds": [
+          138,
+          320,
+          15,
+          9
+        ],
+        "area": 47
+      },
+      {
+        "reference_bounds": [
+          240,
+          325,
+          5,
+          4
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          522,
+          325,
+          4,
+          4
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          337,
+          326,
+          5,
+          4
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          351,
+          328,
+          7,
+          11
+        ],
+        "area": 36
+      },
+      {
+        "reference_bounds": [
+          107,
+          330,
+          8,
+          6
+        ],
+        "area": 19
+      },
+      {
+        "reference_bounds": [
+          478,
+          330,
+          3,
+          5
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          535,
+          330,
+          8,
+          9
+        ],
+        "area": 26
+      },
+      {
+        "reference_bounds": [
+          278,
+          333,
+          8,
+          5
+        ],
+        "area": 17
+      },
+      {
+        "reference_bounds": [
+          340,
+          332,
+          3,
+          6
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          465,
+          333,
+          13,
+          7
+        ],
+        "area": 50
+      },
+      {
+        "reference_bounds": [
+          521,
+          332,
+          6,
+          5
+        ],
+        "area": 20
+      },
+      {
+        "reference_bounds": [
+          257,
+          338,
+          5,
+          3
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          418,
+          341,
+          28,
+          31
+        ],
+        "area": 460
+      },
+      {
+        "reference_bounds": [
+          462,
+          340,
+          7,
+          3
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          138,
+          342,
+          21,
+          10
+        ],
+        "area": 105
+      },
+      {
+        "reference_bounds": [
+          249,
+          344,
+          13,
+          12
+        ],
+        "area": 40
+      },
+      {
+        "reference_bounds": [
+          267,
+          344,
+          4,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          477,
+          347,
+          14,
+          8
+        ],
+        "area": 66
+      },
+      {
+        "reference_bounds": [
+          206,
+          351,
+          4,
+          5
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          265,
+          351,
+          5,
+          3
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          328,
+          352,
+          6,
+          6
+        ],
+        "area": 19
+      },
+      {
+        "reference_bounds": [
+          456,
+          352,
+          23,
+          15
+        ],
+        "area": 113
+      },
+      {
+        "reference_bounds": [
+          365,
+          355,
+          6,
+          3
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          492,
+          356,
+          5,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          291,
+          365,
+          6,
+          4
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          545,
+          367,
+          7,
+          6
+        ],
+        "area": 14
+      },
+      {
+        "reference_bounds": [
+          183,
+          379,
+          5,
+          6
+        ],
+        "area": 18
+      },
+      {
+        "reference_bounds": [
+          227,
+          380,
+          5,
+          5
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          297,
+          381,
+          6,
+          6
+        ],
+        "area": 18
+      },
+      {
+        "reference_bounds": [
+          125,
+          382,
+          8,
+          6
+        ],
+        "area": 17
+      },
+      {
+        "reference_bounds": [
+          347,
+          383,
+          3,
+          6
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          446,
+          383,
+          6,
+          4
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          78,
+          385,
+          4,
+          5
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          239,
+          384,
+          6,
+          5
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          304,
+          384,
+          8,
+          4
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          404,
+          385,
+          2,
+          5
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          415,
+          385,
+          7,
+          4
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          462,
+          385,
+          10,
+          17
+        ],
+        "area": 56
+      },
+      {
+        "reference_bounds": [
+          262,
+          387,
+          6,
+          6
+        ],
+        "area": 18
+      },
+      {
+        "reference_bounds": [
+          269,
+          388,
+          6,
+          5
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          455,
+          388,
+          7,
+          9
+        ],
+        "area": 24
+      },
+      {
+        "reference_bounds": [
+          301,
+          391,
+          4,
+          5
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          134,
+          393,
+          6,
+          5
+        ],
+        "area": 19
+      },
+      {
+        "reference_bounds": [
+          227,
+          392,
+          5,
+          3
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          392,
+          393,
+          16,
+          8
+        ],
+        "area": 44
+      },
+      {
+        "reference_bounds": [
+          341,
+          394,
+          4,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          449,
+          396,
+          18,
+          12
+        ],
+        "area": 62
+      },
+      {
+        "reference_bounds": [
+          291,
+          398,
+          8,
+          7
+        ],
+        "area": 22
+      },
+      {
+        "reference_bounds": [
+          420,
+          398,
+          4,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          444,
+          399,
+          4,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          140,
+          401,
+          7,
+          9
+        ],
+        "area": 17
+      },
+      {
+        "reference_bounds": [
+          433,
+          400,
+          8,
+          6
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          157,
+          403,
+          4,
+          5
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          250,
+          402,
+          4,
+          9
+        ],
+        "area": 22
+      },
+      {
+        "reference_bounds": [
+          343,
+          403,
+          4,
+          4
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          409,
+          402,
+          6,
+          5
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          423,
+          405,
+          6,
+          4
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          444,
+          404,
+          5,
+          7
+        ],
+        "area": 20
+      },
+      {
+        "reference_bounds": [
+          462,
+          404,
+          8,
+          6
+        ],
+        "area": 16
+      },
+      {
+        "reference_bounds": [
+          576,
+          405,
+          7,
+          6
+        ],
+        "area": 16
+      },
+      {
+        "reference_bounds": [
+          77,
+          407,
+          5,
+          4
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          90,
+          406,
+          4,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          212,
+          406,
+          7,
+          5
+        ],
+        "area": 14
+      },
+      {
+        "reference_bounds": [
+          239,
+          407,
+          6,
+          4
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          296,
+          407,
+          5,
+          4
+        ],
+        "area": 10
+      }
+    ],
+    "area_units": "reference_pixels",
+    "max_deviation": 7.916121006011963,
+    "settings": {
+      "absolute_threshold": 12.0,
+      "variation_multiplier": 3.0,
+      "edge_tolerance_px": 0.75,
+      "normalization": "gain_offset",
+      "min_gain": 0.5,
+      "max_gain": 2.0,
+      "min_correlation": 0.85,
+      "min_coverage": 0.98,
+      "min_defect_area": 9,
+      "max_total_defect_area": 0
+    }
+  },
+  "metrics": [
+    {
+      "name": "Geometric support",
+      "value": 1.0,
+      "units": "fraction",
+      "minimum": 0.98,
+      "maximum": null,
+      "status": "within limits"
+    },
+    {
+      "name": "Exposure gain",
+      "value": 0.885430107317141,
+      "units": "ratio",
+      "minimum": 0.5,
+      "maximum": 2.0,
+      "status": "within limits"
+    },
+    {
+      "name": "Reference correlation",
+      "value": 0.9498752858365888,
+      "units": "correlation",
+      "minimum": 0.85,
+      "maximum": null,
+      "status": "within limits"
+    },
+    {
+      "name": "Accepted change area",
+      "value": 3743,
+      "units": "reference pixels",
+      "minimum": null,
+      "maximum": 0,
+      "status": "outside limits"
+    },
+    {
+      "name": "Maximum deviation",
+      "value": 7.916121006011963,
+      "units": "tolerance ratio",
+      "minimum": null,
+      "maximum": null,
+      "status": "diagnostic"
+    }
+  ],
+  "expected_inspection_pixels": 182871,
+  "inspected_reference_pixels": 182871,
+  "reference_size": [
+    702,
+    535
+  ],
+  "input_size": [
+    702,
+    535
+  ],
+  "input_dtype": "uint8",
+  "input_pixels_sha256": "6ab5b82a08c3632f2ca6541272ac5fed80a71b8ad181c516d7f7435dc5ee6242",
+  "reference_mean_sha256": "b1a13c3c45946aeb435c58500b12fc753859122253f3f14f676739f197a50e1e",
+  "reference_tolerance_sha256": "a9e804848096bf0707583bd98b728dc7d4a06fb63544b589b2d96191744a1c5f",
+  "inspection_region_sha256": "71709f11e3af3fa3d203eefa88dae5fe878522e9fa178572b3185ff631311a1d",
+  "normalization_region_sha256": "5ee19670756d37fc5391c42503ebee4a2db1fb0a51bf1bae154b6c5f70519d18",
+  "reference_to_image": [
+    [
+      1.001524992248577,
+      0.023296728059028285,
+      -5.991118536877607
+    ],
+    [
+      -0.02329672805902828,
+      1.001524992248577,
+      15.232839429177744
+    ]
+  ],
+  "display": {
+    "intensity_range": [
+      13.195046424865723,
+      248.24063110351562
+    ],
+    "signed_residual_range": [
+      -487.17431640625,
+      487.17431640625
+    ],
+    "deviation_range": [
+      0.0,
+      2.0
+    ],
+    "tolerance_boundary": 1.0
+  },
+  "training_health": {
+    "sample_count": 8,
+    "samples": [
+      {
+        "gain": 1.0,
+        "offset": 0.0,
+        "correlation": 1.0
+      },
+      {
+        "gain": 0.9306070503918382,
+        "offset": 6.985081300007266,
+        "correlation": 0.904358075189864
+      },
+      {
+        "gain": 0.9859463348818881,
+        "offset": 0.06169002348192976,
+        "correlation": 0.9343059965010733
+      },
+      {
+        "gain": 0.9661534891021338,
+        "offset": 2.838236043202002,
+        "correlation": 0.9328680191070976
+      },
+      {
+        "gain": 0.9897287080137146,
+        "offset": 1.3371476165202836,
+        "correlation": 0.9419818801864422
+      },
+      {
+        "gain": 0.9462665908292457,
+        "offset": 5.135564581939164,
+        "correlation": 0.9064763133490376
+      },
+      {
+        "gain": 0.970947410024101,
+        "offset": 3.75276495607325,
+        "correlation": 0.9274706418502369
+      },
+      {
+        "gain": 0.9192945983247871,
+        "offset": 5.449889692632013,
+        "correlation": 0.8954431407368552
+      }
+    ],
+    "warnings": [],
+    "mean_standard_deviation": 13.83021354675293
+  },
+  "arrays": {
+    "residual": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "478b110b4dd49e692fd87488ccd7fc1babfe7e6df131303037173144da81fbca"
+    },
+    "deviation_map": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "995154c702eba575c38c0e939251f0cbe8d8ac49ee682077eefb0d308cdaffc5"
+    },
+    "inspected_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "d78e96914399fcd0467e6945cec3bb912206047f74ba466e05660b56002fe916"
+    },
+    "defect_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "b5c7d8d7b758ccc3cafc8ee63fb797c976451fd4678b661c764a9b2380ea9b68"
+    }
+  },
+  "images": {
+    "0_reference_mean.png": {
+      "view": "Reference mean",
+      "grid": "reference"
+    },
+    "1_normalized_current.png": {
+      "view": "Normalized current",
+      "grid": "reference"
+    },
+    "2_signed_residual.png": {
+      "view": "Signed residual",
+      "grid": "reference"
+    },
+    "3_deviation_tolerance.png": {
+      "view": "Deviation / tolerance",
+      "grid": "reference"
+    },
+    "4_inspected_coverage.png": {
+      "view": "Inspected coverage",
+      "grid": "reference"
+    },
+    "5_input_overlay.png": {
+      "view": "Input overlay",
+      "grid": "input"
+    }
+  }
+}

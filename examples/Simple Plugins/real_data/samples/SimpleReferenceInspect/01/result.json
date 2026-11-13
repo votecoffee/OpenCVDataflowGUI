@@ -1,0 +1,79 @@
+{
+  "frame": 1,
+  "state": "fail",
+  "input_file": "reference_inspect/armbench_tote/assets/P2S0835EOA.jpg",
+  "input_file_sha256": "7609e883131b428fcdff0b196ccfea4da0bb2476d05696b468a673b1397d40c6",
+  "result_pixels_sha256": "bc54953e7d194f941fe0c1d9d3935d03415166f2c1aa5a354df77669cce3611e",
+  "result_size": [
+    1500,
+    1050
+  ],
+  "measurements": {
+    "model": "simple_reference_inspect_v1",
+    "passed": false,
+    "evaluated": true,
+    "failures": [
+      "defect_area_above_maximum"
+    ],
+    "coverage": 1.0,
+    "exposure": {
+      "gain": 1.0,
+      "offset": 0.0,
+      "correlation": 0.14139261074371182
+    },
+    "inspected_pixels": 187974,
+    "defect_area": 81820,
+    "defects": [
+      {
+        "reference_bounds": [
+          40,
+          70,
+          200,
+          324
+        ],
+        "area": 40523
+      },
+      {
+        "reference_bounds": [
+          309,
+          128,
+          210,
+          263
+        ],
+        "area": 39492
+      },
+      {
+        "reference_bounds": [
+          537,
+          232,
+          34,
+          88
+        ],
+        "area": 1118
+      },
+      {
+        "reference_bounds": [
+          438,
+          388,
+          106,
+          12
+        ],
+        "area": 687
+      }
+    ],
+    "area_units": "reference_pixels",
+    "max_deviation": 18.75,
+    "settings": {
+      "absolute_threshold": 12.0,
+      "variation_multiplier": 3.0,
+      "edge_tolerance_px": 0.75,
+      "normalization": "none",
+      "min_gain": 0.5,
+      "max_gain": 2.0,
+      "min_correlation": null,
+      "min_coverage": 0.98,
+      "min_defect_area": 500,
+      "max_total_defect_area": 9398
+    }
+  }
+}

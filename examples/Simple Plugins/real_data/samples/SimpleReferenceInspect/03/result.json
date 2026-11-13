@@ -1,0 +1,61 @@
+{
+  "frame": 3,
+  "state": "fail",
+  "input_file": "reference_inspect/armbench_tote/assets/OAR1KXNIME.jpg",
+  "input_file_sha256": "7f4d546306841aad78a9a64a49b6947b9421c8e91a02ce32738e199866409ba2",
+  "result_pixels_sha256": "9e29e545a22f19bf3a4834134db810ee0c4c52609da0aea77a9ff29d179ce8d4",
+  "result_size": [
+    1500,
+    1050
+  ],
+  "measurements": {
+    "model": "simple_reference_inspect_v1",
+    "passed": false,
+    "evaluated": true,
+    "failures": [
+      "defect_area_above_maximum"
+    ],
+    "coverage": 1.0,
+    "exposure": {
+      "gain": 1.0,
+      "offset": 0.0,
+      "correlation": -0.08788563496817062
+    },
+    "inspected_pixels": 187974,
+    "defect_area": 152502,
+    "defects": [
+      {
+        "reference_bounds": [
+          40,
+          70,
+          531,
+          324
+        ],
+        "area": 151012
+      },
+      {
+        "reference_bounds": [
+          363,
+          388,
+          208,
+          15
+        ],
+        "area": 1490
+      }
+    ],
+    "area_units": "reference_pixels",
+    "max_deviation": 18.66666603088379,
+    "settings": {
+      "absolute_threshold": 12.0,
+      "variation_multiplier": 3.0,
+      "edge_tolerance_px": 0.75,
+      "normalization": "none",
+      "min_gain": 0.5,
+      "max_gain": 2.0,
+      "min_correlation": null,
+      "min_coverage": 0.98,
+      "min_defect_area": 500,
+      "max_total_defect_area": 9398
+    }
+  }
+}

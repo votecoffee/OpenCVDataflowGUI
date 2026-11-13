@@ -1,5 +1,10 @@
 # SimpleReferenceInspect
 
+For real camera images, open the [ARMBench clear-tote example](armbench_tote/README.md)
+or the [posed VisA PCB hard case](visa_pcb2/README.md). Both include retained
+training, independent replay images, assessment graphics, source licenses and
+explicit limitations. The original generated demonstration follows below.
+
 This project compares parts with a statistical reference trained from eight
 generated good images. Normal variation in one small feature is learned.
 A separate stable-feature mask is used to estimate exposure correction and

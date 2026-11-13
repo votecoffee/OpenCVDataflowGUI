@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "license_checked_on": "2026-11-13",
+  "examples": [
+    {
+      "tool": "SimplePatternMatch",
+      "dataset": "VisA PCB2",
+      "license": "CC-BY-4.0",
+      "project": "pattern_matching/visa_pcb2/project.json",
+      "source_block": "scene",
+      "block": "matcher",
+      "frames": 2,
+      "preview_block": "matcher",
+      "preview_port": "overlay",
+      "overview_frame": 1,
+      "attribution": "pattern_matching/visa_pcb2/SOURCES.md",
+      "scope": "Real board localization; approximate mounting-hole landmarks provide pose checks."
+    },
+    {
+      "tool": "SimpleSegmentation",
+      "dataset": "ARMBench",
+      "license": "CC-BY-4.0",
+      "project": "pixel_segmentation/armbench_tote/project.json",
+      "source_block": "source",
+      "block": "segment",
+      "frames": 2,
+      "preview_block": "color_overlay",
+      "preview_port": "overlay",
+      "overview_frame": 0,
+      "attribution": "pixel_segmentation/armbench_tote/SOURCES.md",
+      "scope": "Inventory foreground in a blue tote; approximate polygons are example-authored."
+    },
+    {
+      "tool": "SimpleClassify",
+      "dataset": "VegQual v4",
+      "license": "CC-BY-4.0",
+      "project": "image_classification/vegqual/project.json",
+      "source_block": "test_images",
+      "block": "classifier",
+      "frames": 16,
+      "preview_block": "classifier",
+      "preview_port": "overlay",
+      "overview_frame": 0,
+      "attribution": "image_classification/vegqual/SOURCES.md",
+      "scope": "Four publisher produce classes, separate test crops; classification errors remain visible."
+    },
+    {
+      "tool": "SimplePathWidth",
+      "dataset": "Hyun Soo Kim weld bead images",
+      "license": "MIT",
+      "project": "path_width/weld_bead/project.json",
+      "source_block": "source",
+      "block": "inspection",
+      "frames": 3,
+      "preview_block": "inspection",
+      "preview_port": "overlay",
+      "overview_frame": 2,
+      "attribution": "path_width/weld_bead/SOURCES.md",
+      "scope": "Real weld edge/width diagnostics; mask annotations are not calibrated width ground truth."
+    },
+    {
+      "tool": "SimpleReferenceInspect",
+      "dataset": "ARMBench",
+      "license": "CC-BY-4.0",
+      "project": "reference_inspect/armbench_tote/project.json",
+      "source_block": "source",
+      "block": "inspection",
+      "frames": 4,
+      "preview_block": "inspection",
+      "preview_port": "assessment",
+      "overview_frame": 1,
+      "attribution": "reference_inspect/armbench_tote/SOURCES.md",
+      "scope": "Clear-tote rule with separate empty/loaded captures, 5% area allowance and fixed imaging assumptions."
+    },
+    {
+      "tool": "Simple3DLocate",
+      "dataset": "T-LESS",
+      "license": "CC-BY-4.0",
+      "project": "3d_locate/real_tless/depth_verified/project.json",
+      "source_block": "scene",
+      "block": "locate",
+      "frames": 1,
+      "preview_block": "locate",
+      "preview_port": "overlay",
+      "overview_frame": 0,
+      "input_photo": "3d_locate/real_tless/source/test_primesense/000001/rgb/000230.png",
+      "attribution": "3d_locate/real_tless/source/ATTRIBUTION.md",
+      "scope": "Real first-surface RGB-D clutter; selected successful pose with depth verification. Broader misses remain documented."
+    }
+  ],
+  "additional_projects": [
+    {
+      "tool": "SimpleReferenceInspect",
+      "project": "reference_inspect/visa_pcb2/project.json",
+      "dataset": "VisA PCB2",
+      "license": "CC-BY-4.0",
+      "attribution": "reference_inspect/visa_pcb2/SOURCES.md",
+      "scope": "Eight independent real test images with publisher masks; retained normal false alarms and missed defect pixels."
+    }
+  ]
+}

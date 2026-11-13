@@ -1,0 +1,68 @@
+{
+  "frame": 0,
+  "state": "pass",
+  "input_file": "reference_inspect/armbench_tote/assets/EZ5895NGB8.jpg",
+  "input_file_sha256": "7e5348d1a7aa3cccfb67154e457746e24c64d20f9e945103d5caeb983148bafc",
+  "result_pixels_sha256": "bd9e428b2e68b831ebe355158b4d3240d2e2c83271a2876922a5edf1e1b575f3",
+  "result_size": [
+    1500,
+    1050
+  ],
+  "measurements": {
+    "model": "simple_reference_inspect_v1",
+    "passed": true,
+    "evaluated": true,
+    "failures": [],
+    "coverage": 1.0,
+    "exposure": {
+      "gain": 1.0,
+      "offset": 0.0,
+      "correlation": 0.9685285668022287
+    },
+    "inspected_pixels": 187974,
+    "defect_area": 3475,
+    "defects": [
+      {
+        "reference_bounds": [
+          180,
+          182,
+          69,
+          52
+        ],
+        "area": 1612
+      },
+      {
+        "reference_bounds": [
+          410,
+          220,
+          45,
+          78
+        ],
+        "area": 1259
+      },
+      {
+        "reference_bounds": [
+          91,
+          257,
+          26,
+          57
+        ],
+        "area": 604
+      }
+    ],
+    "area_units": "reference_pixels",
+    "max_deviation": 10.583333015441895,
+    "settings": {
+      "absolute_threshold": 12.0,
+      "variation_multiplier": 3.0,
+      "edge_tolerance_px": 0.75,
+      "normalization": "none",
+      "min_gain": 0.5,
+      "max_gain": 2.0,
+      "min_correlation": null,
+      "min_coverage": 0.98,
+      "min_defect_area": 500,
+      "max_total_defect_area": 9398
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "frame": 1,
+  "state": "pass",
+  "input_file": "pixel_segmentation/armbench_tote/assets/EZ5895NGB8.jpg",
+  "input_file_sha256": "7e5348d1a7aa3cccfb67154e457746e24c64d20f9e945103d5caeb983148bafc",
+  "result_pixels_sha256": "ae26806edf1b2bff2a882a744085422c60dda5f80f2455c21039035f5bda4026",
+  "result_size": [
+    612,
+    512
+  ],
+  "measurements": {
+    "foreground_pixels": 0,
+    "inspected_pixels": 183848,
+    "report": {
+      "model": "image_segmentation_v1",
+      "count": 1,
+      "incomplete_count": 0,
+      "parts": [
+        {
+          "match_index": 1,
+          "patch_size": [
+            612,
+            512
+          ],
+          "patch_to_source": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "requested_pixels": 183848,
+          "inspected_pixels": 183848,
+          "defect_pixels": 0,
+          "regions": [],
+          "inspected_fraction": 1.0,
+          "defect_fraction": 0.0,
+          "foreground_pixels": 0,
+          "foreground_fraction": 0.0
+        }
+      ],
+      "image_size": [
+        612,
+        512
+      ],
+      "model_sha256": "7b6c9b334e447708a638e5c02298d7ac711dc77fefff9cfe0ad409c079586507",
+      "region_sha256": "104c2848b0396df945958d246e78594ffc641bbb202f56d76599de783c0105bb"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "frame": 2,
+  "state": "fail",
+  "input_file": "reference_inspect/armbench_tote/assets/9TARTKRF1X.jpg",
+  "input_file_sha256": "48f09d0a044c0f6b0cb2178cc9b06fb89815d5c6a56f43a185bba5419ad7121e",
+  "result_pixels_sha256": "b7336003f8d7007916c685692757e1868080cac78964f4d387fd60641bebdf08",
+  "result_size": [
+    1500,
+    1050
+  ],
+  "measurements": {
+    "model": "simple_reference_inspect_v1",
+    "passed": false,
+    "evaluated": true,
+    "failures": [
+      "defect_area_above_maximum"
+    ],
+    "coverage": 1.0,
+    "exposure": {
+      "gain": 1.0,
+      "offset": 0.0,
+      "correlation": -0.3346636753896584
+    },
+    "inspected_pixels": 187974,
+    "defect_area": 154111,
+    "defects": [
+      {
+        "reference_bounds": [
+          40,
+          70,
+          531,
+          336
+        ],
+        "area": 154111
+      }
+    ],
+    "area_units": "reference_pixels",
+    "max_deviation": 18.75,
+    "settings": {
+      "absolute_threshold": 12.0,
+      "variation_multiplier": 3.0,
+      "edge_tolerance_px": 0.75,
+      "normalization": "none",
+      "min_gain": 0.5,
+      "max_gain": 2.0,
+      "min_correlation": null,
+      "min_coverage": 0.98,
+      "min_defect_area": 500,
+      "max_total_defect_area": 9398
+    }
+  }
+}

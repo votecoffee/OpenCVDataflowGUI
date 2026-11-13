@@ -1,0 +1,36 @@
+{
+  "frame": 1,
+  "state": "pass",
+  "input_file": "image_classification/vegqual/images/test/fresh_potato/02.jpg",
+  "input_file_sha256": "b2e022f66b2f1277b8e588002651cf248d0fc1150b09588ce1d90f513f753915",
+  "result_pixels_sha256": "9cbcbd9b7bd8ab0e2bb2d4b2aef3bb7323cd72abea7d00a075b2fa12565eda03",
+  "result_size": [
+    1120,
+    480
+  ],
+  "measurements": {
+    "label": "fresh_potato",
+    "score": 45.875141192333906,
+    "confusion": 65.05870848542543,
+    "probabilities": [
+      {
+        "label": "fresh_potato",
+        "score": 45.875141192333906
+      },
+      {
+        "label": "defected_Potato",
+        "score": 29.845774375597834
+      },
+      {
+        "label": "fresh_capsicum",
+        "score": 20.602719923760855
+      },
+      {
+        "label": "defected_capsicum",
+        "score": 3.6763645083074126
+      }
+    ],
+    "expected": "fresh_potato",
+    "correct": true
+  }
+}

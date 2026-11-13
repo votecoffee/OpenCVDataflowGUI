@@ -1,0 +1,828 @@
+{
+  "model": "simple_reference_inspect_review_v1",
+  "state": "fail",
+  "inspection": {
+    "model": "simple_reference_inspect_v1",
+    "passed": false,
+    "evaluated": true,
+    "failures": [
+      "defect_area_above_maximum"
+    ],
+    "coverage": 1.0,
+    "exposure": {
+      "gain": 0.8814956877914361,
+      "offset": 11.321351164960618,
+      "correlation": 0.9536371273631852
+    },
+    "inspected_pixels": 182871,
+    "defect_area": 1846,
+    "defects": [
+      {
+        "reference_bounds": [
+          339,
+          92,
+          7,
+          5
+        ],
+        "area": 16
+      },
+      {
+        "reference_bounds": [
+          366,
+          92,
+          4,
+          4
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          90,
+          112,
+          5,
+          5
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          292,
+          166,
+          5,
+          4
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          351,
+          167,
+          6,
+          10
+        ],
+        "area": 25
+      },
+      {
+        "reference_bounds": [
+          354,
+          182,
+          10,
+          5
+        ],
+        "area": 14
+      },
+      {
+        "reference_bounds": [
+          365,
+          185,
+          11,
+          3
+        ],
+        "area": 21
+      },
+      {
+        "reference_bounds": [
+          324,
+          193,
+          9,
+          7
+        ],
+        "area": 18
+      },
+      {
+        "reference_bounds": [
+          197,
+          201,
+          8,
+          11
+        ],
+        "area": 33
+      },
+      {
+        "reference_bounds": [
+          204,
+          208,
+          3,
+          6
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          394,
+          209,
+          11,
+          2
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          413,
+          209,
+          12,
+          1
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          437,
+          209,
+          7,
+          8
+        ],
+        "area": 43
+      },
+      {
+        "reference_bounds": [
+          445,
+          208,
+          7,
+          10
+        ],
+        "area": 32
+      },
+      {
+        "reference_bounds": [
+          393,
+          212,
+          9,
+          2
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          415,
+          212,
+          12,
+          2
+        ],
+        "area": 21
+      },
+      {
+        "reference_bounds": [
+          199,
+          215,
+          6,
+          8
+        ],
+        "area": 18
+      },
+      {
+        "reference_bounds": [
+          165,
+          219,
+          5,
+          6
+        ],
+        "area": 20
+      },
+      {
+        "reference_bounds": [
+          454,
+          227,
+          7,
+          4
+        ],
+        "area": 14
+      },
+      {
+        "reference_bounds": [
+          213,
+          233,
+          3,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          165,
+          235,
+          23,
+          16
+        ],
+        "area": 177
+      },
+      {
+        "reference_bounds": [
+          189,
+          241,
+          4,
+          7
+        ],
+        "area": 17
+      },
+      {
+        "reference_bounds": [
+          523,
+          241,
+          8,
+          10
+        ],
+        "area": 24
+      },
+      {
+        "reference_bounds": [
+          311,
+          245,
+          3,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          438,
+          244,
+          6,
+          3
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          368,
+          253,
+          2,
+          6
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          430,
+          253,
+          6,
+          3
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          412,
+          255,
+          12,
+          1
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          414,
+          259,
+          12,
+          1
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          360,
+          260,
+          5,
+          7
+        ],
+        "area": 18
+      },
+      {
+        "reference_bounds": [
+          281,
+          263,
+          2,
+          6
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          487,
+          266,
+          4,
+          4
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          250,
+          271,
+          6,
+          3
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          366,
+          277,
+          3,
+          5
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          225,
+          279,
+          8,
+          2
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          248,
+          279,
+          11,
+          2
+        ],
+        "area": 16
+      },
+      {
+        "reference_bounds": [
+          429,
+          278,
+          4,
+          8
+        ],
+        "area": 14
+      },
+      {
+        "reference_bounds": [
+          439,
+          280,
+          5,
+          6
+        ],
+        "area": 19
+      },
+      {
+        "reference_bounds": [
+          230,
+          293,
+          9,
+          4
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          249,
+          293,
+          4,
+          7
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          310,
+          293,
+          3,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          323,
+          293,
+          4,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          525,
+          294,
+          3,
+          6
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          207,
+          301,
+          5,
+          5
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          480,
+          303,
+          5,
+          11
+        ],
+        "area": 25
+      },
+      {
+        "reference_bounds": [
+          530,
+          304,
+          4,
+          5
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          544,
+          305,
+          4,
+          3
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          143,
+          309,
+          3,
+          7
+        ],
+        "area": 13
+      },
+      {
+        "reference_bounds": [
+          444,
+          309,
+          15,
+          17
+        ],
+        "area": 92
+      },
+      {
+        "reference_bounds": [
+          172,
+          316,
+          5,
+          3
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          265,
+          320,
+          28,
+          20
+        ],
+        "area": 141
+      },
+      {
+        "reference_bounds": [
+          393,
+          324,
+          12,
+          1
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          439,
+          324,
+          3,
+          5
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          193,
+          327,
+          7,
+          15
+        ],
+        "area": 61
+      },
+      {
+        "reference_bounds": [
+          412,
+          326,
+          39,
+          31
+        ],
+        "area": 427
+      },
+      {
+        "reference_bounds": [
+          89,
+          333,
+          5,
+          6
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          473,
+          338,
+          5,
+          6
+        ],
+        "area": 12
+      },
+      {
+        "reference_bounds": [
+          273,
+          340,
+          4,
+          3
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          464,
+          346,
+          11,
+          8
+        ],
+        "area": 32
+      },
+      {
+        "reference_bounds": [
+          265,
+          349,
+          6,
+          10
+        ],
+        "area": 31
+      },
+      {
+        "reference_bounds": [
+          226,
+          357,
+          6,
+          12
+        ],
+        "area": 41
+      },
+      {
+        "reference_bounds": [
+          329,
+          357,
+          5,
+          4
+        ],
+        "area": 10
+      },
+      {
+        "reference_bounds": [
+          354,
+          356,
+          5,
+          4
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          276,
+          361,
+          6,
+          3
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          483,
+          368,
+          6,
+          4
+        ],
+        "area": 15
+      },
+      {
+        "reference_bounds": [
+          106,
+          386,
+          6,
+          4
+        ],
+        "area": 11
+      },
+      {
+        "reference_bounds": [
+          223,
+          397,
+          4,
+          4
+        ],
+        "area": 9
+      },
+      {
+        "reference_bounds": [
+          290,
+          397,
+          3,
+          7
+        ],
+        "area": 11
+      }
+    ],
+    "area_units": "reference_pixels",
+    "max_deviation": 10.020444869995117,
+    "settings": {
+      "absolute_threshold": 12.0,
+      "variation_multiplier": 3.0,
+      "edge_tolerance_px": 0.75,
+      "normalization": "gain_offset",
+      "min_gain": 0.5,
+      "max_gain": 2.0,
+      "min_correlation": 0.85,
+      "min_coverage": 0.98,
+      "min_defect_area": 9,
+      "max_total_defect_area": 0
+    }
+  },
+  "metrics": [
+    {
+      "name": "Geometric support",
+      "value": 1.0,
+      "units": "fraction",
+      "minimum": 0.98,
+      "maximum": null,
+      "status": "within limits"
+    },
+    {
+      "name": "Exposure gain",
+      "value": 0.8814956877914361,
+      "units": "ratio",
+      "minimum": 0.5,
+      "maximum": 2.0,
+      "status": "within limits"
+    },
+    {
+      "name": "Reference correlation",
+      "value": 0.9536371273631852,
+      "units": "correlation",
+      "minimum": 0.85,
+      "maximum": null,
+      "status": "within limits"
+    },
+    {
+      "name": "Accepted change area",
+      "value": 1846,
+      "units": "reference pixels",
+      "minimum": null,
+      "maximum": 0,
+      "status": "outside limits"
+    },
+    {
+      "name": "Maximum deviation",
+      "value": 10.020444869995117,
+      "units": "tolerance ratio",
+      "minimum": null,
+      "maximum": null,
+      "status": "diagnostic"
+    }
+  ],
+  "expected_inspection_pixels": 182871,
+  "inspected_reference_pixels": 182871,
+  "reference_size": [
+    702,
+    535
+  ],
+  "input_size": [
+    702,
+    535
+  ],
+  "input_dtype": "uint8",
+  "input_pixels_sha256": "a3295b668679f9fe655e39925ce2595050562c0b67847712ff1fc0ac634c8236",
+  "reference_mean_sha256": "b1a13c3c45946aeb435c58500b12fc753859122253f3f14f676739f197a50e1e",
+  "reference_tolerance_sha256": "a9e804848096bf0707583bd98b728dc7d4a06fb63544b589b2d96191744a1c5f",
+  "inspection_region_sha256": "71709f11e3af3fa3d203eefa88dae5fe878522e9fa178572b3185ff631311a1d",
+  "normalization_region_sha256": "5ee19670756d37fc5391c42503ebee4a2db1fb0a51bf1bae154b6c5f70519d18",
+  "reference_to_image": [
+    [
+      0.999947324947003,
+      0.0024511866482469554,
+      20.28729588584069
+    ],
+    [
+      -0.0024511866482469554,
+      0.9999473249470031,
+      -2.6459311114113007
+    ]
+  ],
+  "display": {
+    "intensity_range": [
+      13.195046424865723,
+      248.24063110351562
+    ],
+    "signed_residual_range": [
+      -487.17431640625,
+      487.17431640625
+    ],
+    "deviation_range": [
+      0.0,
+      2.0
+    ],
+    "tolerance_boundary": 1.0
+  },
+  "training_health": {
+    "sample_count": 8,
+    "samples": [
+      {
+        "gain": 1.0,
+        "offset": 0.0,
+        "correlation": 1.0
+      },
+      {
+        "gain": 0.9306070503918382,
+        "offset": 6.985081300007266,
+        "correlation": 0.904358075189864
+      },
+      {
+        "gain": 0.9859463348818881,
+        "offset": 0.06169002348192976,
+        "correlation": 0.9343059965010733
+      },
+      {
+        "gain": 0.9661534891021338,
+        "offset": 2.838236043202002,
+        "correlation": 0.9328680191070976
+      },
+      {
+        "gain": 0.9897287080137146,
+        "offset": 1.3371476165202836,
+        "correlation": 0.9419818801864422
+      },
+      {
+        "gain": 0.9462665908292457,
+        "offset": 5.135564581939164,
+        "correlation": 0.9064763133490376
+      },
+      {
+        "gain": 0.970947410024101,
+        "offset": 3.75276495607325,
+        "correlation": 0.9274706418502369
+      },
+      {
+        "gain": 0.9192945983247871,
+        "offset": 5.449889692632013,
+        "correlation": 0.8954431407368552
+      }
+    ],
+    "warnings": [],
+    "mean_standard_deviation": 13.83021354675293
+  },
+  "arrays": {
+    "residual": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "5b6613ac117820e61a3007e37bd5ae43bee8f09d722494d906e00ae8e6ffe57f"
+    },
+    "deviation_map": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "0bb12e0c24f35c2861bdc72720f08100dc791aabb98d78620ee6864cca35f2de"
+    },
+    "inspected_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "d78e96914399fcd0467e6945cec3bb912206047f74ba466e05660b56002fe916"
+    },
+    "defect_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "4918233795d9d29aba4a49feae3380e90102da0bd358e42c440628df6abe0146"
+    }
+  },
+  "images": {
+    "0_reference_mean.png": {
+      "view": "Reference mean",
+      "grid": "reference"
+    },
+    "1_normalized_current.png": {
+      "view": "Normalized current",
+      "grid": "reference"
+    },
+    "2_signed_residual.png": {
+      "view": "Signed residual",
+      "grid": "reference"
+    },
+    "3_deviation_tolerance.png": {
+      "view": "Deviation / tolerance",
+      "grid": "reference"
+    },
+    "4_inspected_coverage.png": {
+      "view": "Inspected coverage",
+      "grid": "reference"
+    },
+    "5_input_overlay.png": {
+      "view": "Input overlay",
+      "grid": "input"
+    }
+  }
+}

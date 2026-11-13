@@ -1,0 +1,5416 @@
+{
+  "SimplePatternMatch": {
+    "project": "pattern_matching/visa_pcb2/project.json",
+    "dataset": "VisA PCB2",
+    "license": "CC-BY-4.0",
+    "attribution": "pattern_matching/visa_pcb2/SOURCES.md",
+    "frames": [
+      {
+        "frame": 0,
+        "state": "pass",
+        "input_file": "pattern_matching/visa_pcb2/assets/pcb2-0000.jpg",
+        "input_file_sha256": "9cad63a1fbf0890e28773ab847a2f32f360bc819eff3432bdba8309fa2a600a4",
+        "result_pixels_sha256": "666f7eb762f6ca24461730124921bfeaa921ee87f26dff2128f787180124b06e",
+        "result_size": [
+          702,
+          535
+        ],
+        "measurements": {
+          "count": 1,
+          "score": 0.9976863863545233,
+          "matches": {
+            "model": "pattern_matches_v1",
+            "pattern_id": "e883f26a2875f2a08fa8dfe772499ffd62870d45707d5494803ae2fdb45d7b02",
+            "count": 1,
+            "items": [
+              {
+                "score": 0.9976863863545233,
+                "center": [
+                  323.9994131232386,
+                  265.00042794129206
+                ],
+                "corners": [
+                  [
+                    84.99482805524414,
+                    161.00540199551241
+                  ],
+                  [
+                    562.9988985492962,
+                    160.99368262606154
+                  ],
+                  [
+                    563.003998191233,
+                    368.9954538870717
+                  ],
+                  [
+                    84.99992769718092,
+                    369.0071732565225
+                  ]
+                ],
+                "pose": {
+                  "model": "image_pose_v1",
+                  "source_to_target": [
+                    [
+                      1.0000085156779333,
+                      2.4517509311470445e-05,
+                      98.99521696733763
+                    ],
+                    [
+                      -2.4517509311470445e-05,
+                      1.0000085156779333,
+                      172.00515242283933
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "target_size": [
+                    702,
+                    535
+                  ],
+                  "target_payload": {
+                    "ticket": {
+                      "model": "flow_ticket_v1",
+                      "kind": "string",
+                      "value": "pcb2-0000.jpg",
+                      "session": "03fa8bcb9eb549abb347d239884fec4a:file:1",
+                      "sequence": 1,
+                      "source": "scene"
+                    },
+                    "spatial": {
+                      "root_id": "scene:image",
+                      "root_size": [
+                        702,
+                        535
+                      ],
+                      "image_size": [
+                        702,
+                        535
+                      ],
+                      "to_root": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          1.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ]
+                      ]
+                    },
+                    "processing_time": {
+                      "model": "processing_time_v1",
+                      "started_at": "2026-11-13T12:17:21.101322+00:00",
+                      "started_ns": 2870612410900,
+                      "clock_id": "39165d35163f41a698d8f46b9e3d0b28",
+                      "inferred_start": false,
+                      "finished_at": "2026-11-13T12:17:21.107680+00:00",
+                      "finished_ns": 2870618766500,
+                      "finished_clock_id": "39165d35163f41a698d8f46b9e3d0b28",
+                      "elapsed_ms": 6.3556
+                    },
+                    "outcome": {
+                      "model": "tool_outcome_v1",
+                      "passed": true,
+                      "chain_passed": true,
+                      "source": {
+                        "id": "scene",
+                        "name": "VisA PCB2 photographs",
+                        "type": "input.file",
+                        "path": "scene"
+                      },
+                      "score": null,
+                      "message": "pcb2-0000.jpg \u00b7 bgr / uint8",
+                      "data": {},
+                      "fail_reasons": []
+                    }
+                  },
+                  "origin": [
+                    98.99521696733763,
+                    172.00515242283933
+                  ],
+                  "angle_degrees": 0.0014047378451434193,
+                  "scale_x": 1.0000085159784848,
+                  "scale_y": 1.0000085159784848
+                },
+                "transform": {
+                  "model": "image_pattern_pose_v1",
+                  "source_to_target": [
+                    [
+                      1.0000085156779333,
+                      2.4517509311470445e-05,
+                      84.99482805524414
+                    ],
+                    [
+                      -2.4517509311470445e-05,
+                      1.0000085156779333,
+                      161.00540199551241
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "source_size": [
+                    479,
+                    209
+                  ],
+                  "target_size": [
+                    702,
+                    535
+                  ],
+                  "source_payload": {
+                    "spatial": {
+                      "root_id": "ogpm:e883f26a2875f2a08fa8dfe772499ffd62870d45707d5494803ae2fdb45d7b02",
+                      "root_size": [
+                        479,
+                        209
+                      ],
+                      "image_size": [
+                        479,
+                        209
+                      ],
+                      "to_root": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          1.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ]
+                      ]
+                    }
+                  },
+                  "target_payload": {
+                    "ticket": {
+                      "model": "flow_ticket_v1",
+                      "kind": "string",
+                      "value": "pcb2-0000.jpg",
+                      "session": "03fa8bcb9eb549abb347d239884fec4a:file:1",
+                      "sequence": 1,
+                      "source": "scene"
+                    },
+                    "spatial": {
+                      "root_id": "scene:image",
+                      "root_size": [
+                        702,
+                        535
+                      ],
+                      "image_size": [
+                        702,
+                        535
+                      ],
+                      "to_root": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          1.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ]
+                      ]
+                    },
+                    "processing_time": {
+                      "model": "processing_time_v1",
+                      "started_at": "2026-11-13T12:17:21.101322+00:00",
+                      "started_ns": 2870612410900,
+                      "clock_id": "39165d35163f41a698d8f46b9e3d0b28",
+                      "inferred_start": false,
+                      "finished_at": "2026-11-13T12:17:21.107680+00:00",
+                      "finished_ns": 2870618766500,
+                      "finished_clock_id": "39165d35163f41a698d8f46b9e3d0b28",
+                      "elapsed_ms": 6.3556
+                    },
+                    "outcome": {
+                      "model": "tool_outcome_v1",
+                      "passed": true,
+                      "chain_passed": true,
+                      "source": {
+                        "id": "scene",
+                        "name": "VisA PCB2 photographs",
+                        "type": "input.file",
+                        "path": "scene"
+                      },
+                      "score": null,
+                      "message": "pcb2-0000.jpg \u00b7 bgr / uint8",
+                      "data": {},
+                      "fail_reasons": []
+                    }
+                  }
+                },
+                "coverage": 0.9979166666666667,
+                "fit_error_working_px": 0.02658281376064261,
+                "coarse_score": 0.8353184858957926,
+                "contrast": 74.52082213106782,
+                "clutter": null,
+                "outside_region_fraction": 0.0,
+                "measured_edge_count": 479
+              }
+            ]
+          }
+        }
+      },
+      {
+        "frame": 1,
+        "state": "pass",
+        "input_file": "pattern_matching/visa_pcb2/assets/pcb2-0621.jpg",
+        "input_file_sha256": "b9bf6245b8408151d2053a6cb4d51e788eefd0ee9e0f52265e2fbb91196b2067",
+        "result_pixels_sha256": "5cde84d2a3472f56e90103a35a526aa8df621d2fe0b831fb4f1c77a44ab97fdf",
+        "result_size": [
+          702,
+          535
+        ],
+        "measurements": {
+          "count": 1,
+          "score": 0.6646803268534598,
+          "matches": {
+            "model": "pattern_matches_v1",
+            "pattern_id": "e883f26a2875f2a08fa8dfe772499ffd62870d45707d5494803ae2fdb45d7b02",
+            "count": 1,
+            "items": [
+              {
+                "score": 0.6646803268534598,
+                "center": [
+                  312.9365158795052,
+                  267.99690744380496
+                ],
+                "corners": [
+                  [
+                    75.17345358249662,
+                    160.6294782843998
+                  ],
+                  [
+                    553.5575064742522,
+                    167.19721735324114
+                  ],
+                  [
+                    550.6995781765138,
+                    375.3643366032101
+                  ],
+                  [
+                    72.31552528475812,
+                    368.79659753436874
+                  ]
+                ],
+                "pose": {
+                  "model": "image_pose_v1",
+                  "source_to_target": [
+                    [
+                      1.000803457932543,
+                      -0.013740039892973527,
+                      89.03356155472952
+                    ],
+                    [
+                      0.013740039892973527,
+                      1.000803457932543,
+                      171.8306768801594
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "target_size": [
+                    702,
+                    535
+                  ],
+                  "target_payload": {
+                    "ticket": {
+                      "model": "flow_ticket_v1",
+                      "kind": "string",
+                      "value": "pcb2-0621.jpg",
+                      "session": "03fa8bcb9eb549abb347d239884fec4a:file:3",
+                      "sequence": 3,
+                      "source": "scene"
+                    },
+                    "spatial": {
+                      "root_id": "scene:image",
+                      "root_size": [
+                        702,
+                        535
+                      ],
+                      "image_size": [
+                        702,
+                        535
+                      ],
+                      "to_root": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          1.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ]
+                      ]
+                    },
+                    "processing_time": {
+                      "model": "processing_time_v1",
+                      "started_at": "2026-11-13T12:17:21.612803+00:00",
+                      "started_ns": 2871123892400,
+                      "clock_id": "39165d35163f41a698d8f46b9e3d0b28",
+                      "inferred_start": false,
+                      "finished_at": "2026-11-13T12:17:21.617437+00:00",
+                      "finished_ns": 2871128524200,
+                      "finished_clock_id": "39165d35163f41a698d8f46b9e3d0b28",
+                      "elapsed_ms": 4.6318
+                    },
+                    "outcome": {
+                      "model": "tool_outcome_v1",
+                      "passed": true,
+                      "chain_passed": true,
+                      "source": {
+                        "id": "scene",
+                        "name": "VisA PCB2 photographs",
+                        "type": "input.file",
+                        "path": "scene"
+                      },
+                      "score": null,
+                      "message": "pcb2-0621.jpg \u00b7 bgr / uint8",
+                      "data": {},
+                      "fail_reasons": []
+                    }
+                  },
+                  "origin": [
+                    89.03356155472952,
+                    171.8306768801594
+                  ],
+                  "angle_degrees": -0.7865648684638515,
+                  "scale_x": 1.000897772055666,
+                  "scale_y": 1.000897772055666
+                },
+                "transform": {
+                  "model": "image_pattern_pose_v1",
+                  "source_to_target": [
+                    [
+                      1.000803457932543,
+                      -0.013740039892973527,
+                      75.17345358249662
+                    ],
+                    [
+                      0.013740039892973527,
+                      1.000803457932543,
+                      160.6294782843998
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "source_size": [
+                    479,
+                    209
+                  ],
+                  "target_size": [
+                    702,
+                    535
+                  ],
+                  "source_payload": {
+                    "spatial": {
+                      "root_id": "ogpm:e883f26a2875f2a08fa8dfe772499ffd62870d45707d5494803ae2fdb45d7b02",
+                      "root_size": [
+                        479,
+                        209
+                      ],
+                      "image_size": [
+                        479,
+                        209
+                      ],
+                      "to_root": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          1.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ]
+                      ]
+                    }
+                  },
+                  "target_payload": {
+                    "ticket": {
+                      "model": "flow_ticket_v1",
+                      "kind": "string",
+                      "value": "pcb2-0621.jpg",
+                      "session": "03fa8bcb9eb549abb347d239884fec4a:file:3",
+                      "sequence": 3,
+                      "source": "scene"
+                    },
+                    "spatial": {
+                      "root_id": "scene:image",
+                      "root_size": [
+                        702,
+                        535
+                      ],
+                      "image_size": [
+                        702,
+                        535
+                      ],
+                      "to_root": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          1.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ]
+                      ]
+                    },
+                    "processing_time": {
+                      "model": "processing_time_v1",
+                      "started_at": "2026-11-13T12:17:21.612803+00:00",
+                      "started_ns": 2871123892400,
+                      "clock_id": "39165d35163f41a698d8f46b9e3d0b28",
+                      "inferred_start": false,
+                      "finished_at": "2026-11-13T12:17:21.617437+00:00",
+                      "finished_ns": 2871128524200,
+                      "finished_clock_id": "39165d35163f41a698d8f46b9e3d0b28",
+                      "elapsed_ms": 4.6318
+                    },
+                    "outcome": {
+                      "model": "tool_outcome_v1",
+                      "passed": true,
+                      "chain_passed": true,
+                      "source": {
+                        "id": "scene",
+                        "name": "VisA PCB2 photographs",
+                        "type": "input.file",
+                        "path": "scene"
+                      },
+                      "score": null,
+                      "message": "pcb2-0621.jpg \u00b7 bgr / uint8",
+                      "data": {},
+                      "fail_reasons": []
+                    }
+                  }
+                },
+                "coverage": 0.8125,
+                "fit_error_working_px": 0.6346993489011473,
+                "coarse_score": 0.7562526861826578,
+                "contrast": 82.40477375373314,
+                "clutter": null,
+                "outside_region_fraction": 0.0,
+                "measured_edge_count": 390
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "SimpleSegmentation": {
+    "project": "pixel_segmentation/armbench_tote/project.json",
+    "dataset": "ARMBench",
+    "license": "CC-BY-4.0",
+    "attribution": "pixel_segmentation/armbench_tote/SOURCES.md",
+    "frames": [
+      {
+        "frame": 0,
+        "state": "pass",
+        "input_file": "pixel_segmentation/armbench_tote/assets/OAR1KXNIME.jpg",
+        "input_file_sha256": "7f4d546306841aad78a9a64a49b6947b9421c8e91a02ce32738e199866409ba2",
+        "result_pixels_sha256": "7306b4e4640cdf59ea1a5b406b05f119d6112915a93268b3e7cff9faff938564",
+        "result_size": [
+          612,
+          512
+        ],
+        "measurements": {
+          "foreground_pixels": 97845,
+          "inspected_pixels": 183848,
+          "report": {
+            "model": "image_segmentation_v1",
+            "count": 1,
+            "incomplete_count": 0,
+            "parts": [
+              {
+                "match_index": 1,
+                "patch_size": [
+                  612,
+                  512
+                ],
+                "patch_to_source": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "requested_pixels": 183848,
+                "inspected_pixels": 183848,
+                "defect_pixels": 97845,
+                "regions": [
+                  {
+                    "x": 59,
+                    "y": 37,
+                    "width": 441,
+                    "height": 343,
+                    "area_px": 97330,
+                    "mean_score": 0.9819971323013306
+                  },
+                  {
+                    "x": 230,
+                    "y": 37,
+                    "width": 128,
+                    "height": 9,
+                    "area_px": 515,
+                    "mean_score": 0.747785210609436
+                  }
+                ],
+                "inspected_fraction": 1.0,
+                "defect_fraction": 0.5322059527435707,
+                "foreground_pixels": 97845,
+                "foreground_fraction": 0.5322059527435707
+              }
+            ],
+            "image_size": [
+              612,
+              512
+            ],
+            "model_sha256": "7b6c9b334e447708a638e5c02298d7ac711dc77fefff9cfe0ad409c079586507",
+            "region_sha256": "104c2848b0396df945958d246e78594ffc641bbb202f56d76599de783c0105bb"
+          }
+        }
+      },
+      {
+        "frame": 1,
+        "state": "pass",
+        "input_file": "pixel_segmentation/armbench_tote/assets/EZ5895NGB8.jpg",
+        "input_file_sha256": "7e5348d1a7aa3cccfb67154e457746e24c64d20f9e945103d5caeb983148bafc",
+        "result_pixels_sha256": "ae26806edf1b2bff2a882a744085422c60dda5f80f2455c21039035f5bda4026",
+        "result_size": [
+          612,
+          512
+        ],
+        "measurements": {
+          "foreground_pixels": 0,
+          "inspected_pixels": 183848,
+          "report": {
+            "model": "image_segmentation_v1",
+            "count": 1,
+            "incomplete_count": 0,
+            "parts": [
+              {
+                "match_index": 1,
+                "patch_size": [
+                  612,
+                  512
+                ],
+                "patch_to_source": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "requested_pixels": 183848,
+                "inspected_pixels": 183848,
+                "defect_pixels": 0,
+                "regions": [],
+                "inspected_fraction": 1.0,
+                "defect_fraction": 0.0,
+                "foreground_pixels": 0,
+                "foreground_fraction": 0.0
+              }
+            ],
+            "image_size": [
+              612,
+              512
+            ],
+            "model_sha256": "7b6c9b334e447708a638e5c02298d7ac711dc77fefff9cfe0ad409c079586507",
+            "region_sha256": "104c2848b0396df945958d246e78594ffc641bbb202f56d76599de783c0105bb"
+          }
+        }
+      }
+    ]
+  },
+  "SimpleClassify": {
+    "project": "image_classification/vegqual/project.json",
+    "dataset": "VegQual v4",
+    "license": "CC-BY-4.0",
+    "attribution": "image_classification/vegqual/SOURCES.md",
+    "frames": [
+      {
+        "frame": 0,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/fresh_potato/01.jpg",
+        "input_file_sha256": "0aa13428b9c855ba810dfcb2fc9ec6728ffbf366c691e152f8c1166fb348433d",
+        "result_pixels_sha256": "4ecb5c9269db86277ebd349c442306f39691c85b94b43159b028bef850b06250",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "fresh_potato",
+          "score": 50.54324430436878,
+          "confusion": 63.27660975550494,
+          "probabilities": [
+            {
+              "label": "fresh_potato",
+              "score": 50.54324430436878
+            },
+            {
+              "label": "defected_Potato",
+              "score": 31.98205145624691
+            },
+            {
+              "label": "fresh_capsicum",
+              "score": 13.424524145954393
+            },
+            {
+              "label": "defected_capsicum",
+              "score": 4.050180093429916
+            }
+          ],
+          "expected": "fresh_potato",
+          "correct": true
+        }
+      },
+      {
+        "frame": 1,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/fresh_potato/02.jpg",
+        "input_file_sha256": "b2e022f66b2f1277b8e588002651cf248d0fc1150b09588ce1d90f513f753915",
+        "result_pixels_sha256": "9cbcbd9b7bd8ab0e2bb2d4b2aef3bb7323cd72abea7d00a075b2fa12565eda03",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "fresh_potato",
+          "score": 45.875141192333906,
+          "confusion": 65.05870848542543,
+          "probabilities": [
+            {
+              "label": "fresh_potato",
+              "score": 45.875141192333906
+            },
+            {
+              "label": "defected_Potato",
+              "score": 29.845774375597834
+            },
+            {
+              "label": "fresh_capsicum",
+              "score": 20.602719923760855
+            },
+            {
+              "label": "defected_capsicum",
+              "score": 3.6763645083074126
+            }
+          ],
+          "expected": "fresh_potato",
+          "correct": true
+        }
+      },
+      {
+        "frame": 2,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/fresh_potato/03.jpg",
+        "input_file_sha256": "f3ea08112e34e26264bb2a55b9c30009410b668d65a4f67d84c2bf4f9427a089",
+        "result_pixels_sha256": "d9f28322e125d0797b12df116ea4f38041966217d6a59f1acb365f778ec5c064",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "defected_Potato",
+          "score": 43.90867707451586,
+          "confusion": 77.83625147133655,
+          "probabilities": [
+            {
+              "label": "defected_Potato",
+              "score": 43.90867707451586
+            },
+            {
+              "label": "fresh_potato",
+              "score": 34.17686830545726
+            },
+            {
+              "label": "fresh_capsicum",
+              "score": 17.98089681879462
+            },
+            {
+              "label": "defected_capsicum",
+              "score": 3.9335578012322734
+            }
+          ],
+          "expected": "fresh_potato",
+          "correct": false
+        }
+      },
+      {
+        "frame": 3,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/fresh_potato/04.jpg",
+        "input_file_sha256": "30472fec3ca7bd0790acdb1e68f0aa363170435422f6fb0db9b8599773e1fd15",
+        "result_pixels_sha256": "3e32f534274c5dd271414e806584d4de346aada75998cc9d297272bba987d5c8",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "defected_Potato",
+          "score": 49.759377949799244,
+          "confusion": 87.19243989828463,
+          "probabilities": [
+            {
+              "label": "defected_Potato",
+              "score": 49.759377949799244
+            },
+            {
+              "label": "fresh_potato",
+              "score": 43.38641571263901
+            },
+            {
+              "label": "fresh_capsicum",
+              "score": 5.982998592008793
+            },
+            {
+              "label": "defected_capsicum",
+              "score": 0.8712077455529641
+            }
+          ],
+          "expected": "fresh_potato",
+          "correct": false
+        }
+      },
+      {
+        "frame": 4,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/defected_Potato/01.jpg",
+        "input_file_sha256": "3fabcddb03a69c86c430d98cf3e7760b8fde5079139be9e5f8d8f40e9d629232",
+        "result_pixels_sha256": "294757c6103e271e694ea6bd2252f149814a9a31786c9f5101ef9ff011aa42c3",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "defected_Potato",
+          "score": 47.61449338114271,
+          "confusion": 97.98647124233901,
+          "probabilities": [
+            {
+              "label": "defected_Potato",
+              "score": 47.61449338114271
+            },
+            {
+              "label": "fresh_potato",
+              "score": 46.655761864098814
+            },
+            {
+              "label": "fresh_capsicum",
+              "score": 4.8616256673605145
+            },
+            {
+              "label": "defected_capsicum",
+              "score": 0.8681190873979721
+            }
+          ],
+          "expected": "defected_Potato",
+          "correct": true
+        }
+      },
+      {
+        "frame": 5,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/defected_Potato/02.jpg",
+        "input_file_sha256": "edd516d5183c0799fed9dc34a914ef6530eb4042605ee741f6a7f32d30127881",
+        "result_pixels_sha256": "a4d817c8e750b3feaed2214e278e75dc101624de7d87a0e9d47ddffcd5a3084a",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "defected_Potato",
+          "score": 50.559960832727356,
+          "confusion": 83.32471886014224,
+          "probabilities": [
+            {
+              "label": "defected_Potato",
+              "score": 50.559960832727356
+            },
+            {
+              "label": "fresh_potato",
+              "score": 42.128945219668104
+            },
+            {
+              "label": "fresh_capsicum",
+              "score": 6.237175992240496
+            },
+            {
+              "label": "defected_capsicum",
+              "score": 1.0739179553640512
+            }
+          ],
+          "expected": "defected_Potato",
+          "correct": true
+        }
+      },
+      {
+        "frame": 6,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/defected_Potato/03.jpg",
+        "input_file_sha256": "827a8308c2f1b507d055609eda0fd6796ae8a3a614e31d901dec11ab3d2ab9b5",
+        "result_pixels_sha256": "dd48c5b715336bc71d99ddf38c716578c7331cdec7eef3cb8c735efcd7212bc2",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "defected_Potato",
+          "score": 45.94661046286935,
+          "confusion": 93.38803352500717,
+          "probabilities": [
+            {
+              "label": "defected_Potato",
+              "score": 45.94661046286935
+            },
+            {
+              "label": "fresh_potato",
+              "score": 42.90863598266888
+            },
+            {
+              "label": "fresh_capsicum",
+              "score": 9.147507000087431
+            },
+            {
+              "label": "defected_capsicum",
+              "score": 1.9972465543743247
+            }
+          ],
+          "expected": "defected_Potato",
+          "correct": true
+        }
+      },
+      {
+        "frame": 7,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/defected_Potato/04.jpg",
+        "input_file_sha256": "f81e8a58c12c794800389afb5b8dc9471977c3f49613af7ac408e4e7cae44ceb",
+        "result_pixels_sha256": "58b241f65d7363f60aaccb2ff6d1456c57431f4d86428e141b84301e97cd5663",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "defected_Potato",
+          "score": 41.186954034330164,
+          "confusion": 92.17372282862286,
+          "probabilities": [
+            {
+              "label": "defected_Potato",
+              "score": 41.186954034330164
+            },
+            {
+              "label": "fresh_potato",
+              "score": 37.963548853155785
+            },
+            {
+              "label": "fresh_capsicum",
+              "score": 15.724559964612439
+            },
+            {
+              "label": "defected_capsicum",
+              "score": 5.124937147901617
+            }
+          ],
+          "expected": "defected_Potato",
+          "correct": true
+        }
+      },
+      {
+        "frame": 8,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/fresh_capsicum/01.jpg",
+        "input_file_sha256": "e1592b3e7c708f317fda12dada44fa50509358ac0f7d334b2f235bf2bed98f65",
+        "result_pixels_sha256": "5fc472bc23482ec32c797586245656e910cd6d291fbcc801164eebb5ce86b597",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "fresh_capsicum",
+          "score": 71.68824221416301,
+          "confusion": 26.38145580128488,
+          "probabilities": [
+            {
+              "label": "fresh_capsicum",
+              "score": 71.68824221416301
+            },
+            {
+              "label": "defected_capsicum",
+              "score": 18.912401934447463
+            },
+            {
+              "label": "defected_Potato",
+              "score": 5.901521495897528
+            },
+            {
+              "label": "fresh_potato",
+              "score": 3.497834355491994
+            }
+          ],
+          "expected": "fresh_capsicum",
+          "correct": true
+        }
+      },
+      {
+        "frame": 9,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/fresh_capsicum/02.jpg",
+        "input_file_sha256": "1fe2b6fcba5ad54e77c7567d91a61d7cc70e35b6542ffcdc283b0ce7e7872498",
+        "result_pixels_sha256": "de870f39723b590211e874dfecc83fbdecaa6f2fa7f179d837b04e21eced3c6e",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "fresh_capsicum",
+          "score": 41.646278345549646,
+          "confusion": 88.91640088617739,
+          "probabilities": [
+            {
+              "label": "fresh_capsicum",
+              "score": 41.646278345549646
+            },
+            {
+              "label": "defected_capsicum",
+              "score": 37.030371807902206
+            },
+            {
+              "label": "fresh_potato",
+              "score": 12.239909250080542
+            },
+            {
+              "label": "defected_Potato",
+              "score": 9.083440596467604
+            }
+          ],
+          "expected": "fresh_capsicum",
+          "correct": true
+        }
+      },
+      {
+        "frame": 10,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/fresh_capsicum/03.jpg",
+        "input_file_sha256": "bc1333a1d63025394c31172d76263319728678c5871cb4e3c13a34e44de07568",
+        "result_pixels_sha256": "bae50292af0be0e3fe21dddf428aa89c3bfc4b034f410661cfa887249d319d2d",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "defected_capsicum",
+          "score": 61.537873779547915,
+          "confusion": 58.6151275631723,
+          "probabilities": [
+            {
+              "label": "defected_capsicum",
+              "score": 61.537873779547915
+            },
+            {
+              "label": "fresh_capsicum",
+              "score": 36.07050321554597
+            },
+            {
+              "label": "defected_Potato",
+              "score": 1.6765196241536449
+            },
+            {
+              "label": "fresh_potato",
+              "score": 0.7151033807524717
+            }
+          ],
+          "expected": "fresh_capsicum",
+          "correct": false
+        }
+      },
+      {
+        "frame": 11,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/fresh_capsicum/04.jpg",
+        "input_file_sha256": "4f501359433ec0504a9bd72558ca52ea44291b96a66a167f64fb50e3a4c58bc5",
+        "result_pixels_sha256": "244cfb3f1f239f3967af39a5e58d9a49e5b2f241935cae7cb5bfa15a8a13b0bb",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "defected_capsicum",
+          "score": 48.018120887648585,
+          "confusion": 97.1301253288566,
+          "probabilities": [
+            {
+              "label": "defected_capsicum",
+              "score": 48.018120887648585
+            },
+            {
+              "label": "fresh_capsicum",
+              "score": 46.64006099873494
+            },
+            {
+              "label": "defected_Potato",
+              "score": 3.7735008800325733
+            },
+            {
+              "label": "fresh_potato",
+              "score": 1.5683172335839015
+            }
+          ],
+          "expected": "fresh_capsicum",
+          "correct": false
+        }
+      },
+      {
+        "frame": 12,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/defected_capsicum/01.jpg",
+        "input_file_sha256": "e1c53f74b6301ded96c3bf4d7d44f6d173b1edf5a7c40364597a791036fd40ba",
+        "result_pixels_sha256": "a6220477e44986379c623d6dcfbc7dc0be1517bb9d8b20f6c218f8178a700a9d",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "defected_capsicum",
+          "score": 49.9553291908097,
+          "confusion": 57.38421309979713,
+          "probabilities": [
+            {
+              "label": "defected_capsicum",
+              "score": 49.9553291908097
+            },
+            {
+              "label": "fresh_capsicum",
+              "score": 28.6664725575594
+            },
+            {
+              "label": "defected_Potato",
+              "score": 13.066502295069991
+            },
+            {
+              "label": "fresh_potato",
+              "score": 8.311695956560923
+            }
+          ],
+          "expected": "defected_capsicum",
+          "correct": true
+        }
+      },
+      {
+        "frame": 13,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/defected_capsicum/02.jpg",
+        "input_file_sha256": "c02e21bf4acafe6d5e218591f9fa517534a32158d38ae2bd4bf041c936f15132",
+        "result_pixels_sha256": "7535ed71f33292067798f0d67b97c1ae39f9289c5c246472e15e7eba3c80f9fc",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "fresh_capsicum",
+          "score": 35.29656738932172,
+          "confusion": 69.51075505184247,
+          "probabilities": [
+            {
+              "label": "fresh_capsicum",
+              "score": 35.29656738932172
+            },
+            {
+              "label": "defected_Potato",
+              "score": 24.53491049969993
+            },
+            {
+              "label": "defected_capsicum",
+              "score": 23.52558772440582
+            },
+            {
+              "label": "fresh_potato",
+              "score": 16.642934386572524
+            }
+          ],
+          "expected": "defected_capsicum",
+          "correct": false
+        }
+      },
+      {
+        "frame": 14,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/defected_capsicum/03.jpg",
+        "input_file_sha256": "58520aeedd110e88b5dbba6b1b08bd66e220039e73adc7e2dfb8fe03c24368e8",
+        "result_pixels_sha256": "858271c8a3b7c9af81dcb1fb327987234e42f7c94b28e05b8d2809760cb91189",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "defected_capsicum",
+          "score": 56.69019437715187,
+          "confusion": 71.90401940496317,
+          "probabilities": [
+            {
+              "label": "defected_capsicum",
+              "score": 56.69019437715187
+            },
+            {
+              "label": "fresh_capsicum",
+              "score": 40.76252836565862
+            },
+            {
+              "label": "defected_Potato",
+              "score": 1.8046351143795982
+            },
+            {
+              "label": "fresh_potato",
+              "score": 0.7426421428099265
+            }
+          ],
+          "expected": "defected_capsicum",
+          "correct": true
+        }
+      },
+      {
+        "frame": 15,
+        "state": "pass",
+        "input_file": "image_classification/vegqual/images/test/defected_capsicum/04.jpg",
+        "input_file_sha256": "64c90b79a7397057d621e56287a3fbd6017facc1aa8ff03ed3de4df7ae054578",
+        "result_pixels_sha256": "4fc370d228ce2fddd74d521dc2fbebbd09d1e5bc14dcdf5a3a7d7f6b1549a810",
+        "result_size": [
+          1120,
+          480
+        ],
+        "measurements": {
+          "label": "fresh_capsicum",
+          "score": 59.484934332168706,
+          "confusion": 58.01138865571781,
+          "probabilities": [
+            {
+              "label": "fresh_capsicum",
+              "score": 59.484934332168706
+            },
+            {
+              "label": "defected_capsicum",
+              "score": 34.50803644703291
+            },
+            {
+              "label": "defected_Potato",
+              "score": 4.101863879357569
+            },
+            {
+              "label": "fresh_potato",
+              "score": 1.9051653414408167
+            }
+          ],
+          "expected": "defected_capsicum",
+          "correct": false
+        }
+      }
+    ]
+  },
+  "SimplePathWidth": {
+    "project": "path_width/weld_bead/project.json",
+    "dataset": "Hyun Soo Kim weld bead images",
+    "license": "MIT",
+    "attribution": "path_width/weld_bead/SOURCES.md",
+    "frames": [
+      {
+        "frame": 0,
+        "state": "pass",
+        "input_file": "path_width/weld_bead/assets/20230930_21h03m42s_B11_1.png",
+        "input_file_sha256": "a99ee393638d553ac73770c1fdf2bec55e993f48ca49e63b476845b9528ea52c",
+        "result_pixels_sha256": "d90f64fe690ff4f870a7d7a1045fc0cbf8b2e7bed8a6d8474529fa84f158e646",
+        "result_size": [
+          448,
+          448
+        ],
+        "measurements": {
+          "model": "simple_path_width_v1",
+          "path": [
+            [
+              100.0,
+              165.0
+            ],
+            [
+              348.0,
+              165.0
+            ]
+          ],
+          "closed": false,
+          "path_length_px": 248.0,
+          "station_spacing_px": 8.0,
+          "stations": [
+            {
+              "distance_px": 4.0,
+              "point": [
+                104.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  104.0,
+                  110.71327279424733
+                ],
+                [
+                  104.0,
+                  233.3841536597205
+                ]
+              ],
+              "edge_strengths": [
+                16.796057813550938,
+                20.015462755836875
+              ],
+              "width_px": 122.67088086547318,
+              "center_offset_px": 7.048713226983924,
+              "issues": []
+            },
+            {
+              "distance_px": 12.0,
+              "point": [
+                112.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  112.0,
+                  109.9733384879354
+                ],
+                [
+                  112.0,
+                  232.26865790137967
+                ]
+              ],
+              "edge_strengths": [
+                18.68599072572918,
+                19.242497503940868
+              ],
+              "width_px": 122.29531941344428,
+              "center_offset_px": 6.120998194657531,
+              "issues": []
+            },
+            {
+              "distance_px": 20.0,
+              "point": [
+                120.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  120.0,
+                  110.12626634472925
+                ],
+                [
+                  120.0,
+                  232.78784976675908
+                ]
+              ],
+              "edge_strengths": [
+                21.748138944014674,
+                20.25745446655951
+              ],
+              "width_px": 122.66158342202984,
+              "center_offset_px": 6.457058055744163,
+              "issues": []
+            },
+            {
+              "distance_px": 28.0,
+              "point": [
+                128.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  128.0,
+                  110.15291886777695
+                ],
+                [
+                  128.0,
+                  234.90579760830806
+                ]
+              ],
+              "edge_strengths": [
+                18.00078337663782,
+                22.12374718183308
+              ],
+              "width_px": 124.75287874053112,
+              "center_offset_px": 7.5293582380425015,
+              "issues": []
+            },
+            {
+              "distance_px": 36.0,
+              "point": [
+                136.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  136.0,
+                  104.56711039603164
+                ],
+                [
+                  136.0,
+                  229.17984376839382
+                ]
+              ],
+              "edge_strengths": [
+                18.17155091583945,
+                16.202511950050063
+              ],
+              "width_px": 124.61273337236219,
+              "center_offset_px": 1.8734770822127302,
+              "issues": []
+            },
+            {
+              "distance_px": 44.0,
+              "point": [
+                144.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  144.0,
+                  100.46428650904284
+                ],
+                [
+                  144.0,
+                  228.8154494853634
+                ]
+              ],
+              "edge_strengths": [
+                14.999289184206154,
+                13.240154681806223
+              ],
+              "width_px": 128.35116297632055,
+              "center_offset_px": -0.3601320027968882,
+              "issues": []
+            },
+            {
+              "distance_px": 52.0,
+              "point": [
+                152.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  152.0,
+                  97.39374542049136
+                ],
+                [
+                  152.0,
+                  230.1529020284357
+                ]
+              ],
+              "edge_strengths": [
+                15.373192129171006,
+                22.740900936305305
+              ],
+              "width_px": 132.75915660794436,
+              "center_offset_px": -1.2266762755364695,
+              "issues": []
+            },
+            {
+              "distance_px": 60.0,
+              "point": [
+                160.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  160.0,
+                  96.00073791153272
+                ],
+                [
+                  160.0,
+                  230.67672023123671
+                ]
+              ],
+              "edge_strengths": [
+                16.41696246479908,
+                22.084901106511364
+              ],
+              "width_px": 134.675982319704,
+              "center_offset_px": -1.6612709286152807,
+              "issues": []
+            },
+            {
+              "distance_px": 68.0,
+              "point": [
+                168.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  168.0,
+                  95.69563079510377
+                ],
+                [
+                  168.0,
+                  232.05320970567047
+                ]
+              ],
+              "edge_strengths": [
+                17.586102520119066,
+                23.36095942296038
+              ],
+              "width_px": 136.3575789105667,
+              "center_offset_px": -1.125579749612882,
+              "issues": []
+            },
+            {
+              "distance_px": 76.0,
+              "point": [
+                176.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  176.0,
+                  96.72897912548154
+                ],
+                [
+                  176.0,
+                  232.46949428006948
+                ]
+              ],
+              "edge_strengths": [
+                13.412463161616067,
+                25.325318929833337
+              ],
+              "width_px": 135.74051515458794,
+              "center_offset_px": -0.40076329722448634,
+              "issues": []
+            },
+            {
+              "distance_px": 84.0,
+              "point": [
+                184.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  184.0,
+                  96.98120982370882
+                ],
+                [
+                  184.0,
+                  232.23983157708452
+                ]
+              ],
+              "edge_strengths": [
+                14.6974307372116,
+                27.643290330858285
+              ],
+              "width_px": 135.25862175337568,
+              "center_offset_px": -0.3894792996033303,
+              "issues": []
+            },
+            {
+              "distance_px": 92.0,
+              "point": [
+                192.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  192.0,
+                  97.33950515772315
+                ],
+                [
+                  192.0,
+                  232.21252261070978
+                ]
+              ],
+              "edge_strengths": [
+                13.54807468236019,
+                28.932055747276777
+              ],
+              "width_px": 134.87301745298663,
+              "center_offset_px": -0.2239861157835321,
+              "issues": []
+            },
+            {
+              "distance_px": 100.0,
+              "point": [
+                200.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  200.0,
+                  104.10911707372627
+                ],
+                [
+                  200.0,
+                  232.73573818478621
+                ]
+              ],
+              "edge_strengths": [
+                17.168740492170386,
+                31.717265184168163
+              ],
+              "width_px": 128.62662111105993,
+              "center_offset_px": 3.4224276292562408,
+              "issues": []
+            },
+            {
+              "distance_px": 108.0,
+              "point": [
+                208.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  208.0,
+                  102.07100894594515
+                ],
+                [
+                  208.0,
+                  231.85770334315177
+                ]
+              ],
+              "edge_strengths": [
+                19.12556210536077,
+                32.788561125325906
+              ],
+              "width_px": 129.78669439720662,
+              "center_offset_px": 1.9643561445484607,
+              "issues": []
+            },
+            {
+              "distance_px": 116.0,
+              "point": [
+                216.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  216.0,
+                  103.02085777802064
+                ],
+                [
+                  216.0,
+                  232.3007054696238
+                ]
+              ],
+              "edge_strengths": [
+                13.778997596887256,
+                25.247829145479248
+              ],
+              "width_px": 129.27984769160315,
+              "center_offset_px": 2.660781623822224,
+              "issues": []
+            },
+            {
+              "distance_px": 124.0,
+              "point": [
+                224.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  224.0,
+                  100.4093681358714
+                ],
+                [
+                  224.0,
+                  232.9717433167268
+                ]
+              ],
+              "edge_strengths": [
+                20.183818040414913,
+                22.850474056736132
+              ],
+              "width_px": 132.56237518085538,
+              "center_offset_px": 1.6905557262990953,
+              "issues": []
+            },
+            {
+              "distance_px": 132.0,
+              "point": [
+                232.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  232.0,
+                  99.0774961152387
+                ],
+                [
+                  232.0,
+                  232.39108421924735
+                ]
+              ],
+              "edge_strengths": [
+                17.897996410999394,
+                27.25701181211959
+              ],
+              "width_px": 133.31358810400866,
+              "center_offset_px": 0.7342901672430244,
+              "issues": []
+            },
+            {
+              "distance_px": 140.0,
+              "point": [
+                240.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  240.0,
+                  98.7218877495779
+                ],
+                [
+                  240.0,
+                  231.1877798189099
+                ]
+              ],
+              "edge_strengths": [
+                18.668703554383782,
+                27.479340479065364
+              ],
+              "width_px": 132.46589206933197,
+              "center_offset_px": -0.04516621575610458,
+              "issues": []
+            },
+            {
+              "distance_px": 148.0,
+              "point": [
+                248.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  248.0,
+                  100.44678831947598
+                ],
+                [
+                  248.0,
+                  231.29631949439243
+                ]
+              ],
+              "edge_strengths": [
+                21.5984487496946,
+                26.7363794611249
+              ],
+              "width_px": 130.84953117491645,
+              "center_offset_px": 0.87155390693421,
+              "issues": []
+            },
+            {
+              "distance_px": 156.0,
+              "point": [
+                256.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  256.0,
+                  102.37733535385127
+                ],
+                [
+                  256.0,
+                  232.27908290474673
+                ]
+              ],
+              "edge_strengths": [
+                17.940665197989922,
+                22.96945048372448
+              ],
+              "width_px": 129.90174755089546,
+              "center_offset_px": 2.328209129298994,
+              "issues": []
+            },
+            {
+              "distance_px": 164.0,
+              "point": [
+                264.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  264.0,
+                  101.77665783634838
+                ],
+                [
+                  264.0,
+                  232.17489724915322
+                ]
+              ],
+              "edge_strengths": [
+                18.784381217259252,
+                22.341366572511447
+              ],
+              "width_px": 130.39823941280486,
+              "center_offset_px": 1.975777542750798,
+              "issues": []
+            },
+            {
+              "distance_px": 172.0,
+              "point": [
+                272.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  272.0,
+                  100.28112352917331
+                ],
+                [
+                  272.0,
+                  230.92549251448415
+                ]
+              ],
+              "edge_strengths": [
+                21.116221635176018,
+                31.055364485927065
+              ],
+              "width_px": 130.64436898531085,
+              "center_offset_px": 0.603308021828731,
+              "issues": []
+            },
+            {
+              "distance_px": 180.0,
+              "point": [
+                280.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  280.0,
+                  99.14240647847872
+                ],
+                [
+                  280.0,
+                  231.72075791140722
+                ]
+              ],
+              "edge_strengths": [
+                24.937794157515427,
+                28.205403050063097
+              ],
+              "width_px": 132.5783514329285,
+              "center_offset_px": 0.431582194942969,
+              "issues": []
+            },
+            {
+              "distance_px": 188.0,
+              "point": [
+                288.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  288.0,
+                  98.07328340312745
+                ],
+                [
+                  288.0,
+                  232.6077760682313
+                ]
+              ],
+              "edge_strengths": [
+                21.2410961548473,
+                26.585112937794467
+              ],
+              "width_px": 134.53449266510384,
+              "center_offset_px": 0.3405297356793682,
+              "issues": []
+            },
+            {
+              "distance_px": 196.0,
+              "point": [
+                296.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  296.0,
+                  95.744745366199
+                ],
+                [
+                  296.0,
+                  233.03837261261125
+                ]
+              ],
+              "edge_strengths": [
+                20.531495101839024,
+                26.028344823232793
+              ],
+              "width_px": 137.29362724641226,
+              "center_offset_px": -0.6084410105948734,
+              "issues": []
+            },
+            {
+              "distance_px": 204.0,
+              "point": [
+                304.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  304.0,
+                  96.08512596310129
+                ],
+                [
+                  304.0,
+                  233.03259578609155
+                ]
+              ],
+              "edge_strengths": [
+                15.514584784815229,
+                25.997691618358232
+              ],
+              "width_px": 136.94746982299026,
+              "center_offset_px": -0.4411391254035806,
+              "issues": []
+            },
+            {
+              "distance_px": 212.0,
+              "point": [
+                312.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  312.0,
+                  96.24188582656372
+                ],
+                [
+                  312.0,
+                  233.4220720887913
+                ]
+              ],
+              "edge_strengths": [
+                14.538292121531214,
+                22.01921738129347
+              ],
+              "width_px": 137.1801862622276,
+              "center_offset_px": -0.16802104232248638,
+              "issues": []
+            },
+            {
+              "distance_px": 220.0,
+              "point": [
+                320.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  320.0,
+                  109.22763954024936
+                ],
+                [
+                  320.0,
+                  232.74385410576733
+                ]
+              ],
+              "edge_strengths": [
+                13.701924022015952,
+                18.60616806642874
+              ],
+              "width_px": 123.51621456551797,
+              "center_offset_px": 5.985746823008341,
+              "issues": []
+            },
+            {
+              "distance_px": 228.0,
+              "point": [
+                328.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  328.0,
+                  97.89659322953487
+                ],
+                [
+                  328.0,
+                  231.07515908331882
+                ]
+              ],
+              "edge_strengths": [
+                9.216000849824077,
+                19.694547491501687
+              ],
+              "width_px": 133.17856585378394,
+              "center_offset_px": -0.5141238435731523,
+              "issues": []
+            },
+            {
+              "distance_px": 236.0,
+              "point": [
+                336.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  336.0,
+                  99.95437617381481
+                ],
+                [
+                  336.0,
+                  227.02183253622474
+                ]
+              ],
+              "edge_strengths": [
+                10.461341467417936,
+                26.3559691053469
+              ],
+              "width_px": 127.06745636240993,
+              "center_offset_px": -1.5118956449802283,
+              "issues": []
+            },
+            {
+              "distance_px": 244.0,
+              "point": [
+                344.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  344.0,
+                  94.49954580747897
+                ],
+                [
+                  344.0,
+                  226.9254465210616
+                ]
+              ],
+              "edge_strengths": [
+                6.265515001669704,
+                22.4066787689565
+              ],
+              "width_px": 132.42590071358262,
+              "center_offset_px": -4.287503835729723,
+              "issues": []
+            }
+          ],
+          "gaps": [],
+          "min_width_px": 122.29531941344428,
+          "max_width_px": 137.29362724641226,
+          "mean_width_px": 130.889051664267,
+          "coverage": 1.0,
+          "observed_fraction": 1.0,
+          "longest_gap_px": 0.0,
+          "passed": true,
+          "failures": []
+        }
+      },
+      {
+        "frame": 1,
+        "state": "pass",
+        "input_file": "path_width/weld_bead/assets/20231113_19h46m30s_B13_3.png",
+        "input_file_sha256": "d39dd2bf0fd5c97fe5e5e7ecd95bd259c0ccb4f3e42b16c10c97956e893dd741",
+        "result_pixels_sha256": "ea69c3960ea42b330d8d3455acab67bfac9de557b05f9815d06d7646e33c2d52",
+        "result_size": [
+          448,
+          448
+        ],
+        "measurements": {
+          "model": "simple_path_width_v1",
+          "path": [
+            [
+              100.0,
+              165.0
+            ],
+            [
+              348.0,
+              165.0
+            ]
+          ],
+          "closed": false,
+          "path_length_px": 248.0,
+          "station_spacing_px": 8.0,
+          "stations": [
+            {
+              "distance_px": 4.0,
+              "point": [
+                104.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  104.0,
+                  78.48519208496556
+                ],
+                [
+                  104.0,
+                  213.53252318880328
+                ]
+              ],
+              "edge_strengths": [
+                29.101402584503983,
+                3.5088658493620795
+              ],
+              "width_px": 135.04733110383773,
+              "center_offset_px": -18.99114236311558,
+              "issues": []
+            },
+            {
+              "distance_px": 12.0,
+              "point": [
+                112.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  112.0,
+                  78.76510946524061
+                ],
+                [
+                  112.0,
+                  205.60505312431334
+                ]
+              ],
+              "edge_strengths": [
+                23.079250795034636,
+                12.322540323638975
+              ],
+              "width_px": 126.83994365907273,
+              "center_offset_px": -22.814918705223022,
+              "issues": []
+            },
+            {
+              "distance_px": 20.0,
+              "point": [
+                120.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  120.0,
+                  82.73682394449722
+                ],
+                [
+                  120.0,
+                  207.8664967675134
+                ]
+              ],
+              "edge_strengths": [
+                22.213925003544254,
+                12.479948337537632
+              ],
+              "width_px": 125.1296728230162,
+              "center_offset_px": -19.698339643994686,
+              "issues": []
+            },
+            {
+              "distance_px": 28.0,
+              "point": [
+                128.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  128.0,
+                  79.6359288734472
+                ],
+                [
+                  128.0,
+                  210.67753304894558
+                ]
+              ],
+              "edge_strengths": [
+                20.076833775273098,
+                9.675910779928735
+              ],
+              "width_px": 131.04160417549838,
+              "center_offset_px": -19.843269038803612,
+              "issues": []
+            },
+            {
+              "distance_px": 36.0,
+              "point": [
+                136.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  136.0,
+                  79.17527410196003
+                ],
+                [
+                  136.0,
+                  211.47344867283837
+                ]
+              ],
+              "edge_strengths": [
+                17.775261462050352,
+                9.282213964065551
+              ],
+              "width_px": 132.29817457087836,
+              "center_offset_px": -19.6756386126008,
+              "issues": []
+            },
+            {
+              "distance_px": 44.0,
+              "point": [
+                144.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  144.0,
+                  76.7503465727491
+                ],
+                [
+                  144.0,
+                  206.47235951231553
+                ]
+              ],
+              "edge_strengths": [
+                14.702817805593407,
+                15.508309224515079
+              ],
+              "width_px": 129.72201293956644,
+              "center_offset_px": -23.388646957467685,
+              "issues": []
+            },
+            {
+              "distance_px": 52.0,
+              "point": [
+                152.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  152.0,
+                  76.41389594791087
+                ],
+                [
+                  152.0,
+                  207.8379466614735
+                ]
+              ],
+              "edge_strengths": [
+                18.80947183705374,
+                13.241846558297292
+              ],
+              "width_px": 131.42405071356262,
+              "center_offset_px": -22.874078695307816,
+              "issues": []
+            },
+            {
+              "distance_px": 60.0,
+              "point": [
+                160.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  160.0,
+                  77.03273718843529
+                ],
+                [
+                  160.0,
+                  208.0961801484122
+                ]
+              ],
+              "edge_strengths": [
+                20.31107104017783,
+                13.249001556494413
+              ],
+              "width_px": 131.0634429599769,
+              "center_offset_px": -22.435541331576253,
+              "issues": []
+            },
+            {
+              "distance_px": 68.0,
+              "point": [
+                168.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  168.0,
+                  78.17953770643571
+                ],
+                [
+                  168.0,
+                  208.78642620273945
+                ]
+              ],
+              "edge_strengths": [
+                25.5319207043415,
+                14.430941301650186
+              ],
+              "width_px": 130.60688849630372,
+              "center_offset_px": -21.51701804541242,
+              "issues": []
+            },
+            {
+              "distance_px": 76.0,
+              "point": [
+                176.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  176.0,
+                  77.92941313411077
+                ],
+                [
+                  176.0,
+                  209.14435989460264
+                ]
+              ],
+              "edge_strengths": [
+                22.36385650801118,
+                25.96402133289409
+              ],
+              "width_px": 131.21494676049187,
+              "center_offset_px": -21.46311348564329,
+              "issues": []
+            },
+            {
+              "distance_px": 84.0,
+              "point": [
+                184.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  184.0,
+                  76.22926813730331
+                ],
+                [
+                  184.0,
+                  210.27709325584442
+                ]
+              ],
+              "edge_strengths": [
+                24.55776811603619,
+                26.948274304353717
+              ],
+              "width_px": 134.0478251185411,
+              "center_offset_px": -21.746819303426136,
+              "issues": []
+            },
+            {
+              "distance_px": 92.0,
+              "point": [
+                192.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  192.0,
+                  78.07134901365745
+                ],
+                [
+                  192.0,
+                  210.97283399309273
+                ]
+              ],
+              "edge_strengths": [
+                25.36668739320439,
+                23.248336271410412
+              ],
+              "width_px": 132.90148497943528,
+              "center_offset_px": -20.477908496624906,
+              "issues": []
+            },
+            {
+              "distance_px": 100.0,
+              "point": [
+                200.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  200.0,
+                  79.27112560734273
+                ],
+                [
+                  200.0,
+                  212.77690649581888
+                ]
+              ],
+              "edge_strengths": [
+                19.87474764061256,
+                23.94111947715567
+              ],
+              "width_px": 133.50578088847615,
+              "center_offset_px": -18.9759839484192,
+              "issues": []
+            },
+            {
+              "distance_px": 108.0,
+              "point": [
+                208.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  208.0,
+                  80.02824104175934
+                ],
+                [
+                  208.0,
+                  214.4390491814383
+                ]
+              ],
+              "edge_strengths": [
+                18.42922193708296,
+                20.43065505450594
+              ],
+              "width_px": 134.41080813967895,
+              "center_offset_px": -17.76635488840118,
+              "issues": []
+            },
+            {
+              "distance_px": 116.0,
+              "point": [
+                216.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  216.0,
+                  79.33490258017534
+                ],
+                [
+                  216.0,
+                  206.87676207843862
+                ]
+              ],
+              "edge_strengths": [
+                14.389000856166856,
+                18.362818614445267
+              ],
+              "width_px": 127.54185949826328,
+              "center_offset_px": -21.894167670693022,
+              "issues": []
+            },
+            {
+              "distance_px": 124.0,
+              "point": [
+                224.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  224.0,
+                  87.07132075345382
+                ],
+                [
+                  224.0,
+                  216.1363345059419
+                ]
+              ],
+              "edge_strengths": [
+                16.020646639359484,
+                11.920753746686886
+              ],
+              "width_px": 129.06501375248808,
+              "center_offset_px": -13.39617237030214,
+              "issues": []
+            },
+            {
+              "distance_px": 132.0,
+              "point": [
+                232.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  232.0,
+                  87.26912867056217
+                ],
+                [
+                  232.0,
+                  214.81786018865486
+                ]
+              ],
+              "edge_strengths": [
+                18.743269448867206,
+                23.175230510549152
+              ],
+              "width_px": 127.5487315180927,
+              "center_offset_px": -13.956505570391485,
+              "issues": []
+            },
+            {
+              "distance_px": 140.0,
+              "point": [
+                240.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  240.0,
+                  86.53395097199967
+                ],
+                [
+                  240.0,
+                  214.12685510758033
+                ]
+              ],
+              "edge_strengths": [
+                16.565957439386015,
+                24.47456179997857
+              ],
+              "width_px": 127.59290413558065,
+              "center_offset_px": -14.66959696021,
+              "issues": []
+            },
+            {
+              "distance_px": 148.0,
+              "point": [
+                248.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  248.0,
+                  79.60834699610291
+                ],
+                [
+                  248.0,
+                  214.626394567192
+                ]
+              ],
+              "edge_strengths": [
+                14.189543826216282,
+                22.15602469273555
+              ],
+              "width_px": 135.01804757108908,
+              "center_offset_px": -17.882629218352548,
+              "issues": []
+            },
+            {
+              "distance_px": 156.0,
+              "point": [
+                256.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  256.0,
+                  95.3770621767701
+                ],
+                [
+                  256.0,
+                  216.13684581402325
+                ]
+              ],
+              "edge_strengths": [
+                14.190891358959139,
+                18.21324832027231
+              ],
+              "width_px": 120.75978363725315,
+              "center_offset_px": -9.243046004603329,
+              "issues": []
+            },
+            {
+              "distance_px": 164.0,
+              "point": [
+                264.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  264.0,
+                  78.23911207155444
+                ],
+                [
+                  264.0,
+                  215.48645115973872
+                ]
+              ],
+              "edge_strengths": [
+                12.69305436722243,
+                16.112725781768535
+              ],
+              "width_px": 137.24733908818428,
+              "center_offset_px": -18.137218384353417,
+              "issues": []
+            },
+            {
+              "distance_px": 172.0,
+              "point": [
+                272.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  272.0,
+                  98.06641329640357
+                ],
+                [
+                  272.0,
+                  216.1382506191532
+                ]
+              ],
+              "edge_strengths": [
+                11.965367276233591,
+                25.641666194368753
+              ],
+              "width_px": 118.07183732274964,
+              "center_offset_px": -7.897668042221611,
+              "issues": []
+            },
+            {
+              "distance_px": 180.0,
+              "point": [
+                280.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  280.0,
+                  77.76472912499196
+                ],
+                [
+                  280.0,
+                  213.7622367381063
+                ]
+              ],
+              "edge_strengths": [
+                15.987231102168593,
+                20.496593179499456
+              ],
+              "width_px": 135.99750761311435,
+              "center_offset_px": -19.236517068450866,
+              "issues": []
+            },
+            {
+              "distance_px": 188.0,
+              "point": [
+                288.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  288.0,
+                  84.78584132559914
+                ],
+                [
+                  288.0,
+                  212.86175944799137
+                ]
+              ],
+              "edge_strengths": [
+                9.28770655056965,
+                19.33702718000448
+              ],
+              "width_px": 128.07591812239224,
+              "center_offset_px": -16.176199613204744,
+              "issues": []
+            },
+            {
+              "distance_px": 196.0,
+              "point": [
+                296.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  296.0,
+                  82.28447965783806
+                ],
+                [
+                  296.0,
+                  210.49589631643255
+                ]
+              ],
+              "edge_strengths": [
+                12.047060526769082,
+                16.836294596542025
+              ],
+              "width_px": 128.2114166585945,
+              "center_offset_px": -18.609812012864694,
+              "issues": []
+            },
+            {
+              "distance_px": 204.0,
+              "point": [
+                304.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  304.0,
+                  81.30796945318195
+                ],
+                [
+                  304.0,
+                  212.41081649524418
+                ]
+              ],
+              "edge_strengths": [
+                16.51872063101883,
+                19.06691185429468
+              ],
+              "width_px": 131.10284704206222,
+              "center_offset_px": -18.140607025786935,
+              "issues": []
+            },
+            {
+              "distance_px": 212.0,
+              "point": [
+                312.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  312.0,
+                  78.304501409347
+                ],
+                [
+                  312.0,
+                  213.0112314316464
+                ]
+              ],
+              "edge_strengths": [
+                15.488872370078674,
+                18.26102744437749
+              ],
+              "width_px": 134.70673002229938,
+              "center_offset_px": -19.342133579503304,
+              "issues": []
+            },
+            {
+              "distance_px": 220.0,
+              "point": [
+                320.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  320.0,
+                  77.38675760391641
+                ],
+                [
+                  320.0,
+                  213.4065004453985
+                ]
+              ],
+              "edge_strengths": [
+                17.157843384544428,
+                19.929743693113892
+              ],
+              "width_px": 136.0197428414821,
+              "center_offset_px": -19.603370975342543,
+              "issues": []
+            },
+            {
+              "distance_px": 228.0,
+              "point": [
+                328.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  328.0,
+                  77.44587965358853
+                ],
+                [
+                  328.0,
+                  211.59905491674462
+                ]
+              ],
+              "edge_strengths": [
+                17.244545537577356,
+                21.567382079321046
+              ],
+              "width_px": 134.15317526315607,
+              "center_offset_px": -20.477532714833423,
+              "issues": []
+            },
+            {
+              "distance_px": 236.0,
+              "point": [
+                336.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  336.0,
+                  78.11543422621139
+                ],
+                [
+                  336.0,
+                  210.86207322161303
+                ]
+              ],
+              "edge_strengths": [
+                13.206240023135512,
+                17.54417237947524
+              ],
+              "width_px": 132.74663899540164,
+              "center_offset_px": -20.51124627608779,
+              "issues": []
+            },
+            {
+              "distance_px": 244.0,
+              "point": [
+                344.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  344.0,
+                  99.49773426110738
+                ],
+                [
+                  344.0,
+                  210.19056535119827
+                ]
+              ],
+              "edge_strengths": [
+                10.514510664418385,
+                6.488396955940625
+              ],
+              "width_px": 110.69283109009089,
+              "center_offset_px": -10.155850193847172,
+              "issues": []
+            }
+          ],
+          "gaps": [],
+          "min_width_px": 110.69283109009089,
+          "max_width_px": 137.24733908818428,
+          "mean_width_px": 130.1227835967945,
+          "coverage": 1.0,
+          "observed_fraction": 1.0,
+          "longest_gap_px": 0.0,
+          "passed": true,
+          "failures": []
+        }
+      },
+      {
+        "frame": 2,
+        "state": "fail",
+        "input_file": "path_width/weld_bead/assets/20231114_11h25m52s_B04_3.png",
+        "input_file_sha256": "8b17dfea3c870dbbf50dcf670073bf4f1e687667e77b3d7127f22a02a18c7dfa",
+        "result_pixels_sha256": "c9b29233b1b9516a11961561ce39e348b6c98803f8010a106a564cbbeeb0b509",
+        "result_size": [
+          448,
+          448
+        ],
+        "measurements": {
+          "model": "simple_path_width_v1",
+          "path": [
+            [
+              100.0,
+              165.0
+            ],
+            [
+              348.0,
+              165.0
+            ]
+          ],
+          "closed": false,
+          "path_length_px": 248.0,
+          "station_spacing_px": 8.0,
+          "stations": [
+            {
+              "distance_px": 4.0,
+              "point": [
+                104.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  104.0,
+                  98.07658089904504
+                ],
+                [
+                  104.0,
+                  250.28574094802389
+                ]
+              ],
+              "edge_strengths": [
+                3.10880419910137,
+                3.628462426691621
+              ],
+              "width_px": 152.20916004897884,
+              "center_offset_px": 9.181160923534463,
+              "issues": []
+            },
+            {
+              "distance_px": 12.0,
+              "point": [
+                112.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  112.0,
+                  96.61059296848337
+                ],
+                [
+                  112.0,
+                  247.77989513176593
+                ]
+              ],
+              "edge_strengths": [
+                2.7370816052804408,
+                7.628782569631664
+              ],
+              "width_px": 151.16930216328257,
+              "center_offset_px": 7.19524405012465,
+              "issues": []
+            },
+            {
+              "distance_px": 20.0,
+              "point": [
+                120.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 28.0,
+              "point": [
+                128.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 36.0,
+              "point": [
+                136.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  136.0,
+                  112.96208280822836
+                ],
+                [
+                  136.0,
+                  221.96025592283343
+                ]
+              ],
+              "edge_strengths": [
+                3.3624765209617933,
+                14.202316710637175
+              ],
+              "width_px": 108.99817311460507,
+              "center_offset_px": 2.4611693655308926,
+              "issues": []
+            },
+            {
+              "distance_px": 44.0,
+              "point": [
+                144.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  144.0,
+                  124.6888860068771
+                ],
+                [
+                  144.0,
+                  242.47227233642408
+                ]
+              ],
+              "edge_strengths": [
+                7.682433986523247,
+                12.497864787473604
+              ],
+              "width_px": 117.78338632954699,
+              "center_offset_px": 18.58057917165059,
+              "issues": []
+            },
+            {
+              "distance_px": 52.0,
+              "point": [
+                152.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  152.0,
+                  114.55642854007874
+                ],
+                [
+                  152.0,
+                  224.2007884219464
+                ]
+              ],
+              "edge_strengths": [
+                2.4222122875667496,
+                10.743831726141602
+              ],
+              "width_px": 109.64435988186767,
+              "center_offset_px": 4.378608481012581,
+              "issues": []
+            },
+            {
+              "distance_px": 60.0,
+              "point": [
+                160.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  160.0,
+                  115.1173772341674
+                ],
+                [
+                  160.0,
+                  233.38879377005168
+                ]
+              ],
+              "edge_strengths": [
+                3.8576317804045615,
+                10.793457803133583
+              ],
+              "width_px": 118.27141653588427,
+              "center_offset_px": 9.253085502109542,
+              "issues": []
+            },
+            {
+              "distance_px": 68.0,
+              "point": [
+                168.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  168.0,
+                  117.20359826798538
+                ],
+                [
+                  168.0,
+                  224.54159232205822
+                ]
+              ],
+              "edge_strengths": [
+                4.807139194094371,
+                12.227347252608759
+              ],
+              "width_px": 107.33799405407284,
+              "center_offset_px": 5.872595295021803,
+              "issues": []
+            },
+            {
+              "distance_px": 76.0,
+              "point": [
+                176.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  176.0,
+                  121.9125700049072
+                ],
+                [
+                  176.0,
+                  240.42600551480848
+                ]
+              ],
+              "edge_strengths": [
+                3.355375176065364,
+                3.7285565762669814
+              ],
+              "width_px": 118.51343550990129,
+              "center_offset_px": 16.169287759857834,
+              "issues": []
+            },
+            {
+              "distance_px": 84.0,
+              "point": [
+                184.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  184.0,
+                  92.86496194148003
+                ],
+                [
+                  184.0,
+                  232.36313645867818
+                ]
+              ],
+              "edge_strengths": [
+                3.5760693295497545,
+                3.671632810292042
+              ],
+              "width_px": 139.49817451719815,
+              "center_offset_px": -2.3859507999208915,
+              "issues": []
+            },
+            {
+              "distance_px": 92.0,
+              "point": [
+                192.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 100.0,
+              "point": [
+                200.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 108.0,
+              "point": [
+                208.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 116.0,
+              "point": [
+                216.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  216.0,
+                  119.98106029230419
+                ],
+                [
+                  216.0,
+                  237.32400120792983
+                ]
+              ],
+              "edge_strengths": [
+                3.4716643445249225,
+                12.876620138773324
+              ],
+              "width_px": 117.34294091562563,
+              "center_offset_px": 13.652530750117013,
+              "issues": []
+            },
+            {
+              "distance_px": 124.0,
+              "point": [
+                224.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 132.0,
+              "point": [
+                232.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 140.0,
+              "point": [
+                240.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  240.0,
+                  100.3911129507558
+                ],
+                [
+                  240.0,
+                  224.42845537821512
+                ]
+              ],
+              "edge_strengths": [
+                3.2460650222803697,
+                25.131217809586005
+              ],
+              "width_px": 124.03734242745932,
+              "center_offset_px": -2.5902158355145417,
+              "issues": []
+            },
+            {
+              "distance_px": 148.0,
+              "point": [
+                248.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 156.0,
+              "point": [
+                256.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 164.0,
+              "point": [
+                264.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  264.0,
+                  100.07911717480306
+                ],
+                [
+                  264.0,
+                  228.64199574543326
+                ]
+              ],
+              "edge_strengths": [
+                4.228263744864592,
+                18.813510614127594
+              ],
+              "width_px": 128.5628785706302,
+              "center_offset_px": -0.6394435398818388,
+              "issues": []
+            },
+            {
+              "distance_px": 172.0,
+              "point": [
+                272.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  272.0,
+                  124.95522389039533
+                ],
+                [
+                  272.0,
+                  233.06905386838056
+                ]
+              ],
+              "edge_strengths": [
+                23.73326300110469,
+                19.551726406297124
+              ],
+              "width_px": 108.11382997798523,
+              "center_offset_px": 14.012138879387948,
+              "issues": []
+            },
+            {
+              "distance_px": 180.0,
+              "point": [
+                280.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  280.0,
+                  89.20472085693117
+                ],
+                [
+                  280.0,
+                  248.4963933861663
+                ]
+              ],
+              "edge_strengths": [
+                3.9774282087069213,
+                15.524130103052018
+              ],
+              "width_px": 159.29167252923511,
+              "center_offset_px": 3.850557121548732,
+              "issues": []
+            },
+            {
+              "distance_px": 188.0,
+              "point": [
+                288.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 196.0,
+              "point": [
+                296.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 204.0,
+              "point": [
+                304.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "out_of_tolerance",
+              "edges": [
+                [
+                  304.0,
+                  75.993351140958
+                ],
+                [
+                  304.0,
+                  243.74686729572926
+                ]
+              ],
+              "edge_strengths": [
+                2.133106760526994,
+                11.15572680322535
+              ],
+              "width_px": 167.75351615477126,
+              "center_offset_px": -5.129890781656371,
+              "issues": [
+                "width_above_maximum"
+              ]
+            },
+            {
+              "distance_px": 212.0,
+              "point": [
+                312.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  312.0,
+                  107.85481763091126
+                ],
+                [
+                  312.0,
+                  246.24384112765722
+                ]
+              ],
+              "edge_strengths": [
+                2.133322954213294,
+                20.579082039303426
+              ],
+              "width_px": 138.38902349674595,
+              "center_offset_px": 12.049329379284238,
+              "issues": []
+            },
+            {
+              "distance_px": 220.0,
+              "point": [
+                320.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 228.0,
+              "point": [
+                328.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "missing",
+              "edges": null,
+              "edge_strengths": null,
+              "width_px": null,
+              "center_offset_px": null,
+              "issues": []
+            },
+            {
+              "distance_px": 236.0,
+              "point": [
+                336.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "out_of_tolerance",
+              "edges": [
+                [
+                  336.0,
+                  90.7127164303297
+                ],
+                [
+                  336.0,
+                  250.7201641338086
+                ]
+              ],
+              "edge_strengths": [
+                2.8545396073353166,
+                11.62197638890269
+              ],
+              "width_px": 160.00744770347887,
+              "center_offset_px": 5.716440282069151,
+              "issues": [
+                "width_above_maximum"
+              ]
+            },
+            {
+              "distance_px": 244.0,
+              "point": [
+                344.0,
+                165.0
+              ],
+              "normal": [
+                -0.0,
+                1.0
+              ],
+              "status": "pass",
+              "edges": [
+                [
+                  344.0,
+                  91.55315124467893
+                ],
+                [
+                  344.0,
+                  249.30844077986401
+                ]
+              ],
+              "edge_strengths": [
+                3.4993567867825317,
+                9.646987137664079
+              ],
+              "width_px": 157.75528953518509,
+              "center_offset_px": 5.430796012271472,
+              "issues": []
+            }
+          ],
+          "gaps": [
+            {
+              "start_px": 16.0,
+              "end_px": 32.0,
+              "length_px": 16.0,
+              "wraps": false
+            },
+            {
+              "start_px": 88.0,
+              "end_px": 112.0,
+              "length_px": 24.0,
+              "wraps": false
+            },
+            {
+              "start_px": 120.0,
+              "end_px": 136.0,
+              "length_px": 16.0,
+              "wraps": false
+            },
+            {
+              "start_px": 144.0,
+              "end_px": 160.0,
+              "length_px": 16.0,
+              "wraps": false
+            },
+            {
+              "start_px": 184.0,
+              "end_px": 200.0,
+              "length_px": 16.0,
+              "wraps": false
+            },
+            {
+              "start_px": 216.0,
+              "end_px": 232.0,
+              "length_px": 16.0,
+              "wraps": false
+            }
+          ],
+          "min_width_px": 107.33799405407284,
+          "max_width_px": 167.75351615477126,
+          "mean_width_px": 132.48218574813637,
+          "coverage": 0.5806451612903226,
+          "observed_fraction": 1.0,
+          "longest_gap_px": 24.0,
+          "passed": false,
+          "failures": [
+            "coverage_below_minimum",
+            "station_out_of_tolerance"
+          ]
+        }
+      }
+    ]
+  },
+  "SimpleReferenceInspect": {
+    "project": "reference_inspect/armbench_tote/project.json",
+    "dataset": "ARMBench",
+    "license": "CC-BY-4.0",
+    "attribution": "reference_inspect/armbench_tote/SOURCES.md",
+    "frames": [
+      {
+        "frame": 0,
+        "state": "pass",
+        "input_file": "reference_inspect/armbench_tote/assets/EZ5895NGB8.jpg",
+        "input_file_sha256": "7e5348d1a7aa3cccfb67154e457746e24c64d20f9e945103d5caeb983148bafc",
+        "result_pixels_sha256": "bd9e428b2e68b831ebe355158b4d3240d2e2c83271a2876922a5edf1e1b575f3",
+        "result_size": [
+          1500,
+          1050
+        ],
+        "measurements": {
+          "model": "simple_reference_inspect_v1",
+          "passed": true,
+          "evaluated": true,
+          "failures": [],
+          "coverage": 1.0,
+          "exposure": {
+            "gain": 1.0,
+            "offset": 0.0,
+            "correlation": 0.9685285668022287
+          },
+          "inspected_pixels": 187974,
+          "defect_area": 3475,
+          "defects": [
+            {
+              "reference_bounds": [
+                180,
+                182,
+                69,
+                52
+              ],
+              "area": 1612
+            },
+            {
+              "reference_bounds": [
+                410,
+                220,
+                45,
+                78
+              ],
+              "area": 1259
+            },
+            {
+              "reference_bounds": [
+                91,
+                257,
+                26,
+                57
+              ],
+              "area": 604
+            }
+          ],
+          "area_units": "reference_pixels",
+          "max_deviation": 10.583333015441895,
+          "settings": {
+            "absolute_threshold": 12.0,
+            "variation_multiplier": 3.0,
+            "edge_tolerance_px": 0.75,
+            "normalization": "none",
+            "min_gain": 0.5,
+            "max_gain": 2.0,
+            "min_correlation": null,
+            "min_coverage": 0.98,
+            "min_defect_area": 500,
+            "max_total_defect_area": 9398
+          }
+        }
+      },
+      {
+        "frame": 1,
+        "state": "fail",
+        "input_file": "reference_inspect/armbench_tote/assets/P2S0835EOA.jpg",
+        "input_file_sha256": "7609e883131b428fcdff0b196ccfea4da0bb2476d05696b468a673b1397d40c6",
+        "result_pixels_sha256": "bc54953e7d194f941fe0c1d9d3935d03415166f2c1aa5a354df77669cce3611e",
+        "result_size": [
+          1500,
+          1050
+        ],
+        "measurements": {
+          "model": "simple_reference_inspect_v1",
+          "passed": false,
+          "evaluated": true,
+          "failures": [
+            "defect_area_above_maximum"
+          ],
+          "coverage": 1.0,
+          "exposure": {
+            "gain": 1.0,
+            "offset": 0.0,
+            "correlation": 0.14139261074371182
+          },
+          "inspected_pixels": 187974,
+          "defect_area": 81820,
+          "defects": [
+            {
+              "reference_bounds": [
+                40,
+                70,
+                200,
+                324
+              ],
+              "area": 40523
+            },
+            {
+              "reference_bounds": [
+                309,
+                128,
+                210,
+                263
+              ],
+              "area": 39492
+            },
+            {
+              "reference_bounds": [
+                537,
+                232,
+                34,
+                88
+              ],
+              "area": 1118
+            },
+            {
+              "reference_bounds": [
+                438,
+                388,
+                106,
+                12
+              ],
+              "area": 687
+            }
+          ],
+          "area_units": "reference_pixels",
+          "max_deviation": 18.75,
+          "settings": {
+            "absolute_threshold": 12.0,
+            "variation_multiplier": 3.0,
+            "edge_tolerance_px": 0.75,
+            "normalization": "none",
+            "min_gain": 0.5,
+            "max_gain": 2.0,
+            "min_correlation": null,
+            "min_coverage": 0.98,
+            "min_defect_area": 500,
+            "max_total_defect_area": 9398
+          }
+        }
+      },
+      {
+        "frame": 2,
+        "state": "fail",
+        "input_file": "reference_inspect/armbench_tote/assets/9TARTKRF1X.jpg",
+        "input_file_sha256": "48f09d0a044c0f6b0cb2178cc9b06fb89815d5c6a56f43a185bba5419ad7121e",
+        "result_pixels_sha256": "b7336003f8d7007916c685692757e1868080cac78964f4d387fd60641bebdf08",
+        "result_size": [
+          1500,
+          1050
+        ],
+        "measurements": {
+          "model": "simple_reference_inspect_v1",
+          "passed": false,
+          "evaluated": true,
+          "failures": [
+            "defect_area_above_maximum"
+          ],
+          "coverage": 1.0,
+          "exposure": {
+            "gain": 1.0,
+            "offset": 0.0,
+            "correlation": -0.3346636753896584
+          },
+          "inspected_pixels": 187974,
+          "defect_area": 154111,
+          "defects": [
+            {
+              "reference_bounds": [
+                40,
+                70,
+                531,
+                336
+              ],
+              "area": 154111
+            }
+          ],
+          "area_units": "reference_pixels",
+          "max_deviation": 18.75,
+          "settings": {
+            "absolute_threshold": 12.0,
+            "variation_multiplier": 3.0,
+            "edge_tolerance_px": 0.75,
+            "normalization": "none",
+            "min_gain": 0.5,
+            "max_gain": 2.0,
+            "min_correlation": null,
+            "min_coverage": 0.98,
+            "min_defect_area": 500,
+            "max_total_defect_area": 9398
+          }
+        }
+      },
+      {
+        "frame": 3,
+        "state": "fail",
+        "input_file": "reference_inspect/armbench_tote/assets/OAR1KXNIME.jpg",
+        "input_file_sha256": "7f4d546306841aad78a9a64a49b6947b9421c8e91a02ce32738e199866409ba2",
+        "result_pixels_sha256": "9e29e545a22f19bf3a4834134db810ee0c4c52609da0aea77a9ff29d179ce8d4",
+        "result_size": [
+          1500,
+          1050
+        ],
+        "measurements": {
+          "model": "simple_reference_inspect_v1",
+          "passed": false,
+          "evaluated": true,
+          "failures": [
+            "defect_area_above_maximum"
+          ],
+          "coverage": 1.0,
+          "exposure": {
+            "gain": 1.0,
+            "offset": 0.0,
+            "correlation": -0.08788563496817062
+          },
+          "inspected_pixels": 187974,
+          "defect_area": 152502,
+          "defects": [
+            {
+              "reference_bounds": [
+                40,
+                70,
+                531,
+                324
+              ],
+              "area": 151012
+            },
+            {
+              "reference_bounds": [
+                363,
+                388,
+                208,
+                15
+              ],
+              "area": 1490
+            }
+          ],
+          "area_units": "reference_pixels",
+          "max_deviation": 18.66666603088379,
+          "settings": {
+            "absolute_threshold": 12.0,
+            "variation_multiplier": 3.0,
+            "edge_tolerance_px": 0.75,
+            "normalization": "none",
+            "min_gain": 0.5,
+            "max_gain": 2.0,
+            "min_correlation": null,
+            "min_coverage": 0.98,
+            "min_defect_area": 500,
+            "max_total_defect_area": 9398
+          }
+        }
+      }
+    ]
+  },
+  "Simple3DLocate": {
+    "project": "3d_locate/real_tless/depth_verified/project.json",
+    "dataset": "T-LESS",
+    "license": "CC-BY-4.0",
+    "attribution": "3d_locate/real_tless/source/ATTRIBUTION.md",
+    "frames": [
+      {
+        "frame": 0,
+        "state": "pass",
+        "input_file": "3d_locate/real_tless/depth_verified/assets/scene.ply",
+        "input_file_sha256": "151113eee38052d452f1a9ff96e0dcc8dd5c1f331f8e2d9700099480ab3a724f",
+        "result_pixels_sha256": "67a6df3e70c52d10f9e4bf2f9b2e2a1834e82eeb732d7c478e30c245da964dc0",
+        "result_size": [
+          960,
+          640
+        ],
+        "measurements": {
+          "count": 1,
+          "poses": [
+            {
+              "model": "pose_3d_v1",
+              "source_to_target": [
+                [
+                  -0.21149982314731838,
+                  0.056388358897370004,
+                  0.9757500590773822,
+                  54.461125000444795
+                ],
+                [
+                  0.6633870056963942,
+                  0.7414361923905746,
+                  0.1009457938031094,
+                  -5.937355252797374
+                ],
+                [
+                  -0.7177642408770627,
+                  0.6686499275362475,
+                  -0.19422092813068748,
+                  741.5210205602142
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "source_frame": "tless_object29",
+              "target_frame": "camera",
+              "units": "mm",
+              "rvec": [
+                0.5745990754062834,
+                1.7140825530760835,
+                0.6143708324440997
+              ],
+              "translation": [
+                54.461125000444795,
+                -5.937355252797374,
+                741.5210205602142
+              ],
+              "coverage": 0.7655677655677655,
+              "score": 0.6922970305305127,
+              "score_type": "geometric_fit_not_probability",
+              "depth_verification": {
+                "mode": "auto",
+                "status": "checked",
+                "reason": null,
+                "source": "scene",
+                "input_points": 347344,
+                "visible_model_points": 546,
+                "known_points": 475,
+                "unique_known_rays": 474,
+                "consistent_points": 462,
+                "occluded_points": 11,
+                "free_space_points": 2,
+                "unknown_points": 71,
+                "depth_coverage": 0.86996336996337,
+                "free_space_fraction": 0.004210526315789474,
+                "maximum_free_space": 0.1,
+                "minimum_depth_coverage": 0.8,
+                "minimum_known_rays": 20,
+                "limit_exceeded": false,
+                "applied": true
+              },
+              "pose_alternatives": {
+                "model": "geometric_pose_alternatives_v1",
+                "status": "alternatives_observed",
+                "count": 2,
+                "suppressed_candidates": 2,
+                "score_gap": 0.027856173539156592,
+                "relative_score_margin": 0.04023731478063713,
+                "margin_type": "geometric_score_gap_not_probability",
+                "score_type": "geometric_fit_not_probability",
+                "minimum_center_separation": 3.7147711835093293,
+                "minimum_orientation_separation_degrees": 12.0,
+                "alternatives": [
+                  {
+                    "source_to_target": [
+                      [
+                        0.20630187117819448,
+                        -0.0669966950912698,
+                        0.976192081915861,
+                        54.77928767280207
+                      ],
+                      [
+                        -0.665644362702919,
+                        -0.74084307747031,
+                        0.08982826373778223,
+                        -5.87821534325338
+                      ],
+                      [
+                        0.7171869493724771,
+                        -0.668328495136312,
+                        -0.19743328553876716,
+                        741.3290121953469
+                      ],
+                      [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                      ]
+                    ],
+                    "score": 0.6644408569913561,
+                    "score_type": "geometric_fit_not_probability",
+                    "coverage": 0.7359154929577465,
+                    "rmse": 0.9289659837006787,
+                    "candidate_source": "planes",
+                    "center_displacement": 0.37628742626005485,
+                    "orientation_difference_degrees": 179.86365628038195,
+                    "overlap": 0.9901448702448835
+                  },
+                  {
+                    "source_to_target": [
+                      [
+                        -0.24877920454524882,
+                        -0.07285914557173157,
+                        -0.9658159515624032,
+                        47.57238220141316
+                      ],
+                      [
+                        0.6628389696084153,
+                        -0.7398902662266318,
+                        -0.11492125265389036,
+                        -6.750624440412636
+                      ],
+                      [
+                        -0.7062247572510383,
+                        -0.6687704679855725,
+                        0.23236319285994975,
+                        743.0409600589701
+                      ],
+                      [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                      ]
+                    ],
+                    "score": 0.555057671596629,
+                    "score_type": "geometric_fit_not_probability",
+                    "coverage": 0.6149825783972126,
+                    "rmse": 0.9429311387582227,
+                    "candidate_source": "planes",
+                    "center_displacement": 7.101154849924965,
+                    "orientation_difference_degrees": 179.09468895514132,
+                    "overlap": 0.8689850571790929
+                  }
+                ],
+                "truncated": false,
+                "exhaustive": false
+              },
+              "projective_scoring": null,
+              "point_to_plane_rmse": 0.9169057120777957
+            }
+          ],
+          "report": {
+            "model": "simple_3d_locate_v1",
+            "units": "mm",
+            "source_frame": "tless_object29",
+            "target_frame": "camera",
+            "matches": [
+              {
+                "source_to_target": [
+                  [
+                    -0.21149982314731838,
+                    0.056388358897370004,
+                    0.9757500590773822,
+                    54.461125000444795
+                  ],
+                  [
+                    0.6633870056963942,
+                    0.7414361923905746,
+                    0.1009457938031094,
+                    -5.937355252797374
+                  ],
+                  [
+                    -0.7177642408770627,
+                    0.6686499275362475,
+                    -0.19422092813068748,
+                    741.5210205602142
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "coverage": 0.7655677655677655,
+                "score": 0.6922970305305127,
+                "score_type": "geometric_fit_not_probability",
+                "projective_scoring": null,
+                "rmse": 0.9169057120777957,
+                "normal_spread": 0.3793592450005643,
+                "votes": 0,
+                "model_inliers": 418,
+                "unique_scene_inliers": 352,
+                "refined": true,
+                "candidate_source": "planes",
+                "pose_alternatives": {
+                  "model": "geometric_pose_alternatives_v1",
+                  "status": "alternatives_observed",
+                  "count": 2,
+                  "suppressed_candidates": 2,
+                  "score_gap": 0.027856173539156592,
+                  "relative_score_margin": 0.04023731478063713,
+                  "margin_type": "geometric_score_gap_not_probability",
+                  "score_type": "geometric_fit_not_probability",
+                  "minimum_center_separation": 3.7147711835093293,
+                  "minimum_orientation_separation_degrees": 12.0,
+                  "alternatives": [
+                    {
+                      "source_to_target": [
+                        [
+                          0.20630187117819448,
+                          -0.0669966950912698,
+                          0.976192081915861,
+                          54.77928767280207
+                        ],
+                        [
+                          -0.665644362702919,
+                          -0.74084307747031,
+                          0.08982826373778223,
+                          -5.87821534325338
+                        ],
+                        [
+                          0.7171869493724771,
+                          -0.668328495136312,
+                          -0.19743328553876716,
+                          741.3290121953469
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          0.0,
+                          1.0
+                        ]
+                      ],
+                      "score": 0.6644408569913561,
+                      "score_type": "geometric_fit_not_probability",
+                      "coverage": 0.7359154929577465,
+                      "rmse": 0.9289659837006787,
+                      "candidate_source": "planes",
+                      "center_displacement": 0.37628742626005485,
+                      "orientation_difference_degrees": 179.86365628038195,
+                      "overlap": 0.9901448702448835
+                    },
+                    {
+                      "source_to_target": [
+                        [
+                          -0.24877920454524882,
+                          -0.07285914557173157,
+                          -0.9658159515624032,
+                          47.57238220141316
+                        ],
+                        [
+                          0.6628389696084153,
+                          -0.7398902662266318,
+                          -0.11492125265389036,
+                          -6.750624440412636
+                        ],
+                        [
+                          -0.7062247572510383,
+                          -0.6687704679855725,
+                          0.23236319285994975,
+                          743.0409600589701
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          0.0,
+                          1.0
+                        ]
+                      ],
+                      "score": 0.555057671596629,
+                      "score_type": "geometric_fit_not_probability",
+                      "coverage": 0.6149825783972126,
+                      "rmse": 0.9429311387582227,
+                      "candidate_source": "planes",
+                      "center_displacement": 7.101154849924965,
+                      "orientation_difference_degrees": 179.09468895514132,
+                      "overlap": 0.8689850571790929
+                    }
+                  ],
+                  "truncated": false,
+                  "exhaustive": false
+                },
+                "depth_verification": {
+                  "mode": "auto",
+                  "status": "checked",
+                  "reason": null,
+                  "source": "scene",
+                  "input_points": 347344,
+                  "visible_model_points": 546,
+                  "known_points": 475,
+                  "unique_known_rays": 474,
+                  "consistent_points": 462,
+                  "occluded_points": 11,
+                  "free_space_points": 2,
+                  "unknown_points": 71,
+                  "depth_coverage": 0.86996336996337,
+                  "free_space_fraction": 0.004210526315789474,
+                  "maximum_free_space": 0.1,
+                  "minimum_depth_coverage": 0.8,
+                  "minimum_known_rays": 20,
+                  "limit_exceeded": false,
+                  "applied": true
+                },
+                "visible_model_points": 546
+              }
+            ],
+            "candidate_count": 618,
+            "tested_candidates": 24,
+            "sampled_scene_points": 21333,
+            "search_model_points": 384,
+            "search_scene_points": 2048,
+            "passed": true,
+            "execution": {
+              "sampling": "uniform",
+              "candidate_backend": "ppf_planes",
+              "plane_search": {
+                "model_patches": 7,
+                "scene_patches": 32,
+                "coarse_proposals": 512
+              },
+              "feature_search": {
+                "coarse_proposals": 0
+              },
+              "region_search": {
+                "enabled": false,
+                "coarse_proposals": 0
+              },
+              "refinement": "legacy",
+              "pose_scoring": {
+                "requested": "geometric",
+                "active": "geometric",
+                "fallback_reason": "geometric_requested",
+                "rejected_candidates": []
+              },
+              "observation_mode": "surface",
+              "projection": "pinhole",
+              "input_points": 347344,
+              "first_surface_points": 347344,
+              "depth_verification": {
+                "mode": "auto",
+                "status": "available",
+                "reason": null,
+                "source": "scene",
+                "input_points": 347344
+              },
+              "depth_rejected": 6,
+              "depth_rejected_candidates": [
+                {
+                  "source_to_target": [
+                    [
+                      -0.22742357642987152,
+                      0.9723064394930784,
+                      -0.053839619279294544,
+                      45.50246002293828
+                    ],
+                    [
+                      0.6688114970540096,
+                      0.11577184797459822,
+                      -0.7343623496782237,
+                      -13.145334606336682
+                    ],
+                    [
+                      -0.7077921292951919,
+                      -0.2030198683302684,
+                      -0.6766189731088977,
+                      737.6317451629825
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "candidate_source": "planes",
+                  "score": 0.5732907138532145,
+                  "depth_verification": {
+                    "mode": "auto",
+                    "status": "checked",
+                    "reason": null,
+                    "source": "scene",
+                    "input_points": 347344,
+                    "visible_model_points": 614,
+                    "known_points": 565,
+                    "unique_known_rays": 563,
+                    "consistent_points": 438,
+                    "occluded_points": 17,
+                    "free_space_points": 110,
+                    "unknown_points": 49,
+                    "depth_coverage": 0.9201954397394136,
+                    "free_space_fraction": 0.19469026548672566,
+                    "maximum_free_space": 0.1,
+                    "minimum_depth_coverage": 0.8,
+                    "minimum_known_rays": 20,
+                    "limit_exceeded": true,
+                    "applied": true
+                  }
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.23433433575035129,
+                      -0.970597362042361,
+                      -0.05502890045104895,
+                      44.60174668865611
+                    ],
+                    [
+                      -0.6672536562600629,
+                      -0.11941453323672584,
+                      -0.7351957069103662,
+                      -13.246032399245202
+                    ],
+                    [
+                      0.707007763250178,
+                      0.2089998326512839,
+                      -0.6756175639041038,
+                      737.7026518004582
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "candidate_source": "planes",
+                  "score": 0.5560303338662748,
+                  "depth_verification": {
+                    "mode": "auto",
+                    "status": "checked",
+                    "reason": null,
+                    "source": "scene",
+                    "input_points": 347344,
+                    "visible_model_points": 637,
+                    "known_points": 619,
+                    "unique_known_rays": 616,
+                    "consistent_points": 472,
+                    "occluded_points": 30,
+                    "free_space_points": 117,
+                    "unknown_points": 18,
+                    "depth_coverage": 0.9717425431711146,
+                    "free_space_fraction": 0.1890145395799677,
+                    "maximum_free_space": 0.1,
+                    "minimum_depth_coverage": 0.8,
+                    "minimum_known_rays": 20,
+                    "limit_exceeded": true,
+                    "applied": true
+                  }
+                },
+                {
+                  "source_to_target": [
+                    [
+                      -0.8338769619526695,
+                      0.007166674918241752,
+                      0.5519038422544301,
+                      3.0322222270919603
+                    ],
+                    [
+                      0.37619009038779466,
+                      0.7390753304179022,
+                      0.5587921544382063,
+                      -67.72435354663635
+                    ],
+                    [
+                      -0.4038938328553801,
+                      0.6735846604089837,
+                      -0.6189939232683187,
+                      829.2351806750647
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "candidate_source": "planes",
+                  "score": 0.4537360730425366,
+                  "depth_verification": {
+                    "mode": "auto",
+                    "status": "checked",
+                    "reason": null,
+                    "source": "scene",
+                    "input_points": 347344,
+                    "visible_model_points": 747,
+                    "known_points": 743,
+                    "unique_known_rays": 741,
+                    "consistent_points": 490,
+                    "occluded_points": 151,
+                    "free_space_points": 102,
+                    "unknown_points": 4,
+                    "depth_coverage": 0.9946452476572959,
+                    "free_space_fraction": 0.13728129205921938,
+                    "maximum_free_space": 0.1,
+                    "minimum_depth_coverage": 0.8,
+                    "minimum_known_rays": 20,
+                    "limit_exceeded": true,
+                    "applied": true
+                  }
+                },
+                {
+                  "source_to_target": [
+                    [
+                      -0.2702951247461538,
+                      -0.9623671281024743,
+                      0.028107939914859437,
+                      43.541405728624284
+                    ],
+                    [
+                      0.6626633393534658,
+                      -0.16478119722533713,
+                      0.7305644774541797,
+                      -14.245927805896343
+                    ],
+                    [
+                      -0.6984395780705552,
+                      0.2160941178949134,
+                      0.682264969052233,
+                      737.4735764481401
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "candidate_source": "planes",
+                  "score": 0.4518523649703921,
+                  "depth_verification": {
+                    "mode": "auto",
+                    "status": "checked",
+                    "reason": null,
+                    "source": "scene",
+                    "input_points": 347344,
+                    "visible_model_points": 622,
+                    "known_points": 615,
+                    "unique_known_rays": 612,
+                    "consistent_points": 439,
+                    "occluded_points": 34,
+                    "free_space_points": 142,
+                    "unknown_points": 7,
+                    "depth_coverage": 0.9887459807073955,
+                    "free_space_fraction": 0.23089430894308943,
+                    "maximum_free_space": 0.1,
+                    "minimum_depth_coverage": 0.8,
+                    "minimum_known_rays": 20,
+                    "limit_exceeded": true,
+                    "applied": true
+                  }
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8290965709071547,
+                      -0.5589305013483772,
+                      -0.0139846620427265,
+                      -1.311365186001332
+                    ],
+                    [
+                      -0.392993791212241,
+                      -0.5647963402673594,
+                      -0.7256452122692101,
+                      -79.21564375250556
+                    ],
+                    [
+                      0.39768675635307155,
+                      0.6071258425425894,
+                      -0.6879269257256356,
+                      829.0137043198927
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "candidate_source": "planes",
+                  "score": 0.4344018429681863,
+                  "depth_verification": {
+                    "mode": "auto",
+                    "status": "checked",
+                    "reason": null,
+                    "source": "scene",
+                    "input_points": 347344,
+                    "visible_model_points": 757,
+                    "known_points": 749,
+                    "unique_known_rays": 746,
+                    "consistent_points": 460,
+                    "occluded_points": 100,
+                    "free_space_points": 189,
+                    "unknown_points": 8,
+                    "depth_coverage": 0.9894319682959049,
+                    "free_space_fraction": 0.2523364485981308,
+                    "maximum_free_space": 0.1,
+                    "minimum_depth_coverage": 0.8,
+                    "minimum_known_rays": 20,
+                    "limit_exceeded": true,
+                    "applied": true
+                  }
+                },
+                {
+                  "source_to_target": [
+                    [
+                      -0.826907096706792,
+                      0.56225015047469,
+                      -0.00997104343248107,
+                      -1.4432820325463638
+                    ],
+                    [
+                      0.39291844438048995,
+                      0.5650026136783514,
+                      -0.7255254251935266,
+                      -79.11126000373663
+                    ],
+                    [
+                      -0.40229311388782146,
+                      -0.6038599298080806,
+                      -0.6881231253857264,
+                      828.7947062888829
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "candidate_source": "planes",
+                  "score": 0.4288266645278313,
+                  "depth_verification": {
+                    "mode": "auto",
+                    "status": "checked",
+                    "reason": null,
+                    "source": "scene",
+                    "input_points": 347344,
+                    "visible_model_points": 748,
+                    "known_points": 742,
+                    "unique_known_rays": 740,
+                    "consistent_points": 466,
+                    "occluded_points": 99,
+                    "free_space_points": 177,
+                    "unknown_points": 6,
+                    "depth_coverage": 0.9919786096256684,
+                    "free_space_fraction": 0.238544474393531,
+                    "maximum_free_space": 0.1,
+                    "minimum_depth_coverage": 0.8,
+                    "minimum_known_rays": 20,
+                    "limit_exceeded": true,
+                    "applied": true
+                  }
+                }
+              ],
+              "overlap_metric": "combined",
+              "overlap_threshold": 0.6,
+              "overlap_rejected": 2,
+              "verified_candidates": 3,
+              "rejection_counts": {
+                "depth": 6,
+                "geometry": 15
+              },
+              "candidate_review": [
+                {
+                  "candidate_index": 2,
+                  "source_to_target": [
+                    [
+                      -0.22742357642987152,
+                      0.9723064394930784,
+                      -0.053839619279294544,
+                      45.50246002293828
+                    ],
+                    [
+                      0.6688114970540096,
+                      0.11577184797459822,
+                      -0.7343623496782237,
+                      -13.145334606336682
+                    ],
+                    [
+                      -0.7077921292951919,
+                      -0.2030198683302684,
+                      -0.6766189731088977,
+                      737.6317451629825
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "candidate_source": "planes",
+                  "score": 0.5732907138532145,
+                  "depth_verification": {
+                    "mode": "auto",
+                    "status": "checked",
+                    "reason": null,
+                    "source": "scene",
+                    "input_points": 347344,
+                    "visible_model_points": 614,
+                    "known_points": 565,
+                    "unique_known_rays": 563,
+                    "consistent_points": 438,
+                    "occluded_points": 17,
+                    "free_space_points": 110,
+                    "unknown_points": 49,
+                    "depth_coverage": 0.9201954397394136,
+                    "free_space_fraction": 0.19469026548672566,
+                    "maximum_free_space": 0.1,
+                    "minimum_depth_coverage": 0.8,
+                    "minimum_known_rays": 20,
+                    "limit_exceeded": true,
+                    "applied": true
+                  },
+                  "stage": "depth",
+                  "failed_checks": [
+                    "free_space"
+                  ]
+                },
+                {
+                  "candidate_index": 7,
+                  "source_to_target": [
+                    [
+                      0.23433433575035129,
+                      -0.970597362042361,
+                      -0.05502890045104895,
+                      44.60174668865611
+                    ],
+                    [
+                      -0.6672536562600629,
+                      -0.11941453323672584,
+                      -0.7351957069103662,
+                      -13.246032399245202
+                    ],
+                    [
+                      0.707007763250178,
+                      0.2089998326512839,
+                      -0.6756175639041038,
+                      737.7026518004582
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "candidate_source": "planes",
+                  "score": 0.5560303338662748,
+                  "depth_verification": {
+                    "mode": "auto",
+                    "status": "checked",
+                    "reason": null,
+                    "source": "scene",
+                    "input_points": 347344,
+                    "visible_model_points": 637,
+                    "known_points": 619,
+                    "unique_known_rays": 616,
+                    "consistent_points": 472,
+                    "occluded_points": 30,
+                    "free_space_points": 117,
+                    "unknown_points": 18,
+                    "depth_coverage": 0.9717425431711146,
+                    "free_space_fraction": 0.1890145395799677,
+                    "maximum_free_space": 0.1,
+                    "minimum_depth_coverage": 0.8,
+                    "minimum_known_rays": 20,
+                    "limit_exceeded": true,
+                    "applied": true
+                  },
+                  "stage": "depth",
+                  "failed_checks": [
+                    "free_space"
+                  ]
+                },
+                {
+                  "candidate_index": 9,
+                  "source_to_target": [
+                    [
+                      -0.8338769619526695,
+                      0.007166674918241752,
+                      0.5519038422544301,
+                      3.0322222270919603
+                    ],
+                    [
+                      0.37619009038779466,
+                      0.7390753304179022,
+                      0.5587921544382063,
+                      -67.72435354663635
+                    ],
+                    [
+                      -0.4038938328553801,
+                      0.6735846604089837,
+                      -0.6189939232683187,
+                      829.2351806750647
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "candidate_source": "planes",
+                  "score": 0.4537360730425366,
+                  "depth_verification": {
+                    "mode": "auto",
+                    "status": "checked",
+                    "reason": null,
+                    "source": "scene",
+                    "input_points": 347344,
+                    "visible_model_points": 747,
+                    "known_points": 743,
+                    "unique_known_rays": 741,
+                    "consistent_points": 490,
+                    "occluded_points": 151,
+                    "free_space_points": 102,
+                    "unknown_points": 4,
+                    "depth_coverage": 0.9946452476572959,
+                    "free_space_fraction": 0.13728129205921938,
+                    "maximum_free_space": 0.1,
+                    "minimum_depth_coverage": 0.8,
+                    "minimum_known_rays": 20,
+                    "limit_exceeded": true,
+                    "applied": true
+                  },
+                  "stage": "depth",
+                  "failed_checks": [
+                    "free_space"
+                  ]
+                },
+                {
+                  "candidate_index": 6,
+                  "source_to_target": [
+                    [
+                      -0.2702951247461538,
+                      -0.9623671281024743,
+                      0.028107939914859437,
+                      43.541405728624284
+                    ],
+                    [
+                      0.6626633393534658,
+                      -0.16478119722533713,
+                      0.7305644774541797,
+                      -14.245927805896343
+                    ],
+                    [
+                      -0.6984395780705552,
+                      0.2160941178949134,
+                      0.682264969052233,
+                      737.4735764481401
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "candidate_source": "planes",
+                  "score": 0.4518523649703921,
+                  "depth_verification": {
+                    "mode": "auto",
+                    "status": "checked",
+                    "reason": null,
+                    "source": "scene",
+                    "input_points": 347344,
+                    "visible_model_points": 622,
+                    "known_points": 615,
+                    "unique_known_rays": 612,
+                    "consistent_points": 439,
+                    "occluded_points": 34,
+                    "free_space_points": 142,
+                    "unknown_points": 7,
+                    "depth_coverage": 0.9887459807073955,
+                    "free_space_fraction": 0.23089430894308943,
+                    "maximum_free_space": 0.1,
+                    "minimum_depth_coverage": 0.8,
+                    "minimum_known_rays": 20,
+                    "limit_exceeded": true,
+                    "applied": true
+                  },
+                  "stage": "depth",
+                  "failed_checks": [
+                    "free_space"
+                  ]
+                },
+                {
+                  "candidate_index": 8,
+                  "source_to_target": [
+                    [
+                      0.8290965709071547,
+                      -0.5589305013483772,
+                      -0.0139846620427265,
+                      -1.311365186001332
+                    ],
+                    [
+                      -0.392993791212241,
+                      -0.5647963402673594,
+                      -0.7256452122692101,
+                      -79.21564375250556
+                    ],
+                    [
+                      0.39768675635307155,
+                      0.6071258425425894,
+                      -0.6879269257256356,
+                      829.0137043198927
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "candidate_source": "planes",
+                  "score": 0.4344018429681863,
+                  "depth_verification": {
+                    "mode": "auto",
+                    "status": "checked",
+                    "reason": null,
+                    "source": "scene",
+                    "input_points": 347344,
+                    "visible_model_points": 757,
+                    "known_points": 749,
+                    "unique_known_rays": 746,
+                    "consistent_points": 460,
+                    "occluded_points": 100,
+                    "free_space_points": 189,
+                    "unknown_points": 8,
+                    "depth_coverage": 0.9894319682959049,
+                    "free_space_fraction": 0.2523364485981308,
+                    "maximum_free_space": 0.1,
+                    "minimum_depth_coverage": 0.8,
+                    "minimum_known_rays": 20,
+                    "limit_exceeded": true,
+                    "applied": true
+                  },
+                  "stage": "depth",
+                  "failed_checks": [
+                    "free_space"
+                  ]
+                },
+                {
+                  "candidate_index": 10,
+                  "source_to_target": [
+                    [
+                      -0.826907096706792,
+                      0.56225015047469,
+                      -0.00997104343248107,
+                      -1.4432820325463638
+                    ],
+                    [
+                      0.39291844438048995,
+                      0.5650026136783514,
+                      -0.7255254251935266,
+                      -79.11126000373663
+                    ],
+                    [
+                      -0.40229311388782146,
+                      -0.6038599298080806,
+                      -0.6881231253857264,
+                      828.7947062888829
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "candidate_source": "planes",
+                  "score": 0.4288266645278313,
+                  "depth_verification": {
+                    "mode": "auto",
+                    "status": "checked",
+                    "reason": null,
+                    "source": "scene",
+                    "input_points": 347344,
+                    "visible_model_points": 748,
+                    "known_points": 742,
+                    "unique_known_rays": 740,
+                    "consistent_points": 466,
+                    "occluded_points": 99,
+                    "free_space_points": 177,
+                    "unknown_points": 6,
+                    "depth_coverage": 0.9919786096256684,
+                    "free_space_fraction": 0.238544474393531,
+                    "maximum_free_space": 0.1,
+                    "minimum_depth_coverage": 0.8,
+                    "minimum_known_rays": 20,
+                    "limit_exceeded": true,
+                    "applied": true
+                  },
+                  "stage": "depth",
+                  "failed_checks": [
+                    "free_space"
+                  ]
+                },
+                {
+                  "candidate_index": 21,
+                  "stage": "geometry",
+                  "candidate_source": "ppf",
+                  "source_to_target": [
+                    [
+                      0.9655106980918899,
+                      -0.2598679494791377,
+                      -0.016054304831428688,
+                      45.96547615880431
+                    ],
+                    [
+                      0.18686594114472665,
+                      0.6487029475010905,
+                      0.7377435909199711,
+                      131.0703245366625
+                    ],
+                    [
+                      -0.1813014393495197,
+                      -0.7152993322637078,
+                      0.6748901046488134,
+                      691.5691370064355
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "score": 0.5724087891371852,
+                  "coverage": 0.6329365079365079,
+                  "rmse": 0.9802395228405018,
+                  "normal_spread": 1.5854647092606988e-19,
+                  "unique_support": 269,
+                  "limits": {
+                    "min_coverage": 0.5,
+                    "min_unique_support": 20,
+                    "max_rmse": 2.2288627101055973,
+                    "min_normal_spread": 0.01
+                  },
+                  "failed_checks": [
+                    "normal_spread"
+                  ]
+                },
+                {
+                  "candidate_index": 18,
+                  "stage": "geometry",
+                  "candidate_source": "ppf",
+                  "source_to_target": [
+                    [
+                      0.9613449685418709,
+                      -0.27493000429980824,
+                      -0.015144114201134663,
+                      45.91374104446314
+                    ],
+                    [
+                      0.19651077138784012,
+                      0.6465328298463193,
+                      0.7371423313441348,
+                      130.62322899225344
+                    ],
+                    [
+                      -0.1928713773160382,
+                      -0.7116240529005591,
+                      0.6755677901925141,
+                      692.073787708388
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "score": 0.5523230951103084,
+                  "coverage": 0.6189555125725339,
+                  "rmse": 1.046301544607394,
+                  "normal_spread": 5.0326966638077485e-19,
+                  "unique_support": 277,
+                  "limits": {
+                    "min_coverage": 0.5,
+                    "min_unique_support": 20,
+                    "max_rmse": 2.2288627101055973,
+                    "min_normal_spread": 0.01
+                  },
+                  "failed_checks": [
+                    "normal_spread"
+                  ]
+                }
+              ],
+              "candidate_review_limit": 8,
+              "match_limit_discarded": 0,
+              "coarse_rejected": 0,
+              "icp_calls": 48,
+              "execution_workers": 1,
+              "active_candidate_workers": 1,
+              "candidate_timing_aggregation": "worker_intervals_may_overlap",
+              "model_levels": [
+                1804
+              ],
+              "scene_levels": [
+                21333
+              ],
+              "seconds": {
+                "preprocess": 0.7473916999997527,
+                "candidate_search": 1.8055497000000287,
+                "ppf_search": 0.053544200000033015,
+                "plane_search": 1.7492423000003328,
+                "feature_search": 0.0,
+                "region_search": 0.0,
+                "depth_prepare": 0.04564609999988534,
+                "depth_verify": 0.019666199998937373,
+                "projective_score_sum": 0.0,
+                "worker_index_prepare_sum": 5.8999999055231456e-06,
+                "suppression": 0.005876800000351068,
+                "pose_alternatives": 0.00039459999970858917,
+                "refine_verify": 1.8259776999998394,
+                "total": 4.378919699999642
+              }
+            },
+            "assessment": {
+              "status": "located",
+              "message": "1 accepted 3D instances",
+              "rejection_counts": {
+                "depth": 6,
+                "geometry": 15
+              }
+            }
+          }
+        },
+        "source_points": 347344
+      }
+    ]
+  }
+}

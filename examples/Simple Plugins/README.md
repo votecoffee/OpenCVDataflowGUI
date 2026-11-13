@@ -7,12 +7,21 @@ a project.
 
 | Tool | Example projects |
 | --- | --- |
-| **SimpleSegmentation** | [Brick mortar, cup rim, PCB laminate, and ARMBench tote foreground](pixel_segmentation/README.md) |
+| **SimpleSegmentation** | [Real ARMBench tote foreground](pixel_segmentation/armbench_tote/README.md), plus [other segmentation projects](pixel_segmentation/README.md). |
 | **SimpleClassify** | [VegQual surface texture and color/layout classification](image_classification/README.md) |
 | **SimplePatternMatch** | [VisA PCB photographs](pattern_matching/visa_pcb2/README.md) for real board localization and [asymmetric brackets](pattern_matching/asymmetric_brackets/README.md) for generated multi-part scenes. |
-| **SimplePathWidth** | [Synthetic curved bead](path_width/README.md) with a gap and [industrial weld bead](path_width/weld_bead/README.md) with separate edge search bands. |
-| **SimpleReferenceInspect** | [Good-reference appearance inspection](reference_inspect/README.md) with learned normal variation and exposure correction. |
-| **Simple3DLocate** | [Rigid 3D surface localization](3d_locate/README.md) with two rotated, partially occluded instances and pose/fit graphics. |
+| **SimplePathWidth** | [Real industrial weld bead](path_width/weld_bead/README.md), plus a [generated curved bead](path_width/README.md) for controlled gap/width regression. |
+| **SimpleReferenceInspect** | [Real clear-tote inspection](reference_inspect/armbench_tote/README.md), [posed PCB hard case](reference_inspect/visa_pcb2/README.md), and [generated reference inspection](reference_inspect/README.md). |
+| **Simple3DLocate** | [Real T-LESS clutter with depth verification](3d_locate/real_tless/depth_verified/README.md), plus [generated rigid surfaces](3d_locate/README.md) for controlled regression. |
+
+## Start with real public data
+
+The [real-data showcase](real_data/README.md) links runnable projects for all
+six tools, with 28 actual replays, input/result images, numeric outputs and
+native 3D fit clouds. It includes dataset licenses, attribution and retained
+errors. The new [clear-tote reference inspection](reference_inspect/armbench_tote/README.md)
+uses separate empty/loaded captures; the [posed PCB reference example](reference_inspect/visa_pcb2/README.md)
+keeps real held-out defect masks and known false alarms visible.
 
 ## Set up SimplePatternMatch
 
