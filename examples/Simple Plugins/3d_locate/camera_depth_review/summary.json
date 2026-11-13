@@ -1,0 +1,145 @@
+{
+  "scope": "ANNOTATED_POSES_ONLY_NOT_DETECTIONS",
+  "cases": [
+    {
+      "object_id": 6,
+      "case": "scene000002_frame000003_isolated",
+      "status": "checked",
+      "known_rays": 2615,
+      "rendered_rays": 2628,
+      "depth_coverage": 0.9950532724505328,
+      "counts": {
+        "consistent": 1400,
+        "free_space": 1089,
+        "occluded": 126,
+        "missing": 13,
+        "grazing": 11
+      },
+      "residual_percentiles": {
+        "5": -2.8010062491775343,
+        "25": 0.37022857627174394,
+        "50": 2.3187510262340094,
+        "75": 4.535362834593808,
+        "95": 10.366680339263796
+      },
+      "distance_tolerance": 2.912538655626217
+    },
+    {
+      "object_id": 6,
+      "case": "scene000002_frame000255_isolated",
+      "status": "checked",
+      "known_rays": 3268,
+      "rendered_rays": 3268,
+      "depth_coverage": 1.0,
+      "counts": {
+        "consistent": 1686,
+        "free_space": 82,
+        "occluded": 1500,
+        "missing": 0,
+        "grazing": 3
+      },
+      "residual_percentiles": {
+        "5": -5.842333963016731,
+        "25": -3.7390330373209264,
+        "50": -2.7342630658559313,
+        "75": -1.3449921041036748,
+        "95": 0.7755723584106051
+      },
+      "distance_tolerance": 2.912538655626217
+    },
+    {
+      "object_id": 6,
+      "case": "scene000002_frame000494_isolated",
+      "status": "checked",
+      "known_rays": 2954,
+      "rendered_rays": 2999,
+      "depth_coverage": 0.9849949983327776,
+      "counts": {
+        "consistent": 2218,
+        "free_space": 606,
+        "occluded": 130,
+        "missing": 45,
+        "grazing": 2
+      },
+      "residual_percentiles": {
+        "5": -2.1380247343240537,
+        "25": -0.09762574752915423,
+        "50": 1.2288481601137464,
+        "75": 2.5857467361621485,
+        "95": 6.114128133583966
+      },
+      "distance_tolerance": 2.912538655626217
+    },
+    {
+      "object_id": 8,
+      "case": "scene000003_frame000005_isolated",
+      "status": "checked",
+      "known_rays": 6708,
+      "rendered_rays": 8207,
+      "depth_coverage": 0.8173510417935909,
+      "counts": {
+        "consistent": 6258,
+        "free_space": 184,
+        "occluded": 266,
+        "missing": 1499,
+        "grazing": 62
+      },
+      "residual_percentiles": {
+        "5": -4.7738275716238485,
+        "25": -0.1991445245182848,
+        "50": 0.9669411537112973,
+        "75": 2.2472743418692827,
+        "95": 4.2059685338169865
+      },
+      "distance_tolerance": 5.551322580568533
+    },
+    {
+      "object_id": 8,
+      "case": "scene000003_frame000261_isolated",
+      "status": "checked",
+      "known_rays": 11055,
+      "rendered_rays": 11055,
+      "depth_coverage": 1.0,
+      "counts": {
+        "consistent": 9852,
+        "free_space": 338,
+        "occluded": 865,
+        "missing": 0,
+        "grazing": 72
+      },
+      "residual_percentiles": {
+        "5": -9.797826303249833,
+        "25": -1.7442466502503495,
+        "50": 0.6767236242631279,
+        "75": 2.487076140499137,
+        "95": 4.568453227078474
+      },
+      "distance_tolerance": 5.551322580568533
+    },
+    {
+      "object_id": 8,
+      "case": "scene000003_frame000493_isolated",
+      "status": "checked",
+      "known_rays": 3656,
+      "rendered_rays": 4184,
+      "depth_coverage": 0.8738049713193117,
+      "counts": {
+        "consistent": 2701,
+        "free_space": 191,
+        "occluded": 764,
+        "missing": 528,
+        "grazing": 243
+      },
+      "residual_percentiles": {
+        "5": -66.35632988487944,
+        "25": -3.507525492101581,
+        "50": -0.1955758892690474,
+        "75": 1.8909905892547747,
+        "95": 5.727378573228357
+      },
+      "distance_tolerance": 5.551322580568533
+    }
+  ],
+  "localization_changed": false,
+  "interpolation_or_hole_filling": false
+}

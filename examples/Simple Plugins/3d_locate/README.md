@@ -41,6 +41,11 @@ samples are unsupported or occluded, and gray points belong to the scene.
 RGB axes mark each taught model origin and orientation.
 
 Open **Train 3D locator…** to see the retained reference and trained samples.
+
+With **dev17**, select one cached accepted or rejected pose and choose
+**Review camera-depth evidence…** in the trainer. Its native flyaround popup
+separates ray agreement, missing depth, nearer/farther returns and grazing
+surfaces with full-map exports. See the [six real camera-depth reviews](camera_depth_review/README.md).
 Load `assets/scene.ply` as the independent test scene and locate it.
 To teach a replacement, load `assets/model.ply`, train, test, stage, and Apply.
 The model cloud should contain one isolated part.

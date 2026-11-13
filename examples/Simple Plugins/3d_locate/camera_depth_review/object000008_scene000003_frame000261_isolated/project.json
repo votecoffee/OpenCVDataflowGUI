@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "camera_depth",
+      "type": "input.cloud",
+      "name": "Annotated pose ray evidence - not a detection",
+      "parameters": {
+        "path": "expected_and_measured.ply",
+        "units": "mm",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        80
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "T-LESS object 8 capture 261 - ANNOTATION ONLY",
+      "description": "This stored evidence graph runs no locator. Colored points are expected CAD geometry, not extra sensor returns; gray points are measured depth. Green: ray agreement, not pose acceptance. Red: farther return/free space. Orange: nearer return. Magenta: missing exact depth. Blue-gray: grazing ray. RGB axes: supplied annotated pose. Orbit the native RGB cloud; full native maps, camera, counts, physical tolerance and source hashes are exported alongside it. T-LESS, Hodan et al., WACV 2017, CC BY 4.0; see ../ATTRIBUTION.md and https://cmp.felk.cvut.cz/t-less/. No annotated pose counts as a detection.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

@@ -1,0 +1,138 @@
+{
+  "scope": "POSE_REVIEW_ONLY_NOT_AN_ACCEPTANCE_DECISION",
+  "status": "checked",
+  "reason": null,
+  "units": "mm",
+  "frame": "camera",
+  "source_to_target": [
+    [
+      -0.99971807,
+      -0.0154649,
+      0.01801623,
+      -61.48505629
+    ],
+    [
+      0.00088391,
+      0.73400797,
+      0.67913992,
+      -33.14969179
+    ],
+    [
+      -0.02372675,
+      0.67896403,
+      -0.7337879,
+      749.18541564
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "render_stride": 2,
+  "rendered_rays": 11055,
+  "known_rays": 11055,
+  "depth_coverage": 1.0,
+  "minimum_depth_coverage": 0.8,
+  "minimum_known_rays": 20,
+  "distance_tolerance": 5.551322580568533,
+  "counts": {
+    "consistent": 9852,
+    "free_space": 338,
+    "occluded": 865,
+    "missing": 0,
+    "grazing": 72
+  },
+  "score": 0.8322621462806022,
+  "score_type": "projective_depth_fit_not_probability",
+  "residual_percentiles": {
+    "5": -9.797826303249833,
+    "25": -1.7442466502503495,
+    "50": 0.6767236242631279,
+    "75": 2.487076140499137,
+    "95": 4.568453227078474
+  },
+  "object_id": 8,
+  "case": "scene000003_frame000261_isolated",
+  "camera": {
+    "model": "camera_model_v1",
+    "camera_matrix": [
+      [
+        1075.65091572,
+        0.0,
+        366.06888344
+      ],
+      [
+        0.0,
+        1073.90347929,
+        300.72159802
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "image_size": [
+      720,
+      540
+    ],
+    "units": "mm",
+    "frame": "camera",
+    "lens": "pinhole",
+    "distortion": []
+  },
+  "settings": {
+    "sampling_distance": 0.03,
+    "ppf_distance": 0.05,
+    "angle_bins": 30,
+    "scene_reference_step": 0.1,
+    "normal_neighbors": 20,
+    "model_viewpoint": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scene_viewpoint": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "max_candidates": 24,
+    "global_model_points": 384,
+    "global_scene_points": 2048,
+    "search_sampling": "uniform",
+    "refinement": "legacy",
+    "icp_iterations": 60,
+    "icp_levels": 4,
+    "distance_tolerance": 0.025,
+    "max_rmse": 0.015,
+    "min_coverage": 0.5,
+    "normal_angle": 30.0,
+    "min_normal_spread": 0.01,
+    "min_unique_support": 20,
+    "max_matches": 5,
+    "overlap_threshold": 0.6,
+    "overlap_metric": "combined",
+    "observation_mode": "surface",
+    "candidate_backend": "ppf",
+    "depth_verification": "auto",
+    "max_free_space": 0.1,
+    "min_depth_coverage": 0.8,
+    "execution_workers": 1,
+    "pose_scoring": "geometric"
+  },
+  "annotation_only": true,
+  "search_executed": false,
+  "depth_source": "full_measured_frame",
+  "display_scene": "supplied_visible_mask",
+  "state_codes": {
+    "0": "outside",
+    "1": "consistent",
+    "2": "free_space",
+    "3": "occluded",
+    "4": "missing",
+    "5": "grazing"
+  }
+}
