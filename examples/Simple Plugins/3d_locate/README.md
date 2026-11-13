@@ -33,6 +33,11 @@ Load `assets/scene.ply` as the independent test scene and locate it.
 To teach a replacement, load `assets/model.ply`, train, test, stage, and Apply.
 The model cloud should contain one isolated part.
 
+With plugin **0.1.0.dev8**, run in Debug and use **Capture last processed
+inputs** to review the scene and any camera/depth consumed in one completed
+run. The trained model is preserved. Acquisition pairing remains explicit;
+see [completed-input capture](CAPTURE.md). Older hosts keep manual captures.
+
 ## Outputs
 
 The saved model frame is `part`; the scene frame is `camera`.

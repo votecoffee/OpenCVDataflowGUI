@@ -22,9 +22,12 @@ Open **Train 3D locator…** to restore the retained CAD model. Select
 `candidate backend = ppf_features`, or use **Optimize execution…** to compare
 the added **features** profile with the other plans. Load `assets/scene.ply`,
 `assets/camera.json` and `assets/depth.ply` for a saved-data preview. These are
-matched saved inputs; independent latest-value captures are not a timing
-guarantee. The host's processed-input bundle API is available for future
-trainer integration, but the plugin's existing capture buttons remain separate.
+matched saved inputs. With plugin **0.1.0.dev8**, run in Debug and use
+**Capture last processed inputs** to capture the consumed search/camera/depth
+together, preserving the trained model. [Capture workflow](../../CAPTURE.md)
+explains validation, ticket provenance and older-host support. A shared block
+execution does not guarantee synchronized acquisitions; individual latest
+captures remain independent.
 
 Model signatures are cached. Runtime work is bounded to 64 descriptor
 neighbors, 2048 correspondences, 4096 guided RANSAC trials and 128 coarse

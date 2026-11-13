@@ -257,3 +257,54 @@ def test_feature_candidate_example_uses_full_scene_and_retains_failed_qualificat
         assert len(benchmark["cases"]) == 8
     finally:
         graph.close()
+
+
+@pytest.mark.local_examples
+def test_real_tless_training_captures_completed_inputs_without_changing_recipe(app):
+    pytest.importorskip("opencv_simple_3d_locate.preview_capture")
+    from opencv_simple_3d_locate.qt_training import LocateTrainingDialog
+
+    from opencv_dataflow.plugin_dialog import PluginDialogContext
+
+    if not hasattr(PluginDialogContext, "snapshot_processed_inputs"):
+        pytest.skip("Completed-input capture requires a compatible host")
+    root = (
+        Path(__file__).resolve().parents[1]
+        / "examples/Simple Plugins/3d_locate/real_tless/cropped_search_depth"
+    )
+    graph = Graph.load(root / "project.json", builtin_registry())
+    context = dialog = None
+    try:
+        graph.set_run_profile("debug")
+        graph.run()
+        block = graph.blocks["locate"]
+        assert block.state == "pass", block.error
+        draft = dict(block.parameters)
+        context = PluginDialogContext(graph, block)
+        dialog = LocateTrainingDialog(None, draft, context)
+        recipe = dialog.recipe
+        original_samples = recipe.samples.copy()
+        dialog.capture_preview_button.click()
+        assert dialog.processed_capture is not None, dialog.status.text()
+        assert dialog.processed_capture.bundle.passed
+        assert dialog.processed_capture.bundle.execution_count == block.timing.count
+        assert dialog.recipe is recipe and draft == block.parameters
+        np.testing.assert_array_equal(recipe.samples, original_samples)
+        np.testing.assert_array_equal(dialog.test_scene.points, block.last_inputs["scene"].points)
+        np.testing.assert_array_equal(
+            dialog.depth_scene.points, block.last_inputs["depth_scene"].points
+        )
+        assert dialog.test_scene is not block.last_inputs["scene"]
+        assert dialog.camera.units == dialog.test_scene.units == dialog.depth_scene.units == "mm"
+        assert dialog.mode.currentText() == "Test search cloud"
+        assert not dialog.viewer.image_item.pixmap().isNull()
+        assert "unverified" in dialog.capture_status.text()
+        dialog._preview()
+        assert len(dialog.result.matches) == block.last_result.outputs["count"] == 1
+        assert draft == block.parameters
+    finally:
+        if dialog is not None:
+            dialog.close()
+        if context is not None:
+            context._close()
+        graph.close()

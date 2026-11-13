@@ -15,8 +15,10 @@ Green model points fit; red points are missing; blue-gray 3D model points are
 self-hidden. RGB axes mark the model's pose.
 
 Open **Train 3D locator…** to see the retained CAD model. To preview the same
-scene, load `assets/scene.ply` and `assets/camera.json`, or run once and capture
-the wired scene and camera. Model and camera coordinates are millimeters;
+scene, load `assets/scene.ply` and `assets/camera.json`, or, with plugin dev8, run in Debug and choose **Capture last processed inputs**
+to capture the scene and camera consumed by the locator together. Review
+[Test search cloud and capture provenance](../CAPTURE.md); common execution
+does not prove simultaneous acquisition. Model and camera coordinates are millimeters;
 the output maps `tless_object29` to `camera`.
 
 The match score combines geometric coverage, point-to-plane fit and normal

@@ -34,11 +34,14 @@ The **Verification depth cloud** view displays that input. Clearing it restores
 verification from the search cloud; loading a new search clears earlier depth.
 Stage stores the model/thresholds. Runtime needs the actual separate input wire.
 
-For capture, use matching saved files or a paused/static acquisition. Current
-individual input capture actions snapshot latest values independently; they
-are not a synchronized live bundle. Units/frame validation does not establish
-capture timing. A coherent processed-input capture hook has been requested
-from the host for future paired live capture.
+With plugin **0.1.0.dev8**, run in Debug, then choose **Capture last processed
+inputs** to capture search, camera and depth from one completed locator run.
+All values are validated before replacing the preview; missing optional
+inputs clear older values, and failures retain the earlier preview. The source
+label reports run judgment and search/depth ticket status. This does not
+synchronize acquisitions. [Capture workflow](../../CAPTURE.md) explains
+pairing, private copies, older-host support and independent latest-value
+captures. Use matched saved files or a registered static scene as appropriate.
 
 ## Scope and remaining failures
 
