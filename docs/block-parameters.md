@@ -605,6 +605,19 @@ Input `corners` — Optional SB inner corners in row order, from this image's fr
 | `max_black` | `255.0` | Value must be a finite number between 0 and 255. Maximum mean black-cell intensity per direction, on an 8-bit scale. |
 | `min_white` | `0.0` | Value must be a finite number between 0 and 255. Minimum mean white-cell intensity per direction, on an 8-bit scale. |
 
+## Define chromatic calibration (`calibration.chromatic_model`)
+
+Calibration / Chromatic aberration
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `640` | Value must be a whole number between 3 and 16384. Width of the exact pixel grid used for this calibration, not a resized image. |
+| `height` | `480` | Value must be a whole number between 3 and 16384. Height of that grid; up to 2.1M pixels in total. |
+| `degree` | `1` | Value must be a whole number between 0 and 11. Polynomial degree 0..11; each row needs (degree+1)*(degree+2)/2 terms. |
+| `coefficients` | `[[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]` | Rows B dx, B dy, R dx, R dy in pixels relative to green. Terms 1,y,x,y²,xy,x²,... on coordinates normalized to the image half-size. Correction samples (x-dx,y-dy). Values are stored as native float32. |
+| `camera_label` | `""` | Optional camera identity label for identifying the calibration setup. |
+| `lens_label` | `""` | Optional lens/focus/aperture label. Retain those settings at runtime. |
+
 ## White / color balance (`calibration.color_balance`)
 
 Calibration / Color balance
@@ -1587,6 +1600,29 @@ Inputs: `image` (image).
 | `right` | `10` |  |
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
 | `value` | `0.0` |  |
+
+## Correct chromatic aberration (`cv.correct_chromatic_aberration`)
+
+Image processing / Lens correction
+
+Inputs: `image` (image), `calibration` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Original-size RGB/BGR(A) with uint8/uint16/int16/float32/float64 samples. Depth/order/alpha are preserved. Green defines the unchanged output coordinate grid.
+
+Input `calibration` — Wire Load chromatic calibration or Define chromatic calibration. Use the calibrated camera, lens, focus and aperture; labels do not verify hardware.
+
+Input `mask` — Correct selected output pixels only; source donors may lie outside this mask.
+
+Input `region` — Intersected with the mask. Calibration always applies to the full image grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `bayer_pattern` | `"none"` | `none`, `RGGB`, `BGGR`, `GRBG`, `GBRG` None requires RGB/BGR(A). Otherwise a raw uint8/uint16 mosaic is bilinearly demosaiced using the explicit current-grid 2x2 tile. Output is BGR. For other algorithms use Demosaic Bayer image before this block. |
+| `calibration_grid` | `"original"` | `original`, `current` Original rejects known crop/resize/pyramid grid transforms. Current accepts a calibration made for the current grid. Size must always match. |
+| `invalid_border` | `"replicate"` | `replicate`, `zero` Native linear interpolation replicates edges; zero instead clears unsupported corrected RGB pixels. Alpha and unselected pixels are retained. |
+| `maximum_displacement` | `128.0` | Value must be a finite number between 0 and 16384. Reject a model exceeding this pixel distance in the grid. |
+| `minimum_valid_fraction` | `0.5` | Value must be a finite number between 0 and 1. Minimum supported fraction of selected pixels. Failure emits diagnostic masks/report but withholds the corrected image. |
+| `maximum_work` | `250000000` | Value must be a whole number between 1 and 1e+09. Bound pixel-count * polynomial-terms * 4. Increase explicitly for high-degree calibrations; hard image limit is 2.1M pixels. |
 
 ## Create diagonal matrix (`cv.create_diagonal_matrix`)
 
@@ -4090,6 +4126,21 @@ Ticket mode and fixed value are common inspector controls.
 | `height` | `0` | Value must be a whole number between 0 and 16384. |
 | `fps` | `0.0` | Value must be a finite number at least 0. |
 | `buffer_size` | `0` | Value must be a whole number between 0 and 16384. |
+
+## Load chromatic calibration (`input.chromatic_calibration`)
+
+Input / Calibration profiles
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | OpenCV UTF-8 YAML/XML/JSON calibration (up to 256 KiB). Reads red_channel/blue_channel coeffs_x/coeffs_y and image_width/image_height. |
+| `path_base` | `"project"` | `project`, `working_directory` Resolve relative paths beside the saved project or working directory. |
+| `node` | `""` | Optional literal root mapping key; empty uses the storage root. |
+| `camera_label` | `""` | Optional camera identity label for identifying the calibration setup. |
+| `lens_label` | `""` | Optional lens/focus/aperture label. Retain those settings at runtime. |
 
 ## Load PLY / PCD point cloud (`input.cloud`)
 

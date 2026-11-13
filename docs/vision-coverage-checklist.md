@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 123 | 16 | 36 | 175 | 70.3% |
+| 1. Core and baseline 2D | 124 | 16 | 35 | 175 | 70.9% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 186 | 57 | 227 | 470 | 39.6% |
+| **Overall** | 187 | 57 | 226 | 470 | 39.8% |
 
 <!-- coverage-summary:end -->
 
@@ -225,7 +225,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S1-145 | Hard-shadow detection and compensation | Aligned reference ratios, chromatic agreement, connected components and robust regional gains | Complete | cv.reference_shadows detects neutral darker regions, fits reciprocal-median attenuation on eroded/trusted support, and preserves local image samples and hard boundaries. Exposes selection, topology/hole, gain/spread and clipping policies with diagnostic masks/data; invalid evidence withholds Image/Gain. Original 16-bit RGB clear/shadow replay restores exact independent pixels and retains defect contrast; inconsistent attenuation is rejected. Qualifies a region-constant neutral-shadow hypothesis, not universal shadow/material separation, registration or penumbra correction. |
-| S1-146 | Correct lateral chromatic aberration | correctChromaticAberration, loadChromaticAberrationParams | Planned | Correct known color fringes with declared lens settings and measure channel alignment and invalid border coverage. |
+| S1-146 | Correct lateral chromatic aberration | correctChromaticAberration, loadChromaticAberrationParams | Complete | cv.correct_chromatic_aberration applies a versioned supplied polynomial on green's pixel grid; input.chromatic_calibration loads native YAML/XML/JSON and calibration.chromatic_model exposes editable coefficients. Preserves color depth/order/alpha and image-owned tickets/frames, with mask/region selection, bounded work/displacement, conservative support and no image event below the valid-fraction limit. An original 16-bit RGB fringe fixture restores independent reference pixels exactly on 36,895 supported pixels; a 100% support requirement deliberately fails. Synthetic tests qualify polynomial/Bayer/native file conventions, not a real-lens calibration fit. |
 | S1-147 | Estimate and refine camera parameters for panoramas | detail rotation estimators, bundle adjustment and wave correction | Planned | Fit a rotating-camera image set with known focal length and yaw. Verify overlap consistency, residuals, and bad-view rejection. |
 | S1-148 | Fill stabilization borders for review | Video stabilization inpainting or neighboring-frame fill | Planned | Fill uncovered display pixels from aligned neighbors where possible and preserve a separate measured-coverage mask for inspection. Verify both outputs on known jitter. |
 

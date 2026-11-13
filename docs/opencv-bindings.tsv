@@ -361,7 +361,7 @@ P2	method	cv2.detail.ChannelsCompensator.setNrFeeds	no static reference	-
 P2	method	cv2.detail.ChannelsCompensator.setSimilarityThreshold	no static reference	-
 P2	function	cv2.detail.computeImageFeatures	no static reference	-
 P2	function	cv2.detail.computeImageFeatures2	no static reference	-
-P2	function	cv2.detail.createLaplacePyr	no static reference	-
+P2	function	cv2.detail.createLaplacePyr	literal reference	-
 P2	function	cv2.detail.createLaplacePyrGpu	no static reference	-
 P2	function	cv2.detail.createWeightMap	no static reference	-
 P2	class	cv2.detail.DpSeamFinder	no static reference	-
@@ -429,7 +429,7 @@ P2	class	cv2.detail.PairwiseSeamFinder	no static reference	-
 P2	method	cv2.detail.PairwiseSeamFinder.find	method name only	-
 P2	class	cv2.detail.PoseGraph	no static reference	-
 P2	class	cv2.detail.ProjectorBase	no static reference	-
-P2	function	cv2.detail.restoreImageFromLaplacePyr	no static reference	-
+P2	function	cv2.detail.restoreImageFromLaplacePyr	literal reference	-
 P2	function	cv2.detail.restoreImageFromLaplacePyrGpu	no static reference	-
 P2	function	cv2.detail.resultRoi	no static reference	-
 P2	function	cv2.detail.resultRoiIntersection	no static reference	-
@@ -498,7 +498,7 @@ P2	class	cv2.dnn.DictValue	no static reference	-
 P2	method	cv2.dnn.DictValue.getIntValue	no static reference	-
 P2	method	cv2.dnn.DictValue.getRealValue	no static reference	-
 P2	method	cv2.dnn.DictValue.getStringValue	no static reference	-
-P2	method	cv2.dnn.DictValue.isInt	no static reference	-
+P2	method	cv2.dnn.DictValue.isInt	method name only	-
 P2	method	cv2.dnn.DictValue.isReal	no static reference	-
 P2	method	cv2.dnn.DictValue.isString	no static reference	-
 P2	function	cv2.dnn.getAvailableTargets	literal reference	-
@@ -827,7 +827,7 @@ P2	method	cv2.ml.SVM.getDecisionFunction	no static reference	-
 P2	method	cv2.ml.SVM.getDefaultGridPtr	no static reference	-
 P2	method	cv2.ml.SVM.getDegree	no static reference	-
 P2	method	cv2.ml.SVM.getGamma	no static reference	-
-P2	method	cv2.ml.SVM.getKernelType	no static reference	-
+P2	method	cv2.ml.SVM.getKernelType	method name only	-
 P2	method	cv2.ml.SVM.getNu	no static reference	-
 P2	method	cv2.ml.SVM.getP	no static reference	-
 P2	method	cv2.ml.SVM.getSupportVectors	no static reference	-
@@ -835,18 +835,18 @@ P2	method	cv2.ml.SVM.getTermCriteria	no static reference	-
 P2	method	cv2.ml.SVM.getType	method name only	-
 P2	method	cv2.ml.SVM.getUncompressedSupportVectors	no static reference	-
 P2	method	cv2.ml.SVM.load	method name only	-
-P2	method	cv2.ml.SVM.setC	no static reference	-
-P2	method	cv2.ml.SVM.setClassWeights	no static reference	-
-P2	method	cv2.ml.SVM.setCoef0	no static reference	-
-P2	method	cv2.ml.SVM.setDegree	no static reference	-
-P2	method	cv2.ml.SVM.setGamma	no static reference	-
-P2	method	cv2.ml.SVM.setKernel	no static reference	-
+P2	method	cv2.ml.SVM.setC	method name only	-
+P2	method	cv2.ml.SVM.setClassWeights	method name only	-
+P2	method	cv2.ml.SVM.setCoef0	method name only	-
+P2	method	cv2.ml.SVM.setDegree	method name only	-
+P2	method	cv2.ml.SVM.setGamma	method name only	-
+P2	method	cv2.ml.SVM.setKernel	method name only	-
 P2	method	cv2.ml.SVM.setNu	no static reference	-
 P2	method	cv2.ml.SVM.setP	no static reference	-
 P2	method	cv2.ml.SVM.setTermCriteria	method name only	-
-P2	method	cv2.ml.SVM.setType	no static reference	-
+P2	method	cv2.ml.SVM.setType	method name only	-
 P2	method	cv2.ml.SVM.trainAuto	no static reference	-
-P2	function	cv2.ml.SVM_create	no static reference	-
+P2	function	cv2.ml.SVM_create	literal reference	-
 P2	function	cv2.ml.SVM_getDefaultGridPtr	no static reference	-
 P2	function	cv2.ml.SVM_load	literal reference	-
 P2	class	cv2.ml.SVMSGD	no static reference	-
@@ -1001,7 +1001,7 @@ P2	method	cv2.optflow.DualTVL1OpticalFlow.getTheta	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.getUseInitialFlow	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.getWarpingsNumber	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setEpsilon	method name only	-
-P2	method	cv2.optflow.DualTVL1OpticalFlow.setGamma	no static reference	-
+P2	method	cv2.optflow.DualTVL1OpticalFlow.setGamma	method name only	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setInnerIterations	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setLambda	method name only	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.setMedianFiltering	no static reference	-
@@ -1120,7 +1120,7 @@ P2	method	cv2.xfeatures2d.AgastFeatureDetector.getThreshold	no static reference	
 P2	method	cv2.xfeatures2d.AgastFeatureDetector.getType	method name only	-
 P2	method	cv2.xfeatures2d.AgastFeatureDetector.setNonmaxSuppression	no static reference	-
 P2	method	cv2.xfeatures2d.AgastFeatureDetector.setThreshold	no static reference	-
-P2	method	cv2.xfeatures2d.AgastFeatureDetector.setType	no static reference	-
+P2	method	cv2.xfeatures2d.AgastFeatureDetector.setType	method name only	-
 P2	function	cv2.xfeatures2d.AgastFeatureDetector_create	no static reference	-
 P2	class	cv2.xfeatures2d.AKAZE	no static reference	-
 P2	method	cv2.xfeatures2d.AKAZE.create	method name only	-
@@ -1497,7 +1497,7 @@ P2	method	cv2.ximgproc.EdgeBoxes.setClusterMinMag	no static reference	-
 P2	method	cv2.ximgproc.EdgeBoxes.setEdgeMergeThr	no static reference	-
 P2	method	cv2.ximgproc.EdgeBoxes.setEdgeMinMag	no static reference	-
 P2	method	cv2.ximgproc.EdgeBoxes.setEta	no static reference	-
-P2	method	cv2.ximgproc.EdgeBoxes.setGamma	no static reference	-
+P2	method	cv2.ximgproc.EdgeBoxes.setGamma	method name only	-
 P2	method	cv2.ximgproc.EdgeBoxes.setKappa	no static reference	-
 P2	method	cv2.ximgproc.EdgeBoxes.setMaxAspectRatio	no static reference	-
 P2	method	cv2.ximgproc.EdgeBoxes.setMaxBoxes	no static reference	-
@@ -1660,8 +1660,8 @@ P3	class	cv2.AffineFeature	no static reference	-
 P3	method	cv2.AffineFeature.create	method name only	-
 P3	method	cv2.AffineFeature.getDefaultName	no static reference	-
 P3	method	cv2.AffineFeature.getViewParams	no static reference	-
-P3	method	cv2.AffineFeature.setViewParams	no static reference	-
-P3	function	cv2.AffineFeature_create	no static reference	-
+P3	method	cv2.AffineFeature.setViewParams	method name only	-
+P3	function	cv2.AffineFeature_create	literal reference	-
 P3	class	cv2.AffineTransformer	no static reference	-
 P3	method	cv2.AffineTransformer.getFullAffine	no static reference	-
 P3	method	cv2.AffineTransformer.setFullAffine	no static reference	-
@@ -2086,7 +2086,7 @@ P3	function	cv2.compare	literal reference	-
 P3	function	cv2.completeSymm	literal reference	-
 P3	function	cv2.composeRT	no static reference	-
 P3	function	cv2.computeCorrespondEpilines	literal reference	-
-P3	function	cv2.computeECC	no static reference	-
+P3	function	cv2.computeECC	literal reference	-
 P3	function	cv2.connectedComponents	no static reference	-
 P3	function	cv2.connectedComponentsWithAlgorithm	literal reference	-
 P3	function	cv2.connectedComponentsWithStats	literal reference	-
@@ -2098,11 +2098,11 @@ P3	function	cv2.convertPointsToHomogeneous	no static reference	-
 P3	function	cv2.convertScaleAbs	literal reference	-
 P3	function	cv2.copyMakeBorder	literal reference	-
 P3	function	cv2.copyTo	literal reference	-
-P3	function	cv2.cornerEigenValsAndVecs	no static reference	-
+P3	function	cv2.cornerEigenValsAndVecs	literal reference	-
 P3	function	cv2.cornerHarris	literal reference	-
 P3	function	cv2.cornerMinEigenVal	literal reference	-
 P3	function	cv2.cornerSubPix	literal reference	-
-P3	function	cv2.correctChromaticAberration	no static reference	-
+P3	function	cv2.correctChromaticAberration	literal reference	-
 P3	function	cv2.correctMatches	no static reference	-
 P3	function	cv2.countNonZero	literal reference	-
 P3	function	cv2.createAffineTransformer	no static reference	-
@@ -2690,7 +2690,7 @@ P3	method	cv2.FastFeatureDetector.getThreshold	no static reference	-
 P3	method	cv2.FastFeatureDetector.getType	method name only	-
 P3	method	cv2.FastFeatureDetector.setNonmaxSuppression	no static reference	-
 P3	method	cv2.FastFeatureDetector.setThreshold	no static reference	-
-P3	method	cv2.FastFeatureDetector.setType	no static reference	-
+P3	method	cv2.FastFeatureDetector.setType	method name only	-
 P3	function	cv2.FastFeatureDetector_create	literal reference	-
 P3	function	cv2.fastNlMeansDenoisingColoredMulti	literal reference	-
 P3	function	cv2.fastNlMeansDenoisingMulti	literal reference	-
@@ -2709,12 +2709,12 @@ P3	class	cv2.FileNode	no static reference	-
 P3	method	cv2.FileNode.at	method name only	-
 P3	method	cv2.FileNode.empty	method name only	-
 P3	method	cv2.FileNode.getNode	method name only	-
-P3	method	cv2.FileNode.isInt	no static reference	-
-P3	method	cv2.FileNode.isMap	no static reference	-
+P3	method	cv2.FileNode.isInt	method name only	-
+P3	method	cv2.FileNode.isMap	method name only	-
 P3	method	cv2.FileNode.isNamed	no static reference	-
 P3	method	cv2.FileNode.isNone	no static reference	-
 P3	method	cv2.FileNode.isReal	no static reference	-
-P3	method	cv2.FileNode.isSeq	no static reference	-
+P3	method	cv2.FileNode.isSeq	method name only	-
 P3	method	cv2.FileNode.isString	no static reference	-
 P3	method	cv2.FileNode.keys	method name only	-
 P3	method	cv2.FileNode.mat	method name only	-
@@ -2733,7 +2733,7 @@ P3	method	cv2.FileStorage.isOpened	method name only	-
 P3	method	cv2.FileStorage.open	method name only	-
 P3	method	cv2.FileStorage.release	method name only	-
 P3	method	cv2.FileStorage.releaseAndGetString	method name only	-
-P3	method	cv2.FileStorage.root	no static reference	-
+P3	method	cv2.FileStorage.root	method name only	-
 P3	method	cv2.FileStorage.startWriteStruct	no static reference	-
 P3	method	cv2.FileStorage.write	method name only	-
 P3	method	cv2.FileStorage.writeComment	no static reference	-
@@ -2953,7 +2953,7 @@ P3	method	cv2.HausdorffDistanceExtractor.getRankProportion	no static reference	-
 P3	method	cv2.HausdorffDistanceExtractor.setDistanceFlag	no static reference	-
 P3	method	cv2.HausdorffDistanceExtractor.setRankProportion	no static reference	-
 P3	function	cv2.haveImageReader	no static reference	-
-P3	function	cv2.haveImageWriter	no static reference	-
+P3	function	cv2.haveImageWriter	literal reference	-
 P3	function	cv2.hconcat	literal reference	-
 P3	class	cv2.hfs.HfsSegment	no static reference	-
 P3	method	cv2.hfs.HfsSegment.create	method name only	-
@@ -3358,7 +3358,7 @@ P3	class	cv2.LineSegmentDetector	no static reference	-
 P3	method	cv2.LineSegmentDetector.compareSegments	no static reference	-
 P3	method	cv2.LineSegmentDetector.detect	method name only	-
 P3	method	cv2.LineSegmentDetector.drawSegments	no static reference	-
-P3	function	cv2.loadChromaticAberrationParams	no static reference	-
+P3	function	cv2.loadChromaticAberrationParams	literal reference	-
 P3	function	cv2.loadMesh	no static reference	-
 P3	function	cv2.loadPointCloud	no static reference	-
 P3	function	cv2.log	literal reference	-
@@ -4649,7 +4649,7 @@ P3	method	cv2.TickMeter.stop	method name only	-
 P3	class	cv2.Tonemap	no static reference	-
 P3	method	cv2.Tonemap.getGamma	no static reference	-
 P3	method	cv2.Tonemap.process	method name only	-
-P3	method	cv2.Tonemap.setGamma	no static reference	-
+P3	method	cv2.Tonemap.setGamma	method name only	-
 P3	class	cv2.TonemapDrago	no static reference	-
 P3	method	cv2.TonemapDrago.getBias	no static reference	-
 P3	method	cv2.TonemapDrago.getSaturation	no static reference	-
@@ -4714,7 +4714,7 @@ P3	method	cv2.TriangleRasterizeSettings.setCullingMode	no static reference	-
 P3	method	cv2.TriangleRasterizeSettings.setGlCompatibleMode	no static reference	-
 P3	method	cv2.TriangleRasterizeSettings.setShadingType	no static reference	-
 P3	function	cv2.triangulatePoints	literal reference	-
-P3	class	cv2.UMat	no static reference	-
+P3	class	cv2.UMat	literal reference	-
 P3	method	cv2.UMat.context	no static reference	-
 P3	method	cv2.UMat.get	method name only	-
 P3	method	cv2.UMat.handle	no static reference	-
@@ -4751,7 +4751,7 @@ P3	method	cv2.VariationalRefinement.setAlpha	no static reference	-
 P3	method	cv2.VariationalRefinement.setDelta	no static reference	-
 P3	method	cv2.VariationalRefinement.setEpsilon	method name only	-
 P3	method	cv2.VariationalRefinement.setFixedPointIterations	no static reference	-
-P3	method	cv2.VariationalRefinement.setGamma	no static reference	-
+P3	method	cv2.VariationalRefinement.setGamma	method name only	-
 P3	method	cv2.VariationalRefinement.setOmega	no static reference	-
 P3	method	cv2.VariationalRefinement.setSorIterations	no static reference	-
 P3	function	cv2.VariationalRefinement_create	no static reference	-

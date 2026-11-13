@@ -152,7 +152,7 @@ def draw_object(image, graphic, transform):
         cv2.arrowedLine(image, tuple(pixels[0]), tuple(pixels[1]), color,
                         graphic.thickness, tipLength=0.3)
     elif graphic.kind in ("label", "text") and (
-        graphic.text_style is not None or not graphic.text.isascii()
+        graphic.text_style is not None or not graphic.text.isascii() or image.dtype != np.uint8
     ):
         draw_unicode(
             image, graphic.text, pixels[0], color, graphic.text_style,

@@ -1,0 +1,28 @@
+{
+  "image_width": 240,
+  "image_height": 160,
+  "blue_channel": {
+    "coeffs_x": [
+      -2.0,
+      0.0,
+      0.0
+    ],
+    "coeffs_y": [
+      1.0,
+      0.0,
+      0.0
+    ]
+  },
+  "red_channel": {
+    "coeffs_x": [
+      3.0,
+      0.0,
+      0.0
+    ],
+    "coeffs_y": [
+      -2.0,
+      0.0,
+      0.0
+    ]
+  }
+}

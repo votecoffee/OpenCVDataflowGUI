@@ -1,0 +1,330 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "fringed_rgb16.png",
+      "parameters": {
+        "path": "assets/fringed_rgb16.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "uint16",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        180
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "ideal_rgb16.png",
+      "parameters": {
+        "path": "assets/ideal_rgb16.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "uint16",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        520
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "calibration",
+      "type": "calibration.chromatic_model",
+      "name": "Editable calibration coefficients",
+      "parameters": {
+        "width": 240,
+        "height": 160,
+        "degree": 1,
+        "coefficients": [
+          [
+            -2.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "camera_label": "Original synthetic camera",
+        "lens_label": "Known integer channel shifts"
+      },
+      "position": [
+        0,
+        -160
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "calibration"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "correct",
+      "type": "cv.correct_chromatic_aberration",
+      "name": "Align R/B with green",
+      "parameters": {
+        "bayer_pattern": "none",
+        "calibration_grid": "original",
+        "invalid_border": "replicate",
+        "maximum_displacement": 128.0,
+        "minimum_valid_fraction": 0.5,
+        "maximum_work": 250000000
+      },
+      "position": [
+        340,
+        180
+      ],
+      "exposed_inputs": [
+        "image",
+        "calibration",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "valid_mask",
+        "processed_mask",
+        "report",
+        "valid_fraction",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "before",
+      "type": "inspect.image_quality",
+      "name": "Fringe error before correction",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "pixel_grid",
+        "check_threshold": false,
+        "threshold": 0.95,
+        "peak_value": 65535
+      },
+      "position": [
+        700,
+        490
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "after",
+      "type": "inspect.image_quality",
+      "name": "Exact corrected pixels",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "pixel_grid",
+        "check_threshold": true,
+        "threshold": 0,
+        "peak_value": 65535
+      },
+      "position": [
+        700,
+        160
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Support diagnostic overlay",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1050,
+        160
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Final corrected image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1390,
+        160
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Calibrated color-fringe correction",
+      "description": "Original 16-bit neutral part has B(-2,+1) and R(+3,-2) pixel displacements. The correction uses green as the pixel grid and retains sample depth. Inspect valid_mask: only the independently known inner rectangle is supported. Before error is nonzero; after error must be exactly zero there. Original graph, fixture and calibration: OpenCVDataflowGUI (MIT). Native API reference: docs.opencv.org/5.0/main_modules/photo_ca_correction.html",
+      "parameters": {},
+      "position": [
+        690,
+        -200
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "correct",
+      "input": "image"
+    },
+    {
+      "source": "calibration",
+      "output": "calibration",
+      "target": "correct",
+      "input": "calibration"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "before",
+      "input": "image_a"
+    },
+    {
+      "source": "correct",
+      "output": "image",
+      "target": "after",
+      "input": "image_a"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "before",
+      "input": "image_b"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "after",
+      "input": "image_b"
+    },
+    {
+      "source": "correct",
+      "output": "valid_mask",
+      "target": "before",
+      "input": "mask"
+    },
+    {
+      "source": "correct",
+      "output": "valid_mask",
+      "target": "after",
+      "input": "mask"
+    },
+    {
+      "source": "correct",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "correct",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

@@ -44,6 +44,16 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Lateral chromatic aberration correction](<../examples/opencv tools/chromatic_aberration/README.md>)
+(S1-146) now loads or defines a versioned native polynomial and aligns red/blue
+to green's unchanged pixel grid. Color depth/order, straight alpha and acquisition
+payloads are preserved. Selected output processing retains original surroundings,
+while conservative donor support excludes replicated borders. Low support
+withholds the corrected image; resource and grid mismatch checks fail explicitly.
+The original uint16 RGB fixture restores all 36,895 supported reference pixels
+exactly and demonstrates an intentional insufficient-support failure. Real-lens
+fitting remains an external captured-calibration step. [Contracts](chromatic-aberration.md)
+
 [Reference-guided shadow correction](<../examples/custom tools/reference_shadows/README.md>)
 (S1-145) now detects neutral darker components and applies one qualified robust
 gain per region. Trusted fit support, chromatic agreement, area/hole policies,

@@ -661,6 +661,7 @@ def builtin_registry():
     from .channel_transform import ChannelTransform, RouteChannels
     from .charuco import DetectCharucoBoard
     from .chessboard_quality import CheckChessboardQuality
+    from .chromatic_aberration import ChromaticModel, CorrectChromaticAberration, LoadChromaticModel
     from .circle_fitting import FitCircleArc
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_tools import CLOUD_BLOCKS
@@ -971,6 +972,9 @@ def builtin_registry():
         *SEGMENTATION_BLOCKS,
         MeasureLabelRegions,
         RegionProperties,
+        ChromaticModel,
+        LoadChromaticModel,
+        CorrectChromaticAberration,
         MultiOtsu,
         GlobalThreshold,
         SkimageLocalThreshold,

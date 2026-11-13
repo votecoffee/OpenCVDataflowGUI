@@ -1,0 +1,32 @@
+{
+  "image_size": [
+    240,
+    160
+  ],
+  "native_bgr_displacements": [
+    [
+      -2,
+      1
+    ],
+    [
+      0,
+      0
+    ],
+    [
+      3,
+      -2
+    ]
+  ],
+  "valid_rectangle_xywh": [
+    3,
+    1,
+    235,
+    157
+  ],
+  "valid_pixels": 36895,
+  "total_pixels": 38400,
+  "corrected_max_absolute_error": 0,
+  "before_max_absolute_error": 30975,
+  "source_dtype": "uint16",
+  "failed_support_minimum": 1.0
+}

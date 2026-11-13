@@ -20,9 +20,9 @@ The last broad checkpoint is `43afa2e` (S1-139): **2,859 passed and 13
 skipped** in the offscreen suite. It completes the 20-increment cycle following
 `0c8c6e9`. Skips cover 11 unavailable optional-plugin checks and two native
 OpenEXR round trips; those paths remain unqualified on this environment.
-The current cycle has **10 targeted increments of about 20** completed
+The current cycle has **11 targeted increments of about 20** completed
 (S1-140–S1-145, the local mosaic/stabilization studies, S2-20 HOG/SVM,
-scikit-image region properties and advanced thresholding).
+scikit-image region properties, advanced thresholding and S1-146 chromatic correction).
 Update the count as implementation continues and reset it after the next
 broader check.
 
@@ -126,7 +126,16 @@ Aligned image comparison now covers selected ECC/normalized correlation and
 constant-region policy. Signed Laplacian bands now support odd-size reconstruction
 and multiscale edits. Floating TIFF and Radiance HDR round trips are qualified;
 S1-125 remains partial until native EXR runs on a capable build. Prioritize
-lateral chromatic aberration correction (S1-146) next. Reference-guided hard
+masked illumination and texture correction (S1-88) next, followed by masked color
+transfer and contrast-preserving decolorization (S1-89/S1-90).
+[Lateral chromatic correction](chromatic-aberration.md) (S1-146) now applies
+loaded or explicitly defined camera/lens polynomials with conservative support,
+depth/order/alpha retention and green-grid ticket/frame ownership. An original
+16-bit RGB fixture verifies exact supported pixels and a failed support gate;
+real-lens coefficient fitting remains a captured-calibration step. Validation
+includes 110 focused checks and installed Debug/Lean runs of both successful
+graphs and an expected support-limit failure. No broad suite was repeated.
+Reference-guided hard
 shadows (S1-145) now use qualified regional gains, preserve defect samples and
 expose masks and failure evidence. An original clear/cast-shadow replay restores
 independent 16-bit RGB pixels exactly; inconsistent attenuation withholds the
@@ -214,7 +223,7 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize lateral chromatic aberration correction (S1-146). Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize masked illumination/texture correction (S1-88), masked color transfer and decolorization (S1-89/S1-90). Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and K-nearest/random-forest image classifiers. Native SVM training, prediction and model I/O are available in [the classical ML workflow](classical-ml.md) (S2-20). | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |

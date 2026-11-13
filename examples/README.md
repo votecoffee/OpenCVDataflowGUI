@@ -99,6 +99,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Focus stacking](<opencv tools/focus_stack/README.md>) | Fuse complementary focal captures, inspect level/coverage maps and verify sharp truth after optional ECC registration. |
 | [Log-polar rotation/scale registration](<opencv tools/logpolar_registration/README.md>) | Recover an independently known similarity, reject a symmetric pose and test an explicit orientation prior. |
 | [Video codec round trip](<opencv tools/video_codec_roundtrip/README.md>) | Record/replay original moving color targets and qualify six lossless/lossy codecs for exact pixels or bounded error, count, order and rate. |
+| [Chromatic aberration correction](<opencv tools/chromatic_aberration/README.md>) | Load or define a native calibration, restore exact 16-bit RGB reference pixels, inspect conservative support and test a failed coverage limit. |
 | [Fourier correlation](<opencv tools/fourier_correlation/README.md>) | Recover a known signed shift and inspect the lag map. |
 | [Aligned image comparison](<opencv tools/aligned_image_comparison/README.md>) | Compare an intact part and a missing-bore fixture with a reference, per-channel correlation and normalized residuals. |
 | [Laplacian pyramids](<opencv tools/laplacian_pyramid/README.md>) | Decompose an odd-sized 16-bit color image into signed bands, verify exact reconstruction, and remove the finest detail. |
