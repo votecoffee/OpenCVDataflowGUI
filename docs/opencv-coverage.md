@@ -44,6 +44,16 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Controlled video encoder qualification](<../examples/opencv tools/video_codec_roundtrip/README.md>)
+(S1-140) now checks finalized lossless and lossy streams for frame count, EOF,
+order, FPS, media time and color. Six native cases cover FFmpeg FFV1/MJPG
+in BGR and grayscale, mp4v BGR MP4, and integer-rate OpenCV MJPEG BGR.
+Known corrupt grayscale and rounded fractional-FPS OpenCV MJPEG combinations
+fail before frame submission, including automatic backend selection. The
+headless qualification command retains clips and explicit reports, with
+unavailable codecs remaining unqualified. Recording info identifies the
+actual backend and acknowledges submission rather than successful encoding.
+
 [Log-polar similarity registration](<../examples/opencv tools/logpolar_registration/README.md>)
 (S1-139) now verifies rotation, isotropic scale and translation after spectral
 proposals. Symmetric near-equal poses withhold primary geometry; an explicit

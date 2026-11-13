@@ -6713,11 +6713,11 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `path` | `"output.avi"` | Use a new file. The container is finalized when execution closes. |
 | `path_base` | `"working_directory"` | `working_directory`, `project` |
-| `backend` | `"auto"` | `auto`, `ffmpeg`, `gstreamer`, `msmf`, `avfoundation`, `opencv_mjpeg` |
+| `backend` | `"auto"` | `auto`, `ffmpeg`, `gstreamer`, `msmf`, `avfoundation`, `opencv_mjpeg` FFmpeg is qualified for color/grayscale and fractional FPS. Codec availability depends on the build. |
 | `codec` | `"MJPG"` | `MJPG`, `mp4v`, `XVID`, `FFV1`, `HFYU`, `custom` |
 | `custom_fourcc` | `""` | Four ASCII characters when codec is set to custom. |
-| `fps` | `30.0` | Constant output playback rate in frames per second. |
-| `color` | `"bgr"` | `bgr`, `gray` |
+| `fps` | `30.0` | Value must be a finite number at least 0.001. Constant playback FPS. The OpenCV MJPEG backend requires a whole number. |
+| `color` | `"bgr"` | `bgr`, `gray` Uint8 BGR or grayscale. Alpha is discarded. Grayscale requires a backend other than OpenCV MJPEG. |
 
 ## Match shape pattern (`pattern.match_shape`)
 

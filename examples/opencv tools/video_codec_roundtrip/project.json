@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Eight original color/moving targets",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/frame-00.png",
+          "assets/frame-01.png",
+          "assets/frame-02.png",
+          "assets/frame-03.png",
+          "assets/frame-04.png",
+          "assets/frame-05.png",
+          "assets/frame-06.png",
+          "assets/frame-07.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        60
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "record",
+      "type": "output.video",
+      "name": "Write video file",
+      "parameters": {
+        "path": "recorded.avi",
+        "path_base": "project",
+        "backend": "ffmpeg",
+        "codec": "FFV1",
+        "custom_fourcc": "",
+        "fps": 12.5,
+        "color": "bgr"
+      },
+      "position": [
+        440,
+        60
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original video fixtures - MIT",
+      "description": "Original synthetic images, generator and graphs under the repository's MIT license. Run all in project.json to record eight RGB-tagged images as lossless BGR FFV1 at 12.5 FPS. Closing execution finalizes recorded.avi. Open replay.json and Run all to decode the eight frames at media times 0,80,...,560 ms. The part center moves from (16,60) to (79,60) in steps of 9 pixels. Existing recordings are preserved; choose a new destination to record again. The block info acknowledges frame submission; the headless qualification command verifies finalized streams. API: https://docs.opencv.org/5.0/main_modules/classcv_1_1VideoWriter.html",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "record",
+      "input": "image"
+    }
+  ]
+}

@@ -8,7 +8,8 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
-from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image
+from .images import COLOR_FORMATS, PIXEL_DEPTHS, format_image, image_format
+from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, frame
 from .processing import finite, gray_image, image_value, integer
 from .replay import ReplaySource
@@ -246,8 +247,17 @@ class WriteVideo(Block):
     parameter_help = {
         "path": "Use a new file. The container is finalized when execution closes.",
         "custom_fourcc": "Four ASCII characters when codec is set to custom.",
-        "fps": "Constant output playback rate in frames per second.",
+        "fps": "Constant playback FPS. The OpenCV MJPEG backend requires a whole number.",
+        "color": (
+            "Uint8 BGR or grayscale. Alpha is discarded. "
+            "Grayscale requires a backend other than OpenCV MJPEG."
+        ),
+        "backend": (
+            "FFmpeg is qualified for color/grayscale and fractional FPS. "
+            "Codec availability depends on the build."
+        ),
     }
+    parameter_ranges = {"fps": NumericRange(0.001)}
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -300,7 +310,18 @@ class WriteVideo(Block):
             self._count = 0
         self._writer.write(np.ascontiguousarray(image))
         self._count += 1
-        info = {"path": str(path), "frames_submitted": self._count, "fps": fps, "codec": codec}
+        info = {
+            "path": str(path),
+            "frames_submitted": self._count,
+            "fps": fps,
+            "codec": codec,
+            "backend": self._writer.getBackendName(),
+            "frame_size": list(size),
+            "color_format": p["color"],
+            "input_color_format": image_format(source),
+            "alpha_discarded": source.ndim == 3 and source.shape[2] == 4,
+            "submission_status": "submitted_unverified",
+        }
         return Result({"info": info}, message=f"Submitted frame {self._count} to {path.name}")
 
     def open_writer(self, path, backend, codec, fps, size, bgr):
@@ -313,8 +334,21 @@ class WriteVideo(Block):
             )
             if not self._writer.isOpened():
                 raise ValueError(
-                    "OpenCV cannot open this video codec/container/backend combination"
+                    f"OpenCV cannot open video codec {codec!r}, container {path.suffix!r}, "
+                    f"backend {self.parameters['backend']!r}"
                 )
+            # This backend silently rounds fractional FPS and its gray stream did
+            # not survive a decoder round trip on the supported OpenCV 5 build.
+            # Inspect the actual backend as CAP_ANY can also choose CV_MJPEG.
+            if self._writer.getBackendName() == "CV_MJPEG":
+                if not bgr:
+                    raise ValidationError(
+                        "OpenCV MJPEG grayscale recording is not reliable; select FFmpeg or BGR"
+                    )
+                if fps != round(fps):
+                    raise ValidationError(
+                        "OpenCV MJPEG requires whole-number FPS; select FFmpeg for fractional FPS"
+                    )
         except Exception:
             self.close()
             path.unlink(missing_ok=True)

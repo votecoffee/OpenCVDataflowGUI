@@ -1,0 +1,82 @@
+{
+  "origin": "Original independently specified color bars and moving-part fixture; MIT",
+  "frame_count": 8,
+  "frame_size": [
+    128,
+    96
+  ],
+  "fps": 12.5,
+  "media_times_ms": [
+    0,
+    80,
+    160,
+    240,
+    320,
+    400,
+    480,
+    560
+  ],
+  "part_centers": [
+    [
+      16,
+      60
+    ],
+    [
+      25,
+      60
+    ],
+    [
+      34,
+      60
+    ],
+    [
+      43,
+      60
+    ],
+    [
+      52,
+      60
+    ],
+    [
+      61,
+      60
+    ],
+    [
+      70,
+      60
+    ],
+    [
+      79,
+      60
+    ]
+  ],
+  "bgr_primary_samples": [
+    [
+      255,
+      0,
+      0
+    ],
+    [
+      0,
+      255,
+      0
+    ],
+    [
+      0,
+      0,
+      255
+    ],
+    [
+      125,
+      125,
+      125
+    ]
+  ],
+  "gray_primary_samples": [
+    29,
+    150,
+    76,
+    125
+  ],
+  "ffv1_maximum_absolute_error_counts": 0
+}
