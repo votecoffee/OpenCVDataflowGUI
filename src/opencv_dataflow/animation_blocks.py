@@ -19,6 +19,7 @@ from .animation_codec import (
     encode,
     frame_group,
     prepare,
+    whole,
 )
 from .core import Block, Port, Result
 from .graphics_layers import GraphicDrawing, graphic_object
@@ -91,7 +92,9 @@ class _DecodeAnimation(Block):
         super().__init__(**kwargs)
         self.exposed_outputs = [p.name for p in self.outputs if p.name != "still_image"]
 
-    def decoded_result(self, data, contexts=(), context=None, file_api=False, formats=()):
+    def decoded_result(
+        self, data, contexts=(), context=None, file_api=False, formats=(), labels=()
+    ):
         p = self.parameters
         animation, details = decode(
             data, p["start_frame"], p["frame_count"], p["maximum_pixels"], file_api=file_api
@@ -105,6 +108,7 @@ class _DecodeAnimation(Block):
             f"{self.id}:{hashlib.sha256(data).hexdigest()[:12]}",
             context,
             contexts,
+            labels,
         )
         for local, packet in enumerate(group.items):
             color = p["color_format"]
@@ -139,7 +143,6 @@ class AnimationFile(_DecodeAnimation):
     block_type, subtype = "Input", "Files"
     defaults = {"path": "", "path_base": "project", **DECODE_DEFAULTS}
     parameter_choices = {"path_base": ("project", "working_directory"), **DECODE_CHOICES}
-    file_source = True
 
     def issue_source_ticket(self):
         ticket = super().issue_source_ticket()
@@ -196,6 +199,7 @@ class DecodeAnimation(_DecodeAnimation):
             contexts,
             self.input_payloads.get("encoded", {}),
             formats=value.color_formats if isinstance(value, EncodedAnimation) else (),
+            labels=value.labels if isinstance(value, EncodedAnimation) else (),
         )
 
 
@@ -249,6 +253,8 @@ class _EncodeAnimation(Block):
         "duration_mode": "Use frame payload timing with a default, one uniform duration, "
         "or the explicit list. Wired Durations overrides this choice.",
         "loop_count": "Zero is infinite; GIF viewers may count repeats differently.",
+        "loop_mode": "Use the first frame's loop metadata when available, or override it.",
+        "background_mode": "Use the first frame's background metadata, or override it.",
         "background_bgra": "Four background bytes. GIF requires zero; APNG alpha must be zero. "
         "WebP packing is normalized and independently checked.",
         "gif_timing": "Exact requires 10-ms units; floor_10ms quantizes and reports both lists.",
@@ -275,6 +281,22 @@ class _EncodeAnimation(Block):
         super().__init__(**kwargs)
         self.exposed_inputs = ["frames"]
 
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        bg = p["background_bgra"]
+        if not isinstance(bg, list) or len(bg) != 4:
+            raise ValidationError("Background BGRA requires four bytes", "background_bgra")
+        for channel in bg:
+            whole(channel, "background_bgra", 0, 255)
+        durations = p["durations_ms"]
+        if not isinstance(durations, list) or len(durations) > 64:
+            raise ValidationError(
+                "Durations must be a list with at most 64 entries", "durations_ms"
+            )
+        for duration in durations:
+            whole(duration, "durations_ms", 1, 655350)
+
     def encoded_result(self, inputs, *, file_api=False):
         animation, requested = prepare(
             inputs["frames"], self.parameters, inputs.get("durations"), inputs.get("still_image")
@@ -286,6 +308,7 @@ class _EncodeAnimation(Block):
             data,
             contexts,
             tuple(image_format(item.value) for item in inputs["frames"].items),
+            inputs["frames"].labels,
         )
         return packet, details
 

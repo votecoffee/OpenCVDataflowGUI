@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 132 | 16 | 27 | 175 | 75.4% |
+| 1. Core and baseline 2D | 133 | 16 | 26 | 175 | 76.0% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 195 | 58 | 217 | 470 | 41.5% |
+| **Overall** | 196 | 58 | 216 | 470 | 41.7% |
 
 <!-- coverage-summary:end -->
 
@@ -180,7 +180,7 @@ fixture or result needed to close the item.
 | S1-108 | Region tracking by color distribution | meanShift, CamShift, histogram backprojection | Complete | sequence.color_tracker. Explicit rectangle/shape teaching, hue/HS bins, native termination controls, HSV/alpha/work-area filtering, frozen or accepted-update learning, current-ticket region/pose/probability outputs and confidence/support/scale/motion gates. Original translation and growing-ellipse fixtures verify centers within 3 pixels and scale growth; disappearance withholds primary events and expires after bounded misses until explicit reseeding. Native parity, stream/context isolation, copyable bounded state, XML and Debug/Lean replay are checked. Color-mass geometry and axial ambiguity are explicit; captured-scene identity reliability is unqualified. |
 | S1-109 | Robust keypoint-free motion refinement | VariationalRefinement | Complete | cv.refine_flow. Explicit paired uint8 gray/color images and copied A-to-B seed field, all seven native solver controls, intersected output selections, source/donor support, border exclusions and comparable before/after residuals. Independent (+2,+1)-pixel translation reduces mean interior endpoint error below 0.6 pixels and 65% of the biased seed error; residual drops below 60%. Native parity, frame/ticket/pyramid ownership, bounds, exceptions, quality gates, XML, Debug/Lean and downstream flow warping are checked. This local single-scale baseline requires a suitable seed; diagnostic support is not visibility or accuracy confidence, and selections do not mask the native optimization energy. |
 | S1-110 | Video seeking by media time | VideoCapture CAP_PROP_POS_MSEC and timestamped replay | Planned | Seek by time on fixtures with known frame timing and report the effective position. |
-| S1-111 | Animated image decoding and encoding | imreadanimation, imwriteanimation, imdecodeanimation, imencodeanimation | Planned | Round-trip a supported animation with per-frame durations, frame order and format checks. |
+| S1-111 | Animated image decoding and encoding | imreadanimation, imwriteanimation, imdecodeanimation, imencodeanimation | Complete | File/buffer blocks qualify bounded APNG, GIF and WebP groups with native readback of order, count, timing and loops; independent pixels/timing, alpha, color tags, contexts/labels and original examples. Explicit GIF quantization, native frame merging, unsupported depths and RGB APNG posters are guarded. Grayscale/BGRA posters are separate from timed frames; native WebP background packing is normalized. Writer publication preserves existing files, including a race. AVIF remains unavailable on this build; these are batch transforms, not paced display playback. |
 | S1-112 | Native QR encoding | QRCodeEncoder | Complete | cv.encode_qr exposes version, correction/mode dropdowns and native structured-append generation. Explicit UTF-8/validated Shift-JIS, integer scaling, normalized quiet zones and bounded sheet/group outputs have native and independent pixel references. ASCII/UTF-8 labels round-trip through the native reader; Kanji is independently checked with optional ZXing. Source tickets/companions get distinct label grids, graphics stay separate and invalid/capacity failures emit nothing. XML and Debug/Lean examples are checked. Arbitrary segment lists are not exposed by this binding; generation-only structured parts do not close S1-162 ordered recovery or qualify print grading. |
 | S1-113 | Compare decoded text to an expected value | Image-derived text normalization and comparison | Complete | inspect.verify_text. Verify expected strings, mismatch reasons and ticket propagation after decoding. |
 | S1-114 | Multi-format barcode decoding | ZXing image decoding adapter | Complete | inspect.read_zxing. Decode formats including Data Matrix with a repeatable fixture when the optional decoder is installed. |

@@ -1690,7 +1690,7 @@ P3	method	cv2.ALIKED.create	method name only	-
 P3	method	cv2.ALIKED.Params	method name only	-
 P3	function	cv2.ALIKED_create	no static reference	-
 P3	class	cv2.ALIKED_Params	no static reference	-
-P3	class	cv2.Animation	no static reference	-
+P3	class	cv2.Animation	literal reference	-
 P3	class	cv2.ANNIndex	no static reference	-
 P3	method	cv2.ANNIndex.addItems	method name only	-
 P3	method	cv2.ANNIndex.build	method name only	-
@@ -3025,11 +3025,11 @@ P3	function	cv2.idft	literal reference	-
 P3	function	cv2.illuminationChange	literal reference	-
 P3	function	cv2.imcount	no static reference	-
 P3	function	cv2.imdecode	literal reference	-
-P3	function	cv2.imdecodeanimation	no static reference	-
+P3	function	cv2.imdecodeanimation	literal reference	-
 P3	function	cv2.imdecodemulti	literal reference	-
 P3	function	cv2.imdecodeWithMetadata	literal reference	-
 P3	function	cv2.imencode	literal reference	-
-P3	function	cv2.imencodeanimation	no static reference	-
+P3	function	cv2.imencodeanimation	literal reference	-
 P3	function	cv2.imencodemulti	literal reference	-
 P3	function	cv2.imencodeWithMetadata	literal reference	-
 P3	class	cv2.img_hash_AverageHash	alias	cv2.img_hash.AverageHash
@@ -3057,12 +3057,12 @@ P3	method	cv2.img_hash_RadialVarianceHash.getSigma	alias	cv2.img_hash.RadialVari
 P3	method	cv2.img_hash_RadialVarianceHash.setNumOfAngleLine	alias	cv2.img_hash.RadialVarianceHash.setNumOfAngleLine
 P3	method	cv2.img_hash_RadialVarianceHash.setSigma	alias	cv2.img_hash.RadialVarianceHash.setSigma
 P3	function	cv2.imread	no static reference	-
-P3	function	cv2.imreadanimation	no static reference	-
+P3	function	cv2.imreadanimation	literal reference	-
 P3	function	cv2.imreadmulti	no static reference	-
 P3	function	cv2.imreadWithMetadata	no static reference	-
 P3	function	cv2.imshow	no static reference	-
 P3	function	cv2.imwrite	no static reference	-
-P3	function	cv2.imwriteanimation	no static reference	-
+P3	function	cv2.imwriteanimation	literal reference	-
 P3	function	cv2.imwritemulti	no static reference	-
 P3	function	cv2.imwriteWithMetadata	literal reference	-
 P3	function	cv2.initCameraMatrix2D	no static reference	-

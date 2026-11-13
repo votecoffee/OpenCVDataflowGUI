@@ -1699,6 +1699,23 @@ Inputs: `image` (image).
 | `mode` | `"2d"` | `2d`, `rows` Transform the entire image or transform each row independently. |
 | `odd_size` | `"pad_even"` | `pad_even`, `reject` Extend odd transformed axes by repeating the last pixel, or reject them. |
 
+## Decode animation from memory (`cv.decode_animation`)
+
+Image processing / Codecs
+
+Inputs: `encoded` (any).
+
+Input `encoded` — EncodedAnimation packet, bytes, or a uint8 vector. Frame contexts from Encode animation are preserved.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `start_frame` | `0` | Value must be a whole number between 0 and 32766. |
+| `frame_count` | `0` | Value must be a whole number between 0 and 64. Zero reads the remaining frames, subject to the 64-frame budget. A positive value explicitly selects a bounded subset. |
+| `preview_frame` | `0` | Value must be a whole number between 0 and 63. Zero-based frame within the selected subset shown by Image. |
+| `color_format` | `"unchanged"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` |
+| `pixel_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` |
+| `maximum_pixels` | `16777216` | Value must be a whole number between 1 and 1.67772e+07. Maximum total selected pixels before native decoding; not per frame. |
+
 ## Decode image from memory (`cv.decode_image`)
 
 Image processing / Codecs
@@ -1914,6 +1931,39 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `sigma_s` | `60.0` | Value must be a finite number between 0.0001 and 200. Spatial scale in pixels. Larger values smooth across wider neighborhoods. |
 | `sigma_r` | `0.4` | Value must be a finite number between 0.0001 and 1. Relative color tolerance. Larger values smooth across stronger edges. |
 | `method` | `"recursive"` | `recursive`, `normalized_convolution` OpenCV domain-filter mode. |
+
+## Encode animation in memory (`cv.encode_animation`)
+
+Image processing / Codecs
+
+Inputs: `frames` (any), `durations` (data, optional), `still_image` (image, optional).
+
+Input `frames` — FlowGroup of 2..64 matching uint8 images; each retains its own context.
+
+Input `durations` — Optional millisecond list, one entry per frame.
+
+Input `still_image` — APNG poster, separate from timed frames. Use grayscale or BGRA to avoid a native RGB poster defect.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `codec` | `"apng"` | `apng`, `gif`, `webp` |
+| `duration_mode` | `"payload_or_default"` | `payload_or_default`, `uniform`, `explicit` Use frame payload timing with a default, one uniform duration, or the explicit list. Wired Durations overrides this choice. |
+| `default_duration_ms` | `100` | Value must be a whole number between 1 and 655350. |
+| `durations_ms` | `[]` |  |
+| `loop_mode` | `"payload_or_default"` | `payload_or_default`, `override` Use the first frame's loop metadata when available, or override it. |
+| `loop_count` | `0` | Value must be a whole number between 0 and 65535. Zero is infinite; GIF viewers may count repeats differently. |
+| `background_mode` | `"payload_or_default"` | `payload_or_default`, `override` Use the first frame's background metadata, or override it. |
+| `background_bgra` | `[0, 0, 0, 0]` | Four background bytes. GIF requires zero; APNG alpha must be zero. WebP packing is normalized and independently checked. |
+| `maximum_pixels` | `16777216` | Value must be a whole number between 1 and 1.67772e+07. Total pixel budget. Readback verifies frame count, timing and loops. |
+| `gif_timing` | `"exact"` | `exact`, `floor_10ms` Exact requires 10-ms units; floor_10ms quantizes and reports both lists. |
+| `gif_quality` | `"palette_256"` | `fast_no_dither`, `fast_floyd`, `palette_8`, `palette_16`, `palette_32`, `palette_64`, `palette_128`, `palette_256` Native fast modes or palette size. GIF has binary alpha and reduced color. |
+| `gif_dither` | `"none"` | `most`, `normal`, `less`, `minimal`, `none` Palette-mode dither; fast modes select their own native dither algorithm. |
+| `gif_color_table` | `"global"` | `global`, `local` |
+| `gif_transparency_threshold` | `1` | Value must be a whole number between 0 and 255. Alpha below this becomes transparent; zero disables alpha. |
+| `webp_mode` | `"lossless"` | `lossless`, `lossy` Lossless uses animation QUALITY=101. The still-image LOSSLESS_MODE flag is ignored by this backend. |
+| `webp_quality` | `90` | Value must be a whole number between 1 and 100. Lossy WebP only, 1..100. |
+| `png_compression` | `-1` | Value must be a whole number between -1 and 9. APNG only; -1 keeps the native compression default, otherwise 0..9. |
+| `png_strategy` | `"native"` | `native`, `default`, `filtered`, `huffman`, `rle`, `fixed` APNG zlib strategy. Native APNG ignores PNG filter and buffer-size flags. |
 
 ## Encode image in memory (`cv.encode_image`)
 
@@ -4280,6 +4330,24 @@ Inputs: `payload` (any), `enable` (boolean).
 | `password_env` | `""` | Name of the environment variable that holds the password. |
 | `write_enabled` | `false` | Also wire a true Enable input for each intended publication. |
 | `retain` | `false` | Ask the broker to retain the last value on the topic. |
+
+## Load animation frames (`input.animation_file`)
+
+Input / Files
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+| `path_base` | `"project"` | `project`, `working_directory` |
+| `start_frame` | `0` | Value must be a whole number between 0 and 32766. |
+| `frame_count` | `0` | Value must be a whole number between 0 and 64. Zero reads the remaining frames, subject to the 64-frame budget. A positive value explicitly selects a bounded subset. |
+| `preview_frame` | `0` | Value must be a whole number between 0 and 63. Zero-based frame within the selected subset shown by Image. |
+| `color_format` | `"unchanged"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` |
+| `pixel_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` |
+| `maximum_pixels` | `16777216` | Value must be a whole number between 1 and 1.67772e+07. Maximum total selected pixels before native decoding; not per frame. |
 
 ## Load calibration profile (`input.calibration`)
 
@@ -6996,6 +7064,41 @@ ML / Embeddings
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `values` | `[[1.0, 0.0], [0.0, 1.0]]` |  |
+
+## Write animation file (`output.animation_file`)
+
+Output / Images
+
+Inputs: `frames` (any), `durations` (data, optional), `still_image` (image, optional).
+
+Input `frames` — FlowGroup of 2..64 matching uint8 images; each retains its own context.
+
+Input `durations` — Optional millisecond list, one entry per frame.
+
+Input `still_image` — APNG poster, separate from timed frames. Use grayscale or BGRA to avoid a native RGB poster defect.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"output.png"` |  |
+| `path_base` | `"project"` | `project`, `working_directory` |
+| `codec` | `"apng"` | `apng`, `gif`, `webp` |
+| `duration_mode` | `"payload_or_default"` | `payload_or_default`, `uniform`, `explicit` Use frame payload timing with a default, one uniform duration, or the explicit list. Wired Durations overrides this choice. |
+| `default_duration_ms` | `100` | Value must be a whole number between 1 and 655350. |
+| `durations_ms` | `[]` |  |
+| `loop_mode` | `"payload_or_default"` | `payload_or_default`, `override` Use the first frame's loop metadata when available, or override it. |
+| `loop_count` | `0` | Value must be a whole number between 0 and 65535. Zero is infinite; GIF viewers may count repeats differently. |
+| `background_mode` | `"payload_or_default"` | `payload_or_default`, `override` Use the first frame's background metadata, or override it. |
+| `background_bgra` | `[0, 0, 0, 0]` | Four background bytes. GIF requires zero; APNG alpha must be zero. WebP packing is normalized and independently checked. |
+| `maximum_pixels` | `16777216` | Value must be a whole number between 1 and 1.67772e+07. Total pixel budget. Readback verifies frame count, timing and loops. |
+| `gif_timing` | `"exact"` | `exact`, `floor_10ms` Exact requires 10-ms units; floor_10ms quantizes and reports both lists. |
+| `gif_quality` | `"palette_256"` | `fast_no_dither`, `fast_floyd`, `palette_8`, `palette_16`, `palette_32`, `palette_64`, `palette_128`, `palette_256` Native fast modes or palette size. GIF has binary alpha and reduced color. |
+| `gif_dither` | `"none"` | `most`, `normal`, `less`, `minimal`, `none` Palette-mode dither; fast modes select their own native dither algorithm. |
+| `gif_color_table` | `"global"` | `global`, `local` |
+| `gif_transparency_threshold` | `1` | Value must be a whole number between 0 and 255. Alpha below this becomes transparent; zero disables alpha. |
+| `webp_mode` | `"lossless"` | `lossless`, `lossy` Lossless uses animation QUALITY=101. The still-image LOSSLESS_MODE flag is ignored by this backend. |
+| `webp_quality` | `90` | Value must be a whole number between 1 and 100. Lossy WebP only, 1..100. |
+| `png_compression` | `-1` | Value must be a whole number between -1 and 9. APNG only; -1 keeps the native compression default, otherwise 0..9. |
+| `png_strategy` | `"native"` | `native`, `default`, `filtered`, `huffman`, `rle`, `fixed` APNG zlib strategy. Native APNG ignores PNG filter and buffer-size flags. |
 
 ## Save calibration profile (`output.calibration`)
 

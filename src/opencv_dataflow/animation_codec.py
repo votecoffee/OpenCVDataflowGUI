@@ -77,6 +77,7 @@ class EncodedAnimation:
     buffer: bytes
     contexts: tuple = ()
     color_formats: tuple = ()
+    labels: tuple = ()
 
     def __post_init__(self):
         details = header(self.buffer)
@@ -97,6 +98,15 @@ class EncodedAnimation:
             raise ValidationError("Animation logical color formats do not match the encoded frames")
         for context in self.contexts:
             validate_payload(context)
+        if (
+            not isinstance(self.labels, tuple)
+            or self.labels
+            and (
+                len(self.labels) != details["total_frames"]
+                or any(not isinstance(label, str) for label in self.labels)
+            )
+        ):
+            raise ValidationError("Animation labels do not match the encoded frames")
         object.__setattr__(self, "contexts", copy.deepcopy(self.contexts))
 
     def describe(self):
@@ -104,6 +114,7 @@ class EncodedAnimation:
             "model": "encoded_animation_v1",
             "codec": self.codec,
             "color_formats": list(self.color_formats),
+            "labels": list(self.labels),
             "byte_count": len(self.buffer),
             "sha256": hashlib.sha256(self.buffer).hexdigest(),
         }
@@ -378,7 +389,7 @@ def encode(animation, p, requested, *, file_api=False):
     return data, details
 
 
-def frame_group(animation, details, owner, context=None, contexts=()):
+def frame_group(animation, details, owner, context=None, contexts=(), labels=()):
     packets = []
     offset = 0
     for local, (image, duration) in enumerate(
@@ -402,5 +413,9 @@ def frame_group(animation, details, owner, context=None, contexts=()):
         packets.append(ValuePacket(image, payload))
         offset += duration
     return FlowGroup(
-        tuple(packets), tuple(f"frame-{details['start_frame'] + i}" for i in range(len(packets)))
+        tuple(packets),
+        tuple(
+            labels[details["start_frame"] + i] if labels else f"frame-{details['start_frame'] + i}"
+            for i in range(len(packets))
+        ),
     )

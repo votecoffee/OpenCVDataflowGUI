@@ -1,0 +1,38 @@
+{
+  "license": "MIT",
+  "creator": "OpenCVDataflowGUI contributors",
+  "frame_count": 3,
+  "durations_ms": [
+    80,
+    120,
+    200
+  ],
+  "loop_count": 3,
+  "circle_centers": [
+    [
+      36,
+      50
+    ],
+    [
+      76,
+      50
+    ],
+    [
+      116,
+      50
+    ]
+  ],
+  "circle_radius_pixels": 12,
+  "gif_requested_ms": [
+    83,
+    129,
+    208
+  ],
+  "gif_stored_ms": [
+    80,
+    120,
+    200
+  ],
+  "lossless_maximum_error": 0,
+  "scope": "Original offline controls, not timed camera playback or codec robustness grading"
+}

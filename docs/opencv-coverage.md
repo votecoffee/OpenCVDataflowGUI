@@ -100,7 +100,19 @@ normalizes native borders, preserves integer module edges, bounds rendering and
 supplies distinct sheet/symbol grids with source ticket/companion payloads.
 Known ASCII/UTF-8 labels read back natively; optional ZXing checks Kanji. Native
 structured-append generation yields a group, while S1-162 ordered recovery remains
-planned. The next priority is animated image codec round trips (S1-111).
+planned.
+
+[Animated image codecs](<../examples/opencv tools/animation_codecs/README.md>)
+(S1-111) now share bounded APNG/GIF/WebP file and buffer operations. Verified
+readback checks frame count, timing, loops and lossless visible samples;
+independent fixtures check order and lossy output. Memory packets retain frame
+tickets, coordinates, logical color formats and labels. GIF quantization is
+explicit, changed native frame counts are rejected, and file publication
+preserves existing outputs. Grayscale/BGRA APNG posters are separate from timed
+frames. AVIF remains unavailable and native RGB posters are guarded. Six examples
+include ordinary per-frame inspection and an intentional timing error.
+See [the animation contract](animation-codecs.md). Next: large-radius image
+smoothing (S1-159), with edge-retention and runtime comparisons against Gaussian blur.
 
 [Lateral chromatic aberration correction](<../examples/opencv tools/chromatic_aberration/README.md>)
 (S1-146) now loads or defines a versioned native polynomial and aligns red/blue

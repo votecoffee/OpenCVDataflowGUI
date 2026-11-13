@@ -75,6 +75,7 @@ def test_buffer_roundtrip_order_timing_contexts_and_independent_pixels(group, co
     decoder = DecodeAnimation()
     decoded = successful(decoder, {"encoded": packet_for(encoded, "encoded")})
     details = decoded.outputs["info"]
+    assert decoded.outputs["frames"].labels == group.labels
     assert details["durations_ms"] == [80, 120, 200]
     assert details["loop_count"] == 3 and details["frame_count"] == 3
     for source, restored, saved in zip(
