@@ -1,0 +1,31 @@
+{
+  "reference": "Direct half-open rectangle assignments; no distance-transform reference",
+  "image_size": [
+    192,
+    128
+  ],
+  "reference_pixels": 10552,
+  "accepted": {
+    "maximum_boundary_distance": 4,
+    "missing_pixels": 0,
+    "extra_pixels": 16
+  },
+  "defect": {
+    "maximum_boundary_distance": 5,
+    "missing_pixels": 35,
+    "extra_pixels": 16
+  },
+  "tolerance": 4,
+  "tab_xywh": [
+    152,
+    44,
+    4,
+    4
+  ],
+  "notch_xywh": [
+    70,
+    99,
+    7,
+    5
+  ]
+}

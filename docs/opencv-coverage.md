@@ -44,6 +44,12 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Binary mask boundary and area inspection](<../examples/opencv tools/mask_boundary/README.md>)
+(S1-136) now measures directed and combined boundary distances, holes and disconnected
+parts, tolerance bands and missing/extra area. Query selection retains full boundary
+targets, while explicit border/empty-set policies prevent invented geometry. Original
+tab/notch projects demonstrate independent pass/fail limits in the current pixel grid.
+
 | Rank | Outstanding capability | OpenCV primitives and graph work |
 | --- | --- | --- |
 | 1 | Inspection image stitching | [Stitch overlapping views](<../examples/custom tools/stitch_image_pair/README.md>) builds a two-view mosaic from a shared frame or wired registration, with coverage and overlap masks. [Stitch an ordered scan](<../examples/custom tools/stitch_scan_sequence/README.md>) automatically registers up to eight adjacent views and reports fit and overlap quality. [Correct exposure in an inspection scan](<../examples/custom tools/stitch_scan_exposure/README.md>) demonstrates overlap-based gain or offset correction and distance-weighted feathering. [Close the loop on an inspection scan](<../examples/custom tools/stitch_scan_loop/README.md>) constrains accumulated drift when the final view overlaps the first. [Choose a content-aware seam](<../examples/custom tools/stitch_seam/README.md>) uses bounded graph-cut selection on registered pairs or ordered scans, with automatic seam scaling for larger overlaps. [Tiled inspection mosaic](<../examples/custom tools/tiled_scan_mosaic/README.md>) registers up to 64 views without a dense canvas and renders selected windows with coverage, overlap and source transforms. Priority blending and feather halos preserve window boundaries; the source batch remains bounded. |

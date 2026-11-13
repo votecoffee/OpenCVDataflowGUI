@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -360.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/accepted.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -360.0,
+        340.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "compare",
+      "type": "inspect.mask_boundary",
+      "name": "Accept tab, reject deep notch",
+      "description": "Four-pixel inclusive boundary tolerance; no missing area, up to 16 extra pixels. Both directed boundaries include holes and disconnected features.",
+      "documentation": "<p>Measure directed inner-boundary pixel-center distances and selected missing/extra foreground area. Holes and disconnected components participate. Selection restricts queries and area counts, while distance targets retain the full uncut boundaries. Distance maps are zero outside their companion boundary masks; missing targets withhold distance maps and statistics rather than inventing finite distances.</p><p>Both combines the two directed sample sets, so mean/RMS/percentile are weighted by boundary pixel counts. Tolerance is inclusive. Beyond-tolerance area excludes differences within that distance of the opposite boundary. Image borders are an explicit exterior assumption. All measurements use current-grid pixels, not physical or automatically rescaled pyramid units. Float32 distances use a four-epsilon relative roundoff guard (at least four float32 epsilons) for all tolerance tests; tolerances of one million pixels or more need no guard. No registration is performed.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/imgproc_misc.html\">OpenCV distance transform reference</a>.</p>",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "tickets": "sample",
+        "foreground": "nonzero",
+        "connectivity": "8",
+        "image_border": "background",
+        "distance_type": "euclidean",
+        "l2_mask": "precise",
+        "direction": "both",
+        "statistic": "maximum",
+        "percentile": 95.0,
+        "tolerance": 4.0,
+        "check_boundary": true,
+        "check_area": true,
+        "area_basis": "raw",
+        "maximum_missing_pixels": 0,
+        "maximum_extra_pixels": 16,
+        "empty_policy": "fail",
+        "graphics_points": 4096
+      },
+      "position": [
+        90.0,
+        80.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "reference",
+        "sample",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "distance",
+        "measurements",
+        "missing",
+        "extra"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original mask fixtures \u2014 MIT",
+      "description": "Original 16-bit bracket masks, projects and generator, under the repository's MIT license. The accepted tab adds 16 pixels and extends four pixels; the defect removes a 7 by 5 notch (35 pixels) and moves its inner boundary five pixels. Truth follows direct rectangle dimensions, independently of the inspection block. OpenCV reference: https://docs.opencv.org/5.0/main_modules/imgproc_misc.html",
+      "parameters": {},
+      "position": [
+        -360.0,
+        -330.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "compare",
+      "input": "reference"
+    },
+    {
+      "source": "sample",
+      "output": "image",
+      "target": "compare",
+      "input": "sample"
+    }
+  ]
+}

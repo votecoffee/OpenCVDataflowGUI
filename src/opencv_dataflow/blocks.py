@@ -730,6 +730,7 @@ def builtin_registry():
     from .local_binary_patterns import LocalBinaryPatterns
     from .local_threshold import LocalThreshold
     from .logix import LOGIX_BLOCKS
+    from .mask_boundary import CompareMaskBoundary
     from .mask_clearance import MaskClearance
     from .match_review import ReviewFeatureMatches
     from .matrix_eigen import MatrixEigen
@@ -972,6 +973,7 @@ def builtin_registry():
         FlatFieldCorrection,
         AdaptiveBackgroundCorrection,
         CompareImageQuality,
+        CompareMaskBoundary,
         CompareAlignedImages,
         MeasureFocus,
         MeasureSlantedEdge,

@@ -5413,6 +5413,43 @@ Input `graphics` — Strip result graphics. Maps outlines, labels, text and poin
 | --- | --- | --- |
 | `sample_spacing` | `0.5` | Value must be a finite number between 0.25 and 1. Maximum spacing in strip pixels when projecting outline segments. |
 
+## Compare mask boundaries and area (`inspect.mask_boundary`)
+
+Inspection / Measurements
+
+Inputs: `reference` (image), `sample` (image), `image` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `reference` — Expected uint8/uint16 monochrome mask; nonzero is foreground by default.
+
+Input `sample` — Observed mask of equal dimensions; owns output coordinates, ticket and payload.
+
+Input `image` — Optional same-grid display image; preserves original pixels, depth and encoding.
+
+Input `mask` — Measurement-center selection, not a crop or a cut in the target boundaries.
+
+Input `region` — Source-grid region intersected with the optional measurement mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Require matching known frames, or compare already aligned pixels by index. |
+| `tickets` | `"sample"` | `sample`, `require_match` Sample owns results. Require match also checks a ticketed reference. |
+| `foreground` | `"nonzero"` | `nonzero`, `zero` Interpret both monochrome masks using nonzero or zero samples. |
+| `connectivity` | `"8"` | `4`, `8` Inner boundary uses cross (4) or square (8) neighborhood erosion. |
+| `image_border` | `"background"` | `background`, `ignore` Assume background outside the image, or ignore unknown exterior pixels. |
+| `distance_type` | `"euclidean"` | `euclidean`, `manhattan`, `chessboard` Pixel-center Euclidean, Manhattan, or chessboard distance. |
+| `l2_mask` | `"precise"` | `precise`, `3`, `5` Precise L2 or approximate 3/5 chamfer mask. Other metrics force size 3. |
+| `direction` | `"both"` | `both`, `sample_to_reference`, `reference_to_sample` Select boundary queries; target boundaries always use the whole image. |
+| `statistic` | `"maximum"` | `maximum`, `percentile`, `mean`, `rms` Compare this statistic with tolerance; Both combines directed samples. |
+| `percentile` | `95.0` | Value must be a finite number between 0 and 100. Percentile of directed/combined pixel-center boundary distances. |
+| `tolerance` | `2.0` | Value must be a finite number at least 0. Inclusive distance limit in current-image pixels, also used for area bands. |
+| `check_boundary` | `true` | Judge the distance statistic and require valid boundary queries. |
+| `check_area` | `false` | Also judge missing/extra pixel counts using the chosen area basis. |
+| `area_basis` | `"beyond_tolerance"` | `raw`, `beyond_tolerance` Count all area differences, or only those farther than tolerance. |
+| `maximum_missing_pixels` | `0` | Value must be a whole number at least 0. Inclusive limit on expected foreground absent from the sample. |
+| `maximum_extra_pixels` | `0` | Value must be a whole number at least 0. Inclusive limit on unexpected sample foreground. |
+| `empty_policy` | `"fail"` | `fail`, `both_empty_pass` Fail absent selected foreground, or explicitly accept both empty masks. |
+| `graphics_points` | `4096` | Value must be a whole number between 64 and 20000. Maximum outline vertices per layer; measurements use all pixels. |
+
 ## Mask clearance at reference (`inspect.mask_clearance`)
 
 Inspection / Measurements

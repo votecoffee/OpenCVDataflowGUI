@@ -7,6 +7,7 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "inspect.mask_boundary": "distanceTransform erode findContours",
     "3d.aruco_pose": "aruco.ArucoDetector.detectMarkers solvePnP",
     "3d.disparity": "StereoBM.create StereoSGBM.create",
     "3d.essential_pose": "findEssentialMat recoverPose",

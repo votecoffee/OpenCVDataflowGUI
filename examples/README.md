@@ -94,6 +94,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Feature covariance and outliers](<opencv tools/feature_covariance/README.md>) | Score correlated measurements and identify rows outside a distance limit. |
 | [Find nonzero pixels](<opencv tools/nonzero_pixels/README.md>) | Extract a bounded set of coordinates and full bounds from a texture mask. |
 | [FLANN feature registration](<opencv tools/flann_registration/README.md>) | Match SIFT descriptors through a KD-tree and recover a known translation. |
+| [Binary mask boundary and area inspection](<opencv tools/mask_boundary/README.md>) | Compare full mask boundaries and missing/extra areas using tab/notch pass/fail fixtures. |
 | [Fourier component reconstruction](<opencv tools/fourier_components/README.md>) | Compare full, phase-only and magnitude-only color reconstruction, verify independent impulse truth, and inspect typed spectral diagnostics. |
 | [Fourier correlation](<opencv tools/fourier_correlation/README.md>) | Recover a known signed shift and inspect the lag map. |
 | [Aligned image comparison](<opencv tools/aligned_image_comparison/README.md>) | Compare an intact part and a missing-bore fixture with a reference, per-channel correlation and normalized residuals. |
