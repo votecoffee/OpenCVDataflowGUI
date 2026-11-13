@@ -20,7 +20,8 @@ The last broad checkpoint is `43afa2e` (S1-139): **2,859 passed and 13
 skipped** in the offscreen suite. It completes the 20-increment cycle following
 `0c8c6e9`. Skips cover 11 unavailable optional-plugin checks and two native
 OpenEXR round trips; those paths remain unqualified on this environment.
-The current cycle has **6 targeted increments of about 20** completed (S1-140–S1-145).
+The current cycle has **7 targeted increments of about 20** completed
+(S1-140–S1-145 plus the local LearnOpenCV mosaic/stabilization studies).
 Update the count as implementation continues and reset it after the next
 broader check.
 
@@ -90,6 +91,12 @@ A fit study uses disjoint ArUco IDs for estimating and verifying a planar mappin
 A part study checks physical rectangle dimensions and orientation after rectification.
 A spacing study measures two detected centers on the original camera image.
 A bore study checks ellipse diameters, axis difference and fit error in millimeters.
+A planar mosaic study solves four point pairs and reconstructs an independent
+16-bit inspection plane exactly, with a separate no-overlap failure project.
+A camera-jitter study checks a twelve-frame centered path smoother against
+known translations and an independent landmark, preserves coverage masks and
+replays every original filename ticket. Both add attributed local examples using
+existing tools; they do not increase completed function coverage.
 
 ## Vision tool priorities
 
