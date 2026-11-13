@@ -1,7 +1,7 @@
 {
   "seconds": {
-    "first_run": 3.2682841000000735,
-    "cached_run": 3.4051510999997845
+    "first_run": 1.6948207000000366,
+    "cached_run": 1.4835411999997632
   },
   "scope": "Synthetic file-load plus locator runs. No cycle-time guarantee."
 }

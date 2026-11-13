@@ -2,7 +2,7 @@
 
 Train from a generated STL CAD part and locate two rotated copies with
 independent surface sampling, measurement noise, clutter, and a missing slice.
-Use Simple3DLocate **0.1.0.dev1 or later** in the DataflowGUI environment.
+Use Simple3DLocate **0.1.0.dev2 or later** in the DataflowGUI environment.
 
 ## Run and train
 
@@ -27,7 +27,24 @@ simple-3d-locate train-stl assets/part.stl taught.s3l --units mm --frame part
 simple-3d-locate locate taught.s3l assets/scene.npz
 ```
 
-Rebuild with `python build_cad_demo.py . --host-project`.
+The saved project uses the fastest plan passing the supplied positive and
+negative scenes. `assets/part.s3l` retains the current baseline, and
+`assets/optimized.s3l` stores the selected execution plan.
+
+Select **Training geometry** to see candidate points in white and local shape
+variation in color. Use **Optimize execution…** to compare plans on additional
+clouds. GUI cloud comparisons use agreement with the current recipe; the
+provided CLI manifest contains independent ground truth.
+
+[comparison.json](comparison.json) records settings, runtime versions, stage
+times, counts and pose errors. [validation.json](validation.json) includes the
+positive CAD scene and a sphere negative. Runtime acceptance limits are fixed.
+
+```powershell
+simple-3d-locate compare assets/part.s3l validation.json --output new_comparison.json
+```
+
+Rebuild with `python build_cad_demo.py . --host-project --optimize-profiles`.
 [timing.json](timing.json) records first and cached local graph runs, including
 file loading. Those measurements describe this synthetic example.
 
@@ -41,3 +58,6 @@ separate qualification work.
 
 The OpenCV surface-matching backend retains its
 [published patent notice](https://docs.opencv.org/4.13.0/d9/d25/group__surface__matching.html).
+
+The [broader execution benchmark](../benchmarks/README.md) compares curved and
+CAD geometry across additional poses, clutter and negative scenes.

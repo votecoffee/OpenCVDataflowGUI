@@ -86,7 +86,10 @@ def generate(folder):
     return recipe, data, truth
 
 
-def host_project(folder):
+def host_project(folder, *, optimize=False):
+    from opencv_simple_3d_locate import ValidationScene, compare_profiles, profile_recipe
+    from opencv_simple_3d_locate.graphics import training_overlay
+
     from opencv_dataflow.blocks import builtin_registry
     from opencv_dataflow.cloud_io import write_cloud
     from opencv_dataflow.core import Graph
@@ -94,14 +97,53 @@ def host_project(folder):
 
     folder = Path(folder)
     assets = folder / "assets"
-    recipe, data, _ = generate(assets)
+    recipe, data, truth = generate(assets)
+    recipe_file = "part.s3l"
+    if optimize:
+        rng = np.random.default_rng(512)
+        normals = rng.normal(size=(900, 3))
+        normals /= np.linalg.norm(normals, axis=1)[:, None]
+        negative = np.c_[35 * normals, normals].astype(np.float32)
+        np.savez_compressed(
+            assets / "negative.npz", points_normals=negative, units="mm", frame="camera"
+        )
+        validation = {
+            "version": 1,
+            "scenes": [
+                {
+                    "name": "CAD instances",
+                    "cloud": "assets/scene.npz",
+                    "truth": [p.tolist() for p in truth],
+                },
+                {"name": "Sphere negative", "cloud": "assets/negative.npz", "truth": []},
+            ],
+        }
+        (folder / "validation.json").write_bytes(
+            (json.dumps(validation, indent=2) + "\n").encode("utf-8")
+        )
+        comparison = compare_profiles(
+            recipe,
+            [
+                ValidationScene("CAD instances", data, "mm", "camera", tuple(truth)),
+                ValidationScene("Sphere negative", negative, "mm", "camera", ()),
+            ],
+            progress=print,
+        )
+        (folder / "comparison.json").write_bytes(
+            (json.dumps(comparison, indent=2, allow_nan=False) + "\n").encode("utf-8")
+        )
+        if comparison["recommended"] is None:
+            raise RuntimeError("No execution plan passed CAD example validation.")
+        recipe = profile_recipe(recipe, comparison["recommended"])
+        recipe_file = "optimized.s3l"
+        save_recipe(assets / recipe_file, recipe)
     with TemporaryDirectory(dir=assets, prefix=".cloud-") as scratch:
         temporary = Path(scratch) / "scene.ply"
         write_cloud(
             temporary, PointCloud(data[:, :3], "mm", "camera", normals=data[:, 3:]), binary=True
         )
         temporary.replace(assets / "scene.ply")
-    digest = hashlib.sha256((assets / "part.s3l").read_bytes()).hexdigest()
+    digest = hashlib.sha256((assets / recipe_file).read_bytes()).hexdigest()
     graph, registry = Graph(), builtin_registry()
     try:
         source = graph.add(
@@ -115,7 +157,7 @@ def host_project(folder):
             registry.create(
                 "3d.simple_locate",
                 block_id="locate",
-                parameters={"recipe_path": "assets/part.s3l", "sha256": digest},
+                parameters={"recipe_path": f"assets/{recipe_file}", "sha256": digest},
             )
         )
         source.position, locate.position = (0.0, 0.0), (370.0, 0.0)
@@ -144,6 +186,11 @@ def host_project(folder):
             )
         if not cv2.imwrite(str(folder / "result.png"), locate.last_result.outputs["overlay"]):
             raise OSError("Could not write CAD result render.")
+        if optimize and not cv2.imwrite(
+            str(folder / "model_analysis.png"),
+            training_overlay(recipe, locate._locator, yaw=-25, pitch=25),
+        ):
+            raise OSError("Could not write training geometry render.")
     finally:
         graph.close()
 
@@ -152,5 +199,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("folder", type=Path)
     parser.add_argument("--host-project", action="store_true")
+    parser.add_argument("--optimize-profiles", action="store_true")
     args = parser.parse_args()
-    (host_project if args.host_project else generate)(args.folder)
+    if args.host_project:
+        host_project(args.folder, optimize=args.optimize_profiles)
+    else:
+        generate(args.folder)

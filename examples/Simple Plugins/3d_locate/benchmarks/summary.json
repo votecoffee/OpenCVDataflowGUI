@@ -1,0 +1,76 @@
+{
+  "models": [
+    {
+      "geometry": "curved",
+      "recommended": null,
+      "profiles": [
+        {
+          "profile": "current",
+          "compatible": false,
+          "mean_scene_median_seconds": 0.6755304750000732,
+          "missed": 0,
+          "extra": 4
+        },
+        {
+          "profile": "geometry",
+          "compatible": false,
+          "mean_scene_median_seconds": 0.5896966625000459,
+          "missed": 0,
+          "extra": 2
+        },
+        {
+          "profile": "pyramid",
+          "compatible": false,
+          "mean_scene_median_seconds": 0.7660281874998418,
+          "missed": 0,
+          "extra": 2
+        },
+        {
+          "profile": "compact",
+          "compatible": false,
+          "mean_scene_median_seconds": 0.77639242500004,
+          "missed": 0,
+          "extra": 2
+        }
+      ]
+    },
+    {
+      "geometry": "cad",
+      "recommended": "compact",
+      "profiles": [
+        {
+          "profile": "current",
+          "compatible": true,
+          "mean_scene_median_seconds": 2.2910064874998852,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "geometry",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.9503487375000077,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "pyramid",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.7157035374998486,
+          "missed": 0,
+          "extra": 0
+        },
+        {
+          "profile": "compact",
+          "compatible": true,
+          "mean_scene_median_seconds": 1.3340746750000108,
+          "missed": 0,
+          "extra": 0
+        }
+      ]
+    }
+  ],
+  "positive_scenes": 6,
+  "negative_scenes": 2,
+  "expected_instances_per_repeat": 12,
+  "scope": "Generated fused surfaces with missing slices, noise and clutter. Real sensor qualification remains open."
+}

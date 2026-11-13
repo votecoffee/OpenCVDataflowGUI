@@ -1,0 +1,3039 @@
+{
+  "model": "simple_3d_execution_comparison_v1",
+  "units": "mm",
+  "source_frame": "part",
+  "trained_samples_sha256": "2bb807457c93e118ae3efe2a24363336a39b7ace0a871f1f2bf7d9ebde86a5f6",
+  "runtime": {
+    "python": "3.14.3",
+    "opencv": "5.0.0",
+    "numpy": "2.5.4"
+  },
+  "repeats": 2,
+  "position_tolerance": 0.3905124837953327,
+  "angle_tolerance_degrees": 1.0,
+  "qualification": "ground_truth",
+  "profiles": [
+    {
+      "profile": "current",
+      "settings": {
+        "sampling_distance": 0.03,
+        "ppf_distance": 0.05,
+        "angle_bins": 30,
+        "scene_reference_step": 0.1,
+        "normal_neighbors": 20,
+        "model_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scene_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_candidates": 24,
+        "global_model_points": 384,
+        "global_scene_points": 2048,
+        "search_sampling": "uniform",
+        "refinement": "legacy",
+        "icp_iterations": 60,
+        "icp_levels": 4,
+        "distance_tolerance": 0.025,
+        "max_rmse": 0.015,
+        "min_coverage": 0.5,
+        "normal_angle": 30.0,
+        "min_normal_spread": 0.01,
+        "min_unique_support": 20,
+        "max_matches": 5,
+        "overlap_threshold": 0.6
+      },
+      "compile_seconds": 0.24397719999979017,
+      "search_model_points": 384,
+      "scenes": [
+        {
+          "name": "cad_independent_0",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 2,
+          "median_seconds": 4.243160200000602,
+          "min_seconds": 4.213012900000649,
+          "max_seconds": 4.273307500000556,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.9232992988964521,
+                      -0.3727244890442564,
+                      0.09270846738037314,
+                      -70.03461534430203
+                    ],
+                    [
+                      -0.1916718548679394,
+                      -0.6563114665668622,
+                      -0.7297377329591352,
+                      -15.028860944359131
+                    ],
+                    [
+                      0.3328367538430865,
+                      0.6559967333146961,
+                      -0.6774127111087036,
+                      159.98166597982535
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8323085522638345,
+                  "rmse": 0.04271542631138713,
+                  "normal_spread": 0.2525184733991905,
+                  "votes": 220,
+                  "model_inliers": 1489,
+                  "unique_scene_inliers": 1186,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8818233546667866,
+                      0.3035424058001437,
+                      -0.36090106545322975,
+                      49.98701117329693
+                    ],
+                    [
+                      0.10698290140551339,
+                      -0.8741156382406884,
+                      -0.47378952055731727,
+                      -0.00021167871419081052
+                    ],
+                    [
+                      -0.45928447608325895,
+                      0.37918842132129416,
+                      -0.8032894317522118,
+                      149.9977398177518
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8317495807713806,
+                  "rmse": 0.04059866432449488,
+                  "normal_spread": 0.2567204329000188,
+                  "votes": 287,
+                  "model_inliers": 1488,
+                  "unique_scene_inliers": 1163,
+                  "refined": true
+                }
+              ],
+              "seconds": 4.273307500000556,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.04865503536339357,
+              "max_angle_error_degrees": 0.06920340912537752,
+              "execution": {
+                "sampling": "uniform",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 48,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  4104
+                ],
+                "seconds": {
+                  "preprocess": 0.010874999999941792,
+                  "candidate_search": 0.07364849999976286,
+                  "refine_verify": 4.188547800000379,
+                  "total": 4.273071399999935
+                }
+              }
+            },
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.9232992988964521,
+                      -0.3727244890442564,
+                      0.09270846738037314,
+                      -70.03461534430203
+                    ],
+                    [
+                      -0.1916718548679394,
+                      -0.6563114665668622,
+                      -0.7297377329591352,
+                      -15.028860944359131
+                    ],
+                    [
+                      0.3328367538430865,
+                      0.6559967333146961,
+                      -0.6774127111087036,
+                      159.98166597982535
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8323085522638345,
+                  "rmse": 0.04271542631138713,
+                  "normal_spread": 0.2525184733991905,
+                  "votes": 220,
+                  "model_inliers": 1489,
+                  "unique_scene_inliers": 1186,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8818233546667866,
+                      0.3035424058001437,
+                      -0.36090106545322975,
+                      49.98701117329693
+                    ],
+                    [
+                      0.10698290140551339,
+                      -0.8741156382406884,
+                      -0.47378952055731727,
+                      -0.00021167871419081052
+                    ],
+                    [
+                      -0.45928447608325895,
+                      0.37918842132129416,
+                      -0.8032894317522118,
+                      149.9977398177518
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8317495807713806,
+                  "rmse": 0.04059866432449488,
+                  "normal_spread": 0.2567204329000188,
+                  "votes": 287,
+                  "model_inliers": 1488,
+                  "unique_scene_inliers": 1163,
+                  "refined": true
+                }
+              ],
+              "seconds": 4.213012900000649,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.04865503536339357,
+              "max_angle_error_degrees": 0.06920340912537752,
+              "execution": {
+                "sampling": "uniform",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 48,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  4104
+                ],
+                "seconds": {
+                  "preprocess": 0.01147209999999177,
+                  "candidate_search": 0.07940360000065994,
+                  "refine_verify": 4.121872899999289,
+                  "total": 4.212748800000554
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "cad_independent_1",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 2,
+          "median_seconds": 2.4837431500000093,
+          "min_seconds": 2.474701400000413,
+          "max_seconds": 2.492784899999606,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.8149462827247943,
+                      -0.3777586103940703,
+                      0.43950084021100694,
+                      -92.82780117138891
+                    ],
+                    [
+                      -0.08534818732167956,
+                      -0.8283276549295588,
+                      -0.5537047796432686,
+                      -69.45211531779015
+                    ],
+                    [
+                      0.5732174484381505,
+                      0.41372905185886855,
+                      -0.7072835559052809,
+                      133.9144818426861
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.840134153158189,
+                  "rmse": 0.04060250583277731,
+                  "normal_spread": 0.2541583555481679,
+                  "votes": 154,
+                  "model_inliers": 1503,
+                  "unique_scene_inliers": 1186,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.9249594957797546,
+                      0.37997043385453044,
+                      -0.00850885205312765,
+                      18.53486599946349
+                    ],
+                    [
+                      0.3510667143005263,
+                      -0.862748175235452,
+                      -0.36389249544079644,
+                      -31.511764554596823
+                    ],
+                    [
+                      -0.14560938595123152,
+                      0.33359864436819503,
+                      -0.9314020888953425,
+                      163.68542295128037
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8334264952487423,
+                  "rmse": 0.04174417936349747,
+                  "normal_spread": 0.25821594880263116,
+                  "votes": 110,
+                  "model_inliers": 1491,
+                  "unique_scene_inliers": 1180,
+                  "refined": true
+                }
+              ],
+              "seconds": 2.474701400000413,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.02517323223478241,
+              "max_angle_error_degrees": 0.03298969432225188,
+              "execution": {
+                "sampling": "uniform",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 48,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  4056
+                ],
+                "seconds": {
+                  "preprocess": 0.010116700000253331,
+                  "candidate_search": 0.04479399999945599,
+                  "refine_verify": 2.4196151000005557,
+                  "total": 2.474525900000117
+                }
+              }
+            },
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.8149462827247943,
+                      -0.3777586103940703,
+                      0.43950084021100694,
+                      -92.82780117138891
+                    ],
+                    [
+                      -0.08534818732167956,
+                      -0.8283276549295588,
+                      -0.5537047796432686,
+                      -69.45211531779015
+                    ],
+                    [
+                      0.5732174484381505,
+                      0.41372905185886855,
+                      -0.7072835559052809,
+                      133.9144818426861
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.840134153158189,
+                  "rmse": 0.04060250583277731,
+                  "normal_spread": 0.2541583555481679,
+                  "votes": 154,
+                  "model_inliers": 1503,
+                  "unique_scene_inliers": 1186,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.9249594957797546,
+                      0.37997043385453044,
+                      -0.00850885205312765,
+                      18.53486599946349
+                    ],
+                    [
+                      0.3510667143005263,
+                      -0.862748175235452,
+                      -0.36389249544079644,
+                      -31.511764554596823
+                    ],
+                    [
+                      -0.14560938595123152,
+                      0.33359864436819503,
+                      -0.9314020888953425,
+                      163.68542295128037
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8334264952487423,
+                  "rmse": 0.04174417936349747,
+                  "normal_spread": 0.25821594880263116,
+                  "votes": 110,
+                  "model_inliers": 1491,
+                  "unique_scene_inliers": 1180,
+                  "refined": true
+                }
+              ],
+              "seconds": 2.492784899999606,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.02517323223478241,
+              "max_angle_error_degrees": 0.03298969432225188,
+              "execution": {
+                "sampling": "uniform",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 48,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  4056
+                ],
+                "seconds": {
+                  "preprocess": 0.009682900000370864,
+                  "candidate_search": 0.04250659999979689,
+                  "refine_verify": 2.4402995999998893,
+                  "total": 2.4924893000006705
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "cad_independent_2",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 2,
+          "median_seconds": 1.7401750499993796,
+          "min_seconds": 1.701991299999463,
+          "max_seconds": 1.778358799999296,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.6237049832916334,
+                      -0.2756238279713324,
+                      0.7314530738684556,
+                      -94.26131656215385
+                    ],
+                    [
+                      -0.04889745230658701,
+                      -0.9476940274352788,
+                      -0.31541253862429997,
+                      -122.25694471071144
+                    ],
+                    [
+                      0.7801289207400967,
+                      0.16095818033865145,
+                      -0.6045587905298888,
+                      92.89116604749624
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8311906092789267,
+                  "rmse": 0.04095561545563288,
+                  "normal_spread": 0.25756555728741143,
+                  "votes": 68,
+                  "model_inliers": 1487,
+                  "unique_scene_inliers": 1190,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8227437974526451,
+                      0.4614076495431761,
+                      0.3319572633581655,
+                      -7.11689387906182
+                    ],
+                    [
+                      0.5329192674617399,
+                      -0.8292934529452832,
+                      -0.16813513395519805,
+                      -71.58963449435979
+                    ],
+                    [
+                      0.1977111481966648,
+                      0.3152385602129462,
+                      -0.9281890712746111,
+                      160.41956501089217
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8306316377864729,
+                  "rmse": 0.04675928433778345,
+                  "normal_spread": 0.25639299742066135,
+                  "votes": 265,
+                  "model_inliers": 1486,
+                  "unique_scene_inliers": 1161,
+                  "refined": true
+                }
+              ],
+              "seconds": 1.778358799999296,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.04635657498561721,
+              "max_angle_error_degrees": 0.08995624188720414,
+              "execution": {
+                "sampling": "uniform",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 46,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  4034
+                ],
+                "seconds": {
+                  "preprocess": 0.01222669999970094,
+                  "candidate_search": 0.0361548999999286,
+                  "refine_verify": 1.7298070000006192,
+                  "total": 1.7781887999999526
+                }
+              }
+            },
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.6237049832916334,
+                      -0.2756238279713324,
+                      0.7314530738684556,
+                      -94.26131656215385
+                    ],
+                    [
+                      -0.04889745230658701,
+                      -0.9476940274352788,
+                      -0.31541253862429997,
+                      -122.25694471071144
+                    ],
+                    [
+                      0.7801289207400967,
+                      0.16095818033865145,
+                      -0.6045587905298888,
+                      92.89116604749624
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8311906092789267,
+                  "rmse": 0.04095561545563288,
+                  "normal_spread": 0.25756555728741143,
+                  "votes": 68,
+                  "model_inliers": 1487,
+                  "unique_scene_inliers": 1190,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8227437974526451,
+                      0.4614076495431761,
+                      0.3319572633581655,
+                      -7.11689387906182
+                    ],
+                    [
+                      0.5329192674617399,
+                      -0.8292934529452832,
+                      -0.16813513395519805,
+                      -71.58963449435979
+                    ],
+                    [
+                      0.1977111481966648,
+                      0.3152385602129462,
+                      -0.9281890712746111,
+                      160.41956501089217
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8306316377864729,
+                  "rmse": 0.04675928433778345,
+                  "normal_spread": 0.25639299742066135,
+                  "votes": 265,
+                  "model_inliers": 1486,
+                  "unique_scene_inliers": 1161,
+                  "refined": true
+                }
+              ],
+              "seconds": 1.701991299999463,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.04635657498561721,
+              "max_angle_error_degrees": 0.08995624188720414,
+              "execution": {
+                "sampling": "uniform",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 46,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  4034
+                ],
+                "seconds": {
+                  "preprocess": 0.011987500000032014,
+                  "candidate_search": 0.0279579999996713,
+                  "refine_verify": 1.6618478000000323,
+                  "total": 1.7017933999995876
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "cad_sphere_negative",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 0,
+          "median_seconds": 0.6969475499995497,
+          "min_seconds": 0.6948281999993924,
+          "max_seconds": 0.699066899999707,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 0,
+              "matches": [],
+              "seconds": 0.6948281999993924,
+              "matched": 0,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.0,
+              "max_angle_error_degrees": 0.0,
+              "execution": {
+                "sampling": "uniform",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 27,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  770
+                ],
+                "seconds": {
+                  "preprocess": 0.0008220999998229672,
+                  "candidate_search": 0.009655100000600214,
+                  "refine_verify": 0.6843138999993243,
+                  "total": 0.6947914000002129
+                }
+              }
+            },
+            {
+              "count": 0,
+              "matches": [],
+              "seconds": 0.699066899999707,
+              "matched": 0,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.0,
+              "max_angle_error_degrees": 0.0,
+              "execution": {
+                "sampling": "uniform",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 27,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  770
+                ],
+                "seconds": {
+                  "preprocess": 0.0007863000000725151,
+                  "candidate_search": 0.00972619999993185,
+                  "refine_verify": 0.6885271000001012,
+                  "total": 0.6990397999998095
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "compatible": true,
+      "median_scene_seconds": 2.2910064874998852
+    },
+    {
+      "profile": "geometry",
+      "settings": {
+        "sampling_distance": 0.03,
+        "ppf_distance": 0.05,
+        "angle_bins": 30,
+        "scene_reference_step": 0.1,
+        "normal_neighbors": 20,
+        "model_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scene_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_candidates": 24,
+        "global_model_points": 384,
+        "global_scene_points": 2048,
+        "search_sampling": "geometry",
+        "refinement": "legacy",
+        "icp_iterations": 60,
+        "icp_levels": 4,
+        "distance_tolerance": 0.025,
+        "max_rmse": 0.015,
+        "min_coverage": 0.5,
+        "normal_angle": 30.0,
+        "min_normal_spread": 0.01,
+        "min_unique_support": 20,
+        "max_matches": 5,
+        "overlap_threshold": 0.6
+      },
+      "compile_seconds": 0.2120392000006177,
+      "search_model_points": 384,
+      "scenes": [
+        {
+          "name": "cad_independent_0",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 2,
+          "median_seconds": 3.320836099999724,
+          "min_seconds": 3.3069282999995266,
+          "max_seconds": 3.3347438999999213,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.9231460231418454,
+                      -0.3727250657000394,
+                      0.09422019611684687,
+                      -70.03006582245547
+                    ],
+                    [
+                      -0.190971302405777,
+                      -0.6572818363732218,
+                      -0.7290477002441516,
+                      -15.036381386330007
+                    ],
+                    [
+                      0.3336635754990904,
+                      0.6550241315957348,
+                      -0.6779469045673242,
+                      159.99989494060992
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8334264952487423,
+                  "rmse": 0.04972302843541512,
+                  "normal_spread": 0.2515090489609371,
+                  "votes": 229,
+                  "model_inliers": 1491,
+                  "unique_scene_inliers": 1192,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.881835095725811,
+                      0.3036595412081403,
+                      -0.3607738169262176,
+                      49.98646420639906
+                    ],
+                    [
+                      0.10697460691658912,
+                      -0.8739421955197632,
+                      -0.4741112447149283,
+                      -0.005892579217828597
+                    ],
+                    [
+                      -0.4592638647022988,
+                      0.3794942976163923,
+                      -0.8031567597022078,
+                      149.98567543643082
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8311906092789267,
+                  "rmse": 0.04045910619283328,
+                  "normal_spread": 0.2568930740022251,
+                  "votes": 91,
+                  "model_inliers": 1487,
+                  "unique_scene_inliers": 1162,
+                  "refined": true
+                }
+              ],
+              "seconds": 3.3069282999995266,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.04719713962405406,
+              "max_angle_error_degrees": 0.14260068789768968,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 45,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  4104
+                ],
+                "seconds": {
+                  "preprocess": 0.03227619999961462,
+                  "candidate_search": 0.04491740000048594,
+                  "refine_verify": 3.229700999999295,
+                  "total": 3.3068946999992477
+                }
+              }
+            },
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.9231460231418454,
+                      -0.3727250657000394,
+                      0.09422019611684687,
+                      -70.03006582245547
+                    ],
+                    [
+                      -0.190971302405777,
+                      -0.6572818363732218,
+                      -0.7290477002441516,
+                      -15.036381386330007
+                    ],
+                    [
+                      0.3336635754990904,
+                      0.6550241315957348,
+                      -0.6779469045673242,
+                      159.99989494060992
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8334264952487423,
+                  "rmse": 0.04972302843541512,
+                  "normal_spread": 0.2515090489609371,
+                  "votes": 229,
+                  "model_inliers": 1491,
+                  "unique_scene_inliers": 1192,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.881835095725811,
+                      0.3036595412081403,
+                      -0.3607738169262176,
+                      49.98646420639906
+                    ],
+                    [
+                      0.10697460691658912,
+                      -0.8739421955197632,
+                      -0.4741112447149283,
+                      -0.005892579217828597
+                    ],
+                    [
+                      -0.4592638647022988,
+                      0.3794942976163923,
+                      -0.8031567597022078,
+                      149.98567543643082
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8311906092789267,
+                  "rmse": 0.04045910619283328,
+                  "normal_spread": 0.2568930740022251,
+                  "votes": 91,
+                  "model_inliers": 1487,
+                  "unique_scene_inliers": 1162,
+                  "refined": true
+                }
+              ],
+              "seconds": 3.3347438999999213,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.04719713962405406,
+              "max_angle_error_degrees": 0.14260068789768968,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 45,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  4104
+                ],
+                "seconds": {
+                  "preprocess": 0.029387300000053074,
+                  "candidate_search": 0.04103220000069996,
+                  "refine_verify": 3.264285999999629,
+                  "total": 3.334705600000234
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "cad_independent_1",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 2,
+          "median_seconds": 2.157047600000169,
+          "min_seconds": 2.1466190999999526,
+          "max_seconds": 2.1674761000003855,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.8148119404547948,
+                      -0.37835888569177567,
+                      0.4392334860986464,
+                      -92.80527824838362
+                    ],
+                    [
+                      -0.08619471410663308,
+                      -0.8283039292115609,
+                      -0.5536091329744889,
+                      -69.4448294597214
+                    ],
+                    [
+                      0.5732817570378178,
+                      0.41322772713210737,
+                      -0.7075244678291096,
+                      133.93132708295394
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8406931246506428,
+                  "rmse": 0.04106309131043163,
+                  "normal_spread": 0.2539893659817397,
+                  "votes": 65,
+                  "model_inliers": 1504,
+                  "unique_scene_inliers": 1187,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.9249264478412543,
+                      0.38004986001587904,
+                      -0.008553945619998483,
+                      18.538193076886714
+                    ],
+                    [
+                      0.3511267326682936,
+                      -0.8627264422621692,
+                      -0.3638861132653301,
+                      -31.513024246287983
+                    ],
+                    [
+                      -0.14567458148025633,
+                      0.3335643711842898,
+                      -0.9314041692986896,
+                      163.68742973291134
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8334264952487423,
+                  "rmse": 0.041428366467208835,
+                  "normal_spread": 0.2582159647405608,
+                  "votes": 70,
+                  "model_inliers": 1491,
+                  "unique_scene_inliers": 1182,
+                  "refined": true
+                }
+              ],
+              "seconds": 2.1466190999999526,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.01216839858462587,
+              "max_angle_error_degrees": 0.020722151744755803,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 45,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  4056
+                ],
+                "seconds": {
+                  "preprocess": 0.03482850000000326,
+                  "candidate_search": 0.036086299999624316,
+                  "refine_verify": 2.0754219000000376,
+                  "total": 2.146336899999369
+                }
+              }
+            },
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.8148119404547948,
+                      -0.37835888569177567,
+                      0.4392334860986464,
+                      -92.80527824838362
+                    ],
+                    [
+                      -0.08619471410663308,
+                      -0.8283039292115609,
+                      -0.5536091329744889,
+                      -69.4448294597214
+                    ],
+                    [
+                      0.5732817570378178,
+                      0.41322772713210737,
+                      -0.7075244678291096,
+                      133.93132708295394
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8406931246506428,
+                  "rmse": 0.04106309131043163,
+                  "normal_spread": 0.2539893659817397,
+                  "votes": 65,
+                  "model_inliers": 1504,
+                  "unique_scene_inliers": 1187,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.9249264478412543,
+                      0.38004986001587904,
+                      -0.008553945619998483,
+                      18.538193076886714
+                    ],
+                    [
+                      0.3511267326682936,
+                      -0.8627264422621692,
+                      -0.3638861132653301,
+                      -31.513024246287983
+                    ],
+                    [
+                      -0.14567458148025633,
+                      0.3335643711842898,
+                      -0.9314041692986896,
+                      163.68742973291134
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8334264952487423,
+                  "rmse": 0.041428366467208835,
+                  "normal_spread": 0.2582159647405608,
+                  "votes": 70,
+                  "model_inliers": 1491,
+                  "unique_scene_inliers": 1182,
+                  "refined": true
+                }
+              ],
+              "seconds": 2.1674761000003855,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.01216839858462587,
+              "max_angle_error_degrees": 0.020722151744755803,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 45,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  4056
+                ],
+                "seconds": {
+                  "preprocess": 0.03410280000025523,
+                  "candidate_search": 0.03527549999944313,
+                  "refine_verify": 2.097865400000046,
+                  "total": 2.167243900000358
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "cad_independent_2",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 2,
+          "median_seconds": 1.4602213500002108,
+          "min_seconds": 1.4297083000001294,
+          "max_seconds": 1.4907344000002922,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.6232734312195165,
+                      -0.27623052669943327,
+                      0.7315920489283655,
+                      -94.24561071375794
+                    ],
+                    [
+                      -0.04937967728350312,
+                      -0.9475700546861652,
+                      -0.31570973842033184,
+                      -122.25486652237335
+                    ],
+                    [
+                      0.7804433851390035,
+                      0.16064771265539682,
+                      -0.6042354135693814,
+                      92.88627712899375
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8323085522638345,
+                  "rmse": 0.04115158693200062,
+                  "normal_spread": 0.2572196048501668,
+                  "votes": 30,
+                  "model_inliers": 1489,
+                  "unique_scene_inliers": 1193,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8226571650169531,
+                      0.4615110685215992,
+                      0.3320281953062449,
+                      -7.12223539685538
+                    ],
+                    [
+                      0.5330893141163884,
+                      -0.8291445989516298,
+                      -0.16833008407370403,
+                      -71.59071581547946
+                    ],
+                    [
+                      0.1976131878726441,
+                      0.3154786326542468,
+                      -0.9281283641379667,
+                      160.4165614100435
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8295136948015651,
+                  "rmse": 0.046713959086214424,
+                  "normal_spread": 0.25673855339024926,
+                  "votes": 97,
+                  "model_inliers": 1484,
+                  "unique_scene_inliers": 1159,
+                  "refined": true
+                }
+              ],
+              "seconds": 1.4907344000002922,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.05202709153052088,
+              "max_angle_error_degrees": 0.08120179468623114,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 46,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  4034
+                ],
+                "seconds": {
+                  "preprocess": 0.03523739999945974,
+                  "candidate_search": 0.02423850000013772,
+                  "refine_verify": 1.4309346000000005,
+                  "total": 1.49041059999945
+                }
+              }
+            },
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.6232734312195165,
+                      -0.27623052669943327,
+                      0.7315920489283655,
+                      -94.24561071375794
+                    ],
+                    [
+                      -0.04937967728350312,
+                      -0.9475700546861652,
+                      -0.31570973842033184,
+                      -122.25486652237335
+                    ],
+                    [
+                      0.7804433851390035,
+                      0.16064771265539682,
+                      -0.6042354135693814,
+                      92.88627712899375
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8323085522638345,
+                  "rmse": 0.04115158693200062,
+                  "normal_spread": 0.2572196048501668,
+                  "votes": 30,
+                  "model_inliers": 1489,
+                  "unique_scene_inliers": 1193,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8226571650169531,
+                      0.4615110685215992,
+                      0.3320281953062449,
+                      -7.12223539685538
+                    ],
+                    [
+                      0.5330893141163884,
+                      -0.8291445989516298,
+                      -0.16833008407370403,
+                      -71.59071581547946
+                    ],
+                    [
+                      0.1976131878726441,
+                      0.3154786326542468,
+                      -0.9281283641379667,
+                      160.4165614100435
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8295136948015651,
+                  "rmse": 0.046713959086214424,
+                  "normal_spread": 0.25673855339024926,
+                  "votes": 97,
+                  "model_inliers": 1484,
+                  "unique_scene_inliers": 1159,
+                  "refined": true
+                }
+              ],
+              "seconds": 1.4297083000001294,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.05202709153052088,
+              "max_angle_error_degrees": 0.08120179468623114,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 46,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  4034
+                ],
+                "seconds": {
+                  "preprocess": 0.03429870000036317,
+                  "candidate_search": 0.024882499999876018,
+                  "refine_verify": 1.3703290999992532,
+                  "total": 1.4295105000001058
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "cad_sphere_negative",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 0,
+          "median_seconds": 0.863289899999927,
+          "min_seconds": 0.8359155999996801,
+          "max_seconds": 0.8906642000001739,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 0,
+              "matches": [],
+              "seconds": 0.8359155999996801,
+              "matched": 0,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.0,
+              "max_angle_error_degrees": 0.0,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 31,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  770
+                ],
+                "seconds": {
+                  "preprocess": 0.000742799999898125,
+                  "candidate_search": 0.007577699999274046,
+                  "refine_verify": 0.8275667000007161,
+                  "total": 0.8358873999995922
+                }
+              }
+            },
+            {
+              "count": 0,
+              "matches": [],
+              "seconds": 0.8906642000001739,
+              "matched": 0,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.0,
+              "max_angle_error_degrees": 0.0,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "legacy",
+                "coarse_rejected": 0,
+                "icp_calls": 31,
+                "model_levels": [
+                  1789
+                ],
+                "scene_levels": [
+                  770
+                ],
+                "seconds": {
+                  "preprocess": 0.0006677999999737949,
+                  "candidate_search": 0.007107899999937217,
+                  "refine_verify": 0.8828644000004715,
+                  "total": 0.8906403000000864
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "compatible": true,
+      "median_scene_seconds": 1.9503487375000077
+    },
+    {
+      "profile": "pyramid",
+      "settings": {
+        "sampling_distance": 0.03,
+        "ppf_distance": 0.05,
+        "angle_bins": 30,
+        "scene_reference_step": 0.1,
+        "normal_neighbors": 20,
+        "model_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scene_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_candidates": 24,
+        "global_model_points": 384,
+        "global_scene_points": 2048,
+        "search_sampling": "geometry",
+        "refinement": "pyramid",
+        "icp_iterations": 60,
+        "icp_levels": 4,
+        "distance_tolerance": 0.025,
+        "max_rmse": 0.015,
+        "min_coverage": 0.5,
+        "normal_angle": 30.0,
+        "min_normal_spread": 0.01,
+        "min_unique_support": 20,
+        "max_matches": 5,
+        "overlap_threshold": 0.6
+      },
+      "compile_seconds": 0.19442499999968277,
+      "search_model_points": 384,
+      "scenes": [
+        {
+          "name": "cad_independent_0",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 2,
+          "median_seconds": 2.4763843999999153,
+          "min_seconds": 2.4649466000000757,
+          "max_seconds": 2.487822199999755,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.9231941918317826,
+                      -0.37302123476557325,
+                      0.09256156103928508,
+                      -70.02877625427446
+                    ],
+                    [
+                      -0.1919709476651443,
+                      -0.6561947280297288,
+                      -0.7297640948680177,
+                      -15.022291837750277
+                    ],
+                    [
+                      0.3329559121274296,
+                      0.6559448431994551,
+                      -0.6774044015648508,
+                      159.98258987116537
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8317495807713806,
+                  "rmse": 0.04167752805825638,
+                  "normal_spread": 0.2526881639847957,
+                  "votes": 125,
+                  "model_inliers": 1488,
+                  "unique_scene_inliers": 1187,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8818640727181419,
+                      0.3037817092952891,
+                      -0.36060009754103406,
+                      49.980819270794214
+                    ],
+                    [
+                      0.10709941934483692,
+                      -0.8738532589488148,
+                      -0.47424697806157295,
+                      -0.007215299136870357
+                    ],
+                    [
+                      -0.4591791280371632,
+                      0.3796013104853138,
+                      -0.8031546385677307,
+                      149.9845480104904
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8311906092789267,
+                  "rmse": 0.04076425378920406,
+                  "normal_spread": 0.25689307584492616,
+                  "votes": 359,
+                  "model_inliers": 1487,
+                  "unique_scene_inliers": 1165,
+                  "refined": true
+                }
+              ],
+              "seconds": 2.487822199999755,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.04034986278032983,
+              "max_angle_error_degrees": 0.05143157564720025,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 1,
+                "icp_calls": 69,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  656,
+                  1403,
+                  4104
+                ],
+                "seconds": {
+                  "preprocess": 0.029398200000287034,
+                  "candidate_search": 0.042821099999855505,
+                  "refine_verify": 2.4152812000002086,
+                  "total": 2.487500600000203
+                }
+              }
+            },
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.9231941918317826,
+                      -0.37302123476557325,
+                      0.09256156103928508,
+                      -70.02877625427446
+                    ],
+                    [
+                      -0.1919709476651443,
+                      -0.6561947280297288,
+                      -0.7297640948680177,
+                      -15.022291837750277
+                    ],
+                    [
+                      0.3329559121274296,
+                      0.6559448431994551,
+                      -0.6774044015648508,
+                      159.98258987116537
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8317495807713806,
+                  "rmse": 0.04167752805825638,
+                  "normal_spread": 0.2526881639847957,
+                  "votes": 125,
+                  "model_inliers": 1488,
+                  "unique_scene_inliers": 1187,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8818640727181419,
+                      0.3037817092952891,
+                      -0.36060009754103406,
+                      49.980819270794214
+                    ],
+                    [
+                      0.10709941934483692,
+                      -0.8738532589488148,
+                      -0.47424697806157295,
+                      -0.007215299136870357
+                    ],
+                    [
+                      -0.4591791280371632,
+                      0.3796013104853138,
+                      -0.8031546385677307,
+                      149.9845480104904
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8311906092789267,
+                  "rmse": 0.04076425378920406,
+                  "normal_spread": 0.25689307584492616,
+                  "votes": 359,
+                  "model_inliers": 1487,
+                  "unique_scene_inliers": 1165,
+                  "refined": true
+                }
+              ],
+              "seconds": 2.4649466000000757,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.04034986278032983,
+              "max_angle_error_degrees": 0.05143157564720025,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 1,
+                "icp_calls": 69,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  656,
+                  1403,
+                  4104
+                ],
+                "seconds": {
+                  "preprocess": 0.03131369999937306,
+                  "candidate_search": 0.04732770000009623,
+                  "refine_verify": 2.3860082000001057,
+                  "total": 2.4646498000001884
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "cad_independent_1",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 2,
+          "median_seconds": 2.020368299999518,
+          "min_seconds": 1.9939527999995335,
+          "max_seconds": 2.0467837999995027,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.8148061215200791,
+                      -0.3780078898381798,
+                      0.4395463792974445,
+                      -92.81464477358331
+                    ],
+                    [
+                      -0.08529545973145806,
+                      -0.8281029538880729,
+                      -0.5540488988447201,
+                      -69.45077705844542
+                    ],
+                    [
+                      0.5734245101864807,
+                      0.4139511239046637,
+                      -0.7069857128227274,
+                      133.90415668514743
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8395751816657351,
+                  "rmse": 0.04073097132513817,
+                  "normal_spread": 0.2543275582367973,
+                  "votes": 63,
+                  "model_inliers": 1502,
+                  "unique_scene_inliers": 1184,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.9249220565844004,
+                      0.38006136013498265,
+                      -0.00851773303349717,
+                      18.531225197259296
+                    ],
+                    [
+                      0.35118633550675166,
+                      -0.8628013861949507,
+                      -0.3636508294138922,
+                      -31.520130254293772
+                    ],
+                    [
+                      -0.14555874070979827,
+                      0.3333573615692614,
+                      -0.9314963888768214,
+                      163.68893898159354
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8334264952487423,
+                  "rmse": 0.041996136845188436,
+                  "normal_spread": 0.2582159565949809,
+                  "votes": 70,
+                  "model_inliers": 1491,
+                  "unique_scene_inliers": 1180,
+                  "refined": true
+                }
+              ],
+              "seconds": 1.9939527999995335,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.0317620636803796,
+              "max_angle_error_degrees": 0.04437815896940163,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 1,
+                "icp_calls": 69,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  658,
+                  1443,
+                  4056
+                ],
+                "seconds": {
+                  "preprocess": 0.029880799999773444,
+                  "candidate_search": 0.04523940000035509,
+                  "refine_verify": 1.9185029000000213,
+                  "total": 1.993623700000171
+                }
+              }
+            },
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.8148061215200791,
+                      -0.3780078898381798,
+                      0.4395463792974445,
+                      -92.81464477358331
+                    ],
+                    [
+                      -0.08529545973145806,
+                      -0.8281029538880729,
+                      -0.5540488988447201,
+                      -69.45077705844542
+                    ],
+                    [
+                      0.5734245101864807,
+                      0.4139511239046637,
+                      -0.7069857128227274,
+                      133.90415668514743
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8395751816657351,
+                  "rmse": 0.04073097132513817,
+                  "normal_spread": 0.2543275582367973,
+                  "votes": 63,
+                  "model_inliers": 1502,
+                  "unique_scene_inliers": 1184,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.9249220565844004,
+                      0.38006136013498265,
+                      -0.00851773303349717,
+                      18.531225197259296
+                    ],
+                    [
+                      0.35118633550675166,
+                      -0.8628013861949507,
+                      -0.3636508294138922,
+                      -31.520130254293772
+                    ],
+                    [
+                      -0.14555874070979827,
+                      0.3333573615692614,
+                      -0.9314963888768214,
+                      163.68893898159354
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8334264952487423,
+                  "rmse": 0.041996136845188436,
+                  "normal_spread": 0.2582159565949809,
+                  "votes": 70,
+                  "model_inliers": 1491,
+                  "unique_scene_inliers": 1180,
+                  "refined": true
+                }
+              ],
+              "seconds": 2.0467837999995027,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.0317620636803796,
+              "max_angle_error_degrees": 0.04437815896940163,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 1,
+                "icp_calls": 69,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  658,
+                  1443,
+                  4056
+                ],
+                "seconds": {
+                  "preprocess": 0.03141479999976582,
+                  "candidate_search": 0.03840169999966747,
+                  "refine_verify": 1.9767176000004838,
+                  "total": 2.046534299999621
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "cad_independent_2",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 2,
+          "median_seconds": 1.1713083499998902,
+          "min_seconds": 1.1608642999999574,
+          "max_seconds": 1.181752399999823,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.623517971492771,
+                      -0.27537659814401066,
+                      0.7317055886216617,
+                      -94.26466169373163
+                    ],
+                    [
+                      -0.04868230441602695,
+                      -0.9477728301062529,
+                      -0.3152089715555832,
+                      -122.2613336501989
+                    ],
+                    [
+                      0.7802918508239631,
+                      0.16091734433247198,
+                      -0.6043593598437106,
+                      92.88642258451084
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8311906092789267,
+                  "rmse": 0.04168614303836905,
+                  "normal_spread": 0.25756557609085395,
+                  "votes": 30,
+                  "model_inliers": 1487,
+                  "unique_scene_inliers": 1190,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8226571706336883,
+                      0.46151108353626924,
+                      0.33202816051978756,
+                      -7.122235226014851
+                    ],
+                    [
+                      0.5330893180185116,
+                      -0.8291445957882184,
+                      -0.16833008729799503,
+                      -71.59071582255343
+                    ],
+                    [
+                      0.19761315396383233,
+                      0.3154786190035246,
+                      -0.9281283759976829,
+                      160.4165628315982
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8295136948015651,
+                  "rmse": 0.04671381815514134,
+                  "normal_spread": 0.25673854885422187,
+                  "votes": 36,
+                  "model_inliers": 1484,
+                  "unique_scene_inliers": 1159,
+                  "refined": true
+                }
+              ],
+              "seconds": 1.1608642999999574,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.05202604145182283,
+              "max_angle_error_degrees": 0.0812003778256714,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 0,
+                "icp_calls": 72,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  655,
+                  1434,
+                  4034
+                ],
+                "seconds": {
+                  "preprocess": 0.03082689999973809,
+                  "candidate_search": 0.025897900000018126,
+                  "refine_verify": 1.1038363000006939,
+                  "total": 1.160561400000006
+                }
+              }
+            },
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.623517971492771,
+                      -0.27537659814401066,
+                      0.7317055886216617,
+                      -94.26466169373163
+                    ],
+                    [
+                      -0.04868230441602695,
+                      -0.9477728301062529,
+                      -0.3152089715555832,
+                      -122.2613336501989
+                    ],
+                    [
+                      0.7802918508239631,
+                      0.16091734433247198,
+                      -0.6043593598437106,
+                      92.88642258451084
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8311906092789267,
+                  "rmse": 0.04168614303836905,
+                  "normal_spread": 0.25756557609085395,
+                  "votes": 30,
+                  "model_inliers": 1487,
+                  "unique_scene_inliers": 1190,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8226571706336883,
+                      0.46151108353626924,
+                      0.33202816051978756,
+                      -7.122235226014851
+                    ],
+                    [
+                      0.5330893180185116,
+                      -0.8291445957882184,
+                      -0.16833008729799503,
+                      -71.59071582255343
+                    ],
+                    [
+                      0.19761315396383233,
+                      0.3154786190035246,
+                      -0.9281283759976829,
+                      160.4165628315982
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8295136948015651,
+                  "rmse": 0.04671381815514134,
+                  "normal_spread": 0.25673854885422187,
+                  "votes": 36,
+                  "model_inliers": 1484,
+                  "unique_scene_inliers": 1159,
+                  "refined": true
+                }
+              ],
+              "seconds": 1.181752399999823,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.05202604145182283,
+              "max_angle_error_degrees": 0.0812003778256714,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 0,
+                "icp_calls": 72,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  655,
+                  1434,
+                  4034
+                ],
+                "seconds": {
+                  "preprocess": 0.033502799999951094,
+                  "candidate_search": 0.036744800000633404,
+                  "refine_verify": 1.1112751000000571,
+                  "total": 1.1815228000004936
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "cad_sphere_negative",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 0,
+          "median_seconds": 1.1947531000000708,
+          "min_seconds": 1.1676839000001564,
+          "max_seconds": 1.2218222999999853,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 0,
+              "matches": [],
+              "seconds": 1.2218222999999853,
+              "matched": 0,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.0,
+              "max_angle_error_degrees": 0.0,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 0,
+                "icp_calls": 72,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  333,
+                  566,
+                  770
+                ],
+                "seconds": {
+                  "preprocess": 0.0007838000001356704,
+                  "candidate_search": 0.007565099999737868,
+                  "refine_verify": 1.2134249999999156,
+                  "total": 1.221773999999641
+                }
+              }
+            },
+            {
+              "count": 0,
+              "matches": [],
+              "seconds": 1.1676839000001564,
+              "matched": 0,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.0,
+              "max_angle_error_degrees": 0.0,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 0,
+                "icp_calls": 72,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  333,
+                  566,
+                  770
+                ],
+                "seconds": {
+                  "preprocess": 0.0007906000000730273,
+                  "candidate_search": 0.007309399999940069,
+                  "refine_verify": 1.1595502000000124,
+                  "total": 1.1676503999997294
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "compatible": true,
+      "median_scene_seconds": 1.7157035374998486
+    },
+    {
+      "profile": "compact",
+      "settings": {
+        "sampling_distance": 0.03,
+        "ppf_distance": 0.05,
+        "angle_bins": 30,
+        "scene_reference_step": 0.1,
+        "normal_neighbors": 20,
+        "model_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scene_viewpoint": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_candidates": 24,
+        "global_model_points": 192,
+        "global_scene_points": 1024,
+        "search_sampling": "geometry",
+        "refinement": "pyramid",
+        "icp_iterations": 60,
+        "icp_levels": 4,
+        "distance_tolerance": 0.025,
+        "max_rmse": 0.015,
+        "min_coverage": 0.5,
+        "normal_angle": 30.0,
+        "min_normal_spread": 0.01,
+        "min_unique_support": 20,
+        "max_matches": 5,
+        "overlap_threshold": 0.6
+      },
+      "compile_seconds": 0.05548030000045401,
+      "search_model_points": 192,
+      "scenes": [
+        {
+          "name": "cad_independent_0",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 2,
+          "median_seconds": 1.4863971499999025,
+          "min_seconds": 1.4734190999997736,
+          "max_seconds": 1.4993752000000313,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.9231941913991489,
+                      -0.37302123650296226,
+                      0.09256155835265627,
+                      -70.02877596661688
+                    ],
+                    [
+                      -0.19197095206960987,
+                      -0.6561947297288102,
+                      -0.7297640921815914,
+                      -15.022291781945338
+                    ],
+                    [
+                      0.3329559107875376,
+                      0.655944840511712,
+                      -0.6774044048260288,
+                      159.98259003287166
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8317495807713806,
+                  "rmse": 0.04167750987360179,
+                  "normal_spread": 0.25268816041569336,
+                  "votes": 31,
+                  "model_inliers": 1488,
+                  "unique_scene_inliers": 1187,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8818642076939538,
+                      0.30378222881784456,
+                      -0.36059932978692283,
+                      49.98079890350653
+                    ],
+                    [
+                      0.10710291793107261,
+                      -0.8738553211956986,
+                      -0.47424238801335816,
+                      -0.007316337852696364
+                    ],
+                    [
+                      -0.45917805278450013,
+                      0.3795961473361202,
+                      -0.8031576935873863,
+                      149.98465776221283
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8311906092789267,
+                  "rmse": 0.04076607680082685,
+                  "normal_spread": 0.25689305924371914,
+                  "votes": 45,
+                  "model_inliers": 1487,
+                  "unique_scene_inliers": 1165,
+                  "refined": true
+                }
+              ],
+              "seconds": 1.4993752000000313,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.040349557029094214,
+              "max_angle_error_degrees": 0.051431311593048826,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 0,
+                "icp_calls": 72,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  656,
+                  1403,
+                  4104
+                ],
+                "seconds": {
+                  "preprocess": 0.030891999999766995,
+                  "candidate_search": 0.011371000000508502,
+                  "refine_verify": 1.4567749999996522,
+                  "total": 1.499038200000541
+                }
+              }
+            },
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.9231941913991489,
+                      -0.37302123650296226,
+                      0.09256155835265627,
+                      -70.02877596661688
+                    ],
+                    [
+                      -0.19197095206960987,
+                      -0.6561947297288102,
+                      -0.7297640921815914,
+                      -15.022291781945338
+                    ],
+                    [
+                      0.3329559107875376,
+                      0.655944840511712,
+                      -0.6774044048260288,
+                      159.98259003287166
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8317495807713806,
+                  "rmse": 0.04167750987360179,
+                  "normal_spread": 0.25268816041569336,
+                  "votes": 31,
+                  "model_inliers": 1488,
+                  "unique_scene_inliers": 1187,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.8818642076939538,
+                      0.30378222881784456,
+                      -0.36059932978692283,
+                      49.98079890350653
+                    ],
+                    [
+                      0.10710291793107261,
+                      -0.8738553211956986,
+                      -0.47424238801335816,
+                      -0.007316337852696364
+                    ],
+                    [
+                      -0.45917805278450013,
+                      0.3795961473361202,
+                      -0.8031576935873863,
+                      149.98465776221283
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8311906092789267,
+                  "rmse": 0.04076607680082685,
+                  "normal_spread": 0.25689305924371914,
+                  "votes": 45,
+                  "model_inliers": 1487,
+                  "unique_scene_inliers": 1165,
+                  "refined": true
+                }
+              ],
+              "seconds": 1.4734190999997736,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.040349557029094214,
+              "max_angle_error_degrees": 0.051431311593048826,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 0,
+                "icp_calls": 72,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  656,
+                  1403,
+                  4104
+                ],
+                "seconds": {
+                  "preprocess": 0.031043400000271504,
+                  "candidate_search": 0.010660599999937403,
+                  "refine_verify": 1.4314314000002923,
+                  "total": 1.4731355000003532
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "cad_independent_1",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 2,
+          "median_seconds": 1.2890314000001126,
+          "min_seconds": 1.2791391999999178,
+          "max_seconds": 1.2989236000003075,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.814802253000025,
+                      -0.3780156044004674,
+                      0.4395469159666965,
+                      -92.81470847597328
+                    ],
+                    [
+                      -0.08530771607963827,
+                      -0.8281055974035377,
+                      -0.5540430607147843,
+                      -69.45118332355926
+                    ],
+                    [
+                      0.5734281838934675,
+                      0.413938790618468,
+                      -0.7069899543402016,
+                      133.90470852713972
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8395751816657351,
+                  "rmse": 0.040664506412606646,
+                  "normal_spread": 0.25432756218735536,
+                  "votes": 26,
+                  "model_inliers": 1502,
+                  "unique_scene_inliers": 1184,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.924922055708124,
+                      0.3800613622681943,
+                      -0.0085177330026291,
+                      18.531225203517188
+                    ],
+                    [
+                      0.3511863375216981,
+                      -0.8628013854144646,
+                      -0.36365082931979864,
+                      -31.520130490037715
+                    ],
+                    [
+                      -0.14555874141650002,
+                      0.333357361157251,
+                      -0.9314963889138376,
+                      163.68893903142447
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8334264952487423,
+                  "rmse": 0.04199614139135208,
+                  "normal_spread": 0.2582159565949809,
+                  "votes": 22,
+                  "model_inliers": 1491,
+                  "unique_scene_inliers": 1180,
+                  "refined": true
+                }
+              ],
+              "seconds": 1.2791391999999178,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.03134801647113635,
+              "max_angle_error_degrees": 0.04376431951505445,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 1,
+                "icp_calls": 69,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  658,
+                  1443,
+                  4056
+                ],
+                "seconds": {
+                  "preprocess": 0.031229899999743793,
+                  "candidate_search": 0.007239700000354787,
+                  "refine_verify": 1.2403465999996115,
+                  "total": 1.2788163000004715
+                }
+              }
+            },
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.814802253000025,
+                      -0.3780156044004674,
+                      0.4395469159666965,
+                      -92.81470847597328
+                    ],
+                    [
+                      -0.08530771607963827,
+                      -0.8281055974035377,
+                      -0.5540430607147843,
+                      -69.45118332355926
+                    ],
+                    [
+                      0.5734281838934675,
+                      0.413938790618468,
+                      -0.7069899543402016,
+                      133.90470852713972
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8395751816657351,
+                  "rmse": 0.040664506412606646,
+                  "normal_spread": 0.25432756218735536,
+                  "votes": 26,
+                  "model_inliers": 1502,
+                  "unique_scene_inliers": 1184,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.924922055708124,
+                      0.3800613622681943,
+                      -0.0085177330026291,
+                      18.531225203517188
+                    ],
+                    [
+                      0.3511863375216981,
+                      -0.8628013854144646,
+                      -0.36365082931979864,
+                      -31.520130490037715
+                    ],
+                    [
+                      -0.14555874141650002,
+                      0.333357361157251,
+                      -0.9314963889138376,
+                      163.68893903142447
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8334264952487423,
+                  "rmse": 0.04199614139135208,
+                  "normal_spread": 0.2582159565949809,
+                  "votes": 22,
+                  "model_inliers": 1491,
+                  "unique_scene_inliers": 1180,
+                  "refined": true
+                }
+              ],
+              "seconds": 1.2989236000003075,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.03134801647113635,
+              "max_angle_error_degrees": 0.04376431951505445,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 1,
+                "icp_calls": 69,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  658,
+                  1443,
+                  4056
+                ],
+                "seconds": {
+                  "preprocess": 0.029967699999360775,
+                  "candidate_search": 0.008380700000088837,
+                  "refine_verify": 1.2602929000004224,
+                  "total": 1.298641499999576
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "cad_independent_2",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 2,
+          "median_seconds": 1.0211644500000148,
+          "min_seconds": 0.9711266000003889,
+          "max_seconds": 1.0712022999996407,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.6235179705219351,
+                      -0.2753766022147201,
+                      0.7317055879169453,
+                      -94.26466157178086
+                    ],
+                    [
+                      -0.04868230527284895,
+                      -0.9477728286155956,
+                      -0.3152089759053752,
+                      -122.26133373098992
+                    ],
+                    [
+                      0.7802918515462841,
+                      0.16091734614599504,
+                      -0.6043593584282468,
+                      92.8864225439214
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8311906092789267,
+                  "rmse": 0.04168614303836905,
+                  "normal_spread": 0.2575655760908525,
+                  "votes": 30,
+                  "model_inliers": 1487,
+                  "unique_scene_inliers": 1190,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.822605615452657,
+                      0.4616509663554925,
+                      0.33196142349495306,
+                      -7.12514914961082
+                    ],
+                    [
+                      0.5331687921178099,
+                      -0.829130336664763,
+                      -0.16814851748919143,
+                      -71.59586230589451
+                    ],
+                    [
+                      0.19761336123195564,
+                      0.3153113859111609,
+                      -0.9281851589943636,
+                      160.4128030755894
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.830072666294019,
+                  "rmse": 0.0478537823283299,
+                  "normal_spread": 0.25656565410799975,
+                  "votes": 15,
+                  "model_inliers": 1485,
+                  "unique_scene_inliers": 1160,
+                  "refined": true
+                }
+              ],
+              "seconds": 0.9711266000003889,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.05856276259878808,
+              "max_angle_error_degrees": 0.08741004196607917,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 1,
+                "icp_calls": 69,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  655,
+                  1434,
+                  4034
+                ],
+                "seconds": {
+                  "preprocess": 0.03077830000074755,
+                  "candidate_search": 0.007498299999497249,
+                  "refine_verify": 0.9325540999998339,
+                  "total": 0.9708307999999306
+                }
+              }
+            },
+            {
+              "count": 2,
+              "matches": [
+                {
+                  "source_to_target": [
+                    [
+                      0.6235179705219351,
+                      -0.2753766022147201,
+                      0.7317055879169453,
+                      -94.26466157178086
+                    ],
+                    [
+                      -0.04868230527284895,
+                      -0.9477728286155956,
+                      -0.3152089759053752,
+                      -122.26133373098992
+                    ],
+                    [
+                      0.7802918515462841,
+                      0.16091734614599504,
+                      -0.6043593584282468,
+                      92.8864225439214
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.8311906092789267,
+                  "rmse": 0.04168614303836905,
+                  "normal_spread": 0.2575655760908525,
+                  "votes": 30,
+                  "model_inliers": 1487,
+                  "unique_scene_inliers": 1190,
+                  "refined": true
+                },
+                {
+                  "source_to_target": [
+                    [
+                      0.822605615452657,
+                      0.4616509663554925,
+                      0.33196142349495306,
+                      -7.12514914961082
+                    ],
+                    [
+                      0.5331687921178099,
+                      -0.829130336664763,
+                      -0.16814851748919143,
+                      -71.59586230589451
+                    ],
+                    [
+                      0.19761336123195564,
+                      0.3153113859111609,
+                      -0.9281851589943636,
+                      160.4128030755894
+                    ],
+                    [
+                      0.0,
+                      0.0,
+                      0.0,
+                      1.0
+                    ]
+                  ],
+                  "coverage": 0.830072666294019,
+                  "rmse": 0.0478537823283299,
+                  "normal_spread": 0.25656565410799975,
+                  "votes": 15,
+                  "model_inliers": 1485,
+                  "unique_scene_inliers": 1160,
+                  "refined": true
+                }
+              ],
+              "seconds": 1.0712022999996407,
+              "matched": 2,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.05856276259878808,
+              "max_angle_error_degrees": 0.08741004196607917,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 1,
+                "icp_calls": 69,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  655,
+                  1434,
+                  4034
+                ],
+                "seconds": {
+                  "preprocess": 0.03100780000022496,
+                  "candidate_search": 0.006851000000096974,
+                  "refine_verify": 1.0331270999995468,
+                  "total": 1.070986100000482
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "cad_sphere_negative",
+          "frame": "test_camera",
+          "basis": "ground_truth",
+          "expected": 0,
+          "median_seconds": 1.5397057000000132,
+          "min_seconds": 1.4905275999999503,
+          "max_seconds": 1.588883800000076,
+          "compatible": true,
+          "runs": [
+            {
+              "count": 0,
+              "matches": [],
+              "seconds": 1.588883800000076,
+              "matched": 0,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.0,
+              "max_angle_error_degrees": 0.0,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 0,
+                "icp_calls": 72,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  333,
+                  566,
+                  770
+                ],
+                "seconds": {
+                  "preprocess": 0.0008908999998311629,
+                  "candidate_search": 0.0060130000001663575,
+                  "refine_verify": 1.5819456999997783,
+                  "total": 1.5888496999996278
+                }
+              }
+            },
+            {
+              "count": 0,
+              "matches": [],
+              "seconds": 1.4905275999999503,
+              "matched": 0,
+              "missed": 0,
+              "extra": 0,
+              "max_position_error": 0.0,
+              "max_angle_error_degrees": 0.0,
+              "execution": {
+                "sampling": "geometry",
+                "refinement": "pyramid",
+                "coarse_rejected": 0,
+                "icp_calls": 72,
+                "model_levels": [
+                  187,
+                  555,
+                  1789
+                ],
+                "scene_levels": [
+                  333,
+                  566,
+                  770
+                ],
+                "seconds": {
+                  "preprocess": 0.0008311000001413049,
+                  "candidate_search": 0.005917100000260689,
+                  "refine_verify": 1.4837437999995018,
+                  "total": 1.4904920999997557
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "compatible": true,
+      "median_scene_seconds": 1.3340746750000108
+    }
+  ],
+  "recommended": "compact",
+  "scope": "Execution comparison on supplied scenes. Acceptance thresholds and trained samples are unchanged."
+}

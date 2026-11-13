@@ -31,8 +31,8 @@
       "type": "3d.simple_locate",
       "name": "Simple3DLocate",
       "parameters": {
-        "recipe_path": "assets/part.s3l",
-        "sha256": "1650e96e333a37a67cec2e5ed34bd440fd5f89330fe98f6d7cf0cfbbf5d1166f",
+        "recipe_path": "assets/optimized.s3l",
+        "sha256": "a4eb9d2976c128466e1161a3a0dd14b44aab4eaecfbfdc8b6c75aa2661445f1e",
         "render_overlay": true
       },
       "position": [
