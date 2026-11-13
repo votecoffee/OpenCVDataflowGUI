@@ -98,6 +98,11 @@ metadata from the latest published upstream result. It validates the target
 cloud port and rejects missing or absent values. Editing the captured cloud
 does not modify the graph's cached cloud.
 
+For retained source-point picking, orbit/zoom, editable XYZ region boxes and
+datum/segment overlays, use the reusable
+[native cloud-teaching widget](cloud-teaching.md). The plugin owns its draft,
+undo history, fitting and Stage/Apply policy; overlays never become sensor rows.
+
 ### Capture several consumed inputs together
 
 Use `snapshot_processed_inputs` for a trainer that needs an image, point cloud,

@@ -20,7 +20,9 @@ independent dimensional gauge truth and no acceptance limits. A graph pass
 means measurements are available; it is not a dimensional acceptance verdict.
 
 Select the tool and inspect **Cloud / fit** in the native flyaround thumbnail
-or popout. In **Review measurement recipe…**, select `part_surface` to focus
+or popout. With dev1, **Train 3D measurements…** restores the reference and
+editable regions; select `part_surface` and **Focus selected**. Open
+**Review trained / completed run…** to focus
 its inliers, exclusions, ROI and range graphics. Toggle scene/regions to inspect
 the fit closely. The value/status table and structured report distinguish
 available values, insufficient support and datum extrapolation. A projected
@@ -36,4 +38,5 @@ records hashes; the full upstream test archive was not downloaded.
 
 [T-LESS authors, CC BY 4.0 license and transformations](ATTRIBUTION.md).
 This is a development workflow/coverage example; E3 physical qualification
-and interactive region teaching remain open.
+remains open. Native axis-aligned region/measurement teaching is available
+with plugin dev1 and the updated host.

@@ -31,7 +31,7 @@
   "generated/reference.npz": "b8c31354c3876c5bcc89b1838f1924cc6d4c719eb8566d0bb43ead4f46b8c4ef",
   "host_examples.py": "8caee58cad7e63d91118efc9260e664635cef62f80adef0fa28aef516c760016",
   "LICENSE": "e1e2d2d0f228c8956d1f5e3e108c35919c88e37e76b4243f21b7ef5307ec3367",
-  "README.md": "4afa142d3288c62be65dba803e0627753acbb19a7d193de950b5b809465ec670",
+  "README.md": "2f6e2129726b7c38fdffe5edabc94eadb5a1534af21931059e47b78bbc9cf8ec",
   "real_tless/ATTRIBUTION.md": "111b0c122fd9ba38c893c88304e89cf77b59f3c336d9be069b77782a32e8d342",
   "real_tless/comparison.json": "9a64d6c45e05238e885cebaf54ef43e6339c12e3ff7e37e8c36bc571147f4781",
   "real_tless/configuration.json": "5a624bcc3e32f7cd807a13a2615e8caa955e744f06d973c0bc4561f347b84a5d",
@@ -53,7 +53,7 @@
   "real_tless/frame000024/project.json": "f75c9a616c28ebfae16d8b3c3b8ee43c6de14d1136c4f7ffb6634bd0e724fc74",
   "real_tless/frame000024/result.ply": "3f3e24a1053ee3eab8dff4d2b4e40ecea6967ed2c57b11969e362a95ec1121ec",
   "real_tless/frame000024/result.png": "438ef328ede12b0a1ee0864df618f466f98bab6730f63c57f437fd50cd049eb4",
-  "real_tless/README.md": "cf0ec20305f58ef6e7b7e5d76f2e8712c6716c9e0d543d69d26484cfcd2ec8c8",
+  "real_tless/README.md": "d8ecf06d0eb76b01cfbcc2dc52f8ed1546eed379dd61c1f113da94dc276e8d5a",
   "real_tless/reference.npz": "9ac15e2638fdc3e48e77ee5b8a20e89747ee76260eb2a19d008ba6183e47b03e",
   "real_tless/source/.gitattributes": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
   "real_tless/source/provenance.json": "e7eb88a95660e37442b08b16bc8433fdd6ebbb6e516ca39ac64e7a632ca6ad8c",
@@ -64,5 +64,6 @@
   "real_tless/source/test_primesense/000002/rgb/000013.png": "9c944d42913491bf0d9a1e59f10c262a6492071543e92a1a20675bb8cdcaaefd",
   "real_tless/source/test_primesense/000002/rgb/000024.png": "9e3efc2f3d1cfea6dfcdad0253e49e3ac0cfba88fde93daaab85216457539b63",
   "real_tless/source/test_primesense/000002/scene_camera.json": "84d4a7b2106ed19c59d11da0fa406a763bd408c8585a77b8f44e5d3d7b300d9b",
-  "real_tless/source/test_primesense/000002/scene_gt.json": "a04b5aabc88dab06280670270b4954e5e353e490f5e661a92b42aa730726316f"
+  "real_tless/source/test_primesense/000002/scene_gt.json": "a04b5aabc88dab06280670270b4954e5e353e490f5e661a92b42aa730726316f",
+  "TRAINING.md": "587e45100fa547be5674fba3dff72fa2969592c65642bb5b8ff9a994a17c9b02"
 }

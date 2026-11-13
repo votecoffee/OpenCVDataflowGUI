@@ -8,7 +8,7 @@ Install the wheel/source package in the Python environment running the app,
 then restart the app and its runners:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install --no-deps C:\path\to\opencv_simple_3d_measure-0.1.0.dev0-py3-none-any.whl
+.\.venv\Scripts\python.exe -m pip install --no-deps C:\path\to\opencv_simple_3d_measure-0.1.0.dev1-py3-none-any.whl
 ```
 
 | Project | Evidence |
@@ -26,14 +26,22 @@ and RGB datum axes. Blue datum Z follows the signed normal. Grids, boxes and
 dimension lines are derived graphics. Inspect **measurements**, **planes** and
 **report** for values, units, limits, fit coverage and extrapolation evidence.
 
-Open **Review measurement recipe…** to restore the retained training cloud.
-Choose a region or toggle cached graphic layers. After a Debug execution,
+With plugin **0.1.0.dev1** and the native teaching host API, open
+**Train 3D measurements…** to restore the retained training cloud or teach a
+new reference. Draw regions, drag XYZ face handles, orbit/zoom/pan or focus a
+selected region, pick probe points and define measurements/limits. Green/red
+show cached fit inliers/exclusions; cyan shows untrained selected points.
+Edits share Undo/Redo and invalidate staging until the current draft trains.
+See the [training guide](TRAINING.md).
+
+**Review trained / completed run…** opens cached native evidence.
+Choose a region or toggle graphic layers. After a Debug execution,
 **Capture completed run** freezes scene and fixture from that completed
 execution. **Export visible review…** saves the selected native PLY, raw report,
-hashes and capture identity. **Import trained recipe…** loads a CLI/API-trained
+hashes, a portable recipe and capture identity. **Import recipe…** loads a CLI/API-trained
 `.s3m`; **Stage recipe** edits the inspector draft and **Apply** activates it.
-Cancel preserves the active parameters. Native graphical region teaching is
-still pending; this release provides review/import and CLI/API training.
+Cancel preserves the active parameters. Older hosts explicitly fall back to
+recipe review/import; update the host to use graphical teaching.
 
 `surface_range` is peak-to-valley residual over **all selected samples** about
 the robustly fitted least-squares plane. It is not minimum-zone flatness.
