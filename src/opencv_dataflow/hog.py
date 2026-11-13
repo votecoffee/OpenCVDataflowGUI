@@ -1,5 +1,7 @@
 """Native one-window HOG descriptors with cell-orientation graphics."""
 
+import copy
+
 import cv2
 import numpy as np
 
@@ -146,7 +148,9 @@ class HOGFeatures(Block):
             if objects:
                 drawings["Dominant cell gradients"] = GraphicDrawing(objects)
         info = {
-            "model": "opencv_hog_window_v1",
+            "model": "opencv_hog_window_v1", "opencv_version": cv2.__version__,
+            "working_encoding": "gray" if source.ndim == 2 else "bgr",
+            "input_depth": str(source.dtype),
             "window_size": list(size),
             "cell_grid": list(cells),
             "block_grid": list(blocks),
@@ -156,6 +160,8 @@ class HOGFeatures(Block):
         }
         return Result(
             {"descriptor": descriptor.tolist(), "info": info},
+            payloads={"descriptor": {**copy.deepcopy(self.input_payloads["image"]),
+                                     "feature_contract": copy.deepcopy(info)}},
             drawings=drawings,
             message=f"{blocks[0]} × {blocks[1]} blocks · {length} descriptor values",
         )

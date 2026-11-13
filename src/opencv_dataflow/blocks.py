@@ -819,6 +819,7 @@ def builtin_registry():
     from .structure_tensor import StructureTensor
     from .subpixel_crop import CropSubpixel
     from .superpixels import SuperpixelsLSC, SuperpixelsSEEDS, SuperpixelsSLIC
+    from .svm_blocks import SVM_BLOCKS
     from .table_sort import SortNumericTable
     from .template_instances import FindTemplateInstances
     from .text_rules import VerifyText
@@ -1062,6 +1063,7 @@ def builtin_registry():
         KMeansImage,
         *OCR_BLOCKS,
         *ANNOY_BLOCKS,
+        *SVM_BLOCKS,
         *LIGHTGLUE_BLOCKS,
         *GEOMETRY3D_BLOCKS,
         CheckEpipolarCorrespondences,

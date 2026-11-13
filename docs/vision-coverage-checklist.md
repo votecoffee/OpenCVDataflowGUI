@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 123 | 16 | 36 | 175 | 70.3% |
-| 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
+| 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 185 | 57 | 228 | 470 | 39.4% |
+| **Overall** | 186 | 57 | 227 | 470 | 39.6% |
 
 <!-- coverage-summary:end -->
 
@@ -332,7 +332,7 @@ fixture or result needed to close the item.
 | S2-17 | ALIKED LightGlue adapter | ALIKED detection/descriptor inference, matched LightGlue weights | Planned | Verify model input requirements and pose accuracy on a pinned local model and pair. |
 | S2-18 | Image embedding retrieval | Annoy build, query, save and load | Complete | ml.annoy_build, ml.annoy_search, ml.annoy_save, ml.annoy_load. Index, rank, and persist image-derived embeddings. |
 | S2-19 | Reusable image color or descriptor clusters | kmeans with persisted centers, nearest-center prediction | Partial | inspect.kmeans_image fits current-frame colors. Reuse a trained palette or visual vocabulary on separate captures and verify label consistency after reload. |
-| S2-20 | SVM image classification | ml.SVM train, predict and model I/O | Planned | Train and reload a classifier on HOG or other image descriptors and verify held-out images with an explicit class mapping. |
+| S2-20 | SVM image classification | ml.SVM C-SVC train/predict and portable native model I/O | Complete | ml.svm_train, ml.svm_predict, ml.svm_save and ml.svm_load expose six kernels, C, gamma, polynomial/sigmoid controls, class weights, normalization and termination. Explicit string mappings, native weights and checked feature contracts persist in revisioned JSON bundles. HOG carries window/encoding/depth/settings/OpenCV-version metadata. Graph-native training/reload correctly predicts nine disjoint original synthetic printed 0/1/2 images in Debug/Lean; same-length wrong preprocessing fails without outputs. This qualifies a bounded C-SVC classifier workflow, not general OCR, probabilities, regression, one-class inference or detector training. |
 | S2-21 | K-nearest image classification | ml.KNearest train and findNearest | Planned | Classify held-out image descriptors with neighbor distances and an unknown-class cutoff. |
 | S2-22 | Random forest image classification | ml.RTrees train, predict and getVotes | Planned | Train on measured image features and verify held-out labels and reported class votes after reload. |
 | S2-23 | Image classifier and detector evaluation | Image-level split, confusion matrix, IoU-based matching | Planned | Use labeled images to report per-class errors and confidence thresholds. Keep frames from one sequence together when splitting. |

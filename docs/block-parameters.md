@@ -6662,6 +6662,56 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `background` | `255` | Fill masked or out-of-image pixels with this uint8 intensity. |
 | `minimum_reads` | `1` | Minimum number of regions that produce nonempty text. |
 
+## Load OpenCV SVM classifier (`ml.svm_load`)
+
+ML / Classical classification
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+
+## Predict OpenCV SVM classes (`ml.svm_predict`)
+
+ML / Classical classification
+
+Inputs: `model` (data), `samples` (data), `image` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `contract_policy` | `"require_match"` | `require_match`, `dimensions_only` Require the trained preprocessing contract, or explicitly check only feature dimensions. Normalization always comes from the model. |
+| `accepted_labels` | `[]` | Optional allowed classes for a tool pass/fail result; [] accepts all. SVM class labels are closed-set predictions, not confidence or unknown-class detection. |
+
+## Save OpenCV SVM classifier (`ml.svm_save`)
+
+Output / ML models
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"classifier.json"` |  |
+
+## Train OpenCV SVM classifier (`ml.svm_train`)
+
+ML / Classical classification
+
+Inputs: `samples` (any), `labels` (data, optional).
+
+Input `samples` — Feature rows, or a batch of vectors. Known feature contracts must agree; HOG supplies its complete window/settings contract.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `kernel` | `"rbf"` | `linear`, `rbf`, `polynomial`, `sigmoid`, `chi_squared`, `intersection` OpenCV C-SVC kernel. Chi-squared requires nonnegative features. |
+| `c` | `2.0` | Value must be a finite number between 1e-09 and 1e+09. Misclassification penalty; optionally multiplied by per-class weights. |
+| `gamma` | `0.1` | Value must be a finite number between 1e-09 and 1e+09. RBF/polynomial/sigmoid/chi-squared kernel scale; ignored by linear/intersection. |
+| `degree` | `3.0` | Value must be a finite number between 0.01 and 32. Polynomial kernel exponent. |
+| `coef0` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Polynomial/sigmoid constant term. |
+| `normalization` | `"none"` | `none`, `l2` Persisted per-row normalization; applied identically at prediction. |
+| `max_iterations` | `5000` | Value must be a whole number between 1 and 100000. Maximum native training iterations. |
+| `epsilon` | `1e-06` | Value must be a finite number between 1e-12 and 1. Native solver termination tolerance; used with iteration limit. |
+| `class_weights` | `[]` | Weights in first-appearance class order; [] gives equal weights. |
+| `labels` | `[]` | One string class per sample row; a wired Labels input takes precedence. |
+
 ## Tensor to embedding vector (`ml.tensor_vector`)
 
 ML / Embeddings
