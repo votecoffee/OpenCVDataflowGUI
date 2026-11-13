@@ -1034,3 +1034,30 @@ Low contrast, clipping, curvature, incomplete support or unfilled subpixel bins
 produce a failed report with a reason, rather than an invented measurement.
 This is an engineering estimate, not an ISO 12233 compliance instrument. Try the
 [sharp/blurred example](<../examples/custom tools/slanted_edge_sharpness/README.md>).
+
+## Aligned image comparison
+
+Use **OpenCV → Video Analysis (video) → Measurements → Compare aligned images
+(correlation)** (`inspect.image_correlation`) to score an already aligned image
+against an equal-size reference. Mask and region selections intersect on the
+candidate's grid; their samples select the same positions in both images.
+Choose native ECC or normalized correlation, per-channel or grayscale processing,
+and minimum or mean channel aggregation. Alpha is ignored unless requested.
+
+The signed similarity is on [-1,1]. The optional minimum is inclusive; endpoint
+roundoff within 64 float64 epsilon is snapped to ±1. Constant regions fail by
+default. The explicit `match_equal` policy assigns a similarity of one to matching
+constant samples while reporting a null measured coefficient. Any undefined
+channel fails the comparison, even with threshold checking disabled. Minimum
+standard deviation and constant tolerance use raw sample units, without rescaling
+mixed input depths. `same_frame` requires matching spatial payloads on both
+inputs; `pixel_grid` intentionally compares equal-size pixels by index.
+
+The numeric report contains each channel's score and standard deviations. The
+optional residual image contains the maximum absolute channel z-score difference,
+zero outside the selection. A fixed-range heat map appears in diagnostic results
+when graphics are enabled. The original candidate output retains its encoding,
+ticket and frame; its score label is drawable result graphics. Correlation ignores
+positive gain/offset and is a global score: use absolute-error metrics or local
+regions when brightness differences or small defects must fail. Try the
+[intact/missing-bore example](<../examples/opencv tools/aligned_image_comparison/README.md>).

@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Candidate: good / missing bore",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/good.png",
+          "assets/missing-bore.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "loop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        250.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "compare",
+      "type": "inspect.image_correlation",
+      "name": "Compare aligned images (correlation)",
+      "parameters": {
+        "method": "ecc",
+        "channels": "per_channel",
+        "aggregation": "minimum",
+        "include_alpha": false,
+        "reference_alignment": "pixel_grid",
+        "constant_policy": "fail",
+        "minimum_stddev": 1e-12,
+        "constant_tolerance": 0.0,
+        "check_threshold": true,
+        "minimum_similarity": 0.98,
+        "emit_residual": true,
+        "residual_preview_max": 3.0
+      },
+      "position": [
+        350.0,
+        100.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "reference",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "similarity",
+        "measurements",
+        "residual"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture_note",
+      "type": "layout.comment",
+      "name": "Original reference inspection fixtures",
+      "description": "Original synthetic images, generator and project under this repository's MIT license. Run all: the intact part passes; the missing-bore image fails. Open the comparison's normalized residual preview to locate differences. Images must already be aligned. Correlation ignores positive brightness gain/offset.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -280.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "compare",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "compare",
+      "input": "reference"
+    }
+  ]
+}

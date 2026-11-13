@@ -92,6 +92,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Find nonzero pixels](<opencv tools/nonzero_pixels/README.md>) | Extract a bounded set of coordinates and full bounds from a texture mask. |
 | [FLANN feature registration](<opencv tools/flann_registration/README.md>) | Match SIFT descriptors through a KD-tree and recover a known translation. |
 | [Fourier correlation](<opencv tools/fourier_correlation/README.md>) | Recover a known signed shift and inspect the lag map. |
+| [Aligned image comparison](<opencv tools/aligned_image_comparison/README.md>) | Compare an intact part and a missing-bore fixture with a reference, per-channel correlation and normalized residuals. |
 | [Fourier spectrum product](<opencv tools/spectrum_product/README.md>) | Combine two DFT spectra and recover a known wrapped shift from the reconstructed lag map. |
 | [Gabor texture direction](<opencv tools/gabor_texture/README.md>) | Compare two oriented texture responses on vertical and horizontal stripes. |
 | [Generalized Hough matching](<opencv tools/generalized_hough/README.md>) | Locate two copies of a template shape, then restrict the search results to a region. |

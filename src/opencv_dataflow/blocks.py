@@ -697,6 +697,7 @@ def builtin_registry():
     from .image_blend import BlendWeightMaps
     from .image_codecs import DecodeImage, EncodeImage
     from .image_colorize import ColorizeScalar
+    from .image_correlation import CompareAlignedImages
     from .image_hash import CompareImageHashes, ComputeImageHash
     from .image_layout import JoinImages, PasteImagePatch, TileImage
     from .image_noise import AddImageNoise, RandomImage
@@ -944,6 +945,7 @@ def builtin_registry():
         FlatFieldCorrection,
         AdaptiveBackgroundCorrection,
         CompareImageQuality,
+        CompareAlignedImages,
         MeasureFocus,
         MeasureSlantedEdge,
         ComputeImageHash,

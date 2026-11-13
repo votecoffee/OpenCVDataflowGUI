@@ -16,10 +16,10 @@ plugins for specialized operations with job-specific interfaces.
 Use targeted tests and a runnable example for each implementation increment.
 Run a broader regression check after roughly 20 increments, or earlier when a
 specific concern involves shared execution, persistence or plugin contracts.
-The last broad checkpoint is `0c8c6e9`. This cycle has **2 targeted increments
-of about 20** completed: S1-174 (line-pair metrology) and S1-175
-(slanted-edge sharpness). Update the cycle count
-as implementation continues and reset it after the next broader check.
+The last broad checkpoint is `0c8c6e9`. This cycle has **3 targeted increments
+of about 20** completed: S1-174 (line-pair metrology), S1-175
+(slanted-edge sharpness) and S1-119 (aligned image comparison). Update the cycle
+count as implementation continues and reset it after the next broader check.
 
 ## Short-term focus
 
@@ -97,7 +97,8 @@ check, and status. Tiled mosaics now render bounded windows from registered
 layouts. Continuous centered stabilization now runs across long streams with
 bounded look-ahead. Line-pair metrology now covers corners, angles and gaps.
 Slanted-edge sharpness now provides selected ESF/SFR reports and explicit limits.
-Prioritize aligned image comparison (S1-119) among the remaining common inspection gaps.
+Aligned image comparison now covers selected ECC/normalized correlation and
+constant-region policy. Prioritize Laplacian image pyramids (S1-124) next.
 The checklist separates independently testable functions and links each capability to the [OpenCV scope map](opencv-scope-map.md).
 Its subgroup audit records which inspection workflows need a different build or
 a tested fallback. Point clouds include imported scans and reconstructed surfaces.
@@ -129,7 +130,7 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize aligned image comparison (S1-119), then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize Laplacian image pyramids (S1-124), then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and reusable classical ML train/predict blocks. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |

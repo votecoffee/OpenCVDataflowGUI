@@ -4849,6 +4849,35 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `t
 | `maximum_matches` | `25` | Value must be a whole number between 1 and 64. |
 | `draw_overlay` | `true` |  |
 
+## Compare aligned images (correlation) (`inspect.image_correlation`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `reference` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Already aligned candidate. Gray/BGR/RGB/BGRA/RGBA: uint8, uint16, float32/64. HSV/Lab: uint8/float32.
+
+Input `reference` — Equal-size aligned reference. Per-channel mode needs matching compared channels. Mixed depths compare raw sample values.
+
+Input `mask` — Optional uint8 selection in the candidate's coordinate frame; intersects the region.
+
+Input `region` — Optional region in the candidate's pixel grid. Both images use the same selected pixels.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"ecc"` | `ecc`, `normalized_correlation` Native computeECC or double-precision normalized correlation on selected pixels. |
+| `channels` | `"per_channel"` | `per_channel`, `gray` Compare canonical B/G/R separately, or weighted grayscale. HSV/Lab convert to BGR. |
+| `aggregation` | `"minimum"` | `minimum`, `mean` Use the lowest similarity or unweighted channel mean; undefined channels fail. |
+| `include_alpha` | `false` | Include alpha in per-channel comparison when both inputs have it; otherwise ignore it. |
+| `reference_alignment` | `"pixel_grid"` | `pixel_grid`, `same_frame` Pixel grid compares equal-size pixels by index. Same frame requires matching spatial payloads on both images. |
+| `constant_policy` | `"fail"` | `fail`, `match_equal` Fail undefined correlation, or explicitly accept two constant regions whose values match within tolerance. |
+| `minimum_stddev` | `1e-12` | Value must be a finite number between 0 and 1e+308. A channel at or below this standard deviation is treated as constant, in original sample units. |
+| `constant_tolerance` | `0.0` | Value must be a finite number between 0 and 1e+308. Maximum per-pixel absolute difference for match_equal, in original sample units; no depth rescaling. |
+| `check_threshold` | `true` | Apply the inclusive minimum similarity; undefined comparisons still fail when disabled. |
+| `minimum_similarity` | `0.95` | Value must be a finite number between -1 and 1. Inclusive signed correlation limit on [-1,1]. Positive gain/offset changes are not defects to this metric. |
+| `emit_residual` | `false` | Output maximum absolute per-channel z-score difference as float32; zero outside the selection. |
+| `residual_preview_max` | `3.0` | Value must be a finite number between 0.001 and 1e+06. Z-score difference at full heat-map intensity; affects only the diagnostic preview. |
+
 ## Compare image quality (`inspect.image_quality`)
 
 Inspection / Measurements

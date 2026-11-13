@@ -84,7 +84,7 @@ IMPLEMENTATION_MODULES = {
     "calib": "calibration calibration_validation chessboard_quality hand_eye remap_maps workplane",
     "geometry": "contour_analysis convex_overlap geometry3d line_pair shape_fitting "
     "translation_registration triangulation voronoi",
-    "video": "ecc_registration native_background sequence_tools",
+    "video": "ecc_registration image_correlation native_background sequence_tools",
     "videoio": "video_files",
     "objdetect": "aruco_markers charuco code_readers",
     "xobjdetect": "hog",
@@ -152,6 +152,7 @@ _MODULE_BY_BLOCK = {
 _NATIVE_NAMES = {
     "cv.gray": ("cvtColor",),
     "inspect.focus": ("Laplacian", "Sobel", "Tenengrad", "sharpness", "blur"),
+    "inspect.image_correlation": ("computeECC", "Pearson", "NCC", "reference comparison"),
     "inspect.slanted_edge": ("ESF", "LSF", "SFR", "MTF50", "MTF10", "edge spread", "sharpness"),
     "inspect.local_binary_patterns": ("LBP", "local_binary_pattern"),
     "inspect.gray_level_cooccurrence": ("GLCM", "Haralick", "graycoprops"),

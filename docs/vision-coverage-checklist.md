@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 101 | 19 | 55 | 175 | 57.7% |
+| 1. Core and baseline 2D | 102 | 19 | 54 | 175 | 58.3% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 163 | 60 | 247 | 470 | 34.7% |
+| **Overall** | 164 | 60 | 246 | 470 | 34.9% |
 
 <!-- coverage-summary:end -->
 
@@ -188,7 +188,7 @@ fixture or result needed to close the item.
 | S1-116 | Robust differential exposure compensation | Local brightness and contrast agreement on aligned images | Planned | Verify a registered reference under changing illumination and report exposure-adjusted and unadjusted defect residuals. |
 | S1-117 | Multi-view exposure seams and blending | detail exposure compensators, GraphCutSeamFinder, MultiBandBlender | Partial | cv.stitch_scan_sequence uses gain/offset, feathering and graph-cut seams. Verify multiband blending across overlapping tiles with bounded memory and preserved image depth. |
 | S1-118 | Resample coverage masks conservatively | Area sampling, explicit coverage threshold | Planned | Resample a validity mask to a different pixel grid and verify partially covered pixels and source provenance. |
-| S1-119 | Correlation-based image comparison | computeECC and masked normalized correlation on aligned image pairs | Planned | Compare supported image encodings with constant-region handling, per-channel results and a defect fixture. |
+| S1-119 | Correlation-based image comparison | computeECC and masked normalized correlation on aligned image pairs | Complete | inspect.image_correlation. Mask/region-selected ECC or normalized correlation, per-channel or grayscale comparison, minimum/mean aggregation, explicit constant-region policy and inclusive limits. Tests verify supported encodings/depths, raw-unit controls, numeric extremes, frames/tickets, residuals and graphics settings. An original intact/missing-bore fixture replays pass/fail cases. |
 | S1-120 | Transport distance between image histograms | EMD on image histograms | Complete | inspect.compare_histograms. Compare histogram signatures using the native transport distance and known distributions. |
 | S1-121 | Curved QR decoding | QRCodeDetector.detectAndDecodeCurved | Partial | inspect.read_qr exposes curved mode. Qualify a known wrapped label and verify source and rectified module coordinates. |
 | S1-122 | Native linear barcode decoding | barcode.BarcodeDetector | Complete | inspect.read_barcode. Verify EAN or UPC text, pose and outline. |
