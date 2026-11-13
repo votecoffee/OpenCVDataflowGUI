@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Independent empty and loaded ARMBench captures",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/EZ5895NGB8.jpg",
+          "assets/P2S0835EOA.jpg",
+          "assets/9TARTKRF1X.jpg",
+          "assets/OAR1KXNIME.jpg"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "blue",
+      "type": "cv.channel_transform",
+      "name": "Measure blue dominance",
+      "parameters": {
+        "matrix": [
+          [
+            0.7,
+            -0.35,
+            -0.35,
+            128.0
+          ]
+        ]
+      },
+      "position": [
+        360.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "matrix"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspection",
+      "type": "inspect.simple_reference",
+      "name": "SimpleReferenceInspect \u00b7 Large occupancy changes",
+      "parameters": {
+        "recipe_path": "assets/reference.sri",
+        "sha256": "1590d06adceba672870ccc1126437175dfbee3342bbe043673520ceae1bd8b5e",
+        "render_overlay": true,
+        "render_assessment": true
+      },
+      "position": [
+        720.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "inspection",
+        "defect_mask",
+        "inspected_mask",
+        "deviation_map",
+        "residual",
+        "defect_area",
+        "overlay",
+        "assessment"
+      ],
+      "thumbnail": true,
+      "preview_output": "assessment"
+    },
+    {
+      "id": "credits",
+      "type": "layout.comment",
+      "name": "Real ARMBench images \u00b7 CC BY 4.0",
+      "description": "Amazon.com, Inc., ARMBench Sparrow tiny archive (CC BY 4.0). One empty tote is the retained good reference; a separate empty and three loaded captures are replayed. Cavity changes up to 5% are allowed; regions below 500 pixels are ignored. Exposure fitting/reference-correlation gating are disabled for the flat blue signal. Fixed camera and lighting are assumed. See README.md and SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -260.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "blue",
+      "input": "image"
+    },
+    {
+      "source": "blue",
+      "output": "image",
+      "target": "inspection",
+      "input": "image"
+    }
+  ]
+}

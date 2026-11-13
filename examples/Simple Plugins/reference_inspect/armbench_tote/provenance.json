@@ -1,0 +1,32 @@
+{
+  "archive_sha256": "30f2539a2c8ae32ae25000ee9025657e2c49529cf9e513196597f9a94e7ca0d7",
+  "images": {
+    "LO95CK8OLH": {
+      "member": "./armbench-segmentation-tiny/LO95CK8OLH.jpg",
+      "original_sha256": "d5fadc9a9da0422ca57b3556de3a175ebcfc806ac2e1116dba40e0b06ed4097c",
+      "prepared_sha256": "6c909ad2c1d51a0879805f36c9a13eb11dde7f70dab77055a1ab6c2310b604b8"
+    },
+    "EZ5895NGB8": {
+      "member": "./armbench-segmentation-tiny/EZ5895NGB8.jpg",
+      "original_sha256": "6e61817804d6150db7036c551237f291e8c3b6e0f7c5de62060cd268fd88ca70",
+      "prepared_sha256": "7e5348d1a7aa3cccfb67154e457746e24c64d20f9e945103d5caeb983148bafc"
+    },
+    "P2S0835EOA": {
+      "member": "./armbench-segmentation-tiny/P2S0835EOA.jpg",
+      "original_sha256": "d2f289f6885f7838d575d4affe3aba270492643efa91e76f62d6c7673600715a",
+      "prepared_sha256": "7609e883131b428fcdff0b196ccfea4da0bb2476d05696b468a673b1397d40c6"
+    },
+    "9TARTKRF1X": {
+      "member": "./armbench-segmentation-tiny/9TARTKRF1X.jpg",
+      "original_sha256": "9caae60bf07ca8dd68bc0645f3fb72748038cbb8a47df101452df30195dc0d37",
+      "prepared_sha256": "48f09d0a044c0f6b0cb2178cc9b06fb89815d5c6a56f43a185bba5419ad7121e"
+    },
+    "OAR1KXNIME": {
+      "member": "./armbench-segmentation-tiny/OAR1KXNIME.jpg",
+      "original_sha256": "c819b487c6d7f061206e1271cb0b7775c2df4804bcf7453b91e2cce10c2f557e",
+      "prepared_sha256": "7f4d546306841aad78a9a64a49b6947b9421c8e91a02ce32738e199866409ba2"
+    }
+  },
+  "reference": "LO95CK8OLH",
+  "occupancy_labels": "Visual image-level labels for this example; not publisher annotations."
+}

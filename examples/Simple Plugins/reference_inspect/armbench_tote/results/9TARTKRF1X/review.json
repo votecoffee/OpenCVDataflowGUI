@@ -1,0 +1,192 @@
+{
+  "model": "simple_reference_inspect_review_v1",
+  "state": "fail",
+  "inspection": {
+    "model": "simple_reference_inspect_v1",
+    "passed": false,
+    "evaluated": true,
+    "failures": [
+      "defect_area_above_maximum"
+    ],
+    "coverage": 1.0,
+    "exposure": {
+      "gain": 1.0,
+      "offset": 0.0,
+      "correlation": -0.3346636753896584
+    },
+    "inspected_pixels": 187974,
+    "defect_area": 154111,
+    "defects": [
+      {
+        "reference_bounds": [
+          40,
+          70,
+          531,
+          336
+        ],
+        "area": 154111
+      }
+    ],
+    "area_units": "reference_pixels",
+    "max_deviation": 18.75,
+    "settings": {
+      "absolute_threshold": 12.0,
+      "variation_multiplier": 3.0,
+      "edge_tolerance_px": 0.75,
+      "normalization": "none",
+      "min_gain": 0.5,
+      "max_gain": 2.0,
+      "min_correlation": null,
+      "min_coverage": 0.98,
+      "min_defect_area": 500,
+      "max_total_defect_area": 9398
+    }
+  },
+  "metrics": [
+    {
+      "name": "Geometric support",
+      "value": 1.0,
+      "units": "fraction",
+      "minimum": 0.98,
+      "maximum": null,
+      "status": "within limits"
+    },
+    {
+      "name": "Exposure gain",
+      "value": 1.0,
+      "units": "ratio",
+      "minimum": 0.5,
+      "maximum": 2.0,
+      "status": "within limits"
+    },
+    {
+      "name": "Reference correlation",
+      "value": -0.3346636753896584,
+      "units": "correlation",
+      "minimum": null,
+      "maximum": null,
+      "status": "diagnostic"
+    },
+    {
+      "name": "Accepted change area",
+      "value": 154111,
+      "units": "reference pixels",
+      "minimum": null,
+      "maximum": 9398,
+      "status": "outside limits"
+    },
+    {
+      "name": "Maximum deviation",
+      "value": 18.75,
+      "units": "tolerance ratio",
+      "minimum": null,
+      "maximum": null,
+      "status": "diagnostic"
+    }
+  ],
+  "expected_inspection_pixels": 187974,
+  "inspected_reference_pixels": 187974,
+  "reference_size": [
+    612,
+    512
+  ],
+  "input_size": [
+    612,
+    512
+  ],
+  "input_dtype": "uint8",
+  "input_pixels_sha256": "56bfbcf614c4764316b10959205b6cc6805bf34a278464d399a921851937b121",
+  "reference_mean_sha256": "0b36a22d61e70a4f39ecb5b85262475ad2c146085a544edfa58297b154d36ccc",
+  "reference_tolerance_sha256": "d9d0faeca02e51aae533afebc09fa0349c553df97d55b71127382f94d91e513f",
+  "inspection_region_sha256": "fe12faa0997451e462737d6850ac66976f6c7f817936b93f7c11015b8c56478f",
+  "normalization_region_sha256": "fe12faa0997451e462737d6850ac66976f6c7f817936b93f7c11015b8c56478f",
+  "reference_to_image": [
+    [
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0
+    ]
+  ],
+  "display": {
+    "intensity_range": [
+      94.0,
+      249.0
+    ],
+    "signed_residual_range": [
+      -45.82371139526367,
+      45.82371139526367
+    ],
+    "deviation_range": [
+      0.0,
+      2.0
+    ],
+    "tolerance_boundary": 1.0
+  },
+  "training_health": {
+    "sample_count": 1,
+    "samples": [
+      {
+        "gain": 1.0,
+        "offset": 0.0,
+        "correlation": 1.0
+      }
+    ],
+    "warnings": [
+      "Fewer than five good samples. Validate against independent images."
+    ],
+    "mean_standard_deviation": 0.0
+  },
+  "arrays": {
+    "residual": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "535cc2b36b10ef98c44759d6fc1ee0acbeacee55c819b316db7a6c65f2467295"
+    },
+    "deviation_map": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "03a2cf1ae8495577bbc0965b2e6a0858c9c9de08227bd19c20b665ea0c78faac"
+    },
+    "inspected_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "92ae87ec97cff08fc34f16804aee91009748527ccfe8073f480466d9853cc675"
+    },
+    "defect_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "3cd604b73932d925da7acaedf864da186d63cdd18b20725f3dd8a625c7f7e876"
+    }
+  },
+  "images": {
+    "0_reference_mean.png": {
+      "view": "Reference mean",
+      "grid": "reference"
+    },
+    "1_normalized_current.png": {
+      "view": "Normalized current",
+      "grid": "reference"
+    },
+    "2_signed_residual.png": {
+      "view": "Signed residual",
+      "grid": "reference"
+    },
+    "3_deviation_tolerance.png": {
+      "view": "Deviation / tolerance",
+      "grid": "reference"
+    },
+    "4_inspected_coverage.png": {
+      "view": "Inspected coverage",
+      "grid": "reference"
+    },
+    "5_input_overlay.png": {
+      "view": "Input overlay",
+      "grid": "input"
+    }
+  }
+}
