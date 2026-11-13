@@ -800,7 +800,7 @@ object and relative pose currently require pinhole input.
 | `cv2.fisheye.solvePnP`, `cv2.fisheye.solvePnPRansac` | Qualify wide-angle object pose on known 3D targets, including outliers. Evaluate the resulting pose through the original lens model, with declared pixel residuals and supported ray domain. | S3-130 |
 | `cv2.findEssentialMat`, `cv2.recoverPose` | Qualify the independent-camera overload or per-lens normalized correspondences. Retain each image grid and calibration; preserve the unitless translation direction until scale is anchored. | S3-131 |
 | `cv::sfm::triangulatePoints` | Extend existing reconstruction work to three or more supplied or estimated cameras, with missing observations and persistent landmark IDs. Keep two-view baseline coverage separate. | S3-12, S3-33 |
-| `cv2.minEnclosingCircle` | The shipped enclosing circle bounds its input points. Circle/arc metrology requires a fit with residual, angular coverage and noise/outlier checks. | S1-33, S1-134 |
+| `cv2.minEnclosingCircle` | The native enclosing circle bounds its input points. inspect.fit_circle_arc separately performs normalized CPU geometric least squares with optional RANSAC, SVD refinement, radial residuals, observed angular envelopes and conditional uncertainty. Short-arc, conditioning and point-order checks have independent truth fixtures; no native fitCircle binding is claimed. | S1-33, S1-134 |
 
 The pinned [3D geometry header](https://github.com/opencv/opencv/blob/5.0.0/modules/geometry/include/opencv2/geometry/3d.hpp)
 declares the fisheye solvers and separate-camera essential/recovery overloads.

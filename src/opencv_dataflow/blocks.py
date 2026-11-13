@@ -661,6 +661,7 @@ def builtin_registry():
     from .channel_transform import ChannelTransform, RouteChannels
     from .charuco import DetectCharucoBoard
     from .chessboard_quality import CheckChessboardQuality
+    from .circle_fitting import FitCircleArc
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_tools import CLOUD_BLOCKS
     from .clustering import KMeansImage, KMeansSamples
@@ -945,6 +946,7 @@ def builtin_registry():
         HoughPolarLines,
         *CONTOUR_ANALYSIS_BLOCKS,
         RasterizeContours,
+        FitCircleArc,
         CompareEdgeMaps,
         *CODE_READER_BLOCKS,
         ReadZXingBarcode,

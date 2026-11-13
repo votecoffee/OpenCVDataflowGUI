@@ -299,6 +299,18 @@ defects** reports hull vertices, solidity and concavity depths from a
 whole-pixel contour. **Test points against contour** classifies points as
 inside, on the edge or outside, and can filter them by signed distance to the
 boundary. See the [OpenCV shape-analysis reference](https://docs.opencv.org/5.0/main_modules/geometry_shape.html).
+
+[Fit circle or arc](<../examples/opencv tools/circle_arc_fitting/README.md>)
+(S1-134) fits geometric circles to ordered image points or selected contour/blob
+boundaries, using normalized CPU least squares and optional RANSAC consensus.
+It reports radial error, signed arc sweep, observed angular envelope, gap/order
+checks, numerical conditioning and conditional radial-noise uncertainty. Short
+or unstable support withholds primary geometry; arc order and RMSE have separate
+judgments. Masks/regions, mapped image frames, tickets, original pixels and
+pyramid context are retained. Geometric circles feed **Region from fitted shape**.
+The original noisy/outlier and short-arc projects compare independent polar truth.
+This solves a different problem from the native minimum enclosing circle.
+
 In a two-object fixture with one hole, the pinned OpenCV 5.0.0
 `findContoursLinkRuns` binding reported the hole contour without a parent link.
 The standard contour path remains the supported option for hierarchy.

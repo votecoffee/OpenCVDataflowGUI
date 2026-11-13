@@ -4758,6 +4758,44 @@ Input `image` — A uint8 monochrome mask. Nonzero pixels indicate foreground.
 | `border_margin` | `1` | Value must be a whole number between 0 and 16384. Reject contours closer than this many pixels to an image edge. |
 | `maximum_candidates` | `8` | Value must be a whole number between 1 and 128. Inspect up to this many contours, largest area first. |
 
+## Fit circle or arc (`inspect.fit_circle_arc`)
+
+Inspection / Measurements
+
+Inputs: `points` (data), `image` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `points` — Ordered [x,y] points or contour/blob collection; no edge detection.
+
+Input `image` — Optional fitting grid and unchanged image; compatible frames map into it.
+
+Input `mask` — Optional uint8 selection of points by nearest pixel. Others do not fit or vote.
+
+Input `region` — Optional region intersected with the mask. Selection does not prove closure.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"ransac"` | `ransac`, `least_squares` RANSAC refits radial consensus; least squares uses every eligible unique point. |
+| `item_index` | `0` | Value must be a whole number between 0 and 99999. Current collection position. Ignored for point-list input. |
+| `boundary_index` | `-1` | Value must be a whole number between -1 and 99999. Blob boundary; -1 chooses largest. Ignored for contours/lists. |
+| `path` | `"auto"` | `auto`, `open`, `closed` Auto closes detected contours or a list with a repeated endpoint; otherwise open. |
+| `inlier_tolerance` | `1.0` | Value must be a finite number between 1e-09 and 1e+07. Inclusive radial consensus distance in output pixels. RANSAC only. |
+| `maximum_trials` | `256` | Value must be a whole number between 16 and 4096. RANSAC candidate budget; adaptive stopping uses at least 16 trials. |
+| `confidence` | `0.99` | Value must be a finite number between 0.5 and 0.999999. Adaptive RANSAC trial target; not a measurement confidence interval. |
+| `random_seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Repeatable local seed, 0–4294967295. Global random state is unchanged. |
+| `refinement_iterations` | `50` | Value must be a whole number between 1 and 200. Geometric iterations per support refit; at most five rounds. |
+| `position_tolerance` | `1e-08` | Value must be a finite number between 1e-12 and 0.1. Geometric convergence tolerance in output pixel units. |
+| `minimum_inliers` | `6` | Value must be a whole number between 3 and 100000. Minimum distinct fitting points. Duplicate coordinates vote once. |
+| `minimum_inlier_fraction` | `0.5` | Value must be a finite number between 0 and 1. Minimum accepted support divided by eligible point count. |
+| `minimum_span_degrees` | `30.0` | Value must be a finite number between 0 and 359.99. Smallest angular envelope, excluding the largest circular gap. |
+| `maximum_condition` | `10000.0` | Value must be a finite number between 1 and 1e+12. Largest radial-Jacobian condition number. High means unstable. |
+| `maximum_gap_degrees` | `120.0` | Value must be a finite number between 0.001 and 179.99. Largest consecutive support angle, including closed-path closure. |
+| `maximum_backtracking_fraction` | `0.1` | Value must be a finite number between 0 and 0.5. Allowed reverse angular travel / total travel, 0 to 0.5. |
+| `minimum_radius` | `0.01` | Value must be a finite number between 1e-09 and 1e+07. Smallest accepted radius, in the fitting grid's pixels. |
+| `maximum_radius` | `10000000.0` | Value must be a finite number between 1e-09 and 1e+07. Largest accepted radius, also used to screen RANSAC candidates. |
+| `check_rmse` | `true` | Judge fitting-support radial root mean square error. |
+| `maximum_rmse` | `1.0` | Value must be a finite number between 0 and 1e+07. Inclusive fitting-support RMSE limit in output pixels. |
+| `sample_limit` | `2000` | Value must be a whole number between 0 and 100000. Maximum residual rows; zero skips the table without changing the fit. |
+
 ## Fit line, ellipse or enclosing circle (`inspect.fit_shape`)
 
 Inspection / Measurements
@@ -6729,7 +6767,7 @@ Inputs: `image` (image), `fit` (data).
 
 Input `image` — Image in the same coordinate frame as the fitted shape.
 
-Input `fit` — Ellipse or enclosing circle geometry from Fit line, ellipse or enclosing circle.
+Input `fit` — Fitted ellipse, geometric circle or enclosing circle in the image frame.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |

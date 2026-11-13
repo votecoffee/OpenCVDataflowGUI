@@ -82,7 +82,7 @@ IMPLEMENTATION_MODULES = {
     ),
     "imgcodecs": "image_codecs tiff_files",
     "calib": "calibration calibration_validation chessboard_quality hand_eye remap_maps workplane",
-    "geometry": "contour_analysis convex_overlap geometry3d line_pair shape_fitting "
+    "geometry": "circle_fitting contour_analysis convex_overlap geometry3d line_pair shape_fitting "
     "translation_registration triangulation voronoi",
     "video": (
         "ecc_registration frame_interpolation image_correlation "

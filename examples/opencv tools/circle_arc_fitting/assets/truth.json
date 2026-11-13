@@ -1,0 +1,18 @@
+{
+  "center": [
+    128,
+    96
+  ],
+  "radius": 60,
+  "units": "pixels",
+  "arc_sweep_degrees": 210,
+  "short_sweep_degrees": 5,
+  "radial_noise_std": {
+    "arc": 0.15,
+    "circle": 0.1
+  },
+  "outlier_every": 9,
+  "maximum_center_error": 0.1,
+  "maximum_radius_error": 0.1,
+  "reference": "Generating center/radius and polar sampling; float32 input rows"
+}

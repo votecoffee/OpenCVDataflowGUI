@@ -76,6 +76,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Color normalization](<opencv tools/normalize_color/README.md>) | Compare shared and independent channel scaling inside a region while preserving outside pixels. |
 | [Colorize scalar image](<opencv tools/colorize_scalar/README.md>) | Show how far each foreground pixel lies from the edge of a synthetic part. |
 | [Contour approximation](<opencv tools/contour_approximation/README.md>) | Simplify the dense outline of a chamfered part into six polygon vertices. |
+| [Circle and arc fitting](<opencv tools/circle_arc_fitting/README.md>) | Compare robust and ordinary circle fits with outliers, build a circle-relative region, and reject a five-degree arc. |
 | [Contour hierarchy](<opencv tools/contour_hierarchy/README.md>) | Follow parent and child links through nested outlines, holes, and islands. |
 | [Contour rasterization](<opencv tools/contour_rasterization/README.md>) | Select a part with its holes and islands, compare explicit solid filling, and verify exact source-grid masks. |
 | [Convex contour approximation](<opencv tools/convex_contour_approximation/README.md>) | Compare a four-sided footprint with a six-sided approximation under an area budget. |

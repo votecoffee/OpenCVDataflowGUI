@@ -43,9 +43,10 @@ def test_rotated_ellipse_preserves_center_angle_and_full_axis_units():
     assert not image.any()
 
 
-def test_circle_margin_inversion_and_invalid_geometry():
+@pytest.mark.parametrize("shape", ("enclosing_circle", "circle"))
+def test_circle_margin_inversion_and_invalid_geometry(shape):
     image = np.zeros((100, 120), np.uint8)
-    fit = {"shape": "enclosing_circle", "center": [45.5, 40.25], "radius": 10.5}
+    fit = {"shape": shape, "center": [45.5, 40.25], "radius": 10.5}
     block = builtin_registry().create(TYPE_ID, parameters={"margin": -1.5})
     result = block.execute({"image": image, "fit": fit})
     assert result and result.passed, block.error
@@ -61,7 +62,7 @@ def test_circle_margin_inversion_and_invalid_geometry():
     assert block.execute({"image": image, "fit": fit}) is None
     assert "Margin collapses" in block.error
     assert block.execute({"image": image, "fit": {"shape": "line"}}) is None
-    assert "ellipse or enclosing circle" in block.error
+    assert "ellipse or fitted/enclosing circle" in block.error
 
 
 @pytest.mark.parametrize("spatial", (frame([120, 100], "other"), frame([60, 50])))

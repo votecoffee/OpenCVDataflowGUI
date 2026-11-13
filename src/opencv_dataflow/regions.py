@@ -110,13 +110,17 @@ class FittedShapeRegion(Block):
     }
     input_help = {
         "image": "Image in the same coordinate frame as the fitted shape.",
-        "fit": "Ellipse or enclosing circle geometry from Fit line, ellipse or enclosing circle.",
+        "fit": "Fitted ellipse, geometric circle or enclosing circle in the image frame.",
     }
 
     def process(self, inputs):
         image, fit = inputs["image"], inputs["fit"]
-        if not isinstance(fit, dict) or fit.get("shape") not in ("ellipse", "enclosing_circle"):
-            raise ValidationError("Fit must contain an ellipse or enclosing circle")
+        if not isinstance(fit, dict) or fit.get("shape") not in (
+            "ellipse",
+            "circle",
+            "enclosing_circle",
+        ):
+            raise ValidationError("Fit must contain an ellipse or fitted/enclosing circle")
         size = [image.shape[1], image.shape[0]]
         fit_payload = self.input_payloads["fit"]
         frame_error = "Fitted shape must use the target image coordinate frame"
