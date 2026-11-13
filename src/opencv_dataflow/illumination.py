@@ -7,6 +7,7 @@ from .core import Block, Port, Result
 from .images import ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .parameters import BORDERS
+from .payloads import metadata, require_same_frame
 from .processing import image_value
 from .selection import SELECTION_INPUTS, selection_mask
 
@@ -16,33 +17,52 @@ INTENSITY_FORMATS = ("gray", "bgr", "rgb", "bgra", "rgba")
 class FlatFieldCorrection(Block):
     type_id, title = "cv.flat_field", "Flat-field correction"
     category, block_type, subtype = "Image processing", "Image processing", "Color and depth"
-    inputs = (*SELECTION_INPUTS, Port("flat"), Port("dark", required=False))
+    inputs = (
+        *SELECTION_INPUTS, Port("flat"),
+        Port("dark", required=False, required_when_connected=True),
+    )
+    parallel_safe = process_inputs_readonly = True
     outputs = (
         Port("image"),
         Port("invalid_mask", visual_type="region"),
         Port("corrected_pixels", "number"),
     )
-    defaults = {"target_mode": "reference_mean", "target_level": 0.5, "min_response": 0.01}
-    parameter_choices = {"target_mode": ("reference_mean", "fixed")}
-    parameter_ranges = {"target_level": NumericRange(0, 1), "min_response": NumericRange(0, 1)}
+    defaults = {
+        "target_mode": "reference_mean", "target_level": 0.5, "min_response": 0.01,
+        "reference_depth": "match_image", "reference_alignment": "pixel_grid",
+    }
+    parameter_choices = {
+        "target_mode": ("reference_mean", "fixed"),
+        "reference_depth": ("match_image", "raw_sample_units"),
+        "reference_alignment": ("pixel_grid", "same_frame"),
+    }
+    parameter_ranges = {"target_level": NumericRange(0), "min_response": NumericRange(0)}
     parameter_help = {
         "target_level": "Fixed target as a fraction of integer full scale or float sample units.",
         "min_response": "Minimum flat minus dark, in full-scale fractions or float sample units.",
+        "reference_depth": "Match depth, or accept floating references in image raw sample units.",
+        "reference_alignment": "Compare aligned pixel indices, or require matching known grids.",
     }
     input_help = {
-        "flat": "Uniform bright reference in the same camera pixel grid, encoding, and depth.",
+        "flat": "Bright reference on the camera grid, matching color order; alpha may be omitted.",
         "dark": "Optional dark reference captured with the same camera settings.",
     }
 
     def process(self, inputs):
         source = inputs["image"]
         encoding = image_format(source)
-        samples = image_value(source, (np.uint8, np.uint16, np.float32))
+        samples = image_value(source, (np.uint8, np.uint16, np.float32, np.float64))
+        if samples.dtype.kind == "u":
+            for key in ("target_level", "min_response"):
+                if self.parameters[key] > 1:
+                    raise ValidationError("Unsigned images require fractions between 0 and 1", key)
         if encoding not in INTENSITY_FORMATS:
             raise ValidationError(
                 "Use grayscale, RGB, or BGR intensity data for flat-field correction"
             )
         has_alpha = encoding in ("rgba", "bgra")
+        if has_alpha and metadata(source).get("alpha_representation", "straight") != "straight":
+            raise ValidationError("Unassociate premultiplied images before flat-field correction")
         if has_alpha:
             samples = samples[..., :3]
         samples = samples.astype(np.float64)
@@ -52,19 +72,34 @@ class FlatFieldCorrection(Block):
             if name not in inputs:
                 continue
             reference = inputs[name]
-            if (
-                reference.shape != source.shape
-                or reference.dtype != source.dtype
-                or image_format(reference) != encoding
-            ):
+            reference_encoding = image_format(reference)
+            same_layout = reference.shape == source.shape and reference_encoding == encoding
+            no_alpha = (
+                has_alpha and reference.shape == source.shape[:2] + (3,)
+                and reference_encoding == encoding.removesuffix("a")
+            )
+            valid_depth = reference.dtype == source.dtype or (
+                self.parameters["reference_depth"] == "raw_sample_units"
+                and reference.dtype in (np.float32, np.float64)
+            )
+            if not (same_layout or no_alpha) or not valid_depth:
                 raise ValidationError(
                     f"{name.capitalize()} must match image dimensions, encoding, and depth"
                 )
-            pixels = image_value(reference, (np.uint8, np.uint16, np.float32))
+            pixels = image_value(reference, (np.uint8, np.uint16, np.float32, np.float64))
             references[name] = (pixels[..., :3] if has_alpha else pixels).astype(np.float64)
 
+        if self.parameters["reference_alignment"] == "same_frame":
+            try:
+                require_same_frame([source, *[inputs[name] for name in references]])
+            except ValueError as exc:
+                raise ValidationError(str(exc)) from exc
+
         dark = references.get("dark", 0)
-        response = references["flat"] - dark
+        with np.errstate(over="ignore", invalid="ignore"):
+            response = references["flat"] - dark
+        if not np.isfinite(response).all():
+            raise ValidationError("Flat-minus-dark response exceeds float64")
         integer = np.issubdtype(source.dtype, np.integer)
         scale = np.iinfo(source.dtype).max if integer else 1.0
         minimum = float(self.parameters["min_response"]) * scale
@@ -79,11 +114,16 @@ class FlatFieldCorrection(Block):
         output = np.asarray(source).copy()
         if count:
             if self.parameters["target_mode"] == "reference_mean":
-                target = response[valid_reference].mean(axis=0)
+                positive = response[valid_reference]
+                peak = positive.max(axis=0)
+                target = (positive / peak).mean(axis=0) * peak
             else:
                 target = float(self.parameters["target_level"]) * scale
-            corrected = cv2.divide(samples - dark, np.where(valid_channels, response, 1.0))
-            corrected *= target
+            with np.errstate(over="ignore", invalid="ignore"):
+                corrected = cv2.divide(samples - dark, np.where(valid_channels, response, 1.0))
+                corrected *= target
+            if not np.isfinite(corrected[valid]).all():
+                raise ValidationError("Corrected samples exceed float64; reduce the sample range")
             limit = scale if integer else np.finfo(source.dtype).max
             np.clip(corrected, 0, limit, out=corrected)
             if integer:
@@ -93,12 +133,15 @@ class FlatFieldCorrection(Block):
 
         invalid_count = int(np.count_nonzero(invalid))
         passed = count > 0 or invalid_count == 0
+        mask_payload = dict(self.input_payloads["image"])
+        mask_payload.pop("alpha_representation", None)
         return Result(
             {
                 "image": ImageArray(output, encoding),
                 "invalid_mask": invalid.astype(np.uint8) * 255,
                 "corrected_pixels": count,
             },
+            payloads={"invalid_mask": mask_payload},
             passed=passed,
             fail_reasons=[]
             if passed

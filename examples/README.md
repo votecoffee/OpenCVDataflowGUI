@@ -193,6 +193,7 @@ See the [industrial integration examples](<industrial integration/README.md>) fo
 | [Find nearest rows](<custom tools/nearest_rows/README.md>) | Compare scaled measurements with masked candidates and mutual nearest-neighbor matching. |
 | [Fitted ellipse inspection band](<custom tools/fitted_shape_region/README.md>) | Fit a rotated ellipse, subtract a smaller fitted region from a larger one, and measure the selected edge band. |
 | [Flat-field illumination correction](<custom tools/flat_field/README.md>) | Remove a lighting gradient using bright and dark references while retaining a synthetic defect. |
+| [Build flat-field references](<custom tools/flat_field_reference/README.md>) | Estimate bright/dark maps from repeated captures, compare mean/median handling and verify a held-out color image. |
 | [Fourier gain mask](<custom tools/fourier_gain/README.md>) | Apply a custom notch at a specific frequency pair and reconstruct the image. |
 | [Fourier spectrum filtering](<custom tools/fourier_filter/README.md>) | Reject a periodic stripe pattern with a band-stop filter and inverse DFT. |
 | [Gabor orientation bank](<custom tools/gabor_orientation_bank/README.md>) | Find dominant stripe directions and reject a flat patch. |

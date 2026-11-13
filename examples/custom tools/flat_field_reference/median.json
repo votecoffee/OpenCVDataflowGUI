@@ -1,0 +1,549 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "bright_batch",
+      "type": "flow.batch",
+      "name": "Three bright captures",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        -200.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "bright_0",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/bright_0.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -600.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "bright_1",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/bright_1.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -600.0,
+        240.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "bright_2",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/bright_outlier.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -600.0,
+        480.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dark_batch",
+      "type": "flow.batch",
+      "name": "Three dark captures",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        -200.0,
+        800.0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dark_0",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/dark_0.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -600.0,
+        800.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dark_1",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/dark_1.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -600.0,
+        1040.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dark_2",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/dark_2.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        -600.0,
+        1280.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "calibration.flat_field_reference",
+      "name": "Build median references",
+      "documentation": "<p>Estimate bright and dark references from independent repeated-capture batches. Keep camera, optics, exposure, gain and lighting settings fixed; registration and camera-setting verification are operator responsibilities. Alpha does not participate in calibration and is retained only on Source. Saturation rejection is per capture pixel across all intensity channels. Mean/median and optional population temporal noise use accepted captures. Noise is about the mean, also in Median mode.</p><p>Validity requires enough captures in both connected batches, a positive published flat-minus-dark response above the configured floor in every channel, and optional noise limits. Invalid and unselected reference pixels are zero, so correction cannot use them. Floating maps retain original sample units, with no full-scale conversion; choose Raw sample units in Flat-field correction for a different reference depth. Each batch is limited to 64 frames; combined signal samples to 64 million, image pixels to 4,194,304 and each axis to 16384. Reduction uses bounded row tiles.</p>",
+      "parameters": {
+        "method": "median",
+        "minimum_frames": 3,
+        "anchor_index": 0,
+        "alignment": "pixel_grid",
+        "output_depth": "float64",
+        "reject_saturation": true,
+        "saturation_level": 0.99,
+        "minimum_response": 0.01,
+        "minimum_valid_fraction": 0.95,
+        "check_noise": false,
+        "maximum_noise": 0.02,
+        "retain_noise": true
+      },
+      "position": [
+        200.0,
+        400.0
+      ],
+      "exposed_inputs": [
+        "bright",
+        "dark",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "flat",
+        "dark",
+        "valid_mask",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "held_out",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/held_out.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        200.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "truth",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/truth.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        1000.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "correct",
+      "type": "cv.flat_field",
+      "name": "Flat-field correction",
+      "parameters": {
+        "target_mode": "fixed",
+        "target_level": 0.5,
+        "min_response": 0.01,
+        "reference_depth": "raw_sample_units",
+        "reference_alignment": "pixel_grid"
+      },
+      "position": [
+        600.0,
+        220.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "flat",
+        "dark"
+      ],
+      "exposed_outputs": [
+        "image",
+        "invalid_mask",
+        "corrected_pixels"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "before",
+      "type": "inspect.image_quality",
+      "name": "Before correction error",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": false,
+        "threshold": 0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1400.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify",
+      "type": "inspect.image_quality",
+      "name": "Verify independent truth",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1400.0,
+        240.0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "about",
+      "type": "layout.comment",
+      "name": "Original calibration fixtures \u2014 MIT",
+      "description": "Original 16-bit RGB simulation, projects and generator under the repository's MIT license. Three bright/dark captures build mean or median references. The median project has an outlier in the third bright capture. A separate held-out image has 1/2 reflectance outside and 1/4 inside its rectangle. Correction to a 1/2 full-scale target produces 16384 and 8192 counts, matching independent pixels exactly. This verifies arithmetic and metadata contracts; physical camera settings require separate qualification.",
+      "parameters": {},
+      "position": [
+        -600.0,
+        -340.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "bright_0",
+      "output": "image",
+      "target": "bright_batch",
+      "input": "item_1"
+    },
+    {
+      "source": "bright_1",
+      "output": "image",
+      "target": "bright_batch",
+      "input": "item_2"
+    },
+    {
+      "source": "bright_2",
+      "output": "image",
+      "target": "bright_batch",
+      "input": "item_3"
+    },
+    {
+      "source": "dark_0",
+      "output": "image",
+      "target": "dark_batch",
+      "input": "item_1"
+    },
+    {
+      "source": "dark_1",
+      "output": "image",
+      "target": "dark_batch",
+      "input": "item_2"
+    },
+    {
+      "source": "dark_2",
+      "output": "image",
+      "target": "dark_batch",
+      "input": "item_3"
+    },
+    {
+      "source": "bright_batch",
+      "output": "group",
+      "target": "reference",
+      "input": "bright"
+    },
+    {
+      "source": "dark_batch",
+      "output": "group",
+      "target": "reference",
+      "input": "dark"
+    },
+    {
+      "source": "held_out",
+      "output": "image",
+      "target": "correct",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "flat",
+      "target": "correct",
+      "input": "flat"
+    },
+    {
+      "source": "reference",
+      "output": "dark",
+      "target": "correct",
+      "input": "dark"
+    },
+    {
+      "source": "held_out",
+      "output": "image",
+      "target": "before",
+      "input": "image_a"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "before",
+      "input": "image_b"
+    },
+    {
+      "source": "correct",
+      "output": "image",
+      "target": "verify",
+      "input": "image_a"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "verify",
+      "input": "image_b"
+    }
+  ]
+}

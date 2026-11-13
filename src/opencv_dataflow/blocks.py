@@ -686,6 +686,7 @@ def builtin_registry():
     from .fanuc import FANUC_BLOCKS
     from .feature_covariance import FitFeatureCovariance, MahalanobisDistance
     from .features import FEATURE_BLOCKS
+    from .flat_field_reference import BuildFlatFieldReference
     from .focus import MeasureFocus
     from .fourier_components import FourierComponents, ReconstructFourierImage
     from .fourier_correlation import FourierCorrelation
@@ -971,6 +972,7 @@ def builtin_registry():
         WatershedPointSeeds,
         WatershedMaskSeeds,
         FlatFieldCorrection,
+        BuildFlatFieldReference,
         AdaptiveBackgroundCorrection,
         CompareImageQuality,
         CompareMaskBoundary,

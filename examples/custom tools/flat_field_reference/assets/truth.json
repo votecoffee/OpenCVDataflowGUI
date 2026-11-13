@@ -1,0 +1,33 @@
+{
+  "reference": "Direct reflectance assignment, independent of correction blocks",
+  "image_size": [
+    96,
+    64
+  ],
+  "channel_order": "RGB",
+  "input_depth": "uint16",
+  "training_noise": [
+    -16,
+    0,
+    16
+  ],
+  "median_outlier": {
+    "rectangle": [
+      15,
+      12,
+      22,
+      16
+    ],
+    "amplitude": 4000
+  },
+  "held_out": "Offset + channel response times reflectance; not a training capture",
+  "expected_background": 16384,
+  "expected_rectangle": 8192,
+  "reflectance_rectangle": [
+    34,
+    22,
+    29,
+    21
+  ],
+  "maximum_error": 0
+}

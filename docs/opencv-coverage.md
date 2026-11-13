@@ -44,6 +44,12 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Capture-stack flat-field references](<../examples/custom tools/flat_field_reference/README.md>)
+(S1-137) now estimate bright/dark maps using mean or median, per-pixel capture
+support, optional saturation/noise rejection and calibration selections. Floating
+raw-unit references feed the existing correction block without rounding away
+capture precision. Original RGB projects verify exact correction on held-out pixels.
+
 [Binary mask boundary and area inspection](<../examples/opencv tools/mask_boundary/README.md>)
 (S1-136) now measures directed and combined boundary distances, holes and disconnected
 parts, tolerance bands and missing/extra area. Query selection retains full boundary

@@ -377,7 +377,7 @@ is evidence of exposure. Completion requires the checklist's graph fixture.
 | `cv2.arrowedLine`, `cv2.circle`, `cv2.clipLine`, `cv2.drawContours`, `cv2.drawFrameAxes`, `cv2.drawMarker`, `cv2.ellipse`, `cv2.ellipse2Poly`, `cv2.fillConvexPoly`, `cv2.fillPoly`, `cv2.line`, `cv2.polylines`, `cv2.rectangle`, `cv::LineIterator` | collection.rasterize_contours groups related subtree boundaries and unions independent roots, with explicit solid/even-odd alternatives, binary filled/outline sampling, fixed-point controls and source-grid context. Other drawing and C++ pixel traversal stay internal to selections and result graphics. | S1-62, S1-106, S1-133, S3-10 |
 | `cv2.FontFace`, `cv2.getFontScaleFromHeight`, `cv2.getTextSize`, `cv2.putText` | Text styles and sizing stay in annotation. Qualify native glyph coverage for Unicode. | S1-106, S1-144 |
 | `cv2.BackgroundSubtractor`, `cv2.BackgroundSubtractorKNN`, `cv2.BackgroundSubtractorMOG2`, `cv2.createBackgroundSubtractorKNN`, `cv2.createBackgroundSubtractorMOG2` | Use the existing stateful warmup and reset contract. | S1-52 |
-| `cv2.accumulate`, `cv2.accumulateProduct`, `cv2.accumulateSquare`, `cv2.accumulateWeighted` | Reuse reference learning for means. Per-pixel variance and covariance need their own output and replay fixture. | S1-107, S1-137, S1-160 |
+| `cv2.accumulate`, `cv2.accumulateProduct`, `cv2.accumulateSquare`, `cv2.accumulateWeighted` | S1-137 now builds bright/dark references and optional population temporal-noise maps using bounded, scaled NumPy mean/median reductions; it does not claim these individual bindings. Per-pixel covariance and general reference learning remain separate workflows. | S1-107, S1-137, S1-160 |
 
 #### Features, matching and 2D geometry
 

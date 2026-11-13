@@ -681,6 +681,35 @@ Input `points` — Ordered [x,y] pixel positions from this image. Detect ArUco m
 | `max_iterations` | `2000` | Value must be a whole number between 1 and 100000. |
 | `confidence` | `0.995` | Value must be a finite number between 0.0001 and 0.9999. |
 
+## Build flat-field references (`calibration.flat_field_reference`)
+
+Calibration / Illumination
+
+Inputs: `bright` (any), `dark` (any, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `bright` — FlowGroup of 1–64 repeated uniform bright captures with fixed camera settings.
+
+Input `dark` — Optional repeated dark captures. When absent, the dark offset is explicitly zero.
+
+Input `mask` — Calibration pixel selection on the anchor grid; references are zero elsewhere.
+
+Input `region` — Optional anchor-grid region intersected with the calibration mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"mean"` | `mean`, `median` Per-pixel mean or median of accepted samples; even medians average two values. |
+| `minimum_frames` | `3` | Value must be a whole number between 1 and 64. Minimum usable captures per selected pixel in each connected batch. |
+| `anchor_index` | `0` | Value must be a whole number between 0 and 63. Bright capture defining the output grid and Source image. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Require matching grids, or assume equal-size pixels are already aligned. |
+| `output_depth` | `"float64"` | `same`, `float32`, `float64` Floating references keep raw sample units; Same rounds integer estimates. |
+| `reject_saturation` | `true` | Reject a capture pixel if any intensity channel reaches the limit. |
+| `saturation_level` | `0.99` | Value must be a finite number at least 0. Exclusive ceiling: full-scale fraction or float sample units. |
+| `minimum_response` | `0.01` | Value must be a finite number at least 0. Inclusive response floor: full-scale fraction or float sample units. |
+| `minimum_valid_fraction` | `0.95` | Value must be a finite number between 0 and 1. Minimum selected fraction with usable published references. |
+| `check_noise` | `false` | Reject pixels with excessive population temporal standard deviation. |
+| `maximum_noise` | `0.02` | Value must be a finite number at least 0. Maximum channel noise: full-scale fraction or float sample units. |
+| `retain_noise` | `false` | Emit noise maps; Check noise computes them even when not retained. |
+
 ## Calibration grid (`calibration.grid`)
 
 Calibration / Grid and coordinates
@@ -1901,15 +1930,17 @@ Image processing / Color and depth
 
 Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `flat` (image), `dark` (image, optional).
 
-Input `flat` — Uniform bright reference in the same camera pixel grid, encoding, and depth.
+Input `flat` — Bright reference on the camera grid, matching color order; alpha may be omitted.
 
 Input `dark` — Optional dark reference captured with the same camera settings.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `target_mode` | `"reference_mean"` | `reference_mean`, `fixed` |
-| `target_level` | `0.5` | Value must be a finite number between 0 and 1. Fixed target as a fraction of integer full scale or float sample units. |
-| `min_response` | `0.01` | Value must be a finite number between 0 and 1. Minimum flat minus dark, in full-scale fractions or float sample units. |
+| `target_level` | `0.5` | Value must be a finite number at least 0. Fixed target as a fraction of integer full scale or float sample units. |
+| `min_response` | `0.01` | Value must be a finite number at least 0. Minimum flat minus dark, in full-scale fractions or float sample units. |
+| `reference_depth` | `"match_image"` | `match_image`, `raw_sample_units` Match depth, or accept floating references in image raw sample units. |
+| `reference_alignment` | `"pixel_grid"` | `pixel_grid`, `same_frame` Compare aligned pixel indices, or require matching known grids. |
 
 ## Flip (`cv.flip`)
 

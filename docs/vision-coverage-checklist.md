@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 114 | 18 | 43 | 175 | 65.1% |
+| 1. Core and baseline 2D | 115 | 18 | 42 | 175 | 65.7% |
 | 2. ML and DNN | 9 | 11 | 42 | 62 | 14.5% |
 | 3. 3D imagery and point clouds | 33 | 27 | 71 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 176 | 59 | 235 | 470 | 37.4% |
+| **Overall** | 177 | 59 | 234 | 470 | 37.7% |
 
 <!-- coverage-summary:end -->
 
@@ -211,7 +211,7 @@ fixture or result needed to close the item.
 | S1-134 | Ordered circle/arc fitting and angular extent | Conditioned CPU geometric least squares with SVD steps and optional RANSAC | Complete | inspect.fit_circle_arc fits ordered point lists or contour/blob boundaries. Verify radial residuals, stable consensus, signed angular extent, observed-support envelopes, conditioning, conditional radial-IID uncertainty, duplicate handling, selection and source-grid/pyramid/ticket context. Short or unstable arcs withhold primary geometry. Geometric circles feed region.fitted_shape. Original pass and short-arc failure projects use independent polar truth. This is distinct from minimum enclosing circles. |
 | S1-135 | Reconstruct features by frequency magnitude and phase | Native DFT/IDFT with conjugate component algebra | Complete | cv.fourier_components edits typed spectra; cv.reconstruct_fourier_image reconstructs full, phase-only or zero-phase magnitude images with declared channel, depth, DC, padding, phase-floor and normalization policies. Independent color impulses verify position/amplitude, row/2D scaling and floating signed output. Mask/region windows select source samples; magnitude-only starts a new coordinate grid. |
 | S1-136 | Binary mask boundary distances | distanceTransform, inner erosion boundaries and directed comparisons | Complete | inspect.mask_boundary compares source-grid masks, including holes and disconnected parts, with directed/combined distance statistics, tolerance bands, raw/beyond-tolerance missing/extra area and independent judgments. Qualify metric, neighborhood, border, selection, empty-set, frame/ticket/pyramid, floating precision and bounded drawable graphics behavior against brute-force pixel references. Original tab/notch projects demonstrate known pass/fail geometry. inspect.contour_profile remains available for continuous contour sampling. |
-| S1-137 | Build a flat-field reference from image stacks | Selected frame averaging or median | Planned | Estimate dark and bright references from repeated captures and verify correction on a held-out image. |
+| S1-137 | Build a flat-field reference from image stacks | Tiled mean/median of accepted capture samples | Complete | calibration.flat_field_reference estimates bright/dark references with per-pixel support counts, saturation rejection, optional temporal-noise checks, selections and published-response validity. Original 16-bit RGB mean/median projects correct a separate held-out image to exact independent reflectance pixels, including a median outlier case. Qualify raw units, floating/rounded precision, HDR/tiny samples, alpha omission, grids, pyramid/capture/batch identity, bounded work and graphics disabled. cv.flat_field accepts explicit floating raw-unit references and optional same-frame checks while preserving inspected image depth/encoding/alpha. |
 | S1-138 | Focus stacking and per-pixel focus selection | Local focus response, image alignment and masked blending | Planned | Fuse different focal planes on a synthetic or recorded stack and verify the focus-index and coverage maps. |
 | S1-139 | Log-polar rotation and scale registration | warpPolar and phaseCorrelate | Planned | Recover rotation and scale before translation and verify ambiguity handling on symmetric parts. |
 | S1-140 | Controlled video encoder qualification | VideoWriter, fourcc and decoder round trip | Partial | output.video writes tested local streams. Check representative lossless and lossy codecs for frame count, rate, color and invalid backend selection. |
