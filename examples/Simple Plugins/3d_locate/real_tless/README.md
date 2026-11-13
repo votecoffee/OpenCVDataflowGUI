@@ -48,6 +48,10 @@ Rebuild with both Python packages available:
 python build_tless_demo.py source . --host-project
 ```
 
+An additional [experimental plane-candidate comparison](plane_candidates/README.md)
+uses the full scene without an object mask. It recovers the correct best pose
+in capture 230 but retains false extra poses and is not the default route.
+
 ## License and attribution
 
 Real images, depth, masks, CAD, annotations and derivatives retain

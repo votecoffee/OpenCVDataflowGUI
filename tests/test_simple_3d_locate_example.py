@@ -56,6 +56,43 @@ def test_simple_3d_locate_example_roundtrip(variant):
 
 
 @pytest.mark.local_examples
+def test_experimental_plane_example_preserves_extra_pose_in_qualification():
+    tool = pytest.importorskip("opencv_simple_3d_locate")
+    if not hasattr(tool.Settings(), "candidate_backend"):
+        pytest.skip("Plane example requires Simple3DLocate 0.1.0.dev4 or later")
+    from opencv_simple_3d_locate.optimization import pose_agreement
+
+    root = (
+        Path(__file__).resolve().parents[1]
+        / "examples/Simple Plugins/3d_locate/real_tless/plane_candidates"
+    )
+    graph = Graph.load(root / "project.json", builtin_registry())
+    try:
+        graph.run()
+        block = graph.blocks["locate"]
+        assert block.state == "pass", block.error
+        output = block.last_result.outputs
+        assert output["count"] == 2
+        assert output["report"]["execution"]["candidate_backend"] == "ppf_planes"
+        assert output["report"]["matches"][0]["candidate_source"] == "planes"
+        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        options = dict(
+            position_tolerance=5, angle_degrees=5, symmetries=(np.diag([-1.0, -1.0, 1.0, 1.0]),)
+        )
+        checked = pose_agreement(
+            [np.asarray(p["source_to_target"]) for p in output["poses"]], [truth], **options
+        )
+        assert checked["matched"] == 1 and checked["extra"] == 1
+        best = pose_agreement([np.asarray(output["pose"]["source_to_target"])], [truth], **options)
+        assert best["matched"] == 1
+        comparison = json.loads((root / "comparison.json").read_bytes())
+        assert comparison["recommended"] is None
+        assert all(not profile["compatible"] for profile in comparison["profiles"])
+    finally:
+        graph.close()
+
+
+@pytest.mark.local_examples
 def test_real_tless_first_surface_camera_example():
     tool = pytest.importorskip("opencv_simple_3d_locate")
     if not hasattr(tool, "Camera"):

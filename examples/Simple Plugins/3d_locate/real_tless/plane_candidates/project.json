@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/scene.ply",
+        "units": "mm",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 1075.65091572,
+        "fy": 1073.90347929,
+        "cx": 376.06888344,
+        "cy": 297.72159802,
+        "width": 720,
+        "height": 540,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "mm",
+        "frame": "camera"
+      },
+      "position": [
+        0,
+        200
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "locate",
+      "type": "3d.simple_locate",
+      "name": "Simple3DLocate",
+      "parameters": {
+        "recipe_path": "assets/object29.s3l",
+        "sha256": "93bca5365aa5104e3bf5419258e5f587b88d38122965e14d4273562eb00f5a3b",
+        "render_overlay": true
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "scene",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "poses",
+        "pose",
+        "count",
+        "report",
+        "aligned_model",
+        "fit",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "cloud",
+      "target": "locate",
+      "input": "scene"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "locate",
+      "input": "camera"
+    }
+  ]
+}

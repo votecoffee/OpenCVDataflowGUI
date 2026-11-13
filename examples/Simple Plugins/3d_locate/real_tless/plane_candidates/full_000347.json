@@ -1,0 +1,97 @@
+{
+  "case": "full_000347",
+  "segmentation_supplied": false,
+  "validation": {
+    "matched": 0,
+    "missed": 1,
+    "extra": 1,
+    "max_position_error": 0.0,
+    "max_angle_error_degrees": 0.0
+  },
+  "result": {
+    "model": "simple_3d_locate_v1",
+    "units": "mm",
+    "source_frame": "tless_object29",
+    "target_frame": "camera",
+    "matches": [
+      {
+        "source_to_target": [
+          [
+            -0.8526402831193292,
+            -0.040975270815556165,
+            0.5208892154611978,
+            -29.11854670440713
+          ],
+          [
+            0.2788092990308854,
+            0.8074473014416002,
+            0.519898288291647,
+            -73.34493259785557
+          ],
+          [
+            -0.44189356453347056,
+            0.5885149807577287,
+            -0.6770378091714184,
+            829.0280094959095
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "coverage": 0.6671232876712329,
+        "score": 0.566987515556434,
+        "score_type": "geometric_fit_not_probability",
+        "rmse": 1.1840409464826211,
+        "normal_spread": 0.40776274324904976,
+        "votes": 0,
+        "model_inliers": 487,
+        "unique_scene_inliers": 412,
+        "refined": true,
+        "candidate_source": "planes",
+        "visible_model_points": 730
+      }
+    ],
+    "candidate_count": 614,
+    "tested_candidates": 24,
+    "sampled_scene_points": 18739,
+    "search_model_points": 384,
+    "search_scene_points": 2048,
+    "passed": true,
+    "execution": {
+      "sampling": "uniform",
+      "candidate_backend": "ppf_planes",
+      "plane_search": {
+        "model_patches": 7,
+        "scene_patches": 32,
+        "coarse_proposals": 512
+      },
+      "refinement": "legacy",
+      "observation_mode": "surface",
+      "projection": "pinhole",
+      "input_points": 292572,
+      "first_surface_points": 292572,
+      "overlap_metric": "combined",
+      "overlap_threshold": 0.6,
+      "overlap_rejected": 10,
+      "coarse_rejected": 0,
+      "icp_calls": 48,
+      "model_levels": [
+        1804
+      ],
+      "scene_levels": [
+        18739
+      ],
+      "seconds": {
+        "preprocess": 0.47331800000029034,
+        "candidate_search": 1.3370367000006809,
+        "ppf_search": 0.06003039999995963,
+        "plane_search": 1.274671600000147,
+        "refine_verify": 0.8986076999990473,
+        "total": 2.7089625999997224
+      }
+    }
+  }
+}
