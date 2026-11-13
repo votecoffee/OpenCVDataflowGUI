@@ -297,12 +297,12 @@ def test_viewport_overview_navigation_and_initial_view_is_clean(app):
     overview = window.view.overview
     assert overview.isVisible()
     workspace = window.centralWidget()
-    for width, sizes in ((1500, [210, 940, 350]), (1200, [180, 540, 480])):
+    for width, sizes in ((1500, [210, 940]), (1200, [180, 540])):
         window.resize(width, 920)
         workspace.setSizes(sizes)
         app.processEvents()
-        corner = overview.mapTo(workspace, QPoint(overview.width(), 0))
-        assert 0 <= workspace.width() - corner.x() <= 4
+        corner = overview.mapTo(window.inspector_dock, QPoint(overview.width(), 0))
+        assert 0 <= window.inspector_dock.width() - corner.x() <= 4
         assert 0 <= corner.y() <= 4
         assert overview.mapTo(window, QPoint(0, overview.height())).y() <= (
             window.inspector.mapTo(window, QPoint()).y()

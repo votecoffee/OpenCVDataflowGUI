@@ -206,7 +206,7 @@ class Node(QGraphicsItem):
         super().mousePressEvent(event)
 
     def mouseDoubleClickEvent(self, event):
-        if not self.scene().locked:
+        if event.button() == Qt.MouseButton.LeftButton:
             self.scene().open_block.emit(self.block)
         event.accept()
 

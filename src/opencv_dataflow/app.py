@@ -36,6 +36,7 @@ from PySide6.QtWidgets import (
     QScrollArea,
     QSizePolicy,
     QSplitter,
+    QStackedWidget,
     QTabWidget,
     QTextEdit,
     QToolBar,
@@ -1772,6 +1773,9 @@ class MainWindow(QMainWindow):
         self.view = CanvasView(self.scene, tool_source=self.library)
         self.view.tool_dropped.connect(self.add_tool)
         self.inspector = Inspector(self)
+        self.block_editor = None
+        self._block_editor_geometry = None
+        self._block_editor_sizes = [430, 670]
         self.library.setHeaderHidden(True)
         self.library.setIndentation(12)
         self.library.itemDoubleClicked.connect(self.add_block)
@@ -1797,12 +1801,31 @@ class MainWindow(QMainWindow):
         sidebar_layout.setContentsMargins(0, 2, 2, 0)
         sidebar_layout.setSpacing(2)
         sidebar_layout.addWidget(self.view.overview, alignment=Qt.AlignmentFlag.AlignRight)
-        sidebar_layout.addWidget(self.inspector, stretch=1)
+        self.inspector_host = QStackedWidget()
+        self.inspector_host.addWidget(self.inspector)
+        self.editor_placeholder = QWidget()
+        placeholder_layout = QVBoxLayout(self.editor_placeholder)
+        placeholder_text = QLabel("This block is open in the expanded editor.")
+        placeholder_text.setWordWrap(True)
+        placeholder_layout.addWidget(placeholder_text)
+        return_editor = QPushButton("Return editor to sidebar")
+        return_editor.clicked.connect(self.close_block_editor)
+        placeholder_layout.addWidget(return_editor)
+        placeholder_layout.addStretch()
+        self.inspector_host.addWidget(self.editor_placeholder)
+        sidebar_layout.addWidget(self.inspector_host, stretch=1)
+        self.inspector_dock = QDockWidget("Block editor", self)
+        self.inspector_dock.setObjectName("blockEditorDock")
+        self.inspector_dock.setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
+        self.inspector_dock.setTitleBarWidget(QWidget())
+        self.inspector_dock.setWidget(sidebar)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.inspector_dock)
+        self.setCorner(Qt.Corner.BottomRightCorner, Qt.DockWidgetArea.RightDockWidgetArea)
+        self.resizeDocks([self.inspector_dock], [350], Qt.Orientation.Horizontal)
         split = QSplitter()
         split.addWidget(library_panel)
         split.addWidget(self.view)
-        split.addWidget(sidebar)
-        split.setSizes([255, 895, 350])
+        split.setSizes([255, 895])
         split.setStretchFactor(1, 1)
         self.setCentralWidget(split)
         self.diagnostics_dock = QDockWidget("Block diagnostics", self)
@@ -1817,11 +1840,11 @@ class MainWindow(QMainWindow):
         self.filmstrip_dock.setWidget(self.filmstrip_view)
         self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, self.filmstrip_dock)
         self.filmstrip_dock.hide()
-        self.scene.selected_block.connect(self.inspector.select)
+        self.scene.selected_block.connect(self.select_block)
         self.scene.edited.connect(self.mark_dirty)
         self.scene.layout_changed.connect(self.mark_layout_dirty)
         self.scene.warning.connect(self.warn)
-        self.scene.open_block.connect(self.enter_toolblock)
+        self.scene.open_block.connect(self.open_block_editor)
         self.make_actions()
         self.run_state = QLabel("Idle")
         self.run_state.setAccessibleName("Execution state")
@@ -1835,6 +1858,89 @@ class MainWindow(QMainWindow):
         self.refresh_production()
         self.statusBar().showMessage("Demo ready · Run once to inspect two shapes")
         QTimer.singleShot(0, self.view.restore_view)
+
+    def select_block(self, block):
+        if self.block_editor is not None:
+            if block is None:
+                # Scene rebuilds briefly clear selection, including after Apply.
+                QTimer.singleShot(0, self.sync_editor_selection)
+                return
+            if block is not self.inspector.block:
+                self.close_block_editor()
+        self.inspector.select(block)
+        if self.block_editor is not None:
+            self.block_editor.setWindowTitle(f"{block.name} · Block editor")
+
+    def sync_editor_selection(self):
+        if self.block_editor is None:
+            return
+        block = next(
+            (item.block for item in self.scene.selectedItems() if isinstance(item, Node)), None
+        )
+        if block is not self.inspector.block:
+            self.close_block_editor()
+            self.inspector.select(block)
+
+    def open_block_editor(self, block):
+        if block is None:
+            return
+        if block is not self.inspector.block:
+            self.select_block(block)
+        if self.block_editor is not None:
+            self.block_editor.raise_()
+            self.block_editor.activateWindow()
+            return
+        dialog = QDialog(self)
+        dialog.setObjectName("expandedBlockEditor")
+        dialog.setWindowTitle(f"{block.name} · Block editor")
+        available = self.screen().availableGeometry()
+        dialog.resize(min(1100, available.width() - 40), min(760, available.height() - 80))
+        dialog.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, True)
+        layout = QVBoxLayout(dialog)
+        self.editor_split = QSplitter(Qt.Orientation.Horizontal)
+        self.editor_split.setChildrenCollapsible(False)
+        self.inspector_host.setCurrentWidget(self.editor_placeholder)
+        self._editor_result_selected = (
+            self.inspector.tabs.currentWidget() is self.inspector.results_page
+        )
+        self.inspector.tabs.removeTab(self.inspector.tabs.indexOf(self.inspector.results_page))
+        if self._editor_result_selected:
+            self.inspector.tabs.setCurrentWidget(self.inspector.parameters_page)
+        self.editor_split.addWidget(self.inspector)
+        self.editor_split.addWidget(self.inspector.results_page)
+        self.editor_split.setStretchFactor(0, 1)
+        self.editor_split.setStretchFactor(1, 2)
+        layout.addWidget(self.editor_split)
+        self.block_editor = dialog
+        dialog.finished.connect(self.restore_block_sidebar)
+        if self._block_editor_geometry is not None:
+            dialog.restoreGeometry(self._block_editor_geometry)
+        self.inspector.show()
+        self.inspector.results_page.show()
+        dialog.show()
+        self.editor_split.setSizes(self._block_editor_sizes)
+        self.inspector.refresh_result()
+
+    def close_block_editor(self):
+        if self.block_editor is not None:
+            self.block_editor.close()
+
+    def restore_block_sidebar(self, _result):
+        dialog, self.block_editor = self.block_editor, None
+        if dialog is None:
+            return
+        self._block_editor_geometry = dialog.saveGeometry()
+        self._block_editor_sizes = self.editor_split.sizes()
+        self.inspector.stop_previews()
+        index = self.inspector.tabs.addTab(self.inspector.results_page, "Results")
+        block = self.inspector.block
+        self.inspector.tabs.setTabEnabled(index, block is not None and not block.layout_only)
+        if self._editor_result_selected:
+            self.inspector.tabs.setCurrentIndex(index)
+        self.inspector_host.addWidget(self.inspector)
+        self.inspector_host.setCurrentWidget(self.inspector)
+        self.inspector.refresh_result()
+        dialog.deleteLater()
 
     def make_actions(self):
         menu = self.menuBar().addMenu("&File")
@@ -2101,6 +2207,7 @@ class MainWindow(QMainWindow):
         self.show_graph(block.graph)
 
     def show_graph(self, graph, selected=None):
+        self.close_block_editor()
         self.graph = graph
         self.branch_workers_choice.blockSignals(True)
         self.branch_workers_choice.setCurrentIndex(
@@ -2605,6 +2712,7 @@ class MainWindow(QMainWindow):
             self.stop_run()
             event.ignore()
         elif self.confirm_discard():
+            self.close_block_editor()
             self.inspector.close_plugin_dialog()
             self.inspector.close_image_popouts()
             self.inspector.stop_previews(wait=True)

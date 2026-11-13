@@ -804,10 +804,14 @@ def test_toolblock_group_navigation_run_and_save(app, monkeypatch, tmp_path):
     assert block.name == "Inspect"
     assert len(window.graph.blocks) == 2
     assert window.toolblock_templates[-1]["name"] == "Inspect"
-    # Enter by double-clicking the actual node header.
+    # Double-click opens the expanded editor; graph navigation stays explicit.
     center = window.view.mapFromScene(window.scene.nodes[block.id].scenePos() + QPoint(80, 20))
     QTest.mouseDClick(window.view.viewport(), Qt.MouseButton.LeftButton, pos=center)
     app.processEvents()
+    assert window.block_editor is not None
+    assert window.graph is window.root_graph
+    window.edit_selected_toolblock()
+    assert window.block_editor is None
     assert window.graph is block.graph
     assert "Inspect" in window.breadcrumb.text()
     inner_nodes = list(block.graph.blocks.values())

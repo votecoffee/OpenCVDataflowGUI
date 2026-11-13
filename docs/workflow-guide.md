@@ -42,7 +42,13 @@ from the repository root.
    Hover over a connector dot or its label to see the full port name and any captured
    number, boolean, or text value.
    The **Debug** run profile captures input values.
-3. Select a block and edit it in the right inspector's **Parameters** tab.
+3. Single-click a block to edit it in the right inspector's **Parameters** tab.
+   The sidebar stays full-height when the bottom filmstrip or diagnostics are open.
+   Double-click a block for a larger, nonmodal editor: configuration tabs on the
+   left, results/images on the right. Drag the divider between the panes to adjust space.
+   Closing it returns the same draft to the sidebar; selecting another block
+   closes it and discards unapplied changes as usual. The popup size and divider
+   are remembered for the current session. Results remain viewable during a run.
    Click **Apply configuration** to save the draft. Switching tabs keeps the
    draft. Switching blocks discards unapplied edits. Use **Block** for the name,
    description, and documentation, and **Show advanced** for recipes, ports, and
@@ -802,8 +808,8 @@ See [video file workflows](video-files.md).
 
 Select nodes and use **ToolBlocks > Create from selected nodes** to encapsulate
 them as one reusable block. Crossing wires are preserved, unbound inputs become
-public inputs, and terminal outputs become public outputs. Double-click the new
-node (or use **Edit internal graph** in its inspector) to develop its contents in
+public inputs, and terminal outputs become public outputs. Use **Edit internal
+graph** in its inspector or **ToolBlocks > Edit selected ToolBlock** to develop its contents in
 the same node editor. ToolBlocks can contain other ToolBlocks. **Up one level** and
 the job breadcrumb show where you are.
 
