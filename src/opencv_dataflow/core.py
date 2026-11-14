@@ -688,7 +688,13 @@ def validate_value(port, value):
             raise TypeError(f"{port.name} requires an image pyramid")
         value.__post_init__()
         return
-    if port.kind == "cloud":
+    if port.kind == "sitk":
+        from .simpleitk_image import MedicalImage
+
+        if not isinstance(value, MedicalImage):
+            raise TypeError(f"{port.name} requires a SimpleITK medical image; use a converter")
+        value.__post_init__()
+    elif port.kind == "cloud":
         from .pointclouds import PointCloud
 
         if not isinstance(value, PointCloud):

@@ -19,7 +19,7 @@ from .visual_style import INDUSTRIAL
 
 TOOL_MIME = "application/x-opencv-dataflow-tool"
 SIMPLE_PLUGINS = "Simple Plugins"
-TOOL_SOURCES = ("OpenCV", "scikit-image", INDUSTRIAL, "Custom", SIMPLE_PLUGINS, "User")
+TOOL_SOURCES = ("OpenCV", "scikit-image", "SimpleITK", INDUSTRIAL, "Custom", SIMPLE_PLUGINS, "User")
 _OPTIONAL_SIMPLE_FAMILIES = {
     **dict.fromkeys(GEOMETRIC_MATCHER_TYPES, "Pattern matching"),
     **dict.fromkeys(PIXEL_SEGMENTATION_TYPES, "Segmentation"),
@@ -245,6 +245,8 @@ def block_entry(block):
         path = ("User", kind, subtype)
     elif kind == INDUSTRIAL:
         path = (INDUSTRIAL, subtype)
+    elif file == "simpleitk_blocks":
+        path = ("SimpleITK", subtype)
     elif file == "multiscale_ridges":
         path = ("scikit-image", "Filtering")
     elif file == "skimage_regions":

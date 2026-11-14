@@ -1,0 +1,59 @@
+{
+  "001": {
+    "source_size_xyz": [
+      35,
+      51,
+      35
+    ],
+    "slice_index": 13,
+    "plane_size_xyz": [
+      35,
+      51,
+      1
+    ],
+    "plane_origin_xyz": [
+      -1.0,
+      -1.0,
+      14.0
+    ],
+    "processing_note": "Explicit window then OpenCV Gaussian blur"
+  },
+  "003": {
+    "source_size_xyz": [
+      34,
+      52,
+      35
+    ],
+    "slice_index": 15,
+    "plane_size_xyz": [
+      34,
+      52,
+      1
+    ],
+    "plane_origin_xyz": [
+      -1.0,
+      -1.0,
+      16.0
+    ],
+    "processing_note": "Explicit window then OpenCV Gaussian blur"
+  },
+  "004": {
+    "source_size_xyz": [
+      36,
+      52,
+      38
+    ],
+    "slice_index": 14,
+    "plane_size_xyz": [
+      36,
+      52,
+      1
+    ],
+    "plane_origin_xyz": [
+      -1.0,
+      -1.0,
+      15.0
+    ],
+    "processing_note": "Explicit window then OpenCV Gaussian blur"
+  }
+}

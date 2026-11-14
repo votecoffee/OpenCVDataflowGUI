@@ -1,0 +1,269 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "mri",
+      "type": "input.simpleitk",
+      "name": "Read medical image",
+      "parameters": {
+        "path": "../assets/msd_hippocampus/images/hippocampus_003.nii.gz",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        12.5
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "hippocampus_003"
+      }
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Medical Segmentation Decathlon \u2014 CC BY-SA 4.0",
+      "description": "Task04 Hippocampus, Vanderbilt University Medical Center; Medical Segmentation Decathlon contributors, Simpson et al. Original MRI and expert labels, subset only. https://registry.opendata.aws/msd/ \u2014 see assets attribution. Interop demonstration; label roundtrip is not an MRI segmentation model or a clinical performance estimate.",
+      "parameters": {},
+      "position": [
+        0,
+        400.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "plane",
+      "type": "sitk.to_opencv",
+      "name": "SimpleITK to OpenCV",
+      "parameters": {
+        "axis": "z",
+        "slice_index": 15,
+        "component_mode": "scalar_only",
+        "component": 0
+      },
+      "position": [
+        330,
+        12.5
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "metadata",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "crop",
+      "type": "cv.crop",
+      "name": "Crop ROI",
+      "parameters": {
+        "x": 2,
+        "y": 3,
+        "width": 30,
+        "height": 46
+      },
+      "position": [
+        660,
+        25.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "resize",
+      "type": "cv.resize",
+      "name": "Resize",
+      "parameters": {
+        "width": 60,
+        "height": 92,
+        "interpolation": "linear",
+        "size_mode": "absolute",
+        "scale_x": 1.0,
+        "scale_y": 1.0,
+        "padding_value": 0.0
+      },
+      "position": [
+        990,
+        12.5
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry",
+        "valid_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "restore",
+      "type": "sitk.from_opencv",
+      "name": "OpenCV to SimpleITK",
+      "parameters": {
+        "assume_same_grid": false
+      },
+      "position": [
+        1320,
+        25.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "metadata"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspect_metadata",
+      "type": "sitk.read_metadata",
+      "name": "Read medical metadata",
+      "parameters": {},
+      "position": [
+        1650,
+        25.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "metadata"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "review",
+      "type": "sitk.to_opencv",
+      "name": "SimpleITK to OpenCV",
+      "parameters": {
+        "axis": "z",
+        "slice_index": 0,
+        "component_mode": "scalar_only",
+        "component": 0
+      },
+      "position": [
+        1980,
+        12.5
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "metadata",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "display",
+      "type": "cv.colorize_scalar",
+      "name": "Colorize scalar image",
+      "parameters": {
+        "colormap": "bone",
+        "range_mode": "auto",
+        "minimum": 0.0,
+        "maximum": 255.0
+      },
+      "position": [
+        2310,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "palette"
+      ],
+      "exposed_outputs": [
+        "image",
+        "levels",
+        "valid_mask",
+        "range"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "mri",
+      "output": "image",
+      "target": "plane",
+      "input": "image"
+    },
+    {
+      "source": "plane",
+      "output": "image",
+      "target": "crop",
+      "input": "image"
+    },
+    {
+      "source": "crop",
+      "output": "image",
+      "target": "resize",
+      "input": "image"
+    },
+    {
+      "source": "resize",
+      "output": "image",
+      "target": "restore",
+      "input": "image"
+    },
+    {
+      "source": "plane",
+      "output": "metadata",
+      "target": "restore",
+      "input": "metadata"
+    },
+    {
+      "source": "restore",
+      "output": "image",
+      "target": "inspect_metadata",
+      "input": "image"
+    },
+    {
+      "source": "inspect_metadata",
+      "output": "image",
+      "target": "review",
+      "input": "image"
+    },
+    {
+      "source": "review",
+      "output": "image",
+      "target": "display",
+      "input": "image"
+    }
+  ]
+}

@@ -851,6 +851,7 @@ def builtin_registry():
         RotatedRectangleOverlap,
     )
     from .simple_classifier.dataflow import ClassifyImage
+    from .simpleitk_blocks import SIMPLEITK_BLOCKS
     from .skeleton import PruneSkeleton, Skeletonize
     from .skimage_regions import RegionProperties
     from .skimage_thresholds import GlobalThreshold, MultiOtsu
@@ -1095,6 +1096,7 @@ def builtin_registry():
         RecipeSelect,
         RecipeField,
         *SEQUENCE_BLOCKS,
+        *SIMPLEITK_BLOCKS,
         ForegroundDebounce,
         StabilizeCameraMotion,
         StabilizeRecordedSequence,

@@ -35,6 +35,9 @@ install with `.venv/bin/python -m pip install -e .`, and launch
 Optional [scikit-image measurements and thresholding](docs/scikit-image.md)
 use `python -m pip install -e ".[skimage]"` in the application environment.
 
+Optional [SimpleITK medical images and metadata](docs/simpleitk.md) use
+`python -m pip install -e ".[simpleitk]"` and a separate **SimpleITK** toolbox group.
+
 ## Usage
 
 The editor opens a synthetic inspection demo. Press **Run once** (F5) to see its

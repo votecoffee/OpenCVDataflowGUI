@@ -64,6 +64,7 @@ def example_index(root, query=""):
         "custom tools",
         "control flow tools",
         "skimage tools",
+        "SimpleITK Tools",
         "user_tools",
     )
     terms = query.casefold().split()

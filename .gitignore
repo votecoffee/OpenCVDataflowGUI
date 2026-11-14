@@ -19,6 +19,7 @@ dist/
 !/examples/Simple Plugins/
 !/examples/opencv tools/
 !/examples/skimage tools/
+!/examples/SimpleITK Tools/
 !/examples/user_tools/
 # Local examples and downloaded images with separate rights.
 /examples/private/

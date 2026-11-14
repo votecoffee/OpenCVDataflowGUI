@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "mri",
+      "type": "input.simpleitk",
+      "name": "Read medical image",
+      "parameters": {
+        "path": "../assets/msd_hippocampus/images/hippocampus_004.nii.gz",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "hippocampus_004"
+      }
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Medical Segmentation Decathlon \u2014 CC BY-SA 4.0",
+      "description": "Task04 Hippocampus, Vanderbilt University Medical Center; Medical Segmentation Decathlon contributors, Simpson et al. Original MRI and expert labels, subset only. https://registry.opendata.aws/msd/ \u2014 see assets attribution. Interop demonstration; label roundtrip is not an MRI segmentation model or a clinical performance estimate.",
+      "parameters": {},
+      "position": [
+        0,
+        375.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "labels",
+      "type": "input.simpleitk",
+      "name": "Read medical image",
+      "parameters": {
+        "path": "../assets/msd_hippocampus/labels/hippocampus_004.nii.gz",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        826.5
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "plane",
+      "type": "sitk.to_opencv",
+      "name": "SimpleITK to OpenCV",
+      "parameters": {
+        "axis": "z",
+        "slice_index": 14,
+        "component_mode": "scalar_only",
+        "component": 0
+      },
+      "position": [
+        330,
+        826.5
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "metadata",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "median",
+      "type": "cv.median_blur",
+      "name": "Median blur",
+      "parameters": {
+        "kernel": 3
+      },
+      "position": [
+        660,
+        826.5
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "restore",
+      "type": "sitk.from_opencv",
+      "name": "OpenCV to SimpleITK",
+      "parameters": {
+        "assume_same_grid": false
+      },
+      "position": [
+        990,
+        675.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "metadata"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "insert",
+      "type": "sitk.insert_slice",
+      "name": "Reinsert processed medical slice",
+      "parameters": {},
+      "position": [
+        1320,
+        839.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "slice"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlap",
+      "type": "sitk.label_overlap",
+      "name": "Medical label overlap / Dice",
+      "parameters": {
+        "label": 1,
+        "minimum_dice": 0.9,
+        "geometry_tolerance": 1e-06,
+        "allow_integral_float": true
+      },
+      "position": [
+        1650,
+        826.5
+      ],
+      "exposed_inputs": [
+        "image",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "metrics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "label_display",
+      "type": "cv.colorize_scalar",
+      "name": "Colorize scalar image",
+      "parameters": {
+        "colormap": "viridis",
+        "range_mode": "fixed",
+        "minimum": 0.0,
+        "maximum": 2.0
+      },
+      "position": [
+        990,
+        953.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "palette"
+      ],
+      "exposed_outputs": [
+        "image",
+        "levels",
+        "valid_mask",
+        "range"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mri_window",
+      "type": "sitk.window",
+      "name": "Medical intensity window",
+      "parameters": {
+        "lower": 35.753822326660156,
+        "upper": 780.6250610351562,
+        "output_min": 0.0,
+        "output_max": 255.0,
+        "output_type": "uint8"
+      },
+      "position": [
+        330,
+        12.5
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mri_plane",
+      "type": "sitk.to_opencv",
+      "name": "SimpleITK to OpenCV",
+      "parameters": {
+        "axis": "z",
+        "slice_index": 14,
+        "component_mode": "scalar_only",
+        "component": 0
+      },
+      "position": [
+        660,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "metadata",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "labels",
+      "output": "image",
+      "target": "plane",
+      "input": "image"
+    },
+    {
+      "source": "plane",
+      "output": "image",
+      "target": "median",
+      "input": "image"
+    },
+    {
+      "source": "median",
+      "output": "image",
+      "target": "restore",
+      "input": "image"
+    },
+    {
+      "source": "labels",
+      "output": "image",
+      "target": "insert",
+      "input": "image"
+    },
+    {
+      "source": "restore",
+      "output": "image",
+      "target": "insert",
+      "input": "slice"
+    },
+    {
+      "source": "insert",
+      "output": "image",
+      "target": "overlap",
+      "input": "image"
+    },
+    {
+      "source": "labels",
+      "output": "image",
+      "target": "overlap",
+      "input": "reference"
+    },
+    {
+      "source": "median",
+      "output": "image",
+      "target": "label_display",
+      "input": "image"
+    },
+    {
+      "source": "mri",
+      "output": "image",
+      "target": "mri_window",
+      "input": "image"
+    },
+    {
+      "source": "mri_window",
+      "output": "image",
+      "target": "mri_plane",
+      "input": "image"
+    }
+  ]
+}

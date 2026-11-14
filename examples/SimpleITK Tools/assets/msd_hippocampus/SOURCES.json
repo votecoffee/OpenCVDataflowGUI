@@ -1,0 +1,88 @@
+{
+  "dataset": "Medical Segmentation Decathlon Task04 Hippocampus",
+  "license": "CC-BY-SA-4.0",
+  "source": "https://registry.opendata.aws/msd/",
+  "archive_url": "https://msd-for-monai.s3-us-west-2.amazonaws.com/Task04_Hippocampus.tar",
+  "archive_sha256": "282d808a3e84e5a52f090d9dd4c0b0057b94a6bd51ad41569aef5ff303287771",
+  "creators": "Medical Segmentation Decathlon contributors; Task04 source: Vanderbilt University Medical Center; Simpson et al.",
+  "labels": {
+    "0": "background",
+    "1": "Anterior",
+    "2": "Posterior"
+  },
+  "modification": "Six original NIfTI files copied without modification; subset selection only.",
+  "files": [
+    {
+      "path": "images/hippocampus_001.nii.gz",
+      "archive_member": "Task04_Hippocampus/imagesTr/hippocampus_001.nii.gz",
+      "bytes": 49874,
+      "sha256": "ab47d6115b412ffaba041cbf48962967127f199f39eb56c777a6bb3746353b4a",
+      "size_xyz": [
+        35,
+        51,
+        35
+      ],
+      "pixel_type": "8-bit unsigned integer"
+    },
+    {
+      "path": "labels/hippocampus_001.nii.gz",
+      "archive_member": "Task04_Hippocampus/labelsTr/hippocampus_001.nii.gz",
+      "bytes": 803,
+      "sha256": "31e218cd74ee787c25a17a9cc3a13743ba8ecd11dd76fbad3c0c18c09fd8b396",
+      "size_xyz": [
+        35,
+        51,
+        35
+      ],
+      "pixel_type": "8-bit unsigned integer"
+    },
+    {
+      "path": "images/hippocampus_003.nii.gz",
+      "archive_member": "Task04_Hippocampus/imagesTr/hippocampus_003.nii.gz",
+      "bytes": 75632,
+      "sha256": "fbc024c6c4788c3e85921613620d9b952408f1aa34ef06159bb4213ef7208ce4",
+      "size_xyz": [
+        34,
+        52,
+        35
+      ],
+      "pixel_type": "32-bit float"
+    },
+    {
+      "path": "labels/hippocampus_003.nii.gz",
+      "archive_member": "Task04_Hippocampus/labelsTr/hippocampus_003.nii.gz",
+      "bytes": 1432,
+      "sha256": "6ada5ddb1dbaee9e0488de52cb5425de67371e4a329bddc761917f923a176a42",
+      "size_xyz": [
+        34,
+        52,
+        35
+      ],
+      "pixel_type": "32-bit float"
+    },
+    {
+      "path": "images/hippocampus_004.nii.gz",
+      "archive_member": "Task04_Hippocampus/imagesTr/hippocampus_004.nii.gz",
+      "bytes": 87109,
+      "sha256": "353a2ba9afe7f2a2b04276d9b35bc46cab36826e74d61b100b210a9dd8d348d9",
+      "size_xyz": [
+        36,
+        52,
+        38
+      ],
+      "pixel_type": "32-bit float"
+    },
+    {
+      "path": "labels/hippocampus_004.nii.gz",
+      "archive_member": "Task04_Hippocampus/labelsTr/hippocampus_004.nii.gz",
+      "bytes": 1057,
+      "sha256": "2889bfde2762753a34b17f38268d2db289774847a667809cf433b623d118387f",
+      "size_xyz": [
+        36,
+        52,
+        38
+      ],
+      "pixel_type": "8-bit unsigned integer"
+    }
+  ]
+}

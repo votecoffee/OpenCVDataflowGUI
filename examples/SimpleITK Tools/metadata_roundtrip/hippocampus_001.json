@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "mri",
+      "type": "input.simpleitk",
+      "name": "Read medical image",
+      "parameters": {
+        "path": "../assets/msd_hippocampus/images/hippocampus_001.nii.gz",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        126.5
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "hippocampus_001"
+      }
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Medical Segmentation Decathlon \u2014 CC BY-SA 4.0",
+      "description": "Task04 Hippocampus, Vanderbilt University Medical Center; Medical Segmentation Decathlon contributors, Simpson et al. Original MRI and expert labels, subset only. https://registry.opendata.aws/msd/ \u2014 see assets attribution. Interop demonstration; label roundtrip is not an MRI segmentation model or a clinical performance estimate.",
+      "parameters": {},
+      "position": [
+        0,
+        628.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "original_metadata",
+      "type": "sitk.read_metadata",
+      "name": "Read medical metadata",
+      "parameters": {},
+      "position": [
+        330,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "metadata"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "window",
+      "type": "sitk.window",
+      "name": "Medical intensity window",
+      "parameters": {
+        "lower": 9.0,
+        "upper": 106.0,
+        "output_min": 0.0,
+        "output_max": 255.0,
+        "output_type": "uint8"
+      },
+      "position": [
+        330,
+        278.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "plane",
+      "type": "sitk.to_opencv",
+      "name": "SimpleITK to OpenCV",
+      "parameters": {
+        "axis": "z",
+        "slice_index": 13,
+        "component_mode": "scalar_only",
+        "component": 0
+      },
+      "position": [
+        660,
+        126.5
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "metadata",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "blur",
+      "type": "cv.gaussian_blur",
+      "name": "Gaussian blur",
+      "parameters": {
+        "kernel": 3,
+        "sigma": 0.8,
+        "kernel_y": 0,
+        "sigma_y": 0.0,
+        "border": "reflect",
+        "border_value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "algorithm_hint": "default"
+      },
+      "position": [
+        990,
+        126.5
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "restore",
+      "type": "sitk.from_opencv",
+      "name": "OpenCV to SimpleITK",
+      "parameters": {
+        "assume_same_grid": false
+      },
+      "position": [
+        1320,
+        139.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "metadata"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tags",
+      "type": "sitk.apply_metadata",
+      "name": "Apply medical metadata",
+      "parameters": {
+        "tag_updates": {
+          "ProcessingNote": "Explicit window then OpenCV Gaussian blur"
+        },
+        "remove_tags": [],
+        "apply_geometry": false
+      },
+      "position": [
+        1650,
+        139.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "metadata"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspect_metadata",
+      "type": "sitk.read_metadata",
+      "name": "Read medical metadata",
+      "parameters": {},
+      "position": [
+        1980,
+        139.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "metadata"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "review",
+      "type": "sitk.to_opencv",
+      "name": "SimpleITK to OpenCV",
+      "parameters": {
+        "axis": "z",
+        "slice_index": 0,
+        "component_mode": "scalar_only",
+        "component": 0
+      },
+      "position": [
+        2310,
+        126.5
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "metadata",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "mri",
+      "output": "image",
+      "target": "original_metadata",
+      "input": "image"
+    },
+    {
+      "source": "mri",
+      "output": "image",
+      "target": "window",
+      "input": "image"
+    },
+    {
+      "source": "window",
+      "output": "image",
+      "target": "plane",
+      "input": "image"
+    },
+    {
+      "source": "plane",
+      "output": "image",
+      "target": "blur",
+      "input": "image"
+    },
+    {
+      "source": "blur",
+      "output": "image",
+      "target": "restore",
+      "input": "image"
+    },
+    {
+      "source": "plane",
+      "output": "metadata",
+      "target": "restore",
+      "input": "metadata"
+    },
+    {
+      "source": "restore",
+      "output": "image",
+      "target": "tags",
+      "input": "image"
+    },
+    {
+      "source": "original_metadata",
+      "output": "metadata",
+      "target": "tags",
+      "input": "metadata"
+    },
+    {
+      "source": "tags",
+      "output": "image",
+      "target": "inspect_metadata",
+      "input": "image"
+    },
+    {
+      "source": "inspect_metadata",
+      "output": "image",
+      "target": "review",
+      "input": "image"
+    }
+  ]
+}

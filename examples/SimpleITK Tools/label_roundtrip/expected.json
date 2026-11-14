@@ -1,0 +1,32 @@
+{
+  "001": {
+    "slice_index": 13,
+    "label": 1,
+    "predicted_voxels": 1326,
+    "reference_voxels": 1324,
+    "intersection_voxels": 1322,
+    "dice": 0.9977358490566037,
+    "jaccard": 0.9954819277108434,
+    "changed_voxels": 7
+  },
+  "003": {
+    "slice_index": 15,
+    "label": 1,
+    "predicted_voxels": 1544,
+    "reference_voxels": 1550,
+    "intersection_voxels": 1540,
+    "dice": 0.995475113122172,
+    "jaccard": 0.990990990990991,
+    "changed_voxels": 22
+  },
+  "004": {
+    "slice_index": 14,
+    "label": 1,
+    "predicted_voxels": 1831,
+    "reference_voxels": 1832,
+    "intersection_voxels": 1826,
+    "dice": 0.996996996996997,
+    "jaccard": 0.9940119760479041,
+    "changed_voxels": 22
+  }
+}

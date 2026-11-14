@@ -4658,6 +4658,18 @@ Ticket mode and fixed value are common inspector controls.
 | `stationary_frames` | `5` |  |
 | `step_pixels` | `2` |  |
 
+## Read medical image (`input.simpleitk`)
+
+Input / I/O
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Single 2D/3D medical image, such as NIfTI, MetaImage or NRRD. DICOM series assembly is a separate planned tool. |
+| `path_base` | `"project"` | `project`, `working_directory` |
+
 ## Synthetic stereo / RGB-D (`input.stereo_demo`)
 
 Input / Depth and RGB-D
@@ -7205,6 +7217,18 @@ Inputs: `data` (data).
 | `path` | `"results.csv"` |  |
 | `format` | `"csv"` | `csv`, `xml`, `sqlite` |
 
+## Write medical image (`output.simpleitk`)
+
+Output / I/O
+
+Inputs: `image` (sitk).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | New single-file .nii/.nii.gz/.mha/.nrrd destination; existing files are preserved. Physical geometry is written by SimpleITK. |
+| `path_base` | `"project"` | `project`, `working_directory` |
+| `compression` | `true` |  |
+
 ## Write multipage TIFF (`output.tiff_file`)
 
 Output / Images
@@ -8130,6 +8154,123 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `reseed_below` | `50` |  |
 | `min_tracks` | `3` |  |
 | `min_track_age` | `2` |  |
+
+## Apply medical metadata (`sitk.apply_metadata`)
+
+Image processing / Metadata
+
+Inputs: `image` (sitk), `metadata` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `tag_updates` | `{}` | String key/value dictionary; overrides copied tags. |
+| `remove_tags` | `[]` | Tag keys to erase after merging metadata. |
+| `apply_geometry` | `false` | Explicitly copy geometry from metadata input; actual image dimensions must match. Does not resample pixels. |
+
+## OpenCV to SimpleITK (`sitk.from_opencv`)
+
+Image processing / Converters
+
+Inputs: `image` (image), `metadata` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `assume_same_grid` | `false` | Explicitly reattach metadata when spatial provenance is absent and dimensions are unchanged. Leave off when crop/resize/warp provenance is available. |
+
+## Physical Gaussian smoothing (`sitk.gaussian`)
+
+Image processing / Processing
+
+Inputs: `image` (sitk).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sigma` | `1.0` | Value must be a finite number between 1e-06 and 10000. Gaussian standard deviation in the image's physical units; not pixels. SimpleITK does not infer the unit name. |
+| `normalize_across_scale` | `false` |  |
+
+## Reinsert processed medical slice (`sitk.insert_slice`)
+
+Image processing / Converters
+
+Inputs: `image` (sitk), `slice` (sitk).
+
+No configurable algorithm parameters.
+
+## Medical label overlap / Dice (`sitk.label_overlap`)
+
+Image processing / Measurements
+
+Inputs: `image` (sitk), `reference` (sitk).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `label` | `1` | Value must be a whole number between 1 and 65535. Nonzero label measured against reference; background excluded. |
+| `minimum_dice` | `0.0` | Value must be a finite number between 0 and 1. |
+| `geometry_tolerance` | `1e-06` | Value must be a finite number between 0 and 0.001. Absolute tolerance for spacing/origin/direction. No implicit registration or resampling is performed. |
+| `allow_integral_float` | `true` | Accept floating label files only when every voxel is finite and exactly a whole number. Probability maps are rejected. |
+
+## Medical Otsu threshold (`sitk.otsu`)
+
+Image processing / Segmentation
+
+Inputs: `image` (sitk), `mask` (sitk, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `bins` | `128` | Value must be a whole number between 2 and 65536. |
+| `inside` | `0` | Value must be a whole number between 0 and 255. |
+| `outside` | `1` | Value must be a whole number between 0 and 255. |
+| `return_bin_midpoint` | `true` |  |
+| `mask_value` | `1` | Value must be a whole number between 0 and 255. Only this uint8 mask label contributes to the histogram. |
+| `mask_output` | `true` | When a mask is supplied, zero output outside its selection. |
+
+## Read medical metadata (`sitk.read_metadata`)
+
+Image processing / Metadata
+
+Inputs: `image` (sitk).
+
+No configurable algorithm parameters.
+
+## Medical binary threshold (`sitk.threshold`)
+
+Image processing / Segmentation
+
+Inputs: `image` (sitk).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `lower` | `0.0` | Value must be a finite number. |
+| `upper` | `1000.0` | Value must be a finite number. |
+| `inside` | `1` | Value must be a whole number between 0 and 255. |
+| `outside` | `0` | Value must be a whole number between 0 and 255. |
+
+## SimpleITK to OpenCV (`sitk.to_opencv`)
+
+Image processing / Converters
+
+Inputs: `image` (sitk).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `axis` | `"z"` | `x`, `y`, `z` 3D slice normal in native XYZ index space; both remaining axes keep their order. |
+| `slice_index` | `0` | Value must be a whole number between 0 and 65535. Zero-based source slice; 2D images require zero. |
+| `component_mode` | `"scalar_only"` | `scalar_only`, `rgb`, `rgba`, `component` Scalar samples retain depth/units. Color vectors require explicit RGB/RGBA interpretation; arbitrary vectors require component selection. |
+| `component` | `0` | Value must be a whole number between 0 and 15. |
+
+## Medical intensity window (`sitk.window`)
+
+Image processing / Processing
+
+Inputs: `image` (sitk).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `lower` | `0.0` | Value must be a finite number. Raw sample lower limit; clipped values map to output_min. |
+| `upper` | `1000.0` | Value must be a finite number. Raw sample upper limit; clipped values map to output_max. |
+| `output_min` | `0.0` | Value must be a finite number. |
+| `output_max` | `255.0` | Value must be a finite number. |
+| `output_type` | `"float32"` | `float32`, `float64`, `uint8`, `uint16` |
 
 ## Advanced global threshold (`skimage.global_threshold`)
 
