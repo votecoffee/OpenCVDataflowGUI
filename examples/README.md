@@ -43,6 +43,7 @@ Classify examples by their primary learning goal:
 | `industrial integration` | PLC, robot and industrial messaging interfaces. |
 | `Simple Plugins` | Examples for the dedicated Simple Plugins family. |
 | `user_tools` | Authoring Python plugins and reusable ToolBlocks. |
+| `SimpleITK Tools` | Medical image/volume interoperability, physical metadata and labeled MRI examples. |
 
 Customer examples and material awaiting redistribution permission stay under the
 local, Git-ignored `private` folder. Moving a public example does not change that policy.
@@ -278,6 +279,19 @@ Measurements, thresholding and morphology using scikit-image. See [setup and exa
 | [scikit-image advanced thresholding](<skimage tools/skimage_thresholding/README.md>) | Compare Multi-Otsu classes, global estimators and local thresholds without reducing 16-bit intensity units. |
 | [scikit-image region measurements](<skimage tools/skimage_region_properties/README.md>) | Measure shape, topology, moments and channel intensities; select a ring and reconstruct its mask. |
 | [Skeletonization and spur pruning](<skimage tools/skeleton_pruning/README.md>) | Extract a binary centerline and visualize the short branches removed from it. |
+
+## SimpleITK Tools
+
+The separate [SimpleITK Tools](<SimpleITK Tools/README.md>) folder contains three
+public Medical Segmentation Decathlon MRI cases with expert labels (CC BY-SA 4.0).
+Each workflow has projects for cases 001, 003 and 004, with attribution and expected
+measurements. Install the optional `simpleitk` extra in the app environment.
+
+| Example | Demonstrates |
+| --- | --- |
+| [Metadata roundtrip](<SimpleITK Tools/metadata_roundtrip/README.md>) | Physical slice extraction, OpenCV processing, exposed/remerged tags and metadata review. |
+| [Physical crop/resize](<SimpleITK Tools/geometry_roundtrip/README.md>) | Correct origin, spacing and direction after OpenCV pixel-center transforms. |
+| [Label roundtrip and overlap](<SimpleITK Tools/label_roundtrip/README.md>) | Reinsertion of a processed expert-label slice and independently checked Dice/Jaccard. |
 
 ## Custom tools
 

@@ -42,7 +42,7 @@ def test_saved_real_medical_project_matches_independent_expectations(folder, cas
             mask[expected["slice_index"]] = False
             np.testing.assert_array_equal(actual[mask], truth[mask])
             assert np.count_nonzero(actual != truth) == expected["changed_voxels"]
-            assert result.payloads["image"]["ticket"]["value"] is not None
+            assert result.payloads["image"]["ticket"]["value"] == f"hippocampus_{case}"
         else:
             image = graph.blocks["restore"].last_result.outputs["image"].image
             origin = (

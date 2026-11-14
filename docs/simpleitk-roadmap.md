@@ -4,6 +4,7 @@ SimpleITK is an optional, separate image/volume backend. Its work is tracked
 independently from OpenCV's four coverage stages and from scikit-image. The
 checklist below describes selected application workflows, not exhaustive coverage
 of the SimpleITK API. [Current contracts and setup](simpleitk.md).
+[GitHub tracking issue #19](https://github.com/votecoffee/OpenCVDataflowGUI/issues/19).
 
 ## M1 — Physical images and OpenCV interoperability
 
@@ -25,6 +26,11 @@ Exit: raw samples, physical points, tickets and tags survive the qualified paths
 invalid combinations fail inside blocks. Examples are under
 [`examples/SimpleITK Tools`](<../examples/SimpleITK Tools/README.md>). Native file
 formats' metadata limitations are documented separately from in-memory retention.
+
+M1 validation: **128 focused tests**, **24 installed Debug/Lean CLI outcomes**
+(18 passes and six intended metric failures), deterministic example regeneration,
+exact hashes for all six original MRI/label files and strict JSON/link checks.
+No broad regression suite was repeated for this increment.
 
 ## M2 — Acquisition, metadata persistence and volume review
 

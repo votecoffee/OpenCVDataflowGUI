@@ -111,6 +111,13 @@ def build():
             ],
             "label_roundtrip": [
                 source("labels", case, labels=True),
+                {
+                    "op": "update",
+                    "id": "labels",
+                    "fields": {
+                        "ticket_settings": {"mode": "fixed", "value": f"hippocampus_{case}"}
+                    },
+                },
                 add("sitk.to_opencv", "plane", slice_index=index),
                 add("cv.median_blur", "median", kernel=3),
                 add("sitk.from_opencv", "restore"),

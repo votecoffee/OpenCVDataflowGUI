@@ -41,9 +41,10 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **3 targeted increments of about 20** completed:
+The current cycle has **4 targeted increments of about 20** completed:
 animated image codec round trips (S1-111), large-radius smoothing (S1-159),
-and assistant application authoring with connected-input plugin captures.
+assistant application authoring with connected-input plugin captures, and the
+SimpleITK medical image/metadata foundation.
 The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
@@ -60,10 +61,29 @@ and existing persistence contracts. All **17 installed CLI outcomes** matched,
 including controlled pass/fail inspections under Debug, Balanced and Lean.
 Two skill packages passed validation and were installed locally. No broad suite
 was repeated and no OpenCV coverage row was added for this application API.
+The SimpleITK increment passed **128 focused checks** for optional imports,
+metadata/native buffer copies, scalar/vector types, oblique physical points,
+OpenCV geometry/pyramids, image I/O, masks, labels, XML, toolbox/editor behavior
+and API/path compatibility. All **24 installed Debug/Lean CLI outcomes** matched:
+18 successful medical examples and six deliberate Dice-threshold failures.
+The six original MRI/label asset hashes, deterministic project regeneration,
+strict JSON and documentation links were verified. No broad suite was repeated.
 Update the count as implementation continues. Example reorganizations and frozen
 third-party reviews do not add vision capability completions.
 
 ## Short-term focus
+
+The optional **SimpleITK** integration has its own
+[medical imaging roadmap](simpleitk-roadmap.md) and
+[tracking issue #19](https://github.com/votecoffee/OpenCVDataflowGUI/issues/19).
+Its foundation provides twelve blocks, typed 2D/3D medical images, explicit
+OpenCV converters, remergeable metadata and physical grid reconstruction, native
+processing/overlap measurements and nine public MRI/expert-label examples under
+`examples/SimpleITK Tools`. Separate toolbox roots are **SimpleITK**,
+**scikit-image** and **Simple Plugins**. Next medical milestones cover DICOM
+series, bound metadata sidecars, reference-grid resampling, volume review,
+segmentation/measurements and registration. This track does not change the
+OpenCV coverage denominator or displace its existing prioritized checklist.
 
 Assistant application development now has two portable skills, a documentation
 map and planning template, and a versioned JSON/Python saved-project API. The API
@@ -573,6 +593,7 @@ the viewer. [Completed milestone](https://github.com/votecoffee/OpenCVDataflowGU
 
 | Milestone | Work | Exit criteria and dependencies |
 | --- | --- | --- |
+| [SimpleITK medical imaging](simpleitk-roadmap.md) | M1 foundation shipped in `dcc8c5a`: twelve blocks and nine labeled MRI examples. Continue DICOM/metadata persistence, volumetric processing/review and registration in [#19](https://github.com/votecoffee/OpenCVDataflowGUI/issues/19). | Physical geometry, tags and ticket provenance remain explicit; public ground truth and native/independent checks qualify each path. Separate from OpenCV coverage. |
 | [Reliable acquisition and replay](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/3) | Independent camera workers, bounded queues, timestamp-window matching, backend enumeration and triggers, multi-source recordings and validation bundles. [#5](https://github.com/votecoffee/OpenCVDataflowGUI/issues/5), [#6](https://github.com/votecoffee/OpenCVDataflowGUI/issues/6) | A stalled source cannot stall another source or coordination deadlines. Replay reproduces ticket outcomes and failure reasons. Physical synchronization needs separate backend and trigger evidence. |
 | [Editor and reusable jobs](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/4) | Undo/redo, autosave recovery, schema migrations, promoted parameters, dynamic bindings and versioned ToolBlock/plugin contracts. [#7](https://github.com/votecoffee/OpenCVDataflowGUI/issues/7), [#8](https://github.com/votecoffee/OpenCVDataflowGUI/issues/8). | Existing and nested jobs round-trip with their layout and interfaces. Interrupted saves can be recovered. Start alongside acquisition. |
 | [Production runtime and validation](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/5) | Operator view, deployable jobs, recipe and asset revisions, durable ticket history, result routing and retention. [#9](https://github.com/votecoffee/OpenCVDataflowGUI/issues/9), [#10](https://github.com/votecoffee/OpenCVDataflowGUI/issues/10), [#11](https://github.com/votecoffee/OpenCVDataflowGUI/issues/11) | Operator and headless runs agree on the same package. An unattended replay pilot survives restart and sink failures, preserves decision provenance, and reports latency, throughput and memory. Depends on replay and compatible job files. |

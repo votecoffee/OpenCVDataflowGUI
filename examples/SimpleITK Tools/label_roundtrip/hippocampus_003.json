@@ -64,7 +64,11 @@
         "ticket"
       ],
       "thumbnail": true,
-      "preview_output": ""
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "hippocampus_003"
+      }
     },
     {
       "id": "plane",

@@ -284,6 +284,13 @@ def test_malformed_metadata_rejects(field, value):
         validate_metadata(document)
 
 
+def test_native_sheared_grid_is_rejected_before_conversion_or_export():
+    image = native()
+    image.SetDirection([1, 0.2, 0, 0, 1, 0, 0, 0, 1])
+    with pytest.raises(ValueError, match="orthonormal"):
+        MedicalImage(image)
+
+
 def test_tickets_and_pyramid_context_survive_native_roundtrip():
     from opencv_dataflow.tickets import TicketClock
 

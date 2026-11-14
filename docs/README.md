@@ -29,6 +29,7 @@
 | 3D/depth/point clouds | [3D vision](vision-3d.md) |
 | ML/DNN and optional dependencies | [ML](ml.md) |
 | scikit-image tools | [scikit-image](scikit-image.md) |
+| Medical images, physical geometry and SimpleITK | [SimpleITK](simpleitk.md), [medical roadmap](simpleitk-roadmap.md), [labeled MRI examples](<../examples/SimpleITK Tools/README.md>) |
 
 For narrower tools, search file names under `docs/` and the machine-readable block
 catalog. The catalog reflects the running environment. Optional providers are

@@ -147,3 +147,6 @@ conventions, and the [roadmap](docs/roadmap.md) for planned work.
 
 The bundled [Noto Sans font](src/opencv_dataflow/fonts/README.md) uses the
 SIL Open Font License 1.1.
+
+The [medical MRI/annotation example assets](<examples/SimpleITK Tools/assets/msd_hippocampus/README.md>)
+retain their source's CC BY-SA 4.0 license.

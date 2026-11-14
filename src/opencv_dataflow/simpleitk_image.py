@@ -73,6 +73,7 @@ def validate_native(image):
     if dtype is None:
         raise ValidationError("Convert complex or run-length-label images to real scalar pixels")
     check_allocation(list(image.GetSize()), image.GetNumberOfComponentsPerPixel(), dtype.itemsize)
+    validate_metadata({"model": META_MODEL, **geometry(image)})
 
 
 def geometry(image):

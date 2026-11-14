@@ -101,8 +101,11 @@ does not rely on Python `deepcopy(SimpleITK.Image)` or `CopyInformation` to reta
 tags; `CopyInformation` omits the dictionary.
 [Official image API](https://simpleitk.org/doxygen/v2_5/html/classitk_1_1simple_1_1Image.html).
 Runtime metadata and snapshots are separate from project configuration. To retain
-them outside a run, export the metadata output/receipt deliberately. Medical file
-formats have their own dictionary restrictions: NIfTI does not preserve arbitrary
+them outside a run, export the metadata output/receipt deliberately. Tags are
+copied verbatim: application-specific intensity statistics or pixel-type
+descriptors in those tags may need explicit updates after processing. The native
+image's geometry and pixel-type fields describe the current result.
+Medical file formats have their own dictionary restrictions: NIfTI does not preserve arbitrary
 tags, and the tested native MHA/NRRD readers rename colon-delimited keys. In-memory
 tag preservation and native pixel/physical-grid file round trips are tested
 separately. Lossless bound metadata sidecars are a roadmap item.
@@ -122,6 +125,10 @@ evaluate an MRI segmentation model. Missing labels in both inputs are reported
 as undefined, rather than assigned a perfect score. Prediction/reference grids
 must match; explicitly tolerated tiny geometry differences are treated as rounding
 before the native comparison. There is no implicit registration/resampling.
+
+Integral-valued floating label files are accepted only after checking every voxel
+for finite whole numbers. Turn off **Allow integral float** to require native
+integer label types. Fractional probability maps are rejected.
 
 The [medical roadmap](simpleitk-roadmap.md) separates this foundation from future
 DICOM-series handling, volumetric segmentation, registration, resampling and
