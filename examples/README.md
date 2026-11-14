@@ -119,6 +119,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Bayer demosaicing](<opencv tools/bayer_demosaicing/README.md>) | Decode a synthetic 16-bit camera mosaic with bilinear and edge-aware interpolation. |
 | [Binary mask boundary and area inspection](<opencv tools/mask_boundary/README.md>) | Compare full mask boundaries and missing/extra areas using tab/notch pass/fail fixtures. |
 | [Coverage-mask resizing](<opencv tools/mask_resampling/README.md>) | Area-weighted validity masks with full/partial coverage thresholds, fractional resize chains and coordinate-frame rejection. |
+| [Exposure-adjusted image comparison](<opencv tools/differential_exposure/README.md>) | Robust local/global gain and offset, separate fitting/inspection regions, raw/adjusted residuals, 16-bit color and coverage-qualified pass/fail cases. |
 | [Blend with weight maps](<opencv tools/blend_weight_maps/README.md>) | Feather a boundary between a sharp image and its blurred copy. |
 | [Brick edges](<opencv tools/brick_edges/README.md>) | Reduce surface texture with Gaussian blur and find mortar edges with Canny. |
 | [BRISK registration](<opencv tools/brisk_registration/README.md>) | Detect and match BRISK keypoints before estimating a known image shift. |

@@ -1,0 +1,30 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "seed": 116,
+  "size": [
+    192,
+    128
+  ],
+  "scope": "Aligned synthetic sample-unit lighting; no camera calibration",
+  "candidate_generation": "round((reference - (5 + 0.03*y)) / (1.25 + 0.15*sin(x/70)))",
+  "defect_xywh": [
+    86,
+    60,
+    5,
+    4
+  ],
+  "defect_candidate_increment": 35,
+  "expected_defect_pixels": 20,
+  "color_reference_gain_bgr": [
+    0.75,
+    1.25,
+    1.5
+  ],
+  "color_reference_offset_bgr": [
+    512,
+    -100,
+    256
+  ],
+  "raw_good_rmse": 37.94586179986396
+}

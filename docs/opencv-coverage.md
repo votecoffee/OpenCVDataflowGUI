@@ -44,6 +44,13 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Differential exposure comparison](<../examples/opencv tools/differential_exposure/README.md>)
+(S1-116) adds robust local/global per-channel gain/offset models for already aligned
+images, separate fitting/inspection selections and raw/adjusted residuals with
+coverage-qualified defect judgments. Controlled lighting, independent window fits
+and a known 20-pixel defect qualify the appearance workflow. Stable fitting areas
+and defect-scale validation remain necessary; this is not radiometric calibration.
+
 [Coverage-mask resizing](<../examples/opencv tools/mask_resampling/README.md>)
 (S1-118) adds whole-grid pixel-cell area integration, explicit inclusive thresholds,
 fractional coverage output and verified resize-coordinate provenance. Exact

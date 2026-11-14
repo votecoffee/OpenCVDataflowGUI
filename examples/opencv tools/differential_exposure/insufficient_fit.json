@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/candidate.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspect",
+      "type": "inspect.differential_exposure",
+      "name": "Compare exposure-adjusted images",
+      "parameters": {
+        "scope": "local",
+        "window": 31,
+        "model": "gain_offset",
+        "robust_loss": "tukey",
+        "iterations": 4,
+        "outlier_limit": 8.0,
+        "minimum_contrast": 1.0,
+        "gain_regularization": 0.0,
+        "minimum_gain": 0.25,
+        "maximum_gain": 4.0,
+        "minimum_fit_pixels": 8,
+        "minimum_fit_fraction": 0.1,
+        "minimum_valid_fraction": 0.95,
+        "defect_threshold": 15.0,
+        "maximum_defect_fraction": 0.0,
+        "saturation": "integer_endpoints",
+        "reference_alignment": "pixel_grid"
+      },
+      "position": [
+        660,
+        150
+      ],
+      "exposed_inputs": [
+        "image",
+        "reference",
+        "mask",
+        "region",
+        "fit_mask",
+        "fit_region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "adjusted",
+        "residual",
+        "raw_residual",
+        "valid_mask",
+        "defect_mask",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "small_fit",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          0,
+          0,
+          8,
+          8
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        330,
+        -200
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Source, lighting model and expected result",
+      "description": "Original synthetic aligned intensity fixtures by OpenCVDataflowGUI contributors (MIT). No external/customer images or equipment I/O. Input pixels are aligned by construction; Pixel grid does not perform registration. truth.json records lighting formulas, injected defects and channel coefficients. Compare raw and adjusted residuals on the same valid inspection population. Image remains original; Adjusted preserves source depth/encoding; contours highlight defects. This is empirical appearance compensation, not physical radiometric calibration. Large defects or texture changes can be learned as illumination; choose known-good fit regions and an appropriate local window. EXPECT FAIL: an 8x8 corner fit region cannot support local correction across the entire image. Coverage fails; unsupported pixels retain original samples and have zero adjusted residual, so always consume Valid mask.",
+      "parameters": {},
+      "position": [
+        0,
+        -400
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "inspect",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "inspect",
+      "input": "reference"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "small_fit",
+      "input": "image"
+    },
+    {
+      "source": "small_fit",
+      "output": "mask",
+      "target": "inspect",
+      "input": "fit_mask"
+    }
+  ]
+}

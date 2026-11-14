@@ -253,6 +253,7 @@ to compare thresholds, fractional chains and a deliberately rejected crop target
 | Automatic threshold | Learn Otsu/Triangle threshold from selected samples only; empty selection is an error |
 | Equalize histogram | Learn and apply equalization from selected samples; preserve outside with matching channels |
 | Normalize | Pass intersected selection to native normalization; outside is zero in the allocated output |
+| [Exposure-adjusted comparison](differential-exposure.md) | Inspection mask/region and independent fitting mask/region; corrected samples only at valid inspection pixels, raw and adjusted residuals reported separately |
 | Histogram | Count selected samples only, independently per channel; automatic floating range uses those samples |
 | Bitwise, absolute difference | Outside output is zero |
 | Good features, FAST, ORB | Native detector mask; ORB also filters pyramid keypoint centers against the original mask and keeps descriptors aligned |

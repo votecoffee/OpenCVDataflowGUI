@@ -41,7 +41,7 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **13 targeted increments of about 20** completed:
+The current cycle has **14 targeted increments of about 20** completed:
 animated image codec round trips (S1-111), large-radius smoothing (S1-159),
 assistant application authoring with connected-input plugin captures, the
 SimpleITK medical image/metadata foundation, optional ROS 2 Lyrical/Fast DDS
@@ -49,8 +49,9 @@ image/data integration, ROS PointCloud2 conversion/acquisition/publication,
 ROS CameraInfo/per-acquisition registered RGB-D association, strict ROS
 pose/TF conversion with run/reset acquisition identity, static CameraInfo reuse,
 ordered timestamp pairing of ROS image streams, explicit CameraInfo intensity
-rectification, source ROI/binning with independent rectified output grids, and
-conservative area-coverage mask resizing (S1-118).
+rectification, source ROI/binning with independent rectified output grids,
+conservative area-coverage mask resizing (S1-118), and paired differential exposure
+compensation with defect residuals (S1-116).
 The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
@@ -105,6 +106,26 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+**Differential exposure comparison (S1-116)** now provides robust local/global
+gain/offset fitting for already aligned reference/candidate images. Separate
+fitting and inspection selections, effective support, gain/contrast/saturation
+guards and explicit coverage limits keep unsupported pixels out of judgments.
+Raw and adjusted residuals precede output rounding/clipping; per-channel reports,
+drawable defect graphics and ticket failure reasons retain inspection evidence.
+This complements flat-field and single-image illumination tools. Stable fit areas
+and defect-scale validation are still necessary: broad defects can be learned
+as lighting. See [the fitting contract](differential-exposure.md).
+Verification passed **122 focused photometric/reference/editor checks**, including
+independent local least-squares fits, known gains/offsets, a specified 20-pixel
+defect, raw/adjusted metrics, native depths/alpha, masks, support and frame failures,
+roundoff limits, XML and controls. All **eight installed Debug/Lean outcomes**
+matched four new original examples, including intentional defect/support failures.
+Deterministic PNG/project regeneration, strict JSON, generated coverage/reference
+checks, source text contracts, links and wheel contents were checked; the app was
+reinstalled. No broad suite was repeated. Core is now **136/175 (77.7%)**, overall
+**199/470 (42.3%)**. Next qualify multiband overlap blending (S1-117) on the existing
+scan-mosaic baseline; native EXR qualification still needs a capable build.
+
 **Coverage-aware mask resizing (S1-118)** now extends the existing resize/region
 baseline with `cv.resample_mask`. Whole-grid pixel-cell area integration returns
 binary acceptance, fractional coverage, resize geometry and source provenance.
@@ -118,9 +139,9 @@ target-frame rejection. Exact rational cell intersections and native area
 downsampling checks cover arbitrary ratios, holes, thin stripes, fractional
 inputs and coverage conservation. Regeneration, JSON, source text contracts,
 generated references and packaged module/registry contents were checked; the
-app was reinstalled. No broad suite was repeated. Core coverage is now
-**135/175 (77.1%)**, overall **198/470 (42.1%)**. Next: registered differential
-exposure compensation (S1-116), with unsupported native EXR qualification still open.
+app was reinstalled. No broad suite was repeated. Core coverage reached
+**135/175 (77.1%)**, overall **198/470 (42.1%)** at that checkpoint. The paired
+exposure follow-up is described above; native EXR qualification remains open.
 
 ROS **ROI/binning-aware intensity rectification** extends the existing block
 without adding another type. Raw K and rectified P are adjusted independently.
@@ -402,7 +423,9 @@ and multiscale edits. Floating TIFF and Radiance HDR round trips are qualified;
 S1-125 remains partial until native EXR runs on a capable build.
 Coverage-aware mask resizing (S1-118) now qualifies explicit pixel-cell area,
 thresholds and provenance alongside the existing resize and transformed-region
-tools. Next prioritize registered differential exposure compensation (S1-116).
+tools. Differential exposure comparison (S1-116) now adds robust paired models,
+raw/adjusted defect residuals and coverage qualification. Next qualify multiband
+overlap blending (S1-117).
 [Large-radius stack smoothing](<../examples/opencv tools/stack_blur/README.md>)
 (S1-159) now has bounded independent kernels, selected writes, high-depth-safe
 float32 work and original-depth output. Five projects cover Gaussian comparison,
@@ -604,7 +627,7 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize registered differential exposure compensation (S1-116). S1-118 now qualifies area-coverage mask resizing with explicit thresholds and source/target coordinate checks. S1-159 now has bounded stack smoothing and measured Gaussian noise/edge/runtime comparisons. S1-111 now has verified APNG/GIF/WebP frame/timing transport across file and buffer APIs. S1-112 QR label generation now has checked native controls, text recovery and bounded grouped outputs. S1-07 metadata file/buffer round trips now have verified native chunk transport and explicit orientation semantics. S1-109 paired flow refinement now has independent motion/residual references and explicit support/failure evidence. S1-108 color-distribution tracking now has controlled translation/scale/loss evidence. S1-95 dense-flow warping and S1-88–S1-90 photo/color edits have controlled references and explicit support/failure evidence. Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Prioritize multiband overlap blending (S1-117) on the existing scan-mosaic baseline. S1-116 now qualifies robust paired lighting models and raw/adjusted defect residuals with independent fit selections and support guards. S1-118 now qualifies area-coverage mask resizing with explicit thresholds and source/target coordinate checks. S1-159 now has bounded stack smoothing and measured Gaussian noise/edge/runtime comparisons. S1-111 now has verified APNG/GIF/WebP frame/timing transport across file and buffer APIs. S1-112 QR label generation now has checked native controls, text recovery and bounded grouped outputs. S1-07 metadata file/buffer round trips now have verified native chunk transport and explicit orientation semantics. S1-109 paired flow refinement now has independent motion/residual references and explicit support/failure evidence. S1-108 color-distribution tracking now has controlled translation/scale/loss evidence. S1-95 dense-flow warping and S1-88–S1-90 photo/color edits have controlled references and explicit support/failure evidence. Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and K-nearest/random-forest image classifiers. Native SVM training, prediction and model I/O are available in [the classical ML workflow](classical-ml.md) (S2-20). | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |

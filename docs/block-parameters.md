@@ -5666,6 +5666,44 @@ Inputs: `depth` (depth), `points` (data, optional).
 | --- | --- | --- |
 | `pixel_points` | `[[0, 0]]` |  |
 
+## Compare exposure-adjusted images (`inspect.differential_exposure`)
+
+Inspection / Reference inspection
+
+Inputs: `image` (image), `reference` (image), `mask` (image, optional), `region` (data, optional), `fit_mask` (image, optional), `fit_region` (data, optional).
+
+Input `image` — Candidate intensity image; owns output tickets, geometry and unchanged alpha.
+
+Input `reference` — Aligned reference with matching dimensions, encoding and depth.
+
+Input `mask` — Inspection selection; intersects Region. Residuals are zero outside it.
+
+Input `region` — Optional inspection region on the candidate grid.
+
+Input `fit_mask` — Stable fitting selection, independent of inspection; intersects Fit region.
+
+Input `fit_region` — Optional fitting region. With no fitting inputs, use the inspection selection.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `scope` | `"local"` | `local`, `global` Local weighted windows, or one model per channel for the whole fit selection. |
+| `window` | `63` | Value must be a positive odd integer between 3 and 255. Odd local window. Only actual in-image pixels supply support; no reflection. |
+| `model` | `"gain_offset"` | `gain_offset`, `offset_only` Reference = gain * image + offset, or fix gain at one. Alpha is not fitted. |
+| `robust_loss` | `"tukey"` | `tukey`, `none` Tukey refits reject residual outliers; None uses ordinary least squares. |
+| `iterations` | `4` | Value must be a whole number between 1 and 10. Robust reweight/refit steps after the initial fit; unused for None. |
+| `outlier_limit` | `8.0` | Value must be a finite number between 1e-12 and 1e+12. Tukey cutoff in raw sample units. Residuals at/above it receive zero weight. |
+| `minimum_contrast` | `1.0` | Value must be a finite number between 0 and 1e+12. Raw standard-deviation floor. Low-contrast windows use offset-only correction. |
+| `gain_regularization` | `0.0` | Value must be a finite number between 0 and 1e+12. Raw contrast scale of a squared ridge penalty toward gain one; zero disables it. |
+| `minimum_gain` | `0.25` | Value must be a finite number between 1e-06 and 1e+06. Inclusive lower gain bound; out-of-range models provide no coverage. |
+| `maximum_gain` | `4.0` | Value must be a finite number between 1e-06 and 1e+06. Inclusive upper gain bound; must be at least Minimum gain. |
+| `minimum_fit_pixels` | `16` | Value must be a whole number between 2 and 4.1943e+06. Minimum effective weighted samples in each model/window. |
+| `minimum_fit_fraction` | `0.1` | Value must be a finite number between 0 and 1. Effective support / actual local window area, or / initial global fit selection. |
+| `minimum_valid_fraction` | `0.95` | Value must be a finite number between 0 and 1. Inclusive selected fraction with usable models and samples. |
+| `defect_threshold` | `15.0` | Value must be a finite number between 0 and 1e+12. Maximum accepted raw-unit absolute residual; any channel exceeding it is a defect. |
+| `maximum_defect_fraction` | `0.0` | Value must be a finite number between 0 and 1. Allowed valid-pixel defect fraction; zero allows none. |
+| `saturation` | `"integer_endpoints"` | `integer_endpoints`, `none` Exclude integer minimum/maximum endpoints from fitting and inspection, or disable. Floating data has no assumed saturation level. |
+| `reference_alignment` | `"pixel_grid"` | `pixel_grid`, `same_frame` Pixel grid assumes equal-index registration; Same frame needs matching known frames. |
+
 ## Watershed seeds from distance peaks (`inspect.distance_markers`)
 
 Inspection / Segmentation

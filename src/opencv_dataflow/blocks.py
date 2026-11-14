@@ -715,6 +715,7 @@ def builtin_registry():
     from .conveyor_tracking import ConveyorDemo, TrackConveyorParts
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
+    from .differential_exposure import DifferentialExposure
     from .distortion_fixture import DistortImageFixture
     from .dnn_blocks import DNN_BLOCKS
     from .ecc_registration import AlignECC
@@ -1056,6 +1057,7 @@ def builtin_registry():
         CompareImageQuality,
         CompareMaskBoundary,
         CompareAlignedImages,
+        DifferentialExposure,
         MeasureFocus,
         LogPolarRegistration,
         FocusStack,
