@@ -41,11 +41,12 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **6 targeted increments of about 20** completed:
+The current cycle has **7 targeted increments of about 20** completed:
 animated image codec round trips (S1-111), large-radius smoothing (S1-159),
 assistant application authoring with connected-input plugin captures, the
 SimpleITK medical image/metadata foundation, optional ROS 2 Lyrical/Fast DDS
-image/data integration, and ROS PointCloud2 conversion/acquisition/publication.
+image/data integration, ROS PointCloud2 conversion/acquisition/publication,
+and ROS CameraInfo/per-acquisition registered RGB-D association.
 The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
@@ -100,25 +101,50 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+ROS **CameraInfo conversion and per-acquisition registered RGB-D validation** now
+reuse the existing camera model and ticket coordinator. Three additional blocks
+support raw K/D or conservative rectified P intrinsics, ROI/binning, canonical
+CameraInfo encoding and strict ticket/frame/image-size/integer-stamp checks.
+Depth scale is explicit and the output is physical meters. Two new examples
+cover a real T-LESS recorded acquisition and a disabled three-topic subscriber.
+The recorded acquisition reports its missing ROS timestamp explicitly.
+Verification passed **183 focused offline/editor/coordination checks** and **two
+native DDS checks**, including staggered color/depth/CameraInfo arrivals through
+the real coordinator into calibrated 3D points. All **18 installed Debug/Lean ROS
+example runs** matched. Nine existing hand–eye tests and the ChArUco example also
+passed on the current OpenCV 5 runtime: hand–eye uses the repo's Park-style NumPy
+solver with Rodrigues, not an unavailable `cv2.calibrateHandEye` binding.
+The separately authored FoundationPose file-review examples were integrated by
+fast-forward and replayed without inference; their rejected evaluations remain
+unchanged. No broad suite, simulator or robot operation was performed.
+
 Optional **ROS 2 Lyrical / Fast DDS** now provides image, point-cloud and structured-data
-readers, gated publishers and offline image converters under
+readers, gated publishers, offline converters and registered RGB-D validation under
 **Industrial integration → ROS 2**. A separate ROS Python worker keeps native
 ROS extensions independent of the Python 3.14/OpenCV 5 GUI. Sources preserve
 headers and acquire tickets only on accepted messages; bounded queues and
 explicit QoS/timeout controls expose waiting and drop behavior. Ambiguous writes
-hold until reset. Seven [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
+hold until reset. Nine [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
 include real VisA PCB/T-LESS RGB-D converter graphs and disabled live templates.
 See [runtime setup](ros2.md) and [issue #20](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20).
 The next milestones are:
 
-1. Calibrated CameraInfo/RGB/depth association; extended cloud-field editing and
-   validated remerging of unknown fields after geometric processing. PointCloud2
-   conversion/read/write with explicit units, stride/endian and metadata is implemented.
-2. TF2/frame-aware pose conversion, timestamp freshness, simulation clock reset
-   handling and rosbag2 replay.
+1. Static CameraInfo caching, approximate-time pairing, stereo-baseline/nonidentity
+   rectification and rectified ROI recomputation; extended cloud-field editing and
+   validated remerging after point edits. Per-acquisition CameraInfo/RGB/depth
+   association and PointCloud2 conversion/read/write are implemented.
+2. Strict TransformStamped/PoseStamped conversion and persistent TF2 lookup at the
+   acquisition stamp, explicit transform direction, bounded timeout/cancellation,
+   unavailable/stale errors and no silent latest fallback. Add dataset/run/reset
+   generation identity to tickets before pose-to-grasp execution. Follow with
+   clock-jump handling and rosbag2 replay.
 3. Services/actions with identities, cancellation and uncertain-outcome handling.
 4. Coordinated Gazebo/ros_gz/MoveIt camera/robot examples and measured image/cloud
    throughput. Shared simulation dependencies and jobs require owner coordination.
+   Reuse ChArUco → PnP → hand–eye tools and generic MarkerArray data publication;
+   keep result-to-marker adapters in the tool plugins. ROS owns scene/TF/camera
+   publishers and SimpleTools owns target detection/estimation. Initial robot
+   examples remain visualization-only until timing/reset/frame acceptance is met.
 
 This is an industrial integration track; it adds no OpenCV coverage completion
 and native localhost DDS tests do not establish simulator or robot acceptance.

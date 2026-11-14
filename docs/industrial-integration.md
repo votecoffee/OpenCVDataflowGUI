@@ -15,8 +15,10 @@ Python worker with `rmw_fastrtps_cpp`. Offline image converters need no ROS
 installation. Endpoints expose domain, discovery, QoS, queue, timeout and clock
 controls; readers issue tickets only on acquisition and writers require an
 explicit Enable event. See [setup, message contracts and limits](ros2.md) and
-[seven examples](<../examples/industrial integration/ros2_fastdds/README.md>).
-Calibrated CameraInfo/TF/depth association and robot simulation are separate
+[nine examples](<../examples/industrial integration/ros2_fastdds/README.md>).
+CameraInfo conversion and registered RGB-D validation use the existing ticket
+coordinator and calibrated 3D tools. TF lookup, cross-camera depth registration,
+clock/reset identity and robot simulation remain separate
 [planned milestones](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20).
 
 ## MQTT

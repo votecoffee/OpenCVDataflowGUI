@@ -40,6 +40,8 @@ Optional [SimpleITK medical images and metadata](docs/simpleitk.md) use
 
 Optional [ROS 2 Lyrical / Fast DDS](docs/ros2.md) image, point-cloud and data blocks use a
 separately configured ROS Python runtime under **Industrial integration → ROS 2**.
+CameraInfo converters and a registered RGB-D validator connect acquisition to the
+existing calibrated 3D tools.
 
 ## Usage
 

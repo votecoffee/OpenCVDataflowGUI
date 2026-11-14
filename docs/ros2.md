@@ -1,6 +1,6 @@
 # ROS 2 Lyrical and Fast DDS
 
-Ten blocks live in **Industrial integration → ROS 2**. The image/cloud converters work
+Thirteen blocks live in **Industrial integration → ROS 2**. The converters work
 offline. Read/publish blocks are optional and start disabled; opening, validating
 or previewing a graph never starts ROS. There is no `pip install rclpy` dependency
 in the GUI environment.
@@ -17,6 +17,9 @@ in the GUI environment.
 | Publish ROS 2 point cloud (`industrial.ros2_cloud_publish`) | Typed cloud or raw portable message plus true Enable → PointCloud2 publication |
 | Encode ROS 2 point cloud (`industrial.ros2_cloud_encode`) | Typed cloud → canonical portable PointCloud2 packet, offline |
 | Decode ROS 2 point cloud (`industrial.ros2_cloud_decode`) | Portable packet → finite XYZ/RGB/normals cloud with explicit units and pixel organization |
+| Decode ROS 2 CameraInfo (`industrial.ros2_camera_decode`) | CameraInfo fields → existing camera model, original message and geometry details |
+| Encode ROS 2 CameraInfo (`industrial.ros2_camera_encode`) | Camera model → canonical current-grid CameraInfo fields for the existing data publisher |
+| Validate registered ROS RGB-D (`industrial.ros2_rgbd`) | Completed ticketed FlowGroup → checked color/depth/camera, physical meter depth and association report |
 
 ## Runtime setup
 
@@ -105,7 +108,8 @@ Offline encode/decode retains arbitrary local JSON payloads, spatial/pyramid
 provenance and tickets. Across DDS, only standard ROS Image fields are sent;
 Dataflow tickets, judgments, graphics and calibration metadata are not embedded
 in pixel bytes. Use a correlated data topic or a custom installed message for
-those fields. CameraInfo association and TF/depth calibration are future work.
+those fields. CameraInfo association is described below; TF lookup and geometric
+depth registration between different camera frames are separate operations.
 
 Image publishing can preserve an incoming ROS header (otherwise zero), clear its
 stamp, override frame ID, or stamp from the ROS node clock. With Use sim time and
@@ -171,7 +175,58 @@ pixel correspondence; duplicate pixels and grids exceeding the buffer limit are
 rejected. Little/big endian output is selectable. Both forms reuse the existing
 3D thumbnail, popout, filtering, measurement and rendering tools.
 
-## Data, tickets and publishing
+## CameraInfo and registered RGB-D
+
+Use the existing data reader/publisher with `sensor_msgs/msg/CameraInfo`; no
+additional ROS process type or dependency is needed. Decode CameraInfo selects
+**Raw** K/D or **Rectified** P intrinsics for images already in that space. It
+does not warp images. Supported models are plumb_bob, rational_polynomial and
+equidistant, plus an explicitly ideal empty model. Empty D on a recognized model
+is treated as zero distortion; uncalibrated K is rejected. The original complete
+message remains on Message and in the camera's `ros2.camera_info` record.
+See the [ROS CameraInfo definition](https://github.com/ros2/common_interfaces/blob/lyrical/sensor_msgs/msg/CameraInfo.msg).
+
+Raw ROI offsets and binning adjust focal lengths, principal point and output
+dimensions. Zero binning means one; all-zero ROI means the full sensor. Details
+includes the output-to-full pixel mapping and discarded partial edge bins.
+Rectified selection currently requires identity R, zero P translation and no
+requested ROI recomputation. These checks prevent silently losing stereo
+baseline or changing the optical frame. Use explicit stereo/TF/rectification
+workflows for those cases. Encode creates current-grid K/D, identity R, P=K|0,
+and zero ROI/binning; use Decode's original Message for an exact field relay.
+
+For live registered RGB-D, connect color Image, depth Image and decoded Camera
+to inputs 1/2/3 of **Coordinate inputs**, using **ticket_all**. Configure all three
+ROS readers for Header stamp tickets and a common optical frame/acquisition
+stamp. Set a deadline for incomplete acquisitions. The existing coordinator owns
+queues, limits, timeouts and late suppression; the RGB-D validator owns no queue.
+This initial workflow requires per-acquisition calibration tickets. A static
+latched CameraInfo cache and approximate-time pairing queues remain future work.
+
+The validator requires all member tickets to match, named matching optical
+frames, matching original ROS image sizes and camera dimensions, unchanged pixel
+geometry, and undistorted pinhole intrinsics. Header spread is compared using
+integer nanoseconds; Max skew permits an explicit tolerance after the caller has
+already correlated the tickets. It does not make different header-stamp tickets
+match in the coordinator. Different camera frames need real registration/TF
+before this block. Matching fields do not prove physical pixel registration.
+
+Uint16 depth requires explicit meters per sample; floating depth declares meters
+or millimeters. Output is a typed physical-meter DepthArray. Zero, negative,
+nonfinite and overflowing values become NaN. An all-invalid depth image is a
+valid failed inspection with a reason; geometry/frame/ticket/time mismatches are
+validation errors with no output event. Color and depth outputs share the
+declared registered pixel frame and retain member metadata. Feed Color, Depth
+and Camera to **Depth to point cloud** using its existing typed inputs.
+
+Zero stamps are rejected by default. Allow zero stamps is an explicit mode for
+known recorded/offline pairs; Info reports `timestamps_nonzero: false`.
+`clock_domain_verified` remains false because Header does not identify a clock
+domain or prove clock synchronization. Equal stamps, `use_sim_time`, and matching
+tickets alone cannot establish exposure synchronization. The examples use actual
+dataset pairing and disclose missing ROS timestamps instead of inventing them.
+
+## Structured data and publishing
 
 Fields mode maps JSON objects to the chosen ROS interface. Nested objects/arrays
 are supported and unspecified ROS fields retain interface defaults. Conversion
@@ -206,21 +261,23 @@ Pre-publication field validation failures remain known rejections.
 ## Examples, verification and next milestones
 
 Open the [ROS examples](<../examples/industrial integration/ros2_fastdds/README.md>)
-for real openly licensed PCB/RGB-D converter graphs and five disabled live templates.
+for real openly licensed PCB/RGB-D converter graphs and six disabled live templates.
 The optional native tests use localhost, private UUID topics and domain 71:
 
 ```powershell
 python -m pytest tests/test_ros2.py -q
 python -m pytest tests/test_ros2_clouds.py -q
+python -m pytest tests/test_ros2_calibration.py -q
 $env:OPENCV_DATAFLOW_TEST_ROS2 = "1"
 python -m pytest tests/test_ros2_native.py -q
 python -m pytest tests/test_ros2_cloud_native.py -q
+python -m pytest tests/test_ros2_calibration_native.py -q
 ```
 
 These tests publish only local fixture images/state. They do not launch a
 simulator or connect a robot. The [roadmap issue](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20)
-covers calibrated CameraInfo/depth association, remaining cloud field/remerge work,
-TF2 transforms, clocks/reset and rosbag2,
+covers static CameraInfo caching/approximate pairing, extended rectification and
+cloud field/remerge work, strict pose/TF2 conversion, clocks/reset and rosbag2,
 services/actions, and coordinated Gazebo/ros_gz/MoveIt examples. Shared simulation
 environments must be coordinated with their owners before dependencies or jobs
 are changed. Native DDS loopback does not qualify simulation or robot motion.

@@ -25,6 +25,8 @@ BASE = ROOT / "examples/industrial integration/ros2_fastdds"
         "offline_cloud_roundtrip",
         "cloud_subscriber",
         "triggered_cloud_publisher",
+        "offline_calibrated_rgbd",
+        "registered_rgbd_subscriber",
     ],
 )
 def test_saved_graphs_validate_and_run_without_ros(monkeypatch, name):
@@ -52,6 +54,19 @@ def test_saved_graphs_validate_and_run_without_ros(monkeypatch, name):
             assert restored.units == "m" and restored.source_size == original.source_size
             assert 10000 < len(restored.points) < 30000
             assert graph.blocks["decode_cloud"].last_result.outputs["details"]["dropped"] > 0
+            assert "CC BY 4.0" in graph.blocks["showcase_source"].description
+        if name == "offline_calibrated_rgbd":
+            validated = graph.blocks["checked"].last_result
+            assert validated.outputs["info"]["ticket"]["value"] == "TLESS:scene1:220"
+            assert not validated.outputs["info"]["timestamps_nonzero"]
+            assert not validated.outputs["info"]["clock_domain_verified"]
+            depth = validated.outputs["depth"]
+            source = graph.blocks["depth"].last_result.outputs["depth"]
+            valid = np.isfinite(source) & (source > 0)
+            np.testing.assert_array_equal(depth[valid], source[valid])
+            assert np.isnan(depth[~valid]).all()
+            cloud = graph.blocks["project"].last_result.outputs["cloud"]
+            assert cloud.units == "m" and 10000 < len(cloud.points) < 30000
             assert "CC BY 4.0" in graph.blocks["showcase_source"].description
         for b in graph.processing_blocks():
             if isinstance(b, ros.ReadROS):
@@ -108,6 +123,26 @@ def test_real_cloud_example_uses_existing_3d_editor_and_optional_controls(app):
         from opencv_dataflow.pointclouds import cloud_outputs
 
         assert len(cloud_outputs(graph.blocks["decode_cloud"])["cloud"].points) > 10000
+    finally:
+        window.dirty = False
+        window.close()
+        app.processEvents()
+
+
+def test_rgbd_block_editor_shows_units_and_timing_controls(app):
+    from PySide6.QtWidgets import QCheckBox, QComboBox
+
+    from opencv_dataflow.app import MainWindow
+
+    window = MainWindow()
+    try:
+        graph = Graph.load(BASE / "offline_calibrated_rgbd.json", window.registry)
+        graph.run()
+        window.replace_graph(graph)
+        window.scene.nodes["checked"].setSelected(True)
+        assert isinstance(window.inspector.fields["float_depth_units"], QComboBox)
+        assert isinstance(window.inspector.fields["allow_zero_stamps"], QCheckBox)
+        assert window.inspector.can_preview()
     finally:
         window.dirty = False
         window.close()

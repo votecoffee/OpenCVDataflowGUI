@@ -1,0 +1,456 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "rgb",
+      "type": "input.file",
+      "name": "Real T-LESS RGB capture",
+      "parameters": {
+        "path": "../../Simple Plugins/3d_locate/real_tless/source/test_primesense/000001/rgb/000220.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "TLESS:scene1:220"
+      }
+    },
+    {
+      "id": "depth",
+      "type": "input.depth_file",
+      "name": "Measured Primesense depth",
+      "parameters": {
+        "path": "../../Simple Plugins/3d_locate/real_tless/source/test_primesense/000001/depth/000220.png",
+        "path_base": "project",
+        "units_per_sample": 0.0001,
+        "units": "m",
+        "display_min": 0.0,
+        "display_max": 5.0
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "TLESS:scene1:220"
+      }
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Publisher camera intrinsics",
+      "parameters": {
+        "fx": 1075.65091572,
+        "fy": 1073.90347929,
+        "cx": 374.06888344,
+        "cy": 294.72159802,
+        "width": 720,
+        "height": 540,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "camera"
+      },
+      "position": [
+        0,
+        600
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "showcase_source",
+      "type": "layout.comment",
+      "name": "Real data: source and scope",
+      "description": "T-LESS, CC BY 4.0. Tomas Hodan, Pavel Haluza, Stepan Obdrzalek, Jiri Matas, Manolis Lourakis, Xenophon Zabulis; WACV 2017. cmp.felk.cvut.cz/t-less/. Real Primesense scene 1, frame 220; original depth and intrinsics retained. Publisher depth_scale=0.1 mm/sample (0.0001 m/sample). No object mask is used. This ROS codec example reconstructs organized pixels with NaN holes. It performs no ROS or robot operation, and does not establish TF calibration. Source/hash/license: ../../Simple Plugins/3d_locate/real_tless/source/ATTRIBUTION.md. Recorded single-frame CameraInfo/RGB-D association. Dataset frame identity supplies the fixed ticket; headers are zero because no ROS exposure timestamp is supplied. Allow zero stamps is explicit and does not prove acquisition clock synchronization. Original metric depth is passed as 32FC1 meters; no synthetic acquisition time is invented.",
+      "parameters": {},
+      "position": [
+        0,
+        -680
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rgb_encode",
+      "type": "industrial.ros2_image_encode",
+      "name": "Encode ROS 2 image",
+      "parameters": {
+        "encoding": "auto",
+        "frame_id": "camera",
+        "stamp_mode": "preserve"
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "message",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rgb_decode",
+      "type": "industrial.ros2_image_decode",
+      "name": "Decode ROS 2 image",
+      "parameters": {},
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "message"
+      ],
+      "exposed_outputs": [
+        "image",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth_encode",
+      "type": "industrial.ros2_image_encode",
+      "name": "Encode ROS 2 image",
+      "parameters": {
+        "encoding": "auto",
+        "frame_id": "camera",
+        "stamp_mode": "preserve"
+      },
+      "position": [
+        330,
+        300
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "message",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth_decode",
+      "type": "industrial.ros2_image_decode",
+      "name": "Decode ROS 2 image",
+      "parameters": {},
+      "position": [
+        660,
+        300
+      ],
+      "exposed_inputs": [
+        "message"
+      ],
+      "exposed_outputs": [
+        "image",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera_encode",
+      "type": "industrial.ros2_camera_encode",
+      "name": "Encode ROS 2 CameraInfo",
+      "parameters": {
+        "stamp_mode": "preserve"
+      },
+      "position": [
+        330,
+        600
+      ],
+      "exposed_inputs": [
+        "camera"
+      ],
+      "exposed_outputs": [
+        "message"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera_decode",
+      "type": "industrial.ros2_camera_decode",
+      "name": "Decode ROS 2 CameraInfo",
+      "parameters": {
+        "space": "raw"
+      },
+      "position": [
+        660,
+        600
+      ],
+      "exposed_inputs": [
+        "message"
+      ],
+      "exposed_outputs": [
+        "camera",
+        "message",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera_ticket",
+      "type": "flow.ticket",
+      "name": "Assign ticket",
+      "parameters": {
+        "mode": "external",
+        "value": 1
+      },
+      "position": [
+        990,
+        600
+      ],
+      "exposed_inputs": [
+        "value",
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "value",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "coordinate",
+      "type": "flow.coordinate",
+      "name": "Coordinate inputs",
+      "parameters": {
+        "inputs": 3,
+        "mode": "ticket_all",
+        "max_wait_ms": 5000.0,
+        "timeout": "discard",
+        "warmup": "all",
+        "max_age_ms": 1000.0,
+        "primary": "input_1",
+        "duplicates": "error",
+        "late": "ignore",
+        "history_size": 4096,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        1320,
+        250
+      ],
+      "exposed_inputs": [
+        "input_1",
+        "input_2",
+        "input_3",
+        "input_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "value",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "checked",
+      "type": "industrial.ros2_rgbd",
+      "name": "Validate registered ROS RGB-D",
+      "parameters": {
+        "use_color": true,
+        "color_label": "input_1",
+        "depth_label": "input_2",
+        "camera_label": "input_3",
+        "max_skew_ms": 0.0,
+        "allow_zero_stamps": true,
+        "uint16_m_per_sample": 0.001,
+        "float_depth_units": "m",
+        "display_max_m": 5.0
+      },
+      "position": [
+        1650,
+        250
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "color",
+        "depth",
+        "camera",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "project",
+      "type": "3d.depth_cloud",
+      "name": "Depth to point cloud",
+      "parameters": {
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m",
+        "sample_step": 4,
+        "max_points": 200000
+      },
+      "position": [
+        1980,
+        250
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "rgb",
+      "output": "image",
+      "target": "rgb_encode",
+      "input": "image"
+    },
+    {
+      "source": "rgb_encode",
+      "output": "message",
+      "target": "rgb_decode",
+      "input": "message"
+    },
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "depth_encode",
+      "input": "image"
+    },
+    {
+      "source": "depth_encode",
+      "output": "message",
+      "target": "depth_decode",
+      "input": "message"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "camera_encode",
+      "input": "camera"
+    },
+    {
+      "source": "camera_encode",
+      "output": "message",
+      "target": "camera_decode",
+      "input": "message"
+    },
+    {
+      "source": "camera_decode",
+      "output": "camera",
+      "target": "camera_ticket",
+      "input": "value"
+    },
+    {
+      "source": "rgb",
+      "output": "ticket",
+      "target": "camera_ticket",
+      "input": "ticket"
+    },
+    {
+      "source": "rgb_decode",
+      "output": "image",
+      "target": "coordinate",
+      "input": "input_1"
+    },
+    {
+      "source": "depth_decode",
+      "output": "image",
+      "target": "coordinate",
+      "input": "input_2"
+    },
+    {
+      "source": "camera_ticket",
+      "output": "value",
+      "target": "coordinate",
+      "input": "input_3"
+    },
+    {
+      "source": "coordinate",
+      "output": "group",
+      "target": "checked",
+      "input": "group"
+    },
+    {
+      "source": "checked",
+      "output": "color",
+      "target": "project",
+      "input": "image"
+    },
+    {
+      "source": "checked",
+      "output": "depth",
+      "target": "project",
+      "input": "depth"
+    },
+    {
+      "source": "checked",
+      "output": "camera",
+      "target": "project",
+      "input": "camera"
+    }
+  ]
+}

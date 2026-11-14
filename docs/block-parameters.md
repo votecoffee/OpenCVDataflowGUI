@@ -4348,6 +4348,26 @@ Inputs: `payload` (any), `enable` (boolean).
 | `write_enabled` | `false` | Also wire a true Enable input for each intended publication. |
 | `retain` | `false` | Ask the broker to retain the last value on the topic. |
 
+## Decode ROS 2 CameraInfo (`industrial.ros2_camera_decode`)
+
+Industrial integration / ROS 2
+
+Inputs: `message` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `space` | `"raw"` | `raw`, `rectified` Use raw K/D or rectified P intrinsics for an already rectified image. No image warping occurs. |
+
+## Encode ROS 2 CameraInfo (`industrial.ros2_camera_encode`)
+
+Industrial integration / ROS 2
+
+Inputs: `camera` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `stamp_mode` | `"preserve"` | `preserve`, `zero` Preserve a ROS acquisition stamp, otherwise zero. Builds canonical calibration for the current grid. |
+
 ## Decode ROS 2 point cloud (`industrial.ros2_cloud_decode`)
 
 Industrial integration / ROS 2
@@ -4491,6 +4511,24 @@ Inputs: `image` (image), `enable` (boolean).
 | `encoding` | `"auto"` | `auto`, `mono8`, `mono16`, `rgb8`, `bgr8`, `rgba8`, `bgra8`, `rgb16`, `bgr16`, `rgba16`, `bgra16`, `8UC1`, `16UC1`, `16SC1`, `32SC1`, `32FC1`, `64FC1` Auto preserves native sample depth and tagged color order; explicit RGB/BGR can swap channels. |
 | `frame_id` | `""` | Optional header frame override, with no implied physical transform or calibration. |
 | `stamp_mode` | `"preserve"` | `preserve`, `zero`, `node_clock` Preserve incoming ROS header (otherwise zero), clear it, or stamp using the ROS node clock. |
+
+## Validate registered ROS RGB-D (`industrial.ros2_rgbd`)
+
+Industrial integration / ROS 2
+
+Inputs: `group` (any).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `use_color` | `true` | Require a registered color image; otherwise only depth and calibration are required. |
+| `color_label` | `"input_1"` | Color member label in the completed coordinator FlowGroup. |
+| `depth_label` | `"input_2"` | Depth member label; use input_1 for a two-input depth/calibration coordinator. |
+| `camera_label` | `"input_3"` | Decoded CameraInfo model member; use input_2 in depth-only groups. |
+| `max_skew_ms` | `0.0` | Value must be a finite number between 0 and 1000. Maximum header stamp spread. Zero requires exact integer nanosecond equality. |
+| `allow_zero_stamps` | `false` | Explicit offline/unknown-time mode. Zero stamps never verify acquisition timing. |
+| `uint16_m_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Explicit meters per uint16 depth sample, e.g. 0.001 for millimeters. |
+| `float_depth_units` | `"m"` | `m`, `mm` Declared 32FC1/64FC1 depth units. Output is physical meters. |
+| `display_max_m` | `5.0` | Value must be a finite number between 0.001 and 1e+06. Depth preview upper display bound in meters; does not clip measured values. |
 
 ## Load animation frames (`input.animation_file`)
 

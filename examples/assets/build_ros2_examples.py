@@ -145,6 +145,7 @@ def build():
     graph.save(ROOT / "joint_state_relay.json")
 
     build_cloud_examples()
+    build_calibration_examples()
 
 
 def real_depth_graph():
@@ -236,6 +237,106 @@ def build_cloud_examples():
         "with original pixel organization; Dataflow tickets remain local."
     )
     graph.save(ROOT / "triggered_cloud_publisher.json")
+
+
+def build_calibration_examples():
+    graph = real_depth_graph()
+    graph.remove("project")
+    for key in ("rgb", "depth"):
+        graph.blocks[key].ticket_settings = {"mode": "fixed", "value": "TLESS:scene1:220"}
+    rgb_encode = add(
+        graph, "industrial.ros2_image_encode", "rgb_encode", (330, 0), frame_id="camera"
+    )
+    rgb_decode = add(graph, "industrial.ros2_image_decode", "rgb_decode", (660, 0))
+    depth_encode = add(
+        graph, "industrial.ros2_image_encode", "depth_encode", (330, 300), frame_id="camera"
+    )
+    depth_decode = add(graph, "industrial.ros2_image_decode", "depth_decode", (660, 300))
+    cam_encode = add(graph, "industrial.ros2_camera_encode", "camera_encode", (330, 600))
+    cam_decode = add(graph, "industrial.ros2_camera_decode", "camera_decode", (660, 600))
+    cam_ticket = add(graph, "flow.ticket", "camera_ticket", (990, 600), mode="external")
+    graph.connect("rgb", "image", rgb_encode.id, "image")
+    graph.connect(rgb_encode.id, "message", rgb_decode.id, "message")
+    graph.connect("depth", "depth", depth_encode.id, "image")
+    graph.connect(depth_encode.id, "message", depth_decode.id, "message")
+    graph.connect("camera", "camera", cam_encode.id, "camera")
+    graph.connect(cam_encode.id, "message", cam_decode.id, "message")
+    graph.connect(cam_decode.id, "camera", cam_ticket.id, "value")
+    graph.connect("rgb", "ticket", cam_ticket.id, "ticket")
+    coord = add(graph, "flow.coordinate", "coordinate", (1320, 250), inputs=3, max_wait_ms=5000.0)
+    for block, output, port in (
+        (rgb_decode, "image", "input_1"),
+        (depth_decode, "image", "input_2"),
+        (cam_ticket, "value", "input_3"),
+    ):
+        graph.connect(block.id, output, coord.id, port)
+    checked = add(graph, "industrial.ros2_rgbd", "checked", (1650, 250), allow_zero_stamps=True)
+    project = add(graph, "3d.depth_cloud", "project", (1980, 250), sample_step=4)
+    graph.connect(coord.id, "group", checked.id, "group")
+    for output, port in (("color", "image"), ("depth", "depth"), ("camera", "camera")):
+        graph.connect(checked.id, output, project.id, port)
+    graph.blocks["showcase_source"].description += (
+        " Recorded single-frame CameraInfo/RGB-D association. Dataset frame identity supplies "
+        "the fixed ticket; headers are zero because no ROS exposure timestamp is supplied. "
+        "Allow zero stamps is explicit and does not prove acquisition clock synchronization. "
+        "Original metric depth is passed as 32FC1 meters; "
+        "no synthetic acquisition time is invented."
+    )
+    graph.save(ROOT / "offline_calibrated_rgbd.json")
+
+    graph = Graph()
+    rgb = add(
+        graph,
+        "input.ros2_image",
+        "rgb",
+        (0, 0),
+        topic="/opencv_dataflow/camera/color_rect",
+        ticket_mode="header_stamp",
+    )
+    depth = add(
+        graph,
+        "input.ros2_image",
+        "depth",
+        (0, 300),
+        topic="/opencv_dataflow/camera/depth_registered",
+        ticket_mode="header_stamp",
+    )
+    source = add(
+        graph,
+        "input.ros2_data",
+        "camera_info",
+        (0, 600),
+        topic="/opencv_dataflow/camera/camera_info",
+        message_type="sensor_msgs/msg/CameraInfo",
+        ticket_mode="header_stamp",
+        reliability="best_effort",
+    )
+    camera = add(graph, "industrial.ros2_camera_decode", "camera", (330, 600), space="rectified")
+    coord = add(graph, "flow.coordinate", "coordinate", (660, 250), inputs=3, max_wait_ms=2000.0)
+    checked = add(graph, "industrial.ros2_rgbd", "checked", (990, 250))
+    project = add(graph, "3d.depth_cloud", "project", (1320, 250), sample_step=4)
+    graph.connect(source.id, "data", camera.id, "message")
+    for block, output, port in (
+        (rgb, "image", "input_1"),
+        (depth, "image", "input_2"),
+        (camera, "camera", "input_3"),
+    ):
+        graph.connect(block.id, output, coord.id, port)
+    graph.connect(coord.id, "group", checked.id, "group")
+    for output, port in (("color", "image"), ("depth", "depth"), ("camera", "camera")):
+        graph.connect(checked.id, output, project.id, port)
+    note(
+        graph,
+        "Disabled registered RGB-D acquisition template. All three topics must provide "
+        "the same nonzero acquisition stamp and optical frame, with already registered color/depth "
+        "pixels. CameraInfo uses rectified P intrinsics, identity R, "
+        "no stereo baseline translation. "
+        "Choose the exact depth scale; uint16 defaults to 0.001 m/sample, floats to meters. "
+        "Coordinator queues matching tickets for two seconds, then discards incomplete sets. "
+        "Header equality does not prove clock synchronization or registration. "
+        "No TF lookup, simulator or robot motion is performed.",
+    )
+    graph.save(ROOT / "registered_rgbd_subscriber.json")
 
 
 if __name__ == "__main__":

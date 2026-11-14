@@ -12,6 +12,8 @@ Open these projects with File → Open. Tools are in
 | [Offline cloud round trip](offline_cloud_roundtrip.json) | Real T-LESS RGB/depth and intrinsics → organized PointCloud2 conversion → typed RGB cloud and measurements; no ROS runtime needed. |
 | [Cloud subscriber and raw relay](cloud_subscriber.json) | Disabled PointCloud2 source feeding existing measurements/3D rendering and an optional gated raw relay preserving all fields and bytes. |
 | [Triggered cloud publisher](triggered_cloud_publisher.json) | Disabled JSON trigger tickets the paired T-LESS RGB/depth capture and publishes a meter-unit organized RGB cloud. |
+| [Recorded calibrated RGB-D](offline_calibrated_rgbd.json) | Real T-LESS capture → ROS image/CameraInfo conversions → ticket coordinator → strict RGB-D validation → calibrated meter cloud. |
+| [Registered RGB-D subscriber](registered_rgbd_subscriber.json) | Disabled three-topic acquisition using matching header-stamp tickets, per-acquisition CameraInfo and a bounded coordinator. |
 
 Run the offline example from the repository root:
 
@@ -63,7 +65,22 @@ supported fields. Raw Message publish mode preserves the original packet instead
 the subscriber example relays to `/opencv_dataflow/demo/observed_points` with
 Write enabled off. See the [conversion limits](../../../docs/ros2.md#pointcloud2-conversion).
 
-Rebuild all seven graphs without downloads or ROS activity:
+The calibrated example uses known dataset frame identity `TLESS:scene1:220` for
+its single recorded capture. No ROS exposure stamp is available: headers remain
+zero and Allow zero stamps is explicitly on. Its report does not claim clock
+synchronization. Input depth is already physical meters and travels as 32FC1.
+Original RGB/depth/intrinsics, source scale and on-canvas T-LESS attribution are
+preserved. This is an offline application example, not a sensor timing test.
+
+The disabled registered subscriber expects `/opencv_dataflow/camera/color_rect`,
+`/opencv_dataflow/camera/depth_registered` and `/opencv_dataflow/camera/camera_info`.
+All use best effort / volatile and require the same nonzero stamp and optical
+frame. CameraInfo selects rectified P with identity R and no stereo translation.
+The coordinator discards incomplete tickets after two seconds. Declare the actual
+depth scale before enabling. This template assumes already registered pixels;
+it does not register different cameras or perform TF lookup.
+
+Rebuild all nine graphs without downloads or ROS activity:
 
 ```powershell
 python examples/assets/build_ros2_examples.py
