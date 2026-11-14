@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "pcb_photo",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "../../assets/showcase/visa-pcb2-0000.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "run",
+      "type": "industrial.ros2_run",
+      "name": "ROS 2 run identity",
+      "parameters": {
+        "dataset_id": "VisA-PCB",
+        "run_id": "inspection-demo"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [
+        "reset"
+      ],
+      "exposed_outputs": [
+        "context",
+        "run_token"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attach",
+      "type": "industrial.ros2_acquisition",
+      "name": "Attach ROS 2 acquisition identity",
+      "parameters": {
+        "capture_mode": "ticket",
+        "capture_field": ""
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "value",
+        "context"
+      ],
+      "exposed_outputs": [
+        "value",
+        "ticket",
+        "acquisition"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "guard",
+      "type": "industrial.ros2_run_guard",
+      "name": "Validate ROS 2 run identity",
+      "parameters": {
+        "identity_source": "payload",
+        "run_field": "run_id"
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "value",
+        "context"
+      ],
+      "exposed_outputs": [
+        "value",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray",
+      "type": "cv.gray",
+      "name": "Grayscale",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        990,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "VisA PCB photo: Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and Onkar Dabeer, SPot-the-Difference (ECCV 2022). CC BY 4.0: https://registry.opendata.aws/visa/. Resized/letterboxed from bundled PCB2 0000; no defects added. Source and hashes: ../../assets/showcase/SOURCES.md. No robot/controller operation. Local run identity example. Attach scope before queues/branches and guard results against the current context afterward. New execution graph, project reopen or flow reset rotates the unsaved session nonce; a rising Reset input advances generation. Run/acquisition tags are local payloads, not standard ROS header fields or motion permission.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "pcb_photo",
+      "output": "image",
+      "target": "attach",
+      "input": "value"
+    },
+    {
+      "source": "run",
+      "output": "context",
+      "target": "attach",
+      "input": "context"
+    },
+    {
+      "source": "attach",
+      "output": "value",
+      "target": "guard",
+      "input": "value"
+    },
+    {
+      "source": "run",
+      "output": "context",
+      "target": "guard",
+      "input": "context"
+    },
+    {
+      "source": "guard",
+      "output": "value",
+      "target": "gray",
+      "input": "image"
+    }
+  ]
+}

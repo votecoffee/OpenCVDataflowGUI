@@ -5,9 +5,11 @@ import sys
 
 if __package__:
     from .native import Endpoint, PublishUncertain
+    from .native_tf import TFEndpoint
     from .wire import read_frame, write_frame
 else:
     from native import Endpoint, PublishUncertain
+    from native_tf import TFEndpoint
     from wire import read_frame, write_frame
 
 
@@ -28,7 +30,8 @@ def main():
                 if operation == "init":
                     if endpoint is not None:
                         raise ValueError("ROS worker is already initialized")
-                    endpoint = Endpoint(request["config"])
+                    factory = TFEndpoint if request["config"].get("kind") == "tf" else Endpoint
+                    endpoint = factory(request["config"])
                     result = endpoint.info
                 elif operation == "close":
                     write_frame(outgoing, {"id": ident, "ok": True, "result": {}})
@@ -44,6 +47,16 @@ def main():
                         request["require_subscriber"],
                         request["wait_for_ack"],
                         request["stamp_mode"],
+                    )
+                elif operation == "lookup":
+                    result = endpoint.lookup(
+                        request["target"],
+                        request["source"],
+                        request["stamp"],
+                        request["timeout"],
+                        request["expected_epoch"],
+                        request["max_age"],
+                        request["future_tolerance"],
                     )
                 else:
                     raise ValueError("Unknown ROS worker operation")

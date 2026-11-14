@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "pose",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.0,
+          0.0,
+          1.5707963267948966
+        ],
+        "translation": [
+          100,
+          -200,
+          300
+        ],
+        "source_frame": "tool0",
+        "target_frame": "base_link",
+        "units": "mm"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "encode",
+      "type": "industrial.ros2_pose_encode",
+      "name": "Encode ROS 2 pose / transform",
+      "parameters": {
+        "message_kind": "transform_stamped",
+        "invert": false,
+        "stamp_mode": "preserve"
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "pose"
+      ],
+      "exposed_outputs": [
+        "message"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "industrial.ros2_pose_decode",
+      "name": "Decode ROS 2 pose / transform",
+      "parameters": {
+        "message_kind": "transform_stamped",
+        "child_frame": "object",
+        "expected_parent": "",
+        "expected_child": "",
+        "invert": false,
+        "units": "mm",
+        "quaternion_policy": "require_unit",
+        "quaternion_tolerance": 1e-06
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "message"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "message",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inverse",
+      "type": "industrial.ros2_pose_decode",
+      "name": "Decode ROS 2 pose / transform",
+      "parameters": {
+        "message_kind": "transform_stamped",
+        "child_frame": "object",
+        "expected_parent": "",
+        "expected_child": "",
+        "invert": true,
+        "units": "m",
+        "quaternion_policy": "require_unit",
+        "quaternion_tolerance": 1e-06
+      },
+      "position": [
+        660,
+        300
+      ],
+      "exposed_inputs": [
+        "message"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "message",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "Original synthetic pose fixture: tool0 into base_link, XYZ in millimeters. ROS translation is meters, quaternion order xyzw, transform direction parent_from_child. Inverse swaps source/target frames and inverts the matrix. Zero header stamp is retained for this offline numeric example; zero is never accepted by exact-time TF lookup. No ROS runtime, robot, simulator or motion is used.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "pose",
+      "output": "transform",
+      "target": "encode",
+      "input": "pose"
+    },
+    {
+      "source": "encode",
+      "output": "message",
+      "target": "decode",
+      "input": "message"
+    },
+    {
+      "source": "encode",
+      "output": "message",
+      "target": "inverse",
+      "input": "message"
+    }
+  ]
+}

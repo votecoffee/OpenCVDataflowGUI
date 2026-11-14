@@ -41,12 +41,13 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **7 targeted increments of about 20** completed:
+The current cycle has **8 targeted increments of about 20** completed:
 animated image codec round trips (S1-111), large-radius smoothing (S1-159),
 assistant application authoring with connected-input plugin captures, the
 SimpleITK medical image/metadata foundation, optional ROS 2 Lyrical/Fast DDS
 image/data integration, ROS PointCloud2 conversion/acquisition/publication,
-and ROS CameraInfo/per-acquisition registered RGB-D association.
+ROS CameraInfo/per-acquisition registered RGB-D association, and strict ROS
+pose/TF conversion with run/reset acquisition identity.
 The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
@@ -101,6 +102,26 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+ROS **strict poses, acquisition-time TF and run/reset identity** now provide six
+additional blocks. Stamped pose/transform conversion names parent/child direction,
+meters/millimeters and quaternion policy. A persistent optional TF2 worker queries
+positive acquisition time with bounded waits, age limits and cancellation; observed
+clock resets invalidate its epoch. Static lookup timestamps are query times, not
+source measurements. One run authority emits an unsaved session/generation and
+opaque token; acquisition tags and guards reject stale local values/groups or
+explicit external envelope tokens. These are data checks, not motion permission.
+Three new examples cover numeric poses, a real PCB run-scope workflow and a
+disabled TF acquisition. See [pose/TF contracts](ros2-poses-tf.md).
+Verification passed **221 focused offline/editor/coordination checks**, **five
+native TF checks** and three existing native DDS spot checks. Exact interpolation,
+inverse direction, static-history recovery, age/future limits, backward clock
+jumps, stale contexts and cancelled-worker cleanup were checked on localhost.
+All **24 installed Debug/Lean CLI runs** matched the twelve ROS examples. The
+separately integrated planning package passed its 22 core checks and fourteen
+pinned file hashes. The app was reinstalled and its wheel contents checked;
+Python 3.12 worker syntax remains compatible with the isolated Lyrical runtime.
+No OpenCV coverage row was added, broad suite repeated or robot/simulator operated.
+
 ROS **CameraInfo conversion and per-acquisition registered RGB-D validation** now
 reuse the existing camera model and ticket coordinator. Three additional blocks
 support raw K/D or conservative rectified P intrinsics, ROI/binning, canonical
@@ -124,7 +145,7 @@ readers, gated publishers, offline converters and registered RGB-D validation un
 ROS extensions independent of the Python 3.14/OpenCV 5 GUI. Sources preserve
 headers and acquire tickets only on accepted messages; bounded queues and
 explicit QoS/timeout controls expose waiting and drop behavior. Ambiguous writes
-hold until reset. Nine [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
+hold until reset. Twelve [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
 include real VisA PCB/T-LESS RGB-D converter graphs and disabled live templates.
 See [runtime setup](ros2.md) and [issue #20](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20).
 The next milestones are:
@@ -133,12 +154,14 @@ The next milestones are:
    rectification and rectified ROI recomputation; extended cloud-field editing and
    validated remerging after point edits. Per-acquisition CameraInfo/RGB/depth
    association and PointCloud2 conversion/read/write are implemented.
-2. Strict TransformStamped/PoseStamped conversion and persistent TF2 lookup at the
-   acquisition stamp, explicit transform direction, bounded timeout/cancellation,
-   unavailable/stale errors and no silent latest fallback. Add dataset/run/reset
-   generation identity to tickets before pose-to-grasp execution. Follow with
-   clock-jump handling and rosbag2 replay.
-3. Services/actions with identities, cancellation and uncertain-outcome handling.
+2. Integrate local run tokens with external capture/service envelopes, request maps,
+   server/robot/scene/frame revisions and held-out timing checks. Strict stamped
+   poses/TF and local run/reset guards are implemented; rosbag2 and source TF
+   sample-age diagnostics remain open. Standard headers do not carry run identity.
+3. GUI services/actions with identities, cancellation, uncertain-outcome handling
+   and trajectory/scene review. The optional source-only
+   [plan-only ROS package](../integrations/ros2/README.md) is integrated separately;
+   it does not by itself add GUI action controls or execution authority.
 4. Coordinated Gazebo/ros_gz/MoveIt camera/robot examples and measured image/cloud
    throughput. Shared simulation dependencies and jobs require owner coordination.
    Reuse ChArUco → PnP → hand–eye tools and generic MarkerArray data publication;

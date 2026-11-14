@@ -146,6 +146,7 @@ def build():
 
     build_cloud_examples()
     build_calibration_examples()
+    build_pose_context_examples()
 
 
 def real_depth_graph():
@@ -337,6 +338,89 @@ def build_calibration_examples():
         "No TF lookup, simulator or robot motion is performed.",
     )
     graph.save(ROOT / "registered_rgbd_subscriber.json")
+
+
+def build_pose_context_examples():
+    graph = Graph()
+    pose = add(
+        graph,
+        "3d.pose",
+        "pose",
+        (0, 0),
+        source_frame="tool0",
+        target_frame="base_link",
+        translation=[100, -200, 300],
+        rvec=[0.0, 0.0, 1.5707963267948966],
+        units="mm",
+    )
+    encoded = add(graph, "industrial.ros2_pose_encode", "encode", (330, 0))
+    decoded = add(graph, "industrial.ros2_pose_decode", "decode", (660, 0), units="mm")
+    inverse = add(graph, "industrial.ros2_pose_decode", "inverse", (660, 300), invert=True)
+    graph.connect(pose.id, "transform", encoded.id, "pose")
+    graph.connect(encoded.id, "message", decoded.id, "message")
+    graph.connect(encoded.id, "message", inverse.id, "message")
+    note(
+        graph,
+        "Original synthetic pose fixture: tool0 into base_link, XYZ in millimeters. "
+        "ROS translation is meters, quaternion order xyzw, transform direction parent_from_child. "
+        "Inverse swaps source/target frames and inverts the matrix. Zero header stamp is retained "
+        "for this offline numeric example; zero is never accepted by exact-time TF lookup. "
+        "No ROS runtime, robot, simulator or motion is used.",
+    )
+    graph.save(ROOT / "offline_pose_roundtrip.json")
+
+    graph = Graph()
+    image = photo(graph)
+    run = add(
+        graph,
+        "industrial.ros2_run",
+        "run",
+        (0, 300),
+        dataset_id="VisA-PCB",
+        run_id="inspection-demo",
+    )
+    attach = add(graph, "industrial.ros2_acquisition", "attach", (330, 0))
+    guard = add(graph, "industrial.ros2_run_guard", "guard", (660, 0))
+    gray = add(graph, "cv.gray", "gray", (990, 0))
+    graph.connect(image.id, "image", attach.id, "value")
+    graph.connect(run.id, "context", attach.id, "context")
+    graph.connect(attach.id, "value", guard.id, "value")
+    graph.connect(run.id, "context", guard.id, "context")
+    graph.connect(guard.id, "value", gray.id, "image")
+    note(
+        graph,
+        CREDIT + " Local run identity example. Attach scope before queues/branches and guard "
+        "results against the current context afterward. New execution graph, project reopen or "
+        "flow reset rotates the unsaved session nonce; a rising Reset input advances generation. "
+        "Run/acquisition tags are local payloads, not standard ROS header fields "
+        "or motion permission.",
+    )
+    graph.save(ROOT / "offline_run_identity.json")
+
+    graph = Graph()
+    image = add(graph, "input.ros2_image", "camera", (0, 0), ticket_mode="header_stamp")
+    run = add(graph, "industrial.ros2_run", "run", (0, 300))
+    attach = add(
+        graph, "industrial.ros2_acquisition", "attach", (330, 0), capture_mode="header_stamp"
+    )
+    lookup = add(graph, "industrial.ros2_tf", "lookup", (660, 0), target_frame="base_link")
+    encode = add(graph, "industrial.ros2_pose_encode", "encode", (990, 0))
+    graph.connect(image.id, "image", attach.id, "value")
+    graph.connect(run.id, "context", attach.id, "context")
+    graph.connect(attach.id, "value", lookup.id, "value")
+    graph.connect(run.id, "context", lookup.id, "context")
+    graph.connect(lookup.id, "pose", encode.id, "pose")
+    note(
+        graph,
+        "Disabled exact-time TF template. Enable only an isolated configured ROS domain. "
+        "The camera header supplies nonzero acquisition time/source frame; Target is base_link. "
+        "Start the persistent TF listener before dynamic captures. No latest fallback exists. "
+        "Default node-clock freshness is one second; select Use sim time and the correct clock "
+        "for simulated headers. Observed backward clock jumps invalidate the listener until reset "
+        "or a new validated run context. Static lookup stamps are query times, not measurements. "
+        "Pose is base_link_from_camera in meters. Nothing publishes robot motion.",
+    )
+    graph.save(ROOT / "exact_time_tf_subscriber.json")
 
 
 if __name__ == "__main__":

@@ -14,6 +14,10 @@ from .ros2_support.wire import read_frame, write_frame
 class ROSRemoteError(RuntimeError):
     """A worker rejected a request before returning a result."""
 
+    def __init__(self, message, code=""):
+        super().__init__(message)
+        self.code = code
+
 
 class ROSPublishUnknown(RuntimeError):
     """A publication might have reached DDS; never retry it automatically."""
@@ -198,7 +202,7 @@ class ROSClient:
                         message = str(error.get("message", "ROS worker rejected the request"))
                         if error.get("unknown_publish") is True:
                             raise ROSPublishUnknown(message)
-                        raise ROSRemoteError(message)
+                        raise ROSRemoteError(message, str(error.get("type", "")))
                     result = response["result"]
                     if not isinstance(result, dict):
                         raise ValueError("Invalid ROS worker result")

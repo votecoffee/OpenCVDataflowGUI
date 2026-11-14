@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "camera",
+      "type": "input.ros2_image",
+      "name": "Read ROS 2 image",
+      "parameters": {
+        "topic": "/opencv_dataflow/camera/image",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "best_effort",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "latest",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "header_stamp",
+        "ticket_field": ""
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "run",
+      "type": "industrial.ros2_run",
+      "name": "ROS 2 run identity",
+      "parameters": {
+        "dataset_id": "inspection",
+        "run_id": ""
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [
+        "reset"
+      ],
+      "exposed_outputs": [
+        "context",
+        "run_token"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attach",
+      "type": "industrial.ros2_acquisition",
+      "name": "Attach ROS 2 acquisition identity",
+      "parameters": {
+        "capture_mode": "header_stamp",
+        "capture_field": ""
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "value",
+        "context"
+      ],
+      "exposed_outputs": [
+        "value",
+        "ticket",
+        "acquisition"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "lookup",
+      "type": "industrial.ros2_tf",
+      "name": "Lookup ROS 2 transform at acquisition",
+      "parameters": {
+        "enabled": false,
+        "domain_id": 71,
+        "namespace": "/opencv_dataflow",
+        "discovery_range": "localhost",
+        "tf_topic": "/tf",
+        "tf_static_topic": "/tf_static",
+        "clock_topic": "/clock",
+        "source_frame": "",
+        "target_frame": "base_link",
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "cache_seconds": 10.0,
+        "use_sim_time": false,
+        "max_age_seconds": 1.0,
+        "future_tolerance_seconds": 0.05,
+        "units": "m",
+        "unavailable": "error"
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "value",
+        "context"
+      ],
+      "exposed_outputs": [
+        "value",
+        "pose",
+        "message",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "encode",
+      "type": "industrial.ros2_pose_encode",
+      "name": "Encode ROS 2 pose / transform",
+      "parameters": {
+        "message_kind": "transform_stamped",
+        "invert": false,
+        "stamp_mode": "preserve"
+      },
+      "position": [
+        990,
+        0
+      ],
+      "exposed_inputs": [
+        "pose"
+      ],
+      "exposed_outputs": [
+        "message"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "Disabled exact-time TF template. Enable only an isolated configured ROS domain. The camera header supplies nonzero acquisition time/source frame; Target is base_link. Start the persistent TF listener before dynamic captures. No latest fallback exists. Default node-clock freshness is one second; select Use sim time and the correct clock for simulated headers. Observed backward clock jumps invalidate the listener until reset or a new validated run context. Static lookup stamps are query times, not measurements. Pose is base_link_from_camera in meters. Nothing publishes robot motion.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "camera",
+      "output": "image",
+      "target": "attach",
+      "input": "value"
+    },
+    {
+      "source": "run",
+      "output": "context",
+      "target": "attach",
+      "input": "context"
+    },
+    {
+      "source": "attach",
+      "output": "value",
+      "target": "lookup",
+      "input": "value"
+    },
+    {
+      "source": "run",
+      "output": "context",
+      "target": "lookup",
+      "input": "context"
+    },
+    {
+      "source": "lookup",
+      "output": "pose",
+      "target": "encode",
+      "input": "pose"
+    }
+  ]
+}

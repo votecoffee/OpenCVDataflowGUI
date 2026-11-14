@@ -42,6 +42,8 @@ Optional [ROS 2 Lyrical / Fast DDS](docs/ros2.md) image, point-cloud and data bl
 separately configured ROS Python runtime under **Industrial integration → ROS 2**.
 CameraInfo converters and a registered RGB-D validator connect acquisition to the
 existing calibrated 3D tools.
+Optional [pose/TF and run identity tools](docs/ros2-poses-tf.md) preserve frame
+direction and check acquisition time and run/reset context.
 
 ## Usage
 

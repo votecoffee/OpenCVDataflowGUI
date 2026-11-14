@@ -4348,6 +4348,17 @@ Inputs: `payload` (any), `enable` (boolean).
 | `write_enabled` | `false` | Also wire a true Enable input for each intended publication. |
 | `retain` | `false` | Ask the broker to retain the last value on the topic. |
 
+## Attach ROS 2 acquisition identity (`industrial.ros2_acquisition`)
+
+Industrial integration / ROS 2
+
+Inputs: `value` (any), `context` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `capture_mode` | `"ticket"` | `ticket`, `header_stamp`, `field` Use the incoming ticket, nonzero header stamp without frame_id, or a numeric/string data field. |
+| `capture_field` | `""` | Dotted object field path when Field is selected. Do not replace physical frame names to correlate tickets. |
+
 ## Decode ROS 2 CameraInfo (`industrial.ros2_camera_decode`)
 
 Industrial integration / ROS 2
@@ -4512,6 +4523,35 @@ Inputs: `image` (image), `enable` (boolean).
 | `frame_id` | `""` | Optional header frame override, with no implied physical transform or calibration. |
 | `stamp_mode` | `"preserve"` | `preserve`, `zero`, `node_clock` Preserve incoming ROS header (otherwise zero), clear it, or stamp using the ROS node clock. |
 
+## Decode ROS 2 pose / transform (`industrial.ros2_pose_decode`)
+
+Industrial integration / ROS 2
+
+Inputs: `message` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `message_kind` | `"transform_stamped"` | `transform_stamped`, `pose_stamped` TransformStamped includes child_frame_id; PoseStamped needs the configured child frame. |
+| `child_frame` | `"object"` | PoseStamped only: explicit object/tool frame whose pose is expressed in header.frame_id. |
+| `expected_parent` | `""` | Optional required header.frame_id, checked before inversion. |
+| `expected_child` | `""` | Optional required child frame, checked before inversion. |
+| `invert` | `false` | Invert the rigid transform and swap source/target frames. |
+| `units` | `"m"` | `m`, `mm` ROS translations are meters; optionally convert the app pose to millimeters. |
+| `quaternion_policy` | `"require_unit"` | `require_unit`, `normalize` Reject nonunit quaternions or explicitly normalize finite nonzero values. |
+| `quaternion_tolerance` | `1e-06` | Value must be a finite number between 1e-12 and 0.01. Allowed quaternion norm error in Require unit mode. |
+
+## Encode ROS 2 pose / transform (`industrial.ros2_pose_encode`)
+
+Industrial integration / ROS 2
+
+Inputs: `pose` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `message_kind` | `"transform_stamped"` | `transform_stamped`, `pose_stamped` TransformStamped includes child_frame_id; PoseStamped needs the configured child frame. |
+| `invert` | `false` | Invert the rigid transform and swap source/target frames. |
+| `stamp_mode` | `"preserve"` | `preserve`, `zero` Keep a ROS acquisition stamp (otherwise zero) or clear it. Header frame is the output parent. |
+
 ## Validate registered ROS RGB-D (`industrial.ros2_rgbd`)
 
 Industrial integration / ROS 2
@@ -4529,6 +4569,60 @@ Inputs: `group` (any).
 | `uint16_m_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Explicit meters per uint16 depth sample, e.g. 0.001 for millimeters. |
 | `float_depth_units` | `"m"` | `m`, `mm` Declared 32FC1/64FC1 depth units. Output is physical meters. |
 | `display_max_m` | `5.0` | Value must be a finite number between 0.001 and 1e+06. Depth preview upper display bound in meters; does not clip measured values. |
+
+## ROS 2 run identity (`industrial.ros2_run`)
+
+Industrial integration / ROS 2
+
+Inputs: `reset` (boolean, optional).
+
+Input `reset` — A rising true edge advances generation once; holding true does not repeat reset.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `dataset_id` | `"inspection"` | Dataset/job identity shared by related acquisitions. |
+| `run_id` | `""` | Optional run label; empty generates a UUID. Runtime session nonce is always fresh after flow reset/reopen. |
+
+## Validate ROS 2 run identity (`industrial.ros2_run_guard`)
+
+Industrial integration / ROS 2
+
+Inputs: `value` (any), `context` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `identity_source` | `"payload"` | `payload`, `envelope` Check full local acquisition payloads or an explicit external JSON run-token field. |
+| `run_field` | `"run_id"` | Envelope mode: dotted field containing the current Run identity run_token; no acquisition tag is invented. |
+
+## Lookup ROS 2 transform at acquisition (`industrial.ros2_tf`)
+
+Industrial integration / ROS 2
+
+Inputs: `value` (any), `context` (data, optional).
+
+Input `value` — Ticketed image/data/pose carrying a positive ROS acquisition header stamp.
+
+Input `context` — Optional current run identity: reject stale acquisition payloads before lookup.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `enabled` | `false` | Start a persistent read-only TF listener. Disabled blocks never start ROS. |
+| `domain_id` | `71` | Value must be a whole number between 0 and 232. DDS domain shared with the transform/clock publishers. |
+| `namespace` | `"/opencv_dataflow"` | Namespace for the private TF worker node. |
+| `discovery_range` | `"localhost"` | `localhost`, `subnet` Localhost by default; subnet opts in to network discovery. |
+| `tf_topic` | `"/tf"` | Dynamic TransformListener topic; standard /tf or a private test topic. |
+| `tf_static_topic` | `"/tf_static"` | Static TransformListener topic using standard transient-local TF QoS. |
+| `clock_topic` | `"/clock"` | Node clock topic when Use sim time is enabled. |
+| `source_frame` | `""` | Empty uses the acquisition header frame. Pose maps this source into Target frame. |
+| `target_frame` | `"base_link"` | Explicit destination/parent frame, e.g. base_link. |
+| `timeout_seconds` | `0.25` | Value must be a finite number between 0.01 and 30. Maximum wall-clock wait for the exact requested transform; no latest fallback. |
+| `startup_timeout_seconds` | `30.0` | Value must be a finite number between 1 and 60. Bounded startup of the separate configured ROS Python worker. |
+| `cache_seconds` | `10.0` | Value must be a finite number between 0.1 and 120. TF2 time cache. Start the listener before collecting dynamic acquisitions. |
+| `use_sim_time` | `false` | Use the selected ROS clock; observed backward jumps latch until reset/new context. |
+| `max_age_seconds` | `1.0` | Value must be a finite number between 0 and 3600. Acquisition age against the node clock. Zero explicitly disables age checking for historical queries. |
+| `future_tolerance_seconds` | `0.05` | Value must be a finite number between 0 and 30. Allowed lead over node time when age checking is enabled. |
+| `units` | `"m"` | `m`, `mm` TF translations are meters; optionally convert the app pose to millimeters. |
+| `unavailable` | `"error"` | `error`, `wait` Report unavailable exact-time TF as an error or wait without an output event. |
 
 ## Load animation frames (`input.animation_file`)
 

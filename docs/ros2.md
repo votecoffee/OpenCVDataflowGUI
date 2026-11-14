@@ -1,6 +1,6 @@
 # ROS 2 Lyrical and Fast DDS
 
-Thirteen blocks live in **Industrial integration → ROS 2**. The converters work
+Nineteen blocks live in **Industrial integration → ROS 2**. The converters work
 offline. Read/publish blocks are optional and start disabled; opening, validating
 or previewing a graph never starts ROS. There is no `pip install rclpy` dependency
 in the GUI environment.
@@ -20,6 +20,14 @@ in the GUI environment.
 | Decode ROS 2 CameraInfo (`industrial.ros2_camera_decode`) | CameraInfo fields → existing camera model, original message and geometry details |
 | Encode ROS 2 CameraInfo (`industrial.ros2_camera_encode`) | Camera model → canonical current-grid CameraInfo fields for the existing data publisher |
 | Validate registered ROS RGB-D (`industrial.ros2_rgbd`) | Completed ticketed FlowGroup → checked color/depth/camera, physical meter depth and association report |
+| Decode / Encode ROS 2 pose (`industrial.ros2_pose_decode`, `industrial.ros2_pose_encode`) | Strict TransformStamped/PoseStamped ↔ typed m/mm parent-from-child poses |
+| Lookup ROS 2 transform (`industrial.ros2_tf`) | Persistent exact-acquisition-time TF2, bounded freshness/wait/cancellation, optional current-context guard |
+| ROS 2 run identity (`industrial.ros2_run`) | Unsaved runtime session and rising-edge reset generation |
+| Attach acquisition identity (`industrial.ros2_acquisition`) | Scope a ticketed value by dataset/run/session/generation and capture key |
+| Validate run identity (`industrial.ros2_run_guard`) | Reject stale or untagged values/groups before consuming results |
+
+See [pose/TF and run-context contracts](ros2-poses-tf.md) for frame direction,
+clock reset behavior, context schemas and external-envelope boundaries.
 
 ## Runtime setup
 
@@ -261,23 +269,28 @@ Pre-publication field validation failures remain known rejections.
 ## Examples, verification and next milestones
 
 Open the [ROS examples](<../examples/industrial integration/ros2_fastdds/README.md>)
-for real openly licensed PCB/RGB-D converter graphs and six disabled live templates.
+for real openly licensed PCB/RGB-D graphs, offline pose/run-context workflows
+and seven disabled live templates.
 The optional native tests use localhost, private UUID topics and domain 71:
 
 ```powershell
 python -m pytest tests/test_ros2.py -q
 python -m pytest tests/test_ros2_clouds.py -q
 python -m pytest tests/test_ros2_calibration.py -q
+python -m pytest tests/test_ros2_poses_context.py tests/test_ros2_tf.py -q
 $env:OPENCV_DATAFLOW_TEST_ROS2 = "1"
 python -m pytest tests/test_ros2_native.py -q
 python -m pytest tests/test_ros2_cloud_native.py -q
 python -m pytest tests/test_ros2_calibration_native.py -q
+python -m pytest tests/test_ros2_tf_native.py -q
 ```
 
 These tests publish only local fixture images/state. They do not launch a
 simulator or connect a robot. The [roadmap issue](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20)
 covers static CameraInfo caching/approximate pairing, extended rectification and
-cloud field/remerge work, strict pose/TF2 conversion, clocks/reset and rosbag2,
-services/actions, and coordinated Gazebo/ros_gz/MoveIt examples. Shared simulation
+cloud field/remerge work, clock/run-envelope integration and rosbag2, GUI
+services/actions, and coordinated Gazebo/ros_gz/MoveIt examples. Pose/TF and local
+run/reset context are implemented; standard messages still need explicit external
+identity envelopes. Shared simulation
 environments must be coordinated with their owners before dependencies or jobs
 are changed. Native DDS loopback does not qualify simulation or robot motion.

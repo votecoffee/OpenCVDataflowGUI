@@ -10,9 +10,12 @@ from .payloads import NO_VALUE, frame
 from .ros2_calibration import ROS2_CALIBRATION_BLOCKS
 from .ros2_client import ROSClient, ROSPublishUnknown
 from .ros2_clouds import decode_cloud, encode_cloud
+from .ros2_context import ROS2_CONTEXT_BLOCKS
 from .ros2_images import decode_image, encode_image
+from .ros2_poses import ROS2_POSE_BLOCKS
 from .ros2_support.cloud_wire import ROSPointCloud
 from .ros2_support.wire import ENCODINGS, MAX_DATA_BYTES, ROSImage, json_bytes, parse_json
+from .ros2_tf import LookupROSTF
 from .tickets import DIRECT_CLOCK
 from .visual_style import INDUSTRIAL
 
@@ -739,4 +742,7 @@ ROS2_BLOCKS = (
     EncodeROSCloud,
     DecodeROSCloud,
     *ROS2_CALIBRATION_BLOCKS,
+    *ROS2_CONTEXT_BLOCKS,
+    *ROS2_POSE_BLOCKS,
+    LookupROSTF,
 )

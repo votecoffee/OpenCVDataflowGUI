@@ -14,6 +14,9 @@ Open these projects with File → Open. Tools are in
 | [Triggered cloud publisher](triggered_cloud_publisher.json) | Disabled JSON trigger tickets the paired T-LESS RGB/depth capture and publishes a meter-unit organized RGB cloud. |
 | [Recorded calibrated RGB-D](offline_calibrated_rgbd.json) | Real T-LESS capture → ROS image/CameraInfo conversions → ticket coordinator → strict RGB-D validation → calibrated meter cloud. |
 | [Registered RGB-D subscriber](registered_rgbd_subscriber.json) | Disabled three-topic acquisition using matching header-stamp tickets, per-acquisition CameraInfo and a bounded coordinator. |
+| [Offline pose round trip](offline_pose_roundtrip.json) | Synthetic numeric fixture: m/mm conversion, parent-from-child direction, quaternion encoding and inversion without ROS. |
+| [Offline run identity](offline_run_identity.json) | Real PCB acquisition with a run/reset scope, scoped ticket and current-context guard. |
+| [Exact-time TF subscriber](exact_time_tf_subscriber.json) | Disabled image acquisition and persistent TF lookup at its nonzero header stamp, guarded by current run context. |
 
 Run the offline example from the repository root:
 
@@ -80,7 +83,21 @@ The coordinator discards incomplete tickets after two seconds. Declare the actua
 depth scale before enabling. This template assumes already registered pixels;
 it does not register different cameras or perform TF lookup.
 
-Rebuild all nine graphs without downloads or ROS activity:
+The run-identity example creates a fresh unsaved session per execution graph and
+scopes the image filename ticket. A rising Reset input advances generation; flow
+reset/reopen creates a new session. Use Run token as the echoed `run_id` in an
+external JSON envelope, then select Envelope mode on the guard. That checks the
+run token without inventing acquisition tags or validating request/scene revisions.
+Local tagging and guard examples perform no network I/O.
+
+The disabled TF template queries `base_link_from_camera` at the actual incoming
+stamp; Source can be overridden to `tool0` for a robot-pose lookup at image time.
+Zero/latest is rejected. Default age limit is one second against the selected
+node clock. Configure Use sim time/Clock topic for simulated headers and start
+the persistent listener before dynamic captures. Static lookup timestamps denote
+query time, not a new measurement. See [pose/TF/context contracts](../../../docs/ros2-poses-tf.md).
+
+Rebuild all twelve graphs without downloads or ROS activity:
 
 ```powershell
 python examples/assets/build_ros2_examples.py

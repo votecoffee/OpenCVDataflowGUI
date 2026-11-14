@@ -27,6 +27,9 @@ BASE = ROOT / "examples/industrial integration/ros2_fastdds"
         "triggered_cloud_publisher",
         "offline_calibrated_rgbd",
         "registered_rgbd_subscriber",
+        "offline_pose_roundtrip",
+        "offline_run_identity",
+        "exact_time_tf_subscriber",
     ],
 )
 def test_saved_graphs_validate_and_run_without_ros(monkeypatch, name):
@@ -68,11 +71,32 @@ def test_saved_graphs_validate_and_run_without_ros(monkeypatch, name):
             cloud = graph.blocks["project"].last_result.outputs["cloud"]
             assert cloud.units == "m" and 10000 < len(cloud.points) < 30000
             assert "CC BY 4.0" in graph.blocks["showcase_source"].description
+        if name == "offline_pose_roundtrip":
+            original = graph.blocks["pose"].last_result.outputs["transform"]
+            restored = graph.blocks["decode"].last_result.outputs["pose"]
+            np.testing.assert_allclose(
+                restored["source_to_target"], original["source_to_target"], atol=1e-10
+            )
+            inverse = graph.blocks["inverse"].last_result.outputs["pose"]
+            assert inverse["source_frame"] == "base_link" and inverse["target_frame"] == "tool0"
+            np.testing.assert_allclose(inverse["translation"], [0.2, 0.1, -0.3], atol=1e-10)
+        if name == "offline_run_identity":
+            context = graph.blocks["run"].last_result.outputs["context"]
+            attached = graph.blocks["attach"].last_result.outputs["acquisition"]
+            assert attached["context"] == context
+            assert graph.blocks["guard"].last_result.outputs["info"]["current"]
+            assert (
+                graph.blocks["gray"].last_result.payloads["image"]["acquisition"]["context"]
+                == context
+            )
+            assert "CC BY 4.0" in graph.blocks["source_and_scope"].description
         for b in graph.processing_blocks():
             if isinstance(b, ros.ReadROS):
                 assert b.parameters["enabled"] is False
             if isinstance(b, ros.PublishROS):
                 assert b.parameters["write_enabled"] is False
+            if b.type_id == "industrial.ros2_tf":
+                assert b.parameters["enabled"] is False
     finally:
         graph.close()
 
@@ -142,6 +166,31 @@ def test_rgbd_block_editor_shows_units_and_timing_controls(app):
         window.scene.nodes["checked"].setSelected(True)
         assert isinstance(window.inspector.fields["float_depth_units"], QComboBox)
         assert isinstance(window.inspector.fields["allow_zero_stamps"], QCheckBox)
+        assert window.inspector.can_preview()
+    finally:
+        window.dirty = False
+        window.close()
+        app.processEvents()
+
+
+def test_pose_and_run_guard_inspector_enum_choices(app):
+    from PySide6.QtWidgets import QComboBox
+
+    from opencv_dataflow.app import MainWindow
+
+    window = MainWindow()
+    try:
+        graph = Graph.load(BASE / "offline_pose_roundtrip.json", window.registry)
+        graph.run()
+        window.replace_graph(graph)
+        window.scene.nodes["decode"].setSelected(True)
+        assert isinstance(window.inspector.fields["quaternion_policy"], QComboBox)
+        assert window.inspector.can_preview()
+        graph = Graph.load(BASE / "offline_run_identity.json", window.registry)
+        graph.run()
+        window.replace_graph(graph)
+        window.scene.nodes["guard"].setSelected(True)
+        assert isinstance(window.inspector.fields["identity_source"], QComboBox)
         assert window.inspector.can_preview()
     finally:
         window.dirty = False
