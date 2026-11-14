@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "opencv-simple-bin-picking"
+version = "0.1.0.dev1"
+description = "Observed-surface suction proposals with explicit contact, clearance and unknown evidence."
+readme = "PACKAGE_README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+dependencies = ["numpy>=1.24", "scipy>=1.11,<2"]
+
+[project.optional-dependencies]
+gui = ["PySide6>=6.8,<7"]
+test = ["pytest>=8"]
+
+[project.scripts]
+simple-bin-picking = "opencv_simple_bin_picking.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

@@ -7,6 +7,26 @@ app projects/recipes and the trusted runtime profile.
 
 ## Available source
 
+The [bin-to-grid example](../../examples/Simple%20Plugins/bin_picking/bin_to_grid/README.md)
+adds two distinct packages:
+
+- [opencv_bin_picking_fixture](packages/opencv_bin_picking_fixture/README.md):
+  isolated UR5e/bin/table scene, original RGB-D source and observed pose-gated
+  fixed-joint grasp assistance. No pick loop or arm trajectories.
+- [opencv_dataflow_pick_backend](packages/opencv_dataflow_pick_backend/README.md):
+  native capture, collision setup, IK/global/Cartesian plans, simulation execution
+  and assisted attachment primitives. The app owns sequencing and the grid.
+
+The actual app graph completed **6/6 placements with 37 successful arm
+trajectories**. Independent final feedback found all parts released, no remaining
+bin candidates or MoveIt attachments and maximum placement error **1.2382 mm**.
+The public example retains original per-pick RGB/depth, colored flyaround clouds,
+calibration/stamps and full motion receipts. These are authored boxes with
+privileged collision/evaluation geometry and assisted grasps, not a physical
+friction-grasp or arbitrary-clutter qualification.
+`pick_backend_sha256.json` pins the backend package independently of the earlier
+plan-only package below.
+
 [opencv_dataflow_planning](packages/opencv_dataflow_planning/README.md) is an
 experimental ament_python package with a **plan-only** MoveIt bridge and recorded
 simulation-result summarizer. Existing ROS String JSON publishers/readers can

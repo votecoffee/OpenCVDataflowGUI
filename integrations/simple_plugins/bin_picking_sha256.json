@@ -1,0 +1,24 @@
+{
+  "package": "opencv-simple-bin-picking",
+  "version": "0.1.0.dev1",
+  "files": {
+    "pyproject.toml": "f4f581c7a337c7e008bb5301628a23e91d2acbc904f20d00ff306d56d2a414ce",
+    "PACKAGE_README.md": "d8a3142ebd3a9934fb2d48abe6dc86484b4dd2056761f5a27429f457ac3e02d0",
+    "LICENSE": "9fdbc8c41abf794f69c3488f463798e06338bf90ebefbe2daee329d217c83d44",
+    "src/opencv_simple_bin_picking/cli.py": "d9886262e514afdfa12d5c7a0b8fd6cb5af1655685721bccbd8e93e74ea1b615",
+    "src/opencv_simple_bin_picking/dataflow.py": "ba270116ab1252b2ce8d44d14a2e6add9c17fbac683a0170ed2ce7743faec71c",
+    "src/opencv_simple_bin_picking/graphics.py": "38eb537ca2cd41965c6d434e35d3ffaf7931499785ea50a32d7d9fc8af6530cd",
+    "src/opencv_simple_bin_picking/parallel_jaw.py": "5335de323b71e5bf2a64418a1919750de49bd66aad73cb5d1944120ac29052b6",
+    "src/opencv_simple_bin_picking/persistence.py": "c6c3add09f1b3f7d433873ed1a1dbed43c6eb0d9c332ab69856c2d4368204151",
+    "src/opencv_simple_bin_picking/planning.py": "ef3a0c276db7e864a3bd45c8c07445dcfd24d814967bf6e55c27d9f635b4beba",
+    "src/opencv_simple_bin_picking/qt_training.py": "5885cb2772796ad81f7ba62e953422011b823832a9faec4e1731f0d690831852",
+    "src/opencv_simple_bin_picking/scene.py": "37b7f8aeec6c442aa599d47c963222bd51c3ecb7c831b635c4f58618f8a9b3a1",
+    "src/opencv_simple_bin_picking/sim_client.py": "e8d2fb1b0e912eef873eb7e897c4be4876c1c433222576f69fafed175f99d495",
+    "src/opencv_simple_bin_picking/sim_dataflow.py": "85aaf7d3d07d7d3c65802616af586c4cefeedb935000cd239f75a8e23ab77754",
+    "src/opencv_simple_bin_picking/sim_workflow.py": "356a315a77fc847388ef49aefeceaa9508f756a8828b1f0768efa4c3ad05e65b",
+    "src/opencv_simple_bin_picking/specs.py": "06b4bae89d6540c56c71d347bb33c9f82ab3577d48538d83481cc06ac4055374",
+    "src/opencv_simple_bin_picking/teaching.py": "b04357cf807dabdbc8de8eb4948265f196458fef2016bf31047aa6eb4254b61a",
+    "src/opencv_simple_bin_picking/__init__.py": "983445afaf122c7689ed34c45898f36dd315afb312c46a9d59e09730df1371de",
+    ".gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9"
+  }
+}

@@ -5,7 +5,6 @@ import math
 import os
 from pathlib import Path
 import time
-import uuid
 
 from .scene import camera_transform, load
 from .state import FixtureState, Observation
@@ -36,7 +35,6 @@ def main(args=None):
     from tf2_msgs.msg import TFMessage
     from tf2_ros import Buffer, TransformListener, StaticTransformBroadcaster
     from geometry_msgs.msg import TransformStamped
-    from ros_gz_interfaces.srv import ControlWorld
     from rosgraph_msgs.msg import Clock
 
     scene = load(arguments.overlay / "scene.json")
@@ -48,8 +46,6 @@ def main(args=None):
             self.source = {}
             self.camera_info = None
             self.last_error = None
-            self.reset_future = None
-            self.reset_started = None
             self.clock_ns = None
             self.clock_advanced = None
             self.tf = Buffer(node=self)
@@ -75,7 +71,6 @@ def main(args=None):
             self.service("/opencv_fixture/status", lambda: self.snapshot())
             self.service("/opencv_fixture/evaluation/snapshot", lambda: self.truth())
             self.service("/opencv_fixture/reset", self.reset)
-            self.world_control = self.create_client(ControlWorld, f"/world/{scene['world']}/control")
             for part in scene["parts"]:
                 part_id = part["id"]; prefix = f"/opencv_fixture/assistance/{part_id}"
                 for operation in ("attach", "detach"):
@@ -178,23 +173,14 @@ def main(args=None):
                     "overlay": str(arguments.overlay.resolve()),
                     "ros_domain_id": os.environ["ROS_DOMAIN_ID"], "gz_partition": os.environ["GZ_PARTITION"],
                     "camera_info": self.camera_info, "last_error": self.last_error,
+                    "reset_supported": False,
                     "physics": {"simulation_stamp_ns": self.clock_ns,
                         "time_recently_advancing": self.core._fresh(self.clock_advanced),
-                        "reset_phase": None if self.reset_started is None else "waiting_for_reset_settle"}}
+                        "reset_phase": None}}
 
         def reset(self):
-            if self.core.pending or self.core.resetting or any(state not in
-                {"detached", "configured_detached_unobserved"} for state in self.core.state.values()):
-                raise ValueError("Detach every object and resolve all pending/unknown outcomes before reset")
-            if not self.core._fresh(self.core.joints_received) or not self.core.arm_stationary:
-                raise ValueError("Stop execution and observe a stationary arm before reset")
-            if not self.world_control.service_is_ready(): raise ValueError("World control bridge is unavailable")
-            request = ControlWorld.Request(); request.world_control.reset.all = True
-            self.core.resetting = True
-            self.last_error = None
-            self.reset_started = time.monotonic()
-            self.reset_future = self.world_control.call_async(request)
-            return {"reset": "requested", "note": "Run UUID changes only after a successful control response and observed settling"}
+            raise ValueError("In-place reset is disabled: native clock rewind interrupted robot/TF feedback. "
+                             "Stop this isolated fixture and prepare a new overlay/session to repeat.")
 
         def poll(self):
             self.core.camera_ready = self.camera_info is not None and all(
@@ -207,22 +193,6 @@ def main(args=None):
                     self.core.tcp = Observation((t.x, t.y, t.z), (q.x, q.y, q.z, q.w), time.monotonic(), stamp)
             except Exception:
                 pass  # Missing/stale TF remains unavailable; cached lookups never refresh age.
-            if self.reset_future is not None and self.reset_future.done():
-                try:
-                    if not self.reset_future.result().success: raise RuntimeError("World rejected reset")
-                    self.core.poses.clear(); self.core.tcp = None; self.source.clear()
-                    self.reset_future = None
-                except Exception as error:
-                    self.last_error = str(error); self.reset_future = None
-                    # The outcome remains fenced; do not claim a reset failed before side effects.
-            if self.core.resetting and self.reset_future is None and self.reset_started is not None:
-                settled = time.monotonic() - self.reset_started > 0.5 and all(
-                    item["id"] in self.core.poses and self.core._fresh(self.core.poses[item["id"]].received)
-                    and math.dist(self.core.poses[item["id"]].xyz, item["pose"][:3]) < 0.006 for item in scene["parts"])
-                if settled and self.last_error is None:
-                    self.core.run_id = str(uuid.uuid4()); self.core.resetting = False; self.reset_started = None
-                elif time.monotonic() - self.reset_started > 10:
-                    self.last_error = "Reset outcome/settling unconfirmed; restart this isolated fixture to recover"
             self.status_pub.publish(String(data=json.dumps(self.snapshot(), allow_nan=False)))
             self.truth_pub.publish(String(data=json.dumps({"session_id": self.core.session_id, "run_id": self.core.run_id,
                 **self.truth()}, allow_nan=False)))

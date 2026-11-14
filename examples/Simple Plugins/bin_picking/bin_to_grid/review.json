@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "review",
+      "type": "input.sim_pick_review",
+      "name": "Recorded bin-grid pick",
+      "parameters": {
+        "archive_directory": "assets/run",
+        "cell": 6
+      },
+      "position": [
+        0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "outcome",
+        "before",
+        "after",
+        "graphics",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "graphics"
+    },
+    {
+      "id": "final_image",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "result.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        425.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "final_cloud",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "result.ply",
+        "units": "m",
+        "frame": "world",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        800.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    }
+  ],
+  "connections": []
+}

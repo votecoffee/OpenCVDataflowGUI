@@ -126,6 +126,11 @@ Projects using installed **Simple Plugins**, including **Simple3DLocate**,
 open directly after setup. **SimpleClassify** is bundled with DataflowGUI. See the
 [Simple Plugins examples and setup](<examples/Simple Plugins/README.md>).
 
+The [bin-to-grid example](<examples/Simple Plugins/bin_picking/bin_to_grid/README.md>)
+includes a six-pick UR5e/MoveIt simulation and offline source-image/colored-cloud
+review. Its native run completed 37 arm trajectories and six released grid
+placements; grasp assistance and privileged collision geometry are explicit.
+
 [Runnable plugin example](examples/user_tools/custom_invert/README.md) · [Plugin dialog API](docs/plugin-dialogs.md)
 
 Plugins can provide their own configuration or training dialogs. The dialog API

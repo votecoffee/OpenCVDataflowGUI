@@ -2,7 +2,12 @@
 
 Additive, simulation-only UR5e scene and source-camera support for the OpenCVDataflowGUI bin-picking example. The application owns candidate perception, pick sequencing, the placement grid, MoveIt collision-scene transitions and trajectory execution. This package supplies no pick loop and sends no robot trajectories.
 
-Status: native headless scene/camera readiness is verified. Assisted lift/release, reset and complete multi-pick acceptance must be measured by the application owner; do not treat pure state-machine or camera tests as those results.
+Status: native source-camera and full six-pick application acceptance are measured.
+The app completed 37 successful arm trajectories and six assisted lifts/releases
+into a table grid, with maximum independent position error 1.2382 mm. All parts
+were detached and MoveIt attachments empty afterward. In-place reset is disabled;
+use a fresh isolated fixture session to repeat. Pure state tests remain separate
+from this native evidence.
 
 ## Scene and ownership
 
@@ -52,11 +57,18 @@ World frame is `world`; the camera optical frame is `opencv_fixture_camera_optic
 | `/opencv_fixture/objects/<id>/attach` | `std_srvs/srv/Trigger` | Request gated assistance; does not report success as an observed grasp |
 | `/opencv_fixture/objects/<id>/detach` | `std_srvs/srv/Trigger` | Request release of an observed attachment |
 | `/opencv_fixture/objects/<id>/state` | `std_srvs/srv/Trigger` | Attachment state and pending operation |
-| `/opencv_fixture/reset` | `std_srvs/srv/Trigger` | Explicit whole-simulation reset after detached/stationary checks; requires observed settling |
+| `/opencv_fixture/reset` | `std_srvs/srv/Trigger` | Returns `success=false`; restart a fresh fixture session to repeat |
 
 Default IDs are `part_01` through `part_06`. Trigger `success=false` means rejected before issuing the requested operation. A successful request contains an operation UUID with `outcome=requested`; **wait for `outcome=observed` and the requested attachment state before moving**. Native DetachableJoint output has no operation UUID, so this UUID is local correlation, not a native transaction guarantee. A two-second missing acknowledgment becomes `outcome_unknown`, blocks further requests and must not be retried automatically. A matching late native observation can resolve it; otherwise stop/restart the isolated fixture.
 
-Every response carries `schema=opencv.bin_picking_fixture/v1`, `session_id`, `run_id` and `simulation_only=true`. Session UUID changes on node startup. Run UUID changes only after a successful reset-control response and fresh settled initial part poses. Match these IDs and `scene_sha256` before consuming results; node restarts are reconnect boundaries. A failed/unconfirmed reset remains fenced. Reset is a separately labeled simulation operation, never a pick or place.
+Every response carries `schema=opencv.bin_picking_fixture/v1`, `session_id`, `run_id`
+and `simulation_only=true`. Session/run UUIDs change on node startup. Match these
+IDs and `scene_sha256` before consuming results; restarts are reconnect boundaries.
+`reset_supported=false` is explicit. The native whole-world reset test restored
+part poses but interrupted joint feedback and disconnected TCP TF after clock
+rewind. It is disabled without issuing a world-control request. Stop the isolated
+launcher and prepare a new overlay/unique partition for another episode. A
+parts-only respawn/rebind route remains future qualification work.
 
 Status `ready` requires fresh RGB/depth, observed CameraInfo, advancing simulation time, TCP/joint feedback, every object pose and no pending operation/reset. `phase` is `waiting_for_observations`, `ready`, `operation_pending` or `resetting`. CameraInfo is retained calibration within a session, while image/pose/TCP freshness uses host monotonic receive age. The status heartbeat uses a steady clock so it continues when simulation time pauses. Source image/frame validity and native behavior still need runtime acceptance.
 
@@ -70,7 +82,12 @@ These are explicitly **truth-based pose gates**, not a validated contact sensor 
 
 ## Verification
 
-Pure tests cover actual initial geometry separation, source/evaluation separation, optical-axis geometry, initially-unattached per-object plugin settings, fresh/invalid/stale/jaw gates, single-object ownership and unknown/late outcomes. Collision-free reach, observed lift/release and repeated reset remain required application runtime checks. No physical camera/robot or commercial simulation license is part of this fixture.
+Pure tests cover actual initial geometry separation, source/evaluation separation,
+optical-axis geometry, initially-unattached plugin settings, fresh/stale/jaw gates,
+single-object ownership and unknown/late outcomes. The subsequent app run verified
+collision-checked reach, six assisted lifts/releases, upright settling and an empty
+bin. Friction grasps, broad clutter and in-place reset remain unqualified. No
+physical camera/robot or commercial simulation license is part of this fixture.
 
 The source checks passed **9 offline tests**, installed Gazebo's world SDF validation and actual URDF-to-SDF conversion retaining `gripper_base_link` and all six initially-unattached plugins. Native ROS interface imports passed without initializing ROS. Tests include the tabletop base-clearance bound and generation-bound stop requests. These parser/state checks do not establish a successful grasp.
 

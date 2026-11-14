@@ -1,0 +1,37 @@
+{
+  "schema": "bin_grid_native_acceptance_v1",
+  "simulation_only": true,
+  "placed": 6,
+  "unique_objects": 6,
+  "fresh_source_captures": 6,
+  "source_candidate_counts": [
+    3,
+    3,
+    3,
+    3,
+    2,
+    1
+  ],
+  "successful_arm_trajectories": 37,
+  "final_all_detached": true,
+  "moveit_attachments_empty": true,
+  "final_bin_candidates": 0,
+  "maximum_placement_error_m": 0.0012381465670915168,
+  "placement_errors_m": [
+    0.0011039087470116075,
+    0.0006912596628105132,
+    0.00027874185945724815,
+    0.0012381465670915168,
+    0.0007197831971152877,
+    0.00020144831705555023
+  ],
+  "fixture_session_id": "0cf634d0-d37e-4d4c-8f24-b23e7a57c9e3",
+  "fixture_run_id": "28a766ed-b198-4c8f-adc0-e41e15228ad5",
+  "scene_sha256": "4d2b71c9409c994ef294d433dfc9eb6e53977fe166366b6a057638e65621cd5a",
+  "assisted_grasp": true,
+  "friction_grasp_validated": false,
+  "source_camera": "original first-return simulator RGB-D; known fixed extrinsics",
+  "collision_geometry": "privileged simulator geometry",
+  "evaluation": "privileged current world poses",
+  "graph": "GridTasks -> flow.unbatch -> SimPickOne -> flow.batch(6) -> GridSummary"
+}

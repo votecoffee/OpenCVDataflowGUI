@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "grid",
+      "type": "input.sim_bin_grid",
+      "name": "Bin to table grid",
+      "description": "Six destination cells in world metres; app-owned pick order.",
+      "parameters": {
+        "rows": 2,
+        "columns": 3,
+        "origin_x_m": 0.35,
+        "origin_y_m": 0.36,
+        "pitch_x_m": 0.1,
+        "pitch_y_m": 0.14,
+        "part_center_z_m": 0.22,
+        "park_x_m": 0.15,
+        "park_y_m": -0.4,
+        "park_z_m": 0.6
+      },
+      "position": [
+        0,
+        25.0
+      ],
+      "exposed_inputs": [
+        "run_id",
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "group",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cells",
+      "type": "flow.unbatch",
+      "name": "Unbatch serial entries",
+      "parameters": {
+        "order": "stored"
+      },
+      "position": [
+        330,
+        25.0
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pick",
+      "type": "3d.sim_bin_pick_one",
+      "name": "Simulated pick and grid place",
+      "description": "Fresh first-return depth for each pick, MoveIt trajectories, observed assisted grasp and grid placement. Disabled by default.",
+      "parameters": {
+        "enabled": false,
+        "bin_x_min_m": 0.335,
+        "bin_x_max_m": 0.565,
+        "bin_y_min_m": -0.235,
+        "bin_y_max_m": 0.235,
+        "floor_z_m": 0.2,
+        "part_height_m": 0.04,
+        "approach_height_m": 0.14,
+        "archive_directory": ".local/bin-grid-runs"
+      },
+      "position": [
+        660,
+        0.0
+      ],
+      "exposed_inputs": [
+        "task"
+      ],
+      "exposed_outputs": [
+        "outcome",
+        "before",
+        "after",
+        "graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": "graphics"
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 6,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        990,
+        0.0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "summary",
+      "type": "3d.sim_bin_grid_summary",
+      "name": "Grid pick summary",
+      "parameters": {},
+      "position": [
+        1320,
+        12.5
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "report",
+        "placed",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "grid",
+      "output": "group",
+      "target": "cells",
+      "input": "group"
+    },
+    {
+      "source": "cells",
+      "output": "value",
+      "target": "pick",
+      "input": "task"
+    },
+    {
+      "source": "pick",
+      "output": "outcome",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "summary",
+      "input": "group"
+    }
+  ]
+}
