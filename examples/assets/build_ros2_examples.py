@@ -671,8 +671,9 @@ def build_rectification_examples():
         "accuracy. Missing ROS acquisition time is explicitly zero. Output CameraInfo has the "
         "new optical/pixel grid, zero distortion and identity R; Pose maps raw vectors into the "
         "rectified optical frame. Valid mask indicates source-center coverage, "
-        "not full interpolation kernel support. Physical depth, cropped/binning ROI "
-        "and stereo baseline P are unsupported. "
+        "not full interpolation kernel support. This fixture uses the full sensor grid; "
+        "cropped/binned input is demonstrated separately with explicit output grids. "
+        "Physical depth and stereo baseline P are unsupported. "
         "No ROS runtime, robot or simulator is used.",
     )
     graph.save(ROOT / "offline_intensity_rectification.json")
@@ -703,7 +704,8 @@ def build_rectification_examples():
     note(
         graph,
         "Disabled raw intensity image + retained CameraInfo rectification template. "
-        "Prime calibration before images. Full unbinned monocular CameraInfo only; R may be "
+        "Prime calibration before images. Monocular CameraInfo may declare source ROI/binning; "
+        "choose a rectified output grid explicitly when do_rectify is true. R may be "
         "nonidentity but P must have zero translation. The rectifier changes pixel coordinates "
         "and names a new optical frame, returning the explicit raw-to-rectified rotation. "
         "It does not transform axial depth or perform stereo/robot calibration. "
@@ -711,6 +713,50 @@ def build_rectification_examples():
         "remain in Info. All live endpoints stay disabled; no simulator or robot is launched.",
     )
     graph.save(ROOT / "intensity_rectification_subscriber.json")
+
+    graph = Graph()
+    image = photo(graph)
+    reduced = add(
+        graph,
+        "cv.warp_affine",
+        "synthetic_acquisition",
+        (330, 0),
+        matrix=[[0.5, 0, -40], [0, 0.5, -20]],
+        width=160,
+        height=120,
+        interpolation="nearest",
+    )
+    fields["binning_x"] = fields["binning_y"] = 2
+    fields["roi"].update(x_offset=80, y_offset=40, width=320, height=240, do_rectify=True)
+    rectified = add(
+        graph,
+        "industrial.ros2_rectify_image",
+        "rectify",
+        (660, 0),
+        camera_info=fields,
+        header_mode="zero_if_missing",
+        rectified_grid="full_sensor",
+    )
+    gray = add(graph, "cv.gray", "gray", (990, 0))
+    edges = add(graph, "cv.canny", "edges", (1320, 0))
+    graph.connect(image.id, "image", reduced.id, "image")
+    graph.connect(reduced.id, "image", rectified.id, "image")
+    graph.connect(rectified.id, "image", gray.id, "image")
+    graph.connect(gray.id, "image", edges.id, "image")
+    graph.connect(rectified.id, "valid_mask", edges.id, "mask")
+    note(
+        graph,
+        CREDIT + " SYNTHETIC acquisition geometry and calibration. Software crops the "
+        "480x320 photo to [80,40,320,240] and decimates by two, producing 160x120 samples. "
+        "This does not model hardware binning or claim physical lens correction/measurement "
+        "accuracy. CameraInfo retains full sensor dimensions and declares this raw ROI/binning. "
+        "The rectifier explicitly selects the full rectified sensor canvas at binning two "
+        "(240x160), preserving invalid borders in Valid mask. do_rectify is true: no tight ROI "
+        "is estimated. Change Rectified grid to Custom ROI and supply full-resolution rectified "
+        "[x,y,width,height] to inspect a chosen area. Image time is explicitly unknown/zero. "
+        "No ROS runtime, robot or simulator is used.",
+    )
+    graph.save(ROOT / "offline_roi_binning_rectification.json")
 
 
 if __name__ == "__main__":

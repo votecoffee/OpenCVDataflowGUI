@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "pcb_photo",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "../../assets/showcase/visa-pcb2-0000.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "synthetic_acquisition",
+      "type": "cv.warp_affine",
+      "name": "Warp affine",
+      "parameters": {
+        "matrix": [
+          [
+            0.5,
+            0,
+            -40
+          ],
+          [
+            0,
+            0.5,
+            -20
+          ]
+        ],
+        "width": 160,
+        "height": 120,
+        "interpolation": "nearest",
+        "border": "constant",
+        "border_value": 0.0,
+        "inverse_map": false
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rectify",
+      "type": "industrial.ros2_rectify_image",
+      "name": "Rectify ROS 2 intensity image",
+      "parameters": {
+        "camera_info": {
+          "header": {
+            "stamp": {
+              "sec": 0,
+              "nanosec": 0
+            },
+            "frame_id": "demo_camera_optical"
+          },
+          "width": 480,
+          "height": 320,
+          "distortion_model": "plumb_bob",
+          "d": [
+            -0.12,
+            0.03,
+            0.001,
+            -0.001,
+            0.0
+          ],
+          "k": [
+            450.0,
+            0.0,
+            239.5,
+            0.0,
+            455.0,
+            159.5,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "r": [
+            0.9987503020541335,
+            -0.030385405445032126,
+            -0.03968074196279848,
+            0.029585598759677548,
+            0.9993501570681494,
+            -0.020590189748919158,
+            0.040280596976814416,
+            0.01939047972088729,
+            0.9990002416433068
+          ],
+          "p": [
+            450.0,
+            0.0,
+            239.5,
+            0.0,
+            0.0,
+            455.0,
+            159.5,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "binning_x": 2,
+          "binning_y": 2,
+          "roi": {
+            "x_offset": 80,
+            "y_offset": 40,
+            "width": 320,
+            "height": 240,
+            "do_rectify": true
+          }
+        },
+        "rectified_frame": "",
+        "width": 0,
+        "height": 0,
+        "rectified_grid": "full_sensor",
+        "rectified_roi": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0,
+        "header_mode": "zero_if_missing",
+        "scalar_semantics": "auto",
+        "require_matching_ticket": false
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "camera_info"
+      ],
+      "exposed_outputs": [
+        "image",
+        "camera",
+        "camera_info",
+        "pose",
+        "valid_mask",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray",
+      "type": "cv.gray",
+      "name": "Grayscale",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        990,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "edges",
+      "type": "cv.canny",
+      "name": "Canny edges",
+      "parameters": {
+        "low": 60.0,
+        "high": 150.0,
+        "l2_gradient": false,
+        "aperture": "3"
+      },
+      "position": [
+        1320,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "VisA PCB photo: Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and Onkar Dabeer, SPot-the-Difference (ECCV 2022). CC BY 4.0: https://registry.opendata.aws/visa/. Resized/letterboxed from bundled PCB2 0000; no defects added. Source and hashes: ../../assets/showcase/SOURCES.md. No robot/controller operation. SYNTHETIC acquisition geometry and calibration. Software crops the 480x320 photo to [80,40,320,240] and decimates by two, producing 160x120 samples. This does not model hardware binning or claim physical lens correction/measurement accuracy. CameraInfo retains full sensor dimensions and declares this raw ROI/binning. The rectifier explicitly selects the full rectified sensor canvas at binning two (240x160), preserving invalid borders in Valid mask. do_rectify is true: no tight ROI is estimated. Change Rectified grid to Custom ROI and supply full-resolution rectified [x,y,width,height] to inspect a chosen area. Image time is explicitly unknown/zero. No ROS runtime, robot or simulator is used.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "pcb_photo",
+      "output": "image",
+      "target": "synthetic_acquisition",
+      "input": "image"
+    },
+    {
+      "source": "synthetic_acquisition",
+      "output": "image",
+      "target": "rectify",
+      "input": "image"
+    },
+    {
+      "source": "rectify",
+      "output": "image",
+      "target": "gray",
+      "input": "image"
+    },
+    {
+      "source": "gray",
+      "output": "image",
+      "target": "edges",
+      "input": "image"
+    },
+    {
+      "source": "rectify",
+      "output": "valid_mask",
+      "target": "edges",
+      "input": "mask"
+    }
+  ]
+}

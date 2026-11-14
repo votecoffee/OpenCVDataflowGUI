@@ -36,6 +36,7 @@ BASE = ROOT / "examples/industrial integration/ros2_fastdds"
         "approximate_rgbd_subscriber",
         "offline_intensity_rectification",
         "intensity_rectification_subscriber",
+        "offline_roi_binning_rectification",
     ],
 )
 def test_saved_graphs_validate_and_run_without_ros(monkeypatch, name):
@@ -85,6 +86,30 @@ def test_saved_graphs_validate_and_run_without_ros(monkeypatch, name):
             assert result.outputs["image"].shape == (320, 480, 3)
             assert result.outputs["camera"]["frame"] == "demo_camera_optical_rectified"
             assert result.outputs["camera_info"]["header"]["stamp"] == {"sec": 0, "nanosec": 0}
+            assert "SYNTHETIC" in graph.blocks["source_and_scope"].description
+            assert "CC BY 4.0" in graph.blocks["source_and_scope"].description
+            assert graph.blocks["edges"].last_result.outputs["image"].any()
+        if name == "offline_roi_binning_rectification":
+            result = graph.blocks["rectify"].last_result
+            info = result.outputs["info"]
+            assert graph.blocks["synthetic_acquisition"].last_result.outputs["image"].shape == (
+                120,
+                160,
+                3,
+            )
+            assert result.outputs["image"].shape == (160, 240, 3)
+            assert info["source_geometry"]["roi"] == [80, 40, 320, 240]
+            assert info["source_geometry"]["binning"] == [2, 2]
+            assert info["rectified_roi_full"] == [0, 0, 480, 320]
+            assert not info["rectified_roi_estimated"]
+            assert 10000 < info["valid_pixels"] < 25000
+            np.testing.assert_allclose(
+                info["source_spatial"]["to_root"], [[2, 0, 80], [0, 2, 40], [0, 0, 1]]
+            )
+            np.testing.assert_allclose(
+                result.outputs["camera"]["camera_matrix"],
+                [[225, 0, 119.75], [0, 227.5, 79.75], [0, 0, 1]],
+            )
             assert "SYNTHETIC" in graph.blocks["source_and_scope"].description
             assert "CC BY 4.0" in graph.blocks["source_and_scope"].description
             assert graph.blocks["edges"].last_result.outputs["image"].any()

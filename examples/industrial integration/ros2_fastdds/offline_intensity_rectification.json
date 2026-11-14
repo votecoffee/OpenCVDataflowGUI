@@ -105,6 +105,13 @@
         "rectified_frame": "",
         "width": 0,
         "height": 0,
+        "rectified_grid": "camera_info_roi",
+        "rectified_roi": [
+          0,
+          0,
+          0,
+          0
+        ],
         "interpolation": "linear",
         "border": "constant",
         "border_value": 0,
@@ -202,7 +209,7 @@
       "id": "source_and_scope",
       "type": "layout.comment",
       "name": "Source, setup and scope",
-      "description": "VisA PCB photo: Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and Onkar Dabeer, SPot-the-Difference (ECCV 2022). CC BY 4.0: https://registry.opendata.aws/visa/. Resized/letterboxed from bundled PCB2 0000; no defects added. Source and hashes: ../../assets/showcase/SOURCES.md. No robot/controller operation. Explicit intensity-image rectification fixture. The camera matrix, distortion and small nonidentity R are SYNTHETIC illustrative parameters; no physical calibration was supplied for this PCB photograph. This remaps pixels to demonstrate software behavior and does not claim to correct the real camera or establish measurement accuracy. Missing ROS acquisition time is explicitly zero. Output CameraInfo has the new optical/pixel grid, zero distortion and identity R; Pose maps raw vectors into the rectified optical frame. Valid mask indicates source-center coverage, not full interpolation kernel support. Physical depth, cropped/binning ROI and stereo baseline P are unsupported. No ROS runtime, robot or simulator is used.",
+      "description": "VisA PCB photo: Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and Onkar Dabeer, SPot-the-Difference (ECCV 2022). CC BY 4.0: https://registry.opendata.aws/visa/. Resized/letterboxed from bundled PCB2 0000; no defects added. Source and hashes: ../../assets/showcase/SOURCES.md. No robot/controller operation. Explicit intensity-image rectification fixture. The camera matrix, distortion and small nonidentity R are SYNTHETIC illustrative parameters; no physical calibration was supplied for this PCB photograph. This remaps pixels to demonstrate software behavior and does not claim to correct the real camera or establish measurement accuracy. Missing ROS acquisition time is explicitly zero. Output CameraInfo has the new optical/pixel grid, zero distortion and identity R; Pose maps raw vectors into the rectified optical frame. Valid mask indicates source-center coverage, not full interpolation kernel support. This fixture uses the full sensor grid; cropped/binned input is demonstrated separately with explicit output grids. Physical depth and stereo baseline P are unsupported. No ROS runtime, robot or simulator is used.",
       "parameters": {},
       "position": [
         0,

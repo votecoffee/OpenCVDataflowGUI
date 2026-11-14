@@ -4610,8 +4610,10 @@ Input `camera_info` — Complete CameraInfo, or decoded/bound CameraInfo camera 
 | --- | --- | --- |
 | `camera_info` | `{}` | Fallback complete CameraInfo JSON when the input is unwired. |
 | `rectified_frame` | `""` | Empty derives <source>_rectified. Nonidentity R needs a distinct optical frame. |
-| `width` | `0` | Value must be a whole number between 0 and 16384. Both dimensions zero keep source size; otherwise scale P intrinsics to this width. |
+| `width` | `0` | Value must be a whole number between 0 and 16384. Both dimensions zero keep the selected binned rectified grid; otherwise resize it. |
 | `height` | `0` | Value must be a whole number between 0 and 16384. Both dimensions must be zero or positive. Output is bounded to 4M pixels/16 MiB. |
+| `rectified_grid` | `"camera_info_roi"` | `camera_info_roi`, `full_sensor`, `custom_roi` Select the CameraInfo ROI (only when do_rectify is false), full rectified sensor canvas, or an explicit ROI in full-resolution rectified pixels. |
+| `rectified_roi` | `[0, 0, 0, 0]` | Custom grid: [x,y,width,height] in full-resolution rectified coordinates. Offsets are nonnegative integers; dimensions are positive and fit the sensor. |
 | `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` OpenCV remap sampling; nearest preserves discrete labels. |
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` Sampling outside source pixels; this does not extend the validity mask. |
 | `border_value` | `0` | One to four finite channel values, in the image's existing channel order. |

@@ -23,6 +23,7 @@ Open these projects with File → Open. Tools are in
 | [Approximate RGB-D subscriber](approximate_rgbd_subscriber.json) | Disabled ordered color/depth timestamp pairing, then static calibration binding, ticket coordination and calibrated colored cloud. |
 | [Offline intensity rectification](offline_intensity_rectification.json) | Real PCB photo with explicitly synthetic camera parameters → nonidentity-R pixel remap, camera/frame outputs, valid mask and masked edges. |
 | [Intensity rectification subscriber](intensity_rectification_subscriber.json) | Disabled raw intensity plus retained CameraInfo → static binding → explicit pixel/optical rectification. |
+| [Offline ROI/binning rectification](offline_roi_binning_rectification.json) | Real PCB photo with synthetic crop/decimation and calibration → independently selected full rectified canvas, coverage mask and masked edges. |
 
 Run the offline example from the repository root:
 
@@ -119,10 +120,16 @@ The intensity rectifier actually remaps pixels and returns a new camera/pixel
 frame plus raw-to-rectified rotation. It does not relabel an unwarped image. The
 PCB example's calibration is synthetic and its acquisition time is unknown/zero;
 it makes no physical correction/accuracy claim. Typed depth, ambiguous scalar
-samples without an Intensity declaration, cropped/binning ROI and stereo baseline
-projection are rejected. See [rectification contracts](../../../docs/ros2-rectification.md).
+samples without an Intensity declaration and stereo baseline projection are
+rejected. Source ROI/binning and an independent rectified output grid are supported.
+The ROI fixture crops/decimates the 480×320 photo to 160×120 and rectifies it to a
+240×160 full-sensor canvas. This is synthetic software geometry, not a model of
+hardware binning. Its CameraInfo sets `do_rectify=true` but explicitly selects
+Full sensor; no tight rectified ROI is estimated. Select Custom ROI and enter
+full-resolution rectified coordinates to choose another output region. See
+[rectification contracts](../../../docs/ros2-rectification.md).
 
-Rebuild all eighteen graphs without downloads or ROS activity:
+Rebuild all nineteen graphs without downloads or ROS activity:
 
 ```powershell
 python examples/assets/build_ros2_examples.py

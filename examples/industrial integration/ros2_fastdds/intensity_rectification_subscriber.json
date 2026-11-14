@@ -144,6 +144,13 @@
         "rectified_frame": "",
         "width": 0,
         "height": 0,
+        "rectified_grid": "camera_info_roi",
+        "rectified_roi": [
+          0,
+          0,
+          0,
+          0
+        ],
         "interpolation": "linear",
         "border": "constant",
         "border_value": 0,
@@ -194,7 +201,7 @@
       "id": "source_and_scope",
       "type": "layout.comment",
       "name": "Source, setup and scope",
-      "description": "Disabled raw intensity image + retained CameraInfo rectification template. Prime calibration before images. Full unbinned monocular CameraInfo only; R may be nonidentity but P must have zero translation. The rectifier changes pixel coordinates and names a new optical frame, returning the explicit raw-to-rectified rotation. It does not transform axial depth or perform stereo/robot calibration. Image acquisition stamps are retained; original calibration and binding provenance remain in Info. All live endpoints stay disabled; no simulator or robot is launched.",
+      "description": "Disabled raw intensity image + retained CameraInfo rectification template. Prime calibration before images. Monocular CameraInfo may declare source ROI/binning; choose a rectified output grid explicitly when do_rectify is true. R may be nonidentity but P must have zero translation. The rectifier changes pixel coordinates and names a new optical frame, returning the explicit raw-to-rectified rotation. It does not transform axial depth or perform stereo/robot calibration. Image acquisition stamps are retained; original calibration and binding provenance remain in Info. All live endpoints stay disabled; no simulator or robot is launched.",
       "parameters": {},
       "position": [
         0,

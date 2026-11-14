@@ -341,7 +341,17 @@ def test_registry_xml_and_offscreen_controls(app, tmp_path):
     from opencv_dataflow.app import MainWindow
 
     graph = Graph()
-    block = graph.add(RectifyROSImage(parameters={"camera_info": calibration()}))
+    block = graph.add(
+        RectifyROSImage(
+            parameters={
+                "camera_info": calibration(),
+                "rectified_grid": "custom_roi",
+                "rectified_roi": [4, 2, 24, 18],
+                "width": 18,
+                "height": 9,
+            }
+        )
+    )
     run(block, image=image())
     path = tmp_path / "rectify.xml"
     graph.save(path)
@@ -353,7 +363,13 @@ def test_registry_xml_and_offscreen_controls(app, tmp_path):
     try:
         window.replace_graph(graph)
         window.scene.nodes[block.id].setSelected(True)
-        for name in ("interpolation", "border", "header_mode", "scalar_semantics"):
+        for name in (
+            "interpolation",
+            "border",
+            "header_mode",
+            "scalar_semantics",
+            "rectified_grid",
+        ):
             assert isinstance(window.inspector.fields[name], QComboBox)
         assert window.inspector.can_preview()
     finally:

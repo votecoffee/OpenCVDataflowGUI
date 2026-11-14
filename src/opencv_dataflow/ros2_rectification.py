@@ -58,6 +58,8 @@ class RectifyROSImage(Block):
         "rectified_frame": "",
         "width": 0,
         "height": 0,
+        "rectified_grid": "camera_info_roi",
+        "rectified_roi": [0, 0, 0, 0],
         "interpolation": "linear",
         "border": "constant",
         "border_value": 0,
@@ -70,6 +72,7 @@ class RectifyROSImage(Block):
         "border": tuple(BORDERS),
         "header_mode": ("require", "zero_if_missing"),
         "scalar_semantics": ("auto", "intensity"),
+        "rectified_grid": ("camera_info_roi", "full_sensor", "custom_roi"),
     }
     parameter_ranges = {
         "width": NumericRange(0, 16384, whole=True),
@@ -81,7 +84,7 @@ class RectifyROSImage(Block):
             "Empty derives <source>_rectified. Nonidentity R needs a distinct optical frame."
         ),
         "width": (
-            "Both dimensions zero keep source size; otherwise scale P intrinsics to this width."
+            "Both dimensions zero keep the selected binned rectified grid; otherwise resize it."
         ),
         "height": (
             "Both dimensions must be zero or positive. Output is bounded to 4M pixels/16 MiB."
@@ -99,6 +102,14 @@ class RectifyROSImage(Block):
         "scalar_semantics": (
             "Auto rejects ambiguous float/16UC1 planes. Intensity explicitly declares "
             "brightness or labels; physical DepthArray input is always rejected."
+        ),
+        "rectified_grid": (
+            "Select the CameraInfo ROI (only when do_rectify is false), full rectified "
+            "sensor canvas, or an explicit ROI in full-resolution rectified pixels."
+        ),
+        "rectified_roi": (
+            "Custom grid: [x,y,width,height] in full-resolution rectified coordinates. "
+            "Offsets are nonnegative integers; dimensions are positive and fit the sensor."
         ),
     }
     input_help = {
@@ -143,6 +154,17 @@ class RectifyROSImage(Block):
         if type(p["require_matching_ticket"]) is not bool:
             raise ValidationError("Use a boolean ticket setting", "require_matching_ticket")
         scalar_value(p["border_value"])
+        if p["rectified_grid"] == "custom_roi":
+            roi = p["rectified_roi"]
+            if (
+                not isinstance(roi, (list, tuple))
+                or len(roi) != 4
+                or any(type(v) is not int or v < 0 for v in roi)
+                or not all(roi[2:])
+            ):
+                raise ValidationError(
+                    "Use [x,y,width,height] with positive integer dimensions", "rectified_roi"
+                )
 
     def process(self, inputs):
         p, image = self.parameters, inputs["image"]
@@ -167,20 +189,34 @@ class RectifyROSImage(Block):
             value = value["ros2"]["camera_info"]
         original = copy.deepcopy(value)
         try:
-            model, _ = camera_from_info(value, space="raw")
+            model, source_geometry = camera_from_info(value, space="raw")
         except ValueError as exc:
             raise ValidationError(str(exc), "camera_info") from exc
         k, d, size = camera(model)
         raw_frame = frame_name(model["frame"])
-        roi = value["roi"]
-        if (
-            value["binning_x"] not in (0, 1)
-            or value["binning_y"] not in (0, 1)
-            or roi["do_rectify"]
-            or [roi["x_offset"], roi["y_offset"]] != [0, 0]
-            or [roi["width"], roi["height"]] not in ([0, 0], list(size))
-        ):
-            raise ValidationError("This rectifier requires a full, unbinned CameraInfo grid")
+        bx, by = source_geometry["binning"]
+        if p["rectified_grid"] == "camera_info_roi":
+            if value["roi"]["do_rectify"]:
+                raise ValidationError(
+                    "Automatic rectified ROI estimation is unavailable; choose Full sensor "
+                    "or Custom ROI explicitly",
+                    "rectified_grid",
+                )
+            output_roi = list(source_geometry["roi"])
+        elif p["rectified_grid"] == "full_sensor":
+            output_roi = [0, 0, value["width"], value["height"]]
+        else:
+            output_roi = list(p["rectified_roi"])
+            x, y, width, height = output_roi
+            if x + width > value["width"] or y + height > value["height"]:
+                raise ValidationError(
+                    "Rectified ROI must fit the full sensor canvas", "rectified_roi"
+                )
+        base_size = (output_roi[2] // bx, output_roi[3] // by)
+        if not all(base_size):
+            raise ValidationError(
+                "Binning leaves no complete rectified output pixels", "rectified_roi"
+            )
         if isinstance(image, DepthArray):
             raise ValidationError(
                 "Axial depth needs 3D reprojection; do not rectify it as intensity"
@@ -206,7 +242,12 @@ class RectifyROSImage(Block):
             raise ValidationError(
                 "Use supported ROS gray or RGB/BGR(A) intensity samples for remap"
             )
-        if not np.allclose(payload["spatial"]["to_root"], np.eye(3), atol=1e-9, rtol=0):
+        spatial = payload["spatial"]
+        identity_grid = np.allclose(spatial["to_root"], np.eye(3), atol=1e-9, rtol=0)
+        calibrated_reduction = spatial["root_size"] == source_geometry["full_size"] and np.allclose(
+            spatial["to_root"], source_geometry["output_to_full"], atol=1e-9, rtol=0
+        )
+        if not identity_grid and not calibrated_reduction:
             raise ValidationError("Image pixels no longer match the original calibrated grid")
         image_ros = payload.get("ros2", {})
         if (
@@ -273,14 +314,18 @@ class RectifyROSImage(Block):
             raise ValidationError(
                 "Nonidentity R requires a different rectified optical frame", "rectified_frame"
             )
-        out_size = (p["width"], p["height"]) if p["width"] else size
+        out_size = (p["width"], p["height"]) if p["width"] else base_size
         if (
             np.prod(out_size) > MAX_PIXELS
             or np.prod(out_size) * channels * image.dtype.itemsize > MAX_IMAGE_BYTES
         ):
             raise ValidationError("Rectified output exceeds 4M pixels or 16 MiB", "width", "height")
         new_k = projection[:, :3].copy()
-        new_k[:2] *= (np.array(out_size) / size)[:, None]
+        new_k[0, 2] -= output_roi[0]
+        new_k[1, 2] -= output_roi[1]
+        new_k[0] /= bx
+        new_k[1] /= by
+        new_k[:2] *= (np.array(out_size) / base_size)[:, None]
         try:
             target = camera_record(new_k, [], out_size, frame=target_frame)
         except ValueError as exc:
@@ -359,6 +404,17 @@ class RectifyROSImage(Block):
             "image_semantics": "intensity_not_axial_depth",
             "pose_convention": "rectified_from_raw",
             "source_spatial": copy.deepcopy(payload["spatial"]),
+            "source_geometry": source_geometry,
+            "rectified_grid": p["rectified_grid"],
+            "rectified_roi_full": output_roi,
+            "rectified_roi_estimated": False,
+            "rectified_binned_size": list(base_size),
+            "discarded_rectified_partial_bins": [output_roi[2] % bx, output_roi[3] % by],
+            "rectified_output_to_full": [
+                [bx * base_size[0] / out_size[0], 0, output_roi[0]],
+                [0, by * base_size[1] / out_size[1], output_roi[1]],
+                [0, 0, 1],
+            ],
         }
         for field in (
             "pyramid",

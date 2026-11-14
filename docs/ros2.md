@@ -22,7 +22,7 @@ in the GUI environment.
 | Validate registered ROS RGB-D (`industrial.ros2_rgbd`) | Completed ticketed FlowGroup → checked color/depth/camera, physical meter depth and association report |
 | Cache ROS 2 CameraInfo (`industrial.ros2_camera_cache`) | Reuse decoded static calibration with explicit per-image ticket/grid/revision bindings and optional run/reset guards |
 | Pair ROS 2 images (`industrial.ros2_image_pair`) | Bounded ordered FIFO timestamp pairing with original-header provenance, common tickets and optional run/reset guards |
-| Rectify ROS 2 intensity (`industrial.ros2_rectify_image`) | Explicit full-grid pinhole/fisheye remapping with nonidentity R, new camera/header/rotation, valid mask and reusable maps |
+| Rectify ROS 2 intensity (`industrial.ros2_rectify_image`) | Pinhole/fisheye remapping with nonidentity R, raw ROI/binning, explicit rectified output grids, new camera/header/rotation, valid mask and reusable maps |
 | Decode / Encode ROS 2 pose (`industrial.ros2_pose_decode`, `industrial.ros2_pose_encode`) | Strict TransformStamped/PoseStamped ↔ typed m/mm parent-from-child poses |
 | Lookup ROS 2 transform (`industrial.ros2_tf`) | Persistent exact-acquisition-time TF2, bounded freshness/wait/cancellation, optional current-context guard |
 | ROS 2 run identity (`industrial.ros2_run`) | Unsaved runtime session and rising-edge reset generation |
@@ -207,9 +207,12 @@ workflows for those cases. Encode creates current-grid K/D, identity R, P=K|0,
 and zero ROI/binning; use Decode's original Message for an exact field relay.
 
 For raw intensity pixels, [explicit CameraInfo rectification](ros2-rectification.md)
-supports nonidentity R on full unbinned monocular grids. It warps pixels and
+supports nonidentity R and raw ROI/binning on monocular grids. An output-grid
+dropdown selects the CameraInfo ROI, full sensor canvas or custom rectified ROI.
+When `do_rectify` is true, explicitly choose Full sensor or Custom ROI; automatic
+tight ROI estimation remains unavailable. It warps pixels and
 returns a named virtual optical frame, raw-to-rectified rotation and canonical
-current-grid CameraInfo. It rejects physical depth, cropped/binning ROI and
+current-grid CameraInfo. It rejects physical depth and
 stereo P translation. The converter's conservative Rectified mode stays unchanged.
 
 For live registered RGB-D, connect color Image, depth Image and decoded Camera
@@ -292,7 +295,7 @@ python -m pytest tests/test_ros2_clouds.py -q
 python -m pytest tests/test_ros2_calibration.py -q
 python -m pytest tests/test_ros2_camera_cache.py -q
 python -m pytest tests/test_ros2_pairing.py -q
-python -m pytest tests/test_ros2_rectification.py -q
+python -m pytest tests/test_ros2_rectification.py tests/test_ros2_rectification_roi.py -q
 python -m pytest tests/test_ros2_poses_context.py tests/test_ros2_tf.py -q
 $env:OPENCV_DATAFLOW_TEST_ROS2 = "1"
 python -m pytest tests/test_ros2_native.py -q
