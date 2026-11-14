@@ -2,13 +2,14 @@ import hashlib
 import math
 from pathlib import Path
 import tempfile
+import threading
 import unittest
 from xml.etree import ElementTree as ET
 
 from opencv_bin_picking_fixture.scene import default_scene, world_xml, add_assistance, bridge_config, camera_transform, validate
 from opencv_bin_picking_fixture.state import FixtureState, Observation, axis_z
 from opencv_bin_picking_fixture.prepare import prepare
-from opencv_bin_picking_fixture.run import environment
+from opencv_bin_picking_fixture.run import environment, watch_stop
 
 
 class SceneTests(unittest.TestCase):
@@ -25,6 +26,12 @@ class SceneTests(unittest.TestCase):
                 self.assertTrue(any(abs(a["pose"][i] - b["pose"][i]) >= (a["size"][i] + b["size"][i])/2 for i in range(3)))
         self.assertAlmostEqual(scene["static_boxes"][1]["pose"][2] + scene["static_boxes"][1]["size"][2]/2, 0.2)
         self.assertGreater(min(p["pose"][2] - p["size"][2]/2 for p in scene["parts"]), 0.2)
+        table = scene["static_boxes"][0]
+        # Keep the tabletop outside the measured base/shoulder sweep, not just the part footprint.
+        self.assertGreaterEqual(table["pose"][0] - table["size"][0]/2, 0.26)
+        for part in scene["parts"]:
+            for axis in (0, 1):
+                self.assertLessEqual(abs(part["pose"][axis] - table["pose"][axis]) + part["size"][axis]/2, table["size"][axis]/2)
 
     def test_source_camera_and_evaluation_are_separate(self):
         scene = default_scene(); root = ET.fromstring(world_xml(scene)); rows = bridge_config(scene)
@@ -98,6 +105,19 @@ class GateTests(unittest.TestCase):
 
 
 class PreparationTests(unittest.TestCase):
+    def test_stop_request_is_bound_to_the_exact_launcher_generation(self):
+        import json
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary); finished, requested = threading.Event(), threading.Event()
+            called = threading.Event()
+            thread = threading.Thread(target=watch_stop, args=(root, "current", finished, requested, called.set))
+            (root / "stop-request.json").write_text(json.dumps({"action": "stop", "launch_id": "old"}), encoding="utf-8")
+            thread.start()
+            self.assertFalse(called.wait(0.2))
+            (root / "stop-request.json").write_text(json.dumps({"action": "stop", "launch_id": "current"}), encoding="utf-8")
+            self.assertTrue(called.wait(1)); thread.join(1)
+            self.assertFalse(thread.is_alive()); self.assertTrue(requested.is_set())
+
     def test_overlay_preserves_original_bytes_and_refuses_existing_or_shared_destinations(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary); runtime = root / "native"; (runtime / "launch").mkdir(parents=True)

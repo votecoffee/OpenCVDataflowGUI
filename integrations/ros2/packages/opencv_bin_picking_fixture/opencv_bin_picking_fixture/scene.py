@@ -16,7 +16,7 @@ def default_scene():
     return {"schema": "opencv.bin_picking_scene/v1", "units": "m", "world": "opencv_bin_picking",
             "world_frame": "world", "robot_model": "ur", "tcp": "gripper_tcp", "group": "ur_manipulator",
             "static_boxes": [
-                {"id": "table_top", "size": [0.70, 0.94, 0.03], "pose": [0.45, 0.15, 0.185, 0, 0, 0]},
+                {"id": "table_top", "size": [0.50, 0.94, 0.03], "pose": [0.51, 0.15, 0.185, 0, 0, 0]},
                 {"id": "bin_floor", "size": [0.24, 0.48, 0.01], "pose": [0.45, 0, 0.195, 0, 0, 0]},
                 {"id": "bin_x_min", "size": [0.01, 0.48, 0.10], "pose": [0.325, 0, 0.25, 0, 0, 0]},
                 {"id": "bin_x_max", "size": [0.01, 0.48, 0.10], "pose": [0.575, 0, 0.25, 0, 0, 0]},

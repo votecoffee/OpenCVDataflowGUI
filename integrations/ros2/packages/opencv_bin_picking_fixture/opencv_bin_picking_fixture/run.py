@@ -5,7 +5,23 @@ import os
 from pathlib import Path
 import re
 import sys
+import threading
+import _thread
 import uuid
+
+
+def watch_stop(overlay, launch_id, finished, requested, interrupt=_thread.interrupt_main):
+    """Request Python SIGINT inside this owned launcher; never send desktop/console input."""
+    path = Path(overlay) / "stop-request.json"
+    while not finished.wait(0.1):
+        try:
+            request = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if request == {"action": "stop", "launch_id": launch_id}:
+            requested.set()
+            interrupt()
+            return
 
 
 def environment(overlay, partition, current=None):
@@ -49,13 +65,24 @@ def main():
         raise RuntimeError("Run this module with the preparation receipt's activated native runtime Python")
     # One explicit launch per overlay; a crash is not permission to replace its owner.
     lease = args.overlay / "session-launch.json"
+    launch_id = str(uuid.uuid4())
     with lease.open("x", encoding="utf-8") as stream:
-        json.dump({**plan, "launch_id": str(uuid.uuid4()), "owner_pid": os.getpid()}, stream, indent=2)
+        json.dump({**plan, "launch_id": launch_id, "owner_pid": os.getpid()}, stream, indent=2)
         stream.write("\n")
     os.environ.update(values)
+    finished, requested = threading.Event(), threading.Event()
+    threading.Thread(target=watch_stop, args=(args.overlay, launch_id, finished, requested), daemon=True).start()
     from ros2cli.cli import main as ros_main
-    return ros_main(argv=["launch", str(launch), f"overlay:={args.overlay.resolve()}",
-                          "gui:=true" if args.gui else "gui:=false"])
+    result = None
+    try:
+        result = ros_main(argv=["launch", str(launch), f"overlay:={args.overlay.resolve()}",
+                               "gui:=true" if args.gui else "gui:=false"])
+        return result
+    finally:
+        finished.set()
+        (args.overlay / "session-exit.json").write_text(json.dumps({"launch_id": launch_id,
+            "owner_pid": os.getpid(), "stop_requested": requested.is_set(), "return_code": result,
+            "note": "Launcher exit only; verify child-process completion separately"}, indent=2) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

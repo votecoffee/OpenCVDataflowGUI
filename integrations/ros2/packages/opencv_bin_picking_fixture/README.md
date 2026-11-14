@@ -6,7 +6,7 @@ Status: native headless scene/camera readiness is verified. Assisted lift/releas
 
 ## Scene and ownership
 
-The configurable initial example contains six original 40 mm, 50 g boxes in three two-high stacks, a bin and a table with a 0.20 m work surface. A fixed overhead RGB-D camera uses the simulator's original RGB, depth and CameraInfo. Smaller/lower part surfaces may still be visible because of perspective; actual first-return occlusion must be checked in rendered depth. No object pose is substituted for source-camera data.
+The configurable initial example contains six original 40 mm, 50 g boxes in three two-high stacks, a bin and a table with a 0.20 m work surface. The tabletop is 0.50 by 0.94 m, centred at x=0.51/y=0.15 m; its x=0.26 m near edge clears the measured base/shoulder sweep. The application still collision-checks every planned trajectory. A fixed overhead RGB-D camera uses the simulator's original RGB, depth and CameraInfo. Smaller/lower part surfaces may still be visible because of perspective; actual first-return occlusion must be checked in rendered depth. No object pose is substituted for source-camera data.
 
 `fixture_prepare` makes a **new private overlay outside the installed runtime**. It copies/checksums only the needed native launch/config files, redirects their generated output and appends an isolated grasp hook to the copied gripper description. It never modifies `C:/dev/ros2-sim`, `ros2-sim2`, their manifests, package caches, original launchers or other demos. Its preparation receipt records source and plugin SHA256 values. Logs, generated descriptions and the MoveIt warehouse database stay in the overlay.
 
@@ -32,6 +32,8 @@ pixi run --locked --manifest-path C:/dev/ALLOCATED_RUNTIME/pixi.toml python -m o
 Run from this package directory or expose its path to the activated child. The wrapper applies domain 130, localhost discovery, the unique partition and overlay-local ROS state/logs **after Pixi activation**, which otherwise overrides outer shell settings with the native manifest's saved defaults. Add `--plan-only` to inspect without starting ROS. One launch record is created exclusively per overlay. Use a new overlay after stopping/restarting a session.
 
 This launches the copied native UR5e control/MoveIt files, bridges and fixture node. Default headless mode does not start Gazebo GUI or RViz. Source launching needs no installation into the shared environment; the standard `ament_python` package can also be built into a separate ROS overlay. Never launch through the baseline wrapper that hardcodes shared generated paths.
+
+After the application returns execution ownership, the launch owner can request shutdown by creating `stop-request.json` in that exact overlay with `{"action":"stop","launch_id":"UUID_FROM_session-launch.json"}`. The launcher raises its own Python interrupt into ROS launch; it sends no desktop/console input. A mismatched generation is ignored. Verify `session-exit.json` and owned-child completion before reusing resources. A request or launcher exit alone is not proof of clean child shutdown.
 
 ## Public ROS contract
 
@@ -68,9 +70,9 @@ These are explicitly **truth-based pose gates**, not a validated contact sensor 
 
 ## Verification
 
-Pure tests cover actual initial geometry separation, source/evaluation separation, optical-axis geometry, initially-unattached per-object plugin settings, fresh/invalid/stale/jaw gates, single-object ownership and unknown/late outcomes. Native SDF parsing, camera frame/encoding/K, rendered occlusion, collision-free reach, observed lift/release and repeated reset remain required runtime checks. No physical camera/robot or commercial simulation license is part of this fixture.
+Pure tests cover actual initial geometry separation, source/evaluation separation, optical-axis geometry, initially-unattached per-object plugin settings, fresh/invalid/stale/jaw gates, single-object ownership and unknown/late outcomes. Collision-free reach, observed lift/release and repeated reset remain required application runtime checks. No physical camera/robot or commercial simulation license is part of this fixture.
 
-The initial source checkpoint passed **8 offline tests**, installed Gazebo's world SDF validation and actual URDF-to-SDF conversion retaining `gripper_base_link` and all six initially-unattached plugins. Native ROS interface imports passed without initializing ROS. These are parser/source checks, not a running scene, a verified camera stream or a successful grasp. Runtime allocation and all dynamic checks remain pending.
+The source checks passed **9 offline tests**, installed Gazebo's world SDF validation and actual URDF-to-SDF conversion retaining `gripper_base_link` and all six initially-unattached plugins. Native ROS interface imports passed without initializing ROS. Tests include the tabletop base-clearance bound and generation-bound stop requests. These parser/state checks do not establish a successful grasp.
 
 The subsequent native headless check used the allocated second RoboStack runtime with domain 130 and a unique Gazebo partition. It passed fresh exact-stamp original **960×720 rgb8 / 32FC1** pairs, CameraInfo/frame/geometry consistency, three first-return-visible upper stack centres and three lower centres occluded by nearer surfaces. All five required MoveIt services, ExecuteTrajectory and both controller trajectory actions were available; GetPlanningScene returned eight arm/gripper joints. No motion goals were sent by this verifier. This proves centre-ray occlusion, not complete lower-part silhouette occlusion.
 
