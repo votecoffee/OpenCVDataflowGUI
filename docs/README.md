@@ -28,6 +28,7 @@
 | Judgments, reasons and ticket histories | [Ticket results](ticket-results.md) |
 | 3D/depth/point clouds | [3D vision](vision-3d.md) |
 | ML/DNN and optional dependencies | [ML](ml.md) |
+| PLC, robot and messaging interfaces | [Industrial integration](industrial-integration.md), [ROS 2 Lyrical / Fast DDS](ros2.md) |
 | scikit-image tools | [scikit-image](scikit-image.md) |
 | Medical images, physical geometry and SimpleITK | [SimpleITK](simpleitk.md), [medical roadmap](simpleitk-roadmap.md), [labeled MRI examples](<../examples/SimpleITK Tools/README.md>) |
 

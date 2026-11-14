@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "pcb_photo",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "../../assets/showcase/visa-pcb2-0000.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "encode_rgb",
+      "type": "industrial.ros2_image_encode",
+      "name": "Encode ROS 2 image",
+      "parameters": {
+        "encoding": "rgb8",
+        "frame_id": "demo_camera_optical",
+        "stamp_mode": "preserve"
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "message",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode_rgb",
+      "type": "industrial.ros2_image_decode",
+      "name": "Decode ROS 2 image",
+      "parameters": {},
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "message"
+      ],
+      "exposed_outputs": [
+        "image",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray",
+      "type": "cv.gray",
+      "name": "Grayscale",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        960,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "edges",
+      "type": "cv.canny",
+      "name": "Canny edges",
+      "parameters": {
+        "low": 60.0,
+        "high": 150.0,
+        "l2_gradient": false,
+        "aperture": "3"
+      },
+      "position": [
+        1280,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "VisA PCB photo: Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and Onkar Dabeer, SPot-the-Difference (ECCV 2022). CC BY 4.0: https://registry.opendata.aws/visa/. Resized/letterboxed from bundled PCB2 0000; no defects added. Source and hashes: ../../assets/showcase/SOURCES.md. No robot/controller operation. Offline converter round trip: no ROS installation is required. RGB conversion is explicit; depth and header are preserved. This is not a DDS test.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "pcb_photo",
+      "output": "image",
+      "target": "encode_rgb",
+      "input": "image"
+    },
+    {
+      "source": "encode_rgb",
+      "output": "message",
+      "target": "decode_rgb",
+      "input": "message"
+    },
+    {
+      "source": "decode_rgb",
+      "output": "image",
+      "target": "gray",
+      "input": "image"
+    },
+    {
+      "source": "gray",
+      "output": "image",
+      "target": "edges",
+      "input": "image"
+    }
+  ]
+}

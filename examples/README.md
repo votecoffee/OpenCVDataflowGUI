@@ -40,7 +40,7 @@ Classify examples by their primary learning goal:
 | `custom tools` | Our own inspection algorithms and tools, plus other-library integrations. |
 | `applications` | Complete inspection tasks such as picking parts, inspecting defects or reading labels. |
 | `control flow tools` | Splitting, joining, branching, queues, batching, recipes and ticket coordination. |
-| `industrial integration` | PLC, robot and industrial messaging interfaces. |
+| `industrial integration` | PLC, robot and industrial messaging interfaces, including [ROS 2 / Fast DDS](<industrial integration/ros2_fastdds/README.md>). |
 | `Simple Plugins` | Examples for the dedicated Simple Plugins family. |
 | `user_tools` | Authoring Python plugins and reusable ToolBlocks. |
 | `SimpleITK Tools` | Medical image/volume interoperability, physical metadata and labeled MRI examples. |

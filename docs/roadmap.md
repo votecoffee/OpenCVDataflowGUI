@@ -41,10 +41,11 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **4 targeted increments of about 20** completed:
+The current cycle has **5 targeted increments of about 20** completed:
 animated image codec round trips (S1-111), large-radius smoothing (S1-159),
-assistant application authoring with connected-input plugin captures, and the
-SimpleITK medical image/metadata foundation.
+assistant application authoring with connected-input plugin captures, the
+SimpleITK medical image/metadata foundation, and optional ROS 2 Lyrical/Fast DDS
+image and data integration.
 The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
@@ -71,7 +72,38 @@ strict JSON and documentation links were verified. No broad suite was repeated.
 Update the count as implementation continues. Example reorganizations and frozen
 third-party reviews do not add vision capability completions.
 
+The ROS 2 increment passed **70 focused offline/editor/industrial checks** and
+**11 opt-in native localhost Fast DDS checks**, using the separate Lyrical
+Python 3.12.3/rclpy 10.0.10 runtime. Exact color/high-depth/padded/endian image
+bytes, structured pose/joint/clock/int64 data, subscriber matching, stale/latest
+queues, ticket acquisition, simulated-clock stamping, worker cleanup, cancellation
+and ambiguous publication handling were checked. All **eight installed Debug/Lean
+CLI runs** matched the four public examples. The application was reinstalled;
+no broad regression suite, simulator or robot operation was performed.
+
 ## Short-term focus
+
+Optional **ROS 2 Lyrical / Fast DDS** now provides image and structured-data
+readers, gated publishers and offline image converters under
+**Industrial integration → ROS 2**. A separate ROS Python worker keeps native
+ROS extensions independent of the Python 3.14/OpenCV 5 GUI. Sources preserve
+headers and acquire tickets only on accepted messages; bounded queues and
+explicit QoS/timeout controls expose waiting and drop behavior. Ambiguous writes
+hold until reset. Four [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
+include a real VisA PCB converter graph and disabled live templates.
+See [runtime setup](ros2.md) and [issue #20](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20).
+The next milestones are:
+
+1. Calibrated CameraInfo/RGB/depth association and PointCloud2 conversion with
+   explicit units, checked fields, stride/endian and metadata.
+2. TF2/frame-aware pose conversion, timestamp freshness, simulation clock reset
+   handling and rosbag2 replay.
+3. Services/actions with identities, cancellation and uncertain-outcome handling.
+4. Coordinated Gazebo/ros_gz/MoveIt camera/robot examples and measured image/cloud
+   throughput. Shared simulation dependencies and jobs require owner coordination.
+
+This is an industrial integration track; it adds no OpenCV coverage completion
+and native localhost DDS tests do not establish simulator or robot acceptance.
 
 The optional **SimpleITK** integration has its own
 [medical imaging roadmap](simpleitk-roadmap.md) and

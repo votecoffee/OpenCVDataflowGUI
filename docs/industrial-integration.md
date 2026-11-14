@@ -1,12 +1,23 @@
 # Industrial integration
 
-The toolbox groups **ControlLogix**, **FANUC**, and **MQTT** tools under
+The toolbox groups **ControlLogix**, **FANUC**, **MQTT**, and **ROS 2** tools under
 **Industrial integration**. Online blocks start disabled and are unavailable in live preview.
 Enable and configure them for the cell's intended endpoint before running a graph.
 
 The [industrial integration examples](<../examples/industrial integration/README.md>)
 include a runnable synthetic FANUC calibration and disabled wiring templates
 for FANUC registers and frames and for ControlLogix trigger and writeback.
+
+## ROS 2 Lyrical / Fast DDS
+
+Optional image and structured-data readers/publishers use a separate trusted ROS
+Python worker with `rmw_fastrtps_cpp`. Offline image converters need no ROS
+installation. Endpoints expose domain, discovery, QoS, queue, timeout and clock
+controls; readers issue tickets only on acquisition and writers require an
+explicit Enable event. See [setup, message contracts and limits](ros2.md) and
+[four examples](<../examples/industrial integration/ros2_fastdds/README.md>).
+CameraInfo/TF/depth/cloud association and robot simulation are separate
+[planned milestones](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20).
 
 ## MQTT
 

@@ -4348,6 +4348,88 @@ Inputs: `payload` (any), `enable` (boolean).
 | `write_enabled` | `false` | Also wire a true Enable input for each intended publication. |
 | `retain` | `false` | Ask the broker to retain the last value on the topic. |
 
+## Publish ROS 2 data (`industrial.ros2_data_publish`)
+
+Industrial integration / ROS 2
+
+Inputs: `data` (any), `enable` (boolean).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `topic` | `"/opencv_dataflow/demo"` | ROS topic. Endpoints must match domain, topic, installed interface and compatible QoS. |
+| `namespace` | `"/opencv_dataflow"` | Node namespace; relative topics resolve here. / is allowed. |
+| `domain_id` | `71` | Value must be a whole number between 0 and 232. Independent DDS domain. Demo default 71; choose the same domain as your peer. |
+| `discovery_range` | `"localhost"` | `localhost`, `subnet` Localhost by default; subnet opts in to network discovery. DDS XML may also affect scope. |
+| `queue_depth` | `4` | Value must be a whole number between 1 and 64. KEEP_LAST DDS depth and maximum buffered received messages; oldest entries are dropped. |
+| `queue_bytes` | `33554432` | Value must be a whole number between 1024 and 6.71089e+07. Local subscription buffer budget, including encoded image data; oldest entries are dropped. |
+| `reliability` | `"reliable"` | `reliable`, `best_effort` Best effort suits cameras. Reliable adds DDS delivery acknowledgments, not application acceptance. |
+| `durability` | `"volatile"` | `volatile`, `transient_local` Transient local can replay cached messages while a publisher remains alive. |
+| `deadline_seconds` | `0.0` | Value must be a finite number between 0 and 3600. Requested/offered DDS deadline; zero uses the middleware's infinite default. |
+| `lifespan_seconds` | `0.0` | Value must be a finite number between 0 and 3600. DDS sample lifespan; zero uses the middleware's infinite default. |
+| `timeout_seconds` | `0.25` | Value must be a finite number between 0.01 and 30. Receive wait, or each discovery/acknowledgment wait for a publication. |
+| `startup_timeout_seconds` | `30.0` | Value must be a finite number between 1 and 60. Bounded worker startup. ROS runs in its own configured Python environment. |
+| `use_sim_time` | `false` | Use /clock for this node's clock. Does not reinterpret incoming header timestamps. |
+| `publication_mode` | `"asynchronous"` | `asynchronous`, `synchronous`, `auto` Fast DDS publishing mode. Asynchronous bounds normal publication latency. |
+| `consume` | `"fifo"` | `fifo`, `latest` FIFO consumes oldest; latest discards superseded buffered samples. |
+| `max_age_seconds` | `0.0` | Value must be a finite number between 0 and 3600. Reject buffered messages older than this local arrival age; zero disables it. |
+| `write_enabled` | `false` | Also wire true Enable for each intended publication; preview cannot publish. |
+| `require_subscriber` | `true` | Wait for a matching subscriber before publishing; no match emits no output. |
+| `wait_for_ack` | `true` | For reliable QoS, wait for DDS acknowledgments. This does not acknowledge robot work. |
+| `message_type` | `"std_msgs/msg/String"` | `std_msgs/msg/String`, `std_msgs/msg/Bool`, `std_msgs/msg/Int32`, `std_msgs/msg/Int64`, `std_msgs/msg/Float32`, `std_msgs/msg/Float64`, `std_msgs/msg/Float64MultiArray`, `geometry_msgs/msg/PoseStamped`, `geometry_msgs/msg/Twist`, `geometry_msgs/msg/TransformStamped`, `geometry_msgs/msg/PoseArray`, `sensor_msgs/msg/JointState`, `sensor_msgs/msg/CameraInfo`, `nav_msgs/msg/Odometry`, `rosgraph_msgs/msg/Clock`, `custom` Installed ROS interface; custom interfaces must be installed in the ROS runtime. |
+| `custom_message_type` | `""` | Installed package/msg/Type when Custom is selected. |
+| `data_mode` | `"fields"` | `fields`, `json_string` Fields returns the ROS message object; JSON string parses String.data as strict JSON. |
+
+## Decode ROS 2 image (`industrial.ros2_image_decode`)
+
+Industrial integration / ROS 2
+
+Inputs: `message` (any).
+
+No configurable algorithm parameters.
+
+## Encode ROS 2 image (`industrial.ros2_image_encode`)
+
+Industrial integration / ROS 2
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `encoding` | `"auto"` | `auto`, `mono8`, `mono16`, `rgb8`, `bgr8`, `rgba8`, `bgra8`, `rgb16`, `bgr16`, `rgba16`, `bgra16`, `8UC1`, `16UC1`, `16SC1`, `32SC1`, `32FC1`, `64FC1` Auto preserves native sample depth and tagged color order; explicit RGB/BGR can swap channels. |
+| `frame_id` | `""` | Optional header frame override, with no implied physical transform or calibration. |
+| `stamp_mode` | `"preserve"` | `preserve`, `zero` Preserve incoming ROS header (otherwise zero), clear it, or stamp using the ROS node clock. |
+
+## Publish ROS 2 image (`industrial.ros2_image_publish`)
+
+Industrial integration / ROS 2
+
+Inputs: `image` (image), `enable` (boolean).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `topic` | `"/opencv_dataflow/camera/image"` | ROS topic. Endpoints must match domain, topic, installed interface and compatible QoS. |
+| `namespace` | `"/opencv_dataflow"` | Node namespace; relative topics resolve here. / is allowed. |
+| `domain_id` | `71` | Value must be a whole number between 0 and 232. Independent DDS domain. Demo default 71; choose the same domain as your peer. |
+| `discovery_range` | `"localhost"` | `localhost`, `subnet` Localhost by default; subnet opts in to network discovery. DDS XML may also affect scope. |
+| `queue_depth` | `4` | Value must be a whole number between 1 and 64. KEEP_LAST DDS depth and maximum buffered received messages; oldest entries are dropped. |
+| `queue_bytes` | `33554432` | Value must be a whole number between 1024 and 6.71089e+07. Local subscription buffer budget, including encoded image data; oldest entries are dropped. |
+| `reliability` | `"best_effort"` | `reliable`, `best_effort` Best effort suits cameras. Reliable adds DDS delivery acknowledgments, not application acceptance. |
+| `durability` | `"volatile"` | `volatile`, `transient_local` Transient local can replay cached messages while a publisher remains alive. |
+| `deadline_seconds` | `0.0` | Value must be a finite number between 0 and 3600. Requested/offered DDS deadline; zero uses the middleware's infinite default. |
+| `lifespan_seconds` | `0.0` | Value must be a finite number between 0 and 3600. DDS sample lifespan; zero uses the middleware's infinite default. |
+| `timeout_seconds` | `0.25` | Value must be a finite number between 0.01 and 30. Receive wait, or each discovery/acknowledgment wait for a publication. |
+| `startup_timeout_seconds` | `30.0` | Value must be a finite number between 1 and 60. Bounded worker startup. ROS runs in its own configured Python environment. |
+| `use_sim_time` | `false` | Use /clock for this node's clock. Does not reinterpret incoming header timestamps. |
+| `publication_mode` | `"asynchronous"` | `asynchronous`, `synchronous`, `auto` Fast DDS publishing mode. Asynchronous bounds normal publication latency. |
+| `consume` | `"fifo"` | `fifo`, `latest` FIFO consumes oldest; latest discards superseded buffered samples. |
+| `max_age_seconds` | `0.0` | Value must be a finite number between 0 and 3600. Reject buffered messages older than this local arrival age; zero disables it. |
+| `write_enabled` | `false` | Also wire true Enable for each intended publication; preview cannot publish. |
+| `require_subscriber` | `true` | Wait for a matching subscriber before publishing; no match emits no output. |
+| `wait_for_ack` | `true` | For reliable QoS, wait for DDS acknowledgments. This does not acknowledge robot work. |
+| `encoding` | `"auto"` | `auto`, `mono8`, `mono16`, `rgb8`, `bgr8`, `rgba8`, `bgra8`, `rgb16`, `bgr16`, `rgba16`, `bgra16`, `8UC1`, `16UC1`, `16SC1`, `32SC1`, `32FC1`, `64FC1` Auto preserves native sample depth and tagged color order; explicit RGB/BGR can swap channels. |
+| `frame_id` | `""` | Optional header frame override, with no implied physical transform or calibration. |
+| `stamp_mode` | `"preserve"` | `preserve`, `zero`, `node_clock` Preserve incoming ROS header (otherwise zero), clear it, or stamp using the ROS node clock. |
+
 ## Load animation frames (`input.animation_file`)
 
 Input / Files
@@ -4645,6 +4727,67 @@ Ticket mode and fixed value are common inspector controls.
 | `layout` | `"NV12"` | `NV12`, `NV21`, `I420`, `YV12`, `YUY2`, `UYVY`, `YVYU` Byte order and chroma subsampling of the input buffer. |
 | `color_format` | `"bgr"` | `gray`, `bgr`, `rgb`, `bgra`, `rgba` Gray extracts the stored luma samples. |
 | `algorithm_hint` | `"default"` | `default`, `accurate`, `approximate` |
+
+## Read ROS 2 data (`input.ros2_data`)
+
+Industrial integration / ROS 2
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `topic` | `"/opencv_dataflow/demo"` | ROS topic. Endpoints must match domain, topic, installed interface and compatible QoS. |
+| `namespace` | `"/opencv_dataflow"` | Node namespace; relative topics resolve here. / is allowed. |
+| `domain_id` | `71` | Value must be a whole number between 0 and 232. Independent DDS domain. Demo default 71; choose the same domain as your peer. |
+| `discovery_range` | `"localhost"` | `localhost`, `subnet` Localhost by default; subnet opts in to network discovery. DDS XML may also affect scope. |
+| `queue_depth` | `4` | Value must be a whole number between 1 and 64. KEEP_LAST DDS depth and maximum buffered received messages; oldest entries are dropped. |
+| `queue_bytes` | `33554432` | Value must be a whole number between 1024 and 6.71089e+07. Local subscription buffer budget, including encoded image data; oldest entries are dropped. |
+| `reliability` | `"reliable"` | `reliable`, `best_effort` Best effort suits cameras. Reliable adds DDS delivery acknowledgments, not application acceptance. |
+| `durability` | `"volatile"` | `volatile`, `transient_local` Transient local can replay cached messages while a publisher remains alive. |
+| `deadline_seconds` | `0.0` | Value must be a finite number between 0 and 3600. Requested/offered DDS deadline; zero uses the middleware's infinite default. |
+| `lifespan_seconds` | `0.0` | Value must be a finite number between 0 and 3600. DDS sample lifespan; zero uses the middleware's infinite default. |
+| `timeout_seconds` | `0.25` | Value must be a finite number between 0.01 and 30. Receive wait, or each discovery/acknowledgment wait for a publication. |
+| `startup_timeout_seconds` | `30.0` | Value must be a finite number between 1 and 60. Bounded worker startup. ROS runs in its own configured Python environment. |
+| `use_sim_time` | `false` | Use /clock for this node's clock. Does not reinterpret incoming header timestamps. |
+| `publication_mode` | `"asynchronous"` | `asynchronous`, `synchronous`, `auto` Fast DDS publishing mode. Asynchronous bounds normal publication latency. |
+| `consume` | `"fifo"` | `fifo`, `latest` FIFO consumes oldest; latest discards superseded buffered samples. |
+| `max_age_seconds` | `0.0` | Value must be a finite number between 0 and 3600. Reject buffered messages older than this local arrival age; zero disables it. |
+| `enabled` | `false` | Explicitly start a subscription. Disabled sources do not create workers or tickets. |
+| `ticket_mode` | `"auto"` | `auto`, `header_stamp`, `field` Auto acquisition ticket; header frame+stamp string; or an external data field. |
+| `ticket_field` | `""` | Dotted path in decoded data for an external string/number ticket; not a ROS timestamp conversion. |
+| `message_type` | `"std_msgs/msg/String"` | `std_msgs/msg/String`, `std_msgs/msg/Bool`, `std_msgs/msg/Int32`, `std_msgs/msg/Int64`, `std_msgs/msg/Float32`, `std_msgs/msg/Float64`, `std_msgs/msg/Float64MultiArray`, `geometry_msgs/msg/PoseStamped`, `geometry_msgs/msg/Twist`, `geometry_msgs/msg/TransformStamped`, `geometry_msgs/msg/PoseArray`, `sensor_msgs/msg/JointState`, `sensor_msgs/msg/CameraInfo`, `nav_msgs/msg/Odometry`, `rosgraph_msgs/msg/Clock`, `custom` Installed ROS interface; custom interfaces must be installed in the ROS runtime. |
+| `custom_message_type` | `""` | Installed package/msg/Type when Custom is selected. |
+| `data_mode` | `"fields"` | `fields`, `json_string` Fields returns the ROS message object; JSON string parses String.data as strict JSON. |
+
+## Read ROS 2 image (`input.ros2_image`)
+
+Industrial integration / ROS 2
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `topic` | `"/opencv_dataflow/camera/image"` | ROS topic. Endpoints must match domain, topic, installed interface and compatible QoS. |
+| `namespace` | `"/opencv_dataflow"` | Node namespace; relative topics resolve here. / is allowed. |
+| `domain_id` | `71` | Value must be a whole number between 0 and 232. Independent DDS domain. Demo default 71; choose the same domain as your peer. |
+| `discovery_range` | `"localhost"` | `localhost`, `subnet` Localhost by default; subnet opts in to network discovery. DDS XML may also affect scope. |
+| `queue_depth` | `4` | Value must be a whole number between 1 and 64. KEEP_LAST DDS depth and maximum buffered received messages; oldest entries are dropped. |
+| `queue_bytes` | `33554432` | Value must be a whole number between 1024 and 6.71089e+07. Local subscription buffer budget, including encoded image data; oldest entries are dropped. |
+| `reliability` | `"best_effort"` | `reliable`, `best_effort` Best effort suits cameras. Reliable adds DDS delivery acknowledgments, not application acceptance. |
+| `durability` | `"volatile"` | `volatile`, `transient_local` Transient local can replay cached messages while a publisher remains alive. |
+| `deadline_seconds` | `0.0` | Value must be a finite number between 0 and 3600. Requested/offered DDS deadline; zero uses the middleware's infinite default. |
+| `lifespan_seconds` | `0.0` | Value must be a finite number between 0 and 3600. DDS sample lifespan; zero uses the middleware's infinite default. |
+| `timeout_seconds` | `0.25` | Value must be a finite number between 0.01 and 30. Receive wait, or each discovery/acknowledgment wait for a publication. |
+| `startup_timeout_seconds` | `30.0` | Value must be a finite number between 1 and 60. Bounded worker startup. ROS runs in its own configured Python environment. |
+| `use_sim_time` | `false` | Use /clock for this node's clock. Does not reinterpret incoming header timestamps. |
+| `publication_mode` | `"asynchronous"` | `asynchronous`, `synchronous`, `auto` Fast DDS publishing mode. Asynchronous bounds normal publication latency. |
+| `consume` | `"latest"` | `fifo`, `latest` FIFO consumes oldest; latest discards superseded buffered samples. |
+| `max_age_seconds` | `0.0` | Value must be a finite number between 0 and 3600. Reject buffered messages older than this local arrival age; zero disables it. |
+| `enabled` | `false` | Explicitly start a subscription. Disabled sources do not create workers or tickets. |
+| `ticket_mode` | `"auto"` | `auto`, `header_stamp` Auto acquisition ticket; header frame+stamp string; or an external data field. |
+| `ticket_field` | `""` | Dotted path in decoded data for an external string/number ticket; not a ROS timestamp conversion. |
 
 ## Sequence demo frames (`input.sequence_demo`)
 

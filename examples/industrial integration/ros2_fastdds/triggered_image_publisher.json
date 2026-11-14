@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "trigger",
+      "type": "input.ros2_data",
+      "name": "Read ROS 2 data",
+      "parameters": {
+        "topic": "/opencv_dataflow/demo/trigger",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "reliable",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "fifo",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "field",
+        "ticket_field": "part",
+        "message_type": "std_msgs/msg/String",
+        "custom_message_type": "",
+        "data_mode": "json_string"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "data",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pcb_photo",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "../../assets/showcase/visa-pcb2-0000.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "external",
+        "value": 1
+      }
+    },
+    {
+      "id": "publish_camera",
+      "type": "industrial.ros2_image_publish",
+      "name": "Publish ROS 2 image",
+      "parameters": {
+        "topic": "/opencv_dataflow/camera/image",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "best_effort",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "fifo",
+        "max_age_seconds": 0.0,
+        "write_enabled": false,
+        "require_subscriber": true,
+        "wait_for_ack": true,
+        "encoding": "auto",
+        "frame_id": "demo_camera_optical",
+        "stamp_mode": "preserve"
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "enable"
+      ],
+      "exposed_outputs": [
+        "published",
+        "delivery"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "VisA PCB photo: Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and Onkar Dabeer, SPot-the-Difference (ECCV 2022). CC BY 4.0: https://registry.opendata.aws/visa/. Resized/letterboxed from bundled PCB2 0000; no defects added. Source and hashes: ../../assets/showcase/SOURCES.md. No robot/controller operation. Disabled live photo publisher, triggered by String JSON {\"part\":\"A-1\"}. Enable the trigger and Write enabled only on an isolated test domain with a camera subscriber. Uses best-effort images and reliable JSON triggers. Ticket remains local; ROS header frame does not encode the ticket. Trigger tickets must distinguish acquisitions.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "trigger",
+      "output": "ticket",
+      "target": "pcb_photo",
+      "input": "ticket"
+    },
+    {
+      "source": "pcb_photo",
+      "output": "image",
+      "target": "publish_camera",
+      "input": "image"
+    },
+    {
+      "source": "trigger",
+      "output": "trigger",
+      "target": "publish_camera",
+      "input": "enable"
+    }
+  ]
+}

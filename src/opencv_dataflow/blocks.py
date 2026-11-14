@@ -840,6 +840,7 @@ def builtin_registry():
     from .remap_maps import BuildLensMaps, LensMapDisplacement, UndistortLensPoints
     from .restoration import RESTORATION_BLOCKS
     from .ridge_response import RidgeResponse
+    from .ros2_blocks import ROS2_BLOCKS
     from .scan_stitching import StitchScanSequence
     from .segmentation import SEGMENTATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
@@ -899,6 +900,7 @@ def builtin_registry():
         *LOGIX_BLOCKS,
         *FANUC_BLOCKS,
         *MQTT_BLOCKS,
+        *ROS2_BLOCKS,
         ImageFile,
         VideoFile,
         TiffFile,

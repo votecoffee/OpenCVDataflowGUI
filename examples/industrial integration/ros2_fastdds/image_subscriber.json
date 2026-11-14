@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "camera",
+      "type": "input.ros2_image",
+      "name": "Read ROS 2 image",
+      "parameters": {
+        "topic": "/opencv_dataflow/camera/image",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "best_effort",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "latest",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "auto",
+        "ticket_field": ""
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray",
+      "type": "cv.gray",
+      "name": "Grayscale",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "edges",
+      "type": "cv.canny",
+      "name": "Canny edges",
+      "parameters": {
+        "low": 60.0,
+        "high": 150.0,
+        "l2_gradient": false,
+        "aperture": "3"
+      },
+      "position": [
+        640,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "Live camera template: disabled. Configure local ROS runtime (docs/ros2.md), domain 71, localhost, /opencv_dataflow/camera/image, best-effort/volatile QoS. Enable camera and use Continuous after a peer is ready. One acquired sample per cycle. No ROS image or robot connection is embedded in this project.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "camera",
+      "output": "image",
+      "target": "gray",
+      "input": "image"
+    },
+    {
+      "source": "gray",
+      "output": "image",
+      "target": "edges",
+      "input": "image"
+    }
+  ]
+}

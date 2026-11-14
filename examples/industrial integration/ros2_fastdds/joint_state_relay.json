@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "joint_state",
+      "type": "input.ros2_data",
+      "name": "Read ROS 2 data",
+      "parameters": {
+        "topic": "/opencv_dataflow/demo/joint_states",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "reliable",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "fifo",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "auto",
+        "ticket_field": "",
+        "message_type": "sensor_msgs/msg/JointState",
+        "custom_message_type": "",
+        "data_mode": "fields"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "data",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "relay_state",
+      "type": "industrial.ros2_data_publish",
+      "name": "Publish ROS 2 data",
+      "parameters": {
+        "topic": "/opencv_dataflow/demo/observed_joint_states",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "reliable",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "fifo",
+        "max_age_seconds": 0.0,
+        "write_enabled": false,
+        "require_subscriber": true,
+        "wait_for_ack": true,
+        "message_type": "sensor_msgs/msg/JointState",
+        "custom_message_type": "",
+        "data_mode": "fields"
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "data",
+        "enable"
+      ],
+      "exposed_outputs": [
+        "published",
+        "delivery"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "Disabled simulation-data template: JointState fields relay to a separate private demo topic; not a command topic. ROS uses meters/radians/seconds, and JointState ordering comes from name[]. Use matching domain/QoS. Data stays structured with header/name/position/velocity/effort. No joint controller, simulator, TF calibration or trajectory execution is provided. Both Enabled and Write enabled must be turned on deliberately.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "joint_state",
+      "output": "data",
+      "target": "relay_state",
+      "input": "data"
+    },
+    {
+      "source": "joint_state",
+      "output": "trigger",
+      "target": "relay_state",
+      "input": "enable"
+    }
+  ]
+}

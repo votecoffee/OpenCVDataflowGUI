@@ -38,6 +38,9 @@ use `python -m pip install -e ".[skimage]"` in the application environment.
 Optional [SimpleITK medical images and metadata](docs/simpleitk.md) use
 `python -m pip install -e ".[simpleitk]"` and a separate **SimpleITK** toolbox group.
 
+Optional [ROS 2 Lyrical / Fast DDS](docs/ros2.md) image and data blocks use a
+separately configured ROS Python runtime under **Industrial integration → ROS 2**.
+
 ## Usage
 
 The editor opens a synthetic inspection demo. Press **Run once** (F5) to see its
