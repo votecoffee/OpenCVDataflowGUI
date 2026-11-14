@@ -1,0 +1,29 @@
+{
+  "case": "object000006_scene000002_frame000013_mask000006",
+  "supplied_instance_mask": true,
+  "ground_truth_pose_entered_runtime": false,
+  "result": {
+    "accepted": false,
+    "missed": true,
+    "extra": false
+  },
+  "accepted_candidates": 0,
+  "seconds": {
+    "prepare": 0.21351010000034876,
+    "refinement": 282.94616980000046,
+    "score_prepare_and_fit": 191.40999359999932,
+    "score_inference": 27.55375869999989,
+    "total": 502.1234333000011
+  },
+  "setup_recipe_sha256": "9dd8370f3f04e0fd18c5898b1f286bbb3c3a253fdfb6d02a0e183db18c963e1d",
+  "capture_archive_sha256": "4383a06fc641ae52544ad3577777cb5ddb267b3414911f9ce882136f42bcb900",
+  "setup_reference_frame": 3,
+  "raw_top_proposal_evaluation_only": {
+    "correct_5mm_5deg": true,
+    "missed": false,
+    "extra": false,
+    "rotation_error_degrees": 2.6806600332968777,
+    "translation_error_mm": 1.1993976543733273,
+    "note": "Assesses raw proposal; actual fit decision remains rejected"
+  }
+}

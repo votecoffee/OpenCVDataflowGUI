@@ -30,6 +30,12 @@ The newer [Simple3DMeasure examples](3d_measure/README.md) add three real
 first-return captures with supplied annotation fixtures. They demonstrate the
 measurement/review workflow; independent physical accuracy remains unqualified.
 
+The experimental [FoundationPose saved-result reviews](foundation_pose/README.md)
+add source-aligned overlays and native RGB flyaround clouds from two actual
+CPU ONNX runs. Both retain rejected results. These fast file-only projects do
+not run neural inference or require its worker environment; live integration
+and the training editor remain future work.
+
 ## Set up SimplePatternMatch
 
 If SimplePatternMatch is already installed in the Python environment running

@@ -1,0 +1,21 @@
+{
+  "case": "object000006_scene000003_frame000010_mask000008",
+  "supplied_instance_mask": true,
+  "ground_truth_pose_entered_runtime": false,
+  "result": {
+    "accepted": false,
+    "missed": false,
+    "extra": false
+  },
+  "accepted_candidates": 0,
+  "seconds": {
+    "prepare": 0.23783320000075037,
+    "refinement": 478.8713828,
+    "score_prepare_and_fit": 144.7426249,
+    "score_inference": 22.908500699999422,
+    "total": 646.7603426000005
+  },
+  "setup_recipe_sha256": "9dd8370f3f04e0fd18c5898b1f286bbb3c3a253fdfb6d02a0e183db18c963e1d",
+  "capture_archive_sha256": "2d93efe24e8df047bf6b67cede05c60ab1438959604bf542a3838138e61e2b8a",
+  "setup_reference_frame": 3
+}

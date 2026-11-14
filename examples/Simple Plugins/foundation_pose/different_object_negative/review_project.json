@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fit",
+      "type": "input.cloud",
+      "name": "Saved rejected pose / fit",
+      "parameters": {
+        "path": "fit.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "rgb",
+      "type": "input.file",
+      "name": "Original RGB",
+      "parameters": {
+        "path": "../source/test_primesense/000003/rgb/000010.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        500,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "overlay",
+      "type": "input.file",
+      "name": "Recorded neural proposal \u2014 rejected",
+      "parameters": {
+        "path": "overlay.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        500,
+        350
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "SAVED REVIEW: both pose results REJECTED",
+      "description": "Actual CPU ONNX outputs with supplied instance masks. File-source pass means load success, not pose acceptance. First raw pose 1.20mm/2.68deg, rejected at 67.5% support versus fixed 70%. Negative presents object 8 to model 6. No live inference or robot motion. T-LESS, Hodan et al., WACV 2017, CC BY 4.0. See README, report/evaluation JSON and THIRD_PARTY notices.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

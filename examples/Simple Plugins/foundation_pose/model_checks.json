@@ -1,0 +1,38 @@
+{
+  "backend": {
+    "model": "nvidia/foundationpose",
+    "revision": "18d8309afc9790cddc03a1d50bc69954dc058693",
+    "assets": {
+      "refiner_net.onnx": "4a4445d2506b1bfc0a8d62fa80f8780a7e37bb0df13bb09aa5dd04a03bf0c954",
+      "score_net.onnx": "bb7208919557560ecb0e10a30612821f0025a2578190b17677bdf3653514a48d"
+    },
+    "runtime": "onnxruntime",
+    "version": "1.32.0",
+    "provider": "CPUExecutionProvider",
+    "threads": 4,
+    "compile_seconds": 0.8534270000000106,
+    "score_semantics": "raw_cohort_dependent_logit"
+  },
+  "purpose": "Random-input tensor semantics, not pose accuracy",
+  "random_seed": 23,
+  "refiner_batch_max_abs_differences": [
+    0.0,
+    0.0
+  ],
+  "scorer_cohort": [
+    -20.617630004882812,
+    -20.68768310546875
+  ],
+  "scorer_independent_calls": [
+    -20.815624237060547,
+    -16.3045711517334
+  ],
+  "scorer_max_difference": 4.383111953735352,
+  "preprocessing_reference": {
+    "reference": "independent torch grid_sample/matrix_exp, CPU",
+    "torch_version": "2.15.0+cpu",
+    "crop_max_absolute_error": 2.979534985403376e-08,
+    "rotation_max_absolute_error": 2.220446049250313e-16,
+    "cuda_renderer_parity": "not_checked"
+  }
+}
