@@ -21,6 +21,7 @@ PATH_WIDTH_TYPES = ("inspect.simple_path_width",)
 REFERENCE_INSPECT_TYPES = ("inspect.simple_reference",)
 LOCATE_3D_TYPES = ("3d.simple_locate",)
 MEASURE_3D_TYPES = ("3d.simple_measure",)
+BIN_PICKING_TYPES = ("3d.simple_bin_picking",)
 
 
 def _register_blocks(register, registry):
@@ -109,6 +110,19 @@ def load_installed_3d_measure(registry):
         raise ValueError(
             "Install Simple3DMeasure in the Python environment running DataflowGUI. "
             "See examples/Simple Plugins/3d_measure/README.md for setup."
+        ) from exc
+    _register_blocks(register, registry)
+
+
+def load_installed_bin_picking(registry):
+    try:
+        from opencv_simple_bin_picking.dataflow import register
+    except ModuleNotFoundError as exc:
+        if exc.name not in ("opencv_simple_bin_picking", "opencv_simple_bin_picking.dataflow"):
+            raise
+        raise ValueError(
+            "Install SimpleBinPicking in the Python environment running DataflowGUI. "
+            "See examples/Simple Plugins/bin_picking/README.md for setup."
         ) from exc
     _register_blocks(register, registry)
 

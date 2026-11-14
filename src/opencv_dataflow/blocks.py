@@ -805,6 +805,7 @@ def builtin_registry():
     from .photo_filters import PHOTO_FILTER_BLOCKS
     from .pick_selection import SelectPickCandidate
     from .plugins import (
+        BIN_PICKING_TYPES,
         GEOMETRIC_MATCHER_TYPES,
         LOCATE_3D_TYPES,
         MEASURE_3D_TYPES,
@@ -813,6 +814,7 @@ def builtin_registry():
         REFERENCE_INSPECT_TYPES,
         load_installed_3d_locate,
         load_installed_3d_measure,
+        load_installed_bin_picking,
         load_installed_geometric_matcher,
         load_installed_path_width,
         load_installed_pixel_segmentation,
@@ -1147,6 +1149,7 @@ def builtin_registry():
     registry.add_provider(REFERENCE_INSPECT_TYPES, load_installed_reference_inspect)
     registry.add_provider(LOCATE_3D_TYPES, load_installed_3d_locate)
     registry.add_provider(MEASURE_3D_TYPES, load_installed_3d_measure)
+    registry.add_provider(BIN_PICKING_TYPES, load_installed_bin_picking)
     registry.add_provider((invert_example.Invert.type_id,), invert_example.register)
     return registry
 

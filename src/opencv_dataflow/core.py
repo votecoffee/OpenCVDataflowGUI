@@ -54,6 +54,7 @@ _PLUGIN_DISPLAY_TITLES = {
     "inspect.simple_reference": "SimpleReferenceInspect",
     "3d.simple_locate": "Simple3DLocate",
     "3d.simple_measure": "Simple3DMeasure",
+    "3d.simple_bin_picking": "SimpleBinPicking",
 }
 
 DISPLAY_RESULT_FIELDS = (

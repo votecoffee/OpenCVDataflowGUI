@@ -8,6 +8,7 @@ from PySide6.QtWidgets import QAbstractItemView, QTreeWidget, QTreeWidgetItem
 
 from .core import block_display_title
 from .plugins import (
+    BIN_PICKING_TYPES,
     GEOMETRIC_MATCHER_TYPES,
     LOCATE_3D_TYPES,
     MEASURE_3D_TYPES,
@@ -27,6 +28,7 @@ _OPTIONAL_SIMPLE_FAMILIES = {
     **dict.fromkeys(REFERENCE_INSPECT_TYPES, "Reference inspection"),
     **dict.fromkeys(LOCATE_3D_TYPES, "3D localization"),
     **dict.fromkeys(MEASURE_3D_TYPES, "3D measurements"),
+    **dict.fromkeys(BIN_PICKING_TYPES, "Bin picking"),
 }
 _SIMPLE_FAMILIES = {**_OPTIONAL_SIMPLE_FAMILIES, "inspect.simple_classify_image": "Classification"}
 
