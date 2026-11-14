@@ -54,7 +54,7 @@ def main():
         stream.write("\n")
     os.environ.update(values)
     from ros2cli.cli import main as ros_main
-    return ros_main(args=["launch", str(launch), f"overlay:={args.overlay.resolve()}",
+    return ros_main(argv=["launch", str(launch), f"overlay:={args.overlay.resolve()}",
                           "gui:=true" if args.gui else "gui:=false"])
 
 

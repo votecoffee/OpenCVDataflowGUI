@@ -2,7 +2,7 @@
 
 Additive, simulation-only UR5e scene and source-camera support for the OpenCVDataflowGUI bin-picking example. The application owns candidate perception, pick sequencing, the placement grid, MoveIt collision-scene transitions and trajectory execution. This package supplies no pick loop and sends no robot trajectories.
 
-Status: source and offline checks are under development. Native scene/camera, assisted lift/release, reset and complete multi-pick acceptance must be measured in the allocated simulator; do not treat pure state-machine tests as those results.
+Status: native headless scene/camera readiness is verified. Assisted lift/release, reset and complete multi-pick acceptance must be measured by the application owner; do not treat pure state-machine or camera tests as those results.
 
 ## Scene and ownership
 
@@ -71,6 +71,10 @@ These are explicitly **truth-based pose gates**, not a validated contact sensor 
 Pure tests cover actual initial geometry separation, source/evaluation separation, optical-axis geometry, initially-unattached per-object plugin settings, fresh/invalid/stale/jaw gates, single-object ownership and unknown/late outcomes. Native SDF parsing, camera frame/encoding/K, rendered occlusion, collision-free reach, observed lift/release and repeated reset remain required runtime checks. No physical camera/robot or commercial simulation license is part of this fixture.
 
 The initial source checkpoint passed **8 offline tests**, installed Gazebo's world SDF validation and actual URDF-to-SDF conversion retaining `gripper_base_link` and all six initially-unattached plugins. Native ROS interface imports passed without initializing ROS. These are parser/source checks, not a running scene, a verified camera stream or a successful grasp. Runtime allocation and all dynamic checks remain pending.
+
+The subsequent native headless check used the allocated second RoboStack runtime with domain 130 and a unique Gazebo partition. It passed fresh exact-stamp original **960×720 rgb8 / 32FC1** pairs, CameraInfo/frame/geometry consistency, three first-return-visible upper stack centres and three lower centres occluded by nearer surfaces. All five required MoveIt services, ExecuteTrajectory and both controller trajectory actions were available; GetPlanningScene returned eight arm/gripper joints. No motion goals were sent by this verifier. This proves centre-ray occlusion, not complete lower-part silhouette occlusion.
+
+Run the maintained read-only verifier **before application motion**, inside the same activated/isolation environment: `python -m opencv_bin_picking_fixture.verify_native --output NEW_EVIDENCE_DIRECTORY`. It retains original RGB/depth bytes, stride/encoding/K, hashes, session context and explicitly evaluation-only projection checks. It assumes the initial three-stack scene and refuses an existing evidence destination. The application owner has sole arm/gripper/attachment/reset control after handoff; the fixture owner must not run overlapping actions.
 
 Primary references: [Gazebo 10 DetachableJoint source](https://github.com/gazebosim/gz-sim/blob/gz-sim10/src/systems/detachable_joint/DetachableJoint.cc), [PosePublisher source](https://github.com/gazebosim/gz-sim/blob/gz-sim10/src/systems/pose_publisher/PosePublisher.cc), [official RGB-D bridge example](https://github.com/gazebosim/ros_gz/blob/ros2/ros_gz_sim_demos/config/rgbd_camera_bridge.yaml). Installed plugin support is checked separately; documentation for other versions is not proof of native behavior.
 

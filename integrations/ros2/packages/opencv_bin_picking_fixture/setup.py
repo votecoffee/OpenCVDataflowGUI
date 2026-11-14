@@ -9,4 +9,5 @@ setup(name="opencv_bin_picking_fixture", version="0.1.0", packages=find_packages
       description="Additive simulation-only bin and RGB-D fixture with explicitly assisted grasping", license="MIT",
       entry_points={"console_scripts": ["fixture_prepare = opencv_bin_picking_fixture.prepare:main",
                                          "fixture_run = opencv_bin_picking_fixture.run:main",
+                                         "fixture_verify_native = opencv_bin_picking_fixture.verify_native:main",
                                          "fixture_bridge = opencv_bin_picking_fixture.node:main"]})
