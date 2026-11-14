@@ -117,10 +117,13 @@ service a timer while a source/native call is blocking the execution thread, and
 it cannot recover the time a frame waited upstream before ingress. Therefore these
 timeouts are not hard real-time deadlines and do not guarantee simultaneous camera
 exposures. Use suitable hardware triggers/PLC/device coordination for that.
-Independent source workers and timestamp-window matching are future work in
-[issue 5](https://github.com/votecoffee/OpenCVDataflowGUI/issues/5). Timestamp
-tolerance, clock-domain alignment and event-time watermarks need explicit designs;
-timestamp-looking ticket text alone does not implement them.
+For two ordered ROS-header image streams, the separate
+[timestamp pairer](ros2-time-pairing.md) provides an explicit bounded FIFO window
+and common pair ticket. It leaves this coordinator's ticket matching unchanged.
+Independent source workers, general multi-stream/out-of-order matching,
+clock-domain alignment and event-time watermarks remain future work in
+[issue 5](https://github.com/votecoffee/OpenCVDataflowGUI/issues/5).
+Timestamp-looking ticket text alone does not implement those policies.
 
 `max_pending` and `max_bytes_mb` bound stored pending/cache data. Closed-key history
 is separately bounded by `history_size` (default 4096); sufficiently old closed

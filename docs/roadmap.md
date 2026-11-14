@@ -41,13 +41,14 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **9 targeted increments of about 20** completed:
+The current cycle has **10 targeted increments of about 20** completed:
 animated image codec round trips (S1-111), large-radius smoothing (S1-159),
 assistant application authoring with connected-input plugin captures, the
 SimpleITK medical image/metadata foundation, optional ROS 2 Lyrical/Fast DDS
 image/data integration, ROS PointCloud2 conversion/acquisition/publication,
-ROS CameraInfo/per-acquisition registered RGB-D association, and strict ROS
-pose/TF conversion with run/reset acquisition identity, and static CameraInfo reuse.
+ROS CameraInfo/per-acquisition registered RGB-D association, strict ROS
+pose/TF conversion with run/reset acquisition identity, static CameraInfo reuse,
+and ordered timestamp pairing of ROS image streams.
 The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
@@ -102,6 +103,27 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+ROS **ordered image timestamp pairing** now buffers two streams with positive
+integer acquisition headers. Earliest feasible FIFO heads pair within an explicit
+tolerance; older unmatched heads and receipt-time expirations are dropped.
+Queues are bounded, duplicates do not replay, and backward stamps hold until
+reset/new run context. Common pair tickets retain both original headers/tickets
+and optional acquisition provenance. No clock alignment, spatial registration or
+physical synchronization is inferred. Pair before static CameraInfo binding for
+registered RGB-D. A real PCB fixture explicitly uses artificial times; a disabled
+RGB-D template shows the complete chain. See [pairing contracts](ros2-time-pairing.md).
+Verification passed **176 focused offline/editor/coordination checks** and one
+native localhost DDS check: an out-of-window image was discarded, a later pair
+matched at 1 ms, and static calibration produced the expected colored meter cloud.
+Independent FIFO references exercise varied arrival interleavings; integer-ns,
+limits, expiry, holds, run/recipe isolation, XML and editor controls were checked.
+All **four installed Debug/Lean outcomes** matched the two new examples. The app
+was reinstalled, wheel source contents and cleanup checked, and the catalog
+imports without ROS extensions. No broad suite, simulator or robot operation
+was performed.
+This integration does not change OpenCV coverage counts. General out-of-order
+matching, multi-stream assignment and clock alignment remain future milestones.
+
 ROS **static CameraInfo reuse** now applies a cached calibration to successive
 ticketed images without rewriting its original acquisition header. Explicit
 bindings record calibration revision, original provenance, image ticket/grid,
@@ -119,7 +141,8 @@ same recorded image. The app was reinstalled and packaged sources checked.
 No broad suite, simulator or robot operation was performed; this integration
 increment does not change the OpenCV coverage denominator.
 See [static calibration contracts](ros2-static-camera.md). Approximate-time image
-pairing and broader stereo/rectification support remain separate work.
+pairing now has a two-stream ordered implementation; broader timing and
+stereo/rectification support remain separate work.
 
 ROS **strict poses, acquisition-time TF and run/reset identity** now provide six
 additional blocks. Stamped pose/transform conversion names parent/child direction,
@@ -164,16 +187,17 @@ readers, gated publishers, offline converters and registered RGB-D validation un
 ROS extensions independent of the Python 3.14/OpenCV 5 GUI. Sources preserve
 headers and acquire tickets only on accepted messages; bounded queues and
 explicit QoS/timeout controls expose waiting and drop behavior. Ambiguous writes
-hold until reset. Fourteen [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
+hold until reset. Sixteen [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
 include real VisA PCB/T-LESS RGB-D converter graphs and disabled live templates.
 See [runtime setup](ros2.md) and [issue #20](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20).
 The next milestones are:
 
-1. Approximate-time image pairing, stereo-baseline/nonidentity
+1. General out-of-order/multi-stream image matching and clock alignment;
+   stereo-baseline/nonidentity
    rectification and rectified ROI recomputation; extended cloud-field editing and
    validated remerging after point edits. Per-acquisition CameraInfo/RGB/depth
    association, explicit static CameraInfo reuse and PointCloud2 conversion/read/write
-   are implemented.
+   and two-stream ordered timestamp pairing are implemented.
 2. Integrate local run tokens with external capture/service envelopes, request maps,
    server/robot/scene/frame revisions and held-out timing checks. Strict stamped
    poses/TF and local run/reset guards are implemented; rosbag2 and source TF

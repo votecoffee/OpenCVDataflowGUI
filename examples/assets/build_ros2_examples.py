@@ -148,6 +148,7 @@ def build():
     build_calibration_examples()
     build_pose_context_examples()
     build_static_camera_examples()
+    build_timestamp_pair_examples()
 
 
 def real_depth_graph():
@@ -523,6 +524,107 @@ def build_static_camera_examples():
         "for run/reset invalidation. No robot, simulator or cross-frame registration is started.",
     )
     graph.save(ROOT / "static_camera_subscriber.json")
+
+
+def build_timestamp_pair_examples():
+    graph = Graph()
+    for index in (1, 2):
+        source = add(
+            graph,
+            "input.file",
+            f"photo_{index}",
+            (0, (index - 1) * 350),
+            path="../../assets/showcase/visa-pcb2-0000.png",
+            path_base="project",
+        )
+        tagged = add(
+            graph,
+            "core.attach_payload",
+            f"fixture_stamp_{index}",
+            (330, (index - 1) * 350),
+            payload={
+                "ros2": {
+                    "header": {
+                        "frame_id": "fixture_camera",
+                        "stamp": {"sec": 1, "nanosec": (index - 1) * 2_000_000},
+                    }
+                }
+            },
+        )
+        graph.connect(source.id, "image", tagged.id, "value")
+    pair = add(
+        graph,
+        "industrial.ros2_image_pair",
+        "pair",
+        (660, 150),
+        tolerance_ms=3,
+        clock_domain="synthetic_example_time",
+    )
+    gray = add(graph, "cv.gray", "gray", (990, 150))
+    edges = add(graph, "cv.canny", "edges", (1320, 150))
+    for index in (1, 2):
+        graph.connect(f"fixture_stamp_{index}", "value", pair.id, f"input_{index}")
+    graph.connect(pair.id, "input_1", gray.id, "image")
+    graph.connect(gray.id, "image", edges.id, "image")
+    note(
+        graph,
+        CREDIT + " Timestamp-pairing control fixture: both streams reuse the SAME "
+        "PCB photograph with artificial 1.000 s and 1.002 s headers. These are not two physical "
+        "captures or evidence of real camera synchronization. The 3 ms tolerance pairs them "
+        "using ordered FIFO and retains both original headers/tickets. This is a one-shot "
+        "fixed-time fixture: Reset flow state before replay, otherwise duplicates are ignored. "
+        "No ROS installation or network activity is required.",
+    )
+    graph.save(ROOT / "offline_timestamp_pair.json")
+
+    graph = Graph.load(ROOT / "static_camera_subscriber.json", REGISTRY)
+    for key in ("cache", "coordinate", "checked", "project"):
+        graph.remove(key)
+    add(graph, "industrial.ros2_camera_cache", "cache", (660, 150))
+    add(graph, "flow.coordinate", "coordinate", (990, 150), inputs=3)
+    add(
+        graph,
+        "industrial.ros2_rgbd",
+        "checked",
+        (1320, 150),
+        calibration_timing="bound_static",
+        max_skew_ms=5,
+    )
+    add(graph, "3d.depth_cloud", "project", (1650, 150), sample_step=4)
+    color = add(
+        graph,
+        "input.ros2_image",
+        "color",
+        (0, -300),
+        topic="/opencv_dataflow/camera/color_rect",
+        ticket_mode="header_stamp",
+    )
+    pair = add(graph, "industrial.ros2_image_pair", "pair", (330, -150), tolerance_ms=5)
+    graph.connect(color.id, "image", pair.id, "input_1")
+    graph.connect("depth", "image", pair.id, "input_2")
+    graph.connect("camera", "camera", "cache", "camera")
+    graph.connect(pair.id, "input_2", "cache", "image")
+    graph.blocks["coordinate"].parameters["inputs"] = 3
+    graph.connect(pair.id, "input_1", "coordinate", "input_1")
+    graph.connect("cache", "image", "coordinate", "input_2")
+    graph.connect("cache", "camera", "coordinate", "input_3")
+    graph.connect("coordinate", "group", "checked", "group")
+    graph.connect("checked", "depth", "project", "depth")
+    graph.connect("checked", "camera", "project", "camera")
+    graph.blocks["checked"].parameters.update(
+        use_color=True, depth_label="input_2", camera_label="input_3", max_skew_ms=5
+    )
+    graph.connect("checked", "color", "project", "image")
+    graph.blocks["source_and_scope"].description = (
+        "Disabled approximate RGB-D template: ordered FIFO pairing within 5 ms, then static "
+        "CameraInfo binding to the matched depth, exact ticket coordination, registered RGB-D "
+        "validation and a colored meter cloud. Declared common ROS clock is not verified clock "
+        "synchronization. Original image stamps remain intact; common pair tickets preserve "
+        "original ticket provenance. Prime calibration before images. Expiry is cooperative; "
+        "duplicate stamps are ignored and backward stamps hold until reset/new run context. "
+        "All live endpoints remain disabled. No simulator or robot is started."
+    )
+    graph.save(ROOT / "approximate_rgbd_subscriber.json")
 
 
 if __name__ == "__main__":

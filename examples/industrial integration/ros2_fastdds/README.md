@@ -19,6 +19,8 @@ Open these projects with File → Open. Tools are in
 | [Exact-time TF subscriber](exact_time_tf_subscriber.json) | Disabled image acquisition and persistent TF lookup at its nonzero header stamp, guarded by current run context. |
 | [Offline static CameraInfo](offline_static_camera.json) | Real T-LESS depth and intrinsics → explicit static calibration binding → ticket coordination → calibrated RGB cloud, with missing ROS timestamps disclosed. |
 | [Static CameraInfo subscriber](static_camera_subscriber.json) | Disabled depth subscriber with a retained-calibration reader and explicit static RGB-D validation. |
+| [Offline timestamp pairing](offline_timestamp_pair.json) | Two copies of one real PCB photo with explicitly artificial timestamps demonstrate ordered FIFO pairing; reset flow state before replaying the fixed stamps. |
+| [Approximate RGB-D subscriber](approximate_rgbd_subscriber.json) | Disabled ordered color/depth timestamp pairing, then static calibration binding, ticket coordination and calibrated colored cloud. |
 
 Run the offline example from the repository root:
 
@@ -105,7 +107,13 @@ are dropped until the cache is primed. Zero receipt-age limit explicitly allows
 unlimited static reuse. Use Context/Require context and tagged images for run/reset
 invalidation. See [static calibration contracts](../../../docs/ros2-static-camera.md).
 
-Rebuild all fourteen graphs without downloads or ROS activity:
+The timestamp pairer keeps original headers and issues a common processing ticket
+with original member provenance. Nearby stamps are not proof of physical capture
+synchronization. Streams must increase in time; duplicates are ignored and a
+backward stamp holds until reset/new run context. Pair before static calibration
+binding. See [timestamp pairing contracts](../../../docs/ros2-time-pairing.md).
+
+Rebuild all sixteen graphs without downloads or ROS activity:
 
 ```powershell
 python examples/assets/build_ros2_examples.py

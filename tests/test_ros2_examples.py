@@ -32,6 +32,8 @@ BASE = ROOT / "examples/industrial integration/ros2_fastdds"
         "exact_time_tf_subscriber",
         "offline_static_camera",
         "static_camera_subscriber",
+        "offline_timestamp_pair",
+        "approximate_rgbd_subscriber",
     ],
 )
 def test_saved_graphs_validate_and_run_without_ros(monkeypatch, name):
@@ -65,6 +67,16 @@ def test_saved_graphs_validate_and_run_without_ros(monkeypatch, name):
             graph.run()
             assert graph.blocks["project"].current_emissions.get("cloud")
             assert graph.blocks["checked"].last_result.outputs["info"]["ticket"] != first_ticket
+        if name == "offline_timestamp_pair":
+            result = graph.blocks["pair"].last_result.outputs["info"]
+            assert result["spread_ns"] == 2_000_000
+            assert result["clock_domain"] == "synthetic_example_time"
+            assert not result["physical_sync_verified"]
+            assert "SAME" in graph.blocks["source_and_scope"].description
+            assert "CC BY 4.0" in graph.blocks["source_and_scope"].description
+            assert graph.blocks["edges"].last_result.outputs["image"].any()
+            graph.run()
+            assert not any(graph.blocks["pair"].current_emissions.values())
         if name == "offline_cloud_roundtrip":
             original = graph.blocks["project"].last_result.outputs["cloud"]
             restored = graph.blocks["decode_cloud"].last_result.outputs["cloud"]

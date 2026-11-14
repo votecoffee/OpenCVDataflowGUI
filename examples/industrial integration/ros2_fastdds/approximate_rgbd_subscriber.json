@@ -1,0 +1,399 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "camera_info",
+      "type": "input.ros2_data",
+      "name": "Read ROS 2 data",
+      "parameters": {
+        "topic": "/opencv_dataflow/camera/camera_info",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "reliable",
+        "durability": "transient_local",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "fifo",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "auto",
+        "ticket_field": "",
+        "message_type": "sensor_msgs/msg/CameraInfo",
+        "custom_message_type": "",
+        "data_mode": "fields"
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "data",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "industrial.ros2_camera_decode",
+      "name": "Decode ROS 2 CameraInfo",
+      "parameters": {
+        "space": "rectified"
+      },
+      "position": [
+        330,
+        350
+      ],
+      "exposed_inputs": [
+        "message"
+      ],
+      "exposed_outputs": [
+        "camera",
+        "message",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth",
+      "type": "input.ros2_image",
+      "name": "Read ROS 2 image",
+      "parameters": {
+        "topic": "/opencv_dataflow/camera/depth_registered",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "best_effort",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "latest",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "header_stamp",
+        "ticket_field": ""
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "Disabled approximate RGB-D template: ordered FIFO pairing within 5 ms, then static CameraInfo binding to the matched depth, exact ticket coordination, registered RGB-D validation and a colored meter cloud. Declared common ROS clock is not verified clock synchronization. Original image stamps remain intact; common pair tickets preserve original ticket provenance. Prime calibration before images. Expiry is cooperative; duplicate stamps are ignored and backward stamps hold until reset/new run context. All live endpoints remain disabled. No simulator or robot is started.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cache",
+      "type": "industrial.ros2_camera_cache",
+      "name": "Cache ROS 2 CameraInfo",
+      "parameters": {
+        "max_age_seconds": 0.0,
+        "require_context": false,
+        "allow_zero_stamps": false
+      },
+      "position": [
+        660,
+        150
+      ],
+      "exposed_inputs": [
+        "context",
+        "reset",
+        "camera",
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "camera",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "coordinate",
+      "type": "flow.coordinate",
+      "name": "Coordinate inputs",
+      "parameters": {
+        "inputs": 3,
+        "mode": "ticket_all",
+        "max_wait_ms": 1000.0,
+        "timeout": "discard",
+        "warmup": "all",
+        "max_age_ms": 1000.0,
+        "primary": "input_1",
+        "duplicates": "error",
+        "late": "ignore",
+        "history_size": 4096,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        990,
+        150
+      ],
+      "exposed_inputs": [
+        "input_1",
+        "input_2",
+        "input_3",
+        "input_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "value",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "checked",
+      "type": "industrial.ros2_rgbd",
+      "name": "Validate registered ROS RGB-D",
+      "parameters": {
+        "use_color": true,
+        "color_label": "input_1",
+        "depth_label": "input_2",
+        "camera_label": "input_3",
+        "calibration_timing": "bound_static",
+        "max_skew_ms": 5,
+        "allow_zero_stamps": false,
+        "uint16_m_per_sample": 0.001,
+        "float_depth_units": "m",
+        "display_max_m": 5.0
+      },
+      "position": [
+        1320,
+        150
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "color",
+        "depth",
+        "camera",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "project",
+      "type": "3d.depth_cloud",
+      "name": "Depth to point cloud",
+      "parameters": {
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m",
+        "sample_step": 4,
+        "max_points": 200000
+      },
+      "position": [
+        1650,
+        150
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "color",
+      "type": "input.ros2_image",
+      "name": "Read ROS 2 image",
+      "parameters": {
+        "topic": "/opencv_dataflow/camera/color_rect",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "best_effort",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "latest",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "header_stamp",
+        "ticket_field": ""
+      },
+      "position": [
+        0,
+        -300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pair",
+      "type": "industrial.ros2_image_pair",
+      "name": "Pair ROS 2 images by timestamp",
+      "parameters": {
+        "tolerance_ms": 5,
+        "max_wait_ms": 1000.0,
+        "clock_domain": "ros_time",
+        "require_same_frame": true,
+        "require_context": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        330,
+        -150
+      ],
+      "exposed_inputs": [
+        "context",
+        "reset",
+        "input_1",
+        "input_2"
+      ],
+      "exposed_outputs": [
+        "group",
+        "input_1",
+        "input_2",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "camera_info",
+      "output": "data",
+      "target": "camera",
+      "input": "message"
+    },
+    {
+      "source": "color",
+      "output": "image",
+      "target": "pair",
+      "input": "input_1"
+    },
+    {
+      "source": "depth",
+      "output": "image",
+      "target": "pair",
+      "input": "input_2"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "cache",
+      "input": "camera"
+    },
+    {
+      "source": "pair",
+      "output": "input_2",
+      "target": "cache",
+      "input": "image"
+    },
+    {
+      "source": "pair",
+      "output": "input_1",
+      "target": "coordinate",
+      "input": "input_1"
+    },
+    {
+      "source": "cache",
+      "output": "image",
+      "target": "coordinate",
+      "input": "input_2"
+    },
+    {
+      "source": "cache",
+      "output": "camera",
+      "target": "coordinate",
+      "input": "input_3"
+    },
+    {
+      "source": "coordinate",
+      "output": "group",
+      "target": "checked",
+      "input": "group"
+    },
+    {
+      "source": "checked",
+      "output": "depth",
+      "target": "project",
+      "input": "depth"
+    },
+    {
+      "source": "checked",
+      "output": "camera",
+      "target": "project",
+      "input": "camera"
+    },
+    {
+      "source": "checked",
+      "output": "color",
+      "target": "project",
+      "input": "image"
+    }
+  ]
+}

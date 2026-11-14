@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "photo_1",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "../../assets/showcase/visa-pcb2-0000.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture_stamp_1",
+      "type": "core.attach_payload",
+      "name": "Attach port payload",
+      "parameters": {
+        "payload": {
+          "ros2": {
+            "header": {
+              "frame_id": "fixture_camera",
+              "stamp": {
+                "sec": 1,
+                "nanosec": 0
+              }
+            }
+          }
+        }
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "value",
+        "payload"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "photo_2",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "../../assets/showcase/visa-pcb2-0000.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture_stamp_2",
+      "type": "core.attach_payload",
+      "name": "Attach port payload",
+      "parameters": {
+        "payload": {
+          "ros2": {
+            "header": {
+              "frame_id": "fixture_camera",
+              "stamp": {
+                "sec": 1,
+                "nanosec": 2000000
+              }
+            }
+          }
+        }
+      },
+      "position": [
+        330,
+        350
+      ],
+      "exposed_inputs": [
+        "value",
+        "payload"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pair",
+      "type": "industrial.ros2_image_pair",
+      "name": "Pair ROS 2 images by timestamp",
+      "parameters": {
+        "tolerance_ms": 3,
+        "max_wait_ms": 1000.0,
+        "clock_domain": "synthetic_example_time",
+        "require_same_frame": true,
+        "require_context": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        660,
+        150
+      ],
+      "exposed_inputs": [
+        "context",
+        "reset",
+        "input_1",
+        "input_2"
+      ],
+      "exposed_outputs": [
+        "group",
+        "input_1",
+        "input_2",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray",
+      "type": "cv.gray",
+      "name": "Grayscale",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        990,
+        150
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "edges",
+      "type": "cv.canny",
+      "name": "Canny edges",
+      "parameters": {
+        "low": 60.0,
+        "high": 150.0,
+        "l2_gradient": false,
+        "aperture": "3"
+      },
+      "position": [
+        1320,
+        150
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "VisA PCB photo: Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and Onkar Dabeer, SPot-the-Difference (ECCV 2022). CC BY 4.0: https://registry.opendata.aws/visa/. Resized/letterboxed from bundled PCB2 0000; no defects added. Source and hashes: ../../assets/showcase/SOURCES.md. No robot/controller operation. Timestamp-pairing control fixture: both streams reuse the SAME PCB photograph with artificial 1.000 s and 1.002 s headers. These are not two physical captures or evidence of real camera synchronization. The 3 ms tolerance pairs them using ordered FIFO and retains both original headers/tickets. This is a one-shot fixed-time fixture: Reset flow state before replay, otherwise duplicates are ignored. No ROS installation or network activity is required.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "photo_1",
+      "output": "image",
+      "target": "fixture_stamp_1",
+      "input": "value"
+    },
+    {
+      "source": "photo_2",
+      "output": "image",
+      "target": "fixture_stamp_2",
+      "input": "value"
+    },
+    {
+      "source": "fixture_stamp_1",
+      "output": "value",
+      "target": "pair",
+      "input": "input_1"
+    },
+    {
+      "source": "fixture_stamp_2",
+      "output": "value",
+      "target": "pair",
+      "input": "input_2"
+    },
+    {
+      "source": "pair",
+      "output": "input_1",
+      "target": "gray",
+      "input": "image"
+    },
+    {
+      "source": "gray",
+      "output": "image",
+      "target": "edges",
+      "input": "image"
+    }
+  ]
+}

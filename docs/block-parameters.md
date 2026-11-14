@@ -4512,6 +4512,30 @@ Inputs: `image` (image).
 | `frame_id` | `""` | Optional header frame override, with no implied physical transform or calibration. |
 | `stamp_mode` | `"preserve"` | `preserve`, `zero` Preserve incoming ROS header (otherwise zero), clear it, or stamp using the ROS node clock. |
 
+## Pair ROS 2 images by timestamp (`industrial.ros2_image_pair`)
+
+Industrial integration / ROS 2
+
+Inputs: `context` (data, optional), `reset` (boolean, optional), `input_1` (image, optional), `input_2` (image, optional).
+
+Input `input_1` — Ticketed ROS image with a positive integer header stamp, in increasing order.
+
+Input `input_2` — Second ordered image stream on the declared common clock.
+
+Input `context` — Prime shared Run identity before tagged images; changes invalidate queues.
+
+Input `reset` — Rising true clears queued images and a backward-time hold once.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `tolerance_ms` | `5.0` | Value must be a finite number between 0 and 1000. Inclusive maximum header-stamp spread; zero requires exact time. |
+| `max_wait_ms` | `1000.0` | Value must be a finite number between 0 and 3.6e+06. Monotonic receipt deadline per image; zero disables expiry. Polled on graph runs. |
+| `clock_domain` | `"ros_time"` | Declared common clock label, not verified synchronization or clock conversion. |
+| `require_same_frame` | `true` | Require the same optical frame. Turning off does not register images. |
+| `require_context` | `false` | Require current Run identity and tagged images; a context change clears queues. |
+| `max_pending` | `64` | Value must be a whole number between 1 and 4096. Maximum total queued images across both streams; overflow errors and clears queues. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.001 and 4096. Bound accounted packet bytes; not a hard process-heap limit. |
+
 ## Publish ROS 2 image (`industrial.ros2_image_publish`)
 
 Industrial integration / ROS 2
