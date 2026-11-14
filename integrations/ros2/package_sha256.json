@@ -1,0 +1,20 @@
+{
+  "package": "opencv_dataflow_planning",
+  "version": "0.1.0",
+  "files": {
+    ".gitattributes": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+    "LICENSE": "e1e2d2d0f228c8956d1f5e3e108c35919c88e37e76b4243f21b7ef5307ec3367",
+    "opencv_dataflow_planning/__init__.py": "6ded21f55bb16ee62e81e5673e604adc55d2818f564625d3e7c903a7a3d830e7",
+    "opencv_dataflow_planning/benchmark.py": "2a6f59440e7b02da7114156f05349151731e716e00564fc286beee71b02b972c",
+    "opencv_dataflow_planning/bridge.py": "d73afc7c65ae73992ef1af6f8018e756759f109322d49eb805c1be9a3a5c1e25",
+    "opencv_dataflow_planning/contracts.py": "38720eab1ecbac501bf0f3a02e97a8816015f17f655e5b331897e3eff799b25a",
+    "package.xml": "66a5781cb33c04bf9ac9e6cf817bba242c8c497f7054faba958d60596364cb27",
+    "pyproject.toml": "26b699dfc3a83136e91748732f583fdf56bc7414f3813dfe683a5be443f5a93b",
+    "README.md": "23de63dcb93513f948909a5d207bad08f1e31f5ad391be3af26ca91c0cf38f53",
+    "resource/opencv_dataflow_planning": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "setup.cfg": "7c9dded5f15ab0f48021daf1444a13729f9c98fed07f848f92ef54c5d52d2955",
+    "setup.py": "528b34685cbb33b65bf15b00777e5735e13ecc777d4b38a318b6dac2b8ec0193",
+    "test/native_smoke.py": "bead7a5eb0c97f5c2cbba432a3001488370aae2dbcc98c89d8441d22a399e317",
+    "test/test_contracts.py": "5703a5991c0ef5e09e9ce2f8cc8fd15ba00db189c34c49dd9022380a18f2eeab"
+  }
+}
