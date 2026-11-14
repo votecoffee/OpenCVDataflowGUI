@@ -15,10 +15,12 @@ Python worker with `rmw_fastrtps_cpp`. Offline image converters need no ROS
 installation. Endpoints expose domain, discovery, QoS, queue, timeout and clock
 controls; readers issue tickets only on acquisition and writers require an
 explicit Enable event. See [setup, message contracts and limits](ros2.md) and
-[sixteen examples](<../examples/industrial integration/ros2_fastdds/README.md>).
+[eighteen examples](<../examples/industrial integration/ros2_fastdds/README.md>).
 CameraInfo conversion and registered RGB-D validation use the existing ticket
 coordinator and calibrated 3D tools. Stamped pose conversion, exact-time TF and
 optional run/reset guards are described in [pose/TF contracts](ros2-poses-tf.md).
+Full-grid intensity rectification with nonidentity R has an
+[explicit image/optical-frame workflow](ros2-rectification.md).
 Static calibration reuse is available through an explicit
 [per-image binding](ros2-static-camera.md). Cross-camera depth registration,
 general timing alignment beyond [two-stream ordered pairing](ros2-time-pairing.md),

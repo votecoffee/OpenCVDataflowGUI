@@ -2,8 +2,13 @@
 
 from pathlib import Path
 
+import cv2
+import numpy as np
+
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
+from opencv_dataflow.geometry3d_common import camera_record
+from opencv_dataflow.ros2_calibration import camera_to_info
 
 ROOT = Path(__file__).resolve().parents[1] / "industrial integration" / "ros2_fastdds"
 REGISTRY = builtin_registry()
@@ -149,6 +154,7 @@ def build():
     build_pose_context_examples()
     build_static_camera_examples()
     build_timestamp_pair_examples()
+    build_rectification_examples()
 
 
 def real_depth_graph():
@@ -625,6 +631,86 @@ def build_timestamp_pair_examples():
         "All live endpoints remain disabled. No simulator or robot is started."
     )
     graph.save(ROOT / "approximate_rgbd_subscriber.json")
+
+
+def build_rectification_examples():
+    graph = Graph()
+    image = photo(graph)
+    # Illustrative geometry only: this photo has no supplied physical lens calibration.
+    fields = camera_to_info(
+        camera_record(
+            [[450, 0, 239.5], [0, 455, 159.5], [0, 0, 1]],
+            [-0.12, 0.03, 0.001, -0.001, 0],
+            (480, 320),
+            frame="demo_camera_optical",
+        )
+    )
+    fields["r"] = cv2.Rodrigues(np.array([0.02, -0.04, 0.03]))[0].ravel().tolist()
+    rectified = add(
+        graph,
+        "industrial.ros2_rectify_image",
+        "rectify",
+        (330, 0),
+        camera_info=fields,
+        header_mode="zero_if_missing",
+    )
+    camera = add(graph, "industrial.ros2_camera_decode", "camera", (660, 300))
+    gray = add(graph, "cv.gray", "gray", (660, 0))
+    edges = add(graph, "cv.canny", "edges", (990, 0))
+    graph.connect(image.id, "image", rectified.id, "image")
+    graph.connect(rectified.id, "camera_info", camera.id, "message")
+    graph.connect(rectified.id, "image", gray.id, "image")
+    graph.connect(gray.id, "image", edges.id, "image")
+    graph.connect(rectified.id, "valid_mask", edges.id, "mask")
+    note(
+        graph,
+        CREDIT + " Explicit intensity-image rectification fixture. The camera matrix, "
+        "distortion and small nonidentity R are SYNTHETIC illustrative parameters; no physical "
+        "calibration was supplied for this PCB photograph. This remaps pixels to demonstrate "
+        "software behavior and does not claim to correct the real camera or establish measurement "
+        "accuracy. Missing ROS acquisition time is explicitly zero. Output CameraInfo has the "
+        "new optical/pixel grid, zero distortion and identity R; Pose maps raw vectors into the "
+        "rectified optical frame. Valid mask indicates source-center coverage, "
+        "not full interpolation kernel support. Physical depth, cropped/binning ROI "
+        "and stereo baseline P are unsupported. "
+        "No ROS runtime, robot or simulator is used.",
+    )
+    graph.save(ROOT / "offline_intensity_rectification.json")
+
+    graph = Graph()
+    source = add(
+        graph,
+        "input.ros2_data",
+        "camera_info",
+        (0, 350),
+        topic="/opencv_dataflow/camera/camera_info",
+        message_type="sensor_msgs/msg/CameraInfo",
+        durability="transient_local",
+    )
+    decoder = add(graph, "industrial.ros2_camera_decode", "camera", (330, 350))
+    image = add(
+        graph, "input.ros2_image", "raw_image", (0, 0), topic="/opencv_dataflow/camera/image_raw"
+    )
+    cache = add(graph, "industrial.ros2_camera_cache", "cache", (660, 150))
+    rectified = add(graph, "industrial.ros2_rectify_image", "rectify", (990, 150))
+    gray = add(graph, "cv.gray", "gray", (1320, 150))
+    graph.connect(source.id, "data", decoder.id, "message")
+    graph.connect(decoder.id, "camera", cache.id, "camera")
+    graph.connect(image.id, "image", cache.id, "image")
+    graph.connect(cache.id, "image", rectified.id, "image")
+    graph.connect(cache.id, "camera", rectified.id, "camera_info")
+    graph.connect(rectified.id, "image", gray.id, "image")
+    note(
+        graph,
+        "Disabled raw intensity image + retained CameraInfo rectification template. "
+        "Prime calibration before images. Full unbinned monocular CameraInfo only; R may be "
+        "nonidentity but P must have zero translation. The rectifier changes pixel coordinates "
+        "and names a new optical frame, returning the explicit raw-to-rectified rotation. "
+        "It does not transform axial depth or perform stereo/robot calibration. "
+        "Image acquisition stamps are retained; original calibration and binding provenance "
+        "remain in Info. All live endpoints stay disabled; no simulator or robot is launched.",
+    )
+    graph.save(ROOT / "intensity_rectification_subscriber.json")
 
 
 if __name__ == "__main__":

@@ -41,14 +41,14 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **10 targeted increments of about 20** completed:
+The current cycle has **11 targeted increments of about 20** completed:
 animated image codec round trips (S1-111), large-radius smoothing (S1-159),
 assistant application authoring with connected-input plugin captures, the
 SimpleITK medical image/metadata foundation, optional ROS 2 Lyrical/Fast DDS
 image/data integration, ROS PointCloud2 conversion/acquisition/publication,
 ROS CameraInfo/per-acquisition registered RGB-D association, strict ROS
 pose/TF conversion with run/reset acquisition identity, static CameraInfo reuse,
-and ordered timestamp pairing of ROS image streams.
+ordered timestamp pairing of ROS image streams, and explicit CameraInfo intensity rectification.
 The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
@@ -102,6 +102,29 @@ controls, local links and Python 3.12 worker syntax were checked. The app was
 reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
+
+ROS **full-grid CameraInfo intensity rectification** now remaps pinhole/fisheye
+images with explicit K/D/R/P, including nonidentity R. It returns a new optical
+and pixel frame, current-grid camera/CameraInfo, raw-to-rectified rotation,
+source-center validity mask and reusable coordinate maps. Ambiguous scalar data
+requires an Intensity declaration; physical depth, already-rectified models,
+cropped/binning ROI and stereo P translation are rejected. Calibration source
+headers and static bindings remain in Info rather than being silently rewritten.
+Two new examples use a real PCB photo with clearly synthetic calibration and a
+disabled static/raw-image subscriber. See [rectification contracts](ros2-rectification.md).
+Verification passed **137 focused native-OpenCV/offline/editor checks**, including
+independent point projection, pinhole/fisheye pixel parity, formats, border modes,
+map reuse, endian normalization, ticket/run/recipe isolation, XML and typed controls.
+All **four installed Debug/Lean outcomes** matched the new rectification examples.
+The separately published bin-to-grid app/source packages were integrated through
+`af16ddd` and its manifest fix `78c8cec`. Four pinned manifests (124 files) and two
+Debug/Lean recorded-review replays passed; those replays checked saved evidence
+and did not rerun simulator motion. The app was
+reinstalled; no broad suite or robot/simulator operation was performed here.
+Stereo baseline, ROI/binning recomputation and physical depth rectification
+remain future work.
+These native calls already exist in the coverage checklist; no OpenCV completion
+row or denominator change is claimed for this ROS workflow.
 
 ROS **ordered image timestamp pairing** now buffers two streams with positive
 integer acquisition headers. Earliest feasible FIFO heads pair within an explicit
@@ -187,17 +210,18 @@ readers, gated publishers, offline converters and registered RGB-D validation un
 ROS extensions independent of the Python 3.14/OpenCV 5 GUI. Sources preserve
 headers and acquire tickets only on accepted messages; bounded queues and
 explicit QoS/timeout controls expose waiting and drop behavior. Ambiguous writes
-hold until reset. Sixteen [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
+hold until reset. Eighteen [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
 include real VisA PCB/T-LESS RGB-D converter graphs and disabled live templates.
 See [runtime setup](ros2.md) and [issue #20](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20).
 The next milestones are:
 
 1. General out-of-order/multi-stream image matching and clock alignment;
-   stereo-baseline/nonidentity
-   rectification and rectified ROI recomputation; extended cloud-field editing and
+   stereo-baseline reference handling and rectified ROI/binning recomputation;
+   extended cloud-field editing and
    validated remerging after point edits. Per-acquisition CameraInfo/RGB/depth
    association, explicit static CameraInfo reuse and PointCloud2 conversion/read/write
-   and two-stream ordered timestamp pairing are implemented.
+   and two-stream ordered timestamp pairing are implemented. Full-grid monocular
+   nonidentity-R intensity rectification has its own explicit image/frame block.
 2. Integrate local run tokens with external capture/service envelopes, request maps,
    server/robot/scene/frame revisions and held-out timing checks. Strict stamped
    poses/TF and local run/reset guards are implemented; rosbag2 and source TF
@@ -210,8 +234,11 @@ The next milestones are:
    throughput. Shared simulation dependencies and jobs require owner coordination.
    Reuse ChArUco → PnP → hand–eye tools and generic MarkerArray data publication;
    keep result-to-marker adapters in the tool plugins. ROS owns scene/TF/camera
-   publishers and SimpleTools owns target detection/estimation. Initial robot
-   examples remain visualization-only until timing/reset/frame acceptance is met.
+   publishers and SimpleTools owns target detection/estimation. Core ROS message
+   blocks do not authorize motion. The separately packaged
+   [bin-to-grid simulation app](<../examples/Simple Plugins/bin_picking/bin_to_grid/README.md>)
+   includes explicit simulation-only actions and recorded native acceptance;
+   hardware motion and eye-in-hand timing/calibration remain separate qualifications.
 
 This is an industrial integration track; it adds no OpenCV coverage completion
 and native localhost DDS tests do not establish simulator or robot acceptance.

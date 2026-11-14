@@ -4596,6 +4596,29 @@ Inputs: `pose` (data).
 | `invert` | `false` | Invert the rigid transform and swap source/target frames. |
 | `stamp_mode` | `"preserve"` | `preserve`, `zero` Keep a ROS acquisition stamp (otherwise zero) or clear it. Header frame is the output parent. |
 
+## Rectify ROS 2 intensity image (`industrial.ros2_rectify_image`)
+
+Industrial integration / ROS 2
+
+Inputs: `image` (image), `camera_info` (data, optional).
+
+Input `image` — Raw intensity image on the calibrated ROS grid. Physical/axial depth is not an intensity image.
+
+Input `camera_info` — Complete CameraInfo, or decoded/bound CameraInfo camera model. R/P select output geometry.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `camera_info` | `{}` | Fallback complete CameraInfo JSON when the input is unwired. |
+| `rectified_frame` | `""` | Empty derives <source>_rectified. Nonidentity R needs a distinct optical frame. |
+| `width` | `0` | Value must be a whole number between 0 and 16384. Both dimensions zero keep source size; otherwise scale P intrinsics to this width. |
+| `height` | `0` | Value must be a whole number between 0 and 16384. Both dimensions must be zero or positive. Output is bounded to 4M pixels/16 MiB. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` OpenCV remap sampling; nearest preserves discrete labels. |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` Sampling outside source pixels; this does not extend the validity mask. |
+| `border_value` | `0` | One to four finite channel values, in the image's existing channel order. |
+| `header_mode` | `"require"` | `require`, `zero_if_missing` Require an image header, or explicitly use zero time if absent. Calibration time is never substituted. |
+| `scalar_semantics` | `"auto"` | `auto`, `intensity` Auto rejects ambiguous float/16UC1 planes. Intensity explicitly declares brightness or labels; physical DepthArray input is always rejected. |
+| `require_matching_ticket` | `false` | Require image and wired calibration to have the same acquisition ticket. |
+
 ## Validate registered ROS RGB-D (`industrial.ros2_rgbd`)
 
 Industrial integration / ROS 2

@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "camera_info",
+      "type": "input.ros2_data",
+      "name": "Read ROS 2 data",
+      "parameters": {
+        "topic": "/opencv_dataflow/camera/camera_info",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "reliable",
+        "durability": "transient_local",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "fifo",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "auto",
+        "ticket_field": "",
+        "message_type": "sensor_msgs/msg/CameraInfo",
+        "custom_message_type": "",
+        "data_mode": "fields"
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "data",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "industrial.ros2_camera_decode",
+      "name": "Decode ROS 2 CameraInfo",
+      "parameters": {
+        "space": "raw"
+      },
+      "position": [
+        330,
+        350
+      ],
+      "exposed_inputs": [
+        "message"
+      ],
+      "exposed_outputs": [
+        "camera",
+        "message",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "raw_image",
+      "type": "input.ros2_image",
+      "name": "Read ROS 2 image",
+      "parameters": {
+        "topic": "/opencv_dataflow/camera/image_raw",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "best_effort",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "latest",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "auto",
+        "ticket_field": ""
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cache",
+      "type": "industrial.ros2_camera_cache",
+      "name": "Cache ROS 2 CameraInfo",
+      "parameters": {
+        "max_age_seconds": 0.0,
+        "require_context": false,
+        "allow_zero_stamps": false
+      },
+      "position": [
+        660,
+        150
+      ],
+      "exposed_inputs": [
+        "context",
+        "reset",
+        "camera",
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "camera",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rectify",
+      "type": "industrial.ros2_rectify_image",
+      "name": "Rectify ROS 2 intensity image",
+      "parameters": {
+        "camera_info": {},
+        "rectified_frame": "",
+        "width": 0,
+        "height": 0,
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0,
+        "header_mode": "require",
+        "scalar_semantics": "auto",
+        "require_matching_ticket": false
+      },
+      "position": [
+        990,
+        150
+      ],
+      "exposed_inputs": [
+        "image",
+        "camera_info"
+      ],
+      "exposed_outputs": [
+        "image",
+        "camera",
+        "camera_info",
+        "pose",
+        "valid_mask",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray",
+      "type": "cv.gray",
+      "name": "Grayscale",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        1320,
+        150
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "Disabled raw intensity image + retained CameraInfo rectification template. Prime calibration before images. Full unbinned monocular CameraInfo only; R may be nonidentity but P must have zero translation. The rectifier changes pixel coordinates and names a new optical frame, returning the explicit raw-to-rectified rotation. It does not transform axial depth or perform stereo/robot calibration. Image acquisition stamps are retained; original calibration and binding provenance remain in Info. All live endpoints stay disabled; no simulator or robot is launched.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "camera_info",
+      "output": "data",
+      "target": "camera",
+      "input": "message"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "cache",
+      "input": "camera"
+    },
+    {
+      "source": "raw_image",
+      "output": "image",
+      "target": "cache",
+      "input": "image"
+    },
+    {
+      "source": "cache",
+      "output": "image",
+      "target": "rectify",
+      "input": "image"
+    },
+    {
+      "source": "cache",
+      "output": "camera",
+      "target": "rectify",
+      "input": "camera_info"
+    },
+    {
+      "source": "rectify",
+      "output": "image",
+      "target": "gray",
+      "input": "image"
+    }
+  ]
+}

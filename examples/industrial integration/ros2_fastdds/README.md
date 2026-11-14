@@ -21,6 +21,8 @@ Open these projects with File → Open. Tools are in
 | [Static CameraInfo subscriber](static_camera_subscriber.json) | Disabled depth subscriber with a retained-calibration reader and explicit static RGB-D validation. |
 | [Offline timestamp pairing](offline_timestamp_pair.json) | Two copies of one real PCB photo with explicitly artificial timestamps demonstrate ordered FIFO pairing; reset flow state before replaying the fixed stamps. |
 | [Approximate RGB-D subscriber](approximate_rgbd_subscriber.json) | Disabled ordered color/depth timestamp pairing, then static calibration binding, ticket coordination and calibrated colored cloud. |
+| [Offline intensity rectification](offline_intensity_rectification.json) | Real PCB photo with explicitly synthetic camera parameters → nonidentity-R pixel remap, camera/frame outputs, valid mask and masked edges. |
+| [Intensity rectification subscriber](intensity_rectification_subscriber.json) | Disabled raw intensity plus retained CameraInfo → static binding → explicit pixel/optical rectification. |
 
 Run the offline example from the repository root:
 
@@ -113,7 +115,14 @@ synchronization. Streams must increase in time; duplicates are ignored and a
 backward stamp holds until reset/new run context. Pair before static calibration
 binding. See [timestamp pairing contracts](../../../docs/ros2-time-pairing.md).
 
-Rebuild all sixteen graphs without downloads or ROS activity:
+The intensity rectifier actually remaps pixels and returns a new camera/pixel
+frame plus raw-to-rectified rotation. It does not relabel an unwarped image. The
+PCB example's calibration is synthetic and its acquisition time is unknown/zero;
+it makes no physical correction/accuracy claim. Typed depth, ambiguous scalar
+samples without an Intensity declaration, cropped/binning ROI and stereo baseline
+projection are rejected. See [rectification contracts](../../../docs/ros2-rectification.md).
+
+Rebuild all eighteen graphs without downloads or ROS activity:
 
 ```powershell
 python examples/assets/build_ros2_examples.py

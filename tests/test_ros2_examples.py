@@ -34,6 +34,8 @@ BASE = ROOT / "examples/industrial integration/ros2_fastdds"
         "static_camera_subscriber",
         "offline_timestamp_pair",
         "approximate_rgbd_subscriber",
+        "offline_intensity_rectification",
+        "intensity_rectification_subscriber",
     ],
 )
 def test_saved_graphs_validate_and_run_without_ros(monkeypatch, name):
@@ -77,6 +79,15 @@ def test_saved_graphs_validate_and_run_without_ros(monkeypatch, name):
             assert graph.blocks["edges"].last_result.outputs["image"].any()
             graph.run()
             assert not any(graph.blocks["pair"].current_emissions.values())
+        if name == "offline_intensity_rectification":
+            result = graph.blocks["rectify"].last_result
+            assert result.outputs["info"]["valid_pixels"] > 100000
+            assert result.outputs["image"].shape == (320, 480, 3)
+            assert result.outputs["camera"]["frame"] == "demo_camera_optical_rectified"
+            assert result.outputs["camera_info"]["header"]["stamp"] == {"sec": 0, "nanosec": 0}
+            assert "SYNTHETIC" in graph.blocks["source_and_scope"].description
+            assert "CC BY 4.0" in graph.blocks["source_and_scope"].description
+            assert graph.blocks["edges"].last_result.outputs["image"].any()
         if name == "offline_cloud_roundtrip":
             original = graph.blocks["project"].last_result.outputs["cloud"]
             restored = graph.blocks["decode_cloud"].last_result.outputs["cloud"]
