@@ -2,7 +2,8 @@
 
 In a new graph, expand **Simple Plugins** in the toolbox or search for the tool
 by name. SimpleClassify is bundled. SimplePatternMatch, SimpleSegmentation, and
-SimplePathWidth, SimpleReferenceInspect, Simple3DLocate and Simple3DMeasure load their installed integrations when you add a block or open
+SimplePathWidth, SimpleReferenceInspect, Simple3DLocate, Simple3DMeasure and
+SimpleBinPicking load their installed integrations when you add a block or open
 a project.
 
 | Tool | Example projects |
@@ -14,6 +15,7 @@ a project.
 | **SimpleReferenceInspect** | [Real clear-tote inspection](reference_inspect/armbench_tote/README.md), [posed PCB hard case](reference_inspect/visa_pcb2/README.md), and [generated reference inspection](reference_inspect/README.md). |
 | **Simple3DLocate** | [Real T-LESS clutter with depth verification](3d_locate/real_tless/depth_verified/README.md), plus [generated rigid surfaces](3d_locate/README.md) for controlled regression. |
 | **Simple3DMeasure** | [Real T-LESS measurement review and generated known/raised/missing surfaces](3d_measure/README.md), with native RGB flyaround, retained reference recipes and explicit dimensional qualification limits. |
+| **SimpleBinPicking** | [Suction contact/clearance review](bin_picking/README.md), with five generated controls and three real T-LESS replays; real cases retain zero eligible picks and open grasp qualification. |
 
 ## Start with real public data
 

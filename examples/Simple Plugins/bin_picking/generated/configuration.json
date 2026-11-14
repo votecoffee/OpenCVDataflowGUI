@@ -1,0 +1,81 @@
+{
+  "camera": {
+    "matrix": [
+      [
+        180.0,
+        0.0,
+        80.0
+      ],
+      [
+        0.0,
+        180.0,
+        60.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "image_size": [
+      160,
+      120
+    ],
+    "frame": "camera"
+  },
+  "bin_to_camera": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      -1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      -1.0,
+      500.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "minimum": [
+    -160.0,
+    -120.0,
+    0.0
+  ],
+  "maximum": [
+    160.0,
+    120.0,
+    100.0
+  ],
+  "units": "mm",
+  "frame": "bin",
+  "depth_scale": 1.0,
+  "settings": {
+    "cup_radius": 5.0,
+    "body_radius": 6.0,
+    "body_length": 25.0,
+    "pregrasp_distance": 30.0,
+    "tcp_offset": 0.0,
+    "surface_tolerance": 1.0,
+    "clearance": 1.0,
+    "min_pick_height": 5.0,
+    "max_tilt_degrees": 25.0,
+    "min_contact_fraction": 0.95,
+    "overlap_threshold": 0.2,
+    "max_candidates": 64,
+    "max_picks": 10,
+    "workers": 1
+  }
+}

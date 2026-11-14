@@ -1,0 +1,46 @@
+{
+  "model": "simple_bin_picking_v1",
+  "units": "mm",
+  "frame": "bin",
+  "camera_frame": "camera",
+  "bin_to_camera": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      -1.0,
+      -1.2246467991473532e-16,
+      0.0
+    ],
+    [
+      0.0,
+      1.2246467991473532e-16,
+      -1.0,
+      500.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "observed_points": 19200,
+  "invalid_depth_pixels": 0,
+  "searched_cells": 0,
+  "evaluated_candidates": 0,
+  "candidate_budget": 64,
+  "eligible_picks": 0,
+  "candidates": [],
+  "row_index_scope": "positive_finite_depth_pixels_in_y_then_x_order",
+  "score_definition": "geometric_contact_planarity_tilt_not_success_probability",
+  "clearance_definition": "observed_points_and_sampled_first_return_free_rays",
+  "unobserved_space": "unknown_not_free",
+  "motion_execution": false,
+  "qualification": "no_robot_ik_full_robot_collision_or_physical_seal_success",
+  "depth_sha256": "ac3feca68ceb634237a31019d9b8642966c86fabcab532fb84dad085a0068368"
+}

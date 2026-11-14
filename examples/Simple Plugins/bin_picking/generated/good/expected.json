@@ -1,0 +1,7721 @@
+{
+  "model": "simple_bin_picking_v1",
+  "units": "mm",
+  "frame": "bin",
+  "camera_frame": "camera",
+  "bin_to_camera": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      -1.0,
+      -1.2246467991473532e-16,
+      0.0
+    ],
+    [
+      0.0,
+      1.2246467991473532e-16,
+      -1.0,
+      500.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "observed_points": 19200,
+  "invalid_depth_pixels": 0,
+  "searched_cells": 924,
+  "evaluated_candidates": 64,
+  "candidate_budget": 64,
+  "eligible_picks": 10,
+  "candidates": [
+    {
+      "id": 34,
+      "seed_row": 5967,
+      "seed_pixel": [
+        47,
+        37
+      ],
+      "instance_id": null,
+      "status": "eligible",
+      "reasons": [],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -84.33333333333333,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -84.33333333333333
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -84.33333333333333
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -84.33333333333333
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "rank": 1
+    },
+    {
+      "id": 35,
+      "seed_row": 5969,
+      "seed_pixel": [
+        49,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "overlap_with_higher_ranked"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -79.22222222222223,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -79.22222222222223
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -79.22222222222223
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -79.22222222222223
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "overlap_candidate": 34
+    },
+    {
+      "id": 36,
+      "seed_row": 5971,
+      "seed_pixel": [
+        51,
+        37
+      ],
+      "instance_id": null,
+      "status": "eligible",
+      "reasons": [],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -74.11111111111111,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -74.11111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -74.11111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -74.11111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "rank": 2
+    },
+    {
+      "id": 37,
+      "seed_row": 5973,
+      "seed_pixel": [
+        53,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "overlap_with_higher_ranked"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -69.0,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -69.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -69.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -69.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "overlap_candidate": 36
+    },
+    {
+      "id": 38,
+      "seed_row": 5975,
+      "seed_pixel": [
+        55,
+        37
+      ],
+      "instance_id": null,
+      "status": "eligible",
+      "reasons": [],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -63.888888888888886,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -63.888888888888886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -63.888888888888886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -63.888888888888886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "rank": 3
+    },
+    {
+      "id": 39,
+      "seed_row": 5977,
+      "seed_pixel": [
+        57,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "overlap_with_higher_ranked"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -58.77777777777778,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -58.77777777777778
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -58.77777777777778
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -58.77777777777778
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "overlap_candidate": 38
+    },
+    {
+      "id": 40,
+      "seed_row": 5979,
+      "seed_pixel": [
+        59,
+        37
+      ],
+      "instance_id": null,
+      "status": "eligible",
+      "reasons": [],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -53.666666666666664,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -53.666666666666664
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -53.666666666666664
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -53.666666666666664
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "rank": 4
+    },
+    {
+      "id": 41,
+      "seed_row": 5981,
+      "seed_pixel": [
+        61,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "overlap_with_higher_ranked"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -48.55555555555556,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -48.55555555555556
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -48.55555555555556
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -48.55555555555556
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "overlap_candidate": 40
+    },
+    {
+      "id": 42,
+      "seed_row": 5983,
+      "seed_pixel": [
+        63,
+        37
+      ],
+      "instance_id": null,
+      "status": "eligible",
+      "reasons": [],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -43.44444444444444,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -43.44444444444444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -43.44444444444444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -43.44444444444444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "rank": 5
+    },
+    {
+      "id": 43,
+      "seed_row": 5985,
+      "seed_pixel": [
+        65,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "overlap_with_higher_ranked"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -38.333333333333336,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -38.333333333333336
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -38.333333333333336
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -38.333333333333336
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "overlap_candidate": 42
+    },
+    {
+      "id": 44,
+      "seed_row": 5987,
+      "seed_pixel": [
+        67,
+        37
+      ],
+      "instance_id": null,
+      "status": "eligible",
+      "reasons": [],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -33.22222222222222,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -33.22222222222222
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -33.22222222222222
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -33.22222222222222
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "rank": 6
+    },
+    {
+      "id": 45,
+      "seed_row": 5989,
+      "seed_pixel": [
+        69,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "overlap_with_higher_ranked"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -28.11111111111111,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -28.11111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -28.11111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -28.11111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "overlap_candidate": 44
+    },
+    {
+      "id": 46,
+      "seed_row": 5991,
+      "seed_pixel": [
+        71,
+        37
+      ],
+      "instance_id": null,
+      "status": "eligible",
+      "reasons": [],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -23.0,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -23.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -23.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -23.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "rank": 7
+    },
+    {
+      "id": 47,
+      "seed_row": 5993,
+      "seed_pixel": [
+        73,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "overlap_with_higher_ranked"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -17.88888888888889,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -17.88888888888889
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -17.88888888888889
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -17.88888888888889
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "overlap_candidate": 46
+    },
+    {
+      "id": 48,
+      "seed_row": 5995,
+      "seed_pixel": [
+        75,
+        37
+      ],
+      "instance_id": null,
+      "status": "eligible",
+      "reasons": [],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -12.777777777777779,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -12.777777777777779
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -12.777777777777779
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -12.777777777777779
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "rank": 8
+    },
+    {
+      "id": 49,
+      "seed_row": 5997,
+      "seed_pixel": [
+        77,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "overlap_with_higher_ranked"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -7.666666666666667,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -7.666666666666667
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -7.666666666666667
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -7.666666666666667
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "overlap_candidate": 48
+    },
+    {
+      "id": 50,
+      "seed_row": 5999,
+      "seed_pixel": [
+        79,
+        37
+      ],
+      "instance_id": null,
+      "status": "eligible",
+      "reasons": [],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        -2.5555555555555554,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -2.5555555555555554
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -2.5555555555555554
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -2.5555555555555554
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "rank": 9
+    },
+    {
+      "id": 51,
+      "seed_row": 6000,
+      "seed_pixel": [
+        80,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "overlap_with_higher_ranked"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        0.0,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "overlap_candidate": 50
+    },
+    {
+      "id": 52,
+      "seed_row": 6002,
+      "seed_pixel": [
+        82,
+        37
+      ],
+      "instance_id": null,
+      "status": "eligible",
+      "reasons": [],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        5.111111111111111,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          5.111111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          5.111111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          5.111111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "rank": 10
+    },
+    {
+      "id": 53,
+      "seed_row": 6004,
+      "seed_pixel": [
+        84,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "overlap_with_higher_ranked"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        10.222222222222221,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          10.222222222222221
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          10.222222222222221
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          10.222222222222221
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0,
+      "overlap_candidate": 52
+    },
+    {
+      "id": 54,
+      "seed_row": 6006,
+      "seed_pixel": [
+        86,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "pick_count_limit"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        15.333333333333334,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          15.333333333333334
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          15.333333333333334
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          15.333333333333334
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0
+    },
+    {
+      "id": 55,
+      "seed_row": 6008,
+      "seed_pixel": [
+        88,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "pick_count_limit"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        20.444444444444443,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          20.444444444444443
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          20.444444444444443
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          20.444444444444443
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0
+    },
+    {
+      "id": 56,
+      "seed_row": 6010,
+      "seed_pixel": [
+        90,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "pick_count_limit"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        25.555555555555557,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          25.555555555555557
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          25.555555555555557
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          25.555555555555557
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0
+    },
+    {
+      "id": 57,
+      "seed_row": 6012,
+      "seed_pixel": [
+        92,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "pick_count_limit"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        30.666666666666668,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          30.666666666666668
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          30.666666666666668
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          30.666666666666668
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0
+    },
+    {
+      "id": 58,
+      "seed_row": 6014,
+      "seed_pixel": [
+        94,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "pick_count_limit"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        35.77777777777778,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          35.77777777777778
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          35.77777777777778
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          35.77777777777778
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0
+    },
+    {
+      "id": 59,
+      "seed_row": 6016,
+      "seed_pixel": [
+        96,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "pick_count_limit"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        40.888888888888886,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          40.888888888888886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          40.888888888888886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          40.888888888888886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0
+    },
+    {
+      "id": 60,
+      "seed_row": 6018,
+      "seed_pixel": [
+        98,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "pick_count_limit"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        46.0,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          46.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          46.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          46.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0
+    },
+    {
+      "id": 61,
+      "seed_row": 6020,
+      "seed_pixel": [
+        100,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "pick_count_limit"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        51.111111111111114,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          51.111111111111114
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          51.111111111111114
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          51.111111111111114
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0
+    },
+    {
+      "id": 62,
+      "seed_row": 6022,
+      "seed_pixel": [
+        102,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "pick_count_limit"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        56.22222222222222,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          56.22222222222222
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          56.22222222222222
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          56.22222222222222
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0
+    },
+    {
+      "id": 63,
+      "seed_row": 6024,
+      "seed_pixel": [
+        104,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "pick_count_limit"
+      ],
+      "score": 1.0,
+      "contact_status": "supported",
+      "clearance_status": "sampled_free",
+      "center": [
+        61.333333333333336,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          61.333333333333336
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          61.333333333333336
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          61.333333333333336
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 1.0,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0,
+      "collision_points": 0,
+      "clearance_samples": 330,
+      "free_samples": 330,
+      "unknown_sample_count": 0
+    },
+    {
+      "id": 0,
+      "seed_row": 5645,
+      "seed_pixel": [
+        45,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_patch_points"
+      ],
+      "score": 0.0,
+      "contact_status": "unavailable",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -89.44444444444444,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": null,
+      "tcp_pose": null,
+      "pregrasp_pose": null,
+      "collision_rows": [],
+      "unknown_samples": []
+    },
+    {
+      "id": 1,
+      "seed_row": 5647,
+      "seed_pixel": [
+        47,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -84.33333333333333,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -84.33333333333333
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -84.33333333333333
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -84.33333333333333
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 2,
+      "seed_row": 5649,
+      "seed_pixel": [
+        49,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -79.22222222222223,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -79.22222222222223
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -79.22222222222223
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -79.22222222222223
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 3,
+      "seed_row": 5651,
+      "seed_pixel": [
+        51,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -74.11111111111111,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -74.11111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -74.11111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -74.11111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 4,
+      "seed_row": 5653,
+      "seed_pixel": [
+        53,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -69.0,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -69.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -69.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -69.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 5,
+      "seed_row": 5655,
+      "seed_pixel": [
+        55,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -63.888888888888886,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -63.888888888888886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -63.888888888888886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -63.888888888888886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 6,
+      "seed_row": 5657,
+      "seed_pixel": [
+        57,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -58.77777777777778,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -58.77777777777778
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -58.77777777777778
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -58.77777777777778
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 7,
+      "seed_row": 5659,
+      "seed_pixel": [
+        59,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -53.666666666666664,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -53.666666666666664
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -53.666666666666664
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -53.666666666666664
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 8,
+      "seed_row": 5661,
+      "seed_pixel": [
+        61,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -48.55555555555556,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -48.55555555555556
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -48.55555555555556
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -48.55555555555556
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 9,
+      "seed_row": 5663,
+      "seed_pixel": [
+        63,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -43.44444444444444,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -43.44444444444444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -43.44444444444444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -43.44444444444444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 10,
+      "seed_row": 5665,
+      "seed_pixel": [
+        65,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -38.333333333333336,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -38.333333333333336
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -38.333333333333336
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -38.333333333333336
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 11,
+      "seed_row": 5667,
+      "seed_pixel": [
+        67,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -33.22222222222222,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -33.22222222222222
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -33.22222222222222
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -33.22222222222222
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 12,
+      "seed_row": 5669,
+      "seed_pixel": [
+        69,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -28.11111111111111,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -28.11111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -28.11111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -28.11111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 13,
+      "seed_row": 5671,
+      "seed_pixel": [
+        71,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -23.0,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -23.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -23.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -23.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 14,
+      "seed_row": 5673,
+      "seed_pixel": [
+        73,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -17.88888888888889,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -17.88888888888889
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -17.88888888888889
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -17.88888888888889
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 15,
+      "seed_row": 5675,
+      "seed_pixel": [
+        75,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -12.777777777777779,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -12.777777777777779
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -12.777777777777779
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -12.777777777777779
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 16,
+      "seed_row": 5677,
+      "seed_pixel": [
+        77,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -7.666666666666667,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -7.666666666666667
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -7.666666666666667
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -7.666666666666667
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 17,
+      "seed_row": 5679,
+      "seed_pixel": [
+        79,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -2.5555555555555554,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -2.5555555555555554
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -2.5555555555555554
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -2.5555555555555554
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 18,
+      "seed_row": 5680,
+      "seed_pixel": [
+        80,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        0.0,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 19,
+      "seed_row": 5682,
+      "seed_pixel": [
+        82,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        5.111111111111111,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          5.111111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          5.111111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          5.111111111111111
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 20,
+      "seed_row": 5684,
+      "seed_pixel": [
+        84,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        10.222222222222221,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          10.222222222222221
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          10.222222222222221
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          10.222222222222221
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 21,
+      "seed_row": 5686,
+      "seed_pixel": [
+        86,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        15.333333333333334,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          15.333333333333334
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          15.333333333333334
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          15.333333333333334
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 22,
+      "seed_row": 5688,
+      "seed_pixel": [
+        88,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        20.444444444444443,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          20.444444444444443
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          20.444444444444443
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          20.444444444444443
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 23,
+      "seed_row": 5690,
+      "seed_pixel": [
+        90,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        25.555555555555557,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          25.555555555555557
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          25.555555555555557
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          25.555555555555557
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 24,
+      "seed_row": 5692,
+      "seed_pixel": [
+        92,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        30.666666666666668,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          30.666666666666668
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          30.666666666666668
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          30.666666666666668
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 25,
+      "seed_row": 5694,
+      "seed_pixel": [
+        94,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        35.77777777777778,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          35.77777777777778
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          35.77777777777778
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          35.77777777777778
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 26,
+      "seed_row": 5696,
+      "seed_pixel": [
+        96,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        40.888888888888886,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          40.888888888888886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          40.888888888888886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          40.888888888888886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 27,
+      "seed_row": 5698,
+      "seed_pixel": [
+        98,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        46.0,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          46.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          46.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          46.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 28,
+      "seed_row": 5700,
+      "seed_pixel": [
+        100,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        51.111111111111114,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          51.111111111111114
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          51.111111111111114
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          51.111111111111114
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 29,
+      "seed_row": 5702,
+      "seed_pixel": [
+        102,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        56.22222222222222,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          56.22222222222222
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          56.22222222222222
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          56.22222222222222
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 30,
+      "seed_row": 5704,
+      "seed_pixel": [
+        104,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        61.333333333333336,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          61.333333333333336
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          61.333333333333336
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          61.333333333333336
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 31,
+      "seed_row": 5706,
+      "seed_pixel": [
+        106,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        66.44444444444444,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          66.44444444444444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          66.44444444444444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          66.44444444444444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          63.88888888888888
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    },
+    {
+      "id": 32,
+      "seed_row": 5708,
+      "seed_pixel": [
+        108,
+        35
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_patch_points"
+      ],
+      "score": 0.0,
+      "contact_status": "unavailable",
+      "clearance_status": "not_evaluated",
+      "center": [
+        71.55555555555556,
+        63.88888888888888,
+        40.00000000000001
+      ],
+      "contact_pose": null,
+      "tcp_pose": null,
+      "pregrasp_pose": null,
+      "collision_rows": [],
+      "unknown_samples": []
+    },
+    {
+      "id": 33,
+      "seed_row": 5965,
+      "seed_pixel": [
+        45,
+        37
+      ],
+      "instance_id": null,
+      "status": "rejected",
+      "reasons": [
+        "insufficient_contact_support"
+      ],
+      "score": 0.0,
+      "contact_status": "unsupported",
+      "clearance_status": "not_evaluated",
+      "center": [
+        -89.44444444444444,
+        58.77777777777777,
+        40.00000000000001
+      ],
+      "contact_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -89.44444444444444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "tcp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -89.44444444444444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          40.00000000000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pregrasp_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -89.44444444444444
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          58.77777777777777
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          70.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "collision_rows": [],
+      "unknown_samples": [],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tilt_degrees": 0.0,
+      "approach_direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "retract_direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contact_fraction": 0.5360824742268041,
+      "contact_samples": 97,
+      "observed_contact_samples": 97,
+      "patch_rmse": 0.0
+    }
+  ],
+  "row_index_scope": "positive_finite_depth_pixels_in_y_then_x_order",
+  "score_definition": "geometric_contact_planarity_tilt_not_success_probability",
+  "clearance_definition": "observed_points_and_sampled_first_return_free_rays",
+  "unobserved_space": "unknown_not_free",
+  "motion_execution": false,
+  "qualification": "no_robot_ik_full_robot_collision_or_physical_seal_success",
+  "depth_sha256": "deafd38c24cccefb798f24b4da79885ea045d75579267649998990996a8db85f"
+}

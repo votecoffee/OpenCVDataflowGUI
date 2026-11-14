@@ -113,7 +113,8 @@ from **User**, connect an image, and run the graph. Load the plugin before openi
 a saved project that uses it. The headless runner accepts `--plugin count_pixels.py`.
 Load Python code only from sources you trust.
 
-Projects using installed **Simple Plugins**, including **Simple3DLocate** and **Simple3DMeasure**,
+Projects using installed **Simple Plugins**, including **Simple3DLocate**,
+**Simple3DMeasure** and **SimpleBinPicking**,
 open directly after setup. **SimpleClassify** is bundled with DataflowGUI. See the
 [Simple Plugins examples and setup](<examples/Simple Plugins/README.md>).
 

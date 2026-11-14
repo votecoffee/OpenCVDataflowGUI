@@ -50,7 +50,9 @@ def test_capture_precedes_target_execution_and_copies_all_packets(connected):
     assert set(result.inputs) == {"depth", "camera"}
     assert target.timing.count == 0 and result.output_revision == 0
     assert result.sources["depth"]["execution_count"] == source.timing.count
-    assert result.inputs["depth"].payload == {"acquisition": "original"}
+    assert result.inputs["depth"].payload["acquisition"] == "original"
+    assert result.inputs["depth"].payload["spatial"]["image_size"] == [4, 3]
+    assert result.publication_id and "optional" in result.missing_inputs
     result.inputs["depth"].value[:] = 0
     result.inputs["camera"].value["nested"]["value"] = -1
     assert source.last_result.outputs["depth"][0, 0] == 500
@@ -91,7 +93,7 @@ def test_port_selection(connected, ports):
 def test_required_value_and_typed_input_validation(connected):
     graph, source, target, context = connected
     source.last_result.outputs["depth"] = NO_VALUE
-    with pytest.raises(ValueError, match="run its source"):
+    with pytest.raises(ValueError, match="required input depth"):
         context.snapshot_connected_inputs()
     source.last_result.outputs["depth"] = np.zeros((1,), np.uint16)
     with pytest.raises(TypeError, match="depth image"):

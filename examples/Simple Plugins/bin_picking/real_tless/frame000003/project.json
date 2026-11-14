@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "depth",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/depth.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 1075.65091572,
+        "fy": 1073.90347929,
+        "cx": 374.06888344,
+        "cy": 254.72159802,
+        "width": 720,
+        "height": 540,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "mm",
+        "frame": "camera"
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "picker",
+      "type": "3d.simple_bin_picking",
+      "name": "SimpleBinPicking",
+      "parameters": {
+        "recipe_path": "assets/recipe.sbp",
+        "sha256": "18d36c3bd36db91b2fe8386e8d6c96bc886d8cae6503df2a7bad747124ee0499",
+        "render_graphics": true
+      },
+      "position": [
+        500,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "bin_pose",
+        "instances",
+        "image"
+      ],
+      "exposed_outputs": [
+        "picks",
+        "candidates",
+        "report",
+        "count",
+        "tcp",
+        "pregrasp",
+        "graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": "graphics"
+    },
+    {
+      "id": "bin_pose",
+      "type": "3d.pose",
+      "name": "Supplied bin/camera calibration (not object detection)",
+      "parameters": {
+        "rvec": [
+          2.3479935623732833,
+          -1.7049443589530957,
+          0.2585123292203593
+        ],
+        "translation": [
+          -10.6079,
+          18.2176,
+          788.902
+        ],
+        "source_frame": "bop_world",
+        "target_frame": "camera",
+        "units": "mm"
+      },
+      "position": [
+        0,
+        480
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rgb",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/rgb.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        720
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "depth",
+      "output": "image",
+      "target": "picker",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "picker",
+      "input": "camera"
+    },
+    {
+      "source": "bin_pose",
+      "output": "transform",
+      "target": "picker",
+      "input": "bin_pose"
+    },
+    {
+      "source": "rgb",
+      "output": "image",
+      "target": "picker",
+      "input": "image"
+    }
+  ]
+}
