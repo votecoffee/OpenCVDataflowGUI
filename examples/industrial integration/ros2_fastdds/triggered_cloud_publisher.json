@@ -1,0 +1,281 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "rgb",
+      "type": "input.file",
+      "name": "Real T-LESS RGB capture",
+      "parameters": {
+        "path": "../../Simple Plugins/3d_locate/real_tless/source/test_primesense/000001/rgb/000220.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "external",
+        "value": 1
+      }
+    },
+    {
+      "id": "depth",
+      "type": "input.depth_file",
+      "name": "Measured Primesense depth",
+      "parameters": {
+        "path": "../../Simple Plugins/3d_locate/real_tless/source/test_primesense/000001/depth/000220.png",
+        "path_base": "project",
+        "units_per_sample": 0.0001,
+        "units": "m",
+        "display_min": 0.0,
+        "display_max": 5.0
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "external",
+        "value": 1
+      }
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Publisher camera intrinsics",
+      "parameters": {
+        "fx": 1075.65091572,
+        "fy": 1073.90347929,
+        "cx": 374.06888344,
+        "cy": 294.72159802,
+        "width": 720,
+        "height": 540,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "camera"
+      },
+      "position": [
+        0,
+        600
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "project",
+      "type": "3d.depth_cloud",
+      "name": "Depth to point cloud",
+      "parameters": {
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m",
+        "sample_step": 4,
+        "max_points": 200000
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "showcase_source",
+      "type": "layout.comment",
+      "name": "Real data: source and scope",
+      "description": "T-LESS, CC BY 4.0. Tomas Hodan, Pavel Haluza, Stepan Obdrzalek, Jiri Matas, Manolis Lourakis, Xenophon Zabulis; WACV 2017. cmp.felk.cvut.cz/t-less/. Real Primesense scene 1, frame 220; original depth and intrinsics retained. Publisher depth_scale=0.1 mm/sample (0.0001 m/sample). No object mask is used. This ROS codec example reconstructs organized pixels with NaN holes. It performs no ROS or robot operation, and does not establish TF calibration. Source/hash/license: ../../Simple Plugins/3d_locate/real_tless/source/ATTRIBUTION.md. Disabled live publisher. Enable trigger and Write enabled only for a configured isolated test domain and compatible subscriber. Publishes XYZ in meters, with original pixel organization; Dataflow tickets remain local.",
+      "parameters": {},
+      "position": [
+        0,
+        -680
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "trigger",
+      "type": "input.ros2_data",
+      "name": "Read ROS 2 data",
+      "parameters": {
+        "topic": "/opencv_dataflow/demo/trigger",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "reliable",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "fifo",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "field",
+        "ticket_field": "part",
+        "message_type": "std_msgs/msg/String",
+        "custom_message_type": "",
+        "data_mode": "json_string"
+      },
+      "position": [
+        -330,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "data",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "publish_cloud",
+      "type": "industrial.ros2_cloud_publish",
+      "name": "Publish ROS 2 point cloud",
+      "parameters": {
+        "topic": "/opencv_dataflow/camera/points",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "best_effort",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "fifo",
+        "max_age_seconds": 0.0,
+        "write_enabled": false,
+        "require_subscriber": true,
+        "wait_for_ack": true,
+        "organization": "source_pixels",
+        "byte_order": "little",
+        "stamp_mode": "preserve",
+        "input_mode": "cloud"
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "message",
+        "enable"
+      ],
+      "exposed_outputs": [
+        "published",
+        "delivery"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "project",
+      "input": "depth"
+    },
+    {
+      "source": "rgb",
+      "output": "image",
+      "target": "project",
+      "input": "image"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "project",
+      "input": "camera"
+    },
+    {
+      "source": "trigger",
+      "output": "ticket",
+      "target": "rgb",
+      "input": "ticket"
+    },
+    {
+      "source": "trigger",
+      "output": "ticket",
+      "target": "depth",
+      "input": "ticket"
+    },
+    {
+      "source": "project",
+      "output": "cloud",
+      "target": "publish_cloud",
+      "input": "cloud"
+    },
+    {
+      "source": "trigger",
+      "output": "trigger",
+      "target": "publish_cloud",
+      "input": "enable"
+    }
+  ]
+}

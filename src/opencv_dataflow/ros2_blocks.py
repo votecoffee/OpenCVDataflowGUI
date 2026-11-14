@@ -4,10 +4,13 @@ import copy
 import re
 
 from .core import Block, Port, Result
+from .geometry3d_common import cloud_graphics
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, frame
 from .ros2_client import ROSClient, ROSPublishUnknown
+from .ros2_clouds import decode_cloud, encode_cloud
 from .ros2_images import decode_image, encode_image
+from .ros2_support.cloud_wire import ROSPointCloud
 from .ros2_support.wire import ENCODINGS, MAX_DATA_BYTES, ROSImage, json_bytes, parse_json
 from .tickets import DIRECT_CLOCK
 from .visual_style import INDUSTRIAL
@@ -182,6 +185,8 @@ class ROSBlock(Block):
         p = self.parameters if p is None else p
         if self.kind == "image":
             return "sensor_msgs/msg/Image"
+        if self.kind == "cloud":
+            return "sensor_msgs/msg/PointCloud2"
         return p["custom_message_type"] if p["message_type"] == "custom" else p["message_type"]
 
     def connection(self):
@@ -527,6 +532,200 @@ class DecodeROSImage(Block):
         return Result({"image": decode_image(packet), "details": packet.describe()})
 
 
+class CloudDecodeOptions:
+    defaults = {
+        "units": "m",
+        "invalid_points": "drop",
+        "colors": "auto",
+        "normals": "normalize",
+        "empty_frame": "ros_cloud",
+    }
+    choices = {
+        "units": ("m", "mm"),
+        "invalid_points": ("drop", "reject"),
+        "colors": ("auto", "ignore"),
+        "normals": ("normalize", "ignore"),
+    }
+    help = {
+        "units": "Declared incoming XYZ units; no scaling is performed when decoding.",
+        "invalid_points": (
+            "Drop invalid XYZ/normals or reject the sample. A false dense claim is rejected."
+        ),
+        "colors": "Decode packed RGB/RGBA or scalar r/g/b bytes; alpha stays in the raw message.",
+        "normals": (
+            "Normalize complete normal_x/y/z or nx/ny/nz fields, or leave them in the raw message."
+        ),
+        "empty_frame": (
+            "Fallback cloud frame only when ROS header.frame_id is empty; no transform is implied."
+        ),
+    }
+
+    @staticmethod
+    def validate(p):
+        value = p["empty_frame"]
+        if not isinstance(value, str) or not value or "\0" in value or len(value) > 1024:
+            raise ValidationError(
+                "Name an empty-header fallback frame (1..1024 characters)", "empty_frame"
+            )
+
+
+class ReadROSCloud(ReadROS):
+    type_id, title = "input.ros2_cloud", "Read ROS 2 point cloud"
+    kind = "cloud"
+    outputs = (
+        Port("cloud", "cloud"),
+        Port("message", "any", visual_type="cloud"),
+        Port("details", "data"),
+        Port("trigger", "boolean"),
+    )
+    flow_primary = ("cloud",)
+    defaults = {
+        **ReadROS.defaults,
+        **CloudDecodeOptions.defaults,
+        "topic": "/opencv_dataflow/camera/points",
+        "consume": "latest",
+        "reliability": "best_effort",
+    }
+    parameter_choices = {
+        **ReadROS.parameter_choices,
+        **CloudDecodeOptions.choices,
+        "ticket_mode": ("auto", "header_stamp"),
+    }
+    parameter_help = {**ReadROS.parameter_help, **CloudDecodeOptions.help}
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        CloudDecodeOptions.validate(self.parameters if parameters is None else parameters)
+
+    def process(self, inputs):
+        received = self.acquire(inputs)
+        if received is None:
+            return self.waiting("ROS point cloud disabled or waiting for a message")
+        packet = ROSPointCloud.from_wire(received["sample"])
+        cloud, details = decode_cloud(
+            packet, **{k: self.parameters[k] for k in CloudDecodeOptions.defaults}
+        )
+        cloud.metadata["ros2"].update(received["info"])
+        self.assign_ticket(inputs, None, packet.header)
+        cloud.metadata["ticket"] = copy.deepcopy(self._source_ticket)
+        packet.metadata = copy.deepcopy(cloud.metadata)
+        return Result(
+            {
+                "cloud": cloud,
+                "message": packet,
+                "details": {**details, **received["info"]},
+                "trigger": True,
+            },
+            graphics=cloud_graphics(self, cloud),
+        )
+
+
+class EncodeROSCloud(Block):
+    type_id, title = "industrial.ros2_cloud_encode", "Encode ROS 2 point cloud"
+    category = block_type = INDUSTRIAL
+    subtype = "ROS 2"
+    inputs = (Port("cloud", "cloud"),)
+    outputs = (Port("message", "any", visual_type="cloud"), Port("details", "data"))
+    defaults = {"organization": "unorganized", "byte_order": "little", "stamp_mode": "preserve"}
+    parameter_choices = {
+        "organization": ("unorganized", "source_pixels"),
+        "byte_order": ("little", "big"),
+        "stamp_mode": ("preserve", "zero"),
+    }
+    parameter_help = {
+        "organization": (
+            "Packed rows or retained source pixels with NaN holes. Duplicate pixels are rejected."
+        ),
+        "byte_order": "Canonical XYZ/normal float32 and packed uint32 RGB field byte order.",
+        "stamp_mode": (
+            "Keep incoming ROS acquisition stamp (otherwise zero) or clear it; "
+            "frame comes from cloud.frame."
+        ),
+    }
+    input_help = {
+        "cloud": "Physical m/mm cloud. XYZ is published in meters; unitless clouds are rejected."
+    }
+
+    def process(self, inputs):
+        cloud = inputs["cloud"]
+        cloud.metadata.update(copy.deepcopy(self.input_payloads["cloud"]))
+        packet = encode_cloud(cloud, **self.parameters)
+        return Result({"message": packet, "details": {**packet.describe(), "units": "m"}})
+
+
+class DecodeROSCloud(Block):
+    type_id, title = "industrial.ros2_cloud_decode", "Decode ROS 2 point cloud"
+    category = block_type = INDUSTRIAL
+    subtype = "ROS 2"
+    inputs = (Port("message", "any", visual_type="cloud"),)
+    outputs = (Port("cloud", "cloud"), Port("details", "data"))
+    defaults = CloudDecodeOptions.defaults
+    parameter_choices = CloudDecodeOptions.choices
+    parameter_help = CloudDecodeOptions.help
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        CloudDecodeOptions.validate(self.parameters if parameters is None else parameters)
+
+    def process(self, inputs):
+        packet = inputs["message"]
+        if not isinstance(packet, ROSPointCloud):
+            raise ValidationError("Expected a portable ROSPointCloud packet")
+        packet.metadata.update(copy.deepcopy(self.input_payloads["message"]))
+        cloud, details = decode_cloud(packet, **self.parameters)
+        return Result({"cloud": cloud, "details": details}, graphics=cloud_graphics(self, cloud))
+
+
+class PublishROSCloud(PublishROS):
+    type_id, title = "industrial.ros2_cloud_publish", "Publish ROS 2 point cloud"
+    kind = "cloud"
+    inputs = (
+        Port("cloud", "cloud", required=False, required_when_connected=True),
+        Port("message", "any", required=False, visual_type="cloud", required_when_connected=True),
+        Port("enable", "boolean"),
+    )
+    defaults = {
+        **PublishROS.defaults,
+        **EncodeROSCloud.defaults,
+        "topic": "/opencv_dataflow/camera/points",
+        "reliability": "best_effort",
+        "input_mode": "cloud",
+    }
+    parameter_choices = {
+        **PublishROS.parameter_choices,
+        **EncodeROSCloud.parameter_choices,
+        "stamp_mode": ("preserve", "zero", "node_clock"),
+        "input_mode": ("cloud", "message"),
+    }
+    parameter_help = {
+        **PublishROS.parameter_help,
+        **EncodeROSCloud.parameter_help,
+        "stamp_mode": PublishROSImage.parameter_help["stamp_mode"],
+        "input_mode": (
+            "Cloud rebuilds canonical fields in meters. Message sends the exact portable packet; "
+            "organization/byte order are retained and the caller owns raw units. "
+            "Wire only the selected input."
+        ),
+    }
+    input_help = EncodeROSCloud.input_help
+
+    def prepare_value(self, inputs):
+        if self.parameters["input_mode"] == "message":
+            packet = inputs.get("message")
+            if not isinstance(packet, ROSPointCloud):
+                raise ValidationError("Message mode requires a portable ROSPointCloud packet")
+            packet = copy.deepcopy(packet)
+            if self.parameters["stamp_mode"] == "zero":
+                packet.header["stamp"] = {"sec": 0, "nanosec": 0}
+            return packet.to_wire()
+        if "cloud" not in inputs:
+            raise ValidationError("Cloud mode requires a typed cloud input")
+        inputs["cloud"].metadata.update(copy.deepcopy(self.input_payloads["cloud"]))
+        return encode_cloud(
+            inputs["cloud"], **{k: self.parameters[k] for k in EncodeROSCloud.defaults}
+        ).to_wire()
+
+
 ROS2_BLOCKS = (
     ReadROSImage,
     ReadROSData,
@@ -534,4 +733,8 @@ ROS2_BLOCKS = (
     PublishROSData,
     EncodeROSImage,
     DecodeROSImage,
+    ReadROSCloud,
+    PublishROSCloud,
+    EncodeROSCloud,
+    DecodeROSCloud,
 )

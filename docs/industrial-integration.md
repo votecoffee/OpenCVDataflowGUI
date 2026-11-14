@@ -10,13 +10,13 @@ for FANUC registers and frames and for ControlLogix trigger and writeback.
 
 ## ROS 2 Lyrical / Fast DDS
 
-Optional image and structured-data readers/publishers use a separate trusted ROS
+Optional image, point-cloud and structured-data readers/publishers use a separate trusted ROS
 Python worker with `rmw_fastrtps_cpp`. Offline image converters need no ROS
 installation. Endpoints expose domain, discovery, QoS, queue, timeout and clock
 controls; readers issue tickets only on acquisition and writers require an
 explicit Enable event. See [setup, message contracts and limits](ros2.md) and
-[four examples](<../examples/industrial integration/ros2_fastdds/README.md>).
-CameraInfo/TF/depth/cloud association and robot simulation are separate
+[seven examples](<../examples/industrial integration/ros2_fastdds/README.md>).
+Calibrated CameraInfo/TF/depth association and robot simulation are separate
 [planned milestones](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20).
 
 ## MQTT

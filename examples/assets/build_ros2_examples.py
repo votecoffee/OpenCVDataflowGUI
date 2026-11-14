@@ -144,6 +144,99 @@ def build():
     )
     graph.save(ROOT / "joint_state_relay.json")
 
+    build_cloud_examples()
+
+
+def real_depth_graph():
+    source = Graph.load(ROOT.parents[1] / "demos/rgbd_cloud/rgbd_cloud.json", REGISTRY)
+    graph = Graph()
+    for key in ("rgb", "depth", "camera", "project", "showcase_source"):
+        graph.add(source.blocks[key])
+    for edge in source.connections:
+        if edge.source in graph.blocks and edge.target in graph.blocks:
+            graph.connect(edge.source, edge.output, edge.target, edge.input)
+    graph.blocks["showcase_source"].description += (
+        " This ROS codec example reconstructs organized pixels with NaN holes. "
+        "It performs no ROS or robot operation, and does not establish TF calibration. "
+        "Source/hash/license: ../../Simple Plugins/3d_locate/real_tless/source/ATTRIBUTION.md."
+    )
+    return graph
+
+
+def build_cloud_examples():
+    graph = real_depth_graph()
+    encoded = add(
+        graph,
+        "industrial.ros2_cloud_encode",
+        "encode_cloud",
+        (660, 0),
+        organization="source_pixels",
+    )
+    decoded = add(graph, "industrial.ros2_cloud_decode", "decode_cloud", (990, 0))
+    measure = add(graph, "3d.cloud_measure", "measure_cloud", (1320, 0))
+    graph.connect("project", "cloud", encoded.id, "cloud")
+    graph.connect(encoded.id, "message", decoded.id, "message")
+    graph.connect(decoded.id, "cloud", measure.id, "cloud")
+    graph.save(ROOT / "offline_cloud_roundtrip.json")
+
+    graph = Graph()
+    reader = add(graph, "input.ros2_cloud", "cloud_source", (0, 0))
+    measure = add(graph, "3d.cloud_measure", "measure_cloud", (330, 0))
+    view = add(graph, "3d.cloud_render", "cloud_view", (660, 0))
+    graph.connect(reader.id, "cloud", measure.id, "cloud")
+    graph.connect(reader.id, "cloud", view.id, "cloud")
+    relay = add(
+        graph,
+        "industrial.ros2_cloud_publish",
+        "raw_relay",
+        (330, 340),
+        input_mode="message",
+        topic="/opencv_dataflow/demo/observed_points",
+    )
+    graph.connect(reader.id, "message", relay.id, "message")
+    graph.connect(reader.id, "trigger", relay.id, "enable")
+    note(
+        graph,
+        "Disabled PointCloud2 subscriber on /opencv_dataflow/camera/points; "
+        "domain 71, localhost, best-effort/volatile. Declare incoming XYZ units explicitly. "
+        "Cloud output projects finite XYZ/RGB/normals; the Message output retains all fields "
+        "and bytes, including intensity/IDs/descriptors. Header frame_id is not TF calibration. "
+        "Optional raw relay is also disabled; Message mode preserves unknown fields, padding "
+        "and exact bytes on /opencv_dataflow/demo/observed_points. "
+        "No simulator, robot or native visualization service is launched.",
+    )
+    graph.save(ROOT / "cloud_subscriber.json")
+
+    graph = real_depth_graph()
+    trigger = add(
+        graph,
+        "input.ros2_data",
+        "trigger",
+        (-330, 0),
+        topic="/opencv_dataflow/demo/trigger",
+        data_mode="json_string",
+        ticket_mode="field",
+        ticket_field="part",
+    )
+    for key in ("rgb", "depth"):
+        graph.blocks[key].ticket_settings = {"mode": "external", "value": 1}
+        graph.connect(trigger.id, "ticket", key, "ticket")
+    writer = add(
+        graph,
+        "industrial.ros2_cloud_publish",
+        "publish_cloud",
+        (660, 0),
+        organization="source_pixels",
+    )
+    graph.connect("project", "cloud", writer.id, "cloud")
+    graph.connect(trigger.id, "trigger", writer.id, "enable")
+    graph.blocks["showcase_source"].description += (
+        " Disabled live publisher. Enable trigger and Write enabled only for a configured "
+        "isolated test domain and compatible subscriber. Publishes XYZ in meters, "
+        "with original pixel organization; Dataflow tickets remain local."
+    )
+    graph.save(ROOT / "triggered_cloud_publisher.json")
+
 
 if __name__ == "__main__":
     build()

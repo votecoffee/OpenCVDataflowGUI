@@ -1,6 +1,6 @@
 # ROS 2 Lyrical and Fast DDS
 
-Six blocks live in **Industrial integration → ROS 2**. The image converters work
+Ten blocks live in **Industrial integration → ROS 2**. The image/cloud converters work
 offline. Read/publish blocks are optional and start disabled; opening, validating
 or previewing a graph never starts ROS. There is no `pip install rclpy` dependency
 in the GUI environment.
@@ -13,6 +13,10 @@ in the GUI environment.
 | Publish ROS 2 data (`industrial.ros2_data_publish`) | Structured fields or String JSON plus true Enable → delivery details |
 | Encode ROS 2 image (`industrial.ros2_image_encode`) | Image → portable in-memory ROSImage packet and bounded details |
 | Decode ROS 2 image (`industrial.ros2_image_decode`) | Portable ROSImage packet → image, preserving local payload metadata |
+| Read ROS 2 point cloud (`input.ros2_cloud`) | PointCloud2 → typed cloud, original raw message, details, trigger and ticket |
+| Publish ROS 2 point cloud (`industrial.ros2_cloud_publish`) | Typed cloud or raw portable message plus true Enable → PointCloud2 publication |
+| Encode ROS 2 point cloud (`industrial.ros2_cloud_encode`) | Typed cloud → canonical portable PointCloud2 packet, offline |
+| Decode ROS 2 point cloud (`industrial.ros2_cloud_decode`) | Portable packet → finite XYZ/RGB/normals cloud with explicit units and pixel organization |
 
 ## Runtime setup
 
@@ -61,7 +65,7 @@ ordinary slash-separated identifiers; remapping/substitution syntax is deferred.
 Inherited Fast DDS XML/security configuration can also influence transports;
 localhost discovery is not a network security boundary.
 
-Image blocks default to **best effort / volatile / latest** receiving. Data uses
+Image/cloud blocks default to **best effort / volatile / latest** receiving. Data uses
 **reliable / volatile / FIFO**. Match the peer's offered/requested QoS. A reliable
 subscriber cannot receive from a best-effort publisher. Depth, durability,
 deadline and lifespan are exposed. Zero deadline/lifespan uses the middleware's
@@ -110,6 +114,63 @@ of that setting. Header-stamp tickets are strings of frame ID + integer
 seconds/nanoseconds, not UTC timestamp tickets. Reused stamps can collide across
 sources or simulation resets; use an application acquisition ID when appropriate.
 
+## PointCloud2 conversion
+
+The cloud blocks use the same bounded worker and enable/ticket/QoS contracts.
+Native messages are kept as portable `ROSPointCloud` packets, retaining the exact
+header, fields, record and row strides, endian, density flag and binary data.
+This supports organized sensors and unordered clouds. Raw packets are limited to
+16 MiB/2 million points, 64 fields and 1024 components per field. Invalid offsets,
+duplicate names, unknown datatypes, truncated buffers and out-of-record fields are
+rejected before publication. Overlapping field aliases are allowed.
+The schema follows the official
+[PointCloud2](https://github.com/ros2/common_interfaces/blob/lyrical/sensor_msgs/msg/PointCloud2.msg)
+and [Lyrical PointField](https://github.com/ros2/common_interfaces/blob/lyrical/sensor_msgs/msg/PointField.msg)
+definitions, including int64/uint64/bool and vector fields.
+
+The **Cloud** output projects scalar float32/float64 XYZ into the app's existing
+finite **float32 PointCloud**. Choose the incoming units explicitly (m or mm);
+decoding labels the units without scaling them. Header frame_id names the cloud
+frame; Empty frame is used only for an empty header. Neither establishes a TF
+transform or calibration. Float64 XYZ can lose precision in this projection;
+overflow is invalid. Drop or Reject controls invalid XYZ/normals. A message
+claiming Is dense while containing invalid XYZ is rejected.
+
+Auto colors supports packed uint32/float32 RGB/RGBA or separate uint8 r/g/b.
+Packed float bits are decoded as bits even when they represent IEEE NaN. Alpha
+remains in the raw packet. Complete normal_x/y/z or nx/ny/nz triples can be
+normalized; zero/nonfinite normals follow the invalid-point policy. Ignore colors
+or normals when those fields are not needed. Details reports discarded points,
+ignored fields and float32 storage. For organized input, retained points keep
+their source pixel coordinates and source image size, including after dropping
+invalid entries. Image masks still need the corresponding pixel frame.
+
+The **Message** output on Read retains extras such as intensity, IDs and
+descriptors, even though the typed cloud does not contain them. Custom tools can
+use `ros2_clouds.cloud_records(packet)` to inspect a structured NumPy view with
+the original field types and component counts. Receipts describe these packets
+without serializing point data. Arbitrary local JSON payloads survive offline
+converters; standard ROS messages carry only their defined fields.
+
+Encoding/publishing constructs canonical XYZ float32, optional unit normals and
+packed uint32 RGB. It converts mm to **meters**, rejects unitless clouds and uses
+`cloud.frame` for header frame_id. Preserve keeps an incoming acquisition stamp
+(otherwise zero); Zero clears it; publishers can instead stamp the node clock.
+Processing followed by encoding rebuilds these supported fields: it does not
+remerge unknown fields, alpha or original padding automatically. Publisher
+**Input mode → Message** sends the raw packet, retaining every field, byte and
+stride; the selected stamp mode still applies. Only wire the selected Cloud or
+Message input. Raw mode does not rescale units or reorganize storage, so the
+caller must know its units. Use it to relay unchanged sensor data without losing
+extras. This is distinct from rebuilding an inspected typed cloud.
+
+Unorganized output packs the retained points into one row and drops pixel
+correspondence. Source pixels reconstructs the original image grid, filling
+missing positions with NaN and marking Is dense false. It requires valid unique
+pixel correspondence; duplicate pixels and grids exceeding the buffer limit are
+rejected. Little/big endian output is selectable. Both forms reuse the existing
+3D thumbnail, popout, filtering, measurement and rendering tools.
+
 ## Data, tickets and publishing
 
 Fields mode maps JSON objects to the chosen ROS interface. Nested objects/arrays
@@ -145,18 +206,21 @@ Pre-publication field validation failures remain known rejections.
 ## Examples, verification and next milestones
 
 Open the [ROS examples](<../examples/industrial integration/ros2_fastdds/README.md>)
-for a real openly licensed PCB converter graph and three disabled live templates.
+for real openly licensed PCB/RGB-D converter graphs and five disabled live templates.
 The optional native tests use localhost, private UUID topics and domain 71:
 
 ```powershell
 python -m pytest tests/test_ros2.py -q
+python -m pytest tests/test_ros2_clouds.py -q
 $env:OPENCV_DATAFLOW_TEST_ROS2 = "1"
 python -m pytest tests/test_ros2_native.py -q
+python -m pytest tests/test_ros2_cloud_native.py -q
 ```
 
 These tests publish only local fixture images/state. They do not launch a
 simulator or connect a robot. The [roadmap issue](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20)
-covers CameraInfo/depth/PointCloud2, TF2 transforms, clocks/reset and rosbag2,
+covers calibrated CameraInfo/depth association, remaining cloud field/remerge work,
+TF2 transforms, clocks/reset and rosbag2,
 services/actions, and coordinated Gazebo/ros_gz/MoveIt examples. Shared simulation
 environments must be coordinated with their owners before dependencies or jobs
 are changed. Native DDS loopback does not qualify simulation or robot motion.

@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "rgb",
+      "type": "input.file",
+      "name": "Real T-LESS RGB capture",
+      "parameters": {
+        "path": "../../Simple Plugins/3d_locate/real_tless/source/test_primesense/000001/rgb/000220.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth",
+      "type": "input.depth_file",
+      "name": "Measured Primesense depth",
+      "parameters": {
+        "path": "../../Simple Plugins/3d_locate/real_tless/source/test_primesense/000001/depth/000220.png",
+        "path_base": "project",
+        "units_per_sample": 0.0001,
+        "units": "m",
+        "display_min": 0.0,
+        "display_max": 5.0
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Publisher camera intrinsics",
+      "parameters": {
+        "fx": 1075.65091572,
+        "fy": 1073.90347929,
+        "cx": 374.06888344,
+        "cy": 294.72159802,
+        "width": 720,
+        "height": 540,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "camera"
+      },
+      "position": [
+        0,
+        600
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "project",
+      "type": "3d.depth_cloud",
+      "name": "Depth to point cloud",
+      "parameters": {
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m",
+        "sample_step": 4,
+        "max_points": 200000
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "showcase_source",
+      "type": "layout.comment",
+      "name": "Real data: source and scope",
+      "description": "T-LESS, CC BY 4.0. Tomas Hodan, Pavel Haluza, Stepan Obdrzalek, Jiri Matas, Manolis Lourakis, Xenophon Zabulis; WACV 2017. cmp.felk.cvut.cz/t-less/. Real Primesense scene 1, frame 220; original depth and intrinsics retained. Publisher depth_scale=0.1 mm/sample (0.0001 m/sample). No object mask is used. This ROS codec example reconstructs organized pixels with NaN holes. It performs no ROS or robot operation, and does not establish TF calibration. Source/hash/license: ../../Simple Plugins/3d_locate/real_tless/source/ATTRIBUTION.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -680
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "encode_cloud",
+      "type": "industrial.ros2_cloud_encode",
+      "name": "Encode ROS 2 point cloud",
+      "parameters": {
+        "organization": "source_pixels",
+        "byte_order": "little",
+        "stamp_mode": "preserve"
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "message",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode_cloud",
+      "type": "industrial.ros2_cloud_decode",
+      "name": "Decode ROS 2 point cloud",
+      "parameters": {
+        "units": "m",
+        "invalid_points": "drop",
+        "colors": "auto",
+        "normals": "normalize",
+        "empty_frame": "ros_cloud"
+      },
+      "position": [
+        990,
+        0
+      ],
+      "exposed_inputs": [
+        "message"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure_cloud",
+      "type": "3d.cloud_measure",
+      "name": "Measure point cloud",
+      "parameters": {},
+      "position": [
+        1320,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "project",
+      "input": "depth"
+    },
+    {
+      "source": "rgb",
+      "output": "image",
+      "target": "project",
+      "input": "image"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "project",
+      "input": "camera"
+    },
+    {
+      "source": "project",
+      "output": "cloud",
+      "target": "encode_cloud",
+      "input": "cloud"
+    },
+    {
+      "source": "encode_cloud",
+      "output": "message",
+      "target": "decode_cloud",
+      "input": "message"
+    },
+    {
+      "source": "decode_cloud",
+      "output": "cloud",
+      "target": "measure_cloud",
+      "input": "cloud"
+    }
+  ]
+}

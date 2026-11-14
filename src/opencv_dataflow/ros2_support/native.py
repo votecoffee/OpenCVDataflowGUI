@@ -12,8 +12,10 @@ import uuid
 from importlib.metadata import version
 
 try:
+    from .cloud_wire import ROSPointCloud
     from .wire import MAX_DATA_BYTES, ROSImage, header_value, json_bytes
 except ImportError:  # Standalone worker, under the ROS interpreter.
+    from cloud_wire import ROSPointCloud
     from wire import MAX_DATA_BYTES, ROSImage, header_value, json_bytes
 
 
@@ -76,7 +78,10 @@ class Endpoint:
             raise RuntimeError("A sourced ROS 2 Lyrical environment is required for this worker")
         if os.environ.get("RMW_IMPLEMENTATION") != "rmw_fastrtps_cpp":
             raise RuntimeError("This integration requires Fast DDS (rmw_fastrtps_cpp)")
-        if config["kind"] not in ("image", "data") or config["role"] not in ("read", "write"):
+        if config["kind"] not in ("image", "cloud", "data") or config["role"] not in (
+            "read",
+            "write",
+        ):
             raise ValueError("Invalid ROS endpoint role/kind")
         if not re.fullmatch(r"[a-z][a-z0-9_]*/msg/[A-Za-z][A-Za-z0-9_]*", config["message_type"]):
             raise ValueError("Expected an installed package/msg/Type interface")
@@ -164,9 +169,10 @@ class Endpoint:
 
     def _receive(self, message):
         try:
-            if self.config["kind"] == "image":
+            if self.config["kind"] in ("image", "cloud"):
                 data = message.data
                 data = data.to_bytes() if callable(getattr(data, "to_bytes", None)) else bytes(data)
+            if self.config["kind"] == "image":
                 sample = ROSImage(
                     message.height,
                     message.width,
@@ -174,6 +180,18 @@ class Endpoint:
                     message.step,
                     message.is_bigendian,
                     data,
+                    self.to_dict(message.header),
+                ).to_wire()
+            elif self.config["kind"] == "cloud":
+                sample = ROSPointCloud(
+                    message.height,
+                    message.width,
+                    [self.to_dict(f) for f in message.fields],
+                    message.is_bigendian,
+                    message.point_step,
+                    message.row_step,
+                    data,
+                    message.is_dense,
                     self.to_dict(message.header),
                 ).to_wire()
             else:
@@ -244,14 +262,18 @@ class Endpoint:
 
     def _make_message(self, value, stamp_mode):
         message = self.message_class()
-        if self.config["kind"] == "image":
-            packet = ROSImage.from_wire(value)
-            message.height, message.width, message.encoding = (
-                packet.height,
-                packet.width,
-                packet.encoding,
+        if self.config["kind"] in ("image", "cloud"):
+            packet = (ROSImage if self.config["kind"] == "image" else ROSPointCloud).from_wire(
+                value
             )
-            message.step, message.is_bigendian = packet.step, packet.is_bigendian
+            message.height, message.width = packet.height, packet.width
+            message.is_bigendian = packet.is_bigendian
+            if self.config["kind"] == "image":
+                message.encoding, message.step = packet.encoding, packet.step
+            else:
+                self.set_fields(message, {"fields": packet.fields})
+                message.point_step, message.row_step = packet.point_step, packet.row_step
+                message.is_dense = packet.is_dense
             message.data = array.array("B", packet.data)
             header = header_value(packet.header)
             self.set_fields(message.header, header)

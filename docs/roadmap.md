@@ -41,11 +41,11 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **5 targeted increments of about 20** completed:
+The current cycle has **6 targeted increments of about 20** completed:
 animated image codec round trips (S1-111), large-radius smoothing (S1-159),
 assistant application authoring with connected-input plugin captures, the
-SimpleITK medical image/metadata foundation, and optional ROS 2 Lyrical/Fast DDS
-image and data integration.
+SimpleITK medical image/metadata foundation, optional ROS 2 Lyrical/Fast DDS
+image/data integration, and ROS PointCloud2 conversion/acquisition/publication.
 The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
@@ -81,21 +81,39 @@ and ambiguous publication handling were checked. All **eight installed Debug/Lea
 CLI runs** matched the four public examples. The application was reinstalled;
 no broad regression suite, simulator or robot operation was performed.
 
+The PointCloud2 increment adds four ROS blocks, exact raw-message relay and a
+typed XYZ/RGB/normals projection with units, endian, stride, field and finite-value
+checks. Source pixel organization survives dropped points; canonical publication
+uses meters and raw publication preserves all fields/bytes. Three additional
+examples reuse real T-LESS RGB-D data and attribution. Focused verification covers
+independent binary layouts, all eleven Lyrical field types, organized NaN holes,
+raw packed-color NaN bits, ticket/payload/XML/editor behavior and native DDS
+exchange. Point-cloud extras remain available in raw packets; remerging extras
+after arbitrary point edits is a separate future feature.
+Validation passed **114 focused offline/editor/industrial checks** and **five
+native cloud checks**. The **eleven existing native DDS checks** also passed after
+the worker extension. All **14 installed Debug/Lean CLI runs** matched the seven
+public ROS examples, including the real T-LESS organized round trip. Source
+assets and the original four examples stayed unchanged; text contracts, generated
+controls, local links and Python 3.12 worker syntax were checked. The app was
+reinstalled; no broad suite or robot/simulator operation was performed.
+
 ## Short-term focus
 
-Optional **ROS 2 Lyrical / Fast DDS** now provides image and structured-data
+Optional **ROS 2 Lyrical / Fast DDS** now provides image, point-cloud and structured-data
 readers, gated publishers and offline image converters under
 **Industrial integration → ROS 2**. A separate ROS Python worker keeps native
 ROS extensions independent of the Python 3.14/OpenCV 5 GUI. Sources preserve
 headers and acquire tickets only on accepted messages; bounded queues and
 explicit QoS/timeout controls expose waiting and drop behavior. Ambiguous writes
-hold until reset. Four [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
-include a real VisA PCB converter graph and disabled live templates.
+hold until reset. Seven [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
+include real VisA PCB/T-LESS RGB-D converter graphs and disabled live templates.
 See [runtime setup](ros2.md) and [issue #20](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20).
 The next milestones are:
 
-1. Calibrated CameraInfo/RGB/depth association and PointCloud2 conversion with
-   explicit units, checked fields, stride/endian and metadata.
+1. Calibrated CameraInfo/RGB/depth association; extended cloud-field editing and
+   validated remerging of unknown fields after geometric processing. PointCloud2
+   conversion/read/write with explicit units, stride/endian and metadata is implemented.
 2. TF2/frame-aware pose conversion, timestamp freshness, simulation clock reset
    handling and rosbag2 replay.
 3. Services/actions with identities, cancellation and uncertain-outcome handling.

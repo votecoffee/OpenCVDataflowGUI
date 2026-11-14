@@ -9,6 +9,9 @@ Open these projects with File → Open. Tools are in
 | [Image subscriber](image_subscriber.json) | Disabled camera subscription feeding grayscale/edge tools. |
 | [Triggered image publisher](triggered_image_publisher.json) | Disabled String JSON trigger supplies a part ticket, loads the real PCB photo, then publishes an image. |
 | [JointState relay](joint_state_relay.json) | Disabled structured state subscription and gated publication to another demo topic, for future simulation adapters. |
+| [Offline cloud round trip](offline_cloud_roundtrip.json) | Real T-LESS RGB/depth and intrinsics → organized PointCloud2 conversion → typed RGB cloud and measurements; no ROS runtime needed. |
+| [Cloud subscriber and raw relay](cloud_subscriber.json) | Disabled PointCloud2 source feeding existing measurements/3D rendering and an optional gated raw relay preserving all fields and bytes. |
+| [Triggered cloud publisher](triggered_cloud_publisher.json) | Disabled JSON trigger tickets the paired T-LESS RGB/depth capture and publishes a meter-unit organized RGB cloud. |
 
 Run the offline example from the repository root:
 
@@ -41,11 +44,30 @@ letterboxed PCB2 0000 image; no defects were added. See the existing
 [machine-readable hashes](../../assets/showcase/sources.json). Code is MIT; image
 rights remain CC BY 4.0. Both photo graphs contain on-canvas attribution.
 
-Rebuild all four graphs without downloads or ROS activity:
+The cloud examples reuse **T-LESS**, Tomáš Hodaň, Pavel Haluza, Štěpán Obdržálek,
+Jiří Matas, Manolis Lourakis and Xenophon Zabulis, WACV 2017, under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+The [publisher](https://cmp.felk.cvut.cz/t-less/) and
+[pinned source/hash/license record](<../../Simple Plugins/3d_locate/real_tless/source/ATTRIBUTION.md>)
+cover the original Primesense scene 1/frame 220 RGB, depth and intrinsics.
+Depth scale is 0.1 mm/sample. These graphs sample valid pixels every four rows
+and columns, reconstruct the organized grid with NaN holes and retain source
+pixel coordinates. They do not establish robot/world calibration or accuracy.
+On-canvas comments preserve attribution. No extra dataset files are copied.
+
+Cloud topics use `/opencv_dataflow/camera/points`, best effort / volatile.
+Choose incoming units explicitly. The typed cloud is finite float32 XYZ with
+optional RGB/unit normals; Message preserves arbitrary fields, exact bytes,
+padding and header. Canonical encode/publish emits meters and rebuilds the
+supported fields. Raw Message publish mode preserves the original packet instead;
+the subscriber example relays to `/opencv_dataflow/demo/observed_points` with
+Write enabled off. See the [conversion limits](../../../docs/ros2.md#pointcloud2-conversion).
+
+Rebuild all seven graphs without downloads or ROS activity:
 
 ```powershell
 python examples/assets/build_ros2_examples.py
 ```
 
-Native localhost checks cover actual Fast DDS image/data exchange and QoS/queue
+Native localhost checks cover actual Fast DDS image/cloud/data exchange and QoS/queue
 behavior. The templates do not establish robot, Gazebo, TF or hand–eye acceptance.

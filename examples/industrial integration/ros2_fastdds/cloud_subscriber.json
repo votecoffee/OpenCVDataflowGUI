@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "cloud_source",
+      "type": "input.ros2_cloud",
+      "name": "Read ROS 2 point cloud",
+      "parameters": {
+        "topic": "/opencv_dataflow/camera/points",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "best_effort",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "latest",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "auto",
+        "ticket_field": "",
+        "units": "m",
+        "invalid_points": "drop",
+        "colors": "auto",
+        "normals": "normalize",
+        "empty_frame": "ros_cloud"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "message",
+        "details",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure_cloud",
+      "type": "3d.cloud_measure",
+      "name": "Measure point cloud",
+      "parameters": {},
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cloud_view",
+      "type": "3d.cloud_render",
+      "name": "Render point cloud",
+      "parameters": {
+        "width": 640,
+        "height": 480,
+        "yaw_degrees": 25.0,
+        "pitch_degrees": -20.0,
+        "max_drawn_points": 20000,
+        "point_size": 2
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "raw_relay",
+      "type": "industrial.ros2_cloud_publish",
+      "name": "Publish ROS 2 point cloud",
+      "parameters": {
+        "topic": "/opencv_dataflow/demo/observed_points",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "best_effort",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "fifo",
+        "max_age_seconds": 0.0,
+        "write_enabled": false,
+        "require_subscriber": true,
+        "wait_for_ack": true,
+        "organization": "unorganized",
+        "byte_order": "little",
+        "stamp_mode": "preserve",
+        "input_mode": "message"
+      },
+      "position": [
+        330,
+        340
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "message",
+        "enable"
+      ],
+      "exposed_outputs": [
+        "published",
+        "delivery"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "Disabled PointCloud2 subscriber on /opencv_dataflow/camera/points; domain 71, localhost, best-effort/volatile. Declare incoming XYZ units explicitly. Cloud output projects finite XYZ/RGB/normals; the Message output retains all fields and bytes, including intensity/IDs/descriptors. Header frame_id is not TF calibration. Optional raw relay is also disabled; Message mode preserves unknown fields, padding and exact bytes on /opencv_dataflow/demo/observed_points. No simulator, robot or native visualization service is launched.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "cloud_source",
+      "output": "cloud",
+      "target": "measure_cloud",
+      "input": "cloud"
+    },
+    {
+      "source": "cloud_source",
+      "output": "cloud",
+      "target": "cloud_view",
+      "input": "cloud"
+    },
+    {
+      "source": "cloud_source",
+      "output": "message",
+      "target": "raw_relay",
+      "input": "message"
+    },
+    {
+      "source": "cloud_source",
+      "output": "trigger",
+      "target": "raw_relay",
+      "input": "enable"
+    }
+  ]
+}

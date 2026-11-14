@@ -4348,6 +4348,68 @@ Inputs: `payload` (any), `enable` (boolean).
 | `write_enabled` | `false` | Also wire a true Enable input for each intended publication. |
 | `retain` | `false` | Ask the broker to retain the last value on the topic. |
 
+## Decode ROS 2 point cloud (`industrial.ros2_cloud_decode`)
+
+Industrial integration / ROS 2
+
+Inputs: `message` (any).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `units` | `"m"` | `m`, `mm` Declared incoming XYZ units; no scaling is performed when decoding. |
+| `invalid_points` | `"drop"` | `drop`, `reject` Drop invalid XYZ/normals or reject the sample. A false dense claim is rejected. |
+| `colors` | `"auto"` | `auto`, `ignore` Decode packed RGB/RGBA or scalar r/g/b bytes; alpha stays in the raw message. |
+| `normals` | `"normalize"` | `normalize`, `ignore` Normalize complete normal_x/y/z or nx/ny/nz fields, or leave them in the raw message. |
+| `empty_frame` | `"ros_cloud"` | Fallback cloud frame only when ROS header.frame_id is empty; no transform is implied. |
+
+## Encode ROS 2 point cloud (`industrial.ros2_cloud_encode`)
+
+Industrial integration / ROS 2
+
+Inputs: `cloud` (cloud).
+
+Input `cloud` — Physical m/mm cloud. XYZ is published in meters; unitless clouds are rejected.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `organization` | `"unorganized"` | `unorganized`, `source_pixels` Packed rows or retained source pixels with NaN holes. Duplicate pixels are rejected. |
+| `byte_order` | `"little"` | `little`, `big` Canonical XYZ/normal float32 and packed uint32 RGB field byte order. |
+| `stamp_mode` | `"preserve"` | `preserve`, `zero` Keep incoming ROS acquisition stamp (otherwise zero) or clear it; frame comes from cloud.frame. |
+
+## Publish ROS 2 point cloud (`industrial.ros2_cloud_publish`)
+
+Industrial integration / ROS 2
+
+Inputs: `cloud` (cloud, optional), `message` (any, optional), `enable` (boolean).
+
+Input `cloud` — Physical m/mm cloud. XYZ is published in meters; unitless clouds are rejected.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `topic` | `"/opencv_dataflow/camera/points"` | ROS topic. Endpoints must match domain, topic, installed interface and compatible QoS. |
+| `namespace` | `"/opencv_dataflow"` | Node namespace; relative topics resolve here. / is allowed. |
+| `domain_id` | `71` | Value must be a whole number between 0 and 232. Independent DDS domain. Demo default 71; choose the same domain as your peer. |
+| `discovery_range` | `"localhost"` | `localhost`, `subnet` Localhost by default; subnet opts in to network discovery. DDS XML may also affect scope. |
+| `queue_depth` | `4` | Value must be a whole number between 1 and 64. KEEP_LAST DDS depth and maximum buffered received messages; oldest entries are dropped. |
+| `queue_bytes` | `33554432` | Value must be a whole number between 1024 and 6.71089e+07. Local subscription buffer budget, including encoded image data; oldest entries are dropped. |
+| `reliability` | `"best_effort"` | `reliable`, `best_effort` Best effort suits cameras. Reliable adds DDS delivery acknowledgments, not application acceptance. |
+| `durability` | `"volatile"` | `volatile`, `transient_local` Transient local can replay cached messages while a publisher remains alive. |
+| `deadline_seconds` | `0.0` | Value must be a finite number between 0 and 3600. Requested/offered DDS deadline; zero uses the middleware's infinite default. |
+| `lifespan_seconds` | `0.0` | Value must be a finite number between 0 and 3600. DDS sample lifespan; zero uses the middleware's infinite default. |
+| `timeout_seconds` | `0.25` | Value must be a finite number between 0.01 and 30. Receive wait, or each discovery/acknowledgment wait for a publication. |
+| `startup_timeout_seconds` | `30.0` | Value must be a finite number between 1 and 60. Bounded worker startup. ROS runs in its own configured Python environment. |
+| `use_sim_time` | `false` | Use /clock for this node's clock. Does not reinterpret incoming header timestamps. |
+| `publication_mode` | `"asynchronous"` | `asynchronous`, `synchronous`, `auto` Fast DDS publishing mode. Asynchronous bounds normal publication latency. |
+| `consume` | `"fifo"` | `fifo`, `latest` FIFO consumes oldest; latest discards superseded buffered samples. |
+| `max_age_seconds` | `0.0` | Value must be a finite number between 0 and 3600. Reject buffered messages older than this local arrival age; zero disables it. |
+| `write_enabled` | `false` | Also wire true Enable for each intended publication; preview cannot publish. |
+| `require_subscriber` | `true` | Wait for a matching subscriber before publishing; no match emits no output. |
+| `wait_for_ack` | `true` | For reliable QoS, wait for DDS acknowledgments. This does not acknowledge robot work. |
+| `organization` | `"unorganized"` | `unorganized`, `source_pixels` Packed rows or retained source pixels with NaN holes. Duplicate pixels are rejected. |
+| `byte_order` | `"little"` | `little`, `big` Canonical XYZ/normal float32 and packed uint32 RGB field byte order. |
+| `stamp_mode` | `"preserve"` | `preserve`, `zero`, `node_clock` Preserve incoming ROS header (otherwise zero), clear it, or stamp using the ROS node clock. |
+| `input_mode` | `"cloud"` | `cloud`, `message` Cloud rebuilds canonical fields in meters. Message sends the exact portable packet; organization/byte order are retained and the caller owns raw units. Wire only the selected input. |
+
 ## Publish ROS 2 data (`industrial.ros2_data_publish`)
 
 Industrial integration / ROS 2
@@ -4727,6 +4789,40 @@ Ticket mode and fixed value are common inspector controls.
 | `layout` | `"NV12"` | `NV12`, `NV21`, `I420`, `YV12`, `YUY2`, `UYVY`, `YVYU` Byte order and chroma subsampling of the input buffer. |
 | `color_format` | `"bgr"` | `gray`, `bgr`, `rgb`, `bgra`, `rgba` Gray extracts the stored luma samples. |
 | `algorithm_hint` | `"default"` | `default`, `accurate`, `approximate` |
+
+## Read ROS 2 point cloud (`input.ros2_cloud`)
+
+Industrial integration / ROS 2
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `topic` | `"/opencv_dataflow/camera/points"` | ROS topic. Endpoints must match domain, topic, installed interface and compatible QoS. |
+| `namespace` | `"/opencv_dataflow"` | Node namespace; relative topics resolve here. / is allowed. |
+| `domain_id` | `71` | Value must be a whole number between 0 and 232. Independent DDS domain. Demo default 71; choose the same domain as your peer. |
+| `discovery_range` | `"localhost"` | `localhost`, `subnet` Localhost by default; subnet opts in to network discovery. DDS XML may also affect scope. |
+| `queue_depth` | `4` | Value must be a whole number between 1 and 64. KEEP_LAST DDS depth and maximum buffered received messages; oldest entries are dropped. |
+| `queue_bytes` | `33554432` | Value must be a whole number between 1024 and 6.71089e+07. Local subscription buffer budget, including encoded image data; oldest entries are dropped. |
+| `reliability` | `"best_effort"` | `reliable`, `best_effort` Best effort suits cameras. Reliable adds DDS delivery acknowledgments, not application acceptance. |
+| `durability` | `"volatile"` | `volatile`, `transient_local` Transient local can replay cached messages while a publisher remains alive. |
+| `deadline_seconds` | `0.0` | Value must be a finite number between 0 and 3600. Requested/offered DDS deadline; zero uses the middleware's infinite default. |
+| `lifespan_seconds` | `0.0` | Value must be a finite number between 0 and 3600. DDS sample lifespan; zero uses the middleware's infinite default. |
+| `timeout_seconds` | `0.25` | Value must be a finite number between 0.01 and 30. Receive wait, or each discovery/acknowledgment wait for a publication. |
+| `startup_timeout_seconds` | `30.0` | Value must be a finite number between 1 and 60. Bounded worker startup. ROS runs in its own configured Python environment. |
+| `use_sim_time` | `false` | Use /clock for this node's clock. Does not reinterpret incoming header timestamps. |
+| `publication_mode` | `"asynchronous"` | `asynchronous`, `synchronous`, `auto` Fast DDS publishing mode. Asynchronous bounds normal publication latency. |
+| `consume` | `"latest"` | `fifo`, `latest` FIFO consumes oldest; latest discards superseded buffered samples. |
+| `max_age_seconds` | `0.0` | Value must be a finite number between 0 and 3600. Reject buffered messages older than this local arrival age; zero disables it. |
+| `enabled` | `false` | Explicitly start a subscription. Disabled sources do not create workers or tickets. |
+| `ticket_mode` | `"auto"` | `auto`, `header_stamp` Auto acquisition ticket; header frame+stamp string; or an external data field. |
+| `ticket_field` | `""` | Dotted path in decoded data for an external string/number ticket; not a ROS timestamp conversion. |
+| `units` | `"m"` | `m`, `mm` Declared incoming XYZ units; no scaling is performed when decoding. |
+| `invalid_points` | `"drop"` | `drop`, `reject` Drop invalid XYZ/normals or reject the sample. A false dense claim is rejected. |
+| `colors` | `"auto"` | `auto`, `ignore` Decode packed RGB/RGBA or scalar r/g/b bytes; alpha stays in the raw message. |
+| `normals` | `"normalize"` | `normalize`, `ignore` Normalize complete normal_x/y/z or nx/ny/nz fields, or leave them in the raw message. |
+| `empty_frame` | `"ros_cloud"` | Fallback cloud frame only when ROS header.frame_id is empty; no transform is implied. |
 
 ## Read ROS 2 data (`input.ros2_data`)
 
