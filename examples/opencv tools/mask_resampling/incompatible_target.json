@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "mask.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Coverage, thresholds and source",
+      "description": "Original synthetic mask by OpenCVDataflowGUI contributors (MIT). No external images. Pixel-cell area coverage is a software validity model, not physical camera calibration or proof of full cubic/Lanczos interpolation support. EXPECTED INVALID RESULT: the target is a 128x96 crop, not a resize of the whole 256x192 grid. Equal target dimensions do not establish alignment. The resampler rejects the known frame mismatch and emits nothing. Use crop geometry to transform the selection separately.",
+      "parameters": {},
+      "position": [
+        0,
+        -350
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cropped_target",
+      "type": "cv.crop",
+      "name": "Crop ROI",
+      "parameters": {
+        "x": 0,
+        "y": 0,
+        "width": 128,
+        "height": 96
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rejected",
+      "type": "cv.resample_mask",
+      "name": "Resample coverage mask",
+      "parameters": {
+        "width": 640,
+        "height": 480,
+        "input_mode": "binary",
+        "minimum_coverage": 1.0
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "mask",
+        "target"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "coverage",
+        "geometry",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "cropped_target",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "rejected",
+      "input": "mask"
+    },
+    {
+      "source": "cropped_target",
+      "output": "image",
+      "target": "rejected",
+      "input": "target"
+    }
+  ]
+}

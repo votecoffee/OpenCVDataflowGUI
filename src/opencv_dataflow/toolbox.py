@@ -72,7 +72,7 @@ IMPLEMENTATION_MODULES = {
         "analysis_tools annotation basic_processing blocks collection_tools contour_raster "
         "features focus_stacking generalized_hough "
         "histogram histogram_comparison image_blend image_colorize path_strip "
-        "logpolar_registration mask_boundary point_set_lines polar_image "
+        "logpolar_registration mask_boundary mask_resampling point_set_lines polar_image "
         "laplacian_pyramids processing "
         "pyramids raster_hough_lines registration segmentation stack_blur subpixel_crop "
         "template_instances "
@@ -166,6 +166,7 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "cv.resample_mask": ("integral", "area coverage", "validity mask"),
     "cv.stack_blur": ("stackBlur", "large-radius smoothing"),
     "cv.gray": ("cvtColor",),
     "cv.alpha_over": ("alpha", "premultiplied", "source over", "opacity", "transparency"),

@@ -1,0 +1,329 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "mask.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Coverage, thresholds and source",
+      "description": "Original synthetic mask by OpenCVDataflowGUI contributors (MIT). No external images. Pixel-cell area coverage is a software validity model, not physical camera calibration or proof of full cubic/Lanczos interpolation support. Resize 256x192 to 128x96: thresholds one (full area), one-half (inclusive) and zero (any positive area) show different binary masks for holes, alternating columns and a one-pixel invalid line. Empty footprints are never accepted. The target supplies size and has the verified resize frame. Inspect Coverage and the diagnostic heatmap; measurement blocks count each accepted selection on the target grid. This graph performs no equipment I/O.",
+      "parameters": {},
+      "position": [
+        0,
+        -350
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "target",
+      "type": "cv.resize",
+      "name": "Resize",
+      "parameters": {
+        "width": 128,
+        "height": 96,
+        "interpolation": "area",
+        "size_mode": "absolute",
+        "scale_x": 1.0,
+        "scale_y": 1.0,
+        "padding_value": 0.0
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry",
+        "valid_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "full",
+      "type": "cv.resample_mask",
+      "name": "Resample coverage mask",
+      "parameters": {
+        "width": 640,
+        "height": 480,
+        "input_mode": "binary",
+        "minimum_coverage": 1.0
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "mask",
+        "target"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "coverage",
+        "geometry",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure_full",
+      "type": "region.measure",
+      "name": "Measure selected region",
+      "parameters": {
+        "min_area": 0,
+        "max_area": 0,
+        "min_coverage": 0.0,
+        "max_coverage": 1.0
+      },
+      "position": [
+        990,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "area",
+        "coverage",
+        "centroid",
+        "bounds",
+        "data"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "half",
+      "type": "cv.resample_mask",
+      "name": "Resample coverage mask",
+      "parameters": {
+        "width": 640,
+        "height": 480,
+        "input_mode": "binary",
+        "minimum_coverage": 0.5
+      },
+      "position": [
+        660,
+        350
+      ],
+      "exposed_inputs": [
+        "mask",
+        "target"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "coverage",
+        "geometry",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure_half",
+      "type": "region.measure",
+      "name": "Measure selected region",
+      "parameters": {
+        "min_area": 0,
+        "max_area": 0,
+        "min_coverage": 0.0,
+        "max_coverage": 1.0
+      },
+      "position": [
+        990,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "area",
+        "coverage",
+        "centroid",
+        "bounds",
+        "data"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "any",
+      "type": "cv.resample_mask",
+      "name": "Resample coverage mask",
+      "parameters": {
+        "width": 640,
+        "height": 480,
+        "input_mode": "binary",
+        "minimum_coverage": 0.0
+      },
+      "position": [
+        660,
+        700
+      ],
+      "exposed_inputs": [
+        "mask",
+        "target"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "coverage",
+        "geometry",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure_any",
+      "type": "region.measure",
+      "name": "Measure selected region",
+      "parameters": {
+        "min_area": 0,
+        "max_area": 0,
+        "min_coverage": 0.0,
+        "max_coverage": 1.0
+      },
+      "position": [
+        990,
+        700
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "area",
+        "coverage",
+        "centroid",
+        "bounds",
+        "data"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "target",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "full",
+      "input": "mask"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "full",
+      "input": "target"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "measure_full",
+      "input": "image"
+    },
+    {
+      "source": "full",
+      "output": "mask",
+      "target": "measure_full",
+      "input": "mask"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "half",
+      "input": "mask"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "half",
+      "input": "target"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "measure_half",
+      "input": "image"
+    },
+    {
+      "source": "half",
+      "output": "mask",
+      "target": "measure_half",
+      "input": "mask"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "any",
+      "input": "mask"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "any",
+      "input": "target"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "measure_any",
+      "input": "image"
+    },
+    {
+      "source": "any",
+      "output": "mask",
+      "target": "measure_any",
+      "input": "mask"
+    }
+  ]
+}

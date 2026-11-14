@@ -778,6 +778,7 @@ def builtin_registry():
     from .logpolar_registration import LogPolarRegistration
     from .mask_boundary import CompareMaskBoundary
     from .mask_clearance import MaskClearance
+    from .mask_resampling import ResampleMask
     from .match_review import ReviewFeatureMatches
     from .matrix_eigen import MatrixEigen
     from .matrix_inverse import InvertMatrix
@@ -1081,6 +1082,7 @@ def builtin_registry():
         SelectPickCandidate,
         BeadCalipers,
         MaskClearance,
+        ResampleMask,
         InspectStripWidth,
         GroupStripDefects,
         JudgeStripDefects,

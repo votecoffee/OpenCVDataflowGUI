@@ -185,6 +185,65 @@ image. The project needs no external images or camera.
 This is image-space affine/projective mapping. Lens-distortion/nonlinear remapping
 and calibrated physical-area conversion are not implemented by this block.
 
+## Resample validity-mask coverage
+
+**Resample coverage mask** (`cv.resample_mask`) carries a validity/selection mask
+through a whole-image resize. It outputs a uint8 binary **Mask**, a float64
+**Coverage** plane in [0,1], standard resize **Geometry**, and an **Info** report.
+The optional diagnostic heatmap follows global/per-block graphics settings.
+This builds on Resize and Transform region with an explicit area model.
+
+| Control | Behavior |
+| --- | --- |
+| Input mode: Binary | A single-channel uint8 mask; any nonzero byte means a fully valid source pixel |
+| Input mode: Coverage | A single-channel float32/64 plane of finite fractions in [0,1] |
+| Width / Height | Requested whole-grid resize dimensions; a connected Target overrides both |
+| Minimum coverage | Inclusive area fraction. Default one accepts only fully valid footprints. Zero accepts any positive area, keeping empty footprints invalid |
+
+Each source pixel is a constant-valued cell extending half a pixel from its
+center. Each output pixel covers a rectangle in that grid. Coverage integrates
+the intersected source cells and divides by footprint area. This supports
+noninteger enlargement, reduction and mixed-axis scaling; it is not a nearest
+or linear point sample. All source cells are considered, including holes and
+one-pixel invalid lines. No border extrapolation adds validity.
+
+The implementation uses OpenCV's [summed-area integral image](https://docs.opencv.org/4.x/d7/d1b/group__imgproc__misc.html)
+with rational footprint weights. Binary inputs have exact integer area numerators
+within the supported grid bounds, followed by float64 division. Fractional-input
+calculation uses float64 arithmetic. Independent integer support checks keep any
+partially valid footprint below one and empty footprints at zero despite floating
+roundoff. Intermediate thresholds compare the stored float64 coverage directly,
+without an added tolerance. Coverage is a cell-area model; it does not certify
+full cubic/Lanczos kernel support or physical scene visibility.
+
+Target supplies only output dimensions and checks the expected whole-grid resize
+frame when both inputs have known coordinate roots. A known crop, translation,
+other root or inconsistent root dimensions is rejected. Target samples and its
+ticket do not replace the source mask or source ticket. Unknown frame IDs cannot
+prove alignment: the explicit whole-grid resize assumption remains, with
+`target_frame_verified=false` in Info. It performs no registration or arbitrary
+projective/nonlinear warp. Use Transform region for those supported image-space
+transformations.
+
+Geometry uses the same continuous pixel-center mapping as Resize:
+`x_source = (x_output + 0.5) * source_width / output_width - 0.5`, independently
+on each axis. Outputs retain the mask's ticket, recipe and transformed spatial/
+pyramid context. Info records both grids/frames, threshold, input interpretation,
+mean coverage, accepted count and fully covered count. Empty masks are valid
+processing results; use a measurement/judgment block when emptiness should fail.
+Physical depth and color masks are rejected. Each input/output grid is bounded
+to 16,384 pixels per axis and 16 million pixels total; prefix buffers and row
+chunks are bounded by those dimensions.
+
+Carry the Coverage output into another resampler using Coverage mode to avoid
+discarding partial area early. Aligned integer-factor stages agree with a direct
+resize in the supplied fixture. Nonaligned repeated grids can still lose detail
+because an intermediate coverage cell no longer describes its internal pattern;
+resample the original mask directly when that matters.
+
+Open [coverage-mask examples](<../examples/opencv tools/mask_resampling/README.md>)
+to compare thresholds, fractional chains and a deliberately rejected crop target.
+
 ## Processing and result policies
 
 | Tools | Selection behavior |

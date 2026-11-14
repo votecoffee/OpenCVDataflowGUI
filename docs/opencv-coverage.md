@@ -44,6 +44,14 @@ binding inventory helps identify candidates and verify availability.
 
 ## P1 — Common tools and workflow gaps
 
+[Coverage-mask resizing](<../examples/opencv tools/mask_resampling/README.md>)
+(S1-118) adds whole-grid pixel-cell area integration, explicit inclusive thresholds,
+fractional coverage output and verified resize-coordinate provenance. Exact
+rational overlap references qualify arbitrary resize ratios, holes, thin invalid
+lines and mixed-axis scaling. It complements existing Resize/Transform region
+sampling; general area integration through nonlinear/projective warps remains
+outside this block's contract.
+
 [Masked illumination and texture correction](<../examples/opencv tools/masked_photo_correction/README.md>)
 (S1-88) exposes native gradient-domain edits with intersected selections,
 exact original surroundings/alpha, explicit native erosion masks and change maps.

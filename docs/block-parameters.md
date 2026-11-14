@@ -3338,6 +3338,23 @@ Input `image` — Float32 or float64 grayscale, color, or physical depth samples
 | `positive_infinity_replacement` | `0.0` | Value must be a finite number. Replacement for positive infinity in stored units. |
 | `negative_infinity_replacement` | `0.0` | Value must be a finite number. Replacement for negative infinity in stored units. |
 
+## Resample coverage mask (`cv.resample_mask`)
+
+Image processing / Geometry
+
+Inputs: `mask` (image), `target` (image, optional).
+
+Input `mask` — Single-channel validity mask or fractional coverage plane; no physical depth.
+
+Input `target` — Optional output-size reference for a whole-grid resize. Known coordinate frames must match that resize; this does not register unrelated images or follow a crop.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `640` | Value must be a whole number between 1 and 16384. Output width; a connected target supplies both dimensions instead. |
+| `height` | `480` | Value must be a whole number between 1 and 16384. Output height. Input and output each have a 16 million pixel limit. |
+| `input_mode` | `"binary"` | `binary`, `coverage` Binary: uint8 nonzero is valid. Coverage: float32/64 fractions in [0,1]. |
+| `minimum_coverage` | `1.0` | Value must be a finite number between 0 and 1. Inclusive accepted area fraction. One requires every overlapping source cell to be fully valid. Zero accepts any positive coverage; empty cells stay invalid. |
+
 ## Resize (`cv.resize`)
 
 Image processing / Geometry
