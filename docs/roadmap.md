@@ -41,8 +41,9 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **2 targeted increments of about 20** completed:
-animated image codec round trips (S1-111) and large-radius smoothing (S1-159).
+The current cycle has **3 targeted increments of about 20** completed:
+animated image codec round trips (S1-111), large-radius smoothing (S1-159),
+and assistant application authoring with connected-input plugin captures.
 The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
@@ -53,10 +54,24 @@ failures. Its benchmark records native-call timing and noise/edge tradeoffs on a
 1920x1080 float32 fixture; it excludes graph overhead and makes no speed guarantee.
 All **10 installed Debug/Lean CLI runs** reproduced their expected outcomes,
 including guarded native high-depth arithmetic. No broad suite was repeated.
+The assistant increment passed **132 focused checks** for authoring, file revision
+conflicts, replay bounds, nested graphs, plugin validation/captures, editor loading
+and existing persistence contracts. All **17 installed CLI outcomes** matched,
+including controlled pass/fail inspections under Debug, Balanced and Lean.
+Two skill packages passed validation and were installed locally. No broad suite
+was repeated and no OpenCV coverage row was added for this application API.
 Update the count as implementation continues. Example reorganizations and frozen
 third-party reviews do not add vision capability completions.
 
 ## Short-term focus
+
+Assistant application development now has two portable skills, a documentation
+map and planning template, and a versioned JSON/Python saved-project API. The API
+discovers block metadata, applies validated edit batches, protects known file
+revisions, runs offline projects and exports review previews/HTML/XML. This is
+saved-file co-work; it does not expose unsaved GUI drafts or a remote service.
+See [assistant development](assistant-development.md). This application capability
+does not add an OpenCV coverage completion.
 
 The requested [scikit-image inspection expansion](scikit-image.md) adds the
 44-property standard 2D regionprops catalog, custom collection metric filters

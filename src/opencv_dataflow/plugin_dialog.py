@@ -60,6 +60,19 @@ class PluginProcessedInputs:
     inputs: dict[str, ValuePacket]
 
 
+@dataclass(frozen=True)
+class PluginConnectedInputs:
+    """Private wired values from one editor publication, not a physical exposure."""
+
+    snapshot_id: str
+    publication_id: str
+    block_id: str
+    output_revision: int
+    inputs: dict[str, ValuePacket]
+    missing_inputs: tuple[str, ...]
+    sources: dict[str, dict]
+
+
 class PluginDialogContext:
     """Catalog cached image outputs published to the editor graph."""
 
@@ -69,6 +82,7 @@ class PluginDialogContext:
         self._graph = graph
         self._block = block
         self._thread_id = get_ident()
+        self._context_id = uuid.uuid4().hex
         self._input_levels = dict(block.input_levels if input_levels is None else input_levels)
         self._input_wires = {
             wire.input: (wire.source, wire.output)
@@ -256,6 +270,77 @@ class PluginDialogContext:
             )
         finally:
             block._execution_lock.release()
+
+    def snapshot_connected_inputs(self, ports=None):
+        """Capture wired values together, including for an unconfigured target.
+
+        The owning thread serializes editor publications. Source execution locks
+        reject direct concurrent execution without waiting. Missing optional
+        values are reported; required inputs must have a retained connected value.
+        No block is executed and physical acquisition synchronization is not inferred.
+        """
+        if self._graph is None:
+            raise RuntimeError("The plugin dialog has closed")
+        if get_ident() != self._thread_id:
+            raise RuntimeError("Capture connected inputs on the plugin dialog's owning thread")
+        declared = {port.name: port for port in self._block.inputs}
+        if isinstance(ports, str):
+            raise TypeError("Pass input names as a collection, not a single string")
+        names = tuple(declared) if ports is None else tuple(ports)
+        if any(not isinstance(name, str) or name not in declared for name in names):
+            raise ValueError("Connected capture must name declared block inputs")
+        if len(set(names)) != len(names):
+            raise ValueError("Connected capture input names must be unique")
+        wires = {w.input: w for w in self._graph.connections if w.target == self.block_id}
+        source_ids = {wires[name].source for name in names if name in wires}
+        owners = {key: self._graph.blocks[key] for key in source_ids}
+        owners[self.block_id] = self._block
+        locked = []
+        revision = self.output_revision
+        try:
+            for key in sorted(owners):
+                owner = owners[key]
+                if not owner._execution_lock.acquire(blocking=False):
+                    raise RuntimeError("A connected block is active; capture after it finishes")
+                locked.append(owner)
+                if owner.timing.started is not None:
+                    raise RuntimeError("A connected block is active; capture after it finishes")
+            packets, sources, missing = {}, {}, []
+            for name in names:
+                wire = wires.get(name)
+                source = owners[wire.source] if wire else None
+                result = source.last_result if source is not None else None
+                value = result.outputs.get(wire.output, NO_VALUE) if result else NO_VALUE
+                if value is NO_VALUE:
+                    if declared[name].required or (wire and declared[name].required_when_connected):
+                        raise ValueError(f"No connected value is cached for required input {name}")
+                    missing.append(name)
+                    continue
+                packets[name] = ValuePacket(value, result.payloads.get(wire.output, {}))
+                sources[name] = {
+                    "block_id": source.id, "port": wire.output,
+                    "execution_count": source.timing.count, "state": source.state,
+                    "retained": not bool(source.current_emissions.get(wire.output)),
+                }
+            values, payloads = prepare_inputs(
+                self._block, packets, input_levels=self._input_levels
+            )
+            for name, value in values.items():
+                validate_value(declared[name], value)
+            copied = copy.deepcopy({
+                name: ValuePacket(value, payloads[name]) for name, value in values.items()
+            })
+            if revision != self.output_revision:
+                raise RuntimeError("Editor publication changed during connected capture; retry")
+            return PluginConnectedInputs(
+                snapshot_id=uuid.uuid4().hex,
+                publication_id=f"{self._context_id}:{revision}",
+                block_id=self.block_id, output_revision=revision,
+                inputs=copied, missing_inputs=tuple(missing), sources=sources,
+            )
+        finally:
+            for owner in reversed(locked):
+                owner._execution_lock.release()
 
     def _snapshot_input_value(self, port, kind):
         if self._graph is None:

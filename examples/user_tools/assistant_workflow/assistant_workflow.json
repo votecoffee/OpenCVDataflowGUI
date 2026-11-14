@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.demo",
+      "name": "Synthetic target",
+      "parameters": {},
+      "position": [
+        0,
+        164.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mean",
+      "type": "example.mean_inspection",
+      "name": "Inspect mean intensity",
+      "description": "Accept the mean of selected pixels between 20 and 100 DN.",
+      "documentation": "<p>Stateless example plugin with enum, numeric and coupled limits. A valid negative result carries a failure reason.</p>",
+      "parameters": {
+        "minimum": 20.0,
+        "maximum": 100.0,
+        "comparison": "inside"
+      },
+      "position": [
+        330,
+        139.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "mean",
+        "passed",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "review",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        660,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "judgment",
+      "type": "inspect.final_judgment",
+      "name": "Final ticket judgment",
+      "parameters": {
+        "mode": "upstream",
+        "data": {},
+        "fail_reason": "",
+        "reason_message": ""
+      },
+      "position": [
+        660,
+        303.0
+      ],
+      "exposed_inputs": [
+        "value",
+        "passed",
+        "reasons"
+      ],
+      "exposed_outputs": [
+        "value",
+        "judgment"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Assistant authoring example (MIT)",
+      "description": "Original synthetic image from input.demo. No external image assets. Load the mean_inspection.py skill template before opening this project. The sibling operations.json and build_example.py show API authoring.",
+      "parameters": {},
+      "position": [
+        0,
+        678.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "mean",
+      "input": "image"
+    },
+    {
+      "source": "mean",
+      "output": "image",
+      "target": "review",
+      "input": "image"
+    },
+    {
+      "source": "mean",
+      "output": "result_graphics",
+      "target": "review",
+      "input": "graphics_1"
+    },
+    {
+      "source": "mean",
+      "output": "image",
+      "target": "judgment",
+      "input": "value"
+    }
+  ]
+}

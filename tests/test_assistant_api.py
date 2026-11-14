@@ -450,3 +450,33 @@ def test_operation_json_rejects_duplicate_fields(tmp_path, capsys):
     path.write_text('[{"op":"add","op":"remove"}]')
     assert main(["new", "--operations", str(path), "--output", str(tmp_path / "p.json")]) == 2
     assert "Duplicate" in json.loads(capsys.readouterr().out)["error"]["message"]
+
+
+def test_example_index_honors_local_git_ignores(tmp_path):
+    subprocess.run(["git", "init", "-q", str(tmp_path)], check=True, capture_output=True)
+    (tmp_path / ".gitignore").write_text("examples/applications/customer/\n")
+    for folder in ("customer", "public_sample"):
+        directory = tmp_path / "examples/applications" / folder
+        directory.mkdir(parents=True)
+        (directory / "project.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "blocks": [{"type": "input.file"}],
+                    "connections": [],
+                }
+            )
+        )
+    index = example_index(tmp_path)
+    assert len(index) == 1 and "public_sample" in index[0]["project"]
+
+
+def test_compact_run_keeps_full_report_in_file(session, tmp_path, capsys):
+    path = tmp_path / "project.json"
+    session.save(path)
+    report = tmp_path / "report.json"
+    assert main(["run", str(path), "--report", str(report), "--summary"]) == 0
+    data = json.loads(capsys.readouterr().out)["data"]
+    assert data["run_count"] == 1 and not data["failures"]
+    assert "activity" not in data
+    assert json.loads(report.read_text())["activity"]["events"]

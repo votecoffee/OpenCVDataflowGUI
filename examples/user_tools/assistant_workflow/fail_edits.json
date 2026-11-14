@@ -1,0 +1,12 @@
+[
+  {
+    "op": "update",
+    "id": "mean",
+    "fields": {
+      "parameters": {
+        "minimum": 200.0,
+        "maximum": 255.0
+      }
+    }
+  }
+]

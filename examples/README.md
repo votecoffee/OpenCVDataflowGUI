@@ -329,5 +329,6 @@ Examples of writing a Python block or packaging a reusable ToolBlock.
 | Example | Demonstrates |
 | --- | --- |
 | [Custom Python invert block](user_tools/custom_invert/README.md) | Edit an inversion band in a plugin popup and preview it with numeric and cross-field validation. |
+| [Assistant/API authoring](user_tools/assistant_workflow/README.md) | Build a saved graph, add a reusable validated plugin, review result graphics and replay a controlled pass/fail case through the JSON API. |
 | [Inspect shapes ToolBlock](user_tools/inspect_shapes/README.md) | Reuse threshold and contour inspection with a nested preprocessing graph. |
 | [Registered defect inspection ToolBlock](user_tools/registered_defect_inspection/README.md) | Align a sample to a reference with ECC, difference the images, and find defect blobs. |

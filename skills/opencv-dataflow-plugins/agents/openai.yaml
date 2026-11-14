@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenCV Dataflow Plugins"
+  short_description: "Develop reusable vision blocks and plugin dialogs"
+  default_prompt: "Use $opencv-dataflow-plugins to develop a reusable block for OpenCVDataflowGUI."

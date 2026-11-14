@@ -2,6 +2,8 @@
 
 import argparse
 import json
+import os
+import subprocess
 import sys
 from contextlib import redirect_stdout
 from importlib.metadata import version
@@ -66,9 +68,31 @@ def example_index(root, query=""):
     )
     terms = query.casefold().split()
     records = []
+    visible = None
+    if (root / ".git").exists():
+        result = subprocess.run(
+            [
+                "git",
+                "ls-files",
+                "-z",
+                "--cached",
+                "--others",
+                "--exclude-standard",
+                "--",
+                "examples",
+            ],
+            cwd=root,
+            capture_output=True,
+            check=True,
+        )
+        visible = {
+            os.fsdecode(path).replace("\\", "/") for path in result.stdout.split(b"\0") if path
+        }
     for category in folders:
         for path in sorted((root / "examples" / category).rglob("*.json")):
             relative = path.relative_to(root)
+            if visible is not None and relative.as_posix() not in visible:
+                continue
             if any(part.casefold() in {"private", "cognextools"} for part in relative.parts):
                 continue
             if not all(term in str(relative).casefold() for term in terms):

@@ -1,5 +1,10 @@
 # Contributing
 
+Start with the [documentation map](docs/README.md). Assistant workflows use the
+[application and plugin skills](docs/assistant-development.md), the versioned
+[JSON/Python API](skills/opencv-dataflow-apps/references/api.md), and the
+[application plan template](docs/application-plan-template.md).
+
 Create a Python 3.14 environment using the [install guide](README.md#install),
 then install the `dev` extra and run the local checks.
 

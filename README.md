@@ -9,6 +9,7 @@ tools, inspect intermediate results, and extend the toolbox with Python plugins.
 - [Usage](#usage)
 - [Architecture](#architecture)
 - [Plugins](#plugins)
+- [Application development](#application-development)
 - [Maintainers](#maintainers)
 - [Contributing](#contributing)
 - [License](#license)
@@ -118,6 +119,14 @@ open directly after setup. **SimpleClassify** is bundled with DataflowGUI. See t
 Plugins can provide their own configuration or training dialogs. The dialog API
 can capture several processed inputs together, preserving their images, point
 clouds and metadata for training in a plugin worker.
+
+## Application development
+
+Coding chats can discover blocks, edit and validate saved graphs, run offline
+inspections, and export result previews through the **JSON CLI and Python API**.
+Two included skills cover application planning and reusable plugin development.
+See the [assistant setup guide](docs/assistant-development.md) and
+[documentation map](docs/README.md).
 
 ## Maintainers
 

@@ -1,0 +1,81 @@
+[
+  {
+    "op": "add",
+    "type": "input.demo",
+    "id": "source",
+    "name": "Synthetic target"
+  },
+  {
+    "op": "add",
+    "type": "example.mean_inspection",
+    "id": "mean"
+  },
+  {
+    "op": "update",
+    "id": "mean",
+    "fields": {
+      "exposed_outputs": [
+        "image",
+        "mean",
+        "passed",
+        "result_graphics"
+      ],
+      "description": "Accept the mean of selected pixels between 20 and 100 DN.",
+      "documentation": "<p>Stateless example plugin with enum, numeric and coupled limits. A valid negative result carries a failure reason.</p>"
+    }
+  },
+  {
+    "op": "add",
+    "type": "cv.overlay_result_graphics",
+    "id": "review"
+  },
+  {
+    "op": "add",
+    "type": "inspect.final_judgment",
+    "id": "judgment"
+  },
+  {
+    "op": "add",
+    "type": "layout.comment",
+    "id": "notes"
+  },
+  {
+    "op": "update",
+    "id": "notes",
+    "fields": {
+      "name": "Assistant authoring example (MIT)",
+      "description": "Original synthetic image from input.demo. No external image assets. Load the mean_inspection.py skill template before opening this project. The sibling operations.json and build_example.py show API authoring."
+    }
+  },
+  {
+    "op": "connect",
+    "source": "source",
+    "output": "image",
+    "target": "mean",
+    "input": "image"
+  },
+  {
+    "op": "connect",
+    "source": "mean",
+    "output": "image",
+    "target": "review",
+    "input": "image"
+  },
+  {
+    "op": "connect",
+    "source": "mean",
+    "output": "result_graphics",
+    "target": "review",
+    "input": "graphics_1"
+  },
+  {
+    "op": "connect",
+    "source": "mean",
+    "output": "image",
+    "target": "judgment",
+    "input": "value"
+  },
+  {
+    "op": "arrange"
+  }
+]

@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenCV Dataflow Applications"
+  short_description: "Plan, build, and verify visual inspection applications"
+  default_prompt: "Use $opencv-dataflow-apps to build and verify an inspection project in OpenCVDataflowGUI."

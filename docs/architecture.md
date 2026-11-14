@@ -155,6 +155,15 @@ packet tickets, timestamps and per-packet judgments. See
 
 ## Projects and plugins
 
+The [assistant API](../skills/opencv-dataflow-apps/references/api.md) exposes
+machine-readable discovery and `ProjectSession` authoring over these same graph
+contracts. Operation batches validate a private candidate before replacing the
+session graph. Static validation does not run processing. Saves check the loaded
+file revision and use an exclusive API-writer lock; use independent working copies
+for concurrent GUI edits because editor drafts are not part of this interface.
+Explicit headless runs use Graph/QueuedExecution and return the normal diagnostics,
+ticket results and timings. [Assistant workflow](assistant-development.md).
+
 Version 1 JSON projects persist type identifiers, instance IDs, names, parameters,
 positions, exposed ports, preview choice, and connections. They omit frames, history,
 native camera handles, and executable code. Load validates schema version, types,

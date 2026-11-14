@@ -56,6 +56,7 @@ The `context` argument is a `PluginDialogContext` with the following members.
 | `snapshot_input_data(port)` | Returns a private `ValuePacket` for the latest published value and payload on a wired `data` input. |
 | `snapshot_input_cloud(port)` | Returns a private `ValuePacket` for the latest published point cloud and payload on a wired `cloud` input. |
 | `snapshot_processed_inputs(ports=None)` | Copies selected retained inputs from one completed execution of the dialog's block into a `PluginProcessedInputs` bundle. |
+| `snapshot_connected_inputs(ports=None)` | Copies current wired values together into a `PluginConnectedInputs` bundle, even when the dialog's block has never run successfully. |
 | `output_revision` | Number of result publications received by the editor since the popup opened. Starts at zero. |
 | `subscribe_outputs(callback)` | Calls `callback(revision)` on the GUI thread after a publication and returns an unsubscribe function. |
 
@@ -144,6 +145,41 @@ the Debug profile. Switching profiles alone does not recreate history. Captures
 on another thread, after popup closure, or while the selected block object is
 executing raise `RuntimeError` without waiting for work to finish. During a
 modeless graph run, the editor's last completed publication remains available.
+
+## Capture a connected bundle before training
+
+An unconfigured tool can capture its connected depth/image, camera model, pose,
+cloud or other inputs together with `snapshot_connected_inputs`. It does not need
+a completed execution of the target tool and does not execute the graph:
+
+```python
+bundle = context.snapshot_connected_inputs(["depth", "camera", "bin_pose"])
+depth = bundle.inputs["depth"]
+camera = bundle.inputs["camera"]
+pose = bundle.inputs.get("bin_pose")  # Optional missing inputs are omitted.
+# Store bundle.publication_id and snapshot_id with the training/reference record.
+```
+
+Names must be unique declared input ports; omit `ports` to request all inputs.
+Missing required values raise `ValueError`; absent optional values are listed in
+`missing_inputs`. A connected optional port with `required_when_connected=True`
+also requires a value. The normal input conversions and draft pyramid-level
+selection apply. Values, typed images/clouds and nested payloads are private copies.
+`sources` identifies each wired source/port, its execution count/state and whether
+that output was retained rather than newly emitted. Failure gates are not applied:
+this is a diagnostic/training capture, not a processing invocation.
+
+`publication_id` combines this context's unique identity and its `output_revision`.
+Two captures of the same publication share that ID but have different snapshot
+IDs. The IDs cannot be compared across dialogs as a global acquisition clock.
+The bundle may contain independently acquired or retained source values; inspect
+their ticket/timestamp/frame payloads to establish any application-specific match.
+It does not claim synchronized exposure or robot/camera pose simultaneity.
+
+Capture on the owning GUI thread before sending the bundle to a worker. The
+method takes nonblocking locks on selected sources and target, rejects active
+objects, checks for a changed publication, and releases all acquired locks on
+failure. A closed context or wrong-thread call raises `RuntimeError`.
 
 ## Follow graph outputs
 
