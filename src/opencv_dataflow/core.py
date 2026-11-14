@@ -745,6 +745,10 @@ class Registry:
         """Register a host-selected loader for known optional block IDs."""
         self._providers.update(dict.fromkeys(type_ids, load))
 
+    def available_type_ids(self):
+        """Discover registered and optional IDs without importing optional providers."""
+        return tuple(sorted(self.types.keys() | self._providers.keys()))
+
     def register(self, block_type):
         if not issubclass(block_type, Block) or block_type.type_id in self.types:
             raise ValueError("Block must be a subclass with a unique type_id")
