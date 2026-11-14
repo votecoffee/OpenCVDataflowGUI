@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "camera_info",
+      "type": "input.ros2_data",
+      "name": "Read ROS 2 data",
+      "parameters": {
+        "topic": "/opencv_dataflow/camera/camera_info",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "reliable",
+        "durability": "transient_local",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "fifo",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "auto",
+        "ticket_field": "",
+        "message_type": "sensor_msgs/msg/CameraInfo",
+        "custom_message_type": "",
+        "data_mode": "fields"
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "data",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "industrial.ros2_camera_decode",
+      "name": "Decode ROS 2 CameraInfo",
+      "parameters": {
+        "space": "rectified"
+      },
+      "position": [
+        330,
+        350
+      ],
+      "exposed_inputs": [
+        "message"
+      ],
+      "exposed_outputs": [
+        "camera",
+        "message",
+        "details"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth",
+      "type": "input.ros2_image",
+      "name": "Read ROS 2 image",
+      "parameters": {
+        "topic": "/opencv_dataflow/camera/depth_registered",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "best_effort",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 0.25,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "latest",
+        "max_age_seconds": 0.0,
+        "enabled": false,
+        "ticket_mode": "header_stamp",
+        "ticket_field": ""
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cache",
+      "type": "industrial.ros2_camera_cache",
+      "name": "Cache ROS 2 CameraInfo",
+      "parameters": {
+        "max_age_seconds": 0.0,
+        "require_context": false,
+        "allow_zero_stamps": false
+      },
+      "position": [
+        660,
+        150
+      ],
+      "exposed_inputs": [
+        "context",
+        "reset",
+        "camera",
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "camera",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "coordinate",
+      "type": "flow.coordinate",
+      "name": "Coordinate inputs",
+      "parameters": {
+        "inputs": 2,
+        "mode": "ticket_all",
+        "max_wait_ms": 1000.0,
+        "timeout": "discard",
+        "warmup": "all",
+        "max_age_ms": 1000.0,
+        "primary": "input_1",
+        "duplicates": "error",
+        "late": "ignore",
+        "history_size": 4096,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        990,
+        150
+      ],
+      "exposed_inputs": [
+        "input_1",
+        "input_2",
+        "input_3",
+        "input_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "value",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "checked",
+      "type": "industrial.ros2_rgbd",
+      "name": "Validate registered ROS RGB-D",
+      "parameters": {
+        "use_color": false,
+        "color_label": "input_1",
+        "depth_label": "input_1",
+        "camera_label": "input_2",
+        "calibration_timing": "bound_static",
+        "max_skew_ms": 0.0,
+        "allow_zero_stamps": false,
+        "uint16_m_per_sample": 0.001,
+        "float_depth_units": "m",
+        "display_max_m": 5.0
+      },
+      "position": [
+        1320,
+        150
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "color",
+        "depth",
+        "camera",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "project",
+      "type": "3d.depth_cloud",
+      "name": "Depth to point cloud",
+      "parameters": {
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m",
+        "sample_step": 4,
+        "max_points": 200000
+      },
+      "position": [
+        1650,
+        150
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_and_scope",
+      "type": "layout.comment",
+      "name": "Source, setup and scope",
+      "description": "Disabled static CameraInfo/depth template. A live transient-local CameraInfo publisher can replay its retained calibration to this late subscriber. Prime the cache before images; early images are discarded, not replayed. CameraInfo is reused explicitly, without changing its original header; image acquisition stamps must be nonzero. Default receipt-age limit zero allows unlimited static reuse. Set a finite limit when updates are expected. Share Run identity and tagged images with Require context for run/reset invalidation. No robot, simulator or cross-frame registration is started.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "camera_info",
+      "output": "data",
+      "target": "camera",
+      "input": "message"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "cache",
+      "input": "camera"
+    },
+    {
+      "source": "depth",
+      "output": "image",
+      "target": "cache",
+      "input": "image"
+    },
+    {
+      "source": "cache",
+      "output": "image",
+      "target": "coordinate",
+      "input": "input_1"
+    },
+    {
+      "source": "cache",
+      "output": "camera",
+      "target": "coordinate",
+      "input": "input_2"
+    },
+    {
+      "source": "coordinate",
+      "output": "group",
+      "target": "checked",
+      "input": "group"
+    },
+    {
+      "source": "checked",
+      "output": "depth",
+      "target": "project",
+      "input": "depth"
+    },
+    {
+      "source": "checked",
+      "output": "camera",
+      "target": "project",
+      "input": "camera"
+    }
+  ]
+}

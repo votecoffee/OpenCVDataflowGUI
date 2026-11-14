@@ -1,6 +1,6 @@
 # ROS 2 Lyrical and Fast DDS
 
-Nineteen blocks live in **Industrial integration → ROS 2**. The converters work
+Twenty blocks live in **Industrial integration → ROS 2**. The converters work
 offline. Read/publish blocks are optional and start disabled; opening, validating
 or previewing a graph never starts ROS. There is no `pip install rclpy` dependency
 in the GUI environment.
@@ -20,6 +20,7 @@ in the GUI environment.
 | Decode ROS 2 CameraInfo (`industrial.ros2_camera_decode`) | CameraInfo fields → existing camera model, original message and geometry details |
 | Encode ROS 2 CameraInfo (`industrial.ros2_camera_encode`) | Camera model → canonical current-grid CameraInfo fields for the existing data publisher |
 | Validate registered ROS RGB-D (`industrial.ros2_rgbd`) | Completed ticketed FlowGroup → checked color/depth/camera, physical meter depth and association report |
+| Cache ROS 2 CameraInfo (`industrial.ros2_camera_cache`) | Reuse decoded static calibration with explicit per-image ticket/grid/revision bindings and optional run/reset guards |
 | Decode / Encode ROS 2 pose (`industrial.ros2_pose_decode`, `industrial.ros2_pose_encode`) | Strict TransformStamped/PoseStamped ↔ typed m/mm parent-from-child poses |
 | Lookup ROS 2 transform (`industrial.ros2_tf`) | Persistent exact-acquisition-time TF2, bounded freshness/wait/cancellation, optional current-context guard |
 | ROS 2 run identity (`industrial.ros2_run`) | Unsaved runtime session and rising-edge reset generation |
@@ -208,8 +209,10 @@ to inputs 1/2/3 of **Coordinate inputs**, using **ticket_all**. Configure all th
 ROS readers for Header stamp tickets and a common optical frame/acquisition
 stamp. Set a deadline for incomplete acquisitions. The existing coordinator owns
 queues, limits, timeouts and late suppression; the RGB-D validator owns no queue.
-This initial workflow requires per-acquisition calibration tickets. A static
-latched CameraInfo cache and approximate-time pairing queues remain future work.
+Per-acquisition calibration tickets remain the default. For startup-only or
+retained calibration, use the [static CameraInfo cache](ros2-static-camera.md)
+and explicitly select Bound static in the validator. The original calibration
+header stays unchanged. Approximate-time image pairing queues remain future work.
 
 The validator requires all member tickets to match, named matching optical
 frames, matching original ROS image sizes and camera dimensions, unchanged pixel
@@ -270,24 +273,26 @@ Pre-publication field validation failures remain known rejections.
 
 Open the [ROS examples](<../examples/industrial integration/ros2_fastdds/README.md>)
 for real openly licensed PCB/RGB-D graphs, offline pose/run-context workflows
-and seven disabled live templates.
+and eight disabled live templates.
 The optional native tests use localhost, private UUID topics and domain 71:
 
 ```powershell
 python -m pytest tests/test_ros2.py -q
 python -m pytest tests/test_ros2_clouds.py -q
 python -m pytest tests/test_ros2_calibration.py -q
+python -m pytest tests/test_ros2_camera_cache.py -q
 python -m pytest tests/test_ros2_poses_context.py tests/test_ros2_tf.py -q
 $env:OPENCV_DATAFLOW_TEST_ROS2 = "1"
 python -m pytest tests/test_ros2_native.py -q
 python -m pytest tests/test_ros2_cloud_native.py -q
 python -m pytest tests/test_ros2_calibration_native.py -q
+python -m pytest tests/test_ros2_camera_cache_native.py -q
 python -m pytest tests/test_ros2_tf_native.py -q
 ```
 
 These tests publish only local fixture images/state. They do not launch a
 simulator or connect a robot. The [roadmap issue](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20)
-covers static CameraInfo caching/approximate pairing, extended rectification and
+covers approximate image pairing, extended rectification and
 cloud field/remerge work, clock/run-envelope integration and rosbag2, GUI
 services/actions, and coordinated Gazebo/ros_gz/MoveIt examples. Pose/TF and local
 run/reset context are implemented; standard messages still need explicit external

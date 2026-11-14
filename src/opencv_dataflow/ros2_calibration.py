@@ -234,13 +234,17 @@ class AssociateROSRGBD(ROSCalibrationBlock):
         "color_label": "input_1",
         "depth_label": "input_2",
         "camera_label": "input_3",
+        "calibration_timing": "per_acquisition",
         "max_skew_ms": 0.0,
         "allow_zero_stamps": False,
         "uint16_m_per_sample": 0.001,
         "float_depth_units": "m",
         "display_max_m": 5.0,
     }
-    parameter_choices = {"float_depth_units": ("m", "mm")}
+    parameter_choices = {
+        "float_depth_units": ("m", "mm"),
+        "calibration_timing": ("per_acquisition", "bound_static"),
+    }
     parameter_ranges = {
         "max_skew_ms": NumericRange(0, 1000),
         "uint16_m_per_sample": NumericRange(1e-9, 1000),
@@ -255,6 +259,10 @@ class AssociateROSRGBD(ROSCalibrationBlock):
             "Depth member label; use input_1 for a two-input depth/calibration coordinator."
         ),
         "camera_label": "Decoded CameraInfo model member; use input_2 in depth-only groups.",
+        "calibration_timing": (
+            "Per acquisition checks the original CameraInfo stamp. Bound static requires "
+            "an explicit Cache ROS 2 CameraInfo binding to this image ticket and grid."
+        ),
         "max_skew_ms": (
             "Maximum header stamp spread. Zero requires exact integer nanosecond equality."
         ),
@@ -314,6 +322,10 @@ class AssociateROSRGBD(ROSCalibrationBlock):
             value = packet.value
             if label == p["camera_label"]:
                 ros = model.get("ros2", {})
+                if p["calibration_timing"] == "bound_static":
+                    from .ros2_camera_cache import static_binding_header
+
+                    ros = {"header": static_binding_header(model, metadata(packet))}
             else:
                 if not isinstance(value, np.ndarray) or value.ndim not in (2, 3):
                     raise ValidationError("RGB-D members must contain images")
@@ -371,7 +383,10 @@ class AssociateROSRGBD(ROSCalibrationBlock):
             "valid_depth_samples": int(valid.sum()),
             "depth_units": "m",
             "registration": "caller_supplied_same_grid",
+            "calibration_timing": p["calibration_timing"],
         }
+        if p["calibration_timing"] == "bound_static":
+            info["static_calibration"] = copy.deepcopy(model["ros2_static_binding"])
         base = metadata(depth_packet)
         base.setdefault("spatial", frame(list(size), f"{self.id}:registered_pixels"))
         base["ros2_rgbd"] = copy.deepcopy(info)

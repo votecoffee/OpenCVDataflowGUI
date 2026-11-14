@@ -4359,6 +4359,26 @@ Inputs: `value` (any), `context` (data).
 | `capture_mode` | `"ticket"` | `ticket`, `header_stamp`, `field` Use the incoming ticket, nonzero header stamp without frame_id, or a numeric/string data field. |
 | `capture_field` | `""` | Dotted object field path when Field is selected. Do not replace physical frame names to correlate tickets. |
 
+## Cache ROS 2 CameraInfo (`industrial.ros2_camera_cache`)
+
+Industrial integration / ROS 2
+
+Inputs: `context` (data, optional), `reset` (boolean, optional), `camera` (data, optional), `image` (image, optional).
+
+Input `camera` — Decoded CameraInfo model. Updates only the cache; no output event.
+
+Input `image` — Triggers one binding using an already cached matching frame/grid.
+
+Input `context` — Share Run identity; a changed context invalidates the static cache.
+
+Input `reset` — Rising true clears calibration once. Holding true does not repeatedly clear it.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_age_seconds` | `0.0` | Value must be a finite number between 0 and 86400. Maximum monotonic receipt age of the cached calibration. Zero explicitly allows unlimited static reuse; this is not camera exposure age. |
+| `require_context` | `false` | Require a current Run identity and tagged image. Changing context clears the calibration; prime it again before the next image. |
+| `allow_zero_stamps` | `false` | Explicit offline/unknown-time mode for image headers. Does not establish acquisition timing. The original CameraInfo stamp is never rewritten. |
+
 ## Decode ROS 2 CameraInfo (`industrial.ros2_camera_decode`)
 
 Industrial integration / ROS 2
@@ -4564,6 +4584,7 @@ Inputs: `group` (any).
 | `color_label` | `"input_1"` | Color member label in the completed coordinator FlowGroup. |
 | `depth_label` | `"input_2"` | Depth member label; use input_1 for a two-input depth/calibration coordinator. |
 | `camera_label` | `"input_3"` | Decoded CameraInfo model member; use input_2 in depth-only groups. |
+| `calibration_timing` | `"per_acquisition"` | `per_acquisition`, `bound_static` Per acquisition checks the original CameraInfo stamp. Bound static requires an explicit Cache ROS 2 CameraInfo binding to this image ticket and grid. |
 | `max_skew_ms` | `0.0` | Value must be a finite number between 0 and 1000. Maximum header stamp spread. Zero requires exact integer nanosecond equality. |
 | `allow_zero_stamps` | `false` | Explicit offline/unknown-time mode. Zero stamps never verify acquisition timing. |
 | `uint16_m_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Explicit meters per uint16 depth sample, e.g. 0.001 for millimeters. |

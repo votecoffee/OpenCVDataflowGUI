@@ -30,6 +30,8 @@ BASE = ROOT / "examples/industrial integration/ros2_fastdds"
         "offline_pose_roundtrip",
         "offline_run_identity",
         "exact_time_tf_subscriber",
+        "offline_static_camera",
+        "static_camera_subscriber",
     ],
 )
 def test_saved_graphs_validate_and_run_without_ros(monkeypatch, name):
@@ -48,6 +50,21 @@ def test_saved_graphs_validate_and_run_without_ros(monkeypatch, name):
             assert result.color_format == "rgb"
             assert graph.blocks["edges"].last_result.outputs["image"].any()
             assert "CC BY 4.0" in graph.blocks["source_and_scope"].description
+        if name == "offline_static_camera":
+            result = graph.blocks["checked"].last_result.outputs["info"]
+            assert result["calibration_timing"] == "bound_static"
+            assert not result["timestamps_nonzero"]
+            assert result["static_calibration"]["calibration_header"]["stamp"] == {
+                "sec": 0,
+                "nanosec": 0,
+            }
+            cloud = graph.blocks["project"].last_result.outputs["cloud"]
+            assert cloud.units == "m" and 10000 < len(cloud.points) < 30000
+            assert "CC BY 4.0" in graph.blocks["showcase_source"].description
+            first_ticket = result["ticket"]
+            graph.run()
+            assert graph.blocks["project"].current_emissions.get("cloud")
+            assert graph.blocks["checked"].last_result.outputs["info"]["ticket"] != first_ticket
         if name == "offline_cloud_roundtrip":
             original = graph.blocks["project"].last_result.outputs["cloud"]
             restored = graph.blocks["decode_cloud"].last_result.outputs["cloud"]

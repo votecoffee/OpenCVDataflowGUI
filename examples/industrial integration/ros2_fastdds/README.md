@@ -17,6 +17,8 @@ Open these projects with File → Open. Tools are in
 | [Offline pose round trip](offline_pose_roundtrip.json) | Synthetic numeric fixture: m/mm conversion, parent-from-child direction, quaternion encoding and inversion without ROS. |
 | [Offline run identity](offline_run_identity.json) | Real PCB acquisition with a run/reset scope, scoped ticket and current-context guard. |
 | [Exact-time TF subscriber](exact_time_tf_subscriber.json) | Disabled image acquisition and persistent TF lookup at its nonzero header stamp, guarded by current run context. |
+| [Offline static CameraInfo](offline_static_camera.json) | Real T-LESS depth and intrinsics → explicit static calibration binding → ticket coordination → calibrated RGB cloud, with missing ROS timestamps disclosed. |
+| [Static CameraInfo subscriber](static_camera_subscriber.json) | Disabled depth subscriber with a retained-calibration reader and explicit static RGB-D validation. |
 
 Run the offline example from the repository root:
 
@@ -97,7 +99,13 @@ node clock. Configure Use sim time/Clock topic for simulated headers and start
 the persistent listener before dynamic captures. Static lookup timestamps denote
 query time, not a new measurement. See [pose/TF/context contracts](../../../docs/ros2-poses-tf.md).
 
-Rebuild all twelve graphs without downloads or ROS activity:
+The static-calibration examples preserve the original CameraInfo header and bind
+each image ticket separately. Calibration updates alone emit nothing; early images
+are dropped until the cache is primed. Zero receipt-age limit explicitly allows
+unlimited static reuse. Use Context/Require context and tagged images for run/reset
+invalidation. See [static calibration contracts](../../../docs/ros2-static-camera.md).
+
+Rebuild all fourteen graphs without downloads or ROS activity:
 
 ```powershell
 python examples/assets/build_ros2_examples.py

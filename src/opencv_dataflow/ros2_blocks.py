@@ -8,6 +8,7 @@ from .geometry3d_common import cloud_graphics
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, frame
 from .ros2_calibration import ROS2_CALIBRATION_BLOCKS
+from .ros2_camera_cache import CacheROSCamera
 from .ros2_client import ROSClient, ROSPublishUnknown
 from .ros2_clouds import decode_cloud, encode_cloud
 from .ros2_context import ROS2_CONTEXT_BLOCKS
@@ -742,6 +743,7 @@ ROS2_BLOCKS = (
     EncodeROSCloud,
     DecodeROSCloud,
     *ROS2_CALIBRATION_BLOCKS,
+    CacheROSCamera,
     *ROS2_CONTEXT_BLOCKS,
     *ROS2_POSE_BLOCKS,
     LookupROSTF,

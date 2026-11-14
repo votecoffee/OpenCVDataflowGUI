@@ -147,6 +147,7 @@ def build():
     build_cloud_examples()
     build_calibration_examples()
     build_pose_context_examples()
+    build_static_camera_examples()
 
 
 def real_depth_graph():
@@ -421,6 +422,107 @@ def build_pose_context_examples():
         "Pose is base_link_from_camera in meters. Nothing publishes robot motion.",
     )
     graph.save(ROOT / "exact_time_tf_subscriber.json")
+
+
+def build_static_camera_examples():
+    graph = real_depth_graph()
+    graph.remove("project")
+    encoded = add(
+        graph, "industrial.ros2_image_encode", "encode_depth", (330, 0), frame_id="camera"
+    )
+    decoded = add(graph, "industrial.ros2_image_decode", "decode_depth", (660, 0))
+    cam_encode = add(graph, "industrial.ros2_camera_encode", "encode_camera", (330, 400))
+    cam_decode = add(graph, "industrial.ros2_camera_decode", "decode_camera", (660, 400))
+    cache = add(graph, "industrial.ros2_camera_cache", "cache", (990, 150), allow_zero_stamps=True)
+    coordinate = add(graph, "flow.coordinate", "coordinate", (1320, 150))
+    checked = add(
+        graph,
+        "industrial.ros2_rgbd",
+        "checked",
+        (1650, 150),
+        use_color=False,
+        depth_label="input_1",
+        camera_label="input_2",
+        calibration_timing="bound_static",
+        allow_zero_stamps=True,
+    )
+    project = add(graph, "3d.depth_cloud", "project", (1980, 150), sample_step=4)
+    graph.connect("depth", "depth", encoded.id, "image")
+    graph.connect(encoded.id, "message", decoded.id, "message")
+    graph.connect("camera", "camera", cam_encode.id, "camera")
+    graph.connect(cam_encode.id, "message", cam_decode.id, "message")
+    # Supporting arrival first, then one binding per image event.
+    graph.connect(cam_decode.id, "camera", cache.id, "camera")
+    graph.connect(decoded.id, "image", cache.id, "image")
+    graph.connect(cache.id, "image", coordinate.id, "input_1")
+    graph.connect(cache.id, "camera", coordinate.id, "input_2")
+    graph.connect(coordinate.id, "group", checked.id, "group")
+    graph.connect(checked.id, "depth", project.id, "depth")
+    graph.connect(checked.id, "camera", project.id, "camera")
+    graph.connect("rgb", "image", project.id, "image")
+    graph.blocks["showcase_source"].description += (
+        " Static CameraInfo reuse with an explicit per-image binding. The recorded T-LESS "
+        "depth and original intrinsics share the known dataset grid. No ROS exposure stamp "
+        "exists, so zero stamps are explicitly allowed without claiming clock synchronization. "
+        "The calibration header remains unchanged; binding records the image ticket, grid "
+        "and calibration revision. Static updates alone emit no images. This graph reoffers "
+        "its offline calibration on each run with a new processing ticket for the same recorded "
+        "image; the native test covers one retained update "
+        "followed by multiple image tickets. No ROS runtime is needed here."
+    )
+    graph.save(ROOT / "offline_static_camera.json")
+
+    graph = Graph()
+    source = add(
+        graph,
+        "input.ros2_data",
+        "camera_info",
+        (0, 350),
+        topic="/opencv_dataflow/camera/camera_info",
+        message_type="sensor_msgs/msg/CameraInfo",
+        durability="transient_local",
+    )
+    camera = add(graph, "industrial.ros2_camera_decode", "camera", (330, 350), space="rectified")
+    depth = add(
+        graph,
+        "input.ros2_image",
+        "depth",
+        (0, 0),
+        topic="/opencv_dataflow/camera/depth_registered",
+        ticket_mode="header_stamp",
+    )
+    cache = add(graph, "industrial.ros2_camera_cache", "cache", (660, 150))
+    coordinate = add(graph, "flow.coordinate", "coordinate", (990, 150))
+    checked = add(
+        graph,
+        "industrial.ros2_rgbd",
+        "checked",
+        (1320, 150),
+        use_color=False,
+        depth_label="input_1",
+        camera_label="input_2",
+        calibration_timing="bound_static",
+    )
+    project = add(graph, "3d.depth_cloud", "project", (1650, 150), sample_step=4)
+    graph.connect(source.id, "data", camera.id, "message")
+    graph.connect(camera.id, "camera", cache.id, "camera")
+    graph.connect(depth.id, "image", cache.id, "image")
+    graph.connect(cache.id, "image", coordinate.id, "input_1")
+    graph.connect(cache.id, "camera", coordinate.id, "input_2")
+    graph.connect(coordinate.id, "group", checked.id, "group")
+    graph.connect(checked.id, "depth", project.id, "depth")
+    graph.connect(checked.id, "camera", project.id, "camera")
+    note(
+        graph,
+        "Disabled static CameraInfo/depth template. A live transient-local CameraInfo publisher "
+        "can replay its retained calibration to this late subscriber. Prime the cache before "
+        "images; early images are discarded, not replayed. CameraInfo is reused explicitly, "
+        "without changing its original header; image acquisition stamps must be nonzero. "
+        "Default receipt-age limit zero allows unlimited static reuse. Set a finite limit "
+        "when updates are expected. Share Run identity and tagged images with Require context "
+        "for run/reset invalidation. No robot, simulator or cross-frame registration is started.",
+    )
+    graph.save(ROOT / "static_camera_subscriber.json")
 
 
 if __name__ == "__main__":

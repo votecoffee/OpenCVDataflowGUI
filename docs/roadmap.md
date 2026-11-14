@@ -41,13 +41,13 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **8 targeted increments of about 20** completed:
+The current cycle has **9 targeted increments of about 20** completed:
 animated image codec round trips (S1-111), large-radius smoothing (S1-159),
 assistant application authoring with connected-input plugin captures, the
 SimpleITK medical image/metadata foundation, optional ROS 2 Lyrical/Fast DDS
 image/data integration, ROS PointCloud2 conversion/acquisition/publication,
 ROS CameraInfo/per-acquisition registered RGB-D association, and strict ROS
-pose/TF conversion with run/reset acquisition identity.
+pose/TF conversion with run/reset acquisition identity, and static CameraInfo reuse.
 The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
@@ -102,6 +102,25 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+ROS **static CameraInfo reuse** now applies a cached calibration to successive
+ticketed images without rewriting its original acquisition header. Explicit
+bindings record calibration revision, original provenance, image ticket/grid,
+receipt age and optional run context. Calibration updates alone emit nothing;
+early images are discarded, expiry/reset invalidates the cache, and stale run
+identities are rejected. The RGB-D validator's new Bound static mode verifies
+these bindings while Per acquisition remains the default. A real T-LESS example
+and disabled retained-calibration subscriber bring the ROS catalog to fourteen.
+Verification passed **209 focused offline/editor/coordination checks** and one
+native localhost DDS check: calibration was published once before subscription,
+then reused for two independent image tickets and their meter point clouds.
+All **eight installed Debug/Lean CLI outcomes** matched the four new/updated
+calibration graphs; repeated offline runs issue fresh processing tickets for the
+same recorded image. The app was reinstalled and packaged sources checked.
+No broad suite, simulator or robot operation was performed; this integration
+increment does not change the OpenCV coverage denominator.
+See [static calibration contracts](ros2-static-camera.md). Approximate-time image
+pairing and broader stereo/rectification support remain separate work.
+
 ROS **strict poses, acquisition-time TF and run/reset identity** now provide six
 additional blocks. Stamped pose/transform conversion names parent/child direction,
 meters/millimeters and quaternion policy. A persistent optional TF2 worker queries
@@ -145,15 +164,16 @@ readers, gated publishers, offline converters and registered RGB-D validation un
 ROS extensions independent of the Python 3.14/OpenCV 5 GUI. Sources preserve
 headers and acquire tickets only on accepted messages; bounded queues and
 explicit QoS/timeout controls expose waiting and drop behavior. Ambiguous writes
-hold until reset. Twelve [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
+hold until reset. Fourteen [public examples](<../examples/industrial integration/ros2_fastdds/README.md>)
 include real VisA PCB/T-LESS RGB-D converter graphs and disabled live templates.
 See [runtime setup](ros2.md) and [issue #20](https://github.com/votecoffee/OpenCVDataflowGUI/issues/20).
 The next milestones are:
 
-1. Static CameraInfo caching, approximate-time pairing, stereo-baseline/nonidentity
+1. Approximate-time image pairing, stereo-baseline/nonidentity
    rectification and rectified ROI recomputation; extended cloud-field editing and
    validated remerging after point edits. Per-acquisition CameraInfo/RGB/depth
-   association and PointCloud2 conversion/read/write are implemented.
+   association, explicit static CameraInfo reuse and PointCloud2 conversion/read/write
+   are implemented.
 2. Integrate local run tokens with external capture/service envelopes, request maps,
    server/robot/scene/frame revisions and held-out timing checks. Strict stamped
    poses/TF and local run/reset guards are implemented; rosbag2 and source TF
