@@ -1,0 +1,9 @@
+[move_group.EXE-11] [INFO] [1794682415.892476300] [move_group]: Calling PlanningResponseAdapter 'ValidateSolution'
+[move_group.EXE-11] [ERROR] [1794682415.896876800] [move_group.moveit.moveit.ros.validate_solution]: Computed path is not valid. Invalid states at index locations: [ 66 67 ] out of 88. Explanations follow in command line. Contacts are published on /display_contacts
+[move_group.EXE-11] [INFO] [1794682415.897107500] [move_group.moveit.moveit.core.moveit_collision_detection_fcl]: Found a contact between 'forearm_link' (type 'Robot link') and 'gripper_base_link' (type 'Robot link'), which constitutes a collision. Contact information is not stored.
+[move_group.EXE-11] [INFO] [1794682415.897147400] [move_group.moveit.moveit.core.moveit_collision_detection_fcl]: Collision checking is considered complete (collision was found and 0 contacts are stored)
+[move_group.EXE-11] [INFO] [1794682415.898262900] [move_group.moveit.moveit.core.moveit_collision_detection_fcl]: Found a contact between 'forearm_link' (type 'Robot link') and 'gripper_base_link' (type 'Robot link'), which constitutes a collision. Contact information is not stored.
+[move_group.EXE-11] [INFO] [1794682415.898304200] [move_group.moveit.moveit.core.moveit_collision_detection_fcl]: Collision checking is considered complete (collision was found and 0 contacts are stored)
+[move_group.EXE-11] [ERROR] [1794682415.898416000] [move_group.moveit.moveit.ros.validate_solution]: Completed listing of explanations for invalid states.
+[move_group.EXE-11] [ERROR] [1794682415.899058800] [move_group]: PlanningResponseAdapter 'ValidateSolution' failed with error code INVALID_MOTION_PLAN
+[move_group.EXE-11] [ERROR] [1794682415.899146900] [move_group.moveit.moveit.ros.move_group.plan_service]: Generating a plan with planning pipeline failed.

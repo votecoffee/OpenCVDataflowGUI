@@ -2,11 +2,11 @@
   ".gitattributes": "89941c51d3c98a2e8f9170851a7eebcf4e3ab00ba11620c8b1a71c67db9e3f4c",
   "acceptance.json": "e644733ba80ab61e33fe60dda805f5eee7796e59b32810e1c24e58c82db52b20",
   "ATTRIBUTION.md": "fc578dd3a702b7a79122d42f423279269091f8ba0c1ef51a11c7c10c6506befb",
-  "build.py": "108128afb7c22593eea03b767c3d3d13be4cc4539f51100b3505224b65cc0bea",
+  "build.py": "a68bcf4c64a35926af9591a70fd32082daa9d885a0ef5c9ef1bf78a7ddf333de",
   "final-camera.png": "7f8642f54ddbefb8e526d0cc609aa4763698a8a5d4c0d86cca4a03a96c99747b",
   "plugin.py": "7af038ac46795e78c64c9df999724de94fd58e14ecbc2c009fd25ac0005435c6",
-  "project.json": "955165146adcd01a039b3cd44dfc372ea8778be93c1ad8a0640e6492a332d509",
-  "README.md": "1d365156cd1d03e33e948718eae3381641eb0cd5dd53761668dc89186f4f1b64",
+  "project.json": "a5ba3a4a61b092be0aabfe62d72c7c4aa80b1f204b35f4df1f1dcbbd4df9b048",
+  "README.md": "7c60b097b3f80b31e74f0e2c31061ddc8ab3f9aebf3ed8ee26bbe8da8ef82d5b",
   "result.ply": "2e4d66c8dc8840e1fc2d8603a94615a36a689f38dab071eb5700e1940062ec44",
   "result.png": "2871fd1ad61b878a43fca072f5c0775ae2e008fbe64f87aa23c5a4585a646056",
   "review.json": "12cce5b0f6c99231d621633b546384d7a651ce6219870c79ae1cd7cbee173a6d",
@@ -78,5 +78,7 @@
   "assets/run/cell-06/before-depth.npy": "86bb30f3c054b37aa7e342b9fe3aeb0a8a187badc1bc92b621c6ccb942e3c8dd",
   "assets/run/cell-06/before-overlay.png": "9a7c0309a454c948b53857728ce33be31a1ddee4d8103ac4ec056c26bd574f80",
   "assets/run/cell-06/before.png": "6cadf057b8cd47891eb9e554f5acb9464224c5e9c28362de7f831059af7b2129",
-  "assets/run/cell-06/outcome.json": "4a6828998bbb13ea353e18507c44a66853a927fd0200096e15400ca610f4f708"
+  "assets/run/cell-06/outcome.json": "4a6828998bbb13ea353e18507c44a66853a927fd0200096e15400ca610f4f708",
+  "run_project.py": "4fe0d235d148d5d4b1a2c564bafa979f6a19d9afbd01efa2d11e4669860f6fc9",
+  "motion_review/sha256.json": "c567c9b665665427f6fafe170f9d0dd88f7755d012bc97d6791a338e1cc1c8d0"
 }

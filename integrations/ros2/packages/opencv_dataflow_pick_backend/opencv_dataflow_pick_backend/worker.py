@@ -19,8 +19,14 @@ from collections import deque
 
 import numpy as np
 
+from .kinematics import SerialChain, joint_samples
+
 MAX_LINE = 24 * 1024 * 1024
 FINGERS = ("gripper_left_finger_joint", "gripper_right_finger_joint")
+
+
+class CandidateCollision(RuntimeError):
+    """A completed read-only path candidate failed post-retiming sampling."""
 
 
 def encode(value):
@@ -139,24 +145,27 @@ def main():
         AttachedCollisionObject,
         CollisionObject,
         Constraints,
-        OrientationConstraint,
+        JointConstraint,
         PlanningScene,
-        PositionConstraint,
     )
     from moveit_msgs.srv import (
         ApplyPlanningScene,
         GetCartesianPath,
         GetMotionPlan,
+        GetPlannerParams,
         GetPlanningScene,
+        GetPositionFK,
         GetPositionIK,
         GetStateValidity,
+        SetPlannerParams,
     )
+    from rcl_interfaces.srv import GetParameters
     from rclpy.action import ActionClient
     from rclpy.node import Node
     from rclpy.qos import qos_profile_sensor_data
     from rclpy.time import Time
     from rosidl_runtime_py.convert import message_to_ordereddict
-    from sensor_msgs.msg import CameraInfo, Image
+    from sensor_msgs.msg import CameraInfo, Image, JointState
     from shape_msgs.msg import SolidPrimitive
     from std_srvs.srv import Trigger
     from tf2_ros import Buffer, TransformListener
@@ -198,12 +207,25 @@ def main():
             self.information = None
             self.active_goal = None
             self.poisoned = False
+            self.chain = None
+            self.robot_description_sha256 = None
+            self.fk_verified = None
+            self.collect_motion = False
+            self.latest_joint_feedback = None
+            self.motion_samples = []
+            self.motion_dropped = 0
+            self.motion_rewind = False
+            self.planner_profile = None
             self.tf = Buffer(node=self)
             self.listener = TransformListener(self.tf, self)
             self.service_clients = {
                 "scene": self.create_client(GetPlanningScene, "/get_planning_scene"),
                 "apply": self.create_client(ApplyPlanningScene, "/apply_planning_scene"),
                 "ik": self.create_client(GetPositionIK, "/compute_ik"),
+                "fk": self.create_client(GetPositionFK, "/compute_fk"),
+                "parameters": self.create_client(GetParameters, "/move_group/get_parameters"),
+                "get_planner": self.create_client(GetPlannerParams, "/get_planner_params"),
+                "set_planner": self.create_client(SetPlannerParams, "/set_planner_params"),
                 "validity": self.create_client(GetStateValidity, "/check_state_validity"),
                 "plan": self.create_client(GetMotionPlan, "/plan_kinematic_path"),
                 "cartesian": self.create_client(GetCartesianPath, "/compute_cartesian_path"),
@@ -215,6 +237,11 @@ def main():
                 "/gripper_controller/follow_joint_trajectory",
             )
             self.subs = []
+            self.subs.append(
+                self.create_subscription(
+                    JointState, "/joint_states", self.joint_feedback, qos_profile_sensor_data
+                )
+            )
             for key in ("rgb", "depth"):
                 self.frames[key] = deque(maxlen=4)
                 self.subs.append(
@@ -264,23 +291,121 @@ def main():
             return json.loads(reply.message)
 
         def guard(self):
-            status = self.trigger("/opencv_fixture/status")
-            if (
-                status.get("simulation_only") is not True
-                or status.get("ready") is not True
-                or status.get("ros_domain_id") != "130"
-                or status.get("gz_partition") != os.environ["GZ_PARTITION"]
-                or not status.get("physics", {}).get("time_recently_advancing")
-            ):
-                raise RuntimeError("Fixture identity/fresh camera, robot and TF are not ready")
-            identity = (status["session_id"], status["run_id"], status["scene_sha256"])
-            if self.environment is not None and self.environment != identity:
+            deadline = time.monotonic() + 2
+            while True:
+                status = self.trigger("/opencv_fixture/status")
+                if (
+                    status.get("simulation_only") is not True
+                    or status.get("ros_domain_id") != "130"
+                    or status.get("gz_partition") != os.environ["GZ_PARTITION"]
+                ):
+                    raise RuntimeError("Fixture isolation identity differs")
+                identity = (status["session_id"], status["run_id"], status["scene_sha256"])
+                if self.environment is not None and self.environment != identity:
+                    self.poisoned = True
+                    raise RuntimeError(
+                        "Fixture restarted/reset/scene changed; start a new application run"
+                    )
+                self.environment = identity
+                if status.get("ready") is True and status.get("physics", {}).get(
+                    "time_recently_advancing"
+                ):
+                    return status
+                if time.monotonic() >= deadline:
+                    raise RuntimeError(
+                        "Fresh camera/robot/TF readiness did not recover within 2 seconds"
+                    )
+                # Reacquire readiness observations only; never replay a motion request.
+                rclpy.spin_once(self, timeout_sec=0.03)
+
+        def model(self):
+            request = GetParameters.Request()
+            request.names = ["robot_description"]
+            response = self.service("parameters", request)
+            if len(response.values) != 1 or response.values[0].type != 4:
+                raise RuntimeError("MoveIt robot_description string is unavailable")
+            text = response.values[0].string_value
+            digest = hashlib.sha256(text.encode()).hexdigest()
+            if self.chain is not None and digest != self.robot_description_sha256:
                 self.poisoned = True
-                raise RuntimeError(
-                    "Fixture restarted/reset/scene changed; start a new application run"
+                raise RuntimeError("MoveIt robot description changed during this worker session")
+            if self.chain is None:
+                self.chain = SerialChain(text)
+                self.robot_description_sha256 = digest
+            return {
+                **self.chain.record(),
+                "robot_description_sha256": digest,
+                "source": "MoveIt robot_description parameter; no mesh geometry",
+            }
+
+        def joint_feedback(self, message):
+            self.latest_joint_feedback = (time.monotonic(), message)
+            if not self.collect_motion or self.chain is None:
+                return
+            stamp = message.header.stamp.sec * 10**9 + message.header.stamp.nanosec
+            if self.motion_samples:
+                previous = self.motion_samples[-1]["stamp_ns"]
+                if stamp < previous:
+                    self.motion_rewind = True
+                    return
+                if stamp - previous < 20_000_000:
+                    return
+            try:
+                positions = dict(zip(message.name, message.position))
+                pose, _ = self.chain.forward(positions)
+                if len(self.motion_samples) >= 2048:
+                    self.motion_dropped += 1
+                    return
+                self.motion_samples.append(
+                    {
+                        "stamp_ns": stamp,
+                        "position_m": pose[:3, 3].tolist(),
+                        "joint_positions": [float(positions[n]) for n in self.chain.required],
+                    }
                 )
-            self.environment = identity
-            return status
+            except (ValueError, KeyError):
+                self.motion_dropped += 1
+
+        def validate_fk(self, solution, start):
+            if self.fk_verified is not None:
+                return self.fk_verified
+            points = solution.joint_trajectory.points
+            errors = []
+            for index in sorted(set([0, len(points) // 2, len(points) - 1])):
+                request = GetPositionFK.Request()
+                request.header.frame_id = "world"
+                request.fk_link_names = ["gripper_tcp"]
+                request.robot_state = copy.deepcopy(start)
+                positions = dict(zip(start.joint_state.name, start.joint_state.position))
+                positions.update(
+                    zip(solution.joint_trajectory.joint_names, points[index].positions)
+                )
+                request.robot_state.joint_state.position = [
+                    float(positions[n]) for n in request.robot_state.joint_state.name
+                ]
+                response = self.service("fk", request)
+                if (
+                    response.error_code.val != 1
+                    or response.fk_link_names != ["gripper_tcp"]
+                    or len(response.pose_stamped) != 1
+                ):
+                    raise RuntimeError("Native FK service returned incomplete TCP geometry")
+                native = response.pose_stamped[0]
+                if native.header.frame_id != "world":
+                    raise RuntimeError("Native FK returned another coordinate frame")
+                p, q = native.pose.position, native.pose.orientation
+                expected = matrix([p.x, p.y, p.z], [q.x, q.y, q.z, q.w])
+                actual, _ = self.chain.forward(positions)
+                error = float(np.max(np.abs(expected - actual)))
+                if error > 1e-7:
+                    raise RuntimeError(f"Review FK differs from MoveIt: {error}")
+                errors.append(error)
+            self.fk_verified = {
+                "source": "native GetPositionFK",
+                "states_checked": len(errors),
+                "maximum_matrix_error": max(errors),
+            }
+            return self.fk_verified
 
         def scene(self):
             request = GetPlanningScene.Request()
@@ -353,6 +478,7 @@ def main():
             ).hexdigest()
 
         def remember(self, solution, start, reference_digest, fraction=1.0):
+            self.model()
             points = solution.joint_trajectory.points
             if not points or not solution.joint_trajectory.joint_names:
                 raise RuntimeError("Planner returned an empty trajectory")
@@ -362,6 +488,28 @@ def main():
             current = self.scene()
             if self.geometry_hash(current) != reference_digest:
                 raise RuntimeError("Planning geometry changed during the solve")
+            states = joint_samples(
+                plain(message_to_ordereddict(solution.joint_trajectory)),
+                dict(zip(start.joint_state.name, start.joint_state.position)),
+            )
+            deadline = time.monotonic() + 20
+            for state in states:
+                if time.monotonic() > deadline:
+                    raise RuntimeError("Post-retiming validity deadline exceeded")
+                request = GetStateValidity.Request()
+                request.group_name = (
+                    ""  # Additional check covers the whole robot, including fingers.
+                )
+                request.robot_state = copy.deepcopy(start)
+                request.robot_state.joint_state.position = [
+                    float(state[n]) for n in start.joint_state.name
+                ]
+                checked = self.service("validity", request)
+                if not checked.valid:
+                    pairs = [f"{c.contact_body_1}/{c.contact_body_2}" for c in checked.contacts[:3]]
+                    raise CandidateCollision("Retimed candidate collision: " + ", ".join(pairs))
+            if self.geometry_hash(self.scene()) != reference_digest:
+                raise RuntimeError("Planning geometry changed during post-retiming checks")
             key = str(uuid.uuid4())
             self.plans.clear()
             self.plans[key] = (
@@ -369,6 +517,11 @@ def main():
                 copy.deepcopy(start),
                 self.geometry_hash(current),
             )
+            review = self.chain.trajectory(
+                plain(message_to_ordereddict(solution.joint_trajectory)),
+                dict(zip(start.joint_state.name, start.joint_state.position)),
+            )
+            review["native_validation"] = self.validate_fk(solution, start)
             return {
                 "plan_id": key,
                 "trajectory": plain(message_to_ordereddict(solution)),
@@ -377,6 +530,14 @@ def main():
                 "geometry_sha256": self.geometry_hash(current),
                 "point_count": len(points),
                 "duration_s": times[-1],
+                "tcp_path": review,
+                "post_retiming_checks": {
+                    "states": len(states),
+                    "maximum_joint_step": 0.01,
+                    "interpolation": "linear in joint space",
+                    "valid": True,
+                    "continuous_collision_certificate": False,
+                },
             }
 
         def action(self, client, goal, seconds=90):
@@ -403,15 +564,58 @@ def main():
                     "fixture": status,
                     "native_python": sys.executable,
                     "assisted": True,
+                    "kinematic_model": self.model(),
                 }
             if operation == "fixture_status":
                 return status
+            if operation == "configure_planner":
+                name = "opencv_rrt_connect"
+                before = GetPlannerParams.Request()
+                before.pipeline_id = "ompl"
+                before.planner_config = name
+                before.group = status["planning_group"]
+                previous = self.service("get_planner", before).params
+                request = SetPlannerParams.Request()
+                request.pipeline_id = "ompl"
+                request.planner_config = name
+                request.group = status["planning_group"]
+                request.replace = True
+                request.params.keys = ["type", "range", "longest_valid_segment_fraction"]
+                request.params.values = ["geometric::RRTConnect", "0.25", "0.0001"]
+                self.service("set_planner", request)
+                actual = self.service("get_planner", before).params
+                values = dict(zip(actual.keys, actual.values))
+                if (
+                    values.get("type") != "geometric::RRTConnect"
+                    or float(values.get("range", 0)) != 0.25
+                    or float(values.get("longest_valid_segment_fraction", 0)) != 0.0001
+                ):
+                    raise RuntimeError("Named OMPL profile read-back differs")
+                self.planner_profile = {
+                    "id": name,
+                    "pipeline": "ompl",
+                    "parameters": values,
+                    "previous": dict(zip(previous.keys, previous.values)),
+                    "scope": "new named profile in this isolated server; defaults unchanged",
+                }
+                return self.planner_profile
             if operation == "evaluation":
                 return self.trigger("/opencv_fixture/evaluation/snapshot")
             if operation == "inspect_scene":
                 scene = self.scene()
                 tf = self.transform("world", status["tcp"], Time())
                 t, q = tf.transform.translation, tf.transform.rotation
+                deadline = time.monotonic() + 1
+                while self.latest_joint_feedback is None and time.monotonic() < deadline:
+                    rclpy.spin_once(self, timeout_sec=0.02)
+                stationary = False
+                if self.latest_joint_feedback is not None:
+                    received, joints = self.latest_joint_feedback
+                    velocities = dict(zip(joints.name, joints.velocity))
+                    stationary = time.monotonic() - received <= 0.5 and all(
+                        n in velocities and np.isfinite(velocities[n]) and abs(velocities[n]) < 0.02
+                        for n in self.chain.required
+                    )
                 return {
                     "world_ids": [o.id for o in scene.world.collision_objects],
                     "attached_ids": [
@@ -419,6 +623,7 @@ def main():
                     ],
                     "robot_state": plain(message_to_ordereddict(scene.robot_state)),
                     "world_from_tcp": matrix([t.x, t.y, t.z], [q.x, q.y, q.z, q.w]).tolist(),
+                    "arm_stationary": bool(stationary),
                 }
             if operation == "capture":
                 start = time.monotonic()
@@ -517,6 +722,7 @@ def main():
                 self.apply(diff)
                 return {"pairs": pairs, "allowed": bool(p["allowed"])}
             if operation in {"plan_pose", "plan_cartesian", "inspect_pose"}:
+                self.plans.clear()
                 scene = self.scene()
                 reference_digest = self.geometry_hash(scene)
                 start = scene.robot_state
@@ -526,7 +732,8 @@ def main():
                 acceleration = float(p.get("acceleration_scale", 0.3))
                 if not 0 < velocity <= 0.5 or not 0 < acceleration <= 0.5:
                     raise ValueError("Use scales in (0,.5]")
-                if operation == "plan_cartesian":
+                direct_probe = None
+                if operation in {"plan_cartesian", "plan_pose"}:
                     request = GetCartesianPath.Request()
                     request.header.frame_id = "world"
                     request.start_state = start
@@ -539,12 +746,31 @@ def main():
                     request.max_velocity_scaling_factor = velocity
                     request.max_acceleration_scaling_factor = acceleration
                     reply = self.service("cartesian", request)
-                    if reply.error_code.val != 1 or reply.fraction < 0.999999:
+                    if reply.error_code.val == 1 and reply.fraction >= 0.999999:
+                        try:
+                            result = self.remember(
+                                reply.solution, start, reference_digest, reply.fraction
+                            )
+                            result["planner_route"] = (
+                                "required_cartesian"
+                                if operation == "plan_cartesian"
+                                else "direct_cartesian"
+                            )
+                            return result
+                        except CandidateCollision as error:
+                            if operation == "plan_cartesian":
+                                raise
+                            direct_probe = {"fraction": reply.fraction, "reason": str(error)}
+                    elif operation == "plan_cartesian":
                         raise RuntimeError(
                             f"Incomplete Cartesian path: {reply.fraction}, "
                             f"code {reply.error_code.val}"
                         )
-                    return self.remember(reply.solution, start, reference_digest, reply.fraction)
+                    else:
+                        direct_probe = {
+                            "fraction": reply.fraction,
+                            "error_code": reply.error_code.val,
+                        }
                 request = GetPositionIK.Request()
                 ik = request.ik_request
                 ik.group_name = status["planning_group"]
@@ -555,7 +781,7 @@ def main():
                 ik.pose_stamped.pose = target
                 ik.timeout.sec = 3
                 reply = self.service("ik", request)
-                if reply.error_code.val != 1:
+                if reply.error_code.val != 1 and operation == "inspect_pose":
                     raise RuntimeError("Collision-aware IK failed: " + str(reply.error_code.val))
                 if operation == "inspect_pose":
                     samples = []
@@ -594,40 +820,93 @@ def main():
                 request = GetMotionPlan.Request()
                 motion = request.motion_plan_request
                 motion.group_name = status["planning_group"]
+                if self.planner_profile is not None:
+                    motion.pipeline_id = self.planner_profile["pipeline"]
+                    motion.planner_id = self.planner_profile["id"]
                 motion.start_state = start
-                motion.allowed_planning_time = 5.0
+                budget = float(p.get("planning_time_s", 10.0))
+                if not 1 <= budget <= 30:
+                    raise ValueError("Planning budget must be 1..30 seconds")
+                motion.allowed_planning_time = budget
                 motion.num_planning_attempts = 5
                 motion.max_velocity_scaling_factor = velocity
                 motion.max_acceleration_scaling_factor = acceleration
-                # A single seeded IK branch can be collision-free at its endpoint
-                # yet trapped behind an obstacle. Let OMPL sample the pose goal's
-                # other IK branches instead of locking six joint constraints.
-                goal = Constraints()
-                position = PositionConstraint()
-                position.header.frame_id = "world"
-                position.link_name = status["tcp"]
-                position.weight = 1.0
-                volume = SolidPrimitive()
-                volume.type = volume.SPHERE
-                volume.dimensions = [0.001]
-                position.constraint_region.primitives = [volume]
-                position.constraint_region.primitive_poses = [target]
-                orientation = OrientationConstraint()
-                orientation.header.frame_id = "world"
-                orientation.link_name = status["tcp"]
-                orientation.orientation = target.orientation
-                orientation.absolute_x_axis_tolerance = 0.005
-                orientation.absolute_y_axis_tolerance = 0.005
-                orientation.absolute_z_axis_tolerance = 0.005
-                orientation.weight = 1.0
-                goal.position_constraints = [position]
-                goal.orientation_constraints = [orientation]
-                motion.goal_constraints = [goal]
-                reply = self.service("plan", request).motion_plan_response
+                # Equivalent bounded joint windings reach the same Cartesian pose
+                # by different routes around obstacles; preserve those alternatives.
+                positions = dict(
+                    zip(reply.solution.joint_state.name, reply.solution.joint_state.position)
+                )
+                current = dict(zip(start.joint_state.name, start.joint_state.position))
+                solutions = [positions] if reply.error_code.val == 1 else []
+                # Explore kinematic branches with bounded single-axis seed changes.
+                # These are robot-space seeds, independent of image or part tuning.
+                for name in self.chain.required:
+                    for direction in (-1, 1):
+                        seeded = copy.deepcopy(start)
+                        index = list(seeded.joint_state.name).index(name)
+                        values = list(seeded.joint_state.position)
+                        values[index] += direction * np.pi / 2
+                        joint = next(j for j in self.chain.record()["joints"] if j["name"] == name)
+                        if joint["bounds"] is not None:
+                            values[index] = float(np.clip(values[index], *joint["bounds"]))
+                        seeded.joint_state.position = values
+                        extra = GetPositionIK.Request()
+                        extra.ik_request = copy.deepcopy(ik)
+                        extra.ik_request.robot_state = seeded
+                        extra.ik_request.timeout.sec = 0
+                        extra.ik_request.timeout.nanosec = 150000000
+                        solved = self.service("ik", extra)
+                        if solved.error_code.val == 1:
+                            solutions.append(
+                                dict(
+                                    zip(
+                                        solved.solution.joint_state.name,
+                                        solved.solution.joint_state.position,
+                                    )
+                                )
+                            )
+                if not solutions:
+                    raise RuntimeError("Collision-aware IK failed for all bounded seeds")
+                candidates = []
+                seen = set()
+                families = [self.chain.joint_candidates(s, current) for s in solutions]
+                # Take one from each branch before adding winding alternatives.
+                for level in range(max(map(len, families))):
+                    for family in families:
+                        if level >= len(family):
+                            continue
+                        candidate = family[level]
+                        key = tuple(round(candidate[n], 3) for n in self.chain.required)
+                        if key not in seen:
+                            candidates.append(candidate)
+                            seen.add(key)
+                candidates = candidates[:64]
+                goals = []
+                for candidate in candidates:
+                    goal = Constraints()
+                    goal.joint_constraints = [
+                        JointConstraint(
+                            joint_name=name,
+                            position=float(candidate[name]),
+                            tolerance_above=0.001,
+                            tolerance_below=0.001,
+                            weight=1.0,
+                        )
+                        for name in self.chain.required
+                    ]
+                    goals.append(goal)
+                motion.goal_constraints = goals
+                reply = self.service("plan", request, budget + 10).motion_plan_response
                 if reply.error_code.val != 1:
                     raise RuntimeError("Motion planning failed: " + str(reply.error_code.val))
-                return self.remember(reply.trajectory, start, reference_digest)
+                result = self.remember(reply.trajectory, start, reference_digest)
+                result["ik_winding_candidates"] = len(candidates)
+                result["ik_seed_queries"] = 1 + 2 * len(self.chain.required)
+                result["planner_route"] = "global_rrt"
+                result["direct_probe"] = direct_probe
+                return result
             if operation == "execute_simulation":
+                self.model()
                 solution, start, digest = self.plans.pop(p["plan_id"])
                 scene = self.scene()
                 if self.geometry_hash(scene) != digest:
@@ -646,13 +925,35 @@ def main():
                     raise RuntimeError("Robot moved after planning")
                 goal = ExecuteTrajectory.Goal()
                 goal.trajectory = solution
-                result = self.action(self.execute_client, goal)
+                self.motion_samples = []
+                self.motion_dropped = 0
+                self.motion_rewind = False
+                self.collect_motion = True
+                try:
+                    result = self.action(self.execute_client, goal)
+                finally:
+                    self.collect_motion = False
                 if result.error_code.val != 1:
                     raise RuntimeError("Trajectory execution failed: " + str(result.error_code.val))
                 return {
                     "executed": True,
                     "error_code": result.error_code.val,
                     "simulation_only": True,
+                    "observed_tcp_path": {
+                        "model": "tcp_feedback_review_v1",
+                        "frame": "world",
+                        "units": "m",
+                        "source": "measured_joint_feedback_fk",
+                        "kinematic_sha256": self.chain.sha256,
+                        "joint_names": list(self.chain.required),
+                        "samples": self.motion_samples,
+                        "discarded_samples": self.motion_dropped,
+                        "clock_rewind": self.motion_rewind,
+                        "status": "available"
+                        if self.motion_samples and not self.motion_rewind
+                        else "unavailable",
+                        "independent_pose_measurement": False,
+                    },
                 }
             if operation == "gripper":
                 opening = float(p["opening_m"])
@@ -701,6 +1002,11 @@ def main():
                     t, q = tf.transform.translation, tf.transform.rotation
                     relative = (
                         np.linalg.inv(matrix([t.x, t.y, t.z], [q.x, q.y, q.z, q.w])) @ world_obj
+                    )
+                if self.motion_rewind:
+                    self.poisoned = True
+                    raise RuntimeError(
+                        "Simulation time rewound during execution; reconcile effects"
                     )
                     attached.object = self.box(name, obj["size_m"], relative, attached.link_name)
                     # MoveIt attaches by removing the world object itself.

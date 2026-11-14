@@ -4,15 +4,18 @@
   "files": {
     ".gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
     "LICENSE": "9fdbc8c41abf794f69c3488f463798e06338bf90ebefbe2daee329d217c83d44",
+    "motion_acceptance.json": "88b02fd9e63ebdf3b1332a9dfc1fa2722bc1cdbcfcdfed04914b319d8a9e6ae0",
     "native_acceptance.json": "e644733ba80ab61e33fe60dda805f5eee7796e59b32810e1c24e58c82db52b20",
-    "package.xml": "c13249c22f3267c73578f709a16e606d930f64e8d10c2f4ae930a10e9968cda7",
+    "opencv_dataflow_pick_backend/__init__.py": "3956963f43e186502c6180df740091afc155f951d705994aafc773775b128884",
+    "opencv_dataflow_pick_backend/kinematics.py": "3bec084c8afa35eebb8f05d6bbdc7ee20eb55fea2ecc828d052c2cd8431031bf",
+    "opencv_dataflow_pick_backend/worker.py": "3dd977a4509c1a53799a09d38749a2dbaf490ecd926b04a6928f2077a43e0af3",
+    "package.xml": "238ddf9e665e63284f299cddd7d46eeae7b9ebd5a1af24ab011ea76b0a198363",
     "pyproject.toml": "50bdda7bff93d808689b8bed51c509884cb60b08651554164ce2d07b1d0a0944",
-    "README.md": "4491fac09753f83dcc48483617dce924d368da1173ed5608d02d6a27a203d766",
+    "README.md": "5f1584b3ffd8949ed4c5f100c09c3388e4530154ea1cd3a5d3cb7a25b1882dca",
+    "resource/opencv_dataflow_pick_backend": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
     "setup.cfg": "29cdbb4f4ae32420c1807101a316808e50d7a82a910175478d2a96b80d10e566",
     "setup.py": "f6938222f422bef4af1791dd1faaf4abe43d1e78ddec6e099c06946fda2f4da3",
-    "opencv_dataflow_pick_backend/worker.py": "7556080f19fb9be33066d68c0b8851bd3ea9a8b5d651f5decc0b0af475b587de",
-    "opencv_dataflow_pick_backend/__init__.py": "3956963f43e186502c6180df740091afc155f951d705994aafc773775b128884",
-    "resource/opencv_dataflow_pick_backend": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
-    "test/test_arrays.py": "4398879e8388be0ad8ec0ab49a4d549f1589a2e65ad7b576cebdba9b26be061c"
+    "test/test_arrays.py": "4398879e8388be0ad8ec0ab49a4d549f1589a2e65ad7b576cebdba9b26be061c",
+    "test/test_kinematics.py": "0ba0a17bf0f007cc8eae85b2eb7511793f6d73cfe1a7f841c9d5ab31c41a3334"
   }
 }

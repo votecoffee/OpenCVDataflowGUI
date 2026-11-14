@@ -140,6 +140,9 @@ class SimClient:
                 self.environment = result["environment"]
             if result["server_id"] != self.server_id or result["environment"] != self.environment:
                 raise ValueError("Native server/fixture identity changed")
+            self.last_correlation = {
+                k: result[k] for k in ("request_id", "run_id", "server_id", "environment")
+            }
             if sent_cancel:
                 raise InterruptedError(
                     "Simulation request cancelled; reconcile effects before a new run"

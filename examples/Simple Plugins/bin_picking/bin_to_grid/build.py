@@ -74,7 +74,7 @@ def build(root, *, enabled=False, review=False):
                 "Fresh first-return depth per pick, MoveIt trajectories, observed assisted "
                 "grasp and grid placement. Disabled by default."
             )
-            session.graph.blocks["pick"].preview_output = "graphics"
+            session.graph.blocks["pick"].preview_output = "motion"
             session.graph.blocks["summary"].preview_output = "image"
             name = "live-enabled.local.json" if enabled else "project.json"
         if not session.inspect()["validation"]["valid"]:

@@ -68,7 +68,10 @@
         "floor_z_m": 0.2,
         "part_height_m": 0.04,
         "approach_height_m": 0.14,
-        "archive_directory": ".local/bin-grid-runs"
+        "archive_directory": ".local/bin-grid-runs",
+        "planning_time_s": 10.0,
+        "velocity_scale": 0.3,
+        "acceleration_scale": 0.3
       },
       "position": [
         660,
@@ -81,10 +84,12 @@
         "outcome",
         "before",
         "after",
-        "graphics"
+        "graphics",
+        "motion",
+        "motion_summary"
       ],
       "thumbnail": true,
-      "preview_output": "graphics"
+      "preview_output": "motion"
     },
     {
       "id": "batch",

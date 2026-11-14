@@ -8,7 +8,7 @@ waits for observed assisted attachment/release and checks settled grid placement
 
 ## Install
 
-Install the included `opencv-simple-bin-picking` source **0.1.0.dev1** from the
+Install the included `opencv-simple-bin-picking` source **0.1.0.dev2** from the
 app repository root:
 
 ```powershell
@@ -40,7 +40,8 @@ after Pixi activation. Set the same partition/domain and
 with another app/chat while running.
 
 Set grid origin/pitch/rows/columns on **Bin to table grid** and detector ROI/floor/
-part height/retract on **Simulated pick and grid place**. Coordinates are world
+part height/retract on **Simulated pick and grid place**. Planning time and
+velocity/acceleration scales are separate robot execution controls. Coordinates are world
 metres. The default grid is 3 columns by 2 rows, 100/140 mm pitch, on a 200 mm-high
 table. The last cell parks the arm away from the camera's view of the grid.
 If changing the number of cells, set **Batch serial entries → Size** to the same
@@ -56,7 +57,17 @@ calibration/capture stamps, support overlays, colored world clouds and complete
 planning/execution/attachment receipts. The **graphics** port uses the native
 flyaround point-cloud thumbnail/popout. Pose axes mark measured candidates;
 they are not an executed trajectory trace. Joint trajectories are retained in
-the receipts.
+the receipts. The new **motion** output adds phase-colored planned TCP lines and
+pink measured-joint-feedback FK dots to the native flyaround scene;
+**motion_summary** provides the image legend. The live project's thumbnail uses
+**motion**. Both paths use the retained MoveIt model, not independent TCP metrology.
+
+For command-line execution of this same app graph against an already running
+isolated fixture (the script does not start/reset a simulator):
+
+```powershell
+.\.venv\Scripts\python.exe "examples/Simple Plugins/bin_picking/bin_to_grid/run_project.py" --output .local/episode-new --runtime-profile .local/ros2-runtime.json --partition opencv_bin_pick_UNIQUE --execute-simulation
+```
 
 One uncertain/failed operation holds the sequence. Every remaining cell emits a
 skipped outcome, so the summary still accounts for all six. No uncertain effect
@@ -83,9 +94,13 @@ grid and the combined native world cloud, including green evaluation bounds.
 preserves the unaltered final source image. Raw source depth remains float32
 NPY, without quantization/filling. Pose/box graphics never enter detection.
 
-All 42 BinPicking/backend checks pass, including saved-graph reopening and a
+The original 42 BinPicking/backend checks passed, including saved-graph reopening and a
 held third pick with the remaining three cells explicitly skipped. Native source,
 motion and independent state evidence are separate from those offline checks.
+[Motion review](motion_review/README.md) adds two completed native episodes
+(baseline and shifted/rotated stacks), an explicitly held historical transfer,
+and offline native path clouds. The detector settings are the same in both new
+completed episodes. The older frozen assets and acceptance above remain intact.
 
 These original primitive boxes are a simulation task, not an external industrial
 dataset. Object truth is used for conservative collision geometry, association,

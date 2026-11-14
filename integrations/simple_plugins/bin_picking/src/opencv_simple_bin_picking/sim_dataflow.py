@@ -13,9 +13,11 @@ from opencv_dataflow.payloads import NO_VALUE, FlowGroup, ValuePacket
 from opencv_dataflow.pointclouds import PointCloud
 from opencv_dataflow.tickets import DIRECT_CLOCK
 
+from .motion import FEEDBACK, STAGES, path_graphics
 from .parallel_jaw import BoxTopSettings
 from .sim_client import SimClient
 from .sim_workflow import pick_one
+from .specs import number
 
 
 def cloud(capture, report):
@@ -77,6 +79,90 @@ def overlay(capture, report):
     return image
 
 
+def motion_cloud(capture, report):
+    base = cloud(capture, report)
+    points, colors, metadata = path_graphics(report)
+    if not len(points):
+        return None
+    return PointCloud(
+        np.vstack([base.points, points]),
+        units="m",
+        frame="world",
+        colors=np.vstack([base.colors, colors]),
+        metadata={
+            **base.metadata,
+            "motion_review": metadata,
+            "scene_time": "recorded source timestamp; historical paths, not collision geometry",
+        },
+    )
+
+
+def motion_summary(report):
+    _, _, metadata = path_graphics(report)
+    rows = metadata["paths"]
+    image = np.full((150 + 30 * max(1, len(rows)), 960, 3), 26, np.uint8)
+    cv2.putText(
+        image,
+        f"Cell {report['cell']} motion review: {report.get('status', 'unknown')}",
+        (18, 32),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.75,
+        (235, 235, 235),
+        1,
+        cv2.LINE_AA,
+    )
+    cv2.putText(
+        image,
+        "Colored lines: planned FK | pink dots: measured-joint FK",
+        (18, 64),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.53,
+        (235, 235, 235),
+        1,
+        cv2.LINE_AA,
+    )
+    cv2.putText(
+        image,
+        "Model-based review; no independent pose measurement or collision certificate",
+        (18, 91),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.48,
+        (80, 210, 250),
+        1,
+        cv2.LINE_AA,
+    )
+    if not rows:
+        cv2.putText(
+            image,
+            "No motion paths recorded in this older episode",
+            (18, 140),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.6,
+            (80, 210, 250),
+            1,
+        )
+    for index, row in enumerate(rows):
+        measured = row["kind"] != "planned"
+        color = (FEEDBACK if measured else STAGES.get(row["stage"], STAGES["transfer"]))[::-1]
+        kind = "feedback" if measured else "planned"
+        text = f"{row['stage']:12} {kind:9} {row['samples']:4} samples"
+        if row.get("duration_s") is not None:
+            text += f"   {row['duration_s']:.2f} s"
+        if measured:
+            text += f"   {row.get('status', 'unknown')}"
+        cv2.putText(
+            image,
+            text,
+            (18, 135 + 30 * index),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.53,
+            color,
+            1,
+            cv2.LINE_AA,
+        )
+    return image
+
+
 def save_pick(root, report, captures):
     root.mkdir(parents=True, exist_ok=False)
     for name, capture in captures.items():
@@ -89,6 +175,14 @@ def save_pick(root, report, captures):
         (root / f"{name}-capture.json").write_text(
             json.dumps(meta, indent=2) + "\n", encoding="utf-8"
         )
+    if captures:
+        latest = captures.get("after", captures.get("before"))
+        motion = motion_cloud(latest, report)
+        if motion is not None:
+            np.savez_compressed(
+                root / "motion-cloud.npz", points=motion.points, colors=motion.colors
+            )
+            cv2.imwrite(str(root / "motion-summary.png"), motion_summary(report))
     (root / "outcome.json").write_text(
         json.dumps(report, indent=2, allow_nan=False) + "\n", encoding="utf-8"
     )
@@ -156,6 +250,7 @@ class GridTasks(Block):
         park = np.diag([1.0, -1.0, -1.0, 1.0])
         park[:3, 3] = [p["park_x_m"], p["park_y_m"], p["park_z_m"]]
         entries[-1].value["park_world_from_tcp"] = park.tolist()
+        entries[0].value["observation_world_from_tcp"] = park.tolist()
         return Result(
             {
                 "group": FlowGroup(
@@ -174,6 +269,8 @@ class SimPickOne(Block):
         Port("before", "image", required=False),
         Port("after", "image", required=False),
         Port("graphics", "cloud", required=False),
+        Port("motion", "cloud", required=False),
+        Port("motion_summary", "image", required=False),
     )
     defaults = {
         "enabled": False,
@@ -185,11 +282,17 @@ class SimPickOne(Block):
         "part_height_m": 0.04,
         "approach_height_m": 0.14,
         "archive_directory": ".local/bin-grid-runs",
+        "planning_time_s": 10.0,
+        "velocity_scale": 0.3,
+        "acceleration_scale": 0.3,
     }
     parameter_help = {
         "enabled": "Explicit simulation execution; false emits disabled outcomes without I/O.",
         "archive_directory": "Local receipts, source images, depth and flyaround clouds.",
         "approach_height_m": "Retract above source/destination in metres; collision checked.",
+        "planning_time_s": "Global planning budget per move, 1..30 seconds.",
+        "velocity_scale": "Fraction of the configured robot's velocity limits, at most 0.5.",
+        "acceleration_scale": "Fraction of configured acceleration limits, at most 0.5.",
     }
     requires_serial_execution = True
     parallel_safe = False
@@ -202,13 +305,22 @@ class SimPickOne(Block):
         self.run = None
         self.held = None
         self.completed = []
-        self.preview_output = "graphics"
+        self.preview_output = "motion"
 
     def validate_parameters(self, parameters=None):
         super().validate_parameters(parameters)
         p = self.parameters if parameters is None else parameters
         if type(p["enabled"]) is not bool:
             raise ValidationError("Enabled must be boolean", "enabled")
+        for field, label, low, high in (
+            ("planning_time_s", "Planning budget", 1, 30),
+            ("velocity_scale", "Velocity scale", 0.01, 0.5),
+            ("acceleration_scale", "Acceleration scale", 0.01, 0.5),
+        ):
+            try:
+                number(p[field], label, low, high)
+            except (ValueError, TypeError) as error:
+                raise ValidationError(str(error), field) from error
         try:
             BoxTopSettings(
                 minimum=(p["bin_x_min_m"], p["bin_y_min_m"]),
@@ -217,6 +329,18 @@ class SimPickOne(Block):
                 part_height=p["part_height_m"],
                 approach_height=p["approach_height_m"],
             )
+        except (ValueError, TypeError) as error:
+            raise ValidationError(
+                str(error),
+                "bin_x_min_m",
+                "bin_x_max_m",
+                "bin_y_min_m",
+                "bin_y_max_m",
+                "floor_z_m",
+                "part_height_m",
+                "approach_height_m",
+            ) from error
+        try:
             relative = Path(p["archive_directory"])
             if relative.is_absolute() or ".." in relative.parts or ":" in str(relative):
                 raise ValueError("Archive directory must stay in the project")
@@ -257,6 +381,9 @@ class SimPickOne(Block):
                     settings,
                     lambda phase, _: self.logger.info("Cell %s: %s", task["cell"], phase),
                     self.completed,
+                    motion_settings={
+                        k: p[k] for k in ("planning_time_s", "velocity_scale", "acceleration_scale")
+                    },
                 )
                 if report["status"] == "placed":
                     self.completed.append(report["object_id"])
@@ -293,6 +420,10 @@ class SimPickOne(Block):
             "before": overlay(captures["before"], report) if "before" in captures else NO_VALUE,
             "after": overlay(after, report) if after else NO_VALUE,
             "graphics": cloud(after, report) if after and self.generate_graphics else NO_VALUE,
+            "motion": (motion_cloud(after, report) or NO_VALUE)
+            if after and self.generate_graphics
+            else NO_VALUE,
+            "motion_summary": motion_summary(report) if self.generate_graphics else NO_VALUE,
         }
         # The summary owns overall judgment so every attempted/skipped cell reaches Batch.
         return Result(outputs, message=f"Cell {task['cell']}: {report['status']}")
@@ -370,6 +501,8 @@ class PickReview(Block):
         Port("before", "image", required=False),
         Port("after", "image", required=False),
         Port("graphics", "cloud", required=False),
+        Port("motion", "cloud", required=False),
+        Port("motion_summary", "image", required=False),
     )
     defaults = {"archive_directory": "assets/run", "cell": 6}
     project_path_parameters = ("archive_directory",)
@@ -387,7 +520,14 @@ class PickReview(Block):
         report = json.loads((root / "outcome.json").read_text(encoding="utf-8"))
         if report.get("schema") != "bin_grid_pick_v1" or report.get("simulation_only") is not True:
             raise ValueError("Expected an identified simulation pick outcome")
-        outputs = {"outcome": report, "before": NO_VALUE, "after": NO_VALUE, "graphics": NO_VALUE}
+        outputs = {
+            "outcome": report,
+            "before": NO_VALUE,
+            "after": NO_VALUE,
+            "graphics": NO_VALUE,
+            "motion": NO_VALUE,
+            "motion_summary": NO_VALUE,
+        }
         for name in ("before", "after"):
             if (root / f"{name}-overlay.png").is_file():
                 outputs[name] = cv2.imread(str(root / f"{name}-overlay.png"))
@@ -401,6 +541,22 @@ class PickReview(Block):
                     colors=arrays["colors"],
                     metadata={"simulation_only": True, "recorded": True, "cell": p["cell"]},
                 )
+        if self.generate_graphics:
+            outputs["motion_summary"] = motion_summary(report)
+            if (root / "motion-cloud.npz").is_file():
+                with np.load(root / "motion-cloud.npz", allow_pickle=False) as arrays:
+                    outputs["motion"] = PointCloud(
+                        arrays["points"],
+                        units="m",
+                        frame="world",
+                        colors=arrays["colors"],
+                        metadata={
+                            "simulation_only": True,
+                            "recorded": True,
+                            "cell": p["cell"],
+                            "paths": "planned FK lines / joint-feedback FK dots",
+                        },
+                    )
         return Result(
             outputs,
             passed=report["status"] == "placed",

@@ -29,7 +29,10 @@ def associate(candidate, truth, excluded=()):
     return rows[0]
 
 
-def pick_one(client, task, settings, emit=lambda *_: None, excluded=()):
+def pick_one(client, task, settings, emit=lambda *_: None, excluded=(), motion_settings=None):
+    motion_settings = motion_settings or dict(
+        planning_time_s=10.0, velocity_scale=0.3, acceleration_scale=0.3
+    )
     receipts = []
     report = dict(
         schema="bin_grid_pick_v1",
@@ -43,6 +46,7 @@ def pick_one(client, task, settings, emit=lambda *_: None, excluded=()):
         perception="first_return_depth",
         collision_geometry="privileged_simulator",
         receipts=receipts,
+        kinematic_model=getattr(client, "info", {}).get("kinematic_model"),
     )
     captures = {}
     phase = "initializing"
@@ -59,21 +63,67 @@ def pick_one(client, task, settings, emit=lambda *_: None, excluded=()):
                 parameters=parameters,
                 result=result,
                 wall_s=time.monotonic() - started,
+                correlation=getattr(client, "last_correlation", {}),
             )
         )
         return result
 
-    def move(target, cartesian=False):
+    def move(target, cartesian=False, stage="transfer"):
+        scene = call("inspect_scene")
+        current = np.asarray(scene["world_from_tcp"])
+        distance = float(np.linalg.norm(current[:3, 3] - target[:3, 3]))
+        rotation_error = float(np.linalg.norm(current[:3, :3] - target[:3, :3]))
+        if distance <= 0.001 and rotation_error <= 0.002:
+            receipts.append(
+                dict(
+                    operation="no_motion",
+                    motion_stage=stage,
+                    result=dict(
+                        reason="already_at_pose",
+                        distance_m=distance,
+                        rotation_matrix_error=rotation_error,
+                    ),
+                )
+            )
+            return receipts[-1]["result"]
         plan = call(
             "plan_cartesian" if cartesian else "plan_pose",
             world_from_tcp=target.tolist(),
-            velocity_scale=0.3,
-            acceleration_scale=0.3,
+            **motion_settings,
         )
-        return call("execute_simulation", plan_id=plan["plan_id"])
+        receipts[-1]["motion_stage"] = stage
+        result = call("execute_simulation", plan_id=plan["plan_id"])
+        receipts[-1]["motion_stage"] = stage
+        return result
 
     try:
+        status = call("fixture_status")
+        receipts[-1]["result"] = {
+            k: status[k]
+            for k in ("session_id", "run_id", "scene_sha256", "ready", "attachments", "pending")
+            if k in status
+        }
+        if (
+            not status.get("attachments")
+            or status.get("pending") is not None
+            or any(
+                state not in {"detached", "configured_detached_unobserved"}
+                for state in status["attachments"].values()
+            )
+        ):
+            raise RuntimeError(
+                "A previous grasp is attached or unresolved; reconcile before a new pick"
+            )
+        scene = call("inspect_scene")
+        if scene.get("arm_stationary") is not True:
+            raise RuntimeError("Fresh stationary arm feedback is required before a new pick")
+        if scene.get("attached_ids"):
+            raise RuntimeError("MoveIt still has an attached object; reconcile before a new pick")
+        call("configure_planner")
         call("gripper", opening_m=0.056)
+        if "observation_world_from_tcp" in task:
+            call("sync_scene")
+            move(np.asarray(task["observation_world_from_tcp"]), stage="observation")
         raw = call("capture")
         # Arrays are retained separately, not duplicated into each JSON receipt.
         receipts[-1]["result"] = {k: v for k, v in raw.items() if k not in {"rgb_bgr", "depth_m"}}
@@ -121,12 +171,12 @@ def pick_one(client, task, settings, emit=lambda *_: None, excluded=()):
         call("gripper", opening_m=candidate["jaw_opening_m"])
         pre = np.array(candidate["world_from_pregrasp"])
         grasp = np.array(candidate["world_from_tcp"])
-        move(pre)
-        move(grasp, True)
+        move(pre, stage="pregrasp")
+        move(grasp, True, "approach")
         call("gripper", opening_m=candidate["jaw_grasp_m"])
         call("attach", object_id=name)
         call("touch", pairs=support_pairs, allowed=True)
-        move(pre, True)
+        move(pre, True, "lift")
         call("touch", pairs=support_pairs, allowed=False)
         lifted = call("evaluation")
         lifted_obj = next(o for o in lifted["objects"] if o["object_id"] == name)
@@ -139,11 +189,11 @@ def pick_one(client, task, settings, emit=lambda *_: None, excluded=()):
         place[2, 3] += settings.part_height / 2 - settings.tcp_below_top + 0.003
         above = place.copy()
         above[2, 3] += settings.approach_height
-        move(above)
-        move(place, True)
+        move(above, stage="transfer")
+        move(place, True, "place")
         call("gripper", opening_m=candidate["jaw_opening_m"])
         call("detach", object_id=name)
-        move(above, True)
+        move(above, True, "retreat")
         call("touch", pairs=finger_pairs, allowed=False)
         # Wait for independent simulator feedback; no set-pose operation exists.
         settled = []
@@ -190,7 +240,7 @@ def pick_one(client, task, settings, emit=lambda *_: None, excluded=()):
         ):
             raise RuntimeError("Placed object did not settle within 10 mm of its grid cell")
         if "park_world_from_tcp" in task:
-            move(np.asarray(task["park_world_from_tcp"]))
+            move(np.asarray(task["park_world_from_tcp"]), stage="park")
         raw = call("capture")
         receipts[-1]["result"] = {k: v for k, v in raw.items() if k not in {"rgb_bgr", "depth_m"}}
         captures["after"] = dict(

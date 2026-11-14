@@ -1,0 +1,46 @@
+{
+  "schema": "bin_grid_motion_acceptance_v1",
+  "simulation_only": true,
+  "placed": 6,
+  "unique_objects": 6,
+  "fresh_source_captures": 6,
+  "source_candidate_counts": [
+    3,
+    3,
+    3,
+    3,
+    2,
+    1
+  ],
+  "successful_arm_trajectories": 38,
+  "final_all_detached": true,
+  "moveit_attachments_empty": true,
+  "final_bin_candidates": 0,
+  "maximum_placement_error_m": 0.000754422277069471,
+  "placement_errors_m": [
+    0.000754422277069471,
+    0.0006547197976292053,
+    0.0005346241476201553,
+    0.0007346030259229972,
+    0.0007233233836821556,
+    0.000724047580609934
+  ],
+  "fixture_session_id": "ebc37900-d21f-4efe-95ec-a1f233296cb3",
+  "fixture_run_id": "7e318b33-8fee-436c-99c5-682605d09695",
+  "scene_sha256": "6f72e3b0177d311853b1cd83c8c0226bae1967b48c0e5b0cd5790532716aa545",
+  "assisted_grasp": true,
+  "friction_grasp_validated": false,
+  "planner_routes": {
+    "global_rrt": 3,
+    "required_cartesian": 24,
+    "direct_cartesian": 11
+  },
+  "post_retiming_sampled_states": 3651,
+  "feedback_samples": 3047,
+  "independent_tcp_measurement": false,
+  "continuous_collision_certificate": false,
+  "source_camera": "original first-return simulator RGB-D; known fixed extrinsics",
+  "collision_geometry": "privileged simulator geometry",
+  "evaluation": "privileged current world poses",
+  "graph": "GridTasks -> flow.unbatch -> SimPickOne -> flow.batch(6) -> GridSummary"
+}

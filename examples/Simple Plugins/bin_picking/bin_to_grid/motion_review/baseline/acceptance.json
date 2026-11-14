@@ -1,0 +1,45 @@
+{
+  "schema": "bin_grid_motion_acceptance_v1",
+  "simulation_only": true,
+  "placed": 6,
+  "unique_objects": 6,
+  "fresh_source_captures": 6,
+  "source_candidate_counts": [
+    3,
+    3,
+    3,
+    2,
+    2,
+    1
+  ],
+  "successful_arm_trajectories": 37,
+  "final_all_detached": true,
+  "moveit_attachments_empty": true,
+  "final_bin_candidates": 0,
+  "maximum_placement_error_m": 0.001238089196569585,
+  "placement_errors_m": [
+    0.001103791531717943,
+    0.0006912624370267479,
+    0.00027873462239851716,
+    0.001238089196569585,
+    0.0007197828047653686,
+    0.0002014488180518839
+  ],
+  "fixture_session_id": "5ab3f699-619b-491b-b047-66fc78d07298",
+  "fixture_run_id": "4b53c0b2-096c-451c-baae-e98c7acabe01",
+  "scene_sha256": "4d2b71c9409c994ef294d433dfc9eb6e53977fe166366b6a057638e65621cd5a",
+  "assisted_grasp": true,
+  "friction_grasp_validated": false,
+  "planner_routes": {
+    "direct_cartesian": 13,
+    "required_cartesian": 24
+  },
+  "post_retiming_sampled_states": 2519,
+  "feedback_samples": 2401,
+  "independent_tcp_measurement": false,
+  "continuous_collision_certificate": false,
+  "source_camera": "original first-return simulator RGB-D; known fixed extrinsics",
+  "collision_geometry": "privileged simulator geometry",
+  "evaluation": "privileged current world poses",
+  "graph": "GridTasks -> flow.unbatch -> SimPickOne -> flow.batch(6) -> GridSummary"
+}

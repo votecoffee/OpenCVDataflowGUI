@@ -27,6 +27,16 @@ friction-grasp or arbitrary-clutter qualification.
 `pick_backend_sha256.json` pins the backend package independently of the earlier
 plan-only package below.
 
+The [motion review](../../examples/Simple%20Plugins/bin_picking/bin_to_grid/motion_review/README.md)
+adds two further completed episodes with unchanged detector settings, including
+translated/rotated stacks and three global-planner fallback plans. Phase-colored
+planned TCP lines and pink measured-joint FK dots use native cloud thumbnails.
+The backend binds FK to the active MoveIt description, tries complete Cartesian
+pose candidates before bounded global search, and adds sampled whole-robot
+validity checks after retiming. Feedback FK is not independent TCP metrology;
+sampled checks are not continuous collision proof. Historical held transfer
+evidence remains separate from the completed runs.
+
 [opencv_dataflow_planning](packages/opencv_dataflow_planning/README.md) is an
 experimental ament_python package with a **plan-only** MoveIt bridge and recorded
 simulation-result summarizer. Existing ROS String JSON publishers/readers can

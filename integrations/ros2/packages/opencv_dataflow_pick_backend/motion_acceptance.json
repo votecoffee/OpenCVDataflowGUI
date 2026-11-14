@@ -1,0 +1,118 @@
+{
+  "schema": "bin_grid_motion_review_v1",
+  "simulation_only": true,
+  "episodes": {
+    "baseline": {
+      "schema": "bin_grid_motion_acceptance_v1",
+      "simulation_only": true,
+      "placed": 6,
+      "unique_objects": 6,
+      "fresh_source_captures": 6,
+      "source_candidate_counts": [
+        3,
+        3,
+        3,
+        2,
+        2,
+        1
+      ],
+      "successful_arm_trajectories": 37,
+      "final_all_detached": true,
+      "moveit_attachments_empty": true,
+      "final_bin_candidates": 0,
+      "maximum_placement_error_m": 0.001238089196569585,
+      "placement_errors_m": [
+        0.001103791531717943,
+        0.0006912624370267479,
+        0.00027873462239851716,
+        0.001238089196569585,
+        0.0007197828047653686,
+        0.0002014488180518839
+      ],
+      "fixture_session_id": "5ab3f699-619b-491b-b047-66fc78d07298",
+      "fixture_run_id": "4b53c0b2-096c-451c-baae-e98c7acabe01",
+      "scene_sha256": "4d2b71c9409c994ef294d433dfc9eb6e53977fe166366b6a057638e65621cd5a",
+      "assisted_grasp": true,
+      "friction_grasp_validated": false,
+      "planner_routes": {
+        "direct_cartesian": 13,
+        "required_cartesian": 24
+      },
+      "post_retiming_sampled_states": 2519,
+      "feedback_samples": 2401,
+      "independent_tcp_measurement": false,
+      "continuous_collision_certificate": false,
+      "source_camera": "original first-return simulator RGB-D; known fixed extrinsics",
+      "collision_geometry": "privileged simulator geometry",
+      "evaluation": "privileged current world poses",
+      "graph": "GridTasks -> flow.unbatch -> SimPickOne -> flow.batch(6) -> GridSummary",
+      "application_run_id": "34f85008-bf5e-4cc3-aae4-82a65b2451b6"
+    },
+    "shifted_stacks": {
+      "schema": "bin_grid_motion_acceptance_v1",
+      "simulation_only": true,
+      "placed": 6,
+      "unique_objects": 6,
+      "fresh_source_captures": 6,
+      "source_candidate_counts": [
+        3,
+        3,
+        3,
+        3,
+        2,
+        1
+      ],
+      "successful_arm_trajectories": 38,
+      "final_all_detached": true,
+      "moveit_attachments_empty": true,
+      "final_bin_candidates": 0,
+      "maximum_placement_error_m": 0.000754422277069471,
+      "placement_errors_m": [
+        0.000754422277069471,
+        0.0006547197976292053,
+        0.0005346241476201553,
+        0.0007346030259229972,
+        0.0007233233836821556,
+        0.000724047580609934
+      ],
+      "fixture_session_id": "ebc37900-d21f-4efe-95ec-a1f233296cb3",
+      "fixture_run_id": "7e318b33-8fee-436c-99c5-682605d09695",
+      "scene_sha256": "6f72e3b0177d311853b1cd83c8c0226bae1967b48c0e5b0cd5790532716aa545",
+      "assisted_grasp": true,
+      "friction_grasp_validated": false,
+      "planner_routes": {
+        "global_rrt": 3,
+        "required_cartesian": 24,
+        "direct_cartesian": 11
+      },
+      "post_retiming_sampled_states": 3651,
+      "feedback_samples": 3047,
+      "independent_tcp_measurement": false,
+      "continuous_collision_certificate": false,
+      "source_camera": "original first-return simulator RGB-D; known fixed extrinsics",
+      "collision_geometry": "privileged simulator geometry",
+      "evaluation": "privileged current world poses",
+      "graph": "GridTasks -> flow.unbatch -> SimPickOne -> flow.batch(6) -> GridSummary",
+      "application_run_id": "b99391b5-5a29-4352-bdee-5da27e10477c"
+    }
+  },
+  "assistance": "pose_gated_fixed_joint",
+  "friction_grasp_validated": false,
+  "independent_tcp_measurement": false,
+  "continuous_collision_certificate": false,
+  "held_transfer": {
+    "placed_before_hold": 2,
+    "held_cell": 3,
+    "skipped_cells": [
+      4,
+      5,
+      6
+    ],
+    "reason": "Motion planning failed: 99999",
+    "phase": "plan_pose",
+    "automatic_retry": false,
+    "native_diagnosis": "MoveIt final ValidateSolution rejected forearm_link/gripper_base_link collision in retimed global path",
+    "attachment_at_hold": "part_06 remained attached after lift; no transfer or release replay",
+    "qualification": "earlier implementation; historical negative evidence, not a new success"
+  }
+}

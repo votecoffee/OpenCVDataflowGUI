@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "review",
+      "type": "input.sim_pick_review",
+      "name": "Recorded bin-grid pick",
+      "description": "Phase-colored planned TCP lines; pink measured-joint FK dots.",
+      "parameters": {
+        "archive_directory": "assets/run",
+        "cell": 3
+      },
+      "position": [
+        0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "outcome",
+        "before",
+        "after",
+        "graphics",
+        "motion",
+        "motion_summary",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "motion"
+    }
+  ],
+  "connections": []
+}
