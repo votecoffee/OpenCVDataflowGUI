@@ -74,7 +74,8 @@ IMPLEMENTATION_MODULES = {
         "histogram histogram_comparison image_blend image_colorize path_strip "
         "logpolar_registration mask_boundary mask_resampling point_set_lines polar_image "
         "laplacian_pyramids processing differential_exposure "
-        "pyramids raster_hough_lines registration segmentation stack_blur subpixel_crop "
+        "pyramids raster_hough_lines registration run_contours segmentation stack_blur "
+        "subpixel_crop "
         "template_instances "
         "tilted_statistics"
     ),

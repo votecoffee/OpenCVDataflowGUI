@@ -7148,6 +7148,32 @@ Inputs: `rectangle_a` (data, optional), `rectangle_b` (data, optional), `image` 
 | `check_iou` | `false` | Judge overlap using intersection area divided by union area. |
 | `minimum_iou` | `0.5` | Value must be a finite number between 0 and 1. Minimum intersection-over-union ratio for a passing result. |
 
+## Run-linked contours (`inspect.run_contours`)
+
+Inspection / Shapes
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Nonempty uint8 monochrome mask; every nonzero value is foreground.
+
+Input `mask` — Center mode keeps whole polygons; Clip modifies the search mask.
+
+Input `region` — Optional region, intersected with Mask. Coordinate frames must match.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `min_area` | `100.0` | Value must be a finite number at least 0. Filter by the area of native run polygons, not foreground pixel count. |
+| `expected_count` | `2` | Value must be a whole number at least 0. |
+| `retrieval` | `"list"` | `list` Flat list only. This tool does not supply hole parents or nested topology. |
+| `approximation` | `"simple"` | `simple` Native run endpoints; ordering, winding and hole polygons differ from ordinary Simple contours. |
+| `offset` | `[0, 0]` | Whole-pixel [x,y] shift; raster outputs stay on the input grid. |
+| `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
+| `max_runs` | `250000` | Value must be a whole number between 1 and 2e+06. Reject before the native call when the search mask has too many row runs. |
+| `max_contours` | `10000` | Value must be a whole number between 1 and 100000. Reject larger native results before measuring collections; no truncation. |
+| `max_points` | `250000` | Value must be a whole number between 1 and 2e+06. Total native vertex budget before filtering or graphics; no sampling. |
+| `draw_overlay` | `false` | Optional color raster; drawable graphics are separate. |
+| `draw_mask` | `false` | Raster of selected native polygons; may differ from source pixels. |
+
 ## Select pick candidate (`inspect.select_pick`)
 
 Inspection / Pick selection

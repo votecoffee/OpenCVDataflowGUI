@@ -206,6 +206,7 @@ BINDINGS = {
     "inspect.contour_hull": "convexHull convexityDefects",
     "inspect.contour_points": "pointPolygonTest",
     "inspect.contours": "findContours contourArea moments",
+    "inspect.run_contours": "findContoursLinkRuns contourArea moments",
     "inspect.corner_response": "cornerHarris cornerMinEigenVal",
     "inspect.corners": "goodFeaturesToTrack",
     "inspect.affine_features": "AffineFeature_create SIFT_create ORB_create",

@@ -517,11 +517,11 @@ class Contours(Block):
         search = gray
         if selection is not None and self.parameters["region_mode"] == "clip":
             search = np.where(selection != 0, gray, 0).astype(gray.dtype)
-        contours, hierarchy = cv2.findContours(
+        contours, hierarchy, extraction_info = self.extract_contours(
             search,
             retrieval[self.parameters["retrieval"]],
             CONTOUR_APPROXIMATIONS[self.parameters["approximation"]],
-            offset=tuple(offset.astype(int)),
+            tuple(offset.astype(int)),
         )
         minimum = float(self.parameters["min_area"])
         expected = int(self.parameters["expected_count"])
@@ -539,11 +539,20 @@ class Contours(Block):
                 if contains(selection, np.asarray(center) - offset):
                     retained.append(contour)
             selected = retained
-        overlay = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
-        mask = np.zeros_like(gray)
-        local = [(c - offset.astype(np.int32).reshape(1, 1, 2)).astype(np.int32) for c in selected]
-        cv2.drawContours(overlay, local, -1, (80, 230, 140), 2)
-        cv2.drawContours(mask, local, -1, 255, -1)
+        overlay = (
+            cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
+            if self.parameters.get("draw_overlay", True) else NO_VALUE
+        )
+        mask = np.zeros_like(gray) if self.parameters.get("draw_mask", True) else NO_VALUE
+        local = []
+        if overlay is not NO_VALUE or mask is not NO_VALUE or self.generate_graphics:
+            local = [
+                (c - offset.astype(np.int32).reshape(1, 1, 2)).astype(np.int32) for c in selected
+            ]
+        if overlay is not NO_VALUE:
+            cv2.drawContours(overlay, local, -1, (80, 230, 140), 2)
+        if mask is not NO_VALUE:
+            cv2.drawContours(mask, local, -1, 255, -1)
         count = len(selected)
         score = max(0.0, 1.0 - abs(count - expected) / max(expected, 1))
         data = {
@@ -551,6 +560,7 @@ class Contours(Block):
             "areas": [float(cv2.contourArea(c)) for c in selected],
             "contours": [c.reshape(-1, 2).tolist() for c in selected],
             "offset": offset.tolist(),
+            **extraction_info,
         }
         payload = moved_payload(
             self.input_payloads["image"],
@@ -569,7 +579,7 @@ class Contours(Block):
                 "collection": collection("contours", items, gray, payload, offset),
             },
             payloads={"collection": payload, "data": payload},
-            graphics={"contours": overlay},
+            graphics={"contours": overlay} if overlay is not NO_VALUE else {},
             drawings={
                 "contours": GraphicDrawing(
                     tuple(
@@ -584,6 +594,10 @@ class Contours(Block):
             score=score,
             message=f"{count} contours / expected {expected}",
         )
+
+    def extract_contours(self, image, retrieval, approximation, offset):
+        contours, hierarchy = cv2.findContours(image, retrieval, approximation, offset=offset)
+        return contours, hierarchy, {}
 
 
 class SaveImage(Block):
@@ -847,6 +861,7 @@ def builtin_registry():
     from .restoration import RESTORATION_BLOCKS
     from .ridge_response import RidgeResponse
     from .ros2_blocks import ROS2_BLOCKS
+    from .run_contours import RunContours
     from .scan_stitching import StitchScanSequence
     from .segmentation import SEGMENTATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
@@ -930,6 +945,7 @@ def builtin_registry():
         SetFilmstripImage,
         Threshold,
         Contours,
+        RunContours,
         SaveImage,
         WriteTiffFile,
         WriteVideo,

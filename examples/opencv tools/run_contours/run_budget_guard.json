@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/sparse.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "runs",
+      "type": "inspect.run_contours",
+      "name": "Run-linked contours",
+      "parameters": {
+        "min_area": 0,
+        "expected_count": 4,
+        "retrieval": "list",
+        "approximation": "simple",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center",
+        "max_runs": 1,
+        "max_contours": 10000,
+        "max_points": 250000,
+        "draw_overlay": true,
+        "draw_mask": true
+      },
+      "position": [
+        650,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Original masks and boundary semantics",
+      "description": "Original synthetic images/projects by OpenCVDataflowGUI contributors, MIT. No customer or third-party images. Sparse rectangles have known inclusive bounds; both APIs agree on their area/perimeter and filled mask, despite point order/winding and redundant vertical endpoints. The nested 23x19 fixture deliberately shows limits: native run areas 4,48,196 versus ordinary 4,62,196. Run-linked output is a flat list with no hole parents; ordinary Tree reports depths 0,1,2. Do not substitute polygon areas for foreground pixel counts. Clip/offset returns an 80x80 polygon with origin [500,-250] and bounds [530,-220,80,80] in the shifted frame. Run budget guard rejects before native extraction. Count failure deliberately requires 5 but finds 4, emitting a valid failed inspection. Rasters are enabled here for review, off by default in the tool. Native allocation savings do not eliminate runtime snapshots or outputs.",
+      "parameters": {},
+      "position": [
+        0,
+        -440
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "runs",
+      "input": "image"
+    }
+  ]
+}
