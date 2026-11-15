@@ -4,6 +4,11 @@ The toolbox groups **ControlLogix**, **FANUC**, **MQTT**, and **ROS 2** tools un
 **Industrial integration**. Online blocks start disabled and are unavailable in live preview.
 Enable and configure them for the cell's intended endpoint before running a graph.
 
+[Connection health monitors](connection-health.md) provide independent status for
+ROS 2, MQTT, ControlLogix, EtherNet/IP and FANUC. Their thumbnails distinguish
+protocol alarms from resource warnings; optional outputs and grouped diagnostics
+support application supervision without requiring image inputs.
+
 The [industrial integration examples](<../examples/industrial integration/README.md>)
 include a runnable synthetic FANUC calibration and disabled wiring templates
 for FANUC registers and frames and for ControlLogix trigger and writeback.

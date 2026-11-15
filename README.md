@@ -72,6 +72,8 @@ Explore the [example catalog](examples/README.md) for runnable projects and the
 [workflow guide](docs/workflow-guide.md) for editor, inspection, and runtime details.
 Use [camera health monitoring](docs/camera-health.md) to train fixed-reference
 position, lighting and focus checks with warning/alarm limits.
+Use [connection health monitors](docs/connection-health.md) for independent ROS,
+MQTT, PLC and robot status with warning/alarm outputs and grouped diagnostics.
 
 ## Architecture
 

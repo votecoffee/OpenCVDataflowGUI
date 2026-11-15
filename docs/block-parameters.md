@@ -4222,6 +4222,20 @@ Inputs: `image` (image), `depth` (depth).
 
 No configurable algorithm parameters.
 
+## Monitor EtherNet/IP health (`industrial.ethernetip_health`)
+
+Industrial integration / EtherNet/IP
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `enabled` | `false` | Permit read-only network probes during Run/Continuous. No I/O when disabled. |
+| `poll_interval_seconds` | `2.0` | Value must be a finite number between 0.1 and 3600. Minimum interval between probes; each graph cycle emits status. |
+| `timeout_seconds` | `2.0` | Value must be a finite number between 0.1 and 30. Per-request timeout. Some checks require multiple bounded requests. |
+| `fail_on_alarm` | `false` | Also fail the graph inspection on a red status; off by default. |
+| `include_logs` | `false` | Include up to twenty recent diagnostics from blocks on the same endpoint. |
+| `stale_after_seconds` | `10.0` | Value must be a finite number between 0.1 and 7200. Thumbnail becomes amber when its last check is older than this. Must be at least the polling interval; outputs update during runs. |
+| `route` | `""` | IP/CIP route. Read-only CIP Identity request; no outputs or tag writes. |
+
 ## Commit approved FANUC register write (`industrial.fanuc_commit_register`)
 
 Industrial integration / FANUC
@@ -4237,6 +4251,23 @@ Input `approval` — Operator-approved plan_id, review_sha256 and approved_sha25
 | `timeout_seconds` | `15.0` | Value must be a finite number between 1 and 120. |
 | `target` | `""` | Use R[index] or PR[group,index]. |
 | `write_enabled` | `false` |  |
+
+## Monitor FANUC health (`industrial.fanuc_health`)
+
+Industrial integration / FANUC
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `enabled` | `false` | Permit read-only network probes during Run/Continuous. No I/O when disabled. |
+| `poll_interval_seconds` | `2.0` | Value must be a finite number between 0.1 and 3600. Minimum interval between probes; each graph cycle emits status. |
+| `timeout_seconds` | `2.0` | Value must be a finite number between 0.1 and 30. Per-request timeout. Some checks require multiple bounded requests. |
+| `fail_on_alarm` | `false` | Also fail the graph inspection on a red status; off by default. |
+| `include_logs` | `false` | Include up to twenty recent diagnostics from blocks on the same endpoint. |
+| `stale_after_seconds` | `10.0` | Value must be a finite number between 0.1 and 7200. Thumbnail becomes amber when its last check is older than this. Must be at least the polling interval; outputs update during runs. |
+| `profile` | `""` | Configured FANUC Workbench policy file; uses its normal read permissions. |
+| `robot_id` | `""` | Configured Workbench robot ID. No motion or register writes are performed. |
+| `group` | `1` | Value must be a whole number between 1 and 8. Motion group for the controller-status heartbeat. |
+| `registers` | `[]` | Optional R[index]/PR[group,index] reads. Isolated access faults warn. |
 
 ## FANUC Cartesian pose (`industrial.fanuc_pose`)
 
@@ -4331,6 +4362,21 @@ Inputs: `trigger` (any, optional), `index` (integer, optional).
 | `source_frame` | `""` | Optional pose source label. Blank uses the frame kind and index. |
 | `target_frame` | `""` | Optional target label. Blank uses base for UFRAME or gripper for UTOOL. |
 
+## Monitor ControlLogix health (`industrial.logix_health`)
+
+Industrial integration / ControlLogix
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `enabled` | `false` | Permit read-only network probes during Run/Continuous. No I/O when disabled. |
+| `poll_interval_seconds` | `2.0` | Value must be a finite number between 0.1 and 3600. Minimum interval between probes; each graph cycle emits status. |
+| `timeout_seconds` | `2.0` | Value must be a finite number between 0.1 and 30. Per-request timeout. Some checks require multiple bounded requests. |
+| `fail_on_alarm` | `false` | Also fail the graph inspection on a red status; off by default. |
+| `include_logs` | `false` | Include up to twenty recent diagnostics from blocks on the same endpoint. |
+| `stale_after_seconds` | `10.0` | Value must be a finite number between 0.1 and 7200. Thumbnail becomes amber when its last check is older than this. Must be at least the polling interval; outputs update during runs. |
+| `route` | `""` | IP/CIP route. Read-only CIP Identity request; no outputs or tag writes. |
+| `tags` | `[]` | Optional named tag reads. Individual faults warn if CIP Identity still answers. |
+
 ## Write Logix tag (`industrial.logix_write`)
 
 Industrial integration / ControlLogix
@@ -4343,6 +4389,29 @@ Inputs: `value` (any), `enable` (boolean).
 | `timeout_seconds` | `2.0` | Value must be a finite number between 0.1 and 30. |
 | `tag` | `""` | One explicit scalar destination, including a specific UDT member or array element. |
 | `write_enabled` | `false` | Also wire a true enable input for each intended write. |
+
+## Monitor MQTT health (`industrial.mqtt_health`)
+
+Industrial integration / MQTT
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `enabled` | `false` | Permit read-only network probes during Run/Continuous. No I/O when disabled. |
+| `poll_interval_seconds` | `2.0` | Value must be a finite number between 0.1 and 3600. Minimum interval between probes; each graph cycle emits status. |
+| `timeout_seconds` | `2.0` | Value must be a finite number between 0.1 and 30. Per-request timeout. Some checks require multiple bounded requests. |
+| `fail_on_alarm` | `false` | Also fail the graph inspection on a red status; off by default. |
+| `include_logs` | `false` | Include up to twenty recent diagnostics from blocks on the same endpoint. |
+| `stale_after_seconds` | `10.0` | Value must be a finite number between 0.1 and 7200. Thumbnail becomes amber when its last check is older than this. Must be at least the polling interval; outputs update during runs. |
+| `host` | `"127.0.0.1"` | Broker hostname/IP; every probe requires a fresh CONNACK, not only an open port. |
+| `port` | `1883` | Value must be a whole number between 1 and 65535. MQTT TCP/TLS port. |
+| `tls` | `false` | Verify TLS certificate and hostname. |
+| `ca_file` | `""` | Optional PEM CA bundle, relative to the project or absolute. |
+| `username` | `""` | MQTT username. |
+| `password_env` | `""` | Environment-variable name, not a password. |
+| `qos` | `0` | `0`, `1`, `2` Requested subscription QoS; this monitor never publishes application data. |
+| `subscriptions` | `[]` | Up to sixteen MQTT topic filters; rejected/missing SUBACK warns. |
+| `require_message` | `false` | Also warn if a filter receives no message during the probe window. |
+| `include_retained` | `true` | Count retained messages as receipt evidence when enabled. |
 
 ## Publish MQTT message (`industrial.mqtt_publish`)
 
@@ -4508,6 +4577,28 @@ Inputs: `data` (any), `enable` (boolean).
 | `message_type` | `"std_msgs/msg/String"` | `std_msgs/msg/String`, `std_msgs/msg/Bool`, `std_msgs/msg/Int32`, `std_msgs/msg/Int64`, `std_msgs/msg/Float32`, `std_msgs/msg/Float64`, `std_msgs/msg/Float64MultiArray`, `geometry_msgs/msg/PoseStamped`, `geometry_msgs/msg/Twist`, `geometry_msgs/msg/TransformStamped`, `geometry_msgs/msg/PoseArray`, `sensor_msgs/msg/JointState`, `sensor_msgs/msg/CameraInfo`, `nav_msgs/msg/Odometry`, `rosgraph_msgs/msg/Clock`, `custom` Installed ROS interface; custom interfaces must be installed in the ROS runtime. |
 | `custom_message_type` | `""` | Installed package/msg/Type when Custom is selected. |
 | `data_mode` | `"fields"` | `fields`, `json_string` Fields returns the ROS message object; JSON string parses String.data as strict JSON. |
+
+## Monitor ROS 2 health (`industrial.ros2_health`)
+
+Industrial integration / ROS 2
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `enabled` | `false` | Permit read-only network probes during Run/Continuous. No I/O when disabled. |
+| `poll_interval_seconds` | `2.0` | Value must be a finite number between 0.1 and 3600. Minimum interval between probes; each graph cycle emits status. |
+| `timeout_seconds` | `2.0` | Value must be a finite number between 0.1 and 30. Discovery observation window for each check; worker RPC is bounded. |
+| `fail_on_alarm` | `false` | Also fail the graph inspection on a red status; off by default. |
+| `include_logs` | `false` | Include up to twenty recent diagnostics from blocks on the same endpoint. |
+| `stale_after_seconds` | `10.0` | Value must be a finite number between 0.1 and 7200. Thumbnail becomes amber when its last check is older than this. Must be at least the polling interval; outputs update during runs. |
+| `domain_id` | `71` | Value must be a whole number between 0 and 232. DDS domain to observe. There is no central ROS server. |
+| `namespace` | `"/opencv_dataflow"` | Namespace of the observer node. Resource names must be fully qualified. |
+| `discovery_range` | `"localhost"` | `localhost`, `subnet` Localhost for local testing; subnet for configured remote ROS peers. |
+| `startup_timeout_seconds` | `30.0` | Value must be a finite number between 1 and 60. Bounded time to start the configured trusted Lyrical worker. |
+| `required_nodes` | `[]` | Fully qualified names, e.g. ["/camera/driver"]. Missing nodes alarm. |
+| `required_services` | `[]` | List of {"name":"/driver/health","type":"std_srvs/srv/Trigger"}. Discovery only; missing services alarm. No service is called. |
+| `topics` | `[]` | List of {"name":"/camera/image","type":"sensor_msgs/msg/Image","minimum_publishers":1,"max_age_seconds":2}. Resource faults warn. Age zero disables receipt freshness checks; payloads are discarded. |
+| `reliability` | `"best_effort"` | `reliable`, `best_effort` Reliability requested by observer subscriptions; affects matching. |
+| `durability` | `"volatile"` | `volatile`, `transient_local` Durability requested by observer subscriptions. |
 
 ## Decode ROS 2 image (`industrial.ros2_image_decode`)
 

@@ -29,6 +29,8 @@ class DiagnosticViewer(QWidget):
         super().__init__(parent)
         self.log = log
         self.block = None
+        self.source_paths = None
+        self.source_label = "Connection endpoint"
         self.frozen = None
         self.revision = None
         self.selected_id = None
@@ -88,6 +90,16 @@ class DiagnosticViewer(QWidget):
 
     def set_block(self, block):
         self.block = block
+        self.source_paths = None
+        self.revision = None
+        self.refresh()
+
+    def set_sources(self, paths, label):
+        """Filter a group of logical logger paths; a callable can refresh membership."""
+        self.block = None
+        self.source_paths = paths
+        self.source_label = label
+        self.scope.setText(label)
         self.revision = None
         self.refresh()
 
@@ -100,10 +112,13 @@ class DiagnosticViewer(QWidget):
     def refresh(self, *_):
         log = self.log()
         path = self.block.logger.name if self.block else None
+        paths = self.source_paths() if callable(self.source_paths) else self.source_paths
+        paths = None if paths is None else frozenset(paths)
         revision = (
             id(log),
             self.frozen["sequence"] if self.frozen else log.revision(),
             path,
+            paths,
             self.severity.currentText(),
             self.search.text(),
             self.frozen is not None,
@@ -118,6 +133,8 @@ class DiagnosticViewer(QWidget):
         matching = []
         for event in snapshot["events"]:
             source = event["source"]
+            if paths is not None and source.get("logical_path", source["path"]) not in paths:
+                continue
             if path is not None and source.get("logical_path", source["path"]) != path:
                 continue
             if LEVELS[event["severity"]] < minimum:
@@ -158,7 +175,10 @@ class DiagnosticViewer(QWidget):
             self.table.scrollToBottom()
         else:
             self.table.verticalScrollBar().setValue(scroll_value)
-        self.scope.setText(f"Block: {self.block.name} · {path}" if self.block else "All blocks")
+        self.scope.setText(
+            self.source_label if paths is not None else
+            f"Block: {self.block.name} · {path}" if self.block else "All blocks"
+        )
         self.summary.setText(
             f"{min(len(matching), 2000)} displayed / {len(matching)} matching · "
             f"{len(snapshot['events'])} events retained · {snapshot['evicted_events']} evicted. "

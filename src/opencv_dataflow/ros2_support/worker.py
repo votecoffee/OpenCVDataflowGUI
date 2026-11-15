@@ -5,10 +5,12 @@ import sys
 
 if __package__:
     from .native import Endpoint, PublishUncertain
+    from .native_health import HealthEndpoint
     from .native_tf import TFEndpoint
     from .wire import read_frame, write_frame
 else:
     from native import Endpoint, PublishUncertain
+    from native_health import HealthEndpoint
     from native_tf import TFEndpoint
     from wire import read_frame, write_frame
 
@@ -31,6 +33,8 @@ def main():
                     if endpoint is not None:
                         raise ValueError("ROS worker is already initialized")
                     factory = TFEndpoint if request["config"].get("kind") == "tf" else Endpoint
+                    if request["config"].get("kind") == "health":
+                        factory = HealthEndpoint
                     endpoint = factory(request["config"])
                     result = endpoint.info
                 elif operation == "close":
@@ -40,6 +44,8 @@ def main():
                     raise ValueError("Initialize the ROS worker first")
                 elif operation == "poll":
                     result = endpoint.poll(request["timeout"])
+                elif operation == "health":
+                    result = endpoint.health(request["timeout"])
                 elif operation == "publish":
                     result = endpoint.publish(
                         request["value"],

@@ -10,6 +10,7 @@ import numpy as np
 from PySide6.QtCore import QPointF, QRectF, Qt, QTimer, Signal
 from PySide6.QtGui import (
     QColor,
+    QFont,
     QImage,
     QPainter,
     QPainterPath,
@@ -271,6 +272,12 @@ class Node(QGraphicsItem):
 
     def paint(self, painter, option, widget=None):
         b = self.block
+        indicator = getattr(b, "status_indicator", None)
+        indicator_status = indicator() if callable(indicator) else None
+        indicator_color = (
+            {"ok": "#49bf70", "warning": "#e6b84a", "alarm": "#eb6262"}
+            .get(indicator_status["state"], "#74859b") if indicator_status else None
+        )
         if self.isSelected():
             painter.setPen(QPen(QColor("#f4f7fb"), 5))
             painter.setBrush(Qt.BrushStyle.NoBrush)
@@ -281,7 +288,7 @@ class Node(QGraphicsItem):
         if b.layout_only:
             self.paint_comment(painter)
             return
-        status = QColor(BLOCK_STATE_COLORS[b.state])
+        status = QColor(indicator_color or BLOCK_STATE_COLORS[b.state])
         if b.last_result and b.last_result.score is not None:
             status = status.lighter(75 + int(50 * b.last_result.score))
         painter.setPen(Qt.PenStyle.NoPen)
@@ -326,7 +333,21 @@ class Node(QGraphicsItem):
             painter.setBrush(QColor("#152030"))
             painter.setPen(Qt.PenStyle.NoPen)
             painter.drawRoundedRect(thumbnail, 5, 5)
-            if value is not None:
+            if indicator_status:
+                painter.setBrush(QColor(indicator_color))
+                painter.drawRoundedRect(thumbnail, 5, 5)
+                painter.setPen(QColor("#102031"))
+                title = QFont(painter.font())
+                title.setBold(True)
+                painter.save()
+                painter.setFont(title)
+                painter.drawText(thumbnail.adjusted(6, 4, -6, -thumbnail.height() / 2),
+                                 Qt.AlignmentFlag.AlignCenter, indicator_status["title"])
+                painter.restore()
+                painter.drawText(thumbnail.adjusted(6, thumbnail.height() / 2, -6, -4),
+                                 Qt.AlignmentFlag.AlignCenter | Qt.TextFlag.TextWordWrap,
+                                 indicator_status["detail"][:120])
+            elif value is not None:
                 if isinstance(value, PointCloud):
                     if self._cloud_thumb is None or self._cloud_thumb[0]() is not value:
                         self._cloud_thumb = (
@@ -352,8 +373,8 @@ class Node(QGraphicsItem):
                     thumbnail, Qt.AlignmentFlag.AlignCenter, "Run to preview"
                 )
         painter.setPen(QColor("#a6b6cb"))
-        label = b.state.upper()
-        if b.last_result and b.last_result.score is not None:
+        label = indicator_status["title"] if indicator_status else b.state.upper()
+        if not indicator_status and b.last_result and b.last_result.score is not None:
             label += f"  {b.last_result.score:.0%}"
         if b.state != "idle":
             label += f"  ·  {b.elapsed_ms:.1f} ms"
@@ -709,6 +730,9 @@ class CanvasView(QGraphicsView):
         self.cloud_timer = QTimer(self)
         self.cloud_timer.setInterval(CLOUD_THUMBNAIL_INTERVAL_MS)
         self.cloud_timer.timeout.connect(self.animate_cloud_thumbnails)
+        self.status_timer = QTimer(self)
+        self.status_timer.setInterval(1000)
+        self.status_timer.timeout.connect(self.refresh_status_indicators)
         self.overview = Overview(self)
         scene.layout_changed.connect(self.overview.update)
         scene.changed.connect(self.overview.update)
@@ -722,10 +746,21 @@ class CanvasView(QGraphicsView):
     def showEvent(self, event):
         super().showEvent(event)
         self.cloud_timer.start()
+        self.status_timer.start()
 
     def hideEvent(self, event):
         self.cloud_timer.stop()
+        self.status_timer.stop()
         super().hideEvent(event)
+
+    def refresh_status_indicators(self):
+        scene = self.scene()
+        if scene is None:
+            return
+        visible = self.mapToScene(self.viewport().rect()).boundingRect()
+        for node in scene.items(visible):
+            if isinstance(node, Node) and callable(getattr(node.block, "status_indicator", None)):
+                node.update(node.thumbnail_rect)
 
     def animate_cloud_thumbnails(self):
         scene = self.scene()

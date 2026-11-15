@@ -838,6 +838,9 @@ class Graph:
             block.run_profile = self.run_profile
             self._bind_block_graphics(block)
             block._activity = self.activity
+            bind_connections = getattr(block, "bind_connection_sources", None)
+            if callable(bind_connections):
+                bind_connections(self.blocks.values())
             block._activity_path = f"{prefix}/{block.id}" if prefix else block.id
             block._activity_logical_path = f"{logical}/{block.id}" if logical else block.id
             binding = (id(self.activity), block._activity_path, block._activity_logical_path)
