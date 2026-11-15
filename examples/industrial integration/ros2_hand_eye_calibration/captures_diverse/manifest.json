@@ -1,0 +1,206 @@
+{
+  "schema": "opencv.hand_eye_replay/v1",
+  "run_id": "27047e41-3fd6-4f5d-bafd-bcc9c9920f3a",
+  "launch_id": "0771fd42-5fc5-43e0-b2b0-391e5eedb140",
+  "simulation_only": true,
+  "scene_sha256": "770fb5b777f4fdb30d1cf4e9088808be43c628dcdd8fdb2cfdd35ff3f2a12adf",
+  "base_frame": "base_link",
+  "gripper_frame": "tool0",
+  "camera_frame": "hand_eye_camera_optical_frame",
+  "board_frame": "charuco_board",
+  "units": "m",
+  "board_definition": {
+    "columns": 7,
+    "rows": 5,
+    "square_length": 0.03,
+    "marker_length": 0.022,
+    "units": "m",
+    "dictionary": "4x4_50",
+    "legacy_pattern": false
+  },
+  "gates": {
+    "max_reprojection_rms_px": 1.0,
+    "max_mount_error_mm": 2.0,
+    "max_mount_error_degrees": 1.0,
+    "max_held_out_translation_rms_mm": 2.0,
+    "max_held_out_rotation_rms_degrees": 1.0
+  },
+  "captures": [
+    {
+      "id": "capture_01",
+      "role": "train",
+      "stamp_ns": 17600000000,
+      "path": "capture_01/capture.json",
+      "sha256": "22887d46281ef407e13a6b67211830a324fa98b5ab8c64f9cb20f4413eaf2a05"
+    },
+    {
+      "id": "capture_02",
+      "role": "train",
+      "stamp_ns": 19600000000,
+      "path": "capture_02/capture.json",
+      "sha256": "a063d3ab8353a853717c2c00c4bd07cae01486b7e12a694624df07e870f0b211"
+    },
+    {
+      "id": "capture_03",
+      "role": "train",
+      "stamp_ns": 21100000000,
+      "path": "capture_03/capture.json",
+      "sha256": "74be0f876179cc945b2c39fc436244cbb8e0eca7f3ac44af3d83988c1279fa71"
+    },
+    {
+      "id": "capture_04",
+      "role": "train",
+      "stamp_ns": 22900000000,
+      "path": "capture_04/capture.json",
+      "sha256": "1aaefb957a286572aca068ce501365c854ceb0382f189ea171acab3d1574cc9a"
+    },
+    {
+      "id": "capture_05",
+      "role": "train",
+      "stamp_ns": 24500000000,
+      "path": "capture_05/capture.json",
+      "sha256": "cd6dbb0e52b67da71f665827fc30c764bdfd7d7ad27bc05e29ef9ba4392a5dcd"
+    },
+    {
+      "id": "capture_06",
+      "role": "train",
+      "stamp_ns": 26400000000,
+      "path": "capture_06/capture.json",
+      "sha256": "1930b4e97418007565e60f0e3efe2eefbc6c81bb9495832268530c1421e3b9b9"
+    },
+    {
+      "id": "capture_07",
+      "role": "train",
+      "stamp_ns": 29100000000,
+      "path": "capture_07/capture.json",
+      "sha256": "4d3a27cbb906b144c1e9d99a606ac45395e8b632db452c321e2b8881d23a8ddb"
+    },
+    {
+      "id": "capture_08",
+      "role": "train",
+      "stamp_ns": 31200000000,
+      "path": "capture_08/capture.json",
+      "sha256": "83bd9f23bd0ca96cc82a25763457f7b318b882d7608e759d7eb549d57e639728"
+    },
+    {
+      "id": "capture_09",
+      "role": "train",
+      "stamp_ns": 32500000000,
+      "path": "capture_09/capture.json",
+      "sha256": "f43001370522708b25020517a0fe2f1e5720abc312b4202272d7aaf1636adbe2"
+    },
+    {
+      "id": "capture_10",
+      "role": "train",
+      "stamp_ns": 34400000000,
+      "path": "capture_10/capture.json",
+      "sha256": "06078bae53a9f363137426f0010acc7fc2a46e1a843680250bd09a8ae52390bf"
+    },
+    {
+      "id": "capture_11",
+      "role": "train",
+      "stamp_ns": 36000000000,
+      "path": "capture_11/capture.json",
+      "sha256": "213d13ac92cdb25aa17516470148b287e3b72627873d9dad3e4e1d16dd03df17"
+    },
+    {
+      "id": "capture_12",
+      "role": "train",
+      "stamp_ns": 38000000000,
+      "path": "capture_12/capture.json",
+      "sha256": "597912c7998e6a231e75d65c356c12e19a55b0417d7b30c0adc84b6661621ae9"
+    },
+    {
+      "id": "capture_13",
+      "role": "train",
+      "stamp_ns": 39800000000,
+      "path": "capture_13/capture.json",
+      "sha256": "eeda0d930b8b98dc78412ef2ee82add7202dbce70fe624262398d7d023af2359"
+    },
+    {
+      "id": "capture_14",
+      "role": "train",
+      "stamp_ns": 41900000000,
+      "path": "capture_14/capture.json",
+      "sha256": "eeb1b21ccb2f81cf785347903ec767503bef9e495a5a549d0f61293864419ae4"
+    },
+    {
+      "id": "capture_15",
+      "role": "train",
+      "stamp_ns": 45400000000,
+      "path": "capture_15/capture.json",
+      "sha256": "ba10a0906c14e9cea45d35bce7ad257e1bfcd5cdbcb29e100e8e516dde6d4fcc"
+    },
+    {
+      "id": "capture_16",
+      "role": "train",
+      "stamp_ns": 47600000000,
+      "path": "capture_16/capture.json",
+      "sha256": "d87cd96c5828c7b2558a8de1a85bacda580f6aa7db204aacabf3573612bb97d0"
+    },
+    {
+      "id": "capture_17",
+      "role": "train",
+      "stamp_ns": 49300000000,
+      "path": "capture_17/capture.json",
+      "sha256": "3b60afa8b08be1b895232885e7e796fcfdc9078358766345b6138e50200c2086"
+    },
+    {
+      "id": "capture_18",
+      "role": "train",
+      "stamp_ns": 50600000000,
+      "path": "capture_18/capture.json",
+      "sha256": "00d9b866e1160b9c58d10a0e26a95653881717ca15f8306076f989f1f77d281e"
+    },
+    {
+      "id": "capture_19",
+      "role": "train",
+      "stamp_ns": 52200000000,
+      "path": "capture_19/capture.json",
+      "sha256": "1656e6f1a33aad6f88e3ffd83e69d7028c04e5ee4a9a8b1785e07106d054eea7"
+    },
+    {
+      "id": "capture_20",
+      "role": "train",
+      "stamp_ns": 54100000000,
+      "path": "capture_20/capture.json",
+      "sha256": "09b45e489a99ac559640a34cdfd43e9a4fc71578e7192047b92e24c484bc1ada"
+    },
+    {
+      "id": "capture_21",
+      "role": "held_out",
+      "stamp_ns": 57100000000,
+      "path": "capture_21/capture.json",
+      "sha256": "f05e3f98d7ffaa26c91019d400be221a5fd2d8924718d071aed4e88724c66f09"
+    },
+    {
+      "id": "capture_22",
+      "role": "held_out",
+      "stamp_ns": 59500000000,
+      "path": "capture_22/capture.json",
+      "sha256": "445cb5db2225de1a8ace001eacc520d754fff03d363ec63833841c86d7416e66"
+    },
+    {
+      "id": "capture_23",
+      "role": "held_out",
+      "stamp_ns": 61900000000,
+      "path": "capture_23/capture.json",
+      "sha256": "ccdc327a9ea61b09bbd232fa21703280f605dc854729cfecd117cccc0b84249d"
+    },
+    {
+      "id": "capture_24",
+      "role": "held_out",
+      "stamp_ns": 64000000000,
+      "path": "capture_24/capture.json",
+      "sha256": "0829b5a97179cc401e75a7486eb6815d157af3257a9262fc7439f8848702d7a5"
+    },
+    {
+      "id": "capture_25",
+      "role": "held_out",
+      "stamp_ns": 66000000000,
+      "path": "capture_25/capture.json",
+      "sha256": "6bf091f9b8e808aa2877e3165335319ccb83fd871169cbe2652d7bec80777deb"
+    }
+  ],
+  "complete": true
+}

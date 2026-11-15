@@ -1,0 +1,89 @@
+{
+  "schema": "opencv.hand_eye_native_acceptance/v1",
+  "date": "2026-11-15",
+  "simulation_only": true,
+  "robot": "UR5e + generic parallel gripper + wrist RGB camera",
+  "runtime": "RoboStack Lyrical / Gazebo 10.6.0 / MoveIt",
+  "isolation": {
+    "ros_domain": 44,
+    "partition_prefix": "opencv_hand_eye_",
+    "private_generated_state_and_logs": true
+  },
+  "camera": {
+    "width": 1280,
+    "height": 960,
+    "encoding": "rgb8",
+    "rate_hz": 10
+  },
+  "episodes": [
+    {
+      "label": "limited_joint_perturbations",
+      "run_id": "77ef4cd7-27d4-41f0-bde6-36380a0a4066",
+      "launch_id": "0d941ef8-7047-4e4f-9713-0f71f1f5aa85",
+      "scene_sha256": "cbcdd13d2a77ecf2bc4e7ebec3813c76f382b83042acedcf87cb31dddf16369c",
+      "complete": true,
+      "captures": 25,
+      "exact_time_robot_pairs": true,
+      "all_settled": true,
+      "successful_simulated_trajectories": 25,
+      "sampled_post_retiming_states_checked": 234,
+      "source_runtime_helpers_unchanged": true,
+      "continuous_collision_certificate": false
+    },
+    {
+      "label": "diverse_camera_poses",
+      "run_id": "27047e41-3fd6-4f5d-bafd-bcc9c9920f3a",
+      "launch_id": "0771fd42-5fc5-43e0-b2b0-391e5eedb140",
+      "scene_sha256": "770fb5b777f4fdb30d1cf4e9088808be43c628dcdd8fdb2cfdd35ff3f2a12adf",
+      "complete": true,
+      "captures": 25,
+      "exact_time_robot_pairs": true,
+      "all_settled": true,
+      "successful_simulated_trajectories": 25,
+      "sampled_post_retiming_states_checked": 508,
+      "source_runtime_helpers_unchanged": true,
+      "continuous_collision_certificate": false
+    },
+    {
+      "label": "diverse_repeat_current_source",
+      "run_id": "b7762420-dd83-4b30-99f9-04192db23b0a",
+      "launch_id": "4795d757-f146-4fc9-b366-a4be120b9f61",
+      "scene_sha256": "770fb5b777f4fdb30d1cf4e9088808be43c628dcdd8fdb2cfdd35ff3f2a12adf",
+      "complete": true,
+      "captures": 25,
+      "exact_time_robot_pairs": true,
+      "all_settled": true,
+      "successful_simulated_trajectories": 25,
+      "sampled_post_retiming_states_checked": 508,
+      "source_runtime_helpers_unchanged": true,
+      "continuous_collision_certificate": false,
+      "executed_source_sha256": {
+        "opencv_hand_eye_demo/build_scene.py": "311f18992eae96c67b9365c9a9c1d4c1c72bcf29cb8459ad2d6c5cc23fd13b6b",
+        "opencv_hand_eye_demo/capture.py": "d5e2cc66b4cd3f48a77e4b77bf9049ccfcb10d3ed4a57a2095cd4307ead19651",
+        "opencv_hand_eye_demo/prepare.py": "fe2f5564129bfc9b64998dc446ccb1fd6704008a244c2647b57682f82da88121",
+        "opencv_hand_eye_demo/run.py": "8ebcc04998a8661c7259f4f2eaf77d6a7d0a56b086ec91190883a50bb9093a67",
+        "opencv_hand_eye_demo/scene.py": "86dee8d4076e3ea94ff9e9849a5ec6c6b3831be7f589dc3d00b58ebed417dd28",
+        "opencv_hand_eye_demo/transforms.py": "9a0df2630da4d8163e1e11a36776fd4ef22a9d7a2668243dc961ef9df936eda8",
+        "opencv_hand_eye_demo/__init__.py": "701f305279c3d3753991927e5bfe3654f94dc9ae9468c42755a500b14d786e19",
+        "launch/hand_eye.launch.py": "f5dfa52f91b4310e81ce5f0870dd0030e810a53b06de98213f93452f429828aa"
+      }
+    }
+  ],
+  "offline_versions": {
+    "python": "3.14.3",
+    "opencv": "5.0.0",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "checks": {
+    "focused_tests": 11,
+    "truth_exclusion_test": true,
+    "complete_save_as_test": true,
+    "graphics_off_test": true
+  },
+  "primary_assessment": "results/assessment.json",
+  "repeat_assessment": "results/repeat_assessment.json",
+  "physical_calibration_qualified": false,
+  "installed_ros_overlay_qualified": false
+}

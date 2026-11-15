@@ -1,0 +1,3 @@
+assets*/scene.json -text
+*.py text eol=lf
+*.png binary

@@ -7,6 +7,14 @@ app projects/recipes and the trusted runtime profile.
 
 ## Available source
 
+The [robot hand-eye calibration example](../../examples/industrial%20integration/ros2_hand_eye_calibration/README.md)
+adds [opencv_hand_eye_demo](packages/opencv_hand_eye_demo/README.md): an isolated
+UR5e wrist-camera/ChArUco scene, collision-checked capture sweep and exact-time
+image/robot pairing. The offline host project fits 20 training views, optionally
+refines from training pixels and evaluates five held-out views against separate
+mount truth, with image residuals and a native colored flyaround cloud. Its
+2 mm / 1° / 1 px demonstration gates pass; failed Park-only baselines are retained.
+
 The [T-LESS mesh-picking example](../../examples/Simple%20Plugins/bin_picking/tless_mesh_grid/README.md)
 adds hashed CAD visual/convex-physics assets and an explicitly authored axial
 grasp profile to the fixture. Camera-based taught-surface proposals precede

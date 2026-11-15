@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "transforms": [
+    {
+      "parent_frame": "tool0",
+      "child_frame": "hand_eye_estimated_camera_optical_frame",
+      "translation_m": [
+        0.11024239733406513,
+        -0.024770945797805193,
+        0.08004316439629881
+      ],
+      "quaternion_xyzw": [
+        0.061557306235911116,
+        -0.042429819773411696,
+        0.042578100681424425,
+        0.996291881822459
+      ]
+    }
+  ]
+}

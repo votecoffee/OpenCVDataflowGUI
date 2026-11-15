@@ -1,0 +1,164 @@
+{
+  "id": "capture_11",
+  "role": "train",
+  "run_id": "77ef4cd7-27d4-41f0-bde6-36380a0a4066",
+  "stamp_ns": 43700000000,
+  "image": {
+    "header": {
+      "stamp": {
+        "sec": 43,
+        "nanosec": 700000000
+      },
+      "frame_id": "hand_eye_camera_optical_frame"
+    },
+    "width": 1280,
+    "height": 960,
+    "step": 3840,
+    "encoding": "rgb8",
+    "is_bigendian": 0,
+    "path": "capture_11/image.png",
+    "source_bytes_sha256": "4e0c7e00b6413fd5848aaaecd2965134978ee70da36d8bc185d0897b95e833ee",
+    "png_sha256": "2f4e8bb3fcc91fe2aa9834c71178fe38e4d76fe48f99c0b9443fe3a6e2f4023a"
+  },
+  "camera_info": {
+    "header": {
+      "stamp": {
+        "sec": 43,
+        "nanosec": 700000000
+      },
+      "frame_id": "hand_eye_camera_optical_frame"
+    },
+    "height": 960,
+    "width": 1280,
+    "distortion_model": "plumb_bob",
+    "d": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "k": [
+      1000.0,
+      0.0,
+      640.0,
+      0.0,
+      999.9999618530273,
+      480.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "r": [
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "p": [
+      1000.0,
+      0.0,
+      640.0,
+      0.0,
+      0.0,
+      999.9999618530273,
+      480.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    "binning_x": 0,
+    "binning_y": 0,
+    "roi": {
+      "x_offset": 0,
+      "y_offset": 0,
+      "height": 0,
+      "width": 0,
+      "do_rectify": false
+    }
+  },
+  "robot_transform": {
+    "header": {
+      "stamp": {
+        "sec": 43,
+        "nanosec": 700000000
+      },
+      "frame_id": "base_link"
+    },
+    "child_frame_id": "tool0",
+    "transform": {
+      "translation": {
+        "x": -0.0041366649305372896,
+        "y": 0.2295905315776933,
+        "z": 1.0344298674149315
+      },
+      "rotation": {
+        "x": 0.700561943027373,
+        "y": 0.09907476824394802,
+        "z": -0.08587215507157263,
+        "w": -0.7014436023391218
+      }
+    }
+  },
+  "joint_feedback": {
+    "header": {
+      "stamp": {
+        "sec": 43,
+        "nanosec": 735000000
+      },
+      "frame_id": "base_link"
+    },
+    "name": [
+      "elbow_joint",
+      "gripper_left_finger_joint",
+      "gripper_right_finger_joint",
+      "shoulder_lift_joint",
+      "shoulder_pan_joint",
+      "wrist_1_joint",
+      "wrist_2_joint",
+      "wrist_3_joint"
+    ],
+    "position": [
+      -0.6637176280827167,
+      0.03999999999999636,
+      0.040000000000003644,
+      -1.2233172056569888,
+      0.004432956006110931,
+      -1.2592855332332404,
+      0.257875881736846,
+      -0.014102907591606794
+    ],
+    "velocity": [
+      -5.1708637371916666e-14,
+      -3.3178754882401407e-15,
+      3.3176586478056436e-15,
+      9.518774657379936e-14,
+      3.937822290467352e-16,
+      -1.0430545316353346e-13,
+      2.6593310886724453e-14,
+      -7.788908407135864e-16
+    ],
+    "effort": [
+      6.4835856811746995,
+      0.007327362525606055,
+      -0.007327362525606075,
+      -8.139830881360487,
+      8.673617379884035e-16,
+      0.28247171913854924,
+      -0.005274697540670042,
+      -0.021486629255518
+    ]
+  },
+  "tf_lookup": "exact_acquisition_time",
+  "settled_capture": true,
+  "native_record_sha256": "9d8274a908923e3f409397147eb803bb80cae184eb67f5762f317bfc0f4bfecf",
+  "motion_path": "capture_11/motion.json",
+  "motion_sha256": "3e64f3860821384d8027fc56eb846e3dd63c55946c60800f5bd00302e11ebf39"
+}

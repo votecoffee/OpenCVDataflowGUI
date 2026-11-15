@@ -1,0 +1,12 @@
+{
+  "model": "hand_eye_reprojection_refinement_v1",
+  "training_views": 20,
+  "held_out_views_used": 0,
+  "truth_used": false,
+  "fixed_camera_intrinsics": true,
+  "method": "training_pixel_soft_l1",
+  "initial_rms_px": 0.9649347546057248,
+  "final_rms_px": 0.14012142022587562,
+  "evaluations": 9,
+  "jacobian_condition_number": 508.40532229150114
+}
