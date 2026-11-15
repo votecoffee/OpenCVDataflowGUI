@@ -7,6 +7,14 @@ app projects/recipes and the trusted runtime profile.
 
 ## Available source
 
+The [T-LESS mesh-picking example](../../examples/Simple%20Plugins/bin_picking/tless_mesh_grid/README.md)
+adds hashed CAD visual/convex-physics assets and an explicitly authored axial
+grasp profile to the fixture. Camera-based taught-surface proposals precede
+privileged pose association/evaluation. Six mesh instances were placed with
+37 arm actions; an original real pose-labeled dataset view is retained separately.
+`fixture_sha256.json` pins the source package. The grasp remains assisted;
+dataset pose truth does not provide physical grasp-success labels.
+
 The [bin-to-grid example](../../examples/Simple%20Plugins/bin_picking/bin_to_grid/README.md)
 adds two distinct packages:
 

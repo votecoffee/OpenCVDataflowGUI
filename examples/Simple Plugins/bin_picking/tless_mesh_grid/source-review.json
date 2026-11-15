@@ -1,0 +1,28 @@
+{
+  "schema": "tless_ground_truth_view_v1",
+  "scene": 7,
+  "image_id": 3,
+  "gt_index": 2,
+  "obj_id": 13,
+  "units": "m",
+  "frame": "tless_camera",
+  "original_bbox_xywh": [
+    173,
+    317,
+    61,
+    63
+  ],
+  "projected_model_bbox_xywh": [
+    173.38657332940792,
+    317.26051010151895,
+    61.928008682247366,
+    64.10370712499014
+  ],
+  "maximum_bbox_difference_px": 1.1037071249901373,
+  "visible_fraction": 0.8751633986928105,
+  "visible_depth_valid": 1557,
+  "visible_mask_pixels": 2678,
+  "model_overlay": "purple; ground truth, not estimated",
+  "grasp_ground_truth_available": false,
+  "simulation_scene_is_original_dataset_scene": false
+}

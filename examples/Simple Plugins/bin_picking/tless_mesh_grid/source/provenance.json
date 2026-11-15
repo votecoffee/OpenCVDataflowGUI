@@ -1,0 +1,22 @@
+{
+  "dataset": "T-LESS",
+  "license": "CC-BY-4.0",
+  "publisher": "https://cmp.felk.cvut.cz/t-less/",
+  "revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1",
+  "scene": 7,
+  "image_id": 3,
+  "gt_index": 2,
+  "obj_id": 13,
+  "source_archive": "tless_test_primesense_bop19.zip",
+  "archive_sha256_from_publisher_metadata": "1a18f6bbfb5ac4ced8529f7a35225adfed88c0f62ef38067933e2b541ef1d00b",
+  "acquisition": "selected ZIP members via bounded HTTP range reads and ZIP CRC checks; full test archive not downloaded",
+  "sha256": {
+    "test_primesense/000007/scene_gt.json": "ccc4cc6a8783666842fd6138fbc15eba042a0d8c138a0624b49921b5f5d3377e",
+    "test_primesense/000007/scene_camera.json": "8a57152d8a4a81df850b4e4f9792e7ca2ae0c543f96ae415efd925fcf3dc2a84",
+    "test_primesense/000007/scene_gt_info.json": "424673e05b24cbf2d0841a506eae379fc19ba150499ff10cff09385eb306b0e4",
+    "test_primesense/000007/rgb/000003.png": "e496fb0d6c66dd11ed379ff3463cdecf5b3990f520fd8e1eb019c51eb2ce56a3",
+    "test_primesense/000007/depth/000003.png": "8d45c52ee7db31f2bda095ea00a77aaa5a5ba795c4e795635e9176194201e1ff",
+    "test_primesense/000007/mask_visib/000003_000002.png": "76dc86c34cf1c9d004869c5785eb507364755c633f3bcde8a7383320eafa501d",
+    "models_info.json": "48a13b6e4532c20954dbe014a082439b05984d12ff13da1da62635a8dee59925"
+  }
+}

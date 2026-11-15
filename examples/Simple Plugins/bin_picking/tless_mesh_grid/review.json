@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "review",
+      "type": "input.sim_pick_review",
+      "name": "Recorded bin-grid pick",
+      "parameters": {
+        "archive_directory": "assets/run",
+        "cell": 6
+      },
+      "position": [
+        0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "outcome",
+        "before",
+        "after",
+        "graphics",
+        "motion",
+        "motion_summary",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "motion"
+    },
+    {
+      "id": "final_camera",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "final-camera.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        475.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "summary",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "summary.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        850.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "original_ground_truth",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "source-review.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        1225.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_ground_truth_cloud",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "source-cloud.ply",
+        "units": "m",
+        "frame": "tless_camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        1600.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    }
+  ],
+  "connections": []
+}

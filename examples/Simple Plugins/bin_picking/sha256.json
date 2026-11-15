@@ -40,7 +40,7 @@
   "generated/narrow_bin/result.png": "30aca46d12082c1243a7d8591d72ff1cdbb51635ab98de0ecc8d917268532515",
   "generated/reference.npy": "06077c4d561334d1d103a15889ba4e0270530ec8b8ad8f5cad5c4650c23d0636",
   "LICENSE": "e1e2d2d0f228c8956d1f5e3e108c35919c88e37e76b4243f21b7ef5307ec3367",
-  "README.md": "9cc9847bd8de1f158403096abe5e6d56879a8552d43db2facba13ce53b1c77af",
+  "README.md": "4e5485139c82053fd61f27a0e6ca15c8cdbb38dbb443880b10133c9a4ea44dad",
   "real_tless/ATTRIBUTION.md": "615ee472de8df789bb2b7b650dea859f5a1661beb20d3e6a81c047fcd7e46e49",
   "real_tless/frame000003/assets/depth.npy": "1af53fa9b85509843b162262717357240851416bad1b3d216e36d266a21eaf52",
   "real_tless/frame000003/assets/depth.png": "9540ddfbc5eb52c705b0599743602f401d9490ad1334c59d34364c674712f275",
@@ -78,5 +78,6 @@
   "real_tless/source/test_primesense/000002/scene_camera.json": "84d4a7b2106ed19c59d11da0fa406a763bd408c8585a77b8f44e5d3d7b300d9b",
   "samples.py": "b91f1f632d5ee8f0a63a11a7f4b4f2e25158888ea9834b8260844e97ad00fd5c",
   "TRAINING.md": "5fd50fb16ee7d7fa16fbcb1b51f051143a60cba9e6af71de0a245a93b7634d2f",
-  "bin_to_grid/sha256.json": "6e05d581520a822e0224f72be563b9e21eec5a75df7e170293e5943bb58ed9fa"
+  "bin_to_grid/sha256.json": "6e05d581520a822e0224f72be563b9e21eec5a75df7e170293e5943bb58ed9fa",
+  "tless_mesh_grid/sha256.json": "63fb3f20a6b3595d6a83219d885be2b803f604eef65f7d6b5e9db3184661c553"
 }

@@ -1,25 +1,26 @@
 {
   "package": "opencv-simple-bin-picking",
-  "version": "0.1.0.dev2",
+  "version": "0.1.0.dev3",
   "files": {
     ".gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
     "LICENSE": "9fdbc8c41abf794f69c3488f463798e06338bf90ebefbe2daee329d217c83d44",
     "PACKAGE_README.md": "d8a3142ebd3a9934fb2d48abe6dc86484b4dd2056761f5a27429f457ac3e02d0",
-    "pyproject.toml": "30544f04a65061cfd6fb195e77119530a6819c92ad9a418d78348a3115ed75c7",
+    "pyproject.toml": "5ec64024a6343fe662fe476326c31f3d41c7a93eae9115a671b10f715effc9f2",
     "src/opencv_simple_bin_picking/__init__.py": "983445afaf122c7689ed34c45898f36dd315afb312c46a9d59e09730df1371de",
     "src/opencv_simple_bin_picking/cli.py": "d9886262e514afdfa12d5c7a0b8fd6cb5af1655685721bccbd8e93e74ea1b615",
     "src/opencv_simple_bin_picking/dataflow.py": "ba270116ab1252b2ce8d44d14a2e6add9c17fbac683a0170ed2ce7743faec71c",
     "src/opencv_simple_bin_picking/graphics.py": "38eb537ca2cd41965c6d434e35d3ffaf7931499785ea50a32d7d9fc8af6530cd",
     "src/opencv_simple_bin_picking/motion.py": "d23f431ef41af782cfa4f02f64eec6583905e9ecff4ef751b84999f9cf2e5378",
-    "src/opencv_simple_bin_picking/parallel_jaw.py": "5335de323b71e5bf2a64418a1919750de49bd66aad73cb5d1944120ac29052b6",
+    "src/opencv_simple_bin_picking/parallel_jaw.py": "9f1486cd4aeed17f41976b7411f072cf88cca590699be4855aa9ecea33c92dfd",
     "src/opencv_simple_bin_picking/persistence.py": "c6c3add09f1b3f7d433873ed1a1dbed43c6eb0d9c332ab69856c2d4368204151",
     "src/opencv_simple_bin_picking/planning.py": "ef3a0c276db7e864a3bd45c8c07445dcfd24d814967bf6e55c27d9f635b4beba",
     "src/opencv_simple_bin_picking/qt_training.py": "5885cb2772796ad81f7ba62e953422011b823832a9faec4e1731f0d690831852",
     "src/opencv_simple_bin_picking/scene.py": "37b7f8aeec6c442aa599d47c963222bd51c3ecb7c831b635c4f58618f8a9b3a1",
     "src/opencv_simple_bin_picking/sim_client.py": "4d20260f603c60530b9b4f38726bbde8c7debca1653ccadfea5897bcf1e0dac4",
-    "src/opencv_simple_bin_picking/sim_dataflow.py": "44e611ff44508ea751f2315c2749d2394205d387ecc0d5736535685ebb8271f9",
-    "src/opencv_simple_bin_picking/sim_workflow.py": "1e13e7819106cd1aedb48189a8661b90e231594bb201f2f270247177da54b082",
+    "src/opencv_simple_bin_picking/sim_dataflow.py": "2f41f2baa8eda96d923d9f8c2cae546c1e5cca21d32e5edf25f25452e9e47e0d",
+    "src/opencv_simple_bin_picking/sim_workflow.py": "55068babe7e0b76efe52cece93f39656172360290f5833a4670ac44d615f3d43",
     "src/opencv_simple_bin_picking/specs.py": "06b4bae89d6540c56c71d347bb33c9f82ab3577d48538d83481cc06ac4055374",
-    "src/opencv_simple_bin_picking/teaching.py": "b04357cf807dabdbc8de8eb4948265f196458fef2016bf31047aa6eb4254b61a"
+    "src/opencv_simple_bin_picking/teaching.py": "b04357cf807dabdbc8de8eb4948265f196458fef2016bf31047aa6eb4254b61a",
+    "src/opencv_simple_bin_picking/top_template.py": "9f30946c5cac524f105864682fd6bd0e586fd1da85e3d3621ea56c33b62204f1"
   }
 }

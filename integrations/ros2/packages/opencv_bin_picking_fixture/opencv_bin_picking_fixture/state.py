@@ -68,6 +68,18 @@ class FixtureState:
         if not self.camera_ready:
             raise ValueError("Source RGB/depth/CameraInfo must be observed before assisted picking")
         part = next(item for item in self.scene["parts"] if item["id"] == part_id)
+        if "axial_grasp" in part:
+            grasp = part["axial_grasp"]
+            if axis_z(pose.quaternion)[2] < 0.98 or axis_z(self.tcp.quaternion)[2] > -0.98:
+                raise ValueError("Axial assistance requires upright part and downward TCP")
+            if math.hypot(self.tcp.xyz[0]-pose.xyz[0], self.tcp.xyz[1]-pose.xyz[1]) > .006:
+                raise ValueError("TCP is outside the 6 mm horizontal grasp gate")
+            if abs(self.tcp.xyz[2]-pose.xyz[2]-grasp["tcp_above_center_m"]) > .003:
+                raise ValueError("TCP height differs from the authored axial grasp by more than 3 mm")
+            for name in ("gripper_left_finger_joint", "gripper_right_finger_joint"):
+                if name not in self.joints or not math.isfinite(self.joints[name]) or abs(self.joints[name]-grasp["jaw_width_m"]/2) > .002:
+                    raise ValueError("Observed jaws differ from the authored axial grasp width")
+            return
         if abs(part["size"][0] - part["size"][1]) > 1e-6 or abs(part["size"][2] - 0.04) > 1e-6:
             raise ValueError("Initial grasp assistance requires a square footprint and 40 mm height")
         # This initial assistance mode supports upright boxes and downward jaws.
@@ -131,6 +143,7 @@ class FixtureState:
                 "finger_joints": ["gripper_left_finger_joint", "gripper_right_finger_joint"],
                 "grasp_gate": {"tcp_above_box_centre_m": [0.006, 0.018], "horizontal_error_m": 0.006,
                                "yaw_error_degrees": 5, "fresh_feedback_max_age_s": 0.5},
+                "authored_axial_grasps": {p["id"]:p["axial_grasp"] for p in self.scene["parts"] if "axial_grasp" in p},
                 "source": {"rgb": "/opencv_fixture/source/rgb", "depth": "/opencv_fixture/source/depth",
                            "camera_info": "/opencv_fixture/source/camera_info", "optical_frame": self.scene["camera"]["optical_frame"],
                            "world_from_source_camera": camera_transform(self.scene)},

@@ -1,0 +1,47 @@
+{
+  "status": "held",
+  "phase": "capture",
+  "reason": "No supported visible box top in the bin",
+  "detections": {
+    "model": "observed_box_top_candidates_v1",
+    "units": "m",
+    "frame": "world",
+    "camera_frame": "opencv_fixture_camera_optical_frame",
+    "candidates": [],
+    "rejected": [
+      {
+        "component": 1,
+        "reason": "insufficient_observed_top_support",
+        "observed_dimensions_m": [
+          0.03965809543500193,
+          0.03830325553425695
+        ],
+        "support": 0.2710603947610759
+      },
+      {
+        "component": 2,
+        "reason": "insufficient_observed_top_support",
+        "observed_dimensions_m": [
+          0.03868646702795603,
+          0.03868442784292048
+        ],
+        "support": 0.2886612570789216
+      },
+      {
+        "component": 3,
+        "reason": "insufficient_observed_top_support",
+        "observed_dimensions_m": [
+          0.03870256835580688,
+          0.03872207838836528
+        ],
+        "support": 0.2612361774097707
+      }
+    ],
+    "observed_roi_points": 2202,
+    "components": 3,
+    "privileged_pose_input": false,
+    "robot_feasibility": "not_assessed"
+  },
+  "qualification": "historical filled-rectangle baseline; no mesh part moved",
+  "placed": 0
+}

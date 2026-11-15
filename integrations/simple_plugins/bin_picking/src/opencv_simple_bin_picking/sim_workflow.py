@@ -29,7 +29,15 @@ def associate(candidate, truth, excluded=()):
     return rows[0]
 
 
-def pick_one(client, task, settings, emit=lambda *_: None, excluded=(), motion_settings=None):
+def pick_one(
+    client,
+    task,
+    settings,
+    emit=lambda *_: None,
+    excluded=(),
+    motion_settings=None,
+    top_template=None,
+):
     motion_settings = motion_settings or dict(
         planning_time_s=10.0, velocity_scale=0.3, acceleration_scale=0.3
     )
@@ -73,7 +81,7 @@ def pick_one(client, task, settings, emit=lambda *_: None, excluded=(), motion_s
         current = np.asarray(scene["world_from_tcp"])
         distance = float(np.linalg.norm(current[:3, 3] - target[:3, 3]))
         rotation_error = float(np.linalg.norm(current[:3, :3] - target[:3, :3]))
-        if distance <= 0.001 and rotation_error <= 0.002:
+        if distance <= 0.001 and rotation_error <= 0.01:
             receipts.append(
                 dict(
                     operation="no_motion",
@@ -133,7 +141,9 @@ def pick_one(client, task, settings, emit=lambda *_: None, excluded=(), motion_s
             (depth.shape[1], depth.shape[0]),
             raw["frame"],
         )
-        detections, support = propose_box_tops(depth, camera, raw["world_from_camera"], settings)
+        detections, support = propose_box_tops(
+            depth, camera, raw["world_from_camera"], settings, top_template
+        )
         captures["before"] = dict(
             depth=depth,
             rgb=rgb,
@@ -150,6 +160,14 @@ def pick_one(client, task, settings, emit=lambda *_: None, excluded=(), motion_s
         call("sync_scene")
         truth = call("evaluation")
         obj = associate(candidate, truth, excluded)
+        report["estimated_center_error_m"] = float(
+            np.linalg.norm(
+                np.asarray(candidate["estimated_center_m"]) - obj["world_pose"]["position_m"]
+            )
+        )
+        report["pose_evaluation"] = "simulator truth after depth-only candidate estimation"
+        report["part_dataset"] = obj.get("dataset")
+        report["planning_geometry"] = obj.get("geometry", "box")
         name = obj["object_id"]
         report["object_id"] = name
         report["candidate"] = candidate
@@ -162,7 +180,7 @@ def pick_one(client, task, settings, emit=lambda *_: None, excluded=(), motion_s
             if other["object_id"] == name or other["world_pose"] is None:
                 continue
             delta = xyz - other["world_pose"]["position_m"]
-            if np.linalg.norm(delta[:2]) < 0.01 and 0.03 < delta[2] < 0.05:
+            if np.linalg.norm(delta[:2]) < 0.01 and abs(delta[2] - settings.part_height) < 0.01:
                 support_pairs.append([name, other["object_id"]])
         # Resting support tolerance is limited to the picked object's floor/support.
         if xyz[2] < settings.floor_z + settings.part_height:
@@ -229,7 +247,15 @@ def pick_one(client, task, settings, emit=lambda *_: None, excluded=(), motion_s
         qx, qy, qz, qw = placed["world_pose"]["quaternion_xyzw"]
         up_z = 1 - 2 * (qx * qx + qy * qy)
         yaw = np.arctan2(2 * (qw * qz + qx * qy), 1 - 2 * (qy * qy + qz * qz))
-        yaw_error = abs((yaw + np.pi / 4) % (np.pi / 2) - np.pi / 4)
+        period = obj.get("yaw_period_rad", np.pi / 2)
+        if period is not None and not (0 < period <= 2 * np.pi):
+            raise ValueError("Invalid declared yaw symmetry")
+        yaw_error = 0.0 if period is None else abs((yaw + period / 2) % period - period / 2)
+        report["yaw_evaluation"] = (
+            "continuous axial symmetry; yaw not observable"
+            if period is None
+            else "discrete symmetry-aware"
+        )
         report.update(upright_cosine=float(up_z), yaw_error_rad=float(yaw_error))
         if (
             error > 0.01

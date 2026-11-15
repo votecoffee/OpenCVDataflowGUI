@@ -1,0 +1,24 @@
+{
+  "dataset": "T-LESS",
+  "obj_id": 13,
+  "license": "CC-BY-4.0",
+  "publisher": "https://cmp.felk.cvut.cz/t-less/",
+  "revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1",
+  "archive": "tless_models.zip",
+  "archive_sha256": "6a29c59766b8d2af05e62e71739f0ca7243ad81bc3c7f9a24925504a8cb37928",
+  "member": "models_cad/obj_000013.ply",
+  "member_sha256": "9d7e25f992ef7e5d10f151c0fe57f8f21452b24f69b8abe7043643fe2aa05d0e",
+  "conversion": "original model origin/axes; mm to m; original visual triangles; outward convex collision hull",
+  "extents_m": [
+    0.0399942,
+    0.0399886,
+    0.046
+  ],
+  "visual_triangles": 12774,
+  "collision_triangles": 1992,
+  "ground_truth": "new simulator poses from native pose feedback; original BOP pose labels retained separately",
+  "authored": "bin arrangement, poses, mass, envelope inertia, convex collision approximation and axial grasp frame",
+  "planning_collision": "conservative 40x40x46 mm oriented box, not exact mesh",
+  "source_symmetry": "continuous model-Z rotation declared in upstream models_info.json",
+  "top_template_sha256": "ba2e115294153688fb604b63d992e9f5460c81f42fce72fb339210c25e9aeed8"
+}

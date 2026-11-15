@@ -119,7 +119,7 @@ def rectangle(points):
     return best[2:]
 
 
-def propose_box_tops(depth, camera, world_from_camera, settings=None):
+def propose_box_tops(depth, camera, world_from_camera, settings=None, top_template=None):
     settings = settings or BoxTopSettings()
     if not isinstance(camera, Camera):
         camera = Camera.from_record(camera)
@@ -176,6 +176,10 @@ def propose_box_tops(depth, camera, world_from_camera, settings=None):
         width, length = map(float, dimensions)
         support_cells = np.unique(cells[indices[top]], axis=0)
         support = min(1.0, len(support_cells) * settings.grid_step**2 / max(width * length, 1e-12))
+        box_support = support
+        expected = matched = None
+        if top_template is not None:
+            support, expected, matched = top_template.coverage(surface[:, :2], center, angle)
         flatness = float(np.std(surface[:, 2]))
         if not all(settings.minimum_side <= v <= settings.maximum_side for v in (width, length)):
             reason = "box_top_dimensions"
@@ -223,6 +227,14 @@ def propose_box_tops(depth, camera, world_from_camera, settings=None):
             "score_semantics": "geometric_support_not_grasp_probability",
         }
         candidates.append(candidate)
+        if expected is not None:
+            candidate.update(
+                kind="observed_taught_planar_top",
+                rectangular_fill_fraction=box_support,
+                expected_surface_xy_m=expected.tolist(),
+                expected_surface_matched=matched.tolist(),
+                matching_tolerance_m=top_template.tolerance_m,
+            )
         retained = pixels[indices[top]]
         support_image[retained[:, 1], retained[:, 0]] = component
     candidates.sort(
@@ -234,7 +246,9 @@ def propose_box_tops(depth, camera, world_from_camera, settings=None):
     )
     candidates = candidates[: settings.maximum_candidates]
     return {
-        "model": "observed_box_top_candidates_v1",
+        "model": "observed_taught_top_candidates_v1"
+        if top_template is not None
+        else "observed_box_top_candidates_v1",
         "units": "m",
         "frame": "world",
         "camera_frame": camera.frame,

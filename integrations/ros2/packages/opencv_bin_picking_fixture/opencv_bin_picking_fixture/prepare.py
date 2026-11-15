@@ -7,14 +7,29 @@ from pathlib import Path
 from .scene import bridge_config, default_scene, digest, load, world_xml
 
 
-def prepare(runtime_root, output, scene=None):
+def prepare(runtime_root, output, scene=None, asset_root=None):
     runtime_root = Path(runtime_root).resolve(strict=True)
     output = Path(output).resolve()
     if output.exists() or output == runtime_root or runtime_root in output.parents:
         raise ValueError("Choose a new output directory outside the runtime root")
     scene = default_scene() if scene is None else scene
-    world = world_xml(scene)
+    world = world_xml(scene, output)
     copies = {}
+    assets = {}
+    for item in scene["parts"]:
+        if "mesh" not in item:
+            continue
+        if asset_root is None:
+            raise ValueError("Mesh scene preparation requires its asset directory")
+        for kind in ("visual", "collision"):
+            relative = item["mesh"][kind]
+            original = (Path(asset_root).resolve() / relative).resolve(strict=True)
+            if not original.is_relative_to(Path(asset_root).resolve()):
+                raise ValueError("Mesh asset resolves outside the scene directory")
+            data = original.read_bytes()
+            if len(data) > 20*1024*1024 or hashlib.sha256(data).hexdigest() != item["mesh"][kind + "_sha256"]:
+                raise ValueError("Mesh asset checksum or size differs")
+            assets[relative] = data
     for name in ("ur_sim_control_windows.launch.py", "ur_moveit_windows.launch.py", "gripper_description.py"):
         path = runtime_root / "launch" / name
         copies[f"launch/{name}"] = path.read_bytes()
@@ -28,6 +43,10 @@ def prepare(runtime_root, output, scene=None):
     output.mkdir(parents=True)
     (output / "generated").mkdir()
     (output / "logs").mkdir()
+    for relative, data in assets.items():
+        target = output / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(data)
     (output / "scene.json").write_text(json.dumps(scene, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     (output / "world.sdf").write_text(world, encoding="utf-8")
     # JSON is also valid YAML and accepted by yaml-cpp's bridge-config parser.
@@ -65,7 +84,8 @@ def main():
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--scene", type=Path)
     args = parser.parse_args()
-    print(json.dumps(prepare(args.runtime_root, args.output, load(args.scene) if args.scene else None), indent=2))
+    print(json.dumps(prepare(args.runtime_root, args.output, load(args.scene) if args.scene else None,
+                             args.scene.parent if args.scene else None), indent=2))
 
 
 if __name__ == "__main__":

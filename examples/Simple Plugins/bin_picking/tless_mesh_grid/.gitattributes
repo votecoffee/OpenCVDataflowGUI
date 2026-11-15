@@ -1,0 +1,11 @@
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+source/** -text
+assets/*.ply -text
+*.stl binary
+*.png binary
+*.npz binary
+*.ply binary
+*.gif binary

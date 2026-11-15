@@ -51,6 +51,20 @@ def validate(scene):
             raise ValueError("Box dimensions must be positive and at most 5 m")
         if item in scene["parts"] and not 0 < item["mass"] <= 10:
             raise ValueError("Part mass must be positive and at most 10 kg")
+        if "mesh" in item:
+            for kind in ("visual", "collision"):
+                name = item["mesh"][kind]
+                path = Path(name)
+                if path.is_absolute() or ".." in path.parts or ":" in name or path.suffix != ".stl":
+                    raise ValueError("Mesh assets must be project-relative STL files")
+                if not re.fullmatch(r"[0-9a-f]{64}", item["mesh"][kind + "_sha256"]):
+                    raise ValueError("Each mesh asset needs a SHA256 digest")
+        if "axial_grasp" in item:
+            grasp = item["axial_grasp"]
+            if not ("mesh" in item and grasp.get("yaw_symmetry") == "continuous_z"
+                    and 0.01 <= grasp["jaw_width_m"] <= 0.07
+                    and 0 < grasp["tcp_above_center_m"] < item["size"][2]/2):
+                raise ValueError("Axial grasp requires a mesh, declared round symmetry and physical jaw/TCP dimensions")
     camera = scene["camera"]
     if len(camera["pose"]) != 6 or not all(math.isfinite(v) for v in camera["pose"]):
         raise ValueError("Camera pose must be finite xyz/rpy")
@@ -79,7 +93,7 @@ def plugin(parent, library, system, **settings):
     return element
 
 
-def box(world, item, static):
+def box(world, item, static, asset_root=None):
     model = child(world, "model", name=item["id"])
     child(model, "static", "true" if static else "false")
     child(model, "pose", item["pose"])
@@ -93,7 +107,16 @@ def box(world, item, static):
             child(inertia, name, value)
     for kind in ("collision", "visual"):
         element = child(link, kind, name=kind)
-        child(child(child(element, "geometry"), "box"), "size", item["size"])
+        if "mesh" in item:
+            geometry = child(child(element, "geometry"), "mesh")
+            path = Path(item["mesh"][kind])
+            resolved = (Path(asset_root) / path).resolve() if asset_root else None
+            # Gazebo's Windows resolver expects file://C:/..., matching the native URDF.
+            uri = ("file://" + resolved.as_posix()) if resolved and resolved.drive else resolved.as_uri() if resolved else path.as_posix()
+            child(geometry, "uri", uri)
+            child(geometry, "scale", "1 1 1")
+        else:
+            child(child(child(element, "geometry"), "box"), "size", item["size"])
         if kind == "visual":
             material = child(element, "material")
             color = "0.32 0.36 0.4 1" if static else "0.85 0.36 0.12 1"
@@ -103,7 +126,7 @@ def box(world, item, static):
                use_pose_vector_msg="true", update_frequency=30, topic=f"/opencv_fixture/evaluation/{item['id']}/pose")
 
 
-def world_xml(scene):
+def world_xml(scene, asset_root=None):
     validate(scene)
     sdf = ET.Element("sdf", version="1.12"); world = child(sdf, "world", name=scene["world"])
     child(world, "gravity", "0 0 -9.81")
@@ -119,7 +142,7 @@ def world_xml(scene):
     floor = {"id": "ground", "size": [4, 4, 0.05], "pose": [0, 0, -0.025, 0, 0, 0]}
     box(world, floor, True)
     for item in scene["static_boxes"]: box(world, item, True)
-    for item in scene["parts"]: box(world, item, False)
+    for item in scene["parts"]: box(world, item, False, asset_root)
     camera = scene["camera"]
     model = child(world, "model", name="fixture_camera"); child(model, "static", "true")
     child(model, "pose", camera["pose"]); link = child(model, "link", name="camera_link")

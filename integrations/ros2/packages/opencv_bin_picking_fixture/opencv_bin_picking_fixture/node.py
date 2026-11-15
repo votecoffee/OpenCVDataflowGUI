@@ -154,6 +154,9 @@ def main(args=None):
             for item in scene["parts"]:
                 pose = self.core.poses.get(item["id"])
                 objects.append({"object_id": item["id"], "size_m": item["size"],
+                    "geometry": "mesh_with_conservative_box_planning_bound" if "mesh" in item else "box",
+                    "yaw_period_rad": None if "axial_grasp" in item else math.pi/2,
+                    "dataset": item.get("dataset"),
                     "world_pose": None if pose is None else {"position_m": pose.xyz, "quaternion_xyzw": pose.quaternion},
                     "source_stamp_ns": None if pose is None else pose.stamp_ns,
                     "receive_age_s": None if pose is None else time.monotonic() - pose.received,

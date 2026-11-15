@@ -1,0 +1,301 @@
+{
+  "schema": "opencv.bin_picking_fixture/v1",
+  "session_id": "d6a9a3c9-20a1-4af7-b2a2-77c037e7af57",
+  "run_id": "e930e65a-65c5-4d7f-8f41-09eaffa16543",
+  "simulation_only": true,
+  "privileged": true,
+  "usage": "collision scene setup and evaluation; never source perception",
+  "world_frame": "world",
+  "objects": [
+    {
+      "object_id": "part_01",
+      "size_m": [
+        0.04,
+        0.04,
+        0.046
+      ],
+      "geometry": "mesh_with_conservative_box_planning_bound",
+      "yaw_period_rad": null,
+      "dataset": {
+        "name": "T-LESS",
+        "obj_id": 13,
+        "license": "CC-BY-4.0",
+        "model_revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1"
+      },
+      "world_pose": {
+        "position_m": [
+          0.4500040216713852,
+          0.4995711326018394,
+          0.22299999700014475
+        ],
+        "quaternion_xyzw": [
+          5.867871094899175e-08,
+          -6.57520958672055e-08,
+          0.0006030661827428103,
+          0.9999998181555693
+        ]
+      },
+      "source_stamp_ns": 249582000000,
+      "receive_age_s": 0.03963129999965531,
+      "attachment": "detached"
+    },
+    {
+      "object_id": "part_02",
+      "size_m": [
+        0.04,
+        0.04,
+        0.046
+      ],
+      "geometry": "mesh_with_conservative_box_planning_bound",
+      "yaw_period_rad": null,
+      "dataset": {
+        "name": "T-LESS",
+        "obj_id": 13,
+        "license": "CC-BY-4.0",
+        "model_revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1"
+      },
+      "world_pose": {
+        "position_m": [
+          0.5500485947939565,
+          0.3589537028679211,
+          0.22299999553887445
+        ],
+        "quaternion_xyzw": [
+          7.545629589222441e-08,
+          -1.0353582321953961e-07,
+          0.0003010558541157132,
+          0.9999999546826812
+        ]
+      },
+      "source_stamp_ns": 249582000000,
+      "receive_age_s": 0.03955580000001646,
+      "attachment": "detached"
+    },
+    {
+      "object_id": "part_03",
+      "size_m": [
+        0.04,
+        0.04,
+        0.046
+      ],
+      "geometry": "mesh_with_conservative_box_planning_bound",
+      "yaw_period_rad": null,
+      "dataset": {
+        "name": "T-LESS",
+        "obj_id": 13,
+        "license": "CC-BY-4.0",
+        "model_revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1"
+      },
+      "world_pose": {
+        "position_m": [
+          0.3499746054074714,
+          0.4990372066285107,
+          0.22299999553887445
+        ],
+        "quaternion_xyzw": [
+          1.1456202988344801e-07,
+          -5.734680787108186e-08,
+          0.4592936214035795,
+          0.8882845092299927
+        ]
+      },
+      "source_stamp_ns": 249582000000,
+      "receive_age_s": 0.039487800000188145,
+      "attachment": "detached"
+    },
+    {
+      "object_id": "part_04",
+      "size_m": [
+        0.04,
+        0.04,
+        0.046
+      ],
+      "geometry": "mesh_with_conservative_box_planning_bound",
+      "yaw_period_rad": null,
+      "dataset": {
+        "name": "T-LESS",
+        "obj_id": 13,
+        "license": "CC-BY-4.0",
+        "model_revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1"
+      },
+      "world_pose": {
+        "position_m": [
+          0.45003712050037536,
+          0.3600332322231311,
+          0.22299999553887423
+        ],
+        "quaternion_xyzw": [
+          4.0516913602009404e-08,
+          -1.215380448162085e-07,
+          -0.3028768174075087,
+          0.9530297127986526
+        ]
+      },
+      "source_stamp_ns": 249582000000,
+      "receive_age_s": 0.03942289999986315,
+      "attachment": "detached"
+    },
+    {
+      "object_id": "part_05",
+      "size_m": [
+        0.04,
+        0.04,
+        0.046
+      ],
+      "geometry": "mesh_with_conservative_box_planning_bound",
+      "yaw_period_rad": null,
+      "dataset": {
+        "name": "T-LESS",
+        "obj_id": 13,
+        "license": "CC-BY-4.0",
+        "model_revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1"
+      },
+      "world_pose": {
+        "position_m": [
+          0.5499980687757263,
+          0.49901100036722107,
+          0.22299999700014475
+        ],
+        "quaternion_xyzw": [
+          5.5308029830262986e-08,
+          -6.861159571980342e-08,
+          -0.04953862807419289,
+          0.9987722084281876
+        ]
+      },
+      "source_stamp_ns": 249582000000,
+      "receive_age_s": 0.03935890000002473,
+      "attachment": "detached"
+    },
+    {
+      "object_id": "part_06",
+      "size_m": [
+        0.04,
+        0.04,
+        0.046
+      ],
+      "geometry": "mesh_with_conservative_box_planning_bound",
+      "yaw_period_rad": null,
+      "dataset": {
+        "name": "T-LESS",
+        "obj_id": 13,
+        "license": "CC-BY-4.0",
+        "model_revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1"
+      },
+      "world_pose": {
+        "position_m": [
+          0.3500273813425461,
+          0.35978017255049727,
+          0.22299999700035958
+        ],
+        "quaternion_xyzw": [
+          2.481007218908064e-08,
+          -8.45585388182943e-08,
+          -0.4284142572244976,
+          0.9035824390761333
+        ]
+      },
+      "source_stamp_ns": 249582000000,
+      "receive_age_s": 0.039298799999869516,
+      "attachment": "detached"
+    }
+  ],
+  "static_boxes": [
+    {
+      "id": "table_top",
+      "size": [
+        0.5,
+        0.94,
+        0.03
+      ],
+      "pose": [
+        0.51,
+        0.15,
+        0.185,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "bin_floor",
+      "size": [
+        0.24,
+        0.48,
+        0.01
+      ],
+      "pose": [
+        0.45,
+        0,
+        0.195,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "bin_x_min",
+      "size": [
+        0.01,
+        0.48,
+        0.1
+      ],
+      "pose": [
+        0.325,
+        0,
+        0.25,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "bin_x_max",
+      "size": [
+        0.01,
+        0.48,
+        0.1
+      ],
+      "pose": [
+        0.575,
+        0,
+        0.25,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "bin_y_min",
+      "size": [
+        0.24,
+        0.01,
+        0.1
+      ],
+      "pose": [
+        0.45,
+        -0.245,
+        0.25,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "bin_y_max",
+      "size": [
+        0.24,
+        0.01,
+        0.1
+      ],
+      "pose": [
+        0.45,
+        0.245,
+        0.25,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

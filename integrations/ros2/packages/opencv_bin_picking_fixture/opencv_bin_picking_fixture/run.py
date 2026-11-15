@@ -31,6 +31,20 @@ def environment(overlay, partition, current=None):
     preparation = json.loads((overlay / "preparation.json").read_text(encoding="utf-8"))
     if Path(preparation["overlay"]).resolve() != overlay:
         raise ValueError("Preparation receipt belongs to another overlay")
+    source_root = str(Path(__file__).resolve().parents[1])
+    if source_root not in sys.path:
+        sys.path.insert(0, source_root)
+    from opencv_bin_picking_fixture.scene import load, digest
+    import hashlib
+    scene = load(overlay / "scene.json")
+    if digest(scene) != preparation["scene_sha256"]:
+        raise ValueError("Scene changed after preparation")
+    for part in scene["parts"]:
+        if "mesh" in part:
+            for kind in ("visual", "collision"):
+                asset = (overlay / part["mesh"][kind]).resolve(strict=True)
+                if not asset.is_relative_to(overlay) or asset.stat().st_size > 20*1024*1024 or hashlib.sha256(asset.read_bytes()).hexdigest() != part["mesh"][kind+"_sha256"]:
+                    raise ValueError("Mesh changed after preparation")
     values = dict(os.environ if current is None else current)
     values.update(ROS_DOMAIN_ID="130", ROS_AUTOMATIC_DISCOVERY_RANGE="LOCALHOST", GZ_PARTITION=partition,
                   ROS_HOME=str(overlay / "state/ros"), ROS_LOG_DIR=str(overlay / "logs"))

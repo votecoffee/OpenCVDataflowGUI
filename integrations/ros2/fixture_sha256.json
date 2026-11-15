@@ -1,0 +1,24 @@
+{
+  "package": "opencv_bin_picking_fixture",
+  "version": "0.1.0",
+  "files": {
+    ".gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+    "launch/fixture.launch.py": "6b1b74303703b8ede6208d95972550224e5c5c4d4419c54de93c0b8fc94d9381",
+    "LICENSE": "9fdbc8c41abf794f69c3488f463798e06338bf90ebefbe2daee329d217c83d44",
+    "opencv_bin_picking_fixture/__init__.py": "bd10c0933dbad7c7012bbea9ef0ed257a915e85086c3c6e40bafdd2cd09a8225",
+    "opencv_bin_picking_fixture/node.py": "8e2d27ecd756947ed5fe747826a3469a653e93c797247c100627d4083d532db7",
+    "opencv_bin_picking_fixture/prepare.py": "7a3ba822c0c426bb07203ac330289b48f0090c3e8b0d70bf54001655e1391725",
+    "opencv_bin_picking_fixture/run.py": "f2bfcc461b82822782c18841f048cfee94c81a836df37ee0b2801fca4b8713db",
+    "opencv_bin_picking_fixture/scene.py": "b0706acf3a3f18581390d71a795b0820e9f42c890213cd55fbfe66f79c25580a",
+    "opencv_bin_picking_fixture/state.py": "26ae79aec3654278ce4b9e0267f371546e8d02bd31d553aad19079158892f1d9",
+    "opencv_bin_picking_fixture/verify_native.py": "69bf22136548322d2cf006b281c0a16bb0b4f99c8786376d816efaaeb4f1b944",
+    "package.xml": "bb7d9d2b275fd1153b1325e2e5572939c69d71c3af60277309636a0892179294",
+    "README.md": "d40637ae4f211eb5a82c7d544d76dd7ed58a3cbd512e4621352fc6166c37982d",
+    "resource/opencv_bin_picking_fixture": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "setup.cfg": "539df1c85194fe853ccf0fb7da68b1ddba5e4a29c1d97cbe4149b53c3461789f",
+    "setup.py": "3358973b39e992846ee7842591ef322fe30557e96f8265d6f199a223428fe0f4",
+    "test/__init__.py": "b6d3f7cb1cfbc9bc9f5eeebf974671129e0e95505171cb2b123aab930a459c6a",
+    "test/test_fixture.py": "c26dab084cadccb426aff949185571fc01d3793102f581e499d2837f9ae2cfce",
+    "test/test_mesh_fixture.py": "b67bdfd4becb0d422e7c8007f470403415c2e90c8a6a3e8224886165820a765b"
+  }
+}

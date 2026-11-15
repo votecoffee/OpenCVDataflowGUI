@@ -11,6 +11,19 @@ from this native evidence.
 
 ## Scene and ownership
 
+Mesh fixtures can declare separate hashed, scene-relative STL visual and
+collision assets. Preparation verifies/copies them into the fresh overlay and
+uses the Windows-compatible URI convention from the native robot description.
+The T-LESS model-13 example uses original visual triangles, an outward convex
+physics hull and a separate conservative planning bound. These representations
+are not interchangeable.
+
+An optional authored axial grasp supports upright, rotationally symmetric mesh
+parts. It preserves fresh stationary feedback, downward tool direction, 6 mm
+XY error, 3 mm taught-height error and 2 mm per-finger width gates. Legacy box
+gates remain unchanged. Symmetry and the authored grasp are explicit metadata;
+this assistance does not establish friction or force closure.
+
 The configurable initial example contains six original 40 mm, 50 g boxes in three two-high stacks, a bin and a table with a 0.20 m work surface. The tabletop is 0.50 by 0.94 m, centred at x=0.51/y=0.15 m; its x=0.26 m near edge clears the measured base/shoulder sweep. The application still collision-checks every planned trajectory. A fixed overhead RGB-D camera uses the simulator's original RGB, depth and CameraInfo. Smaller/lower part surfaces may still be visible because of perspective; actual first-return occlusion must be checked in rendered depth. No object pose is substituted for source-camera data.
 
 `fixture_prepare` makes a **new private overlay outside the installed runtime**. It copies/checksums only the needed native launch/config files, redirects their generated output and appends an isolated grasp hook to the copied gripper description. It never modifies `C:/dev/ros2-sim`, `ros2-sim2`, their manifests, package caches, original launchers or other demos. Its preparation receipt records source and plugin SHA256 values. Logs, generated descriptions and the MoveIt warehouse database stay in the overlay.

@@ -18,6 +18,7 @@ from .parallel_jaw import BoxTopSettings
 from .sim_client import SimClient
 from .sim_workflow import pick_one
 from .specs import number
+from .top_template import TopTemplate
 
 
 def cloud(capture, report):
@@ -34,6 +35,12 @@ def cloud(capture, report):
     colors = capture["rgb"][y, x, ::-1].copy()
     extra, extra_colors = [], []
     for candidate in report.get("detections", {}).get("candidates", []):
+        for xy, matched in zip(
+            candidate.get("expected_surface_xy_m", []),
+            candidate.get("expected_surface_matched", []),
+        ):
+            extra.append([*xy, candidate["top_z_m"] + 0.001])
+            extra_colors.append([50, 240, 100] if matched else [255, 70, 70])
         t = np.asarray(candidate["world_from_tcp"])
         for axis, color in zip(range(3), ([255, 70, 70], [70, 255, 70], [70, 120, 255])):
             extra.extend(t[:3, 3] + np.linspace(0, 0.04, 30)[:, None] * t[:3, axis])
@@ -285,6 +292,8 @@ class SimPickOne(Block):
         "planning_time_s": 10.0,
         "velocity_scale": 0.3,
         "acceleration_scale": 0.3,
+        "top_template_path": "",
+        "top_template_sha256": "",
     }
     parameter_help = {
         "enabled": "Explicit simulation execution; false emits disabled outcomes without I/O.",
@@ -293,7 +302,9 @@ class SimPickOne(Block):
         "planning_time_s": "Global planning budget per move, 1..30 seconds.",
         "velocity_scale": "Fraction of the configured robot's velocity limits, at most 0.5.",
         "acceleration_scale": "Fraction of configured acceleration limits, at most 0.5.",
+        "top_template_path": "Expected surface samples; empty requires a filled rectangular top.",
     }
+    project_asset_parameters = ("top_template_path",)
     requires_serial_execution = True
     parallel_safe = False
     preview_safe = False
@@ -312,6 +323,13 @@ class SimPickOne(Block):
         p = self.parameters if parameters is None else parameters
         if type(p["enabled"]) is not bool:
             raise ValidationError("Enabled must be boolean", "enabled")
+        if p["top_template_path"] and (
+            len(p["top_template_sha256"]) != 64
+            or any(c not in "0123456789abcdef" for c in p["top_template_sha256"])
+        ):
+            raise ValidationError(
+                "Surface template requires its SHA256", "top_template_path", "top_template_sha256"
+            )
         for field, label, low, high in (
             ("planning_time_s", "Planning budget", 1, 30),
             ("velocity_scale", "Velocity scale", 0.01, 0.5),
@@ -384,6 +402,12 @@ class SimPickOne(Block):
                     motion_settings={
                         k: p[k] for k in ("planning_time_s", "velocity_scale", "acceleration_scale")
                     },
+                    top_template=TopTemplate.load(
+                        Path(self.project_dir or ".") / p["top_template_path"],
+                        p["top_template_sha256"],
+                    )
+                    if p["top_template_path"]
+                    else None,
                 )
                 if report["status"] == "placed":
                     self.completed.append(report["object_id"])

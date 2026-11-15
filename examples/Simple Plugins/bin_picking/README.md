@@ -1,6 +1,6 @@
 # SimpleBinPicking suction planning
 
-Install the included `opencv-simple-bin-picking` **0.1.0.dev2** in the Python
+Install the included `opencv-simple-bin-picking` **0.1.0.dev3** in the Python
 environment running this app, from the application repository root:
 
 ```powershell
@@ -15,6 +15,7 @@ the app after installation. These projects use stable type `3d.simple_bin_pickin
 | --- | --- |
 | [Bin to table grid](bin_to_grid/README.md) | Actual six-pick simulation, 37 MoveIt arm trajectories, native colored cloud/recorded review; assisted grasp explicitly labeled. |
 | [Motion review](bin_to_grid/motion_review/README.md) | Two further 6/6 native episodes, phase-colored planned paths and measured-joint FK dots; historical held transfer retained. |
+| [T-LESS mesh picking](tless_mesh_grid/README.md) | Six real CAD mesh instances, retained source pose labels, fixed taught annular top and native 6/6 assisted placements. |
 | [Visible raised patch](generated/good/project.json) | 10 eligible alternatives from 64 candidates. |
 | [Empty floor](generated/empty/project.json) | No candidates above the minimum pick height. |
 | [Missing depth](generated/missing/project.json) | No candidates; no fabricated surface or pose. |
