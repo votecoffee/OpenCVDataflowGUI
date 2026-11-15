@@ -695,6 +695,7 @@ def builtin_registry():
         ValidatePlanarCalibration,
     )
     from .calipers import BeadCalipers
+    from .camera_health import CameraHealth
     from .channel_transform import ChannelTransform, RouteChannels
     from .charuco import DetectCharucoBoard
     from .chessboard_quality import CheckChessboardQuality
@@ -1058,6 +1059,7 @@ def builtin_registry():
         CompareMaskBoundary,
         CompareAlignedImages,
         DifferentialExposure,
+        CameraHealth,
         MeasureFocus,
         LogPolarRegistration,
         FocusStack,

@@ -5422,6 +5422,59 @@ Input `image` — An 8-bit grayscale or color image. Crop upstream to score a sm
 | `check_threshold` | `false` |  |
 | `maximum_score` | `50.0` | Value must be a finite number between 0 and 100. Pass at or below this score when threshold checking is enabled. |
 
+## Monitor camera health (`inspect.camera_health`)
+
+Inspection / Camera monitoring
+
+Inputs: `image` (image), `foreground_mask` (image, optional).
+
+Input `image` — Current image on the trained pixel grid, with matching depth/encoding.
+
+Input `foreground_mask` — Current-image uint8 mask: nonzero means moving/occluded pixels.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_path` | `""` | Project-contained reference/history asset staged by the trainer. |
+| `reference_sha256` | `""` | Pinned training bytes. Retrain/stage to change the baseline. |
+| `check_position` | `true` | Check the fixed background or trained static fiducials. |
+| `check_lighting` | `true` | Check visible corresponding channel means in each lighting region. |
+| `check_focus` | `true` | Check sharpness loss in each focus region against the saved reference. |
+| `position_method` | `"background"` | `background`, `fiducials` Stable background tracking or trained static-region matching. |
+| `position_warning` | `1.0` | Value must be a finite number between 0 and 10000. Warning at absolute image-center displacement in pixels. Warning < alarm. |
+| `position_alarm` | `3.0` | Value must be a finite number between 0 and 10000. Alarm at absolute image-center displacement in pixels. Warning < alarm. |
+| `rotation_warning` | `0.25` | Value must be a finite number between 0 and 10000. Warning at absolute rotation in degrees (background or >=2 fiducials). Warning < alarm. |
+| `rotation_alarm` | `1.0` | Value must be a finite number between 0 and 10000. Alarm at absolute rotation in degrees (background or >=2 fiducials). Warning < alarm. |
+| `scale_warning` | `0.5` | Value must be a finite number between 0 and 10000. Warning at absolute scale change in percent (two fiducials or background). Warning < alarm. |
+| `scale_alarm` | `2.0` | Value must be a finite number between 0 and 10000. Alarm at absolute scale change in percent (two fiducials or background). Warning < alarm. |
+| `lighting_warning` | `10.0` | Value must be a finite number between 0 and 10000. Warning at absolute per-channel mean change in percent. Warning < alarm. |
+| `lighting_alarm` | `20.0` | Value must be a finite number between 0 and 10000. Alarm at absolute per-channel mean change in percent. Warning < alarm. |
+| `focus_warning` | `20.0` | Value must be a finite number between 0 and 10000. Warning at absolute sharpness loss in percent. Warning < alarm. |
+| `focus_alarm` | `40.0` | Value must be a finite number between 0 and 10000. Alarm at absolute sharpness loss in percent. Warning < alarm. |
+| `auto_foreground` | `true` | Reject coherent changes after rough motion/lighting normalization. |
+| `foreground_threshold` | `0.12` | Value must be a finite number between 0.001 and 1. Normalized difference on [0,1] after lighting normalization. |
+| `foreground_min_area` | `32` | Value must be a whole number between 1 and 1e+06. Minimum coherent changed component area in pixels. |
+| `foreground_dilation` | `2` | Value must be a whole number between 0 and 32. Extra foreground margin in pixels before tracking and scoring. |
+| `minimum_region_coverage` | `0.6` | Value must be a finite number between 0.01 and 1. Required visible/stable fraction; missing evidence alarms. |
+| `lighting_floor` | `0.02` | Value must be a finite number between 1e-06 and 1. Minimum normalized mean used as denominator near black. |
+| `max_features` | `600` | Value must be a whole number between 16 and 5000. Maximum Shi-Tomasi reference corners. |
+| `feature_quality` | `0.01` | Value must be a finite number between 0.0001 and 0.5. Minimum corner quality relative to the strongest corner. |
+| `minimum_tracks` | `12` | Value must be a whole number between 3 and 5000. Minimum background inlier count after foreground removal. |
+| `tracking_window` | `21` | Value must be a positive odd integer between 5 and 101. Odd Lucas-Kanade window width/height in pixels. |
+| `pyramid_levels` | `3` | Value must be a whole number between 0 and 5. Maximum LK pyramid level; zero disables pyramids. |
+| `forward_backward_error` | `1.0` | Value must be a finite number between 0.05 and 10. Largest allowed round-trip feature error in pixels. |
+| `ransac_error` | `1.5` | Value must be a finite number between 0.1 and 10. Inlier reprojection error in pixels for the similarity transform. |
+| `minimum_inlier_fraction` | `0.5` | Value must be a finite number between 0.1 and 1. Minimum inlier fraction among eligible final matches. |
+| `minimum_track_coverage` | `0.03` | Value must be a finite number between 0 and 1. Inlier convex-hull area / trained position selection area. |
+| `fiducial_search_margin` | `32` | Value must be a whole number between 1 and 512. Search distance around each trained region, in pixels. |
+| `fiducial_min_score` | `0.85` | Value must be a finite number between 0.1 and 1. Minimum masked normalized correlation for every fiducial. |
+| `fiducial_peak_margin` | `0.02` | Value must be a finite number between 0 and 1. Required score separation from competing locations. |
+| `focus_method` | `"tenengrad"` | `tenengrad`, `laplacian_variance` Training metric. Changes require retraining. |
+| `focus_aperture` | `"3"` | `1`, `3`, `5`, `7` Derivative kernel; keep fixed between training and inspection. |
+| `normalize_focus` | `true` | Divide sharpness by region variance to reduce gain sensitivity. |
+| `float_min` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. Lower bound for floating samples; changes require retraining. |
+| `float_max` | `1.0` | Value must be a finite number between -1e+12 and 1e+12. Upper bound for floating samples, usually one or 255; retrain to change. |
+| `stability_threshold` | `0.08` | Value must be a finite number between 0 and 1. Largest stable-pixel history range on [0,1]; retrain to change. |
+
 ## Classify Lab color (`inspect.classify_lab`)
 
 Inspection / Color measurements
