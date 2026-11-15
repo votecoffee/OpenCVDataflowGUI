@@ -93,6 +93,7 @@ See the [Simple Plugins guide](<Simple Plugins/README.md>) for setup, real-data 
 | [SimplePatternMatch](<Simple Plugins/pattern_matching/asymmetric_brackets/README.md>) | Locate synthetic brackets with direct and wired recipes, and inspect the pose and edge overlays. |
 | [SimpleSegmentation](<Simple Plugins/pixel_segmentation/README.md>) | Train foreground masks for brick mortar, a cup rim, PCB laminate, and inventory in real totes. |
 | [Simple3DMeasure](<Simple Plugins/3d_measure/README.md>) | Review plane measurements on real T-LESS clouds and known/raised/missing generated surfaces with native RGB flyaround. |
+| [SimpleGDRNPP (experimental)](<Simple Plugins/gdrnpp/README.md>) | Review three rejected T-LESS pose results without inference, or explicitly load the isolated-worker setup plugin. New-object training and broader pose accuracy remain open. |
 
 ## Industrial integration
 

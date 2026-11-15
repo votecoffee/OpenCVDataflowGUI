@@ -5,6 +5,7 @@ by name. SimpleClassify is bundled. SimplePatternMatch, SimpleSegmentation, and
 SimplePathWidth, SimpleReferenceInspect, Simple3DLocate, Simple3DMeasure and
 SimpleBinPicking load their installed integrations when you add a block or open
 a project.
+SimpleGDRNPP uses explicit plugin loading and a separately configured worker.
 
 | Tool | Example projects |
 | --- | --- |
@@ -16,6 +17,7 @@ a project.
 | **Simple3DLocate** | [Real T-LESS clutter with depth verification](3d_locate/real_tless/depth_verified/README.md), plus [generated rigid surfaces](3d_locate/README.md) for controlled regression. |
 | **Simple3DMeasure** | [Real T-LESS measurement review and generated known/raised/missing surfaces](3d_measure/README.md), with native RGB flyaround, retained reference recipes and explicit dimensional qualification limits. |
 | **SimpleBinPicking** | [Suction contact/clearance review](bin_picking/README.md), with five generated controls and three real T-LESS replays; real cases retain zero eligible picks and open grasp qualification. |
+| **SimpleGDRNPP (experimental)** | [T-LESS pose reviews and native setup](gdrnpp/README.md), with three retained rejected poses, RGB overlays and native fit-cloud flyaround. |
 
 ## Start with real public data
 
@@ -35,6 +37,14 @@ add source-aligned overlays and native RGB flyaround clouds from two actual
 CPU ONNX runs. Both retain rejected results. These fast file-only projects do
 not run neural inference or require its worker environment; live integration
 and the training editor remain future work.
+
+The [SimpleGDRNPP examples](gdrnpp/README.md) provide three file-only saved-result
+reviews without running neural inference. Setup and inference use the explicitly
+loaded plugin and an isolated worker; model weights stay external. The native
+popup retains RGB-D/CAD references, previews connected captures and stages draft
+changes for **Apply configuration**. All retained poses fail the measured-depth
+gates. The checkpoint covers T-LESS object 6; new-object training and broader
+pose accuracy remain open.
 
 ## Set up SimplePatternMatch
 
