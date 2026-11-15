@@ -155,7 +155,12 @@ BINDINGS = {
     "cv.separable_filter": "sepFilter2D",
     "cv.spatial_gradient": "spatialGradient",
     "cv.split_channels": "split",
-    "cv.stitch_image_pair": "warpPerspective",
+    "cv.stitch_image_pair": "warpPerspective pyrDown pyrUp detail.MultiBandBlender",
+    "cv.stitch_scan_sequence": (
+        "SIFT_create estimateTranslation2D estimateAffinePartial2D warpPerspective "
+        "pyrDown pyrUp detail.GraphCutSeamFinder detail.MultiBandBlender"
+    ),
+    "cv.render_mosaic_tile": "warpPerspective pyrDown pyrUp detail.MultiBandBlender",
     "cv.stylize_photo": "stylization",
     "cv.tonemap_hdr": "createTonemap createTonemapDrago createTonemapReinhard createTonemapMantiuk",
     "cv.threshold": "threshold",

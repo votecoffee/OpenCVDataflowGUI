@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/view-1-16.png",
+          "assets/view-2-16.png",
+          "assets/view-3-16.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "layout",
+      "type": "cv.register_scan_layout",
+      "name": "Register scan layout",
+      "parameters": {
+        "motion_model": "translation",
+        "max_features": 900,
+        "match_ratio": 0.75,
+        "max_descriptor_distance": 250.0,
+        "inlier_pixels": 2.0,
+        "min_inliers": 12,
+        "min_inlier_ratio": 0.5,
+        "max_scale_ratio": 1.15,
+        "max_rotation_degrees": 15.0,
+        "loop_closure": false,
+        "max_loop_drift_pixels": 8.0
+      },
+      "position": [
+        660,
+        -180
+      ],
+      "exposed_inputs": [
+        "views",
+        "masks"
+      ],
+      "exposed_outputs": [
+        "layout"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tile_0",
+      "type": "cv.render_mosaic_tile",
+      "name": "Render mosaic tile",
+      "parameters": {
+        "tile_size": 128,
+        "tile_index": 0,
+        "interpolation": "linear",
+        "blend": "multiband",
+        "feather_width": 32,
+        "multiband_backend": "float64",
+        "multiband_bands": 3,
+        "multiband_native_weights": "float32"
+      },
+      "position": [
+        1040,
+        -300
+      ],
+      "exposed_inputs": [
+        "views",
+        "layout",
+        "masks",
+        "tile_index"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "tile"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tile_5",
+      "type": "cv.render_mosaic_tile",
+      "name": "Render mosaic tile",
+      "parameters": {
+        "tile_size": 128,
+        "tile_index": 5,
+        "interpolation": "linear",
+        "blend": "multiband",
+        "feather_width": 32,
+        "multiband_backend": "float64",
+        "multiband_bands": 3,
+        "multiband_native_weights": "float32"
+      },
+      "position": [
+        1040,
+        20
+      ],
+      "exposed_inputs": [
+        "views",
+        "layout",
+        "masks",
+        "tile_index"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "tile"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tile_11",
+      "type": "cv.render_mosaic_tile",
+      "name": "Render mosaic tile",
+      "parameters": {
+        "tile_size": 128,
+        "tile_index": 11,
+        "interpolation": "linear",
+        "blend": "multiband",
+        "feather_width": 32,
+        "multiband_backend": "float64",
+        "multiband_bands": 3,
+        "multiband_native_weights": "float32"
+      },
+      "position": [
+        1040,
+        340
+      ],
+      "exposed_inputs": [
+        "views",
+        "layout",
+        "masks",
+        "tile_index"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "tile"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Source and expected result",
+      "description": "Photo: Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and Onkar Dabeer, SPot-the-Difference Self-Supervised Pre-training for Anomaly Detection and Segmentation, ECCV 2022. VisA PCB2 normal 0000, CC BY 4.0. https://registry.opendata.aws/visa/ ; https://creativecommons.org/licenses/by/4.0/ . OpenCVDataflowGUI contributors crop the bundled 480x320 resized/letterboxed photograph into overlapping views, apply known darkening gains and expand copies to uint16. The original capture is 8-bit; uint16 expansion adds no sensor information. This demonstrates numerical blending on real photographic texture, not separate physical acquisitions or calibrated illumination. See SOURCES.md and truth.json. EXPECT PASS. Pair projects run once; scan/tile projects use Run all. Coverage and overlap remain authoritative. Native CPU arithmetic is approximate; Float64 preserves high-depth signal until final output rounding. View-only pixels are restored exactly. Tiled filtering uses a phase-aligned halo.",
+      "parameters": {},
+      "position": [
+        0,
+        -430
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "layout",
+      "input": "views"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "tile_0",
+      "input": "views"
+    },
+    {
+      "source": "layout",
+      "output": "layout",
+      "target": "tile_0",
+      "input": "layout"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "tile_5",
+      "input": "views"
+    },
+    {
+      "source": "layout",
+      "output": "layout",
+      "target": "tile_5",
+      "input": "layout"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "tile_11",
+      "input": "views"
+    },
+    {
+      "source": "layout",
+      "output": "layout",
+      "target": "tile_11",
+      "input": "layout"
+    }
+  ]
+}

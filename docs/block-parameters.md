@@ -3320,8 +3320,11 @@ Input `tile_index` — Optional row-major tile index for a loop or per-tile insp
 | `tile_size` | `512` | Value must be a whole number between 16 and 2048. Maximum width and height. Edge tiles are cropped to the mosaic bounds. |
 | `tile_index` | `0` | Value must be a whole number between 0 and 1e+12. Zero-based tile in row-major order. A connected input overrides this value. |
 | `interpolation` | `"linear"` | `nearest`, `linear` Linear output requires every contributing source pixel to be valid. |
-| `blend` | `"prefer_first"` | `prefer_first`, `prefer_last`, `feather` Choose source priority or feather edges. Feather halos preserve tile boundaries. |
+| `blend` | `"prefer_first"` | `prefer_first`, `prefer_last`, `feather`, `multiband` Choose priority, feather or multiband. Filter halos preserve tile boundaries. |
 | `feather_width` | `32` | Value must be a whole number between 1 and 512. Distance from valid source edges, in mosaic pixels, to full weight. |
+| `multiband_backend` | `"float64"` | `float64`, `native_detail` Multiband only. Float64 preserves high-depth/HDR samples; native detail uses the CPU int16 blender and requires uint8 gray/RGB/BGR. |
+| `multiband_bands` | `4` | Value must be a whole number between 0 and 6. Multiband Laplacian reductions, 0..6. Zero averages overlap; more bands spread low-frequency transitions farther and need more halo/workspace. |
+| `multiband_native_weights` | `"float32"` | `float32`, `int16` Native detail only: float32 or int16 Gaussian weight maps. Native integer arithmetic is approximate, even for uint8. |
 
 ## Replace nonfinite samples (`cv.replace_nonfinite`)
 
@@ -3663,7 +3666,10 @@ Input `region_b` — Optional region in Image B coordinates.
 | `transform_source` | `"shared_frame"` | `shared_frame`, `matrix` Use a common recorded image frame or the editable matrix. |
 | `matrix` | `[[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]` | Affine or projective matrix mapping Image B pixels into Image A coordinates. |
 | `interpolation` | `"linear"` | `nearest`, `linear` Resample Image B. Linear requires all contributing pixels to be valid. |
-| `blend` | `"prefer_a"` | `prefer_a`, `prefer_b`, `average`, `graph_cut` Choose a priority, average samples, or select a seam from image content. |
+| `blend` | `"prefer_a"` | `prefer_a`, `prefer_b`, `average`, `graph_cut`, `multiband` Choose priority, average, graph-cut selection or multiband composition. |
+| `multiband_backend` | `"float64"` | `float64`, `native_detail` Multiband only. Float64 preserves high-depth/HDR samples; native detail uses the CPU int16 blender and requires uint8 gray/RGB/BGR. |
+| `multiband_bands` | `4` | Value must be a whole number between 0 and 6. Multiband Laplacian reductions, 0..6. Zero averages overlap; more bands spread low-frequency transitions farther and need more halo/workspace. |
+| `multiband_native_weights` | `"float32"` | `float32`, `int16` Native detail only: float32 or int16 Gaussian weight maps. Native integer arithmetic is approximate, even for uint8. |
 | `seam_cost` | `"color_gradient"` | `color`, `color_gradient` Graph cut uses color disagreement alone or weights it by local gradients. |
 | `seam_resolution` | `"auto"` | `auto`, `full`, `half`, `quarter` Estimate at full, half, or quarter resolution. Auto fits the work limit. |
 | `seam_terminal_cost` | `10000.0` | Value must be a finite number between 1 and 1e+06. Graph cut weight for retaining pixels supported by a view. |
@@ -3696,8 +3702,11 @@ Input `masks` — Optional ordered uint8 masks for feature detection and valid m
 | `loop_closure` | `false` | Require an independent match from the last view back to the first. |
 | `max_loop_drift_pixels` | `8.0` | Value must be a finite number between 0 and 512. Maximum allowed corner adjustment in first-view pixels. |
 | `interpolation` | `"linear"` | `nearest`, `linear` |
-| `blend` | `"prefer_first"` | `prefer_first`, `prefer_last`, `feather`, `graph_cut` Choose priority, feather valid edges, or select a seam from image content. |
+| `blend` | `"prefer_first"` | `prefer_first`, `prefer_last`, `feather`, `graph_cut`, `multiband` Choose priority, feather edges, graph-cut selection or multiband composition. |
 | `feather_width` | `32` | Value must be a whole number between 1 and 512. Distance from a valid edge, in mosaic pixels, to reach full weight. |
+| `multiband_backend` | `"float64"` | `float64`, `native_detail` Multiband only. Float64 preserves high-depth/HDR samples; native detail uses the CPU int16 blender and requires uint8 gray/RGB/BGR. |
+| `multiband_bands` | `4` | Value must be a whole number between 0 and 6. Multiband Laplacian reductions, 0..6. Zero averages overlap; more bands spread low-frequency transitions farther and need more halo/workspace. |
+| `multiband_native_weights` | `"float32"` | `float32`, `int16` Native detail only: float32 or int16 Gaussian weight maps. Native integer arithmetic is approximate, even for uint8. |
 | `seam_cost` | `"color_gradient"` | `color`, `color_gradient` Graph cut uses color disagreement alone or weights it by local gradients. |
 | `seam_resolution` | `"auto"` | `auto`, `full`, `half`, `quarter` Estimate at full, half, or quarter resolution. Auto fits the work limit. |
 | `seam_terminal_cost` | `10000.0` | Value must be a finite number between 1 and 1e+06. Graph cut weight for retaining pixels supported by a view. |

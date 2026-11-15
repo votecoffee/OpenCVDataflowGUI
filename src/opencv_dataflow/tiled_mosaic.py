@@ -15,6 +15,14 @@ from .image_stitching import (
 )
 from .images import ImageArray, image_format
 from .mosaic_photometry import FeatherMosaic
+from .multiband_mosaic import (
+    MULTIBAND_CHOICES,
+    MULTIBAND_DEFAULTS,
+    MULTIBAND_HELP,
+    MULTIBAND_RANGES,
+    MultibandMosaic,
+    tile_window,
+)
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import moved_payload
 from .processing import ImageTool, integer
@@ -174,21 +182,25 @@ class RenderMosaicTile(ImageTool):
         "interpolation": "linear",
         "blend": "prefer_first",
         "feather_width": 32,
+        **MULTIBAND_DEFAULTS,
     }
     parameter_choices = {
         "interpolation": tuple(_INTERPOLATION),
-        "blend": ("prefer_first", "prefer_last", "feather"),
+        "blend": ("prefer_first", "prefer_last", "feather", "multiband"),
+        **MULTIBAND_CHOICES,
     }
     parameter_ranges = {
         "tile_size": NumericRange(16, 2048, whole=True),
         "tile_index": NumericRange(0, _MAX_SIDE**2, whole=True),
         "feather_width": NumericRange(1, 512, whole=True),
+        **MULTIBAND_RANGES,
     }
     parameter_help = {
         "tile_size": "Maximum width and height. Edge tiles are cropped to the mosaic bounds.",
         "tile_index": "Zero-based tile in row-major order. A connected input overrides this value.",
         "interpolation": "Linear output requires every contributing source pixel to be valid.",
-        "blend": "Choose source priority or feather edges. Feather halos preserve tile boundaries.",
+        "blend": "Choose priority, feather or multiband. Filter halos preserve tile boundaries.",
+        **MULTIBAND_HELP,
         "feather_width": "Distance from valid source edges, in mosaic pixels, to full weight.",
     }
     input_help = {
@@ -220,6 +232,10 @@ class RenderMosaicTile(ImageTool):
         left, top = max(0, x - halo), max(0, y - halo)
         right = min(width, x + tile_size[0] + halo)
         bottom = min(height, y + tile_size[1] + halo)
+        if self.parameters["blend"] == "multiband":
+            left, top, right, bottom, halo = tile_window(
+                (x, y), tile_size, size, self.parameters["multiband_bands"]
+            )
         render_size = (right - left, bottom - top)
         channels = 1 if pixels[0].ndim == 2 else pixels[0].shape[2]
         bytes_per_pixel = 5 * channels * pixels[0].itemsize + 32
@@ -230,6 +246,8 @@ class RenderMosaicTile(ImageTool):
             raise ValidationError("Tile exceeds the 256 MiB workspace limit; reduce Tile size")
         shape = (render_size[1], render_size[0], *pixels[0].shape[2:])
         blender = FeatherMosaic(shape, int(self.parameters["feather_width"])) if feather else None
+        if self.parameters["blend"] == "multiband":
+            blender = MultibandMosaic(shape, pixels[0].dtype, self.parameters, base_bytes=workspace)
         mosaic = np.zeros(shape, dtype=pixels[0].dtype) if blender is None else None
         counts = np.zeros(shape[:2], dtype=np.uint8)
         to_window = np.eye(3)
@@ -296,6 +314,9 @@ class RenderMosaicTile(ImageTool):
             "overlap_pixels": int(np.count_nonzero(counts >= 2)),
             "views": contributors,
         }
+        if self.parameters["blend"] == "multiband":
+            tile["multiband"] = {**blender.info, "halo": halo, "window_origin": [left, top],
+                                 "window_size": list(render_size)}
         context = {**self.input_payloads["views"]}
         context.pop("pyramid", None)
         context["spatial"] = mosaic_frame(

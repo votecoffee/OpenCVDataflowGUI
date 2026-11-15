@@ -74,6 +74,8 @@ Use [camera health monitoring](docs/camera-health.md) to train fixed-reference
 position, lighting and focus checks with warning/alarm limits.
 Use [connection health monitors](docs/connection-health.md) for independent ROS,
 MQTT, PLC and robot status with warning/alarm outputs and grouped diagnostics.
+Registered scans can use [multiband mosaics](docs/multiband-mosaics.md) for full
+images or bounded tiles while retaining source depth and coverage information.
 
 ## Architecture
 

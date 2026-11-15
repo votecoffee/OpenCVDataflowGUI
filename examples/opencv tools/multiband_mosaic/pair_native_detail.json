@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "left",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/view-1-8.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/view-2-8.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mosaic",
+      "type": "cv.stitch_image_pair",
+      "name": "Stitch image pair",
+      "parameters": {
+        "transform_source": "matrix",
+        "matrix": [
+          [
+            1,
+            0,
+            110
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "interpolation": "linear",
+        "blend": "multiband",
+        "multiband_backend": "native_detail",
+        "multiband_bands": 3,
+        "multiband_native_weights": "float32",
+        "seam_cost": "color_gradient",
+        "seam_resolution": "auto",
+        "seam_terminal_cost": 10000.0,
+        "seam_bad_region_penalty": 1000.0,
+        "min_overlap_pixels": 1,
+        "ticket_policy": "anchor_a"
+      },
+      "position": [
+        700,
+        80
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "transform",
+        "mask_a",
+        "region_a",
+        "mask_b",
+        "region_b"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "layout"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Source and expected result",
+      "description": "Photo: Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and Onkar Dabeer, SPot-the-Difference Self-Supervised Pre-training for Anomaly Detection and Segmentation, ECCV 2022. VisA PCB2 normal 0000, CC BY 4.0. https://registry.opendata.aws/visa/ ; https://creativecommons.org/licenses/by/4.0/ . OpenCVDataflowGUI contributors crop the bundled 480x320 resized/letterboxed photograph into overlapping views, apply known darkening gains and expand copies to uint16. The original capture is 8-bit; uint16 expansion adds no sensor information. This demonstrates numerical blending on real photographic texture, not separate physical acquisitions or calibrated illumination. See SOURCES.md and truth.json. EXPECT PASS. Pair projects run once; scan/tile projects use Run all. Coverage and overlap remain authoritative. Native CPU arithmetic is approximate; Float64 preserves high-depth signal until final output rounding. View-only pixels are restored exactly. Tiled filtering uses a phase-aligned halo.",
+      "parameters": {},
+      "position": [
+        0,
+        -430
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "left",
+      "output": "image",
+      "target": "mosaic",
+      "input": "image_a"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "mosaic",
+      "input": "image_b"
+    }
+  ]
+}

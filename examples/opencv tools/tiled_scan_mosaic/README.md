@@ -39,8 +39,9 @@ interpolation rounding. Prefer first/last selects source priority. Feather
 blending includes a halo so neighboring tile boundaries retain the same edge
 weights. Masks select feature centers during registration and valid pixels
 during rendering. The tiled renderer supports these priority and feather
-modes; exposure correction, graph-cut seams and multiband blending have their
-own roadmap scope.
+modes. Multiband now has a separate [qualified example collection](../multiband_mosaic/README.md)
+with aligned filter halos and native/Float64 choices. Exposure correction and
+graph-cut selection remain dense-scan features.
 
 Use ordered, textured views of a mostly planar scene. Registration checks
 adjacent feature consensus and optional loop closure. Review fit diagnostics

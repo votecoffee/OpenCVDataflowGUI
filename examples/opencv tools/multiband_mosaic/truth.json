@@ -1,0 +1,91 @@
+{
+  "source": "VisA PCB2 normal 0000; see SOURCES.md",
+  "source_image_size": [
+    480,
+    320
+  ],
+  "source_sha256": "f0bde89a9c4adc33c69d601e00f1ad4bd2de5d4b224c0f62c13cbe26875aa196",
+  "view_xywh": [
+    [
+      0,
+      0,
+      260,
+      320
+    ],
+    [
+      110,
+      0,
+      260,
+      320
+    ],
+    [
+      220,
+      0,
+      260,
+      320
+    ]
+  ],
+  "view_gains": [
+    1.0,
+    0.85,
+    0.7
+  ],
+  "gain_formula": "round(uint8 crop * gain)",
+  "uint16_formula": "uint8 derivative * 257",
+  "nominal_pair_size": [
+    370,
+    320
+  ],
+  "nominal_scan_size": [
+    480,
+    320
+  ],
+  "registration": "Pair uses exact known translation; scans estimate from image features",
+  "scope": "Software changes to one real photo, not physical scan/illumination ground truth",
+  "derivative_license": "CC BY 4.0",
+  "cases": {
+    "pair_float64": [
+      "pair",
+      16,
+      "float64"
+    ],
+    "pair_native_detail": [
+      "pair",
+      8,
+      "native_detail"
+    ],
+    "pair_native_int16_weights": [
+      "pair",
+      8,
+      "native_detail"
+    ],
+    "scan_float64": [
+      "scan",
+      16,
+      "float64"
+    ],
+    "scan_exposure_gain": [
+      "scan",
+      8,
+      "float64"
+    ],
+    "tiles_float64": [
+      "tile",
+      16,
+      "float64"
+    ],
+    "native_depth_guard": [
+      "pair",
+      16,
+      "native_detail"
+    ]
+  },
+  "asset_sha256": {
+    "view-1-16.png": "9ab91333caf78ff000092d4100cdd367848aeace345f42862f7b7d10b1a38b4e",
+    "view-1-8.png": "8ad86117ce55a89e378d6cfeda3fdfc3cea2b5f575a063c400d940c54bd6d28b",
+    "view-2-16.png": "06300ffcc5eb61ecc20b7e9cb0532e19785cdd1d67f9dfca27f3bf7794808f7a",
+    "view-2-8.png": "adc79e2f150768d91abdb18c926350a3fdf7581ffb4097930066385a4d578518",
+    "view-3-16.png": "3e0887eca2b631f636bdcfc0f01a70843eb6cfb1be409b71753cb33731d1441c",
+    "view-3-8.png": "9064022e5eed1a9faef96aceefa12f9b9aabee5e95c7bc1bc434b2d801f9e17a"
+  }
+}

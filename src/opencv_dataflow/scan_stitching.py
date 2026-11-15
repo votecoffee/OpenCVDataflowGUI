@@ -17,6 +17,13 @@ from .mosaic_photometry import (
     fit_overlap_exposure,
 )
 from .mosaic_seams import SEAM_CHOICES, SEAM_DEFAULTS, SEAM_HELP, SEAM_RANGES, graph_cut_selection
+from .multiband_mosaic import (
+    MULTIBAND_CHOICES,
+    MULTIBAND_DEFAULTS,
+    MULTIBAND_HELP,
+    MULTIBAND_RANGES,
+    MultibandMosaic,
+)
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, FlowGroup, check_spatial, image_with_payload, metadata
 from .processing import ImageTool, gray_image, image_value
@@ -275,6 +282,7 @@ class StitchScanSequence(ImageTool):
         "interpolation": "linear",
         "blend": "prefer_first",
         "feather_width": 32,
+        **MULTIBAND_DEFAULTS,
         **SEAM_DEFAULTS,
         "exposure": "none",
         "min_exposure_samples": 64,
@@ -284,7 +292,8 @@ class StitchScanSequence(ImageTool):
     parameter_choices = {
         "motion_model": ("translation", "similarity"),
         "interpolation": tuple(_INTERPOLATION),
-        "blend": ("prefer_first", "prefer_last", "feather", "graph_cut"),
+        "blend": ("prefer_first", "prefer_last", "feather", "graph_cut", "multiband"),
+        **MULTIBAND_CHOICES,
         **SEAM_CHOICES,
         "exposure": ("none", "gain", "offset"),
     }
@@ -300,6 +309,7 @@ class StitchScanSequence(ImageTool):
         "min_overlap_pixels": NumericRange(1, 16_777_216, whole=True),
         "max_loop_drift_pixels": NumericRange(0, 512),
         "feather_width": NumericRange(1, 512, whole=True),
+        **MULTIBAND_RANGES,
         **SEAM_RANGES,
         "min_exposure_samples": NumericRange(1, MAX_EXPOSURE_SAMPLES, whole=True),
         "max_exposure_gain": NumericRange(1, 8),
@@ -314,7 +324,8 @@ class StitchScanSequence(ImageTool):
         "min_overlap_pixels": "Minimum valid overlap for each adjacent pair and the closing pair.",
         "loop_closure": "Require an independent match from the last view back to the first.",
         "max_loop_drift_pixels": "Maximum allowed corner adjustment in first-view pixels.",
-        "blend": "Choose priority, feather valid edges, or select a seam from image content.",
+        "blend": "Choose priority, feather edges, graph-cut selection or multiband composition.",
+        **MULTIBAND_HELP,
         "feather_width": "Distance from a valid edge, in mosaic pixels, to reach full weight.",
         **SEAM_HELP,
         "exposure": "Match the first view using a median gain or offset from valid overlaps.",
@@ -377,6 +388,12 @@ class StitchScanSequence(ImageTool):
         width, height = size
         shape = (height, width, *pixels[0].shape[2:])
         blender = FeatherMosaic(shape, int(p["feather_width"])) if feather else None
+        if p["blend"] == "multiband":
+            blender = MultibandMosaic(
+                shape, dtype, p,
+                base_bytes=width*height*(5*channels*dtype.itemsize + 10 + extra_bytes),
+            )
+            layout["multiband"] = blender.info
         mosaic = np.zeros(shape, dtype=dtype) if blender is None else None
         counts = np.zeros((height, width), dtype=np.uint8)
         layout["views"] = []
