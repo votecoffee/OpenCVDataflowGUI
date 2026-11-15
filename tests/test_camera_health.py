@@ -251,3 +251,121 @@ def test_graph_save_as_preserves_sealed_reference_and_xml(tmp_path):
     graph.close()
     loaded.close()
     restored.close()
+
+
+@pytest.mark.parametrize("mode", ["background", "fiducials"])
+@pytest.mark.parametrize(
+    "angle,scale,expected",
+    [(0.5, 1, "warning"), (1.5, 1, "alarm"), (0, 1.01, "warning"), (0, 1.03, "alarm")],
+)
+def test_rotation_and_scale_against_known_similarity(tmp_path, mode, angle, scale, expected):
+    tool, _ = make_tool(tmp_path, position_method=mode, check_lighting=False, check_focus=False)
+    matrix = cv2.getRotationMatrix2D((159.5, 119.5), angle, scale)
+    current = cv2.warpAffine(fixture(), matrix, (320, 240))
+    result, report = execute(tool, current)
+    assert report["state"] == expected
+    assert report["position"]["state"] == "measured"
+    assert report["position"]["rotation_deg"] == pytest.approx(-angle, abs=0.05)
+    assert report["position"]["scale_percent"] == pytest.approx((scale - 1) * 100, abs=0.05)
+    assert result.outputs["transform"]["model"] == "image_affine_v1"
+
+
+def test_input_grid_and_mask_mismatch_do_not_publish(tmp_path):
+    image = fixture()
+    first = frame([640, 480], "first")
+    first["image_size"] = [320, 240]
+    first["to_root"] = [[2, 0, 0], [0, 2, 0], [0, 0, 1]]
+    packet = ValuePacket(image, {"spatial": first})
+    tool, _ = make_tool(tmp_path, [packet])
+    second = copy.deepcopy(first)
+    second["to_root"][0][2] = 10
+    assert tool.execute({"image": ValuePacket(image, {"spatial": second})}) is None
+    assert "crop/scale" in tool.error and not tool.current_emissions
+    assert tool.execute({"image": packet, "foreground_mask": np.ones(image.shape, float)}) is None
+    assert tool.error_kind == "invalid" and not tool.current_emissions
+    wrong_mask = ValuePacket(
+        np.zeros(image.shape, np.uint8), {"spatial": frame([320, 240], "other")}
+    )
+    assert tool.execute({"image": packet, "foreground_mask": wrong_mask}) is None
+    assert tool.error_kind == "invalid" and not tool.current_emissions
+
+
+def test_color_only_foreground_is_rejected_and_graphics_off_preserves_report(tmp_path):
+    image = np.dstack([fixture()] * 3)
+    tool, _ = make_tool(tmp_path, [image])
+    current = image.copy()
+    # BGR (80,130,52) has virtually the same gray as (100,100,100).
+    image[150:190, 140:180] = 100
+    current[150:190, 140:180] = [80, 130, 52]
+    # Retrain this separate baseline, with the exact gray patch.
+    model = train_reference([image], zones())
+    path = tmp_path / "color-reference.npz"
+    tool.parameters.update(reference_path=str(path), reference_sha256=save_reference(model, path))
+    result, report = execute(tool, current)
+    assert result.passed and report["foreground_pixels"] >= 1500
+    assert result.outputs["foreground_mask"][160:180, 150:170].all()
+    assert result.drawings
+    tool.graphics_mode = "off"
+    lean, other = execute(tool, current)
+    assert not lean.drawings and other == report
+
+
+def test_flat_reference_missing_fiducial_and_native_errors_are_contained(tmp_path, monkeypatch):
+    flat = np.full((240, 320), 100, np.uint8)
+    tool, _ = make_tool(tmp_path, [flat])
+    result, report = execute(tool, flat)
+    assert not result.passed and report["position"]["state"] == "unavailable"
+    assert all(row["state"] == "alarm" for row in report["checks"] if row["check"] == "focus")
+    tool.parameters.update(position_method="fiducials")
+    _, report = execute(tool, flat)
+    assert all(row["reason"] == "flat_template" for row in report["position"]["fiducials"])
+
+    def broken(*args, **kwargs):
+        raise cv2.error("Controlled camera-health tracking failure")
+
+    monkeypatch.setattr(cv2, "goodFeaturesToTrack", broken)
+    tool.parameters.update(position_method="background")
+    assert tool.execute({"image": flat}) is None
+    assert "Controlled camera-health" in tool.error and not tool.current_emissions
+
+
+def test_limits_are_inclusive_and_alarm_diagnostics_have_error_severity(tmp_path):
+    from opencv_dataflow.camera_health.analysis import level
+
+    assert level(9.999, 10, 20) == "healthy"
+    assert level(10, 10, 20) == "warning"
+    assert level(20, 10, 20) == "alarm"
+    tool, _ = make_tool(tmp_path, check_position=False, check_focus=False, auto_foreground=False)
+    _, report = execute(tool, np.rint(fixture() * 0.7).astype(np.uint8))
+    assert report["state"] == "alarm"
+    events = tool.logger.snapshot()["events"]
+    assert any(e["severity"] == "ERROR" and "Camera health alarm" in e["message"] for e in events)
+
+
+def test_built_in_package_toolbox_placement():
+    from opencv_dataflow.toolbox import block_entry
+
+    assert block_entry(CameraHealth()).path == ("Custom", "Inspection", "Camera monitoring")
+
+
+def test_circle_polygon_regions_and_immutable_revision(tmp_path):
+    regions = zones()
+    regions["lighting"][0]["region"] = {
+        **full_region([320, 240]),
+        "shape": "circle",
+        "center": [60, 50],
+        "radius": 20,
+    }
+    regions["focus"][0]["region"] = {
+        **full_region([320, 240]),
+        "shape": "polygon",
+        "vertices": [[25, 85], [110, 85], [105, 130], [30, 130]],
+    }
+    tool, _ = make_tool(tmp_path, regions=regions)
+    result, report = execute(tool, fixture())
+    assert result.passed and report["state"] == "healthy"
+    original = Path(tool.parameters["reference_path"]).read_bytes()
+    other = train_reference([255 - fixture()], regions)
+    with pytest.raises(ValueError, match="different trained baseline"):
+        save_reference(other, tool.parameters["reference_path"])
+    assert Path(tool.parameters["reference_path"]).read_bytes() == original

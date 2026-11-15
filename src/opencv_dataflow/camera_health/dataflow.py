@@ -281,7 +281,8 @@ class CameraHealth(Block):
             event_data={"camera_health": report},
         )
         if state != "healthy":
-            self.logger.warning(
+            log = self.logger.error if state == "alarm" else self.logger.warning
+            log(
                 f"Camera health {state}: "
                 + "; ".join(r["name"] for r in report["checks"] if r["state"] != "healthy")
             )

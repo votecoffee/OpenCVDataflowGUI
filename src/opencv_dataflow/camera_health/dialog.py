@@ -394,6 +394,8 @@ class CameraHealthTrainer(QDialog):
                 raise ValueError("Train a reference first")
             draft = self.draft()
             CameraHealth().validate_parameters(draft)
+            if any(draft[k] != value for k, value in self.candidate.info["settings"].items()):
+                raise ValueError("Training settings changed; train again before staging")
             if (
                 draft["position_method"] == "fiducials"
                 and not self.candidate.info["regions"]["fiducials"]

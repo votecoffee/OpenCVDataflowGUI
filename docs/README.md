@@ -25,6 +25,7 @@
 | Tickets, branching, batching and joins | [Control flow](control-flow.md), [input coordination](input-coordination.md) |
 | Acquisition queues and memory | [Input queues](input-queues.md), [sequence memory](sequence-memory.md) |
 | Recipes and sealed trained assets | [Recipes](recipes.md) |
+| Fixed-camera lighting, position and focus monitoring | [Camera health and reference training](camera-health.md) |
 | Judgments, reasons and ticket histories | [Ticket results](ticket-results.md) |
 | 3D/depth/point clouds | [3D vision](vision-3d.md) |
 | ML/DNN and optional dependencies | [ML](ml.md) |

@@ -6,6 +6,12 @@ reference. It monitors background/fiducial position, lighting and focus, with
 separate warning and alarm limits. It does not silently learn camera drift or
 replace the baseline while inspecting.
 
+Find it under **Custom → Inspection → Camera monitoring** in the toolbox.
+The [camera-health example collection](<../examples/custom tools/camera_health/README.md>)
+contains ten ready-to-run projects using a credited real PCB photograph and
+controlled software changes. They include healthy/warning/alarm outcomes,
+background tracking, two-fiducial matching and deliberately unavailable evidence.
+
 ## Train and run
 
 1. Add the block and connect the camera/file image. Save the project. Run the
@@ -98,6 +104,9 @@ Localized lighting changes can resemble foreground; broad camera/scene changes
 can overwhelm tracking. Inspect masks and coverage, choose stable regions and use
 explicit mover masks/exclusions where needed. Disabling automatic foreground is
 available when those selections already describe the scene reliably.
+Blur can also remove edge pixels from the automatic background selection. Focus
+still requires the configured visible coverage and compares the same retained
+population; inspect that coverage alongside the sharpness loss.
 
 ## States, persistence and limits
 

@@ -304,6 +304,7 @@ Project-defined inspection algorithms, region/metrology tools and integrations w
 | [Adaptive background correction](<custom tools/adaptive_background/README.md>) | Flatten a lighting gradient so a fixed threshold finds a dark defect. |
 | [Annoy nearest neighbors](<custom tools/annoy_search/README.md>) | Turn synthetic image colors into an ONNX embedding and rank three labeled reference vectors with an Annoy index. |
 | [Build flat-field references](<custom tools/flat_field_reference/README.md>) | Estimate bright/dark maps from repeated captures, compare mean/median handling and verify a held-out color image. |
+| [Camera health monitoring](<custom tools/camera_health/README.md>) | Train a frozen image history; check background/fiducial movement, per-region lighting and focus with warning/alarm limits on a real PCB photograph. |
 | [Clip line segments](<custom tools/clip_line_segments/README.md>) | Measure the portion of a long detected edge inside a rectangular inspection window. |
 | [Combined inspection regions](<custom tools/combined_regions/README.md>) | Subtract the center of a circle and union the resulting ring with a second part region. |
 | [Controlled image distortion fixtures](<custom tools/distortion_fixture/README.md>) | Generate reproducible shear, perspective and lens-like warps, inspect analytic donor probes and reuse typed maps against independent 16-bit RGB references. |

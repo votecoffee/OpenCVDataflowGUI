@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/lighting_alarm.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "monitor",
+      "type": "inspect.camera_health",
+      "name": "Camera health: lighting alarm",
+      "parameters": {
+        "reference_path": "reference.npz",
+        "reference_sha256": "d3dc3e69a33c93b1edef7fb2841d5150963ef9910a0697052a312b8f789c3106",
+        "check_position": true,
+        "check_lighting": true,
+        "check_focus": true,
+        "position_method": "background",
+        "position_warning": 1.0,
+        "position_alarm": 3.0,
+        "rotation_warning": 0.25,
+        "rotation_alarm": 1.0,
+        "scale_warning": 0.5,
+        "scale_alarm": 2.0,
+        "lighting_warning": 10.0,
+        "lighting_alarm": 20.0,
+        "focus_warning": 20.0,
+        "focus_alarm": 40.0,
+        "auto_foreground": true,
+        "foreground_threshold": 0.12,
+        "foreground_min_area": 32,
+        "foreground_dilation": 2,
+        "minimum_region_coverage": 0.6,
+        "lighting_floor": 0.02,
+        "max_features": 600,
+        "feature_quality": 0.01,
+        "minimum_tracks": 12,
+        "tracking_window": 21,
+        "pyramid_levels": 3,
+        "forward_backward_error": 1.0,
+        "ransac_error": 1.5,
+        "minimum_inlier_fraction": 0.5,
+        "minimum_track_coverage": 0.03,
+        "fiducial_search_margin": 32,
+        "fiducial_min_score": 0.85,
+        "fiducial_peak_margin": 0.02,
+        "focus_method": "tenengrad",
+        "focus_aperture": "3",
+        "normalize_focus": true,
+        "float_min": 0.0,
+        "float_max": 1.0,
+        "stability_threshold": 0.08
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "foreground_mask"
+      ],
+      "exposed_outputs": [
+        "image",
+        "state",
+        "warning",
+        "alarm",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Photo attribution and expected result",
+      "description": "Photo: Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and Onkar Dabeer, SPot-the-Difference Self-Supervised Pre-training for Anomaly Detection and Segmentation, ECCV 2022. VisA PCB2 normal 0000, CC BY 4.0. https://registry.opendata.aws/visa/ ; https://creativecommons.org/licenses/by/4.0/ . Reused 480x320 resized/letterboxed photo; synthetic colored parts, translations, gain changes and blur added by OpenCVDataflowGUI contributors. See SOURCES.md/truth.json. No customer images or equipment I/O. These are controlled software changes to a real photo, not measured camera/focus ground truth or physical acceptance. EXPECT ALARM: lighting alarm. All projects share the same three-capture frozen baseline and default limits. Warnings pass with an amber overlay; alarms fail with reasons. The full-mask example intentionally lacks evidence and must alarm.",
+      "parameters": {},
+      "position": [
+        0,
+        -400
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "monitor",
+      "input": "image"
+    }
+  ]
+}

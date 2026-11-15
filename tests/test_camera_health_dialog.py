@@ -134,3 +134,31 @@ def test_host_untrained_block_captures_its_wired_input_and_requires_apply(app, t
         window.dirty = False
         window.close()
         app.processEvents()
+
+
+def test_staging_rejects_reference_trained_with_other_settings(app, tmp_path):
+    from opencv_dataflow.camera_health import save_reference, train_reference
+
+    model = train_reference([fixture()], zones())
+    path = tmp_path / "reference.npz"
+    digest = save_reference(model, path)
+    draft = {
+        **CameraHealth.defaults,
+        "reference_path": "reference.npz",
+        "reference_sha256": digest,
+        "focus_aperture": "5",
+    }
+    dialog = CameraHealthTrainer(None, draft, Context(tmp_path))
+    try:
+        assert dialog.candidate is not None
+        dialog.stage()
+        assert "train again" in dialog.status.text()
+        assert not (tmp_path / "models").exists()
+        finish_training(dialog)
+        dialog.stage()
+        assert dialog.result() == dialog.DialogCode.Accepted
+        updated = load_reference(tmp_path / draft["reference_path"], draft["reference_sha256"])
+        assert updated.info["settings"]["focus_aperture"] == "5"
+    finally:
+        dialog.close()
+        app.processEvents()

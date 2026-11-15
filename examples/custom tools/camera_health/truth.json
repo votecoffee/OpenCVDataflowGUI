@@ -1,0 +1,212 @@
+{
+  "source": "VisA PCB2 normal 0000; see SOURCES.md",
+  "license_images_and_normalized_reference": "CC BY 4.0",
+  "source_sha256": "f0bde89a9c4adc33c69d601e00f1ad4bd2de5d4b224c0f62c13cbe26875aa196",
+  "scope": "Controlled software changes to a real photo; no physical ground truth",
+  "image_size": [
+    480,
+    320
+  ],
+  "training_part_xywh": [
+    [
+      15,
+      260,
+      50,
+      35
+    ],
+    [
+      210,
+      260,
+      50,
+      35
+    ],
+    [
+      400,
+      260,
+      50,
+      35
+    ]
+  ],
+  "current_part_xywh": [
+    100,
+    265,
+    50,
+    30
+  ],
+  "part_bgr": [
+    30,
+    40,
+    200
+  ],
+  "translation": "integer horizontal pixels, linear warp, black border",
+  "lighting": "round(original * gain), uint8 BGR, before adding moving part",
+  "blur": "GaussianBlur 9x9, sigma in pixels, before adding moving part",
+  "regions": {
+    "lighting": [
+      {
+        "name": "Left light",
+        "region": {
+          "model": "image_region_v1",
+          "image_size": [
+            480,
+            320
+          ],
+          "shape": "rectangle",
+          "rectangle": [
+            80,
+            45,
+            100,
+            65
+          ]
+        }
+      },
+      {
+        "name": "Right light",
+        "region": {
+          "model": "image_region_v1",
+          "image_size": [
+            480,
+            320
+          ],
+          "shape": "rectangle",
+          "rectangle": [
+            300,
+            45,
+            100,
+            65
+          ]
+        }
+      }
+    ],
+    "focus": [
+      {
+        "name": "Left texture",
+        "region": {
+          "model": "image_region_v1",
+          "image_size": [
+            480,
+            320
+          ],
+          "shape": "rectangle",
+          "rectangle": [
+            100,
+            130,
+            90,
+            75
+          ]
+        }
+      },
+      {
+        "name": "Right texture",
+        "region": {
+          "model": "image_region_v1",
+          "image_size": [
+            480,
+            320
+          ],
+          "shape": "rectangle",
+          "rectangle": [
+            290,
+            130,
+            90,
+            75
+          ]
+        }
+      }
+    ],
+    "fiducials": [
+      {
+        "name": "Datum A",
+        "region": {
+          "model": "image_region_v1",
+          "image_size": [
+            480,
+            320
+          ],
+          "shape": "rectangle",
+          "rectangle": [
+            190,
+            103,
+            49,
+            49
+          ]
+        }
+      },
+      {
+        "name": "Datum B",
+        "region": {
+          "model": "image_region_v1",
+          "image_size": [
+            480,
+            320
+          ],
+          "shape": "rectangle",
+          "rectangle": [
+            27,
+            15,
+            49,
+            49
+          ]
+        }
+      }
+    ]
+  },
+  "cases": {
+    "healthy_moving_part": {
+      "expected": "healthy"
+    },
+    "position_warning": {
+      "shift_px": 2,
+      "expected": "warning"
+    },
+    "position_alarm": {
+      "shift_px": 5,
+      "expected": "alarm"
+    },
+    "lighting_warning": {
+      "gain": 0.85,
+      "expected": "warning"
+    },
+    "lighting_alarm": {
+      "gain": 0.7,
+      "expected": "alarm"
+    },
+    "focus_warning": {
+      "blur_sigma": 0.68,
+      "expected": "warning"
+    },
+    "focus_alarm": {
+      "blur_sigma": 1.5,
+      "expected": "alarm"
+    },
+    "fiducials_healthy": {
+      "mode": "fiducials",
+      "expected": "healthy"
+    },
+    "fiducials_alarm": {
+      "mode": "fiducials",
+      "shift_px": 5,
+      "expected": "alarm"
+    },
+    "insufficient_evidence": {
+      "exclude_all": true,
+      "expected": "alarm"
+    }
+  },
+  "reference_sha256": "d3dc3e69a33c93b1edef7fb2841d5150963ef9910a0697052a312b8f789c3106",
+  "asset_sha256": {
+    "fiducials_alarm.png": "6e75ab2c465a33016c4cf514728ff13d9a62b835a73659a64e640f1e1f155993",
+    "fiducials_healthy.png": "a27a973351ccd965f0e080ed6a8fb8bd4c0c30e647fa244363e840ddee0ab6a9",
+    "focus_alarm.png": "049a89957d63ba6da761bcad70b94361c3d8b92b9ca7043b3b0ae8e81ca94e6b",
+    "focus_warning.png": "d5a96f55970befebb613acdce5f7effcdadaebfb6f4f791d46ed9acf28e386b9",
+    "healthy_moving_part.png": "a27a973351ccd965f0e080ed6a8fb8bd4c0c30e647fa244363e840ddee0ab6a9",
+    "insufficient_evidence.png": "a27a973351ccd965f0e080ed6a8fb8bd4c0c30e647fa244363e840ddee0ab6a9",
+    "lighting_alarm.png": "4ad00ac96e03fee40f6599492eeaff26259fe39153a5309b86dc417b447328df",
+    "lighting_warning.png": "e1ce30aa825c8ff34a92a8f96ab0881d0acbf155308d583838c29bac8dc41806",
+    "position_alarm.png": "6e75ab2c465a33016c4cf514728ff13d9a62b835a73659a64e640f1e1f155993",
+    "position_warning.png": "f0a23fa3de349891185e70266f659452c804d08c281792f29c3d4340564d84b8",
+    "training_1.png": "56110d6ca7effd90003bacc6bc1fab66f360218b6e4cff012a9a0b5d2fc61aa5",
+    "training_2.png": "eecf5e22251c02a59e7f29b043b0fe534f34211233b35c0a574b917cae87898f",
+    "training_3.png": "a2d7ccb8241e37b10589dc6f508f95ecc799ff702607186e3a17b30af4b94350"
+  }
+}

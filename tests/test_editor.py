@@ -1075,7 +1075,8 @@ def test_toolbox_sources_modules_search_and_leaf_activation(app, monkeypatch):
 
     roots = [tree.topLevelItem(i) for i in range(tree.topLevelItemCount())]
     assert [item.text(0) for item in roots] == [
-        "OpenCV", "scikit-image", "Industrial integration", "Custom", "Simple Plugins", "User",
+        "OpenCV", "scikit-image", "SimpleITK", "Industrial integration",
+        "Custom", "Simple Plugins", "User",
     ]
     assert not any(item.isExpanded() for item in roots)
     assert roots[0].child(0).text(0) == "Image Processing (imgproc)"

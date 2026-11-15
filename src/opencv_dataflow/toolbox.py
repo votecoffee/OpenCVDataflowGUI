@@ -245,7 +245,7 @@ def block_entry(block):
     type_id = block.type_id
     if type_id in _SIMPLE_FAMILIES:
         path = (SIMPLE_PLUGINS, _SIMPLE_FAMILIES[type_id])
-    elif package != "opencv_dataflow":
+    elif package.split(".")[0] != "opencv_dataflow":
         path = ("User", kind, subtype)
     elif kind == INDUSTRIAL:
         path = (INDUSTRIAL, subtype)

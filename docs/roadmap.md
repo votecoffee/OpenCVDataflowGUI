@@ -41,7 +41,7 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **14 targeted increments of about 20** completed:
+The current cycle has **15 targeted increments of about 20** completed:
 animated image codec round trips (S1-111), large-radius smoothing (S1-159),
 assistant application authoring with connected-input plugin captures, the
 SimpleITK medical image/metadata foundation, optional ROS 2 Lyrical/Fast DDS
@@ -51,7 +51,8 @@ pose/TF conversion with run/reset acquisition identity, static CameraInfo reuse,
 ordered timestamp pairing of ROS image streams, explicit CameraInfo intensity
 rectification, source ROI/binning with independent rectified output grids,
 conservative area-coverage mask resizing (S1-118), and paired differential exposure
-compensation with defect residuals (S1-116).
+compensation with defect residuals (S1-116), and frozen-reference camera health
+monitoring with foreground suppression and trained fiducials.
 The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
@@ -105,6 +106,28 @@ controls, local links and Python 3.12 worker syntax were checked. The app was
 reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
+
+**Camera health monitoring** (`inspect.camera_health`) now compares each image
+with an explicitly trained, immutable reference/history. Background tracking
+rejects coherent moving foreground; alternatively, one or more trained static
+fiducials supply position evidence. Named lighting/focus regions follow the
+measured image-plane transform. Separate warning/alarm limits cover position,
+rotation, scale, channel-mean change and sharpness loss. Missing or insufficient
+evidence alarms with reasons. The modeless trainer captures completed input
+publications or imported images, uses the existing region editor, trains private
+copies in a worker, and stages a pinned asset for explicit inspector Apply.
+See [the training and measurement contracts](camera-health.md) and
+[ten real-photo replay projects](<../examples/custom tools/camera_health/README.md>).
+Verification passed **83 focused monitor/focus/plugin/editor checks**. All
+**20 installed Debug/Lean CLI outcomes** matched, including controlled warning,
+alarm and unavailable-evidence cases. Known translations, rotations, scales,
+lighting gains and blur, multiple regions/history, grayscale/color/high-depth
+formats, tickets, graphics-off, exception containment, sealed assets and XML
+were checked. Deterministic image/model/project regeneration, source attribution,
+strict JSON, text contracts, local links and wheel contents were checked; the app
+was reinstalled. These image-based health indicators are not physical camera
+calibration. This composite workflow reuses existing native capabilities and does
+not change OpenCV coverage counts. No broad suite was repeated.
 
 **Differential exposure comparison (S1-116)** now provides robust local/global
 gain/offset fitting for already aligned reference/candidate images. Separate
