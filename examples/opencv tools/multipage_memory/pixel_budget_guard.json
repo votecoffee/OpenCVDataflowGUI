@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.tiff_file",
+      "name": "TIFF page sequence",
+      "parameters": {
+        "path": "assets/mixed-pages.tiff",
+        "path_base": "project",
+        "start_page": 0,
+        "end_page": -1,
+        "stride": 1,
+        "repeat": "stop",
+        "page_ticket": true,
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        340,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "encode",
+      "type": "cv.encode_pages",
+      "name": "Encode multipage TIFF in memory",
+      "parameters": {
+        "compression": "deflate",
+        "predictor": "native",
+        "rows_per_strip": 8,
+        "x_dpi": 0,
+        "y_dpi": 0
+      },
+      "position": [
+        680,
+        0
+      ],
+      "exposed_inputs": [
+        "pages"
+      ],
+      "exposed_outputs": [
+        "encoded",
+        "buffer",
+        "page_count",
+        "byte_count",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "cv.decode_pages",
+      "name": "Decode multipage TIFF from memory",
+      "parameters": {
+        "start_page": 0,
+        "page_count": 0,
+        "stride": 1,
+        "preview_page": 2,
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "maximum_pixels": 1,
+        "maximum_decoded_bytes": 134217728
+      },
+      "position": [
+        1040,
+        0
+      ],
+      "exposed_inputs": [
+        "encoded"
+      ],
+      "exposed_outputs": [
+        "pages",
+        "image",
+        "page_count",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Original fixture and transport contract",
+      "description": "Original synthetic images and projects by OpenCVDataflowGUI contributors, MIT. No customer images. Run all acquires 3 pages with filename/page tickets: 72x48 uint8 gray, 64x40 uint16 BGR and 56x32 float64 BGRA with signed HDR values. Typed Encoded preserves page labels, tickets and coordinate payloads; raw Buffer contains TIFF pixels only and the decoder creates new page frames. Selected pages uses stride 2: indexes 0 and 2, preview 1 is original page 2. Verification requires zero sample difference. Unbatch emits each selected image in order. Pixel budget guard intentionally rejects before pixel decoding; Predictor guard intentionally rejects horizontal prediction on floating pages. No files are written.",
+      "parameters": {},
+      "position": [
+        0,
+        -440
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "encode",
+      "input": "pages"
+    },
+    {
+      "source": "encode",
+      "output": "encoded",
+      "target": "decode",
+      "input": "encoded"
+    }
+  ]
+}

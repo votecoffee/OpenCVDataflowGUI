@@ -1728,6 +1728,25 @@ Inputs: `encoded` (encoded_image).
 | `pixel_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` Unchanged preserves the bit depth stored by the codec. |
 | `metadata_mode` | `"off"` | `off`, `read`, `apply_orientation` Read chunks, or also orient pixels. Oriented raw chunks are read-only. |
 
+## Decode multipage TIFF from memory (`cv.decode_pages`)
+
+Image processing / Codecs
+
+Inputs: `encoded` (any).
+
+Input `encoded` — EncodedPages packet, TIFF bytes or a uint8 vector. Top-left contiguous gray/RGB(A), uint8/16 or float32/64; none/LZW/Deflate/PackBits.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `start_page` | `0` | Value must be a whole number between 0 and 1023. Zero-based page in the container. |
+| `page_count` | `0` | Value must be a whole number between 0 and 64. Zero selects remaining strided pages, up to 64. Otherwise cap the count. |
+| `stride` | `1` | Value must be a whole number between 1 and 1024. Select every nth page; unselected pages are not decoded into pixel arrays. |
+| `preview_page` | `0` | Value must be a whole number between 0 and 63. Zero-based position within the selected subset shown by Image. |
+| `color_format` | `"unchanged"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` Unchanged restores typed logical order; raw bytes use native BGR/BGRA. |
+| `pixel_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` Unchanged preserves uint8/16 and float32/64; conversions use full scale. |
+| `maximum_pixels` | `16777216` | Value must be a whole number between 1 and 1.67772e+07. Total selected pixels, checked before native pixel decoding. |
+| `maximum_decoded_bytes` | `134217728` | Value must be a whole number between 1 and 1.34218e+08. Bound for selected sample/output buffers and per-page conversion workspace. Excludes encoded bytes, runtime snapshots and native codec internals. |
+
 ## Unpack RAW10 / RAW12 sensor frame (`cv.decode_raw_sensor`)
 
 Image processing / Color and depth
@@ -1996,6 +2015,22 @@ Input `metadata` — Optional ImageMetadata chunks for PNG/JPEG; readback verifi
 | `exr_storage` | `"float32"` | `float32`, `float16` EXR needs a capable OpenCV build. Float32 retains sample precision; float16 quantizes and requires values within Â±65504. |
 | `exr_compression` | `"zip"` | `no`, `rle`, `zips`, `zip`, `piz`, `pxr24`, `b44`, `b44a`, `dwaa`, `dwab` EXR codec. PXR24, B44/B44A and DWA variants can be lossy; ZIP is the default. |
 | `exr_dwa_level` | `45` | Value must be a whole number between 0 and 1000. EXR DWAA/DWAB compression level; unused by other compression modes. |
+
+## Encode multipage TIFF in memory (`cv.encode_pages`)
+
+Image processing / Codecs
+
+Inputs: `pages` (any).
+
+Input `pages` — Ordered FlowGroup of 1..64 gray/RGB(A)/BGR(A) images. Mixed sizes/depths allowed.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `compression` | `"none"` | `none`, `lzw`, `deflate`, `packbits` Requested lossless compression; Info reports the actual mode per page. The installed encoder uses None for float64 pages. |
+| `predictor` | `"native"` | `native`, `none`, `horizontal`, `floating` LZW/Deflate only; horizontal needs integers, floating needs floats. |
+| `rows_per_strip` | `0` | Value must be a whole number between 0 and 1.67772e+07. Zero uses the native strip height; otherwise set the strip height. |
+| `x_dpi` | `0` | Value must be a whole number between 0 and 1e+06. Set both DPI fields, or both zero. DPI does not set physical calibration. |
+| `y_dpi` | `0` | Value must be a whole number between 0 and 1e+06. Set both DPI fields, or both zero for codec defaults. |
 
 ## Generate QR labels (`cv.encode_qr`)
 

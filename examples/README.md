@@ -232,6 +232,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Image metadata round trips](<opencv tools/metadata_roundtrip/README.md>) | Preserve PNG/JPEG chunks, exact RGBA16 pixels and explicit EXIF orientation; verify fresh metadata after rotation and an unsupported-format failure. |
 | [Native QR label generation](<opencv tools/qr_encoding/README.md>) | Generate checked text/Unicode labels, explicit quiet zones and grouped structured parts; inspect native readback and a deliberate capacity failure. |
 | [Animated image codecs](<opencv tools/animation_codecs/README.md>) | Verify APNG/WebP pixels and frame timing, explicit GIF quantization, unbatch all frames for inspection, and preserve existing output files. |
+| [Multipage TIFF buffers](<opencv tools/multipage_memory/README.md>) | Transport mixed-size/depth pages with typed payloads or raw bytes, select strided subsets and verify exact samples and decode guards. |
 | [Large-radius stack smoothing](<opencv tools/stack_blur/README.md>) | Compare variance-matched Gaussian filtering, noise, edge width and local native-call timing; inspect selected writes, uint16 preservation and guarded integer arithmetic. |
 | [Pixel comparison](<opencv tools/pixel_comparison/README.md>) | Compare a background difference with a scalar to build a texture mask. |
 | [Polar field rotation](<opencv tools/polar_fields/README.md>) | Rotate a Sobel gradient field by 90 degrees while preserving its magnitude. |

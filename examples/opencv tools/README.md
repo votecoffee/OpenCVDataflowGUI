@@ -15,3 +15,5 @@ For a first introduction to running and editing graphs, use the
 contains project-defined inspection algorithms and other-library integrations.
 
 [All examples](../README.md)
+
+For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

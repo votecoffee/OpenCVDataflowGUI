@@ -794,6 +794,7 @@ def builtin_registry():
     from .matrix_svd import MatrixSVD
     from .metadata_blocks import CreateImageMetadata
     from .mqtt import MQTT_BLOCKS
+    from .multipage_blocks import MULTIPAGE_BLOCKS
     from .multiscale_ridges import MultiscaleRidges
     from .native_background import NATIVE_BACKGROUND_BLOCKS
     from .native_trackers import NATIVE_TRACKER_BLOCKS
@@ -898,6 +899,7 @@ def builtin_registry():
     registry = Registry()
     for block in (
         *ANIMATION_BLOCKS,
+        *MULTIPAGE_BLOCKS,
         Comment,
         DemoImage,
         RandomImage,

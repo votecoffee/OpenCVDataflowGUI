@@ -13,6 +13,8 @@ BINDINGS = {
     "input.animation_file": "Animation imreadanimation",
     "cv.decode_animation": "Animation imdecodeanimation",
     "cv.encode_animation": "Animation imencodeanimation imdecodeanimation",
+    "cv.encode_pages": "imencodemulti imdecodemulti",
+    "cv.decode_pages": "imdecodemulti",
     "output.animation_file": "Animation imwriteanimation imdecodeanimation",
     "cv.encode_qr": (
         "QRCodeEncoder_create QRCodeEncoder.encode QRCodeEncoder.encodeStructuredAppend"

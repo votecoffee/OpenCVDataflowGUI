@@ -21,6 +21,7 @@
 | Custom Python blocks | [Plugin skill](../skills/opencv-dataflow-plugins/SKILL.md), [plugin contract](../skills/opencv-dataflow-plugins/references/plugin-contract.md) |
 | Dialogs, captures and worker training | [Plugin dialogs](plugin-dialogs.md) |
 | Pixel formats and high-depth images | [Image formats](image-formats.md) |
+| Ordered multipage buffers, typed page metadata and decode limits | [Multipage TIFF in memory](multipage-memory.md) |
 | Regions, poses, pyramids and spatial provenance | [Workflow guide](workflow-guide.md), [architecture](architecture.md) |
 | Tickets, branching, batching and joins | [Control flow](control-flow.md), [input coordination](input-coordination.md) |
 | Acquisition queues and memory | [Input queues](input-queues.md), [sequence memory](sequence-memory.md) |

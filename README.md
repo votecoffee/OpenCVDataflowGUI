@@ -76,6 +76,8 @@ Use [connection health monitors](docs/connection-health.md) for independent ROS,
 MQTT, PLC and robot status with warning/alarm outputs and grouped diagnostics.
 Registered scans can use [multiband mosaics](docs/multiband-mosaics.md) for full
 images or bounded tiles while retaining source depth and coverage information.
+Use [multipage TIFF buffers](docs/multipage-memory.md) to pass ordered image
+groups with per-page tickets and coordinate metadata through graph connections.
 
 ## Architecture
 

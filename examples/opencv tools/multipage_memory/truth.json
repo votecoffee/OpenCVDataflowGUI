@@ -1,0 +1,41 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "asset_sha256": "525e6578648766e865b34540f45ef1beff41e8c241cbac4852f7d3e1cbd3ff09",
+  "pages": [
+    {
+      "size": [
+        72,
+        48
+      ],
+      "dtype": "uint8",
+      "channels": 1,
+      "samples_sha256": "4635b5ec035f7d3c1d5856dfd95b9fd784670850218b0c51f266ce9cfc35116b"
+    },
+    {
+      "size": [
+        64,
+        40
+      ],
+      "dtype": "uint16",
+      "channels": 3,
+      "samples_sha256": "fa17cb286cc59f324666f0f5b4d046ddf3c1ebd39bd3028675354b52fc689ece"
+    },
+    {
+      "size": [
+        56,
+        32
+      ],
+      "dtype": "float64",
+      "channels": 4,
+      "samples_sha256": "69e8674d9590ef5b7112aeecca9c9bd309fff2750a13f99763817461e2b35ff8"
+    }
+  ],
+  "cases": [
+    "typed_roundtrip",
+    "raw_roundtrip",
+    "selected_pages",
+    "pixel_budget_guard",
+    "predictor_guard"
+  ]
+}
