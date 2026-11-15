@@ -1,0 +1,27 @@
+{
+  "capture_id": "tless_scene000003_frame000010",
+  "accepted": false,
+  "raw_pose": {
+    "target_present": false,
+    "raw_pose_is_extra": true
+  },
+  "final_pose": {
+    "target_present": false,
+    "raw_pose_is_extra": true
+  },
+  "fit": {
+    "status": "rejected",
+    "reason": "fit_gates",
+    "coverage": 0.0,
+    "contradiction": 0.8137387998913929,
+    "rmse_m": null,
+    "rendered_samples": 11049,
+    "supported_samples": 0,
+    "unknown_samples": 2058,
+    "occluded_samples": 0,
+    "outside_target_samples": 360
+  },
+  "depth_refinement": null,
+  "pose_gt_entered_runtime": false,
+  "network_seconds": 0.31770269999833545
+}

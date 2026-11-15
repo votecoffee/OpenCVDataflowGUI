@@ -1,0 +1,31 @@
+{
+  "capture_id": "tless_scene000002_frame000013",
+  "accepted": false,
+  "raw_pose": {
+    "target_present": true,
+    "rotation_error_degrees": 3.247266349355688,
+    "translation_error_mm": 1.066973970539097,
+    "correct_5mm_5deg": true
+  },
+  "final_pose": {
+    "target_present": true,
+    "rotation_error_degrees": 3.247266349355688,
+    "translation_error_mm": 1.066973970539097,
+    "correct_5mm_5deg": true
+  },
+  "fit": {
+    "status": "rejected",
+    "reason": "fit_gates",
+    "coverage": 0.531805477920626,
+    "contradiction": 0.24818334264952488,
+    "rmse_m": 0.0029583636205643415,
+    "rendered_samples": 8945,
+    "supported_samples": 4757,
+    "unknown_samples": 1175,
+    "occluded_samples": 783,
+    "outside_target_samples": 93
+  },
+  "depth_refinement": null,
+  "pose_gt_entered_runtime": false,
+  "network_seconds": 0.3093833999992057
+}

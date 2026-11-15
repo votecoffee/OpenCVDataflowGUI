@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "locate",
+      "type": "3d.simple_gdrnpp",
+      "name": "SimpleGDRNPP \u00b7 retained-reference preview",
+      "parameters": {
+        "recipe_path": "assets/tless6.gdrnpp",
+        "sha256": "420de5ab5f14fcb4df6236d0845d774527c984ebca101c55f2d8d7785f46c80e",
+        "models_dir": "",
+        "mode": "Retained reference",
+        "depth_scale_to_m": 1.0,
+        "render_overlay": true,
+        "render_cloud": true
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "exposed_inputs": [
+        "image",
+        "depth",
+        "camera",
+        "detections",
+        "capture_id"
+      ],
+      "exposed_outputs": [
+        "report",
+        "pose",
+        "poses",
+        "accepted_count",
+        "overlay",
+        "cloud"
+      ]
+    }
+  ],
+  "connections": []
+}

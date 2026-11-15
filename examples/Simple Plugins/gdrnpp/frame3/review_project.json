@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fit",
+      "type": "input.cloud",
+      "name": "Recorded rejected pose / visible fit",
+      "parameters": {
+        "path": "fit.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Original RGB",
+      "parameters": {
+        "path": "source.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        450,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "overlay",
+      "type": "input.file",
+      "name": "Recorded pose proposal \u2014 REJECTED",
+      "parameters": {
+        "path": "overlay.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        900,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "SAVED REVIEW \u00b7 rejected pose",
+      "description": "Actual CPU GDRNPP inference with a supplied instance rectangle. File reads passing do not imply pose acceptance; no pose GT enters inference. T-LESS, Hodan et al., WACV 2017, CC BY 4.0. See report/evaluation JSON and credits.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": []
+    }
+  ],
+  "connections": []
+}
