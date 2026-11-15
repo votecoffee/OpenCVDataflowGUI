@@ -27,9 +27,11 @@ SHAPE_LABELS = {
 
 
 class KernelGrid(QAbstractTableModel):
-    def __init__(self, parent):
+    def __init__(self, parent, cell_values=(0, 1)):
         super().__init__(parent)
-        self.cells = np.empty((0, 0), dtype=np.uint8)
+        self.cell_values = tuple(cell_values)
+        self.cell_dtype = np.int8 if min(self.cell_values) < 0 else np.uint8
+        self.cells = np.empty((0, 0), dtype=self.cell_dtype)
 
     def rowCount(self, parent=QModelIndex()):
         return 0 if parent.isValid() else self.cells.shape[0]
@@ -45,8 +47,16 @@ class KernelGrid(QAbstractTableModel):
             return str(active)
         if role == Qt.ItemDataRole.TextAlignmentRole:
             return Qt.AlignmentFlag.AlignCenter
+        if role == Qt.ItemDataRole.ToolTipRole:
+            if -1 in self.cell_values:
+                return {
+                    1: "Foreground required (1)",
+                    -1: "Background required (-1)",
+                    0: "Don't care (0): this cell is ignored",
+                }[int(active)]
+            return "Active cell (1)" if active else "Ignored cell (0)"
         if active and role == Qt.ItemDataRole.BackgroundRole:
-            return QColor("#28557b")
+            return QColor("#8f3d32" if active == -1 else "#28557b")
         if active and role == Qt.ItemDataRole.ForegroundRole:
             return QColor("#ffffff")
         return None
@@ -57,7 +67,10 @@ class KernelGrid(QAbstractTableModel):
         self.endResetModel()
 
     def toggle(self, index):
-        self.cells[index.row(), index.column()] ^= 1
+        current = int(self.cells[index.row(), index.column()])
+        self.cells[index.row(), index.column()] = self.cell_values[
+            (self.cell_values.index(current) + 1) % len(self.cell_values)
+        ]
         self.dataChanged.emit(index, index)
 
 
@@ -68,12 +81,18 @@ class KernelEditor(QDialog):
         self.resize(460, 480)
         self._original = parameters
         self._make_kernel = block.kernel_matrix
+        self._cell_values = getattr(block, "kernel_cell_values", (0, 1))
+        self._cell_dtype = np.int8 if min(self._cell_values) < 0 else np.uint8
+        if -1 in self._cell_values:
+            self.setWindowTitle("Hit-or-miss kernel: foreground / background / ignore")
         try:
             self._custom = self._make_kernel({**parameters, "shape": "custom"})
-        except (TypeError, ValueError):
-            self._custom = np.empty((0, 0), dtype=np.uint8)
+        except TypeError, ValueError:
+            self._custom = np.empty((0, 0), dtype=self._cell_dtype)
         if parameters["shape"] == "custom":
-            initial = self._custom if self._custom.size else np.zeros((3, 3), dtype=np.uint8)
+            initial = (
+                self._custom if self._custom.size else np.zeros((3, 3), dtype=self._cell_dtype)
+            )
         else:
             initial = self._make_kernel(parameters)
         height, width = initial.shape
@@ -99,7 +118,7 @@ class KernelEditor(QDialog):
         self.anchor_x.setSpecialValueText("Centered")
         self.anchor_y.setSpecialValueText("Centered")
         self.table = QTableView()
-        self.grid = KernelGrid(self.table)
+        self.grid = KernelGrid(self.table, self._cell_values)
         self.table.setModel(self.grid)
         for header in (self.table.horizontalHeader(), self.table.verticalHeader()):
             header.hide()
@@ -165,7 +184,7 @@ class KernelEditor(QDialog):
             control.setEnabled(shape == "cross")
         if shape == "custom":
             source = self._custom if self._custom.size else self.grid.cells
-            cells = np.zeros((height, width), dtype=np.uint8)
+            cells = np.zeros((height, width), dtype=self._cell_dtype)
             rows, cols = min(height, source.shape[0]), min(width, source.shape[1])
             cells[:rows, :cols] = source[:rows, :cols]
             self._custom = cells
@@ -184,7 +203,15 @@ class KernelEditor(QDialog):
         valid = not custom or bool(self._custom.any())
         self.ok.setEnabled(valid)
         if not valid:
-            self.status.setText("Turn on at least one cell.")
+            self.status.setText(
+                "Set at least one foreground/background cell."
+                if -1 in self._cell_values
+                else "Turn on at least one cell."
+            )
+        elif custom and -1 in self._cell_values:
+            self.status.setText(
+                "Click or Space: 0 ignored, 1 foreground (blue), -1 background (red)."
+            )
         elif custom:
             self.status.setText("Click or press Space to toggle. 1 = active, 0 = ignored.")
         else:

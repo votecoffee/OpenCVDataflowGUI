@@ -2409,6 +2409,38 @@ Inputs: `image` (image).
 | `window` | `"hann"` | `hann`, `sqrt_hann` Square-root Hann matches OpenCV's phase-correlation coefficients. |
 | `precision` | `"auto"` | `auto`, `float32`, `float64` Auto uses float64 for float64 input and float32 otherwise. |
 
+## Hit-or-miss binary pattern (`cv.hit_or_miss`)
+
+Image processing / Morphology
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Nonempty uint8 monochrome binary image. Threshold grayscale/color upstream.
+
+Input `mask` — Optional uint8 selection of reported match centers; neighbors use the full image.
+
+Input `region` — Optional region intersected with Mask; filters match centers without cropping neighborhoods.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `shape` | `"custom"` | `rect`, `ellipse`, `cross`, `diamond`, `custom` Standard shapes require foreground at active cells. Custom allows ternary cells. |
+| `kernel` | `3` | Value must be a whole number between 1 and 255. Standard shape width, 1..255. Custom uses its actual grid dimensions. |
+| `kernel_y` | `0` | Value must be a whole number between 0 and 255. Standard shape height; zero uses the width. |
+| `shape_anchor` | `[-1, -1]` | Construction origin for Cross; separate from the match anchor. |
+| `custom_kernel` | `[[-1, 1, -1], [1, 1, 1], [-1, 1, -1]]` | 1 requires foreground, -1 requires background, 0 ignores a cell. Set at least one constraint. |
+| `anchor` | `[-1, -1]` | [x,y] reported match position within the kernel; -1 means centered per axis. |
+| `iterations` | `1` | Value must be a whole number between 1 and 100. Native erosions of foreground and background constraints; does not repeat the whole hit-or-miss operation. |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` Native extrapolation. Full kernel still excludes out-of-image footprints. |
+| `border_value` | `[]` | Empty uses native neutral borders; otherwise [0] or [255], applied independently to the image and its complement. |
+| `support` | `"full_kernel"` | `full_kernel`, `native_border` Full kernel requires the entire repeated footprint within the image. Native border keeps padded matches. |
+| `input_mode` | `"strict_binary"` | `strict_binary`, `nonzero` Strict accepts uint8 gray 0/1 or 0/255. Nonzero explicitly treats any nonzero uint8 sample as foreground. |
+| `polarity` | `"light"` | `light`, `dark` Light uses nonzero as foreground; Dark reverses foreground and background. |
+| `max_points` | `10000` | Value must be a whole number between 0 and 100000. Coordinate cap; excess matches are evenly sampled in row-major order. Zero omits coordinates. Mask and count stay complete. |
+| `max_graphics` | `200` | Value must be a whole number between 0 and 2000. Maximum markers from returned coordinates; also respects graphics-off. |
+| `check_count` | `false` | Enable an inspection judgment using the total selected match-pixel count. |
+| `minimum_count` | `0` | Value must be a whole number between 0 and 6.4e+07. Inclusive minimum when Check count is enabled. |
+| `maximum_count` | `-1` | Value must be a whole number between -1 and 6.4e+07. Inclusive maximum; -1 means no upper limit. |
+
 ## Inverse discrete cosine transform (IDCT) (`cv.idct`)
 
 Image processing / Spectral

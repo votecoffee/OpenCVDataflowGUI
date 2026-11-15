@@ -1,0 +1,139 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "image_size": [
+    112,
+    80
+  ],
+  "kernels": {
+    "isolated": [
+      [
+        -1,
+        -1,
+        -1
+      ],
+      [
+        -1,
+        1,
+        -1
+      ],
+      [
+        -1,
+        -1,
+        -1
+      ]
+    ],
+    "junctions": [
+      [
+        -1,
+        1,
+        -1
+      ],
+      [
+        1,
+        1,
+        1
+      ],
+      [
+        -1,
+        1,
+        -1
+      ]
+    ],
+    "right_endpoints": [
+      [
+        -1,
+        -1,
+        -1
+      ],
+      [
+        1,
+        1,
+        -1
+      ],
+      [
+        -1,
+        -1,
+        -1
+      ]
+    ],
+    "corners": [
+      [
+        -1,
+        1,
+        -1
+      ],
+      [
+        -1,
+        1,
+        1
+      ],
+      [
+        -1,
+        -1,
+        -1
+      ]
+    ]
+  },
+  "points": {
+    "isolated": [
+      [
+        12,
+        12
+      ],
+      [
+        36,
+        12
+      ],
+      [
+        60,
+        12
+      ]
+    ],
+    "junctions": [
+      [
+        20,
+        36
+      ],
+      [
+        52,
+        36
+      ]
+    ],
+    "right_endpoints": [
+      [
+        28,
+        64
+      ],
+      [
+        73,
+        64
+      ]
+    ],
+    "corners": [
+      [
+        84,
+        36
+      ]
+    ]
+  },
+  "native_border_extra": [
+    [
+      0,
+      0
+    ]
+  ],
+  "cases": [
+    "binary_patterns",
+    "dark_patterns",
+    "selected_centers",
+    "border_support",
+    "count_failure",
+    "invalid_binary"
+  ],
+  "asset_sha256": {
+    "dark.png": "a16aa0ffb9206aeaa557b1de26cca30a2cc2d970cdb01e755b4a99726d33abe9",
+    "invalid.png": "ec6695174a276e7b5fe70b55473a0e9835e3cd0492fdfc8a0c8d4beec668df6e",
+    "patterns.png": "49779666d00765b868f5626b2e01765db10d3e3ce1c020749a7016a4c757a20a"
+  }
+}

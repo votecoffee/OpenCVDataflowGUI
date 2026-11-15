@@ -752,6 +752,7 @@ def builtin_registry():
     )
     from .histogram import Histogram
     from .histogram_comparison import CompareHistograms, HistogramBackProjection
+    from .hit_miss import HitOrMiss
     from .hog import HOGFeatures
     from .illumination import AdaptiveBackgroundCorrection, FlatFieldCorrection
     from .image_blend import BlendWeightMaps
@@ -900,6 +901,7 @@ def builtin_registry():
     for block in (
         *ANIMATION_BLOCKS,
         *MULTIPAGE_BLOCKS,
+        HitOrMiss,
         Comment,
         DemoImage,
         RandomImage,

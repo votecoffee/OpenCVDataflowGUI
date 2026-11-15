@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/patterns.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        200
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "isolated",
+      "type": "cv.hit_or_miss",
+      "name": "Isolated",
+      "parameters": {
+        "shape": "custom",
+        "kernel": 3,
+        "kernel_y": 0,
+        "shape_anchor": [
+          -1,
+          -1
+        ],
+        "custom_kernel": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "anchor": [
+          -1,
+          -1
+        ],
+        "iterations": 1,
+        "border": "constant",
+        "border_value": [],
+        "support": "full_kernel",
+        "input_mode": "strict_binary",
+        "polarity": "light",
+        "max_points": 10000,
+        "max_graphics": 200,
+        "check_count": true,
+        "minimum_count": 1,
+        "maximum_count": 1
+      },
+      "position": [
+        750,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "points",
+        "count",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mask",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          25,
+          5,
+          41,
+          15
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        380,
+        550
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "circle",
+        "rectangle": [
+          0,
+          0,
+          100,
+          100
+        ],
+        "center": [
+          36,
+          12
+        ],
+        "radius": 6,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        380,
+        200
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Original fixture and expected matches",
+      "description": "Original synthetic images/projects by OpenCVDataflowGUI contributors, MIT. No customer or third-party images. A controlled 112x80 one-pixel fixture, not a physical inspection. Full support: isolated (12,12),(36,12),(60,12); cross junctions (20,36),(52,36); right endpoints (28,64),(73,64); north/east corner (84,36). The isolated pixel (0,0) is outside full-kernel support. Native neutral borders add it as a fourth match. The dark project inverts pixels and polarity. Selected centers intersects a mask with a circle and returns only (36,12). Count failure deliberately requires 4 full-support isolated pixels but finds 3: it emits a valid failed inspection and reason. Invalid binary has one gray 127 pixel and deliberately emits no processing outputs. Click Edit kernel for signed cells. Counts refer to matched anchor pixels, not connected parts. See truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -350
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "isolated",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "mask",
+      "input": "image"
+    },
+    {
+      "source": "mask",
+      "output": "mask",
+      "target": "isolated",
+      "input": "mask"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "isolated",
+      "input": "region"
+    }
+  ]
+}

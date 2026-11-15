@@ -70,7 +70,7 @@ _MODULE_ORDER = {
 IMPLEMENTATION_MODULES = {
     "imgproc": (
         "analysis_tools annotation basic_processing blocks collection_tools contour_raster "
-        "features focus_stacking generalized_hough "
+        "features focus_stacking generalized_hough hit_miss "
         "histogram histogram_comparison image_blend image_colorize path_strip "
         "logpolar_registration mask_boundary mask_resampling point_set_lines polar_image "
         "laplacian_pyramids processing differential_exposure "

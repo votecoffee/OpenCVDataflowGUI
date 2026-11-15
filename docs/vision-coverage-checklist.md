@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 138 | 14 | 23 | 175 | 78.9% |
+| 1. Core and baseline 2D | 139 | 14 | 22 | 175 | 79.4% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 201 | 56 | 213 | 470 | 42.8% |
+| **Overall** | 202 | 56 | 212 | 470 | 43.0% |
 
 <!-- coverage-summary:end -->
 
@@ -235,7 +235,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S1-149 | Multipage images on memory buffer ports | imdecodemulti and imencodemulti | Complete | cv.encode_pages and cv.decode_pages. Ordered mixed-size/depth gray/RGB(A) TIFF pages, immutable per-page ticket/spatial/pyramid/color/label sidecars, raw byte/vector transport, indexed/strided selection and preview, explicit format/depth/compression/predictor/strip/DPI controls. Exact native sample readback before encoding publication; bounded classic/BigTIFF directory, strip/tile, selected-pixel and conversion-workspace preflight. Five original MIT projects and independent integer TIFF/DPI readback. Limited to supported top-left contiguous baseline pages; float64 multichannel cross-reader metadata remains open in S1-125. |
 | S1-150 | Moving-region rejection in HDR brackets | Exposure alignment, consistency masks and supported HDR merge | Planned | Use brackets with one moving part. Report rejected support and verify that static detail remains usable without treating reconstructed pixels as measured. |
-| S1-151 | Binary hit-or-miss morphology | morphologyEx with MORPH_HITMISS and a ternary kernel | Planned | Expose foreground, background and don't-care kernel cells. Verify corners or junctions and reject incompatible encodings. |
+| S1-151 | Binary hit-or-miss morphology | morphologyEx with MORPH_HITMISS and a ternary kernel | Complete | cv.hit_or_miss. Visual signed foreground/background/ignore kernels and standard presets; strict binary or explicit nonzero/polarity modes, anchors, repeated erosions, full-footprint/native border support, mask/region center filtering, complete match masks/counts with bounded coordinates/graphics, count judgments/reasons and ticket/spatial/pyramid provenance. Independent Boolean references and six original MIT corner/endpoint/junction/isolation projects; signed editor staging, last-input preview, XML and contained input/native failures. |
 | S1-152 | Memory-efficient contour extraction | findContoursLinkRuns | Planned | Compare contours and hierarchy with the supported dense-mask reference on large sparse masks. Verify the native binary input and topology limits. |
 
 ### Codec preflight, random access and video tracking
