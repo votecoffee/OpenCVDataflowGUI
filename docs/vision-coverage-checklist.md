@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 136 | 16 | 23 | 175 | 77.7% |
+| 1. Core and baseline 2D | 137 | 15 | 23 | 175 | 78.3% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 199 | 58 | 213 | 470 | 42.3% |
+| **Overall** | 200 | 57 | 213 | 470 | 42.6% |
 
 <!-- coverage-summary:end -->
 
@@ -186,7 +186,7 @@ fixture or result needed to close the item.
 | S1-114 | Multi-format barcode decoding | ZXing image decoding adapter | Complete | inspect.read_zxing. Decode formats including Data Matrix with a repeatable fixture when the optional decoder is installed. |
 | S1-115 | Internal and external camera capture settings | VideoCapture property readback | Partial | input.camera exposes backend and capture settings. Report negotiated resolution, rate, format and unsupported requests using a controlled source fixture. |
 | S1-116 | Robust differential exposure compensation | Local brightness and contrast agreement on aligned images | Complete | inspect.differential_exposure. Robust local/global per-channel gain/offset, stable fitting selections independent of inspection, weighted support and gain/contrast/saturation guards. Raw and adjusted residuals precede integer clipping; explicit coverage and defect limits produce ticket reasons. Independent window least-squares and controlled lighting/20-pixel defect truth qualify masks, depth/encoding/alpha, provenance, XML/editor controls, graphics and contained failures. Four original examples include 16-bit color and inadequate support. |
-| S1-117 | Multi-view exposure seams and blending | detail exposure compensators, GraphCutSeamFinder, MultiBandBlender | Partial | cv.stitch_scan_sequence uses gain/offset, feathering and graph-cut seams. Verify multiband blending across overlapping tiles with bounded memory and preserved image depth. |
+| S1-117 | Multi-view exposure seams and blending | Overlap gain/offset, GraphCutSeamFinder, pyrDown/pyrUp, MultiBandBlender | Complete | cv.stitch_image_pair, cv.stitch_scan_sequence and cv.render_mosaic_tile add bounded multiband composition alongside existing exposure and graph-cut modes. Float64 support-normalized pyramids preserve uint16/float/RGBA until final casting; native CPU int16 blending exposes float/int16 weights for uint8 gray/RGB/BGR. Source-only pixels and original coverage are retained, tiled halos align the global decimation phase, and workspace is checked before pyramids/native prepare. Analytic/native/dense-versus-tiled references, masks, odd grids, HDR, controls, XML and contained failures are checked. Seven credited real-photo projects include exposure fitting and native-depth rejection. GPU/OpenCL remains unqualified. |
 | S1-118 | Resample coverage masks conservatively | Area sampling, explicit coverage threshold | Complete | cv.resample_mask. Bounded whole-grid pixel-cell area integration with uint8 nonzero or float fractional inputs, explicit inclusive/full/any-positive thresholds, float64 coverage, heatmap and resize geometry. Independent rational overlaps qualify reduction, enlargement, mixed axes, holes/stripes, partial pixels and coverage conservation; source tickets/recipes/spatial/pyramid provenance, target-frame guards, graphics-off, failures, XML/editor controls and three saved examples are checked. |
 | S1-119 | Correlation-based image comparison | computeECC and masked normalized correlation on aligned image pairs | Complete | inspect.image_correlation. Mask/region-selected ECC or normalized correlation, per-channel or grayscale comparison, minimum/mean aggregation, explicit constant-region policy and inclusive limits. Tests verify supported encodings/depths, raw-unit controls, numeric extremes, frames/tickets, residuals and graphics settings. An original intact/missing-bore fixture replays pass/fail cases. |
 | S1-120 | Transport distance between image histograms | EMD on image histograms | Complete | inspect.compare_histograms. Compare histogram signatures using the native transport distance and known distributions. |

@@ -264,6 +264,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Temporal non-local means](<opencv tools/temporal_nlm/README.md>) | Denoise the middle frame of a short sequence and preserve its ticket. |
 | [TIFF page sequence](<opencv tools/tiff_page_sequence/README.md>) | Replay a three-page 16-bit TIFF as separately ticketed images. |
 | [Tile image](<opencv tools/tile_image/README.md>) | Repeat a reference in a 2 × 3 grid and find all six copies with template matching. |
+| [Multiband inspection mosaics](<opencv tools/multiband_mosaic/README.md>) | Compare Float64/native composition, exposure gain and aligned tile halos on a real PCB photograph, with an explicit native-depth guard. |
 | [Tiled inspection mosaic](<opencv tools/tiled_scan_mosaic/README.md>) | Register twelve views and render bounded windows beyond dense-canvas limits, preserving source coordinates. |
 | [Tilted window statistics](<opencv tools/tilted_statistics/README.md>) | Measure two diagonal patches using batched 45-degree windows. |
 | [Transpose image](<opencv tools/transpose_image/README.md>) | Reflect a crop across its anti-diagonal and map points back to the original image. |
