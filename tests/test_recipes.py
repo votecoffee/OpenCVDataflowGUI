@@ -305,9 +305,7 @@ def test_manager_import_copy_revision_and_inspector_bindings(app, monkeypatch, a
 @pytest.mark.local_examples
 def test_legacy_arbitrary_recipe_metadata_remains_valid_and_unknown_revision_fails():
     registry = builtin_registry()
-    graph = Graph.load(
-        "examples/opencv tools/channels_pyramids/channels_pyramids.json", registry
-    )
+    graph = Graph.load("examples/opencv tools/channels_pyramids/channels_pyramids.json", registry)
     graph.run()
     assert all(b.state == "pass" for b in graph.blocks.values())
     a, _ = add_recipes(graph)
@@ -505,7 +503,13 @@ def test_saved_recipe_example_and_gui_version_activation(app, load_example, tmp_
     report = tmp_path / "report.json"
     assert (
         main(
-            ["examples/control flow tools/recipes/recipes.json", "--repeat", "2", "--report", str(report)]
+            [
+                "examples/control flow tools/recipes/recipes.json",
+                "--repeat",
+                "2",
+                "--report",
+                str(report),
+            ]
         )
         == 0
     )

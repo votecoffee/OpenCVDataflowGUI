@@ -33,7 +33,9 @@ def test_relocated_reference_inspection_replays_and_publishes_the_overlay(tmp_pa
         graph.close()
 
 
-def test_reference_trainer_restores_samples_and_stages_a_retrained_recipe(app, monkeypatch, tmp_path):
+def test_reference_trainer_restores_samples_and_stages_a_retrained_recipe(
+    app, monkeypatch, tmp_path
+):
     model_io = pytest.importorskip("opencv_simple_reference_inspect")
     read_image = pytest.importorskip("opencv_simple_reference_inspect.cli").read_image
     moved = tmp_path / "training"
@@ -66,7 +68,9 @@ def test_reference_trainer_restores_samples_and_stages_a_retrained_recipe(app, m
         assert block.parameters == original
         window.inspector.apply()
         assert not warnings and block.parameters["recipe_path"] != original["recipe_path"]
-        saved = model_io.load_model(moved / block.parameters["recipe_path"], sha256=block.parameters["sha256"])
+        saved = model_io.load_model(
+            moved / block.parameters["recipe_path"], sha256=block.parameters["sha256"]
+        )
         assert len(saved.samples) == 7 and saved.settings.absolute_threshold == 14
         window.inspector.open_plugin_dialog()
         assert len(window.inspector._plugin_dialog.samples) == 7

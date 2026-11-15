@@ -18,7 +18,9 @@ from opencv_dataflow.core import Graph
 EXAMPLE = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/reference_inspect"
 
 
-def click(canvas, point, *, button=Qt.MouseButton.LeftButton, modifiers=Qt.KeyboardModifier.NoModifier):
+def click(
+    canvas, point, *, button=Qt.MouseButton.LeftButton, modifiers=Qt.KeyboardModifier.NoModifier
+):
     QTest.mouseClick(canvas, button, modifiers, canvas.to_widget(point).toPoint())
 
 
@@ -93,9 +95,16 @@ def test_polygon_points_remain_editable_while_zooming_and_panning(app):
 
         position = canvas.to_widget([30, 25])
         prior = canvas.to_image(position)
-        event = QWheelEvent(position, canvas.mapToGlobal(position.toPoint()), QPoint(), QPoint(0, 120),
-                            Qt.MouseButton.NoButton, Qt.KeyboardModifier.NoModifier,
-                            Qt.ScrollPhase.NoScrollPhase, False)
+        event = QWheelEvent(
+            position,
+            canvas.mapToGlobal(position.toPoint()),
+            QPoint(),
+            QPoint(0, 120),
+            Qt.MouseButton.NoButton,
+            Qt.KeyboardModifier.NoModifier,
+            Qt.ScrollPhase.NoScrollPhase,
+            False,
+        )
         app.sendEvent(canvas, event)
         assert canvas._zoom == pytest.approx(1.25) and canvas.to_image(position) == prior
         drag(canvas, [30, 20], [33, 24])
@@ -117,7 +126,9 @@ def test_polygon_points_remain_editable_while_zooming_and_panning(app):
         editor.close()
 
 
-def test_mask_dialog_cancel_and_accept_flow_through_retraining_and_apply(app, monkeypatch, tmp_path):
+def test_mask_dialog_cancel_and_accept_flow_through_retraining_and_apply(
+    app, monkeypatch, tmp_path
+):
     editor_type = pytest.importorskip("opencv_simple_reference_inspect.qt_masks").MaskEditor
     model_io = pytest.importorskip("opencv_simple_reference_inspect")
     read_image = pytest.importorskip("opencv_simple_reference_inspect.cli").read_image
@@ -177,7 +188,9 @@ def test_mask_dialog_cancel_and_accept_flow_through_retraining_and_apply(app, mo
         assert block.parameters == original
         window.inspector.apply()
         assert not warnings and block.parameters["recipe_path"] != original["recipe_path"]
-        saved = model_io.load_model(moved / block.parameters["recipe_path"], sha256=block.parameters["sha256"])
+        saved = model_io.load_model(
+            moved / block.parameters["recipe_path"], sha256=block.parameters["sha256"]
+        )
         np.testing.assert_array_equal(saved.inspection_mask, desired)
         np.testing.assert_array_equal(saved.normalization_mask, old_stable)
         assert (moved / original["recipe_path"]).read_bytes() == original_bytes
@@ -192,10 +205,14 @@ def test_mask_dialog_cancel_and_accept_flow_through_retraining_and_apply(app, mo
 
 def test_unset_normalization_mask_edits_the_effective_inspection_region(app, monkeypatch, tmp_path):
     editor_type = pytest.importorskip("opencv_simple_reference_inspect.qt_masks").MaskEditor
-    trainer_type = pytest.importorskip("opencv_simple_reference_inspect.qt_training").ReferenceTrainingDialog
+    trainer_type = pytest.importorskip(
+        "opencv_simple_reference_inspect.qt_training"
+    ).ReferenceTrainingDialog
     from types import SimpleNamespace
 
-    trainer = trainer_type(None, {"recipe_path": "", "sha256": ""}, SimpleNamespace(project_dir=tmp_path))
+    trainer = trainer_type(
+        None, {"recipe_path": "", "sha256": ""}, SimpleNamespace(project_dir=tmp_path)
+    )
     try:
         trainer._append(np.zeros((80, 100), np.uint8), "Reference")
         trainer.inspection_mask = np.zeros((80, 100), bool)

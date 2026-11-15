@@ -25,18 +25,20 @@ def test_relocated_bead_project_reports_gaps_and_publishes_overlay(tmp_path):
         inspection = graph.blocks["inspection"]
         graph.run()
         assert inspection.state == "pass", inspection.error
-        assert inspection.last_result.outputs["mean_width"] == pytest.approx(12., abs=.2)
+        assert inspection.last_result.outputs["mean_width"] == pytest.approx(12.0, abs=0.2)
         graph.run()
         assert inspection.state == "fail", inspection.error
         result = inspection.last_result
-        assert result.outputs["longest_gap"] == pytest.approx(24., abs=2.)
+        assert result.outputs["longest_gap"] == pytest.approx(24.0, abs=2.0)
         assert {item["code"] for item in result.fail_reasons} == {
-            "gap_above_maximum", "station_out_of_tolerance",
+            "gap_above_maximum",
+            "station_out_of_tolerance",
         }
         assert result.outputs["trend"].shape == (292, 630, 3)
         rows = graph.filmstrip.snapshot()
         assert [(row["filename"], row["state"]) for row in rows] == [
-            ("reference.png", "pass"), ("bead.png", "fail"),
+            ("reference.png", "pass"),
+            ("bead.png", "fail"),
         ]
         assert all(row["override"] is not None and row["thumbnail"] for row in rows)
     finally:
@@ -80,7 +82,9 @@ def test_moved_weld_project_uses_wired_affine_transform(tmp_path):
         graph.connections = [wire for wire in graph.connections if wire.input != "pose"]
         graph.run()
         assert inspection.state == "fail", inspection.error
-        assert [item["code"] for item in inspection.last_result.fail_reasons] == ["station_out_of_tolerance"]
+        assert [item["code"] for item in inspection.last_result.fail_reasons] == [
+            "station_out_of_tolerance"
+        ]
     finally:
         graph.close()
 
@@ -98,23 +102,27 @@ def test_calibrated_bead_reopens_with_portable_plane_profile(tmp_path):
         assert block.state == "pass", block.error
         outputs = block.last_result.outputs
         assert outputs["mean_width"] > 30
-        assert outputs["mean_width_physical"] == pytest.approx(6., abs=.09)
+        assert outputs["mean_width_physical"] == pytest.approx(6.0, abs=0.09)
         report = outputs["physical_measurements"]
-        assert report["units"] == "mm" and report["path_length"] == pytest.approx(40.)
-        assert report["stations"][0]["center_offset"] == pytest.approx(1.3, abs=.04)
+        assert report["units"] == "mm" and report["path_length"] == pytest.approx(40.0)
+        assert report["stations"][0]["center_offset"] == pytest.approx(1.3, abs=0.04)
         assert outputs["physical_trend"].shape == (292, 630, 3)
         assert outputs["longest_gap_physical"] == 0
         for issue in ("width_below_minimum", "center_out_of_tolerance"):
             graph.run()
             assert block.state == "fail", block.error
             result = block.last_result
-            assert [item["code"] for item in result.fail_reasons] == ["physical_station_out_of_tolerance"]
+            assert [item["code"] for item in result.fail_reasons] == [
+                "physical_station_out_of_tolerance"
+            ]
             report = result.outputs["physical_measurements"]
             assert report["stations"][0]["issues"] == (issue,)
             overlay = result.outputs["overlay"]
             assert np.any(overlay[..., 2] > overlay[..., 1])
         block.execute({"image": graph.blocks["source"].last_result.outputs["image"]})
-        assert block.state == "error" and "Physical limits require a planar calibration" in block.error
+        assert (
+            block.state == "error" and "Physical limits require a planar calibration" in block.error
+        )
         assert block.last_result is None
     finally:
         graph.close()
@@ -134,7 +142,9 @@ def test_physical_limits_can_be_edited_and_staged_in_trainer(app, monkeypatch, t
     window = MainWindow()
     warnings, previews = [], []
     monkeypatch.setattr(window, "warn", warnings.append)
-    monkeypatch.setattr(trainer.MeasurementPreview, "exec", lambda self: previews.append(self.result))
+    monkeypatch.setattr(
+        trainer.MeasurementPreview, "exec", lambda self: previews.append(self.result)
+    )
     try:
         window.replace_graph(graph, project)
         window.inspector.select(block)
@@ -159,7 +169,9 @@ def test_physical_limits_can_be_edited_and_staged_in_trainer(app, monkeypatch, t
         app.processEvents()
 
 
-def test_calibrated_preview_selects_plane_station_and_keeps_draft_uncommitted(app, monkeypatch, tmp_path):
+def test_calibrated_preview_selects_plane_station_and_keeps_draft_uncommitted(
+    app, monkeypatch, tmp_path
+):
     trainer = pytest.importorskip("opencv_simple_path_width.qt_training")
     if not hasattr(trainer.PathWidthTrainingDialog, "_use_wired_calibration"):
         pytest.skip("Calibrated preview requires SimplePathWidth with preview calibration")
@@ -181,18 +193,20 @@ def test_calibrated_preview_selects_plane_station_and_keeps_draft_uncommitted(ap
         assert view.tabs.currentIndex() == 1
         # With perspective, the midpoint of the plane trend and the midpoint
         # of the pixel trend correspond to different image stations.
-        index = min(range(len(report.stations)), key=lambda i: abs(report.stations[i].distance - 20))
+        index = min(
+            range(len(report.stations)), key=lambda i: abs(report.stations[i].distance - 20)
+        )
         pixel_middle = min(
             range(len(view.result.stations)),
             key=lambda i: abs(view.result.stations[i].distance_px - view.result.path_length_px / 2),
         )
         assert index != pixel_middle
-        position = view.physical_trend.mapFromScene(QPointF(342.5, 90.))
+        position = view.physical_trend.mapFromScene(QPointF(342.5, 90.0))
         QTest.mouseClick(view.physical_trend.viewport(), Qt.MouseButton.LeftButton, pos=position)
         assert view.selected_station == index
         x, y = view.result.stations[index].point
-        assert view.marker.rect().center().x() == pytest.approx(x + .5)
-        assert view.marker.rect().center().y() == pytest.approx(y + .5)
+        assert view.marker.rect().center().x() == pytest.approx(x + 0.5)
+        assert view.marker.rect().center().y() == pytest.approx(y + 0.5)
         assert "mm" in view.windowTitle() and "width below minimum" in view.windowTitle()
         assert "width below minimum" in view.station_details.text()
         view.tabs.setCurrentIndex(0)
@@ -242,7 +256,9 @@ def test_calibrated_curve_replays_and_trainer_can_switch_scan_direction(app, mon
     window = MainWindow()
     warnings, previews = [], []
     monkeypatch.setattr(window, "warn", warnings.append)
-    monkeypatch.setattr(trainer.MeasurementPreview, "exec", lambda view: previews.append(view.result))
+    monkeypatch.setattr(
+        trainer.MeasurementPreview, "exec", lambda view: previews.append(view.result)
+    )
     try:
         window.replace_graph(graph, project)
         graph.run()
@@ -287,20 +303,22 @@ def test_calibrated_edge_bands_replay_and_preview(app, monkeypatch, tmp_path):
     window = MainWindow()
     warnings, previews = [], []
     monkeypatch.setattr(window, "warn", warnings.append)
-    monkeypatch.setattr(trainer.MeasurementPreview, "exec", lambda view: previews.append(view.result))
+    monkeypatch.setattr(
+        trainer.MeasurementPreview, "exec", lambda view: previews.append(view.result)
+    )
     try:
         window.replace_graph(graph, project)
         graph.run()
         assert pixel.state == "fail", pixel.error
         assert pixel.last_result.outputs["coverage"] == pytest.approx(26 / 161)
         assert plane.state == "pass", plane.error
-        assert plane.last_result.outputs["coverage"] == 1.
-        assert plane.last_result.outputs["mean_width_physical"] == pytest.approx(6., abs=.05)
+        assert plane.last_result.outputs["coverage"] == 1.0
+        assert plane.last_result.outputs["mean_width_physical"] == pytest.approx(6.0, abs=0.05)
 
         window.inspector.select(plane)
         window.inspector.open_plugin_dialog()
         dialog = window.inspector._plugin_dialog
-        assert float(dialog.fields["nominal_width_physical"].text()) == 6.
+        assert float(dialog.fields["nominal_width_physical"].text()) == 6.0
         assert float(dialog.fields["edge_search_radius_physical"].text()) == 1.2
         assert not dialog.fields["nominal_width"].text()
         dialog.fields["edge_search_radius_physical"].setText("1.3")
@@ -308,7 +326,7 @@ def test_calibrated_edge_bands_replay_and_preview(app, monkeypatch, tmp_path):
         assert not previews and "Attach a preview calibration" in dialog.status.text()
         dialog.wired_calibration_button.click()
         dialog.preview_button.click()
-        assert len(previews) == 1 and previews[0].coverage == 1.
+        assert len(previews) == 1 and previews[0].coverage == 1.0
         dialog.stage_button.click()
         assert plane.parameters["recipe_path"] == original
         window.inspector.apply()
@@ -347,16 +365,18 @@ def test_cross_scan_preview_tracks_measured_and_missing_stations(app, monkeypatc
         assert not image.isNull()
         view.tabs.setCurrentIndex(0)
         distance = result.stations[missing].distance_px
-        x = canvas.PLOT_LEFT + distance / result.path_length_px * (canvas.PLOT_RIGHT - canvas.PLOT_LEFT)
-        location = view.trend.mapFromScene(QPointF(x, 90.))
+        x = canvas.PLOT_LEFT + distance / result.path_length_px * (
+            canvas.PLOT_RIGHT - canvas.PLOT_LEFT
+        )
+        location = view.trend.mapFromScene(QPointF(x, 90.0))
         QTest.mouseClick(view.trend.viewport(), Qt.MouseButton.LeftButton, pos=location)
         assert view.selected_station == missing and view.station_number.value() == missing + 1
         assert "missing" in view.station_details.text()
         assert view.profile.image_item.pixmap().toImage() != image
         line = view.scan_line.line()
         x, y = result.stations[missing].point
-        assert line.center().x() == pytest.approx(x + .5)
-        assert line.center().y() == pytest.approx(y + .5)
+        assert line.center().x() == pytest.approx(x + 0.5)
+        assert line.center().y() == pytest.approx(y + 0.5)
         assert line.length() == pytest.approx(2 * view.settings.scan_half_width)
         selections.extend((measured, missing))
 
@@ -394,12 +414,12 @@ def test_station_spacing_replay_and_calibrated_training_preview(app, monkeypatch
     def preview(view):
         report = view.result.physical_measurements
         assert view.tabs.currentIndex() == 1
-        assert report.station_spacing == pytest.approx(2.)
-        view.select_station(.56, physical=True)
+        assert report.station_spacing == pytest.approx(2.0)
+        view.select_station(0.56, physical=True)
         index = view.selected_station
-        assert report.stations[index].distance == pytest.approx(23.)
+        assert report.stations[index].distance == pytest.approx(23.0)
         x, y = view.result.stations[index].point
-        assert view.marker.rect().center() == QPointF(x + .5, y + .5)
+        assert view.marker.rect().center() == QPointF(x + 0.5, y + 0.5)
         previews.append(report)
 
     monkeypatch.setattr(trainer.MeasurementPreview, "exec", preview)
@@ -411,15 +431,15 @@ def test_station_spacing_replay_and_calibrated_training_preview(app, monkeypatch
             outputs = block.last_result.outputs
             pixels = outputs["measurements"]
             physical = outputs["physical_measurements"]
-            assert len(pixels["stations"]) == 16 and physical["path_length"] == pytest.approx(40.)
+            assert len(pixels["stations"]) == 16 and physical["path_length"] == pytest.approx(40.0)
             intervals = np.diff([row["distance"] for row in physical["stations"]])
             if block is plane:
                 assert pixels["station_spacing_px"] is None
                 assert physical["station_spacing"] == pytest.approx(2.5)
                 assert intervals == pytest.approx(np.full(15, 2.5))
             else:
-                assert pixels["station_spacing_px"] == pytest.approx(9.09, abs=.01)
-                assert physical["station_spacing"] is None and np.ptp(intervals) > .9
+                assert pixels["station_spacing_px"] == pytest.approx(9.09, abs=0.01)
+                assert physical["station_spacing"] is None and np.ptp(intervals) > 0.9
 
         window.inspector.select(plane)
         window.inspector.open_plugin_dialog()
@@ -434,7 +454,12 @@ def test_station_spacing_replay_and_calibrated_training_preview(app, monkeypatch
         dialog.stage_button.click()
         window.inspector.apply()
         assert not warnings and plane.parameters["recipe_path"] != original
-        assert recipe_io.load_recipe(moved / plane.parameters["recipe_path"]).settings.station_spacing_physical == 2.
+        assert (
+            recipe_io.load_recipe(
+                moved / plane.parameters["recipe_path"]
+            ).settings.station_spacing_physical
+            == 2.0
+        )
     finally:
         window.dirty = False
         window.close()
@@ -512,12 +537,12 @@ def test_fixture_capture_stages_matching_pose_and_preserves_bead_offset(app, mon
     replay = Graph.load(project, builtin_registry())
     try:
         inspection = replay.blocks["width"]
-        for verdict, offset in (("pass", .5), ("pass", .5), ("fail", 4.5)):
+        for verdict, offset in (("pass", 0.5), ("pass", 0.5), ("fail", 4.5)):
             replay.run()
             assert inspection.state == verdict, inspection.error
             result = inspection.last_result.outputs["measurements"]
             assert result["coverage"] == 1
-            assert result["stations"][0]["center_offset_px"] == pytest.approx(offset, abs=.05)
+            assert result["stations"][0]["center_offset_px"] == pytest.approx(offset, abs=0.05)
     finally:
         replay.close()
 
@@ -540,7 +565,7 @@ def test_train_preview_stage_apply_and_restore(app, monkeypatch, tmp_path):
     def preview(self):
         self.show()
         app.processEvents()
-        position = self.trend.mapFromScene(QPointF(343., 90.))
+        position = self.trend.mapFromScene(QPointF(343.0, 90.0))
         QTest.mouseClick(self.trend.viewport(), Qt.MouseButton.LeftButton, pos=position)
         assert self.marker.rect().width() == 12
         assert self.cursor.isVisible()
@@ -570,17 +595,23 @@ def test_train_preview_stage_apply_and_restore(app, monkeypatch, tmp_path):
         midpoint = (vertices[index] + vertices[index + 1]) / 2
 
         def viewport_point(point):
-            return canvas.mapFromScene(QPointF(*point + .5))
+            return canvas.mapFromScene(QPointF(*point + 0.5))
 
-        QTest.mouseClick(canvas.viewport(), Qt.MouseButton.LeftButton,
-                         Qt.KeyboardModifier.ShiftModifier, viewport_point(midpoint))
+        QTest.mouseClick(
+            canvas.viewport(),
+            Qt.MouseButton.LeftButton,
+            Qt.KeyboardModifier.ShiftModifier,
+            viewport_point(midpoint),
+        )
         assert len(canvas.vertices) == len(vertices) + 1
         inserted = canvas.selected
-        adjusted = midpoint + [0., 2.]
+        adjusted = midpoint + [0.0, 2.0]
         QTest.mousePress(canvas.viewport(), Qt.MouseButton.LeftButton, pos=viewport_point(midpoint))
         QTest.mouseMove(canvas.viewport(), viewport_point(adjusted))
-        QTest.mouseRelease(canvas.viewport(), Qt.MouseButton.LeftButton, pos=viewport_point(adjusted))
-        np.testing.assert_allclose(canvas.vertices[inserted], adjusted, atol=1.)
+        QTest.mouseRelease(
+            canvas.viewport(), Qt.MouseButton.LeftButton, pos=viewport_point(adjusted)
+        )
+        np.testing.assert_allclose(canvas.vertices[inserted], adjusted, atol=1.0)
         QTest.keyClick(canvas, Qt.Key.Key_Delete)
         np.testing.assert_allclose(canvas.vertices, vertices)
         canvas.reverse()
@@ -597,7 +628,9 @@ def test_train_preview_stage_apply_and_restore(app, monkeypatch, tmp_path):
         restored = window.inspector._plugin_dialog
         assert not warnings
         np.testing.assert_array_equal(restored.reference, reference)
-        np.testing.assert_allclose(restored.canvas.vertices, np.vstack((vertices[0], vertices[:0:-1])))
+        np.testing.assert_allclose(
+            restored.canvas.vertices, np.vstack((vertices[0], vertices[:0:-1]))
+        )
     finally:
         window.dirty = False
         window.close()

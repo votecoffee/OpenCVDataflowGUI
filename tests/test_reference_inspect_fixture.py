@@ -12,10 +12,15 @@ from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 
-EXAMPLE = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/reference_inspect/fixture_capture"
+EXAMPLE = (
+    Path(__file__).resolve().parents[1]
+    / "examples/Simple Plugins/reference_inspect/fixture_capture"
+)
 
 
-def test_pose_capture_rejects_stale_frames_and_reopens_with_retained_support(app, monkeypatch, tmp_path):
+def test_pose_capture_rejects_stale_frames_and_reopens_with_retained_support(
+    app, monkeypatch, tmp_path
+):
     trainer_module = pytest.importorskip("opencv_simple_reference_inspect.qt_training")
     if not hasattr(trainer_module.ReferenceTrainingDialog, "_capture_pose"):
         pytest.skip("Fixture capture requires SimpleReferenceInspect with paired pose capture")
@@ -67,7 +72,9 @@ def test_pose_capture_rejects_stale_frames_and_reopens_with_retained_support(app
         trainer.inspection_mask = np.ones_like(region)
         trainer._invalidate()
         trainer.train_button.click()
-        assert trainer.model is None and "does not cover both training masks" in trainer.status.text()
+        assert (
+            trainer.model is None and "does not cover both training masks" in trainer.status.text()
+        )
         trainer.inspection_mask = region
         trainer.train_button.click()
         assert trainer.model is not None, trainer.status.text()
@@ -84,7 +91,9 @@ def test_pose_capture_rejects_stale_frames_and_reopens_with_retained_support(app
         window.inspector.apply()
         assert not warnings and block.parameters["recipe_path"] != original["recipe_path"]
         graph.save(project)
-        saved = model_io.load_model(moved / block.parameters["recipe_path"], sha256=block.parameters["sha256"])
+        saved = model_io.load_model(
+            moved / block.parameters["recipe_path"], sha256=block.parameters["sha256"]
+        )
         np.testing.assert_array_equal(saved.reference_fixture, [[1, 0, 17], [0, 1, 17]])
         np.testing.assert_array_equal(saved.sample_support[-1], support)
         window.inspector.open_plugin_dialog()
@@ -125,19 +134,27 @@ def test_rotated_fixture_pose_maps_into_the_original_reference_grid():
 
     model = model_io.load_model(EXAMPLE / "assets/reference.sri")
     source = read_image(EXAMPLE / "assets/nominal.png")
-    transform = cv2.getRotationMatrix2D((128, 96), 5., 1.)
-    current = transform @ np.vstack((model.reference_fixture, [0., 0., 1.]))
+    transform = cv2.getRotationMatrix2D((128, 96), 5.0, 1.0)
+    current = transform @ np.vstack((model.reference_fixture, [0.0, 0.0, 1.0]))
     moved = cv2.warpAffine(source, transform, source.shape[::-1])
-    payload = {"spatial": frame(list(source.shape[::-1]), "rotated-camera"), "ticket": TicketClock().issue("camera")}
+    payload = {
+        "spatial": frame(list(source.shape[::-1]), "rotated-camera"),
+        "ticket": TicketClock().issue("camera"),
+    }
     image = ValuePacket(image_with_payload(moved, payload), payload)
-    pose = ValuePacket(make_pose(np.vstack((current, [0., 0., 1.])), list(source.shape[::-1]), payload), payload)
+    pose = ValuePacket(
+        make_pose(np.vstack((current, [0.0, 0.0, 1.0])), list(source.shape[::-1]), payload), payload
+    )
     fixture = integration.fixture_for_capture(image, pose)
     captured = integration.relative_fixture(fixture, model.reference_fixture)
     runtime = integration.reference_to_image(pose.value, image.value, model.reference_fixture)
     np.testing.assert_allclose(captured, runtime)
     assert model.inspect(moved, reference_to_image=runtime).passed
 
-def test_empty_training_teaches_its_reference_pose_and_removal_clears_it(app, monkeypatch, tmp_path):
+
+def test_empty_training_teaches_its_reference_pose_and_removal_clears_it(
+    app, monkeypatch, tmp_path
+):
     trainer_module = pytest.importorskip("opencv_simple_reference_inspect.qt_training")
     if not hasattr(trainer_module.ReferenceTrainingDialog, "_capture_pose"):
         pytest.skip("Fixture capture requires SimpleReferenceInspect with paired pose capture")
@@ -168,11 +185,15 @@ def test_empty_training_teaches_its_reference_pose_and_removal_clears_it(app, mo
         trainer.capture_pose_button.click()
         assert "empty training set" in trainer.status.text() and len(trainer.samples) == 1
         trainer._remove()
-        assert not trainer.samples and not trainer.sample_support and trainer.reference_fixture is None
+        assert (
+            not trainer.samples and not trainer.sample_support and trainer.reference_fixture is None
+        )
         assert trainer.inspection_mask is trainer.normalization_mask is None
         trainer.capture_pose_button.click()
         trainer.new_set_button.click()
-        assert not trainer.samples and not trainer.sample_support and trainer.reference_fixture is None
+        assert (
+            not trainer.samples and not trainer.sample_support and trainer.reference_fixture is None
+        )
         trainer.capture_pose_button.click()
         trainer.train_button.click()
         assert trainer.model is not None, trainer.status.text()
