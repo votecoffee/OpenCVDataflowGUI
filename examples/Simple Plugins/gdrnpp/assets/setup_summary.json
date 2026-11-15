@@ -1,0 +1,56 @@
+{
+  "schema": "simple_gdrnpp_setup_summary/v1",
+  "name": "T-LESS CAD-6 PBR CPU pilot",
+  "content_sha256": "da8ea8a4d49b3597fd68c38288b60580fe170272eb4a12e62a44ac321111f218",
+  "binding": {
+    "provider": "GDRNPP",
+    "dataset": "T-LESS",
+    "object_id": 6,
+    "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+    "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+    "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+    "checkpoint_bytes": 410204745,
+    "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+  },
+  "units": "m",
+  "model_frame": "tless_object6",
+  "camera_frame": "camera",
+  "reference_capture_id": "tless_scene000002_frame000013",
+  "image_size": [
+    720,
+    540
+  ],
+  "reference_detections": [
+    {
+      "identifier": "supplied_instance",
+      "box": [
+        287.0,
+        92.0,
+        376.0,
+        236.0
+      ],
+      "object_id": 6,
+      "score": null,
+      "source": "published_visible_mask_bbox"
+    }
+  ],
+  "symmetry_count": 2,
+  "settings": {
+    "threads": 4,
+    "batch_size": 1,
+    "distance_tolerance_m": 0.005,
+    "minimum_coverage": 0.7,
+    "maximum_contradiction": 0.1,
+    "depth_refine": false,
+    "maximum_correction_m": 0.02
+  },
+  "credit": {
+    "dataset": "T-LESS",
+    "license": "CC BY 4.0",
+    "url": "https://cmp.felk.cvut.cz/t-less/",
+    "attribution": "T. Hodan, P. Haluza, S. Obdrzalek, J. Matas, M. Lourakis and X. Zabulis. T-LESS: An RGB-D Dataset for 6D Pose Estimation of Texture-less Objects. WACV 2017.",
+    "modifications": "Retained RGB-D/CAD in metric arrays; externally supplied visible-mask bounding rectangle. No pose ground truth enters setup or inference."
+  },
+  "weights_bundled": false,
+  "network_training": false
+}
