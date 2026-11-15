@@ -154,3 +154,27 @@ def test_cip_uses_read_only_identity_service_and_always_closes(monkeypatch):
     assert request["service"] == pycomm3.Services.get_attributes_all
     assert request["class_code"] == pycomm3.ClassCode.identity_object
     assert request["instance"] == 1 and request["connected"] is False
+    assert request["unconnected_send"] is True  # Routed backplane identity.
+
+
+def test_direct_cip_device_does_not_require_an_unconnected_send_router(monkeypatch):
+    pycomm3 = pytest.importorskip("pycomm3")
+    requests = []
+
+    class Client:
+        def __init__(self, route):
+            assert route == "example"
+
+        def open(self):
+            return True
+
+        def generic_message(self, **request):
+            requests.append(request)
+            return SimpleNamespace(value={"serial": 2})
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(pycomm3, "CIPDriver", Client)
+    assert cip_identity("example", 1) == {"serial": 2}
+    assert requests[0]["unconnected_send"] is False

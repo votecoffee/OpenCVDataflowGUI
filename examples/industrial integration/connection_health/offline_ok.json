@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "health",
+      "type": "example.recorded_connection_health",
+      "name": "Replay connection health (offline)",
+      "parameters": {
+        "enabled": true,
+        "poll_interval_seconds": 2.0,
+        "timeout_seconds": 2.0,
+        "fail_on_alarm": true,
+        "include_logs": false,
+        "stale_after_seconds": 10.0,
+        "recorded_state": "ok"
+      },
+      "position": [
+        420,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "ok",
+        "warning",
+        "alarm",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Source and monitoring scope",
+      "description": "Original data-only example by OpenCVDataflowGUI contributors (MIT). No customer data or images. Status is not a physical acceptance result. OFFLINE REPLAY: explicitly load this folder's trusted plugin.py first. It returns authored observations and performs no network I/O. Green=OK, yellow=resource warning with endpoint responsive, red=protocol alarm. This disconnected block runs without image inputs.",
+      "parameters": {},
+      "position": [
+        0,
+        -100
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

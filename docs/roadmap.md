@@ -41,7 +41,7 @@ The subsequent `05d6be3` integration adds eight 3D line examples and a version-2
 recipe Save As regression. Seventeen focused line/asset checks passed after that
 integration; the broad suite was not repeated for these examples.
 
-The current cycle has **15 targeted increments of about 20** completed:
+The current cycle has **16 targeted increments of about 20** completed:
 animated image codec round trips (S1-111), large-radius smoothing (S1-159),
 assistant application authoring with connected-input plugin captures, the
 SimpleITK medical image/metadata foundation, optional ROS 2 Lyrical/Fast DDS
@@ -52,7 +52,8 @@ ordered timestamp pairing of ROS image streams, explicit CameraInfo intensity
 rectification, source ROI/binning with independent rectified output grids,
 conservative area-coverage mask resizing (S1-118), and paired differential exposure
 compensation with defect residuals (S1-116), and frozen-reference camera health
-monitoring with foreground suppression and trained fiducials.
+monitoring with foreground suppression and trained fiducials, and independent
+connection-health monitors with endpoint diagnostics.
 The animation increment's **108 targeted checks** cover
 file/buffer, timing, format, provenance, XML, editor and saved examples.
 All **12 installed Debug/Lean CLI runs** reproduced their expected outcomes,
@@ -106,6 +107,31 @@ controls, local links and Python 3.12 worker syntax were checked. The app was
 reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
+
+**Connection health monitors** now provide ROS 2, MQTT, EtherNet/IP, ControlLogix
+and FANUC status without image inputs or required graph connections. Protocol
+failures alarm red; responding endpoints with failing configured resources warn
+amber. Critical ROS node/service absence also alarms. Optional read-only empty
+GetParameters calls distinguish advertised from responsive ROS services; other
+service types use discovery only. Thumbnails show the latest observation and
+turn amber when stale, including in Lean mode. Hidden optional outputs, explicit
+fail-on-alarm, interval caching and grouped endpoint logs support supervision
+without creating image tickets. See [contracts and limitations](connection-health.md)
+and [eight disabled/offline projects](<../examples/industrial integration/connection_health/README.md>).
+Verification passed **164 focused protocol/runtime/scheduling/diagnostic/editor
+checks** and **four native localhost Lyrical/Fast DDS checks**. Real local Paho
+handshakes distinguish rejected subscriptions, missing/retained messages and
+missing CONNACK. Native ROS checks cover receipt freshness, QoS/interface faults,
+read-only service responses, an advertised but unresponsive service, worker
+failure/recovery and cleanup. CIP/FANUC read paths use controlled replies; no
+physical PLC/robot acceptance is claimed. All **16 installed Debug/Lean CLI
+outcomes** matched (two activations each), including intentional offline alarms.
+Deterministic project regeneration, strict JSON, text contracts, local links and
+wheel contents were checked; the app was reinstalled. No broad suite was repeated
+and no OpenCV coverage count changed. A supervisor independent of blocked graph
+iterations, additional service-specific read-only probes and shared transport
+pooling remain future work; current monitoring is explicitly scheduled by graph
+activations.
 
 **Camera health monitoring** (`inspect.camera_health`) now compares each image
 with an explicitly trained, immutable reference/history. Background tracking

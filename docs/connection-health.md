@@ -52,10 +52,16 @@ tickets. Warnings never fail the monitor automatically.
 decentralized: with no remote expectations configured, green means the local
 participant and observer executor are running. Required nodes use fully qualified
 names; required services use `{ "name": "/driver/health", "type": "std_srvs/srv/Trigger" }`.
-Missing required nodes/services are red. Service checking is **discovery only**;
-it never calls a service and cannot establish that an advertised service responds
-to requests. The [rclpy graph API](https://docs.ros.org/en/rolling/p/rclpy/api/node.html)
-defines those discovery observations.
+Missing required nodes/services are red. Service checking defaults to discovery.
+For a standard parameter service, for example `/camera/driver/get_parameters`
+with type `rcl_interfaces/srv/GetParameters`, set `"check_response": true` to
+require a bounded, read-only response to an empty names request. An advertised
+but unresponsive service then alarms while the local participant stays connected.
+Pending requests are removed/canceled after the check window. No parameter values
+are read or changed. Other service types use discovery only and cannot establish
+response health; arbitrary Trigger, motion or application services are not called.
+The [rclpy graph API](https://docs.ros.org/en/rolling/p/rclpy/api/node.html) defines
+the discovery observations.
 
 Topics use objects such as
 `{ "name": "/camera/image", "type": "sensor_msgs/msg/Image", "minimum_publishers": 1, "max_age_seconds": 2 }`.

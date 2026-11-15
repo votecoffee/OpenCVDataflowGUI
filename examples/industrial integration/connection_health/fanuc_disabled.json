@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "health",
+      "type": "industrial.fanuc_health",
+      "name": "Monitor FANUC health",
+      "parameters": {
+        "enabled": false,
+        "poll_interval_seconds": 2.0,
+        "timeout_seconds": 2.0,
+        "fail_on_alarm": false,
+        "include_logs": false,
+        "stale_after_seconds": 10.0,
+        "profile": "",
+        "robot_id": "robot",
+        "group": 1,
+        "registers": [
+          "R[1]"
+        ]
+      },
+      "position": [
+        420,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "ok",
+        "warning",
+        "alarm",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Source and monitoring scope",
+      "description": "Original data-only example by OpenCVDataflowGUI contributors (MIT). No customer data or images. Status is not a physical acceptance result. REAL-PROTOCOL TEMPLATE: monitoring disabled. Configure the intended endpoint and enable only when ready to make read-only probes. These documentation IPs are placeholders. ROS checks discovery, observer receipts and optional read-only empty GetParameters responses. FANUC needs a local Workbench profile. No outputs, parameters or motion are written.",
+      "parameters": {},
+      "position": [
+        0,
+        -100
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

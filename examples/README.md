@@ -96,6 +96,9 @@ See the [Simple Plugins guide](<Simple Plugins/README.md>) for setup, real-data 
 
 ## Industrial integration
 
+[Connection health examples](<industrial integration/connection_health/README.md>)
+include five disabled endpoint templates and three explicit offline status replays.
+
 See the [industrial integration guide](<industrial integration/README.md>) for PLC, robot and MQTT examples. Hardware templates open with controller access disabled.
 
 | Example | Demonstrates |

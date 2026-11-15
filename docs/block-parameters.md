@@ -4586,7 +4586,7 @@ Industrial integration / ROS 2
 | --- | --- | --- |
 | `enabled` | `false` | Permit read-only network probes during Run/Continuous. No I/O when disabled. |
 | `poll_interval_seconds` | `2.0` | Value must be a finite number between 0.1 and 3600. Minimum interval between probes; each graph cycle emits status. |
-| `timeout_seconds` | `2.0` | Value must be a finite number between 0.1 and 30. Discovery observation window for each check; worker RPC is bounded. |
+| `timeout_seconds` | `2.0` | Value must be a finite number between 0.1 and 30. Discovery/response observation window; worker RPC is bounded. |
 | `fail_on_alarm` | `false` | Also fail the graph inspection on a red status; off by default. |
 | `include_logs` | `false` | Include up to twenty recent diagnostics from blocks on the same endpoint. |
 | `stale_after_seconds` | `10.0` | Value must be a finite number between 0.1 and 7200. Thumbnail becomes amber when its last check is older than this. Must be at least the polling interval; outputs update during runs. |
@@ -4595,7 +4595,7 @@ Industrial integration / ROS 2
 | `discovery_range` | `"localhost"` | `localhost`, `subnet` Localhost for local testing; subnet for configured remote ROS peers. |
 | `startup_timeout_seconds` | `30.0` | Value must be a finite number between 1 and 60. Bounded time to start the configured trusted Lyrical worker. |
 | `required_nodes` | `[]` | Fully qualified names, e.g. ["/camera/driver"]. Missing nodes alarm. |
-| `required_services` | `[]` | List of {"name":"/driver/health","type":"std_srvs/srv/Trigger"}. Discovery only; missing services alarm. No service is called. |
+| `required_services` | `[]` | List of {"name":"/driver/health","type":"std_srvs/srv/Trigger"}. Discovery by default; missing services alarm. check_response=true is supported only for read-only rcl_interfaces/srv/GetParameters with an empty names request. |
 | `topics` | `[]` | List of {"name":"/camera/image","type":"sensor_msgs/msg/Image","minimum_publishers":1,"max_age_seconds":2}. Resource faults warn. Age zero disables receipt freshness checks; payloads are discarded. |
 | `reliability` | `"best_effort"` | `reliable`, `best_effort` Reliability requested by observer subscriptions; affects matching. |
 | `durability` | `"volatile"` | `volatile`, `transient_local` Durability requested by observer subscriptions. |

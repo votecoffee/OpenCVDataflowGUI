@@ -181,6 +181,22 @@ def test_ros_resource_validation(parameters):
     assert block.execute({}) is None and block.error_kind == "invalid"
 
 
+@pytest.mark.parametrize(
+    "service",
+    [
+        {"name": "/robot/trigger", "type": "std_srvs/srv/Trigger", "check_response": True},
+        {
+            "name": "/driver/get_parameters",
+            "type": "rcl_interfaces/srv/GetParameters",
+            "check_response": 1,
+        },
+    ],
+)
+def test_ros_response_checks_reject_arbitrary_or_nonboolean_service_calls(service):
+    block = ROSHealth(parameters={"required_services": [service]})
+    assert block.execute({}) is None and block.error_kind == "invalid"
+
+
 def test_logix_rechecks_protocol_after_a_tag_failure(monkeypatch):
     identities = []
     monkeypatch.setattr(providers, "cip_identity", lambda *a: identities.append(a) or {"serial": 1})
@@ -234,6 +250,37 @@ def test_fanuc_separates_register_fault_from_controller_fault(monkeypatch, tmp_p
     report = providers.FanucProbe().check(p, tmp_path, lambda: False)
     assert report["connected"] and report["resources"][0]["state"] == "warning"
     assert calls == ["core.controller.status", "core.registers.read", "core.controller.status"]
+
+
+def test_healthy_logix_tag_channel_is_reused_and_closed(monkeypatch):
+    opened, closed = [], []
+    monkeypatch.setattr(providers, "cip_identity", lambda *a: {"serial": 1})
+
+    def open_client(*args):
+        opened.append(args)
+        return SimpleNamespace(
+            read=lambda *a: SimpleNamespace(tag="Good", value=1, error=None),
+            close=lambda: closed.append(True),
+        )
+
+    monkeypatch.setattr(providers.logix, "open_logix", open_client)
+    probe = providers.LogixProbe()
+    p = {"route": "example/0", "timeout_seconds": 1, "tags": ["Good"]}
+    for _ in range(2):
+        assert probe.check(p, None, lambda: False)["resources"][0]["state"] == "ok"
+    assert len(opened) == 1 and not closed
+    probe.close()
+    assert closed == [True]
+
+
+def test_removing_a_peer_updates_diagnostic_membership_immediately():
+    registry, graph = builtin_registry(), Graph()
+    monitor = graph.add(registry.create("industrial.mqtt_health", block_id="monitor"))
+    peer = graph.add(registry.create("input.mqtt", block_id="peer"))
+    assert monitor.related_log_sources() == {"monitor", "peer"}
+    graph.remove(peer.id)
+    assert monitor.related_log_sources() == {"monitor"}
+    graph.close()
 
 
 def test_saved_monitors_optional_ports_xml_and_graphics_off(tmp_path):

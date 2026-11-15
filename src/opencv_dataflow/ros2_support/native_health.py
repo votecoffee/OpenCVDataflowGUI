@@ -12,6 +12,7 @@ class HealthEndpoint:
         self.closed, self.error = False, None
         self.lock = threading.Lock()
         self.config, self.topics = config, {}
+        self.service_clients, self.service_calls = {}, {}
         if (
             os.environ.get("ROS_DISTRO") != "lyrical"
             or os.environ.get("RMW_IMPLEMENTATION") != "rmw_fastrtps_cpp"
@@ -34,6 +35,17 @@ class HealthEndpoint:
                 namespace=config["namespace"],
                 use_global_arguments=False,
             )
+            for row in config["required_services"]:
+                if row.get("check_response"):
+                    if row["type"] != "rcl_interfaces/srv/GetParameters":
+                        raise ValueError(
+                            "Only read-only GetParameters response probes are supported"
+                        )
+                    from rcl_interfaces.srv import GetParameters
+
+                    self.service_clients[row["name"]] = self.node.create_client(
+                        GetParameters, row["name"]
+                    )
             qos = QoSProfile(
                 depth=1,
                 reliability=ReliabilityPolicy.RELIABLE
@@ -103,14 +115,38 @@ class HealthEndpoint:
             add(name, found, "Node discovered" if found else "Required node not discovered", True)
         for row in self.config["required_services"]:
             found = row["type"] in services.get(row["name"], [])
+            called, responded = False, None
+            if row.get("check_response") and found:
+                client = self.service_clients[row["name"]]
+                if client.service_is_ready():
+                    from rcl_interfaces.srv import GetParameters
+
+                    if row["name"] not in self.service_calls:
+                        self.service_calls[row["name"]] = client.call_async(GetParameters.Request())
+                    future = self.service_calls[row["name"]]
+                    called = True
+                    responded = (
+                        future.done()
+                        and future.exception() is None
+                        and future.result() is not None
+                        and len(future.result().values) == 0
+                    )
+                else:
+                    responded = False
+            ok = found and (not row.get("check_response") or responded is True)
             add(
                 row["name"],
-                found,
-                "Service discovered (not called)"
-                if found
-                else "Required service/type not discovered",
+                ok,
+                "Required service/type not discovered"
+                if not found
+                else "Read-only GetParameters response confirmed"
+                if responded is True
+                else "Read-only service did not return a valid response"
+                if row.get("check_response")
+                else "Service discovered (not called)",
                 True,
-                service_called=False,
+                service_called=called,
+                response_confirmed=responded,
             )
         for row in self.config["topics"]:
             state = self.topics[row["name"]]
@@ -152,11 +188,19 @@ class HealthEndpoint:
 
     def health(self, timeout):
         end = time.monotonic() + min(30, max(0, float(timeout)))
-        while True:
-            value = self.snapshot()
-            if all(r["state"] == "ok" for r in value["resources"]) or time.monotonic() >= end:
-                return value
-            time.sleep(min(0.02, max(0, end - time.monotonic())))
+        self.service_calls = {}
+        try:
+            while True:
+                value = self.snapshot()
+                if all(r["state"] == "ok" for r in value["resources"]) or time.monotonic() >= end:
+                    return value
+                time.sleep(min(0.02, max(0, end - time.monotonic())))
+        finally:
+            for name, future in self.service_calls.items():
+                if not future.done():
+                    self.service_clients[name].remove_pending_request(future)
+                    future.cancel()
+            self.service_calls = {}
 
     def close(self):
         if self.closed:

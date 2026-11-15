@@ -135,7 +135,7 @@ def cip_identity(route, timeout):
             class_code=ClassCode.identity_object,
             instance=1,
             connected=False,
-            unconnected_send=True,
+            unconnected_send="/" in route.strip("/"),
             route_path=True,
             data_type=ModuleIdentityObject,
             name="health_identity",

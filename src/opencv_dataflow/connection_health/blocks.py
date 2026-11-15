@@ -325,11 +325,12 @@ class ROSHealth(ConnectionHealth):
         **ConnectionHealth.parameter_help,
         "required_nodes": 'Fully qualified names, e.g. ["/camera/driver"]. Missing nodes alarm.',
         "required_services": 'List of {"name":"/driver/health","type":"std_srvs/srv/Trigger"}. '
-        "Discovery only; missing services alarm. No service is called.",
+        "Discovery by default; missing services alarm. check_response=true is supported only "
+        "for read-only rcl_interfaces/srv/GetParameters with an empty names request.",
         "topics": 'List of {"name":"/camera/image","type":"sensor_msgs/msg/Image",'
         '"minimum_publishers":1,"max_age_seconds":2}. Resource faults warn. '
         "Age zero disables receipt freshness checks; payloads are discarded.",
-        "timeout_seconds": "Discovery observation window for each check; worker RPC is bounded.",
+        "timeout_seconds": "Discovery/response observation window; worker RPC is bounded.",
         "namespace": "Namespace of the observer node. Resource names must be fully qualified.",
         "domain_id": "DDS domain to observe. There is no central ROS server.",
         "discovery_range": "Localhost for local testing; subnet for configured remote ROS peers.",
@@ -350,7 +351,9 @@ class ROSHealth(ConnectionHealth):
             names = []
             for row in p[key]:
                 allowed = {"name", "type"} | (
-                    {"minimum_publishers", "max_age_seconds"} if key == "topics" else set()
+                    {"minimum_publishers", "max_age_seconds"}
+                    if key == "topics"
+                    else {"check_response"}
                 )
                 if (
                     not isinstance(row, dict)
@@ -364,6 +367,17 @@ class ROSHealth(ConnectionHealth):
                         "Use absolute names and installed ROS interface types", key
                     )
                 names.append(row["name"])
+                if key == "required_services":
+                    if type(row.get("check_response", False)) is not bool:
+                        raise ValidationError("Check response must be boolean", key)
+                    if (
+                        row.get("check_response")
+                        and row["type"] != "rcl_interfaces/srv/GetParameters"
+                    ):
+                        raise ValidationError(
+                            "Response probes only support read-only GetParameters with empty names",
+                            key,
+                        )
                 if key == "topics":
                     NumericRange(1, 64, whole=True).check(
                         row.get("minimum_publishers", 1), key, key
