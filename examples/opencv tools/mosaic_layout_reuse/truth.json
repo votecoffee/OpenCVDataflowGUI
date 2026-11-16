@@ -1,0 +1,102 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "canvas_size": [
+    480,
+    128
+  ],
+  "view_size": [
+    192,
+    128
+  ],
+  "offsets": [
+    0,
+    144,
+    288
+  ],
+  "layout_id": "236220db28b2a9c59e283417e443b526177a37ff7483b1485663005db0891f80",
+  "calibration_sha256": "1c274f9438ed7d8f188c1dcb116d98397eab5fa248c6012c83c85b695becdaff",
+  "cases": {
+    "full": {
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "runs": 3,
+      "expected_state": "pass"
+    },
+    "reordered": {
+      "order": [
+        2,
+        0,
+        1
+      ],
+      "runs": 3,
+      "expected_state": "pass"
+    },
+    "missing_middle": {
+      "order": [
+        2,
+        0
+      ],
+      "runs": 2,
+      "expected_state": "pass"
+    },
+    "missing_anchor": {
+      "order": [
+        2,
+        1
+      ],
+      "runs": 2,
+      "expected_state": "fail"
+    },
+    "single_view": {
+      "order": [
+        2
+      ],
+      "runs": 1,
+      "expected_state": "pass"
+    },
+    "missing_error": {
+      "order": [
+        0,
+        2
+      ],
+      "runs": 2,
+      "expected_state": "error"
+    },
+    "changed_grid": {
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "runs": 3,
+      "expected_state": "error"
+    },
+    "multiband_tile": {
+      "order": [
+        2,
+        0,
+        1
+      ],
+      "runs": 3,
+      "expected_state": "pass"
+    },
+    "native_registration": {
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "runs": 3,
+      "expected_state": "pass"
+    }
+  },
+  "asset_sha256": {
+    "left.png": "506e14be05ef8bfaa10133870e9312f2c6e9a8c0fdffdac67d60dea5d02e6ce9",
+    "middle.png": "4b92b3cf3f8ea03566b7ac5f8de0b641800064c488f417a1465323c916ab8b01",
+    "right.png": "19f192e58b2aec2ac35a8294db5f23e6ecdc08b59244a075fe26ec8a4b76125d"
+  }
+}

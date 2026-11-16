@@ -812,6 +812,7 @@ def builtin_registry():
     from .matrix_svd import MatrixSVD
     from .metadata_blocks import CreateImageMetadata
     from .mil_tracking import MILSequence
+    from .mosaic_layout_io import LoadMosaicLayout, SaveMosaicLayout
     from .mqtt import MQTT_BLOCKS
     from .multipage_blocks import MULTIPAGE_BLOCKS
     from .multiscale_ridges import MultiscaleRidges
@@ -997,6 +998,8 @@ def builtin_registry():
         StitchImagePair,
         StitchScanSequence,
         RegisterScanLayout,
+        LoadMosaicLayout,
+        SaveMosaicLayout,
         RenderMosaicTile,
         PasteImagePatch,
         CropSubpixel,

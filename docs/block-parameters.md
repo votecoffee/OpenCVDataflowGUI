@@ -2785,6 +2785,15 @@ Input `image` — Gray/RGB/BGR/RGBA/BGRA uint8, uint16, int16 or float32/64. Con
 | `working_depth` | `"float64"` | `float64`, `float32` Floating coefficient depth; raw sample units are retained. Native detail always uses int16. |
 | `border` | `"reflect_101"` | `reflect_101`, `reflect_edge`, `replicate` Downsampling border. Upsampling uses OpenCV's required reflect_101. Native detail requires reflect_101 for both. |
 
+## Load mosaic layout (`cv.load_mosaic_layout`)
+
+Image processing / Calibrated layouts
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Strict JSON layout, up to 1 MiB. Relative paths use the saved project folder. |
+| `expected_sha256` | `""` | Optional file-byte SHA256; Save As copies the sealed layout asset. |
+
 ## Local window statistics (`cv.local_statistics`)
 
 Image processing / Intensity
@@ -3375,7 +3384,7 @@ Input `target_support` — Trusted uint8 B support sampled at the displaced dono
 
 Image processing / Geometry
 
-Inputs: `views` (any), `masks` (any, optional).
+Inputs: `views` (any), `masks` (any, optional), `source_ids` (data, optional).
 
 Input `views` — Two to 64 ordered overlapping images, at most 128 MiB total.
 
@@ -3394,6 +3403,9 @@ Input `masks` — Optional uint8 source masks for feature detection and tile val
 | `max_rotation_degrees` | `15.0` | Value must be a finite number between 0 and 180. |
 | `loop_closure` | `false` | Require an independent match from the last view back to the first. |
 | `max_loop_drift_pixels` | `8.0` | Value must be a finite number between 0 and 512. Maximum allowed corner adjustment in first-view pixels. |
+| `source_identity` | `"ordered"` | `ordered`, `labels`, `payload`, `explicit` Ordered: legacy. Other modes identify reusable views by stable IDs. |
+| `source_id_field` | `"source_id"` | Payload key containing a stable source ID (top-level metadata). |
+| `source_ids` | `[]` | Explicit IDs in received view order; wired Source IDs overrides. |
 
 ## Remap image coordinates (`cv.remap`)
 
@@ -3425,15 +3437,17 @@ Input `packed_map` — Map from Pack remap coordinates. Match Nearest or Subpixe
 
 Image processing / Geometry
 
-Inputs: `views` (any), `layout` (data), `masks` (any, optional), `tile_index` (number, optional).
+Inputs: `views` (any), `layout` (data), `masks` (any, optional), `tile_index` (number, optional), `source_ids` (data, optional).
 
-Input `views` — The same ordered source grids and labels used for registration.
+Input `views` — Legacy order, or stable-ID layouts with reordered/allowed missing views.
 
 Input `layout` — Versioned layout from Register scan layout; no feature refitting is performed.
 
 Input `masks` — Optional ordered uint8 validity masks in source coordinates.
 
 Input `tile_index` — Optional row-major tile index for a loop or per-tile inspection.
+
+Input `source_ids` — Optional explicit IDs for current group entries; not training order.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -3442,6 +3456,9 @@ Input `tile_index` — Optional row-major tile index for a loop or per-tile insp
 | `interpolation` | `"linear"` | `nearest`, `linear` Linear output requires every contributing source pixel to be valid. |
 | `blend` | `"prefer_first"` | `prefer_first`, `prefer_last`, `feather`, `multiband` Choose priority, feather or multiband. Filter halos preserve tile boundaries. |
 | `feather_width` | `32` | Value must be a whole number between 1 and 512. Distance from valid source edges, in mosaic pixels, to full weight. |
+| `source_ids` | `[]` | Optional IDs in received order, overriding the layout identity rule. |
+| `missing_views` | `"error"` | `error`, `fail`, `allow` Error: no output. Fail: failed partial. Allow: passing partial. |
+| `grid_policy` | `"strict"` | `strict`, `pixel_indices` Verify recorded coordinates or explicitly assert calibrated pixel indices. |
 | `multiband_backend` | `"float64"` | `float64`, `native_detail` Multiband only. Float64 preserves high-depth/HDR samples; native detail uses the CPU int16 blender and requires uint8 gray/RGB/BGR. |
 | `multiband_bands` | `4` | Value must be a whole number between 0 and 6. Multiband Laplacian reductions, 0..6. Zero averages overlap; more bands spread low-frequency transitions farther and need more halo/workspace. |
 | `multiband_native_weights` | `"float32"` | `float32`, `int16` Native detail only: float32 or int16 Gaussian weight maps. Native integer arithmetic is approximate, even for uint8. |
@@ -8206,6 +8223,17 @@ Inputs: `map_x` (image), `map_y` (image).
 | --- | --- | --- |
 | `path` | `"lens_maps.npz"` |  |
 | `path_base` | `"working_directory"` | `working_directory`, `project` |
+
+## Save mosaic layout (`output.mosaic_layout`)
+
+Output / Calibrated layouts
+
+Inputs: `layout` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"mosaic_layout.json"` | Destination .json; relative paths use the saved project folder. |
+| `write_mode` | `"new"` | `new`, `replace` New preserves existing files. Replace atomically publishes this layout. |
 
 ## Write results (`output.results`)
 

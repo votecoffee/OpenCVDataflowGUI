@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/left.png",
+          "assets/middle.png",
+          "assets/right.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        430,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "render",
+      "type": "cv.render_mosaic_tile",
+      "name": "Render mosaic tile",
+      "parameters": {
+        "tile_size": 512,
+        "tile_index": 0,
+        "interpolation": "nearest",
+        "blend": "prefer_first",
+        "feather_width": 32,
+        "source_ids": [
+          "left",
+          "middle",
+          "right"
+        ],
+        "missing_views": "allow",
+        "grid_policy": "strict",
+        "multiband_backend": "float64",
+        "multiband_bands": 2,
+        "multiband_native_weights": "float32"
+      },
+      "position": [
+        900,
+        0
+      ],
+      "exposed_inputs": [
+        "views",
+        "layout",
+        "masks",
+        "tile_index",
+        "source_ids"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "overlap",
+        "tile"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "layout",
+      "type": "cv.register_scan_layout",
+      "name": "Register scan layout",
+      "parameters": {
+        "motion_model": "translation",
+        "max_features": 900,
+        "match_ratio": 0.75,
+        "max_descriptor_distance": 250.0,
+        "inlier_pixels": 2.0,
+        "min_inliers": 6,
+        "min_inlier_ratio": 0.5,
+        "max_scale_ratio": 1.15,
+        "max_rotation_degrees": 15.0,
+        "loop_closure": false,
+        "max_loop_drift_pixels": 8.0,
+        "source_identity": "explicit",
+        "source_id_field": "source_id",
+        "source_ids": [
+          "left",
+          "middle",
+          "right"
+        ]
+      },
+      "position": [
+        450,
+        390
+      ],
+      "exposed_inputs": [
+        "views",
+        "masks",
+        "source_ids"
+      ],
+      "exposed_outputs": [
+        "layout"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original fixed-grid replay fixture",
+      "description": "Original MIT images, layout geometry and projects by OpenCVDataflowGUI contributors. No customer/third-party images. Three 192x128 views occupy known offsets 0/144/288 on a 480x128 canvas. IDs map received images to calibration records; replay order does not change source blend priority. Missing regions remain uncovered; missing the anchor does not move the canvas. Layout bytes and geometric identity are pinned. Missing-anchor is a deliberate failed partial, missing-error emits nothing, and changed-grid rejects a one-pixel crop-context change. Multiband renders a masked bounded tile. Native-registration fits a new layout as a separate workflow; frozen replay performs no feature matching. IDs/grid metadata assert identity, not physical camera correctness or exposure synchronization.",
+      "parameters": {},
+      "position": [
+        0,
+        -430
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "render",
+      "input": "views"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "layout",
+      "input": "views"
+    },
+    {
+      "source": "layout",
+      "output": "layout",
+      "target": "render",
+      "input": "layout"
+    }
+  ]
+}

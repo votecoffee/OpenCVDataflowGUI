@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 149 | 13 | 13 | 175 | 85.1% |
+| 1. Core and baseline 2D | 150 | 12 | 13 | 175 | 85.7% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 212 | 55 | 203 | 470 | 45.1% |
+| **Overall** | 213 | 54 | 203 | 470 | 45.3% |
 
 <!-- coverage-summary:end -->
 
@@ -263,7 +263,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S1-164 | Reuse a calibrated mosaic layout | Stitcher.composePanorama and persisted camera or tile transforms | Partial | cv.register_scan_layout emits versioned geometry and cv.render_mosaic_tile reuses it without feature fitting, validating source order and grids. Qualify reuse with missing views identified by stable source IDs, and verify seams, coverage and source-coordinate mapping; reject incompatible grid changes. |
+| S1-164 | Reuse a calibrated mosaic layout | Stitcher.composePanorama and persisted camera or tile transforms | Complete | cv.register_scan_layout and cv.render_mosaic_tile qualify persisted planar transform reuse with opt-in stable IDs from labels, per-member metadata or explicit lists/inputs. Reordered/missing sources retain calibrated blend priority, fixed canvas bounds/root and current source tickets/maps; default legacy ordered behavior is unchanged. Missing policies reject, fail partial or allow explicitly incomplete tiles. Strict grid checks, an explicit reported pixel-index assertion, unknown/duplicate ID rejection and validation of absent geometry precede rendering. cv.load_mosaic_layout/output.mosaic_layout provide bounded strict JSON, geometry/file SHA256 checks, safe publication and Save As assets. Nine original projects and independent pixels/coverage, feather/multiband tile seams, native fitting versus reuse, large virtual bounds, exception/XML/editor/persistence checks qualify this workflow. IDs/metadata do not prove physical camera identity or acquisition synchronization; native Stitcher.composePanorama is not claimed. See [contracts](mosaic-layout-reuse.md). |
 | S1-165 | Replay registered views on a common canvas | detail.Timelapser, detail.TimelapserCrop and common valid support | Planned | Render each view as a separate timestamped frame on the same grid. Verify union and intersection crops, invalid borders, and per-frame source-to-canvas maps. |
 
 ### Reference frequency response

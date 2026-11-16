@@ -37,10 +37,11 @@ _INTERPOLATION = {"nearest": cv2.INTER_NEAREST, "linear": cv2.INTER_LINEAR}
 _DEPTHS = (np.uint8, np.uint16, np.float32, np.float64)
 
 
-def _unpack(group, mask_group, *, max_views=_MAX_VIEWS):
-    if not isinstance(group, FlowGroup) or not 2 <= len(group.items) <= max_views:
+def _unpack(group, mask_group, *, max_views=_MAX_VIEWS, min_views=2):
+    if not isinstance(group, FlowGroup) or not min_views <= len(group.items) <= max_views:
         maximum = "eight" if max_views == _MAX_VIEWS else str(max_views)
-        raise ValidationError(f"Views requires an ordered group of two to {maximum} images")
+        minimum = "two" if min_views == 2 else str(min_views)
+        raise ValidationError(f"Views requires an ordered group of {minimum} to {maximum} images")
     if mask_group is not None and (
         not isinstance(mask_group, FlowGroup) or len(mask_group.items) != len(group.items)
     ):

@@ -22,6 +22,7 @@ For temporal noise and channel/source covariance, try [pixel statistics](tempora
 For native QR finder backends, original-image corners and rectified modules, try [QR comparisons](qr_backends/README.md).
 For ordered multipart payload recovery and deliberate rejection cases, try [structured-append QR](qr_structured_append/README.md).
 For detector repeatability and matcher threshold curves, try [image feature evaluation](feature_evaluation/README.md).
+For calibrated geometry, reordered/missing views and fixed canvas coordinates, try [mosaic layout reuse](mosaic_layout_reuse/README.md).
 For reader/encoder checks and page counts, try [codec preflight](codec_probe/README.md).
 For stored displacement and verified image pairs, try [flow file round trips](flow_file_roundtrip/README.md).
 For seeded local tracking and explicit loss/reacquisition, try [MIL box tracking](mil_box_tracking/README.md).

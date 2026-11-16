@@ -14,6 +14,7 @@ from .image_stitching import (
     warp_mosaic_view,
 )
 from .images import ImageArray, image_format
+from .mosaic_layout import IDENTITIES, MODEL, bind_layout, canvas_frame, seal_layout, source_ids
 from .mosaic_photometry import FeatherMosaic
 from .multiband_mosaic import (
     MULTIBAND_CHOICES,
@@ -48,8 +49,10 @@ _REGISTRATION_KEYS = {
 _INTERPOLATION = {"nearest": cv2.INTER_NEAREST, "linear": cv2.INTER_LINEAR}
 
 
-def _views(inputs):
-    unpacked = _unpack(inputs["views"], inputs.get("masks"), max_views=_MAX_VIEWS)
+def _views(inputs, *, min_views=2):
+    unpacked = _unpack(
+        inputs["views"], inputs.get("masks"), max_views=_MAX_VIEWS, min_views=min_views
+    )
     if any(max(image.shape[:2]) >= 32767 for image in unpacked[1]):
         raise ValidationError("Each source view must be smaller than 32767 pixels per side")
     return unpacked
@@ -95,16 +98,27 @@ def _read_layout(layout, group, images, pixels):
 class RegisterScanLayout(StitchScanSequence):
     type_id, title = "cv.register_scan_layout", "Register scan layout"
     outputs = (Port("layout", "data"),)
+    inputs = (
+        *StitchScanSequence.inputs,
+        Port("source_ids", "data", required=False, required_when_connected=True),
+    )
     defaults = {
         key: value
         for key, value in StitchScanSequence.defaults.items()
         if key in _REGISTRATION_KEYS
+    }
+    defaults = {
+        **defaults,
+        "source_identity": "ordered",
+        "source_id_field": "source_id",
+        "source_ids": [],
     }
     parameter_choices = {
         key: value
         for key, value in StitchScanSequence.parameter_choices.items()
         if key in _REGISTRATION_KEYS
     }
+    parameter_choices = {**parameter_choices, "source_identity": IDENTITIES}
     parameter_ranges = {
         key: value
         for key, value in StitchScanSequence.parameter_ranges.items()
@@ -118,14 +132,47 @@ class RegisterScanLayout(StitchScanSequence):
     parameter_help = {
         **parameter_help,
         "inlier_pixels": "Fit threshold and maximum adjacent RMS after optional loop adjustment.",
+        "source_identity": "Ordered: legacy. Other modes identify reusable views by stable IDs.",
+        "source_id_field": "Payload key containing a stable source ID (top-level metadata).",
+        "source_ids": "Explicit IDs in received view order; wired Source IDs overrides.",
     }
     input_help = {
         "views": "Two to 64 ordered overlapping images, at most 128 MiB total.",
         "masks": "Optional uint8 source masks for feature detection and tile validity.",
     }
 
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        field = p["source_id_field"]
+        if (
+            not isinstance(field, str)
+            or not field.strip()
+            or len(field) > 128
+            or any(ord(c) < 32 for c in field)
+        ):
+            raise ValidationError(
+                "Choose a visible metadata key up to 128 characters", "source_id_field"
+            )
+        if not isinstance(p["source_ids"], list) or len(p["source_ids"]) > 64:
+            raise ValidationError("Source IDs must be a list of at most 64 strings", "source_ids")
+
     def process(self, inputs):
         images, pixels, masks, contexts = _views(inputs)
+        mode = self.parameters["source_identity"]
+        ids = None
+        if mode != "ordered":
+            ids = source_ids(
+                inputs["views"],
+                contexts,
+                mode,
+                self.parameters["source_id_field"],
+                inputs.get("source_ids", self.parameters["source_ids"]),
+            )
+        elif "source_ids" in inputs or self.parameters["source_ids"]:
+            raise ValidationError(
+                "Source IDs require a stable source identity mode", "source_identity"
+            )
         layout, transforms, failure = register_scan(images, pixels, masks, self.parameters)
         if failure is not None:
             pair, reason = failure
@@ -154,6 +201,12 @@ class RegisterScanLayout(StitchScanSequence):
                     "source_ticket": context.get("ticket"),
                 }
             )
+        if ids is not None:
+            layout["model"] = MODEL
+            layout["source_identity"] = {"mode": mode, "field": self.parameters["source_id_field"]}
+            for record, source_id in zip(layout["views"], ids, strict=True):
+                record["source_id"] = source_id
+            layout = seal_layout(layout)
         return Result(
             {"layout": layout},
             message=f"Registered {len(images)} views for a {size[0]} × {size[1]} tiled mosaic",
@@ -169,6 +222,7 @@ class RenderMosaicTile(ImageTool):
         Port("layout", "data"),
         Port("masks", "any", required=False, required_when_connected=True),
         Port("tile_index", "number", required=False, required_when_connected=True),
+        Port("source_ids", "data", required=False, required_when_connected=True),
     )
     outputs = (
         Port("image"),
@@ -182,11 +236,16 @@ class RenderMosaicTile(ImageTool):
         "interpolation": "linear",
         "blend": "prefer_first",
         "feather_width": 32,
+        "source_ids": [],
+        "missing_views": "error",
+        "grid_policy": "strict",
         **MULTIBAND_DEFAULTS,
     }
     parameter_choices = {
         "interpolation": tuple(_INTERPOLATION),
         "blend": ("prefer_first", "prefer_last", "feather", "multiband"),
+        "missing_views": ("error", "fail", "allow"),
+        "grid_policy": ("strict", "pixel_indices"),
         **MULTIBAND_CHOICES,
     }
     parameter_ranges = {
@@ -202,18 +261,47 @@ class RenderMosaicTile(ImageTool):
         "blend": "Choose priority, feather or multiband. Filter halos preserve tile boundaries.",
         **MULTIBAND_HELP,
         "feather_width": "Distance from valid source edges, in mosaic pixels, to full weight.",
+        "source_ids": "Optional IDs in received order, overriding the layout identity rule.",
+        "missing_views": "Error: no output. Fail: failed partial. Allow: passing partial.",
+        "grid_policy": "Verify recorded coordinates or explicitly assert calibrated pixel indices.",
     }
     input_help = {
-        "views": "The same ordered source grids and labels used for registration.",
+        "views": "Legacy order, or stable-ID layouts with reordered/allowed missing views.",
         "layout": "Versioned layout from Register scan layout; no feature refitting is performed.",
         "masks": "Optional ordered uint8 validity masks in source coordinates.",
         "tile_index": "Optional row-major tile index for a loop or per-tile inspection.",
+        "source_ids": "Optional explicit IDs for current group entries; not training order.",
     }
 
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if not isinstance(p["source_ids"], list) or len(p["source_ids"]) > 64:
+            raise ValidationError("Source IDs must be a list of at most 64 strings", "source_ids")
+
     def process(self, inputs):
-        images, pixels, masks, contexts = _views(inputs)
+        images, pixels, masks, contexts = _views(inputs, min_views=1)
         group = inputs["views"]
-        size, transforms = _read_layout(inputs["layout"], group, images, pixels)
+        stable = isinstance(inputs["layout"], dict) and inputs["layout"].get("model") == MODEL
+        binding, selected = None, None
+        if stable:
+            size, transforms, selected, binding = bind_layout(
+                inputs["layout"],
+                group,
+                images,
+                pixels,
+                contexts,
+                self.parameters,
+                inputs.get("source_ids"),
+            )
+            order = [current for _, current in selected]
+            images, pixels, masks, contexts = (
+                [values[i] for i in order] for values in (images, pixels, masks, contexts)
+            )
+        else:
+            if "source_ids" in inputs or self.parameters["source_ids"]:
+                raise ValidationError("Explicit source IDs require a v2 stable layout")
+            size, transforms = _read_layout(inputs["layout"], group, images, pixels)
         width, height = size
         side = int(self.parameters["tile_size"])
         columns, rows = math.ceil(width / side), math.ceil(height / side)
@@ -294,6 +382,16 @@ class RenderMosaicTile(ImageTool):
                     "source_ticket": context.get("ticket"),
                 }
             )
+            if stable:
+                calibrated, current = selected[i]
+                record = inputs["layout"]["views"][calibrated]
+                contributors[-1].update(
+                    index=calibrated,
+                    input_index=current,
+                    label=group.labels[current],
+                    source_id=record["source_id"],
+                    registered_label=record["label"],
+                )
         if blender is not None:
             mosaic = blender.finish(pixels[0].dtype)
         if mosaic.dtype.kind == "f" and not np.isfinite(mosaic).all():
@@ -314,13 +412,23 @@ class RenderMosaicTile(ImageTool):
             "overlap_pixels": int(np.count_nonzero(counts >= 2)),
             "views": contributors,
         }
+        if stable:
+            tile.update(
+                model=MODEL, layout_id=inputs["layout"]["layout_id"], source_matching=binding
+            )
         if self.parameters["blend"] == "multiband":
-            tile["multiband"] = {**blender.info, "halo": halo, "window_origin": [left, top],
-                                 "window_size": list(render_size)}
+            tile["multiband"] = {
+                **blender.info,
+                "halo": halo,
+                "window_origin": [left, top],
+                "window_size": list(render_size),
+            }
         context = {**self.input_payloads["views"]}
         context.pop("pyramid", None)
-        context["spatial"] = mosaic_frame(
-            contexts[0].get("spatial", {}), transforms[0], size, self.id
+        context["spatial"] = (
+            canvas_frame(inputs["layout"])
+            if stable
+            else mosaic_frame(contexts[0].get("spatial", {}), transforms[0], size, self.id)
         )
         tile_to_mosaic = np.eye(3)
         tile_to_mosaic[:2, 2] = [x, y]
@@ -328,6 +436,11 @@ class RenderMosaicTile(ImageTool):
         payload["mosaic"] = {
             key: tile[key] for key in ("origin", "image_size", "mosaic_size", "index")
         }
+        if stable:
+            payload["mosaic"].update(layout_id=tile["layout_id"], source_matching=binding)
+        passed = not (
+            stable and binding["missing_source_ids"] and self.parameters["missing_views"] == "fail"
+        )
         return Result(
             {
                 "image": image,
@@ -336,5 +449,8 @@ class RenderMosaicTile(ImageTool):
                 "tile": tile,
             },
             payloads=dict.fromkeys(("image", "coverage", "overlap", "tile"), payload),
-            message=f"Rendered tile {index + 1}/{columns * rows} at ({x}, {y})",
+            passed=passed,
+            fail_reasons=[] if passed else ["mosaic_sources_missing"],
+            message=f"Rendered tile {index + 1}/{columns * rows} at ({x}, {y})"
+            + (f"; missing {len(binding['missing_source_ids'])} sources" if stable else ""),
         )

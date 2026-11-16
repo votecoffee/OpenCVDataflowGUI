@@ -97,3 +97,8 @@ The blender is local to one execution. It does not retain native pyramids or
 accumulators as trained state. Lean/graphics-off still produces the same primary
 image and judgments. Errors use ordinary exception containment with no output
 event; valid registration/overlap failures retain their existing failure reasons.
+
+For repeated captures, [stable source identity and layout persistence](mosaic-layout-reuse.md)
+allow reordered or missing views without changing calibrated priority or canvas
+coordinates. Missing-view policies explicitly distinguish an invalid request,
+a failed partial image and an allowed partial image.
