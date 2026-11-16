@@ -1,0 +1,22 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "cases": [
+    "file_inventory",
+    "encoder_support",
+    "page_limit",
+    "invalid_header",
+    "unsupported_encoder"
+  ],
+  "file_counts": {
+    "still": 1,
+    "pages": 3,
+    "animation": 3
+  },
+  "asset_sha256": {
+    "animation.png": "eb3d22cd955c982d725b6fa03e46ead0867c1079307bd124ae9e2951d90c4441",
+    "pages.tiff": "422adc0a981ae5c93076de6c36bf54a7bc6a9d9dcb07c2ca594f95430c90e4d7",
+    "truncated.png": "4c4b6a3be1314ab86138bef4314dde022e600960d8689a2c8f8631802d20dab6",
+    "\u90e8\u54c1-\u00e9.png": "836e0f0d67ec6afc40478c0a0fec1bcccc73de063ca0db55cd13856011ae1eca"
+  }
+}

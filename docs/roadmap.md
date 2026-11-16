@@ -35,11 +35,12 @@ deprecation warnings in the skeleton fixtures. This checkpoint does not qualify
 those skipped native paths or physical equipment.
 
 This closes the 20-increment cycle ending with run-linked contours (S1-152).
-The current cycle has **0 targeted increments of about 20** completed. After
+The current cycle has **1 targeted increment of about 20** completed: codec
+availability and page inventory (S1-153). After
 the frozen run, eight existing test files received syntax-tree/comment-preserving
 formatting to resolve 33 line-length findings; their **108 focused checks passed**.
-Full source/test Ruff checks are clean. No application code changed after the
-checkpoint, and the broad suite was not repeated for test formatting.
+Full source/test Ruff checks were clean. That formatting follow-up did not change
+application code or repeat the broad suite.
 
 Previous broad checkpoints were `6cd14f3` (3,689 passed, two EXR skips, ending
 with native QR generation and Save As changes) and `43afa2e` (2,859 passed,
@@ -119,6 +120,28 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+**Codec preflight (S1-153)** now provides `cv.probe_image_file` with native reader
+signature checks, page/frame counts and encoder registry queries. File, Writer
+and combined modes expose separate optional observations, requested count flags,
+an encoder-format dropdown/custom suffix and inclusive page policies. A bounded,
+hashed Python snapshot feeds both file probes and supports Unicode source paths;
+temporary copies are removed and original bytes remain untouched. No source image
+ticket or pixel output is created. Expected external-file/native failures emit
+structured failed preflights; invalid configuration emits no result. Reader/count
+success explicitly does not certify compressed pixel integrity, image-type/codec
+option compatibility, destination permissions or a later independent file read.
+Verification passed **59 focused codec/reference/editor/example checks** covering
+stills, mixed TIFF pages, APNG/GIF/WebP frames, writer availability, native failures,
+Unicode paths, changing snapshots, limits, ticket payloads, corrupt pixels behind
+valid headers, XML, Save As and deterministic fixtures. All **10 installed
+Debug/Lean CLI outcomes** matched five original MIT projects. The app was
+reinstalled; generated references/coverage, strict JSON, text contracts, links and
+wheel source bytes were checked. No broad suite was repeated. Core is now
+**141/175 (80.6%)**, overall **204/470 (43.4%)**. Next complete optical-flow field
+file round trips and frame association (S1-154). See
+[the preflight contract](codec-preflight.md) and
+[five projects](<../examples/opencv tools/codec_probe/README.md>).
+
 **Run-linked contours (S1-152)** now supplies `inspect.run_contours` for uint8
 sparse masks, reusing the ordinary contour measurements/collection/selection
 contract. A strip-based horizontal-run preflight bounds native input complexity;
@@ -139,8 +162,8 @@ A reproducible Windows native-only benchmark on 8000-square sparse masks observe
 cost and is not a speed guarantee. Generated references, strict JSON, local links,
 text contracts and wheel bytes were checked; the application was reinstalled.
 Core is now **140/175 (80.0%)**, overall **203/470 (43.2%)**. This closes the
-20-increment cycle; the 4,801-pass broader checkpoint above is complete. Next qualify codec
-availability and page inventory (S1-153). See [the explicit native limits](run-contours.md)
+20-increment cycle; the 4,801-pass broader checkpoint above is complete. Codec
+preflight is now qualified separately above. See [the explicit native limits](run-contours.md)
 and [five projects](<../examples/opencv tools/run_contours/README.md>).
 
 **Binary hit-or-miss (S1-151)** now provides `cv.hit_or_miss` with a visual
@@ -778,7 +801,7 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Next qualify codec availability/page inventory (S1-153). The 20-increment broad checkpoint passed 4,801 tests with 31 skips; the new cycle is at 0/20. S1-152 now qualifies bounded native run contours with explicit flat topology and different hole-polygon semantics. S1-151 now qualifies signed-kernel binary pattern matching with bounded coordinates and count judgments. S1-149 now qualifies ordered typed TIFF buffers, exact sample readback and bounded page decoding. S1-117 now qualifies native CPU/Float64 multiband composition with source-depth, mask, workspace and tiled-phase contracts. S1-116 now qualifies robust paired lighting models and raw/adjusted defect residuals with independent fit selections and support guards. S1-118 now qualifies area-coverage mask resizing with explicit thresholds and source/target coordinate checks. S1-159 now has bounded stack smoothing and measured Gaussian noise/edge/runtime comparisons. S1-111 now has verified APNG/GIF/WebP frame/timing transport across file and buffer APIs. S1-112 QR label generation now has checked native controls, text recovery and bounded grouped outputs. S1-07 metadata file/buffer round trips now have verified native chunk transport and explicit orientation semantics. S1-109 paired flow refinement now has independent motion/residual references and explicit support/failure evidence. S1-108 color-distribution tracking now has controlled translation/scale/loss evidence. S1-95 dense-flow warping and S1-88–S1-90 photo/color edits have controlled references and explicit support/failure evidence. Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Next complete optical-flow field file round trips and frame association (S1-154). S1-153 now qualifies native codec preflight with bounded snapshots, separate registry/header/count observations and explicit pixel-integrity limits. The latest broad checkpoint passed 4,801 tests with 31 skips; the new cycle is at 1/20. S1-152 now qualifies bounded native run contours with explicit flat topology and different hole-polygon semantics. S1-151 now qualifies signed-kernel binary pattern matching with bounded coordinates and count judgments. S1-149 now qualifies ordered typed TIFF buffers, exact sample readback and bounded page decoding. S1-117 now qualifies native CPU/Float64 multiband composition with source-depth, mask, workspace and tiled-phase contracts. S1-116 now qualifies robust paired lighting models and raw/adjusted defect residuals with independent fit selections and support guards. S1-118 now qualifies area-coverage mask resizing with explicit thresholds and source/target coordinate checks. S1-159 now has bounded stack smoothing and measured Gaussian noise/edge/runtime comparisons. S1-111 now has verified APNG/GIF/WebP frame/timing transport across file and buffer APIs. S1-112 QR label generation now has checked native controls, text recovery and bounded grouped outputs. S1-07 metadata file/buffer round trips now have verified native chunk transport and explicit orientation semantics. S1-109 paired flow refinement now has independent motion/residual references and explicit support/failure evidence. S1-108 color-distribution tracking now has controlled translation/scale/loss evidence. S1-95 dense-flow warping and S1-88–S1-90 photo/color edits have controlled references and explicit support/failure evidence. Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and K-nearest/random-forest image classifiers. Native SVM training, prediction and model I/O are available in [the classical ML workflow](classical-ml.md) (S2-20). | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |

@@ -22,6 +22,7 @@
 | Dialogs, captures and worker training | [Plugin dialogs](plugin-dialogs.md) |
 | Pixel formats and high-depth images | [Image formats](image-formats.md) |
 | Ordered multipage buffers, typed page metadata and decode limits | [Multipage TIFF in memory](multipage-memory.md) |
+| Reader/encoder availability and native image page inventory | [Codec preflight](codec-preflight.md) |
 | Binary corners, endpoints and junctions with signed kernels | [Hit-or-miss morphology](hit-or-miss.md) |
 | Sparse-mask contours with bounded run input and flat native polygons | [Run-linked contours](run-contours.md) |
 | Regions, poses, pyramids and spatial provenance | [Workflow guide](workflow-guide.md), [architecture](architecture.md) |

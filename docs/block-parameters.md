@@ -3146,6 +3146,26 @@ Inputs: `coefficients` (data, optional).
 | `imaginary_tolerance` | `1e-08` | Value must be a finite number at least 0. Maximum imaginary magnitude for inclusion in Real roots. |
 | `residual_limit` | `1e-08` | Value must be a finite number between 0 and 1. Fail the result if a relative residual exceeds this limit. |
 
+## Probe image file and codecs (`cv.probe_image_file`)
+
+Image processing / Codecs
+
+Inputs: `path` (text, optional).
+
+Input `path` — Optional filename text; interpreted using Path base, retaining its ticket/payload.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"file_and_writer"` | `file`, `writer`, `file_and_writer` Check reader/count, encoder extension, or both. Unrequested outputs do not emit. |
+| `path` | `""` | A wired Path overrides this filename. Does not acquire images or issue tickets. |
+| `path_base` | `"project"` | `project`, `working_directory` |
+| `writer_format` | `"png"` | `png`, `jpeg`, `tiff`, `bmp`, `webp`, `gif`, `jpeg2000`, `hdr`, `exr`, `avif`, `jpegxl`, `pbm`, `pgm`, `ppm`, `pam`, `pfm`, `custom` Encoder registry check, not a test of permissions, sample types or codec options. |
+| `custom_extension` | `".png"` | Custom format only: one extension such as .ras, not a filename. |
+| `count_flags` | `"unchanged"` | `unchanged`, `any_color`, `color`, `grayscale`, `gdal` Native imcount flags. GDAL behavior depends on the installed backend. |
+| `maximum_file_bytes` | `134217728` | Value must be a whole number between 1 and 1.34218e+08. Bound the snapshot before native calls. Preserves original files. |
+| `minimum_pages` | `1` | Value must be a whole number between 1 and 1e+06. Inclusive native-count limit; does not guarantee pixel integrity. |
+| `maximum_pages` | `1024` | Value must be a whole number between 1 and 1e+06. Inclusive policy limit checked after counting. Does not bound native traversal or runtime. |
+
 ## Gaussian pyramid up/down (`cv.pyramid`)
 
 Image processing / Geometry

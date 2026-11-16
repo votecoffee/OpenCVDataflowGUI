@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 140 | 14 | 21 | 175 | 80.0% |
+| 1. Core and baseline 2D | 141 | 14 | 20 | 175 | 80.6% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 203 | 56 | 211 | 470 | 43.2% |
+| **Overall** | 204 | 56 | 210 | 470 | 43.4% |
 
 <!-- coverage-summary:end -->
 
@@ -242,7 +242,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S1-153 | Probe image codec availability and page inventory | haveImageReader, haveImageWriter and imcount | Planned | Verify readable formats, encoder availability, page counts and invalid file diagnostics before decoding large inputs. |
+| S1-153 | Probe image codec availability and page inventory | haveImageReader, haveImageWriter and imcount | Complete | cv.probe_image_file. Separate signature, native page/frame and encoder-extension checks using bounded hashed snapshots, Unicode paths, count flags, format dropdown/custom extension and inclusive page policies. Structured diagnostics distinguish missing/unsupported/corrupt headers, file changes, size limits and unavailable encoders. Stills and TIFF/APNG/GIF/WebP inventory, no-pixel-validation semantics, payload/XML/Save As checks and five original MIT projects are qualified. Encoder registry availability does not certify image types/settings/permissions; count limits are post-count policies rather than native traversal bounds. |
 | S1-154 | Read and preserve optical-flow fields in files | readOpticalFlow and writeOpticalFlow | Planned | Round-trip a known signed flow field, validate the frame association and unsupported or invalid samples, and compare loaded motion against a computed reference. |
 | S1-155 | Reuse precomputed optical-flow pyramids | buildOpticalFlowPyramid with optional derivatives | Planned | Verify level geometry, border and derivative controls, and parity against direct tracking. Qualify the Python representation or keep the cache inside the tracker. |
 | S1-156 | Seeded MIL video tracking | TrackerMIL | Planned | Track an annotated part from a configured box and verify initialization, localization, failure reporting and reset over a recorded clip. |

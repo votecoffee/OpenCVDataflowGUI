@@ -719,6 +719,7 @@ def builtin_registry():
     from .cloud_tools import CLOUD_BLOCKS
     from .clustering import KMeansImage, KMeansSamples
     from .code_readers import CODE_READER_BLOCKS
+    from .codec_probe import ProbeImageFile
     from .collection_tools import COLLECTION_BLOCKS
     from .color_calibration import COLOR_CALIBRATION_BLOCKS
     from .color_measurement import COLOR_MEASUREMENT_BLOCKS
@@ -915,6 +916,7 @@ def builtin_registry():
     registry = Registry()
     for block in (
         *ANIMATION_BLOCKS,
+        ProbeImageFile,
         *MULTIPAGE_BLOCKS,
         HitOrMiss,
         Comment,

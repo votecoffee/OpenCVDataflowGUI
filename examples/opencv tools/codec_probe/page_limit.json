@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "probe",
+      "type": "cv.probe_image_file",
+      "name": "Probe image file and codecs",
+      "parameters": {
+        "mode": "file",
+        "path": "assets/pages.tiff",
+        "path_base": "project",
+        "writer_format": "png",
+        "custom_extension": ".png",
+        "count_flags": "unchanged",
+        "maximum_file_bytes": 134217728,
+        "minimum_pages": 4,
+        "maximum_pages": 1024
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "path"
+      ],
+      "exposed_outputs": [
+        "info",
+        "ok",
+        "reader_available",
+        "page_count",
+        "writer_available"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Original fixtures and preflight limits",
+      "description": "Original fixtures/projects by OpenCVDataflowGUI contributors, MIT. No customer or third-party images. Run once. File inventory expects one Unicode-named PNG, three mixed-depth TIFF pages and three APNG frames. Encoders only query the registry: no destination image is written. Page limit deliberately expects at least 4 from a 3-page TIFF; invalid header recognizes PNG but counts zero; the encoder checks the invented .notacodec extension. All are valid failed preflights with diagnostics. Passing headers/counts do not verify pixel integrity. Registered encoders do not prove support for particular sample types, settings or destination permissions. No image acquisition or source ticket is created. Snapshots are bounded; source files retained.",
+      "parameters": {},
+      "position": [
+        500,
+        -100
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

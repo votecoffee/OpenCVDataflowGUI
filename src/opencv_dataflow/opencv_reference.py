@@ -15,6 +15,7 @@ BINDINGS = {
     "cv.encode_animation": "Animation imencodeanimation imdecodeanimation",
     "cv.encode_pages": "imencodemulti imdecodemulti",
     "cv.decode_pages": "imdecodemulti",
+    "cv.probe_image_file": "haveImageReader haveImageWriter imcount",
     "cv.hit_or_miss": "morphologyEx getStructuringElement",
     "output.animation_file": "Animation imwriteanimation imdecodeanimation",
     "cv.encode_qr": (
