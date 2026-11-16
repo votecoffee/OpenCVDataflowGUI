@@ -3,6 +3,12 @@
 import math
 
 
+def candidate_status(candidate):
+    if candidate.get("selection", {}).get("status") == "overlap_suppressed":
+        return "overlap_suppressed"
+    return (candidate.get("fit") or {}).get("status", "unverified")
+
+
 def describe_review(report, number=0):
     """0 selects the best accepted (else strongest rejected); 1..64 selects a proposal."""
     candidates = report["candidates"]
@@ -42,7 +48,7 @@ def describe_review(report, number=0):
         candidate_index=selected,
         candidate_number=selected + 1 if selected is not None else None,
         candidate_id=c["id"] if c is not None else None,
-        status=(c.get("fit") or {}).get("status", "unverified")
+        status=candidate_status(c)
         if c is not None
         else "no_candidates",
         selection_reason=reason,
@@ -58,11 +64,24 @@ def describe_review(report, number=0):
             dict(
                 number=i + 1,
                 candidate_id=c["id"],
-                status=fit.get("status", "unverified"),
+                status=candidate_status(c),
                 support_percent=scores[i] * 100,
                 contradiction_percent=fit.get("contradiction", 0.0) * 100,
                 rmse_mm=rmse * 1000 if rmse is not None else None,
                 selected=i == selected,
             )
+        )
+        if "selection" in c:
+            rows[-1].update(
+                depth_status=c["depth_fit"]["status"],
+                retained_by=c["selection"].get("retained_by"),
+                overlap_percent=(c["selection"].get("overlap", 0.0) * 100),
+            )
+    if selected is not None and "selection" in candidates[selected]:
+        chosen = candidates[selected]
+        selection.update(
+            depth_status=chosen["depth_fit"]["status"],
+            retained_by=chosen["selection"].get("retained_by"),
+            overlap_percent=chosen["selection"].get("overlap", 0.0) * 100,
         )
     return selection, rows

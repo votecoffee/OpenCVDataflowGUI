@@ -1,0 +1,94 @@
+{
+  "schema": "simple_gdrnpp_request/v1",
+  "capture_id": "scene000006_frame000002_repeated_proposal",
+  "rgb_path": "../preprocessing/source.png",
+  "depth_path": "../preprocessing/depth.png",
+  "depth_scale_to_m": 0.0001,
+  "camera_matrix": [
+    [
+      1075.65091572,
+      0.0,
+      373.06888344
+    ],
+    [
+      0.0,
+      1073.90347929,
+      254.72159802
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "model_frame": "tless_object6",
+  "camera_frame": "camera",
+  "extents_m": [
+    0.0894000015258789,
+    0.05,
+    0.0555
+  ],
+  "detections": [
+    {
+      "identifier": "supplied_instance_0",
+      "box": [
+        261,
+        110,
+        415,
+        251
+      ],
+      "source": "published_visible_bbox"
+    },
+    {
+      "identifier": "supplied_instance_1",
+      "box": [
+        255,
+        115,
+        491,
+        292
+      ],
+      "source": "published_visible_bbox"
+    },
+    {
+      "identifier": "supplied_instance_2",
+      "box": [
+        185,
+        267,
+        270,
+        351
+      ],
+      "source": "published_visible_bbox"
+    },
+    {
+      "identifier": "supplied_instance_3",
+      "box": [
+        280,
+        343,
+        374,
+        419
+      ],
+      "source": "published_visible_bbox"
+    },
+    {
+      "identifier": "supplied_instance_4",
+      "box": [
+        399,
+        299,
+        510,
+        395
+      ],
+      "source": "published_visible_bbox"
+    },
+    {
+      "identifier": "duplicate_target",
+      "box": [
+        261,
+        110,
+        415,
+        251
+      ],
+      "source": "intentionally_repeated_external_box"
+    }
+  ],
+  "distortion": []
+}

@@ -78,7 +78,10 @@ def test_valid_rejection_no_stale_pose_and_graphics_off(tmp_path):
     assert client.closed and block._client is None
 
 
-def test_graphics_follow_best_pose_with_separate_gallery_grid_and_candidate_table(tmp_path):
+@pytest.mark.parametrize("suppressed", [False, True])
+def test_graphics_follow_best_pose_with_separate_gallery_grid_and_candidate_table(
+    tmp_path, suppressed
+):
     from opencv_dataflow.simple_gdrnpp.selection import describe_review
 
     poses = [
@@ -94,6 +97,12 @@ def test_graphics_follow_best_pose_with_separate_gallery_grid_and_candidate_tabl
         capture_id="current-B",
         target_frame="camera",
     )
+    if suppressed:
+        report.update(overlap_selection={}, depth_accepted_candidates=2)
+        report["candidates"][0].update(
+            depth_fit=dict(status="accepted", coverage=0.79),
+            selection=dict(status="overlap_suppressed", retained_by="best_accepted", overlap=1.0),
+        )
 
     class Client:
         wrong = False
@@ -134,7 +143,13 @@ def test_graphics_follow_best_pose_with_separate_gallery_grid_and_candidate_tabl
     )
     block.parameters["review_candidate"] = 1
     rejected = block.execute(inputs())
-    assert rejected.outputs["review"]["status"] == "rejected"
+    assert rejected.outputs["review"]["status"] == (
+        "overlap_suppressed" if suppressed else "rejected"
+    )
+    assert rejected.outputs["accepted_count"] == 1 and rejected.outputs["poses"] == [poses[1]]
+    if suppressed:
+        assert rejected.outputs["cloud"].metadata["review"]["depth_status"] == "accepted"
+        assert "1 retained poses (2 depth-accepted before overlap)" in rejected.message
     assert rejected.passed and rejected.outputs["pose"] == poses[1]
     block.parameters["review_candidate"] = 0
     block._client.wrong = True

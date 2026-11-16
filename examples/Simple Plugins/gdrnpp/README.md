@@ -1,5 +1,12 @@
 # SimpleGDRNPP setup and real saved reviews
 
+`overlap_review/run_project.json` demonstrates optional depth-aware duplicate
+selection: six real-scene supplied proposals produce two depth accepts and one
+unique pose. Review the suppressed candidate in the native colored cloud,
+overlay, fit table and gallery. `overlap_review/review_project.json` reads the
+saved results without weights; see `overlap_review/README.md` for the selection
+rule and remaining limits. Original recipes keep selection disabled.
+
 Open `frame3/review_project.json`, `frame13/review_project.json` or
 `wrong_object/review_project.json` for fast offline review with the native RGB
 flyaround thumbnail/popout. These load recorded actual GDRNPP results; source

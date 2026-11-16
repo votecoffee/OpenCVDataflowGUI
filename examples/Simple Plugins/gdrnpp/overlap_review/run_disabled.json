@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "locate",
+      "type": "3d.simple_gdrnpp",
+      "name": "Selection disabled / two depth accepts",
+      "parameters": {
+        "recipe_path": "disabled.gdrnpp",
+        "sha256": "6ec7d7b50c3eddd4855e82419dbf449723e7a48b8de9890849b77c83afa458ab",
+        "models_dir": "",
+        "mode": "Retained reference",
+        "depth_scale_to_m": 1.0,
+        "render_overlay": true,
+        "render_cloud": true,
+        "review_candidate": 0,
+        "render_gallery": true
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "depth",
+        "camera",
+        "detections",
+        "capture_id"
+      ],
+      "exposed_outputs": [
+        "report",
+        "pose",
+        "poses",
+        "accepted_count",
+        "overlay",
+        "cloud",
+        "review",
+        "candidate_table",
+        "gallery"
+      ]
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "ACTUAL WORKER / repeated external proposal",
+      "description": "Real T-LESS scene 6 / frame 2: five supplied visible boxes plus an intentionally repeated target box. Two depth-accepted proposals become one unique pose at 60% maximum overlap. Four others reject. Highest measured support wins, ties keep input order. Review number 6 shows the suppressed duplicate without re-enabling it. Same depth gates, no detector or new accuracy qualification. T-LESS CC BY 4.0, Hodan et al., WACV 2017. Choose the external verified model folder.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": []
+    }
+  ],
+  "connections": []
+}

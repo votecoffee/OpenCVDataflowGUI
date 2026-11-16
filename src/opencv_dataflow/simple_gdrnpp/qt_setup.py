@@ -35,7 +35,7 @@ from opencv_dataflow.images import ImageArray
 from opencv_dataflow.pointclouds import PointCloud
 
 from .bridge import WorkerClient, configure_runtime, project_recipe_path, runtime_python
-from .selection import describe_review
+from .selection import candidate_status, describe_review
 
 
 class BoxView(FilmstripImageView):
@@ -176,6 +176,7 @@ class GDRNPPSetupDialog(QDialog):
             ("distance_tolerance_m", "Depth tolerance", 0.01, 100, 2),
             ("minimum_coverage", "Minimum measured support", 10, 100, 1),
             ("maximum_contradiction", "Maximum contradiction", 0, 100, 1),
+            ("maximum_overlap", "Maximum overlap (100% disables)", 0, 100, 1),
             ("maximum_correction_m", "Maximum translation correction", 0.01, 100, 2),
         ]:
             widget = QSpinBox() if decimals == 0 else QDoubleSpinBox()
@@ -384,7 +385,7 @@ class GDRNPPSetupDialog(QDialog):
             for detection in self.summary["reference_detections"]:
                 self._append_box(detection)
             for name, widget in self.fields.items():
-                widget.setValue(self.summary["settings"][name] * self._display_factor(name))
+                widget.setValue(self._retained_setting(name) * self._display_factor(name))
             self.depth_refine.setChecked(self.summary["settings"]["depth_refine"])
             self.refine_method.setCurrentIndex(
                 self.refine_method.findData(
@@ -431,7 +432,7 @@ class GDRNPPSetupDialog(QDialog):
             settings={
                 **{
                     k: (
-                        self.summary["settings"][k]
+                        self._retained_setting(k)
                         if self.summary and k not in self.dirty_fields
                         else w.value() / self._display_factor(k)
                         if self._display_factor(k) != 1
@@ -459,9 +460,14 @@ class GDRNPPSetupDialog(QDialog):
             1000
             if name.endswith("_m")
             else 100
-            if name in ("minimum_coverage", "maximum_contradiction")
+            if name in ("minimum_coverage", "maximum_contradiction", "maximum_overlap")
             else 1
         )
+
+    def _retained_setting(self, name):
+        if name == "maximum_overlap":
+            return self.summary["settings"].get(name, 1.0)
+        return self.summary["settings"][name]
 
     def _model_folder(self):
         value = self.models.text()
@@ -611,7 +617,8 @@ class GDRNPPSetupDialog(QDialog):
         for number, candidate in enumerate(self.preview_report["candidates"], 1):
             fit = candidate["fit"]
             self.candidates.addItem(
-                f"{number}: {candidate['id']} · {fit['status']} · support {fit['coverage']:.1%}"
+                f"{number}: {candidate['id']} · {candidate_status(candidate)} · "
+                f"support {fit['coverage']:.1%}"
             )
         self.candidates.setCurrentIndex(index if index is not None else -1)
         self.candidates.blockSignals(False)
@@ -627,6 +634,11 @@ class GDRNPPSetupDialog(QDialog):
         self.status.setText(
             "Preview completed. Acceptance uses measured-depth gates. "
             "Refinement reuses these measurements when enabled."
+            + (
+                " Overlap selection keeps stronger unique poses; suppressed fits remain reviewable."
+                if "overlap_selection" in self.preview_report
+                else ""
+            )
         )
         self.result_cloud_button.setEnabled(True)
 

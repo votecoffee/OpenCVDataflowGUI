@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "recorded_0",
+      "type": "input.cloud",
+      "name": "Recorded retained unique pose",
+      "parameters": {
+        "path": "results/best.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_1",
+      "type": "input.cloud",
+      "name": "Recorded suppressed duplicate (depth fits)",
+      "parameters": {
+        "path": "results/suppressed.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        500,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_2",
+      "type": "input.file",
+      "name": "Six proposals / duplicate in amber",
+      "parameters": {
+        "path": "results/gallery.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        0,
+        500
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_3",
+      "type": "input.file",
+      "name": "Suppressed duplicate / source-aligned fit",
+      "parameters": {
+        "path": "results/suppressed.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        500
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_scope",
+      "type": "layout.comment",
+      "name": "SAVED REVIEW / file-source PASS means reading only",
+      "description": "Recorded real T-LESS input with one intentionally repeated rectangle. Two depth accepts become one unique pose. Suppressed surfaces can still fit well; green points show physical depth agreement, amber caption shows duplicate suppression. Native fly-around colored clouds. File-source PASS means reading only, not picking qualification. T-LESS CC BY 4.0, Hodan et al., WACV 2017.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": []
+    }
+  ],
+  "connections": []
+}

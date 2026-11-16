@@ -86,11 +86,15 @@ def test_reopens_reference_boxes_units_and_preserves_unedited_precision(app, tmp
     assert dialog.viewer.image_item.pixmap().width() == 720 and dialog.boxes.rowCount() == 1
     assert dialog.viewer.image_item.pixmap().toImage().pixelColor(0, 0).getRgb()[:3] == (10, 20, 30)
     assert dialog.fields["distance_tolerance_m"].value() == 5
+    assert dialog.fields["maximum_overlap"].value() == 100
+    assert dialog._draft()["settings"]["maximum_overlap"] == 1
     assert dialog._draft()["settings"]["minimum_coverage"] == 0.733333333333
     dialog.name.setText("changed name")
     assert dialog._draft()["settings"]["minimum_coverage"] == 0.733333333333
     dialog.fields["minimum_coverage"].setValue(75)
     assert dialog._draft()["settings"]["minimum_coverage"] == 0.75
+    dialog.fields["maximum_overlap"].setValue(60)
+    assert dialog._draft()["settings"]["maximum_overlap"] == 0.6
     dialog._add_box((10, 10, 30, 35))
     assert dialog.boxes.rowCount() == 2
     dialog.viewer.zoom(1.25)
@@ -134,7 +138,8 @@ def test_edit_cancels_pending_preview_and_discards_older_result(app, tmp_path):
     assert client.closed.wait(2)
 
 
-def test_preview_selects_best_later_candidate_and_switches_cached_review(app, tmp_path):
+@pytest.mark.parametrize("suppressed", [False, True])
+def test_preview_selects_best_later_candidate_and_switches_cached_review(app, tmp_path, suppressed):
     from opencv_dataflow.simple_gdrnpp.selection import describe_review
 
     dialog, client, applied, draft = opened(app, tmp_path)
@@ -146,6 +151,11 @@ def test_preview_selects_best_later_candidate_and_switches_cached_review(app, tm
         accepted_candidates=1,
         target_frame="camera",
     )
+    if suppressed:
+        report["candidates"][0].update(
+            depth_fit=dict(status="accepted", coverage=0.79),
+            selection=dict(status="overlap_suppressed", retained_by="accepted_second", overlap=1.0),
+        )
     arrays = dict(
         overlay=np.zeros((54, 72, 3), np.uint8),
         points=np.zeros((1, 3), np.float32),
@@ -171,7 +181,9 @@ def test_preview_selects_best_later_candidate_and_switches_cached_review(app, tm
     dialog._candidate(0)
     settle(app, dialog)
     assert calls == ["render"] and dialog.candidates.currentIndex() == 0
-    assert "rejected_first (rejected)" in dialog.result_info.text()
+    status = "overlap_suppressed" if suppressed else "rejected"
+    assert f"rejected_first ({status})" in dialog.result_info.text()
+    assert status in dialog.candidates.itemText(0)
     clouds = []
     dialog._cloud = clouds.append
     dialog._result_cloud()

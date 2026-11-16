@@ -1,0 +1,17 @@
+{
+  "proposals": 6,
+  "depth_accepted": 2,
+  "unique_accepted": 1,
+  "suppressed": 1,
+  "maximum_overlap": 0.6,
+  "repeated_proposal_overlap": 1.0,
+  "all_poses_and_depth_metrics_unchanged": true,
+  "best_pose_unchanged": true,
+  "suppressed_review_retains_depth_accept": true,
+  "cached_review_inference_requests": 1,
+  "three_inspections_one_model_load": true,
+  "graphics_off_numeric_parity": true,
+  "weights_bundled": false,
+  "scope": "Real T-LESS scene with one intentionally repeated external box; duplicate-proposal contract, not broader pose accuracy",
+  "attribution": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+}

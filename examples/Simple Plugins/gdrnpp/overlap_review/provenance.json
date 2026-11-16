@@ -1,0 +1,31 @@
+{
+  "dataset": "T-LESS",
+  "license": "CC-BY-4.0",
+  "source": "https://cmp.felk.cvut.cz/t-less/",
+  "attribution": "T. Hodan et al., WACV 2017; same real first-return RGB-D/calibration, one intentionally repeated supplied box, retained reference, derived overlays/gallery/native colored clouds",
+  "runtime_code_commit": "9fd9d61c5f6f8c9c42212d01e03f9734eaf1b644",
+  "worker_implementation_sha256": "99911f5e7cf31828d2c41a744592297993ca9f0f0776751f050fec1a68e461d9",
+  "worker_wheel_sha256": "b68c30a8a7da504f8bf99aebc674cf38d9c4ad919f4e3519bae990d18da38b7c",
+  "pose_labels_entered_runtime": false,
+  "scope": "Duplicate-proposal selection contract on an existing assisted scene, not new accuracy or speed qualification",
+  "sha256": {
+    "candidate_table.json": "33360e9f25e395b3e2064b33507265cecbe8102b789efc8c7ae1d1bfc055c142",
+    "capture.json": "750e2299677a324ff0109164b017e7a7feeb231b526f3e61362d6da569565927",
+    "disabled.gdrnpp": "6ec7d7b50c3eddd4855e82419dbf449723e7a48b8de9890849b77c83afa458ab",
+    "enabled.gdrnpp": "2396c2e12d13a4e3ac464503a3edf16e86ef287a2241e99fe488888463e1b095",
+    "results/best.json": "2297adda4a1196f7b3468970dc9d258350155b3bcf71877da4740265d740bd30",
+    "results/best.ply": "1793b2ecbeea82def81c09bae4e95930b5f5e24323a99efba216fb9bf3d17f07",
+    "results/best.png": "2d10b0f4c5bb844209b4d87fb6565fa4ef26ab7fbbb495603ee9a261dc6337c4",
+    "results/checks.json": "e0d6c04dc76145aeca55218c346925d03c85964eda56c330b9d04667aee9def9",
+    "results/disabled.json": "2cdca60fff03ad00edd7e9bd9a6eec9cb5b885645ca4266a897cde96c04877a5",
+    "results/gallery.png": "eaa28da5e5f778f543135bc3422270ca33cc14cab5e561dc7defda4bb7a555a6",
+    "results/suppressed.json": "6dcc24ef2298c979b892f8bf3850335f34cca4556f081fbe941aa8ac03794042",
+    "results/suppressed.ply": "1793b2ecbeea82def81c09bae4e95930b5f5e24323a99efba216fb9bf3d17f07",
+    "results/suppressed.png": "692e2c18e88b365237b1f349451a754d26afdcfaf3c0885a96a21337941d470d",
+    "review_project.json": "dfd27f24da188c48e00d6953609611cdafe295a75fe057dceddf15de011a7998",
+    "run_disabled.json": "3c414199ef105fff9bf0a63df3551cfdca8a91041fd84b145a95e44825b611dc",
+    "run_project.json": "f9c92bd78d55f0f5eb83503005ea9258d67846dd153646b20165f7115dd7549d",
+    "run_suppressed_review.json": "583321b7cf80d536d16424ae0d4661d31db34e09b6b30bb108a6d5131c1b4fac",
+    "validation.json": "828b2e5bac1db49d1c24acc87e92284f06afed7f7ad0a42017a500787c81f349"
+  }
+}

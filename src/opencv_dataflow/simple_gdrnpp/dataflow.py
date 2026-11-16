@@ -147,8 +147,8 @@ class SimpleGDRNPP(Block):
         "capture_id": "Explicit current acquisition identity; no implicit reference-pose reuse.",
     }
     output_help = {
-        "pose": "Best depth-accepted pose only; absent on rejection. Not a grasp qualification.",
-        "poses": "All depth-accepted poses. Raw proposals remain separately in report.",
+        "pose": "Best retained pose after depth/overlap checks; absent on rejection. Not a grasp.",
+        "poses": "Poses retained after depth/overlap checks. All proposals remain in report.",
         "cloud": "Review-only measured scene, predicted CAD and axes; RGB colors explain fit.",
         "review": "Selected proposal identity/status and whether it is the best accepted pose.",
         "candidate_table": "Proposal numbers, IDs, support/contradiction and selection.",
@@ -289,7 +289,13 @@ class SimpleGDRNPP(Block):
             passed=bool(accepted),
             score=max((c["fit"]["coverage"] for c in report["candidates"]), default=0.0),
             message=(
-                f"{len(accepted)} depth-accepted poses; {viewing}; "
+                (
+                    f"{len(accepted)} retained poses "
+                    f"({report['depth_accepted_candidates']} depth-accepted before overlap); "
+                    if "overlap_selection" in report
+                    else f"{len(accepted)} depth-accepted poses; "
+                )
+                + f"{viewing}; "
                 "score is maximum measured support"
             ),
             fail_reasons=[] if accepted else ["no_depth_accepted_pose"],
