@@ -1,0 +1,310 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/line_signal.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "excluded",
+      "type": "mask.shape",
+      "name": "Shape mask",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          220,
+          0,
+          20,
+          64
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": true
+      },
+      "position": [
+        400,
+        -250
+      ],
+      "exposed_inputs": [
+        "image",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "path_0",
+      "type": "cv.path_intensity_profile",
+      "name": "Path intensity profile",
+      "parameters": {
+        "vertices": [
+          [
+            0,
+            16
+          ],
+          [
+            512,
+            16
+          ]
+        ],
+        "closed": false,
+        "sample_spacing": 1,
+        "interpolation": "linear",
+        "include_alpha": false
+      },
+      "position": [
+        800,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "path"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "points",
+        "path_length",
+        "selected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "resample_0",
+      "type": "cv.resample_image_profile",
+      "name": "Resample image profile",
+      "description": "Align measured image profiles to an exact pixel or physical pitch.",
+      "documentation": "<p>Resamples uniform path measurements while retaining source image coordinates, tickets and explicit invalid gaps. A reference profile supplies a shared distance grid. Rate-aware Kaiser filtering suppresses aliases during decimation. See docs/profile-resampling.md for boundary, calibration and validity contracts.</p>",
+      "parameters": {
+        "grid": "own_extent",
+        "pitch": 4,
+        "start": 0.0,
+        "end": 100.0,
+        "distance_origin": 0.0,
+        "method": "kaiser_sinc",
+        "antialias": true,
+        "kernel_lobes": 12,
+        "window_beta": 8.6,
+        "rolloff": 0.9,
+        "boundary": "reflect",
+        "maximum_work": 8000000
+      },
+      "position": [
+        1200,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "profile",
+        "reference",
+        "scale"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "points",
+        "valid",
+        "selected_count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "path_1",
+      "type": "cv.path_intensity_profile",
+      "name": "Path intensity profile",
+      "parameters": {
+        "vertices": [
+          [
+            0,
+            48
+          ],
+          [
+            512,
+            48
+          ]
+        ],
+        "closed": false,
+        "sample_spacing": 1,
+        "interpolation": "linear",
+        "include_alpha": false
+      },
+      "position": [
+        800,
+        320
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "path"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "points",
+        "path_length",
+        "selected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "resample_1",
+      "type": "cv.resample_image_profile",
+      "name": "Resample image profile",
+      "description": "Align measured image profiles to an exact pixel or physical pitch.",
+      "documentation": "<p>Resamples uniform path measurements while retaining source image coordinates, tickets and explicit invalid gaps. A reference profile supplies a shared distance grid. Rate-aware Kaiser filtering suppresses aliases during decimation. See docs/profile-resampling.md for boundary, calibration and validity contracts.</p>",
+      "parameters": {
+        "grid": "reference",
+        "pitch": 4,
+        "start": 0.0,
+        "end": 100.0,
+        "distance_origin": 0.0,
+        "method": "linear",
+        "antialias": false,
+        "kernel_lobes": 12,
+        "window_beta": 8.6,
+        "rolloff": 0.9,
+        "boundary": "reflect",
+        "maximum_work": 8000000
+      },
+      "position": [
+        1200,
+        320
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "profile",
+        "reference",
+        "scale"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "points",
+        "valid",
+        "selected_count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original measured-profile fixtures - MIT",
+      "description": "Original MIT high-depth image, calibration fixture, generator and projects by OpenCVDataflowGUI contributors. No customer or third-party images. The two horizontal paths share intensity but have their own image coordinates. One resampler supplies the common reference distance grid. Physical common uses a declared .25 mm/px rectified-workplane scale. Masked decimation compares antialiased filtering with unfiltered sampling and preserves a taught gap. Filter support widens the invalid gap; it never invents data across it. The Float64 Kaiser implementation is original; the installed native signal resampler did not qualify the tested decimation/coordinate requirements. These synthetic profiles are engineering checks, not calibration acceptance.",
+      "parameters": {},
+      "position": [
+        0,
+        -600
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "excluded",
+      "input": "image"
+    },
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "path_0",
+      "input": "image"
+    },
+    {
+      "source": "path_0",
+      "output": "profile",
+      "target": "resample_0",
+      "input": "profile"
+    },
+    {
+      "source": "excluded",
+      "output": "mask",
+      "target": "path_0",
+      "input": "mask"
+    },
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "path_1",
+      "input": "image"
+    },
+    {
+      "source": "path_1",
+      "output": "profile",
+      "target": "resample_1",
+      "input": "profile"
+    },
+    {
+      "source": "resample_0",
+      "output": "profile",
+      "target": "resample_1",
+      "input": "reference"
+    },
+    {
+      "source": "excluded",
+      "output": "mask",
+      "target": "path_1",
+      "input": "mask"
+    }
+  ]
+}

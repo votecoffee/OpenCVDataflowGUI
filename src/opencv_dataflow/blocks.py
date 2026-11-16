@@ -858,6 +858,7 @@ def builtin_registry():
     from .poses import POSE_BLOCKS
     from .principal_components import FitPrincipalComponents, TransformPrincipalComponents
     from .processing import PROCESSING_BLOCKS
+    from .profile_resampling import ResampleImageProfile
     from .projection import IntensityProfile, PathIntensityProfile
     from .ptcloud3d import PTCLOUD3D_BLOCKS
     from .pyramids import PYRAMID_BLOCKS
@@ -1016,6 +1017,7 @@ def builtin_registry():
         RestoreFromNeighbors,
         EstimateScanlineMotion,
         TrackImageParts,
+        ResampleImageProfile,
         *REFRESH_TRACKING_BLOCKS,
         CaptureBackgroundReference,
         SaveBackgroundReference,

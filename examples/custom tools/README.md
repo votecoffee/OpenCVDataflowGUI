@@ -15,3 +15,5 @@ under [Demos](../demos/README.md). Python plugin authoring examples remain in
 [dedicated collection](<../Simple Plugins/README.md>).
 
 [All examples](../README.md)
+
+For image measurements on a shared pixel or physical grid, try [profile resampling](profile_resampling/README.md).

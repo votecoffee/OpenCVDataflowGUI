@@ -1,0 +1,23 @@
+{
+  "license": "MIT - original repository fixtures",
+  "image_size": [
+    513,
+    64
+  ],
+  "peak_center_pixel": 320,
+  "physical_units_per_pixel": 0.25,
+  "masked_columns": [
+    220,
+    239
+  ],
+  "signal": "18000 + 4000*cos(2*pi*x/64) + 12000*exp(-((x-320)/16)^2) + 2000*sin(2*pi*0.30*x), rounded uint16",
+  "cases": [
+    "pixel_common",
+    "physical_common",
+    "masked_decimation"
+  ],
+  "asset_sha256": {
+    "line_signal.png": "244c7bc8c64ce2ec8a129183e824afc15cd9b24aa24b7447ad3ab356f0cf1ccc",
+    "workplane.json": "37459cb88844f6d33332ba26447e9fe0c3400d05a888c4001a3370fc1ff30d7c"
+  }
+}

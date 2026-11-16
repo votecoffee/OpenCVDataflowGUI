@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 159 | 8 | 8 | 175 | 90.9% |
+| 1. Core and baseline 2D | 160 | 7 | 8 | 175 | 91.4% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 222 | 50 | 198 | 470 | 47.2% |
+| **Overall** | 223 | 49 | 198 | 470 | 47.4% |
 
 <!-- coverage-summary:end -->
 
@@ -297,7 +297,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S1-173 | Resample measured image profiles onto a common pitch | signal.resampleSignal with verified antialiasing or a tested equivalent | Partial | cv.path_intensity_profile supplies image-space profiles and sample coordinates. Align two profiles to a common pixel or physical pitch. Verify amplitude, peak position, antialiasing, invalid gaps and source-coordinate provenance for upsampling and decimation. |
+| S1-173 | Resample measured image profiles onto a common pitch | Tested rate-aware Kaiser sinc/FIR equivalent | Complete | cv.resample_image_profile consumes measured path profiles and a configured or reference distance grid, with optional exact-grid rectified-workplane scale. Float64 phase-aware interpolation and rate-aware antialiasing preserve explicit null support, exact pitch, closed periods, separate source/reference contexts and source fractional/image coordinates; boundary extension is flagged. Analytic amplitude/peak/alias references, physical units/tickets, invalid gaps/ends, resource/XML/editor controls and three original high-depth projects qualify the image-profile baseline. The installed native signal.resampleSignal retained strong 4:1 aliases and a different coordinate convention, so that native binding is not qualified; see docs/profile-resampling.md. |
 
 ### Image metrology and edge sharpness
 

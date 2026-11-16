@@ -25,7 +25,7 @@ CHANNEL_COLORS = {"B": (245, 155, 75), "G": (80, 220, 90), "R": (90, 90, 245)}
 FALLBACK_COLORS = ((220, 220, 220), (210, 180, 85), (185, 95, 230), (90, 220, 225))
 
 
-def profile_plot(values, valid, labels, axis, statistic, *, distances=None):
+def profile_plot(values, valid, labels, axis, statistic, *, distances=None, distance_units="px"):
     graphic = np.full((300, 640, 3), 25, np.uint8)
     font = cv2.FONT_HERSHEY_SIMPLEX
     neutral = (175, 175, 175)
@@ -62,8 +62,9 @@ def profile_plot(values, valid, labels, axis, statistic, *, distances=None):
         cv2.putText(graphic, label, (left + channel * 105, 289), font, 0.48, color, 1)
     cv2.putText(graphic, f"{high:.4g}", (8, top + 4), font, 0.42, neutral, 1)
     cv2.putText(graphic, f"{low:.4g}", (8, bottom), font, 0.42, neutral, 1)
-    cv2.putText(graphic, "0", (left, 268), font, 0.42, neutral, 1)
-    last = str(len(values) - 1) if distances is None else f"{distances[-1]:.4g} px"
+    first = "0" if distances is None else f"{distances[0]:.4g}"
+    cv2.putText(graphic, first, (left, 268), font, 0.42, neutral, 1)
+    last = str(len(values) - 1) if distances is None else f"{distances[-1]:.4g} {distance_units}"
     cv2.putText(graphic, last, (right - 8 * len(last), 268), font, 0.42, neutral, 1)
     return graphic
 

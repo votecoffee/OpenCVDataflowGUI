@@ -3504,6 +3504,33 @@ Input `source_ids` — Optional explicit stable IDs for received entries, requir
 | `grid_policy` | `"strict"` | `strict`, `pixel_indices` Verify saved coordinates, or explicitly assert calibrated pixel indices. |
 | `maximum_workspace_mib` | `256` | Value must be a whole number between 1 and 256. Replay-buffer estimate; snapshots/runtime copies are additional. |
 
+## Resample image profile (`cv.resample_image_profile`)
+
+Image processing / Statistics
+
+Inputs: `profile` (data), `reference` (data, optional), `scale` (data, optional).
+
+Input `profile` — Measured Path intensity profile, or image_profile_v1, with source points and image payload.
+
+Input `reference` — Reference target distances/units only; its values and ticket are never treated as current measurements.
+
+Input `scale` — Optional current rectified-workplane scale converts pixel arc distance to physical units.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `grid` | `"own_extent"` | `own_extent`, `explicit_extent`, `reference` Use this profile's extent, explicit start/end, or the Reference distance grid. |
+| `pitch` | `1.0` | Value must be a finite number between 1e-06 and 1e+06. Exact target spacing in profile units; a partial final interval is omitted, never stretched. |
+| `start` | `0.0` | Value must be a finite number between -1e+09 and 1e+09. First target coordinate for explicit extent; outside-source samples stay invalid. |
+| `end` | `100.0` | Value must be a finite number between -1e+09 and 1e+09. Maximum target coordinate for explicit extent; included only when pitch lands on it. |
+| `distance_origin` | `0.0` | Value must be a finite number between -1e+09 and 1e+09. Add to source arc distances after physical-scale conversion; aligns taught path origins. |
+| `method` | `"kaiser_sinc"` | `kaiser_sinc`, `linear` Windowed sinc, or linear interpolation (with a prefilter for antialiased downsampling). |
+| `antialias` | `true` | Low-pass before decimation; disabling it permits aliases. Gaps never become invented data. |
+| `kernel_lobes` | `12` | Value must be a whole number between 2 and 32. Kernel half-support in source samples, expanded by the decimation ratio. |
+| `window_beta` | `8.6` | Value must be a finite number between 0 and 20. Kaiser window beta; controls stopband attenuation and transition width. |
+| `rolloff` | `0.9` | Value must be a finite number between 0.1 and 1. Cutoff as a fraction of target Nyquist when reducing sample density. |
+| `boundary` | `"reflect"` | `reflect`, `replicate`, `invalid` Extend outer ends by reflection or replication, or mark unsupported kernels invalid. Closed paths wrap. |
+| `maximum_work` | `8000000` | Value must be a whole number between 1 and 3.2e+07. Output samples times kernel taps times channels ceiling; not an elapsed-time guarantee. |
+
 ## Resample coverage mask (`cv.resample_mask`)
 
 Image processing / Geometry

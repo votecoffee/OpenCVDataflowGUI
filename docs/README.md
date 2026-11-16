@@ -28,6 +28,7 @@
 | Stored optical-flow fields, native I/O and verified image-pair association | [Flow files](flow-files.md) |
 | Detection association, oriented prediction, uncertainty and expiry | [Image tracking](image-tracking.md) |
 | Periodic full-frame detector scheduling, local motion and freshness | [Detector refresh tracking](refresh-tracking.md) |
+| Common-pitch measured profiles, physical scale and antialiasing | [Profile resampling](profile-resampling.md) |
 | Seeded MIL tracking, loss/reseed and native confidence limits | [MIL tracking](mil-tracking.md) |
 | Precomputed optical-flow pyramids and Python consumer qualification | [Pyramid binding audit](optical-flow-pyramid-audit.md) |
 | Encoded video bytes, bounded FFmpeg callbacks and per-frame groups | [Video buffers](video-buffer.md) |

@@ -344,6 +344,7 @@ Project-defined inspection algorithms, region/metrology tools and integrations w
 | [Minimum spanning tree](<custom tools/minimum_spanning_tree/README.md>) | Find and overlay the shortest network connecting five detected centers using Delaunay edges. |
 | [Motion deblur](<custom tools/motion_deblur/README.md>) | Restore a frame blurred by an eight-pixel horizontal motion path. |
 | [Path intensity profile](<custom tools/path_intensity_profile/README.md>) | Sample all color channels along a bent path and preserve excluded samples. |
+| [Common-pitch image profiles](<custom tools/profile_resampling/README.md>) | Align measured profiles on exact pixel/physical grids, preserve source coordinates and invalid gaps, and compare antialiased decimation. |
 | [Reference-guided cast shadows](<custom tools/reference_shadows/README.md>) | Restore a clear/shadow pair with exact 16-bit RGB pixel and defect-contrast truth; inspect a deliberately rejected nonuniform model. |
 | [Regions through image transforms](<custom tools/transformed_regions/README.md>) | Carry a region through crop, resize, and rotation, then measure the transformed selection. |
 | [Seeded random images and noise](<custom tools/seeded_noise/README.md>) | Compare two independently scheduled noise branches for exact agreement. |
