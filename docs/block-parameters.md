@@ -3478,6 +3478,32 @@ Input `image` — Float32 or float64 grayscale, color, or physical depth samples
 | `positive_infinity_replacement` | `0.0` | Value must be a finite number. Replacement for positive infinity in stored units. |
 | `negative_infinity_replacement` | `0.0` | Value must be a finite number. Replacement for negative infinity in stored units. |
 
+## Replay registered views (`cv.replay_registered_views`)
+
+Image processing / Geometry
+
+Inputs: `views` (any), `layout` (data), `masks` (any, optional), `source_ids` (data, optional).
+
+Input `views` — One to 64 current images; member tickets/timestamps remain attached.
+
+Input `layout` — Successful v1/v2 planar layout. No feature fitting or blending is performed.
+
+Input `masks` — Optional uint8 validity masks, in received image order and source coordinates.
+
+Input `source_ids` — Optional explicit stable IDs for received entries, requiring a v2 layout.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `crop` | `"canvas"` | `canvas`, `union`, `intersection` Full canvas, tight union, or common-valid bounding crop with holes zeroed. |
+| `backend` | `"preserve"` | `preserve`, `native_detail` Preserve supports layout types. Native detail requires uint8 gray/RGB/BGR. |
+| `interpolation` | `"linear"` | `nearest`, `linear` Linear requires every contributing source sample to be valid. |
+| `frame_order` | `"received"` | `received`, `calibrated` Received preserves acquisition order; calibrated uses saved order. |
+| `preview_frame` | `0` | Value must be a whole number between 0 and 63. Zero-based output frame shown as Image; does not discard other frames. |
+| `source_ids` | `[]` | Stable IDs in received order; wired IDs override the saved identity rule. |
+| `missing_views` | `"error"` | `error`, `fail`, `allow` Error: no output. Fail: failed partial. Allow: incomplete replay. |
+| `grid_policy` | `"strict"` | `strict`, `pixel_indices` Verify saved coordinates, or explicitly assert calibrated pixel indices. |
+| `maximum_workspace_mib` | `256` | Value must be a whole number between 1 and 256. Replay-buffer estimate; snapshots/runtime copies are additional. |
+
 ## Resample coverage mask (`cv.resample_mask`)
 
 Image processing / Geometry

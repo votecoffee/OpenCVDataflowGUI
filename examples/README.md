@@ -275,6 +275,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Structured-append QR](<opencv tools/qr_structured_append/README.md>) | Recover shuffled image/scene fragments; reject missing, duplicate, mismatched, parity-colliding and damaged sets without partial payload events. |
 | [Feature/matcher evaluation](<opencv tools/feature_evaluation/README.md>) | Measure center repeatability and precision/recall with independent image transforms, shared support, existing matchers and deliberate failure cases. |
 | [Calibrated mosaic layout reuse](<opencv tools/mosaic_layout_reuse/README.md>) | Reuse sealed planar geometry with stable source IDs, reordered/missing views, unchanged canvas coordinates and explicit coverage/failure policies. |
+| [Registered-view replay](<opencv tools/registered_view_replay/README.md>) | Preserve independent acquisitions with union/common-valid crops, mask holes, native placement and per-ticket serial inspections. |
 | [TIFF page sequence](<opencv tools/tiff_page_sequence/README.md>) | Replay a three-page 16-bit TIFF as separately ticketed images. |
 | [TIFF page access](<opencv tools/tiff_page_access/README.md>) | Select arbitrary pages from a 257-page mixed-depth stack, inspect bounded cache hits and conversions, and exercise explicit range/workspace errors. |
 | [Tile image](<opencv tools/tile_image/README.md>) | Repeat a reference in a 2 × 3 grid and find all six copies with template matching. |

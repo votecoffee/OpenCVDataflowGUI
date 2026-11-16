@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 150 | 12 | 13 | 175 | 85.7% |
+| 1. Core and baseline 2D | 151 | 12 | 12 | 175 | 86.3% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 213 | 54 | 203 | 470 | 45.3% |
+| **Overall** | 214 | 54 | 202 | 470 | 45.5% |
 
 <!-- coverage-summary:end -->
 
@@ -264,7 +264,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S1-164 | Reuse a calibrated mosaic layout | Stitcher.composePanorama and persisted camera or tile transforms | Complete | cv.register_scan_layout and cv.render_mosaic_tile qualify persisted planar transform reuse with opt-in stable IDs from labels, per-member metadata or explicit lists/inputs. Reordered/missing sources retain calibrated blend priority, fixed canvas bounds/root and current source tickets/maps; default legacy ordered behavior is unchanged. Missing policies reject, fail partial or allow explicitly incomplete tiles. Strict grid checks, an explicit reported pixel-index assertion, unknown/duplicate ID rejection and validation of absent geometry precede rendering. cv.load_mosaic_layout/output.mosaic_layout provide bounded strict JSON, geometry/file SHA256 checks, safe publication and Save As assets. Nine original projects and independent pixels/coverage, feather/multiband tile seams, native fitting versus reuse, large virtual bounds, exception/XML/editor/persistence checks qualify this workflow. IDs/metadata do not prove physical camera identity or acquisition synchronization; native Stitcher.composePanorama is not claimed. See [contracts](mosaic-layout-reuse.md). |
-| S1-165 | Replay registered views on a common canvas | detail.Timelapser, detail.TimelapserCrop and common valid support | Planned | Render each view as a separate timestamped frame on the same grid. Verify union and intersection crops, invalid borders, and per-frame source-to-canvas maps. |
+| S1-165 | Replay registered views on a common canvas | detail.Timelapser, detail.TimelapserCrop and common valid support | Complete | cv.replay_registered_views emits independent frame/coverage groups on full, union or exact common-valid bounding crops, preserving current tickets/timestamps, source/pyramid provenance and source-to-frame/canvas maps. Stable-ID/legacy layouts share missing/grid policies; mask holes and invalid borders are explicit. Default preserves gray/RGB/BGR(A) depth; optional native detail uses tested AS_IS/CROP factories with exact uint8 conversion and wrapper-enforced masks. Direct TimelapserCrop construction faults in this wheel and is not used. No-common emits a failed diagnostic without frames. Dense workspace preflight, independent pixels/half-pixel averages/rotations, native reset/masks, parallel calls, exceptions, XML/editor and nine original projects qualify replay and per-ticket Unbatch inspections. No exposure-synchronization or physical-camera assertion. See [contracts](registered-view-replay.md). |
 
 ### Reference frequency response
 

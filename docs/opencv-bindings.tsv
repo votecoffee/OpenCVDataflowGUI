@@ -31,12 +31,12 @@ P1	method	cv2.QRCodeDetector.getEncoding	no static reference	-
 P1	method	cv2.QRCodeDetector.setEpsX	method name only	-
 P1	method	cv2.QRCodeDetector.setEpsY	method name only	-
 P1	method	cv2.QRCodeDetector.setUseAlignmentMarkers	method name only	-
-P1	class	cv2.QRCodeDetectorAruco	no static reference	-
-P1	method	cv2.QRCodeDetectorAruco.getArucoParameters	no static reference	-
-P1	method	cv2.QRCodeDetectorAruco.getDetectorParameters	no static reference	-
+P1	class	cv2.QRCodeDetectorAruco	literal reference	-
+P1	method	cv2.QRCodeDetectorAruco.getArucoParameters	method name only	-
+P1	method	cv2.QRCodeDetectorAruco.getDetectorParameters	method name only	-
 P1	method	cv2.QRCodeDetectorAruco.Params	method name only	-
-P1	method	cv2.QRCodeDetectorAruco.setArucoParameters	no static reference	-
-P1	method	cv2.QRCodeDetectorAruco.setDetectorParameters	no static reference	-
+P1	method	cv2.QRCodeDetectorAruco.setArucoParameters	method name only	-
+P1	method	cv2.QRCodeDetectorAruco.setDetectorParameters	method name only	-
 P1	class	cv2.QRCodeDetectorAruco_Params	no static reference	-
 P1	class	cv2.QRCodeEncoder	no static reference	-
 P1	method	cv2.QRCodeEncoder.create	method name only	-
@@ -153,13 +153,13 @@ P2	class	cv2.aruco.ArucoDetector	literal reference	-
 P2	method	cv2.aruco.ArucoDetector.detectMarkers	method name only	-
 P2	method	cv2.aruco.ArucoDetector.detectMarkersMultiDict	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.detectMarkersWithConfidence	no static reference	-
-P2	method	cv2.aruco.ArucoDetector.getDetectorParameters	no static reference	-
+P2	method	cv2.aruco.ArucoDetector.getDetectorParameters	method name only	-
 P2	method	cv2.aruco.ArucoDetector.getDictionaries	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.getDictionary	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.getRefineParameters	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.read	method name only	-
 P2	method	cv2.aruco.ArucoDetector.refineDetectedMarkers	no static reference	-
-P2	method	cv2.aruco.ArucoDetector.setDetectorParameters	no static reference	-
+P2	method	cv2.aruco.ArucoDetector.setDetectorParameters	method name only	-
 P2	method	cv2.aruco.ArucoDetector.setDictionaries	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.setDictionary	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.setRefineParameters	no static reference	-
@@ -184,11 +184,11 @@ P2	method	cv2.aruco.CharucoDetector.detectBoard	method name only	-
 P2	method	cv2.aruco.CharucoDetector.detectDiamonds	no static reference	-
 P2	method	cv2.aruco.CharucoDetector.getBoard	no static reference	-
 P2	method	cv2.aruco.CharucoDetector.getCharucoParameters	no static reference	-
-P2	method	cv2.aruco.CharucoDetector.getDetectorParameters	no static reference	-
+P2	method	cv2.aruco.CharucoDetector.getDetectorParameters	method name only	-
 P2	method	cv2.aruco.CharucoDetector.getRefineParameters	no static reference	-
 P2	method	cv2.aruco.CharucoDetector.setBoard	no static reference	-
 P2	method	cv2.aruco.CharucoDetector.setCharucoParameters	no static reference	-
-P2	method	cv2.aruco.CharucoDetector.setDetectorParameters	no static reference	-
+P2	method	cv2.aruco.CharucoDetector.setDetectorParameters	method name only	-
 P2	method	cv2.aruco.CharucoDetector.setRefineParameters	no static reference	-
 P2	class	cv2.aruco.CharucoParameters	literal reference	-
 P2	class	cv2.aruco.DetectorParameters	literal reference	-
@@ -315,10 +315,10 @@ P2	method	cv2.detail.BestOf2NearestMatcher.create	method name only	-
 P2	function	cv2.detail.BestOf2NearestMatcher_create	no static reference	-
 P2	class	cv2.detail.BestOf2NearestRangeMatcher	no static reference	-
 P2	class	cv2.detail.Blender	no static reference	-
-P2	method	cv2.detail.Blender.blend	no static reference	-
-P2	method	cv2.detail.Blender.createDefault	no static reference	-
+P2	method	cv2.detail.Blender.blend	method name only	-
+P2	method	cv2.detail.Blender.createDefault	method name only	-
 P2	method	cv2.detail.Blender.feed	method name only	-
-P2	method	cv2.detail.Blender.prepare	no static reference	-
+P2	method	cv2.detail.Blender.prepare	method name only	-
 P2	function	cv2.detail.Blender_createDefault	no static reference	-
 P2	class	cv2.detail.BlocksChannelsCompensator	no static reference	-
 P2	class	cv2.detail.BlocksCompensator	no static reference	-
@@ -370,7 +370,7 @@ P2	class	cv2.detail.Estimator	no static reference	-
 P2	method	cv2.detail.Estimator.apply	method name only	-
 P2	class	cv2.detail.ExposureCompensator	no static reference	-
 P2	method	cv2.detail.ExposureCompensator.apply	method name only	-
-P2	method	cv2.detail.ExposureCompensator.createDefault	no static reference	-
+P2	method	cv2.detail.ExposureCompensator.createDefault	method name only	-
 P2	method	cv2.detail.ExposureCompensator.feed	method name only	-
 P2	method	cv2.detail.ExposureCompensator.getMatGains	no static reference	-
 P2	method	cv2.detail.ExposureCompensator.getUpdateGain	no static reference	-
@@ -378,10 +378,10 @@ P2	method	cv2.detail.ExposureCompensator.setMatGains	no static reference	-
 P2	method	cv2.detail.ExposureCompensator.setUpdateGain	no static reference	-
 P2	function	cv2.detail.ExposureCompensator_createDefault	no static reference	-
 P2	class	cv2.detail.FeatherBlender	no static reference	-
-P2	method	cv2.detail.FeatherBlender.blend	no static reference	-
+P2	method	cv2.detail.FeatherBlender.blend	method name only	-
 P2	method	cv2.detail.FeatherBlender.createWeightMaps	no static reference	-
 P2	method	cv2.detail.FeatherBlender.feed	method name only	-
-P2	method	cv2.detail.FeatherBlender.prepare	no static reference	-
+P2	method	cv2.detail.FeatherBlender.prepare	method name only	-
 P2	method	cv2.detail.FeatherBlender.setSharpness	no static reference	-
 P2	method	cv2.detail.FeatherBlender.sharpness	no static reference	-
 P2	class	cv2.detail.FeaturesMatcher	no static reference	-
@@ -410,11 +410,11 @@ P2	function	cv2.detail.matchesGraphAsString	no static reference	-
 P2	class	cv2.detail.MatchesInfo	no static reference	-
 P2	method	cv2.detail.MatchesInfo.getInliers	no static reference	-
 P2	method	cv2.detail.MatchesInfo.getMatches	no static reference	-
-P2	class	cv2.detail.MultiBandBlender	no static reference	-
-P2	method	cv2.detail.MultiBandBlender.blend	no static reference	-
+P2	class	cv2.detail.MultiBandBlender	literal reference	-
+P2	method	cv2.detail.MultiBandBlender.blend	method name only	-
 P2	method	cv2.detail.MultiBandBlender.feed	method name only	-
 P2	method	cv2.detail.MultiBandBlender.numBands	no static reference	-
-P2	method	cv2.detail.MultiBandBlender.prepare	no static reference	-
+P2	method	cv2.detail.MultiBandBlender.prepare	method name only	-
 P2	method	cv2.detail.MultiBandBlender.setNumBands	no static reference	-
 P2	class	cv2.detail.NoBundleAdjuster	no static reference	-
 P2	class	cv2.detail.NoExposureCompensator	no static reference	-
@@ -435,7 +435,7 @@ P2	function	cv2.detail.resultRoi	no static reference	-
 P2	function	cv2.detail.resultRoiIntersection	no static reference	-
 P2	function	cv2.detail.resultTl	no static reference	-
 P2	class	cv2.detail.SeamFinder	no static reference	-
-P2	method	cv2.detail.SeamFinder.createDefault	no static reference	-
+P2	method	cv2.detail.SeamFinder.createDefault	method name only	-
 P2	method	cv2.detail.SeamFinder.find	method name only	-
 P2	function	cv2.detail.SeamFinder_createDefault	no static reference	-
 P2	function	cv2.detail.selectRandomSubset	no static reference	-
@@ -444,10 +444,10 @@ P2	method	cv2.detail.SphericalProjector.mapBackward	no static reference	-
 P2	method	cv2.detail.SphericalProjector.mapForward	no static reference	-
 P2	function	cv2.detail.stitchingLogLevel	no static reference	-
 P2	function	cv2.detail.strip	no static reference	-
-P2	class	cv2.detail.Timelapser	no static reference	-
-P2	method	cv2.detail.Timelapser.createDefault	no static reference	-
-P2	method	cv2.detail.Timelapser.getDst	no static reference	-
-P2	method	cv2.detail.Timelapser.initialize	no static reference	-
+P2	class	cv2.detail.Timelapser	literal reference	-
+P2	method	cv2.detail.Timelapser.createDefault	literal reference	-
+P2	method	cv2.detail.Timelapser.getDst	method name only	-
+P2	method	cv2.detail.Timelapser.initialize	method name only	-
 P2	method	cv2.detail.Timelapser.process	method name only	-
 P2	function	cv2.detail.Timelapser_createDefault	no static reference	-
 P2	class	cv2.detail.TimelapserCrop	no static reference	-
@@ -1648,9 +1648,9 @@ P2	function	cv2.ximgproc.thinning	literal reference	-
 P2	function	cv2.ximgproc.transformFD	no static reference	-
 P2	function	cv2.ximgproc.weightedMedianFilter	no static reference	-
 P3	function	cv2.absdiff	literal reference	-
-P3	function	cv2.accumulate	no static reference	-
-P3	function	cv2.accumulateProduct	no static reference	-
-P3	function	cv2.accumulateSquare	no static reference	-
+P3	function	cv2.accumulate	literal reference	-
+P3	function	cv2.accumulateProduct	literal reference	-
+P3	function	cv2.accumulateSquare	literal reference	-
 P3	function	cv2.accumulateWeighted	literal reference	-
 P3	function	cv2.adaptiveThreshold	literal reference	-
 P3	function	cv2.add	literal reference	-
@@ -2748,7 +2748,7 @@ P3	function	cv2.findChessboardCorners	literal reference	-
 P3	function	cv2.findChessboardCornersSB	literal reference	-
 P3	function	cv2.findChessboardCornersSBWithMeta	no static reference	-
 P3	function	cv2.findCirclesGrid	literal reference	-
-P3	function	cv2.findContoursLinkRuns	no static reference	-
+P3	function	cv2.findContoursLinkRuns	literal reference	-
 P3	function	cv2.findEssentialMat	literal reference	-
 P3	function	cv2.findFundamentalMat	literal reference	-
 P3	function	cv2.findHomography	literal reference	-
@@ -2928,7 +2928,7 @@ P3	class	cv2.GOpaqueT	no static reference	-
 P3	method	cv2.GOpaqueT.type	method name only	-
 P3	class	cv2.GraphicalCodeDetector	no static reference	-
 P3	method	cv2.GraphicalCodeDetector.decode	method name only	-
-P3	method	cv2.GraphicalCodeDetector.decodeBytes	no static reference	-
+P3	method	cv2.GraphicalCodeDetector.decodeBytes	method name only	-
 P3	method	cv2.GraphicalCodeDetector.decodeBytesMulti	no static reference	-
 P3	method	cv2.GraphicalCodeDetector.decodeMulti	no static reference	-
 P3	method	cv2.GraphicalCodeDetector.detect	method name only	-
@@ -2936,7 +2936,7 @@ P3	method	cv2.GraphicalCodeDetector.detectAndDecode	method name only	-
 P3	method	cv2.GraphicalCodeDetector.detectAndDecodeBytes	no static reference	-
 P3	method	cv2.GraphicalCodeDetector.detectAndDecodeBytesMulti	no static reference	-
 P3	method	cv2.GraphicalCodeDetector.detectAndDecodeMulti	method name only	-
-P3	method	cv2.GraphicalCodeDetector.detectMulti	no static reference	-
+P3	method	cv2.GraphicalCodeDetector.detectMulti	method name only	-
 P3	function	cv2.groupRectangles	no static reference	-
 P3	class	cv2.GScalar	no static reference	-
 P3	class	cv2.GScalarDesc	no static reference	-
@@ -2952,7 +2952,7 @@ P3	method	cv2.HausdorffDistanceExtractor.getDistanceFlag	no static reference	-
 P3	method	cv2.HausdorffDistanceExtractor.getRankProportion	no static reference	-
 P3	method	cv2.HausdorffDistanceExtractor.setDistanceFlag	no static reference	-
 P3	method	cv2.HausdorffDistanceExtractor.setRankProportion	no static reference	-
-P3	function	cv2.haveImageReader	no static reference	-
+P3	function	cv2.haveImageReader	literal reference	-
 P3	function	cv2.haveImageWriter	literal reference	-
 P3	function	cv2.hconcat	literal reference	-
 P3	class	cv2.hfs.HfsSegment	no static reference	-
@@ -3023,7 +3023,7 @@ P3	function	cv2.HuMoments	literal reference	-
 P3	function	cv2.idct	literal reference	-
 P3	function	cv2.idft	literal reference	-
 P3	function	cv2.illuminationChange	literal reference	-
-P3	function	cv2.imcount	no static reference	-
+P3	function	cv2.imcount	literal reference	-
 P3	function	cv2.imdecode	literal reference	-
 P3	function	cv2.imdecodeanimation	literal reference	-
 P3	function	cv2.imdecodemulti	literal reference	-
@@ -3081,7 +3081,7 @@ P3	function	cv2.intensity_transform.gammaCorrection	no static reference	-
 P3	function	cv2.intensity_transform.logTransform	no static reference	-
 P3	function	cv2.intersectConvexConvex	literal reference	-
 P3	function	cv2.invert	literal reference	-
-P3	function	cv2.invertAffineTransform	no static reference	-
+P3	function	cv2.invertAffineTransform	literal reference	-
 P3	function	cv2.isContourConvex	literal reference	-
 P3	class	cv2.IStreamReader	no static reference	-
 P3	method	cv2.IStreamReader.read	method name only	-
@@ -3370,7 +3370,7 @@ P3	class	cv2.mat_wrapper.Any	no static reference	-
 P3	class	cv2.mat_wrapper.Mat	no static reference	-
 P3	function	cv2.matMulDeriv	no static reference	-
 P3	class	cv2.MatShape	no static reference	-
-P3	method	cv2.MatShape.channels	no static reference	-
+P3	method	cv2.MatShape.channels	method name only	-
 P3	method	cv2.MatShape.clear	method name only	-
 P3	method	cv2.MatShape.empty	method name only	-
 P3	method	cv2.MatShape.erase	no static reference	-
@@ -4136,7 +4136,7 @@ P3	method	cv2.rapid_Rapid.create	alias	cv2.rapid.Rapid.create
 P3	class	cv2.rapid_Tracker	alias	cv2.rapid.Tracker
 P3	method	cv2.rapid_Tracker.clearState	alias	cv2.rapid.Tracker.clearState
 P3	method	cv2.rapid_Tracker.compute	alias	cv2.rapid.Tracker.compute
-P3	function	cv2.readOpticalFlow	no static reference	-
+P3	function	cv2.readOpticalFlow	literal reference	-
 P3	function	cv2.recoverPose	literal reference	-
 P3	function	cv2.rectangle	literal reference	-
 P3	function	cv2.rectangleIntersectionArea	no static reference	-
@@ -4688,9 +4688,9 @@ P3	method	cv2.TrackerKCF.create	literal reference	-
 P3	method	cv2.TrackerKCF.Params	literal reference	-
 P3	function	cv2.TrackerKCF_create	no static reference	-
 P3	class	cv2.TrackerKCF_Params	no static reference	-
-P3	class	cv2.TrackerMIL	no static reference	-
-P3	method	cv2.TrackerMIL.create	method name only	-
-P3	method	cv2.TrackerMIL.Params	method name only	-
+P3	class	cv2.TrackerMIL	literal reference	-
+P3	method	cv2.TrackerMIL.create	literal reference	-
+P3	method	cv2.TrackerMIL.Params	literal reference	-
 P3	function	cv2.TrackerMIL_create	no static reference	-
 P3	class	cv2.TrackerMIL_Params	no static reference	-
 P3	class	cv2.TrackerNano	no static reference	-
@@ -4715,9 +4715,9 @@ P3	method	cv2.TriangleRasterizeSettings.setGlCompatibleMode	no static reference	
 P3	method	cv2.TriangleRasterizeSettings.setShadingType	no static reference	-
 P3	function	cv2.triangulatePoints	literal reference	-
 P3	class	cv2.UMat	literal reference	-
-P3	method	cv2.UMat.context	no static reference	-
+P3	method	cv2.UMat.context	method name only	-
 P3	method	cv2.UMat.get	method name only	-
-P3	method	cv2.UMat.handle	no static reference	-
+P3	method	cv2.UMat.handle	method name only	-
 P3	method	cv2.UMat.isContinuous	no static reference	-
 P3	method	cv2.UMat.isSubmatrix	no static reference	-
 P3	method	cv2.UMat.queue	method name only	-
@@ -4814,7 +4814,7 @@ P3	class	cv2.wechat_qrcode_WeChatQRCode	alias	cv2.wechat_qrcode.WeChatQRCode
 P3	method	cv2.wechat_qrcode_WeChatQRCode.detectAndDecode	alias	cv2.wechat_qrcode.WeChatQRCode.detectAndDecode
 P3	method	cv2.wechat_qrcode_WeChatQRCode.getScaleFactor	alias	cv2.wechat_qrcode.WeChatQRCode.getScaleFactor
 P3	method	cv2.wechat_qrcode_WeChatQRCode.setScaleFactor	alias	cv2.wechat_qrcode.WeChatQRCode.setScaleFactor
-P3	function	cv2.writeOpticalFlow	no static reference	-
+P3	function	cv2.writeOpticalFlow	literal reference	-
 P3	class	cv2.xfeatures2d_AffineFeature2D	alias	cv2.xfeatures2d.AffineFeature2D
 P3	class	cv2.xfeatures2d_AgastFeatureDetector	alias	cv2.xfeatures2d.AgastFeatureDetector
 P3	method	cv2.xfeatures2d_AgastFeatureDetector.create	alias	cv2.xfeatures2d.AgastFeatureDetector.create
@@ -5418,7 +5418,7 @@ P4	class	cv2.cuda.GpuMat	no static reference	-
 P4	method	cv2.cuda.GpuMat.adjustROI	no static reference	-
 P4	method	cv2.cuda.GpuMat.Allocator	no static reference	-
 P4	method	cv2.cuda.GpuMat.assignTo	no static reference	-
-P4	method	cv2.cuda.GpuMat.channels	no static reference	-
+P4	method	cv2.cuda.GpuMat.channels	method name only	-
 P4	method	cv2.cuda.GpuMat.clone	method name only	-
 P4	method	cv2.cuda.GpuMat.col	no static reference	-
 P4	method	cv2.cuda.GpuMat.colRange	no static reference	-
@@ -5454,7 +5454,7 @@ P4	function	cv2.cuda.GpuMat_setDefaultAllocator	no static reference	-
 P4	class	cv2.cuda.GpuMatND	no static reference	-
 P4	method	cv2.cuda.GpuMatND.from_dlpack	no static reference	-
 P4	class	cv2.cuda.HostMem	no static reference	-
-P4	method	cv2.cuda.HostMem.channels	no static reference	-
+P4	method	cv2.cuda.HostMem.channels	method name only	-
 P4	method	cv2.cuda.HostMem.clone	method name only	-
 P4	method	cv2.cuda.HostMem.create	method name only	-
 P4	method	cv2.cuda.HostMem.createMatHeader	no static reference	-

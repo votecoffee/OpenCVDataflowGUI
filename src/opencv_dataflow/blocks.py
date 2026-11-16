@@ -863,6 +863,7 @@ def builtin_registry():
     from .region_contrast import MeasureRegionContrast
     from .region_proposals import GraphSegments, SelectiveSearchProposals
     from .regions import REGION_BLOCKS
+    from .registered_replay import ReplayRegisteredViews
     from .registration import REGISTRATION_BLOCKS
     from .remap_maps import BuildLensMaps, LensMapDisplacement, UndistortLensPoints
     from .restoration import RESTORATION_BLOCKS
@@ -1000,6 +1001,7 @@ def builtin_registry():
         RegisterScanLayout,
         LoadMosaicLayout,
         SaveMosaicLayout,
+        ReplayRegisteredViews,
         RenderMosaicTile,
         PasteImagePatch,
         CropSubpixel,

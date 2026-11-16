@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/left.png",
+          "assets/middle.png",
+          "assets/right.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        420,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "layout",
+      "type": "cv.load_mosaic_layout",
+      "name": "Load mosaic layout",
+      "parameters": {
+        "path": "assets/calibration.json",
+        "expected_sha256": "4a705bcc6f91445868bdcdec1a978e445b02e20fa1b0ed533bfeb38349c01bdc"
+      },
+      "position": [
+        420,
+        370
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "layout",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "replay",
+      "type": "cv.replay_registered_views",
+      "name": "Replay registered views",
+      "parameters": {
+        "crop": "canvas",
+        "backend": "preserve",
+        "interpolation": "nearest",
+        "frame_order": "received",
+        "preview_frame": 0,
+        "source_ids": [
+          "left",
+          "middle",
+          "right"
+        ],
+        "missing_views": "allow",
+        "grid_policy": "strict",
+        "maximum_workspace_mib": 1
+      },
+      "position": [
+        900,
+        0
+      ],
+      "exposed_inputs": [
+        "views",
+        "layout",
+        "masks",
+        "source_ids"
+      ],
+      "exposed_outputs": [
+        "frames",
+        "coverage",
+        "image",
+        "common",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "serial",
+      "type": "flow.unbatch",
+      "name": "Unbatch serial entries",
+      "parameters": {
+        "order": "stored"
+      },
+      "position": [
+        1360,
+        0
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original registered replay fixture",
+      "description": "Original MIT images, known transforms and projects by OpenCVDataflowGUI contributors; no customer/third-party images. Three 192x128 captures occupy known x offsets 0/48/96 on a 288x128 canvas. Replay keeps each view independent with its original filename ticket, support and coordinate mapping. Intersection uses the exact common-valid support, including source-mask holes; Unbatch sends each image to an inspection. Native detail uses the factory and exact uint8 placement with masks enforced by the wrapper. Depth16 demonstrates preserved high-depth samples; native-depth and budget guards reject before warping. No-common is a deliberate failed replay using disjoint saved geometry (no physical timing/calibration claim). Source IDs/metadata assert identity, not synchronized exposures or physical camera correctness.",
+      "parameters": {},
+      "position": [
+        0,
+        -420
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "replay",
+      "input": "views"
+    },
+    {
+      "source": "layout",
+      "output": "layout",
+      "target": "replay",
+      "input": "layout"
+    },
+    {
+      "source": "replay",
+      "output": "frames",
+      "target": "serial",
+      "input": "group"
+    }
+  ]
+}

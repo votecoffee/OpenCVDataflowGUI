@@ -1,0 +1,186 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "view_size": [
+    192,
+    128
+  ],
+  "offsets": [
+    0,
+    48,
+    96
+  ],
+  "cases": {
+    "union": {
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "runs": 3,
+      "filenames": [
+        "left.png",
+        "middle.png",
+        "right.png"
+      ],
+      "layout": "calibration.json",
+      "crop": "union",
+      "backend": "preserve",
+      "masked": false,
+      "expected_state": "pass"
+    },
+    "intersection": {
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "runs": 3,
+      "filenames": [
+        "left.png",
+        "middle.png",
+        "right.png"
+      ],
+      "layout": "calibration.json",
+      "crop": "intersection",
+      "backend": "preserve",
+      "masked": true,
+      "expected_state": "pass"
+    },
+    "native_union": {
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "runs": 3,
+      "filenames": [
+        "left.png",
+        "middle.png",
+        "right.png"
+      ],
+      "layout": "calibration.json",
+      "crop": "union",
+      "backend": "native_detail",
+      "masked": false,
+      "expected_state": "pass"
+    },
+    "native_intersection": {
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "runs": 3,
+      "filenames": [
+        "left.png",
+        "middle.png",
+        "right.png"
+      ],
+      "layout": "calibration.json",
+      "crop": "intersection",
+      "backend": "native_detail",
+      "masked": true,
+      "expected_state": "pass"
+    },
+    "reordered_missing": {
+      "order": [
+        2,
+        1
+      ],
+      "runs": 2,
+      "filenames": [
+        "right.png",
+        "middle.png"
+      ],
+      "layout": "calibration.json",
+      "crop": "canvas",
+      "backend": "preserve",
+      "masked": false,
+      "expected_state": "pass"
+    },
+    "depth16": {
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "runs": 3,
+      "filenames": [
+        "left16.png",
+        "middle16.png",
+        "right16.png"
+      ],
+      "layout": "depth16.json",
+      "crop": "intersection",
+      "backend": "preserve",
+      "masked": false,
+      "expected_state": "pass"
+    },
+    "no_common": {
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "runs": 3,
+      "filenames": [
+        "left.png",
+        "middle.png",
+        "right.png"
+      ],
+      "layout": "disjoint.json",
+      "crop": "intersection",
+      "backend": "preserve",
+      "masked": false,
+      "expected_state": "fail"
+    },
+    "budget_guard": {
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "runs": 3,
+      "filenames": [
+        "left.png",
+        "middle.png",
+        "right.png"
+      ],
+      "layout": "calibration.json",
+      "crop": "canvas",
+      "backend": "preserve",
+      "masked": false,
+      "expected_state": "error"
+    },
+    "native_depth_guard": {
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "runs": 3,
+      "filenames": [
+        "left16.png",
+        "middle16.png",
+        "right16.png"
+      ],
+      "layout": "depth16.json",
+      "crop": "union",
+      "backend": "native_detail",
+      "masked": false,
+      "expected_state": "error"
+    }
+  },
+  "asset_sha256": {
+    "calibration.json": "4a705bcc6f91445868bdcdec1a978e445b02e20fa1b0ed533bfeb38349c01bdc",
+    "depth16.json": "572a03d9e22bb1cd64f7efa88a53a66a0cc0ce33fae5e7cde8667cb9a47e0d28",
+    "disjoint.json": "40a15e7cc586a487072ea8551dd7e04a9520fe5d31be68b410c32d4088451d69",
+    "left.png": "9bdba1127a428a441c9b8815e6c3d683722eccd511ed6c10585f8ff0ee07b228",
+    "left16.png": "6e5ce85bd7beceeed899baa28ad5cdba59ce8d8576c5afa975eb7959298d19c4",
+    "middle.png": "cdd747f75df4532c85d0558a37cbc3b271b98d3e13c5eb0353daf171e17cee31",
+    "middle16.png": "d892a4a807d599e434d344be8a5132307bceeea83859463e2436cfd808693948",
+    "right.png": "d471220ae75534fac56499e983880f6c9d20089a5e1c8a1ef264c1f2b7b30378",
+    "right16.png": "33fec786faa38b85aa298153444e5fb8e745a68a2a7bd646b3a424123e710289"
+  }
+}

@@ -144,3 +144,7 @@ Focused checks cover exact pixels/support/priority, calibrated order, current
 tickets, stable canvas coordinates, feather/multiband adjacent-tile seams, native
 fitting versus reuse, large virtual extents, strict file persistence, exception
 recovery, XML/Save As and offscreen inspector dropdowns.
+
+For separate acquisitions, [Registered-view replay](registered-view-replay.md)
+uses these same layouts and source-ID rules. Frame/coverage groups share full,
+union or common-valid grids, retaining member tickets and timestamps.
