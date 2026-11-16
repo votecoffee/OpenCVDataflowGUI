@@ -1,0 +1,1410 @@
+{
+  "schema": "simple_gdrnpp_preparation_benchmark/v1",
+  "python": "3.13.9",
+  "recipe_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+  "repeats": 3,
+  "rows": [
+    {
+      "pair": 0,
+      "graphics": false,
+      "preloaded": false,
+      "preparation": null,
+      "inspections": [
+        {
+          "first": true,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 4.799998350790702e-06,
+            "client_process_launch_seconds": 0.010612700001729536,
+            "client_packet_write_seconds": 0.08530179999979737,
+            "client_reply_wait_seconds": 7.518827099998816,
+            "client_packet_read_seconds": 0.01891820000128064,
+            "worker": {
+              "packet_read_seconds": 0.03205129999878409,
+              "handler_seconds": 7.270618300000933,
+              "packet_write_seconds": 0.0016142000004037982,
+              "worker_request_seconds": 7.304283800000121
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0033629000008659204,
+            "client_total_seconds": 7.6370362999987265
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.2360116999989259,
+            "capture_prepare_seconds": 0.009637099999963539,
+            "model_prepare_seconds": 5.512887000000774,
+            "numeric_seconds": 1.5119568999998592,
+            "graphics_seconds": 3.1800000215298496e-05,
+            "worker_handle_seconds": 7.270524499999738,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "87f24cb3db4744df96c178af50a3dff2",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 1
+          },
+          "worker_peak_working_set_bytes": 4292608
+        },
+        {
+          "first": false,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 5.300000339047983e-06,
+            "client_process_launch_seconds": 9.000013960758224e-07,
+            "client_packet_write_seconds": 0.07175499999902968,
+            "client_reply_wait_seconds": 1.6397157999999763,
+            "client_packet_read_seconds": 0.009033899999849382,
+            "worker": {
+              "packet_read_seconds": 0.01831520000087039,
+              "handler_seconds": 1.6185637999988103,
+              "packet_write_seconds": 0.002000100001168903,
+              "worker_request_seconds": 1.6388791000008496
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0015506999989156611,
+            "client_total_seconds": 1.7220658000005642
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.00044469999920693226,
+            "capture_prepare_seconds": 0.004314199999498669,
+            "model_prepare_seconds": 0.00039140000080806203,
+            "numeric_seconds": 1.6131273999999394,
+            "graphics_seconds": 3.80000001314329e-05,
+            "worker_handle_seconds": 1.6183156999995845,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "87f24cb3db4744df96c178af50a3dff2",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 2
+          },
+          "worker_peak_working_set_bytes": 4292608
+        }
+      ]
+    },
+    {
+      "pair": 0,
+      "graphics": false,
+      "preloaded": true,
+      "preparation": {
+        "prepared": {
+          "schema": "simple_gdrnpp_preparation/v1",
+          "ready": true,
+          "recipe_content_sha256": "013589694bdf06a5fdf491be80b5db9c24e5875f9cc3a5fc6d120c62c09400d4",
+          "recipe_archive_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+          "binding": {
+            "provider": "GDRNPP",
+            "dataset": "T-LESS",
+            "object_id": 6,
+            "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+            "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+            "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+            "checkpoint_bytes": 410204745,
+            "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+          },
+          "worker": {
+            "session": "3b166c4ff04740b8808274c431a7263e",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 0
+          },
+          "inspection_performed": false,
+          "seconds": {
+            "recipe_lookup": 0.23716540000168607,
+            "model_prepare": 6.1901822999989236,
+            "total": 6.42734770000061
+          },
+          "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+        },
+        "request_timing": {
+          "operation": "prepare",
+          "client_lock_wait_seconds": 3.4000004234258085e-06,
+          "client_process_launch_seconds": 0.008060299998760456,
+          "client_packet_write_seconds": 0.001198000001750188,
+          "client_reply_wait_seconds": 6.703240299999379,
+          "client_packet_read_seconds": 0.013077999999950407,
+          "worker": {
+            "packet_read_seconds": 0.0016084999988379423,
+            "handler_seconds": 6.427360699999554,
+            "packet_write_seconds": 0.0016063000002759509,
+            "worker_request_seconds": 6.4305754999986675
+          },
+          "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+          "client_cleanup_seconds": 0.0016162000010808697,
+          "client_total_seconds": 6.727199900000414
+        }
+      },
+      "inspections": [
+        {
+          "first": true,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 4.200001058052294e-06,
+            "client_process_launch_seconds": 5.999991117278114e-07,
+            "client_packet_write_seconds": 0.0772264000006544,
+            "client_reply_wait_seconds": 1.5792139000004681,
+            "client_packet_read_seconds": 0.012056999999913387,
+            "worker": {
+              "packet_read_seconds": 0.025361900001371396,
+              "handler_seconds": 1.5513962999993964,
+              "packet_write_seconds": 0.0015977999992173864,
+              "worker_request_seconds": 1.5783559999999852
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.001507000000856351,
+            "client_total_seconds": 1.6700125000006665
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.0007481000011466676,
+            "capture_prepare_seconds": 0.008796899999651941,
+            "model_prepare_seconds": 0.0006302999991021352,
+            "numeric_seconds": 1.5411258000003727,
+            "graphics_seconds": 3.079999987676274e-05,
+            "worker_handle_seconds": 1.5513319000001502,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "3b166c4ff04740b8808274c431a7263e",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 1
+          },
+          "worker_peak_working_set_bytes": 4292608
+        },
+        {
+          "first": false,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 4.300000000512227e-06,
+            "client_process_launch_seconds": 6.999998731771484e-07,
+            "client_packet_write_seconds": 0.09482690000004368,
+            "client_reply_wait_seconds": 1.5233907000001636,
+            "client_packet_read_seconds": 0.010754200000519631,
+            "worker": {
+              "packet_read_seconds": 0.020707600000605453,
+              "handler_seconds": 1.5007805000004737,
+              "packet_write_seconds": 0.0013699999999516876,
+              "worker_request_seconds": 1.5228581000010308
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0015900999987934483,
+            "client_total_seconds": 1.6305699000004097
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.0006260999998630723,
+            "capture_prepare_seconds": 0.005318499999702908,
+            "model_prepare_seconds": 0.00046099999963189475,
+            "numeric_seconds": 1.4933818999998039,
+            "graphics_seconds": 2.9000000722589903e-05,
+            "worker_handle_seconds": 1.4998164999997243,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "3b166c4ff04740b8808274c431a7263e",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 2
+          },
+          "worker_peak_working_set_bytes": 4292608
+        }
+      ]
+    },
+    {
+      "pair": 1,
+      "graphics": false,
+      "preloaded": true,
+      "preparation": {
+        "prepared": {
+          "schema": "simple_gdrnpp_preparation/v1",
+          "ready": true,
+          "recipe_content_sha256": "013589694bdf06a5fdf491be80b5db9c24e5875f9cc3a5fc6d120c62c09400d4",
+          "recipe_archive_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+          "binding": {
+            "provider": "GDRNPP",
+            "dataset": "T-LESS",
+            "object_id": 6,
+            "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+            "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+            "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+            "checkpoint_bytes": 410204745,
+            "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+          },
+          "worker": {
+            "session": "e8f8ef56c19e410ba3a4951a70426919",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 0
+          },
+          "inspection_performed": false,
+          "seconds": {
+            "recipe_lookup": 0.22622769999907177,
+            "model_prepare": 5.759458300000915,
+            "total": 5.985685999999987
+          },
+          "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+        },
+        "request_timing": {
+          "operation": "prepare",
+          "client_lock_wait_seconds": 3.099999958067201e-06,
+          "client_process_launch_seconds": 0.011387300000933465,
+          "client_packet_write_seconds": 0.0013460999998642365,
+          "client_reply_wait_seconds": 6.270210299999235,
+          "client_packet_read_seconds": 0.013111800000842777,
+          "worker": {
+            "packet_read_seconds": 0.0017017999998643063,
+            "handler_seconds": 5.985699200000454,
+            "packet_write_seconds": 0.0023522999999840977,
+            "worker_request_seconds": 5.989753300000302
+          },
+          "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+          "client_cleanup_seconds": 0.0017463999993196921,
+          "client_total_seconds": 6.29780860000028
+        }
+      },
+      "inspections": [
+        {
+          "first": true,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 3.99999953515362e-06,
+            "client_process_launch_seconds": 5.999991117278114e-07,
+            "client_packet_write_seconds": 0.08197680000012042,
+            "client_reply_wait_seconds": 1.5313779999996768,
+            "client_packet_read_seconds": 0.013419700000667945,
+            "worker": {
+              "packet_read_seconds": 0.023926699999719858,
+              "handler_seconds": 1.5054784000003565,
+              "packet_write_seconds": 0.0014245999991544522,
+              "worker_request_seconds": 1.5308296999992308
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0015798000003997004,
+            "client_total_seconds": 1.6283620999984123
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.0003844999991997611,
+            "capture_prepare_seconds": 0.005532900000616792,
+            "model_prepare_seconds": 0.00039759999890520703,
+            "numeric_seconds": 1.4990140000008978,
+            "graphics_seconds": 3.6499999623629265e-05,
+            "worker_handle_seconds": 1.5053654999992432,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "e8f8ef56c19e410ba3a4951a70426919",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 1
+          },
+          "worker_peak_working_set_bytes": 4317184
+        },
+        {
+          "first": false,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 3.600000127335079e-06,
+            "client_process_launch_seconds": 5.000001692678779e-07,
+            "client_packet_write_seconds": 0.07407190000049013,
+            "client_reply_wait_seconds": 1.495678900000712,
+            "client_packet_read_seconds": 0.013107899998431094,
+            "worker": {
+              "packet_read_seconds": 0.018560600001364946,
+              "handler_seconds": 1.4749656999993022,
+              "packet_write_seconds": 0.0015349999994214159,
+              "worker_request_seconds": 1.4950613000000885
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0025867000003927387,
+            "client_total_seconds": 1.5854550000003655
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.0003481999992800411,
+            "capture_prepare_seconds": 0.004645000000891741,
+            "model_prepare_seconds": 0.00035430000025371555,
+            "numeric_seconds": 1.469232399998873,
+            "graphics_seconds": 3.1600000511389226e-05,
+            "worker_handle_seconds": 1.47461149999981,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "e8f8ef56c19e410ba3a4951a70426919",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 2
+          },
+          "worker_peak_working_set_bytes": 4317184
+        }
+      ]
+    },
+    {
+      "pair": 1,
+      "graphics": false,
+      "preloaded": false,
+      "preparation": null,
+      "inspections": [
+        {
+          "first": true,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 4.19999923906289e-06,
+            "client_process_launch_seconds": 0.010095600000568083,
+            "client_packet_write_seconds": 0.08973969999897236,
+            "client_reply_wait_seconds": 8.108842300000106,
+            "client_packet_read_seconds": 0.009137900000496302,
+            "worker": {
+              "packet_read_seconds": 0.024636399999508285,
+              "handler_seconds": 7.796384900000703,
+              "packet_write_seconds": 0.0016328999990946613,
+              "worker_request_seconds": 7.822654199999306
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0019185000001016306,
+            "client_total_seconds": 8.21974179999961
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.25835839999854215,
+            "capture_prepare_seconds": 0.009440100000574603,
+            "model_prepare_seconds": 5.772080300001107,
+            "numeric_seconds": 1.756354499999361,
+            "graphics_seconds": 3.449999894655775e-05,
+            "worker_handle_seconds": 7.796267799998532,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "c1f488612cb2481380d492ce2b389c40",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 1
+          },
+          "worker_peak_working_set_bytes": 4292608
+        },
+        {
+          "first": false,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 3.7999998312443495e-06,
+            "client_process_launch_seconds": 5.000001692678779e-07,
+            "client_packet_write_seconds": 0.08422880000034638,
+            "client_reply_wait_seconds": 1.7332700000006298,
+            "client_packet_read_seconds": 0.008557299999665702,
+            "worker": {
+              "packet_read_seconds": 0.022340999999869382,
+              "handler_seconds": 1.7077562000013131,
+              "packet_write_seconds": 0.002513699999326491,
+              "worker_request_seconds": 1.732610900000509
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0020339000002422836,
+            "client_total_seconds": 1.8280982000014774
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.0005338000009942334,
+            "capture_prepare_seconds": 0.006127700000433833,
+            "model_prepare_seconds": 0.000436700000136625,
+            "numeric_seconds": 1.700232799999867,
+            "graphics_seconds": 4.42000000475673e-05,
+            "worker_handle_seconds": 1.7073752000014792,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "c1f488612cb2481380d492ce2b389c40",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 2
+          },
+          "worker_peak_working_set_bytes": 4292608
+        }
+      ]
+    },
+    {
+      "pair": 2,
+      "graphics": false,
+      "preloaded": false,
+      "preparation": null,
+      "inspections": [
+        {
+          "first": true,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 7.99999907030724e-06,
+            "client_process_launch_seconds": 0.010223700001006364,
+            "client_packet_write_seconds": 0.09254460000011022,
+            "client_reply_wait_seconds": 8.109227999999348,
+            "client_packet_read_seconds": 0.010637600000336533,
+            "worker": {
+              "packet_read_seconds": 0.025020900000527035,
+              "handler_seconds": 7.87190290000035,
+              "packet_write_seconds": 0.001494599999205093,
+              "worker_request_seconds": 7.898418400000082
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0018642000013642246,
+            "client_total_seconds": 8.224509199999375
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.23487560000103258,
+            "capture_prepare_seconds": 0.009191299999656621,
+            "model_prepare_seconds": 5.812063299999863,
+            "numeric_seconds": 1.815632199999527,
+            "graphics_seconds": 2.950000089185778e-05,
+            "worker_handle_seconds": 7.8717919000009715,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "eb54ddea6e5743e68f88fa730ea89294",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 1
+          },
+          "worker_peak_working_set_bytes": 4292608
+        },
+        {
+          "first": false,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 4.200001058052294e-06,
+            "client_process_launch_seconds": 3.9999940781854093e-07,
+            "client_packet_write_seconds": 0.07343159999982163,
+            "client_reply_wait_seconds": 1.8836264000001393,
+            "client_packet_read_seconds": 0.009650899999542162,
+            "worker": {
+              "packet_read_seconds": 0.021082699999169563,
+              "handler_seconds": 1.859902600001078,
+              "packet_write_seconds": 0.0020492000003287103,
+              "worker_request_seconds": 1.8830345000005764
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.002275099999678787,
+            "client_total_seconds": 1.9689932000001136
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.000417500001276494,
+            "capture_prepare_seconds": 0.005678099998476682,
+            "model_prepare_seconds": 0.00046290000136650633,
+            "numeric_seconds": 1.8517820999986725,
+            "graphics_seconds": 4.580000131682027e-05,
+            "worker_handle_seconds": 1.858386400001109,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "eb54ddea6e5743e68f88fa730ea89294",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 2
+          },
+          "worker_peak_working_set_bytes": 4292608
+        }
+      ]
+    },
+    {
+      "pair": 2,
+      "graphics": false,
+      "preloaded": true,
+      "preparation": {
+        "prepared": {
+          "schema": "simple_gdrnpp_preparation/v1",
+          "ready": true,
+          "recipe_content_sha256": "013589694bdf06a5fdf491be80b5db9c24e5875f9cc3a5fc6d120c62c09400d4",
+          "recipe_archive_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+          "binding": {
+            "provider": "GDRNPP",
+            "dataset": "T-LESS",
+            "object_id": 6,
+            "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+            "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+            "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+            "checkpoint_bytes": 410204745,
+            "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+          },
+          "worker": {
+            "session": "70f1e34b054244a9b8de8bdaab48f67c",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 0
+          },
+          "inspection_performed": false,
+          "seconds": {
+            "recipe_lookup": 0.3113082999989274,
+            "model_prepare": 6.113884899999903,
+            "total": 6.42519319999883
+          },
+          "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+        },
+        "request_timing": {
+          "operation": "prepare",
+          "client_lock_wait_seconds": 4.300000000512227e-06,
+          "client_process_launch_seconds": 0.010030199999164324,
+          "client_packet_write_seconds": 0.0015985999998520128,
+          "client_reply_wait_seconds": 6.719112300001143,
+          "client_packet_read_seconds": 0.013348700000278768,
+          "worker": {
+            "packet_read_seconds": 0.0019231000005675014,
+            "handler_seconds": 6.425209899998663,
+            "packet_write_seconds": 0.0017275000009249197,
+            "worker_request_seconds": 6.428860500000155
+          },
+          "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+          "client_cleanup_seconds": 0.0017317999991064426,
+          "client_total_seconds": 6.745829499999672
+        }
+      },
+      "inspections": [
+        {
+          "first": true,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 4.300000000512227e-06,
+            "client_process_launch_seconds": 5.999991117278114e-07,
+            "client_packet_write_seconds": 0.09174499999971886,
+            "client_reply_wait_seconds": 1.8332277000008617,
+            "client_packet_read_seconds": 0.008015100000193343,
+            "worker": {
+              "packet_read_seconds": 0.026497000000745174,
+              "handler_seconds": 1.803771599999891,
+              "packet_write_seconds": 0.002196600000388571,
+              "worker_request_seconds": 1.8324652000010246
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0014682000000902917,
+            "client_total_seconds": 1.934464099998877
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.000523599999723956,
+            "capture_prepare_seconds": 0.008084799999778625,
+            "model_prepare_seconds": 0.0004766000001836801,
+            "numeric_seconds": 1.7944874000004347,
+            "graphics_seconds": 4.909999915980734e-05,
+            "worker_handle_seconds": 1.8036214999992808,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "70f1e34b054244a9b8de8bdaab48f67c",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 1
+          },
+          "worker_peak_working_set_bytes": 4292608
+        },
+        {
+          "first": false,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 3.600000127335079e-06,
+            "client_process_launch_seconds": 3.9999940781854093e-07,
+            "client_packet_write_seconds": 0.08438530000057654,
+            "client_reply_wait_seconds": 1.6035551000004489,
+            "client_packet_read_seconds": 0.009282600000005914,
+            "worker": {
+              "packet_read_seconds": 0.019211299999369658,
+              "handler_seconds": 1.5820679999997083,
+              "packet_write_seconds": 0.0017410000000381842,
+              "worker_request_seconds": 1.603020299999116
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0018189999991591321,
+            "client_total_seconds": 1.6990492000004451
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.00043449999975564424,
+            "capture_prepare_seconds": 0.0055090000005293405,
+            "model_prepare_seconds": 0.00046599999950558413,
+            "numeric_seconds": 1.5752172000011342,
+            "graphics_seconds": 2.6899999284069054e-05,
+            "worker_handle_seconds": 1.5816536000002088,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "70f1e34b054244a9b8de8bdaab48f67c",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 2
+          },
+          "worker_peak_working_set_bytes": 4292608
+        }
+      ]
+    },
+    {
+      "pair": 0,
+      "graphics": true,
+      "preloaded": false,
+      "preparation": null,
+      "inspections": [
+        {
+          "first": true,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 6.199999916134402e-06,
+            "client_process_launch_seconds": 0.010343599999032449,
+            "client_packet_write_seconds": 0.09931160000087402,
+            "client_reply_wait_seconds": 8.672241700000086,
+            "client_packet_read_seconds": 0.02768859999923734,
+            "worker": {
+              "packet_read_seconds": 0.03102949999993143,
+              "handler_seconds": 8.35577370000101,
+              "packet_write_seconds": 0.09810309999920719,
+              "worker_request_seconds": 8.484906300000148
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.00243159999990894,
+            "client_total_seconds": 8.81202779999876
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.22326650000104564,
+            "capture_prepare_seconds": 0.004897400000118068,
+            "model_prepare_seconds": 5.853820899999846,
+            "numeric_seconds": 1.9932141999997839,
+            "graphics_seconds": 0.2804481000002852,
+            "worker_handle_seconds": 8.355647100001079,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "d064e2c6d5c3444b9839c9d5dc583815",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 1
+          },
+          "worker_peak_working_set_bytes": 4292608
+        },
+        {
+          "first": false,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 5.300000339047983e-06,
+            "client_process_launch_seconds": 8.999995770864189e-07,
+            "client_packet_write_seconds": 0.09988809999958903,
+            "client_reply_wait_seconds": 2.1947916000008263,
+            "client_packet_read_seconds": 0.034858600000006845,
+            "worker": {
+              "packet_read_seconds": 0.02573819999997795,
+              "handler_seconds": 2.073201600000175,
+              "packet_write_seconds": 0.09509409999918716,
+              "worker_request_seconds": 2.19403389999934
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0026603999995131744,
+            "client_total_seconds": 2.332208800000444
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.0005129000001034001,
+            "capture_prepare_seconds": 0.007149299999582581,
+            "model_prepare_seconds": 0.0005230000006122282,
+            "numeric_seconds": 1.8505576999996265,
+            "graphics_seconds": 0.2140878000009252,
+            "worker_handle_seconds": 2.07283070000085,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "d064e2c6d5c3444b9839c9d5dc583815",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 2
+          },
+          "worker_peak_working_set_bytes": 4292608
+        }
+      ]
+    },
+    {
+      "pair": 0,
+      "graphics": true,
+      "preloaded": true,
+      "preparation": {
+        "prepared": {
+          "schema": "simple_gdrnpp_preparation/v1",
+          "ready": true,
+          "recipe_content_sha256": "013589694bdf06a5fdf491be80b5db9c24e5875f9cc3a5fc6d120c62c09400d4",
+          "recipe_archive_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+          "binding": {
+            "provider": "GDRNPP",
+            "dataset": "T-LESS",
+            "object_id": 6,
+            "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+            "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+            "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+            "checkpoint_bytes": 410204745,
+            "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+          },
+          "worker": {
+            "session": "c6dc6c78a4ad413bbc6e3693fcc62058",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 0
+          },
+          "inspection_performed": false,
+          "seconds": {
+            "recipe_lookup": 0.22846729999946547,
+            "model_prepare": 5.528736399999616,
+            "total": 5.757203699999081
+          },
+          "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+        },
+        "request_timing": {
+          "operation": "prepare",
+          "client_lock_wait_seconds": 4.499999704421498e-06,
+          "client_process_launch_seconds": 0.009248200000001816,
+          "client_packet_write_seconds": 0.001406400000632857,
+          "client_reply_wait_seconds": 6.035776000000624,
+          "client_packet_read_seconds": 0.007943399999930989,
+          "worker": {
+            "packet_read_seconds": 0.0016348999997717328,
+            "handler_seconds": 5.757218000000648,
+            "packet_write_seconds": 0.0014704999994137324,
+            "worker_request_seconds": 5.760323399999834
+          },
+          "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+          "client_cleanup_seconds": 0.001572300001498661,
+          "client_total_seconds": 6.0559541000002355
+        }
+      },
+      "inspections": [
+        {
+          "first": true,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 4.600000465870835e-06,
+            "client_process_launch_seconds": 5.999991117278114e-07,
+            "client_packet_write_seconds": 0.08798320000096282,
+            "client_reply_wait_seconds": 2.3766012999985833,
+            "client_packet_read_seconds": 0.026758600000903243,
+            "worker": {
+              "packet_read_seconds": 0.02212150000013935,
+              "handler_seconds": 2.2748989000010624,
+              "packet_write_seconds": 0.07891339999878255,
+              "worker_request_seconds": 2.3759337999999843
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0019173999990016455,
+            "client_total_seconds": 2.493270200000552
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.00031350000062957406,
+            "capture_prepare_seconds": 0.0063200999993568985,
+            "model_prepare_seconds": 0.000408199999583303,
+            "numeric_seconds": 2.06724530000065,
+            "graphics_seconds": 0.20055649999994785,
+            "worker_handle_seconds": 2.2748436000001675,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "c6dc6c78a4ad413bbc6e3693fcc62058",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 1
+          },
+          "worker_peak_working_set_bytes": 4292608
+        },
+        {
+          "first": false,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 3.7999998312443495e-06,
+            "client_process_launch_seconds": 6.999998731771484e-07,
+            "client_packet_write_seconds": 0.08829950000108511,
+            "client_reply_wait_seconds": 2.2260819999992236,
+            "client_packet_read_seconds": 0.028705400000035297,
+            "worker": {
+              "packet_read_seconds": 0.020912900001349044,
+              "handler_seconds": 2.106428399998549,
+              "packet_write_seconds": 0.09808280000106606,
+              "worker_request_seconds": 2.2254241000009642
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0031703000004199566,
+            "client_total_seconds": 2.3462661000012304
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.0003220999988116091,
+            "capture_prepare_seconds": 0.006972600000153761,
+            "model_prepare_seconds": 0.0005324000012478791,
+            "numeric_seconds": 1.8680108999997174,
+            "graphics_seconds": 0.2301575999990746,
+            "worker_handle_seconds": 2.105995599999005,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "c6dc6c78a4ad413bbc6e3693fcc62058",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 2
+          },
+          "worker_peak_working_set_bytes": 4292608
+        }
+      ]
+    },
+    {
+      "pair": 1,
+      "graphics": true,
+      "preloaded": true,
+      "preparation": {
+        "prepared": {
+          "schema": "simple_gdrnpp_preparation/v1",
+          "ready": true,
+          "recipe_content_sha256": "013589694bdf06a5fdf491be80b5db9c24e5875f9cc3a5fc6d120c62c09400d4",
+          "recipe_archive_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+          "binding": {
+            "provider": "GDRNPP",
+            "dataset": "T-LESS",
+            "object_id": 6,
+            "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+            "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+            "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+            "checkpoint_bytes": 410204745,
+            "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+          },
+          "worker": {
+            "session": "3b9fdff00fe14e6ba48ee5e6cc1d789d",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 0
+          },
+          "inspection_performed": false,
+          "seconds": {
+            "recipe_lookup": 0.2632599999997183,
+            "model_prepare": 6.156857199999649,
+            "total": 6.420117199999368
+          },
+          "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+        },
+        "request_timing": {
+          "operation": "prepare",
+          "client_lock_wait_seconds": 5.600000804406591e-06,
+          "client_process_launch_seconds": 0.023069299999406212,
+          "client_packet_write_seconds": 0.0021302000004652655,
+          "client_reply_wait_seconds": 6.77500019999934,
+          "client_packet_read_seconds": 0.009047499999724096,
+          "worker": {
+            "packet_read_seconds": 0.0027140999991388526,
+            "handler_seconds": 6.420132999999623,
+            "packet_write_seconds": 0.0018736000001808861,
+            "worker_request_seconds": 6.424720699998943
+          },
+          "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+          "client_cleanup_seconds": 0.002117400001225178,
+          "client_total_seconds": 6.811378100001093
+        }
+      },
+      "inspections": [
+        {
+          "first": true,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 5.100000635138713e-06,
+            "client_process_launch_seconds": 5.999991117278114e-07,
+            "client_packet_write_seconds": 0.08287880000170844,
+            "client_reply_wait_seconds": 2.3138040999983787,
+            "client_packet_read_seconds": 0.02936730000146781,
+            "worker": {
+              "packet_read_seconds": 0.023529000000053202,
+              "handler_seconds": 2.2022073000007367,
+              "packet_write_seconds": 0.08739409999907366,
+              "worker_request_seconds": 2.3131303999998636
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0026943000011669938,
+            "client_total_seconds": 2.4287546000014117
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.0003820000001724111,
+            "capture_prepare_seconds": 0.005647300000418909,
+            "model_prepare_seconds": 0.000497900000482332,
+            "numeric_seconds": 1.9464986999992107,
+            "graphics_seconds": 0.24910079999972368,
+            "worker_handle_seconds": 2.202126700000008,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "3b9fdff00fe14e6ba48ee5e6cc1d789d",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 1
+          },
+          "worker_peak_working_set_bytes": 4292608
+        },
+        {
+          "first": false,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 4.600000465870835e-06,
+            "client_process_launch_seconds": 5.999991117278114e-07,
+            "client_packet_write_seconds": 0.0828523000000132,
+            "client_reply_wait_seconds": 1.8828092999992805,
+            "client_packet_read_seconds": 0.029318000000785105,
+            "worker": {
+              "packet_read_seconds": 0.031338099999629776,
+              "handler_seconds": 1.7531157000012172,
+              "packet_write_seconds": 0.09769090000008873,
+              "worker_request_seconds": 1.8821447000009357
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0018498000008548843,
+            "client_total_seconds": 1.9968379999991157
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.0005679999994754326,
+            "capture_prepare_seconds": 0.006062200000087614,
+            "model_prepare_seconds": 0.0005860999990545679,
+            "numeric_seconds": 1.5709044000013819,
+            "graphics_seconds": 0.17461119999825314,
+            "worker_handle_seconds": 1.7527318999982526,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "3b9fdff00fe14e6ba48ee5e6cc1d789d",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 2
+          },
+          "worker_peak_working_set_bytes": 4292608
+        }
+      ]
+    },
+    {
+      "pair": 1,
+      "graphics": true,
+      "preloaded": false,
+      "preparation": null,
+      "inspections": [
+        {
+          "first": true,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 4.100000296602957e-06,
+            "client_process_launch_seconds": 0.010427299999719253,
+            "client_packet_write_seconds": 0.08760069999880216,
+            "client_reply_wait_seconds": 8.017094000000725,
+            "client_packet_read_seconds": 0.029714500000409316,
+            "worker": {
+              "packet_read_seconds": 0.022889700001542224,
+              "handler_seconds": 7.715530699999363,
+              "packet_write_seconds": 0.0731469999991532,
+              "worker_request_seconds": 7.811567400000058
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0023080999999365304,
+            "client_total_seconds": 8.14715189999879
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.23213029999897117,
+            "capture_prepare_seconds": 0.00519469999926514,
+            "model_prepare_seconds": 5.6165223000007245,
+            "numeric_seconds": 1.6629437999999936,
+            "graphics_seconds": 0.19867639999938547,
+            "worker_handle_seconds": 7.71546749999834,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "c88eef8d155942ef9d4b3ce0758012d3",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 1
+          },
+          "worker_peak_working_set_bytes": 4292608
+        },
+        {
+          "first": false,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 3.4000004234258085e-06,
+            "client_process_launch_seconds": 5.999991117278114e-07,
+            "client_packet_write_seconds": 0.0751871000011306,
+            "client_reply_wait_seconds": 1.998105200000282,
+            "client_packet_read_seconds": 0.030605399999330984,
+            "worker": {
+              "packet_read_seconds": 0.01946250000037253,
+              "handler_seconds": 1.8866297999993549,
+              "packet_write_seconds": 0.09138690000145289,
+              "worker_request_seconds": 1.9974792000011803
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0017072999999072636,
+            "client_total_seconds": 2.1056122000009054
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.000381200001356774,
+            "capture_prepare_seconds": 0.004297599998608348,
+            "model_prepare_seconds": 0.00036750000072061084,
+            "numeric_seconds": 1.7326124999999593,
+            "graphics_seconds": 0.14864370000032068,
+            "worker_handle_seconds": 1.8863025000009657,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "c88eef8d155942ef9d4b3ce0758012d3",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 2
+          },
+          "worker_peak_working_set_bytes": 4292608
+        }
+      ]
+    },
+    {
+      "pair": 2,
+      "graphics": true,
+      "preloaded": false,
+      "preparation": null,
+      "inspections": [
+        {
+          "first": true,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 4.899999112240039e-06,
+            "client_process_launch_seconds": 0.008597399999416666,
+            "client_packet_write_seconds": 0.08799160000125994,
+            "client_reply_wait_seconds": 10.20900999999867,
+            "client_packet_read_seconds": 0.03839660000085132,
+            "worker": {
+              "packet_read_seconds": 0.021458799999891198,
+              "handler_seconds": 9.904339900000195,
+              "packet_write_seconds": 0.10812409999925876,
+              "worker_request_seconds": 10.033922799999345
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0030994000007922295,
+            "client_total_seconds": 10.347104799999215
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.2557190999996237,
+            "capture_prepare_seconds": 0.005027499999414431,
+            "model_prepare_seconds": 7.216641300001356,
+            "numeric_seconds": 2.1542723000002297,
+            "graphics_seconds": 0.2726119999988441,
+            "worker_handle_seconds": 9.904272199999468,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "03b4e780f78d4273a6906c2fef502b91",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 1
+          },
+          "worker_peak_working_set_bytes": 4292608
+        },
+        {
+          "first": false,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 6.900001608300954e-06,
+            "client_process_launch_seconds": 7.999988156370819e-07,
+            "client_packet_write_seconds": 0.11264930000106688,
+            "client_reply_wait_seconds": 2.4442069999986415,
+            "client_packet_read_seconds": 0.040861500001483364,
+            "worker": {
+              "packet_read_seconds": 0.027989000000161468,
+              "handler_seconds": 2.3074983000005886,
+              "packet_write_seconds": 0.10789959999965504,
+              "worker_request_seconds": 2.443386900000405
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.004045700001370278,
+            "client_total_seconds": 2.6017775000000256
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.0006802999996580184,
+            "capture_prepare_seconds": 0.0075890999996772734,
+            "model_prepare_seconds": 0.0007552000006398885,
+            "numeric_seconds": 2.0357910999991873,
+            "graphics_seconds": 0.26226839999981166,
+            "worker_handle_seconds": 2.307084099998974,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "03b4e780f78d4273a6906c2fef502b91",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 2
+          },
+          "worker_peak_working_set_bytes": 4292608
+        }
+      ]
+    },
+    {
+      "pair": 2,
+      "graphics": true,
+      "preloaded": true,
+      "preparation": {
+        "prepared": {
+          "schema": "simple_gdrnpp_preparation/v1",
+          "ready": true,
+          "recipe_content_sha256": "013589694bdf06a5fdf491be80b5db9c24e5875f9cc3a5fc6d120c62c09400d4",
+          "recipe_archive_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+          "binding": {
+            "provider": "GDRNPP",
+            "dataset": "T-LESS",
+            "object_id": 6,
+            "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+            "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+            "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+            "checkpoint_bytes": 410204745,
+            "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+          },
+          "worker": {
+            "session": "60d4aa252c7c487b81a5f173366e36f2",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 0
+          },
+          "inspection_performed": false,
+          "seconds": {
+            "recipe_lookup": 0.31595300000117277,
+            "model_prepare": 9.206017399999837,
+            "total": 9.52197040000101
+          },
+          "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+        },
+        "request_timing": {
+          "operation": "prepare",
+          "client_lock_wait_seconds": 7.1000013122102246e-06,
+          "client_process_launch_seconds": 0.34944849999919825,
+          "client_packet_write_seconds": 0.001866399999926216,
+          "client_reply_wait_seconds": 10.736822400000165,
+          "client_packet_read_seconds": 0.012485900000683614,
+          "worker": {
+            "packet_read_seconds": 0.003440200000113691,
+            "handler_seconds": 9.521988500000589,
+            "packet_write_seconds": 0.0014840000003459863,
+            "worker_request_seconds": 9.526912700001049
+          },
+          "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+          "client_cleanup_seconds": 0.0032992000014928635,
+          "client_total_seconds": 11.103936299999987
+        }
+      },
+      "inspections": [
+        {
+          "first": true,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 7.0000005507608876e-06,
+            "client_process_launch_seconds": 1.2000000424450263e-06,
+            "client_packet_write_seconds": 0.12176069999986794,
+            "client_reply_wait_seconds": 2.7514176000004227,
+            "client_packet_read_seconds": 0.04363609999927576,
+            "worker": {
+              "packet_read_seconds": 0.0365431999998691,
+              "handler_seconds": 2.6056442000008246,
+              "packet_write_seconds": 0.10811469999862311,
+              "worker_request_seconds": 2.750302099999317
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0035332000006746966,
+            "client_total_seconds": 2.9203618000010465
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.0004597000006469898,
+            "capture_prepare_seconds": 0.009838299998591538,
+            "model_prepare_seconds": 0.0007464000009349547,
+            "numeric_seconds": 2.2743181999994704,
+            "graphics_seconds": 0.3201222999996389,
+            "worker_handle_seconds": 2.605484899999283,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "60d4aa252c7c487b81a5f173366e36f2",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 1
+          },
+          "worker_peak_working_set_bytes": 4292608
+        },
+        {
+          "first": false,
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 6.70000008540228e-06,
+            "client_process_launch_seconds": 9.000013960758224e-07,
+            "client_packet_write_seconds": 0.11411319999933767,
+            "client_reply_wait_seconds": 2.6569500000005064,
+            "client_packet_read_seconds": 0.04475599999932456,
+            "worker": {
+              "packet_read_seconds": 0.028828999998950167,
+              "handler_seconds": 2.5142495000000054,
+              "packet_write_seconds": 0.11278310000125202,
+              "worker_request_seconds": 2.6558616000002075
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.004086999999344698,
+            "client_total_seconds": 2.8199203000003763
+          },
+          "execution_profile": {
+            "recipe_lookup_seconds": 0.0006367999994836282,
+            "capture_prepare_seconds": 0.008196200000384124,
+            "model_prepare_seconds": 0.000690799999574665,
+            "numeric_seconds": 2.2650523000011162,
+            "graphics_seconds": 0.23918489999960002,
+            "worker_handle_seconds": 2.5137610000001587,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "worker": {
+            "session": "60d4aa252c7c487b81a5f173366e36f2",
+            "model_cache_hit": true,
+            "model_load_count": 1,
+            "recipe_cache_hit": true,
+            "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+            "inference_request_count": 2
+          },
+          "worker_peak_working_set_bytes": 4292608
+        }
+      ]
+    }
+  ],
+  "summary": [
+    {
+      "graphics": false,
+      "unprepared_first_image_median_seconds": 8.21974179999961,
+      "preparation_median_seconds": 6.727199900000414,
+      "prepared_first_image_median_seconds": 1.6700125000006665,
+      "prepared_startup_plus_first_image_median_seconds": 8.39721240000108
+    },
+    {
+      "graphics": true,
+      "unprepared_first_image_median_seconds": 8.81202779999876,
+      "preparation_median_seconds": 6.811378100001093,
+      "prepared_first_image_median_seconds": 2.493270200000552,
+      "prepared_startup_plus_first_image_median_seconds": 9.240132700002505
+    }
+  ],
+  "worker_implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+  "unchanged_candidate": {
+    "pose": {
+      "model": "pose_3d_v1",
+      "source_to_target": [
+        [
+          -0.8576746674400246,
+          -0.015376754687021307,
+          -0.5139627615371936,
+          -0.026244027435802918
+        ],
+        [
+          -0.4901713614265574,
+          0.32639276194844236,
+          0.8082077711732933,
+          -0.041651478978925786
+        ],
+        [
+          0.15532611264329726,
+          0.9451091579087373,
+          -0.28747604833822105,
+          0.7165341709435432
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "units": "m",
+      "source_frame": "tless_object6",
+      "target_frame": "camera"
+    },
+    "fit": {
+      "status": "accepted",
+      "reason": "fit_gates",
+      "coverage": 0.8598474404926018,
+      "contradiction": 0.045032625677786965,
+      "rmse_m": 0.001488388399593532,
+      "rendered_samples": 10881,
+      "supported_samples": 9356,
+      "unknown_samples": 320,
+      "occluded_samples": 669,
+      "outside_target_samples": 49
+    },
+    "accepted_count": 1
+  },
+  "graphics_array_sha256": {
+    "overlay": "46ee878e3055f65119f22a4ce028ccabade093002645085d0996a93f56af77fa",
+    "points": "d65454be14bf8160d0c9d6faa611fb17a9cce0b492c4cd7baa31f93b630f24e8",
+    "colors": "26795f4d00cf045af81325eae698fe01f150329a858d6a3116e087a533287312"
+  },
+  "capture_sha256": {
+    "capture.json": "f3da45861f1bcba09414341df5cb51d2408819f91faf2eca560197cfa7845c8a",
+    "source.png": "04b19c87d60aaabe98c6be9655a58c5cc620ac31dc356ede55e89dc02cd2a166",
+    "depth.png": "ffc9e6045fbb77da82f9620b4d5e8d086b7d13a74a2360f7d6c7a446db20cc56"
+  },
+  "scope": "Fresh worker processes, alternating prepared/unprepared arms. Same sealed settings, one real calibrated capture, two inspection calls per session. Preparation consumes no image and runs no network forward. First-image times include packet IO, inference, ICP/fit, requested graphics and cleanup; exclude acquisition/file decoding, GUI, robot and hardware acceptance. Preparation shifts startup; it does not remove it.",
+  "attribution": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+}

@@ -1,0 +1,17 @@
+{
+  "previous_worker_receipt_sha256": "86bb421eeb7f9e9a2865e050a9677fae83867983fa95b25c7668ac4c14280276",
+  "previous_worker_samples_checked": 8,
+  "pose_identical": true,
+  "fit_identical": true,
+  "accepted_count_identical": true,
+  "overlay_bit_identical_to_frozen_png": true,
+  "native_xyz_bit_identical_to_frozen_ply": true,
+  "native_rgb_bit_identical_to_frozen_ply": true,
+  "sessions": 12,
+  "inspection_requests": 24,
+  "preparation_requests": 6,
+  "zero_inspections_at_readiness": true,
+  "same_worker_reused_after_preparation": true,
+  "one_model_load_per_session": true,
+  "source_recipe_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3"
+}

@@ -1,0 +1,23 @@
+{
+  "worker_tests_passed": 66,
+  "worker_modules_skipped": 2,
+  "subtests_passed": 4,
+  "real_checkpoint_cases_included": true,
+  "source_host_popup_tests_passed": 7,
+  "installed_native_cli_passed_runs": 2,
+  "preparation_session_count": 6,
+  "fresh_worker_session_count": 12,
+  "inspection_request_count": 24,
+  "zero_forward_passes_or_inspection_results_at_readiness": true,
+  "one_model_load_per_session": true,
+  "same_worker_after_preparation": true,
+  "fixed_frozen_pose_fit_overlay_native_xyz_rgb_match": true,
+  "runtime_source_modules_in_wheel": 17,
+  "wheel_runtime_source_byte_match": true,
+  "wheel_license_notices_present": true,
+  "weights_bundled": false,
+  "host_ml_environment_changed": false,
+  "automatic_host_execution_instance_preparation_implemented": false,
+  "old_recipes_source_images_numerical_receipts_changed": false,
+  "installed_host_popup_tests_passed": 7
+}

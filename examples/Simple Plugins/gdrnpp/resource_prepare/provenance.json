@@ -1,0 +1,32 @@
+{
+  "dataset": "T-LESS",
+  "license": "CC-BY-4.0",
+  "source": "https://cmp.felk.cvut.cz/t-less/",
+  "authors": "T. Hodan et al., WACV 2017",
+  "runtime_source_commit": "cc7de2dda650ab67f8cdca77bc2cece889b3283f",
+  "worker_implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+  "python": "3.13.9",
+  "platform": "Windows 11 10.0.26200",
+  "packages": {
+    "torch": "2.15.0+cpu",
+    "torchvision": "0.29.2+cpu",
+    "timm": "0.6.7",
+    "numpy": "2.5.4",
+    "opencv-python-headless": "5.0.0.93",
+    "psutil": "7.2.2",
+    "scipy": "1.18.1",
+    "trimesh": "4.12.2"
+  },
+  "model_checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+  "wheel_sha256": "592bb0f0d0fe848123b356d34cd515bb3cc8a6c651e059c6a4cbc6b5237277b7",
+  "capture": "scene000006_frame000002",
+  "input_credit": "Calibrated RGB-D and annotation-derived rectangle retained in scene extension; pose labels never enter inference",
+  "scope": "Preparation shifts CPU model startup; no total-cycle, broad accuracy or host-startup-integration claim",
+  "sha256": {
+    "benchmark.json": "913840c430d24604e4fd1a4d55ddbe7e13da51d89bc3d3c0fcb8e03b1f7d0729",
+    "first_image.png": "e93a56e1e3bc9bee1f170ddb0a7f57a2750b14de59b966d3055cc0a4ed7f810f",
+    "parity.json": "fa9452df8bdb8f1fc969febd75ce4d236de607bd8a8ea19b11de263113b6e79b",
+    "summary.json": "dc234a35d1d0a10ef18d026e5ce12f3af83fc99ee5e35a505f50f5ebd64d0f4a",
+    "validation.json": "54a6c5277a5f079b0430eda4fac2102d04d95f34d53addbb29385ce764833f6b"
+  }
+}

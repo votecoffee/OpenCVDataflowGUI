@@ -239,6 +239,15 @@
   "examples/Simple Plugins/gdrnpp/worker_cycles/README.md": "06964103d83cd566dd7ace3e29e4b4c1cef3836761b18a1b0fa8e25f3386bf46",
   "examples/Simple Plugins/gdrnpp/worker_cycles/benchmark_worker.py": "2f1e18f09c070fa0fd3ef3f410143e7fadaf9be128f77c41aac6f84da50b52d3",
   "examples/Simple Plugins/gdrnpp/worker_cycles/ruff.toml": "7e7d24e47b693acea75985d6956a4258252039fa66346e752a3adaa5037ac72e",
-  "examples/Simple Plugins/gdrnpp/README.md": "b63724146f94b313beb9eebde842b2dbe5834d68f062b79d2803fd8f52c8ae3f",
-  "examples/Simple Plugins/gdrnpp/.gitattributes": "c3b869d0e23503ff73f7aeab7a266bf0b5f267450eee93702dbb462e186bef74"
+  "examples/Simple Plugins/gdrnpp/resource_prepare/benchmark.json": "913840c430d24604e4fd1a4d55ddbe7e13da51d89bc3d3c0fcb8e03b1f7d0729",
+  "examples/Simple Plugins/gdrnpp/resource_prepare/first_image.png": "e93a56e1e3bc9bee1f170ddb0a7f57a2750b14de59b966d3055cc0a4ed7f810f",
+  "examples/Simple Plugins/gdrnpp/resource_prepare/parity.json": "fa9452df8bdb8f1fc969febd75ce4d236de607bd8a8ea19b11de263113b6e79b",
+  "examples/Simple Plugins/gdrnpp/resource_prepare/provenance.json": "0b332cddd71f1bbfe4c1765fb6942cd54e5fee3e70ac4c7c0f712aafd260fd28",
+  "examples/Simple Plugins/gdrnpp/resource_prepare/summary.json": "dc234a35d1d0a10ef18d026e5ce12f3af83fc99ee5e35a505f50f5ebd64d0f4a",
+  "examples/Simple Plugins/gdrnpp/resource_prepare/validation.json": "54a6c5277a5f079b0430eda4fac2102d04d95f34d53addbb29385ce764833f6b",
+  "examples/Simple Plugins/gdrnpp/resource_prepare/README.md": "ce516776912b45fd20ec0f3f2d738f527015474a4093a267f5f0aa021304f38f",
+  "examples/Simple Plugins/gdrnpp/resource_prepare/benchmark_prepare.py": "9e7c8df747fa9588d5cfbd110315c698a52b363ce2d85b2e3e579f7157d2f8d6",
+  "examples/Simple Plugins/gdrnpp/resource_prepare/ruff.toml": "7e7d24e47b693acea75985d6956a4258252039fa66346e752a3adaa5037ac72e",
+  "examples/Simple Plugins/gdrnpp/README.md": "33759583857c174ab7e235afcdffba7c0b318bbad5d34b515daeee90c4a21d63",
+  "examples/Simple Plugins/gdrnpp/.gitattributes": "f91d58a969bb3576c7cc0bd5840e7b9cb0417248fca6e982f13463c35d0d9b52"
 }

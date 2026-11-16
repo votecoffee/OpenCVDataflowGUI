@@ -1,0 +1,24 @@
+{
+  "modes": [
+    {
+      "graphics": false,
+      "unprepared_first_image_median_seconds": 8.21974179999961,
+      "preparation_median_seconds": 6.727199900000414,
+      "prepared_first_image_median_seconds": 1.6700125000006665,
+      "prepared_startup_plus_first_image_median_seconds": 8.39721240000108
+    },
+    {
+      "graphics": true,
+      "unprepared_first_image_median_seconds": 8.81202779999876,
+      "preparation_median_seconds": 6.811378100001093,
+      "prepared_first_image_median_seconds": 2.493270200000552,
+      "prepared_startup_plus_first_image_median_seconds": 9.240132700002505
+    }
+  ],
+  "scope": "Three alternating prepared/unprepared pairs per mode; one independent real capture; startup moved, not eliminated",
+  "preparation_seconds_range": [
+    6.0559541000002355,
+    11.103936299999987
+  ],
+  "worker_implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4"
+}

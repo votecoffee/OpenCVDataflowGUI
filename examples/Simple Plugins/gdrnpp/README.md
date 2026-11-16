@@ -135,3 +135,13 @@ do not establish a consistent overall gain. Updated warm examples took about
 Profiles now separate worker computation, graphics, model setup and client
 transfer/cleanup. Keep persistent model reuse; restart/reset an updated worker
 and restart the app to load its updated light bridge. Recipes are unchanged.
+
+`resource_prepare/README.md` adds explicit resource-only preparation with the
+same persistent worker. It validates the applied recipe/checkpoint and loads
+the model, without a capture, forward pass, pose, preview token or inspection
+result. In twelve fresh CPU sessions, first-image medians moved from 8.2 to
+1.7 seconds (graphics off), and 8.8 to 2.5 seconds (image/native cloud), with
+6.7-6.8 seconds of separate preparation. Startup is moved, not eliminated;
+all poses, fits and review arrays match the prior frozen capture. The runnable
+replay and raw receipts are retained. Preparing actual app execution instances
+still needs its host lifecycle hook; this does not run on project open.
