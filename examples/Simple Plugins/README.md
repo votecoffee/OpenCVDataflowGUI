@@ -26,6 +26,12 @@ installation is needed. Calibrated results use native fly-around clouds. Real
 CC BY 4.0 WLI-Set captures remain pixel-only, with poor fits and missing samples
 visible. The trainer restores existing training and stages edits for Apply.
 
+The [SimpleSurfaceEnhance map reviews](surface_enhance/README.md) add five
+rendered controls with normal/albedo, relighting, residual and unavailable
+reason views. They use analytic references and attributed CC0 Poly Haven
+material maps. File-only projects load retained images; the bundled CLI
+wheel replays estimation separately. Retained training/execution is next.
+
 ## Start with real public data
 
 The [real-data showcase](real_data/README.md) links runnable projects for all

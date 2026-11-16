@@ -1,0 +1,37 @@
+[
+  {
+    "case": "analytic_clean",
+    "validated": true,
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "estimation_reexecuted": false
+  },
+  {
+    "case": "analytic_contaminated",
+    "validated": true,
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "estimation_reexecuted": false
+  },
+  {
+    "case": "four_light_ambiguity",
+    "validated": true,
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "estimation_reexecuted": false
+  },
+  {
+    "case": "polyhaven_clean",
+    "validated": true,
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "estimation_reexecuted": false
+  },
+  {
+    "case": "polyhaven_contaminated",
+    "validated": true,
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "estimation_reexecuted": false
+  }
+]

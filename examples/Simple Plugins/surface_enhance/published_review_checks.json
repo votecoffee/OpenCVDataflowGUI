@@ -1,0 +1,51 @@
+{
+  "scope": "File-only saved map review, not surface estimation",
+  "cases": [
+    {
+      "case": "analytic_clean",
+      "valid": true,
+      "reopened": true,
+      "portable_paths": true,
+      "rgb_views_loaded": 8,
+      "estimation_reexecuted": false,
+      "passed": true
+    },
+    {
+      "case": "analytic_contaminated",
+      "valid": true,
+      "reopened": true,
+      "portable_paths": true,
+      "rgb_views_loaded": 8,
+      "estimation_reexecuted": false,
+      "passed": true
+    },
+    {
+      "case": "four_light_ambiguity",
+      "valid": true,
+      "reopened": true,
+      "portable_paths": true,
+      "rgb_views_loaded": 8,
+      "estimation_reexecuted": false,
+      "passed": true
+    },
+    {
+      "case": "polyhaven_clean",
+      "valid": true,
+      "reopened": true,
+      "portable_paths": true,
+      "rgb_views_loaded": 8,
+      "estimation_reexecuted": false,
+      "passed": true
+    },
+    {
+      "case": "polyhaven_contaminated",
+      "valid": true,
+      "reopened": true,
+      "portable_paths": true,
+      "rgb_views_loaded": 8,
+      "estimation_reexecuted": false,
+      "passed": true
+    }
+  ],
+  "passed": true
+}

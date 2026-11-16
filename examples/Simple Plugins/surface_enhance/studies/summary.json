@@ -1,0 +1,168 @@
+{
+  "scope": "Two rendered control families; acquired real multi-light validation remains open",
+  "cases": [
+    {
+      "case": "analytic_clean",
+      "source": "Original analytic bump/hollow and varying albedo",
+      "image_kind": "Rendered diffuse control, not acquired light-stack images",
+      "valid_pixels": 19344,
+      "coverage": 1.0,
+      "reason_counts": {
+        "valid": 19344,
+        "outside_roi": 1136
+      },
+      "mean_normal_error_deg": 0.059228005668810604,
+      "p95_normal_error_deg": 0.12299142952540314,
+      "mean_relative_albedo_error_percent": 0.035459183156490326,
+      "rejected_observations": 0,
+      "settings": {
+        "minimum_support": 3,
+        "minimum_support_fraction": 0.5,
+        "relative_tolerance": 0.06,
+        "absolute_tolerance": 1e-06,
+        "minimum_singular_ratio": 0.001,
+        "ambiguity_angle_deg": 8.0,
+        "minimum_albedo": 1e-08,
+        "view_direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "minimum_view_cosine": 0.02,
+        "seed_count": 32
+      },
+      "compiled_seed_count": 32
+    },
+    {
+      "case": "analytic_contaminated",
+      "source": "Original analytic bump/hollow and varying albedo",
+      "image_kind": "Rendered diffuse control, not acquired light-stack images",
+      "valid_pixels": 19144,
+      "coverage": 0.9896608767576509,
+      "reason_counts": {
+        "valid": 19144,
+        "outside_roi": 1136,
+        "insufficient_observations": 200
+      },
+      "mean_normal_error_deg": 0.05932332531280078,
+      "p95_normal_error_deg": 0.12328343928087142,
+      "mean_relative_albedo_error_percent": 0.035902224481105804,
+      "rejected_observations": 8356,
+      "settings": {
+        "minimum_support": 3,
+        "minimum_support_fraction": 0.5,
+        "relative_tolerance": 0.06,
+        "absolute_tolerance": 1e-06,
+        "minimum_singular_ratio": 0.001,
+        "ambiguity_angle_deg": 8.0,
+        "minimum_albedo": 1e-08,
+        "view_direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "minimum_view_cosine": 0.02,
+        "seed_count": 32
+      },
+      "compiled_seed_count": 32
+    },
+    {
+      "case": "four_light_ambiguity",
+      "source": "Original flat reference; four lights with one competing observation",
+      "image_kind": "Rendered diffuse control, not acquired light-stack images",
+      "valid_pixels": 11952,
+      "coverage": 0.6178660049627791,
+      "reason_counts": {
+        "valid": 11952,
+        "outside_roi": 1136,
+        "ambiguous_orientation": 7392
+      },
+      "mean_normal_error_deg": 0.07087963343082385,
+      "p95_normal_error_deg": 0.14137313469119603,
+      "mean_relative_albedo_error_percent": 0.042255252599716187,
+      "rejected_observations": 7392,
+      "settings": {
+        "minimum_support": 3,
+        "minimum_support_fraction": 0.5,
+        "relative_tolerance": 0.06,
+        "absolute_tolerance": 1e-06,
+        "minimum_singular_ratio": 0.001,
+        "ambiguity_angle_deg": 8.0,
+        "minimum_albedo": 1e-08,
+        "view_direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "minimum_view_cosine": 0.02,
+        "seed_count": 32
+      },
+      "compiled_seed_count": 4
+    },
+    {
+      "case": "polyhaven_clean",
+      "source": "Powered by Poly Haven / Charlotte Baglioni / Anti Slip Concrete / CC0",
+      "image_kind": "Rendered diffuse control, not acquired light-stack images",
+      "valid_pixels": 63504,
+      "coverage": 1.0,
+      "reason_counts": {
+        "valid": 63504,
+        "outside_roi": 2032
+      },
+      "mean_normal_error_deg": 0.062139804513329996,
+      "p95_normal_error_deg": 0.1253503088704142,
+      "mean_relative_albedo_error_percent": 0.03854088485240936,
+      "rejected_observations": 0,
+      "settings": {
+        "minimum_support": 3,
+        "minimum_support_fraction": 0.5,
+        "relative_tolerance": 0.06,
+        "absolute_tolerance": 1e-06,
+        "minimum_singular_ratio": 0.001,
+        "ambiguity_angle_deg": 8.0,
+        "minimum_albedo": 1e-08,
+        "view_direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "minimum_view_cosine": 0.02,
+        "seed_count": 32
+      },
+      "compiled_seed_count": 32
+    },
+    {
+      "case": "polyhaven_contaminated",
+      "source": "Powered by Poly Haven / Charlotte Baglioni / Anti Slip Concrete / CC0",
+      "image_kind": "Rendered diffuse control, not acquired light-stack images",
+      "valid_pixels": 63304,
+      "coverage": 0.9968505920886873,
+      "reason_counts": {
+        "valid": 63304,
+        "outside_roi": 2032,
+        "insufficient_observations": 200
+      },
+      "mean_normal_error_deg": 0.062303183806416924,
+      "p95_normal_error_deg": 0.1258134338155139,
+      "mean_relative_albedo_error_percent": 0.038969311863183975,
+      "rejected_observations": 26709,
+      "settings": {
+        "minimum_support": 3,
+        "minimum_support_fraction": 0.5,
+        "relative_tolerance": 0.06,
+        "absolute_tolerance": 1e-06,
+        "minimum_singular_ratio": 0.001,
+        "ambiguity_angle_deg": 8.0,
+        "minimum_albedo": 1e-08,
+        "view_direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "minimum_view_cosine": 0.02,
+        "seed_count": 32
+      },
+      "compiled_seed_count": 32
+    }
+  ]
+}

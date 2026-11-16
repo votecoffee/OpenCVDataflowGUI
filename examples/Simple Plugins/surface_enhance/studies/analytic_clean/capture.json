@@ -1,0 +1,103 @@
+{
+  "schema": "simple_surface_capture/v1",
+  "capture_id": "analytic_clean",
+  "pixel_grid": "rendered_reference_grid",
+  "response": "linear",
+  "input_scale": 1,
+  "frame": "camera",
+  "black_level": 0.02,
+  "input_ceiling": 1,
+  "mask": "mask.npy",
+  "lights": [
+    {
+      "id": "lamp0",
+      "image": "lamp0.npy",
+      "direction": [
+        0.6,
+        0.0,
+        -0.8
+      ],
+      "relative_intensity": 0.8,
+      "exposure_s": 0.2
+    },
+    {
+      "id": "lamp1",
+      "image": "lamp1.npy",
+      "direction": [
+        0.4242640687119285,
+        0.4242640687119285,
+        -0.8
+      ],
+      "relative_intensity": 0.8428571428571429,
+      "exposure_s": 0.2285714285714286
+    },
+    {
+      "id": "lamp2",
+      "image": "lamp2.npy",
+      "direction": [
+        3.6739403974420595e-17,
+        0.6,
+        -0.8
+      ],
+      "relative_intensity": 0.8857142857142858,
+      "exposure_s": 0.2571428571428572
+    },
+    {
+      "id": "lamp3",
+      "image": "lamp3.npy",
+      "direction": [
+        -0.42426406871192845,
+        0.4242640687119285,
+        -0.8
+      ],
+      "relative_intensity": 0.9285714285714286,
+      "exposure_s": 0.28571428571428575
+    },
+    {
+      "id": "lamp4",
+      "image": "lamp4.npy",
+      "direction": [
+        -0.6,
+        7.347880794884119e-17,
+        -0.8
+      ],
+      "relative_intensity": 0.9714285714285715,
+      "exposure_s": 0.3142857142857143
+    },
+    {
+      "id": "lamp5",
+      "image": "lamp5.npy",
+      "direction": [
+        -0.4242640687119286,
+        -0.42426406871192845,
+        -0.8
+      ],
+      "relative_intensity": 1.0142857142857142,
+      "exposure_s": 0.34285714285714286
+    },
+    {
+      "id": "lamp6",
+      "image": "lamp6.npy",
+      "direction": [
+        -1.1021821192326178e-16,
+        -0.6,
+        -0.8
+      ],
+      "relative_intensity": 1.0571428571428572,
+      "exposure_s": 0.37142857142857144
+    },
+    {
+      "id": "lamp7",
+      "image": "lamp7.npy",
+      "direction": [
+        0.4242640687119284,
+        -0.4242640687119286,
+        -0.8
+      ],
+      "relative_intensity": 1.1,
+      "exposure_s": 0.4
+    }
+  ],
+  "source": "Original analytic bump/hollow and varying albedo",
+  "reference_scope": "Rendering inputs are reference normals/albedo; not physical gauge evidence"
+}

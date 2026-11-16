@@ -1,0 +1,33 @@
+{
+  "case": "four_light_ambiguity",
+  "source": "Original flat reference; four lights with one competing observation",
+  "image_kind": "Rendered diffuse control, not acquired light-stack images",
+  "valid_pixels": 11952,
+  "coverage": 0.6178660049627791,
+  "reason_counts": {
+    "valid": 11952,
+    "outside_roi": 1136,
+    "ambiguous_orientation": 7392
+  },
+  "mean_normal_error_deg": 0.07087963343082385,
+  "p95_normal_error_deg": 0.14137313469119603,
+  "mean_relative_albedo_error_percent": 0.042255252599716187,
+  "rejected_observations": 7392,
+  "settings": {
+    "minimum_support": 3,
+    "minimum_support_fraction": 0.5,
+    "relative_tolerance": 0.06,
+    "absolute_tolerance": 1e-06,
+    "minimum_singular_ratio": 0.001,
+    "ambiguity_angle_deg": 8.0,
+    "minimum_albedo": 1e-08,
+    "view_direction": [
+      0.0,
+      0.0,
+      -1.0
+    ],
+    "minimum_view_cosine": 0.02,
+    "seed_count": 32
+  },
+  "compiled_seed_count": 4
+}

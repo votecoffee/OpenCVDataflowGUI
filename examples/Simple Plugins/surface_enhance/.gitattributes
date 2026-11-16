@@ -1,0 +1,10 @@
+.gitattributes text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+*.npy binary
+*.npz binary
+*.exr binary
+*.whl binary
+LICENSE -text whitespace=cr-at-eol

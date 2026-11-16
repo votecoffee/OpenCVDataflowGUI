@@ -1,0 +1,179 @@
+{
+  "schema": "simple_surface_result/v1",
+  "capture_id": "analytic_contaminated",
+  "pixel_grid": "rendered_reference_grid",
+  "frame": "camera",
+  "image_size": [
+    160,
+    128
+  ],
+  "light_ids": [
+    "lamp0",
+    "lamp1",
+    "lamp2",
+    "lamp3",
+    "lamp4",
+    "lamp5",
+    "lamp6",
+    "lamp7"
+  ],
+  "settings": {
+    "minimum_support": 3,
+    "minimum_support_fraction": 0.5,
+    "relative_tolerance": 0.06,
+    "absolute_tolerance": 1e-06,
+    "minimum_singular_ratio": 0.001,
+    "ambiguity_angle_deg": 8.0,
+    "minimum_albedo": 1e-08,
+    "view_direction": [
+      0.0,
+      0.0,
+      -1.0
+    ],
+    "minimum_view_cosine": 0.02,
+    "seed_count": 32
+  },
+  "compiled_triplet_seeds": 32,
+  "valid_pixels": 19144,
+  "active_pixels": 19344,
+  "coverage": 0.9896608767576509,
+  "reason_counts": {
+    "valid": 19144,
+    "outside_roi": 1136,
+    "insufficient_observations": 200
+  },
+  "no_redundancy_pixels": 0,
+  "rejected_observations": 8356,
+  "scope": "Directional diffuse normal/albedo fit, not metric height or defect acceptance",
+  "residual_scope": "Positive/negative residuals are model disagreement; material labels are not inferred",
+  "rig": {
+    "directions": [
+      [
+        0.6,
+        0.0,
+        -0.8
+      ],
+      [
+        0.4242640687119285,
+        0.4242640687119285,
+        -0.8
+      ],
+      [
+        3.6739403974420595e-17,
+        0.6,
+        -0.8
+      ],
+      [
+        -0.42426406871192845,
+        0.4242640687119285,
+        -0.8
+      ],
+      [
+        -0.6,
+        7.347880794884119e-17,
+        -0.8
+      ],
+      [
+        -0.4242640687119286,
+        -0.42426406871192845,
+        -0.8
+      ],
+      [
+        -1.1021821192326178e-16,
+        -0.6,
+        -0.8
+      ],
+      [
+        0.4242640687119284,
+        -0.4242640687119286,
+        -0.8
+      ]
+    ],
+    "relative_intensity": [
+      0.8,
+      0.8428571428571429,
+      0.8857142857142858,
+      0.9285714285714286,
+      0.9714285714285715,
+      1.0142857142857142,
+      1.0571428571428572,
+      1.1
+    ],
+    "exposure_s": [
+      0.2,
+      0.2285714285714286,
+      0.2571428571428572,
+      0.28571428571428575,
+      0.3142857142857143,
+      0.34285714285714286,
+      0.37142857142857144,
+      0.4
+    ]
+  },
+  "virtual_light": [
+    0.6,
+    0,
+    -0.8
+  ],
+  "map_units": {
+    "normals": "unit vectors in named frame",
+    "albedo": "relative signal per light-second",
+    "normal_change": "normal-vector change per source pixel",
+    "relight": "orientation cosine"
+  },
+  "display": {
+    "albedo_max": 0.5739310383796692,
+    "normal_change_max": 0.04203711077570915,
+    "input_max": 0.20494353771209717,
+    "residual_max": 0.25,
+    "relight_max": 1.0,
+    "scope": "Display ranges only; numerical maps, fit and validity are unchanged",
+    "reason_legend": {
+      "valid": [
+        40,
+        200,
+        80
+      ],
+      "outside_roi": [
+        50,
+        55,
+        60
+      ],
+      "insufficient_observations": [
+        65,
+        130,
+        240
+      ],
+      "ill_conditioned": [
+        255,
+        175,
+        35
+      ],
+      "insufficient_consensus": [
+        230,
+        95,
+        35
+      ],
+      "ambiguous_orientation": [
+        215,
+        65,
+        220
+      ],
+      "weak_signal": [
+        115,
+        120,
+        125
+      ],
+      "back_facing": [
+        200,
+        75,
+        75
+      ],
+      "numerical_failure": [
+        120,
+        30,
+        160
+      ]
+    }
+  }
+}
