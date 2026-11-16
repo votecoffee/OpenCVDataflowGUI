@@ -1,0 +1,357 @@
+{
+  "license": "MIT - original repository fixtures",
+  "image_size": [
+    224,
+    112
+  ],
+  "frames": [
+    {
+      "frame": 0,
+      "timestamp_ms": 0,
+      "objects": [
+        {
+          "label": "A",
+          "center": [
+            39.5,
+            45.5
+          ],
+          "size": [
+            39,
+            31
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 1,
+      "timestamp_ms": 100,
+      "objects": [
+        {
+          "label": "A",
+          "center": [
+            42.5,
+            45.5
+          ],
+          "size": [
+            39,
+            31
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2,
+      "timestamp_ms": 200,
+      "objects": [
+        {
+          "label": "A",
+          "center": [
+            45.5,
+            45.5
+          ],
+          "size": [
+            39,
+            31
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 3,
+      "timestamp_ms": 300,
+      "objects": [
+        {
+          "label": "A",
+          "center": [
+            48.5,
+            45.5
+          ],
+          "size": [
+            39,
+            31
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 4,
+      "timestamp_ms": 400,
+      "objects": [
+        {
+          "label": "A",
+          "center": [
+            51.5,
+            45.5
+          ],
+          "size": [
+            39,
+            31
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 5,
+      "timestamp_ms": 500,
+      "objects": [
+        {
+          "label": "A",
+          "center": [
+            54.5,
+            45.5
+          ],
+          "size": [
+            39,
+            31
+          ]
+        },
+        {
+          "label": "B",
+          "center": [
+            174.5,
+            87.5
+          ],
+          "size": [
+            29,
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 6,
+      "timestamp_ms": 600,
+      "objects": [
+        {
+          "label": "A",
+          "center": [
+            57.5,
+            45.5
+          ],
+          "size": [
+            39,
+            31
+          ]
+        },
+        {
+          "label": "B",
+          "center": [
+            174.5,
+            87.5
+          ],
+          "size": [
+            29,
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 7,
+      "timestamp_ms": 700,
+      "objects": [
+        {
+          "label": "A",
+          "center": [
+            60.5,
+            45.5
+          ],
+          "size": [
+            39,
+            31
+          ]
+        },
+        {
+          "label": "B",
+          "center": [
+            174.5,
+            87.5
+          ],
+          "size": [
+            29,
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 8,
+      "timestamp_ms": 800,
+      "objects": [
+        {
+          "label": "A",
+          "center": [
+            63.5,
+            45.5
+          ],
+          "size": [
+            39,
+            31
+          ]
+        },
+        {
+          "label": "B",
+          "center": [
+            174.5,
+            87.5
+          ],
+          "size": [
+            29,
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 9,
+      "timestamp_ms": 900,
+      "objects": [
+        {
+          "label": "B",
+          "center": [
+            174.5,
+            87.5
+          ],
+          "size": [
+            29,
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 10,
+      "timestamp_ms": 1000,
+      "objects": [
+        {
+          "label": "B",
+          "center": [
+            174.5,
+            87.5
+          ],
+          "size": [
+            29,
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 11,
+      "timestamp_ms": 1100,
+      "objects": [
+        {
+          "label": "B",
+          "center": [
+            174.5,
+            87.5
+          ],
+          "size": [
+            29,
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 12,
+      "timestamp_ms": 1200,
+      "objects": [
+        {
+          "label": "B",
+          "center": [
+            174.5,
+            87.5
+          ],
+          "size": [
+            29,
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 13,
+      "timestamp_ms": 1300,
+      "objects": [
+        {
+          "label": "B",
+          "center": [
+            174.5,
+            87.5
+          ],
+          "size": [
+            29,
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 14,
+      "timestamp_ms": 1400,
+      "objects": [
+        {
+          "label": "B",
+          "center": [
+            174.5,
+            87.5
+          ],
+          "size": [
+            29,
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 15,
+      "timestamp_ms": 1500,
+      "objects": [
+        {
+          "label": "B",
+          "center": [
+            174.5,
+            87.5
+          ],
+          "size": [
+            29,
+            23
+          ]
+        }
+      ]
+    }
+  ],
+  "cases": {
+    "periodic": {
+      "period": 4,
+      "age": 15
+    },
+    "every_frame": {
+      "period": 1,
+      "age": 15
+    },
+    "freshness_limit": {
+      "period": 4,
+      "age": 2
+    }
+  },
+  "asset_sha256": {
+    "frame_00.png": "a0916df93330e05efb196e1fbd9ba0489e92d42d02c1bbcac6c59ebca87cbb62",
+    "frame_01.png": "eaaeec4e5f31c99a37c868bef105eedad7d0adb4e4979600b2bbb6c2348258b3",
+    "frame_02.png": "a17a59930dbeb5ca4c6d53c91bf5855207638043be041e4462a910b0e57f82ce",
+    "frame_03.png": "3e81e25ba611a0e07ed721a4f1d75c3a8fdd7a5e7cfefdab2c63d45116367e12",
+    "frame_04.png": "a956d16618849c82b6f56c54f1e2b63f8047e19ddc9fdd6c785de79a4087d72d",
+    "frame_05.png": "68c2771772a06c79689769a43be627dad102963447d10d5a2365e68b126ee06b",
+    "frame_06.png": "0ad056be7f457b1b6829554aea0efc15fdd56b21572422828d130ae90548ed6e",
+    "frame_07.png": "4ab984f9d6c21f320794c88ca5d951de94985ab06862d410c73472f7f45f6b07",
+    "frame_08.png": "1b1d94490b97331b571f08f9a7dd3c08555739c974d0e664b323a21b3fceac2f",
+    "frame_09.png": "69242de5479d4d697e00b855569f84e8fb30d36dd41bd41562769bb240fe70e2",
+    "frame_10.png": "69242de5479d4d697e00b855569f84e8fb30d36dd41bd41562769bb240fe70e2",
+    "frame_11.png": "69242de5479d4d697e00b855569f84e8fb30d36dd41bd41562769bb240fe70e2",
+    "frame_12.png": "69242de5479d4d697e00b855569f84e8fb30d36dd41bd41562769bb240fe70e2",
+    "frame_13.png": "69242de5479d4d697e00b855569f84e8fb30d36dd41bd41562769bb240fe70e2",
+    "frame_14.png": "69242de5479d4d697e00b855569f84e8fb30d36dd41bd41562769bb240fe70e2",
+    "frame_15.png": "69242de5479d4d697e00b855569f84e8fb30d36dd41bd41562769bb240fe70e2"
+  }
+}

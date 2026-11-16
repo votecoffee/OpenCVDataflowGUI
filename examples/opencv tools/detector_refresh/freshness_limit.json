@@ -1,0 +1,338 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/frame_00.png",
+        "source_mode": "files",
+        "paths": [
+          "assets/frame_00.png",
+          "assets/frame_01.png",
+          "assets/frame_02.png",
+          "assets/frame_03.png",
+          "assets/frame_04.png",
+          "assets/frame_05.png",
+          "assets/frame_06.png",
+          "assets/frame_07.png",
+          "assets/frame_08.png",
+          "assets/frame_09.png",
+          "assets/frame_10.png",
+          "assets/frame_11.png",
+          "assets/frame_12.png",
+          "assets/frame_13.png",
+          "assets/frame_14.png",
+          "assets/frame_15.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cadence",
+      "type": "flow.detection_cadence",
+      "name": "Detector refresh cadence",
+      "parameters": {
+        "warmup": 1,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "period": 4
+      },
+      "position": [
+        380,
+        200
+      ],
+      "exposed_inputs": [
+        "image",
+        "reset",
+        "stream",
+        "force"
+      ],
+      "exposed_outputs": [
+        "image",
+        "refresh",
+        "report",
+        "ready",
+        "activations",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detector",
+      "type": "inspect.blobs",
+      "name": "Find blobs",
+      "parameters": {
+        "connectivity": 8,
+        "min_area": 40,
+        "max_area": 0,
+        "expected_count": 2,
+        "algorithm": "default",
+        "region_mode": "center",
+        "check_count": false
+      },
+      "position": [
+        760,
+        200
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "centroids",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "track",
+      "type": "sequence.track_refreshed",
+      "name": "Track with periodic detections",
+      "description": "Periodic full-frame detection with bounded local image tracking between refreshes.",
+      "documentation": "<p>Wire Detector refresh cadence Image to any full-frame detector. Wire original Image, cadence Refresh and detector results here. Local LK similarity measurements refine existing identities only; only full detection discovers new objects. Blue means local evidence, green detector evidence, amber prediction. See docs/refresh-tracking.md for clock, budget, freshness and loss contracts.</p>",
+      "parameters": {
+        "warmup": 1,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "clock": "nominal",
+        "nominal_interval_ms": 100,
+        "minimum_interval_ms": 0.001,
+        "maximum_interval_ms": 1000.0,
+        "angle_period": "180",
+        "maximum_tracks": 64,
+        "minimum_observations": 2,
+        "emit_tentative": false,
+        "emit_predictions": true,
+        "maximum_missed_frames": 2,
+        "maximum_unobserved_ms": 1000.0,
+        "offscreen_margin": 100.0,
+        "minimum_detection_score": 0.0,
+        "minimum_confidence": 0.05,
+        "confidence_decay_ms": 1000.0,
+        "label_policy": "if_both",
+        "association_distance": 50.0,
+        "innovation_gate": 18.5,
+        "maximum_scale_ratio": 2.0,
+        "maximum_angle_difference": 60.0,
+        "ambiguity_margin": 0.05,
+        "position_noise": 1.0,
+        "scale_noise": 0.05,
+        "angle_noise": 5.0,
+        "position_acceleration": 10.0,
+        "scale_acceleration": 0.1,
+        "angular_acceleration": 30.0,
+        "initial_position_sigma": 2.0,
+        "initial_velocity_sigma": 100.0,
+        "initial_scale_sigma": 0.2,
+        "initial_scale_velocity_sigma": 0.5,
+        "initial_angle_sigma": 20.0,
+        "initial_angular_velocity_sigma": 90.0,
+        "initial_width": 20.0,
+        "initial_height": 20.0,
+        "maximum_position_sigma": 100.0,
+        "maximum_scale_sigma": 1.0,
+        "maximum_angle_sigma": 90.0,
+        "maximum_detector_age_frames": 2,
+        "maximum_detector_age_ms": 2000.0,
+        "local_max_points": 48,
+        "local_quality": 0.01,
+        "local_min_distance": 3.0,
+        "local_block_size": 5,
+        "local_gradient_size": "3",
+        "local_harris": false,
+        "local_harris_k": 0.04,
+        "local_window": 21,
+        "local_levels": 3,
+        "local_iterations": 30,
+        "local_epsilon": 0.01,
+        "local_min_eigenvalue": 0.0001,
+        "local_max_error": 20.0,
+        "local_error_metric": "patch",
+        "fit_method": "ransac",
+        "local_fb_tolerance": 1.0,
+        "local_min_points": 4,
+        "local_min_inliers": 0.6,
+        "local_min_span": 3.0,
+        "local_max_shift": 30.0,
+        "local_max_scale": 1.2,
+        "local_max_angle": 20.0,
+        "local_work_limit": 32000000,
+        "fit_threshold": 2.0,
+        "fit_iterations": 200,
+        "fit_confidence": 0.99,
+        "fit_refine_iterations": 10
+      },
+      "position": [
+        1140,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "detections",
+        "timestamp_ms",
+        "refresh"
+      ],
+      "exposed_outputs": [
+        "tracks",
+        "poses",
+        "count",
+        "report",
+        "ready",
+        "activations",
+        "status",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1520,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1900,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original annotated detector-refresh fixtures - MIT",
+      "description": "Original MIT images, annotations and projects by OpenCVDataflowGUI contributors; no customer or external images. Run All consumes sixteen frames. Native blob detection runs only on cadence images; local image evidence updates existing identities between refreshes. A new lower-right part enters at frame 5, discovered at frame 8 for period 4 or frame 5 for period 1. The moving upper part disappears at frame 9; lost local support must predict then expire, without learning replacement background. Blue means local evidence, green detector evidence and amber prediction. Freshness limit deliberately expires even successful local tracks after two acquisitions without a detector match. truth.json records independent intended motion and hashes. Detector calls are measured; this makes no runtime speed claim. These synthetic tests do not qualify production tracking.",
+      "parameters": {},
+      "position": [
+        0,
+        -420
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "cadence",
+      "input": "image"
+    },
+    {
+      "source": "cadence",
+      "output": "image",
+      "target": "detector",
+      "input": "image"
+    },
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "track",
+      "input": "image"
+    },
+    {
+      "source": "cadence",
+      "output": "refresh",
+      "target": "track",
+      "input": "refresh"
+    },
+    {
+      "source": "detector",
+      "output": "collection",
+      "target": "track",
+      "input": "detections"
+    },
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "track",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

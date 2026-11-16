@@ -547,6 +547,12 @@ class TrackImageParts(SequenceBlock):
             raise ValidationError("Tracking timestamps must strictly increase by Minimum interval")
         return float(value), dt / 1000, mode
 
+    def _allow_association(self, track, observation):
+        return True
+
+    def _allow_birth(self, observation):
+        return True
+
     def step(self, inputs, state, mask):
         p = dict(self.parameters)
         for key, limits in self.parameter_ranges.items():
@@ -557,7 +563,7 @@ class TrackImageParts(SequenceBlock):
         found = observations(
             inputs["detections"],
             ImageArray(image, image_format(image), self.input_payloads["image"]),
-            self.input_payloads["detections"],
+            self.input_payloads.get("detections", {}),
             p,
             mask,
         )
@@ -602,6 +608,7 @@ class TrackImageParts(SequenceBlock):
                 squared = float(residual[indices] @ np.linalg.solve(innovation, residual[indices]))
                 valid = (
                     label_ok
+                    and self._allow_association(track, item)
                     and np.linalg.norm(residual[:2]) <= p["association_distance"]
                     and squared <= p["innovation_gate"]
                 )
@@ -670,7 +677,7 @@ class TrackImageParts(SequenceBlock):
         next_id = state.get("next_id", 1)
         dropped = 0
         for column, item in enumerate(found):
-            if column in used:
+            if column in used or not self._allow_birth(item):
                 continue
             if len(retained) >= p["maximum_tracks"]:
                 dropped += 1

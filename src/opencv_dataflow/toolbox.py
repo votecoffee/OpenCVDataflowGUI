@@ -99,7 +99,7 @@ IMPLEMENTATION_MODULES = {
         "background_reference color_tracking ecc_registration flow_files flow_refinement "
         "flow_warp frame_interpolation "
         "mil_tracking motion_trajectory motion_trajectory_io neighbor_restoration scanline_motion "
-        "image_correlation image_tracking native_background sequence_tools"
+        "image_correlation image_tracking refresh_tracking native_background sequence_tools"
     ),
     "videoio": "video_buffer video_files",
     "objdetect": "aruco_markers charuco code_readers qr_encoding qr_append",
@@ -158,7 +158,8 @@ BLOCK_MODULES = {
         "input.demo output.results input.calibration output.calibration "
         "calibration.pixel_to_physical "
         "calibration.lens_map_displacement collection.filter collection.sort collection.draw "
-        "core.attach_payload core.read_payload sequence.background sequence.image_memory "
+        "core.attach_payload core.read_payload flow.detection_cadence "
+        "sequence.background sequence.image_memory "
         "cv.distortion_fixture "
         "inspect.region_contrast "
         "sequence.foreground_debounce "

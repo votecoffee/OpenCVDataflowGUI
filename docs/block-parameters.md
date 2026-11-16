@@ -4235,6 +4235,24 @@ Inputs: `input_1` (any, optional), `input_2` (any, optional), `input_3` (any, op
 | `max_pending` | `64` |  |
 | `max_bytes_mb` | `128.0` |  |
 
+## Detector refresh cadence (`flow.detection_cadence`)
+
+Control flow / Scheduling
+
+Inputs: `image` (image), `reset` (data, optional), `stream` (data, optional), `force` (boolean, optional).
+
+Input `force` — Force an extra refresh and restart cadence from this acquisition.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `1` | Readiness only; leave one so the first refresh is delivered. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `period` | `5` | Value must be a whole number between 1 and 10000. Emit detector image on the first acquisition and every N acquisitions after it. |
+
 ## Queue input images (`flow.image_queue`)
 
 Control flow / Acquisition queues
@@ -9569,6 +9587,100 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `reseed_below` | `50` |  |
 | `min_tracks` | `3` |  |
 | `min_track_age` | `2` |  |
+
+## Track with periodic detections (`sequence.track_refreshed`)
+
+Sequence / Object tracking
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `detections` (data, optional), `timestamp_ms` (number, optional), `refresh` (boolean).
+
+Input `image` — Current uint8 image/grid/ticket; convert other depths explicitly before local tracking.
+
+Input `detections` — Wire a detector downstream of the cadence Image output; absent on local-only frames.
+
+Input `timestamp_ms` — Optional synchronized acquisition time in milliseconds; strict monotonicity within each stream.
+
+Input `mask` — Select detection and output-prediction centers; intersected with region.
+
+Input `region` — Current-grid selection. Excluded detections act as missed observations for existing tracks.
+
+Input `refresh` — Wire cadence Refresh on every image. True requires current detector output, including explicit empty results.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `1` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `clock` | `"auto"` | `auto`, `explicit`, `media`, `nominal` Auto uses explicit timestamp, then video media time, then nominal intervals; switching clock type retires state. |
+| `nominal_interval_ms` | `100.0` | Value must be a finite number between 0.001 and 1e+06. Deterministic per-activation interval when no acquisition/media clock is used. |
+| `minimum_interval_ms` | `0.001` | Value must be a finite number between 1e-06 and 1000. Reject duplicate/decreasing or smaller time intervals. |
+| `maximum_interval_ms` | `1000.0` | Value must be a finite number between 0.001 and 1e+06. Larger gaps expire all old tracks before consuming current detections. |
+| `angle_period` | `"360"` | `360`, `180` 360 for directed poses; 180 for unoriented principal axes. Output angles use [-period/2,period/2). |
+| `maximum_tracks` | `64` | Value must be a whole number between 1 and 128. Bounded active-track capacity; overflow detections are reported, not silently merged. |
+| `minimum_observations` | `2` | Value must be a whole number between 1 and 1000. Cumulative matched detections needed to confirm an identity. |
+| `emit_tentative` | `false` | Include unconfirmed tracks in Tracks/Poses. |
+| `emit_predictions` | `true` | Include confirmed missing tracks; every item still identifies observed versus predicted. |
+| `maximum_missed_frames` | `10` | Value must be a whole number between 0 and 10000. Expire after more consecutive missing detections than this count. |
+| `maximum_unobserved_ms` | `1000.0` | Value must be a finite number between 0.001 and 1e+09. Expire after this many media/nominal milliseconds since last observation. |
+| `offscreen_margin` | `100.0` | Value must be a finite number between 0 and 100000. Allowed predicted-center distance beyond image bounds before expiry. |
+| `minimum_detection_score` | `0.0` | Value must be a finite number between 0 and 1. Ignore detections below this score; unscored detections use one. |
+| `minimum_confidence` | `0.05` | Value must be a finite number between 0 and 1. Output floor for last score times confirmation and elapsed-time decay; not a probability. |
+| `confidence_decay_ms` | `1000.0` | Value must be a finite number between 0.001 and 1e+09. Exponential prediction confidence time constant. |
+| `label_policy` | `"if_both"` | `if_both`, `ignore`, `required` Require equal known labels, ignore them, or require a label on every detection. |
+| `association_distance` | `50.0` | Value must be a finite number between 0.001 and 1e+06. Absolute center-distance gate in current pixels, independent of covariance growth. |
+| `innovation_gate` | `18.5` | Value must be a finite number between 0.001 and 1e+06. Maximum squared Mahalanobis innovation over available measurement dimensions; not a probability. |
+| `maximum_scale_ratio` | `2.0` | Value must be a finite number between 1 and 1000. Per-axis measured/predicted size ratio gate, applied only when size is present. |
+| `maximum_angle_difference` | `60.0` | Value must be a finite number between 0 and 180. Wrapped angular association gate in degrees, applied when orientation is present. |
+| `ambiguity_margin` | `0.05` | Value must be a finite number between 0 and 1. Normalized cost gap identifying near-tied associations; flagged and confidence halved. |
+| `position_noise` | `1.0` | Value must be a finite number between 1e-06 and 1e+06. Measurement standard deviation in current pixels. |
+| `scale_noise` | `0.05` | Value must be a finite number between 1e-06 and 10. Measurement standard deviation in log width/height. |
+| `angle_noise` | `5.0` | Value must be a finite number between 1e-06 and 1e+06. Measurement standard deviation in degrees. |
+| `position_acceleration` | `10.0` | Value must be a finite number between 0 and 1e+06. Process acceleration standard deviation in pixels/second squared. |
+| `scale_acceleration` | `0.1` | Value must be a finite number between 0 and 10. Process acceleration standard deviation in log size/second squared. |
+| `angular_acceleration` | `30.0` | Value must be a finite number between 0 and 1e+06. Process acceleration standard deviation in degrees/second squared. |
+| `initial_position_sigma` | `2.0` | Value must be a finite number between 1e-06 and 1e+06. Initial center uncertainty in pixels. |
+| `initial_velocity_sigma` | `100.0` | Value must be a finite number between 1e-06 and 1e+06. Initial center-velocity uncertainty in pixels/second. |
+| `initial_scale_sigma` | `0.2` | Value must be a finite number between 1e-06 and 10. Initial log-size uncertainty. |
+| `initial_scale_velocity_sigma` | `0.5` | Value must be a finite number between 1e-06 and 10. Initial log-size velocity uncertainty per second. |
+| `initial_angle_sigma` | `20.0` | Value must be a finite number between 1e-06 and 1e+06. Initial angle uncertainty in degrees when measured. |
+| `initial_angular_velocity_sigma` | `90.0` | Value must be a finite number between 1e-06 and 1e+06. Initial angular-velocity uncertainty in degrees/second. |
+| `initial_width` | `20.0` | Value must be a finite number between 1e-06 and 1e+06. Fallback pixels for center-only measurements; size stays explicitly unavailable. |
+| `initial_height` | `20.0` | Value must be a finite number between 1e-06 and 1e+06. Fallback pixels for center-only measurements; size stays explicitly unavailable. |
+| `maximum_position_sigma` | `100.0` | Value must be a finite number between 1e-06 and 1e+06. Expire when either predicted center standard deviation exceeds this pixel bound. |
+| `maximum_scale_sigma` | `1.0` | Value must be a finite number between 1e-06 and 10. Expire measured-size tracks above this log-size uncertainty. |
+| `maximum_angle_sigma` | `90.0` | Value must be a finite number between 1e-06 and 1e+06. Expire measured-orientation tracks above this angular uncertainty in degrees. |
+| `maximum_detector_age_frames` | `15` | Value must be a whole number between 1 and 10000. Expire beyond this many acquisitions since a full detector match, even if local motion keeps succeeding. |
+| `maximum_detector_age_ms` | `2000.0` | Value must be a finite number between 0.001 and 1e+09. Expire beyond this acquisition/media age since a full detector match, regardless of local success. |
+| `local_max_points` | `48` | Value must be a whole number between 4 and 256. Maximum ROI corners per track, at most 4096 across all tracks. |
+| `local_quality` | `0.01` | Value must be a finite number between 1e-06 and 1. goodFeaturesToTrack relative corner strength. |
+| `local_min_distance` | `3.0` | Value must be a finite number between 0 and 100. Minimum separation of ROI corners in pixels. |
+| `local_block_size` | `5` | Value must be a positive odd integer between 3 and 63. Odd corner covariance neighborhood. |
+| `local_gradient_size` | `"3"` | `3`, `5`, `7` Corner gradient aperture (dropdown). |
+| `local_harris` | `false` | Use Harris corner scoring instead of minimum eigenvalues. |
+| `local_harris_k` | `0.04` | Value must be a finite number between 0 and 1. Harris free parameter when enabled. |
+| `local_window` | `21` | Value must be a positive odd integer between 3 and 63. Odd Lucas-Kanade patch width and height. |
+| `local_levels` | `3` | Value must be a whole number between 0 and 5. Maximum LK pyramid level; zero uses original resolution only. |
+| `local_iterations` | `30` | Value must be a whole number between 1 and 200. LK termination iteration ceiling. |
+| `local_epsilon` | `0.01` | Value must be a finite number between 1e-06 and 1. LK termination displacement epsilon in pixels. |
+| `local_min_eigenvalue` | `0.0001` | Value must be a finite number between 0 and 1. LK minimum normalized corner eigenvalue. |
+| `local_max_error` | `20.0` | Value must be a finite number between 0 and 255. Maximum forward native patch error; used only in patch error mode. |
+| `local_error_metric` | `"patch"` | `patch`, `min_eigenvalue` Native LK patch error or minimum eigenvalue; neither is confidence. |
+| `fit_method` | `"ransac"` | `ransac`, `lmeds` Robust similarity estimation: RANSAC or LMedS (dropdown). |
+| `local_fb_tolerance` | `1.0` | Value must be a finite number between 0 and 100. Maximum round-trip pixel error; zero disables backward checking. |
+| `local_min_points` | `4` | Value must be a whole number between 4 and 256. Minimum supported points for local similarity fitting. |
+| `local_min_inliers` | `0.6` | Value must be a finite number between 0.01 and 1. Required retained-inlier fraction of the original ROI points. |
+| `local_min_span` | `3.0` | Value must be a finite number between 0.1 and 100. Minimum point span on both axes before and after robust fitting. |
+| `local_max_shift` | `30.0` | Value must be a finite number between 0.1 and 1000. Maximum local center displacement per acquisition in pixels. |
+| `local_max_scale` | `1.2` | Value must be a finite number between 1 and 4. Maximum per-frame scale ratio (reciprocal sets the minimum). |
+| `local_max_angle` | `20.0` | Value must be a finite number between 0 and 180. Maximum per-frame local rotation in degrees. |
+| `local_work_limit` | `32000000` | Value must be a whole number between 1 and 1.28e+08. Conservative point times window area times level bound; not elapsed time or native RSS. |
+| `fit_threshold` | `2.0` | Value must be a finite number between 0.001 and 100. RANSAC reprojection and retained residual ceiling in pixels. |
+| `fit_iterations` | `200` | Value must be a whole number between 1 and 10000. Maximum RANSAC iterations. |
+| `fit_confidence` | `0.99` | Value must be a finite number between 0.001 and 0.999999. RANSAC confidence control, not track probability. |
+| `fit_refine_iterations` | `10` | Value must be a whole number between 0 and 100. Native similarity-fit refinement iterations. |
 
 ## Apply medical metadata (`sitk.apply_metadata`)
 

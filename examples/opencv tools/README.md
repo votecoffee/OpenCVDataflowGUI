@@ -36,3 +36,4 @@ For bounded native stream decoding and grouped inspections, try [video buffers](
 For exact binary neighborhoods, try [hit-or-miss patterns](hit_or_miss/README.md).
 For sparse-mask extraction and allocation limits, try [run-linked contours](run_contours/README.md).
 For oriented part identities and bounded missed detections, try [image tracking](image_tracking/README.md).
+For scheduled full-frame detection with local image refinement, try [detector refresh](detector_refresh/README.md).

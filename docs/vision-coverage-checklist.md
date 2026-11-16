@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 158 | 8 | 9 | 175 | 90.3% |
+| 1. Core and baseline 2D | 159 | 8 | 8 | 175 | 90.9% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 221 | 50 | 199 | 470 | 47.0% |
+| **Overall** | 222 | 50 | 198 | 470 | 47.2% |
 
 <!-- coverage-summary:end -->
 
@@ -291,7 +291,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S1-171 | Predict oriented image tracks through missed detections | KalmanFilter, Joseph covariance and gated assignment | Complete | sequence.track_image. Elapsed-time center/log-size/angle prediction, wrapped 180/360-degree innovations, partial measurements, native correction with Joseph covariance, gated global assignment, label/scale/angle gates and ambiguity flags. Pattern scale/local offsets and current ticket/grid are preserved. Independent transition/covariance math, irregular intervals, wraparound, uncertainty growth, bounded expiry, same/new-ID reacquisition, worker/XML/errors/graphics controls and two annotated twenty-frame native-blob projects qualify this baseline; synthetic center/angle/size bounds do not establish general appearance identity or industrial accuracy. |
-| S1-172 | Refresh tracked objects with a periodic full-frame detector | DetectionBasedTracker or a graph scheduler with local tracking | Planned | Run full-frame detection at a configured cadence and refine tracks locally between refreshes. Verify recovery from drift, discovery of entering parts, stale-track expiry and the detector call budget on replay. |
+| S1-172 | Refresh tracked objects with a periodic full-frame detector | Graph cadence with local LK similarity tracking | Complete | flow.detection_cadence gates any detector, feeding sequence.track_refreshed. Full detections seed/correct/discover; bounded ROI corners, forward/backward LK and robust similarity fitting update original identities between refreshes. Explicit detector/local/prediction flags, missed/time/covariance expiry and independent detector-age bounds prevent silent indefinite reuse. Native transform references, controlled drift correction, entering/lost parts, no local births/background reseeding, clocks/tickets/selection/work/depth/errors/worker/XML/controls and three annotated projects verify the baseline; independently counted detector invocations are 4 versus 16, without a runtime speed claim. |
 
 ### Image profile resampling
 

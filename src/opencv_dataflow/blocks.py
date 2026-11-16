@@ -866,6 +866,7 @@ def builtin_registry():
     from .raster_hough_lines import HoughPolarLines
     from .raw_sensor import RAW_SENSOR_BLOCKS
     from .recipe_blocks import RecipeField, RecipeSelect
+    from .refresh_tracking import REFRESH_TRACKING_BLOCKS
     from .region_contrast import MeasureRegionContrast
     from .region_proposals import GraphSegments, SelectiveSearchProposals
     from .regions import REGION_BLOCKS
@@ -1015,6 +1016,7 @@ def builtin_registry():
         RestoreFromNeighbors,
         EstimateScanlineMotion,
         TrackImageParts,
+        *REFRESH_TRACKING_BLOCKS,
         CaptureBackgroundReference,
         SaveBackgroundReference,
         ReplayRegisteredViews,
