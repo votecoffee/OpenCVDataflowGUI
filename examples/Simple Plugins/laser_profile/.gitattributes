@@ -7,3 +7,4 @@ LICENSE -text whitespace=cr-at-eol
 *.whl binary
 studies/wli/origin/** -text
 studies/wli/centerline/** -text
+*.py text eol=lf

@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "../../studies/calibrated_control/unavailable.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "laser",
+      "type": "3d.simple_laser_profile",
+      "name": "SimpleLaserProfile",
+      "description": "Frozen reference recipe. Availability gate 90% for every case; not an accuracy, stripe identity or dimensional acceptance gate.",
+      "parameters": {
+        "recipe_path": "assets/trained.slp",
+        "sha256": "af5bb5ffbd559d1074a0f23613227d1a5143de6631c5b0b2da06c0e2d1c797c7",
+        "minimum_coverage": 0.9,
+        "render_graphics": true
+      },
+      "position": [
+        410,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "cloud",
+        "report",
+        "coverage",
+        "count",
+        "calibrated",
+        "overlay",
+        "chart"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "laser",
+      "input": "image"
+    }
+  ]
+}

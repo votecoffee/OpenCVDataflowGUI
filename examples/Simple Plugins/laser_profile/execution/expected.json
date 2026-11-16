@@ -1,0 +1,62 @@
+[
+  {
+    "case": "calibrated_step",
+    "passed": true,
+    "valid_bins": 480,
+    "calibrated": true,
+    "coverage": 1.0,
+    "minimum_coverage": 0.9,
+    "numerical_report_matches_standalone": true,
+    "graphics_off_numerical_parity": true
+  },
+  {
+    "case": "calibrated_unavailable",
+    "passed": false,
+    "valid_bins": 390,
+    "calibrated": true,
+    "coverage": 0.8125,
+    "minimum_coverage": 0.9,
+    "numerical_report_matches_standalone": true,
+    "graphics_off_numerical_parity": true
+  },
+  {
+    "case": "wli_1",
+    "passed": false,
+    "valid_bins": 72,
+    "calibrated": false,
+    "coverage": 0.6,
+    "minimum_coverage": 0.9,
+    "numerical_report_matches_standalone": true,
+    "graphics_off_numerical_parity": true
+  },
+  {
+    "case": "wli_2",
+    "passed": false,
+    "valid_bins": 42,
+    "calibrated": false,
+    "coverage": 0.35,
+    "minimum_coverage": 0.9,
+    "numerical_report_matches_standalone": true,
+    "graphics_off_numerical_parity": true
+  },
+  {
+    "case": "wli_3",
+    "passed": false,
+    "valid_bins": 2,
+    "calibrated": false,
+    "coverage": 0.016666666666666666,
+    "minimum_coverage": 0.9,
+    "numerical_report_matches_standalone": true,
+    "graphics_off_numerical_parity": true
+  },
+  {
+    "case": "wli_4",
+    "passed": false,
+    "valid_bins": 7,
+    "calibrated": false,
+    "coverage": 0.058333333333333334,
+    "minimum_coverage": 0.9,
+    "numerical_report_matches_standalone": true,
+    "graphics_off_numerical_parity": true
+  }
+]

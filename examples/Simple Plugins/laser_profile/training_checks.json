@@ -1,0 +1,13 @@
+{
+  "actual_host_inspector": true,
+  "staged_without_mutating_applied": true,
+  "apply_committed": true,
+  "reopened_roi": [
+    280,
+    20,
+    80,
+    400
+  ],
+  "reopened_valid_bins": 400,
+  "scope": "Offscreen UI and saved recipe; no desktop input or physical gauge"
+}

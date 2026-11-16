@@ -1,0 +1,64 @@
+{
+  "scope": "Published plugin software/GUI checks; no physical gauge or desktop interaction",
+  "wheel_sha256": "97433ebfe03f775fb8b7c43173b18682b1cf7bd2b16333d1c3d965b209719f06",
+  "wheel_runtime_modules": 11,
+  "cases": [
+    {
+      "case": "calibrated_step",
+      "passed": true,
+      "bins": 480,
+      "calibrated": true,
+      "graphics_off_parity": true,
+      "cache_reused": true,
+      "image_results_available": true
+    },
+    {
+      "case": "calibrated_unavailable",
+      "passed": false,
+      "bins": 390,
+      "calibrated": true,
+      "graphics_off_parity": true,
+      "cache_reused": true,
+      "image_results_available": true
+    },
+    {
+      "case": "wli_1",
+      "passed": false,
+      "bins": 72,
+      "calibrated": false,
+      "graphics_off_parity": true,
+      "cache_reused": true,
+      "image_results_available": true
+    },
+    {
+      "case": "wli_2",
+      "passed": false,
+      "bins": 42,
+      "calibrated": false,
+      "graphics_off_parity": true,
+      "cache_reused": true,
+      "image_results_available": true
+    },
+    {
+      "case": "wli_3",
+      "passed": false,
+      "bins": 2,
+      "calibrated": false,
+      "graphics_off_parity": true,
+      "cache_reused": true,
+      "image_results_available": true
+    },
+    {
+      "case": "wli_4",
+      "passed": false,
+      "bins": 7,
+      "calibrated": false,
+      "graphics_off_parity": true,
+      "cache_reused": true,
+      "image_results_available": true
+    }
+  ],
+  "bundled_popup_restored_reference": true,
+  "cancel_preserved_configuration": true,
+  "host_environment_modified": false
+}

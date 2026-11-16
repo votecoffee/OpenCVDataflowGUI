@@ -19,7 +19,12 @@ SimpleGDRNPP uses explicit plugin loading and a separately configured worker.
 | **SimpleBinPicking** | [Suction contact/clearance review](bin_picking/README.md), with five generated controls and three real T-LESS replays; real cases retain zero eligible picks and open grasp qualification. |
 | **SimpleGDRNPP (experimental)** | [T-LESS pose reviews and native setup](gdrnpp/README.md), with three retained rejected poses, RGB overlays and native fit-cloud flyaround. |
 
-The [SimpleLaserProfile image/profile/cloud reviews](laser_profile/README.md) add a generated 50-mm calibration control and four real CC BY 4.0 WLI-Set captures. Calibrated outputs use native fly-around clouds; real uncalibrated stripes remain pixel-only. The optional standalone CLI retains training; the guided host trainer/execution plugin is next.
+The [SimpleLaserProfile trainer and examples](laser_profile/README.md) add
+retained reference/ROI teaching, six execution projects and eight saved image/
+profile/cloud reviews. Load its bundled-wheel plugin explicitly; no environment
+installation is needed. Calibrated results use native fly-around clouds. Real
+CC BY 4.0 WLI-Set captures remain pixel-only, with poor fits and missing samples
+visible. The trainer restores existing training and stages edits for Apply.
 
 ## Start with real public data
 
