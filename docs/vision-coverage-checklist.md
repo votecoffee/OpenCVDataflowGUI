@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 156 | 10 | 9 | 175 | 89.1% |
+| 1. Core and baseline 2D | 158 | 8 | 9 | 175 | 90.3% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 219 | 52 | 199 | 470 | 46.6% |
+| **Overall** | 221 | 50 | 199 | 470 | 47.0% |
 
 <!-- coverage-summary:end -->
 
@@ -113,7 +113,7 @@ fixture or result needed to close the item.
 | S1-51 | Sparse and dense optical flow | calcOpticalFlowPyrLK, calcOpticalFlowFarneback, DISOpticalFlow | Complete | sequence.track_points, sequence.lk_grid_flow, sequence.farneback, sequence.dis. Flow and consistency checks. |
 | S1-52 | Baseline background subtraction | createBackgroundSubtractorMOG2, createBackgroundSubtractorKNN, temporal median | Complete | sequence.mog2, sequence.knn_background, sequence.temporal_median. Learning and foreground masks on replay. |
 | S1-53 | Seeded object and conveyor tracking | TrackerCSRT, TrackerKCF, image-space association | Complete | sequence.track_csrt, sequence.track_kcf, sequence.track_conveyor. Seeded boxes and multi-part image/encoder tracking. |
-| S1-54 | Track across missed image detections | KalmanFilter and gated assignment | Partial | sequence.track_conveyor predicts with encoder motion. Add a reusable image-center predictor with confidence, bounded missed frames and crossing-part tests. |
+| S1-54 | Track across missed image detections | KalmanFilter and gated assignment | Complete | sequence.track_image. Native Float64 constant-velocity center prediction, globally gated one-to-one assignment, observed/predicted and heuristic-confidence flags, bounded misses/time/uncertainty and generation-safe expiry. Independent center-only crossing and reordered-detection tests retain identity; explicit empty detections advance while missing events hold. Two annotated native-blob projects exercise disappearance/reacquisition. |
 | S1-55 | Reference-based image error | absdiff, norm, PSNR | Complete | inspect.image_quality. Selected MAE, RMSE, maximum absolute error and PSNR on aligned frames. |
 | S1-56 | Illumination and color inspection | cvtColor, channel gains, flat-field/shading correction, Lab difference | Complete | calibration.color_balance, cv.flat_field, cv.adaptive_background, inspect.measure_lab, inspect.compare_lab. Selected Lab statistics and tolerance. |
 | S1-57 | Masked image inpainting | inpaint | Complete | cv.inpaint. Verify Telea and Navier–Stokes reconstruction over a selected region. |
@@ -290,7 +290,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S1-171 | Predict oriented image tracks through missed detections | KalmanFilter, an unscented filter or a tested nonlinear predictor | Partial | sequence.track_conveyor predicts position from encoder motion. Predict image-space center, scale and orientation with uncertainty through gaps. Verify angle wraparound, timestamp intervals, reacquisition and explicit expiry on an annotated clip. |
+| S1-171 | Predict oriented image tracks through missed detections | KalmanFilter, Joseph covariance and gated assignment | Complete | sequence.track_image. Elapsed-time center/log-size/angle prediction, wrapped 180/360-degree innovations, partial measurements, native correction with Joseph covariance, gated global assignment, label/scale/angle gates and ambiguity flags. Pattern scale/local offsets and current ticket/grid are preserved. Independent transition/covariance math, irregular intervals, wraparound, uncertainty growth, bounded expiry, same/new-ID reacquisition, worker/XML/errors/graphics controls and two annotated twenty-frame native-blob projects qualify this baseline; synthetic center/angle/size bounds do not establish general appearance identity or industrial accuracy. |
 | S1-172 | Refresh tracked objects with a periodic full-frame detector | DetectionBasedTracker or a graph scheduler with local tracking | Planned | Run full-frame detection at a configured cadence and refine tracks locally between refreshes. Verify recovery from drift, discovery of entering parts, stale-track expiry and the detector call budget on replay. |
 
 ### Image profile resampling

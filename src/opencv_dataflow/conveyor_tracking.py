@@ -17,6 +17,7 @@ from .sequence import (
     SequenceStep,
 )
 from .tickets import ticket_key
+from .tracking_assignment import associate_costs
 
 
 def associate_positions(predicted, detected, gate):
@@ -25,51 +26,7 @@ def associate_positions(predicted, detected, gate):
         return {}
     offsets = predicted[:, None, :] - detected[None, :, :]
     distances = np.hypot(offsets[..., 0], offsets[..., 1])
-    rows, detections = distances.shape
-    # Dummy columns let every track remain unmatched. Their penalty makes
-    # cardinality dominate the sum of normalized, in-gate distances.
-    penalty = rows + 1
-    costs = np.full((rows, detections + rows), float(penalty))
-    costs[:, :detections] = np.where(
-        distances <= gate, np.minimum(distances, gate) / gate, penalty**2
-    )
-    columns = costs.shape[1]
-    row_potential, col_potential = np.zeros(rows + 1), np.zeros(columns + 1)
-    owner = np.zeros(columns + 1, dtype=int)
-    previous = np.zeros_like(owner)
-    # One-based shortest augmenting paths. Column zero is the active row's root.
-    for row in range(1, rows + 1):
-        owner[0] = row
-        current = 0
-        used = np.zeros(columns + 1, dtype=bool)
-        best = np.full(columns + 1, np.inf)
-        while True:
-            used[current] = True
-            active = owner[current]
-            available = np.flatnonzero(~used)
-            reduced = costs[active - 1, available - 1] - row_potential[active]
-            reduced -= col_potential[available]
-            improved = reduced < best[available]
-            changed = available[improved]
-            best[changed] = reduced[improved]
-            previous[changed] = current
-            following = available[np.argmin(best[available])]
-            delta = best[following]
-            row_potential[owner[used]] += delta
-            col_potential[used] -= delta
-            best[available] -= delta
-            current = following
-            if not owner[current]:
-                break
-        while current:
-            prior = previous[current]
-            owner[current] = owner[prior]
-            current = prior
-    return {
-        int(row - 1): col - 1
-        for col, row in enumerate(owner[1 : detections + 1], 1)
-        if row and distances[row - 1, col - 1] <= gate
-    }
+    return associate_costs(np.minimum(distances, gate) / gate, distances <= gate)
 
 
 class TrackConveyorParts(SequenceBlock):

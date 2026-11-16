@@ -7,6 +7,7 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "sequence.track_image": "KalmanFilter KalmanFilter.predict KalmanFilter.correct",
     "inspect.scanline_motion": "goodFeaturesToTrack calcOpticalFlowPyrLK",
     "sequence.restore_neighbors": "Sobel GaussianBlur blur boxFilter erode dilate",
     "sequence.replay_trajectory": "warpAffine",

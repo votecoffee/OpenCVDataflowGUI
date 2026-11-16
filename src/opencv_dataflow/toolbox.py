@@ -99,7 +99,7 @@ IMPLEMENTATION_MODULES = {
         "background_reference color_tracking ecc_registration flow_files flow_refinement "
         "flow_warp frame_interpolation "
         "mil_tracking motion_trajectory motion_trajectory_io neighbor_restoration scanline_motion "
-        "image_correlation native_background sequence_tools"
+        "image_correlation image_tracking native_background sequence_tools"
     ),
     "videoio": "video_buffer video_files",
     "objdetect": "aruco_markers charuco code_readers qr_encoding qr_append",

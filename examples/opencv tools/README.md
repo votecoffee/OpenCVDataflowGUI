@@ -35,3 +35,4 @@ For seeded local tracking and explicit loss/reacquisition, try [MIL box tracking
 For bounded native stream decoding and grouped inspections, try [video buffers](video_buffer/README.md).
 For exact binary neighborhoods, try [hit-or-miss patterns](hit_or_miss/README.md).
 For sparse-mask extraction and allocation limits, try [run-linked contours](run_contours/README.md).
+For oriented part identities and bounded missed detections, try [image tracking](image_tracking/README.md).

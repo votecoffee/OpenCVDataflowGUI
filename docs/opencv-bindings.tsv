@@ -3086,7 +3086,7 @@ P3	function	cv2.isContourConvex	literal reference	-
 P3	class	cv2.IStreamReader	no static reference	-
 P3	method	cv2.IStreamReader.read	method name only	-
 P3	method	cv2.IStreamReader.seek	method name only	-
-P3	class	cv2.KalmanFilter	no static reference	-
+P3	class	cv2.KalmanFilter	literal reference	-
 P3	method	cv2.KalmanFilter.correct	method name only	-
 P3	method	cv2.KalmanFilter.predict	method name only	-
 P3	class	cv2.KeyPoint	no static reference	-

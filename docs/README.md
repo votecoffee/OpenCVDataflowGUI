@@ -26,6 +26,7 @@
 | Random TIFF pages, bounded LRU caching and snapshot refresh | [On-demand TIFF pages](tiff-page-access.md) |
 | Reader/encoder availability and native image page inventory | [Codec preflight](codec-preflight.md) |
 | Stored optical-flow fields, native I/O and verified image-pair association | [Flow files](flow-files.md) |
+| Detection association, oriented prediction, uncertainty and expiry | [Image tracking](image-tracking.md) |
 | Seeded MIL tracking, loss/reseed and native confidence limits | [MIL tracking](mil-tracking.md) |
 | Precomputed optical-flow pyramids and Python consumer qualification | [Pyramid binding audit](optical-flow-pyramid-audit.md) |
 | Encoded video bytes, bounded FFmpeg callbacks and per-frame groups | [Video buffers](video-buffer.md) |
