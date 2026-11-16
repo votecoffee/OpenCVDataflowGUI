@@ -6,9 +6,10 @@ import numpy as np
 from .core import Block, Port, Result
 from .features import overlay_image
 from .graphics_layers import GraphicDrawing, draw_object, graphic_object
-from .parameter_validation import NumericRange
+from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, frame, image_with_payload
 from .processing import finite, gray_image
+from .qr_detector import DEFAULTS, HELP, RANGES, REFINEMENT, make_detector, validate_qr
 from .selection import SELECTION_INPUTS, selection_mask
 
 
@@ -106,38 +107,57 @@ class CodeReader(Block):
 
 class ReadQRCode(CodeReader):
     type_id, title = "inspect.read_qr", "Read QR codes"
+    preview_safe = parallel_safe = process_inputs_readonly = True
     outputs = (*CodeReader.outputs, Port("rectified", required=False))
     defaults = {
         **CodeReader.defaults,
+        **DEFAULTS,
         "mode": "multi",
         "eps_x": 0.2,
         "eps_y": 0.1,
         "use_alignment_markers": True,
     }
-    parameter_choices = {"mode": ("multi", "single", "curved")}
+    parameter_choices = {
+        "mode": ("multi", "single", "curved"),
+        "backend": ("standard", "aruco"),
+        "aruco_corner_refinement": tuple(REFINEMENT),
+    }
     parameter_ranges = {
         **CodeReader.parameter_ranges,
+        **RANGES,
         "eps_x": NumericRange(0),
         "eps_y": NumericRange(0),
     }
+    parameter_help = {
+        **HELP,
+        "mode": "Multi reads all decoded symbols; single chooses one. Curved requires standard.",
+        "eps_x": "Standard backend only: horizontal finder-pattern scan tolerance.",
+        "eps_y": "Standard backend only: vertical finder-pattern scan tolerance.",
+        "use_alignment_markers": "Standard only: refine QR geometry using alignment markers.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        validate_qr(self.parameters if parameters is None else parameters)
 
     def process(self, inputs):
         source = inputs["image"]
+        if source.shape[0] * source.shape[1] > self.parameters["maximum_pixels"]:
+            raise ValidationError("Image exceeds the configured QR pixel limit", "maximum_pixels")
         image, _ = barcode_image(inputs)
         if image is None:
-            return self.code_result(source, [], rectified=NO_VALUE)
-        detector = cv2.QRCodeDetector()
-        detector.setEpsX(float(self.parameters["eps_x"]))
-        detector.setEpsY(float(self.parameters["eps_y"]))
-        detector.setUseAlignmentMarkers(self.parameters["use_alignment_markers"])
+            result = self.code_result(source, [], rectified=NO_VALUE)
+            result.event_data["qr_backend"] = self.parameters["backend"]
+            result.message += f" ({self.parameters['backend']} QR backend)"
+            return result
+        detector = make_detector(self.parameters)
         mode = self.parameters["mode"]
         if mode == "multi":
             _, texts, points, rectified_images = detector.detectAndDecodeMulti(image)
         else:
-            decode = {
-                "single": detector.detectAndDecode,
-                "curved": detector.detectAndDecodeCurved,
-            }[mode]
+            decode = (
+                detector.detectAndDecodeCurved if mode == "curved" else detector.detectAndDecode
+            )
             value, points, rectified = decode(image)
             texts, rectified_images = (value,), (rectified,)
         codes = (
@@ -158,6 +178,8 @@ class ReadQRCode(CodeReader):
             result.payloads["rectified"] = {
                 "spatial": frame(rectified.shape[1::-1], f"{self.id}:qr_modules"),
             }
+        result.event_data["qr_backend"] = self.parameters["backend"]
+        result.message += f" ({self.parameters['backend']} QR backend)"
         return result
 
 

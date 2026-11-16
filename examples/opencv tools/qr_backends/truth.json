@@ -1,0 +1,326 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "cases": {
+    "cluttered": {
+      "codes": [
+        {
+          "text": "CLUTTER-42",
+          "corners": [
+            [
+              294.0,
+              124.0
+            ],
+            [
+              419.0,
+              124.0
+            ],
+            [
+              419.0,
+              249.0
+            ],
+            [
+              294.0,
+              249.0
+            ]
+          ],
+          "module_size": 21,
+          "module_sha256": "8b03cb9b601c724e501900382901b4a271e2a6e58091f4f49a3824f32780868a",
+          "pixels_per_module": 6,
+          "angle_degrees": 0
+        }
+      ],
+      "expected_texts": [
+        "CLUTTER-42"
+      ],
+      "decoded_by_backend": {
+        "standard": [
+          "CLUTTER-42"
+        ],
+        "aruco": [
+          "CLUTTER-42"
+        ]
+      }
+    },
+    "rotated": {
+      "codes": [
+        {
+          "text": "ROTATED-42",
+          "corners": [
+            [
+              272.43768600450534,
+              149.18649847194868
+            ],
+            [
+              383.81350152805135,
+              92.43768600450534
+            ],
+            [
+              440.56231399549466,
+              203.81350152805132
+            ],
+            [
+              329.18649847194865,
+              260.56231399549466
+            ]
+          ],
+          "module_size": 21,
+          "module_sha256": "59428f13c1727524b8d19349be2d925a1439d3eda6c9465a97f0d24fce28cbf7",
+          "pixels_per_module": 6,
+          "angle_degrees": 27
+        }
+      ],
+      "expected_texts": [
+        "ROTATED-42"
+      ],
+      "decoded_by_backend": {
+        "standard": [
+          "ROTATED-42"
+        ],
+        "aruco": [
+          "ROTATED-42"
+        ]
+      }
+    },
+    "small": {
+      "codes": [
+        {
+          "text": "SMALL-07",
+          "corners": [
+            [
+              338.0,
+              168.0
+            ],
+            [
+              379.0,
+              168.0
+            ],
+            [
+              379.0,
+              209.0
+            ],
+            [
+              338.0,
+              209.0
+            ]
+          ],
+          "module_size": 21,
+          "module_sha256": "693cfb0bf7c3acf97c7db90d1683f2de32da94b9461e8dce4e8486155dc9dc0a",
+          "pixels_per_module": 2,
+          "angle_degrees": 0
+        }
+      ],
+      "expected_texts": [
+        "SMALL-07"
+      ],
+      "decoded_by_backend": {
+        "standard": [],
+        "aruco": [
+          "SMALL-07"
+        ]
+      }
+    },
+    "multiple": {
+      "codes": [
+        {
+          "text": "LEFT-42",
+          "corners": [
+            [
+              64.0,
+              124.0
+            ],
+            [
+              189.0,
+              124.0
+            ],
+            [
+              189.0,
+              249.0
+            ],
+            [
+              64.0,
+              249.0
+            ]
+          ],
+          "module_size": 21,
+          "module_sha256": "33bd7baa257f02b500ea03cac1d251d918b3d4e77a0be0b359b5942e397e6cbf",
+          "pixels_per_module": 6,
+          "angle_degrees": 0
+        },
+        {
+          "text": "CENTER-07",
+          "corners": [
+            [
+              374.0,
+              259.0
+            ],
+            [
+              374.0,
+              134.0
+            ],
+            [
+              499.0,
+              134.0
+            ],
+            [
+              499.0,
+              259.0
+            ]
+          ],
+          "module_size": 21,
+          "module_sha256": "8919d1c7e003a9d2f7882a6a7e64ed7bcb0105f848551f6c2dcc441db3f61c7a",
+          "pixels_per_module": 6,
+          "angle_degrees": 90
+        },
+        {
+          "text": "RIGHT-18",
+          "corners": [
+            [
+              698.3602556302471,
+              112.3712942780272
+            ],
+            [
+              820.6287057219728,
+              138.3602556302471
+            ],
+            [
+              794.6397443697529,
+              260.6287057219728
+            ],
+            [
+              672.3712942780272,
+              234.6397443697529
+            ]
+          ],
+          "module_size": 21,
+          "module_sha256": "ec334364d676462492ff2958a1738323eed9dc6593698cabae66325e9ebab587",
+          "pixels_per_module": 6,
+          "angle_degrees": -12
+        }
+      ],
+      "expected_texts": [
+        "LEFT-42",
+        "CENTER-07",
+        "RIGHT-18"
+      ],
+      "decoded_by_backend": {
+        "standard": [
+          "LEFT-42",
+          "CENTER-07",
+          "RIGHT-18"
+        ],
+        "aruco": [
+          "LEFT-42",
+          "CENTER-07",
+          "RIGHT-18"
+        ]
+      }
+    },
+    "selected": {
+      "codes": [
+        {
+          "text": "LEFT-42",
+          "corners": [
+            [
+              64.0,
+              124.0
+            ],
+            [
+              189.0,
+              124.0
+            ],
+            [
+              189.0,
+              249.0
+            ],
+            [
+              64.0,
+              249.0
+            ]
+          ],
+          "module_size": 21,
+          "module_sha256": "33bd7baa257f02b500ea03cac1d251d918b3d4e77a0be0b359b5942e397e6cbf",
+          "pixels_per_module": 6,
+          "angle_degrees": 0
+        },
+        {
+          "text": "CENTER-07",
+          "corners": [
+            [
+              374.0,
+              259.0
+            ],
+            [
+              374.0,
+              134.0
+            ],
+            [
+              499.0,
+              134.0
+            ],
+            [
+              499.0,
+              259.0
+            ]
+          ],
+          "module_size": 21,
+          "module_sha256": "8919d1c7e003a9d2f7882a6a7e64ed7bcb0105f848551f6c2dcc441db3f61c7a",
+          "pixels_per_module": 6,
+          "angle_degrees": 90
+        },
+        {
+          "text": "RIGHT-18",
+          "corners": [
+            [
+              698.3602556302471,
+              112.3712942780272
+            ],
+            [
+              820.6287057219728,
+              138.3602556302471
+            ],
+            [
+              794.6397443697529,
+              260.6287057219728
+            ],
+            [
+              672.3712942780272,
+              234.6397443697529
+            ]
+          ],
+          "module_size": 21,
+          "module_sha256": "ec334364d676462492ff2958a1738323eed9dc6593698cabae66325e9ebab587",
+          "pixels_per_module": 6,
+          "angle_degrees": -12
+        }
+      ],
+      "expected_texts": [
+        "LEFT-42"
+      ],
+      "decoded_by_backend": {
+        "standard": [
+          "LEFT-42"
+        ],
+        "aruco": [
+          "LEFT-42"
+        ]
+      }
+    },
+    "blank": {
+      "codes": [],
+      "expected_texts": [],
+      "decoded_by_backend": {
+        "standard": [],
+        "aruco": []
+      }
+    }
+  },
+  "asset_sha256": {
+    "cluttered.png": "350beb4f4f26aadc0d0db67988ecd75b4cc627a290d3dbaa756334acbf456f91",
+    "rotated.png": "961c969c0b4c3022b03a0ddc3a68b2f36074927b5e4163dd094e9296eb206eb0",
+    "small.png": "420f8cdf81efa5d797e685020485c6c34fbfcda040a00a6505790ceec70d9a24",
+    "multiple.png": "efc689101658d847b42e31496a4cd5fcf089423ceb26ced196b4e6e5abd24580",
+    "selected.png": "efc689101658d847b42e31496a4cd5fcf089423ceb26ced196b4e6e5abd24580",
+    "blank.png": "ac23494eaf59529dfeb52959e7af944830b1697ff437ce5f851ed29cd9f8f861"
+  }
+}

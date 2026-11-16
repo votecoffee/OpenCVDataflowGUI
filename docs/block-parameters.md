@@ -7118,10 +7118,54 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | --- | --- | --- |
 | `minimum_reads` | `1` | Value must be a whole number between 0 and 4095. |
 | `draw_overlay` | `true` |  |
-| `mode` | `"multi"` | `multi`, `single`, `curved` |
-| `eps_x` | `0.2` | Value must be a finite number at least 0. |
-| `eps_y` | `0.1` | Value must be a finite number at least 0. |
-| `use_alignment_markers` | `true` |  |
+| `backend` | `"standard"` | `standard`, `aruco` Standard preserves existing projects; ArUco uses finder-marker candidates. No automatic fallback. |
+| `qr_min_module_size` | `4.0` | Value must be a finite number between 1 and 128. ArUco QR: smallest pyramid module size in pixels. |
+| `qr_max_rotation_degrees` | `15.0` | Value must be a finite number between 0.01 and 90. ArUco QR: relative finder-pattern rotation tolerance in degrees; not label angle. |
+| `qr_max_module_size_mismatch` | `1.75` | Value must be a finite number between 1 and 100. ArUco QR: allowed ratio between finder-pattern module sizes. |
+| `qr_max_timing_pattern_mismatch` | `2.0` | Value must be a finite number between 0.0001 and 100. ArUco QR: timing-module size mismatch tolerance. |
+| `qr_max_penalties` | `0.4` | Value must be a finite number between 0 and 1. ArUco QR: permitted fraction of timing-pattern penalty points. |
+| `qr_max_colors_mismatch` | `0.2` | Value must be a finite number between 0 and 1. ArUco QR: relative timing-pattern intensity mismatch tolerance. |
+| `qr_scale_timing_pattern_score` | `0.9` | Value must be a finite number between 0.0001 and 1. ArUco QR: timing-score scale used to select the finder-pattern hypothesis. |
+| `aruco_adaptive_min` | `3` | Value must be a positive odd integer between 3 and 1001. ArUco backend only. Smallest adaptive threshold window, pixels. |
+| `aruco_adaptive_max` | `23` | Value must be a positive odd integer between 3 and 1001. ArUco backend only. Largest adaptive threshold window, pixels; at least the minimum. |
+| `aruco_adaptive_step` | `10` | Value must be a whole number between 1 and 1000. ArUco backend only. Threshold window step; at most 128 window scales per invocation. |
+| `aruco_adaptive_constant` | `7.0` | Value must be a finite number between -255 and 255. ArUco backend only. Adaptive threshold subtraction constant in uint8 intensity units. |
+| `aruco_min_perimeter_rate` | `0.02` | Value must be a finite number between 1e-06 and 16. ArUco backend only. Finder perimeter divided by the image's largest dimension. |
+| `aruco_max_perimeter_rate` | `4.0` | Value must be a finite number between 1e-06 and 16. ArUco backend only. Largest permitted finder perimeter ratio; at least the minimum. |
+| `aruco_polygon_accuracy` | `0.03` | Value must be a finite number between 1e-06 and 1. ArUco backend only. Polygon approximation error as a fraction of contour perimeter. |
+| `aruco_min_corner_distance` | `0.05` | Value must be a finite number between 0 and 1. ArUco backend only. Smallest corner separation relative to finder perimeter. |
+| `aruco_min_border_distance` | `3` | Value must be a whole number between 0 and 16384. ArUco backend only. Finder-corner exclusion distance from image border, pixels. |
+| `aruco_min_marker_distance` | `0.125` | Value must be a finite number between 0 and 1. ArUco backend only. Close-candidate grouping distance relative to finder perimeter. |
+| `aruco_min_group_distance` | `0.21` | Value must be a finite number between 0 and 10. ArUco backend only. Candidate group separation measured in module-size units. |
+| `aruco_refinement_window` | `5` | Value must be a whole number between 1 and 255. ArUco backend only. Corner refinement half-window, pixels. |
+| `aruco_relative_refinement_window` | `0.3` | Value must be a finite number between 0.0001 and 10. ArUco backend only. Refinement window relative to estimated module size. |
+| `aruco_refinement_iterations` | `30` | Value must be a whole number between 1 and 1000. ArUco backend only. Maximum corner-refinement iterations. |
+| `aruco_refinement_accuracy` | `0.1` | Value must be a finite number between 1e-06 and 100. ArUco backend only. Corner-refinement stopping displacement, pixels. |
+| `aruco_border_bits` | `1` | Value must be a whole number between 1 and 16. ArUco backend only. Finder marker border width in modules; QR finders normally require one. |
+| `aruco_pixels_per_cell` | `4` | Value must be a whole number between 1 and 64. ArUco backend only. Canonical pixels per finder module for identification. |
+| `aruco_cell_margin` | `0.13` | Value must be a finite number between 0 and 0.49. ArUco backend only. Fraction ignored on each side of a canonical module; below one half. |
+| `aruco_max_border_error` | `0.35` | Value must be a finite number between 0 and 1. ArUco backend only. Allowed erroneous border-bit fraction. |
+| `aruco_min_otsu_stddev` | `5.0` | Value must be a finite number between 0 and 255. ArUco backend only. Minimum canonical intensity deviation for Otsu thresholding. |
+| `aruco_error_correction` | `0.6` | Value must be a finite number between 0 and 1. ArUco backend only. Fraction of the internal finder dictionary's correction capacity. |
+| `aruco_valid_bit_threshold` | `0.49` | Value must be a finite number between 0 and 1. ArUco backend only. Native valid-bit identification threshold (OpenCV 5). |
+| `aruco_apriltag_decimate` | `0.0` | Value must be a finite number between 0 and 16. ArUco backend only. AprilTag candidate extraction only: quad decimation, zero disables. |
+| `aruco_apriltag_sigma` | `0.0` | Value must be a finite number between 0 and 16. ArUco backend only. AprilTag candidate extraction only: blur sigma. |
+| `aruco_apriltag_min_cluster` | `5` | Value must be a whole number between 1 and 100000. ArUco backend only. AprilTag candidate extraction only: smallest connected cluster. |
+| `aruco_apriltag_max_maxima` | `10` | Value must be a whole number between 4 and 128. ArUco backend only. AprilTag candidate extraction only: maximum corner maxima. |
+| `aruco_apriltag_critical_degrees` | `10.0` | Value must be a finite number between 0 and 89.9. ArUco backend only. AprilTag candidate extraction only: critical angle, degrees. |
+| `aruco_apriltag_max_line_error` | `10.0` | Value must be a finite number between 1e-06 and 1e+06. ArUco backend only. AprilTag candidate extraction only: largest line-fit mean square error. |
+| `aruco_apriltag_min_contrast` | `5` | Value must be a whole number between 0 and 255. ArUco backend only. AprilTag candidate extraction only: minimum white/black contrast. |
+| `aruco_min_canonical_side` | `32` | Value must be a whole number between 1 and 4096. ArUco backend only. ArUco3 only: smallest canonical finder side, pixels. |
+| `aruco_min_length_ratio` | `0.0` | Value must be a finite number between 0 and 1. ArUco backend only. ArUco3 only: smallest finder length relative to original image size. |
+| `aruco_corner_refinement` | `"none"` | `none`, `subpixel`, `contour`, `apriltag` ArUco finder refinement; AprilTag selects its candidate extractor. ArUco3 requires subpixel. |
+| `aruco_detect_inverted` | `false` | ArUco backend only: inverted finder markers; no guarantee of inverted QR decoding. |
+| `aruco_use_aruco3` | `false` | ArUco backend only: native multi-scale candidate extraction; use subpixel refinement. |
+| `aruco_apriltag_deglitch` | `false` | AprilTag candidate extraction only: remove isolated threshold artifacts. |
+| `maximum_pixels` | `16777216` | Value must be a whole number between 441 and 6.71089e+07. Reject larger images before grayscale/selection/native decoding; not a native workspace or time bound. |
+| `mode` | `"multi"` | `multi`, `single`, `curved` Multi reads all decoded symbols; single chooses one. Curved requires standard. |
+| `eps_x` | `0.2` | Value must be a finite number at least 0. Standard backend only: horizontal finder-pattern scan tolerance. |
+| `eps_y` | `0.1` | Value must be a finite number at least 0. Standard backend only: vertical finder-pattern scan tolerance. |
+| `use_alignment_markers` | `true` | Standard only: refine QR geometry using alignment markers. |
 
 ## Read barcodes (ZXing) (`inspect.read_zxing`)
 

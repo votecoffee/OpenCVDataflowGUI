@@ -35,11 +35,11 @@ deprecation warnings in the skeleton fixtures. This checkpoint does not qualify
 those skipped native paths or physical equipment.
 
 This closes the 20-increment cycle ending with run-linked contours (S1-152).
-The current cycle has **7 targeted increments of about 20** completed: codec
+The current cycle has **8 targeted increments of about 20** completed: codec
 availability/page inventory (S1-153), program lifecycle/managed ROS services,
 optical-flow file round trips (S1-154), seeded MIL tracking (S1-156), bounded
-encoded-video decoding (S1-157), indexed TIFF page access (S1-158), and temporal
-pixel statistics (S1-160). Program
+encoded-video decoding (S1-157), indexed TIFF page access (S1-158), temporal
+pixel statistics (S1-160), and ArUco-backed QR reading (S1-161). Program
 lifecycle is application infrastructure and does not add OpenCV coverage. The
 S1-155 pyramid binding audit records an unresolved consumer limit and adds no
 capability completion. After
@@ -126,6 +126,28 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+**ArUco-backed QR reading (S1-161)** extends `inspect.read_qr` with a
+standard/ArUco backend dropdown, preserving the existing default and output ports.
+All seven QR finder controls and 35 native ArUco detector fields have explicit
+defaults, tooltips, numeric validation and a corner-refinement dropdown. Single
+and multi modes work on both backends; curved remains standard-only. Per-call
+native instances support previews and independent parallel branches. Pixel/window
+guards, explicit uint8 working depth, mask/region semantics, error containment,
+camera/module grids and ticket retention are documented.
+Six original MIT scenes compare clutter, rotation, two-pixel modules, three labels,
+a selected label and no-code behavior. Known rendering transforms bound corner
+errors below 2.5 pixels; single rectified patches exactly match original modules.
+The standard backend's small-label miss remains an explicit inspection failure,
+while ArUco decodes it on this build; this does not rank arbitrary-image robustness.
+**116 focused checks** and **12 installed Debug/Lean outcomes** matched, including
+that deliberately failed comparison branch. App reinstall, three packaged source
+modules, deterministic regeneration, original asset hashes, strict JSON, local
+links, generated counts/parameters and text contracts were checked. Core is
+**147/175 (84.0%)**, overall **210/470 (44.7%)**; no broad suite repeated.
+See [contracts](qr-backends.md) and
+[six projects](<../examples/opencv tools/qr_backends/README.md>).
+Next qualify ordered structured-append QR recovery (S1-162).
+
 **Temporal pixel statistics (S1-160)** adds `sequence.pixel_moments` with selected
 gray/RGB(A) channels or an optional paired image. Centered float64 cumulative and
 exponentially weighted moments produce mean, variance, standard deviation,
@@ -142,13 +164,11 @@ oracle qualify small variations around 1e12; ±1e100 samples remain finite.
 **94 focused checks** and **14 installed Debug/Lean replay outcomes** passed.
 App reinstall, four packaged source modules, generated references/counts,
 strict JSON, original asset hashes/regeneration, links and text contracts were
-verified; no broad suite was repeated. Core is **146/175 (83.4%)**, overall
-**209/470 (44.5%)**. Counts/weights do not prove independent observations; scene
+verified; no broad suite was repeated. At this completion core was **146/175
+(83.4%)**, overall **209/470 (44.5%)**. Counts/weights do not prove independent observations; scene
 movement or lighting drift remains part of measured variation. See
 [contracts](temporal-pixel-statistics.md) and
 [seven projects](<../examples/opencv tools/temporal_pixel_statistics/README.md>).
-Next qualify ArUco-backed QR decoding (S1-161).
-
 **On-demand TIFF page access (S1-158)** adds `input.tiff_page` with a wired or
 configured zero-based index, native one-page range decoding and an LRU bounded
 by raw page count and bytes. An immutable snapshot and inspected directories
@@ -967,7 +987,7 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Next qualify ArUco-backed QR decoding (S1-161). S1-160 now qualifies centered per-pixel cumulative/weighted noise and paired covariance, explicit support/validity, ticket/grid contracts, independent numerical references and state/resource lifecycle checks. S1-158 now qualifies bounded indexed TIFF snapshots and raw-page LRU caching, exact mixed-depth page references, fresh acquisition tickets/content grids and explicit refresh/resource/lifecycle contracts. S1-157 now qualifies bounded native FFmpeg in-memory decoding, exact FFV1 frame/time references, explicit short-clip/timestamp policies, grouped frame tickets, resource guards and teardown. S1-155 remains Planned after both Python LK APIs rejected all 12 tested pyramid representations; a cache consumer still needs implementation and measured benefit. S1-156 now qualifies seeded MIL tracking with all native controls, explicit loss/reseed, tuned recorded examples and no confidence claim. S1-154 now qualifies bounded native .flo round trips, precision/invalid-vector policies and verified image-pair direction/grid metadata. S1-153 now qualifies native codec preflight with bounded snapshots, separate registry/header/count observations and explicit pixel-integrity limits. The latest broad checkpoint passed 4,801 tests with 31 skips; the new cycle is at 7/20 (including program lifecycle infrastructure). S1-152 now qualifies bounded native run contours with explicit flat topology and different hole-polygon semantics. S1-151 now qualifies signed-kernel binary pattern matching with bounded coordinates and count judgments. S1-149 now qualifies ordered typed TIFF buffers, exact sample readback and bounded page decoding. S1-117 now qualifies native CPU/Float64 multiband composition with source-depth, mask, workspace and tiled-phase contracts. S1-116 now qualifies robust paired lighting models and raw/adjusted defect residuals with independent fit selections and support guards. S1-118 now qualifies area-coverage mask resizing with explicit thresholds and source/target coordinate checks. S1-159 now has bounded stack smoothing and measured Gaussian noise/edge/runtime comparisons. S1-111 now has verified APNG/GIF/WebP frame/timing transport across file and buffer APIs. S1-112 QR label generation now has checked native controls, text recovery and bounded grouped outputs. S1-07 metadata file/buffer round trips now have verified native chunk transport and explicit orientation semantics. S1-109 paired flow refinement now has independent motion/residual references and explicit support/failure evidence. S1-108 color-distribution tracking now has controlled translation/scale/loss evidence. S1-95 dense-flow warping and S1-88–S1-90 photo/color edits have controlled references and explicit support/failure evidence. Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | Close common gaps in image processing, geometry, replay, and measurement. Next qualify ordered structured-append QR recovery (S1-162). S1-161 now qualifies standard/ArUco QR reading, all finder controls, independent camera-corner and exact module references, explicit small-label backend differences and lifecycle/payload checks. S1-160 now qualifies centered per-pixel cumulative/weighted noise and paired covariance, explicit support/validity, ticket/grid contracts, independent numerical references and state/resource lifecycle checks. S1-158 now qualifies bounded indexed TIFF snapshots and raw-page LRU caching, exact mixed-depth page references, fresh acquisition tickets/content grids and explicit refresh/resource/lifecycle contracts. S1-157 now qualifies bounded native FFmpeg in-memory decoding, exact FFV1 frame/time references, explicit short-clip/timestamp policies, grouped frame tickets, resource guards and teardown. S1-155 remains Planned after both Python LK APIs rejected all 12 tested pyramid representations; a cache consumer still needs implementation and measured benefit. S1-156 now qualifies seeded MIL tracking with all native controls, explicit loss/reseed, tuned recorded examples and no confidence claim. S1-154 now qualifies bounded native .flo round trips, precision/invalid-vector policies and verified image-pair direction/grid metadata. S1-153 now qualifies native codec preflight with bounded snapshots, separate registry/header/count observations and explicit pixel-integrity limits. The latest broad checkpoint passed 4,801 tests with 31 skips; the new cycle is at 8/20 (including program lifecycle infrastructure). S1-152 now qualifies bounded native run contours with explicit flat topology and different hole-polygon semantics. S1-151 now qualifies signed-kernel binary pattern matching with bounded coordinates and count judgments. S1-149 now qualifies ordered typed TIFF buffers, exact sample readback and bounded page decoding. S1-117 now qualifies native CPU/Float64 multiband composition with source-depth, mask, workspace and tiled-phase contracts. S1-116 now qualifies robust paired lighting models and raw/adjusted defect residuals with independent fit selections and support guards. S1-118 now qualifies area-coverage mask resizing with explicit thresholds and source/target coordinate checks. S1-159 now has bounded stack smoothing and measured Gaussian noise/edge/runtime comparisons. S1-111 now has verified APNG/GIF/WebP frame/timing transport across file and buffer APIs. S1-112 QR label generation now has checked native controls, text recovery and bounded grouped outputs. S1-07 metadata file/buffer round trips now have verified native chunk transport and explicit orientation semantics. S1-109 paired flow refinement now has independent motion/residual references and explicit support/failure evidence. S1-108 color-distribution tracking now has controlled translation/scale/loss evidence. S1-95 dense-flow warping and S1-88–S1-90 photo/color edits have controlled references and explicit support/failure evidence. Native EXR qualification for S1-125 remains open because this build has no EXR codec; then follow the remaining coverage checklist. Sequence and calibrated measurement follow-up is tracked in [#14](https://github.com/votecoffee/OpenCVDataflowGUI/issues/14). | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | Add multi-input and batched ONNX execution, model-specific detection and mask decoding, more LightGlue adapters, and K-nearest/random-forest image classifiers. Native SVM training, prediction and model I/O are available in [the classical ML workflow](classical-ml.md) (S2-20). | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |

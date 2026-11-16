@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 146 | 13 | 16 | 175 | 83.4% |
+| 1. Core and baseline 2D | 147 | 13 | 15 | 175 | 84.0% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 209 | 55 | 206 | 470 | 44.5% |
+| **Overall** | 210 | 55 | 205 | 470 | 44.7% |
 
 <!-- coverage-summary:end -->
 
@@ -255,7 +255,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S1-159 | Large-radius image smoothing | stackBlur | Complete | cv.stack_blur exposes independent odd sizes, explicit native clamping/rejection, float32/native arithmetic and alpha policy. uint8/uint16/int16/float32 image depths, RGB tags, masks/regions, provenance, bounds, XML and failure containment are checked. Float32 work restores integer output depth; observed high-depth/native-large-integer artifacts are guarded. Independent triangular references and five original projects qualify processing. A 1920x1080 matched-variance Gaussian comparison records noise, edge center/width and local single-thread timings at 31/127/255; native-call observations exclude graph overhead and are not speed guarantees. |
 | S1-160 | Temporal per-pixel noise and covariance | accumulate, accumulateSquare, accumulateProduct and accumulateWeighted | Complete | sequence.pixel_moments. Centered float64 cumulative/exponential moments of selected gray/RGB(A) channels, optional paired sources, per-pixel count/effective support and separate variance/correlation validity. Population/sample normalization, masks/regions, freeze/cap, ticket/grid contracts, reset/context/stream isolation and bounded copyable state are checked. Independent batch/Decimal references verify tiny variations at 1e12 and finite ±1e100 inputs. Seven original replay projects qualify 2/4-unit noise, channel/source covariance, weighted histories and deliberate pairing/memory failures in Debug/Lean. Heatmap graphics, XML/reopen and worker handoffs checked. Registration, exposure synchronization, independence and pure camera-noise identity are not inferred. See [contracts](temporal-pixel-statistics.md). |
-| S1-161 | ArUco-backed QR reading | QRCodeDetectorAruco | Planned | Compare both native QR backends on cluttered, rotated and small labels. Verify payload, rectified patch and corners on the original image, including multiple candidates. |
+| S1-161 | ArUco-backed QR reading | QRCodeDetectorAruco | Complete | inspect.read_qr adds a standard/ArUco backend dropdown without changing saved-project defaults or downstream ports. All seven QR finder and 35 native ArUco detector controls, enum refinement, validated coupled limits and explicit backend/mode rules. Six original scenes compare clutter, rotation, two-pixel modules, multiple labels, selection and no-code behavior. Known placement transforms verify original-image corners within 2.5 pixels; emitted module images exactly match original symbol bytes on separate ticket-preserving grids. The small-label standard miss is retained as a valid inspection failure. Masks/regions, RGB(A), native exceptions/recovery, parallel instances, graphics-off, XML and editor controls checked. No general robustness ranking, print grade, 3D pose or structured-append recovery claim. See [contracts](qr-backends.md). |
 | S1-162 | Structured-append QR payloads | QRCodeEncoder.encodeStructuredAppend and a qualified decoder | Planned | Generate and recover a split payload in sequence, even when symbols are presented out of order. Report missing, duplicated and mismatched fragments without treating a partial payload as valid. |
 | S1-163 | Keypoint repeatability and match accuracy | evaluateFeatureDetector, computeRecallPrecisionCurve or validated equivalents | Planned | Evaluate two registered images with known common support. Report repeatability and correspondence counts, then precision and recall versus match threshold with a held-out transform. |
 

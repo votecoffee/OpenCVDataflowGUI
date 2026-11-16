@@ -237,7 +237,10 @@ BINDINGS = {
     "inspect.orb": "ORB_create Feature2D.detectAndCompute",
     "inspect.phase_correlation": "phaseCorrelate",
     "inspect.read_barcode": "barcode.BarcodeDetector.detectAndDecodeWithType",
-    "inspect.read_qr": "GraphicalCodeDetector.detectAndDecode",
+    "inspect.read_qr": (
+        "QRCodeDetector QRCodeDetectorAruco GraphicalCodeDetector.detectAndDecode "
+        "GraphicalCodeDetector.detectAndDecodeMulti QRCodeDetector.detectAndDecodeCurved"
+    ),
     "inspect.refine_corners": "cornerSubPix",
     "inspect.sift": "SIFT_create Feature2D.detectAndCompute",
     "inspect.selective_search": "ximgproc.segmentation.createSelectiveSearchSegmentation",

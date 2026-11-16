@@ -3,6 +3,14 @@
 The standard toolbox includes OpenCV QR and linear barcode readers. Install
 the optional backend for Data Matrix, Code 128, PDF417 and more symbologies.
 
+**Read QR codes** has a Backend dropdown for standard or ArUco finder detection,
+with the standard default preserved for existing programs. Both support single
+and multi decoding; curved mode requires standard. All native ArUco finder/QR
+parameters are exposed, with corner-refinement enum choices and validated limits.
+Try the [six backend comparisons](<../examples/opencv tools/qr_backends/README.md>)
+and read the [QR contracts](qr-backends.md) for selection, image depth, graphics
+and module-grid behavior. Backend reads and candidate ordering can differ.
+
 ```powershell
 python -m pip install -e ".[barcodes]"
 ```

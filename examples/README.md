@@ -271,6 +271,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Subpixel template locations](<opencv tools/subpixel_template/README.md>) | Compare integer and refined template matches against two known fractional placements. |
 | [Temporal non-local means](<opencv tools/temporal_nlm/README.md>) | Denoise the middle frame of a short sequence and preserve its ticket. |
 | [Temporal pixel statistics](<opencv tools/temporal_pixel_statistics/README.md>) | Verify per-pixel noise, weighted support and channel/source covariance on known image sequences, including region and deliberate ticket/memory failures. |
+| [QR backend comparisons](<opencv tools/qr_backends/README.md>) | Compare standard/ArUco reading, independent camera corners and exact modules on cluttered, rotated, small, multiple, selected and blank scenes. |
 | [TIFF page sequence](<opencv tools/tiff_page_sequence/README.md>) | Replay a three-page 16-bit TIFF as separately ticketed images. |
 | [TIFF page access](<opencv tools/tiff_page_access/README.md>) | Select arbitrary pages from a 257-page mixed-depth stack, inspect bounded cache hits and conversions, and exercise explicit range/workspace errors. |
 | [Tile image](<opencv tools/tile_image/README.md>) | Repeat a reference in a 2 × 3 grid and find all six copies with template matching. |
