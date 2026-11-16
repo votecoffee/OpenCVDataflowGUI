@@ -1,5 +1,10 @@
 # SimpleGDRNPP setup and real saved reviews
 
+`candidate_execution/` adds bounded parallel depth stages, all-frame numerical
+checks and complete-worker comparisons. Existing CPU/memory budgets select up
+to four active tasks; images, recipes and gates stay unchanged. Its live and
+recorded projects retain the native colored fly-around result.
+
 `packet_transport/` retains the bounded streaming transport comparison, full
 packet/cycle samples and unchanged native colored result. New local packets
 avoid routine compression; legacy packets remain compatible. Read its README

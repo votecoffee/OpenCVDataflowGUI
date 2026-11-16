@@ -1,0 +1,266 @@
+{
+  "real_frames": 32,
+  "candidates_per_frame": 2,
+  "candidate_comparisons": 64,
+  "rows": [
+    {
+      "case": "original_frame3",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "original_frame13",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 2,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "original_wrong_object",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000006_frame000002",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 2,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000006_frame000045",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 2,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000006_frame000096",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 2,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000006_frame000139",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 2,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000006_frame000206",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 2,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000006_frame000273",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 2,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000006_frame000329",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 2,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000006_frame000388",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 2,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000006_frame000409",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000006_frame000462",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000006_frame000496",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 2,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000006_frame000501",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000001_frame000001",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000004_frame000000",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000005_frame000007",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000007_frame000003",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000008_frame000001",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000009_frame000000",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000010_frame000005",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000011_frame000004",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000012_frame000002",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000013_frame000002",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000014_frame000002",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000015_frame000001",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000016_frame000008",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000017_frame000003",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000018_frame000002",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000019_frame000001",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    },
+    {
+      "case": "scene000020_frame000003",
+      "repeated_real_proposals": 2,
+      "candidates_poses_fits_refinement_traces_exact": true,
+      "accepted_count": 0,
+      "best_and_order_exact": true,
+      "maximum_in_flight": 2
+    }
+  ],
+  "implementation_sha256": "fa54a967a547e9f1701e8cc9b359aa35fecf991ab85c65ae926d878d311ad005",
+  "scope": "Frozen neural proposals duplicated to exercise two depth tasks per real frame; original RGB-D, cameras, CAD and rectangles. No new physical part, network inference, pose labels, gate tuning, accuracy or throughput qualification. Per-frame component wall times are not a repeated performance study.",
+  "attribution": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+}
