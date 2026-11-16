@@ -11,6 +11,7 @@ import time
 import uuid
 from pathlib import Path
 
+from .process_tree import ProcessTree
 from .wire import read_packet, strict_json, write_packet
 
 
@@ -72,6 +73,8 @@ class WorkerClient:
         self._lock = threading.Lock()
         self._root = None
         self._responses = None
+        self._tree = None
+        self._readers = []
 
     def _start(self):
         parent = Path(tempfile.gettempdir()).resolve()
@@ -83,7 +86,7 @@ class WorkerClient:
         env.pop("PYTHONHOME", None)
         env.pop("PYTHONPATH", None)
         env["PYTHONNOUSERSITE"] = "1"
-        self.process = subprocess.Popen(
+        self._tree = ProcessTree(
             [
                 self.python or runtime_python(),
                 "-u",
@@ -96,8 +99,8 @@ class WorkerClient:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             env=env,
-            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
         )
+        self.process = self._tree.process
         process = self.process
         responses = queue.Queue(maxsize=4)
         self._responses = responses
@@ -130,34 +133,39 @@ class WorkerClient:
             except (OSError, ValueError):
                 pass
 
-        threading.Thread(target=read, daemon=True).start()
-        threading.Thread(target=drain, daemon=True).start()
+        self._readers = [threading.Thread(target=target, daemon=True) for target in (read, drain)]
+        for reader in self._readers:
+            reader.start()
 
     def _stop(self):
         process = self.process
-        self.process = None
+        if self._tree is not None:
+            self._tree.stop()
+            self._tree = None
         if process is not None:
-            if process.poll() is None:
-                process.terminate()
-                try:
-                    process.wait(timeout=2)
-                except subprocess.TimeoutExpired:
-                    process.kill()
-                    process.wait(timeout=2)
+            for reader in self._readers:
+                if reader.ident is not None:
+                    reader.join(timeout=5)
+                if reader.is_alive():
+                    raise TimeoutError("GDRNPP worker pipe reader did not retire")
             for stream in (process.stdin, process.stdout, process.stderr):
                 stream.close()
+        self.process = None
+        self._readers = []
+        self._responses = None
         if self._root is not None:
             root = self._root
-            self._root = None
             if not Path(root.name).resolve().is_relative_to(Path(tempfile.gettempdir()).resolve()):
                 raise RuntimeError("Private worker cleanup escaped its temporary parent")
             root.cleanup()
+            self._root = None
 
     def call(self, operation, metadata=None, arrays=None, *, cancelled=lambda: False):
         started = time.perf_counter()
         deadline = time.monotonic() + self.timeout
         job = None
         response_metadata = None
+        failed = False
         while not self._lock.acquire(timeout=0.05):
             if cancelled():
                 raise RuntimeError("GDRNPP request cancelled")
@@ -169,6 +177,8 @@ class WorkerClient:
                 raise RuntimeError("GDRNPP worker has closed")
             if cancelled():
                 raise RuntimeError("GDRNPP request cancelled")
+            if time.monotonic() > deadline:
+                raise TimeoutError("GDRNPP worker timed out")
             if self.process is None:
                 self._start()
             process_ready = time.perf_counter()
@@ -176,18 +186,24 @@ class WorkerClient:
             job = self.root / identifier
             job.mkdir()
             write_packet(job, metadata or {}, arrays or {})
+            if self._closed or cancelled():
+                raise RuntimeError("GDRNPP request cancelled; no result published")
+            if time.monotonic() > deadline:
+                raise TimeoutError("GDRNPP worker timed out")
             message = json.dumps(dict(id=identifier, op=operation)).encode() + b"\n"
             self.process.stdin.write(message)
             self.process.stdin.flush()
             sent = time.perf_counter()
             while True:
-                if cancelled():
+                if self._closed or cancelled():
                     raise RuntimeError("GDRNPP request cancelled; no result published")
                 if time.monotonic() > deadline:
                     raise TimeoutError("GDRNPP worker timed out")
                 try:
                     response = self._responses.get(timeout=0.05)
                 except queue.Empty:
+                    if self.process.poll() is not None:
+                        raise RuntimeError("GDRNPP worker exited before returning a result")
                     continue
                 if isinstance(response, Exception):
                     raise response
@@ -197,6 +213,10 @@ class WorkerClient:
                     raise ValueError(response.get("error", "GDRNPP worker failed"))
                 received = time.perf_counter()
                 response_metadata, result_arrays = read_packet(job / "result")
+                if self._closed or cancelled():
+                    raise RuntimeError("GDRNPP request cancelled; no result published")
+                if time.monotonic() > deadline:
+                    raise TimeoutError("GDRNPP worker timed out")
                 if not isinstance(response_metadata, dict):
                     raise ValueError("Worker metadata must be an object")
                 response_metadata["request_timing"] = dict(
@@ -218,12 +238,17 @@ class WorkerClient:
                     ]
                 return response_metadata, result_arrays
         except BaseException:
-            self._stop()
+            failed = True
+            try:
+                self._stop()
+            except BaseException:
+                self._closed = True  # Unconfirmed retirement must never reuse this session.
+                raise
             raise
         finally:
             cleanup_started = time.perf_counter()
             try:
-                if job is not None and job.exists():
+                if not failed and job is not None and job.exists():
                     if not job.resolve().is_relative_to(self.root):
                         raise RuntimeError("Request cleanup escaped private worker storage")
                     shutil.rmtree(job)

@@ -1,5 +1,10 @@
 # SimpleGDRNPP setup and real saved reviews
 
+`worker_lifecycle/` adds complete Windows process ownership, busy cancel/timeout/
+close recovery, standard-library host checks and an actual-model replay. Four
+completed previews keep the frozen poses, fits and overlay/XYZ/RGB bytes exact.
+Restart the app to load the new light bridge; recipes remain unchanged.
+
 `candidate_execution/` adds bounded parallel depth stages, all-frame numerical
 checks and complete-worker comparisons. Existing CPU/memory budgets select up
 to four active tasks; images, recipes and gates stay unchanged. Its live and

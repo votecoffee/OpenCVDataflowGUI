@@ -12,3 +12,4 @@ overlap_review/** -text
 batch_execution/** -text
 packet_transport/** -text
 candidate_execution/** -text
+worker_lifecycle/** -text

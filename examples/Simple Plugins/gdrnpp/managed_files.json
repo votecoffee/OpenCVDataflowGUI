@@ -1,5 +1,6 @@
 {
-  "src/opencv_dataflow/simple_gdrnpp/bridge.py": "f4863f7dc34aeae5401a22d7ef2b6c6df555582331fe9333b3d1e8dd0a3ae29d",
+  "src/opencv_dataflow/simple_gdrnpp/bridge.py": "7ff001b0dad70b191011e24485710df7574f49ce5752b89dd896085bef2c750a",
+  "src/opencv_dataflow/simple_gdrnpp/process_tree.py": "4e2b39d56d9cda6629702f8134c428c55323806da92d2412f85478f011ee7836",
   "src/opencv_dataflow/simple_gdrnpp/wire.py": "d1a880440800eaf9ce8fc42f30d0d1e98543134d399983c628b6430bc365de2a",
   "src/opencv_dataflow/simple_gdrnpp/qt_setup.py": "1f8114c5fccda1aee71b47c0ec137bd5edddf0fa2e63d66b4fbde2f3e0120477",
   "src/opencv_dataflow/simple_gdrnpp/dataflow.py": "df7d20f9b0e2f4da0663a22c5312c6699b5b48190b71f2bd9e27293ae3a505d7",
@@ -16,6 +17,7 @@
   "tests/test_simple_gdrnpp_host.py": "f04598f6c12cd9d859faf5b212f3524bc2c0e7f597312f91c187bea6c718a567",
   "tests/test_simple_gdrnpp_setup.py": "111a3f46c2e9491329c8f9ebcb2321494df084dc1c75480f705a61b899c57192",
   "tests/test_simple_gdrnpp_wire.py": "f95c2582fe974a43c763ee304802ca3c98a98351958e20fb3b33073acb769cc0",
+  "tests/test_simple_gdrnpp_process_tree.py": "c4a1e14a53d4f8693153f5956f2000d3533597a80d71896ba86b81031c570ff3",
   "examples/Simple Plugins/gdrnpp/setup_project.json": "39d9c2f58ccd2db02d1a9e715cd9bf76707488a93ef041e6528ada3273d16099",
   "examples/Simple Plugins/gdrnpp/frame3/report.json": "71ebc4374726cc49847e6e858fb62e298a29871534cefbe5750c87cae9750d5f",
   "examples/Simple Plugins/gdrnpp/frame3/evaluation.json": "d04e661aed9dba3f1db1cde57f6acfc79c7ae5844d11dd676aa4bb05c2d408ff",
@@ -693,6 +695,18 @@
   "examples/Simple Plugins/gdrnpp/candidate_execution/benchmark_candidate_execution.py": "596dec7a687bdc535f235f1987aeaf43ff855a6db56dace511eb5b2dc93521af",
   "examples/Simple Plugins/gdrnpp/candidate_execution/worker_metrics.py": "5a139603f3d1b233c81a1a3d84dbf65dea60925d7e88eb629ff4d3469d9abb89",
   "examples/Simple Plugins/gdrnpp/candidate_execution/ruff.toml": "0424f7a1c2a54c1cb8a990e66eeb33abbdaa9f117b5c1f5bdfc9ae0f09016f0e",
-  "examples/Simple Plugins/gdrnpp/README.md": "3820e55d97aa74e7bc578d8c64d7a9239a796d5623d348600e75d922bcb1160a",
-  "examples/Simple Plugins/gdrnpp/.gitattributes": "63105018474a71e33331b87fc05005f9be7f2cd73a557715b63acaccf3a455da"
+  "examples/Simple Plugins/gdrnpp/worker_lifecycle/after_cancel.json": "548480c7babda2fc851e80a57b23ffb4a603262387ce747e325403c961d74cfd",
+  "examples/Simple Plugins/gdrnpp/worker_lifecycle/after_close.json": "32cad678c96116027394ab1b9f105402bff81f87a79c62034c549921870c44af",
+  "examples/Simple Plugins/gdrnpp/worker_lifecycle/after_timeout.json": "855153cde36f479df4c370ca87bb4c924a523ebd3aed3d2332c3170155c2c677",
+  "examples/Simple Plugins/gdrnpp/worker_lifecycle/baseline.json": "c6697ebba7cf2aa8ad1ea4878131be6a5e4f282042d06c7c2f2fcadc90453434",
+  "examples/Simple Plugins/gdrnpp/worker_lifecycle/native_summary.json": "de8e1ea9de3d9b87ad7531c54d0d1de26480857761299b94d63449122a3027c4",
+  "examples/Simple Plugins/gdrnpp/worker_lifecycle/provenance.json": "5ab7735b2684279ee055e60ba13d60d5c829924a093beec4e565c1015c225863",
+  "examples/Simple Plugins/gdrnpp/worker_lifecycle/receipt.json": "0390c19d0a50bfabef51c76b16ea8cb471327e448791b7aefc7f43f3edb187b0",
+  "examples/Simple Plugins/gdrnpp/worker_lifecycle/validation.json": "d303810f62a899f291a1feb5e4cb3a5c28222416563d5dc2209ccde076214772",
+  "examples/Simple Plugins/gdrnpp/worker_lifecycle/README.md": "858b19f770b80ee2e235456623ea35ac6f7d322a4c8324adfbcb36b46c91865b",
+  "examples/Simple Plugins/gdrnpp/worker_lifecycle/check_worker_lifecycle.py": "ac0477b62b782601d4f851e40204f3ac263c877ea20f193242d45c9a648e5167",
+  "examples/Simple Plugins/gdrnpp/worker_lifecycle/worker_metrics.py": "5a139603f3d1b233c81a1a3d84dbf65dea60925d7e88eb629ff4d3469d9abb89",
+  "examples/Simple Plugins/gdrnpp/worker_lifecycle/ruff.toml": "0424f7a1c2a54c1cb8a990e66eeb33abbdaa9f117b5c1f5bdfc9ae0f09016f0e",
+  "examples/Simple Plugins/gdrnpp/README.md": "e1c9354ae6480d752695c28512d935e5d305bfb81c397d9aae9635c7d877e28d",
+  "examples/Simple Plugins/gdrnpp/.gitattributes": "1c8171aa5a45028d7cf4c705b54b9d06ca8e27a14f57ca013500c7e9a12961df"
 }

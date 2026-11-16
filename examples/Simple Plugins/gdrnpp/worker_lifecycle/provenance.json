@@ -1,0 +1,26 @@
+{
+  "dataset": "T-LESS",
+  "license": "CC-BY-4.0",
+  "source": "https://cmp.felk.cvut.cz/t-less/",
+  "attribution": "T. Hodan et al., WACV 2017; existing unchanged retained RGB-D recipe and derived lifecycle reports",
+  "pose_labels_entered_runtime": false,
+  "weights_bundled": false,
+  "changes": "Worker/client lifetime only; numerical inference implementation unchanged",
+  "numerical_runtime_sha256": "fa54a967a547e9f1701e8cc9b359aa35fecf991ab85c65ae926d878d311ad005",
+  "sha256": {
+    "after_cancel.json": "548480c7babda2fc851e80a57b23ffb4a603262387ce747e325403c961d74cfd",
+    "after_close.json": "32cad678c96116027394ab1b9f105402bff81f87a79c62034c549921870c44af",
+    "after_timeout.json": "855153cde36f479df4c370ca87bb4c924a523ebd3aed3d2332c3170155c2c677",
+    "baseline.json": "c6697ebba7cf2aa8ad1ea4878131be6a5e4f282042d06c7c2f2fcadc90453434",
+    "native_summary.json": "de8e1ea9de3d9b87ad7531c54d0d1de26480857761299b94d63449122a3027c4",
+    "receipt.json": "0390c19d0a50bfabef51c76b16ea8cb471327e448791b7aefc7f43f3edb187b0",
+    "validation.json": "d303810f62a899f291a1feb5e4cb3a5c28222416563d5dc2209ccde076214772"
+  },
+  "source_sha256": {
+    "GDRNPP/src/opencv_simple_gdrnpp/bridge.py": "7ff001b0dad70b191011e24485710df7574f49ce5752b89dd896085bef2c750a",
+    "GDRNPP/src/opencv_simple_gdrnpp/process_tree.py": "4e2b39d56d9cda6629702f8134c428c55323806da92d2412f85478f011ee7836",
+    "GDRNPP/tests/test_process_tree.py": "c7d6b83ef66d8ae7bdde98efc53266d969f37fa2c6f51ebd53a9b1a6d979471c",
+    "GDRNPP/examples/check_worker_lifecycle.py": "ac0477b62b782601d4f851e40204f3ac263c877ea20f193242d45c9a648e5167"
+  },
+  "worker_wheel_sha256": "e0fd56ad73c8ad4d9635c3c633ed48e3467525f98afe7443f1fe2aa28be06db8"
+}

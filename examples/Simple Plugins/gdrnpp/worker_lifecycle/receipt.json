@@ -1,0 +1,209 @@
+{
+  "scope": "Windows CPU real model; busy request interruption and fresh-session recovery",
+  "recipe_sha256": "0f748bc8019bb1b08fd39e5f37a98de21f4664e4216170baa26911f752020134",
+  "prepared_without_inspection": true,
+  "interrupted": [
+    {
+      "action": "cancel",
+      "owned_processes_before": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 43212,
+            "created": 1794858552.9621413,
+            "name": "python.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 4292608,
+            "peak_working_set_bytes": 4292608
+          },
+          {
+            "pid": 50956,
+            "created": 1794858553.0869987,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 8138752,
+            "peak_working_set_bytes": 8142848
+          },
+          {
+            "pid": 52736,
+            "created": 1794858553.1059828,
+            "name": "python.exe",
+            "cpu_seconds": 20.234375,
+            "rss_bytes": 1170092032,
+            "peak_working_set_bytes": 1281642496
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1182523392
+      },
+      "observed_owned_cpu_seconds": 0.515625,
+      "request_elapsed_seconds": 0.17552359999899636,
+      "stop_to_return_seconds": 0.074771999999939,
+      "error_type": "RuntimeError",
+      "no_result_returned": true,
+      "all_observed_processes_retired": true,
+      "pipe_readers_joined": true,
+      "private_storage_removed": true
+    },
+    {
+      "action": "timeout",
+      "owned_processes_before": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 56016,
+            "created": 1794858564.8774214,
+            "name": "python.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 4292608,
+            "peak_working_set_bytes": 4292608
+          },
+          {
+            "pid": 24984,
+            "created": 1794858565.03311,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 8138752,
+            "peak_working_set_bytes": 8142848
+          },
+          {
+            "pid": 35704,
+            "created": 1794858565.0520084,
+            "name": "python.exe",
+            "cpu_seconds": 21.75,
+            "rss_bytes": 1170092032,
+            "peak_working_set_bytes": 1280847872
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1182523392
+      },
+      "observed_owned_cpu_seconds": 3.109375,
+      "request_elapsed_seconds": 0.820524500002648,
+      "stop_to_return_seconds": null,
+      "error_type": "TimeoutError",
+      "no_result_returned": true,
+      "all_observed_processes_retired": true,
+      "pipe_readers_joined": true,
+      "private_storage_removed": true
+    },
+    {
+      "action": "close",
+      "owned_processes_before": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 4132,
+            "created": 1794858577.7836313,
+            "name": "python.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 4292608,
+            "peak_working_set_bytes": 4292608
+          },
+          {
+            "pid": 58924,
+            "created": 1794858577.904046,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.03125,
+            "rss_bytes": 8138752,
+            "peak_working_set_bytes": 8142848
+          },
+          {
+            "pid": 54188,
+            "created": 1794858577.928612,
+            "name": "python.exe",
+            "cpu_seconds": 34.15625,
+            "rss_bytes": 1167532032,
+            "peak_working_set_bytes": 1278582784
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1179963392
+      },
+      "observed_owned_cpu_seconds": 0.25,
+      "request_elapsed_seconds": 0.166451799999777,
+      "stop_to_return_seconds": 0.06095619999905466,
+      "error_type": "RuntimeError",
+      "no_result_returned": true,
+      "all_observed_processes_retired": true,
+      "pipe_readers_joined": true,
+      "private_storage_removed": true
+    }
+  ],
+  "completed": [
+    {
+      "label": "baseline",
+      "worker": {
+        "session": "977cc5ed07764eed94ae0f70820894b8",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "fa54a967a547e9f1701e8cc9b359aa35fecf991ab85c65ae926d878d311ad005",
+        "inference_request_count": 1
+      },
+      "graphics_sha256": {
+        "overlay": "46ee878e3055f65119f22a4ce028ccabade093002645085d0996a93f56af77fa",
+        "points": "d65454be14bf8160d0c9d6faa611fb17a9cce0b492c4cd7baa31f93b630f24e8",
+        "colors": "26795f4d00cf045af81325eae698fe01f150329a858d6a3116e087a533287312"
+      },
+      "all_candidates_exact": true
+    },
+    {
+      "label": "after_cancel",
+      "worker": {
+        "session": "b847975e5de04cd7b66acfb552fcfcc5",
+        "model_cache_hit": false,
+        "model_load_count": 1,
+        "recipe_cache_hit": false,
+        "implementation_sha256": "fa54a967a547e9f1701e8cc9b359aa35fecf991ab85c65ae926d878d311ad005",
+        "inference_request_count": 1
+      },
+      "graphics_sha256": {
+        "overlay": "46ee878e3055f65119f22a4ce028ccabade093002645085d0996a93f56af77fa",
+        "points": "d65454be14bf8160d0c9d6faa611fb17a9cce0b492c4cd7baa31f93b630f24e8",
+        "colors": "26795f4d00cf045af81325eae698fe01f150329a858d6a3116e087a533287312"
+      },
+      "all_candidates_exact": true
+    },
+    {
+      "label": "after_timeout",
+      "worker": {
+        "session": "4e92cb57ae274466aa087925ee4d455a",
+        "model_cache_hit": false,
+        "model_load_count": 1,
+        "recipe_cache_hit": false,
+        "implementation_sha256": "fa54a967a547e9f1701e8cc9b359aa35fecf991ab85c65ae926d878d311ad005",
+        "inference_request_count": 1
+      },
+      "graphics_sha256": {
+        "overlay": "46ee878e3055f65119f22a4ce028ccabade093002645085d0996a93f56af77fa",
+        "points": "d65454be14bf8160d0c9d6faa611fb17a9cce0b492c4cd7baa31f93b630f24e8",
+        "colors": "26795f4d00cf045af81325eae698fe01f150329a858d6a3116e087a533287312"
+      },
+      "all_candidates_exact": true
+    },
+    {
+      "label": "after_close",
+      "worker": {
+        "session": "02ea7eb2dfb64878a822e3ff511565fc",
+        "model_cache_hit": false,
+        "model_load_count": 1,
+        "recipe_cache_hit": false,
+        "implementation_sha256": "fa54a967a547e9f1701e8cc9b359aa35fecf991ab85c65ae926d878d311ad005",
+        "inference_request_count": 1
+      },
+      "graphics_sha256": {
+        "overlay": "46ee878e3055f65119f22a4ce028ccabade093002645085d0996a93f56af77fa",
+        "points": "d65454be14bf8160d0c9d6faa611fb17a9cce0b492c4cd7baa31f93b630f24e8",
+        "colors": "26795f4d00cf045af81325eae698fe01f150329a858d6a3116e087a533287312"
+      },
+      "all_candidates_exact": true
+    }
+  ],
+  "completed_previews": 4,
+  "stale_token_rejected": true,
+  "gates_or_recipe_changed": false,
+  "numerical_graphics_or_accuracy_change": false,
+  "attribution": "T. Hodan et al., T-LESS, WACV 2017, CC BY 4.0; unchanged retained recipe",
+  "source": "https://cmp.felk.cvut.cz/t-less/"
+}
