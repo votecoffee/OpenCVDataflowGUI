@@ -1,0 +1,16 @@
+{
+  "worker_tests_passed": 55,
+  "worker_modules_skipped": 2,
+  "subtests_passed": 4,
+  "real_checkpoint_cases_included": true,
+  "host_popup_tests_passed": 7,
+  "installed_native_cli_passed_runs": 2,
+  "frozen_pose_cases": 32,
+  "shared_graphics_cases": 32,
+  "measured_worker_calls": 32,
+  "current_worker_code_matches_after_fingerprint": true,
+  "old_examples_and_recipes_changed": false,
+  "built_wheel_matches_runtime_source": true,
+  "weights_bundled": false,
+  "host_ml_environment_changed": false
+}

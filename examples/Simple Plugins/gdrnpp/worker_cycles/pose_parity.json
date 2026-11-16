@@ -1,0 +1,932 @@
+{
+  "cases": [
+    {
+      "case": "original_frame3",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.6711907999997493
+    },
+    {
+      "case": "original_frame13",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": true,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.3834406999994826
+    },
+    {
+      "case": "original_wrong_object",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.27912280000055034
+    },
+    {
+      "case": "scene000006_frame000002",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": true,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 1.1566557999994984
+    },
+    {
+      "case": "scene000006_frame000045",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": true,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.7903201999997691
+    },
+    {
+      "case": "scene000006_frame000096",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": true,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 1.1033283999986452
+    },
+    {
+      "case": "scene000006_frame000139",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": true,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.4059159999997064
+    },
+    {
+      "case": "scene000006_frame000206",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": true,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.7911256999996112
+    },
+    {
+      "case": "scene000006_frame000273",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": true,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.6573755999997957
+    },
+    {
+      "case": "scene000006_frame000329",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": true,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.5783425999998144
+    },
+    {
+      "case": "scene000006_frame000388",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": true,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.4744942999986961
+    },
+    {
+      "case": "scene000006_frame000409",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.32078939999883005
+    },
+    {
+      "case": "scene000006_frame000462",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.3634889999993902
+    },
+    {
+      "case": "scene000006_frame000496",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": true,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.308661299999585
+    },
+    {
+      "case": "scene000006_frame000501",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.29508759999953327
+    },
+    {
+      "case": "scene000001_frame000001",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.17190409999966505
+    },
+    {
+      "case": "scene000004_frame000000",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.266504299999724
+    },
+    {
+      "case": "scene000005_frame000007",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.10064349999993283
+    },
+    {
+      "case": "scene000007_frame000003",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.14691820000007283
+    },
+    {
+      "case": "scene000008_frame000001",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.26325079999878653
+    },
+    {
+      "case": "scene000009_frame000000",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.12165600000116683
+    },
+    {
+      "case": "scene000010_frame000005",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.2786744000004546
+    },
+    {
+      "case": "scene000011_frame000004",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.46367280000049504
+    },
+    {
+      "case": "scene000012_frame000002",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.23436349999974482
+    },
+    {
+      "case": "scene000013_frame000002",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.10369300000093062
+    },
+    {
+      "case": "scene000014_frame000002",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.21028260000093724
+    },
+    {
+      "case": "scene000015_frame000001",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.7110235000000102
+    },
+    {
+      "case": "scene000016_frame000008",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.19438890000128595
+    },
+    {
+      "case": "scene000017_frame000003",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.13245420000021113
+    },
+    {
+      "case": "scene000018_frame000002",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.14201839999986987
+    },
+    {
+      "case": "scene000019_frame000001",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.2817979999999807
+    },
+    {
+      "case": "scene000020_frame000003",
+      "fields": [
+        {
+          "stride": 4,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 2,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        },
+        {
+          "stride": 1,
+          "bit_identical": true,
+          "maximum_xyz_difference_m": 0.0,
+          "first_return_mask_identical": true
+        }
+      ],
+      "pose_bit_identical": true,
+      "maximum_pose_element_difference": 0.0,
+      "fit_counts_and_decision_identical": true,
+      "accepted": false,
+      "refinement_status_and_iteration_ranks_identical": true,
+      "optimized_replay_seconds": 0.17318390000036743
+    }
+  ]
+}

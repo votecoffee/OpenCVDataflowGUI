@@ -72,6 +72,16 @@ The behavior remains experimental: the unchanged larger scene extension accepts
 remain unqualified. A performance improvement does not resolve geometric
 ambiguity, sensor/model disagreement or pose/grasp qualification.
 
+## Prepared rays and complete worker requests
+
+The [worker cycle study](../worker_cycles/README.md) adds once-per-level measured-ray
+preparation, sparse correspondence work and one shared render for combined
+image/cloud review. Paired alignment improves a further 1.26-1.78x; all 32
+frozen results remain unchanged. Separate sequential whole-worker observations
+include inference, startup, transfer, optional graphics and cleanup. They do
+not establish a consistent whole-call gain. Runtime profiles now separate
+these costs, without changing recipes or judgment.
+
 ## Reproduce and activate
 
 The source distribution supplies `examples/benchmark_geometry.py` and `examples/check_geometry_reviews.py`, with frozen source/image inputs and replay commands. This folder retains the full benchmark and graphics-parity receipts plus chart. It does not embed a neural model or launch a worker.

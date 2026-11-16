@@ -1,0 +1,123 @@
+{
+  "scope": "Paired alignment benchmark is separate from sequential before/after complete-worker observations",
+  "reference_commit": "6a9ecfffae7329617238e29f2ba00825c5f96935",
+  "paired_preparation": [
+    {
+      "case": "scene000006_frame000002",
+      "samples_seconds": {
+        "reference": [
+          1.9051834999991115,
+          2.1459305999997014,
+          1.9059698000000935
+        ],
+        "prepared": [
+          1.543107900000905,
+          1.5092050999992352,
+          1.4385861999999179
+        ]
+      },
+      "reference_median_seconds": 1.9059698000000935,
+      "prepared_median_seconds": 1.5092050999992352,
+      "median_speedup": 1.2628964744427773,
+      "pose_and_fit_identical": true
+    },
+    {
+      "case": "scene000006_frame000409",
+      "samples_seconds": {
+        "reference": [
+          1.051631799999086,
+          1.1241105999997671,
+          1.050220299999637
+        ],
+        "prepared": [
+          0.49032660000011674,
+          0.6904185000003054,
+          0.5917960000006133
+        ]
+      },
+      "reference_median_seconds": 1.051631799999086,
+      "prepared_median_seconds": 0.5917960000006133,
+      "median_speedup": 1.7770174181609817,
+      "pose_and_fit_identical": true
+    },
+    {
+      "case": "scene000006_frame000045",
+      "samples_seconds": {
+        "reference": [
+          2.1947603000007803,
+          2.108909299999141,
+          2.368906399999105
+        ],
+        "prepared": [
+          1.486572800000431,
+          1.5858468000005814,
+          1.6508204999990994
+        ]
+      },
+      "reference_median_seconds": 2.1947603000007803,
+      "prepared_median_seconds": 1.5858468000005814,
+      "median_speedup": 1.3839674172814016,
+      "pose_and_fit_identical": true
+    },
+    {
+      "case": "scene000011_frame000004",
+      "samples_seconds": {
+        "reference": [
+          1.6124348000012105,
+          1.7256799999995565,
+          1.6197826999996323
+        ],
+        "prepared": [
+          1.1202701999991405,
+          0.9336262999986502,
+          0.8683466000002227
+        ]
+      },
+      "reference_median_seconds": 1.6197826999996323,
+      "prepared_median_seconds": 0.9336262999986502,
+      "median_speedup": 1.7349368799936058,
+      "pose_and_fit_identical": true
+    }
+  ],
+  "whole_worker_cases": [
+    {
+      "case": "retained_reference",
+      "graphics": false,
+      "before_warm_median_seconds": 1.182237900000473,
+      "after_warm_median_seconds": 1.2804591999993136,
+      "before_cold_seconds": 8.217131100000188,
+      "after_cold_seconds": 16.354903499999637,
+      "pose_identical": true
+    },
+    {
+      "case": "retained_reference",
+      "graphics": true,
+      "before_warm_median_seconds": 1.612468199999057,
+      "after_warm_median_seconds": 1.523931800000355,
+      "before_cold_seconds": 9.628878599998643,
+      "after_cold_seconds": 11.497650900000735,
+      "pose_identical": true
+    },
+    {
+      "case": "connected_independent_capture",
+      "graphics": false,
+      "before_warm_median_seconds": 2.2541956000004575,
+      "after_warm_median_seconds": 2.4965664999999717,
+      "before_cold_seconds": 10.045589100000143,
+      "after_cold_seconds": 13.586664799999198,
+      "pose_identical": true
+    },
+    {
+      "case": "connected_independent_capture",
+      "graphics": true,
+      "before_warm_median_seconds": 2.767593999999008,
+      "after_warm_median_seconds": 2.82390420000047,
+      "before_cold_seconds": 10.076580500001,
+      "after_cold_seconds": 13.288751199999751,
+      "pose_identical": true
+    }
+  ],
+  "whole_request_improvement_established": false,
+  "current_worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+  "attribution": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+}

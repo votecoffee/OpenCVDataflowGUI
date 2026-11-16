@@ -1,0 +1,15 @@
+{
+  "dataset": "T-LESS",
+  "license": "CC-BY-4.0",
+  "scope": "Separate paired alignment checks and sequential complete-worker observations; whole-request speedup not established",
+  "sha256": {
+    "after.json": "86bb421eeb7f9e9a2865e050a9677fae83867983fa95b25c7668ac4c14280276",
+    "before.json": "d31365fe785fcd88298b1898efb53ba3618d59db125e3dd58220ad97f834783b",
+    "cycles.png": "b32e7fa8248f76c3c1fed8174c9288d7049dba897383bb244b2f69850b067984",
+    "graphics_parity.json": "d01496c6989d1e3bf34c444668a344f359eb0db6783ea270e14b3af33b2c045b",
+    "pose_parity.json": "425cecdbcd2e0ee6dcfe80cb9ff5b1f2d4879672068505353a3503b074d373d5",
+    "preparation.json": "6a51aafa996add1343534459f09ea1b8832d8361140b22e1db116f9fba950d21",
+    "summary.json": "21043643efae80ad40f149659e599776808149236bf512b37583d233eb613b07",
+    "validation.json": "daeba602d51d1ed5f3e527844b1f2506266dd606faa3f81fc9a63fe90dc56d7d"
+  }
+}

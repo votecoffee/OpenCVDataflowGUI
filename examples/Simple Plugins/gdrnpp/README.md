@@ -125,3 +125,13 @@ All 32 frozen poses, decisions and native review outputs are unchanged on the
 tested installation. All earlier files above remain as historical evidence.
 Broader accuracy, heavy occlusion and complete machine cycle qualification
 remain open; these numbers are not a general inference-rate guarantee.
+
+`worker_cycles/README.md` adds actual cold/warm subprocess measurements with
+graphics on/off and a runnable `benchmark_worker.py`. Prepared rays and one
+shared render per image/cloud review preserve all 32 frozen results. Paired
+alignment improves another 1.26-1.78x; the separate sequential whole-call runs
+do not establish a consistent overall gain. Updated warm examples took about
+1.3-2.8 seconds, and cold examples 11.5-16.4 seconds, with fixed settings.
+Profiles now separate worker computation, graphics, model setup and client
+transfer/cleanup. Keep persistent model reuse; restart/reset an updated worker
+and restart the app to load its updated light bridge. Recipes are unchanged.

@@ -154,20 +154,24 @@ class WorkerClient:
             root.cleanup()
 
     def call(self, operation, metadata=None, arrays=None, *, cancelled=lambda: False):
+        started = time.perf_counter()
         deadline = time.monotonic() + self.timeout
         job = None
+        response_metadata = None
         while not self._lock.acquire(timeout=0.05):
             if cancelled():
                 raise RuntimeError("GDRNPP request cancelled")
             if time.monotonic() > deadline:
                 raise TimeoutError("GDRNPP worker is busy")
         try:
+            acquired = time.perf_counter()
             if self._closed:
                 raise RuntimeError("GDRNPP worker has closed")
             if cancelled():
                 raise RuntimeError("GDRNPP request cancelled")
             if self.process is None:
                 self._start()
+            process_ready = time.perf_counter()
             identifier = uuid.uuid4().hex
             job = self.root / identifier
             job.mkdir()
@@ -175,6 +179,7 @@ class WorkerClient:
             message = json.dumps(dict(id=identifier, op=operation)).encode() + b"\n"
             self.process.stdin.write(message)
             self.process.stdin.flush()
+            sent = time.perf_counter()
             while True:
                 if cancelled():
                     raise RuntimeError("GDRNPP request cancelled; no result published")
@@ -190,17 +195,44 @@ class WorkerClient:
                     raise RuntimeError("Stale worker response")
                 if not response.get("ok"):
                     raise ValueError(response.get("error", "GDRNPP worker failed"))
-                return read_packet(job / "result")
+                received = time.perf_counter()
+                response_metadata, result_arrays = read_packet(job / "result")
+                if not isinstance(response_metadata, dict):
+                    raise ValueError("Worker metadata must be an object")
+                response_metadata["request_timing"] = dict(
+                    operation=operation,
+                    client_lock_wait_seconds=acquired - started,
+                    client_process_launch_seconds=process_ready - acquired,
+                    client_packet_write_seconds=sent - process_ready,
+                    client_reply_wait_seconds=received - sent,
+                    client_packet_read_seconds=time.perf_counter() - received,
+                    worker=response.get("timing"),
+                    scope=(
+                        "Serialized worker request through private packet cleanup; "
+                        "excludes acquisition/GUI"
+                    ),
+                )
+                if isinstance(response_metadata.get("report"), dict):
+                    response_metadata["report"]["request_timing"] = response_metadata[
+                        "request_timing"
+                    ]
+                return response_metadata, result_arrays
         except BaseException:
             self._stop()
             raise
         finally:
+            cleanup_started = time.perf_counter()
             try:
                 if job is not None and job.exists():
                     if not job.resolve().is_relative_to(self.root):
                         raise RuntimeError("Request cleanup escaped private worker storage")
                     shutil.rmtree(job)
             finally:
+                if isinstance(response_metadata, dict) and "request_timing" in response_metadata:
+                    response_metadata["request_timing"].update(
+                        client_cleanup_seconds=time.perf_counter() - cleanup_started,
+                        client_total_seconds=time.perf_counter() - started,
+                    )
                 self._lock.release()
 
     def close(self):

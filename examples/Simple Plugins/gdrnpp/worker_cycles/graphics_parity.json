@@ -1,0 +1,132 @@
+{
+  "cases": [
+    {
+      "case": "original_frame3",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "original_frame13",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "original_wrong_object",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000006_frame000002",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000006_frame000045",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000006_frame000096",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000006_frame000139",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000006_frame000206",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000006_frame000273",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000006_frame000329",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000006_frame000388",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000006_frame000409",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000006_frame000462",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000006_frame000496",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000006_frame000501",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000001_frame000001",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000004_frame000000",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000005_frame000007",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000007_frame000003",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000008_frame000001",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000009_frame000000",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000010_frame000005",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000011_frame000004",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000012_frame000002",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000013_frame000002",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000014_frame000002",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000015_frame000001",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000016_frame000008",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000017_frame000003",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000018_frame000002",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000019_frame000001",
+      "shared_and_separate_graphics_bit_identical": true
+    },
+    {
+      "case": "scene000020_frame000003",
+      "shared_and_separate_graphics_bit_identical": true
+    }
+  ]
+}

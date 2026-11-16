@@ -1,0 +1,954 @@
+{
+  "python": "3.13.9",
+  "recipe_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+  "warm_requests": 3,
+  "scenarios": [
+    {
+      "case": "retained_reference",
+      "graphics": false,
+      "samples": [
+        {
+          "cold": true,
+          "client_round_trip_seconds": 8.217131100000188,
+          "report_seconds": {
+            "preprocess": 0.021991100000377628,
+            "network": 0.40717290000065987,
+            "total": 0.4322742999993352,
+            "depth_refinement": 0.7817319999994652,
+            "depth_verification": 0.0558125999996264,
+            "through_depth_verification": 1.2703815999993822
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": false,
+          "recipe_cache_hit": false,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 1.1963276000005862,
+          "report_seconds": {
+            "preprocess": 0.005489099999977043,
+            "network": 0.4107953999991878,
+            "total": 0.4195759000012913,
+            "depth_refinement": 0.7023951999999554,
+            "depth_verification": 0.04884010000023409,
+            "through_depth_verification": 1.171505199999956
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 1.1820291000003635,
+          "report_seconds": {
+            "preprocess": 0.004155900000114343,
+            "network": 0.385879900000873,
+            "total": 0.39257790000010573,
+            "depth_refinement": 0.7030088000010437,
+            "depth_verification": 0.06305599999905098,
+            "through_depth_verification": 1.158981100001256
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 1.182237900000473,
+          "report_seconds": {
+            "preprocess": 0.004661700000724522,
+            "network": 0.3653178000004118,
+            "total": 0.37375839999913296,
+            "depth_refinement": 0.7130127000000357,
+            "depth_verification": 0.06273309999960475,
+            "through_depth_verification": 1.1499832999998034
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ],
+      "cold_seconds": 8.217131100000188,
+      "warm_median_seconds": 1.182237900000473
+    },
+    {
+      "case": "retained_reference",
+      "graphics": true,
+      "samples": [
+        {
+          "cold": true,
+          "client_round_trip_seconds": 9.628878599998643,
+          "report_seconds": {
+            "preprocess": 0.019047000001592096,
+            "network": 0.42379340000115917,
+            "total": 0.44599190000008093,
+            "depth_refinement": 0.822330900000452,
+            "depth_verification": 0.059213299999100855,
+            "through_depth_verification": 1.3280713000003743
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": false,
+          "recipe_cache_hit": false,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1756020,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 1.5715987000003224,
+          "report_seconds": {
+            "preprocess": 0.006429099999877508,
+            "network": 0.4150326999988465,
+            "total": 0.42463710000083665,
+            "depth_refinement": 0.807793899999524,
+            "depth_verification": 0.05701530000078492,
+            "through_depth_verification": 1.2900820999984717
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1756020,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 1.6204003999991983,
+          "report_seconds": {
+            "preprocess": 0.006343000000924803,
+            "network": 0.41172779999942577,
+            "total": 0.42131420000077924,
+            "depth_refinement": 0.8223825000004581,
+            "depth_verification": 0.062438599999950384,
+            "through_depth_verification": 1.3067399000010482
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1756020,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 1.612468199999057,
+          "report_seconds": {
+            "preprocess": 0.005052300000897958,
+            "network": 0.41977240000051097,
+            "total": 0.42788710000058927,
+            "depth_refinement": 0.8290929000013421,
+            "depth_verification": 0.05796360000022105,
+            "through_depth_verification": 1.315518899999006
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1756020,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ],
+      "cold_seconds": 9.628878599998643,
+      "warm_median_seconds": 1.612468199999057
+    },
+    {
+      "case": "connected_independent_capture",
+      "graphics": false,
+      "samples": [
+        {
+          "cold": true,
+          "client_round_trip_seconds": 10.045589100000143,
+          "report_seconds": {
+            "preprocess": 0.017425800000637537,
+            "network": 0.4016372999994928,
+            "total": 0.42217970000092464,
+            "depth_refinement": 1.522197000000233,
+            "depth_verification": 0.14114890000018931,
+            "through_depth_verification": 2.086051899999802
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": false,
+          "recipe_cache_hit": false,
+          "worker_peak_working_set_bytes": 4288512,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 2.280889699999534,
+          "report_seconds": {
+            "preprocess": 0.006367399999362533,
+            "network": 0.4005416999989393,
+            "total": 0.4101943999994546,
+            "depth_refinement": 1.560010000001057,
+            "depth_verification": 0.12851150000096823,
+            "through_depth_verification": 2.0992552999996406
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4288512,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 2.2541956000004575,
+          "report_seconds": {
+            "preprocess": 0.004271499999958905,
+            "network": 0.40231609999864304,
+            "total": 0.4095974000010756,
+            "depth_refinement": 1.550711299998511,
+            "depth_verification": 0.14003070000035223,
+            "through_depth_verification": 2.1006674000000203
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4288512,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 2.0854512000005343,
+          "report_seconds": {
+            "preprocess": 0.0064998999987437855,
+            "network": 0.3986875000009604,
+            "total": 0.408719299999575,
+            "depth_refinement": 1.381850800000393,
+            "depth_verification": 0.1193487999989884,
+            "through_depth_verification": 1.9104225000010047
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4288512,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ],
+      "cold_seconds": 10.045589100000143,
+      "warm_median_seconds": 2.2541956000004575
+    },
+    {
+      "case": "connected_independent_capture",
+      "graphics": true,
+      "samples": [
+        {
+          "cold": true,
+          "client_round_trip_seconds": 10.076580500001,
+          "report_seconds": {
+            "preprocess": 0.0200211000010313,
+            "network": 0.3807464000001346,
+            "total": 0.4038001999997505,
+            "depth_refinement": 1.5416258000004746,
+            "depth_verification": 0.13534310000068217,
+            "through_depth_verification": 2.081340900000214
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": false,
+          "recipe_cache_hit": false,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1822620,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 2.659412599999996,
+          "report_seconds": {
+            "preprocess": 0.004701500000010128,
+            "network": 0.37170179999884567,
+            "total": 0.3790307999988727,
+            "depth_refinement": 1.5134295000007114,
+            "depth_verification": 0.1370786000006774,
+            "through_depth_verification": 2.0299865000015416
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1822620,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 2.767593999999008,
+          "report_seconds": {
+            "preprocess": 0.005277099999148049,
+            "network": 0.40665179999996326,
+            "total": 0.4151734999995824,
+            "depth_refinement": 1.589245099999971,
+            "depth_verification": 0.13377129999935278,
+            "through_depth_verification": 2.1385196999999607
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1822620,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 2.7684207999991486,
+          "report_seconds": {
+            "preprocess": 0.0044781999986298615,
+            "network": 0.4003348999995069,
+            "total": 0.4076342999996996,
+            "depth_refinement": 1.5327582999998413,
+            "depth_verification": 0.13613470000018424,
+            "through_depth_verification": 2.076825000000099
+          },
+          "worker_profile": null,
+          "request_timing": null,
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1822620,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ],
+      "cold_seconds": 10.076580500001,
+      "warm_median_seconds": 2.767593999999008
+    }
+  ],
+  "poses_identical_across_repeats_and_graphics": true,
+  "scope": "Actual isolated worker calls include process/model startup on cold requests, client packet writes, connected input transfer/validation, inference, ICP/fit, requested graphics, result transfer/read and private request cleanup. No camera acquisition, GUI composition, robot or hardware acceptance.",
+  "attribution": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+}

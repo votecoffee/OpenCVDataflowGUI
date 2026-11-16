@@ -1,0 +1,84 @@
+{
+  "reference_commit": "6a9ecfffae7329617238e29f2ba00825c5f96935",
+  "warmup_pairs": 1,
+  "measured_pairs": 3,
+  "cases": [
+    {
+      "case": "scene000006_frame000002",
+      "samples_seconds": {
+        "reference": [
+          1.9051834999991115,
+          2.1459305999997014,
+          1.9059698000000935
+        ],
+        "prepared": [
+          1.543107900000905,
+          1.5092050999992352,
+          1.4385861999999179
+        ]
+      },
+      "reference_median_seconds": 1.9059698000000935,
+      "prepared_median_seconds": 1.5092050999992352,
+      "median_speedup": 1.2628964744427773,
+      "pose_and_fit_identical": true
+    },
+    {
+      "case": "scene000006_frame000409",
+      "samples_seconds": {
+        "reference": [
+          1.051631799999086,
+          1.1241105999997671,
+          1.050220299999637
+        ],
+        "prepared": [
+          0.49032660000011674,
+          0.6904185000003054,
+          0.5917960000006133
+        ]
+      },
+      "reference_median_seconds": 1.051631799999086,
+      "prepared_median_seconds": 0.5917960000006133,
+      "median_speedup": 1.7770174181609817,
+      "pose_and_fit_identical": true
+    },
+    {
+      "case": "scene000006_frame000045",
+      "samples_seconds": {
+        "reference": [
+          2.1947603000007803,
+          2.108909299999141,
+          2.368906399999105
+        ],
+        "prepared": [
+          1.486572800000431,
+          1.5858468000005814,
+          1.6508204999990994
+        ]
+      },
+      "reference_median_seconds": 2.1947603000007803,
+      "prepared_median_seconds": 1.5858468000005814,
+      "median_speedup": 1.3839674172814016,
+      "pose_and_fit_identical": true
+    },
+    {
+      "case": "scene000011_frame000004",
+      "samples_seconds": {
+        "reference": [
+          1.6124348000012105,
+          1.7256799999995565,
+          1.6197826999996323
+        ],
+        "prepared": [
+          1.1202701999991405,
+          0.9336262999986502,
+          0.8683466000002227
+        ]
+      },
+      "reference_median_seconds": 1.6197826999996323,
+      "prepared_median_seconds": 0.9336262999986502,
+      "median_speedup": 1.7349368799936058,
+      "pose_and_fit_identical": true
+    }
+  ],
+  "scope": "Same batched renderer, ICP settings and inputs; only per-level/sparse correspondence preparation differs. No inference, transport or graphics."
+}

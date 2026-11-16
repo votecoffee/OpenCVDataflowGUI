@@ -1,0 +1,1370 @@
+{
+  "python": "3.13.9",
+  "recipe_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+  "warm_requests": 3,
+  "scenarios": [
+    {
+      "case": "retained_reference",
+      "graphics": false,
+      "samples": [
+        {
+          "cold": true,
+          "client_round_trip_seconds": 16.354903499999637,
+          "report_seconds": {
+            "preprocess": 0.034367700000075274,
+            "network": 0.5121945999999298,
+            "total": 0.5520675999996456,
+            "depth_refinement": 0.8157061999991129,
+            "depth_verification": 0.07471999999870604,
+            "through_depth_verification": 1.4432109000008495
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.23228019999987737,
+            "capture_prepare_seconds": 6.8999997893115506e-06,
+            "model_prepare_seconds": 14.316750800000591,
+            "numeric_seconds": 1.443247799999881,
+            "graphics_seconds": 6.38999990769662e-05,
+            "worker_handle_seconds": 15.992349599999216,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 4.300000000512227e-06,
+            "client_process_launch_seconds": 0.012409700000716839,
+            "client_packet_write_seconds": 0.00413499999922351,
+            "client_reply_wait_seconds": 16.319691599999715,
+            "client_packet_read_seconds": 0.015186399999947753,
+            "worker": {
+              "packet_read_seconds": 0.009127400000579655,
+              "handler_seconds": 15.992538500000592,
+              "packet_write_seconds": 0.002666799999133218,
+              "worker_request_seconds": 16.004332700000305
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.003454300000157673,
+            "client_total_seconds": 16.35488869999972
+          },
+          "model_cache_hit": false,
+          "recipe_cache_hit": false,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 1.2804591999993136,
+          "report_seconds": {
+            "preprocess": 0.007006399999227142,
+            "network": 0.4680735000001732,
+            "total": 0.47909729999992123,
+            "depth_refinement": 0.6636626999988948,
+            "depth_verification": 0.10696449999886681,
+            "through_depth_verification": 1.25028999999995
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.0007399999994959217,
+            "capture_prepare_seconds": 3.700000888784416e-06,
+            "model_prepare_seconds": 0.0006761000004189555,
+            "numeric_seconds": 1.2503171999996994,
+            "graphics_seconds": 5.419999979494605e-05,
+            "worker_handle_seconds": 1.251791200000298,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 6.299998858594336e-06,
+            "client_process_launch_seconds": 1.5000005078036338e-06,
+            "client_packet_write_seconds": 0.0017996000005950918,
+            "client_reply_wait_seconds": 1.2580834999989747,
+            "client_packet_read_seconds": 0.016024700000343728,
+            "worker": {
+              "packet_read_seconds": 0.0026415999982418725,
+              "handler_seconds": 1.2519788000008703,
+              "packet_write_seconds": 0.0023951000002853107,
+              "worker_request_seconds": 1.2570154999993974
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.004508900001383154,
+            "client_total_seconds": 1.2804368999986764
+          },
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 1.3303276000006008,
+          "report_seconds": {
+            "preprocess": 0.00705759999982547,
+            "network": 0.5697789999994711,
+            "total": 0.5804552999998123,
+            "depth_refinement": 0.6418295000003127,
+            "depth_verification": 0.08047020000049088,
+            "through_depth_verification": 1.3034548999985418
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.0004352999985712813,
+            "capture_prepare_seconds": 2.200000380980782e-06,
+            "model_prepare_seconds": 0.0004284000006009592,
+            "numeric_seconds": 1.3034724999997707,
+            "graphics_seconds": 3.6699999327538535e-05,
+            "worker_handle_seconds": 1.3043750999986514,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 5.699999746866524e-06,
+            "client_process_launch_seconds": 8.999995770864189e-07,
+            "client_packet_write_seconds": 0.0017829999997047707,
+            "client_reply_wait_seconds": 1.3099873999999545,
+            "client_packet_read_seconds": 0.01460880000013276,
+            "worker": {
+              "packet_read_seconds": 0.002384199999141856,
+              "handler_seconds": 1.3045500999996875,
+              "packet_write_seconds": 0.0021529000005102716,
+              "worker_request_seconds": 1.3090871999993396
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.003922400001101778,
+            "client_total_seconds": 1.330315299999711
+          },
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 1.1429834999999002,
+          "report_seconds": {
+            "preprocess": 0.008692200000950834,
+            "network": 0.42623620000085793,
+            "total": 0.43848130000151286,
+            "depth_refinement": 0.6012551000003441,
+            "depth_verification": 0.07573179999963031,
+            "through_depth_verification": 1.1160801999994874
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.0006439999997382984,
+            "capture_prepare_seconds": 1.999998858082108e-06,
+            "model_prepare_seconds": 0.0005455000009533251,
+            "numeric_seconds": 1.1160947999997006,
+            "graphics_seconds": 3.570000080799218e-05,
+            "worker_handle_seconds": 1.1173220000000583,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 6.000000212225132e-06,
+            "client_process_launch_seconds": 9.000013960758224e-07,
+            "client_packet_write_seconds": 0.0019901999985449947,
+            "client_reply_wait_seconds": 1.1232243000013113,
+            "client_packet_read_seconds": 0.014189499999702093,
+            "worker": {
+              "packet_read_seconds": 0.002775300001303549,
+              "handler_seconds": 1.117500000000291,
+              "packet_write_seconds": 0.002018899998802226,
+              "worker_request_seconds": 1.1222942000003968
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0035518999993655598,
+            "client_total_seconds": 1.1429707000006601
+          },
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ],
+      "cold_seconds": 16.354903499999637,
+      "warm_median_seconds": 1.2804591999993136
+    },
+    {
+      "case": "retained_reference",
+      "graphics": true,
+      "samples": [
+        {
+          "cold": true,
+          "client_round_trip_seconds": 11.497650900000735,
+          "report_seconds": {
+            "preprocess": 0.02489600000080827,
+            "network": 0.4785503000002791,
+            "total": 0.5080913000001601,
+            "depth_refinement": 0.5849556000011944,
+            "depth_verification": 0.07957849999911559,
+            "through_depth_verification": 1.1731996999988041
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.30521869999938644,
+            "capture_prepare_seconds": 9.0000012278324e-06,
+            "model_prepare_seconds": 9.274082500000077,
+            "numeric_seconds": 1.1732309999988502,
+            "graphics_seconds": 0.14502309999988938,
+            "worker_handle_seconds": 10.89756429999943,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 8.700000762473792e-06,
+            "client_process_launch_seconds": 0.014660400000138907,
+            "client_packet_write_seconds": 0.002503699999579112,
+            "client_reply_wait_seconds": 11.436146699999881,
+            "client_packet_read_seconds": 0.040537300001233234,
+            "worker": {
+              "packet_read_seconds": 0.0034169000009569572,
+              "handler_seconds": 10.89765499999885,
+              "packet_write_seconds": 0.10401640000054613,
+              "worker_request_seconds": 11.005088300000352
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0037636999986716546,
+            "client_total_seconds": 11.497625400001198
+          },
+          "model_cache_hit": false,
+          "recipe_cache_hit": false,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1756020,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 1.4155912999995053,
+          "report_seconds": {
+            "preprocess": 0.0058208999998896616,
+            "network": 0.4112465999987762,
+            "total": 0.4214649000005011,
+            "depth_refinement": 0.6176837999992131,
+            "depth_verification": 0.08263950000036857,
+            "through_depth_verification": 1.122428900000159
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.0004666999993787613,
+            "capture_prepare_seconds": 3.0000010156072676e-06,
+            "model_prepare_seconds": 0.00040330000047106296,
+            "numeric_seconds": 1.1224518999988504,
+            "graphics_seconds": 0.12435960000038904,
+            "worker_handle_seconds": 1.247684500000105,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 6.999998731771484e-06,
+            "client_process_launch_seconds": 9.000013960758224e-07,
+            "client_packet_write_seconds": 0.0026603999995131744,
+            "client_reply_wait_seconds": 1.3664427000003343,
+            "client_packet_read_seconds": 0.042780399999173824,
+            "worker": {
+              "packet_read_seconds": 0.009732900000017253,
+              "handler_seconds": 1.2479660999997577,
+              "packet_write_seconds": 0.10765730000093754,
+              "worker_request_seconds": 1.3653563000007125
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0034163999989687,
+            "client_total_seconds": 1.4153120999999373
+          },
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1756020,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 1.9990237999991223,
+          "report_seconds": {
+            "preprocess": 0.00827680000111286,
+            "network": 0.4813873999992211,
+            "total": 0.4953509999995731,
+            "depth_refinement": 1.0902781000004325,
+            "depth_verification": 0.11638140000104613,
+            "through_depth_verification": 1.7028324000002613
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.0006427999996958533,
+            "capture_prepare_seconds": 2.099999619531445e-06,
+            "model_prepare_seconds": 0.0006351000010909047,
+            "numeric_seconds": 1.7028537999995024,
+            "graphics_seconds": 0.14200510000046052,
+            "worker_handle_seconds": 1.8461389000003692,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 5.699999746866524e-06,
+            "client_process_launch_seconds": 1.0000003385357559e-06,
+            "client_packet_write_seconds": 0.002512199998818687,
+            "client_reply_wait_seconds": 1.955109700000321,
+            "client_packet_read_seconds": 0.0385136999993847,
+            "worker": {
+              "packet_read_seconds": 0.0025217999991582474,
+              "handler_seconds": 1.8464223999999376,
+              "packet_write_seconds": 0.10520309999992605,
+              "worker_request_seconds": 1.954147299999022
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.002616600000692415,
+            "client_total_seconds": 1.9987646999998105
+          },
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1756020,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 1.523931800000355,
+          "report_seconds": {
+            "preprocess": 0.0072737999998935265,
+            "network": 0.4501658999997744,
+            "total": 0.4612243999999919,
+            "depth_refinement": 0.6559471000000485,
+            "depth_verification": 0.09089700000004086,
+            "through_depth_verification": 1.2089063999992504
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.000574100000449107,
+            "capture_prepare_seconds": 1.999998858082108e-06,
+            "model_prepare_seconds": 0.0005744000009144656,
+            "numeric_seconds": 1.2089263999987452,
+            "graphics_seconds": 0.15068580000115617,
+            "worker_handle_seconds": 1.360762700000123,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 3.99999953515362e-06,
+            "client_process_launch_seconds": 6.000009307172149e-07,
+            "client_packet_write_seconds": 0.00189689999933762,
+            "client_reply_wait_seconds": 1.4816671000007773,
+            "client_packet_read_seconds": 0.03634260000035283,
+            "worker": {
+              "packet_read_seconds": 0.0026760000000649597,
+              "handler_seconds": 1.3612876000006509,
+              "packet_write_seconds": 0.1167979000001651,
+              "worker_request_seconds": 1.480761500000881
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0036688000000140164,
+            "client_total_seconds": 1.5235843999998906
+          },
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1756020,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.7205122444394518,
+            "contradiction": 0.05481914176589531,
+            "rmse_m": 0.0022108748089522123,
+            "rendered_samples": 8902,
+            "supported_samples": 6414,
+            "unknown_samples": 1256,
+            "occluded_samples": 686,
+            "outside_target_samples": 62
+          },
+          "pose": [
+            [
+              -0.18788117133164198,
+              -0.981942232695572,
+              -0.022138588660634798,
+              -0.03310906421619188
+            ],
+            [
+              -0.9325603920683252,
+              0.18541641632525097,
+              -0.3097609847971061,
+              -0.06602851499113581
+            ],
+            [
+              0.30827225078560344,
+              -0.03755268573532239,
+              -0.9505566869943327,
+              0.7882849881909257
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ],
+      "cold_seconds": 11.497650900000735,
+      "warm_median_seconds": 1.523931800000355
+    },
+    {
+      "case": "connected_independent_capture",
+      "graphics": false,
+      "samples": [
+        {
+          "cold": true,
+          "client_round_trip_seconds": 13.586664799999198,
+          "report_seconds": {
+            "preprocess": 0.027343700001438265,
+            "network": 0.4542816999983188,
+            "total": 0.48613010000008217,
+            "depth_refinement": 1.6422251000003598,
+            "depth_verification": 0.17396039999948698,
+            "through_depth_verification": 2.3028966000001674
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.32020290000036766,
+            "capture_prepare_seconds": 0.007260200000018813,
+            "model_prepare_seconds": 10.365242699999726,
+            "numeric_seconds": 2.302927400000044,
+            "graphics_seconds": 3.9799999285605736e-05,
+            "worker_handle_seconds": 12.995672999999442,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 6.800000846851617e-06,
+            "client_process_launch_seconds": 0.012544100000013714,
+            "client_packet_write_seconds": 0.1197214999992866,
+            "client_reply_wait_seconds": 13.434134600000107,
+            "client_packet_read_seconds": 0.017130300000644638,
+            "worker": {
+              "packet_read_seconds": 0.03589589999864984,
+              "handler_seconds": 12.995861100000184,
+              "packet_write_seconds": 0.0028228999999555526,
+              "worker_request_seconds": 13.03457989999879
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.002795299998979317,
+            "client_total_seconds": 13.586337799999455
+          },
+          "model_cache_hit": false,
+          "recipe_cache_hit": false,
+          "worker_peak_working_set_bytes": 4288512,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 2.4965664999999717,
+          "report_seconds": {
+            "preprocess": 0.007510499999625608,
+            "network": 0.46080239999901096,
+            "total": 0.47284810000019206,
+            "depth_refinement": 1.616479899999831,
+            "depth_verification": 0.22451410000030592,
+            "through_depth_verification": 2.314354000000094
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.0006792999993194826,
+            "capture_prepare_seconds": 0.007544899999629706,
+            "model_prepare_seconds": 0.0005658000009134412,
+            "numeric_seconds": 2.3143728999984887,
+            "graphics_seconds": 4.310000076657161e-05,
+            "worker_handle_seconds": 2.323205999999118,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 5.900001269765198e-06,
+            "client_process_launch_seconds": 6.999998731771484e-07,
+            "client_packet_write_seconds": 0.11252169999897887,
+            "client_reply_wait_seconds": 2.361567500000092,
+            "client_packet_read_seconds": 0.01791620000039984,
+            "worker": {
+              "packet_read_seconds": 0.03243819999988773,
+              "handler_seconds": 2.3253598000010243,
+              "packet_write_seconds": 0.0028913000005559297,
+              "worker_request_seconds": 2.360689300001468
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.004530000000158907,
+            "client_total_seconds": 2.496549999999843
+          },
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4288512,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 2.411738400000104,
+          "report_seconds": {
+            "preprocess": 0.006374300000970834,
+            "network": 0.4302367000000231,
+            "total": 0.44019240000125137,
+            "depth_refinement": 1.6136059999989811,
+            "depth_verification": 0.1833384000001388,
+            "through_depth_verification": 2.237655900000391
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.00045790000149281695,
+            "capture_prepare_seconds": 0.006403800000043702,
+            "model_prepare_seconds": 0.0005779999992228113,
+            "numeric_seconds": 2.2376702000001387,
+            "graphics_seconds": 3.889999970851932e-05,
+            "worker_handle_seconds": 2.2451488000006066,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 6.300000677583739e-06,
+            "client_process_launch_seconds": 8.000006346264854e-07,
+            "client_packet_write_seconds": 0.11422869999842078,
+            "client_reply_wait_seconds": 2.2775943000015104,
+            "client_packet_read_seconds": 0.016403099998569814,
+            "worker": {
+              "packet_read_seconds": 0.028529900000648922,
+              "handler_seconds": 2.2454655000001367,
+              "packet_write_seconds": 0.0025867999993351987,
+              "worker_request_seconds": 2.276582200000121
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0034838000010495307,
+            "client_total_seconds": 2.4117236000001867
+          },
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4288512,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 2.8694678000010754,
+          "report_seconds": {
+            "preprocess": 0.008750099999815575,
+            "network": 0.5006207000005816,
+            "total": 0.5153754999992088,
+            "depth_refinement": 1.9935963000007177,
+            "depth_verification": 0.1822296999998798,
+            "through_depth_verification": 2.6919132999992144
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.00045789999967382755,
+            "capture_prepare_seconds": 0.007676600000195322,
+            "model_prepare_seconds": 0.000794300000052317,
+            "numeric_seconds": 2.691931999999724,
+            "graphics_seconds": 0.000130899999930989,
+            "worker_handle_seconds": 2.7009916999995767,
+            "graphics_requested": false,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 5.600000804406591e-06,
+            "client_process_launch_seconds": 7.999988156370819e-07,
+            "client_packet_write_seconds": 0.11722430000008899,
+            "client_reply_wait_seconds": 2.7348297999997158,
+            "client_packet_read_seconds": 0.013412500000413274,
+            "worker": {
+              "packet_read_seconds": 0.030629200000475976,
+              "handler_seconds": 2.7013771000001725,
+              "packet_write_seconds": 0.002033599999776925,
+              "worker_request_seconds": 2.7340399000004254
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.003972099999373313,
+            "client_total_seconds": 2.8694522000005236
+          },
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4288512,
+          "returned_array_bytes": 0,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ],
+      "cold_seconds": 13.586664799999198,
+      "warm_median_seconds": 2.4965664999999717
+    },
+    {
+      "case": "connected_independent_capture",
+      "graphics": true,
+      "samples": [
+        {
+          "cold": true,
+          "client_round_trip_seconds": 13.288751199999751,
+          "report_seconds": {
+            "preprocess": 0.031058099999427213,
+            "network": 0.5082426999997551,
+            "total": 0.5453518999984226,
+            "depth_refinement": 1.9716907999991236,
+            "depth_verification": 0.1969638999999006,
+            "through_depth_verification": 2.714793199998894
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.30692269999963173,
+            "capture_prepare_seconds": 0.0079239000006055,
+            "model_prepare_seconds": 9.256868299999041,
+            "numeric_seconds": 2.7148288000007597,
+            "graphics_seconds": 0.3110087000004569,
+            "worker_handle_seconds": 12.597552400000495,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 6.099999154685065e-06,
+            "client_process_launch_seconds": 0.01474890000099549,
+            "client_packet_write_seconds": 0.12055529999997816,
+            "client_reply_wait_seconds": 13.104165200000352,
+            "client_packet_read_seconds": 0.04567759999918053,
+            "worker": {
+              "packet_read_seconds": 0.047841599998719175,
+              "handler_seconds": 12.59768559999975,
+              "packet_write_seconds": 0.13000880000072357,
+              "worker_request_seconds": 12.775535999999192
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0035777000011876225,
+            "client_total_seconds": 13.288736099999369
+          },
+          "model_cache_hit": false,
+          "recipe_cache_hit": false,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1822620,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 2.7607411999997566,
+          "report_seconds": {
+            "preprocess": 0.00818040000012843,
+            "network": 0.5225626999999804,
+            "total": 0.5344937999998365,
+            "depth_refinement": 1.4773766000016622,
+            "depth_verification": 0.16303180000068096,
+            "through_depth_verification": 2.175562500000524
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.0006730000004608883,
+            "capture_prepare_seconds": 0.00931019999916316,
+            "model_prepare_seconds": 0.0005634000008285511,
+            "numeric_seconds": 2.1756435000006604,
+            "graphics_seconds": 0.2536657999989984,
+            "worker_handle_seconds": 2.4398559000001114,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 6.800000846851617e-06,
+            "client_process_launch_seconds": 8.999995770864189e-07,
+            "client_packet_write_seconds": 0.1185646000012639,
+            "client_reply_wait_seconds": 2.5921113999993395,
+            "client_packet_read_seconds": 0.04500940000070841,
+            "worker": {
+              "packet_read_seconds": 0.03473179999855347,
+              "handler_seconds": 2.4402619000011327,
+              "packet_write_seconds": 0.11593539999921632,
+              "worker_request_seconds": 2.5909290999989025
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.004548400000203401,
+            "client_total_seconds": 2.7602484000017284
+          },
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1822620,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 2.82390420000047,
+          "report_seconds": {
+            "preprocess": 0.007221400001071743,
+            "network": 0.4741431000002194,
+            "total": 0.485868699999628,
+            "depth_refinement": 1.581123399999342,
+            "depth_verification": 0.16549269999995886,
+            "through_depth_verification": 2.2333521000000474
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.0007687999986956129,
+            "capture_prepare_seconds": 0.00976760000048671,
+            "model_prepare_seconds": 0.0007292999998753658,
+            "numeric_seconds": 2.233370100000684,
+            "graphics_seconds": 0.24155849999988277,
+            "worker_handle_seconds": 2.4861942999996245,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 7.0000005507608876e-06,
+            "client_process_launch_seconds": 8.000006346264854e-07,
+            "client_packet_write_seconds": 0.13167409999914526,
+            "client_reply_wait_seconds": 2.6438450000005105,
+            "client_packet_read_seconds": 0.04431970000041474,
+            "worker": {
+              "packet_read_seconds": 0.03669330000047921,
+              "handler_seconds": 2.4869352000005165,
+              "packet_write_seconds": 0.11923860000024433,
+              "worker_request_seconds": 2.64286710000124
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0037125999988347758,
+            "client_total_seconds": 2.823563900001318
+          },
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1822620,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "cold": false,
+          "client_round_trip_seconds": 2.995596299999306,
+          "report_seconds": {
+            "preprocess": 0.005571600000621402,
+            "network": 0.44893969999975525,
+            "total": 0.45860929999980726,
+            "depth_refinement": 1.6483031000007031,
+            "depth_verification": 0.22249209999972663,
+            "through_depth_verification": 2.3299134999997477
+          },
+          "worker_profile": {
+            "recipe_lookup_seconds": 0.0007030999986454844,
+            "capture_prepare_seconds": 0.008562700000766199,
+            "model_prepare_seconds": 0.0007733999991614837,
+            "numeric_seconds": 2.3299362000016117,
+            "graphics_seconds": 0.31495149999864225,
+            "worker_handle_seconds": 2.654926899998827,
+            "graphics_requested": true,
+            "scope": "Worker handler only; packet transfer and process/import startup are separate"
+          },
+          "request_timing": {
+            "operation": "preview",
+            "client_lock_wait_seconds": 6.300000677583739e-06,
+            "client_process_launch_seconds": 8.000006346264854e-07,
+            "client_packet_write_seconds": 0.11372899999878427,
+            "client_reply_wait_seconds": 2.8285171000006812,
+            "client_packet_read_seconds": 0.04938190000029863,
+            "worker": {
+              "packet_read_seconds": 0.0332431999995606,
+              "handler_seconds": 2.6556034999994154,
+              "packet_write_seconds": 0.1388862000003428,
+              "worker_request_seconds": 2.8277328999993188
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.003557100000762148,
+            "client_total_seconds": 2.9951978999997664
+          },
+          "model_cache_hit": true,
+          "recipe_cache_hit": true,
+          "worker_peak_working_set_bytes": 4292608,
+          "returned_array_bytes": 1822620,
+          "geometry_backend": "numpy_batched_first_return_v1",
+          "worker_implementation_sha256": "f1d8d34910b5a0f3a30a6683c6b3dabdfb4cddf420adff9ddbb4e3f6c8b2cd4a",
+          "fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "pose": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ],
+      "cold_seconds": 13.288751199999751,
+      "warm_median_seconds": 2.82390420000047
+    }
+  ],
+  "poses_identical_across_repeats_and_graphics": true,
+  "scope": "Actual isolated worker calls include process/model startup on cold requests, client packet writes, connected input transfer/validation, inference, ICP/fit, requested graphics, result transfer/read and private request cleanup. No camera acquisition, GUI composition, robot or hardware acceptance.",
+  "attribution": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+}

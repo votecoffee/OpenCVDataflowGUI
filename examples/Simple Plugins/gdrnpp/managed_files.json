@@ -1,5 +1,5 @@
 {
-  "src/opencv_dataflow/simple_gdrnpp/bridge.py": "a25df1144ca443377a5632d68c4b19054422a586c858d32ad047b1b542619964",
+  "src/opencv_dataflow/simple_gdrnpp/bridge.py": "f4863f7dc34aeae5401a22d7ef2b6c6df555582331fe9333b3d1e8dd0a3ae29d",
   "src/opencv_dataflow/simple_gdrnpp/wire.py": "25fd3f6c42f209cd84b2bdf786f9e40a626179238d5a253bc7e553ba83197222",
   "src/opencv_dataflow/simple_gdrnpp/qt_setup.py": "da308cd1c9345e191c27d041388d0275a044ee50735c859f73c63e90ad0b3824",
   "src/opencv_dataflow/simple_gdrnpp/dataflow.py": "c6c9765c939d0800287cfeb392089b8c3700665e739dfff3557e53f5d454fbf9",
@@ -226,7 +226,19 @@
   "examples/Simple Plugins/gdrnpp/performance/provenance.json": "29964fec9bf0e28de60a15883583d28def095d9c15f2859bc30323d4b5975488",
   "examples/Simple Plugins/gdrnpp/performance/review_parity.json": "aa08cc28081eeb6532313bc7cf747952409c44f795d5846c302502ba07112ccb",
   "examples/Simple Plugins/gdrnpp/performance/validation.json": "2c5df0343c0c43c6fcb7f813b6ec22f4f1bc16965055660932f2dff5df9e3214",
-  "examples/Simple Plugins/gdrnpp/performance/README.md": "0a809390e645cdf5ceea1100cf0f54c7275803a0032701b0b4e600f593900e7a",
-  "examples/Simple Plugins/gdrnpp/README.md": "9ed85a6866396dc870b514d0bc01a350bf48a45742a4ada6cfb1483315176b98",
-  "examples/Simple Plugins/gdrnpp/.gitattributes": "41092fe2ba28ad42895aade2a83d9296bf5aa3e0b315b69dbbe2ef66c16850f9"
+  "examples/Simple Plugins/gdrnpp/performance/README.md": "e29f67dc34ef4d975e6c594e8d5dd1d36e3e573dca1798871ec4076e93ac866f",
+  "examples/Simple Plugins/gdrnpp/worker_cycles/after.json": "86bb421eeb7f9e9a2865e050a9677fae83867983fa95b25c7668ac4c14280276",
+  "examples/Simple Plugins/gdrnpp/worker_cycles/before.json": "d31365fe785fcd88298b1898efb53ba3618d59db125e3dd58220ad97f834783b",
+  "examples/Simple Plugins/gdrnpp/worker_cycles/cycles.png": "b32e7fa8248f76c3c1fed8174c9288d7049dba897383bb244b2f69850b067984",
+  "examples/Simple Plugins/gdrnpp/worker_cycles/graphics_parity.json": "d01496c6989d1e3bf34c444668a344f359eb0db6783ea270e14b3af33b2c045b",
+  "examples/Simple Plugins/gdrnpp/worker_cycles/pose_parity.json": "425cecdbcd2e0ee6dcfe80cb9ff5b1f2d4879672068505353a3503b074d373d5",
+  "examples/Simple Plugins/gdrnpp/worker_cycles/preparation.json": "6a51aafa996add1343534459f09ea1b8832d8361140b22e1db116f9fba950d21",
+  "examples/Simple Plugins/gdrnpp/worker_cycles/provenance.json": "4c6fe3caab8747799975044afe3f1476018c1fa57046ade93e7b72f1b350da62",
+  "examples/Simple Plugins/gdrnpp/worker_cycles/summary.json": "21043643efae80ad40f149659e599776808149236bf512b37583d233eb613b07",
+  "examples/Simple Plugins/gdrnpp/worker_cycles/validation.json": "daeba602d51d1ed5f3e527844b1f2506266dd606faa3f81fc9a63fe90dc56d7d",
+  "examples/Simple Plugins/gdrnpp/worker_cycles/README.md": "06964103d83cd566dd7ace3e29e4b4c1cef3836761b18a1b0fa8e25f3386bf46",
+  "examples/Simple Plugins/gdrnpp/worker_cycles/benchmark_worker.py": "2f1e18f09c070fa0fd3ef3f410143e7fadaf9be128f77c41aac6f84da50b52d3",
+  "examples/Simple Plugins/gdrnpp/worker_cycles/ruff.toml": "7e7d24e47b693acea75985d6956a4258252039fa66346e752a3adaa5037ac72e",
+  "examples/Simple Plugins/gdrnpp/README.md": "b63724146f94b313beb9eebde842b2dbe5834d68f062b79d2803fd8f52c8ae3f",
+  "examples/Simple Plugins/gdrnpp/.gitattributes": "c3b869d0e23503ff73f7aeab7a266bf0b5f267450eee93702dbb462e186bef74"
 }
