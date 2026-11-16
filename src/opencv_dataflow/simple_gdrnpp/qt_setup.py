@@ -174,7 +174,7 @@ class GDRNPPSetupDialog(QDialog):
             ("distance_tolerance_m", "Depth tolerance", 0.01, 100, 2),
             ("minimum_coverage", "Minimum measured support", 10, 100, 1),
             ("maximum_contradiction", "Maximum contradiction", 0, 100, 1),
-            ("maximum_correction_m", "Maximum depth correction", 0.01, 100, 2),
+            ("maximum_correction_m", "Maximum translation correction", 0.01, 100, 2),
         ]:
             widget = QSpinBox() if decimals == 0 else QDoubleSpinBox()
             if decimals:
@@ -187,9 +187,14 @@ class GDRNPPSetupDialog(QDialog):
             widget.valueChanged.connect(lambda value, key=key: self._setting_changed(key))
             form.addRow(text, widget)
             self.fields[key] = widget
-        self.depth_refine = QCheckBox("Optional median-depth translation correction")
+        self.depth_refine = QCheckBox("Optional depth refinement")
         self.depth_refine.toggled.connect(self._invalidate)
         form.addRow(self.depth_refine)
+        self.refine_method = QComboBox()
+        self.refine_method.addItem("Axial median translation", "median_translation")
+        self.refine_method.addItem("Robust projective ICP (local 6D)", "projective_icp_v1")
+        self.refine_method.currentIndexChanged.connect(self._invalidate)
+        form.addRow("Depth alignment method", self.refine_method)
         hint = QLabel(
             "Setup imports a trained object model. It does not train a new object.\n"
             "Depth acceptance and pose/fit colors remain independent of detector confidence."
@@ -379,6 +384,11 @@ class GDRNPPSetupDialog(QDialog):
             for name, widget in self.fields.items():
                 widget.setValue(self.summary["settings"][name] * self._display_factor(name))
             self.depth_refine.setChecked(self.summary["settings"]["depth_refine"])
+            self.refine_method.setCurrentIndex(
+                self.refine_method.findData(
+                    self.summary["settings"].get("depth_refinement", "median_translation")
+                )
+            )
             self.viewer.set_image(pixmap(ImageArray(arrays["rgb"], "rgb")))
             self._paint_boxes()
             self.reference_info.setText(
@@ -428,6 +438,7 @@ class GDRNPPSetupDialog(QDialog):
                     for k, w in self.fields.items()
                 },
                 "depth_refine": self.depth_refine.isChecked(),
+                "depth_refinement": self.refine_method.currentData(),
             },
             detections=detections,
         )
@@ -601,7 +612,8 @@ class GDRNPPSetupDialog(QDialog):
         )
         self.tabs.setCurrentIndex(2)
         self.status.setText(
-            "Preview completed. Acceptance is from independent measured-depth gates."
+            "Preview completed. Acceptance uses measured-depth gates. "
+            "Refinement reuses these measurements when enabled."
         )
         self.result_cloud_button.setEnabled(True)
 

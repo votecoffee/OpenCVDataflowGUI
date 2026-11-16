@@ -1,0 +1,77 @@
+{
+  "case": "wrong_object",
+  "capture_id": "tless_scene000003_frame000010",
+  "accepted": false,
+  "raw_pose": {
+    "target_present": false,
+    "raw_pose_is_extra": true
+  },
+  "refined_pose": {
+    "target_present": false,
+    "raw_pose_is_extra": true
+  },
+  "fit": {
+    "status": "rejected",
+    "reason": "fit_gates",
+    "coverage": 0.0,
+    "contradiction": 0.8137387998913929,
+    "rmse_m": null,
+    "rendered_samples": 11049,
+    "supported_samples": 0,
+    "unknown_samples": 2058,
+    "occluded_samples": 0,
+    "outside_target_samples": 360
+  },
+  "depth_refinement": {
+    "method": "projective_icp_v1",
+    "status": "unavailable",
+    "reason": "no_safe_fit_improvement",
+    "stop_reason": "insufficient_correspondences",
+    "settings": {
+      "strides": [
+        4,
+        2,
+        1
+      ],
+      "iterations_per_level": 4,
+      "maximum_correspondence_m": 0.02,
+      "maximum_translation_m": 0.02,
+      "maximum_rotation_degrees": 15.0,
+      "minimum_correspondences": 50
+    },
+    "fit_before": {
+      "status": "rejected",
+      "reason": "fit_gates",
+      "coverage": 0.0,
+      "contradiction": 0.8137387998913929,
+      "rmse_m": null,
+      "rendered_samples": 11049,
+      "supported_samples": 0,
+      "unknown_samples": 2058,
+      "occluded_samples": 0,
+      "outside_target_samples": 360
+    },
+    "proposed_fit": {
+      "status": "rejected",
+      "reason": "fit_gates",
+      "coverage": 0.0,
+      "contradiction": 0.8137387998913929,
+      "rmse_m": null,
+      "rendered_samples": 11049,
+      "supported_samples": 0,
+      "unknown_samples": 2058,
+      "occluded_samples": 0,
+      "outside_target_samples": 360
+    },
+    "iterations": [],
+    "minimum_observed_rank": 0,
+    "all_solved_systems_full_rank": false,
+    "same_depth_used_for_refinement_and_verification": true,
+    "pose_labels_used": false,
+    "before_quality": -0.8137387998913929,
+    "proposed_quality": -0.8137387998913929
+  },
+  "annotated_pose_depth_fit_evaluation_only": [],
+  "pose_labels_entered_runtime": false,
+  "refinement_seconds": 1.5780995999998595
+}

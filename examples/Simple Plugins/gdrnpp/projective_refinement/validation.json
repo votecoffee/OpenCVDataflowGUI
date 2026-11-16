@@ -1,0 +1,142 @@
+{
+  "date": "2026-11-16",
+  "worker_tests": {
+    "passed": 27,
+    "subtests": 4,
+    "skipped": 4,
+    "scope": "Two host-only modules and two opt-in ML tests skipped in base worker run"
+  },
+  "real_checkpoint_bridge_tests": {
+    "passed": 6,
+    "includes_two_opt_in_real_model_tests": true
+  },
+  "host_popup_tests": {
+    "passed": 7
+  },
+  "actual_native_check": {
+    "scope": "Focused actual offscreen popup and installed-host worker check; no new-object training or physical grasp qualification",
+    "host_popup_reference_restored": true,
+    "local_method_preview_depth_accepted": true,
+    "raw_pose_retained": true,
+    "stage_updated_private_draft_only": true,
+    "staged_method_restored_on_reopen": true,
+    "original_recipe_sha256": "420de5ab5f14fcb4df6236d0845d774527c984ebca101c55f2d8d7785f46c80e",
+    "original_recipe_unchanged": true,
+    "native_graph_saved_reopened_and_depth_accepted": true,
+    "graphics_off_preserved_pose": true,
+    "repeated_model_and_recipe_cache_hit": true,
+    "host_torch_imported": false,
+    "fit_settings": {
+      "distance_tolerance_m": 0.005,
+      "minimum_coverage": 0.7,
+      "maximum_contradiction": 0.1
+    },
+    "same_depth_used_for_refinement_and_verification": true,
+    "candidate_fit": {
+      "status": "accepted",
+      "reason": "fit_gates",
+      "coverage": 0.7205122444394518,
+      "contradiction": 0.05481914176589531,
+      "rmse_m": 0.0022108748089522123,
+      "rendered_samples": 8902,
+      "supported_samples": 6414,
+      "unknown_samples": 1256,
+      "occluded_samples": 686,
+      "outside_target_samples": 62
+    }
+  },
+  "saved_review_checks": {
+    "scope": "Saved file reading and colored native-cloud contracts; recorded pose decisions preserved, not a new inference or pick",
+    "managed_member_hashes_verified": 59,
+    "runs": [
+      {
+        "project": "frame3/review_project.json",
+        "profile": "debug",
+        "file_reads_passed": true,
+        "recorded_depth_accepted": 0,
+        "colored_cloud_points": 40682
+      },
+      {
+        "project": "frame3/review_project.json",
+        "profile": "lean",
+        "file_reads_passed": true,
+        "recorded_depth_accepted": 0,
+        "colored_cloud_points": 40682
+      },
+      {
+        "project": "frame13/review_project.json",
+        "profile": "debug",
+        "file_reads_passed": true,
+        "recorded_depth_accepted": 0,
+        "colored_cloud_points": 39467
+      },
+      {
+        "project": "frame13/review_project.json",
+        "profile": "lean",
+        "file_reads_passed": true,
+        "recorded_depth_accepted": 0,
+        "colored_cloud_points": 39467
+      },
+      {
+        "project": "wrong_object/review_project.json",
+        "profile": "debug",
+        "file_reads_passed": true,
+        "recorded_depth_accepted": 0,
+        "colored_cloud_points": 45300
+      },
+      {
+        "project": "wrong_object/review_project.json",
+        "profile": "lean",
+        "file_reads_passed": true,
+        "recorded_depth_accepted": 0,
+        "colored_cloud_points": 45300
+      },
+      {
+        "project": "projective_refinement/frame3/review_project.json",
+        "profile": "debug",
+        "file_reads_passed": true,
+        "recorded_depth_accepted": 0,
+        "colored_cloud_points": 40628
+      },
+      {
+        "project": "projective_refinement/frame3/review_project.json",
+        "profile": "lean",
+        "file_reads_passed": true,
+        "recorded_depth_accepted": 0,
+        "colored_cloud_points": 40628
+      },
+      {
+        "project": "projective_refinement/frame13/review_project.json",
+        "profile": "debug",
+        "file_reads_passed": true,
+        "recorded_depth_accepted": 1,
+        "colored_cloud_points": 39308
+      },
+      {
+        "project": "projective_refinement/frame13/review_project.json",
+        "profile": "lean",
+        "file_reads_passed": true,
+        "recorded_depth_accepted": 1,
+        "colored_cloud_points": 39308
+      },
+      {
+        "project": "projective_refinement/wrong_object/review_project.json",
+        "profile": "debug",
+        "file_reads_passed": true,
+        "recorded_depth_accepted": 0,
+        "colored_cloud_points": 45300
+      },
+      {
+        "project": "projective_refinement/wrong_object/review_project.json",
+        "profile": "lean",
+        "file_reads_passed": true,
+        "recorded_depth_accepted": 0,
+        "colored_cloud_points": 45300
+      }
+    ]
+  },
+  "wheel": {
+    "license_notices_present": true,
+    "weights_bundled": false
+  }
+}

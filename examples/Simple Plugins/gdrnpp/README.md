@@ -3,7 +3,7 @@
 Open `frame3/review_project.json`, `frame13/review_project.json` or
 `wrong_object/review_project.json` for fast offline review with the native RGB
 flyaround thumbnail/popout. These load recorded actual GDRNPP results; source
-blocks passing means successful file reading. **All recorded poses are rejected**
+blocks passing means successful file reading. **All baseline recorded poses are rejected**
 by unchanged measured-depth gates. The wrong-object case deliberately presents
 an object-8 rectangle to the object-6 model. No automatic detector or physical
 grasp acceptance is claimed.
@@ -49,6 +49,38 @@ Select the `cloud` output for native flyaround. Each block/draft owns a bounded
 isolated worker and keeps its model/recipe loaded between calls. Turning
 graphics off skips the overlay/cloud render work. Cancellation retires that
 worker so an older computation cannot publish into the current draft.
+
+## Optional local depth alignment
+
+`setup_icp_project.json` opens a separate opt-in setup with bounded robust
+projective ICP. In the popup enable depth refinement and choose **Robust
+projective ICP (local 6D)**. The original `setup_project.json` and baseline
+assets/results are unchanged. Use the same separately installed worker.
+
+`projective_refinement/frame3/review_project.json`,
+`projective_refinement/frame13/review_project.json` and
+`projective_refinement/wrong_object/review_project.json` retain full overlays,
+native RGB flyaround clouds, original RGB and explicit decision labels. The
+comparison image and summary JSON retain all three development cases.
+
+All use the same 5 mm / >=70% support / <=10% contradiction gates. Frame 3
+reaches 76.27% support / 10.33% contradiction and remains rejected. Frame 13
+reaches 72.05% / 5.48% and passes these depth gates, but its translation error
+against annotated pose **worsens from 1.067 to 4.251 mm** (rotation improves
+from 3.247 to 2.386 degrees). The wrong-object control remains rejected.
+Published annotated poses also fail the raw-depth gates on both positives;
+sensor/model disagreement is not solely network pose error. Those labels enter
+evaluation only. This uses the same depth for refinement and verification,
+not an independent measurement or grasp qualification.
+
+The original NumPy/OpenCV local solver uses first-return CAD, measured rays at
+strides 4/2/1, robust point-to-plane updates, explicit rank and motion bounds.
+It retains raw pose and rejects updates that worsen any gate violation. No
+extra Open3D dependency is needed. See the [point-to-plane mathematical
+background](https://www.open3d.org/docs/release/tutorial/pipelines/icp_registration.html).
+Sampled positive refinement took about 6.4-7.2 seconds on CPU; no full-cycle
+speed or broad accuracy claim is made. Independent scenes, GPU profiling and
+actual new-object training remain open.
 
 ## Attribution
 

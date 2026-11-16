@@ -108,6 +108,17 @@ def test_stage_updates_only_the_supplied_inspector_draft(app, tmp_path):
     assert applied["recipe_path"] == "" and client.closed.wait(2)
 
 
+def test_depth_alignment_method_is_an_explicit_draft_choice(app, tmp_path):
+    dialog, client, applied, draft = opened(app, tmp_path)
+    assert dialog._draft()["settings"]["depth_refinement"] == "median_translation"
+    dialog.depth_refine.setChecked(True)
+    dialog.refine_method.setCurrentIndex(dialog.refine_method.findData("projective_icp_v1"))
+    assert dialog._draft()["settings"]["depth_refinement"] == "projective_icp_v1"
+    assert dialog._draft()["settings"]["distance_tolerance_m"] == 0.005
+    dialog.reject()
+    assert client.closed.wait(2) and draft == applied
+
+
 def test_edit_cancels_pending_preview_and_discards_older_result(app, tmp_path):
     dialog, client, applied, draft = opened(app, tmp_path)
     client.started.clear()

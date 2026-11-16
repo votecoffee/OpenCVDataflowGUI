@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "locate",
+      "type": "3d.simple_gdrnpp",
+      "name": "SimpleGDRNPP \u00b7 optional local depth alignment",
+      "parameters": {
+        "recipe_path": "assets/tless6_icp.gdrnpp",
+        "sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+        "models_dir": "",
+        "mode": "Retained reference",
+        "depth_scale_to_m": 1.0,
+        "render_overlay": true,
+        "render_cloud": true
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "exposed_inputs": [
+        "image",
+        "depth",
+        "camera",
+        "detections",
+        "capture_id"
+      ],
+      "exposed_outputs": [
+        "report",
+        "pose",
+        "poses",
+        "accepted_count",
+        "overlay",
+        "cloud"
+      ]
+    }
+  ],
+  "connections": []
+}
