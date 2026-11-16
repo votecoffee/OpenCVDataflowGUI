@@ -286,6 +286,10 @@ class CounterInput(Block):
     block_type, subtype = "Input", "Synthetic"
     outputs = (Port("value", "data"),)
     defaults = {"start": 1, "step": 1}
+    parameter_help = {
+        "start": "First integer value after reset.",
+        "step": "Integer increment; zero repeats Start as a fixed selector value.",
+    }
 
     def reset_runtime(self):
         self.next_value = None
@@ -295,8 +299,8 @@ class CounterInput(Block):
 
     def process(self, inputs):
         start, step = (self.parameters[k] for k in ("start", "step"))
-        if type(start) is not int or type(step) is not int or step == 0:
-            raise ValueError("Counter start and nonzero step must be whole numbers")
+        if type(start) is not int or type(step) is not int:
+            raise ValueError("Counter start and step must be whole numbers")
         value = getattr(self, "next_value", None)
         value = int(start) if value is None else value
         self.next_value = value + int(step)

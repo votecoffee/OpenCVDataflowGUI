@@ -23,6 +23,7 @@
 | Dialogs, captures and worker training | [Plugin dialogs](plugin-dialogs.md) |
 | Pixel formats and high-depth images | [Image formats](image-formats.md) |
 | Ordered multipage buffers, typed page metadata and decode limits | [Multipage TIFF in memory](multipage-memory.md) |
+| Random TIFF pages, bounded LRU caching and snapshot refresh | [On-demand TIFF pages](tiff-page-access.md) |
 | Reader/encoder availability and native image page inventory | [Codec preflight](codec-preflight.md) |
 | Stored optical-flow fields, native I/O and verified image-pair association | [Flow files](flow-files.md) |
 | Seeded MIL tracking, loss/reseed and native confidence limits | [MIL tracking](mil-tracking.md) |

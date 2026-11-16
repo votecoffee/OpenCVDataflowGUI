@@ -149,7 +149,8 @@ agree on one part ticket and the group receives an explicit final judgment. No
 camera or external writes are needed.
 
 Counter input emits exact integer values on its data `value` port, configured by
-`start` and nonzero `step`, with runtime progress retained between runs. Its separate
+`start` and `step`, with runtime progress retained between runs. A zero step repeats
+Start as a fixed selector, while each activation still issues a fresh ticket. Its separate
 automatic `ticket` output identifies the counter acquisition; use **value** when
 feeding the cameras' ticket inputs. It is a demonstration source, not a PLC driver.
 Production part identities must remain unique across workpieces and resets.

@@ -902,6 +902,7 @@ def builtin_registry():
     from .text_rules import VerifyText
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
     from .tiff_files import TiffFile, WriteTiffFile
+    from .tiff_page_access import TiffPageAccess
     from .tiled_mosaic import RegisterScanLayout, RenderMosaicTile
     from .tilted_statistics import TiltedWindowStatistics
     from .translation_registration import EstimateTranslation
@@ -934,6 +935,7 @@ def builtin_registry():
         VideoFile,
         DecodeVideo,
         TiffFile,
+        TiffPageAccess,
         RawYuvFile,
         *RAW_SENSOR_BLOCKS,
         Camera,

@@ -187,6 +187,7 @@ BINDINGS = {
     "input.depth_file": "imdecode",
     "input.file": "imdecode imdecodeWithMetadata",
     "input.tiff_file": "imdecodemulti",
+    "input.tiff_page": "imdecodemulti",
     "input.video_file": "VideoCapture.open VideoCapture.read",
     "cv.decode_video": "VideoCapture.open VideoCapture.read VideoCapture.release",
     "inspect.affine": "estimateAffine2D estimateAffinePartial2D",

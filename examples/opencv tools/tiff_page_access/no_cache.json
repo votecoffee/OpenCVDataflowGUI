@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "page",
+      "type": "input.tiff_page",
+      "name": "Read TIFF page on demand",
+      "parameters": {
+        "path": "assets/mixed-stack.tiff",
+        "path_base": "project",
+        "page_index": 256,
+        "page_ticket": true,
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "refresh": "on_change",
+        "cache_pages": 0,
+        "cache_bytes": 524288,
+        "maximum_encoded_bytes": 134217728,
+        "maximum_page_pixels": 16777216,
+        "maximum_decoded_bytes": 268435456
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "page_index",
+        "reset",
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "page_count",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Original 257-page stack and access scope",
+      "description": "All pages, reference formulas, annotations and project content are original OpenCVDataflowGUI contributor work, MIT. No customer or third-party media. 257 top-left TIFF pages alternate uint16 gray, uint8 BGR, float32 gray and float64 gray; negative/HDR values are deliberate. Select a zero-based Page index or wire the integer input. The wired counter uses Start as a selector and Step=0; change its Start to request another page without changing the TIFF block. Repeat Run once to observe cache hits and fresh tickets. Only requested pages are decoded; intermediate TIFF directories still need traversal. Two-page/512 KiB LRU bounds raw retained pages. On-change checks file identity/times; Verify content hashes each request; Pinned ignores changes until reset/path change. Page-outside-stack and workspace-limit cases deliberately emit no image. Content/page pixel grids do not establish camera or physical calibration.",
+      "parameters": {},
+      "position": [
+        360,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

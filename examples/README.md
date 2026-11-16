@@ -93,7 +93,7 @@ See the [Simple Plugins guide](<Simple Plugins/README.md>) for setup, real-data 
 | [SimplePatternMatch](<Simple Plugins/pattern_matching/asymmetric_brackets/README.md>) | Locate synthetic brackets with direct and wired recipes, and inspect the pose and edge overlays. |
 | [SimpleSegmentation](<Simple Plugins/pixel_segmentation/README.md>) | Train foreground masks for brick mortar, a cup rim, PCB laminate, and inventory in real totes. |
 | [Simple3DMeasure](<Simple Plugins/3d_measure/README.md>) | Review plane measurements on real T-LESS clouds and known/raised/missing generated surfaces with native RGB flyaround. |
-| [SimpleGDRNPP (experimental)](<Simple Plugins/gdrnpp/README.md>) | Review three rejected T-LESS pose results without inference, or explicitly load the isolated-worker setup plugin. [Cold/warm worker measurements and benchmark](<Simple Plugins/gdrnpp/worker_cycles/README.md>) provide supporting evidence. New-object training and broader pose accuracy remain open. |
+| [SimpleGDRNPP (experimental)](<Simple Plugins/gdrnpp/README.md>) | Review three rejected T-LESS pose results without inference, or explicitly load the isolated-worker setup plugin. [Cold/warm worker measurements](<Simple Plugins/gdrnpp/worker_cycles/README.md>) and [same-client resource preparation](<Simple Plugins/gdrnpp/resource_prepare/README.md>) provide supporting evidence. New-object training and broader pose accuracy remain open. |
 
 ## Industrial integration
 
@@ -271,6 +271,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Subpixel template locations](<opencv tools/subpixel_template/README.md>) | Compare integer and refined template matches against two known fractional placements. |
 | [Temporal non-local means](<opencv tools/temporal_nlm/README.md>) | Denoise the middle frame of a short sequence and preserve its ticket. |
 | [TIFF page sequence](<opencv tools/tiff_page_sequence/README.md>) | Replay a three-page 16-bit TIFF as separately ticketed images. |
+| [TIFF page access](<opencv tools/tiff_page_access/README.md>) | Select arbitrary pages from a 257-page mixed-depth stack, inspect bounded cache hits and conversions, and exercise explicit range/workspace errors. |
 | [Tile image](<opencv tools/tile_image/README.md>) | Repeat a reference in a 2 × 3 grid and find all six copies with template matching. |
 | [Multiband inspection mosaics](<opencv tools/multiband_mosaic/README.md>) | Compare Float64/native composition, exposure gain and aligned tile halos on a real PCB photograph, with an explicit native-depth guard. |
 | [Tiled inspection mosaic](<opencv tools/tiled_scan_mosaic/README.md>) | Register twelve views and render bounded windows beyond dense-canvas limits, preserving source coordinates. |

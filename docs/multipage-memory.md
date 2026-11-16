@@ -5,6 +5,11 @@ Use **OpenCV → Image Codecs → Codecs** to encode an ordered image group with
 creates a group; **Unbatch serial entries** emits the decoded pages individually.
 The existing TIFF file blocks remain available for recorded acquisition and saving.
 
+For random file-page requests beyond a 64-image group, use
+[Read TIFF page on demand](tiff-page-access.md), with joint page/byte cache limits,
+snapshot refresh policies and a wired integer selector. It reads up to 1024
+inspected TIFF pages individually without retaining every decoded page.
+
 ## Pixels and page context
 
 **Encoded** carries an immutable `EncodedPages` packet containing TIFF bytes and

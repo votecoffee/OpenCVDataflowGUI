@@ -5024,8 +5024,8 @@ Ticket mode and fixed value are common inspector controls.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `start` | `1` |  |
-| `step` | `1` |  |
+| `start` | `1` | First integer value after reset. |
+| `step` | `1` | Integer increment; zero repeats Start as a fixed selector value. |
 
 ## Demo image (`input.demo`)
 
@@ -5388,6 +5388,34 @@ Ticket mode and fixed value are common inspector controls.
 | `page_ticket` | `true` | Use filename and page index for automatic tickets. |
 | `color_format` | `"unchanged"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` |
 | `pixel_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` |
+
+## Read TIFF page on demand (`input.tiff_page`)
+
+Input / Files
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+Inputs: `page_index` (integer, optional), `reset` (boolean, optional).
+
+Input `page_index` — Integer page to read now; connected indices must emit. Order is arbitrary.
+
+Input `reset` — True discards the snapshot and LRU before this request, including Pinned mode.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Classic/BigTIFF snapshot, up to 1024 pages; no native file handle is retained. |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
+| `page_index` | `0` | Value must be a whole number between 0 and 1023. Zero-based page. A wired Page index takes precedence. |
+| `page_ticket` | `true` | Automatic filename#page tickets with fresh acquisition identities. |
+| `color_format` | `"unchanged"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` Unchanged preserves native gray/BGR/BGRA order. TIFF RGB decodes as BGR. |
+| `pixel_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` Unchanged preserves uint8/uint16/float32/float64 samples, including HDR. |
+| `refresh` | `"on_change"` | `on_change`, `verify_content`, `pinned` On change checks file identity/size/times. Verify content reads/hashes each request. Pinned ignores external file changes until reset/path change. |
+| `cache_pages` | `4` | Value must be a whole number between 0 and 64. Maximum retained raw pages using least-recently-used eviction. 0=off. |
+| `cache_bytes` | `16777216` | Value must be a whole number between 0 and 1.34218e+08. Maximum retained raw sample bytes. Oversize pages bypass cache. 0=off. |
+| `maximum_encoded_bytes` | `134217728` | Value must be a whole number between 8 and 1.34218e+08. |
+| `maximum_page_pixels` | `16777216` | Value must be a whole number between 1 and 1.67772e+07. Checked from the TIFF directory before native pixel decoding. |
+| `maximum_decoded_bytes` | `268435456` | Value must be a whole number between 1 and 5.36871e+08. Conservative raw/conversion workspace estimate, excluding retained cache, encoded snapshot, native codec internals and runtime copies. Not a hard RSS limit. |
 
 ## Video file (`input.video_file`)
 
