@@ -827,6 +827,7 @@ def builtin_registry():
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .photo_filters import PHOTO_FILTER_BLOCKS
     from .pick_selection import SelectPickCandidate
+    from .pixel_moments import PixelMoments
     from .plugins import (
         BIN_PICKING_TYPES,
         GEOMETRIC_MATCHER_TYPES,
@@ -1146,6 +1147,7 @@ def builtin_registry():
         *NATIVE_TRACKER_BLOCKS,
         MILSequence,
         ColorDistributionTracker,
+        PixelMoments,
         TrackConveyorParts,
         ConveyorDemo,
         FinalJudgment,

@@ -5,6 +5,11 @@ Use them for temporal operations or learning a reference image. Native flow and
 background models are under **OpenCV > Video Analysis (video)**. Built-in
 sequence workflows and reference memory are under **Custom > Sequence**.
 
+`sequence.pixel_moments` is under **OpenCV > Image Processing (imgproc) > Temporal
+statistics**. It measures selected-channel mean/variance and paired covariance
+using per-pixel observation counts and optional exponential weights. See
+[numerical support, pairing and memory limits](temporal-pixel-statistics.md).
+
 Open [sequence memory](<../examples/demos/sequence_memory/sequence_memory.json>).
 Run continuously, or press F5 several times. The source initially holds a textured
 patch still and then moves it. The example compares background subtraction,

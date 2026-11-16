@@ -1,0 +1,66 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "cases": [
+    "stationary_noise",
+    "channel_covariance",
+    "paired_sources",
+    "exponential",
+    "masked_history",
+    "ticket_mismatch",
+    "memory_limit"
+  ],
+  "signal": [
+    -3,
+    -2,
+    -1,
+    0,
+    1,
+    2,
+    3,
+    0
+  ],
+  "orthogonal": [
+    1,
+    -1,
+    1,
+    -1,
+    1,
+    -1,
+    1,
+    -1
+  ],
+  "size": [
+    64,
+    48
+  ],
+  "count": 8,
+  "sample_variance_signal": 4.0,
+  "gain_boundary_x": 32,
+  "asset_sha256": {
+    "color_00.png": "6542a569f57da84cc91b7a13de796691bcd3e3c58be112d08b3352a30e97c570",
+    "color_01.png": "2b8ed5e09dd4d9aa0eda0aa6a32ad28d0a455fd8529a6fa61375f3fb08544e7a",
+    "color_02.png": "231c00b443097b33dd6cee3796a462e2e8f0352aac66c3904dda97c4d4a253c0",
+    "color_03.png": "1e1c7025ff8df027a5a48b0739c8d33d6a6f285c6271c3f166bfd7199052d6f4",
+    "color_04.png": "ae523eabe2a4fbbd02a2af43e064d4161c870c91eb7d42c23aa18bb4b9c9a7bb",
+    "color_05.png": "c09451c9aba34e2b004e3b937e0ff3b40971f2077bbd4c810463b704f55bbd7d",
+    "color_06.png": "bf344296c5e96920ae5446f2ed3d2a71ee2c1cf31b50e5d4d24ccca4e0a36159",
+    "color_07.png": "1e1c7025ff8df027a5a48b0739c8d33d6a6f285c6271c3f166bfd7199052d6f4",
+    "x_00.png": "20f9d2a60be3a19a13e181ca54c08d1848c9cbd462adeaad0389a35b8c9ef458",
+    "x_01.png": "f79ad8979df93d71939194daf05e77bc578838a9e5e0eaf170ca83e8c0e1c56a",
+    "x_02.png": "6b0454e252ef8c7eb123578882f017a31b58542a3dcc93a393cc726025913ebb",
+    "x_03.png": "66f7ccce3cec8bcd2485814a394d5038d725df42a1d32ad506c6834d744a3a50",
+    "x_04.png": "7731c21fb3867167874aab1b8afa717d4dd7bddcd09f4d4a3bbc4a42c4870914",
+    "x_05.png": "f1f7de9f6047940523b48521c970f4e0327d43e0716e85456dc14cfde2cbb2c8",
+    "x_06.png": "2c627d5e841e6baf2cfd6a9bbcadd1325e31530a4f6baa4cd29bfbe24aab0a17",
+    "x_07.png": "66f7ccce3cec8bcd2485814a394d5038d725df42a1d32ad506c6834d744a3a50",
+    "y_00.png": "d01d6fb0eae5775f7126b78c37f879a3526ef285c3bf6acc0baef34efd3479f5",
+    "y_01.png": "512679de909b9874c266b562d2485c860132678daf1b891ebc61517dc25c598b",
+    "y_02.png": "93eb89bd6568ac76d442553732a4210d4efd8a07c58160a456fbf58d8b143d7f",
+    "y_03.png": "ea46cc296f8e8b536795aa135a05742694293badcdf18fa5ddbf85db5ec15faf",
+    "y_04.png": "f9a0e97d06f86ec5920f26e6fdcdf8c97c351c1d7239084a1c7f6d9c1c2d20d7",
+    "y_05.png": "28e9ec7a46c5da5e9e5d9320c4428d25c9d7fc0397311d87b0abefab21871b32",
+    "y_06.png": "16d8bb3dd235985a8e989c87a6f95f0e5e8da1ac98e9e79798f0a220c71af786",
+    "y_07.png": "ea46cc296f8e8b536795aa135a05742694293badcdf18fa5ddbf85db5ec15faf"
+  }
+}

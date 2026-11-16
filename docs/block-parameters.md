@@ -8732,6 +8732,46 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `maximum_variance` | `75.0` |  |
 | `complexity_reduction` | `0.05` | Evidence threshold for retaining a mixture. Zero disables it. |
 
+## Temporal pixel statistics (`sequence.pixel_moments`)
+
+Sequence / Temporal statistics
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `other` (image, optional), `learn` (boolean, optional).
+
+Input `image` — Finite uint8/uint16/int16/float32/float64 gray/RGB(A); absolute samples ≤1e100.
+
+Input `other` — Optional paired image with equal dimensions; connected inputs must emit.
+
+Input `learn` — False freezes the model but allows outputs from existing eligible observations.
+
+Input `mask` — Selected pixels learn and appear in maps; excluded pixels are not observations.
+
+Input `region` — Rectangle/circle/polygon intersection with Mask in Image coordinates.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Value must be a whole number between 1 and 10000. Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` | Value must be a whole number between 1 and 64. |
+| `max_bytes_mb` | `256.0` | Value must be a finite number between 0.001 and 4096. Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Value must be a finite number between 0 and 3.6e+06. Reset after this ingress gap; zero keeps state across pauses. |
+| `method` | `"cumulative"` | `cumulative`, `exponential` Cumulative or exponentially weighted eligible observations per pixel. |
+| `normalization` | `"sample"` | `population`, `sample` Population divides by sum of weights; sample uses W - sum(w²)/W. |
+| `alpha` | `0.05` | Value must be a finite number between 1e-06 and 1. Exponential observation weight; no decay while paused or outside selection. |
+| `channel_x` | `"gray"` | `gray`, `blue`, `green`, `red`, `alpha` Measured channel of Image, in its original numerical sample units. |
+| `channel_y` | `"gray"` | `gray`, `blue`, `green`, `red`, `alpha` Channel of Other when connected, otherwise another channel of Image. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_indices` Check declared grids, or explicitly assert registration by pixel indices. |
+| `ticket_policy` | `"match_if_present"` | `match_if_present`, `require_match`, `ignore` Other-source ticket matching; not proof of exposure synchronization. |
+| `minimum_samples` | `2` | Value must be a whole number between 2 and 1e+09. Per-pixel accepted observations needed for a valid estimate. |
+| `maximum_samples` | `1000000` | Value must be a whole number between 2 and 1e+09. Freeze each pixel at this count; counts stay exactly representable. |
+| `minimum_coverage` | `1.0` | Value must be a finite number between 0.001 and 1. Required valid fraction of currently selected pixels for readiness. |
+| `maximum_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. |
+| `maximum_workspace_bytes` | `1073741824` | Value must be a whole number between 1 and 2.14748e+09. Conservative working-map estimate, not a hard RSS bound; GUI/runtime copies are extra. |
+| `preview_metric` | `"std_x"` | `std_x`, `variance_x`, `covariance`, `correlation`, `mean_x` Diagnostic heatmap only; graphics off/Lean skips it. |
+| `preview_min` | `0.0` | Value must be a finite number between -1e+100 and 1e+100. Heatmap lower bound. Correlation always uses -1..1. |
+| `preview_max` | `10.0` | Value must be a finite number between -1e+100 and 1e+100. Heatmap upper bound; does not alter numerical maps. |
+
 ## Stabilize recorded sequence (`sequence.stabilize_batch`)
 
 Sequence / Temporal processing

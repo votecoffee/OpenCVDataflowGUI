@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "x",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/x_00.png",
+          "assets/x_01.png",
+          "assets/x_02.png",
+          "assets/x_03.png",
+          "assets/x_04.png",
+          "assets/x_05.png",
+          "assets/x_06.png",
+          "assets/x_07.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "statistics",
+      "type": "sequence.pixel_moments",
+      "name": "Temporal pixel statistics",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 256.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "method": "cumulative",
+        "normalization": "sample",
+        "alpha": 0.25,
+        "channel_x": "gray",
+        "channel_y": "gray",
+        "alignment": "same_frame",
+        "ticket_policy": "require_match",
+        "minimum_samples": 2,
+        "maximum_samples": 1000000,
+        "minimum_coverage": 1.0,
+        "maximum_pixels": 4194304,
+        "maximum_workspace_bytes": 1073741824,
+        "preview_metric": "std_x",
+        "preview_min": 0.0,
+        "preview_max": 5.0
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "other",
+        "learn"
+      ],
+      "exposed_outputs": [
+        "mean_x",
+        "std_x",
+        "covariance",
+        "count",
+        "valid",
+        "ready",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "circle",
+        "rectangle": [
+          0,
+          0,
+          100,
+          100
+        ],
+        "center": [
+          32,
+          24
+        ],
+        "radius": 16,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        360,
+        230
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Original temporal references and measurement scope",
+      "description": "Images, signals, pixel references and project are original OpenCVDataflowGUI contributor work, MIT. No customer or third-party media. Eight stationary 64x48 frames use a zero-mean signal with sample variance 4 and gains 1 and 2 in left/right halves. Paired Y has 3x signal plus orthogonal noise; green has 2x signal plus that noise. Default gray self-pair has covariance equal to variance. Counts/validity are per pixel. Paired sources explicitly assert matching pixel indices and share an external ticket; this fixture does not prove physical registration or exposure synchronization. Exponential weights are .25*.75^age; sample normalization uses W-sum(w\u00b2)/W. Run all from reset for the stated references. Ticket-mismatch and memory-limit projects deliberately emit no statistics. Temporal variation can include scene movement/lighting drift and is not automatically pure camera noise.",
+      "parameters": {},
+      "position": [
+        720,
+        430
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "x",
+      "output": "image",
+      "target": "statistics",
+      "input": "image"
+    },
+    {
+      "source": "x",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "statistics",
+      "input": "region"
+    }
+  ]
+}

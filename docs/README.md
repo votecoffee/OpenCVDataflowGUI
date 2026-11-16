@@ -34,6 +34,7 @@
 | Regions, poses, pyramids and spatial provenance | [Workflow guide](workflow-guide.md), [architecture](architecture.md) |
 | Tickets, branching, batching and joins | [Control flow](control-flow.md), [input coordination](input-coordination.md) |
 | Acquisition queues and memory | [Input queues](input-queues.md), [sequence memory](sequence-memory.md) |
+| Per-pixel temporal noise, weighted support and paired covariance | [Temporal pixel statistics](temporal-pixel-statistics.md) |
 | Recipes and sealed trained assets | [Recipes](recipes.md) |
 | Fixed-camera lighting, position and focus monitoring | [Camera health and reference training](camera-health.md) |
 | Multiview composition, native/floating blending and bounded tiles | [Multiband mosaics](multiband-mosaics.md) |
