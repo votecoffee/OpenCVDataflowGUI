@@ -1,0 +1,31 @@
+{
+  "schema": "simple_gdrnpp_environment_qualification/v1",
+  "interpreter": "CPython 3.13.9",
+  "platform": "Windows x64",
+  "installer": "uv 0.12.19",
+  "runtime_third_party_packages": 17,
+  "validation_third_party_packages": 24,
+  "source_wheel_packages": 2,
+  "all_installed_versions_match_locks": true,
+  "fresh_noneditable_environments": 2,
+  "validation_worker_tests_passed": 66,
+  "host_only_modules_skipped": 2,
+  "subtests_passed": 4,
+  "installed_host_cli_passed_runs": 2,
+  "runtime_install_offline_from_populated_uv_cache": true,
+  "source_wheel_runtime_bytes_match_current_source": true,
+  "source_wheel_license_notices_present": true,
+  "weights_bundled": false,
+  "frozen_pose_fit_overlay_xyz_rgb_unchanged_in_both_environments": true,
+  "scoped_lock_regeneration_byte_identical": true,
+  "negative_checks": {
+    "incorrect_artifact_hash_rejected": true,
+    "unqualified_platform_rejected": true,
+    "wrong_interpreter_reported": true,
+    "metadata_check_imports_no_ml_or_image_processing": true
+  },
+  "host_ml_environment_changed": false,
+  "trusted_runtime_profile_changed": false,
+  "automatic_host_preparation_implemented": false,
+  "scope": "Dependency reproducibility and one independent frozen capture; not a new cycle-time, broad accuracy, GPU or robot qualification"
+}

@@ -1,0 +1,6 @@
+{
+  "incorrect_artifact_hash_rejected": true,
+  "unqualified_platform_rejected": true,
+  "wrong_interpreter_reported": true,
+  "metadata_check_imports_no_ml_or_image_processing": true
+}

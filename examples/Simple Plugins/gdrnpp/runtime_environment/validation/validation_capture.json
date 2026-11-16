@@ -1,0 +1,77 @@
+{
+  "schema": "simple_gdrnpp_environment_replay/v1",
+  "capture_id": "scene000006_frame000002",
+  "lock_sha256": "4400267ebdb9a968dec4f0e1a02aba4f40b260b42d2c6d22e716405ccc88ebff",
+  "worker_implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+  "clean_noneditable_install": true,
+  "preparation_inspections": 0,
+  "model_load_count": 1,
+  "pose_fit_acceptance_identical_to_frozen_capture": true,
+  "graphics_array_sha256": {
+    "overlay": "46ee878e3055f65119f22a4ce028ccabade093002645085d0996a93f56af77fa",
+    "points": "d65454be14bf8160d0c9d6faa611fb17a9cce0b492c4cd7baa31f93b630f24e8",
+    "colors": "26795f4d00cf045af81325eae698fe01f150329a858d6a3116e087a533287312"
+  },
+  "overlay_native_xyz_rgb_bit_identical": true,
+  "prepared": {
+    "prepared": {
+      "schema": "simple_gdrnpp_preparation/v1",
+      "ready": true,
+      "recipe_content_sha256": "013589694bdf06a5fdf491be80b5db9c24e5875f9cc3a5fc6d120c62c09400d4",
+      "recipe_archive_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+      "binding": {
+        "provider": "GDRNPP",
+        "dataset": "T-LESS",
+        "object_id": 6,
+        "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+        "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+        "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+        "checkpoint_bytes": 410204745,
+        "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+      },
+      "worker": {
+        "session": "b54cf4e1f83f43138d8b64244dd05d6f",
+        "model_cache_hit": false,
+        "model_load_count": 1,
+        "recipe_cache_hit": false,
+        "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+        "inference_request_count": 0
+      },
+      "inspection_performed": false,
+      "seconds": {
+        "recipe_lookup": 0.3062969999991765,
+        "model_prepare": 19.834644200000184,
+        "total": 20.14094119999936
+      },
+      "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+    },
+    "request_timing": {
+      "operation": "prepare",
+      "client_lock_wait_seconds": 6.599999323952943e-06,
+      "client_process_launch_seconds": 0.015925800000331947,
+      "client_packet_write_seconds": 0.0022205000004760223,
+      "client_reply_wait_seconds": 20.54717840000012,
+      "client_packet_read_seconds": 0.012183699998786324,
+      "worker": {
+        "packet_read_seconds": 0.00261789999967732,
+        "handler_seconds": 20.140964000000167,
+        "packet_write_seconds": 0.0026818999995157355,
+        "worker_request_seconds": 20.14626379999936
+      },
+      "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+      "client_cleanup_seconds": 0.0037077999986649957,
+      "client_total_seconds": 20.581231799998932
+    }
+  },
+  "inspection_worker": {
+    "session": "b54cf4e1f83f43138d8b64244dd05d6f",
+    "model_cache_hit": true,
+    "model_load_count": 1,
+    "recipe_cache_hit": true,
+    "implementation_sha256": "144ceca51beb28411d2df7a71b31374a2e482bc7a31bd02fc7e577b0330957d4",
+    "inference_request_count": 1
+  },
+  "scope": "One independent real T-LESS capture after resource-only prepare; not a new speed or accuracy benchmark",
+  "attribution": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0",
+  "environment_lock": "validation"
+}

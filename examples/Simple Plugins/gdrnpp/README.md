@@ -145,3 +145,8 @@ result. In twelve fresh CPU sessions, first-image medians moved from 8.2 to
 all poses, fits and review arrays match the prior frozen capture. The runnable
 replay and raw receipts are retained. Preparing actual app execution instances
 still needs its host lifecycle hook; this does not run on project open.
+
+`runtime_environment/README.md` supplies the tested Windows x64 CPython 3.13.9
+CPU wheel locks, read-only version check and clean-install qualification.
+Runtime-only and developer-validation installations reproduce the frozen pose,
+fit, overlay and native XYZ/RGB arrays. Dependencies stay outside the app.

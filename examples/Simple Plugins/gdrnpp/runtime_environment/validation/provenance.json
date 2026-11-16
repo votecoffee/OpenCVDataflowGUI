@@ -1,0 +1,23 @@
+{
+  "dataset": "T-LESS",
+  "license": "CC-BY-4.0",
+  "source": "https://cmp.felk.cvut.cz/t-less/",
+  "attribution": "T. Hodan et al., WACV 2017; modified calibrated RGB-D/box and native pose-fit graphics; pose labels evaluation-only",
+  "runtime_source_commit": "56ce80dc7e28ac98b26b158493bd18ad3a3c6dab",
+  "inputs_sha256": {
+    "check_environment.py": "fb063c2a755612516045af9286235a4de4ec1c6da7703b7eddba16773bf052d3",
+    "constraints.txt": "8b5370e73f9d6a80cc316266591d0529c41c3a73d0463a669fb8e633c6c30c15",
+    "generate_locks.py": "bee7155983a3c81374a379d1a51b5c07913ca88411fc3250018728b0b0895713",
+    "pylock.runtime.toml": "5f3d513ed7075b58e8a11b8122dcc7bf79b4da1862baeb8a495b9af0f9f21567",
+    "pylock.validation.toml": "4400267ebdb9a968dec4f0e1a02aba4f40b260b42d2c6d22e716405ccc88ebff",
+    "runtime.in": "f2d0630c44e6a03a88fdee8d5224aa265b8ec9e3197e6280d5bce30fc3f61c42",
+    "validation.in": "2acc40e98273ab75ad00951bd9471d17fd3b9dffc2ef36ed7131d2af0a85b68f"
+  },
+  "sha256": {
+    "negative_checks.json": "320d5611b4e401770d186c9be38527ac5709b1f867c6510dea001b3a6f42ab12",
+    "runtime_capture.json": "369ca44df2cf4e3b3ee5c0f3ced29a432b65605f00629230542adff43799e1a3",
+    "source_modules.json": "531cd505037e526e458a4728a85b42a4295bc9c0fdea0463dafc271116592530",
+    "summary.json": "830c80163ab7a0bca4a5bc2763958c2ad8726cb0668001801aad04ca9a722556",
+    "validation_capture.json": "e913010d64f5484d5637f034d67e4e7bf5ca0da9aaeaa5ec002e111bb8be1b6c"
+  }
+}
