@@ -1,0 +1,44 @@
+{
+  "schema": "simple_gdrnpp_request/v1",
+  "capture_id": "scene000006_frame000409",
+  "rgb_path": "source.png",
+  "depth_path": "depth.png",
+  "depth_scale_to_m": 0.0001,
+  "camera_matrix": [
+    [
+      1075.65091572,
+      0.0,
+      365.06888344
+    ],
+    [
+      0.0,
+      1073.90347929,
+      316.72159802
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "model_frame": "tless_object6",
+  "camera_frame": "camera",
+  "extents_m": [
+    0.0894000015258789,
+    0.05,
+    0.0555
+  ],
+  "detections": [
+    {
+      "identifier": "supplied_instance",
+      "box": [
+        283.0,
+        152.0,
+        378.0,
+        256.0
+      ],
+      "source": "published_visible_bbox"
+    }
+  ],
+  "distortion": []
+}

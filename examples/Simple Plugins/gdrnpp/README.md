@@ -82,6 +82,26 @@ Sampled positive refinement took about 6.4-7.2 seconds on CPU; no full-cycle
 speed or broad accuracy claim is made. Independent scenes, GPU profiling and
 actual new-object training remain open.
 
+## Broader real scene extension
+
+`scene_extension/gallery.html` retains raw/local-alignment comparisons for all
+29 metadata-selected cases from 18 new scenes. Twelve positives in scene 6
+improve from 3 to 9 depth-accepted poses; all nine are within the development
+5 mm / 5 degree annotation criterion. All seventeen target-absent controls
+remain rejected, including a lookalike with 78.29% support but 12.15%
+contradiction. Settings and checkpoint remain unchanged. No gate was loosened.
+
+Four `scene_extension/reviews/*/review_project.json` projects compare raw and
+aligned native colored flyaround clouds, full source RGB and pose/fit images.
+They retain an improvement, remaining failure, worst accepted annotation error
+and strongest absent control. File-source PASS is not pose acceptance. All
+29 cases remain in summary/evaluation, with public T-LESS CC BY 4.0 attribution.
+
+The positive views are correlated, from one additional arrangement and at least
+91.4% visible. Heavy occlusion, new objects, detection and picking remain open.
+Fitting/verification reuse depth and sometimes worsen annotation error. See
+`scene_extension/README.md` for commands, timing scopes and remaining limits.
+
 ## Attribution
 
 T. Hodaň, P. Haluza, Š. Obdržálek, J. Matas, M. Lourakis and X. Zabulis,

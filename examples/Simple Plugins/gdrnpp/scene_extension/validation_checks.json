@@ -1,0 +1,65 @@
+{
+  "scope": "Artifact links/strict JSON, pinned managed members and native dual-color-cloud file review; file-read PASS does not change recorded pose decisions",
+  "gallery_sections_per_source_and_host": 29,
+  "managed_hashes_verified": 221,
+  "native_review_runs": [
+    {
+      "project": "reviews/scene000006_frame000002/review_project.json",
+      "profile": "debug",
+      "file_reads_passed": true,
+      "dual_colored_clouds": true
+    },
+    {
+      "project": "reviews/scene000006_frame000002/review_project.json",
+      "profile": "lean",
+      "file_reads_passed": true,
+      "dual_colored_clouds": true
+    },
+    {
+      "project": "reviews/scene000006_frame000045/review_project.json",
+      "profile": "debug",
+      "file_reads_passed": true,
+      "dual_colored_clouds": true
+    },
+    {
+      "project": "reviews/scene000006_frame000045/review_project.json",
+      "profile": "lean",
+      "file_reads_passed": true,
+      "dual_colored_clouds": true
+    },
+    {
+      "project": "reviews/scene000006_frame000409/review_project.json",
+      "profile": "debug",
+      "file_reads_passed": true,
+      "dual_colored_clouds": true
+    },
+    {
+      "project": "reviews/scene000006_frame000409/review_project.json",
+      "profile": "lean",
+      "file_reads_passed": true,
+      "dual_colored_clouds": true
+    },
+    {
+      "project": "reviews/scene000011_frame000004/review_project.json",
+      "profile": "debug",
+      "file_reads_passed": true,
+      "dual_colored_clouds": true
+    },
+    {
+      "project": "reviews/scene000011_frame000004/review_project.json",
+      "profile": "lean",
+      "file_reads_passed": true,
+      "dual_colored_clouds": true
+    }
+  ],
+  "worker_tests_passed": 31,
+  "worker_subtests_passed": 4,
+  "worker_skips": 4,
+  "selection_reproduced_from_pinned_metadata_and_archive_index": true,
+  "selected_source_hashes_verified": 113,
+  "all_58_pose_error_evaluations_reproduced_from_recipe_symmetries": true,
+  "portable_rgbd_capture_loads": 4,
+  "algorithm_settings_changed": false,
+  "checkpoint_changed": false,
+  "old_recipe_and_pilot_results_changed": false
+}

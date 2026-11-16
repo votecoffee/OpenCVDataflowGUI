@@ -1,0 +1,418 @@
+{
+  "rule": "Select 10 evenly spaced eligible frames plus least visible/most foreshortened.\n\nNegatives: first eligible frame of each target-absent scene; lowest object ID\nsupplies the rectangle. Min 100 visible pixels / 10 pixels per bbox side.\n",
+  "cases": [
+    {
+      "scene": 6,
+      "frame": 2,
+      "instance_index": 0,
+      "selected_object_id": 6,
+      "target_present": true,
+      "bbox_xywh": [
+        261,
+        110,
+        154,
+        141
+      ],
+      "visibility": 0.9523703868057096
+    },
+    {
+      "scene": 6,
+      "frame": 45,
+      "instance_index": 0,
+      "selected_object_id": 6,
+      "target_present": true,
+      "bbox_xywh": [
+        275,
+        224,
+        130,
+        165
+      ],
+      "visibility": 0.9465428937259923
+    },
+    {
+      "scene": 6,
+      "frame": 96,
+      "instance_index": 0,
+      "selected_object_id": 6,
+      "target_present": true,
+      "bbox_xywh": [
+        354,
+        148,
+        149,
+        154
+      ],
+      "visibility": 0.9482860520094563
+    },
+    {
+      "scene": 6,
+      "frame": 139,
+      "instance_index": 0,
+      "selected_object_id": 6,
+      "target_present": true,
+      "bbox_xywh": [
+        232,
+        138,
+        143,
+        116
+      ],
+      "visibility": 0.9666451936153461
+    },
+    {
+      "scene": 6,
+      "frame": 206,
+      "instance_index": 0,
+      "selected_object_id": 6,
+      "target_present": true,
+      "bbox_xywh": [
+        215,
+        137,
+        152,
+        140
+      ],
+      "visibility": 0.9539675887119307
+    },
+    {
+      "scene": 6,
+      "frame": 273,
+      "instance_index": 0,
+      "selected_object_id": 6,
+      "target_present": true,
+      "bbox_xywh": [
+        225,
+        143,
+        136,
+        140
+      ],
+      "visibility": 0.9548741901461504
+    },
+    {
+      "scene": 6,
+      "frame": 329,
+      "instance_index": 0,
+      "selected_object_id": 6,
+      "target_present": true,
+      "bbox_xywh": [
+        296,
+        162,
+        151,
+        126
+      ],
+      "visibility": 0.9844053180021559
+    },
+    {
+      "scene": 6,
+      "frame": 388,
+      "instance_index": 0,
+      "selected_object_id": 6,
+      "target_present": true,
+      "bbox_xywh": [
+        351,
+        146,
+        146,
+        99
+      ],
+      "visibility": 0.9954857047316502
+    },
+    {
+      "scene": 6,
+      "frame": 409,
+      "instance_index": 0,
+      "selected_object_id": 6,
+      "target_present": true,
+      "bbox_xywh": [
+        283,
+        152,
+        95,
+        104
+      ],
+      "visibility": 0.9140266299357208
+    },
+    {
+      "scene": 6,
+      "frame": 462,
+      "instance_index": 0,
+      "selected_object_id": 6,
+      "target_present": true,
+      "bbox_xywh": [
+        349,
+        150,
+        140,
+        81
+      ],
+      "visibility": 0.9894828251640293
+    },
+    {
+      "scene": 6,
+      "frame": 496,
+      "instance_index": 0,
+      "selected_object_id": 6,
+      "target_present": true,
+      "bbox_xywh": [
+        236,
+        147,
+        136,
+        72
+      ],
+      "visibility": 0.9849615806805708
+    },
+    {
+      "scene": 6,
+      "frame": 501,
+      "instance_index": 0,
+      "selected_object_id": 6,
+      "target_present": true,
+      "bbox_xywh": [
+        254,
+        144,
+        124,
+        73
+      ],
+      "visibility": 0.9865396069088743
+    },
+    {
+      "scene": 1,
+      "frame": 1,
+      "instance_index": 0,
+      "selected_object_id": 2,
+      "target_present": false,
+      "bbox_xywh": [
+        267,
+        345,
+        64,
+        65
+      ],
+      "visibility": 0.9642857142857143
+    },
+    {
+      "scene": 4,
+      "frame": 0,
+      "instance_index": 0,
+      "selected_object_id": 5,
+      "target_present": false,
+      "bbox_xywh": [
+        196,
+        291,
+        145,
+        128
+      ],
+      "visibility": 0.9398471252907943
+    },
+    {
+      "scene": 5,
+      "frame": 7,
+      "instance_index": 0,
+      "selected_object_id": 1,
+      "target_present": false,
+      "bbox_xywh": [
+        281,
+        288,
+        55,
+        60
+      ],
+      "visibility": 0.9620586025544703
+    },
+    {
+      "scene": 7,
+      "frame": 3,
+      "instance_index": 0,
+      "selected_object_id": 1,
+      "target_present": false,
+      "bbox_xywh": [
+        414,
+        353,
+        52,
+        52
+      ],
+      "visibility": 0.9543279686820356
+    },
+    {
+      "scene": 8,
+      "frame": 1,
+      "instance_index": 0,
+      "selected_object_id": 19,
+      "target_present": false,
+      "bbox_xywh": [
+        309,
+        102,
+        112,
+        111
+      ],
+      "visibility": 0.9833292473645502
+    },
+    {
+      "scene": 9,
+      "frame": 0,
+      "instance_index": 0,
+      "selected_object_id": 1,
+      "target_present": false,
+      "bbox_xywh": [
+        431,
+        215,
+        49,
+        54
+      ],
+      "visibility": 0.9344042838018741
+    },
+    {
+      "scene": 10,
+      "frame": 5,
+      "instance_index": 0,
+      "selected_object_id": 19,
+      "target_present": false,
+      "bbox_xywh": [
+        205,
+        210,
+        119,
+        112
+      ],
+      "visibility": 0.9608521970705726
+    },
+    {
+      "scene": 11,
+      "frame": 4,
+      "instance_index": 0,
+      "selected_object_id": 5,
+      "target_present": false,
+      "bbox_xywh": [
+        365,
+        299,
+        124,
+        150
+      ],
+      "visibility": 0.9480254777070064
+    },
+    {
+      "scene": 12,
+      "frame": 2,
+      "instance_index": 0,
+      "selected_object_id": 2,
+      "target_present": false,
+      "bbox_xywh": [
+        228,
+        139,
+        87,
+        70
+      ],
+      "visibility": 0.984785972150593
+    },
+    {
+      "scene": 13,
+      "frame": 2,
+      "instance_index": 0,
+      "selected_object_id": 19,
+      "target_present": false,
+      "bbox_xywh": [
+        207,
+        332,
+        112,
+        104
+      ],
+      "visibility": 0.9033294392523364
+    },
+    {
+      "scene": 14,
+      "frame": 2,
+      "instance_index": 0,
+      "selected_object_id": 19,
+      "target_present": false,
+      "bbox_xywh": [
+        242,
+        255,
+        93,
+        124
+      ],
+      "visibility": 0.9306621199204319
+    },
+    {
+      "scene": 15,
+      "frame": 1,
+      "instance_index": 0,
+      "selected_object_id": 25,
+      "target_present": false,
+      "bbox_xywh": [
+        275,
+        184,
+        123,
+        150
+      ],
+      "visibility": 0.9602975661033395
+    },
+    {
+      "scene": 16,
+      "frame": 8,
+      "instance_index": 0,
+      "selected_object_id": 10,
+      "target_present": false,
+      "bbox_xywh": [
+        139,
+        293,
+        132,
+        116
+      ],
+      "visibility": 0.9539151712887439
+    },
+    {
+      "scene": 17,
+      "frame": 3,
+      "instance_index": 0,
+      "selected_object_id": 1,
+      "target_present": false,
+      "bbox_xywh": [
+        537,
+        190,
+        63,
+        82
+      ],
+      "visibility": 0.9764930114358322
+    },
+    {
+      "scene": 18,
+      "frame": 2,
+      "instance_index": 0,
+      "selected_object_id": 1,
+      "target_present": false,
+      "bbox_xywh": [
+        179,
+        326,
+        54,
+        53
+      ],
+      "visibility": 0.958245466048081
+    },
+    {
+      "scene": 19,
+      "frame": 1,
+      "instance_index": 0,
+      "selected_object_id": 13,
+      "target_present": false,
+      "bbox_xywh": [
+        278,
+        84,
+        55,
+        73
+      ],
+      "visibility": 0.9914712153518124
+    },
+    {
+      "scene": 20,
+      "frame": 3,
+      "instance_index": 0,
+      "selected_object_id": 1,
+      "target_present": false,
+      "bbox_xywh": [
+        225,
+        140,
+        56,
+        73
+      ],
+      "visibility": 0.8139219015280136
+    }
+  ],
+  "settings_selected_before_inference": true,
+  "excluded_development_scenes": [
+    2,
+    3
+  ],
+  "checkpoint_object_id": 6,
+  "scope": "New scene-level development validation; not untouched production qualification"
+}

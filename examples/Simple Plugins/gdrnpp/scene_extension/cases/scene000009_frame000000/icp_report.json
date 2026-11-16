@@ -1,0 +1,237 @@
+{
+  "model": "simple_gdrnpp_result_v1",
+  "capture_id": "scene000009_frame000000",
+  "units": "m",
+  "source_frame": "tless_object6",
+  "target_frame": "camera",
+  "candidates": [
+    {
+      "id": "supplied_instance",
+      "object_id": 6,
+      "capture_id": "scene000009_frame000000",
+      "pose": {
+        "model": "pose_3d_v1",
+        "source_to_target": [
+          [
+            -0.06701525096105913,
+            0.22056559837402284,
+            0.9730671985801059,
+            0.09875984367101703
+          ],
+          [
+            0.04005996600973302,
+            -0.9738784256504103,
+            0.223508414105548,
+            -0.013767385863288175
+          ],
+          [
+            0.996947418504068,
+            0.053959511363496804,
+            0.05642885672674361,
+            1.303339922869647
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "units": "m",
+        "source_frame": "tless_object6",
+        "target_frame": "camera"
+      },
+      "detection_source": "published_visible_bbox",
+      "detection_score": null,
+      "network_score": null,
+      "qualification": "measured_depth_gates",
+      "fit": {
+        "status": "rejected",
+        "reason": "fit_gates",
+        "coverage": 0.0,
+        "contradiction": 0.0,
+        "rmse_m": null,
+        "rendered_samples": 6105,
+        "supported_samples": 0,
+        "unknown_samples": 0,
+        "occluded_samples": 6105,
+        "outside_target_samples": 400
+      },
+      "raw_rotation6d": [
+        -0.03992738202214241,
+        0.014195248484611511,
+        0.2777056097984314,
+        0.03337659314274788,
+        -0.15094293653964996,
+        0.012853160500526428
+      ],
+      "raw_centroid_z": [
+        -0.03927098587155342,
+        0.0069960299879312515,
+        1.649539589881897
+      ],
+      "crop": {
+        "source_xyxy": [
+          431.0,
+          215.0,
+          480.0,
+          269.0
+        ],
+        "source_size": [
+          720,
+          540
+        ],
+        "working_size": [
+          720,
+          540
+        ],
+        "padded_scale": 81.0,
+        "source_from_input": [
+          [
+            0.31640625,
+            0.0,
+            415.0
+          ],
+          [
+            9.994749265320599e-17,
+            0.31640625,
+            201.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "source_from_output": [
+          [
+            1.265625,
+            0.0,
+            415.0
+          ],
+          [
+            3.9978997061282397e-16,
+            1.265625,
+            201.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "depth_refinement": {
+        "method": "projective_icp_v1",
+        "status": "unavailable",
+        "reason": "no_safe_fit_improvement",
+        "stop_reason": "insufficient_correspondences",
+        "settings": {
+          "strides": [
+            4,
+            2,
+            1
+          ],
+          "iterations_per_level": 4,
+          "maximum_correspondence_m": 0.02,
+          "maximum_translation_m": 0.02,
+          "maximum_rotation_degrees": 15.0,
+          "minimum_correspondences": 50
+        },
+        "fit_before": {
+          "status": "rejected",
+          "reason": "fit_gates",
+          "coverage": 0.0,
+          "contradiction": 0.0,
+          "rmse_m": null,
+          "rendered_samples": 6105,
+          "supported_samples": 0,
+          "unknown_samples": 0,
+          "occluded_samples": 6105,
+          "outside_target_samples": 400
+        },
+        "proposed_fit": {
+          "status": "rejected",
+          "reason": "fit_gates",
+          "coverage": 0.0,
+          "contradiction": 0.0,
+          "rmse_m": null,
+          "rendered_samples": 6105,
+          "supported_samples": 0,
+          "unknown_samples": 0,
+          "occluded_samples": 6105,
+          "outside_target_samples": 400
+        },
+        "iterations": [],
+        "minimum_observed_rank": 0,
+        "all_solved_systems_full_rank": false,
+        "same_depth_used_for_refinement_and_verification": true,
+        "pose_labels_used": false,
+        "before_quality": 0.0,
+        "proposed_quality": 0.0
+      }
+    }
+  ],
+  "best_pose": null,
+  "accepted_candidates": 0,
+  "provider": {
+    "provider": "GDRNPP",
+    "architecture": "convnext_base_double_mask_64_regions",
+    "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+    "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+    "object_id": 6,
+    "device": "cpu",
+    "torch": "2.15.0+cpu",
+    "timm": "0.6.7",
+    "threads": 4,
+    "parameter_keys": 392,
+    "load_seconds": 2.033773099999962,
+    "initialization_seconds": 18.81033750000006,
+    "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+    "adapted_inference_only": true,
+    "upstream_training_runtime_parity_qualified": false
+  },
+  "input": {
+    "rgb_sha256": "47e0cc94cce20dc4e431dfb8474b214e4192fdace9a2334ec8e6139cf45cabe6",
+    "camera_matrix": [
+      [
+        1075.65091572,
+        0.0,
+        372.06888344
+      ],
+      [
+        0.0,
+        1073.90347929,
+        253.72159802
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "source_size": [
+      720,
+      540
+    ]
+  },
+  "score_semantics": "GDRNPP pose head has no scalar confidence; external detector score is separate",
+  "qualification": "RGB network proposals require independent geometry/task qualification",
+  "seconds": {
+    "preprocess": 0.004775299999892013,
+    "network": 0.4300232999994478,
+    "total": 0.4375620999999228
+  },
+  "batch_size": 1,
+  "ground_truth_pose_used": false,
+  "fit_settings": {
+    "distance_tolerance_m": 0.005,
+    "minimum_coverage": 0.7,
+    "maximum_contradiction": 0.1
+  },
+  "fit_semantics": "Original measured axial depth; first-return CAD surfaces are predictions",
+  "verification_backend": "Shared original metric geometry; no FoundationPose neural inference",
+  "depth_refinement": "projective_icp_v1",
+  "depth_refinement_scope": "Local CPU alignment; not the publisher CUDA refiner",
+  "same_depth_used_for_refinement_and_verification": true
+}

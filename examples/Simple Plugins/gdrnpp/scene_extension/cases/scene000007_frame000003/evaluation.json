@@ -1,0 +1,110 @@
+{
+  "case": "scene000007_frame000003",
+  "selection": {
+    "scene": 7,
+    "frame": 3,
+    "instance_index": 0,
+    "selected_object_id": 1,
+    "target_present": false,
+    "bbox_xywh": [
+      414,
+      353,
+      52,
+      52
+    ],
+    "visibility": 0.9543279686820356
+  },
+  "pose_labels_entered_runtime": false,
+  "numeric_seconds": 3.7902619999995295,
+  "refinement_seconds": 2.2278950999998415,
+  "network_seconds": 0.38428360000034445,
+  "raw": {
+    "accepted": false,
+    "fit": {
+      "status": "rejected",
+      "reason": "fit_gates",
+      "coverage": 0.0,
+      "contradiction": 0.0,
+      "rmse_m": null,
+      "rendered_samples": 5335,
+      "supported_samples": 0,
+      "unknown_samples": 0,
+      "occluded_samples": 5335,
+      "outside_target_samples": 60
+    },
+    "pose_error": {
+      "target_present": false,
+      "raw_pose_is_extra": true
+    },
+    "refinement": null
+  },
+  "icp": {
+    "accepted": false,
+    "fit": {
+      "status": "rejected",
+      "reason": "fit_gates",
+      "coverage": 0.0,
+      "contradiction": 0.0,
+      "rmse_m": null,
+      "rendered_samples": 5335,
+      "supported_samples": 0,
+      "unknown_samples": 0,
+      "occluded_samples": 5335,
+      "outside_target_samples": 60
+    },
+    "pose_error": {
+      "target_present": false,
+      "raw_pose_is_extra": true
+    },
+    "refinement": {
+      "method": "projective_icp_v1",
+      "status": "unavailable",
+      "reason": "no_safe_fit_improvement",
+      "stop_reason": "insufficient_correspondences",
+      "settings": {
+        "strides": [
+          4,
+          2,
+          1
+        ],
+        "iterations_per_level": 4,
+        "maximum_correspondence_m": 0.02,
+        "maximum_translation_m": 0.02,
+        "maximum_rotation_degrees": 15.0,
+        "minimum_correspondences": 50
+      },
+      "fit_before": {
+        "status": "rejected",
+        "reason": "fit_gates",
+        "coverage": 0.0,
+        "contradiction": 0.0,
+        "rmse_m": null,
+        "rendered_samples": 5335,
+        "supported_samples": 0,
+        "unknown_samples": 0,
+        "occluded_samples": 5335,
+        "outside_target_samples": 60
+      },
+      "proposed_fit": {
+        "status": "rejected",
+        "reason": "fit_gates",
+        "coverage": 0.0,
+        "contradiction": 0.0,
+        "rmse_m": null,
+        "rendered_samples": 5335,
+        "supported_samples": 0,
+        "unknown_samples": 0,
+        "occluded_samples": 5335,
+        "outside_target_samples": 60
+      },
+      "iterations": [],
+      "minimum_observed_rank": 0,
+      "all_solved_systems_full_rank": false,
+      "same_depth_used_for_refinement_and_verification": true,
+      "pose_labels_used": false,
+      "before_quality": 0.0,
+      "proposed_quality": 0.0
+    }
+  },
+  "annotated_pose_depth_fit_evaluation_only": []
+}

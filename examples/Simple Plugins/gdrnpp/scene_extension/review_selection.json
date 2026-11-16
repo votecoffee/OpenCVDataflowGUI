@@ -1,0 +1,21 @@
+{
+  "scope": "Post-run review selection only; aggregate evaluation includes every preselected case",
+  "reviews": [
+    {
+      "case": "scene000006_frame000002",
+      "reason": "First positive converted to depth acceptance, in frozen case order"
+    },
+    {
+      "case": "scene000006_frame000409",
+      "reason": "Worst remaining positive annotation error among depth rejections"
+    },
+    {
+      "case": "scene000006_frame000045",
+      "reason": "Worst accepted-positive annotation error; depth acceptance is separate"
+    },
+    {
+      "case": "scene000011_frame000004",
+      "reason": "Target-absent control with highest depth support; wrong accepts take priority"
+    }
+  ]
+}

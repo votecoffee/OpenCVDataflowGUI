@@ -1,0 +1,185 @@
+{
+  "model": "simple_gdrnpp_result_v1",
+  "capture_id": "scene000005_frame000007",
+  "units": "m",
+  "source_frame": "tless_object6",
+  "target_frame": "camera",
+  "candidates": [
+    {
+      "id": "supplied_instance",
+      "object_id": 6,
+      "capture_id": "scene000005_frame000007",
+      "pose": {
+        "model": "pose_3d_v1",
+        "source_to_target": [
+          [
+            0.2213886738161148,
+            -0.9716889943972513,
+            0.08250789824738368,
+            -0.07317541547431795
+          ],
+          [
+            0.30517898877307154,
+            -0.01132371895741102,
+            -0.952227681912482,
+            0.06866165663648556
+          ],
+          [
+            0.9262034549262853,
+            0.2359921006225256,
+            0.2940321215894283,
+            1.2462703280978733
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "units": "m",
+        "source_frame": "tless_object6",
+        "target_frame": "camera"
+      },
+      "detection_source": "published_visible_bbox",
+      "detection_score": null,
+      "network_score": null,
+      "qualification": "measured_depth_gates",
+      "fit": {
+        "status": "rejected",
+        "reason": "fit_gates",
+        "coverage": 0.0,
+        "contradiction": 0.0,
+        "rmse_m": null,
+        "rendered_samples": 8136,
+        "supported_samples": 0,
+        "unknown_samples": 9,
+        "occluded_samples": 8127,
+        "outside_target_samples": 644
+      },
+      "raw_rotation6d": [
+        0.05078694596886635,
+        0.04682721942663193,
+        0.1707623451948166,
+        -1.0783019065856934,
+        -0.08612566441297531,
+        0.09515286982059479
+      ],
+      "raw_centroid_z": [
+        0.06202683970332146,
+        -0.018551243469119072,
+        1.7525676488876343
+      ],
+      "crop": {
+        "source_xyxy": [
+          281.0,
+          288.0,
+          336.0,
+          348.0
+        ],
+        "source_size": [
+          720,
+          540
+        ],
+        "working_size": [
+          720,
+          540
+        ],
+        "padded_scale": 90.0,
+        "source_from_input": [
+          [
+            0.3515625,
+            0.0,
+            263.5
+          ],
+          [
+            9.109406907884691e-17,
+            0.3515625,
+            273.00000000000006
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "source_from_output": [
+          [
+            1.40625,
+            0.0,
+            263.5
+          ],
+          [
+            3.6437627631538764e-16,
+            1.40625,
+            273.00000000000006
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    }
+  ],
+  "best_pose": null,
+  "accepted_candidates": 0,
+  "provider": {
+    "provider": "GDRNPP",
+    "architecture": "convnext_base_double_mask_64_regions",
+    "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+    "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+    "object_id": 6,
+    "device": "cpu",
+    "torch": "2.15.0+cpu",
+    "timm": "0.6.7",
+    "threads": 4,
+    "parameter_keys": 392,
+    "load_seconds": 2.033773099999962,
+    "initialization_seconds": 18.81033750000006,
+    "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+    "adapted_inference_only": true,
+    "upstream_training_runtime_parity_qualified": false
+  },
+  "input": {
+    "rgb_sha256": "24b888ca891e0694e69a57f21c7200628359ad211f0500c43b12432aa2b094fd",
+    "camera_matrix": [
+      [
+        1075.65091572,
+        0.0,
+        375.06888344
+      ],
+      [
+        0.0,
+        1073.90347929,
+        257.72159802
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "source_size": [
+      720,
+      540
+    ]
+  },
+  "score_semantics": "GDRNPP pose head has no scalar confidence; external detector score is separate",
+  "qualification": "RGB network proposals require independent geometry/task qualification",
+  "seconds": {
+    "preprocess": 0.005484499999511172,
+    "network": 0.37393209999936516,
+    "total": 0.38275679999969725
+  },
+  "batch_size": 1,
+  "ground_truth_pose_used": false,
+  "fit_settings": {
+    "distance_tolerance_m": 0.005,
+    "minimum_coverage": 0.7,
+    "maximum_contradiction": 0.1
+  },
+  "fit_semantics": "Original measured axial depth; first-return CAD surfaces are predictions",
+  "verification_backend": "Shared original metric geometry; no FoundationPose neural inference"
+}

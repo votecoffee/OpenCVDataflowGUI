@@ -1,0 +1,6 @@
+line-length = 100
+[lint]
+select = ["E", "F", "I"]
+[lint.isort]
+known-first-party = ["opencv_simple_gdrnpp"]
+known-third-party = ["validate_tless", "replay_tless"]

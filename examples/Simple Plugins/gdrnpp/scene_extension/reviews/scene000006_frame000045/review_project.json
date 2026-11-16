@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "raw_fit",
+      "type": "input.cloud",
+      "name": "Raw Fit",
+      "parameters": {
+        "path": "raw_fit.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "icp_fit",
+      "type": "input.cloud",
+      "name": "Icp Fit",
+      "parameters": {
+        "path": "icp_fit.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        450,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Source",
+      "parameters": {
+        "path": "source.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        900,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "raw_overlay",
+      "type": "input.file",
+      "name": "Raw Overlay",
+      "parameters": {
+        "path": "raw_overlay.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        0,
+        450
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "icp_overlay",
+      "type": "input.file",
+      "name": "Icp Overlay",
+      "parameters": {
+        "path": "icp_overlay.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        450,
+        450
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "SAVED REVIEW \u00b7 depth decisions and annotation errors are separate",
+      "description": "Worst accepted-positive annotation error; depth acceptance is separate. Target present. RAW rejected; support 42.53%; contradiction 1.74%; annotation error 5.598 mm / 5.835 degrees. ICP accepted; support 87.19%; contradiction 5.77%; annotation error 4.398 mm / 1.533 degrees. Same fixed gates and depth for fitting/verification; supplied rectangle. File reads passing is not pose/grasp acceptance. All 29 preselected cases remain in the summary/gallery. T-LESS, Hodan et al., WACV 2017, CC BY 4.0.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": []
+    }
+  ],
+  "connections": []
+}
