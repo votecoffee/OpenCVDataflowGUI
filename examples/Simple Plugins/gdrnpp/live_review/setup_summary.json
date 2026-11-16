@@ -1,0 +1,14 @@
+{
+  "sha256": "1cc4cba06c0671cb9937c04e4cd9d2d93e7700b1930778e15530e95d1e0dfdee",
+  "original_recipe_unchanged": true,
+  "settings": {
+    "threads": 4,
+    "batch_size": 1,
+    "distance_tolerance_m": 0.005,
+    "minimum_coverage": 0.7,
+    "maximum_contradiction": 0.1,
+    "depth_refine": true,
+    "maximum_correction_m": 0.02,
+    "depth_refinement": "projective_icp_v1"
+  }
+}

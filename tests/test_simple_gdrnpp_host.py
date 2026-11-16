@@ -76,3 +76,81 @@ def test_valid_rejection_no_stale_pose_and_graphics_off(tmp_path):
     assert block.preview_output == "cloud"
     block.reset_runtime()
     assert client.closed and block._client is None
+
+
+def test_graphics_follow_best_pose_with_separate_gallery_grid_and_candidate_table(tmp_path):
+    from opencv_dataflow.simple_gdrnpp.selection import describe_review
+
+    poses = [
+        dict(model="pose_3d_v1", source_to_target=np.eye(4).tolist(), identity=i) for i in range(2)
+    ]
+    report = dict(
+        candidates=[
+            dict(id="first_rejected", pose=poses[0], fit=dict(status="rejected", coverage=0.99)),
+            dict(id="best_accepted", pose=poses[1], fit=dict(status="accepted", coverage=0.8)),
+        ],
+        best_pose=poses[1],
+        accepted_candidates=1,
+        capture_id="current-B",
+        target_frame="camera",
+    )
+
+    class Client:
+        wrong = False
+
+        def call(self, op, data, arrays, **kw):
+            selection, _ = describe_review(report, data["review_candidate"])
+            return dict(
+                report=copy.deepcopy(report),
+                candidate_index=0 if self.wrong else selection["candidate_index"],
+            ), dict(
+                overlay=np.zeros((12, 16, 3), np.uint8),
+                gallery=np.zeros((318, 720, 3), np.uint8),
+                points=np.zeros((1, 3), np.float32),
+                colors=np.zeros((1, 3), np.uint8),
+            )
+
+        def close(self):
+            pass
+
+    block = SimpleGDRNPP(
+        parameters=dict(
+            recipe_path="model.gdrnpp",
+            sha256="0" * 64,
+            models_dir=str(tmp_path),
+            render_gallery=True,
+        )
+    )
+    block.project_dir = tmp_path
+    block._client = Client()
+    result = block.execute(inputs())
+    assert result is not None, block.error
+    assert result.outputs["pose"] == poses[1] and result.outputs["review"]["candidate_number"] == 2
+    assert result.outputs["cloud"].metadata["review"]["candidate_id"] == "best_accepted"
+    assert result.outputs["candidate_table"][1]["selected"]
+    assert result.outputs["gallery"].shape == (318, 720, 3)
+    assert result.payloads["gallery"]["spatial"] != result.payloads.get("overlay", {}).get(
+        "spatial"
+    )
+    block.parameters["review_candidate"] = 1
+    rejected = block.execute(inputs())
+    assert rejected.outputs["review"]["status"] == "rejected"
+    assert rejected.passed and rejected.outputs["pose"] == poses[1]
+    block.parameters["review_candidate"] = 0
+    block._client.wrong = True
+    assert block.execute(inputs()) is None and "Update the isolated worker" in block.error
+    assert block.last_result is None
+
+
+@pytest.mark.parametrize(
+    "parameters",
+    [
+        dict(review_candidate=True),
+        dict(review_candidate=65),
+        dict(review_candidate=-1),
+        dict(render_gallery="yes"),
+    ],
+)
+def test_review_controls_validate_without_processing(parameters):
+    with pytest.raises(ValueError):
+        SimpleGDRNPP(parameters=parameters).validate_parameters()

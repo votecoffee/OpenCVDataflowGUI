@@ -33,7 +33,10 @@
         "poses",
         "accepted_count",
         "overlay",
-        "cloud"
+        "cloud",
+        "review",
+        "candidate_table",
+        "gallery"
       ]
     }
   ],

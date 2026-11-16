@@ -1,0 +1,70 @@
+{
+  "default_selected_number": 2,
+  "default_selected_is_best_accepted": true,
+  "candidate_count": 5,
+  "cached_candidate_views": [
+    {
+      "schema": "simple_gdrnpp_review/v1",
+      "candidate_index": 0,
+      "candidate_number": 1,
+      "candidate_id": "supplied_instance_1",
+      "status": "rejected",
+      "selection_reason": "requested_candidate",
+      "is_best_accepted": false,
+      "best_accepted_number": 2,
+      "candidate_count": 5
+    },
+    {
+      "schema": "simple_gdrnpp_review/v1",
+      "candidate_index": 1,
+      "candidate_number": 2,
+      "candidate_id": "supplied_instance_0",
+      "status": "accepted",
+      "selection_reason": "requested_candidate",
+      "is_best_accepted": true,
+      "best_accepted_number": 2,
+      "candidate_count": 5
+    },
+    {
+      "schema": "simple_gdrnpp_review/v1",
+      "candidate_index": 2,
+      "candidate_number": 3,
+      "candidate_id": "supplied_instance_2",
+      "status": "rejected",
+      "selection_reason": "requested_candidate",
+      "is_best_accepted": false,
+      "best_accepted_number": 2,
+      "candidate_count": 5
+    },
+    {
+      "schema": "simple_gdrnpp_review/v1",
+      "candidate_index": 3,
+      "candidate_number": 4,
+      "candidate_id": "supplied_instance_3",
+      "status": "rejected",
+      "selection_reason": "requested_candidate",
+      "is_best_accepted": false,
+      "best_accepted_number": 2,
+      "candidate_count": 5
+    },
+    {
+      "schema": "simple_gdrnpp_review/v1",
+      "candidate_index": 4,
+      "candidate_number": 5,
+      "candidate_id": "supplied_instance_4",
+      "status": "rejected",
+      "selection_reason": "requested_candidate",
+      "is_best_accepted": false,
+      "best_accepted_number": 2,
+      "candidate_count": 5
+    }
+  ],
+  "inference_requests_through_cached_views": 1,
+  "model_loads_through_cached_views": 1,
+  "accepted_pose_and_all_fits_unchanged": true,
+  "graphics_off_has_no_arrays": true,
+  "gallery_opt_in": true,
+  "weights_bundled": false,
+  "scope": "Same real T-LESS scene with proposal order changed; selected view does not change acceptance, not new accuracy qualification",
+  "attribution": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+}

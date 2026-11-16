@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "recorded_0",
+      "type": "input.cloud",
+      "name": "Recorded best accepted proposal 2",
+      "parameters": {
+        "path": "results/best.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_1",
+      "type": "input.cloud",
+      "name": "Recorded rejected proposal 1",
+      "parameters": {
+        "path": "results/candidate_1.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        500,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_2",
+      "type": "input.file",
+      "name": "All five proposals; * = selected",
+      "parameters": {
+        "path": "results/gallery.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        0,
+        500
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_3",
+      "type": "input.file",
+      "name": "Default source-aligned best image",
+      "parameters": {
+        "path": "results/best.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        500
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_scope",
+      "type": "layout.comment",
+      "name": "SAVED REVIEW / file-source PASS means reading only",
+      "description": "Recorded actual worker views. Proposal 2 passes depth and proposal 1 rejects; viewing a proposal never changes accepted pose outputs. Native colored clouds and separate gallery pixel grid. T-LESS CC BY 4.0, Hodan et al., WACV 2017.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": []
+    }
+  ],
+  "connections": []
+}

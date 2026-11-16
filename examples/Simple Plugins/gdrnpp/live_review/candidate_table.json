@@ -1,0 +1,47 @@
+[
+  {
+    "number": 1,
+    "candidate_id": "supplied_instance_1",
+    "status": "rejected",
+    "support_percent": 0.0,
+    "contradiction_percent": 97.48860487979265,
+    "rmse_mm": null,
+    "selected": false
+  },
+  {
+    "number": 2,
+    "candidate_id": "supplied_instance_0",
+    "status": "accepted",
+    "support_percent": 85.98474404926017,
+    "contradiction_percent": 4.503262567778696,
+    "rmse_mm": 1.488388399593532,
+    "selected": true
+  },
+  {
+    "number": 3,
+    "candidate_id": "supplied_instance_2",
+    "status": "rejected",
+    "support_percent": 0.0,
+    "contradiction_percent": 0.0,
+    "rmse_mm": null,
+    "selected": false
+  },
+  {
+    "number": 4,
+    "candidate_id": "supplied_instance_3",
+    "status": "rejected",
+    "support_percent": 0.0,
+    "contradiction_percent": 0.0,
+    "rmse_mm": null,
+    "selected": false
+  },
+  {
+    "number": 5,
+    "candidate_id": "supplied_instance_4",
+    "status": "rejected",
+    "support_percent": 0.0,
+    "contradiction_percent": 0.0,
+    "rmse_mm": null,
+    "selected": false
+  }
+]

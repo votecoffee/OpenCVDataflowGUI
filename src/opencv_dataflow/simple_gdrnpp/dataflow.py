@@ -13,6 +13,7 @@ from opencv_dataflow.payloads import NO_VALUE, ValuePacket, frame, require_same_
 from opencv_dataflow.pointclouds import PointCloud
 
 from .bridge import WorkerClient, project_recipe_path
+from .selection import describe_review
 
 CAPTURE_PORTS = ("image", "depth", "camera", "detections", "capture_id")
 
@@ -100,6 +101,9 @@ class SimpleGDRNPP(Block):
         Port("accepted_count", "integer"),
         Port("overlay", "image", required=False),
         Port("cloud", "cloud", required=False),
+        Port("review", "data"),
+        Port("candidate_table", "data"),
+        Port("gallery", "image", required=False),
     )
     defaults = dict(
         recipe_path="",
@@ -109,9 +113,14 @@ class SimpleGDRNPP(Block):
         depth_scale_to_m=1.0,
         render_overlay=True,
         render_cloud=True,
+        review_candidate=0,
+        render_gallery=False,
     )
     parameter_choices = {"mode": ("Connected RGB-D", "Retained reference")}
-    parameter_ranges = {"depth_scale_to_m": NumericRange(1e-12, 1)}
+    parameter_ranges = {
+        "depth_scale_to_m": NumericRange(1e-12, 1),
+        "review_candidate": NumericRange(0, 64, whole=True),
+    }
     project_path_parameters = ("models_dir",)
     parameter_help = {
         "recipe_path": "Project-relative sealed .gdrnpp setup staged by the native popup.",
@@ -123,6 +132,13 @@ class SimpleGDRNPP(Block):
         ),
         "render_overlay": "Generate the candidate pose/fit image when graphics are enabled.",
         "render_cloud": "Generate measured scene and predicted CAD/axes for native flyaround.",
+        "review_candidate": (
+            "0 shows the highest-support accepted pose, or strongest rejected proposal. "
+            "1..64 selects that proposal for graphics; accepted pose outputs stay unchanged."
+        ),
+        "render_gallery": (
+            "Optional image of all numbered proposals; adds rendering work per candidate."
+        ),
     }
     input_help = {
         "camera": "Rectified pinhole dict: matrix, image_size, frame, optional zero distortion.",
@@ -134,6 +150,9 @@ class SimpleGDRNPP(Block):
         "pose": "Best depth-accepted pose only; absent on rejection. Not a grasp qualification.",
         "poses": "All depth-accepted poses. Raw proposals remain separately in report.",
         "cloud": "Review-only measured scene, predicted CAD and axes; RGB colors explain fit.",
+        "review": "Selected proposal identity/status and whether it is the best accepted pose.",
+        "candidate_table": "Proposal numbers, IDs, support/contradiction and selection.",
+        "gallery": "Optional diagnostic montage of all proposals; uses its own pixel grid.",
     }
 
     def __init__(self, **kwargs):
@@ -155,9 +174,11 @@ class SimpleGDRNPP(Block):
                 raise ValidationError(str(e), "recipe_path") from e
             if re.fullmatch("[0-9a-f]{64}", p["sha256"]) is None:
                 raise ValidationError("Stage a setup with its complete SHA-256", "sha256")
-        for name in ("render_overlay", "render_cloud"):
+        for name in ("render_overlay", "render_cloud", "render_gallery"):
             if type(p[name]) is not bool:
                 raise ValidationError("Rendering options must be boolean", name)
+        if type(p["review_candidate"]) is not int:
+            raise ValidationError("Review candidate must be an integer", "review_candidate")
         if not isinstance(p["models_dir"], str):
             raise ValidationError("Choose an external model directory", "models_dir")
 
@@ -177,9 +198,12 @@ class SimpleGDRNPP(Block):
             data = dict(
                 base=base,
                 models_dir=str(path),
-                graphics=self.generate_graphics and (p["render_overlay"] or p["render_cloud"]),
+                graphics=self.generate_graphics
+                and (p["render_overlay"] or p["render_cloud"] or p["render_gallery"]),
                 want_image=p["render_overlay"],
                 want_cloud=p["render_cloud"],
+                want_gallery=p["render_gallery"],
+                review_candidate=p["review_candidate"],
             )
             arrays = {}
             if p["mode"] == "Connected RGB-D":
@@ -198,10 +222,21 @@ class SimpleGDRNPP(Block):
         except ValueError as error:
             raise ValidationError(str(error)) from error
         report = result["report"]
+        selection, table = describe_review(report, p["review_candidate"])
+        if (
+            any(k in graphics for k in ("overlay", "points"))
+            and result.get("candidate_index") != selection["candidate_index"]
+        ):
+            raise ValidationError(
+                "Update the isolated worker: returned graphics select another proposal"
+            )
+        if data["graphics"] and p["render_gallery"] and "gallery" not in graphics:
+            raise ValidationError("Update the isolated worker to create the candidate gallery")
         accepted = [c["pose"] for c in report["candidates"] if c["fit"]["status"] == "accepted"]
         contexts = {}
         image = NO_VALUE
         cloud = NO_VALUE
+        gallery = NO_VALUE
         if "overlay" in graphics:
             image = ImageArray(graphics["overlay"], "rgb")
             contexts["overlay"] = (
@@ -224,8 +259,20 @@ class SimpleGDRNPP(Block):
                     "derived_review": True,
                     "components": ["measured scene", "predicted visible CAD", "pose axes"],
                     "capture_id": report["capture_id"],
+                    "review": copy.deepcopy(selection),
                 },
             )
+        if "gallery" in graphics:
+            gallery = ImageArray(graphics["gallery"], "rgb")
+            contexts["gallery"] = {
+                "spatial": frame(gallery.shape[1::-1], f"gdrnpp-gallery:{report['capture_id']}")
+            }
+        viewing = (
+            f"reviewing {selection['candidate_number']}/{selection['candidate_count']} "
+            f"{selection['candidate_id']} ({selection['status']})"
+            if selection["candidate_index"] is not None
+            else "no proposals to review"
+        )
         return Result(
             dict(
                 report=report,
@@ -234,11 +281,17 @@ class SimpleGDRNPP(Block):
                 accepted_count=len(accepted),
                 overlay=image,
                 cloud=cloud,
+                review=selection,
+                candidate_table=table,
+                gallery=gallery,
             ),
             payloads=contexts,
             passed=bool(accepted),
             score=max((c["fit"]["coverage"] for c in report["candidates"]), default=0.0),
-            message=f"{len(accepted)} depth-accepted poses; score is maximum measured support",
+            message=(
+                f"{len(accepted)} depth-accepted poses; {viewing}; "
+                "score is maximum measured support"
+            ),
             fail_reasons=[] if accepted else ["no_depth_accepted_pose"],
         )
 

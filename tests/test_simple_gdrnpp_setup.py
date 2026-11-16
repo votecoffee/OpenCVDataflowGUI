@@ -132,3 +132,51 @@ def test_edit_cancels_pending_preview_and_discards_older_result(app, tmp_path):
     assert not dialog.result_cloud_button.isEnabled() and draft == applied
     dialog.reject()
     assert client.closed.wait(2)
+
+
+def test_preview_selects_best_later_candidate_and_switches_cached_review(app, tmp_path):
+    from opencv_dataflow.simple_gdrnpp.selection import describe_review
+
+    dialog, client, applied, draft = opened(app, tmp_path)
+    report = dict(
+        candidates=[
+            dict(id="rejected_first", fit=dict(status="rejected", coverage=0.99)),
+            dict(id="accepted_second", fit=dict(status="accepted", coverage=0.8)),
+        ],
+        accepted_candidates=1,
+        target_frame="camera",
+    )
+    arrays = dict(
+        overlay=np.zeros((54, 72, 3), np.uint8),
+        points=np.zeros((1, 3), np.float32),
+        colors=np.zeros((1, 3), np.uint8),
+    )
+    calls = []
+
+    def response(number):
+        review, _ = describe_review(report, number)
+        return dict(
+            token="cached", report=report, review=review, candidate_index=review["candidate_index"]
+        )
+
+    def cached(op, data, *args, **kwargs):
+        calls.append(op)
+        assert op == "render" and data["token"] == "cached"
+        return response(data["index"] + 1), arrays
+
+    client.call = cached
+    dialog._previewed(response(0), arrays)
+    assert dialog.candidates.currentIndex() == 1
+    assert "accepted_second" in dialog.result_info.text()
+    dialog._candidate(0)
+    settle(app, dialog)
+    assert calls == ["render"] and dialog.candidates.currentIndex() == 0
+    assert "rejected_first (rejected)" in dialog.result_info.text()
+    clouds = []
+    dialog._cloud = clouds.append
+    dialog._result_cloud()
+    assert clouds[0].metadata["review"]["candidate_number"] == 1
+    assert not clouds[0].metadata["review"]["is_best_accepted"]
+    assert draft == applied
+    dialog.reject()
+    assert client.closed.wait(2)

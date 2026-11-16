@@ -159,3 +159,13 @@ Paired five-candidate preparation is 2.80-3.87x faster on this image and its
 doubled copy; this is not a complete-cycle result. All 32 frozen real neural
 fields, poses, fits and native graphics match the reference. Use the updated
 external worker; no recipe edits/retraining are needed.
+
+`live_review/run_project.json` exercises actual live result selection on the
+same real scene with its accepted proposal placed second. Default image/cloud
+now match the numeric best accepted pose; `review` identifies it and
+`candidate_table` lists all proposals. Optional `gallery` shows every proposal
+on a separate diagnostic image grid and is off by default. The native popup's
+numbered selector re-renders cached views without inference. The recorded
+`live_review/review_project.json` opens colored clouds and gallery without a
+model. Update the separate worker and light adapter together; reset/restart an
+already loaded worker. Accepted poses/fit gates are unchanged.

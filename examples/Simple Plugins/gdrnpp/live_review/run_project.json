@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "locate",
+      "type": "3d.simple_gdrnpp",
+      "name": "Best accepted result = proposal 2",
+      "parameters": {
+        "recipe_path": "setup.gdrnpp",
+        "sha256": "1cc4cba06c0671cb9937c04e4cd9d2d93e7700b1930778e15530e95d1e0dfdee",
+        "models_dir": "",
+        "mode": "Retained reference",
+        "depth_scale_to_m": 1.0,
+        "render_overlay": true,
+        "render_cloud": true,
+        "review_candidate": 0,
+        "render_gallery": true
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "depth",
+        "camera",
+        "detections",
+        "capture_id"
+      ],
+      "exposed_outputs": [
+        "report",
+        "pose",
+        "poses",
+        "accepted_count",
+        "overlay",
+        "cloud",
+        "review",
+        "candidate_table",
+        "gallery"
+      ]
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "ACTUAL WORKER / retained-reference demonstration",
+      "description": "Choose the external verified model folder. Runs the real object-6 model on retained RGB-D and five supplied proposals. Best numeric pose and default graphics are proposal 2; proposal 1 rejects. Gallery is enabled for this demonstration and costs extra rendering. Same fixed fit gates; source T-LESS CC BY 4.0, Hodan et al. WACV 2017. No automatic detector or grasp qualification.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": []
+    }
+  ],
+  "connections": []
+}

@@ -35,6 +35,7 @@ from opencv_dataflow.images import ImageArray
 from opencv_dataflow.pointclouds import PointCloud
 
 from .bridge import WorkerClient, configure_runtime, project_recipe_path, runtime_python
+from .selection import describe_review
 
 
 class BoxView(FilmstripImageView):
@@ -102,6 +103,7 @@ class GDRNPPSetupDialog(QDialog):
         self.token = None
         self.preview_arrays = None
         self.preview_report = None
+        self.preview_review = None
         self.box_items = []
         layout = QVBoxLayout(self)
         actions = QHBoxLayout()
@@ -469,6 +471,7 @@ class GDRNPPSetupDialog(QDialog):
         return str(path if path.is_absolute() else Path(self.context.project_dir) / path)
 
     def _invalidate(self, *_):
+        self.preview_review = None
         if self.restoring:
             return
         self.revision += 1
@@ -594,19 +597,29 @@ class GDRNPPSetupDialog(QDialog):
         self.token = metadata["token"]
         self.preview_report = metadata["report"]
         self.preview_arrays = arrays
+        index = metadata.get("candidate_index")
+        self.preview_review = (
+            metadata.get("review")
+            or describe_review(
+                self.preview_report,
+                index + 1 if index is not None and self.preview_report["candidates"] else 0,
+            )[0]
+        )
         self.result_view.set_image(pixmap(ImageArray(arrays["overlay"], "rgb")))
         self.candidates.blockSignals(True)
         self.candidates.clear()
-        for candidate in self.preview_report["candidates"]:
+        for number, candidate in enumerate(self.preview_report["candidates"], 1):
             fit = candidate["fit"]
             self.candidates.addItem(
-                f"{candidate['id']} · {fit['status']} · support {fit['coverage']:.1%}"
+                f"{number}: {candidate['id']} · {fit['status']} · support {fit['coverage']:.1%}"
             )
-        self.candidates.setCurrentIndex(metadata["candidate_index"])
+        self.candidates.setCurrentIndex(index if index is not None else -1)
         self.candidates.blockSignals(False)
         accepted = self.preview_report["accepted_candidates"]
         self.result_info.setText(
             f"{accepted} accepted / {len(self.preview_report['candidates'])} candidates. "
+            f"Viewing {self.preview_review['candidate_id'] or 'no candidate'} "
+            f"({self.preview_review['status']}). "
             "Green: supported; red: contradicted; purple: behind depth; orange: unknown/outside. "
             "Axes and predicted CAD surface are explanatory graphics, not camera measurements."
         )
@@ -618,7 +631,7 @@ class GDRNPPSetupDialog(QDialog):
         self.result_cloud_button.setEnabled(True)
 
     def _candidate(self, index):
-        if self.token:
+        if self.token and index >= 0:
             self._submit("render", dict(token=self.token, index=index), self._previewed)
 
     def _reference_cloud(self):
@@ -642,6 +655,7 @@ class GDRNPPSetupDialog(QDialog):
                 "m",
                 self.preview_report["target_frame"],
                 colors=self.preview_arrays["colors"],
+                metadata={"derived_review": True, "review": self.preview_review},
             )
         )
 
