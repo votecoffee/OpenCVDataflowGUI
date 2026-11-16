@@ -52,6 +52,9 @@ def rebase_project_paths(graph, destination, project_path=None):
             nested = getattr(block, "graph", None)
             if isinstance(nested, Graph):
                 visit(nested)
+        if original is not None and Path(original) != destination:
+            for relative in current.program["assets"]:
+                assets.copy(original, relative)
         if original is not None and Path(original) != destination and current.validation_sets:
             manifests = copy.deepcopy(current.validation_sets)
             for manifest in manifests:

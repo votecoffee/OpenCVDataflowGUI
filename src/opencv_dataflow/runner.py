@@ -146,6 +146,8 @@ def main(argv=None):
         if queued is not None:
             queued.close()
             queued = None
+        graph.close()
+        passed = passed and not graph.program_status()["error"]
         if args.report:
             # Ports of kind number may contain NumPy scalar objects.
             content = (
@@ -160,6 +162,7 @@ def main(argv=None):
                         "ticket_results": graph.ticket_results.snapshot(),
                         "activity": graph.activity.snapshot(),
                         "active_recipe": graph.recipes.active_ref(),
+                        "program": graph.program_status(),
                     },
                     indent=2,
                     allow_nan=False,

@@ -7,6 +7,7 @@
 | [FANUC registers and frames](fanuc_registers_and_frames/README.md) | Inspect the wiring for R and PR reads, indexed UFRAME and UTOOL reads, flange pose composition, and a reviewed register write. |
 | [ControlLogix trigger and writeback](controllogix_trigger_and_writeback/README.md) | Follow a PLC request through a real PCB photo inspection and result tag/readback; a separate offline replay needs no controller. |
 | [ROS 2 Lyrical / Fast DDS](ros2_fastdds/README.md) | Real PCB offline image conversion plus disabled image/data endpoints for isolated ROS and future simulation workflows. |
+| [Self-starting ROS programs](ros2_program_lifecycle/README.md) | First-run image/data publishers, a real PCB photo, per-cycle hooks, reusable services and automatic program/application-close cleanup. |
 | [Connection health](connection_health/README.md) | Independent ROS, MQTT, EtherNet/IP, Logix and FANUC monitors, with disabled templates and an offline status/provider demonstration. |
 
 The calibration runs offline. The two hardware templates open with controller

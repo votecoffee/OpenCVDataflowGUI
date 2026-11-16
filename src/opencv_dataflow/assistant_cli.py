@@ -171,6 +171,8 @@ def _parser():
 
 def _dispatch(args):
     if args.command == "info":
+        from .program_config import DEFAULT_PROGRAM, DEFAULT_SERVICE, HOOKS
+
         checkout = Path(__file__).resolve().parents[2]
         checkout = checkout if (checkout / "docs" / "architecture.md").is_file() else None
         return {
@@ -182,6 +184,11 @@ def _dispatch(args):
             "gui_attachment": False,
             "source_checkout": str(checkout) if checkout else None,
             "documentation": str(checkout / "docs" / "README.md") if checkout else None,
+            "program_lifecycle": {
+                "hooks": list(HOOKS), "defaults": DEFAULT_PROGRAM,
+                "service_defaults": DEFAULT_SERVICE,
+                "documentation": str(checkout / "docs/program-lifecycle.md") if checkout else None,
+            },
             "commands": [
                 "info",
                 "catalog",
@@ -261,6 +268,11 @@ def _dispatch(args):
                 from .assistant_artifacts import export_previews
 
                 data["artifacts"] = export_previews(session.graph, args.artifacts)
+            # The CLI session ends here; capture shutdown diagnostics in the receipt.
+            session.close()
+            data["program"] = session.graph.program_status()
+            data["activity"] = session.graph.activity.snapshot()
+            data["passed"] = data["passed"] and not data["program"]["error"]
             if args.report:
                 with args.report.open("x", encoding="utf-8", newline="\n") as stream:
                     stream.write(
@@ -290,6 +302,7 @@ def _dispatch(args):
                     "stop_reason": data["stop_reason"],
                     "run_count": len(data["runs"]),
                     "failures": list(failures.values()),
+                    "program_error": session.graph.program_status()["error"] or None,
                     "report": str(args.report.resolve()) if args.report else None,
                     "artifacts_manifest": (
                         str(args.artifacts.resolve() / "manifest.json") if args.artifacts else None

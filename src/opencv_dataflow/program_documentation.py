@@ -8,6 +8,7 @@ from tempfile import NamedTemporaryFile
 
 from .parallel_inspection import ParallelInspect
 from .port_types import connection_mode
+from .program_config import DEFAULT_PROGRAM
 from .toolblocks import ToolBlock
 from .visual_style import BLOCK_COLORS, block_type
 from .workspace import arranged_positions
@@ -293,6 +294,12 @@ def render_program_documentation(graph, title):
         f"<title>{title} · Program documentation</title><style>{STYLES}</style></head><body>",
         f"<header><h1>{title}</h1><p>OpenCV Dataflow program documentation</p>",
         f'<p class="summary">{settings}</p></header>',
+        *(
+            ["<section><h2>Program settings and lifecycle</h2>",
+             f"<pre>{escape(json.dumps(graph.program, indent=2))}</pre></section>"]
+            if graph.program != DEFAULT_PROGRAM
+            else []
+        ),
         *canvas_sections(graph, "job", "Program layout"),
         "</body></html>",
     ]

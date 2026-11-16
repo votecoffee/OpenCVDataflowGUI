@@ -118,10 +118,17 @@ the Python ToolBlock API. Connected ports must remain exposed; a rewire must
 explicitly disconnect the old incoming connection first.
 
 Allowed settings: `run_profile`, `branch_workers`, `graphics_mode`, `groups`,
-`viewport`, `validation_sets`, `recipes`. These use the existing project schemas.
+`viewport`, `validation_sets`, `recipes`, `program`. These use the existing project schemas.
 `run_profile` is `debug`, `balanced` or `lean`; `graphics_mode` is `inherit`, `on`
 or `off`. `branch_workers` is `auto` or a supported integer (currently 1–8).
 The API does not maintain a second set of scheduler or conversion rules.
+
+`program` configures first-run startup, per-cycle Before/After run, shutdown
+scripts, initial JSON variables, owned service commands and Save As assets. See
+[program lifecycle](../../../docs/program-lifecycle.md) for the schema and API.
+Inspect/validate/apply/save do not execute hooks or launch services. Explicit run
+does so when extensions are enabled. Python sessions retain services until
+`close()`; CLI receipts include final shutdown activity and program status.
 
 Disk saves preserve project-relative inputs and sealed assets through the existing
 Save As contract. The API uses a unique temporary file, exclusive new-file

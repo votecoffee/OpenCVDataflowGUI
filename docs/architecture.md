@@ -195,7 +195,28 @@ plugins explicitly from a trusted local `.py` file; registration is staged so a
 failure does not partially update the registry. This is not process isolation or a
 security sandbox. Extensions can use the full Python environment. A project with
 unavailable plugin types fails clearly; load the plugin and reopen the project.
-Plugins are session-local, and projects never execute embedded scripts.
+Plugins are session-local; saved projects do not select executable plugin files.
+Optional, explicitly enabled program lifecycle scripts execute only when the
+program runs and during cleanup of a started session, never just on file load.
+
+## Program lifecycle
+
+The root graph owns persisted program settings and a separate unsaved lifecycle
+session. Startup runs on first execution, followed by ordered managed services;
+Before/After run wrap root cycles. Shutdown closes block resources, runs its hook
+and stops services in reverse order. Execution copies borrow the loaded program's
+session, so finishing Run once leaves services available. ToolBlocks and acquisition
+producers do not duplicate lifecycle events. Replacing or closing the program and
+application shutdown close the owner. Hook failures are contained and cleanup
+continues; prior file/device side effects are not rolled back.
+
+Hooks run in bounded application-Python subprocesses with JSON context/state.
+Services use the application or configured ROS interpreter, explicit argument lists,
+readiness checks and owned process trees. Windows job ownership is established
+before the command starts; shutdown has a grace period and a tree-termination
+fallback. Program diagnostics share the activity log. Program assets follow the
+existing exclusive Save As copy rules. See [program lifecycle](program-lifecycle.md)
+for the editor, schemas, event ordering, limits and headless API.
 
 ToolBlocks implement the same base block contract with an embedded graph and typed
 public-terminal bindings. Projects embed their definitions; reusable definition

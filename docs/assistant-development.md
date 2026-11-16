@@ -5,6 +5,12 @@ runtime as the desktop editor. It can discover blocks and parameter constraints,
 apply batches of edits, validate connections, run recorded images, inspect ticket
 and diagnostic receipts, and export review previews or program documentation.
 
+Chats can configure root-program [lifecycle hooks and managed services](program-lifecycle.md)
+through the `program` settings operation. `info` lists supported events/defaults;
+inspection returns unsaved program status. Opening/validating does not launch
+services. Explicit execution can start trusted scripts and ROS/external commands;
+session close runs shutdown and cleans up the owned processes.
+
 ## Skills and setup
 
 The repository contains two portable skills:

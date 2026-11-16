@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "program": {
+    "name": "Self-starting ROS data demo",
+    "description": "Starts a private local ROS publisher on first run; closes it with the program.",
+    "enabled": true,
+    "variables": {
+      "cycles": 0
+    },
+    "scripts": {
+      "startup": "print('Starting the local ROS demo source')",
+      "before_run": "state['cycles'] += 1",
+      "after_run": "state['last_status'] = context['status']",
+      "shutdown": "print('Closing the local ROS demo source')"
+    },
+    "script_timeout_seconds": 10.0,
+    "services": [
+      {
+        "id": "ros_demo",
+        "enabled": true,
+        "runtime": "ros2",
+        "argv": [
+          "{python}",
+          "-u",
+          "{project_dir}/demo_publisher.py",
+          "--image",
+          "{project_dir}/pcb.ppm"
+        ],
+        "cwd": "{project_dir}",
+        "environment": {
+          "RMW_IMPLEMENTATION": "rmw_fastrtps_cpp",
+          "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST",
+          "ROS_STATIC_PEERS": ""
+        },
+        "ready_text": "ROS_DEMO_READY",
+        "startup_timeout_seconds": 30.0,
+        "shutdown_timeout_seconds": 5,
+        "stop_input": ""
+      }
+    ],
+    "assets": [
+      "demo_publisher.py",
+      "pcb.ppm",
+      "SOURCES.json"
+    ]
+  },
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.ros2_data",
+      "name": "Read ROS 2 data",
+      "parameters": {
+        "topic": "/opencv_dataflow/program_demo/data",
+        "namespace": "/opencv_dataflow",
+        "domain_id": 71,
+        "discovery_range": "localhost",
+        "queue_depth": 4,
+        "queue_bytes": 33554432,
+        "reliability": "reliable",
+        "durability": "volatile",
+        "deadline_seconds": 0.0,
+        "lifespan_seconds": 0.0,
+        "timeout_seconds": 3.0,
+        "startup_timeout_seconds": 30.0,
+        "use_sim_time": false,
+        "publication_mode": "asynchronous",
+        "consume": "fifo",
+        "max_age_seconds": 0.0,
+        "enabled": true,
+        "ticket_mode": "field",
+        "ticket_field": "sequence",
+        "message_type": "std_msgs/msg/String",
+        "custom_message_type": "",
+        "data_mode": "json_string"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "data",
+        "message",
+        "trigger",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "instructions",
+      "type": "layout.comment",
+      "name": "Run once starts ROS; closing this program stops it",
+      "description": "Configure the local Lyrical runtime once, then Run once or Continuous. This program starts its own localhost Fast DDS image/data publisher in domain 71. Stop pauses graph cycles; the publisher remains until New/Open, Stop program services, or application close. Program > Settings and scripts shows hooks, service state and diagnostics. No robot, simulator or hardware connection. Image: Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and Onkar Dabeer, VisA / SPot-the-Difference, ECCV 2022, CC BY 4.0. https://registry.opendata.aws/visa/ . Reuses PCB2 0000, resized/letterboxed by the showcase fixture, converted losslessly to RGB PPM here. Code and graph: MIT.",
+      "parameters": {},
+      "position": [
+        0,
+        400
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

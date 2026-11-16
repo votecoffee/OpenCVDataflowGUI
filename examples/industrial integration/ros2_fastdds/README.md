@@ -1,5 +1,8 @@
 # ROS 2 Lyrical / Fast DDS
 
+For demos that start their own ROS publishers on the first run and stop them when
+the program/application closes, use [the self-starting image/data programs](../ros2_program_lifecycle/README.md).
+
 Open these projects with File → Open. Tools are in
 **Industrial integration → ROS 2**. Read the [setup and contracts](../../../docs/ros2.md).
 

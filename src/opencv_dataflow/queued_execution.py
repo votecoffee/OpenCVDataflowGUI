@@ -150,6 +150,7 @@ class QueuedExecution:
             check_upstream(graph.blocks[key])
         self.producer = Graph.from_dict(graph.to_dict(), registry, project_dir=graph.project_dir)
         self.producer.production_completion = False
+        self.producer._program_hooks = False  # Consumer owns program events and services.
         self.producer.blocks = {k: b for k, b in self.producer.blocks.items() if k in self.upstream}
         self.producer.connections = [
             c
@@ -216,6 +217,7 @@ class QueuedExecution:
     def start(self):
         if self.thread is not None:
             raise ValueError("Acquisition already started")
+        self.graph.start_program(self.stopped)
         with self.queue.condition:
             self.queue.runtime["producer_error"] = ""
             self.queue.runtime["producer_done"] = False

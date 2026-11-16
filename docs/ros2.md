@@ -34,6 +34,14 @@ clock reset behavior, context schemas and external-envelope boundaries.
 
 ## Runtime setup
 
+[Self-starting image/data demos](<../examples/industrial integration/ros2_program_lifecycle/README.md>)
+use the program's first-run managed service to launch a local publisher through
+this runtime profile. Repeated Run once calls reuse it; program replacement and
+application close destroy its ROS nodes and process tree. Configure **Program →
+Settings and scripts…** for hooks, readiness, shutdown and status. See
+[program lifecycle](program-lifecycle.md). The existing disabled endpoint templates
+remain available for independently managed peers.
+
 The GUI uses Python 3.14/OpenCV 5. ROS runs in a **separate interpreter** configured
 on this computer. Its extensions must match that interpreter. The locally verified
 Lyrical runtime uses Python 3.12.3, rclpy 10.0.10 and `rmw_fastrtps_cpp`; the GUI

@@ -137,6 +137,7 @@ class Runner(QThread):
         self.registry = registry or builtin_registry()
         self.final_queue_states = {}
         self.frame_has_results = True
+        self.detached = False
 
     def stop(self):
         self.stop_requested.set()
@@ -154,10 +155,14 @@ class Runner(QThread):
             return interrupted
 
         def publish(has_results=True):
+            if self.detached:
+                return
             self.frame_has_results = has_results
             self.ack.clear()
             self.frame.emit()
-            self.ack.wait()
+            while not self.ack.wait(0.05):
+                if self.detached:
+                    return
 
         try:
             repeat = {"all": "stop", "continuous": "loop"}.get(self.mode)
@@ -223,6 +228,15 @@ class Runner(QThread):
                 if isinstance(b, ImageQueue)
             }
             self.graph.close()
+
+
+class ProgramCloser(QThread):
+    def __init__(self, graph):
+        super().__init__()
+        self.graph = graph
+
+    def run(self):
+        self.graph.close()
 
 
 class LivePreview(QThread):
@@ -1766,6 +1780,8 @@ class MainWindow(QMainWindow):
         self.dirty = False
         self.runner = None
         self.closing = False
+        self._shutdown_worker = None
+        self._shutdown_complete = False
         self.setWindowTitle("OpenCV Dataflow · Untitled")
         self.resize(1500, 920)
         self.scene = CanvasScene(self.graph)
@@ -2033,6 +2049,10 @@ class MainWindow(QMainWindow):
         recipes_menu = self.menuBar().addMenu("&Recipes")
         self.recipe_action = recipes_menu.addAction("Manage recipes…", self.manage_recipes)
         self.edit_actions.append(self.recipe_action)
+        program_menu = self.menuBar().addMenu("&Program")
+        self.edit_actions.append(program_menu.addAction(
+            "Settings and scripts…", self.edit_program_settings
+        ))
         toolbar.addAction("Delete selected", self.scene.delete_selected)
         workspace = self.menuBar().addMenu("&Workspace")
         workspace.addAction("Color legend…", self.show_color_legend)
@@ -2060,6 +2080,16 @@ class MainWindow(QMainWindow):
         self.breadcrumb = QLabel("Job")
         toolbar.addWidget(self.breadcrumb)
         self.update_navigation()
+
+    def edit_program_settings(self):
+        from .program_settings import ProgramSettingsDialog
+
+        if self.runner:
+            return
+        before = copy.deepcopy(self.root_graph.program)
+        accepted = ProgramSettingsDialog(self.root_graph, self).exec()
+        if accepted and self.root_graph.program != before:
+            self.mark_layout_dirty()
 
     def show_color_legend(self):
         dialog = QDialog(self)
@@ -2498,6 +2528,7 @@ class MainWindow(QMainWindow):
                 self.root_graph.to_dict(), self.registry, project_dir=self.root_graph.project_dir
             )
             execution_graph.copy_runtime_from(self.root_graph)
+            execution_graph.borrow_program_runtime(self.root_graph)
             share_native_sequence_runtime(execution_graph, self.root_graph)
             execution_graph.bind_activity(self.root_graph.activity)
             execution_graph.filmstrip = self.root_graph.filmstrip
@@ -2707,7 +2738,11 @@ class MainWindow(QMainWindow):
             RecipeManager(self).exec()
 
     def closeEvent(self, event):
-        if self.runner:
+        if self._shutdown_complete:
+            event.accept()
+        elif self._shutdown_worker is not None:
+            event.ignore()
+        elif self.runner:
             self.closing = True
             self.stop_run()
             event.ignore()
@@ -2716,11 +2751,40 @@ class MainWindow(QMainWindow):
             self.inspector.close_plugin_dialog()
             self.inspector.close_image_popouts()
             self.inspector.stop_previews(wait=True)
-            self.root_graph.close()
-            event.accept()
+            program_status = self.root_graph.program_status()
+            if program_status["started"] and not program_status["closed"]:
+                self._shutdown_worker = ProgramCloser(self.root_graph)
+                self._shutdown_worker.finished.connect(self.on_program_closed)
+                self.run_state.setText("Closing program…")
+                self.centralWidget().setEnabled(False)
+                for action in self.edit_actions + self.run_actions:
+                    action.setEnabled(False)
+                self._shutdown_worker.start()
+                event.ignore()
+            else:
+                self.root_graph.close()
+                event.accept()
         else:
             self.closing = False
             event.ignore()
+
+    def on_program_closed(self):
+        self._shutdown_worker.wait()
+        self._shutdown_worker.deleteLater()
+        self._shutdown_worker = None
+        self._shutdown_complete = True
+        self.close()
+
+    def shutdown_application(self):
+        """Also cover application quit requests that bypass the window close event."""
+        if self.runner is not None:
+            self.runner.detached = True
+            self.runner.stop()
+            self.runner.ack.set()
+            self.runner.wait()
+        if self._shutdown_worker is not None:
+            self._shutdown_worker.wait()
+        self.root_graph.close()
 
 
 STYLE = """
@@ -2770,7 +2834,11 @@ def main():
             print(f"Unable to open project: {exc}", file=sys.stderr)
             sys.exit(2)
     window.show()
-    sys.exit(app.exec())
+    try:
+        exit_code = app.exec()
+    finally:
+        window.shutdown_application()
+    sys.exit(exit_code)
 
 
 if __name__ == "__main__":

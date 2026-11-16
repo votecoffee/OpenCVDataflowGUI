@@ -141,6 +141,17 @@ def validate_graph(graph, *, require_complete=True):
     """Static diagnostics. Image-dependent rules are checked only during execution."""
     issues = []
     for current, scope, bound in _graphs(graph):
+        from .program_config import validate_program, validate_scripts
+
+        try:
+            settings = validate_program(current.program)
+            if settings["enabled"]:
+                if scope:
+                    raise ValueError("Program lifecycle belongs to the root program")
+                validate_scripts(settings)
+        except (Exception, SystemExit) as exc:
+            issues.append({"scope": list(scope), "block": None, "kind": "program",
+                           "message": exception_message(exc), "fields": ["program"]})
         current.ordered()
         wired = {(c.target, c.input) for c in current.connections} | bound
         for block in current.blocks.values():
@@ -272,6 +283,7 @@ def _apply_operation(data, operation, registry):
             "viewport",
             "validation_sets",
             "recipes",
+            "program",
         }:
             raise ValueError("Unknown project setting")
         target.update(fields)
@@ -364,6 +376,7 @@ class ProjectSession:
             "project": copy.deepcopy(self.graph.to_dict()),
             "ports": ports,
             "validation": validate_graph(self.graph),
+            "program_runtime": self.graph.program_status(),
         }
 
     def apply(self, operations):
@@ -498,6 +511,7 @@ class ProjectSession:
             "ticket_results": self.graph.ticket_results.snapshot(),
             "activity": self.graph.activity.snapshot(),
             "active_recipe": self.graph.recipes.active_ref(),
+            "program": self.graph.program_status(),
         }
 
     def connection(self, source_kind, target_kind):

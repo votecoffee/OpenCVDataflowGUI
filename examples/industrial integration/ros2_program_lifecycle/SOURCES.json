@@ -1,0 +1,11 @@
+{
+  "creator": "Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang and Onkar Dabeer",
+  "dataset": "VisA / SPot-the-Difference, ECCV 2022; PCB2 0000",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "source": "https://registry.opendata.aws/visa/",
+  "prior_record": "../../assets/showcase/sources.json",
+  "input_sha256": "f0bde89a9c4adc33c69d601e00f1ad4bd2de5d4b224c0f62c13cbe26875aa196",
+  "output_sha256": "4dc2e3276d5e3ca512d42b878afe760d9564904951f01fc1a7753d15a90a0a31",
+  "changes": "Existing resized/letterboxed showcase PNG converted to lossless RGB8 PPM; no further pixel edits."
+}

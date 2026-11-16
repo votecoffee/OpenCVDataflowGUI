@@ -68,6 +68,8 @@ results. To build your own small project:
 when there is no sequence. **Continuous** loops the recordings until **Stop**.
 The status bar shows the active mode.
 
+Use **Program → Settings and scripts…** for [startup/run/shutdown hooks and managed services](docs/program-lifecycle.md), including self-starting ROS demos.
+
 Explore the [example catalog](examples/README.md) for runnable projects and the
 [workflow guide](docs/workflow-guide.md) for editor, inspection, and runtime details.
 Use [camera health monitoring](docs/camera-health.md) to train fixed-reference

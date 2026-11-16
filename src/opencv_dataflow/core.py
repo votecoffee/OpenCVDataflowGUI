@@ -809,6 +809,65 @@ class Graph:
         self._event_prefix = ""
         self.recipes = RecipeCatalog()
         self._allow_recipe_activation = True
+        from .program_config import DEFAULT_PROGRAM
+
+        self.program = copy.deepcopy(DEFAULT_PROGRAM)
+        self._program_runtime = None
+        self._program_last_status = None
+        self._owns_program_runtime = True
+        self._program_hooks = True
+
+    def set_program(self, value):
+        from .program_config import validate_program
+
+        settings = validate_program(value)
+        if settings != self.program:
+            self.stop_program()
+            self.program = settings
+            self._program_last_status = None
+
+    def _ensure_program_runtime(self):
+        if not self.program["enabled"] or not self._program_hooks:
+            return None
+        from .program_config import validate_program
+        from .program_lifecycle import ProgramRuntime
+
+        settings = validate_program(self.program)
+        if not settings["enabled"] or not self._program_hooks:
+            return None
+        if self._program_runtime is None or (
+            self._program_runtime.closed and not self._program_runtime.error
+        ):
+            self._program_runtime = ProgramRuntime(settings)
+            self._program_last_status = None
+        elif self._program_runtime.settings != settings:
+            raise RuntimeError("Stop program services before changing active program settings")
+        return self._program_runtime
+
+    def start_program(self, cancelled=lambda: False):
+        runtime = self._ensure_program_runtime()
+        if runtime is not None:
+            runtime.start(self, cancelled)
+
+    def borrow_program_runtime(self, owner):
+        self._program_runtime = owner._ensure_program_runtime()
+        self._owns_program_runtime = False
+
+    def stop_program(self):
+        if self._program_runtime is not None and self._owns_program_runtime:
+            for block in self.blocks.values():
+                block._close_safely()
+            self._program_runtime.close(self)
+            self._program_last_status = self._program_runtime.snapshot()
+            self._program_runtime = None
+
+    def program_status(self):
+        if self._program_runtime is None and self._program_last_status is not None:
+            return copy.deepcopy(self._program_last_status)
+        return self._program_runtime.snapshot() if self._program_runtime is not None else {
+            "started": False, "closed": False, "run_index": 0, "services": {}, "events": [],
+            "state": copy.deepcopy(self.program["variables"]), "error": "",
+        }
 
     def bind_recipes(self, catalog=None, allow_activation=None):
         if catalog is not None and catalog is not self.recipes:
@@ -1132,6 +1191,34 @@ class Graph:
     def run(
         self, cancelled=lambda: False, injected=None, provided=None, *,
         filmstrip_capture=None, end_of_input=False,
+    ):
+        runtime = self._ensure_program_runtime()
+        if runtime is None or cancelled():
+            return self._run_with_bookkeeping(
+                cancelled, injected, provided, filmstrip_capture, end_of_input
+            )
+        try:
+            runtime.before_run(self, cancelled)
+        except InterruptedError:
+            if not cancelled():
+                raise
+            self.clear_results(preserve_history=True)
+            for block in self.processing_blocks():
+                block.state, block.error = "skipped", "Run stopped"
+            return
+        error = None
+        try:
+            return self._run_with_bookkeeping(
+                cancelled, injected, provided, filmstrip_capture, end_of_input
+            )
+        except BaseException as exc:
+            error = exc
+            raise
+        finally:
+            runtime.after_run(self, cancelled, error)
+
+    def _run_with_bookkeeping(
+        self, cancelled, injected, provided, filmstrip_capture, end_of_input,
     ):
         if self.filmstrip_enabled and self.production_completion and not self._event_prefix:
             from .filmstrip import FilmstripCapture
@@ -1553,11 +1640,18 @@ class Graph:
     def close(self):
         for block in self.blocks.values():
             block._close_safely()
+        if self._program_runtime is not None and self._owns_program_runtime:
+            self._program_runtime.close(self)
+            self._program_last_status = self._program_runtime.snapshot()
+            self._program_runtime = None
 
     def to_dict(self, include_recipes=True):
+        from .program_config import DEFAULT_PROGRAM
+
         catalog = self.recipes.definition() if include_recipes else None
         return {
             "schema_version": 1,
+            **({"program": copy.deepcopy(self.program)} if self.program != DEFAULT_PROGRAM else {}),
             **({"groups": copy.deepcopy(self.groups)} if self.groups else {}),
             **({"viewport": copy.deepcopy(self.viewport)} if self.viewport else {}),
             **({"run_profile": self.run_profile.name} if self.run_profile.name != "debug" else {}),
@@ -1596,6 +1690,8 @@ class Graph:
         if data.get("schema_version") != 1:
             raise ValueError("Unsupported project schema version")
         graph = cls()
+        graph.set_program(data.get("program", {}))
+        graph._program_hooks = _depth == 0
         graph.set_run_profile(data.get("run_profile", "debug"))
         graph.set_branch_workers(data.get("branch_workers", "auto"))
         graph.set_graphics_mode(data.get("graphics_mode", "inherit"))
