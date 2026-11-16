@@ -18,5 +18,6 @@ contains project-defined inspection algorithms and other-library integrations.
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).
 For reader/encoder checks and page counts, try [codec preflight](codec_probe/README.md).
+For stored displacement and verified image pairs, try [flow file round trips](flow_file_roundtrip/README.md).
 For exact binary neighborhoods, try [hit-or-miss patterns](hit_or_miss/README.md).
 For sparse-mask extraction and allocation limits, try [run-linked contours](run_contours/README.md).

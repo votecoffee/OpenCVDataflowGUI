@@ -99,6 +99,8 @@ BINDINGS = {
     "cv.decode_image": "imdecode imdecodeWithMetadata",
     "cv.decolor": "decolor",
     "cv.warp_flow": "remap",
+    "input.flow_file": "readOpticalFlow",
+    "output.flow_file": "writeOpticalFlow",
     "cv.demosaic_bayer": "demosaicing",
     "cv.detail_enhance": "detailEnhance",
     "cv.illumination_change": "illuminationChange",

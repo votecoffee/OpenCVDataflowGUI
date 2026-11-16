@@ -1,14 +1,15 @@
 """Dense displacement sampling with explicit grids, coverage and consistency evidence."""
 
 import copy
-import struct
-from pathlib import Path
 from uuid import uuid4
 
 import cv2
 import numpy as np
 
 from .core import Block, Port, Result
+from .flow_files import MAX_PIXELS, check_use
+from .flow_files import LoadFlowFile as LoadFlowFile
+from .flow_files import StoredFlow as StoredFlow
 from .graphics_layers import GraphicDrawing, graphic_object
 from .images import ImageArray
 from .parameter_validation import NumericRange, ValidationError
@@ -20,7 +21,6 @@ from .remap_maps import COORDINATE_MAP_TAG
 from .selection import SELECTION_INPUTS, selection_mask
 from .sequence_tools import DenseFlow
 
-MAX_PIXELS = 2_100_000
 HALO = {"nearest": 0, "linear": 0, "cubic": 2, "lanczos4": 4}
 
 
@@ -74,67 +74,6 @@ def sample_mask(mask, x, y, method="linear", halo=0):
 def inside(x, y, shape, halo=0):
     h, w = shape
     return (x >= halo) & (x <= w - 1 - halo) & (y >= halo) & (y <= h - 1 - halo)
-
-
-class StoredFlow(DenseFlow):
-    def describe(self):
-        return {
-            "model": "dense_flow_v1",
-            "shape": list(self.vectors.shape),
-            "dtype": str(self.vectors.dtype),
-            "coordinates": "File-defined displacement; consumer declares direction and grids",
-            "nonfinite_vectors": self.metadata["flow_file"]["nonfinite_vectors"],
-        }
-
-
-class LoadFlowFile(Block):
-    type_id, title = "input.flow_file", "Load dense flow file"
-    category = block_type = "Input"
-    subtype = "Motion fields"
-    outputs = (Port("flow", "any"), Port("info", "data"))
-    defaults = {"path": "", "path_base": "project"}
-    parameter_choices = {"path_base": ("project", "working_directory")}
-    parameter_help = {
-        "path": "Middlebury .flo: float32 dx/dy; source/target identity is not stored.",
-        "path_base": "Resolve relative file paths from this saved project or working directory.",
-    }
-    process_inputs_readonly = parallel_safe = True
-
-    def process(self, inputs):
-        value = self.parameters["path"]
-        if not isinstance(value, str) or not value.strip() or Path(value).suffix.lower() != ".flo":
-            raise ValidationError("Choose a .flo displacement file", "path")
-        path = Path(value)
-        if self.parameters["path_base"] == "project" and not path.is_absolute():
-            if self.project_dir is None:
-                raise ValidationError("Save or open the project before using a relative flow path")
-            path = self.project_dir / path
-        with path.open("rb") as stream:
-            header = stream.read(12)
-            if len(header) != 12:
-                raise ValidationError("Truncated .flo header")
-            magic, width, height = struct.unpack("<fii", header)
-            if (
-                magic != 202021.25
-                or not 1 <= width < 32767
-                or not 1 <= height < 32767
-                or width * height > MAX_PIXELS
-            ):
-                raise ValidationError("Invalid .flo header or dimensions; at most 2.1M pixels")
-            expected = width * height * 8
-            raw = stream.read(expected + 1)
-            if len(raw) != expected:
-                raise ValidationError("Flow bytes do not match the declared dimensions")
-        vectors = np.frombuffer(raw, "<f4").reshape(height, width, 2).copy()
-        info = {
-            "filename": path.name,
-            "size": [width, height],
-            "nonfinite_vectors": int(np.count_nonzero(~np.isfinite(vectors).all(axis=2))),
-            "association": "unspecified; pair with the intended image and flow direction",
-        }
-        return Result(
-            {"flow": StoredFlow(vectors, {"flow_file": copy.deepcopy(info)}), "info": info}
-        )
 
 
 class WarpDenseFlow(Block):
@@ -257,6 +196,10 @@ class WarpDenseFlow(Block):
         target = self.input_payloads.get("target", {})
         if "target" in inputs and inputs["target"].shape[:2] != shape:
             raise ValidationError("Target anchor must match the flow/output dimensions")
+        file_association = check_use(
+            inputs["flow"], flow_context, source, inputs.get("target"), incoming, target,
+            p["direction"],
+        )
         identity = uuid4().hex
         target_frame = target.get("spatial")
         grid_context = target
@@ -399,6 +342,7 @@ class WarpDenseFlow(Block):
                 if flow_context.get("spatial", {}).get("root_id") is not None
                 else "size_only"
             ),
+            "file_association": file_association,
         }
         outputs = {
             "image": output,

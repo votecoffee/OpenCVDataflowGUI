@@ -745,6 +745,7 @@ def builtin_registry():
     from .feature_covariance import FitFeatureCovariance, MahalanobisDistance
     from .features import FEATURE_BLOCKS
     from .flat_field_reference import BuildFlatFieldReference
+    from .flow_files import SaveFlowFile
     from .flow_refinement import RefineDenseFlow
     from .flow_warp import LoadFlowFile, WarpDenseFlow
     from .focus import MeasureFocus
@@ -1019,6 +1020,7 @@ def builtin_registry():
         InterpolateFrames,
         RefineDenseFlow,
         LoadFlowFile,
+        SaveFlowFile,
         WarpDenseFlow,
         AddImageNoise,
         DistortImageFixture,

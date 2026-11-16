@@ -1,0 +1,24 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "cases": [
+    "roundtrip",
+    "computed_motion",
+    "bare_file",
+    "direction_mismatch",
+    "wrong_image"
+  ],
+  "translation": [
+    3,
+    -2
+  ],
+  "exact_covered_pixels": 11750,
+  "computed_interior_median_endpoint_error": 0.0001772071118466556,
+  "computed_interior_p95_endpoint_error": 0.002429920481517911,
+  "asset_sha256": {
+    "computed.flo": "4e49805caac22a6f92f9425b7ec22261631ee79e575cf65ed751960cdb53e91b",
+    "exact.flo": "68828d51983dcde271a59749f3f65c9699559ea88c0afec2c8d6f72e2dd77b72",
+    "source.png": "88d311b1589d10cfc8810f7e62d383ea3cbb6648665158a852f60dcd3a7d48c9",
+    "target.png": "ed4d61786fc8ada3da70107ff1fb3e4c23656c294b3006b3e3c88f49abb91097"
+  }
+}

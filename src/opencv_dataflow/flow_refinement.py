@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
+from .flow_files import check_use
 from .flow_warp import MAX_PIXELS, flow_field, inside, same_grid, sample_mask
 from .graphics_layers import GraphicDrawing, graphic_object
 from .images import ImageArray
@@ -195,6 +196,8 @@ class RefineDenseFlow(Block):
         except ValueError as exc:
             raise ValidationError(str(exc)) from exc
         same_grid(self.input_payloads["flow"], source_context, "flow")
+        check_use(inputs["flow"], self.input_payloads["flow"], source, target,
+                  source_context, target_context, "source_to_target")
         initial, finite = flow_field(
             inputs["flow"], (h, w), p["maximum_motion"], "flow", self.input_payloads["flow"]
         )

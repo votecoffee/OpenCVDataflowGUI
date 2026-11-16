@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/source.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "target",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/target.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        320
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load",
+      "type": "input.flow_file",
+      "name": "Load dense flow file",
+      "parameters": {
+        "path": "assets/exact.flo",
+        "path_base": "project",
+        "metadata_mode": "auto",
+        "expected_direction": "any",
+        "invalid_vectors": "preserve",
+        "visual_max_motion": 10.0
+      },
+      "position": [
+        0,
+        640
+      ],
+      "exposed_inputs": [
+        "path",
+        "source",
+        "target",
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "flow",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "save",
+      "type": "output.flow_file",
+      "name": "Save dense flow file",
+      "parameters": {
+        "path": "output/motion.flo",
+        "path_base": "project",
+        "direction": "source_to_target",
+        "metadata_mode": "require_images",
+        "source_label": "before",
+        "target_label": "after",
+        "precision": "float32_only",
+        "invalid_vectors": "reject",
+        "unique_name": true,
+        "create_directories": true,
+        "visual_max_motion": 10.0
+      },
+      "position": [
+        360,
+        240
+      ],
+      "exposed_inputs": [
+        "flow",
+        "source",
+        "target"
+      ],
+      "exposed_outputs": [
+        "path",
+        "flow",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reload",
+      "type": "input.flow_file",
+      "name": "Load dense flow file",
+      "parameters": {
+        "path": "",
+        "path_base": "project",
+        "metadata_mode": "verify_images",
+        "expected_direction": "any",
+        "invalid_vectors": "preserve",
+        "visual_max_motion": 10.0
+      },
+      "position": [
+        720,
+        240
+      ],
+      "exposed_inputs": [
+        "path",
+        "source",
+        "target",
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "flow",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "warp",
+      "type": "cv.warp_flow",
+      "name": "Warp image with dense flow",
+      "parameters": {
+        "direction": "source_to_target",
+        "interpolation": "nearest",
+        "border": "constant",
+        "border_value": 0,
+        "invalid_fill": "constant",
+        "consistency": "off",
+        "consistency_tolerance": 1.0,
+        "maximum_motion": 4096.0,
+        "inverse_iterations": 12,
+        "inverse_tolerance": 0.1,
+        "maximum_work": 64000000,
+        "minimum_coverage": 0.0
+      },
+      "position": [
+        1080,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "flow",
+        "mask",
+        "region",
+        "target"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Original fixtures; displacement and association contracts",
+      "description": "Original synthetic images, fields and project: OpenCVDataflowGUI contributors, MIT. No third-party/customer images. Analytic truth is dx=3, dy=-2 local pixels. Computed field uses Farneback; its error is measured against independent analytic truth. Roundtrip writes a fresh UUID-named .flo plus SHA-bound image-pair manifest into the ignored output folder, reloads with image verification and warps the source. Bare file has no direction/pair provenance. Direction mismatch and wrong image deliberately stop Warp as invalid, with no image emission. Fingerprints establish pixel/grid identity, not camera identity, acquisition timing, visibility or motion accuracy.",
+      "parameters": {},
+      "position": [
+        360,
+        700
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "load",
+      "output": "flow",
+      "target": "save",
+      "input": "flow"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "save",
+      "input": "source"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "save",
+      "input": "target"
+    },
+    {
+      "source": "save",
+      "output": "path",
+      "target": "reload",
+      "input": "path"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "reload",
+      "input": "source"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "reload",
+      "input": "target"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "warp",
+      "input": "image"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "warp",
+      "input": "target"
+    },
+    {
+      "source": "reload",
+      "output": "flow",
+      "target": "warp",
+      "input": "flow"
+    }
+  ]
+}

@@ -5047,10 +5047,16 @@ Input / Motion fields
 Ticket terminals: optional `ticket` data input and `ticket` data output.
 Ticket mode and fixed value are common inspector controls.
 
+Inputs: `path` (text, optional), `source` (image, optional), `target` (image, optional).
+
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `path` | `""` | Middlebury .flo: float32 dx/dy; source/target identity is not stored. |
-| `path_base` | `"project"` | `project`, `working_directory` Resolve relative file paths from this saved project or working directory. |
+| `path` | `""` | Middlebury .flo: float32 local-pixel dx/dy. A wired Path overrides this filename. |
+| `path_base` | `"project"` | `project`, `working_directory` |
+| `metadata_mode` | `"auto"` | `auto`, `ignore`, `required`, `verify_images` Optional .flo.json binds direction and image content; Verify needs both anchors. |
+| `expected_direction` | `"any"` | `any`, `unspecified`, `source_to_target`, `target_to_source` Reject a different declaration; untagged files cannot establish direction. |
+| `invalid_vectors` | `"preserve"` | `preserve`, `reject` Preserve/reject nonfinite and Middlebury unknown (>1e9 per-axis) vectors. |
+| `visual_max_motion` | `10.0` | Value must be a finite number between 0.001 and 1e+09. Local-pixel magnitude at full brightness; invalid vectors are black. |
 
 ## Load lens correction maps (`input.lens_maps`)
 
@@ -7923,6 +7929,26 @@ Input `image` — Ticketed image to display in the filmstrip and its pop-out.
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `priority` | `0` | Value must be a whole number between 0 and 100. Higher priority wins when several blocks select the same ticket. |
+
+## Save dense flow file (`output.flow_file`)
+
+Output / Motion fields
+
+Inputs: `flow` (any), `source` (image, optional), `target` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"flow.flo"` |  |
+| `path_base` | `"project"` | `project`, `working_directory` |
+| `direction` | `"source_to_target"` | `unspecified`, `source_to_target`, `target_to_source` Declared image-pair direction, not inferred from vector signs. |
+| `metadata_mode` | `"if_connected"` | `none`, `if_connected`, `require_images` Optional SHA-bound .flo.json; both image anchors bind exact pixels and grids. |
+| `source_label` | `""` |  |
+| `target_label` | `""` |  |
+| `precision` | `"float32_only"` | `float32_only`, `convert_float64` Native .flo is float32; conversion explicitly permits float64 rounding. |
+| `invalid_vectors` | `"reject"` | `reject`, `preserve` Reject by default; Preserve writes nonfinite/unknown samples unchanged. |
+| `unique_name` | `false` | Append a fresh UUID to avoid overwriting files on repeated runs. |
+| `create_directories` | `false` | Create output directories only after input/config validation. |
+| `visual_max_motion` | `10.0` | Value must be a finite number between 0.001 and 1e+09. Local-pixel magnitude at full brightness; invalid vectors are black. |
 
 ## Save image (`output.image`)
 
