@@ -1,0 +1,315 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "evaluate",
+      "type": "inspect.evaluate_features",
+      "name": "Evaluate image features and matches",
+      "parameters": {
+        "reference_transform": [
+          [
+            0.9902680687415704,
+            0.13917310096006544,
+            -10.867312066736538
+          ],
+          [
+            -0.13917310096006544,
+            0.9902680687415704,
+            40.8842007156552
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reprojection_tolerance": 3.0,
+        "border_margin": 0.0,
+        "ranking": "distance",
+        "match_threshold": 64,
+        "minimum_correspondences": 1,
+        "minimum_repeatability": 0.3,
+        "minimum_precision": 0.45,
+        "minimum_recall": 0.2,
+        "maximum_features": 2000,
+        "maximum_pairs": 4000000,
+        "maximum_geometry_edges": 100000,
+        "maximum_matches": 10000,
+        "maximum_curve_points": 24,
+        "maximum_image_pixels": 8388608,
+        "preview_width": 1200,
+        "preview_height": 600,
+        "maximum_graphic_matches": 200
+      },
+      "position": [
+        900,
+        50
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "matches",
+        "query_mask",
+        "train_mask",
+        "query_region",
+        "train_region"
+      ],
+      "exposed_outputs": [
+        "metrics",
+        "repeatability",
+        "precision",
+        "recall",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query",
+      "type": "inspect.orb",
+      "name": "ORB keypoints and descriptors",
+      "parameters": {
+        "max_features": 250,
+        "scale_factor": 1.2,
+        "levels": 8,
+        "fast_threshold": 20,
+        "edge_threshold": 31,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31
+      },
+      "position": [
+        440,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/occluded.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        380
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "inspect.orb",
+      "name": "ORB keypoints and descriptors",
+      "parameters": {
+        "max_features": 250,
+        "scale_factor": 1.2,
+        "levels": 8,
+        "fast_threshold": 20,
+        "edge_threshold": 31,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31
+      },
+      "position": [
+        440,
+        380
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_selection",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          0,
+          0,
+          250,
+          320
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        420,
+        760
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original independent-transform benchmark",
+      "description": "Original MIT scenes, projects and matrices by OpenCVDataflowGUI contributors. No customer/third-party images. build_example.py renders the known image transform independently of feature extraction/matching. Evaluator never fits a homography. Center reprojection within three target pixels defines eligible geometric edges; maximum one-to-one cardinality defines repeatability and recall denominator. Ranked candidate duplicates consume precision but cannot add true positives. Legacy native ellipse-overlap evaluation is a separate metric; its functions are not Python-bound here. Wrong transform and empty features deliberately fail; pair budget deliberately errors. Native feature counts can vary with build/settings.",
+      "parameters": {},
+      "position": [
+        0,
+        -430
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "query_source",
+      "output": "image",
+      "target": "query",
+      "input": "image"
+    },
+    {
+      "source": "query_source",
+      "output": "image",
+      "target": "evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "query",
+      "output": "features",
+      "target": "evaluate",
+      "input": "query"
+    },
+    {
+      "source": "train_source",
+      "output": "image",
+      "target": "train",
+      "input": "image"
+    },
+    {
+      "source": "train_source",
+      "output": "image",
+      "target": "evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "train",
+      "output": "features",
+      "target": "evaluate",
+      "input": "train"
+    },
+    {
+      "source": "train_source",
+      "output": "image",
+      "target": "train_selection",
+      "input": "image"
+    },
+    {
+      "source": "train_selection",
+      "output": "region",
+      "target": "evaluate",
+      "input": "train_region"
+    }
+  ]
+}

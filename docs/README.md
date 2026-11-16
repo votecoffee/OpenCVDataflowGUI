@@ -37,6 +37,7 @@
 | Per-pixel temporal noise, weighted support and paired covariance | [Temporal pixel statistics](temporal-pixel-statistics.md) |
 | QR backend selection, finder controls and module/camera result grids | [QR readers](qr-backends.md), [barcode reading](barcode-reading.md) |
 | Multipart QR recovery with header/order/count/parity checks | [Structured-append QR](qr-structured-append.md) |
+| Detector repeatability and thresholded descriptor precision/recall | [Image feature evaluation](feature-evaluation.md) |
 | Recipes and sealed trained assets | [Recipes](recipes.md) |
 | Fixed-camera lighting, position and focus monitoring | [Camera health and reference training](camera-health.md) |
 | Multiview composition, native/floating blending and bounded tiles | [Multiband mosaics](multiband-mosaics.md) |

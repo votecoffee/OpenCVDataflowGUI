@@ -7,6 +7,7 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "inspect.evaluate_features": "perspectiveTransform BFMatcher.knnMatch",
     "inspect.read_qr_append": (
         "QRCodeDetector QRCodeDetectorAruco GraphicalCodeDetector.detectMulti "
         "GraphicalCodeDetector.decodeBytes"

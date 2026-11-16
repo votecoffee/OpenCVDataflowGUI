@@ -137,7 +137,7 @@ BLOCK_MODULES = {
     ),
     "geometry": "inspect.affine inspect.homography collection.clip_lines",
     "features": (
-        "inspect.affine_features "
+        "inspect.affine_features inspect.evaluate_features "
         "inspect.fast inspect.orb inspect.sift inspect.akaze inspect.kaze inspect.brisk "
         "inspect.mser inspect.simple_blob_detector "
         "inspect.match_orb inspect.match_sift inspect.match_akaze inspect.match_brisk "

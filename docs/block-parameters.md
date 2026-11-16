@@ -6026,6 +6026,41 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `background_gap` | `1` | Value must be a whole number between 0 and 255. Number of pixel layers to leave unlabeled outside the foreground. |
 | `connectivity` | `"8"` | `4`, `8` Connectivity used to group adjacent peak pixels into one seed. |
 
+## Evaluate image features and matches (`inspect.evaluate_features`)
+
+Inspection / Feature evaluation
+
+Inputs: `query_image` (image), `train_image` (image), `query` (data), `train` (data), `transform` (data, optional), `matches` (data, optional), `query_mask` (image, optional), `train_mask` (image, optional), `query_region` (data, optional), `train_region` (data, optional).
+
+Input `query` — ORB/BRISK/AKAZE/SIFT/KAZE feature data for Query image.
+
+Input `train` — Same descriptor family/settings for Train image.
+
+Input `transform` — Independent query-to-train truth. Fitting these matches biases evaluation.
+
+Input `matches` — Indexed paired match record; descriptor distance is used as rank.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_transform` | `[[1, 0, 0], [0, 1, 0], [0, 0, 1]]` | Known query-to-train homography; wired Transform overrides. |
+| `reprojection_tolerance` | `3.0` | Value must be a finite number between 1e-06 and 1024. Inclusive target-pixel center error; geometry-only correctness. |
+| `border_margin` | `0.0` | Value must be a finite number between 0 and 4096. Boundary margin in each image's pixels; selections use keypoint centers. |
+| `ranking` | `"distance"` | `distance`, `ratio` Automatic NN distance or ratio; external Matches always ranks by distance. |
+| `match_threshold` | `64.0` | Value must be a finite number between 0 and 1e+09. Inclusive operating threshold; ratio normally uses 0..1. |
+| `minimum_correspondences` | `1` | Value must be a whole number between 0 and 4096. Minimum one-to-one geometric pairs; no-support never passes. |
+| `minimum_repeatability` | `0.0` | Value must be a finite number between 0 and 1. Correspondence count divided by smaller eligible feature count. |
+| `minimum_precision` | `0.0` | Value must be a finite number between 0 and 1. Unique correct pairs / accepted rows. Duplicates reduce precision. |
+| `minimum_recall` | `0.0` | Value must be a finite number between 0 and 1. Unique correct pairs / geometric correspondences. |
+| `maximum_features` | `2000` | Value must be a whole number between 1 and 4096. Per-input feature count cap before descriptor conversion. |
+| `maximum_pairs` | `4000000` | Value must be a whole number between 1 and 8e+06. Full input query×train pair guard, before descriptor/geometry matching. |
+| `maximum_geometry_edges` | `100000` | Value must be a whole number between 1 and 200000. Valid geometry edge cap before one-to-one assignment. |
+| `maximum_matches` | `10000` | Value must be a whole number between 1 and 20000. Bound diagnostic rows and external candidate lists. |
+| `maximum_curve_points` | `64` | Value must be a whole number between 2 and 256. Maximum sampled thresholds, including operating and highest rank. |
+| `maximum_image_pixels` | `8388608` | Value must be a whole number between 1 and 1.67772e+07. Per-image cap before grayscale/preview or numeric evaluation. |
+| `preview_width` | `1200` | Value must be a whole number between 128 and 2048. Maximum side-by-side diagnostic width; output has its own grid. |
+| `preview_height` | `600` | Value must be a whole number between 128 and 1024. Maximum diagnostic height; images scale together. |
+| `maximum_graphic_matches` | `200` | Value must be a whole number between 0 and 2000. Draw at most this many accepted candidates, best rank first. |
+
 ## FAST corners (`inspect.fast`)
 
 Inspection / Features

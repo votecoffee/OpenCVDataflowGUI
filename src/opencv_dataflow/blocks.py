@@ -743,6 +743,7 @@ def builtin_registry():
     from .exposure import AlignExposures, FuseExposures
     from .fanuc import FANUC_BLOCKS
     from .feature_covariance import FitFeatureCovariance, MahalanobisDistance
+    from .feature_evaluation import EvaluateImageFeatures
     from .features import FEATURE_BLOCKS
     from .flat_field_reference import BuildFlatFieldReference
     from .flow_files import SaveFlowFile
@@ -1155,6 +1156,7 @@ def builtin_registry():
         FinalJudgment,
         *DNN_BLOCKS,
         FitFeatureCovariance,
+        EvaluateImageFeatures,
         SolveLinearSystem,
         SolveLinearProgram,
         SolvePolynomialRoots,
