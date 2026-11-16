@@ -8910,6 +8910,43 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `pca_learning_rate` | `0.15` |  |
 | `sigma` | `0.2` |  |
 
+## Track object box (MIL) (`sequence.track_mil`)
+
+Sequence / Object tracking
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `seed` (data, optional).
+
+Input `image` — uint8 gray/RGB/BGR/RGBA/BGRA, up to 2.1M pixels. MIL receives canonical grayscale.
+
+Input `seed` — Optional [x,y,w,h] or {bounds:[...]}, in this image's coordinates, when no model exists.
+
+Input `mask` — Seed support and optional accepted-center gate; not a native MIL training mask.
+
+Input `region` — Rectangle/circle/polygon selection, intersected with Mask; same semantics.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `1` | Value must be a whole number between 1 and 10000. Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` | Value must be a whole number between 1 and 64. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.01 and 4096. Conservative model/workspace estimate, not a native allocator or hard RSS limit. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Value must be a finite number between 0 and 3.6e+06. Reset after this ingress gap; zero keeps state across pauses. |
+| `initial_bounds` | `[]` | Initial [x,y,width,height], at least 8×8. Wired Seed takes precedence. |
+| `max_misses` | `3` | Value must be a whole number between 1 and 1000. Consecutive missed updates before discarding the model and waiting for a seed. |
+| `minimum_contrast` | `2.0` | Value must be a finite number between 0 and 255. Minimum grayscale standard deviation inside the box. Zero disables. |
+| `maximum_center_jump` | `0.0` | Value must be a finite number between 0 and 65536. Maximum motion since the last accepted update. Zero disables. |
+| `draw_overlay` | `true` | Enable drawable results and optional raster Overlay; Lean/off skips unrequested graphics. |
+| `init_positive_radius` | `3.0` | Value must be a finite number between 1 and 32. Native positive-sampling radius, in local pixels. |
+| `init_negative_samples` | `65` | Value must be a whole number between 1 and 4096. Native cap on negative initialization samples. |
+| `search_radius` | `25.0` | Value must be a finite number between 2 and 128. Native local search window radius; larger windows increase work. |
+| `track_positive_radius` | `4.0` | Value must be a finite number between 1 and 32. Native tracking sampler control; SDK versions may use init sampling for updates. |
+| `track_positive_samples` | `100000` | Value must be a whole number between 1 and 100000. Native tracking positive-sample cap; SDK policy determines actual use. |
+| `track_negative_samples` | `65` | Value must be a whole number between 1 and 4096. Native tracking negative-sample cap; SDK policy determines actual use. |
+| `features` | `250` | Value must be a whole number between 1 and 1024. Native Haar feature count. MIL returns no probability/confidence through this API. |
+| `selection_mode` | `"center"` | `center`, `seed_only` Mask/region bounds seed the model; Center also gates accepted centers. |
+| `maximum_work` | `4000000` | Value must be a whole number between 1 and 6.4e+07. Conservative feature/candidate product bound before native initialization. |
+
 ## Track points (Lucas-Kanade) (`sequence.track_points`)
 
 Sequence / Temporal processing

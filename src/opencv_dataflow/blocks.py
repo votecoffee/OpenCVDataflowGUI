@@ -810,6 +810,7 @@ def builtin_registry():
     )
     from .matrix_svd import MatrixSVD
     from .metadata_blocks import CreateImageMetadata
+    from .mil_tracking import MILSequence
     from .mqtt import MQTT_BLOCKS
     from .multipage_blocks import MULTIPAGE_BLOCKS
     from .multiscale_ridges import MultiscaleRidges
@@ -1139,6 +1140,7 @@ def builtin_registry():
         StabilizeStream,
         *NATIVE_BACKGROUND_BLOCKS,
         *NATIVE_TRACKER_BLOCKS,
+        MILSequence,
         ColorDistributionTracker,
         TrackConveyorParts,
         ConveyorDemo,

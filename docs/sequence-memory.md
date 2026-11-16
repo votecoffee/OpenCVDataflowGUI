@@ -331,6 +331,13 @@ with `opencv-dataflow-run "examples/opencv tools/native_box_tracking/native_box_
 Both blocks follow the same moving synthetic target.
 See the [OpenCV tracking tutorial](https://docs.opencv.org/5.0/tutorials_contrib/tracking/tutorial_introduction_to_tracker.html).
 
+The core-video `sequence.track_mil` uses the same native sequence lifecycle and
+worker-sharing contract. It exposes all seven MIL parameters, explicit region
+center gates, loss judgments/reasons and bounded preflight work. It has fixed
+box size and no native confidence score. Primary results are withheld during
+initialization/warmup/loss. See [MIL controls and limitations](mil-tracking.md)
+and the [recorded example set](<../examples/opencv tools/mil_box_tracking/README.md>).
+
 ## Associate conveyor parts across frames
 
 **Track conveyor parts** associates template or pattern matches, measured

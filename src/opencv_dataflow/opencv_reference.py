@@ -256,6 +256,7 @@ BINDINGS = {
     "sequence.lk_grid_flow": "calcOpticalFlowPyrLK remap",
     "sequence.mog2": "createBackgroundSubtractorMOG2 BackgroundSubtractor.apply",
     "sequence.track_points": "calcOpticalFlowPyrLK",
+    "sequence.track_mil": "TrackerMIL.create TrackerMIL.init TrackerMIL.update",
 }
 
 _DOCS = "https://docs.opencv.org/5.0"

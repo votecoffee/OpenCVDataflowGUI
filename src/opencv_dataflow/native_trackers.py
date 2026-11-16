@@ -1,4 +1,4 @@
-"""Single-target CSRT and KCF box tracking in ticketed image sequences."""
+"""Shared seeded native box tracking, with CSRT and KCF implementations."""
 
 import cv2
 import numpy as np
@@ -52,7 +52,9 @@ def box_center(bounds):
 
 def box_contrast(image, bounds):
     x, y, w, h = bounds
-    gray = cv2.cvtColor(image[y : y + h, x : x + w], cv2.COLOR_BGR2GRAY)
+    gray = image[y : y + h, x : x + w]
+    if gray.ndim == 3:
+        gray = cv2.cvtColor(gray, cv2.COLOR_BGR2GRAY)
     return float(cv2.meanStdDev(gray)[1][0, 0])
 
 
@@ -71,6 +73,24 @@ class NativeBoxTracker(NativeSequenceBlock):
     def new_tracker(self, image, bounds, mask, state):
         raise NotImplementedError
 
+    def prepare_image(self, source):
+        image = image_value(source, (np.uint8,), canonical=True)
+        if image.ndim == 2:
+            image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+        elif image.shape[2] == 4:
+            image = cv2.cvtColor(image, cv2.COLOR_BGRA2BGR)
+        return image
+
+    def location_allowed(self, bounds, mask):
+        return True
+
+    def tracked_overlay(self, source, bounds):
+        overlay = overlay_image(source) if self.parameters["draw_overlay"] else None
+        if overlay is not None:
+            x, y, w, h = bounds
+            cv2.rectangle(overlay, (x, y), (x + w - 1, y + h - 1), (70, 220, 140), 2)
+        return overlay
+
     def pending(self, state, phase, reason, learned=False):
         return SequenceStep(
             dict.fromkeys(self.flow_primary),
@@ -86,11 +106,7 @@ class NativeBoxTracker(NativeSequenceBlock):
 
     def step(self, inputs, state, mask):
         source, p = inputs["image"], self.parameters
-        image = image_value(source, (np.uint8,), canonical=True)
-        if image.ndim == 2:
-            image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
-        elif image.shape[2] == 4:
-            image = cv2.cvtColor(image, cv2.COLOR_BGRA2BGR)
+        image = self.prepare_image(source)
         contrast_minimum = finite(p["minimum_contrast"], "Minimum contrast", 0)
         jump_limit = finite(p["maximum_center_jump"], "Maximum center jump", 0)
         misses_limit = integer(p["max_misses"], "Maximum misses", 1, 1000)
@@ -112,7 +128,8 @@ class NativeBoxTracker(NativeSequenceBlock):
             if box_contrast(image, bounds) < contrast_minimum:
                 return self.pending(state, "seed_required", "seed_low_contrast")
             tracker = self.new_tracker(image, bounds, mask, state)
-            tracker.init(image, bounds)
+            if tracker.init(image, bounds) is False:
+                raise RuntimeError("Native tracker initialization returned failure")
             revision = state.get("track_revision", 0) + 1
             state.update(
                 native=tracker,
@@ -138,6 +155,8 @@ class NativeBoxTracker(NativeSequenceBlock):
                 located, reason = False, "target_low_contrast"
             elif jump_limit and jump > jump_limit:
                 located, reason = False, "center_jump_above_maximum"
+            elif not self.location_allowed(bounds, mask):
+                located, reason = False, "center_outside_region"
         if not located:
             state["misses"] += 1
             if state["misses"] >= misses_limit:
@@ -152,9 +171,7 @@ class NativeBoxTracker(NativeSequenceBlock):
             local_offset(*center, 0), size, self.input_payloads["image"], track_id=state["track_id"]
         )
         x, y, w, h = bounds
-        overlay = overlay_image(source) if p["draw_overlay"] else None
-        if overlay is not None:
-            cv2.rectangle(overlay, (x, y), (x + w - 1, y + h - 1), (70, 220, 140), 2)
+        overlay = self.tracked_overlay(source, bounds)
         return SequenceStep(
             {
                 "bounds": list(bounds),

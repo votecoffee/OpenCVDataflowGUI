@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/frame_00.png",
+          "assets/frame_01.png",
+          "assets/frame_02.png",
+          "assets/frame_03.png",
+          "assets/frame_04.png",
+          "assets/frame_05.png",
+          "assets/frame_06.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "track",
+      "type": "sequence.track_mil",
+      "name": "Track object box (MIL)",
+      "parameters": {
+        "warmup": 3,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "initial_bounds": [
+          44,
+          42,
+          32,
+          32
+        ],
+        "max_misses": 1,
+        "minimum_contrast": 2.0,
+        "maximum_center_jump": 0.0,
+        "draw_overlay": true,
+        "init_positive_radius": 3.0,
+        "init_negative_samples": 65,
+        "search_radius": 8,
+        "track_positive_radius": 4.0,
+        "track_positive_samples": 100000,
+        "track_negative_samples": 65,
+        "features": 250,
+        "selection_mode": "center",
+        "maximum_work": 1
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "seed"
+      ],
+      "exposed_outputs": [
+        "bounds",
+        "points",
+        "pose",
+        "tracked_region",
+        "ready",
+        "activations",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Original clip and MIL limitations",
+      "description": "Original synthetic frames, template, annotations and project: OpenCVDataflowGUI contributors, MIT. No third-party/customer images. The 32x32 target translates by two pixels/frame. Search radius=8; warmup=3 withholds the first two activations, including bootstrap estimates. MIL is approximate/stochastic, fixed-size and has no native probability. Pose angle zero follows image axes, not measured part rotation. Template reacquisition includes a deliberate blank/lost frame: the full replay fails for that observation, then a new track ID/readiness appears. Wrong region and work limit deliberately reject processing. Loss guards and software localization do not qualify robot picking.",
+      "parameters": {},
+      "position": [
+        360,
+        550
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "track",
+      "input": "image"
+    }
+  ]
+}

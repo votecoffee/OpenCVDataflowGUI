@@ -1,0 +1,90 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "cases": [
+    "translation",
+    "template_reacquisition",
+    "region_seed",
+    "wrong_region",
+    "work_limit"
+  ],
+  "annotations": [
+    {
+      "file": "frame_00.png",
+      "bounds": [
+        44,
+        42,
+        32,
+        32
+      ]
+    },
+    {
+      "file": "frame_01.png",
+      "bounds": [
+        46,
+        42,
+        32,
+        32
+      ]
+    },
+    {
+      "file": "frame_02.png",
+      "bounds": [
+        48,
+        42,
+        32,
+        32
+      ]
+    },
+    {
+      "file": "frame_03.png",
+      "bounds": [
+        50,
+        42,
+        32,
+        32
+      ]
+    },
+    {
+      "file": "frame_04.png",
+      "bounds": [
+        52,
+        42,
+        32,
+        32
+      ]
+    },
+    {
+      "file": "frame_05.png",
+      "bounds": [
+        54,
+        42,
+        32,
+        32
+      ]
+    },
+    {
+      "file": "frame_06.png",
+      "bounds": [
+        56,
+        42,
+        32,
+        32
+      ]
+    }
+  ],
+  "warmup": 3,
+  "search_radius": 8,
+  "accepted_center_error_limit_pixels": 8,
+  "asset_sha256": {
+    "blank.png": "41d42e7cf052ff011ce641f38b853f491c6ec72ae5c57ca96649ab924b261eab",
+    "frame_00.png": "e93fc30478f5b12d44b0d8717de383f5737b58f064807d0b76f86583a927377c",
+    "frame_01.png": "0c0a473fb1fcde402f1513245663b2ca21fedf68b2f37bd29fcbf0d24616a741",
+    "frame_02.png": "04846fdd50d283569f660648f6e26606a433b31a71ebccd69f3fd9f9804ec380",
+    "frame_03.png": "45629910f79b4b4ddce9182cdd0ad2e147016729ff219503b06352ea39ed5179",
+    "frame_04.png": "728bdbf52fb211dd71116a576c7b0d745b36e977171c813bd4d20cdb0ae7fe1e",
+    "frame_05.png": "95518f2645b90fa1168ac30551b94b9f9714bcf1a4954e94d66eb5f413dcf6df",
+    "frame_06.png": "ff6a9255ee1bb5386dbd6b16e45f385b645a47a3377814cda756da91777908de",
+    "template.png": "7f2f7ff0cfbea9d7ef0a442a2fa15dd06b79d8147c2c52124aa8e22f1ab1f7b3"
+  }
+}

@@ -95,6 +95,7 @@ IMPLEMENTATION_MODULES = {
     "translation_registration triangulation voronoi",
     "video": (
         "color_tracking ecc_registration flow_files flow_refinement flow_warp frame_interpolation "
+        "mil_tracking "
         "image_correlation native_background sequence_tools"
     ),
     "videoio": "video_files",
