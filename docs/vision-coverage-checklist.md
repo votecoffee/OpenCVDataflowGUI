@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 153 | 11 | 11 | 175 | 87.4% |
+| 1. Core and baseline 2D | 154 | 11 | 10 | 175 | 88.0% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 216 | 53 | 201 | 470 | 46.0% |
+| **Overall** | 217 | 53 | 200 | 470 | 46.2% |
 
 <!-- coverage-summary:end -->
 
@@ -277,7 +277,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S1-167 | Persist and replay a video motion trajectory | videostab.FromFileMotionReader and ToFileMotionWriter or a typed trajectory record | Complete | sequence.capture_trajectory, sequence.load_trajectory, output.motion_trajectory and sequence.replay_trajectory qualify a bounded 1–64-frame affine record; native motion-file classes are absent from this wheel. Versioned direction, explicit validity/reasons, indexed/media timestamps, content/type/encoding fingerprints, source geometry and segment target grids persist with clip/revision IDs. Complete-clip binding precedes warping; current tickets/pyramid provenance survive, reset has no stale cursor and invalid frames reject/fail partial/skip explicitly. Strict JSON/file pinning, safe publication and Save As assets checked. Ten original PNG/FFV1 projects, independent pixels/coverage/maps, native fit/capture replay parity, mismatch/exception/all-invalid/single-frame/XML/editor checks qualify the workflow. No unbounded append recorder, native file interoperability, physical identity or general accuracy claim. See [contracts](motion-trajectory.md). |
-| S1-168 | Restore blurred frames from aligned neighbors | videostab.WeightingDeblurer or a tested equivalent | Planned | Use a recorded or synthetic clip with alternating sharp and motion-blurred frames. Verify sharper detail without introducing duplicate moving parts, preserve original coverage and report which neighbors contributed. |
+| S1-168 | Restore blurred frames from aligned neighbors | videostab.WeightingDeblurer or a tested equivalent | Complete | `sequence.restore_neighbors` qualifies blur-model checked detail reuse from registered neighbors with native Sobel/box/Gaussian filters. Independent alternating sharp/blur truth verifies detail improvement and exact replacement; controlled moved/appearing/disappearing parts retain target samples, coverage never expands, and per-neighbor contribution masks/tickets remain explicit. Six [projects](<../examples/opencv tools/neighbor_restoration/README.md>) cover Gaussian, 16-bit BGR/coverage/regions and no-donor pass/fail. The native deblurrer is absent from this Python wheel; this tested equivalent needs known registration and blur and cannot guarantee rejection of small/low-contrast changes. See [contracts](neighbor-restoration.md). |
 | S1-169 | Correct rolling-shutter wobble in video | videostab.MoreAccurateMotionWobbleSuppressor or a tested equivalent | Planned | Reduce line bending on a clip with known row-dependent distortion. Verify near-edge geometry, valid image support and behavior when there is insufficient motion evidence. |
 
 ### Foreground references across restarts

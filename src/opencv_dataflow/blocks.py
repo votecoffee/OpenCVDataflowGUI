@@ -822,6 +822,7 @@ def builtin_registry():
     from .native_background import NATIVE_BACKGROUND_BLOCKS
     from .native_trackers import NATIVE_TRACKER_BLOCKS
     from .nearest_rows import FindNearestRows
+    from .neighbor_restoration import RestoreFromNeighbors
     from .ocr import OCR_BLOCKS
     from .offline_stabilization import StabilizeRecordedSequence
     from .oriented_edges import FindOrientedEdges
@@ -1008,6 +1009,7 @@ def builtin_registry():
         ReplayMotionTrajectory,
         LoadMotionTrajectory,
         SaveMotionTrajectory,
+        RestoreFromNeighbors,
         ReplayRegisteredViews,
         RenderMosaicTile,
         PasteImagePatch,

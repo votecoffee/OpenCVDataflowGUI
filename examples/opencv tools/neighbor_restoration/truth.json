@@ -1,0 +1,59 @@
+{
+  "license": "MIT - original repository fixtures",
+  "size": [
+    160,
+    96
+  ],
+  "target_index": 1,
+  "blur_length": 7,
+  "moving_rectangles_xywh": [
+    [
+      40,
+      32,
+      16,
+      17
+    ],
+    [
+      100,
+      32,
+      16,
+      17
+    ]
+  ],
+  "cases": {
+    "project": {
+      "state": "pass",
+      "unchanged": false
+    },
+    "moving_parts": {
+      "state": "pass",
+      "unchanged": false
+    },
+    "highdepth": {
+      "state": "pass",
+      "unchanged": false
+    },
+    "gaussian": {
+      "state": "pass",
+      "unchanged": false
+    },
+    "unchanged": {
+      "state": "pass",
+      "unchanged": true
+    },
+    "no_neighbor_fail": {
+      "state": "fail",
+      "unchanged": true
+    }
+  },
+  "asset_sha256": {
+    "blur.png": "19cda16f7c96751ca6c0e9f82cf39990c7bc9bd2657ffdfb5defe7ba541a0b33",
+    "blur16.png": "9aa613cfba1378227421abe0374b22286f0dbd004923c25fd27a03df2a4988f3",
+    "gaussian.png": "04d49c2cf2e0b208b665713358fcaec1d8c314424d9b93ca12bf7aeacbfe4a8b",
+    "moving_blur.png": "3c7493d140c32356719619774da1f2898c0724ace769fb0cfba994ff0ff8bc35",
+    "moving_donor.png": "92693958c0d4c4d2467e5013fe17127274097a1080d7dcffed64625b4ca13734",
+    "moving_truth.png": "8d5c0876ffd87a0a79ed8ea2b0fefa531e884e9a225b90bb3f223de609ef1949",
+    "sharp.png": "016e267c23b2eee34642c11d09505694e05eab5276dc841e475e1c20c77d5424",
+    "sharp16.png": "75f258cdf6a14bf6c40de54d8df6e0e84e000336864e4c16e082384b9331431d"
+  }
+}

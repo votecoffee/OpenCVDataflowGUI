@@ -7,6 +7,7 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "sequence.restore_neighbors": "Sobel GaussianBlur blur boxFilter erode dilate",
     "sequence.replay_trajectory": "warpAffine",
     "inspect.frequency_response": "dft divSpectrums createHanningWindow",
     "cv.replay_registered_views": (

@@ -9075,6 +9075,38 @@ Input `trajectory` — Versioned trajectory; replay does not fit motion or resto
 | `invalid_frames` | `"reject"` | `reject`, `fail_partial`, `skip` Reject all, emit failed partial, or skip invalid/low-coverage frames. |
 | `preview_frame` | `0` | Value must be a whole number between 0 and 63. Original ordinal to show as Image; omitted frames emit no preview. |
 
+## Restore detail from neighbors (`sequence.restore_neighbors`)
+
+Image processing / Video restoration
+
+Inputs: `frames` (any), `coverage` (any, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `frames` — Batch of 2-16 registered gray/RGB(A)/BGR(A) uint8/16 or float32/64 images.
+
+Input `coverage` — Optional same-order uint8 support masks on each capture grid. Target support is never expanded.
+
+Input `mask` — Target-grid output selection. Outside pixels are copied exactly; neighborhoods use full images.
+
+Input `region` — Optional target-grid region intersected with mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `target_index` | `0` | Value must be a whole number between 0 and 15. Zero-based capture whose pixels, support, ticket and coordinate grid are retained. |
+| `temporal_radius` | `2` | Value must be a whole number between 1 and 15. Use only neighbors within this many batch positions of the target. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Same frame requires every known matching root/grid; pixel grid explicitly asserts upstream registration. |
+| `blur_model` | `"horizontal_box"` | `horizontal_box`, `vertical_box`, `gaussian` Expected target blur applied to a sharp neighbor for the scene-consistency check. |
+| `blur_size` | `7` | Value must be a positive odd integer between 3 and 63. Odd box length or square Gaussian size in current pixels. |
+| `blur_sigma` | `1.5` | Value must be a finite number between 0 and 30. Gaussian only; zero derives sigma from the kernel size. |
+| `maximum_model_error` | `0.02` | Value must be a finite number between 0 and 2. Maximum absolute channel difference between blurred donor and target, divided by shared scale. |
+| `change_radius` | `3` | Value must be a whole number between 0 and 63. Exclude this halo around model mismatches, including changed or moving foreground. |
+| `energy_window` | `5` | Value must be a positive odd integer between 1 and 63. Odd local averaging size for native 3x3 Sobel luminance energy. |
+| `minimum_energy` | `1e-06` | Value must be a finite number at least 0. Minimum donor energy in squared shared-scale luminance units; positive energy required. |
+| `minimum_sharpness_ratio` | `1.1` | Value must be a finite number between 1 and 100. Donor energy must strictly exceed target energy times this factor. |
+| `blend` | `"best"` | `best`, `weighted` Best copies the highest-energy donor; weighted mixes all accepted donors by energy. |
+| `mix` | `1.0` | Value must be a finite number between 0.001 and 1. Convex mix of restored detail and original target; one uses the accepted donor result. |
+| `minimum_restored_fraction` | `0.0` | Value must be a finite number between 0 and 1. Required restored fraction of selected, originally supported target pixels. |
+| `no_neighbor` | `"pass_through"` | `pass_through`, `fail` Pass through unchanged when no pixels qualify, or report an inspection failure. |
+
 ## Stabilize recorded sequence (`sequence.stabilize_batch`)
 
 Sequence / Temporal processing

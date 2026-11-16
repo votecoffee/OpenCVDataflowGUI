@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "frame0",
+      "type": "input.file",
+      "name": "Sharp neighbor 0",
+      "parameters": {
+        "path": "assets/moving_donor.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "frame1",
+      "type": "input.file",
+      "name": "Current blurred target",
+      "parameters": {
+        "path": "assets/moving_blur.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        290
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "frame2",
+      "type": "input.file",
+      "name": "Sharp neighbor 2",
+      "parameters": {
+        "path": "assets/moving_donor.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        580
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "frame3",
+      "type": "input.file",
+      "name": "Independent sharp truth",
+      "parameters": {
+        "path": "assets/moving_truth.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        870
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "frames",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "restore",
+      "type": "sequence.restore_neighbors",
+      "name": "Restore detail from neighbors",
+      "documentation": "<p>Restore a selected blurred target from sharper registered neighbors. The expected target blur is applied to each donor; channel mismatches and their configurable halo exclude detected changes. Entire scoring and blur neighborhoods must be supported. Best ties prefer batch order. Alpha stays the target's.</p><p>This is an application equivalent, not the unavailable native WeightingDeblurer. It requires upstream registration and a suitable blur model. Small, low-contrast or model-indistinguishable changes can escape the gate; accepted pixels are not proof of unchanged parts. Use raw images for critical defect decisions; qualify tolerances on representative captures. Registration and blind deconvolution are separate.</p>",
+      "parameters": {
+        "target_index": 1,
+        "temporal_radius": 2,
+        "alignment": "pixel_grid",
+        "blur_model": "horizontal_box",
+        "blur_size": 7,
+        "blur_sigma": 1.5,
+        "maximum_model_error": 0.005,
+        "change_radius": 5,
+        "energy_window": 5,
+        "minimum_energy": 1e-06,
+        "minimum_sharpness_ratio": 1.1,
+        "blend": "best",
+        "mix": 1.0,
+        "minimum_restored_fraction": 0.0,
+        "no_neighbor": "pass_through"
+      },
+      "position": [
+        850,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "frames",
+        "coverage",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "restored_mask",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "before",
+      "type": "inspect.image_quality",
+      "name": "Compare image quality",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": false,
+        "threshold": 0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1300,
+        350
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify",
+      "type": "inspect.image_quality",
+      "name": "Compare image quality",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1300,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original restoration fixtures - MIT",
+      "description": "Original MIT images, generator and projects by OpenCVDataflowGUI contributors. No customer or third-party data. Three ordered captures are sharp/blurred/sharp; the middle capture keeps its ticket. Horizontal blur uses an independent seven-sample average. In the moving scene, the target part is at x100, the donor part at x40; both changed areas retain original target pixels. Sharp truth is not reconstructed from the target. Pixel-grid mode asserts registration of these generated captures. Accepted detail must match truth. No-neighbor-fail intentionally fails. Model agreement cannot prove absence of low-contrast defects. OpenCV Sobel/filter reference: https://docs.opencv.org/5.0/main_modules/imgproc_filter.html",
+      "parameters": {},
+      "position": [
+        0,
+        -400
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "frame0",
+      "output": "image",
+      "target": "frames",
+      "input": "item_1"
+    },
+    {
+      "source": "frame1",
+      "output": "image",
+      "target": "frames",
+      "input": "item_2"
+    },
+    {
+      "source": "frame2",
+      "output": "image",
+      "target": "frames",
+      "input": "item_3"
+    },
+    {
+      "source": "frames",
+      "output": "group",
+      "target": "restore",
+      "input": "frames"
+    },
+    {
+      "source": "frame1",
+      "output": "image",
+      "target": "before",
+      "input": "image_a"
+    },
+    {
+      "source": "frame3",
+      "output": "image",
+      "target": "before",
+      "input": "image_b"
+    },
+    {
+      "source": "restore",
+      "output": "restored_mask",
+      "target": "before",
+      "input": "mask"
+    },
+    {
+      "source": "restore",
+      "output": "image",
+      "target": "verify",
+      "input": "image_a"
+    },
+    {
+      "source": "frame3",
+      "output": "image",
+      "target": "verify",
+      "input": "image_b"
+    },
+    {
+      "source": "restore",
+      "output": "restored_mask",
+      "target": "verify",
+      "input": "mask"
+    }
+  ]
+}

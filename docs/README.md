@@ -45,6 +45,7 @@
 | Stable source IDs, missing views and sealed calibrated layouts | [Mosaic layout reuse](mosaic-layout-reuse.md) |
 | Independent registered frames, union/common crops and source timestamps | [Registered-view replay](registered-view-replay.md) |
 | Content-bound motion capture, JSON assets and no-fit clip replay | [Motion trajectories](motion-trajectory.md) |
+| Blur-model checked detail reuse, change gates and target coverage | [Neighbor restoration](neighbor-restoration.md) |
 | ROS, MQTT, PLC and robot connection status | [Connection health monitors](connection-health.md) |
 | Judgments, reasons and ticket histories | [Ticket results](ticket-results.md) |
 | 3D/depth/point clouds | [3D vision](vision-3d.md) |
