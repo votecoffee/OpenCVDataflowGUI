@@ -1,0 +1,66 @@
+[
+  {
+    "project": "reference/project.json",
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "extraction_reexecuted": false,
+    "native_cloud_points": 480,
+    "calibrated": true
+  },
+  {
+    "project": "step/project.json",
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "extraction_reexecuted": false,
+    "native_cloud_points": 480,
+    "calibrated": true
+  },
+  {
+    "project": "unavailable/project.json",
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "extraction_reexecuted": false,
+    "native_cloud_points": 390,
+    "calibrated": true
+  },
+  {
+    "project": "capture_1/project.json",
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "extraction_reexecuted": false,
+    "native_cloud_points": 0,
+    "calibrated": false
+  },
+  {
+    "project": "capture_2/project.json",
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "extraction_reexecuted": false,
+    "native_cloud_points": 0,
+    "calibrated": false
+  },
+  {
+    "project": "capture_3/project.json",
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "extraction_reexecuted": false,
+    "native_cloud_points": 0,
+    "calibrated": false
+  },
+  {
+    "project": "capture_4/project.json",
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "extraction_reexecuted": false,
+    "native_cloud_points": 0,
+    "calibrated": false
+  },
+  {
+    "project": "unrestricted_diagnostic/project.json",
+    "saved_and_reopened": true,
+    "file_sources_passed": true,
+    "extraction_reexecuted": false,
+    "native_cloud_points": 0,
+    "calibrated": false
+  }
+]

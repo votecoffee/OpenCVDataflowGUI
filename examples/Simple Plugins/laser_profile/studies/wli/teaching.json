@@ -1,0 +1,12 @@
+{
+  "reference": "s_multi_10 (1000).jpg",
+  "rectangle_xywh": [
+    280,
+    235,
+    120,
+    50
+  ],
+  "scope": "Select one laser stripe on the reference; fixed ROI for all four captures",
+  "selection": "First, one-third, two-thirds and last sorted basename, before extraction",
+  "calibrated": false
+}

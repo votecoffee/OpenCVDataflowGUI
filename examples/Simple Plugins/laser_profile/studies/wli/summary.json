@@ -1,0 +1,96 @@
+{
+  "scope": "Real pixel-only extraction; no camera/laser calibration, metric XYZ or cloud",
+  "reference_comparison": "Distance of accepted pixels to any published industrial-software centerline; not physical accuracy, stripe identity, completeness or subpixel truth",
+  "recipe_sha256": "1c8f39f26748798cb80ccf1d123b38dcc260a9aba7e0e864c4dc8fe99b2b94e6",
+  "frozen_settings": {
+    "direction": "columns",
+    "channel": "intensity",
+    "threshold": 0.011764705882352941,
+    "minimum_width": 2,
+    "maximum_width": 36,
+    "ambiguity_ratio": 0.5,
+    "valley_ratio": 0.75,
+    "reject_saturated": true
+  },
+  "training_health": {
+    "training_bins": 120,
+    "valid_bins": 72,
+    "reason_counts": {
+      "input_ceiling": 48,
+      "valid": 72
+    },
+    "noise_sigma": 0.0,
+    "learned_threshold": 0.011764705882352941,
+    "median_support_width_px": 12.0,
+    "source": "Reference only; no test-image threshold relearning",
+    "accuracy_score": null,
+    "status": "ready_for_review"
+  },
+  "unrestricted_diagnostic": "Same settings without ROI; diagnostic outside taught scope, not a trained recipe",
+  "unrestricted_reasons": {
+    "multiple_peaks": 67,
+    "too_many_peaks": 733
+  },
+  "results": [
+    {
+      "image": "s_multi_10 (1000).jpg",
+      "role": "training reference",
+      "valid_samples": 72,
+      "active_samples": 120,
+      "coverage": 0.6,
+      "reason_counts": {
+        "input_ceiling": 48,
+        "valid": 72
+      },
+      "mean_distance_to_published_centerline_px": 0.5435602068901062,
+      "within_2px_of_published_centerline": 70
+    },
+    {
+      "image": "s_multi_11 (2212).jpg",
+      "role": "held-out fixed selection",
+      "valid_samples": 42,
+      "active_samples": 120,
+      "coverage": 0.35,
+      "reason_counts": {
+        "input_ceiling": 32,
+        "missing": 41,
+        "multiple_peaks": 3,
+        "too_narrow": 2,
+        "valid": 42
+      },
+      "mean_distance_to_published_centerline_px": 0.8425043821334839,
+      "within_2px_of_published_centerline": 37
+    },
+    {
+      "image": "s_multi_12 (3211).jpg",
+      "role": "held-out fixed selection",
+      "valid_samples": 2,
+      "active_samples": 120,
+      "coverage": 0.016666666666666666,
+      "reason_counts": {
+        "clipped": 94,
+        "missing": 22,
+        "multiple_peaks": 1,
+        "too_narrow": 1,
+        "valid": 2
+      },
+      "mean_distance_to_published_centerline_px": 9.645759582519531,
+      "within_2px_of_published_centerline": 0
+    },
+    {
+      "image": "s_multi_3 (1789).jpg",
+      "role": "held-out fixed selection",
+      "valid_samples": 7,
+      "active_samples": 120,
+      "coverage": 0.058333333333333334,
+      "reason_counts": {
+        "clipped": 93,
+        "missing": 19,
+        "multiple_peaks": 1,
+        "valid": 7
+      },
+      "mean_distance_to_published_centerline_px": 8.090487480163574,
+      "within_2px_of_published_centerline": 0
+    }
+  ]
+}

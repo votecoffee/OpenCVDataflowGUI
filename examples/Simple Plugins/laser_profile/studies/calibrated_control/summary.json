@@ -1,0 +1,62 @@
+{
+  "scope": "Generated image/metric development check; not gauge qualification",
+  "recipe_sha256": "af5bb5ffbd559d1074a0f23613227d1a5143de6631c5b0b2da06c0e2d1c797c7",
+  "frozen_settings": {
+    "direction": "rows",
+    "channel": "intensity",
+    "threshold": 0.011764705882352941,
+    "minimum_width": 2,
+    "maximum_width": 27,
+    "ambiguity_ratio": 0.5,
+    "valley_ratio": 0.75,
+    "reject_saturated": true
+  },
+  "training_health": {
+    "training_bins": 480,
+    "valid_bins": 480,
+    "reason_counts": {
+      "valid": 480
+    },
+    "noise_sigma": 0.0,
+    "learned_threshold": 0.011764705882352941,
+    "median_support_width_px": 9.0,
+    "source": "Reference only; no test-image threshold relearning",
+    "accuracy_score": null,
+    "status": "ready_for_review"
+  },
+  "results": [
+    {
+      "image": "reference.png",
+      "valid_samples": 480,
+      "reason_counts": {
+        "valid": 480
+      },
+      "mean_absolute_z_error_mm": 0.014507751974474995,
+      "maximum_z_error_mm": 0.06964112657908972,
+      "median_step_mm": 0.0
+    },
+    {
+      "image": "step.png",
+      "valid_samples": 480,
+      "reason_counts": {
+        "valid": 480
+      },
+      "mean_absolute_z_error_mm": 0.02593510509135537,
+      "maximum_z_error_mm": 0.09422908233258642,
+      "median_step_mm": 49.9979561381399
+    },
+    {
+      "image": "unavailable.png",
+      "valid_samples": 390,
+      "reason_counts": {
+        "input_ceiling": 30,
+        "missing": 30,
+        "multiple_peaks": 30,
+        "valid": 390
+      },
+      "mean_absolute_z_error_mm": 0.02687773321184787,
+      "maximum_z_error_mm": 0.09422908233258642,
+      "median_step_mm": 49.998981469421445
+    }
+  ]
+}

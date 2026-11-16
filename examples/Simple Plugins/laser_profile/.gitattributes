@@ -1,0 +1,9 @@
+.gitattributes text eol=lf
+LICENSE -text whitespace=cr-at-eol
+*.md text eol=lf
+*.json text eol=lf
+*.slp binary
+*.ply binary
+*.whl binary
+studies/wli/origin/** -text
+studies/wli/centerline/** -text

@@ -1,0 +1,53 @@
+{
+  "scope": "Portable saved file reviews, not extraction or gauge acceptance",
+  "projects": [
+    {
+      "project": "studies/calibrated_control/reference/project.json",
+      "passed": true,
+      "extracted": false,
+      "native_cloud_points": 480
+    },
+    {
+      "project": "studies/calibrated_control/step/project.json",
+      "passed": true,
+      "extracted": false,
+      "native_cloud_points": 480
+    },
+    {
+      "project": "studies/calibrated_control/unavailable/project.json",
+      "passed": true,
+      "extracted": false,
+      "native_cloud_points": 390
+    },
+    {
+      "project": "studies/wli/capture_1/project.json",
+      "passed": true,
+      "extracted": false,
+      "native_cloud_points": 0
+    },
+    {
+      "project": "studies/wli/capture_2/project.json",
+      "passed": true,
+      "extracted": false,
+      "native_cloud_points": 0
+    },
+    {
+      "project": "studies/wli/capture_3/project.json",
+      "passed": true,
+      "extracted": false,
+      "native_cloud_points": 0
+    },
+    {
+      "project": "studies/wli/capture_4/project.json",
+      "passed": true,
+      "extracted": false,
+      "native_cloud_points": 0
+    },
+    {
+      "project": "studies/wli/unrestricted_diagnostic/project.json",
+      "passed": true,
+      "extracted": false,
+      "native_cloud_points": 0
+    }
+  ]
+}
