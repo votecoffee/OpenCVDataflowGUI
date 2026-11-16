@@ -1,5 +1,10 @@
 # SimpleGDRNPP setup and real saved reviews
 
+`batch_execution/` adds the all-32-case CPU batch numerical audit, complete-worker
+timings with owned-process-tree CPU/RSS sampling, and paired live/saved native
+cloud examples. Read its `README.md` and `audit.html`; batch size one remains
+the default. Earlier launcher-only memory samples are explicitly qualified.
+
 `overlap_review/run_project.json` demonstrates optional depth-aware duplicate
 selection: six real-scene supplied proposals produce two depth accepts and one
 unique pose. Review the suppressed candidate in the native colored cloud,

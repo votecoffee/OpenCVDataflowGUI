@@ -1,0 +1,43 @@
+{
+  "worker_tests_passed": 115,
+  "host_only_test_modules_skipped": 2,
+  "subtests_passed": 4,
+  "installed_host_editor_checks_passed": 15,
+  "real_cases": 32,
+  "numerical_comparisons": 192,
+  "decision_changes": 0,
+  "diagnostic_limit_exceedances": 0,
+  "baseline_final_reports": 32,
+  "batched_final_reports": 192,
+  "fit_dictionaries_with_numerical_differences": 56,
+  "whole_worker_samples": 32,
+  "warmup_samples": 8,
+  "measured_samples": 24,
+  "graphics_modes": [
+    false,
+    true
+  ],
+  "thread_policy": 4,
+  "worker_process_trees_sampled": true,
+  "incomplete_processes_never_treated_as_zero": true,
+  "earlier_launcher_only_cpu_memory_fields_invalid": true,
+  "all_prior_receipts_retained": true,
+  "default_batch_size": 1,
+  "default_changed": false,
+  "original_archives_roundtrip_byte_identical": true,
+  "static_projects_validated": 3,
+  "static_validation_executed": false,
+  "actual_native_batch4_runs": 2,
+  "actual_native_groups": [
+    4,
+    1
+  ],
+  "recorded_native_review_source_blocks": 5,
+  "worker_model_loads": 1,
+  "wheel_source_modules_match": 19,
+  "wheel_sha256": "d8e743a2529aea059f279e52f5a7eeaf8e262723bcf6d64d2235e9e314d6e921",
+  "license_notices_present": true,
+  "weights_bundled": false,
+  "host_ml_environment_changed": false,
+  "scope": "CPU batch agreement and fixed-scene process/timing evidence, not broad capacity, GPU or pose/grasp qualification"
+}

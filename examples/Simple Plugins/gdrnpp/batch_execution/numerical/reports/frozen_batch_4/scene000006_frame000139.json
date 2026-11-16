@@ -1,0 +1,527 @@
+{
+  "model": "simple_gdrnpp_result_v1",
+  "capture_id": "scene000006_frame000139",
+  "units": "m",
+  "source_frame": "tless_object6",
+  "target_frame": "camera",
+  "candidates": [
+    {
+      "id": "supplied_instance",
+      "object_id": 6,
+      "capture_id": "scene000006_frame000139",
+      "pose": {
+        "model": "pose_3d_v1",
+        "source_to_target": [
+          [
+            -0.9929492851244671,
+            0.0010199903904935849,
+            0.11853555074496819,
+            -0.04314335566152149
+          ],
+          [
+            0.10350544627297589,
+            0.4948591495719829,
+            0.8627867898135244,
+            -0.04416864846180434
+          ],
+          [
+            -0.05777836760104696,
+            0.868972601239243,
+            -0.49147561336536427,
+            0.7204592128837422
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "units": "m",
+        "source_frame": "tless_object6",
+        "target_frame": "camera"
+      },
+      "detection_source": "published_visible_bbox",
+      "detection_score": null,
+      "network_score": null,
+      "qualification": "measured_depth_gates",
+      "fit": {
+        "status": "accepted",
+        "reason": "fit_gates",
+        "coverage": 0.9281442392260334,
+        "contradiction": 0.0148636763412489,
+        "rmse_m": 0.0016200582031160593,
+        "rendered_samples": 11370,
+        "supported_samples": 10553,
+        "unknown_samples": 10,
+        "occluded_samples": 467,
+        "outside_target_samples": 183
+      },
+      "raw_rotation6d": [
+        -2.225682020187378,
+        0.2547568380832672,
+        -0.04178100451827049,
+        -0.006811392493546009,
+        0.8740581274032593,
+        1.3757944107055664
+      ],
+      "raw_centroid_z": [
+        0.011751960963010788,
+        0.023831220343708992,
+        2.4251933097839355
+      ],
+      "crop": {
+        "source_xyxy": [
+          232.0,
+          138.0,
+          375.0,
+          254.0
+        ],
+        "source_size": [
+          720,
+          540
+        ],
+        "working_size": [
+          720,
+          540
+        ],
+        "padded_scale": 214.5,
+        "source_from_input": [
+          [
+            0.8378906249999999,
+            0.0,
+            196.25
+          ],
+          [
+            0.0,
+            0.837890625,
+            88.75
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "source_from_output": [
+          [
+            3.3515624999999996,
+            0.0,
+            196.25
+          ],
+          [
+            0.0,
+            3.3515625,
+            88.75
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "depth_refinement": {
+        "method": "projective_icp_v1",
+        "execution_backend": "numpy_batched_first_return_v1",
+        "status": "applied",
+        "reason": "improved_fit_without_worsening_gate_violations",
+        "stop_reason": "iteration_budget",
+        "settings": {
+          "strides": [
+            4,
+            2,
+            1
+          ],
+          "iterations_per_level": 4,
+          "maximum_correspondence_m": 0.02,
+          "maximum_translation_m": 0.02,
+          "maximum_rotation_degrees": 15.0,
+          "minimum_correspondences": 50
+        },
+        "fit_before": {
+          "status": "accepted",
+          "reason": "fit_gates",
+          "coverage": 0.7496485061511423,
+          "contradiction": 0.007996485061511424,
+          "rmse_m": 0.00230222987011075,
+          "rendered_samples": 11380,
+          "supported_samples": 8531,
+          "unknown_samples": 0,
+          "occluded_samples": 2758,
+          "outside_target_samples": 19
+        },
+        "proposed_fit": {
+          "status": "accepted",
+          "reason": "fit_gates",
+          "coverage": 0.9281442392260334,
+          "contradiction": 0.0148636763412489,
+          "rmse_m": 0.0016200582031160593,
+          "rendered_samples": 11370,
+          "supported_samples": 10553,
+          "unknown_samples": 10,
+          "occluded_samples": 467,
+          "outside_target_samples": 183
+        },
+        "iterations": [
+          {
+            "stride": 4,
+            "iteration": 0,
+            "rank": 6,
+            "samples": 701,
+            "robust_scale_m": 0.0025,
+            "point_to_plane_rmse_m": 0.002505277979957803,
+            "rotation_step_degrees": 2.2885273301062083,
+            "translation_step_m": 0.003328794003535619,
+            "singular_values": [
+              21.57567624080831,
+              11.290147581245245,
+              9.274502571182113,
+              8.539769789510437,
+              6.544760715952204,
+              6.29445394860325
+            ],
+            "line_search_fraction": 1.0
+          },
+          {
+            "stride": 4,
+            "iteration": 1,
+            "rank": 6,
+            "samples": 713,
+            "robust_scale_m": 0.0025,
+            "point_to_plane_rmse_m": 0.0013067394693086444,
+            "rotation_step_degrees": 0.44409898242224605,
+            "translation_step_m": 0.0008473257631584431,
+            "singular_values": [
+              21.775870176841956,
+              12.26911295212007,
+              9.485793503343304,
+              8.66584840293102,
+              7.053270650352841,
+              6.501699678682582
+            ],
+            "line_search_fraction": 1.0
+          },
+          {
+            "stride": 4,
+            "iteration": 2,
+            "rank": 6,
+            "samples": 715,
+            "robust_scale_m": 0.0025,
+            "point_to_plane_rmse_m": 0.0013111956229850323,
+            "rotation_step_degrees": 0.13053213392802604,
+            "translation_step_m": 0.00026298255798586214,
+            "singular_values": [
+              21.722564110940024,
+              12.348764678557,
+              9.64551997486507,
+              8.661617344206743,
+              7.029524871405825,
+              6.4640747971850105
+            ],
+            "line_search_fraction": 1.0
+          },
+          {
+            "stride": 4,
+            "iteration": 3,
+            "rank": 6,
+            "samples": 715,
+            "robust_scale_m": 0.0025,
+            "point_to_plane_rmse_m": 0.001326957550493302,
+            "rotation_step_degrees": 0.18061900667940642,
+            "translation_step_m": 5.029052863834307e-05,
+            "singular_values": [
+              21.727234839916758,
+              12.309542299612891,
+              9.682417735618625,
+              8.651782255347948,
+              7.004794216352297,
+              6.492801251824822
+            ],
+            "line_search_fraction": 1.0
+          },
+          {
+            "stride": 2,
+            "iteration": 0,
+            "rank": 6,
+            "samples": 3127,
+            "robust_scale_m": 0.0025,
+            "point_to_plane_rmse_m": 0.001257879951092299,
+            "rotation_step_degrees": 0.19436617908830078,
+            "translation_step_m": 0.00010834750969044928,
+            "singular_values": [
+              45.28659394727362,
+              26.967300211328958,
+              18.87038066072555,
+              18.160084699382395,
+              15.346405903927083,
+              14.171255041897796
+            ],
+            "line_search_fraction": 1.0
+          },
+          {
+            "stride": 2,
+            "iteration": 1,
+            "rank": 6,
+            "samples": 3123,
+            "robust_scale_m": 0.0025,
+            "point_to_plane_rmse_m": 0.001256601884919147,
+            "rotation_step_degrees": 0.03916746081615591,
+            "translation_step_m": 6.571191419602192e-05,
+            "singular_values": [
+              45.292692549010084,
+              26.832421211486825,
+              18.93201146139344,
+              18.171119281180104,
+              15.237885982498954,
+              14.145478492004331
+            ],
+            "line_search_fraction": 1.0
+          },
+          {
+            "stride": 2,
+            "iteration": 2,
+            "rank": 6,
+            "samples": 3121,
+            "robust_scale_m": 0.0025,
+            "point_to_plane_rmse_m": 0.0012591831223760035,
+            "rotation_step_degrees": 0.01703155033311025,
+            "translation_step_m": 2.8757036330115466e-05,
+            "singular_values": [
+              45.271005089964376,
+              26.82030300624604,
+              18.9362676389768,
+              18.185989352478938,
+              15.22316559568137,
+              14.13227875506062
+            ],
+            "line_search_fraction": 1.0
+          },
+          {
+            "stride": 2,
+            "iteration": 3,
+            "rank": 6,
+            "samples": 3121,
+            "robust_scale_m": 0.0025,
+            "point_to_plane_rmse_m": 0.0012602309034610096,
+            "rotation_step_degrees": 0.007690791466814879,
+            "translation_step_m": 9.129870741474953e-06,
+            "singular_values": [
+              45.27694728988606,
+              26.812579507395128,
+              18.927785839827532,
+              18.193092148020114,
+              15.221819914070181,
+              14.126179317311994
+            ],
+            "line_search_fraction": 1.0
+          },
+          {
+            "stride": 1,
+            "iteration": 0,
+            "rank": 6,
+            "samples": 13086,
+            "robust_scale_m": 0.0025,
+            "point_to_plane_rmse_m": 0.0013446750443475283,
+            "rotation_step_degrees": 0.2441968020487586,
+            "translation_step_m": 0.0002731889382277365,
+            "singular_values": [
+              92.36014337884242,
+              56.28905974755711,
+              37.6847940983275,
+              36.672272325674044,
+              31.53279825370521,
+              29.70709148694822
+            ],
+            "line_search_fraction": 1.0
+          },
+          {
+            "stride": 1,
+            "iteration": 1,
+            "rank": 6,
+            "samples": 13063,
+            "robust_scale_m": 0.0025,
+            "point_to_plane_rmse_m": 0.001332397663464151,
+            "rotation_step_degrees": 0.016184749368710623,
+            "translation_step_m": 0.00010320929737358984,
+            "singular_values": [
+              92.47090161912628,
+              56.01222139382382,
+              37.59881631987433,
+              36.69627294411566,
+              31.302695947855117,
+              29.74672569649233
+            ],
+            "line_search_fraction": 1.0
+          },
+          {
+            "stride": 1,
+            "iteration": 2,
+            "rank": 6,
+            "samples": 13060,
+            "robust_scale_m": 0.0025,
+            "point_to_plane_rmse_m": 0.001326539257072476,
+            "rotation_step_degrees": 0.010493704416114179,
+            "translation_step_m": 4.963413837179561e-05,
+            "singular_values": [
+              92.45805591345065,
+              56.025809919733206,
+              37.569140575793654,
+              36.68606915604253,
+              31.316163579292574,
+              29.743418336979094
+            ],
+            "line_search_fraction": 1.0
+          },
+          {
+            "stride": 1,
+            "iteration": 3,
+            "rank": 6,
+            "samples": 13060,
+            "robust_scale_m": 0.0025,
+            "point_to_plane_rmse_m": 0.0013251197613436915,
+            "rotation_step_degrees": 0.009307615641792076,
+            "translation_step_m": 1.911438545196815e-05,
+            "singular_values": [
+              92.49163640661759,
+              56.000134768644244,
+              37.55233857909691,
+              36.672111783402755,
+              31.284311470299656,
+              29.76383285930068
+            ],
+            "line_search_fraction": 1.0
+          }
+        ],
+        "minimum_observed_rank": 6,
+        "all_solved_systems_full_rank": true,
+        "same_depth_used_for_refinement_and_verification": true,
+        "pose_labels_used": false,
+        "before_quality": 0.7416520210896309,
+        "proposed_quality": 0.9132805628847845
+      },
+      "unrefined_pose": {
+        "model": "pose_3d_v1",
+        "source_to_target": [
+          [
+            -0.990575469052913,
+            -0.007824093147150771,
+            0.13674437347483823,
+            -0.04432373396453773
+          ],
+          [
+            0.11664020783186695,
+            0.475169936071771,
+            0.8721287713236434,
+            -0.04713744754744858
+          ],
+          [
+            -0.0718004319453596,
+            0.8798592588704023,
+            -0.46977907845335765,
+            0.7236008010544144
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "units": "m",
+        "source_frame": "tless_object6",
+        "target_frame": "camera"
+      }
+    }
+  ],
+  "best_pose": {
+    "model": "pose_3d_v1",
+    "source_to_target": [
+      [
+        -0.9929492851244671,
+        0.0010199903904935849,
+        0.11853555074496819,
+        -0.04314335566152149
+      ],
+      [
+        0.10350544627297589,
+        0.4948591495719829,
+        0.8627867898135244,
+        -0.04416864846180434
+      ],
+      [
+        -0.05777836760104696,
+        0.868972601239243,
+        -0.49147561336536427,
+        0.7204592128837422
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "units": "m",
+    "source_frame": "tless_object6",
+    "target_frame": "camera"
+  },
+  "accepted_candidates": 1,
+  "provider": {
+    "provider": "GDRNPP",
+    "architecture": "convnext_base_double_mask_64_regions",
+    "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+    "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+    "object_id": 6,
+    "device": "cpu",
+    "torch": "2.15.0+cpu",
+    "timm": "0.6.7",
+    "threads": 4,
+    "parameter_keys": 392,
+    "load_seconds": 1.2373178000016196,
+    "initialization_seconds": 5.356483399998979,
+    "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+    "adapted_inference_only": true,
+    "upstream_training_runtime_parity_qualified": false
+  },
+  "input": {
+    "rgb_sha256": "f811acfbbc216430d831f9e38fee2ed907b1e21eb7a5296902fe77053dfb31d0",
+    "camera_matrix": [
+      [
+        1075.65091572,
+        0.0,
+        371.06888344
+      ],
+      [
+        0.0,
+        1073.90347929,
+        268.72159802
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "source_size": [
+      720,
+      540
+    ]
+  },
+  "score_semantics": "GDRNPP pose head has no scalar confidence; external detector score is separate",
+  "qualification": "Batch network audit; independent per-frame measured-depth replay",
+  "batch_size": 4,
+  "ground_truth_pose_used": false,
+  "batch_audit_order": "frozen",
+  "depth_refinement": "projective_icp_v1",
+  "depth_refinement_scope": "Local CPU alignment; not the publisher CUDA refiner",
+  "same_depth_used_for_refinement_and_verification": true,
+  "fit_settings": {
+    "distance_tolerance_m": 0.005,
+    "minimum_coverage": 0.7,
+    "maximum_contradiction": 0.1
+  },
+  "fit_semantics": "Original measured axial depth; first-return CAD surfaces are predictions",
+  "verification_backend": "Original metric assessment with batched geometry; no FoundationPose neural inference",
+  "geometry_execution_backend": "numpy_batched_first_return_v1"
+}

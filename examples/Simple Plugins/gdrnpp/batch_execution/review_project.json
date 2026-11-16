@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "recorded_0",
+      "type": "input.cloud",
+      "name": "Recorded baseline / five single forwards",
+      "parameters": {
+        "path": "results/batch1.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_1",
+      "type": "input.cloud",
+      "name": "Recorded batch four / groups [4,1]",
+      "parameters": {
+        "path": "results/batch4.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        500,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_2",
+      "type": "input.file",
+      "name": "Baseline pose / measured depth support",
+      "parameters": {
+        "path": "results/batch1.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        0,
+        500
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_3",
+      "type": "input.file",
+      "name": "Batched pose / same depth gates",
+      "parameters": {
+        "path": "results/batch4.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        500
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_scope",
+      "type": "layout.comment",
+      "name": "SAVED REVIEW / file-source PASS means reading only",
+      "description": "Same real five-proposal RGB-D capture, same checkpoint/four CPU threads/ICP/fit gates. Both have one accepted target and four rejected distractors. Tiny numerical batch differences are audited separately, not bit-identity or general speed claims. Native fly-around colored clouds are derived fit explanations, not measured CAD surfaces. File-source PASS means reading. T-LESS CC BY 4.0, Hodan et al., WACV 2017.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": []
+    },
+    {
+      "id": "recorded_4",
+      "type": "input.file",
+      "name": "Complete request range and owned-process CPU study",
+      "parameters": {
+        "path": "comparison.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        0,
+        1000
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    }
+  ],
+  "connections": []
+}
