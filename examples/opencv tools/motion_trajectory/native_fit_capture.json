@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.video_file",
+      "name": "Video file",
+      "parameters": {
+        "path": "assets/jitter.avi",
+        "path_base": "project",
+        "backend": "auto",
+        "start_frame": 0,
+        "end_frame": 5,
+        "stride": 1,
+        "repeat": "stop",
+        "frame_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "unchanged"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "frames",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 5,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        430,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit",
+      "type": "sequence.stabilize_batch",
+      "name": "Stabilize recorded sequence",
+      "parameters": {
+        "radius_frames": 1,
+        "sigma_frames": 1.0,
+        "motion_model": "translation",
+        "max_features": 240,
+        "feature_quality": 0.01,
+        "feature_spacing": 8.0,
+        "tracking_window": 21,
+        "max_pyramid_level": 3,
+        "forward_backward_pixels": 1.0,
+        "max_patch_error": 30.0,
+        "inlier_pixels": 2.0,
+        "min_inliers": 6,
+        "min_inlier_ratio": 0.5,
+        "max_step_pixels": 40.0,
+        "max_step_degrees": 12.0,
+        "max_step_scale_ratio": 1.15,
+        "min_coverage_fraction": 0.65,
+        "interpolation": "nearest"
+      },
+      "position": [
+        430,
+        430
+      ],
+      "exposed_inputs": [
+        "frames",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "corrected",
+        "coverage",
+        "transforms",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "trajectory",
+      "type": "sequence.capture_trajectory",
+      "name": "Capture motion trajectory",
+      "parameters": {
+        "timestamp_mode": "media",
+        "frame_period_ms": 40.0,
+        "interpolation": "nearest"
+      },
+      "position": [
+        890,
+        430
+      ],
+      "exposed_inputs": [
+        "frames",
+        "transforms"
+      ],
+      "exposed_outputs": [
+        "trajectory",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "replay",
+      "type": "sequence.replay_trajectory",
+      "name": "Replay motion trajectory",
+      "parameters": {
+        "interpolation": "recorded",
+        "min_coverage_fraction": 0.65,
+        "invalid_frames": "reject",
+        "preview_frame": 1
+      },
+      "position": [
+        1320,
+        0
+      ],
+      "exposed_inputs": [
+        "frames",
+        "trajectory"
+      ],
+      "exposed_outputs": [
+        "corrected",
+        "coverage",
+        "transforms",
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "serial",
+      "type": "flow.unbatch",
+      "name": "Unbatch serial entries",
+      "parameters": {
+        "order": "stored"
+      },
+      "position": [
+        1750,
+        0
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original sealed motion replay",
+      "description": "Original MIT frames, FFV1 clip and motion projects by OpenCVDataflowGUI contributors; no customer or third-party images. The five frames have known integer shifts (0,0), (2,-1), (-1,2), (3,1), (0,-2). Frozen source-to-target corrections undo these shifts on one 160x112 canvas. Content/depth/encoding/grid fingerprints and media indices/timestamps bind replay to its source clip without reviving capture tickets. Invalid geometry is rejected, failed partial or explicitly skipped. Native fit/capture is a separate workflow; loaded trajectories perform no feature fitting. Changed pixels, reordered frames and changed media time deliberately reject before warp. FFV1 and PNG store the same original pixel values. Coverage masks mark invalid borders. These fixtures qualify recorded pixel motion, not physical camera identity.",
+      "parameters": {},
+      "position": [
+        0,
+        -440
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "frames",
+      "input": "item_1"
+    },
+    {
+      "source": "frames",
+      "output": "group",
+      "target": "fit",
+      "input": "frames"
+    },
+    {
+      "source": "frames",
+      "output": "group",
+      "target": "trajectory",
+      "input": "frames"
+    },
+    {
+      "source": "fit",
+      "output": "transforms",
+      "target": "trajectory",
+      "input": "transforms"
+    },
+    {
+      "source": "frames",
+      "output": "group",
+      "target": "replay",
+      "input": "frames"
+    },
+    {
+      "source": "trajectory",
+      "output": "trajectory",
+      "target": "replay",
+      "input": "trajectory"
+    },
+    {
+      "source": "replay",
+      "output": "corrected",
+      "target": "serial",
+      "input": "group"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+*.png binary
+*.avi binary
+assets/*.json -text
+truth.json text eol=lf

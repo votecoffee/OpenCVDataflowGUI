@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/frame_000.png",
+          "assets/changed.png",
+          "assets/frame_002.png",
+          "assets/frame_003.png",
+          "assets/frame_004.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "frames",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 5,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        430,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "trajectory",
+      "type": "sequence.load_trajectory",
+      "name": "Load motion trajectory",
+      "parameters": {
+        "path": "assets/known.json",
+        "expected_sha256": "b2c439d77a9ed46e418d896f872b364266f4ec551eea64331f6164be633fab5a"
+      },
+      "position": [
+        430,
+        430
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "trajectory",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "replay",
+      "type": "sequence.replay_trajectory",
+      "name": "Replay motion trajectory",
+      "parameters": {
+        "interpolation": "recorded",
+        "min_coverage_fraction": 0.65,
+        "invalid_frames": "reject",
+        "preview_frame": 1
+      },
+      "position": [
+        1320,
+        0
+      ],
+      "exposed_inputs": [
+        "frames",
+        "trajectory"
+      ],
+      "exposed_outputs": [
+        "corrected",
+        "coverage",
+        "transforms",
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "serial",
+      "type": "flow.unbatch",
+      "name": "Unbatch serial entries",
+      "parameters": {
+        "order": "stored"
+      },
+      "position": [
+        1750,
+        0
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original sealed motion replay",
+      "description": "Original MIT frames, FFV1 clip and motion projects by OpenCVDataflowGUI contributors; no customer or third-party images. The five frames have known integer shifts (0,0), (2,-1), (-1,2), (3,1), (0,-2). Frozen source-to-target corrections undo these shifts on one 160x112 canvas. Content/depth/encoding/grid fingerprints and media indices/timestamps bind replay to its source clip without reviving capture tickets. Invalid geometry is rejected, failed partial or explicitly skipped. Native fit/capture is a separate workflow; loaded trajectories perform no feature fitting. Changed pixels, reordered frames and changed media time deliberately reject before warp. FFV1 and PNG store the same original pixel values. Coverage masks mark invalid borders. These fixtures qualify recorded pixel motion, not physical camera identity.",
+      "parameters": {},
+      "position": [
+        0,
+        -440
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "frames",
+      "input": "item_1"
+    },
+    {
+      "source": "frames",
+      "output": "group",
+      "target": "replay",
+      "input": "frames"
+    },
+    {
+      "source": "trajectory",
+      "output": "trajectory",
+      "target": "replay",
+      "input": "trajectory"
+    },
+    {
+      "source": "replay",
+      "output": "corrected",
+      "target": "serial",
+      "input": "group"
+    }
+  ]
+}

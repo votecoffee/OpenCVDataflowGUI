@@ -44,6 +44,7 @@
 | Multiview composition, native/floating blending and bounded tiles | [Multiband mosaics](multiband-mosaics.md) |
 | Stable source IDs, missing views and sealed calibrated layouts | [Mosaic layout reuse](mosaic-layout-reuse.md) |
 | Independent registered frames, union/common crops and source timestamps | [Registered-view replay](registered-view-replay.md) |
+| Content-bound motion capture, JSON assets and no-fit clip replay | [Motion trajectories](motion-trajectory.md) |
 | ROS, MQTT, PLC and robot connection status | [Connection health monitors](connection-health.md) |
 | Judgments, reasons and ticket histories | [Ticket results](ticket-results.md) |
 | 3D/depth/point clouds | [3D vision](vision-3d.md) |

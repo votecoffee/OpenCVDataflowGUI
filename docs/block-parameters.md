@@ -8305,6 +8305,17 @@ Inputs: `layout` (data).
 | `path` | `"mosaic_layout.json"` | Destination .json; relative paths use the saved project folder. |
 | `write_mode` | `"new"` | `new`, `replace` New preserves existing files. Replace atomically publishes this layout. |
 
+## Save motion trajectory (`output.motion_trajectory`)
+
+Output / Recorded motion
+
+Inputs: `trajectory` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"motion_trajectory.json"` | Destination .json, relative to the saved project; directory must exist. |
+| `write_mode` | `"new"` | `new`, `replace` New preserves existing files; Replace publishes atomically. |
+
 ## Write results (`output.results`)
 
 Output / Structured data
@@ -8690,6 +8701,22 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `stable_activations` | `0` | Optional consecutive low-foreground frames before readiness. |
 | `max_foreground_fraction` | `0.05` |  |
 
+## Capture motion trajectory (`sequence.capture_trajectory`)
+
+Sequence / Recorded motion
+
+Inputs: `frames` (any), `transforms` (any).
+
+Input `frames` — One to 64 original source frames in clip order, with current metadata.
+
+Input `transforms` — Matching stabilization transforms, or valid=false/reason placeholders.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `timestamp_mode` | `"indexed"` | `indexed`, `media` Nominal indexed times, or require each video_frame index/timestamp_ms. |
+| `frame_period_ms` | `40.0` | Value must be a finite number between 0.001 and 1e+06. Nominal indexed frame period; does not assert exposure timing. |
+| `interpolation` | `"linear"` | `nearest`, `linear` Saved sampling policy; match the original stabilization interpolation. |
+
 ## Track region by color (`sequence.color_tracker`)
 
 Sequence / Object tracking
@@ -8919,6 +8946,15 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `min_eigenvalue` | `0.0001` | Value must be a finite number between 0 and 1. OpenCV threshold for accepting a trackable image patch. |
 | `minimum_support` | `0.5` | Value must be a finite number between 1e-06 and 1. Minimum bilinear weight contributed by valid tracks at a pixel. |
 
+## Load motion trajectory (`sequence.load_trajectory`)
+
+Sequence / Recorded motion
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Strict UTF-8 JSON, up to 1 MiB; relative to the saved project. |
+| `expected_sha256` | `""` | Optional exact-byte SHA256; Save As copies this sealed asset. |
+
 ## LSBP background subtraction (`sequence.lsbp_background`)
 
 Sequence / Foreground segmentation
@@ -9021,6 +9057,23 @@ Input `region` — Rectangle/circle/polygon intersection with Mask in Image coor
 | `preview_metric` | `"std_x"` | `std_x`, `variance_x`, `covariance`, `correlation`, `mean_x` Diagnostic heatmap only; graphics off/Lean skips it. |
 | `preview_min` | `0.0` | Value must be a finite number between -1e+100 and 1e+100. Heatmap lower bound. Correlation always uses -1..1. |
 | `preview_max` | `10.0` | Value must be a finite number between -1e+100 and 1e+100. Heatmap upper bound; does not alter numerical maps. |
+
+## Replay motion trajectory (`sequence.replay_trajectory`)
+
+Sequence / Recorded motion
+
+Inputs: `frames` (any), `trajectory` (data).
+
+Input `frames` — Complete recorded clip in original order; exact pixels/types/grids are checked.
+
+Input `trajectory` — Versioned trajectory; replay does not fit motion or restore old tickets.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `interpolation` | `"recorded"` | `recorded`, `nearest`, `linear` Use saved interpolation or explicitly override sampling. |
+| `min_coverage_fraction` | `0.65` | Value must be a finite number between 0 and 1. Minimum valid support per frame; zero coverage always fails. |
+| `invalid_frames` | `"reject"` | `reject`, `fail_partial`, `skip` Reject all, emit failed partial, or skip invalid/low-coverage frames. |
+| `preview_frame` | `0` | Value must be a whole number between 0 and 63. Original ordinal to show as Image; omitted frames emit no preview. |
 
 ## Stabilize recorded sequence (`sequence.stabilize_batch`)
 

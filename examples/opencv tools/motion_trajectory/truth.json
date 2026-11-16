@@ -1,0 +1,180 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "shifts": [
+    [
+      0,
+      0
+    ],
+    [
+      2,
+      -1
+    ],
+    [
+      -1,
+      2
+    ],
+    [
+      3,
+      1
+    ],
+    [
+      0,
+      -2
+    ]
+  ],
+  "image_size": [
+    160,
+    112
+  ],
+  "cases": {
+    "replay_files": {
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "video": false,
+      "record": "known",
+      "expected_state": "pass",
+      "invalid_frames": "reject"
+    },
+    "replay_video": {
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "video": true,
+      "record": "media",
+      "expected_state": "pass",
+      "invalid_frames": "reject"
+    },
+    "highdepth": {
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "video": false,
+      "record": "depth16",
+      "expected_state": "pass",
+      "invalid_frames": "reject"
+    },
+    "invalid_reject": {
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "video": false,
+      "record": "invalid",
+      "expected_state": "fail",
+      "invalid_frames": "reject"
+    },
+    "invalid_partial": {
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "video": false,
+      "record": "invalid",
+      "expected_state": "fail",
+      "invalid_frames": "fail_partial"
+    },
+    "invalid_skip": {
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "video": false,
+      "record": "invalid",
+      "expected_state": "pass",
+      "invalid_frames": "skip"
+    },
+    "changed_pixels": {
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "video": false,
+      "record": "known",
+      "expected_state": "error",
+      "invalid_frames": "reject"
+    },
+    "reordered_frames": {
+      "order": [
+        0,
+        2,
+        1,
+        3,
+        4
+      ],
+      "video": false,
+      "record": "known",
+      "expected_state": "error",
+      "invalid_frames": "reject"
+    },
+    "native_fit_capture": {
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "video": true,
+      "record": null,
+      "expected_state": "pass",
+      "invalid_frames": "reject"
+    },
+    "time_guard": {
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "video": true,
+      "record": "media",
+      "expected_state": "error",
+      "invalid_frames": "reject"
+    }
+  },
+  "asset_sha256": {
+    "changed.png": "547bd5c5c2626568d0ebb6308cfee4245ae6a1960323f011d5e895f24b791147",
+    "depth16.json": "a985618958bdc66a1e2817c1ea98cf6f25086bd6f538056066598ce6bdc74279",
+    "frame_000.png": "2c5575c2720100c2168096092b3c5ec8b4cd49a85d19dd8018a7352744c622c5",
+    "frame_000_16.png": "2f575c613291f528d8b7c3e584861a20840ea25b2ca8d652c8afe05bd6b567f3",
+    "frame_001.png": "4189e5508c7b5257c61744b8ac91c052d4699ba90fb5d1e58f31fd9d22a9782d",
+    "frame_001_16.png": "a81f3ca70b1c1cb8112ebf901d1f86c1a51955dcfa83cccb7b0cb3285e1fed03",
+    "frame_002.png": "7f4dd621258930e3d46557840a70e82d1f0ef716617e17a0fd2c02e3b2b84109",
+    "frame_002_16.png": "be9dda9794e60000bfb68827c19aeab9853abcfa4d4f01aa6310a06b914ddca5",
+    "frame_003.png": "920f2889d07911fd7b4bc07f8d4eb656ddae7fb4cac97b174b3aac7f654eac9e",
+    "frame_003_16.png": "4090611abf72ebf3ceeb33f87d0602c1a4e6680b701a6ae39bc077bb3186faeb",
+    "frame_004.png": "10987387bdddee836e7ad60b03413945e9bbc53ba0301280ecf879186a3c95d5",
+    "frame_004_16.png": "edf28d2bdafec716da33fefff94588c734f87a2af090010b6006c5ef2d4fa524",
+    "invalid.json": "ca4fbac779b0ac733ffc6cf1236ec6f62f4bc83c0015bae7ba6079515cb281a1",
+    "jitter.avi": "26525271b8c6d61acbb139cd410cb3bc6c1b17f4786638f00a87d6df38f39770",
+    "known.json": "b2c439d77a9ed46e418d896f872b364266f4ec551eea64331f6164be633fab5a",
+    "media.json": "884739bd85fc951b037d2411333c0ccbc7c3e7c70260424b0b07179102fd1e5b"
+  }
+}

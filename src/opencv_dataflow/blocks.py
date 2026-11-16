@@ -814,6 +814,8 @@ def builtin_registry():
     from .metadata_blocks import CreateImageMetadata
     from .mil_tracking import MILSequence
     from .mosaic_layout_io import LoadMosaicLayout, SaveMosaicLayout
+    from .motion_trajectory import CaptureMotionTrajectory, ReplayMotionTrajectory
+    from .motion_trajectory_io import LoadMotionTrajectory, SaveMotionTrajectory
     from .mqtt import MQTT_BLOCKS
     from .multipage_blocks import MULTIPAGE_BLOCKS
     from .multiscale_ridges import MultiscaleRidges
@@ -1002,6 +1004,10 @@ def builtin_registry():
         RegisterScanLayout,
         LoadMosaicLayout,
         SaveMosaicLayout,
+        CaptureMotionTrajectory,
+        ReplayMotionTrajectory,
+        LoadMotionTrajectory,
+        SaveMotionTrajectory,
         ReplayRegisteredViews,
         RenderMosaicTile,
         PasteImagePatch,

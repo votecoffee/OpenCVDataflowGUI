@@ -49,9 +49,10 @@ _SHARED_PARAMETERS = (
 )
 
 
-def _frames(group):
-    if not isinstance(group, FlowGroup) or not 2 <= len(group.items) <= 64:
-        raise ValidationError("Frames requires an ordered group of two to 64 images")
+def _frames(group, *, min_frames=2):
+    if not isinstance(group, FlowGroup) or not min_frames <= len(group.items) <= 64:
+        minimum = "two" if min_frames == 2 else str(min_frames)
+        raise ValidationError(f"Frames requires an ordered group of {minimum} to 64 images")
     if any(
         not isinstance(entry.value, np.ndarray) or entry.value.ndim not in (2, 3)
         for entry in group.items

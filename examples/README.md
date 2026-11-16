@@ -277,6 +277,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Calibrated mosaic layout reuse](<opencv tools/mosaic_layout_reuse/README.md>) | Reuse sealed planar geometry with stable source IDs, reordered/missing views, unchanged canvas coordinates and explicit coverage/failure policies. |
 | [Registered-view replay](<opencv tools/registered_view_replay/README.md>) | Preserve independent acquisitions with union/common-valid crops, mask holes, native placement and per-ticket serial inspections. |
 | [Relative image frequency response](<opencv tools/frequency_response/README.md>) | Measure gain/phase only at excited reference frequencies, with exact blur, shift, brightness and selection examples. |
+| [Saved motion trajectories](<opencv tools/motion_trajectory/README.md>) | Capture and reload clip-bound affine corrections, preserve current tickets and pixels, and verify timing, omissions and native fit/replay parity. |
 | [TIFF page sequence](<opencv tools/tiff_page_sequence/README.md>) | Replay a three-page 16-bit TIFF as separately ticketed images. |
 | [TIFF page access](<opencv tools/tiff_page_access/README.md>) | Select arbitrary pages from a 257-page mixed-depth stack, inspect bounded cache hits and conversions, and exercise explicit range/workspace errors. |
 | [Tile image](<opencv tools/tile_image/README.md>) | Repeat a reference in a 2 × 3 grid and find all six copies with template matching. |
