@@ -1,0 +1,75 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "image_size": [
+    128,
+    96
+  ],
+  "shift": [
+    -3,
+    2
+  ],
+  "cases": {
+    "identity": {
+      "sample": "reference16.png",
+      "reference": "reference16.png",
+      "expected_state": "pass"
+    },
+    "binomial_blur": {
+      "sample": "blur16.png",
+      "reference": "reference16.png",
+      "expected_state": "pass"
+    },
+    "shift_phase_fail": {
+      "sample": "shift16.png",
+      "reference": "reference16.png",
+      "expected_state": "fail"
+    },
+    "gain_half_fail": {
+      "sample": "half16.png",
+      "reference": "reference16.png",
+      "expected_state": "fail"
+    },
+    "horizontal_grating": {
+      "sample": "grating16.png",
+      "reference": "grating16.png",
+      "expected_state": "pass"
+    },
+    "masked_identity": {
+      "sample": "exterior16.png",
+      "reference": "reference16.png",
+      "expected_state": "pass"
+    },
+    "color_red": {
+      "sample": "color_sample.png",
+      "reference": "color_reference.png",
+      "expected_state": "pass"
+    },
+    "no_reference_energy": {
+      "sample": "reference16.png",
+      "reference": "constant16.png",
+      "expected_state": "fail"
+    },
+    "budget_guard": {
+      "sample": "reference16.png",
+      "reference": "reference16.png",
+      "expected_state": "error"
+    },
+    "grid_guard": {
+      "sample": "reference16.png",
+      "reference": "reference16.png",
+      "expected_state": "error"
+    }
+  },
+  "asset_sha256": {
+    "blur16.png": "599cc77a83556e5a3e91654e65fb054834e26ae6bd3ccaac4b28509381ccc383",
+    "color_reference.png": "db453dbdb45d68e537d78fdb87598120d90239c0c801c9c5c87050f6c4c7127f",
+    "color_sample.png": "b86472305dc499ed5b7eec91844bb208803939a5de187d86538546bef07238b4",
+    "constant16.png": "16a0bbd8191dfe29c182cb216c7519386538af4121642d59f97f48560a6babc0",
+    "exterior16.png": "528ce59c96463fbe240a9fd41e063af0d4e5c11d7e4a387369a0e827a741ded2",
+    "grating16.png": "6a12be1aef679de69d1d151a4347ecc92d2c4be8a55eb38740a7cd2c855aaf1d",
+    "half16.png": "e8b5555bd7fb62d4af1d42da4a00ca18067d6380dc39486d9429cf4c43db8f14",
+    "reference16.png": "368d8846aa67fd052495095d22353734cf0df9fa6ff3c78d8962e6cbaed70e74",
+    "shift16.png": "fd41a9f70f1727a169406d0b881e712e29276347b5fdc3be080c90ee262bd768"
+  }
+}

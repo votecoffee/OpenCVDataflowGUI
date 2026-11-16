@@ -82,7 +82,7 @@ IMPLEMENTATION_MODULES = {
     ),
     "core": (
         "channel_transform clustering feature_covariance fourier_components fourier_correlation "
-        "gram_matrix "
+        "frequency_response gram_matrix "
         "image_layout image_noise image_norm image_statistics image_validity linear_program "
         "linear_system matrix_eigen "
         "matrix_inverse matrix_multiply matrix_structure matrix_svd nearest_rows polynomial_roots "

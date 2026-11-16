@@ -24,6 +24,7 @@ For ordered multipart payload recovery and deliberate rejection cases, try [stru
 For detector repeatability and matcher threshold curves, try [image feature evaluation](feature_evaluation/README.md).
 For calibrated geometry, reordered/missing views and fixed canvas coordinates, try [mosaic layout reuse](mosaic_layout_reuse/README.md).
 For independent registered frames, common-valid crops and serial inspections, try [registered-view replay](registered_view_replay/README.md).
+For supported frequency gain/phase and exact blur/shift references, try [relative frequency response](frequency_response/README.md).
 For reader/encoder checks and page counts, try [codec preflight](codec_probe/README.md).
 For stored displacement and verified image pairs, try [flow file round trips](flow_file_roundtrip/README.md).
 For seeded local tracking and explicit loss/reacquisition, try [MIL box tracking](mil_box_tracking/README.md).

@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 151 | 12 | 12 | 175 | 86.3% |
+| 1. Core and baseline 2D | 152 | 12 | 11 | 175 | 86.9% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 214 | 54 | 202 | 470 | 45.5% |
+| **Overall** | 215 | 54 | 201 | 470 | 45.7% |
 
 <!-- coverage-summary:end -->
 
@@ -270,7 +270,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S1-166 | Measure image frequency response against a reference | dft and divSpectrums with a supported-band mask | Planned | Estimate relative gain and phase from aligned captures of a known target. Verify on a known blur or transfer function and suppress bins with insufficient reference energy. |
+| S1-166 | Measure image frequency response against a reference | dft and divSpectrums with a supported-band mask | Complete | inspect.frequency_response measures aligned captures using native float64 DFT/division, explicit radial/antipodal direction bands, shared source masks/regions, weighted centering and None/Hann/square-root Hann apertures. Coherent absolute/relative/numerical floors reject unexcited reference bins; normalized complex denominators prevent epsilon bias and a separate sample-energy mask qualifies phase. Gain/phase/support maps, radial means/circular phase, inclusive judgments and undefined/no-support failures are explicit. Sample type/encoding and both tickets/contexts survive; frequency maps have independent grids. Ten original projects and independent analytic/NumPy references qualify exact periodic blur, shift, brightness, color selection, masks, constant references, guards, exceptions, parallel calls and XML/editor behavior. This is a single-pair windowed ratio, not optical MTF certification, proven physical alignment or coherence estimation. See [contracts](frequency-response.md). |
 
 ### Video trajectories and restoration
 

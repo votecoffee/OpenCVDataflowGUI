@@ -755,6 +755,7 @@ def builtin_registry():
     from .fourier_components import FourierComponents, ReconstructFourierImage
     from .fourier_correlation import FourierCorrelation
     from .frame_interpolation import InterpolateFrames
+    from .frequency_response import MeasureFrequencyResponse
     from .generalized_hough import FindGuilTemplate, FindHoughTemplate
     from .geometry3d import GEOMETRY3D_BLOCKS
     from .gram_matrix import GramMatrix
@@ -1027,6 +1028,7 @@ def builtin_registry():
         FourierComponents,
         ReconstructFourierImage,
         FourierCorrelation,
+        MeasureFrequencyResponse,
         *ANALYSIS_BLOCKS,
         BlendWeightMaps,
         AlphaOver,

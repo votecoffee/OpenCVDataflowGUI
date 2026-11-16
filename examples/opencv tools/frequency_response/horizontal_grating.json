@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "sample",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/grating16.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/grating16.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        370
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "inspect.frequency_response",
+      "name": "Image frequency response",
+      "parameters": {
+        "channel": "gray",
+        "unsigned_scale": "raw",
+        "reference_alignment": "pixel_grid",
+        "ticket_policy": "independent",
+        "window": "none",
+        "subtract_mean": true,
+        "relative_floor": 1e-06,
+        "absolute_floor": 0.0,
+        "phase_relative_floor": 1e-06,
+        "minimum_frequency": 0.0,
+        "maximum_frequency": 0.5,
+        "direction": "horizontal",
+        "angle_degrees": 0.0,
+        "angular_tolerance_degrees": 0,
+        "radial_bins": 32,
+        "include_dc": false,
+        "minimum_supported_bins": 1,
+        "minimum_supported_fraction": 0.0,
+        "minimum_mean_gain": 0.0,
+        "maximum_mean_gain": 1000000.0,
+        "check_phase": false,
+        "maximum_phase_degrees": 180.0,
+        "maximum_workspace_mib": 256
+      },
+      "position": [
+        620,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "reference",
+        "mask",
+        "region",
+        "reference_mask",
+        "reference_region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "gain",
+        "phase",
+        "supported",
+        "phase_valid",
+        "aperture",
+        "metrics",
+        "mean_gain",
+        "maximum_phase_degrees"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original frequency-response fixture",
+      "description": "Original MIT images, known transforms and projects by OpenCVDataflowGUI contributors; no customer/third-party images. Reference samples are multiples of 16, so periodic [1,2,1]/4 convolution on both axes remains exact uint16 without quantization. Known gain is (1+cos(2*pi*fx))*(1+cos(2*pi*fy))/4. Shift is (-3,+2) pixels with unit gain and known Fourier phase. Half gain deliberately fails its tolerance; a four-pixel grating excites only one conjugate pair. The circle excludes changed exterior pixels. Color selects Red. Constant reference has no centered energy and cannot pass. Budget and grid guards deliberately reject before FFT. Equal pixel indices are a caller assertion of alignment; this does not measure optical MTF certification or infer general camera calibration from arbitrary photographs.",
+      "parameters": {},
+      "position": [
+        0,
+        -430
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "sample",
+      "output": "image",
+      "target": "measure",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "measure",
+      "input": "reference"
+    }
+  ]
+}

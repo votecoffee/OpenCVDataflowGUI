@@ -6266,6 +6266,50 @@ Input `reference_mask` — Optional uint8 selection in the reference image frame
 | `normalization` | `"energy"` | `energy`, `none` Energy scales each whole signal to unit L2 norm before correlation. |
 | `subtract_mean` | `false` | Remove each input's mean over its selected samples before correlation. |
 
+## Image frequency response (`inspect.frequency_response`)
+
+Inspection / Spectral measurements
+
+Inputs: `image` (image), `reference` (image), `mask` (image, optional), `region` (data, optional), `reference_mask` (image, optional), `reference_region` (data, optional).
+
+Input `image` — Aligned sample capture. Original type/encoding is preserved on Image.
+
+Input `reference` — Aligned reference with known scene detail; no registration is fitted.
+
+Input `mask` — Optional sample-space uint8 selection; shared support weights both signals.
+
+Input `region` — Optional sample-space region, intersected with the other selections.
+
+Input `reference_mask` — Optional uint8 selection in the reference's own coordinates.
+
+Input `reference_region` — Optional reference-space region; both selections must overlap.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `channel` | `"gray"` | `gray`, `R`, `G`, `B`, `A` Gray uses Rec.601 RGB luminance; named channels must exist in both inputs. |
+| `unsigned_scale` | `"raw"` | `raw`, `unit_range` Raw uses sample units; Unit range divides unsigned values by depth max. |
+| `reference_alignment` | `"pixel_grid"` | `pixel_grid`, `same_frame` Assert pixel alignment, or require identical known spatial grids. |
+| `ticket_policy` | `"independent"` | `independent`, `same_ticket` Allow historical reference, or require matching acquisition identities. |
+| `window` | `"none"` | `none`, `hann`, `sqrt_hann` Shared none/Hann/square-root Hann aperture; finite windows can bias estimates. |
+| `subtract_mean` | `true` | Remove each signal's aperture-weighted mean before the transform. |
+| `relative_floor` | `1e-06` | Value must be a finite number between 0 and 1. Reject reference amplitudes at/below this fraction of its full peak. |
+| `absolute_floor` | `0.0` | Value must be a finite number between 0 and 1e+100. Reference floor in sample units after aperture normalization. |
+| `phase_relative_floor` | `1e-06` | Value must be a finite number between 0 and 1. Phase needs sample amplitude above this fraction of its peak. |
+| `minimum_frequency` | `0.0` | Value must be a finite number between 0 and 0.707107. Inclusive radial lower frequency in cycles per image pixel. |
+| `maximum_frequency` | `0.5` | Value must be a finite number between 0 and 0.707107. Inclusive radial upper frequency; corners can extend to sqrt(0.5). |
+| `direction` | `"all"` | `all`, `horizontal`, `vertical`, `angle` Antipodal frequency cone; horizontal means varying across image x. |
+| `angle_degrees` | `0.0` | Value must be a finite number between -180 and 180. Cone orientation with x right/y down, used by Angle. |
+| `angular_tolerance_degrees` | `10.0` | Value must be a finite number between 0 and 90. Inclusive half-angle of the antipodal frequency cone. |
+| `radial_bins` | `64` | Value must be a whole number between 1 and 256. Equal-width radial summaries; unsupported bins remain undefined. |
+| `include_dc` | `false` | Include DC at minimum frequency zero; centering can remove it. |
+| `minimum_supported_bins` | `1` | Value must be a whole number between 1 and 2.1e+06. Minimum excited bins, counting both real conjugate partners. |
+| `minimum_supported_fraction` | `0.0` | Value must be a finite number between 0 and 1. Excited bins divided by eligible band/direction bins. |
+| `minimum_mean_gain` | `0.0` | Value must be a finite number between 0 and 1e+100. Inclusive lower bound on unweighted supported mean gain. |
+| `maximum_mean_gain` | `1000000.0` | Value must be a finite number between 0 and 1e+100. Inclusive upper bound on supported mean linear gain. |
+| `check_phase` | `false` | Require phase and limit its maximum absolute wrapped value from zero. |
+| `maximum_phase_degrees` | `180.0` | Value must be a finite number between 0 and 180. Inclusive phase limit when enabled; shifts affect phase. |
+| `maximum_workspace_mib` | `256` | Value must be a whole number between 1 and 256. Work-buffer estimate; snapshots/previews use additional memory. |
+
 ## GrabCut foreground (`inspect.grabcut`)
 
 Inspection / Segmentation
