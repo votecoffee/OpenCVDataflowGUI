@@ -2,3 +2,4 @@
 *.gdrnpp binary
 projective_refinement/** -text
 scene_extension/** -text
+performance/** -text

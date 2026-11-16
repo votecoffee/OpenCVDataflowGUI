@@ -1,0 +1,327 @@
+{
+  "backend": "numpy_batched_first_return_v1",
+  "cases": [
+    {
+      "case": "original_frame3",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 1.1641532182693481e-08,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 40628
+    },
+    {
+      "case": "original_frame13",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 1.5366822481155396e-08,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 39308
+    },
+    {
+      "case": "original_wrong_object",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 45300
+    },
+    {
+      "case": "scene000006_frame000002",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 43748
+    },
+    {
+      "case": "scene000006_frame000045",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 42697
+    },
+    {
+      "case": "scene000006_frame000096",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 43731
+    },
+    {
+      "case": "scene000006_frame000139",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 44208
+    },
+    {
+      "case": "scene000006_frame000206",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 44543
+    },
+    {
+      "case": "scene000006_frame000273",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 43610
+    },
+    {
+      "case": "scene000006_frame000329",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 44215
+    },
+    {
+      "case": "scene000006_frame000388",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 42022
+    },
+    {
+      "case": "scene000006_frame000409",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 38045
+    },
+    {
+      "case": "scene000006_frame000462",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 40781
+    },
+    {
+      "case": "scene000006_frame000496",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 39265
+    },
+    {
+      "case": "scene000006_frame000501",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 38708
+    },
+    {
+      "case": "scene000001_frame000001",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 33154
+    },
+    {
+      "case": "scene000004_frame000000",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 42054
+    },
+    {
+      "case": "scene000005_frame000007",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 33591
+    },
+    {
+      "case": "scene000007_frame000003",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 32062
+    },
+    {
+      "case": "scene000008_frame000001",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 36739
+    },
+    {
+      "case": "scene000009_frame000000",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 32611
+    },
+    {
+      "case": "scene000010_frame000005",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 38313
+    },
+    {
+      "case": "scene000011_frame000004",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0.0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 41020
+    },
+    {
+      "case": "scene000012_frame000002",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 34337
+    },
+    {
+      "case": "scene000013_frame000002",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 37862
+    },
+    {
+      "case": "scene000014_frame000002",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 35020
+    },
+    {
+      "case": "scene000015_frame000001",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 41110
+    },
+    {
+      "case": "scene000016_frame000008",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 36960
+    },
+    {
+      "case": "scene000017_frame000003",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 36223
+    },
+    {
+      "case": "scene000018_frame000002",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 33824
+    },
+    {
+      "case": "scene000019_frame000001",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 34321
+    },
+    {
+      "case": "scene000020_frame000003",
+      "raw_fit_counts_and_decision_identical": true,
+      "raw_fit_identical_between_renderers_on_same_input": true,
+      "raw_rmse_difference_from_historic_capture_conversion_m": 0,
+      "overlay_bit_identical": true,
+      "native_xyz_bit_identical": true,
+      "native_rgb_bit_identical": true,
+      "cloud_points": 35817
+    }
+  ],
+  "legacy_median_pose_checks": 3,
+  "scope": "Original scalar rendering versus batched rendering on all frozen refined poses; no neural inference"
+}

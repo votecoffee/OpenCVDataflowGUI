@@ -1,0 +1,20 @@
+{
+  "scope": "Focused contracts and real-checkpoint integration; stage performance is separate from complete machine cycle and pose accuracy",
+  "worker_tests": {
+    "passed": 41,
+    "skipped": 4,
+    "subtests_passed": 4
+  },
+  "real_checkpoint_bridge": {
+    "passed": 6,
+    "includes_two_real_model_checks": true
+  },
+  "host_popup_tests_passed": 7,
+  "actual_installed_host_cli_passed": true,
+  "old_recipe_content_identity_preserved": true,
+  "renderer_source_matches_benchmark_hash": true,
+  "built_wheel_contains_exact_new_source": true,
+  "licenses_present": true,
+  "weights_bundled": false,
+  "host_ml_environment_changed": false
+}

@@ -220,6 +220,13 @@
   "examples/Simple Plugins/gdrnpp/scene_extension/reviews/scene000006_frame000045/review_project.json": "9c443f0d560d2626c15412fa9d90fe54b4d52d39546cfd109783f1f453123acf",
   "examples/Simple Plugins/gdrnpp/scene_extension/reviews/scene000011_frame000004/review_project.json": "c254fb7cddca1fe560467ab3b1a335b74c7fa32edded061b0a3400f7ac4dd87d",
   "examples/Simple Plugins/gdrnpp/scene_extension/provenance.json": "69e21ac1dd23155dba5c61b89bbc0500f8b5c0c89e7c39494e1ae413f3ff09a6",
-  "examples/Simple Plugins/gdrnpp/README.md": "b1458d51c34a5a2f76aee79c248e0309d0f4323a117bd64dcc2be83a64a020c9",
-  "examples/Simple Plugins/gdrnpp/.gitattributes": "40b389b54e9558b5f43a9faabf72a59d174594252c49566fa49b7f1bd9f95766"
+  "examples/Simple Plugins/gdrnpp/performance/benchmark.json": "0160a8a6aaf8b4a5df36c3c812a65e1975f99c21309b49aeccc7d08c673ae190",
+  "examples/Simple Plugins/gdrnpp/performance/comparison.png": "319774645e75753e082870d48d99de2673b353422cede156dc5e7d432afd2e42",
+  "examples/Simple Plugins/gdrnpp/performance/profile.json": "e2e3ba745ca244ecf50c1690e894fb2e41fe4a8e5747322f1b4ccab08d89170d",
+  "examples/Simple Plugins/gdrnpp/performance/provenance.json": "29964fec9bf0e28de60a15883583d28def095d9c15f2859bc30323d4b5975488",
+  "examples/Simple Plugins/gdrnpp/performance/review_parity.json": "aa08cc28081eeb6532313bc7cf747952409c44f795d5846c302502ba07112ccb",
+  "examples/Simple Plugins/gdrnpp/performance/validation.json": "2c5df0343c0c43c6fcb7f813b6ec22f4f1bc16965055660932f2dff5df9e3214",
+  "examples/Simple Plugins/gdrnpp/performance/README.md": "0a809390e645cdf5ceea1100cf0f54c7275803a0032701b0b4e600f593900e7a",
+  "examples/Simple Plugins/gdrnpp/README.md": "9ed85a6866396dc870b514d0bc01a350bf48a45742a4ada6cfb1483315176b98",
+  "examples/Simple Plugins/gdrnpp/.gitattributes": "41092fe2ba28ad42895aade2a83d9296bf5aa3e0b315b69dbbe2ef66c16850f9"
 }

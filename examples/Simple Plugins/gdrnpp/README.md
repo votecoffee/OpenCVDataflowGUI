@@ -111,3 +111,17 @@ Retained metric arrays, supplied rectangles, overlays and colored fit clouds
 are modifications. No endorsement is implied. Pose ground truth is used only
 for the saved evaluation metrics. Public GDRNPP source/model terms, authors and
 dependency notices are recorded in `THIRD_PARTY.md`; weights stay external.
+
+## Geometry execution performance
+
+The updated separate worker uses bounded batched geometry for fitting and
+predicted review surfaces. It needs no new training, recipe or host dependency.
+Reset/restart an already running worker after updating its package.
+
+`performance/README.md` and `performance/comparison.png` retain three paired
+warm CPU measurements on four fixed cases: alignment plus final fit improves
+about 5.0-8.5x, excluding neural inference/startup/transport/review graphics.
+All 32 frozen poses, decisions and native review outputs are unchanged on the
+tested installation. All earlier files above remain as historical evidence.
+Broader accuracy, heavy occlusion and complete machine cycle qualification
+remain open; these numbers are not a general inference-rate guarantee.

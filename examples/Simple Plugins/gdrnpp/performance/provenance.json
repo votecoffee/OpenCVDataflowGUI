@@ -1,0 +1,12 @@
+{
+  "scope": "Generic geometry execution evidence; unchanged fixed settings and retained original results",
+  "dataset": "T-LESS",
+  "license": "CC-BY-4.0",
+  "sha256": {
+    "benchmark.json": "0160a8a6aaf8b4a5df36c3c812a65e1975f99c21309b49aeccc7d08c673ae190",
+    "comparison.png": "319774645e75753e082870d48d99de2673b353422cede156dc5e7d432afd2e42",
+    "profile.json": "e2e3ba745ca244ecf50c1690e894fb2e41fe4a8e5747322f1b4ccab08d89170d",
+    "review_parity.json": "aa08cc28081eeb6532313bc7cf747952409c44f795d5846c302502ba07112ccb",
+    "validation.json": "2c5df0343c0c43c6fcb7f813b6ec22f4f1bc16965055660932f2dff5df9e3214"
+  }
+}

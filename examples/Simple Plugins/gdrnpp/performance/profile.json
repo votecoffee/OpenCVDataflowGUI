@@ -1,0 +1,159 @@
+{
+  "scope": "Original profiled single-case alignment; profiler overhead is included, separate from paired unprofiled timings",
+  "total_seconds": 8.054237599999999,
+  "functions": [
+    {
+      "module": "refinement.py",
+      "line": 95,
+      "function": "refine_pose",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.027688800000000003,
+      "cumulative_seconds": 8.054229300000001
+    },
+    {
+      "module": "render.py",
+      "line": 12,
+      "function": "render",
+      "primitive_calls": 14,
+      "total_calls": 14,
+      "self_seconds": 4.088318,
+      "cumulative_seconds": 7.6792907
+    },
+    {
+      "module": "refinement.py",
+      "line": 62,
+      "function": "_correspondences",
+      "primitive_calls": 12,
+      "total_calls": 12,
+      "self_seconds": 0.11623570000000001,
+      "cumulative_seconds": 6.7514840000000005
+    },
+    {
+      "module": "_index_tricks_impl.py",
+      "line": 146,
+      "function": "__getitem__",
+      "primitive_calls": 62617,
+      "total_calls": 62617,
+      "self_seconds": 0.8760483,
+      "cumulative_seconds": 1.516717
+    },
+    {
+      "module": "refinement.py",
+      "line": 58,
+      "function": "_fit",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 0.0002842,
+      "cumulative_seconds": 1.2602431
+    },
+    {
+      "module": "render.py",
+      "line": 86,
+      "function": "fit_evidence",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 0.002226,
+      "cumulative_seconds": 1.2599333000000001
+    },
+    {
+      "module": "~",
+      "line": 0,
+      "function": "<method 'reduce' of 'numpy.ufunc' objects>",
+      "primitive_calls": 427397,
+      "total_calls": 427397,
+      "self_seconds": 0.8614861,
+      "cumulative_seconds": 0.8614861
+    },
+    {
+      "module": "numeric.py",
+      "line": 1726,
+      "function": "indices",
+      "primitive_calls": 62617,
+      "total_calls": 62617,
+      "self_seconds": 0.29504400000000003,
+      "cumulative_seconds": 0.5165216
+    },
+    {
+      "module": "~",
+      "line": 0,
+      "function": "<method 'min' of 'numpy.ndarray' objects>",
+      "primitive_calls": 142405,
+      "total_calls": 142405,
+      "self_seconds": 0.07627,
+      "cumulative_seconds": 0.46955470000000005
+    },
+    {
+      "module": "shape_base.py",
+      "line": 378,
+      "function": "stack",
+      "primitive_calls": 62617,
+      "total_calls": 62617,
+      "self_seconds": 0.4008491,
+      "cumulative_seconds": 0.46288120000000005
+    },
+    {
+      "module": "_methods.py",
+      "line": 43,
+      "function": "_amin",
+      "primitive_calls": 142405,
+      "total_calls": 142405,
+      "self_seconds": 0.039958600000000004,
+      "cumulative_seconds": 0.39328470000000004
+    },
+    {
+      "module": "fromnumeric.py",
+      "line": 2474,
+      "function": "any",
+      "primitive_calls": 79800,
+      "total_calls": 79800,
+      "self_seconds": 0.0668114,
+      "cumulative_seconds": 0.29682600000000003
+    },
+    {
+      "module": "fromnumeric.py",
+      "line": 86,
+      "function": "_wrapreduction_any_all",
+      "primitive_calls": 79808,
+      "total_calls": 79808,
+      "self_seconds": 0.1295273,
+      "cumulative_seconds": 0.23005440000000002
+    },
+    {
+      "module": "~",
+      "line": 0,
+      "function": "<method 'sum' of 'numpy.ndarray' objects>",
+      "primitive_calls": 62613,
+      "total_calls": 62613,
+      "self_seconds": 0.039679200000000005,
+      "cumulative_seconds": 0.2244556
+    },
+    {
+      "module": "~",
+      "line": 0,
+      "function": "<method 'max' of 'numpy.ndarray' objects>",
+      "primitive_calls": 79800,
+      "total_calls": 79800,
+      "self_seconds": 0.0429119,
+      "cumulative_seconds": 0.1904354
+    },
+    {
+      "module": "_methods.py",
+      "line": 47,
+      "function": "_sum",
+      "primitive_calls": 62613,
+      "total_calls": 62613,
+      "self_seconds": 0.0217017,
+      "cumulative_seconds": 0.1847764
+    },
+    {
+      "module": "_methods.py",
+      "line": 39,
+      "function": "_amax",
+      "primitive_calls": 79800,
+      "total_calls": 79800,
+      "self_seconds": 0.0216678,
+      "cumulative_seconds": 0.1475235
+    }
+  ]
+}
