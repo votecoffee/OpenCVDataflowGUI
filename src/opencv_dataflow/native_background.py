@@ -3,6 +3,7 @@
 import cv2
 import numpy as np
 
+from .background_reference import identifiers, load_reference, match_reference, reference_path
 from .core import Port
 from .images import ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
@@ -20,6 +21,14 @@ BACKGROUND_DEFAULTS = {
     "shadow_threshold": 0.5,
     "shadow_value": 127,
     "include_shadows": False,
+    "reference_path": "",
+    "reference_sha256": "",
+    "reference_camera_id": "",
+    "reference_calibration_id": "",
+    "reference_replay_passes": 32,
+    "reference_replay_rate": 0.5,
+    "maximum_reference_work": 64_000_000,
+    "reference_update": "frozen",
 }
 BACKGROUND_HELP = {
     **SEQUENCE_HELP,
@@ -27,6 +36,29 @@ BACKGROUND_HELP = {
     "shadow_value": "Value in the raw mask for detected shadows. The shadows port is binary.",
     "include_shadows": "Include shadows in the main binary foreground mask.",
     "max_bytes_mb": "Retained CPU model budget. Processing images require additional memory.",
+    "reference_path": (
+        "Optional sealed clean-background JSON. Restored through bounded reference replay."
+    ),
+    "reference_sha256": (
+        "Optional exact file SHA256. Reset forces a fresh read even with unchanged file metadata."
+    ),
+    "reference_camera_id": "Must match the saved reference's stable camera/setup ID.",
+    "reference_calibration_id": (
+        "Must match the saved reference's calibration revision, including empty values."
+    ),
+    "reference_replay_passes": (
+        "Clean-reference updates before the first live image; native background probe must pass."
+    ),
+    "reference_replay_rate": (
+        "Native learning rate used only during clean-reference replay, below one."
+    ),
+    "maximum_reference_work": (
+        "Maximum reference pixels times (replay passes + one verification probe)."
+    ),
+    "reference_update": (
+        "Frozen disables live learning; Guarded requires a known-foreground mask on "
+        "every activation."
+    ),
 }
 
 
@@ -35,7 +67,7 @@ class NativeBackgroundSequence(NativeSequenceBlock):
 
     inputs = (
         *NativeSequenceBlock.inputs,
-        Port("known_foreground", required=False, visual_type="mask"),
+        Port("known_foreground", required=False, required_when_connected=True, visual_type="mask"),
     )
     data_outputs = (
         Port("mask"),
@@ -46,7 +78,84 @@ class NativeBackgroundSequence(NativeSequenceBlock):
     )
     defaults = BACKGROUND_DEFAULTS
     parameter_help = BACKGROUND_HELP
+    parameter_choices = {
+        **NativeSequenceBlock.parameter_choices,
+        "reference_update": ("frozen", "guarded"),
+    }
+    parameter_ranges = {
+        "reference_replay_passes": NumericRange(1, 1024, whole=True),
+        "reference_replay_rate": NumericRange(1e-8, 0.999999),
+        "maximum_reference_work": NumericRange(1, 512_000_000, whole=True),
+    }
+    project_asset_parameters = (*NativeSequenceBlock.project_asset_parameters, "reference_path")
+    input_help = {
+        **NativeSequenceBlock.input_help,
+        "known_foreground": (
+            "Current-grid uint8 object mask. With a restored reference, Guarded requires "
+            "this mask and replaces marked samples with trusted background before learning."
+        ),
+    }
     image_depths = (np.uint8,)
+    reference_rebuild_frozen = False
+
+    def reset_runtime(self):
+        super().reset_runtime()
+        self._reference_cache = self._active_reference = None
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["reference_path"]:
+            identifiers(
+                p["reference_camera_id"],
+                p["reference_calibration_id"],
+                fields=("reference_camera_id", "reference_calibration_id"),
+            )
+        digest = p["reference_sha256"]
+        if (
+            not isinstance(digest, str)
+            or digest
+            and (len(digest) != 64 or any(c not in "0123456789abcdefABCDEF" for c in digest))
+        ):
+            raise ValidationError(
+                "Reference SHA256 must be empty or 64 hex digits", "reference_sha256"
+            )
+
+    def extra_context(self, inputs):
+        p = self.parameters
+        self._active_reference = None
+        if not p["reference_path"]:
+            self._reference_cache = None
+            return None
+        path = reference_path(self, "reference_path")
+        info = path.stat()
+        key = (
+            str(path),
+            info.st_dev,
+            info.st_ino,
+            info.st_size,
+            info.st_mtime_ns,
+            info.st_ctime_ns,
+            p["reference_sha256"],
+        )
+        if (
+            inputs.get("reset", False)
+            or self._reference_cache is None
+            or self._reference_cache[0] != key
+        ):
+            self._reference_cache = (key, load_reference(path, p["reference_sha256"]))
+        entry = self._reference_cache[1]
+        record, reference, _ = entry
+        match_reference(
+            record,
+            reference,
+            inputs["image"],
+            self.input_payloads["image"],
+            p["reference_camera_id"],
+            p["reference_calibration_id"],
+        )
+        self._active_reference = entry  # One immutable file snapshot per activation.
+        return record["id"]
 
     def learning_rate(self, inputs):
         rate = finite(self.parameters["learning_rate"], "Learning rate")
@@ -66,34 +175,87 @@ class NativeBackgroundSequence(NativeSequenceBlock):
             raise ValueError("Floating-point MOG2 frames must use the [0, 255] intensity scale")
         rate = self.learning_rate(inputs)
         known = selection_mask({"image": source, "mask": inputs.get("known_foreground")}, image)
+        reference_entry = self._active_reference
+        if reference_entry is not None and p["reference_update"] == "guarded" and known is None:
+            raise ValidationError(
+                "Guarded reference learning requires Known foreground on every activation"
+            )
+        rebuild_query = bool(
+            reference_entry is not None
+            and self.reference_rebuild_frozen
+            and (p["reference_update"] == "frozen" or rate == 0)
+        )
+        if rebuild_query:
+            # This wheel's KNN updates samples even at learningRate=0. Never
+            # retain a queried frozen model; release it before reserving again.
+            state.pop("native", None)
+            state.pop("native_bytes", None)
         if "native" not in state:
-            if rate == 0:
+            if rate == 0 and reference_entry is None:
                 return SequenceStep(
                     dict.fromkeys(self.flow_primary),
                     ready=False,
                     learned=False,
                     details={"reason": "learning_disabled"},
                 )
-            self.reserve_native_state(state, self.estimate_state_bytes(source))
+            seed = None
+            if reference_entry is not None:
+                record, saved, digest = reference_entry
+                seed = image_value(saved, self.image_depths, canonical=True)
+                passes = int(p["reference_replay_passes"])
+                if seed.shape[0] * seed.shape[1] * (passes + 1) > p["maximum_reference_work"]:
+                    raise ValidationError(
+                        "Reference replay exceeds Maximum reference work", "maximum_reference_work"
+                    )
+            self.reserve_native_state(
+                state, self.estimate_state_bytes(source) + (seed.nbytes if seed is not None else 0)
+            )
             model = self.new_model()
             shadow_threshold = finite(p["shadow_threshold"], "Shadow threshold", 0)
             if shadow_threshold > 1:
                 raise ValueError("Shadow threshold must be at most 1")
             model.setShadowThreshold(shadow_threshold)
             model.setShadowValue(integer(p["shadow_value"], "Shadow value", 1, 254))
+            if seed is not None:
+                for _ in range(passes):
+                    model.apply(seed, learningRate=float(p["reference_replay_rate"]))
+                probe_rate = (
+                    float(p["reference_replay_rate"]) if self.reference_rebuild_frozen else 0
+                )
+                probe = model.apply(seed, learningRate=probe_rate)
+                restored = model.getBackgroundImage()
+                if probe.any() or restored is None or not np.array_equal(restored, seed):
+                    raise ValidationError(
+                        "Reference replay is not ready; increase replay passes or review "
+                        "reference/model settings",
+                        "reference_replay_passes",
+                    )
+                state.update(seeded=True, reference_id=record["id"], reference_replay_passes=passes)
             state["native"] = model
         model = state["native"]
+        if reference_entry is not None and p["reference_update"] == "frozen":
+            rate = 0
+        protected_background = model.getBackgroundImage() if reference_entry is not None else None
+        working = image
+        if reference_entry is not None and known is not None and known.any():
+            # Some native knownForegroundMask implementations mark FG only
+            # after updating samples. Do not feed object values to learning.
+            working = image.copy()
+            working[known != 0] = protected_background[known != 0]
+        query_rate = float(p["reference_replay_rate"]) if rebuild_query else rate
         if known is None:
-            raw = model.apply(image, learningRate=rate)
+            raw = model.apply(working, learningRate=query_rate)
         else:
-            raw = model.apply(image, knownForegroundMask=known, learningRate=rate)
+            raw = model.apply(working, knownForegroundMask=known, learningRate=query_rate)
         if mask is not None:
             raw[mask == 0] = 0
         shadows = raw == p["shadow_value"] if p["detect_shadows"] else np.zeros(raw.shape, bool)
         visible = (raw == 255) | (shadows if p["include_shadows"] else False)
         foreground = np.asarray(source).copy()
         foreground[~visible] = 0
-        background = model.getBackgroundImage()
+        background = protected_background if rebuild_query else model.getBackgroundImage()
+        if rebuild_query:
+            state.pop("native", None)
         encoding = "gray" if image.ndim == 2 else "bgr"
         binary = ImageArray(visible.astype(np.uint8) * 255, "gray")
         return SequenceStep(
@@ -111,6 +273,16 @@ class NativeBackgroundSequence(NativeSequenceBlock):
                 if mask is not None
                 else float(visible.mean()),
                 "native_model_bytes": state["native_bytes"],
+                "background_reference": {
+                    "id": state["reference_id"],
+                    "file_sha256": reference_entry[2],
+                    "replay_passes": state["reference_replay_passes"],
+                    "update_policy": p["reference_update"],
+                    "replay_verified": True,
+                    "frozen_query_rebuild": rebuild_query,
+                }
+                if reference_entry is not None
+                else None,
             },
             graphics={"background subtraction": binary},
         )
@@ -176,6 +348,7 @@ class MOG2Sequence(NativeBackgroundSequence):
 
 class KNNBackgroundSequence(NativeBackgroundSequence):
     type_id, title = "sequence.knn_background", "KNN background subtraction"
+    reference_rebuild_frozen = True
     defaults = {
         **BACKGROUND_DEFAULTS,
         "squared_distance_threshold": 400.0,

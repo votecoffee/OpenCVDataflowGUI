@@ -691,6 +691,7 @@ def builtin_registry():
     from .annotation import AnnotationLayer
     from .annoy_blocks import ANNOY_BLOCKS
     from .aruco_markers import DetectArucoMarkers
+    from .background_reference import CaptureBackgroundReference, SaveBackgroundReference
     from .basic_processing import BASIC_PROCESSING_BLOCKS
     from .blob_detection import SimpleBlobDetection
     from .calibration import (
@@ -1012,6 +1013,8 @@ def builtin_registry():
         SaveMotionTrajectory,
         RestoreFromNeighbors,
         EstimateScanlineMotion,
+        CaptureBackgroundReference,
+        SaveBackgroundReference,
         ReplayRegisteredViews,
         RenderMosaicTile,
         PasteImagePatch,

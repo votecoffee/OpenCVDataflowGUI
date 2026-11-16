@@ -47,6 +47,7 @@
 | Content-bound motion capture, JSON assets and no-fit clip replay | [Motion trajectories](motion-trajectory.md) |
 | Blur-model checked detail reuse, change gates and target coverage | [Neighbor restoration](neighbor-restoration.md) |
 | Validated row motion, rolling-shutter correction and nonlinear maps | [Rolling-shutter baseline](rolling-shutter.md) |
+| Sealed clean backgrounds, first-image restoration and protected learning | [Background references](background-reference.md) |
 | ROS, MQTT, PLC and robot connection status | [Connection health monitors](connection-health.md) |
 | Judgments, reasons and ticket histories | [Ticket results](ticket-results.md) |
 | 3D/depth/point clouds | [3D vision](vision-3d.md) |

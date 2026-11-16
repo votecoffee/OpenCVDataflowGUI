@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/part_a0.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "background",
+      "type": "sequence.knn_background",
+      "name": "KNN background subtraction",
+      "parameters": {
+        "warmup": 20,
+        "max_streams": 4,
+        "max_bytes_mb": 256.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "history": 500,
+        "learning_rate": 0.5,
+        "detect_shadows": false,
+        "shadow_threshold": 0.5,
+        "shadow_value": 127,
+        "include_shadows": false,
+        "reference_path": "assets/clean.background.json",
+        "reference_sha256": "df21d1eae9cd05511c814da07d006c0e2e3fe4930a4a7ced501ee42c39d36763",
+        "reference_camera_id": "inspection-camera",
+        "reference_calibration_id": "grid-revision-1",
+        "reference_replay_passes": 32,
+        "reference_replay_rate": 0.5,
+        "maximum_reference_work": 64000000,
+        "reference_update": "guarded",
+        "squared_distance_threshold": 400.0,
+        "samples": 7,
+        "neighbors": 2
+      },
+      "position": [
+        450,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "known_foreground"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "raw_mask",
+        "shadows",
+        "background",
+        "foreground",
+        "ready",
+        "activations",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "known",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          40,
+          28,
+          24,
+          20
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "truth",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/mask_a.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        450,
+        450
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify",
+      "type": "inspect.image_quality",
+      "name": "Compare image quality",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0,
+        "peak_value": 255.0
+      },
+      "position": [
+        900,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original background-reference fixtures - MIT",
+      "description": "Original MIT conveyor images, references, generator and projects by OpenCVDataflowGUI contributors; no external or customer data. A saved clean reference is replayed before the first current part is classified. Camera/calibration/grid/encoding bindings and SHA256 prevent accidental mismatches. Frozen MOG2 retains its native model. Frozen KNN rebuilds its query model because this wheel can update at learningRate=0. Guarded updates sanitize known foreground with trusted background pixels. Replay checks five independent current captures, including a persistent part and an empty last frame. Float MOG2 keeps original [0,255] fractional values. Camera mismatch intentionally errors before native work. Prepare reference writes only an explicitly requested generated JSON; never captures a scene with known foreground. This is reference replay, not opaque native-state serialization or physical camera qualification.",
+      "parameters": {},
+      "position": [
+        0,
+        -400
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "background",
+      "input": "image"
+    },
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "known",
+      "input": "image"
+    },
+    {
+      "source": "known",
+      "output": "mask",
+      "target": "background",
+      "input": "known_foreground"
+    },
+    {
+      "source": "background",
+      "output": "mask",
+      "target": "verify",
+      "input": "image_a"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "verify",
+      "input": "image_b"
+    }
+  ]
+}

@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 155 | 11 | 9 | 175 | 88.6% |
+| 1. Core and baseline 2D | 156 | 10 | 9 | 175 | 89.1% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 218 | 53 | 199 | 470 | 46.4% |
+| **Overall** | 219 | 52 | 199 | 470 | 46.6% |
 
 <!-- coverage-summary:end -->
 
@@ -284,7 +284,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S1-170 | Restore a validated foreground reference after restart | BackgroundSubtractor.getBackgroundImage and versioned reference images or warmup replay | Partial | sequence.mog2 and sequence.knn_background emit background images. Save a camera-bound reference or verified warmup frames, reload them after a restart, and compare the first eligible foreground result. Reject mismatched calibration, size or encoding and keep known foreground out of relearning. |
+| S1-170 | Restore a validated foreground reference after restart | BackgroundSubtractor.getBackgroundImage and versioned reference images or warmup replay | Complete | `sequence.capture_background_reference` and `output.background_reference` seal a clean image with declared camera/calibration IDs and grid/pyramid/recipe policy. `sequence.mog2` and `sequence.knn_background` reload and replay it, verify exact background recovery and classify the first current image without live warmup. Frozen KNN uses disposable replay/query models to avoid this wheel's zero-rate updates; guarded learning substitutes trusted background under known foreground to prevent native mask-update leakage. Independent/native masks, persistent parts, float samples, fresh tickets/roots, mismatch/corruption/resource guards, cache/reset and safe publication/Save As/reopen qualify eight [projects](<../examples/opencv tools/background_reference/README.md>). Scope is clean-image reconstruction, not opaque model/history serialization or physical camera authentication; see [contracts](background-reference.md). |
 
 ### Track prediction and detector scheduling
 

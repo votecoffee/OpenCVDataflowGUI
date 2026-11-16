@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/clean.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "sequence.capture_background_reference",
+      "name": "Capture clean background reference",
+      "documentation": "<p>Capture an entire clean background image as a versioned, checksummed record. Set stable camera and calibration identities and choose recipe binding. Any marked known foreground rejects capture. Unmarked foreground cannot be detected reliably by this recorder. Save the record with Save background reference, then select that JSON in a MOG2 or KNN block's Reference path.</p>",
+      "parameters": {
+        "camera_id": "inspection-camera",
+        "calibration_id": "grid-revision-1",
+        "recipe_binding": "strict"
+      },
+      "position": [
+        450,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "known_foreground"
+      ],
+      "exposed_outputs": [
+        "reference",
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "save",
+      "type": "output.background_reference",
+      "name": "Save background reference",
+      "parameters": {
+        "path": "capture.generated.json",
+        "write_mode": "new"
+      },
+      "position": [
+        900,
+        0
+      ],
+      "exposed_inputs": [
+        "reference"
+      ],
+      "exposed_outputs": [
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original background-reference fixtures - MIT",
+      "description": "Original MIT conveyor images, references, generator and projects by OpenCVDataflowGUI contributors; no external or customer data. A saved clean reference is replayed before the first current part is classified. Camera/calibration/grid/encoding bindings and SHA256 prevent accidental mismatches. Frozen MOG2 retains its native model. Frozen KNN rebuilds its query model because this wheel can update at learningRate=0. Guarded updates sanitize known foreground with trusted background pixels. Replay checks five independent current captures, including a persistent part and an empty last frame. Float MOG2 keeps original [0,255] fractional values. Camera mismatch intentionally errors before native work. Prepare reference writes only an explicitly requested generated JSON; never captures a scene with known foreground. This is reference replay, not opaque native-state serialization or physical camera qualification.",
+      "parameters": {},
+      "position": [
+        0,
+        -400
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "reference",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "reference",
+      "target": "save",
+      "input": "reference"
+    }
+  ]
+}

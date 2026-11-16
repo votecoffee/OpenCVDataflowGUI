@@ -1,0 +1,73 @@
+{
+  "license": "MIT - original repository fixtures",
+  "image_size": [
+    112,
+    80
+  ],
+  "camera_id": "inspection-camera",
+  "calibration_id": "grid-revision-1",
+  "replay_cases": [
+    "part_a0",
+    "part_a1",
+    "part_b0",
+    "part_b1",
+    "empty0"
+  ],
+  "cases": {
+    "mog2": {
+      "state": "pass",
+      "runs": 1,
+      "prepare": false
+    },
+    "knn": {
+      "state": "pass",
+      "runs": 1,
+      "prepare": false
+    },
+    "guarded_mog2": {
+      "state": "pass",
+      "runs": 1,
+      "prepare": false
+    },
+    "guarded_knn": {
+      "state": "pass",
+      "runs": 1,
+      "prepare": false
+    },
+    "replay": {
+      "state": "pass",
+      "runs": 5,
+      "prepare": false
+    },
+    "float_mog2": {
+      "state": "pass",
+      "runs": 1,
+      "prepare": false
+    },
+    "camera_mismatch": {
+      "state": "error",
+      "runs": 1,
+      "prepare": false
+    },
+    "prepare_reference": {
+      "state": "pass",
+      "runs": 1,
+      "prepare": true
+    }
+  },
+  "asset_sha256": {
+    "clean.background.json": "df21d1eae9cd05511c814da07d006c0e2e3fe4930a4a7ced501ee42c39d36763",
+    "clean.png": "71c48d1eeea4a473be15e3a9921cd50f7e4992bc286ca0e76e25da6040b225ea",
+    "clean.tif": "f6deaa8cfe942d21d68b1521d2a6abc0fffcf5ff11d3c77769762bc5843068f0",
+    "clean_float.background.json": "b4805a39a568e9ad6be8209d9c97b44d3352a4fa71b6ac8712e642c461fa4f5b",
+    "empty0.png": "71c48d1eeea4a473be15e3a9921cd50f7e4992bc286ca0e76e25da6040b225ea",
+    "mask_a.png": "ed139b00d8567b63ea89224dfb908b072f83c5e7e00714e37a078e169697fb3e",
+    "mask_b.png": "14a4f37d0cb13e7ac45c1c8e56f13bda251352d7616b59d804130b426c932603",
+    "mask_empty.png": "59c86919e97d5aef4aa7a4ea00271dfdc94e0b1a7424d1fd728f8f881d2e9bf0",
+    "part_a0.png": "fa86dd4985e31961901e6f282c5a357b6634f27a26f6ead4ea05b37310e96471",
+    "part_a0.tif": "2bf2ea8a5c35a4f981c03e23357915cd2c220c179804ccac048e68fbb93615ee",
+    "part_a1.png": "fa86dd4985e31961901e6f282c5a357b6634f27a26f6ead4ea05b37310e96471",
+    "part_b0.png": "a822c7ea4d5a14743673596da4bdb55001e070eabfae815768d54c6ae255eb4c",
+    "part_b1.png": "a822c7ea4d5a14743673596da4bdb55001e070eabfae815768d54c6ae255eb4c"
+  }
+}

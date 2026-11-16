@@ -8241,6 +8241,17 @@ Input `still_image` — APNG poster, separate from timed frames. Use grayscale o
 | `png_compression` | `-1` | Value must be a whole number between -1 and 9. APNG only; -1 keeps the native compression default, otherwise 0..9. |
 | `png_strategy` | `"native"` | `native`, `default`, `filtered`, `huffman`, `rle`, `fixed` APNG zlib strategy. Native APNG ignores PNG filter and buffer-size flags. |
 
+## Save background reference (`output.background_reference`)
+
+Output / Foreground segmentation
+
+Inputs: `reference` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"background_reference.json"` | Versioned UTF-8 JSON relative to the project; directory must exist. |
+| `write_mode` | `"new"` | `new`, `replace` New preserves existing files; Replace publishes atomically. |
+
 ## Save calibration profile (`output.calibration`)
 
 Output / Calibration profiles
@@ -8745,6 +8756,22 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `stable_activations` | `0` | Optional consecutive low-foreground frames before readiness. |
 | `max_foreground_fraction` | `0.05` |  |
 
+## Capture clean background reference (`sequence.capture_background_reference`)
+
+Sequence / Foreground segmentation
+
+Inputs: `image` (image), `known_foreground` (image, optional).
+
+Input `image` — Clean gray/RGB/BGR uint8 or float32 [0,255] scene, at most 8 MiB.
+
+Input `known_foreground` — Any marked pixel rejects capture; wait for a clean scene first.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `camera_id` | `""` | Required stable camera/setup identity; copied into the sealed reference. |
+| `calibration_id` | `""` | Optional calibration revision; restored consumers must match it exactly. |
+| `recipe_binding` | `"strict"` | `strict`, `ignore` Strict checks captured recipe context; Ignore permits recipe-independent backgrounds. |
+
 ## Capture motion trajectory (`sequence.capture_trajectory`)
 
 Sequence / Recorded motion
@@ -8948,6 +8975,8 @@ Sequence / Temporal processing
 
 Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `known_foreground` (image, optional).
 
+Input `known_foreground` — Current-grid uint8 object mask. With a restored reference, Guarded requires this mask and replaces marked samples with trusted background before learning.
+
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `warmup` | `20` | Minimum eligible activations before primary data outputs are emitted. |
@@ -8962,6 +8991,14 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `shadow_threshold` | `0.5` |  |
 | `shadow_value` | `127` | Value in the raw mask for detected shadows. The shadows port is binary. |
 | `include_shadows` | `false` | Include shadows in the main binary foreground mask. |
+| `reference_path` | `""` | Optional sealed clean-background JSON. Restored through bounded reference replay. |
+| `reference_sha256` | `""` | Optional exact file SHA256. Reset forces a fresh read even with unchanged file metadata. |
+| `reference_camera_id` | `""` | Must match the saved reference's stable camera/setup ID. |
+| `reference_calibration_id` | `""` | Must match the saved reference's calibration revision, including empty values. |
+| `reference_replay_passes` | `32` | Value must be a whole number between 1 and 1024. Clean-reference updates before the first live image; native background probe must pass. |
+| `reference_replay_rate` | `0.5` | Value must be a finite number between 1e-08 and 0.999999. Native learning rate used only during clean-reference replay, below one. |
+| `maximum_reference_work` | `64000000` | Value must be a whole number between 1 and 5.12e+08. Maximum reference pixels times (replay passes + one verification probe). |
+| `reference_update` | `"frozen"` | `frozen`, `guarded` Frozen disables live learning; Guarded requires a known-foreground mask on every activation. |
 | `squared_distance_threshold` | `400.0` | Squared distance used to decide if a sample matches. |
 | `samples` | `7` |  |
 | `neighbors` | `2` | Minimum matching samples required to classify a pixel as background. |
@@ -9039,6 +9076,8 @@ Sequence / Temporal processing
 
 Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `known_foreground` (image, optional), `learn` (data, optional).
 
+Input `known_foreground` — Current-grid uint8 object mask. With a restored reference, Guarded requires this mask and replaces marked samples with trusted background before learning.
+
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `warmup` | `5` | Minimum eligible activations before primary data outputs are emitted. |
@@ -9053,6 +9092,14 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `shadow_threshold` | `0.5` |  |
 | `shadow_value` | `127` | Value in the raw mask for detected shadows. The shadows port is binary. |
 | `include_shadows` | `false` | Include shadows in the main binary foreground mask. |
+| `reference_path` | `""` | Optional sealed clean-background JSON. Restored through bounded reference replay. |
+| `reference_sha256` | `""` | Optional exact file SHA256. Reset forces a fresh read even with unchanged file metadata. |
+| `reference_camera_id` | `""` | Must match the saved reference's stable camera/setup ID. |
+| `reference_calibration_id` | `""` | Must match the saved reference's calibration revision, including empty values. |
+| `reference_replay_passes` | `32` | Value must be a whole number between 1 and 1024. Clean-reference updates before the first live image; native background probe must pass. |
+| `reference_replay_rate` | `0.5` | Value must be a finite number between 1e-08 and 0.999999. Native learning rate used only during clean-reference replay, below one. |
+| `maximum_reference_work` | `64000000` | Value must be a whole number between 1 and 5.12e+08. Maximum reference pixels times (replay passes + one verification probe). |
+| `reference_update` | `"frozen"` | `frozen`, `guarded` Frozen disables live learning; Guarded requires a known-foreground mask on every activation. |
 | `variance_threshold` | `16.0` | Squared Mahalanobis distance threshold for background matching. |
 | `new_mixture_threshold` | `9.0` | Squared distance threshold for generating a new mixture. |
 | `mixtures` | `5` |  |
