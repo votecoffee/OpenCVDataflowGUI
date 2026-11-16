@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 160 | 7 | 8 | 175 | 91.4% |
+| 1. Core and baseline 2D | 161 | 6 | 8 | 175 | 92.0% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 223 | 49 | 198 | 470 | 47.4% |
+| **Overall** | 224 | 48 | 198 | 470 | 47.7% |
 
 <!-- coverage-summary:end -->
 
@@ -70,7 +70,7 @@ fixture or result needed to close the item.
 | S1-08 | Raw sensor color decoding | demosaicing, cvtColor | Complete | cv.demosaic_bayer, input.raw_yuv, cv.decode_yuv. Bayer phase at a crop and packed YUV layouts. |
 | S1-09 | Camera image capture | VideoCapture.open, read, release | Complete | input.camera. Graph camera frame contract with backend and format settings. Physical backend qualification is tracked under acquisition. |
 | S1-10 | Video file replay and recording | VideoCapture, VideoWriter | Complete | input.video_file, output.video. Frame bounds, stride, stop/loop, frame timestamps, and a local round trip. |
-| S1-11 | Timestamp-paced file video | VideoCapture timestamps and replay clock | Partial | input.video_file exposes media timestamps. Verify paced playback with a fake clock, variable gaps, stride, and prompt Stop/Resume. |
+| S1-11 | Timestamp-paced file video | VideoCapture timestamps and monotonic replay clock | Complete | input.paced_video_file adds explicit decoder/FPS policies, Speed, media-gap/lateness limits, no implicit drops, preserved stride timing and cooperative cancellable waits before ticket assignment. Stop retains the pending frame and Resume reanchors wall time. Cycle start exposes loop boundaries for sequence reset. Fake-clock variable gaps/overhead/fallback/lateness/loop references, native FFmpeg/MJPEG pixels/timing, queue ordering, offscreen Runner Stop/Resume, worker/XML/editor/error checks and three original lossless projects qualify the baseline. Existing input.video_file remains fast; actual VFR diagnostics, network transport, arbitrary native-call interruption and hard real time are not claimed. |
 | S1-12 | Network video input | VideoCapture with a supported network backend | Planned | Replay a local test stream and verify reconnect, bounded read failure, and clean stop. |
 | S1-13 | Color conversion and pixel depth | cvtColor, convertTo, convertScaleAbs | Complete | cv.gray, cv.convert, cv.scale_absolute. Grayscale, color-space/depth conversion, and signed magnitude display. |
 | S1-14 | Channel split, merge and linear mixing | split, merge, mixChannels, transform | Complete | cv.split_channels, cv.merge_channels, cv.route_channels, cv.channel_transform. Verify monochrome planes and multi-source channel order. |

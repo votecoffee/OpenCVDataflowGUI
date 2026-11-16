@@ -1,0 +1,109 @@
+{
+  "license": "MIT - original repository fixtures",
+  "image_size": [
+    160,
+    96
+  ],
+  "fps": 20,
+  "frames": [
+    {
+      "index": 0,
+      "timestamp_ms": 0.0,
+      "center": [
+        31.5,
+        41.5
+      ],
+      "sha256": "f73bc9bfc7e61eb84eac443b84c38522dbe550bebc665e9ba06d9ac6785b2087"
+    },
+    {
+      "index": 1,
+      "timestamp_ms": 50.0,
+      "center": [
+        39.5,
+        41.5
+      ],
+      "sha256": "8358cda0dba8bdc55269e4695e447c56f3ef8731c2850dd7e22f3670df766ddd"
+    },
+    {
+      "index": 2,
+      "timestamp_ms": 100.0,
+      "center": [
+        47.5,
+        41.5
+      ],
+      "sha256": "5862b6c5a7f6ae060a78ff62dec76cd2e75fb0bbe6d37cc1993390e227591acb"
+    },
+    {
+      "index": 3,
+      "timestamp_ms": 150.0,
+      "center": [
+        55.5,
+        41.5
+      ],
+      "sha256": "71bb860f07338a905ff24665e70ea503f11636eafb92f944421fa838a4ce284f"
+    },
+    {
+      "index": 4,
+      "timestamp_ms": 200.0,
+      "center": [
+        63.5,
+        41.5
+      ],
+      "sha256": "9543f9faf7db7e0806cf58d505400efdd6ac22155040171afc7b0c24256de9ec"
+    },
+    {
+      "index": 5,
+      "timestamp_ms": 250.0,
+      "center": [
+        71.5,
+        41.5
+      ],
+      "sha256": "25645d368d5f873bbf037a238fe191f2c3f1b05830dd6d022ea200c44f1ca705"
+    },
+    {
+      "index": 6,
+      "timestamp_ms": 300.0,
+      "center": [
+        79.5,
+        41.5
+      ],
+      "sha256": "d91704ab8c1617939f3b777474a690254c237d7dd32151074ba0a9774bf7c2de"
+    },
+    {
+      "index": 7,
+      "timestamp_ms": 350.0,
+      "center": [
+        87.5,
+        41.5
+      ],
+      "sha256": "ea0d92d0e48c66a0f6b354c2b6d790ae3651bfc9a69cc571400c0b43e7077a35"
+    }
+  ],
+  "cases": {
+    "native_paced": {
+      "stride": 1,
+      "speed": 1,
+      "start": 0,
+      "end": 8,
+      "runs": 8
+    },
+    "strided_fast": {
+      "stride": 2,
+      "speed": 2,
+      "start": 0,
+      "end": 8,
+      "runs": 4
+    },
+    "loop_reset": {
+      "stride": 1,
+      "speed": 2,
+      "start": 2,
+      "end": 5,
+      "runs": 7,
+      "repeat": "loop"
+    }
+  },
+  "asset_sha256": {
+    "moving_part.avi": "c99251b975c65e26c7acd4cab05afd574da9ef67ba3531bf43928fad6c89476e"
+  }
+}

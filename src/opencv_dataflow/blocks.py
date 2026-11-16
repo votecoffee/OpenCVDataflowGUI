@@ -829,6 +829,7 @@ def builtin_registry():
     from .offline_stabilization import StabilizeRecordedSequence
     from .oriented_edges import FindOrientedEdges
     from .overlay_graphics import OverlayResultGraphics, SetFilmstripImage
+    from .paced_video import PacedVideoFile
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .path_continuity import InspectPathContinuity
     from .path_strip import UnwrapPathStrip
@@ -947,6 +948,7 @@ def builtin_registry():
         *ROS2_BLOCKS,
         ImageFile,
         VideoFile,
+        PacedVideoFile,
         DecodeVideo,
         TiffFile,
         TiffPageAccess,

@@ -5232,6 +5232,32 @@ Ticket mode and fixed value are common inspector controls.
 | `include_retained` | `true` | Accept the retained message replayed when a subscription starts. |
 | `ticket_field` | `""` | Optional top-level JSON field containing an external ticket value. |
 
+## Paced video file (`input.paced_video_file`)
+
+Input / Video
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
+| `backend` | `"auto"` | `auto`, `ffmpeg`, `gstreamer`, `msmf`, `avfoundation`, `opencv_mjpeg` |
+| `start_frame` | `0` | Value must be a whole number between 0 and 2.14748e+09. Zero-based first frame. |
+| `end_frame` | `-1` | Value must be a whole number between -1 and 2.14748e+09. Exclusive end frame. -1 reads until the decoder reaches end of file. |
+| `stride` | `1` | Value must be a whole number between 1 and 100000. Emit every Nth frame, counting from the start frame. |
+| `repeat` | `"stop"` | `stop`, `loop` |
+| `frame_ticket` | `true` | Use filename and frame index as the default ticket value. |
+| `color_format` | `"bgr"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` |
+| `pixel_depth` | `"uint8"` | `unchanged`, `uint8`, `uint16`, `float32` |
+| `speed` | `1.0` | Value must be a finite number between 0.01 and 100. Wall-clock playback factor. Two runs twice as fast; no implicit frame dropping. |
+| `timing_policy` | `"decoder_or_fps"` | `decoder_or_fps`, `decoder_only`, `configured_fps` Prefer increasing decoder timestamps, require them, or use the configured frame rate. |
+| `fallback_fps` | `0.0` | Value must be a finite number between 0 and 1000. Configured rate; zero disables this fallback. Configured FPS policy requires a positive rate. |
+| `late_policy` | `"rebase"` | `rebase`, `catch_up` Rebase after excessive delay to avoid bursts, or retain deadlines and catch up without dropping frames. |
+| `maximum_lateness_ms` | `250.0` | Value must be a finite number between 0 and 60000. Delay allowed before the chosen late policy takes effect. |
+| `maximum_gap_ms` | `10000.0` | Value must be a finite number between 0.001 and 3.6e+06. Reject larger intervals before waiting; measured in media milliseconds, before Speed. |
+
 ## Repeated parts demo (`input.parts_demo`)
 
 Input / Synthetic

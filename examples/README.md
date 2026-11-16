@@ -288,6 +288,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Background reference restoration](<opencv tools/background_reference/README.md>) | Capture sealed clean scenes, restore MOG2/KNN before the first current part, protect learning and verify restart/replay masks. |
 | [Image-track prediction](<opencv tools/image_tracking/README.md>) | Follow position, scale and angle through missed blob detections; inspect uncertainty, expiry, reacquisition and filmstrip overlays. |
 | [Periodic detector refresh](<opencv tools/detector_refresh/README.md>) | Schedule any detector at a cadence, refine existing parts with local image motion and inspect entry, loss, freshness and call budgets. |
+| [Paced video replay](<opencv tools/paced_video/README.md>) | Play at media speed, select stride/speed, stop/resume pending frames and reset image tracking on loop boundaries. |
 | [TIFF page sequence](<opencv tools/tiff_page_sequence/README.md>) | Replay a three-page 16-bit TIFF as separately ticketed images. |
 | [TIFF page access](<opencv tools/tiff_page_access/README.md>) | Select arbitrary pages from a 257-page mixed-depth stack, inspect bounded cache hits and conversions, and exercise explicit range/workspace errors. |
 | [Tile image](<opencv tools/tile_image/README.md>) | Repeat a reference in a 2 × 3 grid and find all six copies with template matching. |

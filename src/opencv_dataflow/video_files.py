@@ -124,6 +124,27 @@ class VideoFile(ReplaySource):
                         return False
         return not self._cancelled() and self._capture.grab()
 
+    def prepare_frame(self, index):
+        """Optional source-specific scheduling before a ticket or output event is issued."""
+        return not self._cancelled()
+
+    def frame_info(self, index):
+        fps = self._capture.get(cv2.CAP_PROP_FPS)
+        fps = fps if math.isfinite(fps) and fps > 0 else None
+        timestamp = self._capture.get(cv2.CAP_PROP_POS_MSEC)
+        origin = "decoder"
+        if not math.isfinite(timestamp) or timestamp < 0 or (index and timestamp == 0):
+            timestamp = 1000.0 * index / fps if fps else None
+            origin = "frame_rate_estimate" if timestamp is not None else "unavailable"
+        return {
+            "filename": video_path(self).name,
+            "frame_index": index,
+            "timestamp_ms": timestamp,
+            "timestamp_source": origin,
+            "fps": fps,
+            "backend": self._capture.getBackendName(),
+        }
+
     def issue_source_ticket(self):
         state = self._sequence
         p = self.parameters
@@ -148,6 +169,9 @@ class VideoFile(ReplaySource):
                     self.close()
                     return None
                 raise ValueError(f"Cannot decode frame {state['next']} in {path.name}")
+            if not self.prepare_frame(state["next"]):
+                self.close()
+                return None
             label = f"{path.name}#{state['next']:06d}"
             ticket = super().issue_source_ticket()
             state["selected"] = label
@@ -173,22 +197,8 @@ class VideoFile(ReplaySource):
             ok, raw = self._capture.retrieve()
             if not ok:
                 raise ValueError(f"Decoder could not retrieve frame {index}")
-            fps = self._capture.get(cv2.CAP_PROP_FPS)
-            fps = fps if math.isfinite(fps) and fps > 0 else None
-            timestamp = self._capture.get(cv2.CAP_PROP_POS_MSEC)
-            origin = "decoder"
-            if not math.isfinite(timestamp) or timestamp < 0 or (index and timestamp == 0):
-                timestamp = 1000.0 * index / fps if fps else None
-                origin = "frame_rate_estimate" if timestamp is not None else "unavailable"
+            info = self.frame_info(index)
             output = format_image(raw, p["color_format"], p["pixel_depth"])
-            info = {
-                "filename": video_path(self).name,
-                "frame_index": index,
-                "timestamp_ms": timestamp,
-                "timestamp_source": origin,
-                "fps": fps,
-                "backend": self._capture.getBackendName(),
-            }
             next_index = index + int(p["stride"])
             state["next"] = next_index
             if p["end_frame"] != -1 and next_index >= p["end_frame"]:
