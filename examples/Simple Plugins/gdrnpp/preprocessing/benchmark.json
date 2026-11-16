@@ -1,0 +1,100 @@
+{
+  "reference_sha256": "bfa3e8bcc7f02135ec99598e3685e76d5d177bc68bead8839c1c5bc73a1242ae",
+  "capture_sha256": "a39d321abdcd5f39808e6237101bd9c84e3a611cd05586e813b83689f843952e",
+  "source_rgb_sha256": "81945b7fd2cadd78fed01651c709c6de875fad79a06224ce3d55577103cd441e",
+  "camera": [
+    [
+      1075.65091572,
+      0.0,
+      373.06888344
+    ],
+    [
+      0.0,
+      1073.90347929,
+      254.72159802
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "pairs": 9,
+  "calls_per_arm": 20,
+  "cases": [
+    {
+      "source_size": [
+        720,
+        540
+      ],
+      "candidate_count": 5,
+      "derived_resize_factor": 1,
+      "samples_seconds": {
+        "reference": [
+          0.024930869999934657,
+          0.02329685499998959,
+          0.03000438499993834,
+          0.04459261499996501,
+          0.039318864999950166,
+          0.03483764000002339,
+          0.02728188000000955,
+          0.028010530000028667,
+          0.027468094999949243
+        ],
+        "shared": [
+          0.00785430500000075,
+          0.008527944999968895,
+          0.013322605000030307,
+          0.016589235000083136,
+          0.014358859999993001,
+          0.011942765000003418,
+          0.008963190000031318,
+          0.009998970000015105,
+          0.008472875000006753
+        ]
+      },
+      "reference_median_seconds": 0.028010530000028667,
+      "shared_median_seconds": 0.009998970000015105,
+      "preparation_speedup": 2.801341538177067,
+      "all_crop_fields_bit_identical": true
+    },
+    {
+      "source_size": [
+        1440,
+        1080
+      ],
+      "candidate_count": 5,
+      "derived_resize_factor": 2,
+      "samples_seconds": {
+        "reference": [
+          0.05989132999993672,
+          0.06233397000005425,
+          0.07211666500006686,
+          0.08123747500003446,
+          0.08336940999997751,
+          0.08677293500004453,
+          0.0811070550000295,
+          0.08857847499994023,
+          0.10410563499999625
+        ],
+        "shared": [
+          0.015212630000041827,
+          0.015311225000004924,
+          0.017759604999992008,
+          0.019358680000004826,
+          0.020994805000009366,
+          0.021999095000046508,
+          0.022726799999963986,
+          0.02240356000002066,
+          0.024753115000021354
+        ]
+      },
+      "reference_median_seconds": 0.08123747500003446,
+      "shared_median_seconds": 0.020994805000009366,
+      "preparation_speedup": 3.86940840841333,
+      "all_crop_fields_bit_identical": true
+    }
+  ],
+  "scope": "Full-frame preparation and all candidate crops only; excludes model, ICP/fit, IO, graphics and acquisition. 2x case is a resized copy, not a new acquisition.",
+  "attribution": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+}

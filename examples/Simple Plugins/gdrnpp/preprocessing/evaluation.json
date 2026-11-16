@@ -1,0 +1,102 @@
+{
+  "cases": [
+    {
+      "identifier": "supplied_instance_0",
+      "published_object_id": 6,
+      "target_present": true,
+      "depth_accepted": true,
+      "fit": {
+        "status": "accepted",
+        "reason": "fit_gates",
+        "coverage": 0.8598474404926018,
+        "contradiction": 0.045032625677786965,
+        "rmse_m": 0.001488388399593532,
+        "rendered_samples": 10881,
+        "supported_samples": 9356,
+        "unknown_samples": 320,
+        "occluded_samples": 669,
+        "outside_target_samples": 49
+      },
+      "pose_error": {
+        "rotation_degrees": 2.8395134531641157,
+        "translation_mm": 3.393842103874413
+      }
+    },
+    {
+      "identifier": "supplied_instance_1",
+      "published_object_id": 7,
+      "target_present": false,
+      "depth_accepted": false,
+      "fit": {
+        "status": "rejected",
+        "reason": "fit_gates",
+        "coverage": 0.0,
+        "contradiction": 0.9748860487979265,
+        "rmse_m": null,
+        "rendered_samples": 11189,
+        "supported_samples": 0,
+        "unknown_samples": 281,
+        "occluded_samples": 0,
+        "outside_target_samples": 604
+      }
+    },
+    {
+      "identifier": "supplied_instance_2",
+      "published_object_id": 11,
+      "target_present": false,
+      "depth_accepted": false,
+      "fit": {
+        "status": "rejected",
+        "reason": "fit_gates",
+        "coverage": 0.0,
+        "contradiction": 0.0,
+        "rmse_m": null,
+        "rendered_samples": 11793,
+        "supported_samples": 0,
+        "unknown_samples": 0,
+        "occluded_samples": 11793,
+        "outside_target_samples": 1254
+      }
+    },
+    {
+      "identifier": "supplied_instance_3",
+      "published_object_id": 11,
+      "target_present": false,
+      "depth_accepted": false,
+      "fit": {
+        "status": "rejected",
+        "reason": "fit_gates",
+        "coverage": 0.0,
+        "contradiction": 0.0,
+        "rmse_m": null,
+        "rendered_samples": 8654,
+        "supported_samples": 0,
+        "unknown_samples": 0,
+        "occluded_samples": 8654,
+        "outside_target_samples": 2301
+      }
+    },
+    {
+      "identifier": "supplied_instance_4",
+      "published_object_id": 12,
+      "target_present": false,
+      "depth_accepted": false,
+      "fit": {
+        "status": "rejected",
+        "reason": "fit_gates",
+        "coverage": 0.0,
+        "contradiction": 0.0,
+        "rmse_m": null,
+        "rendered_samples": 9260,
+        "supported_samples": 0,
+        "unknown_samples": 14,
+        "occluded_samples": 9246,
+        "outside_target_samples": 41
+      }
+    }
+  ],
+  "target_depth_accepted": 1,
+  "distractor_depth_accepted": 0,
+  "ground_truth_used_only_after_inference": true,
+  "scope": "Five supplied visible rectangles in one real first-return scene; one model-6 target and four other-object proposals, not automatic detection or broad accuracy"
+}

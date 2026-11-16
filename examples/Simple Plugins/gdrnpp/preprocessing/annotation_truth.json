@@ -1,0 +1,122 @@
+{
+  "evaluation_only": true,
+  "cases": [
+    {
+      "identifier": "supplied_instance_0",
+      "published_object_id": 6,
+      "target_present": true,
+      "visibility": 0.9523703868057096,
+      "model_to_camera_rotation": [
+        -0.87251934,
+        -0.05132596,
+        -0.4858761,
+        -0.47579628,
+        0.31525549,
+        0.82111616,
+        0.1110305,
+        0.94761826,
+        -0.29948695
+      ],
+      "model_to_camera_translation_mm": [
+        -25.6185213,
+        -44.604772,
+        714.98337546
+      ]
+    },
+    {
+      "identifier": "supplied_instance_1",
+      "published_object_id": 7,
+      "target_present": false,
+      "visibility": 0.6103302060031385,
+      "model_to_camera_rotation": [
+        -0.97732303,
+        -0.21155415,
+        -0.00919072,
+        0.20007784,
+        -0.93677734,
+        0.28708353,
+        -0.0693432,
+        0.27873426,
+        0.95786184
+      ],
+      "model_to_camera_translation_mm": [
+        -0.61289955,
+        -34.56342958,
+        772.16343347
+      ]
+    },
+    {
+      "identifier": "supplied_instance_2",
+      "published_object_id": 11,
+      "target_present": false,
+      "visibility": 0.9376286537669823,
+      "model_to_camera_rotation": [
+        0.87196901,
+        -0.48902777,
+        0.02284323,
+        0.46372702,
+        0.84001318,
+        0.28166467,
+        -0.15693045,
+        -0.23500955,
+        0.95924133
+      ],
+      "model_to_camera_translation_mm": [
+        -98.72763805,
+        41.1453761,
+        752.39295301
+      ]
+    },
+    {
+      "identifier": "supplied_instance_3",
+      "published_object_id": 11,
+      "target_present": false,
+      "visibility": 0.865432612312812,
+      "model_to_camera_rotation": [
+        -0.98348605,
+        0.18075023,
+        0.00919084,
+        0.1705532,
+        0.94260004,
+        -0.287083,
+        -0.06055344,
+        -0.28077437,
+        -0.957862
+      ],
+      "model_to_camera_translation_mm": [
+        -32.17947889,
+        87.71039324,
+        738.03031211
+      ]
+    },
+    {
+      "identifier": "supplied_instance_4",
+      "published_object_id": 12,
+      "target_present": false,
+      "visibility": 0.8972368421052631,
+      "model_to_camera_rotation": [
+        -0.86998443,
+        -0.49299345,
+        0.00919084,
+        -0.47455501,
+        0.8320942,
+        -0.287083,
+        0.13388237,
+        -0.25411902,
+        -0.957862
+      ],
+      "model_to_camera_translation_mm": [
+        57.16993061,
+        63.36497521,
+        744.94170878
+      ]
+    }
+  ],
+  "dataset": "T-LESS",
+  "license": "CC-BY-4.0",
+  "url": "https://cmp.felk.cvut.cz/t-less/",
+  "source_metadata_sha256": {
+    "scene_gt.json": "e06c01e5492e38bd92f0749681040c6617c92fca4c2613cedffe1d44766b4df6",
+    "scene_gt_info.json": "a227488dc9afbd9cb90ae48d1bca6fc69acaa7d3d7a312af34ba38c97d08edbc"
+  }
+}

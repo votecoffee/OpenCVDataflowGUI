@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "cloud_0",
+      "type": "input.cloud",
+      "name": "Proposal 1: ACCEPTED / Cloud",
+      "parameters": {
+        "path": "results/fit.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "image_0",
+      "type": "input.file",
+      "name": "Proposal 1: ACCEPTED / Overlay",
+      "parameters": {
+        "path": "results/overlay.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "cloud_1",
+      "type": "input.cloud",
+      "name": "Proposal 2: REJECTED / Cloud",
+      "parameters": {
+        "path": "results/fit_001.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        500
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "image_1",
+      "type": "input.file",
+      "name": "Proposal 2: REJECTED / Overlay",
+      "parameters": {
+        "path": "results/overlay_001.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        500
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "cloud_2",
+      "type": "input.cloud",
+      "name": "Proposal 3: REJECTED / Cloud",
+      "parameters": {
+        "path": "results/fit_002.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        1000
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "image_2",
+      "type": "input.file",
+      "name": "Proposal 3: REJECTED / Overlay",
+      "parameters": {
+        "path": "results/overlay_002.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        1000
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "cloud_3",
+      "type": "input.cloud",
+      "name": "Proposal 4: REJECTED / Cloud",
+      "parameters": {
+        "path": "results/fit_003.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        1500
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "image_3",
+      "type": "input.file",
+      "name": "Proposal 4: REJECTED / Overlay",
+      "parameters": {
+        "path": "results/overlay_003.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        1500
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "cloud_4",
+      "type": "input.cloud",
+      "name": "Proposal 5: REJECTED / Cloud",
+      "parameters": {
+        "path": "results/fit_004.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        2000
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "image_4",
+      "type": "input.file",
+      "name": "Proposal 5: REJECTED / Overlay",
+      "parameters": {
+        "path": "results/overlay_004.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        2000
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "SAVED REAL RGB-D REVIEW / five supplied proposals",
+      "description": "Object-6 model on all five published visible rectangles. Only proposal 1 passes fixed depth gates; four other-object proposals are rejected. Source-file PASS only means successful reading. Fit/verification reuse depth; not detector, grasp or broad accuracy qualification. T-LESS, Hodan et al., WACV 2017, CC BY 4.0.",
+      "parameters": {},
+      "position": [
+        0,
+        -350
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": []
+    }
+  ],
+  "connections": []
+}

@@ -150,3 +150,12 @@ still needs its host lifecycle hook; this does not run on project open.
 CPU wheel locks, read-only version check and clean-install qualification.
 Runtime-only and developer-validation installations reproduce the frozen pose,
 fit, overlay and native XYZ/RGB arrays. Dependencies stay outside the app.
+
+`preprocessing/review_project.json` adds five native cloud/overlay reviews from
+one real first-return scene: one trained-object target passes fixed depth gates,
+and four other-object proposals remain rejected. Shared full-image preparation
+produces identical crops while avoiding repeated color/resize/coordinate work.
+Paired five-candidate preparation is 2.80-3.87x faster on this image and its
+doubled copy; this is not a complete-cycle result. All 32 frozen real neural
+fields, poses, fits and native graphics match the reference. Use the updated
+external worker; no recipe edits/retraining are needed.

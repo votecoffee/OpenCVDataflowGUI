@@ -1,0 +1,293 @@
+{
+  "cases": [
+    {
+      "case": "original_frame3",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "original_frame13",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 1,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "original_wrong_object",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000006_frame000002",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 1,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000006_frame000045",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 1,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000006_frame000096",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 1,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000006_frame000139",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 1,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000006_frame000206",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 1,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000006_frame000273",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 1,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000006_frame000329",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 1,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000006_frame000388",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 1,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000006_frame000409",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000006_frame000462",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000006_frame000496",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 1,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000006_frame000501",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000001_frame000001",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000004_frame000000",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000005_frame000007",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000007_frame000003",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000008_frame000001",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000009_frame000000",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000010_frame000005",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000011_frame000004",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000012_frame000002",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000013_frame000002",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000014_frame000002",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000015_frame000001",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0.0
+    },
+    {
+      "case": "scene000016_frame000008",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000017_frame000003",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000018_frame000002",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000019_frame000001",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    },
+    {
+      "case": "scene000020_frame000003",
+      "crops_bit_identical": true,
+      "neural_fields_bit_identical": true,
+      "candidate_pose_fit_identical": true,
+      "accepted_count": 0,
+      "overlay_xyz_rgb_bit_identical": true,
+      "historical_rmse_difference_m": 0
+    }
+  ],
+  "scope": "Reference/shared full pipelines use identical current RGB-D. Old pilot depth-conversion rounding remains separate; frozen poses within 1e-10, counts/decisions unchanged."
+}
