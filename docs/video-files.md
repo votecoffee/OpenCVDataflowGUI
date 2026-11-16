@@ -1,5 +1,9 @@
 # Video file workflows
 
+For a bounded encoded clip received as bytes, use [Decode encoded video](video-buffer.md).
+It returns an ordered frame group through native FFmpeg in-memory callbacks;
+Unbatch can send those frames through ordinary per-frame inspections.
+
 ## Replay a clip
 
 1. Add **Input > Video > Video file** and select a local video.

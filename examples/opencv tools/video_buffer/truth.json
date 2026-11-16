@@ -1,0 +1,128 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "codec": "FFV1",
+  "fps": 10,
+  "size": [
+    64,
+    48
+  ],
+  "cases": [
+    "selected_frames",
+    "group_inspection",
+    "short_clip",
+    "read_limit",
+    "decoded_limit",
+    "malformed"
+  ],
+  "annotations": [
+    {
+      "index": 0,
+      "timestamp_ms": 0,
+      "bounds": [
+        8,
+        15,
+        14,
+        12
+      ],
+      "file": "frame_00.png",
+      "bgr_sha256": "2c1b13cc90ddf55067f3fcf74154e995d74d6a55782819b306fee36807daa871"
+    },
+    {
+      "index": 1,
+      "timestamp_ms": 100,
+      "bounds": [
+        11,
+        15,
+        14,
+        12
+      ],
+      "file": "frame_01.png",
+      "bgr_sha256": "fca4703b86fea4d4a9e238811d9316365f9772191f2bef7db4bc84d7abd95a6c"
+    },
+    {
+      "index": 2,
+      "timestamp_ms": 200,
+      "bounds": [
+        14,
+        15,
+        14,
+        12
+      ],
+      "file": "frame_02.png",
+      "bgr_sha256": "b61a1ee9e8036eb6725119675ba86d1b0061df963a547889a80113ec21a12f46"
+    },
+    {
+      "index": 3,
+      "timestamp_ms": 300,
+      "bounds": [
+        17,
+        15,
+        14,
+        12
+      ],
+      "file": "frame_03.png",
+      "bgr_sha256": "dc70f8f8ccae4bbdce0bc66735a838e75747856f2a69624353377fc29733f594"
+    },
+    {
+      "index": 4,
+      "timestamp_ms": 400,
+      "bounds": [
+        20,
+        15,
+        14,
+        12
+      ],
+      "file": "frame_04.png",
+      "bgr_sha256": "5563ec35f6a1bb3019c0e4f351cc6e7df77e1a020c948faf1b7ba752c247928c"
+    },
+    {
+      "index": 5,
+      "timestamp_ms": 500,
+      "bounds": [
+        23,
+        15,
+        14,
+        12
+      ],
+      "file": "frame_05.png",
+      "bgr_sha256": "ec2ea6f97bff69d2a790627073b585c618e1e88958abd9bbc25718e772608ff6"
+    },
+    {
+      "index": 6,
+      "timestamp_ms": 600,
+      "bounds": [
+        26,
+        15,
+        14,
+        12
+      ],
+      "file": "frame_06.png",
+      "bgr_sha256": "aba6cd75ae493ca89ac80797330d857bff0e1f72913412d41b330e0d7f4a792c"
+    },
+    {
+      "index": 7,
+      "timestamp_ms": 700,
+      "bounds": [
+        29,
+        15,
+        14,
+        12
+      ],
+      "file": "frame_07.png",
+      "bgr_sha256": "766154efe30b982fe00d229f539ae9ff76ec15a302ee3d55d4363c07547a979a"
+    }
+  ],
+  "asset_sha256": {
+    "color-motion.avi": "dfc8a2927a21a383a8137fee99223a6fc44841194959d6601b1c6b2f6fab18fe",
+    "frame_00.png": "dbb8b6073e8b3228d905e2ffdfa958a6ef8d18c4d4b1202b749d89383cb05735",
+    "frame_01.png": "0348c54bb9b29e1bc3c5157ca034ff9857ada9b40443a9dcdca0e03e12c890c6",
+    "frame_02.png": "8164c3fdd6640af4a1d25b620b885123ac340baff18bbab1b9bea2d026d348fb",
+    "frame_03.png": "53c15225e40fbc0ec0df7980e1a405786a43646f707cb52dbba651703d9cc393",
+    "frame_04.png": "fa25e6247cb6b7748e92fc50bb79e272729620ec6372f62ec49628e246d5c2fe",
+    "frame_05.png": "cc4432b17be617d095b36a8a5acaacf85ef2bef9cf6bcd9b992f938c7448a623",
+    "frame_06.png": "50133780cf0d01554761f576e8db9599b33d81920de882cb00d4a94bf23a887b",
+    "frame_07.png": "47949d296a04c37de27bf71ac65038f89c3f3e9cc755afd6a0fa44cf608012ed",
+    "not-video.bin": "3eb023c2e7dee3796908b22227e1801228f7b603d36953c1eda7454cb579b22d"
+  }
+}

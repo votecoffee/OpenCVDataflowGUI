@@ -98,7 +98,7 @@ IMPLEMENTATION_MODULES = {
         "mil_tracking "
         "image_correlation native_background sequence_tools"
     ),
-    "videoio": "video_files",
+    "videoio": "video_buffer video_files",
     "objdetect": "aruco_markers charuco code_readers qr_encoding",
     "xobjdetect": "hog",
     "dnn": "dnn_blocks ocr",

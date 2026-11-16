@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "decode",
+      "type": "cv.decode_video",
+      "name": "Decode encoded video",
+      "parameters": {
+        "path": "assets/color-motion.avi",
+        "path_base": "project",
+        "backend": "ffmpeg",
+        "start_frame": 0,
+        "frame_count": 8,
+        "stride": 1,
+        "preview_frame": 0,
+        "short_clip": "allow",
+        "timestamp_policy": "decoder_or_fps",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "orientation_auto": false,
+        "decoder_threads": 1,
+        "open_timeout_ms": 5000,
+        "read_timeout_ms": 5000,
+        "maximum_encoded_bytes": 67108864,
+        "maximum_frame_pixels": 16000000,
+        "maximum_decoded_bytes": 268435456,
+        "maximum_scan_frames": 4096,
+        "read_chunk_bytes": 257,
+        "maximum_read_bytes": 268435456,
+        "maximum_io_calls": 100000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "encoded"
+      ],
+      "exposed_outputs": [
+        "frames",
+        "image",
+        "frame_count",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "unbatch",
+      "type": "flow.unbatch",
+      "name": "Unbatch serial entries",
+      "parameters": {
+        "order": "stored"
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray",
+      "type": "cv.gray",
+      "name": "Grayscale",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "threshold",
+      "type": "cv.threshold",
+      "name": "Threshold",
+      "parameters": {
+        "value": 128,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        1080,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "parts",
+      "type": "inspect.contours",
+      "name": "Find contours",
+      "parameters": {
+        "min_area": 20,
+        "expected_count": 1,
+        "retrieval": "external",
+        "approximation": "simple",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        1440,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Original clip and timestamp scope",
+      "description": "Frames, lossless FFV1 video, annotations and project: OpenCVDataflowGUI contributors, MIT. Original synthetic moving part; no customer or third-party media. Ten FPS, eight 64x48 BGR frames, known pixel boxes and presentation times. Native FFmpeg reads a bounded immutable buffer in chunks of at most 257 bytes. Presentation time is not camera acquisition time. Each frame has its own fresh ticket; Unbatch dispatches individual images in one graph activation. Read-limit, decoded-limit and malformed cases deliberately produce no result. Short-clip mode explicitly reports an unsatisfied requested frame count.",
+      "parameters": {},
+      "position": [
+        360,
+        360
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "decode",
+      "output": "frames",
+      "target": "unbatch",
+      "input": "group"
+    },
+    {
+      "source": "unbatch",
+      "output": "value",
+      "target": "gray",
+      "input": "image"
+    },
+    {
+      "source": "gray",
+      "output": "image",
+      "target": "threshold",
+      "input": "image"
+    },
+    {
+      "source": "threshold",
+      "output": "image",
+      "target": "parts",
+      "input": "image"
+    }
+  ]
+}

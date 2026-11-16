@@ -188,6 +188,7 @@ BINDINGS = {
     "input.file": "imdecode imdecodeWithMetadata",
     "input.tiff_file": "imdecodemulti",
     "input.video_file": "VideoCapture.open VideoCapture.read",
+    "cv.decode_video": "VideoCapture.open VideoCapture.read VideoCapture.release",
     "inspect.affine": "estimateAffine2D estimateAffinePartial2D",
     "inspect.akaze": "xfeatures2d.AKAZE_create",
     "inspect.align_ecc": "findTransformECCMultiScale findTransformECCWithMask",

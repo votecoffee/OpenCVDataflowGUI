@@ -906,6 +906,7 @@ def builtin_registry():
     from .tilted_statistics import TiltedWindowStatistics
     from .translation_registration import EstimateTranslation
     from .triangulation import DelaunayTriangulation
+    from .video_buffer import DecodeVideo
     from .video_files import VideoFile, WriteVideo
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
     from .voronoi import VoronoiCells
@@ -931,6 +932,7 @@ def builtin_registry():
         *ROS2_BLOCKS,
         ImageFile,
         VideoFile,
+        DecodeVideo,
         TiffFile,
         RawYuvFile,
         *RAW_SENSOR_BLOCKS,

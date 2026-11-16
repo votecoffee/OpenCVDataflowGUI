@@ -1770,6 +1770,39 @@ Input `pixel_frame` — Optional decoded-pixel spatial frame; byte-grid coordina
 | `column_offset` | `"even"` | `even`, `odd` Parity of the captured first column relative to the sensor tile origin. |
 | `row_offset` | `"even"` | `even`, `odd` Parity of the captured first row relative to the sensor tile origin. |
 
+## Decode encoded video (`cv.decode_video`)
+
+Image processing / Video decoding
+
+Inputs: `encoded` (any, optional).
+
+Input `encoded` — Immutable snapshot of bytes/bytearray or a uint8 vector.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Optional file snapshot, used only when Encoded is unconnected. |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
+| `backend` | `"ffmpeg"` | `ffmpeg` Explicit FFmpeg IStreamReader; no fallback to files or other backends. |
+| `start_frame` | `0` | Value must be a whole number between 0 and 99999. Zero-based ordinal; decoding scans from the start, without frame seeks. |
+| `frame_count` | `16` | Value must be a whole number between 1 and 64. Maximum selected frames in the output group (1..64). |
+| `stride` | `1` | Value must be a whole number between 1 and 4096. Select every Nth decoded frame, starting at Start frame. |
+| `preview_frame` | `0` | Value must be a whole number between 0 and 63. Position inside the selected group, not the original frame index. |
+| `short_clip` | `"allow"` | `allow`, `error` Allow fewer frames, or reject if the requested count is unavailable. |
+| `timestamp_policy` | `"decoder_or_fps"` | `decoder_or_fps`, `decoder_only`, `allow_missing` Presentation time; labeled FPS fallback. Not camera acquisition time. |
+| `color_format` | `"bgr"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` Native uint8 BGR converted using normal image format rules. |
+| `pixel_depth` | `"uint8"` | `unchanged`, `uint8`, `uint16`, `float32` Output conversion, not recovery of encoded high-bit-depth video samples. |
+| `orientation_auto` | `false` | Native orientation flag; rotated geometry must pass size checks. |
+| `decoder_threads` | `1` | Value must be a whole number between 1 and 16. |
+| `open_timeout_ms` | `5000` | Value must be a whole number between 1 and 60000. Native FFmpeg opening timeout; not a hard execution deadline. |
+| `read_timeout_ms` | `5000` | Value must be a whole number between 1 and 60000. Native FFmpeg read timeout; cancellation is cooperative. |
+| `maximum_encoded_bytes` | `67108864` | Value must be a whole number between 1 and 2.68435e+08. |
+| `maximum_frame_pixels` | `16000000` | Value must be a whole number between 1 and 6.4e+07. |
+| `maximum_decoded_bytes` | `268435456` | Value must be a whole number between 1 and 5.36871e+08. Selected outputs plus estimated conversion buffers; excludes native decoder internals and runtime snapshots. Not a hard RSS bound. |
+| `maximum_scan_frames` | `4096` | Value must be a whole number between 1 and 100000. Cap selected and skipped decoded frames per activation. |
+| `read_chunk_bytes` | `4096` | Value must be a whole number between 1 and 1.04858e+06. Maximum bytes per native read callback; supports short reads. |
+| `maximum_read_bytes` | `268435456` | Value must be a whole number between 1 and 1.07374e+09. Cumulative bytes served, including decoder rereads after seeks. |
+| `maximum_io_calls` | `100000` | Value must be a whole number between 1 and 1e+06. Combined read/seek callback limit; counters do not retain a call log. |
+
 ## Decode packed YUV (`cv.decode_yuv`)
 
 Image processing / Color and depth

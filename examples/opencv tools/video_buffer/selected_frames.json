@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "decode",
+      "type": "cv.decode_video",
+      "name": "Decode encoded video",
+      "parameters": {
+        "path": "assets/color-motion.avi",
+        "path_base": "project",
+        "backend": "ffmpeg",
+        "start_frame": 1,
+        "frame_count": 4,
+        "stride": 2,
+        "preview_frame": 1,
+        "short_clip": "allow",
+        "timestamp_policy": "decoder_or_fps",
+        "color_format": "rgb",
+        "pixel_depth": "uint16",
+        "orientation_auto": false,
+        "decoder_threads": 1,
+        "open_timeout_ms": 5000,
+        "read_timeout_ms": 5000,
+        "maximum_encoded_bytes": 67108864,
+        "maximum_frame_pixels": 16000000,
+        "maximum_decoded_bytes": 268435456,
+        "maximum_scan_frames": 4096,
+        "read_chunk_bytes": 257,
+        "maximum_read_bytes": 268435456,
+        "maximum_io_calls": 100000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "encoded"
+      ],
+      "exposed_outputs": [
+        "frames",
+        "image",
+        "frame_count",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "Original clip and timestamp scope",
+      "description": "Frames, lossless FFV1 video, annotations and project: OpenCVDataflowGUI contributors, MIT. Original synthetic moving part; no customer or third-party media. Ten FPS, eight 64x48 BGR frames, known pixel boxes and presentation times. Native FFmpeg reads a bounded immutable buffer in chunks of at most 257 bytes. Presentation time is not camera acquisition time. Each frame has its own fresh ticket; Unbatch dispatches individual images in one graph activation. Read-limit, decoded-limit and malformed cases deliberately produce no result. Short-clip mode explicitly reports an unsatisfied requested frame count.",
+      "parameters": {},
+      "position": [
+        360,
+        360
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

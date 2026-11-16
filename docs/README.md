@@ -27,6 +27,7 @@
 | Stored optical-flow fields, native I/O and verified image-pair association | [Flow files](flow-files.md) |
 | Seeded MIL tracking, loss/reseed and native confidence limits | [MIL tracking](mil-tracking.md) |
 | Precomputed optical-flow pyramids and Python consumer qualification | [Pyramid binding audit](optical-flow-pyramid-audit.md) |
+| Encoded video bytes, bounded FFmpeg callbacks and per-frame groups | [Video buffers](video-buffer.md) |
 | Binary corners, endpoints and junctions with signed kernels | [Hit-or-miss morphology](hit-or-miss.md) |
 | Sparse-mask contours with bounded run input and flat native polygons | [Run-linked contours](run-contours.md) |
 | Regions, poses, pyramids and spatial provenance | [Workflow guide](workflow-guide.md), [architecture](architecture.md) |
