@@ -330,6 +330,15 @@ are separate subprocesses and cannot prepare an in-process block worker. The
 provides supporting workflow evidence; it does not add this automatic SDK hook.
 Track the shared lifecycle seam under [production runtime #9](https://github.com/votecoffee/OpenCVDataflowGUI/issues/9).
 
+A separate plugin/viewer follow-up is **cached-result rendering** on the owning
+execution worker. A live output viewer should be able to select a proposal or
+change diagnostic image/cloud views from an already completed result, with no
+new inference, acquisition ticket, inspection history entry or numeric-output
+mutation. Use bounded requests, cancellation and invocation/project/selection
+identity checks to discard stale replies; shutdown must dispose queued work.
+Expose the capability through a reusable plugin API rather than requiring each
+tool to build its own popup. This remains planned and adds no vision completion.
+
 **Codec preflight (S1-153)** now provides `cv.probe_image_file` with native reader
 signature checks, page/frame counts and encoder registry queries. File, Writer
 and combined modes expose separate optional observations, requested count flags,
