@@ -1,5 +1,11 @@
 # SimpleGDRNPP setup and real saved reviews
 
+`packet_transport/` retains the bounded streaming transport comparison, full
+packet/cycle samples and unchanged native colored result. New local packets
+avoid routine compression; legacy packets remain compatible. Read its README
+for disk-size tradeoffs and measured scope. Older profiling helpers now use the
+owned-process sampler; their original receipts stay intact.
+
 `batch_execution/` adds the all-32-case CPU batch numerical audit, complete-worker
 timings with owned-process-tree CPU/RSS sampling, and paired live/saved native
 cloud examples. Read its `README.md` and `audit.html`; batch size one remains

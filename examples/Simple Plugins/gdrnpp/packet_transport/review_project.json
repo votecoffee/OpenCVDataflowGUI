@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "recorded_0",
+      "type": "input.cloud",
+      "name": "Frozen accepted result / exact current XYZ/RGB",
+      "parameters": {
+        "path": "results/fit.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_2",
+      "type": "input.file",
+      "name": "Source-aligned fit / unchanged current overlay",
+      "parameters": {
+        "path": "results/overlay.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "recorded_scope",
+      "type": "layout.comment",
+      "name": "SAVED REVIEW / file-source PASS means reading only",
+      "description": "Bit-identical frozen native result reused after current transport replay confirms all overlay/XYZ/RGB bytes. Chart compares packet methods with full-request timings, all ranges retained. File-source PASS means reading, not pose or picking qualification. T-LESS CC BY 4.0, Hodan et al., WACV 2017.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": []
+    },
+    {
+      "id": "recorded_4",
+      "type": "input.file",
+      "name": "Packet speed, disk bytes and full request",
+      "parameters": {
+        "path": "comparison.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        0,
+        500
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    }
+  ],
+  "connections": []
+}

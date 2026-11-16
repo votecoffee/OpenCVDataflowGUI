@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-import psutil
+from worker_metrics import snapshot
 
 from opencv_simple_gdrnpp.bridge import WorkerClient
 from opencv_simple_gdrnpp.workflow import load_capture
@@ -103,11 +103,7 @@ def run(recipe, models, extension, output, *, worker_python=sys.executable, repe
                                 request_timing=metadata["request_timing"],
                                 execution_profile=report["execution_profile"],
                                 worker=info,
-                                worker_peak_working_set_bytes=getattr(
-                                    psutil.Process(client.process.pid).memory_info(),
-                                    "peak_wset",
-                                    None,
-                                ),
+                                owned_processes=snapshot(client.process.pid),
                             )
                         )
                     row = dict(
@@ -142,11 +138,13 @@ def run(recipe, models, extension, output, *, worker_python=sys.executable, repe
         selected = [r for r in rows if r["graphics"] == graphics]
         plain = [r for r in selected if not r["preloaded"]]
         ready = [r for r in selected if r["preloaded"]]
+
         def first(r):
             return r["inspections"][0]["request_timing"]["client_total_seconds"]
 
         def prep(r):
             return r["preparation"]["request_timing"]["client_total_seconds"]
+
         summary.append(
             dict(
                 graphics=graphics,

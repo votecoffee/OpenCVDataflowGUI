@@ -1,0 +1,772 @@
+{
+  "validation_only": true,
+  "timing_qualified": false,
+  "reason": "Functional owned-process sampler replay; concurrent correctness tests, not a new performance study",
+  "inspections_with_complete_owned_processes": 8,
+  "receipt": {
+    "schema": "simple_gdrnpp_preparation_benchmark/v1",
+    "python": "3.13.9",
+    "recipe_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+    "repeats": 1,
+    "rows": [
+      {
+        "pair": 0,
+        "graphics": false,
+        "preloaded": false,
+        "preparation": null,
+        "inspections": [
+          {
+            "first": true,
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 5.300000339047983e-06,
+              "client_process_launch_seconds": 0.011702100000547944,
+              "client_packet_write_seconds": 0.015100699998583877,
+              "client_reply_wait_seconds": 7.576639499999146,
+              "client_packet_read_seconds": 0.010169500001211418,
+              "worker": {
+                "packet_read_seconds": 0.025425799998629373,
+                "handler_seconds": 7.290214600001491,
+                "packet_write_seconds": 0.001446499998564832,
+                "worker_request_seconds": 7.317086899998685
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0020703999980469234,
+              "client_total_seconds": 7.61569149999923
+            },
+            "execution_profile": {
+              "recipe_lookup_seconds": 0.28132819999882486,
+              "capture_prepare_seconds": 0.005716499999834923,
+              "model_prepare_seconds": 5.640777799999341,
+              "numeric_seconds": 1.3622998999999254,
+              "graphics_seconds": 4.329999865149148e-05,
+              "worker_handle_seconds": 7.290165699996578,
+              "graphics_requested": false,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "worker": {
+              "session": "52b1c0d3deb44738a8e3ffb1fadfa1bc",
+              "model_cache_hit": false,
+              "model_load_count": 1,
+              "recipe_cache_hit": false,
+              "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+              "inference_request_count": 1
+            },
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 26328,
+                  "created": 1794853434.0930464,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.0,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 4140,
+                  "created": 1794853434.1012218,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 8142848,
+                  "peak_working_set_bytes": 8146944
+                },
+                {
+                  "pid": 31928,
+                  "created": 1794853434.1165135,
+                  "name": "python.exe",
+                  "cpu_seconds": 9.75,
+                  "rss_bytes": 1166327808,
+                  "peak_working_set_bytes": 1205792768
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1178763264
+            }
+          },
+          {
+            "first": false,
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 5.100002454128116e-06,
+              "client_process_launch_seconds": 1.5999976312741637e-06,
+              "client_packet_write_seconds": 0.014203200000338256,
+              "client_reply_wait_seconds": 1.3309633000026224,
+              "client_packet_read_seconds": 0.009573799998179311,
+              "worker": {
+                "packet_read_seconds": 0.014073399997869274,
+                "handler_seconds": 1.3146538000000874,
+                "packet_write_seconds": 0.0017030000017257407,
+                "worker_request_seconds": 1.3304301999996824
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0021546999996644445,
+              "client_total_seconds": 1.356906799999706
+            },
+            "execution_profile": {
+              "recipe_lookup_seconds": 0.00040359999911743216,
+              "capture_prepare_seconds": 0.004545100000541424,
+              "model_prepare_seconds": 0.0003873000023304485,
+              "numeric_seconds": 1.3090006999991601,
+              "graphics_seconds": 5.4699998145224527e-05,
+              "worker_handle_seconds": 1.3143913999992947,
+              "graphics_requested": false,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "worker": {
+              "session": "52b1c0d3deb44738a8e3ffb1fadfa1bc",
+              "model_cache_hit": true,
+              "model_load_count": 1,
+              "recipe_cache_hit": true,
+              "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+              "inference_request_count": 2
+            },
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 26328,
+                  "created": 1794853434.0930464,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.0,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 4140,
+                  "created": 1794853434.1012218,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 8142848,
+                  "peak_working_set_bytes": 8146944
+                },
+                {
+                  "pid": 31928,
+                  "created": 1794853434.1165135,
+                  "name": "python.exe",
+                  "cpu_seconds": 12.515625,
+                  "rss_bytes": 1156980736,
+                  "peak_working_set_bytes": 1205854208
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1169416192
+            }
+          }
+        ]
+      },
+      {
+        "pair": 0,
+        "graphics": false,
+        "preloaded": true,
+        "preparation": {
+          "prepared": {
+            "schema": "simple_gdrnpp_preparation/v1",
+            "ready": true,
+            "recipe_content_sha256": "013589694bdf06a5fdf491be80b5db9c24e5875f9cc3a5fc6d120c62c09400d4",
+            "recipe_archive_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+            "binding": {
+              "provider": "GDRNPP",
+              "dataset": "T-LESS",
+              "object_id": 6,
+              "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+              "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+              "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+              "checkpoint_bytes": 410204745,
+              "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+            },
+            "worker": {
+              "session": "311aa2c460e74c9f805c0073aec9c5ab",
+              "model_cache_hit": false,
+              "model_load_count": 1,
+              "recipe_cache_hit": false,
+              "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+              "inference_request_count": 0
+            },
+            "inspection_performed": false,
+            "seconds": {
+              "recipe_lookup": 0.26831569999922067,
+              "model_prepare": 5.577707399999781,
+              "total": 5.846023099999002
+            },
+            "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+          },
+          "request_timing": {
+            "operation": "prepare",
+            "client_lock_wait_seconds": 3.6999990697950125e-06,
+            "client_process_launch_seconds": 0.009481100001721643,
+            "client_packet_write_seconds": 0.0017430000007152557,
+            "client_reply_wait_seconds": 6.140995399997337,
+            "client_packet_read_seconds": 0.012880199999926845,
+            "worker": {
+              "packet_read_seconds": 0.001783400002750568,
+              "handler_seconds": 5.84603799999968,
+              "packet_write_seconds": 0.0017595999997865874,
+              "worker_request_seconds": 5.8495810000022175
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0024151999969035387,
+            "client_total_seconds": 6.1675224999999045
+          }
+        },
+        "inspections": [
+          {
+            "first": true,
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 6.000002031214535e-06,
+              "client_process_launch_seconds": 1.1000010999850929e-06,
+              "client_packet_write_seconds": 0.01588389999960782,
+              "client_reply_wait_seconds": 1.47668259999773,
+              "client_packet_read_seconds": 0.01535620000140625,
+              "worker": {
+                "packet_read_seconds": 0.01678130000072997,
+                "handler_seconds": 1.4561140000005253,
+                "packet_write_seconds": 0.002929899997980101,
+                "worker_request_seconds": 1.4758251999992353
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0025657000005594455,
+              "client_total_seconds": 1.5105008000027738
+            },
+            "execution_profile": {
+              "recipe_lookup_seconds": 0.0002920000006270129,
+              "capture_prepare_seconds": 0.005725000002712477,
+              "model_prepare_seconds": 0.0003485999986878596,
+              "numeric_seconds": 1.449418100000912,
+              "graphics_seconds": 0.00018679999993764795,
+              "worker_handle_seconds": 1.455970500002877,
+              "graphics_requested": false,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "worker": {
+              "session": "311aa2c460e74c9f805c0073aec9c5ab",
+              "model_cache_hit": true,
+              "model_load_count": 1,
+              "recipe_cache_hit": true,
+              "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+              "inference_request_count": 1
+            },
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 27252,
+                  "created": 1794853443.0960913,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 49420,
+                  "created": 1794853443.1057577,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.0,
+                  "rss_bytes": 8138752,
+                  "peak_working_set_bytes": 8142848
+                },
+                {
+                  "pid": 53732,
+                  "created": 1794853443.122566,
+                  "name": "python.exe",
+                  "cpu_seconds": 9.6875,
+                  "rss_bytes": 1156898816,
+                  "peak_working_set_bytes": 1205555200
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1169330176
+            }
+          },
+          {
+            "first": false,
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 5.40000110049732e-06,
+              "client_process_launch_seconds": 7.00001692166552e-07,
+              "client_packet_write_seconds": 0.016995399997540517,
+              "client_reply_wait_seconds": 1.5682263000016974,
+              "client_packet_read_seconds": 0.011769099997763988,
+              "worker": {
+                "packet_read_seconds": 0.013365500002691988,
+                "handler_seconds": 1.5523101999970095,
+                "packet_write_seconds": 0.0019819000008283183,
+                "worker_request_seconds": 1.5676576000005298
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0031392999990202952,
+              "client_total_seconds": 1.6001420000029611
+            },
+            "execution_profile": {
+              "recipe_lookup_seconds": 0.00030169999809004366,
+              "capture_prepare_seconds": 0.0045576000011351425,
+              "model_prepare_seconds": 0.0003184000015608035,
+              "numeric_seconds": 1.5468010000004142,
+              "graphics_seconds": 5.539999983739108e-05,
+              "worker_handle_seconds": 1.5520341000010376,
+              "graphics_requested": false,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "worker": {
+              "session": "311aa2c460e74c9f805c0073aec9c5ab",
+              "model_cache_hit": true,
+              "model_load_count": 1,
+              "recipe_cache_hit": true,
+              "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+              "inference_request_count": 2
+            },
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 27252,
+                  "created": 1794853443.0960913,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 49420,
+                  "created": 1794853443.1057577,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.0,
+                  "rss_bytes": 8138752,
+                  "peak_working_set_bytes": 8142848
+                },
+                {
+                  "pid": 53732,
+                  "created": 1794853443.122566,
+                  "name": "python.exe",
+                  "cpu_seconds": 13.015625,
+                  "rss_bytes": 1164578816,
+                  "peak_working_set_bytes": 1205555200
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1177010176
+            }
+          }
+        ]
+      },
+      {
+        "pair": 0,
+        "graphics": true,
+        "preloaded": false,
+        "preparation": null,
+        "inspections": [
+          {
+            "first": true,
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 4.800000169780105e-06,
+              "client_process_launch_seconds": 0.012020400001347298,
+              "client_packet_write_seconds": 0.01911639999889303,
+              "client_reply_wait_seconds": 8.597971900002449,
+              "client_packet_read_seconds": 0.023303799996938324,
+              "worker": {
+                "packet_read_seconds": 0.027673299999150913,
+                "handler_seconds": 8.228932499998336,
+                "packet_write_seconds": 0.004228100002364954,
+                "worker_request_seconds": 8.260833899999852
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0020029000006616116,
+              "client_total_seconds": 8.654423900003167
+            },
+            "execution_profile": {
+              "recipe_lookup_seconds": 0.2906682000029832,
+              "capture_prepare_seconds": 0.005633799999486655,
+              "model_prepare_seconds": 6.306850900000427,
+              "numeric_seconds": 1.4469526999964728,
+              "graphics_seconds": 0.1787629000027664,
+              "worker_handle_seconds": 8.228868500002136,
+              "graphics_requested": true,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "worker": {
+              "session": "0844d54610c142c28a1af1e7b16267ba",
+              "model_cache_hit": false,
+              "model_load_count": 1,
+              "recipe_cache_hit": false,
+              "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+              "inference_request_count": 1
+            },
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 59372,
+                  "created": 1794853452.4106553,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 4288512,
+                  "peak_working_set_bytes": 4288512
+                },
+                {
+                  "pid": 58180,
+                  "created": 1794853452.4214897,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.0,
+                  "rss_bytes": 8142848,
+                  "peak_working_set_bytes": 8146944
+                },
+                {
+                  "pid": 54296,
+                  "created": 1794853452.440428,
+                  "name": "python.exe",
+                  "cpu_seconds": 10.84375,
+                  "rss_bytes": 1174720512,
+                  "peak_working_set_bytes": 1206321152
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1187151872
+            }
+          },
+          {
+            "first": false,
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 4.300000000512227e-06,
+              "client_process_launch_seconds": 7.00001692166552e-07,
+              "client_packet_write_seconds": 0.006120800000644522,
+              "client_reply_wait_seconds": 1.7128803999985394,
+              "client_packet_read_seconds": 0.023451200002455153,
+              "worker": {
+                "packet_read_seconds": 0.01604370000131894,
+                "handler_seconds": 1.69180039999992,
+                "packet_write_seconds": 0.004423800000949996,
+                "worker_request_seconds": 1.712267900002189
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.002106899999489542,
+              "client_total_seconds": 1.7445672000030754
+            },
+            "execution_profile": {
+              "recipe_lookup_seconds": 0.0004174999994575046,
+              "capture_prepare_seconds": 0.005059400002210168,
+              "model_prepare_seconds": 0.0005859999982931186,
+              "numeric_seconds": 1.5477672000015446,
+              "graphics_seconds": 0.1376654999985476,
+              "worker_handle_seconds": 1.691495600000053,
+              "graphics_requested": true,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "worker": {
+              "session": "0844d54610c142c28a1af1e7b16267ba",
+              "model_cache_hit": true,
+              "model_load_count": 1,
+              "recipe_cache_hit": true,
+              "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+              "inference_request_count": 2
+            },
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 59372,
+                  "created": 1794853452.4106553,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 4288512,
+                  "peak_working_set_bytes": 4288512
+                },
+                {
+                  "pid": 58180,
+                  "created": 1794853452.4214897,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.0,
+                  "rss_bytes": 8142848,
+                  "peak_working_set_bytes": 8146944
+                },
+                {
+                  "pid": 54296,
+                  "created": 1794853452.440428,
+                  "name": "python.exe",
+                  "cpu_seconds": 14.1875,
+                  "rss_bytes": 1176686592,
+                  "peak_working_set_bytes": 1217908736
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1189117952
+            }
+          }
+        ]
+      },
+      {
+        "pair": 0,
+        "graphics": true,
+        "preloaded": true,
+        "preparation": {
+          "prepared": {
+            "schema": "simple_gdrnpp_preparation/v1",
+            "ready": true,
+            "recipe_content_sha256": "013589694bdf06a5fdf491be80b5db9c24e5875f9cc3a5fc6d120c62c09400d4",
+            "recipe_archive_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+            "binding": {
+              "provider": "GDRNPP",
+              "dataset": "T-LESS",
+              "object_id": 6,
+              "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+              "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+              "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+              "checkpoint_bytes": 410204745,
+              "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+            },
+            "worker": {
+              "session": "3923c0da9b134bb885e9a72c415bcb47",
+              "model_cache_hit": false,
+              "model_load_count": 1,
+              "recipe_cache_hit": false,
+              "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+              "inference_request_count": 0
+            },
+            "inspection_performed": false,
+            "seconds": {
+              "recipe_lookup": 0.22830640000029234,
+              "model_prepare": 5.976654599999165,
+              "total": 6.204960999999457
+            },
+            "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+          },
+          "request_timing": {
+            "operation": "prepare",
+            "client_lock_wait_seconds": 3.4999975468963385e-06,
+            "client_process_launch_seconds": 0.008078200000454672,
+            "client_packet_write_seconds": 0.0012535000023490284,
+            "client_reply_wait_seconds": 6.5037835000002815,
+            "client_packet_read_seconds": 0.009590099998604273,
+            "worker": {
+              "packet_read_seconds": 0.001919600003020605,
+              "handler_seconds": 6.204973699997936,
+              "packet_write_seconds": 0.00782210000033956,
+              "worker_request_seconds": 6.214715400001296
+            },
+            "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+            "client_cleanup_seconds": 0.0014584000018658116,
+            "client_total_seconds": 6.524170699998649
+          }
+        },
+        "inspections": [
+          {
+            "first": true,
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 4.400000761961564e-06,
+              "client_process_launch_seconds": 2.0700001186924055e-05,
+              "client_packet_write_seconds": 0.0052093999984208494,
+              "client_reply_wait_seconds": 1.7580019000015454,
+              "client_packet_read_seconds": 0.020804399999178713,
+              "worker": {
+                "packet_read_seconds": 0.015679000000091037,
+                "handler_seconds": 1.7267666000007011,
+                "packet_write_seconds": 0.014967200000683079,
+                "worker_request_seconds": 1.7574128000014753
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0025003000009746756,
+              "client_total_seconds": 1.786544700000377
+            },
+            "execution_profile": {
+              "recipe_lookup_seconds": 0.00032699999792384915,
+              "capture_prepare_seconds": 0.004912600001262035,
+              "model_prepare_seconds": 0.0006456000010075513,
+              "numeric_seconds": 1.5275871999983792,
+              "graphics_seconds": 0.1932027000002563,
+              "worker_handle_seconds": 1.726675099998829,
+              "graphics_requested": true,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "worker": {
+              "session": "3923c0da9b134bb885e9a72c415bcb47",
+              "model_cache_hit": true,
+              "model_load_count": 1,
+              "recipe_cache_hit": true,
+              "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+              "inference_request_count": 1
+            },
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 57964,
+                  "created": 1794853462.8441148,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 33836,
+                  "created": 1794853462.8526764,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 8142848,
+                  "peak_working_set_bytes": 8146944
+                },
+                {
+                  "pid": 27508,
+                  "created": 1794853462.867268,
+                  "name": "python.exe",
+                  "cpu_seconds": 10.828125,
+                  "rss_bytes": 1176911872,
+                  "peak_working_set_bytes": 1206456320
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1189347328
+            }
+          },
+          {
+            "first": false,
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 5.000001692678779e-06,
+              "client_process_launch_seconds": 7.999988156370819e-07,
+              "client_packet_write_seconds": 0.006169200001750141,
+              "client_reply_wait_seconds": 1.715211899998394,
+              "client_packet_read_seconds": 0.0191649000007601,
+              "worker": {
+                "packet_read_seconds": 0.014379799999005627,
+                "handler_seconds": 1.6866876000021875,
+                "packet_write_seconds": 0.013559499999246327,
+                "worker_request_seconds": 1.7146269000004395
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0022721000023011584,
+              "client_total_seconds": 1.7428270000018529
+            },
+            "execution_profile": {
+              "recipe_lookup_seconds": 0.0004955000003974419,
+              "capture_prepare_seconds": 0.005206199999520322,
+              "model_prepare_seconds": 0.000522300000739051,
+              "numeric_seconds": 1.5106393999994907,
+              "graphics_seconds": 0.1694932999998855,
+              "worker_handle_seconds": 1.686356700000033,
+              "graphics_requested": true,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "worker": {
+              "session": "3923c0da9b134bb885e9a72c415bcb47",
+              "model_cache_hit": true,
+              "model_load_count": 1,
+              "recipe_cache_hit": true,
+              "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+              "inference_request_count": 2
+            },
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 57964,
+                  "created": 1794853462.8441148,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 33836,
+                  "created": 1794853462.8526764,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 8142848,
+                  "peak_working_set_bytes": 8146944
+                },
+                {
+                  "pid": 27508,
+                  "created": 1794853462.867268,
+                  "name": "python.exe",
+                  "cpu_seconds": 14.15625,
+                  "rss_bytes": 1178075136,
+                  "peak_working_set_bytes": 1218236416
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1190510592
+            }
+          }
+        ]
+      }
+    ],
+    "summary": [
+      {
+        "graphics": false,
+        "unprepared_first_image_median_seconds": 7.61569149999923,
+        "preparation_median_seconds": 6.1675224999999045,
+        "prepared_first_image_median_seconds": 1.5105008000027738,
+        "prepared_startup_plus_first_image_median_seconds": 7.678023300002678
+      },
+      {
+        "graphics": true,
+        "unprepared_first_image_median_seconds": 8.654423900003167,
+        "preparation_median_seconds": 6.524170699998649,
+        "prepared_first_image_median_seconds": 1.786544700000377,
+        "prepared_startup_plus_first_image_median_seconds": 8.310715399999026
+      }
+    ],
+    "worker_implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+    "unchanged_candidate": {
+      "pose": {
+        "model": "pose_3d_v1",
+        "source_to_target": [
+          [
+            -0.8576746674400246,
+            -0.015376754687021307,
+            -0.5139627615371936,
+            -0.026244027435802918
+          ],
+          [
+            -0.4901713614265574,
+            0.32639276194844236,
+            0.8082077711732933,
+            -0.041651478978925786
+          ],
+          [
+            0.15532611264329726,
+            0.9451091579087373,
+            -0.28747604833822105,
+            0.7165341709435432
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "units": "m",
+        "source_frame": "tless_object6",
+        "target_frame": "camera"
+      },
+      "fit": {
+        "status": "accepted",
+        "reason": "fit_gates",
+        "coverage": 0.8598474404926018,
+        "contradiction": 0.045032625677786965,
+        "rmse_m": 0.001488388399593532,
+        "rendered_samples": 10881,
+        "supported_samples": 9356,
+        "unknown_samples": 320,
+        "occluded_samples": 669,
+        "outside_target_samples": 49
+      },
+      "accepted_count": 1
+    },
+    "graphics_array_sha256": {
+      "overlay": "46ee878e3055f65119f22a4ce028ccabade093002645085d0996a93f56af77fa",
+      "points": "d65454be14bf8160d0c9d6faa611fb17a9cce0b492c4cd7baa31f93b630f24e8",
+      "colors": "26795f4d00cf045af81325eae698fe01f150329a858d6a3116e087a533287312"
+    },
+    "capture_sha256": {
+      "capture.json": "f3da45861f1bcba09414341df5cb51d2408819f91faf2eca560197cfa7845c8a",
+      "source.png": "04b19c87d60aaabe98c6be9655a58c5cc620ac31dc356ede55e89dc02cd2a166",
+      "depth.png": "ffc9e6045fbb77da82f9620b4d5e8d086b7d13a74a2360f7d6c7a446db20cc56"
+    },
+    "scope": "Fresh worker processes, alternating prepared/unprepared arms. Same sealed settings, one real calibrated capture, two inspection calls per session. Preparation consumes no image and runs no network forward. First-image times include packet IO, inference, ICP/fit, requested graphics and cleanup; exclude acquisition/file decoding, GUI, robot and hardware acceptance. Preparation shifts startup; it does not remove it.",
+    "attribution": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+  }
+}

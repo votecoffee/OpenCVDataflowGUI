@@ -3,3 +3,4 @@ line-length = 100
 select = ["E", "F", "I"]
 [lint.isort]
 known-first-party = ["opencv_simple_gdrnpp"]
+known-third-party = ["worker_metrics"]

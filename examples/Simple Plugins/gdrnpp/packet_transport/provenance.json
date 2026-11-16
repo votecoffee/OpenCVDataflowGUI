@@ -1,0 +1,27 @@
+{
+  "dataset": "T-LESS",
+  "license": "CC-BY-4.0",
+  "source": "https://cmp.felk.cvut.cz/t-less/",
+  "attribution": "T. Hodan et al., WACV 2017; existing first-return RGB-D/calibration, supplied rectangles, reused bit-identical fit graphics, derived transport profiles/chart; synthetic arrays test transport only",
+  "runtime_code_commit": "20d973ecf879ee5b272cb3ff72befe4514080bc3",
+  "benchmark_code_commit": "f69113154a7cc4f44b27080070c4ca410960016f",
+  "reference_wire_sha256": "25fd3f6c42f209cd84b2bdf786f9e40a626179238d5a253bc7e553ba83197222",
+  "candidate_wire_sha256": "d1a880440800eaf9ce8fc42f30d0d1e98543134d399983c628b6430bc365de2a",
+  "worker_implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+  "worker_wheel_sha256": "aefe01cbd6bcce448f7934973cb040349a692fb61cda31355086b99a1b9d9f3e",
+  "pose_labels_entered_runtime": false,
+  "sha256": {
+    "comparison.png": "c16147dec59450890b7943dd2bcf6d3a428fd4694eadea37e03aa83bee6e1f87",
+    "helper_validation/older_prepare_helper.json": "a368d8bb5055268430910da284691af6f9ca4a1b384f9cf8990b015421c6226c",
+    "helper_validation/older_worker_helper.json": "8cd22f7b4cff03093850c082c56fcc89f7ae2d1b8a32f9afba9cdd0c53cdf889",
+    "packet_timings.json": "2c4d22ad5a569f66d067760876f8ce86a945e41ebe7013169e31abee74326945",
+    "reference_wire.py": "25fd3f6c42f209cd84b2bdf786f9e40a626179238d5a253bc7e553ba83197222",
+    "results/fit.ply": "1793b2ecbeea82def81c09bae4e95930b5f5e24323a99efba216fb9bf3d17f07",
+    "results/overlay.png": "2d10b0f4c5bb844209b4d87fb6565fa4ef26ab7fbbb495603ee9a261dc6337c4",
+    "review_project.json": "23d708a59b57cc55ac5f2dab08c93513be260b21d16ea35b6a83604d7397d91a",
+    "run_project.json": "087145426b2464ed158f2b3aafe1c522c982791e00cece94fb0ae68ef493a1e6",
+    "setup.gdrnpp": "0f748bc8019bb1b08fd39e5f37a98de21f4664e4216170baa26911f752020134",
+    "validation.json": "5a4be490f8d5d33b3212cca7a01c2b049f72e7acb9b7d09f19fb0a4d5dca7bab",
+    "worker_transport.json": "bd34a8553ce0dbd77e7d58199a3efb15fca47cc5ace3ed3d0e8a835d0566c18f"
+  }
+}

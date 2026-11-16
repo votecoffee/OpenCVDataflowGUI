@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "locate",
+      "type": "3d.simple_gdrnpp",
+      "name": "Current streaming worker / unchanged recipe",
+      "parameters": {
+        "recipe_path": "setup.gdrnpp",
+        "sha256": "0f748bc8019bb1b08fd39e5f37a98de21f4664e4216170baa26911f752020134",
+        "models_dir": "",
+        "mode": "Retained reference",
+        "depth_scale_to_m": 1.0,
+        "render_overlay": true,
+        "render_cloud": true,
+        "review_candidate": 0,
+        "render_gallery": false
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "depth",
+        "camera",
+        "detections",
+        "capture_id"
+      ],
+      "exposed_outputs": [
+        "report",
+        "pose",
+        "poses",
+        "accepted_count",
+        "overlay",
+        "cloud",
+        "review",
+        "candidate_table",
+        "gallery"
+      ]
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "REAL RGB-D / STREAMING TRANSPORT",
+      "description": "Same five supplied T-LESS boxes, trained recipe, four CPU threads, batch one and depth/ICP gates. Packet transport is standard stored NPZ with bounded streaming read. One target accepts; four distractors reject. Numeric and image/native cloud parity checked against frozen compressed transport. No general cycle-rate or OS-stall guarantee. T-LESS CC BY 4.0, Hodan et al., WACV 2017. Select the separately verified external checkpoint.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": []
+    }
+  ],
+  "connections": []
+}

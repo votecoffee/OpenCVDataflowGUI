@@ -1,0 +1,952 @@
+{
+  "validation_only": true,
+  "timing_qualified": false,
+  "reason": "Functional owned-process sampler replay; concurrent correctness tests, not a new performance study",
+  "inspections_with_complete_owned_processes": 8,
+  "receipt": {
+    "python": "3.13.9",
+    "recipe_sha256": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3",
+    "warm_requests": 1,
+    "scenarios": [
+      {
+        "case": "retained_reference",
+        "graphics": false,
+        "samples": [
+          {
+            "cold": true,
+            "client_round_trip_seconds": 8.105683099998714,
+            "report_seconds": {
+              "preprocess": 0.014439200000197161,
+              "network": 0.3783155999990413,
+              "total": 0.3954585000028601,
+              "depth_refinement": 0.4106004999994184,
+              "depth_verification": 0.05986789999951725,
+              "through_depth_verification": 0.8664011000000755
+            },
+            "worker_profile": {
+              "recipe_lookup_seconds": 0.2905047000022023,
+              "capture_prepare_seconds": 6.499998562503606e-06,
+              "model_prepare_seconds": 6.586971900000208,
+              "numeric_seconds": 0.8664310999993177,
+              "graphics_seconds": 6.399999983841553e-05,
+              "worker_handle_seconds": 7.743978200000129,
+              "graphics_requested": false,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 4.699999408330768e-06,
+              "client_process_launch_seconds": 0.010330100001738174,
+              "client_packet_write_seconds": 0.0016670999975758605,
+              "client_reply_wait_seconds": 8.082312000002275,
+              "client_packet_read_seconds": 0.009582599999703234,
+              "worker": {
+                "packet_read_seconds": 0.016777900000306545,
+                "handler_seconds": 7.744058000000223,
+                "packet_write_seconds": 0.00272209999820916,
+                "worker_request_seconds": 7.7635579999987385
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0017703000012261327,
+              "client_total_seconds": 8.105671299999813
+            },
+            "model_cache_hit": false,
+            "recipe_cache_hit": false,
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 54588,
+                  "created": 1794853395.3820043,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.03125,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 57500,
+                  "created": 1794853395.3893118,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.0,
+                  "rss_bytes": 8142848,
+                  "peak_working_set_bytes": 8146944
+                },
+                {
+                  "pid": 21152,
+                  "created": 1794853395.4056418,
+                  "name": "python.exe",
+                  "cpu_seconds": 10.015625,
+                  "rss_bytes": 1159737344,
+                  "peak_working_set_bytes": 1190936576
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1172172800
+            },
+            "returned_array_bytes": 0,
+            "geometry_backend": "numpy_batched_first_return_v1",
+            "worker_implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+            "fit": {
+              "status": "accepted",
+              "reason": "fit_gates",
+              "coverage": 0.7205122444394518,
+              "contradiction": 0.05481914176589531,
+              "rmse_m": 0.0022108748089522123,
+              "rendered_samples": 8902,
+              "supported_samples": 6414,
+              "unknown_samples": 1256,
+              "occluded_samples": 686,
+              "outside_target_samples": 62
+            },
+            "pose": [
+              [
+                -0.18788117133164198,
+                -0.981942232695572,
+                -0.022138588660634798,
+                -0.03310906421619188
+              ],
+              [
+                -0.9325603920683252,
+                0.18541641632525097,
+                -0.3097609847971061,
+                -0.06602851499113581
+              ],
+              [
+                0.30827225078560344,
+                -0.03755268573532239,
+                -0.9505566869943327,
+                0.7882849881909257
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "cold": false,
+            "client_round_trip_seconds": 0.8881217000016477,
+            "report_seconds": {
+              "preprocess": 0.004750899999635294,
+              "network": 0.39158120000138297,
+              "total": 0.39883199999894714,
+              "depth_refinement": 0.3877262999994855,
+              "depth_verification": 0.07050629999866942,
+              "through_depth_verification": 0.8574432999994315
+            },
+            "worker_profile": {
+              "recipe_lookup_seconds": 0.00022539999918080866,
+              "capture_prepare_seconds": 4.699999408330768e-06,
+              "model_prepare_seconds": 0.00019180000163032673,
+              "numeric_seconds": 0.8574631999981648,
+              "graphics_seconds": 7.850000110920519e-05,
+              "worker_handle_seconds": 0.8579635999994935,
+              "graphics_requested": false,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 5.099998816149309e-06,
+              "client_process_launch_seconds": 1.2999989849049598e-06,
+              "client_packet_write_seconds": 0.0023820999995223247,
+              "client_reply_wait_seconds": 0.8638747000004514,
+              "client_packet_read_seconds": 0.017145000001619337,
+              "worker": {
+                "packet_read_seconds": 0.0028853000003437046,
+                "handler_seconds": 0.8580600999994203,
+                "packet_write_seconds": 0.0024168000018107705,
+                "worker_request_seconds": 0.8633622000015748
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0046824000019114465,
+              "client_total_seconds": 0.8880996000007144
+            },
+            "model_cache_hit": true,
+            "recipe_cache_hit": true,
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 54588,
+                  "created": 1794853395.3820043,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.03125,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 57500,
+                  "created": 1794853395.3893118,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.0,
+                  "rss_bytes": 8142848,
+                  "peak_working_set_bytes": 8146944
+                },
+                {
+                  "pid": 21152,
+                  "created": 1794853395.4056418,
+                  "name": "python.exe",
+                  "cpu_seconds": 12.625,
+                  "rss_bytes": 1159176192,
+                  "peak_working_set_bytes": 1192083456
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1171611648
+            },
+            "returned_array_bytes": 0,
+            "geometry_backend": "numpy_batched_first_return_v1",
+            "worker_implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+            "fit": {
+              "status": "accepted",
+              "reason": "fit_gates",
+              "coverage": 0.7205122444394518,
+              "contradiction": 0.05481914176589531,
+              "rmse_m": 0.0022108748089522123,
+              "rendered_samples": 8902,
+              "supported_samples": 6414,
+              "unknown_samples": 1256,
+              "occluded_samples": 686,
+              "outside_target_samples": 62
+            },
+            "pose": [
+              [
+                -0.18788117133164198,
+                -0.981942232695572,
+                -0.022138588660634798,
+                -0.03310906421619188
+              ],
+              [
+                -0.9325603920683252,
+                0.18541641632525097,
+                -0.3097609847971061,
+                -0.06602851499113581
+              ],
+              [
+                0.30827225078560344,
+                -0.03755268573532239,
+                -0.9505566869943327,
+                0.7882849881909257
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "cold_seconds": 8.105683099998714,
+        "warm_median_seconds": 0.8881217000016477
+      },
+      {
+        "case": "retained_reference",
+        "graphics": true,
+        "samples": [
+          {
+            "cold": true,
+            "client_round_trip_seconds": 7.78141659999892,
+            "report_seconds": {
+              "preprocess": 0.018050099999527447,
+              "network": 0.373789699999179,
+              "total": 0.39497430000119493,
+              "depth_refinement": 0.3760370000018156,
+              "depth_verification": 0.05524359999981243,
+              "through_depth_verification": 0.8268038999995042
+            },
+            "worker_profile": {
+              "recipe_lookup_seconds": 0.35009749999881024,
+              "capture_prepare_seconds": 1.04000027931761e-05,
+              "model_prepare_seconds": 6.056377099997917,
+              "numeric_seconds": 0.8268429000017932,
+              "graphics_seconds": 0.10909829999945941,
+              "worker_handle_seconds": 7.342426200000773,
+              "graphics_requested": true,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 5.099998816149309e-06,
+              "client_process_launch_seconds": 0.012013500003376976,
+              "client_packet_write_seconds": 0.0015647999971406534,
+              "client_reply_wait_seconds": 7.737591299999622,
+              "client_packet_read_seconds": 0.025526299999910407,
+              "worker": {
+                "packet_read_seconds": 0.011764800001401454,
+                "handler_seconds": 7.342510900001798,
+                "packet_write_seconds": 0.00469149999844376,
+                "worker_request_seconds": 7.3589672000016435
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.004683999999542721,
+              "client_total_seconds": 7.781391299999086
+            },
+            "model_cache_hit": false,
+            "recipe_cache_hit": false,
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 51752,
+                  "created": 1794853404.5360143,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.03125,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 57736,
+                  "created": 1794853404.547088,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 8142848,
+                  "peak_working_set_bytes": 8146944
+                },
+                {
+                  "pid": 11740,
+                  "created": 1794853404.5694191,
+                  "name": "python.exe",
+                  "cpu_seconds": 9.90625,
+                  "rss_bytes": 1169264640,
+                  "peak_working_set_bytes": 1192804352
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1181700096
+            },
+            "returned_array_bytes": 1756020,
+            "geometry_backend": "numpy_batched_first_return_v1",
+            "worker_implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+            "fit": {
+              "status": "accepted",
+              "reason": "fit_gates",
+              "coverage": 0.7205122444394518,
+              "contradiction": 0.05481914176589531,
+              "rmse_m": 0.0022108748089522123,
+              "rendered_samples": 8902,
+              "supported_samples": 6414,
+              "unknown_samples": 1256,
+              "occluded_samples": 686,
+              "outside_target_samples": 62
+            },
+            "pose": [
+              [
+                -0.18788117133164198,
+                -0.981942232695572,
+                -0.022138588660634798,
+                -0.03310906421619188
+              ],
+              [
+                -0.9325603920683252,
+                0.18541641632525097,
+                -0.3097609847971061,
+                -0.06602851499113581
+              ],
+              [
+                0.30827225078560344,
+                -0.03755268573532239,
+                -0.9505566869943327,
+                0.7882849881909257
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "cold": false,
+            "client_round_trip_seconds": 1.1702731999976095,
+            "report_seconds": {
+              "preprocess": 0.00432849999924656,
+              "network": 0.4437716000029468,
+              "total": 0.451479899998958,
+              "depth_refinement": 0.5194976999991923,
+              "depth_verification": 0.05929879999894183,
+              "through_depth_verification": 1.030708300000697
+            },
+            "worker_profile": {
+              "recipe_lookup_seconds": 0.000310799998260336,
+              "capture_prepare_seconds": 4.800000169780105e-06,
+              "model_prepare_seconds": 0.0002550000026531052,
+              "numeric_seconds": 1.030732100000023,
+              "graphics_seconds": 0.09251159999985248,
+              "worker_handle_seconds": 1.1238143000009586,
+              "graphics_requested": true,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 5.999998393235728e-06,
+              "client_process_launch_seconds": 1.1000010999850929e-06,
+              "client_packet_write_seconds": 0.0029993999996804632,
+              "client_reply_wait_seconds": 1.13524630000029,
+              "client_packet_read_seconds": 0.027718599998479476,
+              "worker": {
+                "packet_read_seconds": 0.00224539999908302,
+                "handler_seconds": 1.1241144999985409,
+                "packet_write_seconds": 0.008104800002911361,
+                "worker_request_seconds": 1.1344647000005352
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.004090999998879852,
+              "client_total_seconds": 1.170067499999277
+            },
+            "model_cache_hit": true,
+            "recipe_cache_hit": true,
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 51752,
+                  "created": 1794853404.5360143,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.03125,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 57736,
+                  "created": 1794853404.547088,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 8142848,
+                  "peak_working_set_bytes": 8146944
+                },
+                {
+                  "pid": 11740,
+                  "created": 1794853404.5694191,
+                  "name": "python.exe",
+                  "cpu_seconds": 12.859375,
+                  "rss_bytes": 1171943424,
+                  "peak_working_set_bytes": 1205075968
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1184378880
+            },
+            "returned_array_bytes": 1756020,
+            "geometry_backend": "numpy_batched_first_return_v1",
+            "worker_implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+            "fit": {
+              "status": "accepted",
+              "reason": "fit_gates",
+              "coverage": 0.7205122444394518,
+              "contradiction": 0.05481914176589531,
+              "rmse_m": 0.0022108748089522123,
+              "rendered_samples": 8902,
+              "supported_samples": 6414,
+              "unknown_samples": 1256,
+              "occluded_samples": 686,
+              "outside_target_samples": 62
+            },
+            "pose": [
+              [
+                -0.18788117133164198,
+                -0.981942232695572,
+                -0.022138588660634798,
+                -0.03310906421619188
+              ],
+              [
+                -0.9325603920683252,
+                0.18541641632525097,
+                -0.3097609847971061,
+                -0.06602851499113581
+              ],
+              [
+                0.30827225078560344,
+                -0.03755268573532239,
+                -0.9505566869943327,
+                0.7882849881909257
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "cold_seconds": 7.78141659999892,
+        "warm_median_seconds": 1.1702731999976095
+      },
+      {
+        "case": "connected_independent_capture",
+        "graphics": false,
+        "samples": [
+          {
+            "cold": true,
+            "client_round_trip_seconds": 8.146733400000812,
+            "report_seconds": {
+              "preprocess": 0.014481900001555914,
+              "network": 0.3908508999993501,
+              "total": 0.4080959000020812,
+              "depth_refinement": 1.050140499999543,
+              "depth_verification": 0.10832709999885992,
+              "through_depth_verification": 1.5671354000005522
+            },
+            "worker_profile": {
+              "recipe_lookup_seconds": 0.2632807000009052,
+              "capture_prepare_seconds": 0.005800999999337364,
+              "model_prepare_seconds": 5.866654800000106,
+              "numeric_seconds": 1.567170199999964,
+              "graphics_seconds": 7.229999755509198e-05,
+              "worker_handle_seconds": 7.7029789999978675,
+              "graphics_requested": false,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 4.5000015234109014e-06,
+              "client_process_launch_seconds": 0.010958499999105697,
+              "client_packet_write_seconds": 0.006598100000701379,
+              "client_reply_wait_seconds": 8.114136699998198,
+              "client_packet_read_seconds": 0.012772500002029119,
+              "worker": {
+                "packet_read_seconds": 0.03147269999681157,
+                "handler_seconds": 7.703080400002364,
+                "packet_write_seconds": 0.0028025999999954365,
+                "worker_request_seconds": 7.737355699999171
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0020683000002463814,
+              "client_total_seconds": 8.14654259999952
+            },
+            "model_cache_hit": false,
+            "recipe_cache_hit": false,
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 12276,
+                  "created": 1794853413.535324,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 45172,
+                  "created": 1794853413.546693,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 8138752,
+                  "peak_working_set_bytes": 8142848
+                },
+                {
+                  "pid": 47280,
+                  "created": 1794853413.5673969,
+                  "name": "python.exe",
+                  "cpu_seconds": 10.53125,
+                  "rss_bytes": 1166675968,
+                  "peak_working_set_bytes": 1205972992
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1179107328
+            },
+            "returned_array_bytes": 0,
+            "geometry_backend": "numpy_batched_first_return_v1",
+            "worker_implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+            "fit": {
+              "status": "accepted",
+              "reason": "fit_gates",
+              "coverage": 0.8598474404926018,
+              "contradiction": 0.045032625677786965,
+              "rmse_m": 0.001488388399593532,
+              "rendered_samples": 10881,
+              "supported_samples": 9356,
+              "unknown_samples": 320,
+              "occluded_samples": 669,
+              "outside_target_samples": 49
+            },
+            "pose": [
+              [
+                -0.8576746674400246,
+                -0.015376754687021307,
+                -0.5139627615371936,
+                -0.026244027435802918
+              ],
+              [
+                -0.4901713614265574,
+                0.32639276194844236,
+                0.8082077711732933,
+                -0.041651478978925786
+              ],
+              [
+                0.15532611264329726,
+                0.9451091579087373,
+                -0.28747604833822105,
+                0.7165341709435432
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "cold": false,
+            "client_round_trip_seconds": 1.655359700002009,
+            "report_seconds": {
+              "preprocess": 0.0040063999986159615,
+              "network": 0.4221065000019735,
+              "total": 0.4291936999979953,
+              "depth_refinement": 1.0438850999998976,
+              "depth_verification": 0.12790840000161552,
+              "through_depth_verification": 1.6013483999995515
+            },
+            "worker_profile": {
+              "recipe_lookup_seconds": 0.0006461999983002897,
+              "capture_prepare_seconds": 0.008125600001221756,
+              "model_prepare_seconds": 0.0004998000003979541,
+              "numeric_seconds": 1.6013666999970155,
+              "graphics_seconds": 6.81000019540079e-05,
+              "worker_handle_seconds": 1.6107063999988895,
+              "graphics_requested": false,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 4.599998646881431e-06,
+              "client_process_launch_seconds": 8.999995770864189e-07,
+              "client_packet_write_seconds": 0.010126200002559926,
+              "client_reply_wait_seconds": 1.632676099998207,
+              "client_packet_read_seconds": 0.010644599999068305,
+              "worker": {
+                "packet_read_seconds": 0.018304799999896204,
+                "handler_seconds": 1.6110473000007914,
+                "packet_write_seconds": 0.002600499999971362,
+                "worker_request_seconds": 1.631952600000659
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0018935000007331837,
+              "client_total_seconds": 1.6553499000001466
+            },
+            "model_cache_hit": true,
+            "recipe_cache_hit": true,
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 12276,
+                  "created": 1794853413.535324,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 45172,
+                  "created": 1794853413.546693,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.015625,
+                  "rss_bytes": 8138752,
+                  "peak_working_set_bytes": 8142848
+                },
+                {
+                  "pid": 47280,
+                  "created": 1794853413.5673969,
+                  "name": "python.exe",
+                  "cpu_seconds": 14.0,
+                  "rss_bytes": 1166221312,
+                  "peak_working_set_bytes": 1206870016
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1178652672
+            },
+            "returned_array_bytes": 0,
+            "geometry_backend": "numpy_batched_first_return_v1",
+            "worker_implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+            "fit": {
+              "status": "accepted",
+              "reason": "fit_gates",
+              "coverage": 0.8598474404926018,
+              "contradiction": 0.045032625677786965,
+              "rmse_m": 0.001488388399593532,
+              "rendered_samples": 10881,
+              "supported_samples": 9356,
+              "unknown_samples": 320,
+              "occluded_samples": 669,
+              "outside_target_samples": 49
+            },
+            "pose": [
+              [
+                -0.8576746674400246,
+                -0.015376754687021307,
+                -0.5139627615371936,
+                -0.026244027435802918
+              ],
+              [
+                -0.4901713614265574,
+                0.32639276194844236,
+                0.8082077711732933,
+                -0.041651478978925786
+              ],
+              [
+                0.15532611264329726,
+                0.9451091579087373,
+                -0.28747604833822105,
+                0.7165341709435432
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "cold_seconds": 8.146733400000812,
+        "warm_median_seconds": 1.655359700002009
+      },
+      {
+        "case": "connected_independent_capture",
+        "graphics": true,
+        "samples": [
+          {
+            "cold": true,
+            "client_round_trip_seconds": 8.649711499998375,
+            "report_seconds": {
+              "preprocess": 0.010365400001319358,
+              "network": 0.382801699997799,
+              "total": 0.3956752000012784,
+              "depth_refinement": 1.0359458999992057,
+              "depth_verification": 0.13564010000118287,
+              "through_depth_verification": 1.5676392999994277
+            },
+            "worker_profile": {
+              "recipe_lookup_seconds": 0.27544059999854653,
+              "capture_prepare_seconds": 0.006984200001170393,
+              "model_prepare_seconds": 6.23673449999842,
+              "numeric_seconds": 1.5676641999998537,
+              "graphics_seconds": 0.18466370000169263,
+              "worker_handle_seconds": 8.271487199999683,
+              "graphics_requested": true,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 6.099999154685065e-06,
+              "client_process_launch_seconds": 0.008471900000586174,
+              "client_packet_write_seconds": 0.016680599997926038,
+              "client_reply_wait_seconds": 8.59495600000082,
+              "client_packet_read_seconds": 0.026143400002183625,
+              "worker": {
+                "packet_read_seconds": 0.027024400002119364,
+                "handler_seconds": 8.271543499999098,
+                "packet_write_seconds": 0.005329899999196641,
+                "worker_request_seconds": 8.303897800000414
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0034357000004092697,
+              "client_total_seconds": 8.649696599997696
+            },
+            "model_cache_hit": false,
+            "recipe_cache_hit": false,
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 57672,
+                  "created": 1794853423.376012,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.03125,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 50560,
+                  "created": 1794853423.3855321,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.0,
+                  "rss_bytes": 8142848,
+                  "peak_working_set_bytes": 8146944
+                },
+                {
+                  "pid": 34620,
+                  "created": 1794853423.4051964,
+                  "name": "python.exe",
+                  "cpu_seconds": 10.8125,
+                  "rss_bytes": 1175556096,
+                  "peak_working_set_bytes": 1205714944
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1187991552
+            },
+            "returned_array_bytes": 1822620,
+            "geometry_backend": "numpy_batched_first_return_v1",
+            "worker_implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+            "fit": {
+              "status": "accepted",
+              "reason": "fit_gates",
+              "coverage": 0.8598474404926018,
+              "contradiction": 0.045032625677786965,
+              "rmse_m": 0.001488388399593532,
+              "rendered_samples": 10881,
+              "supported_samples": 9356,
+              "unknown_samples": 320,
+              "occluded_samples": 669,
+              "outside_target_samples": 49
+            },
+            "pose": [
+              [
+                -0.8576746674400246,
+                -0.015376754687021307,
+                -0.5139627615371936,
+                -0.026244027435802918
+              ],
+              [
+                -0.4901713614265574,
+                0.32639276194844236,
+                0.8082077711732933,
+                -0.041651478978925786
+              ],
+              [
+                0.15532611264329726,
+                0.9451091579087373,
+                -0.28747604833822105,
+                0.7165341709435432
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "cold": false,
+            "client_round_trip_seconds": 1.6236333999986527,
+            "report_seconds": {
+              "preprocess": 0.005993400001898408,
+              "network": 0.3466393999988213,
+              "total": 0.35599070000171196,
+              "depth_refinement": 0.9048010000005888,
+              "depth_verification": 0.12715960000059567,
+              "through_depth_verification": 1.3884937000002537
+            },
+            "worker_profile": {
+              "recipe_lookup_seconds": 0.0008080000006884802,
+              "capture_prepare_seconds": 0.008713399998669047,
+              "model_prepare_seconds": 0.0006863999988127034,
+              "numeric_seconds": 1.388526600003388,
+              "graphics_seconds": 0.17122599999856902,
+              "worker_handle_seconds": 1.5699604000001273,
+              "graphics_requested": true,
+              "scope": "Worker handler only; packet transfer and process/import startup are separate"
+            },
+            "request_timing": {
+              "operation": "preview",
+              "client_lock_wait_seconds": 4.400000761961564e-06,
+              "client_process_launch_seconds": 7.999988156370819e-07,
+              "client_packet_write_seconds": 0.009498600000370061,
+              "client_reply_wait_seconds": 1.5912986000003002,
+              "client_packet_read_seconds": 0.020514399999228772,
+              "worker": {
+                "packet_read_seconds": 0.01552599999922677,
+                "handler_seconds": 1.570465200002218,
+                "packet_write_seconds": 0.004746899998281151,
+                "worker_request_seconds": 1.5907380999997258
+              },
+              "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+              "client_cleanup_seconds": 0.0021875999991607387,
+              "client_total_seconds": 1.6235075000004144
+            },
+            "model_cache_hit": true,
+            "recipe_cache_hit": true,
+            "owned_processes": {
+              "complete": true,
+              "processes": [
+                {
+                  "pid": 57672,
+                  "created": 1794853423.376012,
+                  "name": "python.exe",
+                  "cpu_seconds": 0.03125,
+                  "rss_bytes": 4292608,
+                  "peak_working_set_bytes": 4292608
+                },
+                {
+                  "pid": 50560,
+                  "created": 1794853423.3855321,
+                  "name": "conhost.exe",
+                  "cpu_seconds": 0.0,
+                  "rss_bytes": 8142848,
+                  "peak_working_set_bytes": 8146944
+                },
+                {
+                  "pid": 34620,
+                  "created": 1794853423.4051964,
+                  "name": "python.exe",
+                  "cpu_seconds": 14.09375,
+                  "rss_bytes": 1176342528,
+                  "peak_working_set_bytes": 1215967232
+                }
+              ],
+              "problems": [],
+              "tree_rss_bytes": 1188777984
+            },
+            "returned_array_bytes": 1822620,
+            "geometry_backend": "numpy_batched_first_return_v1",
+            "worker_implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+            "fit": {
+              "status": "accepted",
+              "reason": "fit_gates",
+              "coverage": 0.8598474404926018,
+              "contradiction": 0.045032625677786965,
+              "rmse_m": 0.001488388399593532,
+              "rendered_samples": 10881,
+              "supported_samples": 9356,
+              "unknown_samples": 320,
+              "occluded_samples": 669,
+              "outside_target_samples": 49
+            },
+            "pose": [
+              [
+                -0.8576746674400246,
+                -0.015376754687021307,
+                -0.5139627615371936,
+                -0.026244027435802918
+              ],
+              [
+                -0.4901713614265574,
+                0.32639276194844236,
+                0.8082077711732933,
+                -0.041651478978925786
+              ],
+              [
+                0.15532611264329726,
+                0.9451091579087373,
+                -0.28747604833822105,
+                0.7165341709435432
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "cold_seconds": 8.649711499998375,
+        "warm_median_seconds": 1.6236333999986527
+      }
+    ],
+    "poses_identical_across_repeats_and_graphics": true,
+    "scope": "Actual isolated worker calls include process/model startup on cold requests, client packet writes, connected input transfer/validation, inference, ICP/fit, requested graphics, result transfer/read and private request cleanup. No camera acquisition, GUI composition, robot or hardware acceptance.",
+    "attribution": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+  }
+}

@@ -1,14 +1,15 @@
 """Bounded numeric/JSON messages between the GUI and its isolated Python worker."""
 
-import io
 import json
 import math
 from pathlib import Path
-from zipfile import ZipFile
+from zipfile import ZIP_DEFLATED, ZIP_STORED, ZipFile
 
 import numpy as np
 
 LIMIT = 128 * 1024 * 1024
+DTYPES = ("|u1", "<i4", "<f4", "<f8", "|b1")
+CHUNK_BYTES = 4 * 1024 * 1024
 
 
 def strict_json(raw):
@@ -30,17 +31,54 @@ def strict_json(raw):
     return json.loads(raw, object_pairs_hook=pairs, parse_constant=bad, parse_float=number)
 
 
-def write_packet(directory, metadata, arrays):
+def write_packet(directory, metadata, arrays, *, compression="stored"):
     directory = Path(directory)
+    if compression not in ("stored", "deflated_fast"):
+        raise ValueError("Choose stored or deflated_fast packet encoding")
+    if len(arrays) > 16:
+        raise ValueError("Invalid worker array members")
+    normalized = {}
     for name, array in arrays.items():
-        if not name.replace("_", "").isalnum() or np.asarray(array).dtype.hasobject:
+        array = np.asarray(array)
+        if (
+            not isinstance(name, str)
+            or not name.replace("_", "").isalnum()
+            or array.dtype.hasobject
+        ):
             raise ValueError("Only named numeric arrays may cross the worker boundary")
-    if sum(np.asarray(a).nbytes for a in arrays.values()) > LIMIT:
+        if (
+            array.dtype.str not in DTYPES
+            or not 1 <= array.ndim <= 3
+            or any(v > 2_000_000 for v in array.shape)
+        ):
+            raise ValueError("Invalid numeric array header")
+        normalized[name] = array
+    if sum(a.nbytes for a in normalized.values()) > LIMIT:
         raise ValueError("Worker arrays exceed 128 MiB")
     raw = (json.dumps(metadata, allow_nan=False) + "\n").encode("utf-8")
     if len(raw) > 4 * 1024 * 1024:
         raise ValueError("Worker metadata exceeds 4 MiB")
-    np.savez_compressed(directory / "arrays.npz", **arrays)
+
+    def encode(mode):
+        with ZipFile(
+            directory / "arrays.npz",
+            "w",
+            compression=ZIP_STORED if mode == "stored" else ZIP_DEFLATED,
+            compresslevel=None if mode == "stored" else 1,
+        ) as archive:
+            for name, array in normalized.items():
+                with archive.open(name + ".npy", "w", force_zip64=True) as stream:
+                    np.lib.format.write_array(stream, array, version=(1, 0), allow_pickle=False)
+            expanded = sum(info.file_size for info in archive.infolist())
+        if expanded > LIMIT:
+            raise ValueError("Worker arrays including headers exceed 128 MiB")
+
+    encode(compression)
+    if (directory / "arrays.npz").stat().st_size > LIMIT and compression == "stored":
+        # ZIP framing can exceed the file cap near the exact legacy payload bound.
+        encode("deflated_fast")
+    if (directory / "arrays.npz").stat().st_size > LIMIT:
+        raise ValueError("Oversized worker response")
     (directory / "metadata.json").write_bytes(raw)
 
 
@@ -64,23 +102,33 @@ def read_packet(directory):
             stem = name.removesuffix(".npy")
             if name != stem + ".npy" or not stem.replace("_", "").isalnum():
                 raise ValueError("Invalid worker array name")
-            raw = archive.read(name)
-            stream = io.BytesIO(raw)
-            version = np.lib.format.read_magic(stream)
-            if version not in ((1, 0), (2, 0)):
-                raise ValueError("Unsupported numeric array format")
-            reader = (
-                np.lib.format.read_array_header_1_0
-                if version == (1, 0)
-                else np.lib.format.read_array_header_2_0
-            )
-            shape, _, dtype = reader(stream)
-            if (
-                not 1 <= len(shape) <= 3
-                or any(type(v) is not int or not 0 <= v <= 2_000_000 for v in shape)
-                or dtype.str not in ("|u1", "<i4", "<f4", "<f8", "|b1")
-                or math.prod(shape) * dtype.itemsize != len(raw) - stream.tell()
-            ):
-                raise ValueError("Invalid numeric array header")
-            arrays[stem] = np.load(io.BytesIO(raw), allow_pickle=False)
+            with archive.open(name) as stream:
+                version = np.lib.format.read_magic(stream)
+                if version not in ((1, 0), (2, 0)):
+                    raise ValueError("Unsupported numeric array format")
+                reader = (
+                    np.lib.format.read_array_header_1_0
+                    if version == (1, 0)
+                    else np.lib.format.read_array_header_2_0
+                )
+                shape, fortran, dtype = reader(stream)
+                size = math.prod(shape) * dtype.itemsize
+                if (
+                    not 1 <= len(shape) <= 3
+                    or any(type(v) is not int or not 0 <= v <= 2_000_000 for v in shape)
+                    or dtype.str not in DTYPES
+                    or size != archive.getinfo(name).file_size - stream.tell()
+                ):
+                    raise ValueError("Invalid numeric array header")
+                array = np.empty(shape, dtype=dtype, order="F" if fortran else "C")
+                buffer = memoryview(array.ravel(order="K")).cast("B")
+                offset = 0
+                while offset < size:
+                    count = stream.readinto(buffer[offset : offset + CHUNK_BYTES])
+                    if not count:
+                        raise ValueError("Truncated numeric array data")
+                    offset += count
+                if stream.read(1):
+                    raise ValueError("Trailing numeric array data")
+                arrays[stem] = array
     return metadata, arrays

@@ -14,7 +14,7 @@ import time
 from pathlib import Path
 
 import numpy as np
-import psutil
+from worker_metrics import snapshot
 
 from opencv_simple_gdrnpp.bridge import WorkerClient
 from opencv_simple_gdrnpp.workflow import load_capture
@@ -86,9 +86,7 @@ def run(recipe, models, extension, output, *, worker_python=sys.executable, repe
                         request_timing=metadata.get("request_timing"),
                         model_cache_hit=report["worker"]["model_cache_hit"],
                         recipe_cache_hit=report["worker"]["recipe_cache_hit"],
-                        worker_peak_working_set_bytes=getattr(
-                            psutil.Process(client.process.pid).memory_info(), "peak_wset", None
-                        ),
+                        owned_processes=snapshot(client.process.pid),
                         returned_array_bytes=sum(value.nbytes for value in result.values()),
                         geometry_backend=report["geometry_execution_backend"],
                         worker_implementation_sha256=report["worker"].get("implementation_sha256"),

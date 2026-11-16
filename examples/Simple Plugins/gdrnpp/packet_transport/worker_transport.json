@@ -1,0 +1,2802 @@
+{
+  "summary": [
+    {
+      "method": "legacy",
+      "graphics": false,
+      "measured_samples": 3,
+      "median_seconds": 4.122894600001018,
+      "minimum_seconds": 4.116060700001981,
+      "maximum_seconds": 4.2795068000014,
+      "client_packet_write_median_ms": 82.78489999793237,
+      "client_packet_read_median_ms": 10.8007999988331,
+      "worker_packet_write_median_ms": 2.384299998084316
+    },
+    {
+      "method": "stored",
+      "graphics": false,
+      "measured_samples": 3,
+      "median_seconds": 4.008793299999525,
+      "minimum_seconds": 3.95402059999833,
+      "maximum_seconds": 4.1734952999977395,
+      "client_packet_write_median_ms": 8.752100002311636,
+      "client_packet_read_median_ms": 11.614600000029895,
+      "worker_packet_write_median_ms": 1.965400002518436
+    },
+    {
+      "method": "legacy",
+      "graphics": true,
+      "measured_samples": 3,
+      "median_seconds": 4.366782199998852,
+      "minimum_seconds": 4.273884599999292,
+      "maximum_seconds": 4.4095316999992065,
+      "client_packet_write_median_ms": 90.2886000003491,
+      "client_packet_read_median_ms": 29.028199998720083,
+      "worker_packet_write_median_ms": 82.51580000069225
+    },
+    {
+      "method": "stored",
+      "graphics": true,
+      "measured_samples": 3,
+      "median_seconds": 4.244533799999772,
+      "minimum_seconds": 4.096823700001551,
+      "maximum_seconds": 4.4364108000008855,
+      "client_packet_write_median_ms": 9.5833000013954,
+      "client_packet_read_median_ms": 17.506899999716552,
+      "worker_packet_write_median_ms": 13.726100001804298
+    }
+  ],
+  "samples": [
+    {
+      "method": "legacy",
+      "graphics": false,
+      "round": 0,
+      "warmup": true,
+      "client_round_trip_seconds": 4.230840200001694,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 4.0000013541430235e-06,
+        "client_process_launch_seconds": 5.000001692678779e-07,
+        "client_packet_write_seconds": 0.08141199999954551,
+        "client_reply_wait_seconds": 4.138834500001394,
+        "client_packet_read_seconds": 0.008915599999454571,
+        "worker": {
+          "packet_read_seconds": 0.03103009999904316,
+          "handler_seconds": 4.105199300000095,
+          "packet_write_seconds": 0.002104800001689,
+          "worker_request_seconds": 4.138334200000827
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.0016187000001082197,
+        "client_total_seconds": 4.230788799999573
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.00026620000062393956,
+        "capture_prepare_seconds": 0.005639399998472072,
+        "model_prepare_seconds": 0.00038240000139921904,
+        "numeric_seconds": 4.098299199999019,
+        "graphics_seconds": 6.910000229254365e-05,
+        "worker_handle_seconds": 4.104656300001807,
+        "graphics_requested": false,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.01611639999828185,
+        "network": 1.7980416999998852,
+        "total": 1.827855499999714,
+        "depth_refinement": 1.780769999997574,
+        "depth_verification": 0.48919889999888255,
+        "through_depth_verification": 4.09827999999834
+      },
+      "worker": {
+        "session": "bc70e7ffe25c4981b7c633311e313aeb",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 1
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 44876,
+            "created": 1794853179.7761405,
+            "name": "python.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 4333568,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 52972,
+            "created": 1794853179.7841997,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 8142848,
+            "peak_working_set_bytes": 8146944
+          },
+          {
+            "pid": 58936,
+            "created": 1794853179.79907,
+            "name": "python.exe",
+            "cpu_seconds": 22.71875,
+            "rss_bytes": 1165832192,
+            "peak_working_set_bytes": 1211600896
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1178308608
+      },
+      "worker_cpu_seconds": 10.015625,
+      "returned_array_bytes": 0,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "stored",
+      "graphics": false,
+      "round": 0,
+      "warmup": true,
+      "client_round_trip_seconds": 3.967999800002872,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 4.300000000512227e-06,
+        "client_process_launch_seconds": 5.000001692678779e-07,
+        "client_packet_write_seconds": 0.007944799999677343,
+        "client_reply_wait_seconds": 3.9496531000004325,
+        "client_packet_read_seconds": 0.008485800000926247,
+        "worker": {
+          "packet_read_seconds": 0.01658089999909862,
+          "handler_seconds": 3.930773100000806,
+          "packet_write_seconds": 0.0017225000010512304,
+          "worker_request_seconds": 3.949076500000956
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.0018552999972598627,
+        "client_total_seconds": 3.96794779999982
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0005110000020067673,
+        "capture_prepare_seconds": 0.008257099998445483,
+        "model_prepare_seconds": 0.0004933000018354505,
+        "numeric_seconds": 3.9210098999974434,
+        "graphics_seconds": 5.880000026081689e-05,
+        "worker_handle_seconds": 3.930330099999992,
+        "graphics_requested": false,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.017435800000384916,
+        "network": 1.901981999999407,
+        "total": 1.9312489000003552,
+        "depth_refinement": 1.6023719000004348,
+        "depth_verification": 0.386884800002008,
+        "through_depth_verification": 3.920985299999302
+      },
+      "worker": {
+        "session": "7985df8b126043ec99fe832901e2a867",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 1
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 44012,
+            "created": 1794853192.0791326,
+            "name": "python.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 4333568,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 44760,
+            "created": 1794853192.0953991,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 8130560,
+            "peak_working_set_bytes": 8134656
+          },
+          {
+            "pid": 49776,
+            "created": 1794853192.123086,
+            "name": "python.exe",
+            "cpu_seconds": 18.109375,
+            "rss_bytes": 1165832192,
+            "peak_working_set_bytes": 1211101184
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1178296320
+      },
+      "worker_cpu_seconds": 10.078125,
+      "returned_array_bytes": 0,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "stored",
+      "graphics": false,
+      "round": 1,
+      "warmup": false,
+      "client_round_trip_seconds": 3.95402059999833,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 4.900000931229442e-06,
+        "client_process_launch_seconds": 5.999972927384079e-07,
+        "client_packet_write_seconds": 0.013794100002996856,
+        "client_reply_wait_seconds": 3.923864799999137,
+        "client_packet_read_seconds": 0.013710399998672074,
+        "worker": {
+          "packet_read_seconds": 0.01164250000147149,
+          "handler_seconds": 3.9093149000000267,
+          "packet_write_seconds": 0.0023170999993453734,
+          "worker_request_seconds": 3.9232745000008435
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.0025846999997156672,
+        "client_total_seconds": 3.9539637999987463
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0003346999983477872,
+        "capture_prepare_seconds": 0.005693200000678189,
+        "model_prepare_seconds": 0.0005084000003989786,
+        "numeric_seconds": 3.9020203000000038,
+        "graphics_seconds": 5.880000026081689e-05,
+        "worker_handle_seconds": 3.9086153999996895,
+        "graphics_requested": false,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.007463800000550691,
+        "network": 1.731355000003532,
+        "total": 1.7482032000007166,
+        "depth_refinement": 1.7134517999984382,
+        "depth_verification": 0.43990320000011707,
+        "through_depth_verification": 3.9019856000013533
+      },
+      "worker": {
+        "session": "7985df8b126043ec99fe832901e2a867",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 2
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 44012,
+            "created": 1794853192.0791326,
+            "name": "python.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 4333568,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 44760,
+            "created": 1794853192.0953991,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 8130560,
+            "peak_working_set_bytes": 8134656
+          },
+          {
+            "pid": 49776,
+            "created": 1794853192.123086,
+            "name": "python.exe",
+            "cpu_seconds": 27.703125,
+            "rss_bytes": 1167007744,
+            "peak_working_set_bytes": 1211420672
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1179471872
+      },
+      "worker_cpu_seconds": 9.59375,
+      "returned_array_bytes": 0,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "legacy",
+      "graphics": false,
+      "round": 1,
+      "warmup": false,
+      "client_round_trip_seconds": 4.122894600001018,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 6.300000677583739e-06,
+        "client_process_launch_seconds": 8.999995770864189e-07,
+        "client_packet_write_seconds": 0.09030459999848972,
+        "client_reply_wait_seconds": 4.019369100002223,
+        "client_packet_read_seconds": 0.0108007999988331,
+        "worker": {
+          "packet_read_seconds": 0.024546199998439988,
+          "handler_seconds": 3.9920808999995643,
+          "packet_write_seconds": 0.0019337000012455974,
+          "worker_request_seconds": 4.01856079999925
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.002350899998418754,
+        "client_total_seconds": 4.122836300000927
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.00041760000021895394,
+        "capture_prepare_seconds": 0.005328100000042468,
+        "model_prepare_seconds": 0.00044859999979962595,
+        "numeric_seconds": 3.985196599998744,
+        "graphics_seconds": 7.100000220816582e-05,
+        "worker_handle_seconds": 3.9914619000010134,
+        "graphics_requested": false,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.006327499999315478,
+        "network": 1.8226568999998563,
+        "total": 1.8398065000001225,
+        "depth_refinement": 1.739455500002805,
+        "depth_verification": 0.4055704999991576,
+        "through_depth_verification": 3.985172099997726
+      },
+      "worker": {
+        "session": "bc70e7ffe25c4981b7c633311e313aeb",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 2
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 44876,
+            "created": 1794853179.7761405,
+            "name": "python.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 4321280,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 52972,
+            "created": 1794853179.7841997,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 8122368,
+            "peak_working_set_bytes": 8146944
+          },
+          {
+            "pid": 58936,
+            "created": 1794853179.79907,
+            "name": "python.exe",
+            "cpu_seconds": 32.78125,
+            "rss_bytes": 1167740928,
+            "peak_working_set_bytes": 1211600896
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1180184576
+      },
+      "worker_cpu_seconds": 10.0625,
+      "returned_array_bytes": 0,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "legacy",
+      "graphics": false,
+      "round": 2,
+      "warmup": false,
+      "client_round_trip_seconds": 4.116060700001981,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 4.5000015234109014e-06,
+        "client_process_launch_seconds": 5.000001692678779e-07,
+        "client_packet_write_seconds": 0.08278489999793237,
+        "client_reply_wait_seconds": 4.019913300002372,
+        "client_packet_read_seconds": 0.011082499997428386,
+        "worker": {
+          "packet_read_seconds": 0.023724399998172885,
+          "handler_seconds": 3.9919240000017453,
+          "packet_write_seconds": 0.002986399998917477,
+          "worker_request_seconds": 4.018634799998836
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.0022174999976414256,
+        "client_total_seconds": 4.116008000000875
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0004216999986965675,
+        "capture_prepare_seconds": 0.004660300000978168,
+        "model_prepare_seconds": 0.00039289999767788686,
+        "numeric_seconds": 3.9857588000013493,
+        "graphics_seconds": 7.520000144722871e-05,
+        "worker_handle_seconds": 3.991308900000149,
+        "graphics_requested": false,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.0061903999994683545,
+        "network": 1.7476149000031,
+        "total": 1.7642907999979798,
+        "depth_refinement": 1.786635299999034,
+        "depth_verification": 0.4344563000013295,
+        "through_depth_verification": 3.9857426999988093
+      },
+      "worker": {
+        "session": "bc70e7ffe25c4981b7c633311e313aeb",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 3
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 44876,
+            "created": 1794853179.7761405,
+            "name": "python.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 4321280,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 52972,
+            "created": 1794853179.7841997,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 8122368,
+            "peak_working_set_bytes": 8146944
+          },
+          {
+            "pid": 58936,
+            "created": 1794853179.79907,
+            "name": "python.exe",
+            "cpu_seconds": 42.59375,
+            "rss_bytes": 1166143488,
+            "peak_working_set_bytes": 1211695104
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1178587136
+      },
+      "worker_cpu_seconds": 9.8125,
+      "returned_array_bytes": 0,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "stored",
+      "graphics": false,
+      "round": 2,
+      "warmup": false,
+      "client_round_trip_seconds": 4.008793299999525,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 4.399997123982757e-06,
+        "client_process_launch_seconds": 6.000009307172149e-07,
+        "client_packet_write_seconds": 0.005993000002490589,
+        "client_reply_wait_seconds": 3.9891562999982852,
+        "client_packet_read_seconds": 0.011614600000029895,
+        "worker": {
+          "packet_read_seconds": 0.017297499998676358,
+          "handler_seconds": 3.9693229000004067,
+          "packet_write_seconds": 0.001965400002518436,
+          "worker_request_seconds": 3.9885858000016015
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.00197199999820441,
+        "client_total_seconds": 4.00874499999918
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0006729000015184283,
+        "capture_prepare_seconds": 0.008537499998055864,
+        "model_prepare_seconds": 0.0006393000003299676,
+        "numeric_seconds": 3.958741200000077,
+        "graphics_seconds": 5.279999822960235e-05,
+        "worker_handle_seconds": 3.9686436999982106,
+        "graphics_requested": false,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.00900040000124136,
+        "network": 1.7703660000006494,
+        "total": 1.7878243000013754,
+        "depth_refinement": 1.7437824000007822,
+        "depth_verification": 0.4266371000012441,
+        "through_depth_verification": 3.9587232999983826
+      },
+      "worker": {
+        "session": "7985df8b126043ec99fe832901e2a867",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 3
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 44012,
+            "created": 1794853192.0791326,
+            "name": "python.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 4321280,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 44760,
+            "created": 1794853192.0953991,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 8110080,
+            "peak_working_set_bytes": 8134656
+          },
+          {
+            "pid": 49776,
+            "created": 1794853192.123086,
+            "name": "python.exe",
+            "cpu_seconds": 37.40625,
+            "rss_bytes": 1166966784,
+            "peak_working_set_bytes": 1211420672
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1179398144
+      },
+      "worker_cpu_seconds": 9.703125,
+      "returned_array_bytes": 0,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "stored",
+      "graphics": false,
+      "round": 3,
+      "warmup": false,
+      "client_round_trip_seconds": 4.1734952999977395,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 4.800000169780105e-06,
+        "client_process_launch_seconds": 7.999988156370819e-07,
+        "client_packet_write_seconds": 0.008752100002311636,
+        "client_reply_wait_seconds": 4.15222829999766,
+        "client_packet_read_seconds": 0.009547900001052767,
+        "worker": {
+          "packet_read_seconds": 0.0130046999984188,
+          "handler_seconds": 4.135998000001564,
+          "packet_write_seconds": 0.0018428000003041234,
+          "worker_request_seconds": 4.150845500000287
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.002892600001359824,
+        "client_total_seconds": 4.173431999999593
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0003558999997039791,
+        "capture_prepare_seconds": 0.004435400001966627,
+        "model_prepare_seconds": 0.00035209999987273477,
+        "numeric_seconds": 4.130340399999113,
+        "graphics_seconds": 5.0099999498343095e-05,
+        "worker_handle_seconds": 4.135533900000155,
+        "graphics_requested": false,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.00581860000238521,
+        "network": 1.7277007999982743,
+        "total": 1.7431667999990168,
+        "depth_refinement": 1.926592799998616,
+        "depth_verification": 0.46023799999966286,
+        "through_depth_verification": 4.130329100000381
+      },
+      "worker": {
+        "session": "7985df8b126043ec99fe832901e2a867",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 4
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 44012,
+            "created": 1794853192.0791326,
+            "name": "python.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 4321280,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 44760,
+            "created": 1794853192.0953991,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 8110080,
+            "peak_working_set_bytes": 8134656
+          },
+          {
+            "pid": 49776,
+            "created": 1794853192.123086,
+            "name": "python.exe",
+            "cpu_seconds": 47.15625,
+            "rss_bytes": 1167007744,
+            "peak_working_set_bytes": 1211420672
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1179439104
+      },
+      "worker_cpu_seconds": 9.75,
+      "returned_array_bytes": 0,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "legacy",
+      "graphics": false,
+      "round": 3,
+      "warmup": false,
+      "client_round_trip_seconds": 4.2795068000014,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 5.300000339047983e-06,
+        "client_process_launch_seconds": 6.999980541877449e-07,
+        "client_packet_write_seconds": 0.07467259999975795,
+        "client_reply_wait_seconds": 4.193316299999424,
+        "client_packet_read_seconds": 0.009649300001910888,
+        "worker": {
+          "packet_read_seconds": 0.021323400000255788,
+          "handler_seconds": 4.168993300001603,
+          "packet_write_seconds": 0.002384299998084316,
+          "worker_request_seconds": 4.192700999999943
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.0018051999977615196,
+        "client_total_seconds": 4.2794533999986015
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0004927999980282038,
+        "capture_prepare_seconds": 0.004426999999850523,
+        "model_prepare_seconds": 0.00033959999927901663,
+        "numeric_seconds": 4.163127700001496,
+        "graphics_seconds": 5.950000195298344e-05,
+        "worker_handle_seconds": 4.168446600000607,
+        "graphics_requested": false,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.0052553000023181085,
+        "network": 1.8515742999952636,
+        "total": 1.8677873000015097,
+        "depth_refinement": 1.8866890000026615,
+        "depth_verification": 0.408295299999736,
+        "through_depth_verification": 4.163112900001579
+      },
+      "worker": {
+        "session": "bc70e7ffe25c4981b7c633311e313aeb",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 4
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 44876,
+            "created": 1794853179.7761405,
+            "name": "python.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 4321280,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 52972,
+            "created": 1794853179.7841997,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.015625,
+            "rss_bytes": 8122368,
+            "peak_working_set_bytes": 8146944
+          },
+          {
+            "pid": 58936,
+            "created": 1794853179.79907,
+            "name": "python.exe",
+            "cpu_seconds": 52.875,
+            "rss_bytes": 1166274560,
+            "peak_working_set_bytes": 1211695104
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1178718208
+      },
+      "worker_cpu_seconds": 10.28125,
+      "returned_array_bytes": 0,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "legacy",
+      "graphics": true,
+      "round": 0,
+      "warmup": true,
+      "client_round_trip_seconds": 5.238066899997648,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 4.999998054699972e-06,
+        "client_process_launch_seconds": 6.000009307172149e-07,
+        "client_packet_write_seconds": 0.09905950000029407,
+        "client_reply_wait_seconds": 5.107173600001261,
+        "client_packet_read_seconds": 0.029767899999569636,
+        "worker": {
+          "packet_read_seconds": 0.03528569999980391,
+          "handler_seconds": 4.97379809999984,
+          "packet_write_seconds": 0.09722490000058315,
+          "worker_request_seconds": 5.106308700000227
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.002004099998885067,
+        "client_total_seconds": 5.238013999998657
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0003146999988530297,
+        "capture_prepare_seconds": 0.005866700001206482,
+        "model_prepare_seconds": 0.000383700000384124,
+        "numeric_seconds": 4.757591999998112,
+        "graphics_seconds": 0.20920620000106283,
+        "worker_handle_seconds": 4.973363299999619,
+        "graphics_requested": true,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.01629020000109449,
+        "network": 2.1300490999929025,
+        "total": 2.159313899999688,
+        "depth_refinement": 2.1178167999969446,
+        "depth_verification": 0.47992840000006254,
+        "through_depth_verification": 4.757568499997433
+      },
+      "worker": {
+        "session": "e301133811f145ae974e68ca08dcbe72",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 1
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 24936,
+            "created": 1794853232.106222,
+            "name": "python.exe",
+            "cpu_seconds": 0.03125,
+            "rss_bytes": 4333568,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 19756,
+            "created": 1794853232.1200523,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 8134656,
+            "peak_working_set_bytes": 8138752
+          },
+          {
+            "pid": 13824,
+            "created": 1794853232.139776,
+            "name": "python.exe",
+            "cpu_seconds": 19.71875,
+            "rss_bytes": 1176936448,
+            "peak_working_set_bytes": 1210503168
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1189404672
+      },
+      "worker_cpu_seconds": 11.9375,
+      "returned_array_bytes": 1822620,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "stored",
+      "graphics": true,
+      "round": 0,
+      "warmup": true,
+      "client_round_trip_seconds": 4.509144600000582,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 4.699999408330768e-06,
+        "client_process_launch_seconds": 7.999988156370819e-07,
+        "client_packet_write_seconds": 0.006282700000156183,
+        "client_reply_wait_seconds": 4.476707500001794,
+        "client_packet_read_seconds": 0.022844099999929313,
+        "worker": {
+          "packet_read_seconds": 0.013117099999362836,
+          "handler_seconds": 4.44928930000242,
+          "packet_write_seconds": 0.013685300000361167,
+          "worker_request_seconds": 4.476091700002144
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.003091799997491762,
+        "client_total_seconds": 4.508935599998949
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0003758000020752661,
+        "capture_prepare_seconds": 0.005029399999330053,
+        "model_prepare_seconds": 0.0004211999985272996,
+        "numeric_seconds": 4.252601300002425,
+        "graphics_seconds": 0.19055739999748766,
+        "worker_handle_seconds": 4.448985099999845,
+        "graphics_requested": true,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.014363799997227034,
+        "network": 2.0618071999961103,
+        "total": 2.0869755999992776,
+        "depth_refinement": 1.7457337000014377,
+        "depth_verification": 0.4194695000005595,
+        "through_depth_verification": 4.252578799998446
+      },
+      "worker": {
+        "session": "65edd0ec723a4db08d64e2e12bc34ed8",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 1
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 44904,
+            "created": 1794853238.6940484,
+            "name": "python.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 4333568,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 988,
+            "created": 1794853238.7054865,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.03125,
+            "rss_bytes": 8138752,
+            "peak_working_set_bytes": 8142848
+          },
+          {
+            "pid": 40600,
+            "created": 1794853238.7234185,
+            "name": "python.exe",
+            "cpu_seconds": 19.09375,
+            "rss_bytes": 1174941696,
+            "peak_working_set_bytes": 1210769408
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1187414016
+      },
+      "worker_cpu_seconds": 10.984375,
+      "returned_array_bytes": 1822620,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "stored",
+      "graphics": true,
+      "round": 1,
+      "warmup": false,
+      "client_round_trip_seconds": 4.4364108000008855,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 5.800000508315861e-06,
+        "client_process_launch_seconds": 6.000009307172149e-07,
+        "client_packet_write_seconds": 0.0095833000013954,
+        "client_reply_wait_seconds": 4.402948399998422,
+        "client_packet_read_seconds": 0.019588700000895187,
+        "worker": {
+          "packet_read_seconds": 0.015072700000018813,
+          "handler_seconds": 4.382414899999276,
+          "packet_write_seconds": 0.004942300001857802,
+          "worker_request_seconds": 4.402429900001152
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.004094799998711096,
+        "client_total_seconds": 4.436226900001202
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0005403000031947158,
+        "capture_prepare_seconds": 0.006717199998092838,
+        "model_prepare_seconds": 0.0003665000003820751,
+        "numeric_seconds": 4.201444400001492,
+        "graphics_seconds": 0.17246119999981602,
+        "worker_handle_seconds": 4.3815296000029775,
+        "graphics_requested": true,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.006755099999281811,
+        "network": 1.9029732999988482,
+        "total": 1.9218107000015152,
+        "depth_refinement": 1.9002833999984432,
+        "depth_verification": 0.3787995000020601,
+        "through_depth_verification": 4.201360399998521
+      },
+      "worker": {
+        "session": "65edd0ec723a4db08d64e2e12bc34ed8",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 2
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 44904,
+            "created": 1794853238.6940484,
+            "name": "python.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 4333568,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 988,
+            "created": 1794853238.7054865,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.03125,
+            "rss_bytes": 8138752,
+            "peak_working_set_bytes": 8142848
+          },
+          {
+            "pid": 40600,
+            "created": 1794853238.7234185,
+            "name": "python.exe",
+            "cpu_seconds": 29.703125,
+            "rss_bytes": 1178705920,
+            "peak_working_set_bytes": 1221767168
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1191178240
+      },
+      "worker_cpu_seconds": 10.609375,
+      "returned_array_bytes": 1822620,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "legacy",
+      "graphics": true,
+      "round": 1,
+      "warmup": false,
+      "client_round_trip_seconds": 4.4095316999992065,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 5.000001692678779e-06,
+        "client_process_launch_seconds": 6.999980541877449e-07,
+        "client_packet_write_seconds": 0.0902886000003491,
+        "client_reply_wait_seconds": 4.286200000002282,
+        "client_packet_read_seconds": 0.029028199998720083,
+        "worker": {
+          "packet_read_seconds": 0.019443900000624126,
+          "handler_seconds": 4.178291300002456,
+          "packet_write_seconds": 0.08769349999784026,
+          "worker_request_seconds": 4.285428700000921
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.0037352999970607925,
+        "client_total_seconds": 4.409262700002728
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0003739000021596439,
+        "capture_prepare_seconds": 0.004628899998351699,
+        "model_prepare_seconds": 0.000347099998180056,
+        "numeric_seconds": 3.9754065000015544,
+        "graphics_seconds": 0.19692270000086864,
+        "worker_handle_seconds": 4.177679100001114,
+        "graphics_requested": true,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.0056083999988914,
+        "network": 1.7586633999999322,
+        "total": 1.7734832999994978,
+        "depth_refinement": 1.7620790000000852,
+        "depth_verification": 0.43944140000166954,
+        "through_depth_verification": 3.975382600001467
+      },
+      "worker": {
+        "session": "e301133811f145ae974e68ca08dcbe72",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 2
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 24936,
+            "created": 1794853232.106222,
+            "name": "python.exe",
+            "cpu_seconds": 0.03125,
+            "rss_bytes": 4321280,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 19756,
+            "created": 1794853232.1200523,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 8114176,
+            "peak_working_set_bytes": 8138752
+          },
+          {
+            "pid": 13824,
+            "created": 1794853232.139776,
+            "name": "python.exe",
+            "cpu_seconds": 29.625,
+            "rss_bytes": 1178062848,
+            "peak_working_set_bytes": 1222668288
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1190498304
+      },
+      "worker_cpu_seconds": 9.90625,
+      "returned_array_bytes": 1822620,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "legacy",
+      "graphics": true,
+      "round": 2,
+      "warmup": false,
+      "client_round_trip_seconds": 4.366782199998852,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 5.099998816149309e-06,
+        "client_process_launch_seconds": 6.000009307172149e-07,
+        "client_packet_write_seconds": 0.09310850000110804,
+        "client_reply_wait_seconds": 4.236233199997514,
+        "client_packet_read_seconds": 0.0345517000023392,
+        "worker": {
+          "packet_read_seconds": 0.022720399996615015,
+          "handler_seconds": 4.130419700002676,
+          "packet_write_seconds": 0.08251580000069225,
+          "worker_request_seconds": 4.235655899999983
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.002542199999879813,
+        "client_total_seconds": 4.36644570000135
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0005636999994749203,
+        "capture_prepare_seconds": 0.007601500001328532,
+        "model_prepare_seconds": 0.0006385000015143305,
+        "numeric_seconds": 3.9346523999993224,
+        "graphics_seconds": 0.18622210000103223,
+        "worker_handle_seconds": 4.129678200002672,
+        "graphics_requested": true,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.008674199998495169,
+        "network": 1.8357281000025978,
+        "total": 1.8544575999985682,
+        "depth_refinement": 1.6628003000005265,
+        "depth_verification": 0.4169106000008469,
+        "through_depth_verification": 3.9346357000031276
+      },
+      "worker": {
+        "session": "e301133811f145ae974e68ca08dcbe72",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 3
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 24936,
+            "created": 1794853232.106222,
+            "name": "python.exe",
+            "cpu_seconds": 0.03125,
+            "rss_bytes": 4321280,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 19756,
+            "created": 1794853232.1200523,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 8114176,
+            "peak_working_set_bytes": 8138752
+          },
+          {
+            "pid": 13824,
+            "created": 1794853232.139776,
+            "name": "python.exe",
+            "cpu_seconds": 39.921875,
+            "rss_bytes": 1179410432,
+            "peak_working_set_bytes": 1222705152
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1191845888
+      },
+      "worker_cpu_seconds": 10.296875,
+      "returned_array_bytes": 1822620,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "stored",
+      "graphics": true,
+      "round": 2,
+      "warmup": false,
+      "client_round_trip_seconds": 4.244533799999772,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 6.800000846851617e-06,
+        "client_process_launch_seconds": 7.999988156370819e-07,
+        "client_packet_write_seconds": 0.009989400001359172,
+        "client_reply_wait_seconds": 4.214572299999418,
+        "client_packet_read_seconds": 0.017506899999716552,
+        "worker": {
+          "packet_read_seconds": 0.01830349999727332,
+          "handler_seconds": 4.180669400000625,
+          "packet_write_seconds": 0.015106500002730172,
+          "worker_request_seconds": 4.214079400000628
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.0022527000000991393,
+        "client_total_seconds": 4.244332199999917
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0005715000006603077,
+        "capture_prepare_seconds": 0.007596100000228034,
+        "model_prepare_seconds": 0.0004029000010632444,
+        "numeric_seconds": 4.005478099999891,
+        "graphics_seconds": 0.16591999999945983,
+        "worker_handle_seconds": 4.1799686000013025,
+        "graphics_requested": true,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.0086397000013676,
+        "network": 1.876747799997247,
+        "total": 1.8943064000013692,
+        "depth_refinement": 1.6373309000009613,
+        "depth_verification": 0.4734886000005645,
+        "through_depth_verification": 4.0054653999977745
+      },
+      "worker": {
+        "session": "65edd0ec723a4db08d64e2e12bc34ed8",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 3
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 44904,
+            "created": 1794853238.6940484,
+            "name": "python.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 4321280,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 988,
+            "created": 1794853238.7054865,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.03125,
+            "rss_bytes": 8122368,
+            "peak_working_set_bytes": 8142848
+          },
+          {
+            "pid": 40600,
+            "created": 1794853238.7234185,
+            "name": "python.exe",
+            "cpu_seconds": 39.9375,
+            "rss_bytes": 1176166400,
+            "peak_working_set_bytes": 1222754304
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1188610048
+      },
+      "worker_cpu_seconds": 10.234375,
+      "returned_array_bytes": 1822620,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "stored",
+      "graphics": true,
+      "round": 3,
+      "warmup": false,
+      "client_round_trip_seconds": 4.096823700001551,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 6.300000677583739e-06,
+        "client_process_launch_seconds": 6.000009307172149e-07,
+        "client_packet_write_seconds": 0.005698799999663606,
+        "client_reply_wait_seconds": 4.071786299999076,
+        "client_packet_read_seconds": 0.016817100000480423,
+        "worker": {
+          "packet_read_seconds": 0.013467200002196478,
+          "handler_seconds": 4.043947399997705,
+          "packet_write_seconds": 0.013726100001804298,
+          "worker_request_seconds": 4.071140700001706
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.002299199997651158,
+        "client_total_seconds": 4.096611799999664
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0003651000006357208,
+        "capture_prepare_seconds": 0.005283200000121724,
+        "model_prepare_seconds": 0.0004406000007293187,
+        "numeric_seconds": 3.871612800001458,
+        "graphics_seconds": 0.1655596999989939,
+        "worker_handle_seconds": 4.0432614000019385,
+        "graphics_requested": true,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.0073502000013832,
+        "network": 1.848924399993848,
+        "total": 1.8657290999981342,
+        "depth_refinement": 1.623178599998937,
+        "depth_verification": 0.38227009999900474,
+        "through_depth_verification": 3.871599000001879
+      },
+      "worker": {
+        "session": "65edd0ec723a4db08d64e2e12bc34ed8",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 4
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 44904,
+            "created": 1794853238.6940484,
+            "name": "python.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 4321280,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 988,
+            "created": 1794853238.7054865,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.03125,
+            "rss_bytes": 8122368,
+            "peak_working_set_bytes": 8142848
+          },
+          {
+            "pid": 40600,
+            "created": 1794853238.7234185,
+            "name": "python.exe",
+            "cpu_seconds": 50.03125,
+            "rss_bytes": 1178632192,
+            "peak_working_set_bytes": 1222754304
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1191075840
+      },
+      "worker_cpu_seconds": 10.09375,
+      "returned_array_bytes": 1822620,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    },
+    {
+      "method": "legacy",
+      "graphics": true,
+      "round": 3,
+      "warmup": false,
+      "client_round_trip_seconds": 4.273884599999292,
+      "request_timing": {
+        "operation": "preview",
+        "client_lock_wait_seconds": 4.999998054699972e-06,
+        "client_process_launch_seconds": 1.0000003385357559e-06,
+        "client_packet_write_seconds": 0.07546770000044489,
+        "client_reply_wait_seconds": 4.1678006000001915,
+        "client_packet_read_seconds": 0.02838749999864376,
+        "worker": {
+          "packet_read_seconds": 0.018153900000470458,
+          "handler_seconds": 4.066699799997878,
+          "packet_write_seconds": 0.08228330000201822,
+          "worker_request_seconds": 4.167137000000366
+        },
+        "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+        "client_cleanup_seconds": 0.0020059999988006894,
+        "client_total_seconds": 4.273671999999351
+      },
+      "execution_profile": {
+        "recipe_lookup_seconds": 0.0003832000002148561,
+        "capture_prepare_seconds": 0.004354600001533981,
+        "model_prepare_seconds": 0.00038270000004558824,
+        "numeric_seconds": 3.9053969999986293,
+        "graphics_seconds": 0.1555606000001717,
+        "worker_handle_seconds": 4.066078100000595,
+        "graphics_requested": true,
+        "scope": "Worker handler only; packet transfer and process/import startup are separate"
+      },
+      "seconds": {
+        "preprocess": 0.005728299998736475,
+        "network": 1.7694470999995247,
+        "total": 1.7852826000016648,
+        "depth_refinement": 1.7326266999989457,
+        "depth_verification": 0.38705660000050557,
+        "through_depth_verification": 3.9053831000019272
+      },
+      "worker": {
+        "session": "e301133811f145ae974e68ca08dcbe72",
+        "model_cache_hit": true,
+        "model_load_count": 1,
+        "recipe_cache_hit": true,
+        "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+        "inference_request_count": 4
+      },
+      "owned_processes": {
+        "complete": true,
+        "processes": [
+          {
+            "pid": 24936,
+            "created": 1794853232.106222,
+            "name": "python.exe",
+            "cpu_seconds": 0.03125,
+            "rss_bytes": 4321280,
+            "peak_working_set_bytes": 4333568
+          },
+          {
+            "pid": 19756,
+            "created": 1794853232.1200523,
+            "name": "conhost.exe",
+            "cpu_seconds": 0.0,
+            "rss_bytes": 8114176,
+            "peak_working_set_bytes": 8138752
+          },
+          {
+            "pid": 13824,
+            "created": 1794853232.139776,
+            "name": "python.exe",
+            "cpu_seconds": 49.890625,
+            "rss_bytes": 1179344896,
+            "peak_working_set_bytes": 1223012352
+          }
+        ],
+        "problems": [],
+        "tree_rss_bytes": 1191780352
+      },
+      "worker_cpu_seconds": 9.96875,
+      "returned_array_bytes": 1822620,
+      "candidates_pose_fit_exact": true,
+      "result_arrays_bit_identical": true,
+      "accepted_count": 1
+    }
+  ],
+  "preparations": [
+    {
+      "method": "legacy",
+      "graphics": false,
+      "readiness": {
+        "prepared": {
+          "schema": "simple_gdrnpp_preparation/v1",
+          "ready": true,
+          "recipe_content_sha256": "4ce14f2b81f4a5675d961e966e2f050f9990046165bddef5bea1ad48adebb3d4",
+          "recipe_archive_sha256": "0f748bc8019bb1b08fd39e5f37a98de21f4664e4216170baa26911f752020134",
+          "binding": {
+            "provider": "GDRNPP",
+            "dataset": "T-LESS",
+            "object_id": 6,
+            "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+            "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+            "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+            "checkpoint_bytes": 410204745,
+            "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+          },
+          "worker": {
+            "session": "bc70e7ffe25c4981b7c633311e313aeb",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+            "inference_request_count": 0
+          },
+          "inspection_performed": false,
+          "seconds": {
+            "recipe_lookup": 0.22299279999788268,
+            "model_prepare": 11.801113699999405,
+            "total": 12.024106499997288
+          },
+          "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+        },
+        "benchmark_transport": {
+          "method": "legacy",
+          "benchmark_only": true
+        },
+        "request_timing": {
+          "operation": "prepare",
+          "client_lock_wait_seconds": 4.699999408330768e-06,
+          "client_process_launch_seconds": 0.00970459999734885,
+          "client_packet_write_seconds": 0.01107390000106534,
+          "client_reply_wait_seconds": 12.266308199999912,
+          "client_packet_read_seconds": 0.012944400001288159,
+          "worker": {
+            "packet_read_seconds": 0.01174669999818434,
+            "handler_seconds": 12.024120300000504,
+            "packet_write_seconds": 0.001394099999743048,
+            "worker_request_seconds": 12.037261099998432
+          },
+          "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+          "client_cleanup_seconds": 0.002798199999233475,
+          "client_total_seconds": 12.302842899996904
+        }
+      }
+    },
+    {
+      "method": "stored",
+      "graphics": false,
+      "readiness": {
+        "prepared": {
+          "schema": "simple_gdrnpp_preparation/v1",
+          "ready": true,
+          "recipe_content_sha256": "4ce14f2b81f4a5675d961e966e2f050f9990046165bddef5bea1ad48adebb3d4",
+          "recipe_archive_sha256": "0f748bc8019bb1b08fd39e5f37a98de21f4664e4216170baa26911f752020134",
+          "binding": {
+            "provider": "GDRNPP",
+            "dataset": "T-LESS",
+            "object_id": 6,
+            "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+            "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+            "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+            "checkpoint_bytes": 410204745,
+            "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+          },
+          "worker": {
+            "session": "7985df8b126043ec99fe832901e2a867",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+            "inference_request_count": 0
+          },
+          "inspection_performed": false,
+          "seconds": {
+            "recipe_lookup": 0.2774836000025971,
+            "model_prepare": 6.247621099999378,
+            "total": 6.525104700001975
+          },
+          "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+        },
+        "benchmark_transport": {
+          "method": "stored",
+          "benchmark_only": true
+        },
+        "request_timing": {
+          "operation": "prepare",
+          "client_lock_wait_seconds": 6.70000008540228e-06,
+          "client_process_launch_seconds": 0.013924999999289867,
+          "client_packet_write_seconds": 0.0023992999995243736,
+          "client_reply_wait_seconds": 6.878703200000018,
+          "client_packet_read_seconds": 0.009976000001188368,
+          "worker": {
+            "packet_read_seconds": 0.0022403000002668705,
+            "handler_seconds": 6.5251184000007925,
+            "packet_write_seconds": 0.0015993000015441794,
+            "worker_request_seconds": 6.5289580000026035
+          },
+          "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+          "client_cleanup_seconds": 0.0021306000016920734,
+          "client_total_seconds": 6.907147199999599
+        }
+      }
+    },
+    {
+      "method": "legacy",
+      "graphics": true,
+      "readiness": {
+        "prepared": {
+          "schema": "simple_gdrnpp_preparation/v1",
+          "ready": true,
+          "recipe_content_sha256": "4ce14f2b81f4a5675d961e966e2f050f9990046165bddef5bea1ad48adebb3d4",
+          "recipe_archive_sha256": "0f748bc8019bb1b08fd39e5f37a98de21f4664e4216170baa26911f752020134",
+          "binding": {
+            "provider": "GDRNPP",
+            "dataset": "T-LESS",
+            "object_id": 6,
+            "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+            "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+            "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+            "checkpoint_bytes": 410204745,
+            "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+          },
+          "worker": {
+            "session": "e301133811f145ae974e68ca08dcbe72",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+            "inference_request_count": 0
+          },
+          "inspection_performed": false,
+          "seconds": {
+            "recipe_lookup": 0.28812899999684305,
+            "model_prepare": 5.916466800001217,
+            "total": 6.20459579999806
+          },
+          "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+        },
+        "benchmark_transport": {
+          "method": "legacy",
+          "benchmark_only": true
+        },
+        "request_timing": {
+          "operation": "prepare",
+          "client_lock_wait_seconds": 4.400000761961564e-06,
+          "client_process_launch_seconds": 0.011221900000236928,
+          "client_packet_write_seconds": 0.0017994000008911826,
+          "client_reply_wait_seconds": 6.565905499999644,
+          "client_packet_read_seconds": 0.0073774999982560985,
+          "worker": {
+            "packet_read_seconds": 0.002226900000096066,
+            "handler_seconds": 6.204608099997131,
+            "packet_write_seconds": 0.0013617000004160218,
+            "worker_request_seconds": 6.208196699997643
+          },
+          "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+          "client_cleanup_seconds": 0.0016860999967320822,
+          "client_total_seconds": 6.587998599999992
+        }
+      }
+    },
+    {
+      "method": "stored",
+      "graphics": true,
+      "readiness": {
+        "prepared": {
+          "schema": "simple_gdrnpp_preparation/v1",
+          "ready": true,
+          "recipe_content_sha256": "4ce14f2b81f4a5675d961e966e2f050f9990046165bddef5bea1ad48adebb3d4",
+          "recipe_archive_sha256": "0f748bc8019bb1b08fd39e5f37a98de21f4664e4216170baa26911f752020134",
+          "binding": {
+            "provider": "GDRNPP",
+            "dataset": "T-LESS",
+            "object_id": 6,
+            "source_commit": "990003d2c13d4a06fec98e27d980595a9831ccc7",
+            "source_config": "configs/gdrn/tlessPbrSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/6.py",
+            "checkpoint_sha256": "b1dc54a1a6572e4db560f28a05a0821ed4dc05b18c07052f651f890753d8e606",
+            "checkpoint_bytes": 410204745,
+            "metric_geometry_sha256": "7f93f2e6abe6582a80aab6aa2effd42c4886d44c4092710de44be0913b270efa"
+          },
+          "worker": {
+            "session": "65edd0ec723a4db08d64e2e12bc34ed8",
+            "model_cache_hit": false,
+            "model_load_count": 1,
+            "recipe_cache_hit": false,
+            "implementation_sha256": "f35c3fc5325ee916ac8ba7d5b9b4f12260d896c05e00854fe75b7350bb292fc6",
+            "inference_request_count": 0
+          },
+          "inspection_performed": false,
+          "seconds": {
+            "recipe_lookup": 0.27260759999990114,
+            "model_prepare": 6.514276699999755,
+            "total": 6.786884299999656
+          },
+          "scope": "Validated model/recipe resources only; no capture, network forward or inspection result"
+        },
+        "benchmark_transport": {
+          "method": "stored",
+          "benchmark_only": true
+        },
+        "request_timing": {
+          "operation": "prepare",
+          "client_lock_wait_seconds": 3.9000005926936865e-06,
+          "client_process_launch_seconds": 0.011171699999977136,
+          "client_packet_write_seconds": 0.001271899996936554,
+          "client_reply_wait_seconds": 7.083046800002194,
+          "client_packet_read_seconds": 0.013647100000525825,
+          "worker": {
+            "packet_read_seconds": 0.0018920999973488506,
+            "handler_seconds": 6.786898800000927,
+            "packet_write_seconds": 0.0013715999994019512,
+            "worker_request_seconds": 6.7901624999976775
+          },
+          "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+          "client_cleanup_seconds": 0.0033000000003085006,
+          "client_total_seconds": 7.112448399999266
+        }
+      }
+    }
+  ],
+  "graphics_sha256": {
+    "overlay": "46ee878e3055f65119f22a4ce028ccabade093002645085d0996a93f56af77fa",
+    "points": "d65454be14bf8160d0c9d6faa611fb17a9cce0b492c4cd7baa31f93b630f24e8",
+    "colors": "26795f4d00cf045af81325eae698fe01f150329a858d6a3116e087a533287312"
+  },
+  "stable_result": {
+    "candidates": [
+      {
+        "id": "supplied_instance_0",
+        "object_id": 6,
+        "capture_id": "scene000006_frame000002_all_visible_boxes",
+        "pose": {
+          "model": "pose_3d_v1",
+          "source_to_target": [
+            [
+              -0.8576746674400246,
+              -0.015376754687021307,
+              -0.5139627615371936,
+              -0.026244027435802918
+            ],
+            [
+              -0.4901713614265574,
+              0.32639276194844236,
+              0.8082077711732933,
+              -0.041651478978925786
+            ],
+            [
+              0.15532611264329726,
+              0.9451091579087373,
+              -0.28747604833822105,
+              0.7165341709435432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "units": "m",
+          "source_frame": "tless_object6",
+          "target_frame": "camera"
+        },
+        "detection_source": "published_visible_bbox",
+        "detection_score": null,
+        "network_score": null,
+        "qualification": "measured_depth_gates",
+        "fit": {
+          "status": "accepted",
+          "reason": "fit_gates",
+          "coverage": 0.8598474404926018,
+          "contradiction": 0.045032625677786965,
+          "rmse_m": 0.001488388399593532,
+          "rendered_samples": 10881,
+          "supported_samples": 9356,
+          "unknown_samples": 320,
+          "occluded_samples": 669,
+          "outside_target_samples": 49
+        },
+        "raw_rotation6d": [
+          -1.9215848445892334,
+          -1.0831698179244995,
+          0.39647984504699707,
+          0.14261361956596375,
+          0.6464871168136597,
+          1.4260748624801636
+        ],
+        "raw_centroid_z": [
+          -0.03147884085774422,
+          0.037159308791160583,
+          2.578911542892456
+        ],
+        "crop": {
+          "source_xyxy": [
+            261.0,
+            110.0,
+            415.0,
+            251.0
+          ],
+          "source_size": [
+            720,
+            540
+          ],
+          "working_size": [
+            720,
+            540
+          ],
+          "padded_scale": 231.0,
+          "source_from_input": [
+            [
+              0.90234375,
+              0.0,
+              222.49999999999997
+            ],
+            [
+              3.423320244141952e-17,
+              0.90234375,
+              65.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "source_from_output": [
+            [
+              3.609375,
+              0.0,
+              222.49999999999997
+            ],
+            [
+              1.369328097656781e-16,
+              3.609375,
+              65.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "depth_refinement": {
+          "method": "projective_icp_v1",
+          "execution_backend": "numpy_batched_first_return_v1",
+          "status": "applied",
+          "reason": "improved_fit_without_worsening_gate_violations",
+          "stop_reason": "iteration_budget",
+          "settings": {
+            "strides": [
+              4,
+              2,
+              1
+            ],
+            "iterations_per_level": 4,
+            "maximum_correspondence_m": 0.02,
+            "maximum_translation_m": 0.02,
+            "maximum_rotation_degrees": 15.0,
+            "minimum_correspondences": 50
+          },
+          "fit_before": {
+            "status": "rejected",
+            "reason": "fit_gates",
+            "coverage": 0.7239856472536572,
+            "contradiction": 0.14895574569877634,
+            "rmse_m": 0.0030173228587955236,
+            "rendered_samples": 10869,
+            "supported_samples": 7869,
+            "unknown_samples": 230,
+            "occluded_samples": 1147,
+            "outside_target_samples": 11
+          },
+          "proposed_fit": {
+            "status": "accepted",
+            "reason": "fit_gates",
+            "coverage": 0.8598474404926018,
+            "contradiction": 0.045032625677786965,
+            "rmse_m": 0.001488388399593532,
+            "rendered_samples": 10881,
+            "supported_samples": 9356,
+            "unknown_samples": 320,
+            "occluded_samples": 669,
+            "outside_target_samples": 49
+          },
+          "iterations": [
+            {
+              "stride": 4,
+              "iteration": 0,
+              "rank": 6,
+              "samples": 670,
+              "robust_scale_m": 0.0025,
+              "point_to_plane_rmse_m": 0.003207438370048811,
+              "rotation_step_degrees": 3.0000000000000004,
+              "translation_step_m": 0.0032093004710316507,
+              "singular_values": [
+                21.406549329549804,
+                9.531064305315962,
+                9.063332906769617,
+                8.153029276378504,
+                5.850735112476012,
+                5.079839770135155
+              ],
+              "line_search_fraction": 1.0
+            },
+            {
+              "stride": 4,
+              "iteration": 1,
+              "rank": 6,
+              "samples": 674,
+              "robust_scale_m": 0.0025,
+              "point_to_plane_rmse_m": 0.0012814738560085507,
+              "rotation_step_degrees": 0.23481919840444404,
+              "translation_step_m": 0.0010192179768298848,
+              "singular_values": [
+                22.440956169354294,
+                9.797641441461023,
+                9.523222096484618,
+                8.615562673633908,
+                6.2214778230794785,
+                5.267104588914417
+              ],
+              "line_search_fraction": 1.0
+            },
+            {
+              "stride": 4,
+              "iteration": 2,
+              "rank": 6,
+              "samples": 670,
+              "robust_scale_m": 0.0025,
+              "point_to_plane_rmse_m": 0.0012205834114481175,
+              "rotation_step_degrees": 0.11608292962451999,
+              "translation_step_m": 0.00046639587729986484,
+              "singular_values": [
+                22.442575809201635,
+                9.734301605699919,
+                9.504126204958643,
+                8.501627575639402,
+                6.350695329948081,
+                5.0233599497854025
+              ],
+              "line_search_fraction": 1.0
+            },
+            {
+              "stride": 4,
+              "iteration": 3,
+              "rank": 6,
+              "samples": 669,
+              "robust_scale_m": 0.0025,
+              "point_to_plane_rmse_m": 0.001184308263391732,
+              "rotation_step_degrees": 0.2283584052078584,
+              "translation_step_m": 0.0001515232691928296,
+              "singular_values": [
+                22.46550765326488,
+                9.735805147417434,
+                9.456116229477695,
+                8.400669783310855,
+                6.360978046291627,
+                4.957344822011628
+              ],
+              "line_search_fraction": 1.0
+            },
+            {
+              "stride": 2,
+              "iteration": 0,
+              "rank": 6,
+              "samples": 2943,
+              "robust_scale_m": 0.0025,
+              "point_to_plane_rmse_m": 0.0013431566822595328,
+              "rotation_step_degrees": 0.3294638639531823,
+              "translation_step_m": 0.0002489342727659962,
+              "singular_values": [
+                46.755886558194625,
+                20.351448222980853,
+                19.531418359944396,
+                18.56708551339988,
+                13.851182879282234,
+                10.681504871415807
+              ],
+              "line_search_fraction": 1.0
+            },
+            {
+              "stride": 2,
+              "iteration": 1,
+              "rank": 6,
+              "samples": 2940,
+              "robust_scale_m": 0.0025,
+              "point_to_plane_rmse_m": 0.0013585903692104751,
+              "rotation_step_degrees": 0.1568930877122071,
+              "translation_step_m": 0.00015780967470590797,
+              "singular_values": [
+                46.76231175107123,
+                20.14909420069363,
+                19.54133490222492,
+                18.590695816978336,
+                13.850577999632248,
+                10.672679064456911
+              ],
+              "line_search_fraction": 1.0
+            },
+            {
+              "stride": 2,
+              "iteration": 2,
+              "rank": 6,
+              "samples": 2942,
+              "robust_scale_m": 0.0025,
+              "point_to_plane_rmse_m": 0.0013956757433919791,
+              "rotation_step_degrees": 0.13710308587176492,
+              "translation_step_m": 8.449320125090385e-05,
+              "singular_values": [
+                46.78166848975359,
+                20.11439661285138,
+                19.526844735382028,
+                18.543990049104192,
+                13.856505600605427,
+                10.595717162558323
+              ],
+              "line_search_fraction": 1.0
+            },
+            {
+              "stride": 2,
+              "iteration": 3,
+              "rank": 6,
+              "samples": 2936,
+              "robust_scale_m": 0.0025,
+              "point_to_plane_rmse_m": 0.0014048321210481023,
+              "rotation_step_degrees": 0.056010692557518164,
+              "translation_step_m": 4.8781743777248415e-05,
+              "singular_values": [
+                46.726860447724945,
+                20.091612340420962,
+                19.46936467401818,
+                18.55547188857182,
+                13.85000527796014,
+                10.532606950564332
+              ],
+              "line_search_fraction": 1.0
+            },
+            {
+              "stride": 1,
+              "iteration": 0,
+              "rank": 6,
+              "samples": 12195,
+              "robust_scale_m": 0.0025,
+              "point_to_plane_rmse_m": 0.0015456575454193494,
+              "rotation_step_degrees": 0.25480093816934773,
+              "translation_step_m": 0.0002155334293654883,
+              "singular_values": [
+                95.2931828100907,
+                40.17218288275342,
+                39.64641227480837,
+                37.89162105086993,
+                28.78941648047397,
+                21.161809499772623
+              ],
+              "line_search_fraction": 1.0
+            },
+            {
+              "stride": 1,
+              "iteration": 1,
+              "rank": 6,
+              "samples": 12201,
+              "robust_scale_m": 0.0025,
+              "point_to_plane_rmse_m": 0.0015645066457115196,
+              "rotation_step_degrees": 0.10356154033851742,
+              "translation_step_m": 0.00012894951217937243,
+              "singular_values": [
+                95.35528253798793,
+                40.021600817255454,
+                39.69868007128899,
+                37.842237564495655,
+                28.746868791396867,
+                21.142885195760403
+              ],
+              "line_search_fraction": 1.0
+            },
+            {
+              "stride": 1,
+              "iteration": 2,
+              "rank": 6,
+              "samples": 12214,
+              "robust_scale_m": 0.0025,
+              "point_to_plane_rmse_m": 0.0015666604706023365,
+              "rotation_step_degrees": 0.06360108956103204,
+              "translation_step_m": 8.211029252953678e-05,
+              "singular_values": [
+                95.31468372787432,
+                40.08945648303718,
+                39.6898637268305,
+                37.99447459766132,
+                28.721010306395325,
+                21.28221755507738
+              ],
+              "line_search_fraction": 1.0
+            },
+            {
+              "stride": 1,
+              "iteration": 3,
+              "rank": 6,
+              "samples": 12221,
+              "robust_scale_m": 0.0025,
+              "point_to_plane_rmse_m": 0.0015713048095217458,
+              "rotation_step_degrees": 0.047197070852760564,
+              "translation_step_m": 4.619706850763282e-05,
+              "singular_values": [
+                95.31726402090071,
+                40.11772027124035,
+                39.69107934970481,
+                38.01039677219584,
+                28.721018829234925,
+                21.34367408492005
+              ],
+              "line_search_fraction": 1.0
+            }
+          ],
+          "minimum_observed_rank": 6,
+          "all_solved_systems_full_rank": true,
+          "same_depth_used_for_refinement_and_verification": true,
+          "pose_labels_used": false,
+          "before_quality": 0.5750299015548809,
+          "proposed_quality": 0.8148148148148148
+        },
+        "unrefined_pose": {
+          "model": "pose_3d_v1",
+          "source_to_target": [
+            [
+              -0.8627793983127751,
+              -0.04382285578896166,
+              -0.5036777413759177,
+              -0.026514711261515687
+            ],
+            [
+              -0.4926224954379369,
+              0.29697256550753165,
+              0.8180038950545254,
+              -0.04589610446439386
+            ],
+            [
+              0.11373120431766189,
+              0.9538798942457981,
+              -0.27780993595996445,
+              0.7145036309312432
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "units": "m",
+          "source_frame": "tless_object6",
+          "target_frame": "camera"
+        }
+      },
+      {
+        "id": "supplied_instance_1",
+        "object_id": 6,
+        "capture_id": "scene000006_frame000002_all_visible_boxes",
+        "pose": {
+          "model": "pose_3d_v1",
+          "source_to_target": [
+            [
+              -0.8625426343620451,
+              -0.011731293453927817,
+              -0.5058483771464343,
+              -0.03284997448085613
+            ],
+            [
+              -0.4683819989020201,
+              0.3967062844665081,
+              0.7894570456771705,
+              -0.0403115617180306
+            ],
+            [
+              0.19141187792906494,
+              0.9178706339232539,
+              -0.3476708103493777,
+              0.6547580007779397
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "units": "m",
+          "source_frame": "tless_object6",
+          "target_frame": "camera"
+        },
+        "detection_source": "published_visible_bbox",
+        "detection_score": null,
+        "network_score": null,
+        "qualification": "measured_depth_gates",
+        "fit": {
+          "status": "rejected",
+          "reason": "fit_gates",
+          "coverage": 0.0,
+          "contradiction": 0.9748860487979265,
+          "rmse_m": null,
+          "rendered_samples": 11189,
+          "supported_samples": 0,
+          "unknown_samples": 281,
+          "occluded_samples": 0,
+          "outside_target_samples": 604
+        },
+        "raw_rotation6d": [
+          -1.7479994297027588,
+          -0.9332277178764343,
+          0.5394852757453918,
+          0.10429371148347855,
+          0.7978425025939941,
+          1.5082257986068726
+        ],
+        "raw_centroid_z": [
+          -0.22838042676448822,
+          -0.0841556042432785,
+          3.6216301918029785
+        ],
+        "crop": {
+          "source_xyxy": [
+            255.0,
+            115.0,
+            491.0,
+            292.0
+          ],
+          "source_size": [
+            720,
+            540
+          ],
+          "working_size": [
+            720,
+            540
+          ],
+          "padded_scale": 354.0,
+          "source_from_input": [
+            [
+              1.3828125,
+              0.0,
+              196.0
+            ],
+            [
+              1.821285247281414e-17,
+              1.3828125,
+              26.5
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "source_from_output": [
+            [
+              5.53125,
+              0.0,
+              196.0
+            ],
+            [
+              7.285140989125656e-17,
+              5.53125,
+              26.5
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "depth_refinement": {
+          "method": "projective_icp_v1",
+          "execution_backend": "numpy_batched_first_return_v1",
+          "status": "unavailable",
+          "reason": "no_safe_fit_improvement",
+          "stop_reason": "insufficient_correspondences",
+          "settings": {
+            "strides": [
+              4,
+              2,
+              1
+            ],
+            "iterations_per_level": 4,
+            "maximum_correspondence_m": 0.02,
+            "maximum_translation_m": 0.02,
+            "maximum_rotation_degrees": 15.0,
+            "minimum_correspondences": 50
+          },
+          "fit_before": {
+            "status": "rejected",
+            "reason": "fit_gates",
+            "coverage": 0.0,
+            "contradiction": 0.9748860487979265,
+            "rmse_m": null,
+            "rendered_samples": 11189,
+            "supported_samples": 0,
+            "unknown_samples": 281,
+            "occluded_samples": 0,
+            "outside_target_samples": 604
+          },
+          "proposed_fit": {
+            "status": "rejected",
+            "reason": "fit_gates",
+            "coverage": 0.0,
+            "contradiction": 0.9748860487979265,
+            "rmse_m": null,
+            "rendered_samples": 11189,
+            "supported_samples": 0,
+            "unknown_samples": 281,
+            "occluded_samples": 0,
+            "outside_target_samples": 604
+          },
+          "iterations": [],
+          "minimum_observed_rank": 0,
+          "all_solved_systems_full_rank": false,
+          "same_depth_used_for_refinement_and_verification": true,
+          "pose_labels_used": false,
+          "before_quality": -0.9748860487979265,
+          "proposed_quality": -0.9748860487979265
+        }
+      },
+      {
+        "id": "supplied_instance_2",
+        "object_id": 6,
+        "capture_id": "scene000006_frame000002_all_visible_boxes",
+        "pose": {
+          "model": "pose_3d_v1",
+          "source_to_target": [
+            [
+              -0.7656168190411065,
+              -0.6345385410291243,
+              -0.10579095589892439,
+              -0.14597457696859353
+            ],
+            [
+              -0.5091482705819098,
+              0.4971959051159857,
+              0.7025412945153802,
+              0.05220660496989962
+            ],
+            [
+              -0.3931906979632507,
+              0.591740713391031,
+              -0.7037357480977116,
+              1.075653195848652
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "units": "m",
+          "source_frame": "tless_object6",
+          "target_frame": "camera"
+        },
+        "detection_source": "published_visible_bbox",
+        "detection_score": null,
+        "network_score": null,
+        "qualification": "measured_depth_gates",
+        "fit": {
+          "status": "rejected",
+          "reason": "fit_gates",
+          "coverage": 0.0,
+          "contradiction": 0.0,
+          "rmse_m": null,
+          "rendered_samples": 11793,
+          "supported_samples": 0,
+          "unknown_samples": 0,
+          "occluded_samples": 11793,
+          "outside_target_samples": 1254
+        },
+        "raw_rotation6d": [
+          -0.40100574493408203,
+          -0.24270862340927124,
+          -0.1532687246799469,
+          -0.17050401866436005,
+          0.31112122535705566,
+          0.4044775366783142
+        ],
+        "raw_centroid_z": [
+          -0.004769224673509598,
+          -0.025675227865576744,
+          2.1429028511047363
+        ],
+        "crop": {
+          "source_xyxy": [
+            185.0,
+            267.0,
+            270.0,
+            351.0
+          ],
+          "source_size": [
+            720,
+            540
+          ],
+          "working_size": [
+            720,
+            540
+          ],
+          "padded_scale": 127.5,
+          "source_from_input": [
+            [
+              0.498046875,
+              0.0,
+              163.74999999999997
+            ],
+            [
+              -6.197823847549004e-17,
+              0.498046875,
+              245.25
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "source_from_output": [
+            [
+              1.9921875,
+              0.0,
+              163.74999999999997
+            ],
+            [
+              -2.479129539019602e-16,
+              1.9921875,
+              245.25
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "depth_refinement": {
+          "method": "projective_icp_v1",
+          "execution_backend": "numpy_batched_first_return_v1",
+          "status": "unavailable",
+          "reason": "no_safe_fit_improvement",
+          "stop_reason": "insufficient_correspondences",
+          "settings": {
+            "strides": [
+              4,
+              2,
+              1
+            ],
+            "iterations_per_level": 4,
+            "maximum_correspondence_m": 0.02,
+            "maximum_translation_m": 0.02,
+            "maximum_rotation_degrees": 15.0,
+            "minimum_correspondences": 50
+          },
+          "fit_before": {
+            "status": "rejected",
+            "reason": "fit_gates",
+            "coverage": 0.0,
+            "contradiction": 0.0,
+            "rmse_m": null,
+            "rendered_samples": 11793,
+            "supported_samples": 0,
+            "unknown_samples": 0,
+            "occluded_samples": 11793,
+            "outside_target_samples": 1254
+          },
+          "proposed_fit": {
+            "status": "rejected",
+            "reason": "fit_gates",
+            "coverage": 0.0,
+            "contradiction": 0.0,
+            "rmse_m": null,
+            "rendered_samples": 11793,
+            "supported_samples": 0,
+            "unknown_samples": 0,
+            "occluded_samples": 11793,
+            "outside_target_samples": 1254
+          },
+          "iterations": [],
+          "minimum_observed_rank": 0,
+          "all_solved_systems_full_rank": false,
+          "same_depth_used_for_refinement_and_verification": true,
+          "pose_labels_used": false,
+          "before_quality": 0.0,
+          "proposed_quality": 0.0
+        }
+      },
+      {
+        "id": "supplied_instance_3",
+        "object_id": 6,
+        "capture_id": "scene000006_frame000002_all_visible_boxes",
+        "pose": {
+          "model": "pose_3d_v1",
+          "source_to_target": [
+            [
+              0.044001426518067564,
+              -0.9911355574647511,
+              0.12535621721084284,
+              -0.04165380225294407
+            ],
+            [
+              -0.6570362026694919,
+              -0.12323265128189476,
+              -0.7437184561644878,
+              0.10974331077179654
+            ],
+            [
+              0.7525737856489749,
+              -0.04963889993817183,
+              -0.6566343554573572,
+              0.9713597940214982
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "units": "m",
+          "source_frame": "tless_object6",
+          "target_frame": "camera"
+        },
+        "detection_source": "published_visible_bbox",
+        "detection_score": null,
+        "network_score": null,
+        "qualification": "measured_depth_gates",
+        "fit": {
+          "status": "rejected",
+          "reason": "fit_gates",
+          "coverage": 0.0,
+          "contradiction": 0.0,
+          "rmse_m": null,
+          "rendered_samples": 8654,
+          "supported_samples": 0,
+          "unknown_samples": 0,
+          "occluded_samples": 8654,
+          "outside_target_samples": 2301
+        },
+        "raw_rotation6d": [
+          0.018036846071481705,
+          -0.17865651845932007,
+          0.16275276243686676,
+          -0.9357450008392334,
+          -0.002062960062175989,
+          -0.11881111562252045
+        ],
+        "raw_centroid_z": [
+          -0.0006077180150896311,
+          -0.06512898206710815,
+          2.1400270462036133
+        ],
+        "crop": {
+          "source_xyxy": [
+            280.0,
+            343.0,
+            374.0,
+            419.0
+          ],
+          "source_size": [
+            720,
+            540
+          ],
+          "working_size": [
+            720,
+            540
+          ],
+          "padded_scale": 141.0,
+          "source_from_input": [
+            [
+              0.55078125,
+              0.0,
+              256.49999999999994
+            ],
+            [
+              0.0,
+              0.55078125,
+              310.49999999999994
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "source_from_output": [
+            [
+              2.203125,
+              0.0,
+              256.49999999999994
+            ],
+            [
+              0.0,
+              2.203125,
+              310.49999999999994
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "depth_refinement": {
+          "method": "projective_icp_v1",
+          "execution_backend": "numpy_batched_first_return_v1",
+          "status": "unavailable",
+          "reason": "no_safe_fit_improvement",
+          "stop_reason": "insufficient_correspondences",
+          "settings": {
+            "strides": [
+              4,
+              2,
+              1
+            ],
+            "iterations_per_level": 4,
+            "maximum_correspondence_m": 0.02,
+            "maximum_translation_m": 0.02,
+            "maximum_rotation_degrees": 15.0,
+            "minimum_correspondences": 50
+          },
+          "fit_before": {
+            "status": "rejected",
+            "reason": "fit_gates",
+            "coverage": 0.0,
+            "contradiction": 0.0,
+            "rmse_m": null,
+            "rendered_samples": 8654,
+            "supported_samples": 0,
+            "unknown_samples": 0,
+            "occluded_samples": 8654,
+            "outside_target_samples": 2301
+          },
+          "proposed_fit": {
+            "status": "rejected",
+            "reason": "fit_gates",
+            "coverage": 0.0,
+            "contradiction": 0.0,
+            "rmse_m": null,
+            "rendered_samples": 8654,
+            "supported_samples": 0,
+            "unknown_samples": 0,
+            "occluded_samples": 8654,
+            "outside_target_samples": 2301
+          },
+          "iterations": [],
+          "minimum_observed_rank": 0,
+          "all_solved_systems_full_rank": false,
+          "same_depth_used_for_refinement_and_verification": true,
+          "pose_labels_used": false,
+          "before_quality": 0.0,
+          "proposed_quality": 0.0
+        }
+      },
+      {
+        "id": "supplied_instance_4",
+        "object_id": 6,
+        "capture_id": "scene000006_frame000002_all_visible_boxes",
+        "pose": {
+          "model": "pose_3d_v1",
+          "source_to_target": [
+            [
+              0.9190257746681579,
+              0.3940800815558277,
+              0.009618462275440396,
+              0.06956148910826611
+            ],
+            [
+              0.3860221179648057,
+              -0.8947544499613019,
+              -0.22450255837387117,
+              0.07961859947907726
+            ],
+            [
+              -0.07986582459073192,
+              0.21003657680366042,
+              -0.9744260292433913,
+              0.9499952528211806
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "units": "m",
+          "source_frame": "tless_object6",
+          "target_frame": "camera"
+        },
+        "detection_source": "published_visible_bbox",
+        "detection_score": null,
+        "network_score": null,
+        "qualification": "measured_depth_gates",
+        "fit": {
+          "status": "rejected",
+          "reason": "fit_gates",
+          "coverage": 0.0,
+          "contradiction": 0.0,
+          "rmse_m": null,
+          "rendered_samples": 9260,
+          "supported_samples": 0,
+          "unknown_samples": 14,
+          "occluded_samples": 9246,
+          "outside_target_samples": 41
+        },
+        "raw_rotation6d": [
+          1.7710179090499878,
+          0.7469487190246582,
+          0.037793565541505814,
+          0.43617957830429077,
+          -2.2148869037628174,
+          0.35604894161224365
+        ],
+        "raw_centroid_z": [
+          -0.02404274418950081,
+          -0.023699162527918816,
+          2.4714720249176025
+        ],
+        "crop": {
+          "source_xyxy": [
+            399.0,
+            299.0,
+            510.0,
+            395.0
+          ],
+          "source_size": [
+            720,
+            540
+          ],
+          "working_size": [
+            720,
+            540
+          ],
+          "padded_scale": 166.5,
+          "source_from_input": [
+            [
+              0.6503906250000002,
+              0.0,
+              371.25
+            ],
+            [
+              5.290477214730259e-17,
+              0.650390625,
+              263.75
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "source_from_output": [
+            [
+              2.601562500000001,
+              0.0,
+              371.25
+            ],
+            [
+              2.1161908858921037e-16,
+              2.6015625,
+              263.75
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "depth_refinement": {
+          "method": "projective_icp_v1",
+          "execution_backend": "numpy_batched_first_return_v1",
+          "status": "unavailable",
+          "reason": "no_safe_fit_improvement",
+          "stop_reason": "insufficient_correspondences",
+          "settings": {
+            "strides": [
+              4,
+              2,
+              1
+            ],
+            "iterations_per_level": 4,
+            "maximum_correspondence_m": 0.02,
+            "maximum_translation_m": 0.02,
+            "maximum_rotation_degrees": 15.0,
+            "minimum_correspondences": 50
+          },
+          "fit_before": {
+            "status": "rejected",
+            "reason": "fit_gates",
+            "coverage": 0.0,
+            "contradiction": 0.0,
+            "rmse_m": null,
+            "rendered_samples": 9260,
+            "supported_samples": 0,
+            "unknown_samples": 14,
+            "occluded_samples": 9246,
+            "outside_target_samples": 41
+          },
+          "proposed_fit": {
+            "status": "rejected",
+            "reason": "fit_gates",
+            "coverage": 0.0,
+            "contradiction": 0.0,
+            "rmse_m": null,
+            "rendered_samples": 9260,
+            "supported_samples": 0,
+            "unknown_samples": 14,
+            "occluded_samples": 9246,
+            "outside_target_samples": 41
+          },
+          "iterations": [],
+          "minimum_observed_rank": 0,
+          "all_solved_systems_full_rank": false,
+          "same_depth_used_for_refinement_and_verification": true,
+          "pose_labels_used": false,
+          "before_quality": 0.0,
+          "proposed_quality": 0.0
+        }
+      }
+    ],
+    "best_pose": {
+      "model": "pose_3d_v1",
+      "source_to_target": [
+        [
+          -0.8576746674400246,
+          -0.015376754687021307,
+          -0.5139627615371936,
+          -0.026244027435802918
+        ],
+        [
+          -0.4901713614265574,
+          0.32639276194844236,
+          0.8082077711732933,
+          -0.041651478978925786
+        ],
+        [
+          0.15532611264329726,
+          0.9451091579087373,
+          -0.28747604833822105,
+          0.7165341709435432
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "units": "m",
+      "source_frame": "tless_object6",
+      "target_frame": "camera"
+    },
+    "accepted_count": 1
+  },
+  "reference_sha256": "25fd3f6c42f209cd84b2bdf786f9e40a626179238d5a253bc7e553ba83197222",
+  "candidate_wire_sha256": "d1a880440800eaf9ce8fc42f30d0d1e98543134d399983c628b6430bc365de2a",
+  "scope": "Explicit benchmark swaps both transport endpoints against pinned reference. Same numerical code/model/recipe/four CPU threads. Two prepared workers per graphics mode; one warmup and three alternating measured rounds. Capture arrays in memory; acquisition, caller decoding and GUI excluded. Nested times overlap; shared workstation, not capacity or stall-elimination proof.",
+  "attribution": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+}
