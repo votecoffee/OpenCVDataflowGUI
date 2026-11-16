@@ -1,0 +1,83 @@
+{
+  "license": "MIT - original repository fixtures",
+  "image_size": [
+    320,
+    240
+  ],
+  "coefficients_xy": [
+    [
+      1.3,
+      -0.25
+    ],
+    [
+      2.1,
+      0
+    ],
+    [
+      -0.7,
+      0.4
+    ],
+    [
+      0.9,
+      0
+    ]
+  ],
+  "row_coordinate": "u=2*y/(height-1)-1; ascending powers",
+  "video_amplitudes": [
+    0,
+    1,
+    -1,
+    0.7,
+    -0.5,
+    1.2
+  ],
+  "video_period_ms": 100,
+  "part_xywh": [
+    180,
+    76,
+    50,
+    69
+  ],
+  "cases": {
+    "project": {
+      "state": "pass",
+      "reason": null,
+      "runs": 1
+    },
+    "video": {
+      "state": "pass",
+      "reason": null,
+      "runs": 6
+    },
+    "highdepth": {
+      "state": "pass",
+      "reason": null,
+      "runs": 1
+    },
+    "moving_part": {
+      "state": "pass",
+      "reason": null,
+      "runs": 1
+    },
+    "no_texture": {
+      "state": "fail",
+      "reason": "insufficient_tracks",
+      "runs": 1
+    },
+    "row_gap": {
+      "state": "fail",
+      "reason": "insufficient_row_coverage",
+      "runs": 1
+    }
+  },
+  "asset_sha256": {
+    "flat.png": "7cff9db9f9b8e68028f34029fefdf79f43e6d87cef00c9a510502b97bd35fca9",
+    "part_truth.png": "c81a006af302084163b784fe3f201324e94be4c24fd478f3de63ea6be030f04c",
+    "part_wobbled.png": "3b70473971aad2d1b99b8f6b0e492941e1119811fde3685068a2cea5c8eb31a6",
+    "reference.png": "cefb4b67e3e54b4e5247b577e548b127bdd3c522b3fdef0d4f7e04567ee49724",
+    "reference16.png": "a80d4b3adac3878f93af6cbcf53fb18c3b1bd319dc12ff6b9f1952cd14d255cb",
+    "row_wobble.avi": "af543adf60f89218ae4d0c841abf74a20b19f1850952e4072ad3ffcccdcda11d",
+    "wobbled.png": "89564e7445a8317d43de79efdd247d3c3ff6bfad69961b90208b2d711a49ece6",
+    "wobbled16.png": "7579140c2e87a12b9e00ac7504180cd312e3dff1218bf9d413e0a0114c8cba05"
+  }
+}

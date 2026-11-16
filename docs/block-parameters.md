@@ -7500,6 +7500,50 @@ Input `region` — Optional region, intersected with Mask. Coordinate frames mus
 | `draw_overlay` | `false` | Optional color raster; drawable graphics are separate. |
 | `draw_mask` | `false` | Raster of selected native polygons; may differ from source pixels. |
 
+## Estimate rolling-shutter motion (`inspect.scanline_motion`)
+
+Inspection / Registration
+
+Inputs: `image` (image), `reference` (image), `mask` (image, optional), `region` (data, optional), `reference_mask` (image, optional), `reference_region` (data, optional).
+
+Input `image` — Current wobbled capture; same shape, depth and intensity encoding as reference.
+
+Input `reference` — Sharp stable scene geometry defining the output/flow index grid.
+
+Input `mask` — Current-grid track-center support, intersected with Region. Also wire to the warper for donor coverage.
+
+Input `region` — Current-grid track-center selection. Does not crop LK patch context.
+
+Input `reference_mask` — Reference fitting selection; exclude moving parts and retain static texture across rows.
+
+Input `reference_region` — Reference-grid region intersected with Reference mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `degree` | `"3"` | `1`, `2`, `3`, `4`, `5` Polynomial degree of horizontal and vertical displacement versus reference row. |
+| `max_features` | `800` | Value must be a whole number between 16 and 5000. Maximum Shi-Tomasi corners detected in the reference fitting selection. |
+| `feature_quality` | `0.01` | Value must be a finite number between 1e-06 and 1. Native minimum corner quality relative to the best corner. |
+| `feature_spacing` | `5.0` | Value must be a finite number between 1 and 100. Minimum reference corner separation in current pixels. |
+| `tracking_window` | `21` | Value must be a positive odd integer between 3 and 61. Odd LK patch width/height. Selections restrict centers, not full patches. |
+| `max_pyramid_level` | `3` | Value must be a whole number between 0 and 5. Highest LK pyramid level; zero uses the original resolution only. |
+| `forward_backward_pixels` | `0.75` | Value must be a finite number between 0 and 20. Maximum tracking round-trip error in reference pixels. |
+| `max_patch_error` | `25.0` | Value must be a finite number between 0 and 255. Maximum native LK mean patch difference in shared 8-bit working units. |
+| `minimum_tracks` | `32` | Value must be a whole number between 8 and 5000. Required forward/backward-checked paired corners before fitting. |
+| `minimum_training_inliers` | `20` | Value must be a whole number between 3 and 5000. Required fitting inliers, excluding every-fourth validation tracks. |
+| `minimum_inlier_ratio` | `0.7` | Value must be a finite number between 0 and 1. Required fraction of training tracks within Inlier pixels. |
+| `inlier_pixels` | `0.75` | Value must be a finite number between 0.001 and 20. Huber scale and final Euclidean training residual tolerance in pixels. |
+| `fit_iterations` | `10` | Value must be a whole number between 1 and 30. Bounded deterministic Huber iterations, followed by one inlier refit. |
+| `minimum_validation_tracks` | `6` | Value must be a whole number between 2 and 1250. Required withheld tracks within the validation tolerance. |
+| `minimum_validation_ratio` | `0.8` | Value must be a finite number between 0 and 1. Required accepted fraction of all withheld validation tracks. |
+| `validation_pixels` | `1.0` | Value must be a finite number between 0.001 and 20. Maximum withheld reference-to-image prediction error in pixels. |
+| `minimum_row_span` | `0.75` | Value must be a finite number between 0.1 and 1. Minimum height fraction spanned by fitting inliers. |
+| `maximum_row_gap` | `0.25` | Value must be a finite number between 0.01 and 1. Largest allowed gap between fitting-inlier rows, as a height fraction. |
+| `extrapolation_rows` | `8` | Value must be a whole number between 0 and 64. Supported rows beyond the first/last fitting inlier; zero forbids extrapolation. |
+| `maximum_motion` | `32.0` | Value must be a finite number between 0.001 and 4096. Reject a fit exceeding this per-axis displacement on supported rows. |
+| `maximum_row_step` | `2.0` | Value must be a finite number between 0.001 and 100. Reject excessive change of displacement between neighboring supported rows. |
+| `minimum_vertical_jacobian` | `0.25` | Value must be a finite number between 0.001 and 1. Minimum 1 + vertical flow step; protects against row folds. |
+| `maximum_work` | `64000000` | Value must be a whole number between 1 and 5.12e+08. Preflight max_features * tracking_window squared * (pyramid level + 1) * 30. |
+
 ## Select pick candidate (`inspect.select_pick`)
 
 Inspection / Pick selection

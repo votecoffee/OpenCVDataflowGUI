@@ -279,6 +279,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Relative image frequency response](<opencv tools/frequency_response/README.md>) | Measure gain/phase only at excited reference frequencies, with exact blur, shift, brightness and selection examples. |
 | [Saved motion trajectories](<opencv tools/motion_trajectory/README.md>) | Capture and reload clip-bound affine corrections, preserve current tickets and pixels, and verify timing, omissions and native fit/replay parity. |
 | [Neighbor restoration](<opencv tools/neighbor_restoration/README.md>) | Reuse sharper registered detail with explicit target blur, change rejection, original coverage and per-neighbor contribution masks. |
+| [Rolling-shutter correction](<opencv tools/rolling_shutter/README.md>) | Fit validated row motion, correct six-frame video and 16-bit color, preserve current parts and inspect support/nonlinear source maps. |
 | [TIFF page sequence](<opencv tools/tiff_page_sequence/README.md>) | Replay a three-page 16-bit TIFF as separately ticketed images. |
 | [TIFF page access](<opencv tools/tiff_page_access/README.md>) | Select arbitrary pages from a 257-page mixed-depth stack, inspect bounded cache hits and conversions, and exercise explicit range/workspace errors. |
 | [Tile image](<opencv tools/tile_image/README.md>) | Repeat a reference in a 2 × 3 grid and find all six copies with template matching. |

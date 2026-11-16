@@ -27,6 +27,7 @@ For independent registered frames, common-valid crops and serial inspections, tr
 For supported frequency gain/phase and exact blur/shift references, try [relative frequency response](frequency_response/README.md).
 For saved corrections, content/timing checks and no-fit replay, try [motion trajectories](motion_trajectory/README.md).
 For sharper registered neighbors, change gates and preserved target support, try [neighbor restoration](neighbor_restoration/README.md).
+For validated row-dependent motion, video correction and current-part preservation, try [rolling-shutter correction](rolling_shutter/README.md).
 For reader/encoder checks and page counts, try [codec preflight](codec_probe/README.md).
 For stored displacement and verified image pairs, try [flow file round trips](flow_file_roundtrip/README.md).
 For seeded local tracking and explicit loss/reacquisition, try [MIL box tracking](mil_box_tracking/README.md).

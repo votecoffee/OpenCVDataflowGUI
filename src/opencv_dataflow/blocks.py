@@ -875,6 +875,7 @@ def builtin_registry():
     from .ros2_blocks import ROS2_BLOCKS
     from .run_contours import RunContours
     from .scan_stitching import StitchScanSequence
+    from .scanline_motion import EstimateScanlineMotion
     from .segmentation import SEGMENTATION_BLOCKS
     from .sequence_tools import SEQUENCE_BLOCKS
     from .shadow_compensation import CompensateReferenceShadows
@@ -1010,6 +1011,7 @@ def builtin_registry():
         LoadMotionTrajectory,
         SaveMotionTrajectory,
         RestoreFromNeighbors,
+        EstimateScanlineMotion,
         ReplayRegisteredViews,
         RenderMosaicTile,
         PasteImagePatch,

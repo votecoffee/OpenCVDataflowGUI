@@ -1,0 +1,335 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/wobbled16.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference16.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "truth",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference16.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        600
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "motion",
+      "type": "inspect.scanline_motion",
+      "name": "Estimate rolling-shutter motion",
+      "documentation": "<p>Estimate smooth horizontal/vertical displacement versus reference row. Connect Flow and Support to Warp image with dense flow, with the current image as its Image and the reference as its Target. The field is a target-to-source pull map; the warper preserves current pixels/type/ticket and emits explicit coverage and maps.</p><p>Reference static texture must span the image height. Exclude expected moving objects with fitting selections. Forward/backward LK tracks feed a deterministic robust polynomial fit; every fourth row-sorted track is withheld for validation. Poor consensus, inadequate row support or unsafe geometry withholds Flow.</p><p>This reference-based baseline is not a physical rolling-shutter calibration or the native C++ wobble suppressor. It models row translation, not x-dependent perspective/rotation, parallax or arbitrary high-frequency vibration. Validation cannot prove rigidity or absence of defects. Retain raw captures.</p>",
+      "parameters": {
+        "degree": "3",
+        "max_features": 800,
+        "feature_quality": 0.01,
+        "feature_spacing": 5.0,
+        "tracking_window": 21,
+        "max_pyramid_level": 3,
+        "forward_backward_pixels": 0.75,
+        "max_patch_error": 25.0,
+        "minimum_tracks": 32,
+        "minimum_training_inliers": 20,
+        "minimum_inlier_ratio": 0.7,
+        "inlier_pixels": 0.75,
+        "fit_iterations": 10,
+        "minimum_validation_tracks": 6,
+        "minimum_validation_ratio": 0.8,
+        "validation_pixels": 1.0,
+        "minimum_row_span": 0.75,
+        "maximum_row_gap": 0.25,
+        "extrapolation_rows": 8,
+        "maximum_motion": 32.0,
+        "maximum_row_step": 2.0,
+        "minimum_vertical_jacobian": 0.25,
+        "maximum_work": 64000000
+      },
+      "position": [
+        450,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "flow",
+        "support",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "correct",
+      "type": "cv.warp_flow",
+      "name": "Warp image with dense flow",
+      "parameters": {
+        "direction": "target_to_source",
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0,
+        "invalid_fill": "constant",
+        "consistency": "off",
+        "consistency_tolerance": 1.0,
+        "maximum_motion": 4096.0,
+        "inverse_iterations": 12,
+        "inverse_tolerance": 0.1,
+        "maximum_work": 64000000,
+        "minimum_coverage": 0.85
+      },
+      "position": [
+        900,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "flow",
+        "mask",
+        "region",
+        "target",
+        "flow_support"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "before",
+      "type": "inspect.image_quality",
+      "name": "Compare image quality",
+      "parameters": {
+        "metric": "rmse",
+        "mask_alignment": "pixel_grid",
+        "check_threshold": false,
+        "threshold": 4000,
+        "peak_value": 255.0
+      },
+      "position": [
+        1350,
+        350
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify",
+      "type": "inspect.image_quality",
+      "name": "Compare image quality",
+      "parameters": {
+        "metric": "rmse",
+        "mask_alignment": "pixel_grid",
+        "check_threshold": true,
+        "threshold": 4000,
+        "peak_value": 255.0
+      },
+      "position": [
+        1350,
+        0
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original rolling-shutter fixtures - MIT",
+      "description": "Original MIT coupon, video, generator and projects by OpenCVDataflowGUI contributors. No external or customer images. Known row-dependent horizontal and vertical cubic translations distort a sharp reference; independent bisection and array sampling create the captures. Native corner tracking estimates motion, separate tracks validate it, and the existing dense-flow warper corrects current pixels with explicit coverage and coordinate maps. Video has six known amplitudes at 10 fps. Moving-part fitting uses only the left static strip; the current part remains in the output. No-texture and row-gap intentionally fail without emitting a motion field. This is a row-translation baseline, not physical exposure calibration, general projective correction or defect qualification. OpenCV tracking reference: https://docs.opencv.org/5.0/main_modules/video_track.html",
+      "parameters": {},
+      "position": [
+        0,
+        -400
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "motion",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "motion",
+      "input": "reference"
+    },
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "correct",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "correct",
+      "input": "target"
+    },
+    {
+      "source": "motion",
+      "output": "flow",
+      "target": "correct",
+      "input": "flow"
+    },
+    {
+      "source": "motion",
+      "output": "support",
+      "target": "correct",
+      "input": "flow_support"
+    },
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "before",
+      "input": "image_a"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "before",
+      "input": "image_b"
+    },
+    {
+      "source": "correct",
+      "output": "coverage",
+      "target": "before",
+      "input": "mask"
+    },
+    {
+      "source": "correct",
+      "output": "image",
+      "target": "verify",
+      "input": "image_a"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "verify",
+      "input": "image_b"
+    },
+    {
+      "source": "correct",
+      "output": "coverage",
+      "target": "verify",
+      "input": "mask"
+    }
+  ]
+}
