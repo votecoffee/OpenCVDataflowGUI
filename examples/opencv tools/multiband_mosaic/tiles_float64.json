@@ -79,7 +79,10 @@
         "max_scale_ratio": 1.15,
         "max_rotation_degrees": 15.0,
         "loop_closure": false,
-        "max_loop_drift_pixels": 8.0
+        "max_loop_drift_pixels": 8.0,
+        "source_identity": "ordered",
+        "source_id_field": "source_id",
+        "source_ids": []
       },
       "position": [
         660,
@@ -87,7 +90,8 @@
       ],
       "exposed_inputs": [
         "views",
-        "masks"
+        "masks",
+        "source_ids"
       ],
       "exposed_outputs": [
         "layout"
@@ -105,6 +109,9 @@
         "interpolation": "linear",
         "blend": "multiband",
         "feather_width": 32,
+        "source_ids": [],
+        "missing_views": "error",
+        "grid_policy": "strict",
         "multiband_backend": "float64",
         "multiband_bands": 3,
         "multiband_native_weights": "float32"
@@ -117,7 +124,8 @@
         "views",
         "layout",
         "masks",
-        "tile_index"
+        "tile_index",
+        "source_ids"
       ],
       "exposed_outputs": [
         "image",
@@ -138,6 +146,9 @@
         "interpolation": "linear",
         "blend": "multiband",
         "feather_width": 32,
+        "source_ids": [],
+        "missing_views": "error",
+        "grid_policy": "strict",
         "multiband_backend": "float64",
         "multiband_bands": 3,
         "multiband_native_weights": "float32"
@@ -150,7 +161,8 @@
         "views",
         "layout",
         "masks",
-        "tile_index"
+        "tile_index",
+        "source_ids"
       ],
       "exposed_outputs": [
         "image",
@@ -171,6 +183,9 @@
         "interpolation": "linear",
         "blend": "multiband",
         "feather_width": 32,
+        "source_ids": [],
+        "missing_views": "error",
+        "grid_policy": "strict",
         "multiband_backend": "float64",
         "multiband_bands": 3,
         "multiband_native_weights": "float32"
@@ -183,7 +198,8 @@
         "views",
         "layout",
         "masks",
-        "tile_index"
+        "tile_index",
+        "source_ids"
       ],
       "exposed_outputs": [
         "image",

@@ -2,17 +2,20 @@
 
 import json
 
+import pytest
+
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 from opencv_dataflow.graphics_layers import RESULT_GRAPHICS
+from opencv_dataflow.parameter_validation import ValidationError
 from opencv_dataflow.project_xml import export_project_xml, read_project_xml
 
 
-def test_builtin_catalog_defaults_help_and_persistence(tmp_path):
+def test_builtin_catalog_metadata_configured_defaults_and_persistence(tmp_path, catalog_block):
     registry = builtin_registry()
     catalog = []
     for kind, cls in registry.types.items():
-        block = registry.create(kind, block_id=kind)
+        block = catalog_block(registry, kind, block_id=kind)
         block.validate_parameters()
         input_names = {port.name for port in block.inputs}
         output_names = {port.name for port in block.output_ports}
@@ -37,3 +40,18 @@ def test_builtin_catalog_defaults_help_and_persistence(tmp_path):
     xml_path = tmp_path / "catalog.xml"
     export_project_xml(expected, xml_path)
     assert read_project_xml(xml_path) == expected
+
+
+@pytest.mark.parametrize(
+    "kind, fields",
+    [
+        ("input.tiff_page", ("path",)),
+        ("sequence.capture_background_reference", ("camera_id", "calibration_id")),
+    ],
+)
+def test_required_configuration_stays_invalid_before_user_selection(kind, fields):
+    block = builtin_registry().create(kind)
+    with pytest.raises(ValidationError) as invalid:
+        block.validate_parameters()
+    assert invalid.value.fields == fields
+    assert block.last_result is None and not block.last_inputs

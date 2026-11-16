@@ -52,3 +52,20 @@ def load_example():
         window.replace_graph(Graph.load(paths[0], window.registry))
 
     return load
+
+
+@pytest.fixture
+def catalog_block(tmp_path):
+    """Supply required identities/file selections without opening a file or device."""
+    settings = {
+        "input.tiff_page": {"path": str(tmp_path / "catalog-placeholder.tiff")},
+        "sequence.capture_background_reference": {
+            "camera_id": "catalog-camera",
+            "calibration_id": "catalog-calibration",
+        },
+    }
+
+    def create(registry, kind, **kwargs):
+        return registry.create(kind, parameters=settings.get(kind, {}), **kwargs)
+
+    return create

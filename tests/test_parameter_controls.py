@@ -222,11 +222,11 @@ def test_homography_solver_dropdowns(method):
     )
 
 
-def test_every_declared_enum_has_valid_default_and_roundtrips():
+def test_every_declared_enum_default_and_required_settings_roundtrip(catalog_block):
     registry = builtin_registry()
     graph = Graph()
     for kind, cls in registry.types.items():
-        block = graph.add(registry.create(kind))
+        block = graph.add(catalog_block(registry, kind))
         assert cls.parameter_choices.keys() <= cls.defaults.keys()
         block.validate_parameters()
     restored = Graph.from_dict(graph.to_dict(), registry)

@@ -1,8 +1,8 @@
 """Saved real-photo workflows and deterministic public derivative assets."""
 
 import hashlib
+import importlib.util
 import json
-import runpy
 from pathlib import Path
 
 import numpy as np
@@ -62,11 +62,23 @@ def test_real_photo_mosaic_outcomes_depth_and_reports(case, description, profile
         graph.close()
 
 
-def test_regenerated_pngs_projects_and_truth_are_byte_identical():
+def test_regenerated_assets_and_project_text_match_without_changing_sources(tmp_path):
     paths = sorted([*BASE.glob("*.json"), *BASE.glob("assets/*.png")])
     assert len(paths) == 14
     before = [hashlib.sha256(p.read_bytes()).hexdigest() for p in paths]
-    runpy.run_path(str(BASE / "build_example.py"), run_name="__main__")
+    spec = importlib.util.spec_from_file_location("multiband_example", BASE / "build_example.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module.HERE = tmp_path
+    module.build()
+
+    def generated_bytes(path):
+        data = path.read_bytes()
+        return data.replace(b"\r\n", b"\n") if path.suffix == ".json" else data
+
+    assert [generated_bytes(tmp_path / p.relative_to(BASE)) for p in paths] == [
+        generated_bytes(p) for p in paths
+    ]
     assert [hashlib.sha256(p.read_bytes()).hexdigest() for p in paths] == before
     for name, digest in TRUTH["asset_sha256"].items():
         assert hashlib.sha256((BASE / "assets" / name).read_bytes()).hexdigest() == digest
