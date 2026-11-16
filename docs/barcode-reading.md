@@ -11,6 +11,12 @@ Try the [six backend comparisons](<../examples/opencv tools/qr_backends/README.m
 and read the [QR contracts](qr-backends.md) for selection, image depth, graphics
 and module-grid behavior. Backend reads and candidate ordering can differ.
 
+For a multipart payload, use **Read structured-append QR** with a scene or a
+batched image group. It verifies actual fragment headers, counts, unique indices,
+raw codeword integrity and payload parity before emitting full text. An optional
+expected SHA256 distinguishes known payloads that share QR's eight-bit parity.
+See [contracts and rejection cases](qr-structured-append.md).
+
 ```powershell
 python -m pip install -e ".[barcodes]"
 ```

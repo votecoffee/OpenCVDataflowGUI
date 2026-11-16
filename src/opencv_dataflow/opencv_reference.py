@@ -7,6 +7,10 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "inspect.read_qr_append": (
+        "QRCodeDetector QRCodeDetectorAruco GraphicalCodeDetector.detectMulti "
+        "GraphicalCodeDetector.decodeBytes"
+    ),
     "inspect.differential_exposure": "boxFilter",
     "cv.resample_mask": "integral",
     "cv.stack_blur": "stackBlur",

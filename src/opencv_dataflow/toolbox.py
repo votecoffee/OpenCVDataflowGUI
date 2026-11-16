@@ -101,7 +101,7 @@ IMPLEMENTATION_MODULES = {
         "image_correlation native_background sequence_tools"
     ),
     "videoio": "video_buffer video_files",
-    "objdetect": "aruco_markers charuco code_readers qr_encoding",
+    "objdetect": "aruco_markers charuco code_readers qr_encoding qr_append",
     "xobjdetect": "hog",
     "dnn": "dnn_blocks ocr",
     "photo": "chromatic_aberration exposure hdr photo_filters restoration",

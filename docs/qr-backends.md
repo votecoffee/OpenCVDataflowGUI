@@ -89,8 +89,9 @@ Both backends read the ordinary/rotated/multiple/selected cases. ArUco reads the
 small label while standard reports zero and fails its one-read criterion on this
 build. The blank comparison explicitly allows zero reads. This is a recorded
 fixture difference, not a general ranking of backend robustness. Printed labels,
-production optics/lighting, quality grading and structured-append reassembly
-require separate qualification; ordered reassembly remains roadmap S1-162.
+production optics/lighting and quality grading require separate qualification.
+For multipart payloads, use the separately qualified
+[structured-append reader](qr-structured-append.md) and its explicit integrity limits.
 
 Native references: [QR/ArUco detector](https://docs.opencv.org/5.0/main_modules/classcv_1_1QRCodeDetectorAruco.html),
 [QR controls](https://docs.opencv.org/5.0/main_modules/structcv_1_1QRCodeDetectorAruco_1_1Params.html),

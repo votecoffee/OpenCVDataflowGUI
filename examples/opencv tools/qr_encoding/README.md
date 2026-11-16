@@ -8,7 +8,8 @@ a label and read it back through **Read QR codes**.
 - `qr_unicode.json`: a UTF-8 ECI payload with accented and Japanese characters.
 - `structured_append.json`: generate three native structured-append symbols,
   delivered together as a `FlowGroup` and shown in a contact sheet. This project
-  demonstrates generation; ordered recovery remains roadmap item S1-162.
+  demonstrates generation; try the [structured recovery examples](../qr_structured_append/README.md)
+  for verified ordered payloads.
 - `capacity_failure.json`: intentionally requests too much byte data for version
   1. It reports invalid configuration and emits no image. Its CLI exits with failure.
 
@@ -49,8 +50,8 @@ Structured-append generation currently accepts ASCII and reports
 `requires_reassembly=true`. A part's reported position is its index in the native
 output vector, not an independently decoded header. Individual readers may
 return fragments. Neither those fragments nor the contact sheet establish a
-complete recovered payload; missing/duplicate/mismatched fragment handling is
-reserved for S1-162. Generation pass/fail is not a print-quality grade or a
+complete recovered payload; use the [structured reader](../../../docs/qr-structured-append.md)
+for missing/duplicate/mismatched fragment checks. Generation pass/fail is not a print-quality grade or a
 scanner/lighting robustness qualification.
 
 ## Fixture and validation

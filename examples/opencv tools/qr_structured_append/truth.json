@@ -1,0 +1,133 @@
+{
+  "creator": "OpenCVDataflowGUI contributors",
+  "license": "MIT",
+  "text": "PART-0042/LOT-A-INSPECTION-1234567890",
+  "sha256": "083e6f3bf91353e541c8d609731c59c2ad3ce6718b48ae3fe7598494613dfc99",
+  "part_count": 3,
+  "success_cases": [
+    "shuffled_scene",
+    "shuffled_group"
+  ],
+  "cases": [
+    "shuffled_scene",
+    "shuffled_group",
+    "missing",
+    "duplicate",
+    "mismatched",
+    "mixed_count",
+    "collision_digest",
+    "damaged_header"
+  ],
+  "scene_core_top_lefts": {
+    "shuffled_scene": [
+      [
+        56,
+        44
+      ],
+      [
+        262,
+        44
+      ],
+      [
+        468,
+        44
+      ]
+    ],
+    "missing": [
+      [
+        56,
+        44
+      ],
+      [
+        262,
+        44
+      ]
+    ],
+    "duplicate": [
+      [
+        56,
+        44
+      ],
+      [
+        262,
+        44
+      ],
+      [
+        468,
+        44
+      ],
+      [
+        674,
+        44
+      ]
+    ],
+    "mismatched": [
+      [
+        56,
+        44
+      ],
+      [
+        262,
+        44
+      ],
+      [
+        468,
+        44
+      ]
+    ],
+    "mixed_count": [
+      [
+        56,
+        44
+      ],
+      [
+        286,
+        44
+      ],
+      [
+        516,
+        44
+      ]
+    ],
+    "collision_digest": [
+      [
+        56,
+        44
+      ],
+      [
+        262,
+        44
+      ],
+      [
+        468,
+        44
+      ]
+    ],
+    "damaged_header": [
+      [
+        56,
+        44
+      ],
+      [
+        262,
+        44
+      ],
+      [
+        468,
+        44
+      ]
+    ]
+  },
+  "asset_sha256": {
+    "collision_digest.png": "259d2dfd8ea73ab9cf18c693020333e4e7887619647f5b1635e99415033c4493",
+    "damaged_header.png": "0f9b6c85eeed8f19998a72239d95626a0284183453f6d1adc23b6ad1237dbe1c",
+    "duplicate.png": "e8a6dae088255aab21c75f90e03b7e847f021d27da6f71a51a64969555cfa995",
+    "mismatched.png": "eaccb84b3e9d8f181d17e137c0d5f5b040b445c37c9eb754d1f68bda0180e756",
+    "missing.png": "f909f758fca4d074c76ff9077d5461f7b635d1e950e0f6969b4f13d5664acc82",
+    "mixed_count.png": "34ac586c0bc098c4b985ed79f2937ce86055a7d85f20099ef99263a26682d0a6",
+    "part_0.png": "131727a22c37d757cd99aedf955a32725ce006126772e883368e0af4b1379b81",
+    "part_1.png": "3f81be02461949e42fc6b97450ac755e8f7fd4a2d84faf669c77ad449a62d395",
+    "part_2.png": "f6874fdc5f014f61eadd2e676dcdb221ed67df21722b31178417f9e31c3cd9ca",
+    "shuffled_scene.png": "825232b8cde4d861b6901c77cf1aff36d464457d74e194063359e557b77baf1b"
+  }
+}
