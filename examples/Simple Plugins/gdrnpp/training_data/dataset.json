@@ -1,0 +1,131 @@
+{
+  "schema": "simple_gdrnpp_training_dataset/v1",
+  "name": "T-LESS multi-object training-data workflow slice",
+  "root": "source",
+  "models_dir": "models_cad",
+  "model_units": "mm",
+  "object_ids": [
+    1,
+    6
+  ],
+  "source_credit": {
+    "title": "T-LESS",
+    "authors": "T. Hodan, P. Haluza, S. Obdrzalek, J. Matas, M. Lourakis, X. Zabulis; WACV 2017",
+    "license": "CC-BY-4.0",
+    "source_url": "https://cmp.felk.cvut.cz/t-less/"
+  },
+  "captures": [
+    {
+      "partition": "train_pbr",
+      "scene_id": 0,
+      "image_id": 0,
+      "role": "train",
+      "group_id": "train_pbr_scene_000000"
+    },
+    {
+      "partition": "train_pbr",
+      "scene_id": 0,
+      "image_id": 373,
+      "role": "train",
+      "group_id": "train_pbr_scene_000000"
+    },
+    {
+      "partition": "train_pbr",
+      "scene_id": 0,
+      "image_id": 630,
+      "role": "train",
+      "group_id": "train_pbr_scene_000000"
+    },
+    {
+      "partition": "train_pbr",
+      "scene_id": 0,
+      "image_id": 974,
+      "role": "train",
+      "group_id": "train_pbr_scene_000000"
+    },
+    {
+      "partition": "train_pbr",
+      "scene_id": 1,
+      "image_id": 0,
+      "role": "train",
+      "group_id": "train_pbr_scene_000001"
+    },
+    {
+      "partition": "train_pbr",
+      "scene_id": 1,
+      "image_id": 333,
+      "role": "train",
+      "group_id": "train_pbr_scene_000001"
+    },
+    {
+      "partition": "train_pbr",
+      "scene_id": 1,
+      "image_id": 627,
+      "role": "train",
+      "group_id": "train_pbr_scene_000001"
+    },
+    {
+      "partition": "train_pbr",
+      "scene_id": 1,
+      "image_id": 999,
+      "role": "train",
+      "group_id": "train_pbr_scene_000001"
+    },
+    {
+      "partition": "train_primesense",
+      "scene_id": 1,
+      "image_id": 0,
+      "role": "validation",
+      "group_id": "train_primesense_scene_000001"
+    },
+    {
+      "partition": "train_primesense",
+      "scene_id": 1,
+      "image_id": 432,
+      "role": "validation",
+      "group_id": "train_primesense_scene_000001"
+    },
+    {
+      "partition": "train_primesense",
+      "scene_id": 1,
+      "image_id": 863,
+      "role": "validation",
+      "group_id": "train_primesense_scene_000001"
+    },
+    {
+      "partition": "train_primesense",
+      "scene_id": 1,
+      "image_id": 1295,
+      "role": "validation",
+      "group_id": "train_primesense_scene_000001"
+    },
+    {
+      "partition": "train_primesense",
+      "scene_id": 6,
+      "image_id": 0,
+      "role": "validation",
+      "group_id": "train_primesense_scene_000006"
+    },
+    {
+      "partition": "train_primesense",
+      "scene_id": 6,
+      "image_id": 432,
+      "role": "validation",
+      "group_id": "train_primesense_scene_000006"
+    },
+    {
+      "partition": "train_primesense",
+      "scene_id": 6,
+      "image_id": 863,
+      "role": "validation",
+      "group_id": "train_primesense_scene_000006"
+    },
+    {
+      "partition": "train_primesense",
+      "scene_id": 6,
+      "image_id": 1295,
+      "role": "validation",
+      "group_id": "train_primesense_scene_000006"
+    }
+  ]
+}

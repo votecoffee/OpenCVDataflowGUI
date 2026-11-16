@@ -47,6 +47,8 @@ publisher's complete training/evaluation distribution.
   sibling FoundationPose package, plus [trimesh](https://github.com/mikedh/trimesh/blob/main/LICENSE.md)
   (MIT). No FoundationPose neural model or original noncommercial research
   implementation is used by this tool.
+- Optional training-data review uses [Pillow](https://github.com/python-pillow/Pillow/blob/main/LICENSE),
+  MIT-CMU, for bounded image-header inspection, plus trimesh as listed above.
 - [SciPy](https://github.com/scipy/scipy/blob/main/LICENSE.txt), BSD-3-Clause,
   is used only by the developer's independent pose-conversion reference check.
 
@@ -57,5 +59,9 @@ T. Hodaň, P. Haluza, Š. Obdržálek, J. Matas, M. Lourakis and X. Zabulis,
 WACV 2017. [Publisher/license](https://cmp.felk.cvut.cz/t-less/): CC BY 4.0.
 Selected original RGB/depth/mask/CAD/calibration bytes and pose annotations
 retain CC BY 4.0. Derived bounding rectangles, metric conversion and overlays
-are identified as modifications. Pose annotations are evaluation-only.
+are identified as modifications. In the earlier inference studies, pose annotations are evaluation-only.
+The new training-data review explicitly uses official training-acquisition/PBR
+labels for data preparation, never as inference input. Its synthetic training
+and real-camera validation roles, converted labels and diagnostic graphics
+are identified as modifications; no network training is performed.
 No endorsement is implied.

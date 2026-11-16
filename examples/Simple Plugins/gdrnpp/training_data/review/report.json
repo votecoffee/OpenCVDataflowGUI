@@ -1,0 +1,2727 @@
+{
+  "schema": "simple_gdrnpp_training_check/v1",
+  "name": "T-LESS multi-object training-data workflow slice",
+  "object_ids": [
+    1,
+    6
+  ],
+  "class_mapping": {
+    "1": 0,
+    "6": 1
+  },
+  "source_credit": {
+    "title": "T-LESS",
+    "authors": "T. Hodan, P. Haluza, S. Obdrzalek, J. Matas, M. Lourakis, X. Zabulis; WACV 2017",
+    "license": "CC-BY-4.0",
+    "source_url": "https://cmp.felk.cvut.cz/t-less/"
+  },
+  "definition_sha256": "a737b6f967966502b6c78813db9e7c837b454f3a8f765ca4f7cd96071e96132e",
+  "units": "m",
+  "pose_direction": "Original CAD model to camera",
+  "structurally_valid": true,
+  "status": "needs_review",
+  "errors": [],
+  "warnings": [
+    {
+      "code": "small_split_class",
+      "role": "train",
+      "object_id": 1,
+      "message": "Fewer than 20 instances: a small workflow sample, not training qualification"
+    },
+    {
+      "code": "small_split_class",
+      "role": "train",
+      "object_id": 6,
+      "message": "Fewer than 20 instances: a small workflow sample, not training qualification"
+    },
+    {
+      "code": "small_split_class",
+      "role": "validation",
+      "object_id": 1,
+      "message": "Fewer than 20 instances: a small workflow sample, not training qualification"
+    },
+    {
+      "code": "small_split_class",
+      "role": "validation",
+      "object_id": 6,
+      "message": "Fewer than 20 instances: a small workflow sample, not training qualification"
+    },
+    {
+      "code": "invisible_instances",
+      "message": "Fully hidden instances are retained but marked unusable"
+    }
+  ],
+  "counts": {
+    "train": {
+      "1": 6,
+      "6": 6
+    },
+    "validation": {
+      "1": 4,
+      "6": 4
+    },
+    "test": {
+      "1": 0,
+      "6": 0
+    }
+  },
+  "coverage": {
+    "1": {
+      "train": {
+        "camera_direction_octants": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1,
+          3
+        ],
+        "occupied_octants": 4,
+        "capture_groups": [
+          "train_pbr_scene_000000",
+          "train_pbr_scene_000001"
+        ],
+        "distance_range_m": [
+          0.8612222665073649,
+          1.0758015733507997
+        ],
+        "visible_fraction_range": [
+          0.3030973451327434,
+          0.9942932396839332
+        ],
+        "scope": "Raw camera-direction coverage; not symmetry-aware or an accuracy score"
+      },
+      "validation": {
+        "camera_direction_octants": [
+          0,
+          0,
+          0,
+          2,
+          1,
+          1,
+          0,
+          0
+        ],
+        "occupied_octants": 3,
+        "capture_groups": [
+          "train_primesense_scene_000001"
+        ],
+        "distance_range_m": [
+          0.6349890183194815,
+          0.6501111148474317
+        ],
+        "visible_fraction_range": [
+          0.9281808239154211,
+          0.9966577540106952
+        ],
+        "scope": "Raw camera-direction coverage; not symmetry-aware or an accuracy score"
+      },
+      "test": {
+        "camera_direction_octants": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "occupied_octants": 0,
+        "capture_groups": [],
+        "distance_range_m": null,
+        "visible_fraction_range": null,
+        "scope": "Raw camera-direction coverage; not symmetry-aware or an accuracy score"
+      }
+    },
+    "6": {
+      "train": {
+        "camera_direction_octants": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1
+        ],
+        "occupied_octants": 6,
+        "capture_groups": [
+          "train_pbr_scene_000000"
+        ],
+        "distance_range_m": [
+          0.6165520629885872,
+          0.856517049390205
+        ],
+        "visible_fraction_range": [
+          0.0005228953462314185,
+          0.9935221173422173
+        ],
+        "scope": "Raw camera-direction coverage; not symmetry-aware or an accuracy score"
+      },
+      "validation": {
+        "camera_direction_octants": [
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "occupied_octants": 4,
+        "capture_groups": [
+          "train_primesense_scene_000006"
+        ],
+        "distance_range_m": [
+          0.6375606216245528,
+          0.646404565307608
+        ],
+        "visible_fraction_range": [
+          0.9254360035471475,
+          0.9967751749315485
+        ],
+        "scope": "Raw camera-direction coverage; not symmetry-aware or an accuracy score"
+      },
+      "test": {
+        "camera_direction_octants": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "occupied_octants": 0,
+        "capture_groups": [],
+        "distance_range_m": null,
+        "visible_fraction_range": null,
+        "scope": "Raw camera-direction coverage; not symmetry-aware or an accuracy score"
+      }
+    }
+  },
+  "samples": [
+    {
+      "id": "train_pbr/000000/000000/000019",
+      "capture_id": "train_pbr/000000/000000",
+      "role": "train",
+      "group_id": "train_pbr_scene_000000",
+      "object_id": 6,
+      "instance_index": 19,
+      "rgb_path": "train_pbr/000000/rgb/000000.jpg",
+      "depth_path": "train_pbr/000000/depth/000000.png",
+      "visible_mask_path": "train_pbr/000000/mask_visib/000000_000019.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          -0.12008919566869736,
+          0.21587111055850983,
+          0.9690089225769043,
+          1.9144854741171003e-07
+        ],
+        [
+          -0.14193080365657806,
+          -0.969779372215271,
+          0.19845326244831085,
+          -5.836704513058066e-07
+        ],
+        [
+          0.98256516456604,
+          -0.11370012909173965,
+          0.14709872007369995,
+          0.6165520629882812
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        299.0,
+        214.0,
+        121.0,
+        117.0
+      ],
+      "bbox_visible_bop_xywh": [
+        299.0,
+        214.0,
+        120.0,
+        116.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          309.3254757891125,
+          317.13877044411566
+        ],
+        [
+          409.85453184194904,
+          336.88371779369476
+        ],
+        [
+          329.33939596881254,
+          225.56398639198292
+        ],
+        [
+          430.5796139203949,
+          246.80729301394862
+        ],
+        [
+          298.5601767244827,
+          290.1876436215886
+        ],
+        [
+          385.9895109952632,
+          307.66348664054317
+        ],
+        [
+          315.7904460828437,
+          210.68669391394135
+        ],
+        [
+          403.75833588659805,
+          229.2935336830184
+        ]
+      ],
+      "visible_fraction": 0.9935221173422173,
+      "visible_pixels": 10736,
+      "valid_depth_fraction": 1.0,
+      "usable": true,
+      "rgb_sha256": "70ee60fc34d69689e065ab28ae330998d2cbbc8b1eee2e9df4c004adc86228c4"
+    },
+    {
+      "id": "train_pbr/000000/000373/000007",
+      "capture_id": "train_pbr/000000/000373",
+      "role": "train",
+      "group_id": "train_pbr_scene_000000",
+      "object_id": 6,
+      "instance_index": 7,
+      "rgb_path": "train_pbr/000000/rgb/000373.jpg",
+      "depth_path": "train_pbr/000000/depth/000373.png",
+      "visible_mask_path": "train_pbr/000000/mask_visib/000373_000007.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          -0.6593889594078064,
+          0.24512749910354614,
+          -0.7107170224189758,
+          -0.19424002075195312
+        ],
+        [
+          -0.5858376622200012,
+          0.4249360263347626,
+          0.6900895833969116,
+          -0.17892828369140626
+        ],
+        [
+          0.47116920351982117,
+          0.8714022636413574,
+          -0.13659322261810303,
+          0.8147864379882813
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        66.0,
+        0.0,
+        66.0,
+        96.0
+      ],
+      "bbox_visible_bop_xywh": [
+        66.0,
+        0.0,
+        65.0,
+        95.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          150.38165753859363,
+          17.330832133251022
+        ],
+        [
+          93.07781064892222,
+          68.3820915133516
+        ],
+        [
+          177.6203454070522,
+          58.6170636522512
+        ],
+        [
+          123.64674821166061,
+          107.3136663586381
+        ],
+        [
+          83.6468217571487,
+          -38.42665696524627
+        ],
+        [
+          28.6975800949974,
+          9.449001209769774
+        ],
+        [
+          112.92896741490276,
+          3.660899270118102
+        ],
+        [
+          61.04367609480612,
+          49.467222985537504
+        ]
+      ],
+      "visible_fraction": 0.10276219705788972,
+      "visible_pixels": 971,
+      "valid_depth_fraction": 1.0,
+      "usable": true,
+      "rgb_sha256": "e1095ea89a9e2c72a3706edd1b2360d4b98e107ba5737aa6c93aad31088892e8"
+    },
+    {
+      "id": "train_pbr/000000/000373/000017",
+      "capture_id": "train_pbr/000000/000373",
+      "role": "train",
+      "group_id": "train_pbr_scene_000000",
+      "object_id": 6,
+      "instance_index": 17,
+      "rgb_path": "train_pbr/000000/rgb/000373.jpg",
+      "depth_path": "train_pbr/000000/depth/000373.png",
+      "visible_mask_path": "train_pbr/000000/mask_visib/000373_000017.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          -0.8789973855018616,
+          -0.19732242822647095,
+          0.4340825378894806,
+          0.09324051666259765
+        ],
+        [
+          -0.46356868743896484,
+          0.5668165683746338,
+          -0.6810455918312073,
+          0.1203138885498047
+        ],
+        [
+          -0.11165964603424072,
+          -0.7998642921447754,
+          -0.589702844619751,
+          0.7298048095703125
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        417.0,
+        410.0,
+        153.0,
+        112.0
+      ],
+      "bbox_visible_bop_xywh": [
+        417.0,
+        410.0,
+        152.0,
+        111.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          534.9411015225825,
+          472.9891531223729
+        ],
+        [
+          577.7884438037947,
+          427.0159666330874
+        ],
+        [
+          529.9954979609885,
+          525.7181193534733
+        ],
+        [
+          575.0645794609476,
+          479.5833213969816
+        ],
+        [
+          426.1869739387341,
+          417.18130209624184
+        ],
+        [
+          464.735243541883,
+          368.0707118313901
+        ],
+        [
+          415.1419385103191,
+          467.5452940013239
+        ],
+        [
+          455.4044603539202,
+          417.9760635979509
+        ]
+      ],
+      "visible_fraction": 0.7317983382622166,
+      "visible_pixels": 10393,
+      "valid_depth_fraction": 1.0,
+      "usable": true,
+      "rgb_sha256": "e1095ea89a9e2c72a3706edd1b2360d4b98e107ba5737aa6c93aad31088892e8"
+    },
+    {
+      "id": "train_pbr/000000/000630/000004",
+      "capture_id": "train_pbr/000000/000630",
+      "role": "train",
+      "group_id": "train_pbr_scene_000000",
+      "object_id": 1,
+      "instance_index": 4,
+      "rgb_path": "train_pbr/000000/rgb/000630.jpg",
+      "depth_path": "train_pbr/000000/depth/000630.png",
+      "visible_mask_path": "train_pbr/000000/mask_visib/000630_000004.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          -0.8462719917297363,
+          0.5260441899299622,
+          0.08426958322525024,
+          -0.005995001316070557
+        ],
+        [
+          0.3442348539829254,
+          0.6606545448303223,
+          -0.6671116352081299,
+          0.2062980194091797
+        ],
+        [
+          -0.40660327672958374,
+          -0.5355493426322937,
+          -0.7401762008666992,
+          1.0558192138671876
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        337.0,
+        475.0,
+        29.0,
+        25.0
+      ],
+      "bbox_visible_bop_xywh": [
+        337.0,
+        475.0,
+        28.0,
+        24.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          357.0813628302012,
+          475.11007072022915
+        ],
+        [
+          362.2404386094899,
+          442.19133257792674
+        ],
+        [
+          375.42806277840674,
+          501.74934266969325
+        ],
+        [
+          381.4870807844489,
+          469.4027555615654
+        ],
+        [
+          327.56955017004657,
+          489.7796397158642
+        ],
+        [
+          331.5084058341264,
+          457.05034606875574
+        ],
+        [
+          345.64128196481823,
+          517.0346636332881
+        ],
+        [
+          350.4579312211126,
+          484.91645471479734
+        ]
+      ],
+      "visible_fraction": 0.3030973451327434,
+      "visible_pixels": 411,
+      "valid_depth_fraction": 1.0,
+      "usable": true,
+      "rgb_sha256": "bbe0829db95c82e2dd5d82e6d80e0493ba8e47b6648bce17e21f217bf02af36e"
+    },
+    {
+      "id": "train_pbr/000000/000630/000005",
+      "capture_id": "train_pbr/000000/000630",
+      "role": "train",
+      "group_id": "train_pbr_scene_000000",
+      "object_id": 1,
+      "instance_index": 5,
+      "rgb_path": "train_pbr/000000/rgb/000630.jpg",
+      "depth_path": "train_pbr/000000/depth/000630.png",
+      "visible_mask_path": "train_pbr/000000/mask_visib/000630_000005.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          -0.7574310302734375,
+          0.628923237323761,
+          -0.1753690391778946,
+          0.004982541084289551
+        ],
+        [
+          -0.11005213856697083,
+          -0.3877283036708832,
+          -0.9151806831359863,
+          0.11973609924316407
+        ],
+        [
+          -0.6435738205909729,
+          -0.6738862991333008,
+          0.36289146542549133,
+          0.9881558837890625
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "bbox_visible_bop_xywh": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          373.54879438526257,
+          437.9948333589813
+        ],
+        [
+          361.96188309814653,
+          375.5095907560445
+        ],
+        [
+          398.1169974517986,
+          427.1312470428962
+        ],
+        [
+          385.7101871909852,
+          363.4122820636283
+        ],
+        [
+          344.6983783105552,
+          437.6344483072485
+        ],
+        [
+          333.4913506937273,
+          373.74976905929276
+        ],
+        [
+          369.13342100726993,
+          426.50551387388396
+        ],
+        [
+          357.09978611456324,
+          361.3308854894884
+        ]
+      ],
+      "visible_fraction": 0.0,
+      "visible_pixels": 0,
+      "valid_depth_fraction": 0.0,
+      "usable": false,
+      "rgb_sha256": "bbe0829db95c82e2dd5d82e6d80e0493ba8e47b6648bce17e21f217bf02af36e"
+    },
+    {
+      "id": "train_pbr/000000/000630/000009",
+      "capture_id": "train_pbr/000000/000630",
+      "role": "train",
+      "group_id": "train_pbr_scene_000000",
+      "object_id": 1,
+      "instance_index": 9,
+      "rgb_path": "train_pbr/000000/rgb/000630.jpg",
+      "depth_path": "train_pbr/000000/depth/000630.png",
+      "visible_mask_path": "train_pbr/000000/mask_visib/000630_000009.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          0.20969028770923615,
+          -0.07569338381290436,
+          0.974833607673645,
+          0.021766607284545898
+        ],
+        [
+          0.5246090888977051,
+          0.8500536680221558,
+          -0.046840813010931015,
+          0.31396112060546877
+        ],
+        [
+          -0.8251153230667114,
+          0.5212286114692688,
+          0.21795742213726044,
+          0.8904861450195313
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "bbox_visible_bop_xywh": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          347.40904895104126,
+          621.8875077960331
+        ],
+        [
+          418.70329393621967,
+          613.2752340907089
+        ],
+        [
+          344.5222919804408,
+          650.018234324076
+        ],
+        [
+          414.4460717285912,
+          641.1690137554126
+        ],
+        [
+          356.1609856912228,
+          656.6133344430276
+        ],
+        [
+          429.67784090969485,
+          647.186200563028
+        ],
+        [
+          352.9976549556139,
+          684.9476375847925
+        ],
+        [
+          425.0583609070788,
+          675.2895055228903
+        ]
+      ],
+      "visible_fraction": 0.0,
+      "visible_pixels": 0,
+      "valid_depth_fraction": 0.0,
+      "usable": false,
+      "rgb_sha256": "bbe0829db95c82e2dd5d82e6d80e0493ba8e47b6648bce17e21f217bf02af36e"
+    },
+    {
+      "id": "train_pbr/000000/000630/000017",
+      "capture_id": "train_pbr/000000/000630",
+      "role": "train",
+      "group_id": "train_pbr_scene_000000",
+      "object_id": 6,
+      "instance_index": 17,
+      "rgb_path": "train_pbr/000000/rgb/000630.jpg",
+      "depth_path": "train_pbr/000000/depth/000630.png",
+      "visible_mask_path": "train_pbr/000000/mask_visib/000630_000017.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          -0.9753759503364563,
+          -0.058955464512109756,
+          -0.21252389252185822,
+          0.012536812782287597
+        ],
+        [
+          0.04701898992061615,
+          -0.9970425963401794,
+          0.060792747884988785,
+          0.12799122619628905
+        ],
+        [
+          -0.21547938883304596,
+          0.04930311441421509,
+          0.9752629399299622,
+          0.827798828125
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        314.0,
+        400.0,
+        74.0,
+        77.0
+      ],
+      "bbox_visible_bop_xywh": [
+        314.0,
+        400.0,
+        73.0,
+        76.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          444.4259328392475,
+          467.9270881783406
+        ],
+        [
+          424.43533883966376,
+          459.71420201680013
+        ],
+        [
+          440.2626764037661,
+          401.3618949051813
+        ],
+        [
+          420.5893012662326,
+          397.3341929393688
+        ],
+        [
+          327.73735738823,
+          478.46930630093254
+        ],
+        [
+          314.77393450740385,
+          469.392873538705
+        ],
+        [
+          323.835928194374,
+          410.25293131676705
+        ],
+        [
+          311.15973567172085,
+          405.56502918084976
+        ]
+      ],
+      "visible_fraction": 0.5129400792725577,
+      "visible_pixels": 4400,
+      "valid_depth_fraction": 1.0,
+      "usable": true,
+      "rgb_sha256": "bbe0829db95c82e2dd5d82e6d80e0493ba8e47b6648bce17e21f217bf02af36e"
+    },
+    {
+      "id": "train_pbr/000000/000974/000009",
+      "capture_id": "train_pbr/000000/000974",
+      "role": "train",
+      "group_id": "train_pbr_scene_000000",
+      "object_id": 6,
+      "instance_index": 9,
+      "rgb_path": "train_pbr/000000/rgb/000974.jpg",
+      "depth_path": "train_pbr/000000/depth/000974.png",
+      "visible_mask_path": "train_pbr/000000/mask_visib/000974_000009.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          -0.9722118377685547,
+          -0.23212508857250214,
+          -0.030368689447641373,
+          0.03862892532348633
+        ],
+        [
+          0.22779685258865356,
+          -0.9679354429244995,
+          0.10587581247091293,
+          -0.21984449768066408
+        ],
+        [
+          -0.05397136136889458,
+          0.0960158109664917,
+          0.9939154982566833,
+          0.7253121337890626
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        364.0,
+        0.0,
+        7.0,
+        1.0
+      ],
+      "bbox_visible_bop_xywh": [
+        364.0,
+        0.0,
+        6.0,
+        0.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          496.79154807542216,
+          -51.314919512586215
+        ],
+        [
+          484.3614251646117,
+          -19.392123892176837
+        ],
+        [
+          478.08668722537857,
+          -123.09818716006647
+        ],
+        [
+          467.09706690833883,
+          -86.15170795592303
+        ],
+        [
+          362.820486103303,
+          -21.990054634058293
+        ],
+        [
+          360.18901276651536,
+          7.976268678555734
+        ],
+        [
+          344.9080867275129,
+          -94.47151131270279
+        ],
+        [
+          343.6058038788785,
+          -59.38567812950893
+        ]
+      ],
+      "visible_fraction": 0.0005228953462314185,
+      "visible_pixels": 7,
+      "valid_depth_fraction": 1.0,
+      "usable": true,
+      "rgb_sha256": "2a3ad88df54144dea36c8a9a165b513b1e09fbf2179f138c98c96a6d34317048"
+    },
+    {
+      "id": "train_pbr/000000/000974/000013",
+      "capture_id": "train_pbr/000000/000974",
+      "role": "train",
+      "group_id": "train_pbr_scene_000000",
+      "object_id": 6,
+      "instance_index": 13,
+      "rgb_path": "train_pbr/000000/rgb/000974.jpg",
+      "depth_path": "train_pbr/000000/depth/000974.png",
+      "visible_mask_path": "train_pbr/000000/mask_visib/000974_000013.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          -0.5609939098358154,
+          -0.5225077867507935,
+          -0.6420835256576538,
+          0.19864630126953126
+        ],
+        [
+          -0.8166833519935608,
+          0.47612544894218445,
+          0.32608717679977417,
+          0.06801926422119141
+        ],
+        [
+          0.13532918691635132,
+          0.7073118686676025,
+          -0.6938269138336182,
+          0.6860653076171875
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        593.0,
+        290.0,
+        127.0,
+        169.0
+      ],
+      "bbox_visible_bop_xywh": [
+        593.0,
+        290.0,
+        126.0,
+        168.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          761.8037501945739,
+          401.67693589907003
+        ],
+        [
+          726.2574679601599,
+          439.7839869840302
+        ],
+        [
+          702.7875365308607,
+          430.84037881416157
+        ],
+        [
+          665.7445302862294,
+          468.6162752244383
+        ],
+        [
+          677.0273409534809,
+          286.35033907803154
+        ],
+        [
+          637.1548080488398,
+          316.97551207949647
+        ],
+        [
+          623.1029129542019,
+          320.6242085636712
+        ],
+        [
+          582.2653817920236,
+          351.59218390481726
+        ]
+      ],
+      "visible_fraction": 0.878351164254248,
+      "visible_pixels": 13957,
+      "valid_depth_fraction": 1.0,
+      "usable": true,
+      "rgb_sha256": "2a3ad88df54144dea36c8a9a165b513b1e09fbf2179f138c98c96a6d34317048"
+    },
+    {
+      "id": "train_pbr/000001/000000/000000",
+      "capture_id": "train_pbr/000001/000000",
+      "role": "train",
+      "group_id": "train_pbr_scene_000001",
+      "object_id": 1,
+      "instance_index": 0,
+      "rgb_path": "train_pbr/000001/rgb/000000.jpg",
+      "depth_path": "train_pbr/000001/depth/000000.png",
+      "visible_mask_path": "train_pbr/000001/mask_visib/000000_000000.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          -0.2423560619354248,
+          -0.15672442317008972,
+          -0.9574450850486755,
+          0.03893545913696289
+        ],
+        [
+          0.4413440227508545,
+          -0.8966529965400696,
+          0.03505688160657883,
+          -0.06055000305175781
+        ],
+        [
+          -0.8639901876449585,
+          -0.4140664041042328,
+          0.28647860884666443,
+          0.9686729125976563
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        379.0,
+        184.0,
+        37.0,
+        38.0
+      ],
+      "bbox_visible_bop_xywh": [
+        379.0,
+        184.0,
+        36.0,
+        37.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          442.36620951419553,
+          211.33758711053366
+        ],
+        [
+          377.8807604891881,
+          214.67079237734265
+        ],
+        [
+          437.5040227672851,
+          175.6434471787777
+        ],
+        [
+          372.1568422169657,
+          179.66080346458497
+        ],
+        [
+          435.4002355263823,
+          226.89494142017153
+        ],
+        [
+          369.03000882894537,
+          230.0507599639924
+        ],
+        [
+          430.2736089733907,
+          190.29022074787906
+        ],
+        [
+          362.9906348661199,
+          194.16587129917448
+        ]
+      ],
+      "visible_fraction": 0.30364372469635625,
+      "visible_pixels": 600,
+      "valid_depth_fraction": 1.0,
+      "usable": true,
+      "rgb_sha256": "e33a1ad3d66aaddf4b08ea049180a5949870636f4a8209d14acc9838bddc4f26"
+    },
+    {
+      "id": "train_pbr/000001/000000/000007",
+      "capture_id": "train_pbr/000001/000000",
+      "role": "train",
+      "group_id": "train_pbr_scene_000001",
+      "object_id": 1,
+      "instance_index": 7,
+      "rgb_path": "train_pbr/000001/rgb/000000.jpg",
+      "depth_path": "train_pbr/000001/depth/000000.png",
+      "visible_mask_path": "train_pbr/000001/mask_visib/000000_000007.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          0.19007058441638947,
+          -0.23408672213554382,
+          0.9534552097320557,
+          -0.08623523712158203
+        ],
+        [
+          -0.4630160331726074,
+          -0.8777467012405396,
+          -0.12319719046354294,
+          -0.01905972099304199
+        ],
+        [
+          0.8657307028770447,
+          -0.41804879903793335,
+          -0.27521997690200806,
+          0.9417698974609375
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        227.0,
+        225.0,
+        72.0,
+        42.0
+      ],
+      "bbox_visible_bop_xywh": [
+        227.0,
+        225.0,
+        71.0,
+        41.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          229.143770251358,
+          279.30798136501306
+        ],
+        [
+          294.57943363940336,
+          270.72887474591505
+        ],
+        [
+          217.5833903235167,
+          243.90174766279304
+        ],
+        [
+          283.856137298321,
+          234.53016063876777
+        ],
+        [
+          240.57445829176933,
+          261.1298515044419
+        ],
+        [
+          304.13764492493846,
+          252.50231137758934
+        ],
+        [
+          229.55416121852454,
+          226.56562002819385
+        ],
+        [
+          293.9080512718416,
+          217.18542244004865
+        ]
+      ],
+      "visible_fraction": 0.9837863614687649,
+      "visible_pixels": 2063,
+      "valid_depth_fraction": 1.0,
+      "usable": true,
+      "rgb_sha256": "e33a1ad3d66aaddf4b08ea049180a5949870636f4a8209d14acc9838bddc4f26"
+    },
+    {
+      "id": "train_pbr/000001/000333/000013",
+      "capture_id": "train_pbr/000001/000333",
+      "role": "train",
+      "group_id": "train_pbr_scene_000001",
+      "object_id": 1,
+      "instance_index": 13,
+      "rgb_path": "train_pbr/000001/rgb/000333.jpg",
+      "depth_path": "train_pbr/000001/depth/000333.png",
+      "visible_mask_path": "train_pbr/000001/mask_visib/000333_000013.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          -0.5678873062133789,
+          -0.6969445943832397,
+          0.43791818618774414,
+          0.026849184036254883
+        ],
+        [
+          -0.1890091747045517,
+          -0.4073984920978546,
+          -0.8934775590896606,
+          -0.2224763946533203
+        ],
+        [
+          0.8011115193367004,
+          -0.5901650786399841,
+          0.09962744265794754,
+          0.92526904296875
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        374.0,
+        0.0,
+        46.0,
+        26.0
+      ],
+      "bbox_visible_bop_xywh": [
+        374.0,
+        0.0,
+        45.0,
+        25.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          401.6640301501101,
+          54.055528874148656
+        ],
+        [
+          432.5673560800176,
+          -8.029263746700432
+        ],
+        [
+          373.40663011047167,
+          32.03865394247954
+        ],
+        [
+          405.20651735070413,
+          -31.315929509477964
+        ],
+        [
+          377.8488958396587,
+          52.94718260472937
+        ],
+        [
+          407.99530699304626,
+          -7.3036597238731105
+        ],
+        [
+          349.9158404191452,
+          31.572153950714938
+        ],
+        [
+          380.91295377779835,
+          -29.873851001163302
+        ]
+      ],
+      "visible_fraction": 0.3576871358135365,
+      "visible_pixels": 798,
+      "valid_depth_fraction": 1.0,
+      "usable": true,
+      "rgb_sha256": "adce56d490b556638885c79995b69de2977b8ad654314f25bf6aedc8ae6b4b21"
+    },
+    {
+      "id": "train_pbr/000001/000627/000010",
+      "capture_id": "train_pbr/000001/000627",
+      "role": "train",
+      "group_id": "train_pbr_scene_000001",
+      "object_id": 1,
+      "instance_index": 10,
+      "rgb_path": "train_pbr/000001/rgb/000627.jpg",
+      "depth_path": "train_pbr/000001/depth/000627.png",
+      "visible_mask_path": "train_pbr/000001/mask_visib/000627_000010.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          -0.2116156816482544,
+          0.8714389801025391,
+          -0.44250765442848206,
+          0.18265525817871095
+        ],
+        [
+          0.8762522339820862,
+          -0.03137608617544174,
+          -0.4808301329612732,
+          -0.16884547424316407
+        ],
+        [
+          -0.43289825320243835,
+          -0.4894994795322418,
+          -0.7569606900215149,
+          0.824519287109375
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        574.0,
+        11.0,
+        46.0,
+        69.0
+      ],
+      "bbox_visible_bop_xywh": [
+        574.0,
+        11.0,
+        45.0,
+        68.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          589.9331489725987,
+          60.00590381912032
+        ],
+        [
+          567.3295383021728,
+          9.449308157928561
+        ],
+        [
+          633.3234856725026,
+          54.3652521787037
+        ],
+        [
+          612.7476191444417,
+          2.400224797090738
+        ],
+        [
+          584.651999032139,
+          95.05653327976796
+        ],
+        [
+          561.3167225560776,
+          45.56921859916767
+        ],
+        [
+          628.7239720932922,
+          90.03511110887982
+        ],
+        [
+          607.4798120898568,
+          39.17205220212048
+        ]
+      ],
+      "visible_fraction": 0.6744276290259992,
+      "visible_pixels": 1738,
+      "valid_depth_fraction": 1.0,
+      "usable": true,
+      "rgb_sha256": "8c4b63ed878a475bba80e5dfe3714263b06dbc76477f154fad56531fe8bcff33"
+    },
+    {
+      "id": "train_pbr/000001/000999/000011",
+      "capture_id": "train_pbr/000001/000999",
+      "role": "train",
+      "group_id": "train_pbr_scene_000001",
+      "object_id": 1,
+      "instance_index": 11,
+      "rgb_path": "train_pbr/000001/rgb/000999.jpg",
+      "depth_path": "train_pbr/000001/depth/000999.png",
+      "visible_mask_path": "train_pbr/000001/mask_visib/000999_000011.png",
+      "image_size": [
+        720,
+        540
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          1073.90347929,
+          270.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          -0.0928296372294426,
+          -0.9379962086677551,
+          0.3339848220348358,
+          0.09967183685302734
+        ],
+        [
+          -0.12212509661912918,
+          0.34362679719924927,
+          0.9311316609382629,
+          -0.0661338882446289
+        ],
+        [
+          -0.9881640672683716,
+          0.045648638159036636,
+          -0.1464516520500183,
+          0.9034511108398438
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        460.0,
+        156.0,
+        48.0,
+        75.0
+      ],
+      "bbox_visible_bop_xywh": [
+        460.0,
+        156.0,
+        47.0,
+        74.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          485.07106255621676,
+          155.57019484968274
+        ],
+        [
+          510.3121046576999,
+          221.2978799640066
+        ],
+        [
+          446.7297920129839,
+          169.71184709325541
+        ],
+        [
+          471.5521418419372,
+          235.46326171132856
+        ],
+        [
+          486.00453529741566,
+          145.9664361889966
+        ],
+        [
+          512.2458667923088,
+          214.17642593984598
+        ],
+        [
+          446.17440355649643,
+          160.67382591891112
+        ],
+        [
+          471.96370544823185,
+          228.90972776060823
+        ]
+      ],
+      "visible_fraction": 0.9942932396839332,
+      "visible_pixels": 2265,
+      "valid_depth_fraction": 1.0,
+      "usable": true,
+      "rgb_sha256": "339a389517ce9117c572e2a2c2c646a4d63d117d7fd197068b0c58405f650654"
+    },
+    {
+      "id": "train_primesense/000001/000000/000000",
+      "capture_id": "train_primesense/000001/000000",
+      "role": "validation",
+      "group_id": "train_primesense_scene_000001",
+      "object_id": 1,
+      "instance_index": 0,
+      "rgb_path": "train_primesense/000001/rgb/000000.png",
+      "depth_path": "train_primesense/000001/depth/000000.png",
+      "visible_mask_path": "train_primesense/000001/mask_visib/000000_000000.png",
+      "image_size": [
+        400,
+        400
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          224.06888344
+        ],
+        [
+          0.0,
+          1073.90347929,
+          167.72159802
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          0.99968707,
+          0.02496792,
+          -0.00160221,
+          -0.01409421585
+        ],
+        [
+          0.02462464,
+          -0.99322556,
+          -0.11356043,
+          0.019097850109999998
+        ],
+        [
+          -0.00442673,
+          0.11348608,
+          -0.99352966,
+          0.63454525338
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        169.0,
+        167.0,
+        61.0,
+        61.0
+      ],
+      "bbox_visible_bop_xywh": [
+        169.0,
+        167.0,
+        60.0,
+        60.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          172.2000266020075,
+          231.72966627439615
+        ],
+        [
+          166.78800789392236,
+          225.79913841078647
+        ],
+        [
+          173.9177446557712,
+          175.39287954685287
+        ],
+        [
+          168.71346977791518,
+          163.8504786634982
+        ],
+        [
+          228.95040507367867,
+          233.14054546830397
+        ],
+        [
+          229.26820803867645,
+          227.35097636973245
+        ],
+        [
+          230.33057906837166,
+          176.78227107988855
+        ],
+        [
+          230.78476999666086,
+          165.3763152157183
+        ]
+      ],
+      "visible_fraction": 0.9945945945945946,
+      "visible_pixels": 2944,
+      "valid_depth_fraction": 0.9959239130434783,
+      "usable": true,
+      "rgb_sha256": "a5555f06a99a6b569723bb0e7b8704b7d032afecabbc0d24ce6b0c0a886b9dbf"
+    },
+    {
+      "id": "train_primesense/000001/000432/000000",
+      "capture_id": "train_primesense/000001/000432",
+      "role": "validation",
+      "group_id": "train_primesense_scene_000001",
+      "object_id": 1,
+      "instance_index": 0,
+      "rgb_path": "train_primesense/000001/rgb/000432.png",
+      "depth_path": "train_primesense/000001/depth/000432.png",
+      "visible_mask_path": "train_primesense/000001/mask_visib/000432_000000.png",
+      "image_size": [
+        400,
+        400
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          222.06888344
+        ],
+        [
+          0.0,
+          1073.90347929,
+          242.72159802
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          0.99729277,
+          -0.07143101,
+          0.01746607,
+          -0.01304953844
+        ],
+        [
+          -0.01173908,
+          -0.38912398,
+          -0.92111046,
+          -0.02558907984
+        ],
+        [
+          0.07259241,
+          0.91841222,
+          -0.38890851,
+          0.64377024773
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        171.0,
+        145.0,
+        59.0,
+        105.0
+      ],
+      "bbox_visible_bop_xywh": [
+        171.0,
+        145.0,
+        58.0,
+        104.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          171.88221135434546,
+          258.88959416735696
+        ],
+        [
+          171.80944933034672,
+          161.00485922293328
+        ],
+        [
+          170.27775421168383,
+          236.30550945676652
+        ],
+        [
+          170.14955465621378,
+          142.45401187373005
+        ],
+        [
+          230.6526018293092,
+          258.13718998720196
+        ],
+        [
+          232.8469855463807,
+          160.62636852375263
+        ],
+        [
+          226.2478687538422,
+          235.67427178914033
+        ],
+        [
+          228.17214150740202,
+          142.16683998787846
+        ]
+      ],
+      "visible_fraction": 0.9966577540106952,
+      "visible_pixels": 4473,
+      "valid_depth_fraction": 0.987033310976973,
+      "usable": true,
+      "rgb_sha256": "a1e4264a78911430c37d8e06d2643123d4813c7e32b01631fb77fa7466f6566a"
+    },
+    {
+      "id": "train_primesense/000001/000863/000000",
+      "capture_id": "train_primesense/000001/000863",
+      "role": "validation",
+      "group_id": "train_primesense_scene_000001",
+      "object_id": 1,
+      "instance_index": 0,
+      "rgb_path": "train_primesense/000001/rgb/000863.png",
+      "depth_path": "train_primesense/000001/depth/000863.png",
+      "visible_mask_path": "train_primesense/000001/mask_visib/000863_000000.png",
+      "image_size": [
+        400,
+        400
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          211.06888344
+        ],
+        [
+          0.0,
+          1073.90347929,
+          245.72159802
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          0.91426201,
+          -0.4050791,
+          -0.00597102,
+          -0.00690706713
+        ],
+        [
+          0.15181725,
+          0.32891218,
+          0.93207702,
+          -0.027465596850000003
+        ],
+        [
+          -0.37560096,
+          -0.85307006,
+          0.36221002,
+          0.64949395306
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        171.0,
+        149.0,
+        57.0,
+        106.0
+      ],
+      "bbox_visible_bop_xywh": [
+        171.0,
+        149.0,
+        56.0,
+        105.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          185.5871670341424,
+          140.92328854035705
+        ],
+        [
+          185.83902878480168,
+          234.14172780497552
+        ],
+        [
+          160.1810280494508,
+          155.57510043449003
+        ],
+        [
+          161.30789987390213,
+          252.56188791255997
+        ],
+        [
+          238.2752749103908,
+          147.61440985572753
+        ],
+        [
+          236.78609020467627,
+          242.44263307272445
+        ],
+        [
+          214.87726966916605,
+          162.902127295983
+        ],
+        [
+          214.13011440781028,
+          261.62932876531846
+        ]
+      ],
+      "visible_fraction": 0.9963294333562743,
+      "visible_pixels": 4343,
+      "valid_depth_fraction": 0.9606262951876583,
+      "usable": true,
+      "rgb_sha256": "e0437ec31154b1560e084f46cd1aea1b50aa8d9d5d48382edd606b753b91e138"
+    },
+    {
+      "id": "train_primesense/000001/001295/000000",
+      "capture_id": "train_primesense/000001/001295",
+      "role": "validation",
+      "group_id": "train_primesense_scene_000001",
+      "object_id": 1,
+      "instance_index": 0,
+      "rgb_path": "train_primesense/000001/rgb/001295.png",
+      "depth_path": "train_primesense/000001/depth/001295.png",
+      "visible_mask_path": "train_primesense/000001/mask_visib/001295_000000.png",
+      "image_size": [
+        400,
+        400
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          213.06888344
+        ],
+        [
+          0.0,
+          1073.90347929,
+          173.72159802
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          0.87697702,
+          -0.48035491,
+          0.01304489,
+          -0.00767783984
+        ],
+        [
+          0.47413372,
+          0.86939646,
+          0.1390967,
+          0.015516674860000001
+        ],
+        [
+          -0.07815692,
+          -0.1157995,
+          0.99019282,
+          0.63741202805
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        172.0,
+        172.0,
+        58.0,
+        58.0
+      ],
+      "bbox_visible_bop_xywh": [
+        172.0,
+        172.0,
+        57.0,
+        57.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          186.61175054374007,
+          152.18071581305583
+        ],
+        [
+          190.28038460168727,
+          167.74788521616034
+        ],
+        [
+          156.62237779259183,
+          205.90708926124486
+        ],
+        [
+          163.03774173860273,
+          216.68794099423658
+        ],
+        [
+          240.80317356042812,
+          181.39880174276223
+        ],
+        [
+          239.57339238094795,
+          194.38052416602724
+        ],
+        [
+          211.04166880220694,
+          235.56465929342824
+        ],
+        [
+          212.51926089755008,
+          243.68449984453886
+        ]
+      ],
+      "visible_fraction": 0.9281808239154211,
+      "visible_pixels": 2546,
+      "valid_depth_fraction": 0.9355852317360566,
+      "usable": true,
+      "rgb_sha256": "f34d780e2d8bd575716a78f61f91cabfdfc5abc4c0b69a2ef0cf3d3419f71ded"
+    },
+    {
+      "id": "train_primesense/000006/000000/000000",
+      "capture_id": "train_primesense/000006/000000",
+      "role": "validation",
+      "group_id": "train_primesense_scene_000006",
+      "object_id": 6,
+      "instance_index": 0,
+      "rgb_path": "train_primesense/000006/rgb/000000.png",
+      "depth_path": "train_primesense/000006/depth/000000.png",
+      "visible_mask_path": "train_primesense/000006/mask_visib/000000_000000.png",
+      "image_size": [
+        400,
+        400
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          225.06888344
+        ],
+        [
+          0.0,
+          1073.90347929,
+          169.72159802
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          0.99997902,
+          -0.00254466,
+          -0.0059721,
+          -0.014767210970000002
+        ],
+        [
+          -0.00318248,
+          -0.9939984,
+          -0.10934555,
+          0.018273703120000002
+        ],
+        [
+          -0.00565802,
+          0.1093621,
+          -0.99398564,
+          0.63712757553
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        121.0,
+        153.0,
+        156.0,
+        91.0
+      ],
+      "bbox_visible_bop_xywh": [
+        121.0,
+        153.0,
+        155.0,
+        90.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          128.85109897759233,
+          244.80433952287967
+        ],
+        [
+          119.52011871845437,
+          240.8918240608193
+        ],
+        [
+          129.43410336499616,
+          164.2536922594423
+        ],
+        [
+          120.23892824625236,
+          153.12149952683157
+        ],
+        [
+          274.09677055488714,
+          244.39999948825346
+        ],
+        [
+          277.96805428293646,
+          240.4474466677734
+        ],
+        [
+          273.4898267676686,
+          163.79159714360114
+        ],
+        [
+          277.27181460852955,
+          152.60855196979776
+        ]
+      ],
+      "visible_fraction": 0.9717753729160573,
+      "visible_pixels": 13290,
+      "valid_depth_fraction": 0.9497366440933033,
+      "usable": true,
+      "rgb_sha256": "56d8459d6b4243cb037374e716030a03d15c45f0b6f875e2972c543f5cc0379e"
+    },
+    {
+      "id": "train_primesense/000006/000432/000000",
+      "capture_id": "train_primesense/000006/000432",
+      "role": "validation",
+      "group_id": "train_primesense_scene_000006",
+      "object_id": 6,
+      "instance_index": 0,
+      "rgb_path": "train_primesense/000006/rgb/000432.png",
+      "depth_path": "train_primesense/000006/depth/000432.png",
+      "visible_mask_path": "train_primesense/000006/mask_visib/000432_000000.png",
+      "image_size": [
+        400,
+        400
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          221.06888344
+        ],
+        [
+          0.0,
+          1073.90347929,
+          239.72159802
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          0.99972442,
+          -0.01567357,
+          0.0174715,
+          -0.0129755102
+        ],
+        [
+          0.00997069,
+          -0.3902786,
+          -0.92064241,
+          -0.023728632040000003
+        ],
+        [
+          0.02124852,
+          0.92056302,
+          -0.39001525,
+          0.64583856358
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        122.0,
+        143.0,
+        155.0,
+        117.0
+      ],
+      "bbox_visible_bop_xywh": [
+        122.0,
+        143.0,
+        154.0,
+        116.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          122.87743333883776,
+          258.6137992982113
+        ],
+        [
+          121.10604083000875,
+          169.4840944598946
+        ],
+        [
+          128.29435818287874,
+          226.45699619373417
+        ],
+        [
+          126.82549789690921,
+          142.51146188997834
+        ],
+        [
+          274.66381748255037,
+          260.06569312511556
+        ],
+        [
+          278.25811932152055,
+          171.26348544753344
+        ],
+        [
+          269.8008776722176,
+          227.90045313806297
+        ],
+        [
+          272.9843905478171,
+          144.24431973661007
+        ]
+      ],
+      "visible_fraction": 0.9967751749315485,
+      "visible_pixels": 16382,
+      "valid_depth_fraction": 0.9754608716884385,
+      "usable": true,
+      "rgb_sha256": "6ba1990bff3eee5ea4c53d01fa414fc7b172eea0b2c1ae70176869620298c3bb"
+    },
+    {
+      "id": "train_primesense/000006/000863/000000",
+      "capture_id": "train_primesense/000006/000863",
+      "role": "validation",
+      "group_id": "train_primesense_scene_000006",
+      "object_id": 6,
+      "instance_index": 0,
+      "rgb_path": "train_primesense/000006/rgb/000863.png",
+      "depth_path": "train_primesense/000006/depth/000863.png",
+      "visible_mask_path": "train_primesense/000006/mask_visib/000863_000000.png",
+      "image_size": [
+        400,
+        400
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          222.06888344
+        ],
+        [
+          0.0,
+          1073.90347929,
+          238.72159802
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          0.99453158,
+          0.10358562,
+          -0.01331321,
+          -0.013047023980000001
+        ],
+        [
+          -0.02934235,
+          0.39948071,
+          0.91627188,
+          -0.0231985943
+        ],
+        [
+          0.10023077,
+          -0.91087021,
+          0.40033599,
+          0.64572384957
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        124.0,
+        142.0,
+        156.0,
+        118.0
+      ],
+      "bbox_visible_bop_xywh": [
+        124.0,
+        142.0,
+        155.0,
+        117.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          123.67666274605956,
+          144.47331849497152
+        ],
+        [
+          125.73755890300198,
+          228.46578117172862
+        ],
+        [
+          125.47126036208779,
+          172.72298813534195
+        ],
+        [
+          127.61790705029932,
+          261.7944503918797
+        ],
+        [
+          269.50512427995545,
+          141.49304102306542
+        ],
+        [
+          266.8026110040969,
+          224.4821086948237
+        ],
+        [
+          282.04969945264213,
+          169.11176373300222
+        ],
+        [
+          278.71793140170956,
+          257.05894556741373
+        ]
+      ],
+      "visible_fraction": 0.9895005158706075,
+      "visible_pixels": 16304,
+      "valid_depth_fraction": 0.9980372914622179,
+      "usable": true,
+      "rgb_sha256": "c5f67b58a2e8449630f39a1a3ab071ecfa6b5bd91f26d208cdc979d6d1f1b180"
+    },
+    {
+      "id": "train_primesense/000006/001295/000000",
+      "capture_id": "train_primesense/000006/001295",
+      "role": "validation",
+      "group_id": "train_primesense_scene_000006",
+      "object_id": 6,
+      "instance_index": 0,
+      "rgb_path": "train_primesense/000006/rgb/001295.png",
+      "depth_path": "train_primesense/000006/depth/001295.png",
+      "visible_mask_path": "train_primesense/000006/mask_visib/001295_000000.png",
+      "image_size": [
+        400,
+        400
+      ],
+      "camera_matrix": [
+        [
+          1075.65091572,
+          0.0,
+          223.06888344
+        ],
+        [
+          0.0,
+          1073.90347929,
+          169.72159802
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "depth_scale_to_m": 0.0001,
+      "model_to_camera_m": [
+        [
+          0.99845971,
+          0.05533665,
+          0.00397051,
+          -0.01352172147
+        ],
+        [
+          -0.0554507,
+          0.99311506,
+          0.10319007,
+          0.018168084440000003
+        ],
+        [
+          0.00176702,
+          -0.10325139,
+          0.99465308,
+          0.6372047853499999
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "model_origin": "Original BOP CAD origin; no recentering",
+      "bbox_visible_xywh": [
+        119.0,
+        150.0,
+        161.0,
+        96.0
+      ],
+      "bbox_visible_bop_xywh": [
+        119.0,
+        150.0,
+        160.0,
+        95.0
+      ],
+      "cad_bounds_pixels": [
+        [
+          118.25234051272759,
+          157.3621333043248
+        ],
+        [
+          127.27851883609523,
+          167.60114295540916
+        ],
+        [
+          122.26428835396705,
+          245.11615437337633
+        ],
+        [
+          131.02636444900793,
+          248.1189257758207
+        ],
+        [
+          275.09925563827125,
+          148.6702843075007
+        ],
+        [
+          271.151176242785,
+          159.62573542356543
+        ],
+        [
+          280.4439298437288,
+          236.32755882234702
+        ],
+        [
+          276.01959551573634,
+          240.0621460813611
+        ]
+      ],
+      "visible_fraction": 0.9254360035471475,
+      "visible_pixels": 12523,
+      "valid_depth_fraction": 0.9531262477042243,
+      "usable": true,
+      "rgb_sha256": "076f12800c75caaf530bc39c44016d96da0d0e952b70b8f5477f15634b6ce9dc"
+    }
+  ],
+  "source_sha256": {
+    "models_cad/models_info.json": "48a13b6e4532c20954dbe014a082439b05984d12ff13da1da62635a8dee59925",
+    "models_cad/obj_000001.ply": "630a743d841285cdf9d94b1ad30b45c99b13e2d92bb7726e7f50b811844d9675",
+    "models_cad/obj_000006.ply": "f1227fe15e046bc18c1686bd5fb3b849a9996c2de2ca3fc16d34b9ec348f94df",
+    "train_pbr/000000/scene_camera.json": "8a07ca38901b4ca0ca8da0d85e0def4d6c5984d915feb0a244a74657c73abf95",
+    "train_pbr/000000/scene_gt.json": "83eedeeb057fbef989531936fdb7bd21966f1a06564fa1b056de89cd1c46b7ae",
+    "train_pbr/000000/scene_gt_info.json": "01ad2f54382535ea52e34dd412a55a332c8671ccbb3ecb7bc41063c2593fb773",
+    "train_pbr/000000/rgb/000000.jpg": "70ee60fc34d69689e065ab28ae330998d2cbbc8b1eee2e9df4c004adc86228c4",
+    "train_pbr/000000/depth/000000.png": "1cc41f7263e841e9059461fdf11f42db3787c2c89eba97ab16295ac256935b22",
+    "train_pbr/000000/mask_visib/000000_000019.png": "85d90e165f95691c03f4334b1ebdafb213887ae8e6865ed9c65be8eba372f1ff",
+    "train_pbr/000000/rgb/000373.jpg": "e1095ea89a9e2c72a3706edd1b2360d4b98e107ba5737aa6c93aad31088892e8",
+    "train_pbr/000000/depth/000373.png": "d756c662b81a7e5407ec0350e1222e28a57eb8b6fc79bcab15e78dec367cd52b",
+    "train_pbr/000000/mask_visib/000373_000007.png": "d047c7c7b8ace91bd2a920f800b79ef406057107252ba68ad5850d537af01bc8",
+    "train_pbr/000000/mask_visib/000373_000017.png": "cadcf4bb8ddff766d59873b7fa9b8ef9d2972c01f45f0800d0069c1cbc1f6751",
+    "train_pbr/000000/rgb/000630.jpg": "bbe0829db95c82e2dd5d82e6d80e0493ba8e47b6648bce17e21f217bf02af36e",
+    "train_pbr/000000/depth/000630.png": "477cb7f0da9562ca4bcc90767bed27106e7a967bb92fbcc01e1e768a74c382c9",
+    "train_pbr/000000/mask_visib/000630_000004.png": "a5e1d072343ae1af4eef5d6640bf8bf7b3b1494bfcc17007d4078292565f7f42",
+    "train_pbr/000000/mask_visib/000630_000005.png": "ffce06101fbeee0ac1a09b572ae7ed6d2164024cd1ac845ee5e3d49fd922f1b5",
+    "train_pbr/000000/mask_visib/000630_000009.png": "ffce06101fbeee0ac1a09b572ae7ed6d2164024cd1ac845ee5e3d49fd922f1b5",
+    "train_pbr/000000/mask_visib/000630_000017.png": "c26ed7ecd9eefcb4ceecc2bc0c2ec379591e4b4375ea7ec9efd680d581b6982c",
+    "train_pbr/000000/rgb/000974.jpg": "2a3ad88df54144dea36c8a9a165b513b1e09fbf2179f138c98c96a6d34317048",
+    "train_pbr/000000/depth/000974.png": "4a6b60b520c66330295d539a4470232969fc43551885d14748c364af04e3b88b",
+    "train_pbr/000000/mask_visib/000974_000009.png": "079be526fb775771d6bf900f53188fb8c317c6c7eb53e550e0a9b91e3b972400",
+    "train_pbr/000000/mask_visib/000974_000013.png": "72e2aff8bfb1d5c5b9208797e2ec3d747ac9a3f02da594bf50ef3990d3881465",
+    "train_pbr/000001/scene_camera.json": "8a07ca38901b4ca0ca8da0d85e0def4d6c5984d915feb0a244a74657c73abf95",
+    "train_pbr/000001/scene_gt.json": "dd0a4f90b4514f21e2ddf39e8993d559fd1aa9ec4fa81ce93d952a15aab22adb",
+    "train_pbr/000001/scene_gt_info.json": "69c3b1c96ac9b7cd140035d74511ea9873e11c1def749c794925f6351bdb9f5b",
+    "train_pbr/000001/rgb/000000.jpg": "e33a1ad3d66aaddf4b08ea049180a5949870636f4a8209d14acc9838bddc4f26",
+    "train_pbr/000001/depth/000000.png": "e4513ae8fd5929d4ab179eba468933b7722555bf7ce13158085d726729e14790",
+    "train_pbr/000001/mask_visib/000000_000000.png": "1d1367b1159a4bd6158810ec23ee11330284247724066f44c95e526e54ee99fa",
+    "train_pbr/000001/mask_visib/000000_000007.png": "bbeb7a2f0f6f7880a727d194ba928109c38d26c327651c3542c5102a91e16840",
+    "train_pbr/000001/rgb/000333.jpg": "adce56d490b556638885c79995b69de2977b8ad654314f25bf6aedc8ae6b4b21",
+    "train_pbr/000001/depth/000333.png": "98d5cbebaf679b342d4f2915ad1d82428e005d9b85aa5da6f8e827af19ac44e4",
+    "train_pbr/000001/mask_visib/000333_000013.png": "c639074fc82f60460de948c01c807423ab68e822370c28a505bb00b9f68b563a",
+    "train_pbr/000001/rgb/000627.jpg": "8c4b63ed878a475bba80e5dfe3714263b06dbc76477f154fad56531fe8bcff33",
+    "train_pbr/000001/depth/000627.png": "dc9a1f36435c8709f79706a58a862c065523b45ad33fcc96b2e1aab62269a481",
+    "train_pbr/000001/mask_visib/000627_000010.png": "a569739191e0ec91809b956ef64d20f5f9387fd3cc29ebb6e6027ba67888db6c",
+    "train_pbr/000001/rgb/000999.jpg": "339a389517ce9117c572e2a2c2c646a4d63d117d7fd197068b0c58405f650654",
+    "train_pbr/000001/depth/000999.png": "dd8bec295c45ca104726f71839baaf333b3d2c4315b179de804ca08ea0525d1b",
+    "train_pbr/000001/mask_visib/000999_000011.png": "8999f408ec2ec4b5ec4886047566a133db76c31d912a6419589ed8f341adf49a",
+    "train_primesense/000001/scene_camera.json": "49baebc0500004017067917cf83a021e4d3efcc3c1abd0c3cd2a51deeba00637",
+    "train_primesense/000001/scene_gt.json": "3629ef05cda780ca87359936a807535bbf017a5ea90a5c3a20e42128c808857b",
+    "train_primesense/000001/scene_gt_info.json": "17250ad9ea974a2749c9cc0ba1a968a12cd256698abe8ff4234cb00091f1fd91",
+    "train_primesense/000001/rgb/000000.png": "a5555f06a99a6b569723bb0e7b8704b7d032afecabbc0d24ce6b0c0a886b9dbf",
+    "train_primesense/000001/depth/000000.png": "763b9ad23b9cace81e23899d13f3106c55f0bd29daa2dce68e66676b19376de5",
+    "train_primesense/000001/mask_visib/000000_000000.png": "cd4519eb3e7160424e35cc096b6bf313a5aa8c622de4ac516b6236cd5563885b",
+    "train_primesense/000001/rgb/000432.png": "a1e4264a78911430c37d8e06d2643123d4813c7e32b01631fb77fa7466f6566a",
+    "train_primesense/000001/depth/000432.png": "a5e83d0c9999b78eae79d07dcb998b40bb19f227456f2b0c78642120af69a970",
+    "train_primesense/000001/mask_visib/000432_000000.png": "6ecaed553769036031e594e42c5d3accd20470a64102778b71cda5fa8a957862",
+    "train_primesense/000001/rgb/000863.png": "e0437ec31154b1560e084f46cd1aea1b50aa8d9d5d48382edd606b753b91e138",
+    "train_primesense/000001/depth/000863.png": "4968b7578500356d8f8954b97019eb176977e759b374fa7982244da6729d2486",
+    "train_primesense/000001/mask_visib/000863_000000.png": "ce300dff264ac5807e580aa4cbb20936617f756272b381b313efacf6f0aac664",
+    "train_primesense/000001/rgb/001295.png": "f34d780e2d8bd575716a78f61f91cabfdfc5abc4c0b69a2ef0cf3d3419f71ded",
+    "train_primesense/000001/depth/001295.png": "7c8e7b1ede5b16bfb53ac227a16df4e2385cd3e7b857fc3167348e2141043547",
+    "train_primesense/000001/mask_visib/001295_000000.png": "c1f61552dd02784ec80d206d8f6acbe8bf639d0983ba613f83216b38783682ab",
+    "train_primesense/000006/scene_camera.json": "ebe108fa0bd6f69c6cf99b2f2ed859e414885c1f5e0fe9ceb9083e23a15f39e5",
+    "train_primesense/000006/scene_gt.json": "938c7dd0e80ab3d1a98f22e7bd0bbf11f98033ee2bccb210505565ce68827763",
+    "train_primesense/000006/scene_gt_info.json": "bd7e88ade3a805fe05e94a85e18d8f6bd386518722cbf039c8a0bbd21d5a9424",
+    "train_primesense/000006/rgb/000000.png": "56d8459d6b4243cb037374e716030a03d15c45f0b6f875e2972c543f5cc0379e",
+    "train_primesense/000006/depth/000000.png": "ba5a0ecbfa2dfc615c17f1bddebb084a8934acb36fba3a26481368090621615e",
+    "train_primesense/000006/mask_visib/000000_000000.png": "71e0ba8ca5787606f15b315164e7b07cd1df10a2cb90702de47a14fe7e83d0d1",
+    "train_primesense/000006/rgb/000432.png": "6ba1990bff3eee5ea4c53d01fa414fc7b172eea0b2c1ae70176869620298c3bb",
+    "train_primesense/000006/depth/000432.png": "c61c183fcf6fe879ca22e44c261db21e6d895296bfc1473ee075e0e016687490",
+    "train_primesense/000006/mask_visib/000432_000000.png": "2f045208e04213061faa18ff7c943bac82fa1474f603fe30cf70cf90afd467cb",
+    "train_primesense/000006/rgb/000863.png": "c5f67b58a2e8449630f39a1a3ab071ecfa6b5bd91f26d208cdc979d6d1f1b180",
+    "train_primesense/000006/depth/000863.png": "5e8bcddd23f6f45cf468cebce283cf8dde33ff5399ad0736b6964829c1430d63",
+    "train_primesense/000006/mask_visib/000863_000000.png": "6f53322735cfe0caa85f7008796eef3b7b323dc37594f60fdee48a4f0d9db170",
+    "train_primesense/000006/rgb/001295.png": "076f12800c75caaf530bc39c44016d96da0d0e952b70b8f5477f15634b6ce9dc",
+    "train_primesense/000006/depth/001295.png": "5f20f3872f9e93b200488fcf8f471f1fb59e9ab84c9fb39f9e5878b9a68e2848",
+    "train_primesense/000006/mask_visib/001295_000000.png": "ae1b4f21f456c4f599b200f5c4b0d1519eb27a115d1266ce92e2ff391fad59bb"
+  },
+  "model_training_performed": false,
+  "model_accuracy_score": null,
+  "scope": "Data/label readiness only; no optimizer, checkpoint, inference or inspection result"
+}

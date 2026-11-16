@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "cloud_0",
+      "type": "input.cloud",
+      "name": "train / object 6 / GROUND TRUTH",
+      "parameters": {
+        "path": "review/label_00000.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "file_0",
+      "type": "input.file",
+      "name": "train / object 6 / GROUND TRUTH",
+      "parameters": {
+        "path": "review/label_00000_thumbnail.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "cloud_1",
+      "type": "input.cloud",
+      "name": "train / object 1 / GROUND TRUTH",
+      "parameters": {
+        "path": "review/label_00003.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        420
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "file_1",
+      "type": "input.file",
+      "name": "train / object 1 / GROUND TRUTH",
+      "parameters": {
+        "path": "review/label_00003_thumbnail.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        420
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "cloud_2",
+      "type": "input.cloud",
+      "name": "validation / object 1 / GROUND TRUTH",
+      "parameters": {
+        "path": "review/label_00014.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        840
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "file_2",
+      "type": "input.file",
+      "name": "validation / object 1 / GROUND TRUTH",
+      "parameters": {
+        "path": "review/label_00014_thumbnail.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        840
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "cloud_3",
+      "type": "input.cloud",
+      "name": "validation / object 6 / GROUND TRUTH",
+      "parameters": {
+        "path": "review/label_00018.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        1260
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "file_3",
+      "type": "input.file",
+      "name": "validation / object 6 / GROUND TRUTH",
+      "parameters": {
+        "path": "review/label_00018_thumbnail.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        500,
+        1260
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "scope",
+      "type": "layout.comment",
+      "name": "GROUND-TRUTH LABEL REVIEW / NO MODEL TRAINED",
+      "description": "Published synthetic train and independent real-camera validation labels. Native clouds contain measured first-return scene, yellow CAD points clipped to visible labels, and RGB pose axes. PASS means file loading only, not learned pose accuracy. T-LESS, Hodan et al., WACV 2017, CC BY 4.0. review/review.html has split/object filmstrips, original toggle, zoom and Center part.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "node_size": "large"
+    }
+  ],
+  "connections": []
+}

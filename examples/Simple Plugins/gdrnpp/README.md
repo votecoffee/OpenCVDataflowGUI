@@ -1,5 +1,11 @@
 # SimpleGDRNPP setup and real saved reviews
 
+`training_data/` starts new-object data preparation with calibrated labels for
+objects 1 and 6. It includes 16 original synthetic/real captures, 22 label reviews,
+split/source checks, zoomable filmstrips and four colored native cloud/image
+pairs. These are ground-truth reviews, not inference. The included data-only
+wheel needs no Torch, FoundationPose or checkpoint; actual training remains open.
+
 `worker_lifecycle/` adds complete Windows process ownership, busy cancel/timeout/
 close recovery, standard-library host checks and an actual-model replay. Four
 completed previews keep the frozen poses, fits and overlay/XYZ/RGB bytes exact.

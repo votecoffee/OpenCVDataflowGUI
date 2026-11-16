@@ -13,3 +13,5 @@ batch_execution/** -text
 packet_transport/** -text
 candidate_execution/** -text
 worker_lifecycle/** -text
+training_data/** -text
+training_data/source/** -text whitespace=cr-at-eol
