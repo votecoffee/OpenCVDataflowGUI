@@ -1,0 +1,9 @@
+# Model pins and native arrays must remain byte-exact on Windows checkouts.
+*.yml -text -diff
+*.yaml -text -diff
+*.npy -text
+*.whl -text
+*.png -text
+*.jpg -text
+# Preserve the upstream license verbatim, including its final blank lines.
+ARMBENCH-License-CC-BY.txt -text -whitespace

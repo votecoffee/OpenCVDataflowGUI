@@ -1,0 +1,359 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Held-out ARMBench tote photos",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/OAR1KXNIME.jpg",
+          "assets/EZ5895NGB8.jpg"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "blue",
+      "type": "cv.channel_transform",
+      "name": "Measure blue dominance",
+      "parameters": {
+        "matrix": [
+          [
+            0.7,
+            -0.35,
+            -0.35,
+            128.0
+          ]
+        ]
+      },
+      "position": [
+        370.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "matrix"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "segment",
+      "type": "inspection.ocv_segment_image",
+      "name": "SimpleSegmentation \u00b7 Inventory foreground",
+      "parameters": {
+        "model_path": "model.yml",
+        "model_sha256": "7b6c9b334e447708a638e5c02298d7ac711dc77fefff9cfe0ad409c079586507",
+        "region_path": "region.png",
+        "region_sha256": "104c2848b0396df945958d246e78594ffc641bbb202f56d76599de783c0105bb",
+        "samples_per_pixel": 1,
+        "threshold": 0.5,
+        "min_area_px": 180,
+        "workers": 4,
+        "render_overlay": true,
+        "capture_only": false,
+        "emit_score_map": true
+      },
+      "position": [
+        740.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "valid"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "inspected",
+        "report",
+        "count",
+        "overlay",
+        "score_map"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "regions",
+      "type": "inspect.blobs",
+      "name": "Group foreground regions",
+      "parameters": {
+        "connectivity": 8,
+        "min_area": 1,
+        "max_area": 0,
+        "expected_count": 2,
+        "algorithm": "default",
+        "region_mode": "center",
+        "check_count": false
+      },
+      "position": [
+        1100.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "centroids",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "color_overlay",
+      "type": "collection.draw",
+      "name": "Show outlines on the photo",
+      "parameters": {
+        "color": [
+          80,
+          230,
+          140
+        ],
+        "thickness": 2,
+        "draw_bounds": false,
+        "draw_centers": false,
+        "labels": "none"
+      },
+      "position": [
+        1460.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "source_credits",
+      "type": "layout.comment",
+      "name": "ARMBench image credits",
+      "description": "Amazon.com, Inc. \u00b7 ARMBench Sparrow, Object Segmentation tiny archive \u00b7 CC BY 4.0.\nPhotos resized and re-encoded. Binary inventory labels drawn for this example.\nCitation and source archive details are in SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -245.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "distance",
+      "type": "cv.distance_transform",
+      "name": "Distance to foreground boundary",
+      "parameters": {
+        "mask_size": "precise",
+        "distance_type": "l2",
+        "output_depth": "float32"
+      },
+      "position": [
+        1100.0,
+        360.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "distance",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": "preview"
+    },
+    {
+      "id": "eligible",
+      "type": "cv.in_range",
+      "name": "Minimum interior clearance (px)",
+      "parameters": {
+        "lower": [
+          12.0
+        ],
+        "upper": [
+          1000000.0
+        ]
+      },
+      "position": [
+        1460.0,
+        360.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pick",
+      "type": "cv.image_statistics",
+      "name": "Best image-space pick candidate",
+      "parameters": {
+        "channel": "auto",
+        "statistic": "maximum",
+        "percentiles": [],
+        "value_percentile": 50.0,
+        "percentile_method": "linear",
+        "include_alpha": false
+      },
+      "position": [
+        1820.0,
+        360.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "maximum_location",
+        "selected_count",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pick_overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Show candidate on the photo",
+      "parameters": {
+        "excluded_graphics": {
+          "graphics_1": [
+            "minimum"
+          ]
+        }
+      },
+      "position": [
+        2220.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "blue",
+      "input": "image"
+    },
+    {
+      "source": "blue",
+      "output": "image",
+      "target": "segment",
+      "input": "image"
+    },
+    {
+      "source": "segment",
+      "output": "mask",
+      "target": "regions",
+      "input": "image"
+    },
+    {
+      "source": "regions",
+      "output": "collection",
+      "target": "color_overlay",
+      "input": "collection"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "color_overlay",
+      "input": "image"
+    },
+    {
+      "source": "segment",
+      "output": "mask",
+      "target": "distance",
+      "input": "image"
+    },
+    {
+      "source": "distance",
+      "output": "distance",
+      "target": "eligible",
+      "input": "image"
+    },
+    {
+      "source": "distance",
+      "output": "distance",
+      "target": "pick",
+      "input": "image"
+    },
+    {
+      "source": "eligible",
+      "output": "image",
+      "target": "pick",
+      "input": "mask"
+    },
+    {
+      "source": "color_overlay",
+      "output": "overlay",
+      "target": "pick_overlay",
+      "input": "image"
+    },
+    {
+      "source": "pick",
+      "output": "result_graphics",
+      "target": "pick_overlay",
+      "input": "graphics_1"
+    }
+  ]
+}

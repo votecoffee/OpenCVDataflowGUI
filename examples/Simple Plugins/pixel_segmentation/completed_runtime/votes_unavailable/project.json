@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "pcb-0000-blue-excess.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "segment",
+      "type": "inspection.ocv_segment_image",
+      "name": "SimpleSegmentation \u00b7 Segment blue PCB laminate",
+      "parameters": {
+        "model_path": "model.yml",
+        "model_sha256": "e1fd300863b89a7526b083b51863bf9bb95547a5f55d2f4c3b185590b3967d6d",
+        "region_path": "",
+        "region_sha256": "",
+        "samples_per_pixel": 1,
+        "threshold": 0.55,
+        "min_area_px": 70,
+        "workers": 4,
+        "render_overlay": true,
+        "capture_only": false,
+        "emit_score_map": false,
+        "render_heatmap": false
+      },
+      "position": [
+        355.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "valid"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "inspected",
+        "report",
+        "count",
+        "overlay",
+        "score_map"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "board",
+      "type": "inspect.contours",
+      "name": "Locate one board",
+      "description": "Use the external contour of the learned mask to measure the board outline and center.",
+      "parameters": {
+        "min_area": 30000.0,
+        "expected_count": 1,
+        "retrieval": "external",
+        "approximation": "simple",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        725.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "count",
+        "collection",
+        "mask"
+      ],
+      "thumbnail": true,
+      "preview_output": "mask"
+    },
+    {
+      "id": "board_preview",
+      "type": "collection.draw",
+      "name": "Show board outline and center",
+      "parameters": {
+        "color": [
+          80,
+          230,
+          140
+        ],
+        "thickness": 2,
+        "draw_bounds": false,
+        "draw_centers": true,
+        "labels": "none"
+      },
+      "position": [
+        1105.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "source_credits",
+      "type": "layout.comment",
+      "name": "VisA PCB2 photo credits",
+      "description": "VisA PCB2 photographs 0000 and 0621 by Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang, and Onkar Dabeer (ECCV 2022, CC BY 4.0).\n\nThe inputs were resized to 650 \u00d7 495 and converted to a grayscale blue-excess channel using saturating B \u2212 R.\n\nDataset and citation at https://registry.opendata.aws/visa/.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -254.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "segment",
+      "input": "image"
+    },
+    {
+      "source": "segment",
+      "output": "mask",
+      "target": "board",
+      "input": "image"
+    },
+    {
+      "source": "segment",
+      "output": "overlay",
+      "target": "board_preview",
+      "input": "image"
+    },
+    {
+      "source": "board",
+      "output": "collection",
+      "target": "board_preview",
+      "input": "collection"
+    }
+  ]
+}

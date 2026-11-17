@@ -2,6 +2,12 @@
 
 These examples use **SimpleSegmentation** to learn a foreground class from labels. Each includes a saved project, editable labels, and a pinned model.
 
+Dev2 adds [completed-run Results review](completed_runtime/README.md) with a
+checksum-pinned plugin, exact input/model assets, retained votes/coverage and
+selectable reported components. Its real PCB/tote examples also show missing
+scores, observed-empty foreground and deliberate unknown observations. Training
+drafts stay independent; review does not rerun inference or select new components.
+
 | Project | Foreground | What to look for |
 | --- | --- | --- |
 | [Brick mortar](brick_mortar/project.json) | Bright mortar joints | Labels cover selected joint and brick patches in the upper-left area. The result follows joints across the photograph. |
