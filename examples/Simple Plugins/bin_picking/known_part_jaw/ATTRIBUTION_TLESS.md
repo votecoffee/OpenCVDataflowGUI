@@ -34,3 +34,9 @@ robot-reachability or physical pick-success labels in these examples.
 Native-training derivatives additionally retain the supplied frame-13 pose and
 raw depth inside the staged `.sbpj` recipe. Their attribution and CC BY 4.0
 license follow the original source and other derivatives described above.
+
+Locator-chain frame-255 RGB/depth/camera/visible-mask sources and publisher
+CAD/reconstructed locator models retain the same CC BY 4.0 attribution.
+The chains supply no test object poses; source hashes and transformations are
+documented in `locator_chain/README.md`. Diagnostic overlays of frames 3/13
+use explicitly supplied annotations and retain the same dataset license.

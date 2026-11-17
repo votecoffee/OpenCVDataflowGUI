@@ -1,0 +1,45 @@
+[
+  {
+    "case": "reconstructed",
+    "locator_instances": 1,
+    "converted_instances": 1,
+    "eligible_grasps": 0,
+    "jaw_reasons": [
+      [
+        "insufficient_current_pose_evidence"
+      ],
+      [
+        "insufficient_current_pose_evidence"
+      ]
+    ],
+    "ground_truth_object_pose_supplied": false,
+    "supplied_visible_instance_mask": true,
+    "first_return_measured_depth": true,
+    "locator_model_sha256": "c9bb37916098f573065822e5e0d604700c7b8bd0056a9be68b5c1dd8a64f2154",
+    "source_cloud_sha256": {
+      "scene000002_frame000255_isolated.ply": "3f07540657aa310ba36ed1d833056439d0a14715a85aa1c8dfa3ec73f4fdc82b",
+      "scene000002_frame000255_full.ply": "71a7fe93a144e1bd197769de5175deb1fe7320dcdc4237d3cc7f0b408d27652e"
+    },
+    "depth_png_sha256": "217ea1ce3079186c75dca60a750b1f363e296b7a4dbfea0f60f6ee82706565c6",
+    "tested_locator_version": "0.1.0.dev19",
+    "legacy_capture_binding": "Explicit recorded pairing; not a freshness proof"
+  },
+  {
+    "case": "cad",
+    "locator_instances": 0,
+    "converted_instances": 0,
+    "eligible_grasps": 0,
+    "jaw_reasons": [],
+    "ground_truth_object_pose_supplied": false,
+    "supplied_visible_instance_mask": true,
+    "first_return_measured_depth": true,
+    "locator_model_sha256": "24da7b5dc788e8b63ceef874852ffd69fe65bb578902599752c7d14caf152729",
+    "source_cloud_sha256": {
+      "scene000002_frame000255_isolated.ply": "3f07540657aa310ba36ed1d833056439d0a14715a85aa1c8dfa3ec73f4fdc82b",
+      "scene000002_frame000255_full.ply": "71a7fe93a144e1bd197769de5175deb1fe7320dcdc4237d3cc7f0b408d27652e"
+    },
+    "depth_png_sha256": "217ea1ce3079186c75dca60a750b1f363e296b7a4dbfea0f60f6ee82706565c6",
+    "tested_locator_version": "0.1.0.dev19",
+    "legacy_capture_binding": "Explicit recorded pairing; not a freshness proof"
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "model": "simple_part_instances_v1",
+  "locator_model": "simple_3d_locate_v1",
+  "capture_id": "tless_scene2_frame255",
+  "capture_binding": "explicit_legacy_source_capture_declaration",
+  "source_frame": "tless_object6",
+  "target_frame": "camera",
+  "units": "m",
+  "upstream_units": "mm",
+  "upstream_accepted_candidates": 1,
+  "emitted_instances": 1,
+  "instance_semantics": "verified_matches",
+  "candidates": [
+    {
+      "candidate_id": "1",
+      "upstream_status": "accepted",
+      "emitted_instance": "tless6-1",
+      "reason": "upstream_accepted_geometry_only"
+    }
+  ],
+  "identity_scope": "Current acquisition proposals; generated ranks are not tracking identities",
+  "qualification": "Conversion only; jaw contact/current-depth/clearance checks still required",
+  "legacy_scope": "Explicit binding is a caller declaration, not proof of acquisition synchrony"
+}

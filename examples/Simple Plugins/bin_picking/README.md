@@ -7,6 +7,9 @@ The jaw tool now has native CAD-contact teaching, retained frozen depth/pose
 references and inspector Stage/Apply/Cancel, with three saved teaching projects.
 Robot execution integration remains separate. The suction projects below keep
 their existing installed package and recipes.
+The jaw plugin also adds an explicit locator-report converter and two actual
+[real locator-to-jaw chains](known_part_jaw/locator_chain/README.md), preserving
+capture/units/frame checks and the downstream jaw rejections.
 
 Install the included `opencv-simple-bin-picking` **0.1.0.dev3** in the Python
 environment running this app, from the application repository root:

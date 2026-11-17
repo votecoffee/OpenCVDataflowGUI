@@ -1,0 +1,114 @@
+{
+  "derived_review": true,
+  "components": [
+    {
+      "role": "measured_scene",
+      "rows": [
+        0,
+        30000
+      ],
+      "observations": true
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30000,
+        30020
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30020,
+        30040
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30040,
+        30060
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30060,
+        30080
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30080,
+        30100
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30100,
+        30120
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30120,
+        30140
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30140,
+        30160
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30160,
+        30180
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30180,
+        30200
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30200,
+        30220
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30220,
+        30240
+      ],
+      "observations": false
+    }
+  ],
+  "capture_id": "tless_scene2_frame255",
+  "contact_source": "CAD_taught_not_measured_force_closure",
+  "selected_candidate": null,
+  "unobserved_space": "unknown_not_free",
+  "physical_grasp_qualified": false
+}

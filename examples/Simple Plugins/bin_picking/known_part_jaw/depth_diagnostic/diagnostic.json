@@ -1,0 +1,60 @@
+{
+  "rows": [
+    {
+      "frame": 3,
+      "annotation_pose_assistance": true,
+      "tolerance_m": 0.003,
+      "current_four_neighbor_point_evidence": {
+        "id": "part-1",
+        "status": "rejected",
+        "reason": "insufficient_current_pose_evidence",
+        "coverage": 0.25100479709581225,
+        "contradiction": 0.34928043562816025,
+        "samples": 7713,
+        "known_samples": 7633,
+        "supported_samples": 1936
+      },
+      "independent_full_resolution_triangle": {
+        "rendered_rays": 10542,
+        "coverage": 0.36643900588123696,
+        "contradiction": 0.5044583570479985,
+        "unknown": 52,
+        "occluded": 1309,
+        "accepted": false
+      },
+      "method_difference": "Core uses four observed neighbors; triangle diagnostic uses exact pixels",
+      "conclusion": "Both reject; a sampling-only explanation is not established"
+    },
+    {
+      "frame": 13,
+      "annotation_pose_assistance": true,
+      "tolerance_m": 0.003,
+      "current_four_neighbor_point_evidence": {
+        "id": "part-1",
+        "status": "rejected",
+        "reason": "insufficient_current_pose_evidence",
+        "coverage": 0.28961504028648166,
+        "contradiction": 0.22097881229483737,
+        "samples": 6702,
+        "known_samples": 5833,
+        "supported_samples": 1941
+      },
+      "independent_full_resolution_triangle": {
+        "rendered_rays": 9096,
+        "coverage": 0.41051011433597184,
+        "contradiction": 0.3354221635883905,
+        "unknown": 1256,
+        "occluded": 1055,
+        "accepted": false
+      },
+      "method_difference": "Core uses four observed neighbors; triangle diagnostic uses exact pixels",
+      "conclusion": "Both reject; a sampling-only explanation is not established"
+    }
+  ],
+  "mesh_recipe_sha256": "9dd8370f3f04e0fd18c5898b1f286bbb3c3a253fdfb6d02a0e183db18c963e1d",
+  "no_pose_or_clearance_gate_changed": true,
+  "robot_execution": false,
+  "scope": "Diagnostic only, not independent localization or calibrated accuracy",
+  "legend": "Green support; magenta free-space contradiction; blue occluded; orange missing depth",
+  "renderer_scope": "Development CPU rasterizer, unqualified against native CUDA rendering"
+}

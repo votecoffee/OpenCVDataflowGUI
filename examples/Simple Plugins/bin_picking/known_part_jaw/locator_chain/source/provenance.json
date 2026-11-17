@@ -1,0 +1,13 @@
+{
+  "dataset": "T-LESS",
+  "license": "CC-BY-4.0",
+  "revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1",
+  "source": "https://cmp.felk.cvut.cz/t-less/",
+  "sha256": {
+    "test_primesense/000002/rgb/000255.png": "6bd1229a235157185cf6087c053f1352fb94074a25b540a4d16d1b7e683fbe8d",
+    "test_primesense/000002/depth/000255.png": "217ea1ce3079186c75dca60a750b1f363e296b7a4dbfea0f60f6ee82706565c6",
+    "test_primesense/000002/mask_visib/000255_000001.png": "a6e63cdd60fb218ed75d45b68040351d6443aad787b56ac57c75f812f4921863",
+    "test_primesense/000002/scene_camera.json": "84d4a7b2106ed19c59d11da0fa406a763bd408c8585a77b8f44e5d3d7b300d9b"
+  },
+  "scope": "RGB/depth/camera and visible mask only; object pose labels are not runtime inputs"
+}

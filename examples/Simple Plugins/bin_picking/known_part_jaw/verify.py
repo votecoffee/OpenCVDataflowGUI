@@ -52,6 +52,8 @@ def verify(root, output, *, native=False):
                         raise AssertionError("Native result review re-ran the jaw planner")
 
                     block._planner.plan = forbidden
+                    if "locate" in session.graph.blocks:
+                        session.graph.blocks["locate"]._locator.locate = forbidden
                     window.show()
                     app.processEvents()
                     node = window.scene.nodes["jaw"]
@@ -89,11 +91,16 @@ def verify(root, output, *, native=False):
             block = copied.graph.blocks["jaw"]
             assert block.last_result is not None, block.error
             assert block.last_result.outputs["report"] == expected
-            for relative_asset in (
+            asset_paths = [
                 "assets/depth.npy",
                 "assets/records.json",
                 block.parameters["recipe_path"],
-            ):
+            ]
+            if "locate" in copied.graph.blocks:
+                asset_paths += ["assets/full.ply", "assets/isolated.ply", "assets/locator.s3l"]
+                for name in ("locator_scene_path", "locator_depth_path"):
+                    assert copied.graph.blocks["capture"].parameters[name].startswith("assets/")
+            for relative_asset in asset_paths:
                 assert (saved.parent / relative_asset).read_bytes() == (
                     path.parent / relative_asset
                 ).read_bytes()
@@ -111,7 +118,7 @@ def verify(root, output, *, native=False):
                 ).hexdigest(),
             )
         )
-    assert len(rows) in (5, 8)
+    assert len(rows) in (5, 8, 10)
     (output / "checks.json").write_text(json.dumps(rows, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(rows, indent=2))
 

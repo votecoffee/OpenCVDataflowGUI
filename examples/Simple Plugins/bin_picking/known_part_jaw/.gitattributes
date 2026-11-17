@@ -1,2 +1,4 @@
 * -text whitespace=cr-at-eol
 tless/source/models_cad/*.ply -diff
+locator_chain/source/** -diff
+locator_chain/**/assets/*.ply -diff

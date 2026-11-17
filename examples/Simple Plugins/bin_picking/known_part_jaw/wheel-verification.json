@@ -1,10 +1,10 @@
 {
-  "version": "0.1.0.dev5",
-  "sha256": "7cd2702f4775706dfbd7c7fefd40bd4ecf3a40c026c486fd731c81fa9a79a40f",
-  "source_revision": "4f84a06",
-  "modules": 24,
+  "version": "0.1.0.dev6",
+  "sha256": "c7c8dfff73fdc27ca2386904503c4d17ca696525bbf8d71344cf1a1bebbbcc30",
+  "source_revision": "26472b4",
+  "modules": 26,
   "source_matches_after_newline_normalization": true,
   "mit_license_matches": true,
   "host_environment_install": false,
-  "checkout_host_tests_passed": 86
+  "checkout_host_tests_passed": 94
 }

@@ -1,6 +1,6 @@
 # CAD-taught jaw alternatives
 
-Eight offline projects exercise **SimpleBinPicking Jaw** and native CAD-contact teaching. They
+Ten offline projects exercise **SimpleBinPicking Jaw** and native CAD-contact teaching. They
 retain the CAD surface, two authored part-relative grasp frames, calibrated
 depth/camera, gripper dimensions and TCP mounting in checksummed `.sbpj` files.
 They use the same generic jaw settings. The clear control demonstrates a usable
@@ -26,10 +26,10 @@ grasp-label accuracy or physical pick success. Real-data pose verification and
 useful CAD contact proposals need further work; thresholds were not relaxed to
 make the examples pass.
 
-The plugin loads its bundled `opencv-simple-bin-picking` **0.1.0.dev5** wheel,
+The plugin loads its bundled `opencv-simple-bin-picking` **0.1.0.dev6** wheel,
 without installing or updating the app environment. NumPy and SciPy must already
 be available. The complete wheel SHA-256 is
-`7cd2702f4775706dfbd7c7fefd40bd4ecf3a40c026c486fd731c81fa9a79a40f`.
+`c7c8dfff73fdc27ca2386904503c4d17ca696525bbf8d71344cf1a1bebbbcc30`.
 Opening a project does not load Python code automatically. If an older
 BinPicking package is already imported, restart the app and load this plugin
 first; the loader rejects mixed versions. The original suction block remains
@@ -89,20 +89,42 @@ need a supplied pose reference once before they can preview independently.
 Explicit locator-instance adapters, better general real contact proposals,
 symmetry handling and qualified robot handoff remain follow-ups.
 
+## Locator integration and depth diagnostics
+
+The [two real composed locator projects](locator_chain/README.md) run actual
+Simple3DLocate reports through the new [part-instance adapter](POSE_INSTANCES.md)
+and into the jaw planner, using the same measured frame and unchanged recipes.
+The reconstructed locator finds one proposal, which the jaw tool rejects; the
+CAD locator finds none and propagates an empty result. No annotated object pose
+enters these chains. Their supplied visible mask is explicit segmentation
+assistance. Simple3DLocate 0.1.0.dev19 was already installed for these checks;
+only the two composed projects require it.
+
+The converter also checks GDRNPP detection and FoundationPose hypothesis report
+contracts. One FoundationPose mask yields at most one part instance. Raw scores
+never promote a rejected pose. Capture/frame mismatches reject input, with an
+explicit opt-in source declaration for legacy reports lacking capture IDs.
+Valid empty conversion means no accepted part, not a grasp inspection pass.
+
+[Depth diagnostic overlays](depth_diagnostic/README.md) compare the existing
+sampled-CAD check with a separate triangle renderer under the same 3 mm tolerance.
+Both still reject the pose-assisted frames. This does not establish a root cause
+or qualify the development renderer; no acceptance/clearance gates were relaxed.
+
 ## Verification and reproduction
 
 `verification.json` records saved-project reopen and graphics-off/cache parity.
 `native-verification.json` records actual offscreen app thumbnail/popout orbit,
-RGB preservation, review without replanning and portable Save As for all eight
+RGB preservation, review without replanning and portable Save As for all ten
 projects. This is software acceptance, not hardware qualification. The bundled
-wheel passed 86 checks against the checkout host, including existing suction
-and mocked simulation checks. All 24 packaged source modules and the MIT notice
+wheel passed 94 checks against the checkout host, including existing suction
+and mocked simulation checks. All 26 packaged source modules and the MIT notice
 were checked against the source publication, allowing newline normalization.
 
 From an environment with the app, NumPy, SciPy and OpenCV:
 
 ```powershell
-python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev5-py3-none-any.whl --source tless/source
+python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev6-py3-none-any.whl --source tless/source
 python build_native_training.py C:\path\to\new-output C:\path\to\new-output\native_training
 python verify.py C:\path\to\new-output C:\path\to\new-checks
 ```

@@ -10,6 +10,26 @@
     "expected_sha256": "1de03747769c3d66d5cf50ae24cc1a92d11fca4405c2a8d41ce7b7633b5f7579"
   },
   {
+    "case": "locator_chain/cad",
+    "passed": false,
+    "eligible": 0,
+    "reopened_exact": true,
+    "portable_save_as_exact": true,
+    "native_flyaround_colors_preserved": true,
+    "review_did_not_replan": true,
+    "expected_sha256": "4ae04f487b58f58da755e2b3e33030b3946d88412e05af389b979471452d955b"
+  },
+  {
+    "case": "locator_chain/reconstructed",
+    "passed": false,
+    "eligible": 0,
+    "reopened_exact": true,
+    "portable_save_as_exact": true,
+    "native_flyaround_colors_preserved": true,
+    "review_did_not_replan": true,
+    "expected_sha256": "531113ac06428a14d487a8f4f136a459dc86081590cb11da88188f529cef6132"
+  },
+  {
     "case": "native_training/clear",
     "passed": true,
     "eligible": 1,
