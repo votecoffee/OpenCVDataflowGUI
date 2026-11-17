@@ -1,4 +1,4 @@
-# DNN, LightGlue and Annoy
+# Image models, LightGlue and Annoy
 
 **OpenCV > Deep Neural Networks (dnn)** contains DNN inference, classification
 and embedding tools. **Custom > ML** includes LightGlue matching and Annoy
@@ -6,6 +6,11 @@ vector search. ML borders use pink. Image, pose, region and
 data connections keep the ordinary canvas type colors. All these blocks use the
 existing ticket/outcome, payload, recipe-parameter, timing and diagnostic contracts.
 The index writer is under **Custom > Output > ML models > Save Annoy index**.
+
+Reusable native color palettes and image-descriptor vocabularies use the base
+OpenCV installation. Train, save, reload and predict without refitting each
+capture; distance/cluster filters report unknown samples. See
+[reusable clusters](reusable-clusters.md) for preprocessing and model contracts.
 
 ## Installation
 

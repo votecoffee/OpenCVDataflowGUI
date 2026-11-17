@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/heldout-vertical.png",
+          "assets/heldout-horizontal.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "hog",
+      "type": "inspect.hog",
+      "name": "Histogram of oriented gradients",
+      "parameters": {
+        "cell_size": [
+          8,
+          8
+        ],
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "bins": 9,
+        "win_sigma": -1.0,
+        "l2_hys_threshold": 0.2,
+        "gamma_correction": true,
+        "signed_gradient": true
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "descriptor",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "model",
+      "type": "ml.kmeans_load",
+      "name": "Load cluster model",
+      "parameters": {
+        "path": "assets/vocabulary.json"
+      },
+      "position": [
+        360,
+        420
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "predict",
+      "type": "ml.kmeans_predict",
+      "name": "Predict descriptor clusters",
+      "parameters": {
+        "contract_policy": "require_match",
+        "max_distance": 0.0,
+        "max_unknown_fraction": 0.0,
+        "accepted_clusters": []
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "model",
+        "samples"
+      ],
+      "exposed_outputs": [
+        "labels",
+        "distances",
+        "accepted",
+        "histogram",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original synthetic cluster study",
+      "description": "Original synthetic images and graph code by OpenCVDataflowGUI contributors, MIT. No external images, models or tutorial content. Fixed palette IDs persist across other images and depth/encoding changes; descriptor vocabulary uses native OpenCV HOG on separate stripe arrangements. Training saves new files and preserves existing ones. Defect intentionally fails; wrong HOG preprocessing is an error without prediction events. Colors/distances are not probabilities or production accuracy evidence. See README.md and SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -480
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "hog",
+      "input": "image"
+    },
+    {
+      "source": "model",
+      "output": "model",
+      "target": "predict",
+      "input": "model"
+    },
+    {
+      "source": "hog",
+      "output": "descriptor",
+      "target": "predict",
+      "input": "samples"
+    }
+  ]
+}

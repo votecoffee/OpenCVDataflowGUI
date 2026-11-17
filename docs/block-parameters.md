@@ -8901,6 +8901,57 @@ Input `initial_labels` — Optional list of zero-based labels for the first atte
 | `plot_y` | `-1` | Value must be a whole number between -1 and 127. -1 chooses the first other feature or a one-dimensional strip. |
 | `draw_plot` | `true` |  |
 
+## Load cluster model (`ml.kmeans_load`)
+
+ML / Clustering
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+
+## Predict descriptor clusters (`ml.kmeans_predict`)
+
+ML / Clustering
+
+Inputs: `model` (data), `samples` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `contract_policy` | `"require_match"` | `require_match`, `dimensions_only` Require the saved preprocessing contract, or explicitly check dimensions only. Stored normalization always applies. |
+| `max_distance` | `0.0` | Value must be a finite number between 0 and 1e+15. Euclidean distance in the saved working feature space; 0 disables the cutoff. Positive limits are inclusive. This is not a probability. |
+| `max_unknown_fraction` | `0.0` | Value must be a finite number between 0 and 1. Allowed fraction rejected by distance or accepted-cluster filters. Exceeding it is an inspection failure, not a processing exception. |
+| `accepted_clusters` | `[]` | Stored zero-based IDs to accept; [] accepts all. IDs do not have semantic names and stay fixed only within the same model revision. |
+
+## Save cluster model (`ml.kmeans_save`)
+
+Output / ML models
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"clusters.json"` |  |
+
+## Train descriptor clusters (`ml.kmeans_train`)
+
+ML / Clustering
+
+Inputs: `samples` (any), `initial_labels` (data, optional).
+
+Input `samples` — Numeric rows or a batch of image-descriptor vectors with matching feature_contract payloads.
+
+Input `initial_labels` — Optional cluster ID per fitted row; used on the first attempt.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `clusters` | `3` | Value must be a whole number between 1 and 32. Must be no greater than the number of samples used in this run. |
+| `initialization` | `"kmeans_plus_plus"` | `kmeans_plus_plus`, `random` |
+| `attempts` | `3` | Value must be a whole number between 1 and 20. Returns the fit with the lowest sum of squared distances. |
+| `termination` | `"both"` | `both`, `iterations`, `epsilon` |
+| `max_iterations` | `50` | Value must be a whole number between 2 and 100. Used by the both and iterations modes. |
+| `epsilon` | `0.01` | Value must be a finite number at least 0. Center movement tolerance in feature units, used by both and epsilon modes. |
+| `normalization` | `"none"` | `none`, `l2` Per-row L2 or none; stored and reused at prediction. |
+
 ## Pose from ordered landmarks (`ml.landmark_pose`)
 
 ML / Landmarks
@@ -9128,6 +9179,37 @@ Input `region` — Optional source-grid shape intersected with Mask.
 | `maximum_tensor_elements` | `2000000` | Value must be a whole number between 1 and 2e+06. Bound each serialized head before conversion. |
 | `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound source pixels; source axes are limited to 16384. |
 | `graphics_maximum_features` | `256` | Value must be a whole number between 1 and 4096. Bound optional markers without changing numeric results. |
+
+## Apply image color palette (`ml.palette_predict`)
+
+ML / Clustering
+
+Inputs: `model` (data), `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_distance` | `0.0` | Value must be a finite number between 0 and 1e+15. Euclidean distance in the saved working feature space; 0 disables the cutoff. Positive limits are inclusive. This is not a probability. |
+| `max_unknown_fraction` | `0.0` | Value must be a finite number between 0 and 1. Allowed fraction rejected by distance or accepted-cluster filters. Exceeding it is an inspection failure, not a processing exception. |
+| `accepted_clusters` | `[]` | Stored zero-based IDs to accept; [] accepts all. IDs do not have semantic names and stay fixed only within the same model revision. |
+
+## Train image color palette (`ml.palette_train`)
+
+ML / Clustering
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8/uint16 or normalized float gray/BGR/RGB/BGRA/RGBA; primary pixels and alpha remain unchanged.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `clusters` | `3` | Value must be a whole number between 1 and 32. Must be no greater than the number of samples used in this run. |
+| `initialization` | `"kmeans_plus_plus"` | `kmeans_plus_plus`, `random` |
+| `attempts` | `3` | Value must be a whole number between 1 and 20. Returns the fit with the lowest sum of squared distances. |
+| `termination` | `"both"` | `both`, `iterations`, `epsilon` |
+| `max_iterations` | `50` | Value must be a whole number between 2 and 100. Used by the both and iterations modes. |
+| `epsilon` | `0.01` | Value must be a finite number at least 0. Center movement tolerance in feature units, used by both and epsilon modes. |
+| `color_space` | `"lab"` | `bgr`, `lab`, `gray` Fixed normalized BGR/gray or Lab (L/100, a/128, b/128). No automatic white balance. Stored and reused on other depths/encodings. |
+| `max_samples` | `20000` | Value must be a whole number between 1 and 100000. Evenly spaced selected pixels in row-major order, not random sampling. Raise for rare colors. Transparent pixels are excluded. |
 
 ## Recognize text (CTC ONNX) (`ml.recognize_text`)
 

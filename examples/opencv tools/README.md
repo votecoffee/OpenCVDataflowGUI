@@ -63,3 +63,5 @@ For per-pixel score/ID heads, source-grid masks, confidence and area checks, try
 For separate object masks, preserved overlap, ROI/prototype heads and per-instance inspection, try [instance segmentation](instance_segmentation/README.md).
 
 For ordered keypoints, heatmap fitting, partial results and local inspection poses, try [landmarks](landmarks/README.md).
+
+For saved palettes, HOG vocabularies and unknown-sample inspection, try [reusable image clusters](reusable_clusters/README.md).

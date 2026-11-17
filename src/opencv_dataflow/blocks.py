@@ -651,6 +651,7 @@ def builtin_registry():
     from .circle_fitting import FitCircleArc
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_tools import CLOUD_BLOCKS
+    from .cluster_models import CLUSTER_MODEL_BLOCKS
     from .clustering import KMeansImage, KMeansSamples
     from .code_readers import CODE_READER_BLOCKS
     from .codec_probe import ProbeImageFile
@@ -1172,6 +1173,7 @@ def builtin_registry():
         MahalanobisDistance,
         KMeansSamples,
         KMeansImage,
+        *CLUSTER_MODEL_BLOCKS,
         *OCR_BLOCKS,
         *ANNOY_BLOCKS,
         *SVM_BLOCKS,

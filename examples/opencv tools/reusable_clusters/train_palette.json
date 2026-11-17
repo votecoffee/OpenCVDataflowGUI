@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "ml.palette_train",
+      "name": "Train image color palette",
+      "parameters": {
+        "clusters": 3,
+        "initialization": "kmeans_plus_plus",
+        "attempts": 1,
+        "termination": "both",
+        "max_iterations": 50,
+        "epsilon": 0.01,
+        "color_space": "bgr",
+        "max_samples": 20000
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "model",
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "save",
+      "type": "ml.kmeans_save",
+      "name": "Save cluster model",
+      "parameters": {
+        "path": "trained-palette.json"
+      },
+      "position": [
+        800,
+        0
+      ],
+      "exposed_inputs": [
+        "model"
+      ],
+      "exposed_outputs": [
+        "path"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original synthetic cluster study",
+      "description": "Original synthetic images and graph code by OpenCVDataflowGUI contributors, MIT. No external images, models or tutorial content. Fixed palette IDs persist across other images and depth/encoding changes; descriptor vocabulary uses native OpenCV HOG on separate stripe arrangements. Training saves new files and preserves existing ones. Defect intentionally fails; wrong HOG preprocessing is an error without prediction events. Colors/distances are not probabilities or production accuracy evidence. See README.md and SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -480
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "train",
+      "input": "image"
+    },
+    {
+      "source": "train",
+      "output": "model",
+      "target": "save",
+      "input": "model"
+    }
+  ]
+}

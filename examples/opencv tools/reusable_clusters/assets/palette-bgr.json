@@ -1,0 +1,29 @@
+{
+  "centers": [
+    [
+      0.09411634504795074,
+      0.12548859417438507,
+      0.7843557000160217
+    ],
+    [
+      0.15686063468456268,
+      0.705869197845459,
+      0.14117461442947388
+    ],
+    [
+      0.8234996795654297,
+      0.27452436089515686,
+      0.09804446250200272
+    ]
+  ],
+  "feature_contract": {
+    "model": "opencv_color_features_v1",
+    "opencv_version": "5.0.0",
+    "scaling": "unit_bgr_gray;Lab_L/100_ab/128",
+    "space": "bgr"
+  },
+  "kind": "colors",
+  "model": "opencv_cluster_centers_v1",
+  "normalization": "none",
+  "revision": "f8b7ef99163261f2a5315a74b95d776a7aca7a9577c4eb68498a1f15056c0431"
+}

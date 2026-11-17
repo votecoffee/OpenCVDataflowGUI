@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/defect.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "model",
+      "type": "ml.kmeans_load",
+      "name": "Load cluster model",
+      "parameters": {
+        "path": "assets/palette-bgr.json"
+      },
+      "position": [
+        0,
+        420
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "predict",
+      "type": "ml.palette_predict",
+      "name": "Apply image color palette",
+      "parameters": {
+        "max_distance": 0.05,
+        "max_unknown_fraction": 0.0,
+        "accepted_clusters": []
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "model",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "labels",
+        "distances",
+        "unknown_mask",
+        "quantized",
+        "cluster_map",
+        "histogram",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        800,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1200,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original synthetic cluster study",
+      "description": "Original synthetic images and graph code by OpenCVDataflowGUI contributors, MIT. No external images, models or tutorial content. Fixed palette IDs persist across other images and depth/encoding changes; descriptor vocabulary uses native OpenCV HOG on separate stripe arrangements. Training saves new files and preserves existing ones. Defect intentionally fails; wrong HOG preprocessing is an error without prediction events. Colors/distances are not probabilities or production accuracy evidence. See README.md and SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -480
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "model",
+      "output": "model",
+      "target": "predict",
+      "input": "model"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "predict",
+      "input": "image"
+    },
+    {
+      "source": "predict",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "predict",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}
