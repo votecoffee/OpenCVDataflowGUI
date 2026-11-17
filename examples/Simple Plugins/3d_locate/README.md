@@ -1,5 +1,16 @@
 # Simple3DLocate
 
+For exact **completed-run Results review**, open the
+[dev21 pinned-plugin examples](completed_runtime/README.md). Load that folder's
+`plugin.py` first, then open one of its four projects; restart if another locator
+version is already imported. No environment installation is needed. Its native
+fly-around Results popup freezes original scene/camera/depth, executed recipe
+and recorded accepted/rejected fit evidence with layer selection and raw-cloud/
+array/recipe/JSON/PNG export. It performs no search, ICP, verification or model
+reload and keeps teaching drafts independent. Real first-return accepted/missed
+cases retain their existing settings; generated complete/fused and empty controls
+stay explicit. The node's native fit-cloud thumbnail remains the primary output.
+
 For a **real single-view depth capture**, open [T-LESS](real_tless/README.md).
 It uses attributed CC BY 4.0 industrial RGB-D data and requires plugin dev3.
 This older generated example deliberately uses **complete/fused observations**;

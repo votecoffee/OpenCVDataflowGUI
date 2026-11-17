@@ -1,0 +1,74 @@
+[
+  {
+    "case": "real_positive",
+    "count": 1,
+    "state": "located",
+    "source_sha256": "65a3868a7636d81291ef4b3f9d2054f2bf692f92b53e5151fd160b3207b996a2",
+    "recipe_sha256": "c6af5c5b5d50149c1b25be20004054d6ab06258d033727583531449f570d1298",
+    "graphics": {
+      "points": "ee6d6b272859a04e71555b5eeeb3a450e87b5994381328517cb2f143a5fecea1",
+      "colors": "bdca9d9cf8b444ab8796b1e4c8225942d1e1429c3a83c504994f6dae7595bd89",
+      "overlay": "67a6df3e70c52d10f9e4bf2f9b2e2a1834e82eeb732d7c478e30c245da964dc0"
+    },
+    "native_results_flyaround": true,
+    "no_search_verification_reload_or_training": true,
+    "primary_outputs_and_graphics_unchanged": true,
+    "exports": [
+      "snapshots/real_positive/accepted_0"
+    ]
+  },
+  {
+    "case": "real_no_match",
+    "count": 0,
+    "state": "verification_failed",
+    "source_sha256": "ee8b18414a641d7a5fe47f7a350aaba3dbd65cdfe555131f4b5609c96977d9e8",
+    "recipe_sha256": "1ec5838c8bb166ef25ae15f9394a81b68e744787b90f1b6d21c5217414bbdad1",
+    "graphics": {
+      "points": "da21e3f1d0b34ebbf8c34ccd2709866d0558919dce631a865ab57ce89fff91c8",
+      "colors": "0b28d343370cca38ef66ba25bf05ada0970135b854330ef2bf13f0958947c905",
+      "overlay": "137dc94ac136828d9d789d3a307121afcdb4effafd16779388730d4f2a1f8699"
+    },
+    "native_results_flyaround": true,
+    "no_search_verification_reload_or_training": true,
+    "primary_outputs_and_graphics_unchanged": true,
+    "exports": [
+      "snapshots/real_no_match/rejected_0"
+    ]
+  },
+  {
+    "case": "generated_complete",
+    "count": 2,
+    "state": "located",
+    "source_sha256": "f60845fe4ddc5265d604d1c5f7c4937d0079c3496a947079362240a46fb5a034",
+    "recipe_sha256": "8183afa88ce68a7508605d911eb0ebfdb287241da755c40e6a8087dabf031be9",
+    "graphics": {
+      "points": "460285dc10188d89778232cf42bc314cf680b6fc7f83a58b0e80895535fcc8cc",
+      "colors": "d6b2a7c4742372cf40fdf54bc5ba5683f5cbd0333f9b09d3aadf3191e47a0c6a",
+      "overlay": "46adc18e0115d55eaf8a678b21786c909151bb3b5a37bcc546f18dec02f8cd0a"
+    },
+    "native_results_flyaround": true,
+    "no_search_verification_reload_or_training": true,
+    "primary_outputs_and_graphics_unchanged": true,
+    "exports": [
+      "snapshots/generated_complete/all"
+    ]
+  },
+  {
+    "case": "empty_control",
+    "count": 0,
+    "state": "insufficient_scene_points",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "recipe_sha256": "c6af5c5b5d50149c1b25be20004054d6ab06258d033727583531449f570d1298",
+    "graphics": {
+      "points": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "colors": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "overlay": "e8e52cdb00ce1c910b495309f2d80be811d5ea8e31dfc28f001f606366819c28"
+    },
+    "native_results_flyaround": true,
+    "no_search_verification_reload_or_training": true,
+    "primary_outputs_and_graphics_unchanged": true,
+    "exports": [
+      "snapshots/empty_control/all"
+    ]
+  }
+]

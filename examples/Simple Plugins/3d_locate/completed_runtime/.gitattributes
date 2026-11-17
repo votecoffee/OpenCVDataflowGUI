@@ -1,0 +1,6 @@
+*.whl binary
+*.s3l binary
+*.npy binary
+*.npz binary
+*.ply binary
+*.png binary
