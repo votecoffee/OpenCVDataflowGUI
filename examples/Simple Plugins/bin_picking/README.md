@@ -3,8 +3,9 @@
 The separate [CAD-taught jaw examples](known_part_jaw/README.md) add a pinned
 explicit-load plugin, clear/obstacle/unknown controls and two real T-LESS
 pose-assisted replays. They use native colored fly-around contact/sweep graphics.
-The initial jaw core retains authored frames through API/CLI; native jaw teaching
-and robot execution integration remain next. The suction projects below keep
+The jaw tool now has native CAD-contact teaching, retained frozen depth/pose
+references and inspector Stage/Apply/Cancel, with three saved teaching projects.
+Robot execution integration remains separate. The suction projects below keep
 their existing installed package and recipes.
 
 Install the included `opencv-simple-bin-picking` **0.1.0.dev3** in the Python

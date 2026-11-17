@@ -92,7 +92,7 @@ def verify(root, output, *, native=False):
             for relative_asset in (
                 "assets/depth.npy",
                 "assets/records.json",
-                "assets/trained.sbpj",
+                block.parameters["recipe_path"],
             ):
                 assert (saved.parent / relative_asset).read_bytes() == (
                     path.parent / relative_asset
@@ -111,7 +111,7 @@ def verify(root, output, *, native=False):
                 ).hexdigest(),
             )
         )
-    assert len(rows) == 5
+    assert len(rows) in (5, 8)
     (output / "checks.json").write_text(json.dumps(rows, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(rows, indent=2))
 

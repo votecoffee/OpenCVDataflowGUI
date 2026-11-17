@@ -30,3 +30,7 @@ Object poses enter these examples as explicit ground-truth assistance, rather
 than as locator results or grasp truth. Both measured scenes remain rejected
 under unchanged generic pose/clearance settings. There are no dataset grasp,
 robot-reachability or physical pick-success labels in these examples.
+
+Native-training derivatives additionally retain the supplied frame-13 pose and
+raw depth inside the staged `.sbpj` recipe. Their attribution and CC BY 4.0
+license follow the original source and other derivatives described above.

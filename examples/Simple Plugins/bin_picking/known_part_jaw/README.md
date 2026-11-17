@@ -1,6 +1,6 @@
 # CAD-taught jaw alternatives
 
-Five offline projects exercise the initial **SimpleBinPicking Jaw** core. They
+Eight offline projects exercise **SimpleBinPicking Jaw** and native CAD-contact teaching. They
 retain the CAD surface, two authored part-relative grasp frames, calibrated
 depth/camera, gripper dimensions and TCP mounting in checksummed `.sbpj` files.
 They use the same generic jaw settings. The clear control demonstrates a usable
@@ -26,10 +26,10 @@ grasp-label accuracy or physical pick success. Real-data pose verification and
 useful CAD contact proposals need further work; thresholds were not relaxed to
 make the examples pass.
 
-The plugin loads its bundled `opencv-simple-bin-picking` **0.1.0.dev4** wheel,
+The plugin loads its bundled `opencv-simple-bin-picking` **0.1.0.dev5** wheel,
 without installing or updating the app environment. NumPy and SciPy must already
 be available. The complete wheel SHA-256 is
-`c47d4a1182cb0b9abc5304240499ab9d282f2a78b68e9a3e4c021c8d534bbcaf`.
+`7cd2702f4775706dfbd7c7fefd40bd4ecf3a40c026c486fd731c81fa9a79a40f`.
 Opening a project does not load Python code automatically. If an older
 BinPicking package is already imported, restart the app and load this plugin
 first; the loader rejects mixed versions. The original suction block remains
@@ -67,27 +67,43 @@ proposals are alternatives, not a preapproved sequence of picks.
 
 ## Training and next work
 
-This increment retains authored grasp frames through the API/CLI; it does not
-yet provide the native jaw-frame training popup. Teach two opposing CAD contacts
-and a retract direction with `JawGrasp.from_contacts`; the original CAD origin
-is preserved. Multiple named frames, stroke, finger/palm geometry, mounting,
-contact/pose tolerances, overlap threshold and up to eight workers are retained.
-Native cloud contact/frame editing and pose-locator/robot handoff are next.
+Open **Teach CAD jaw grasps…** from the block's Configuration inspector.
+The [native training guide](JAW_TRAINING.md) covers actual-row CAD point picking,
+numeric contact/retract edits, named alternatives/undo, gripper/TCP controls,
+frozen references, cancellable previews and Stage/inspector Apply/Cancel.
+The original model origin and untouched stored values are preserved.
+
+Three projects were trained through the actual inspector and retain their own
+raw depth and explicit pose reference, so **Preview reference** works on reopen:
+
+| Native teaching project | Result after preview, Stage, Apply and reopen |
+| --- | --- |
+| [Clear control](native_training/clear/project.json) | One eligible alternative. |
+| [Observed obstacle](native_training/obstacle/project.json) | Zero; collision remains rejected. |
+| [Real T-LESS frame 13](native_training/tless_frame000013/project.json) | Zero; annotated pose assistance does not override weak depth support. |
+
+`native_training/checks.json` records actual connected capture, Cancel preserving
+applied training, Stage editing only the draft, Apply, and retained-reference
+preview after reopen. Existing legacy recipes show CAD/grasps immediately but
+need a supplied pose reference once before they can preview independently.
+Explicit locator-instance adapters, better general real contact proposals,
+symmetry handling and qualified robot handoff remain follow-ups.
 
 ## Verification and reproduction
 
 `verification.json` records saved-project reopen and graphics-off/cache parity.
 `native-verification.json` records actual offscreen app thumbnail/popout orbit,
-RGB preservation, review without replanning and portable Save As for all five
+RGB preservation, review without replanning and portable Save As for all eight
 projects. This is software acceptance, not hardware qualification. The bundled
-wheel passed 71 checks against the checkout host, including existing suction
-and mocked simulation checks. All 22 packaged source modules and the MIT notice
+wheel passed 86 checks against the checkout host, including existing suction
+and mocked simulation checks. All 24 packaged source modules and the MIT notice
 were checked against the source publication, allowing newline normalization.
 
 From an environment with the app, NumPy, SciPy and OpenCV:
 
 ```powershell
-python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev4-py3-none-any.whl --source tless/source
+python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev5-py3-none-any.whl --source tless/source
+python build_native_training.py C:\path\to\new-output C:\path\to\new-output\native_training
 python verify.py C:\path\to\new-output C:\path\to\new-checks
 ```
 

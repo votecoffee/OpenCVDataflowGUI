@@ -1,0 +1,35 @@
+[
+  {
+    "case": "clear",
+    "eligible": 1,
+    "inspector_cancel_preserved": true,
+    "actual_connected_capture": true,
+    "stage_did_not_apply": true,
+    "inspector_apply_reopen": true,
+    "retained_reference_preview": true,
+    "expected_sha256": "8834bde46f0cda5231aabbd02d9a2316071a8de38b27be2a1b8e29fc40b85557",
+    "assistance": "Authored pose"
+  },
+  {
+    "case": "obstacle",
+    "eligible": 0,
+    "inspector_cancel_preserved": true,
+    "actual_connected_capture": true,
+    "stage_did_not_apply": true,
+    "inspector_apply_reopen": true,
+    "retained_reference_preview": true,
+    "expected_sha256": "1c5fbcab757e10296ed193529b5760cb77ceacc23dd25672553edcf91e1bbb9c",
+    "assistance": "Authored pose"
+  },
+  {
+    "case": "tless_frame000013",
+    "eligible": 0,
+    "inspector_cancel_preserved": true,
+    "actual_connected_capture": true,
+    "stage_did_not_apply": true,
+    "inspector_apply_reopen": true,
+    "retained_reference_preview": true,
+    "expected_sha256": "5fb79eebb2304b25eaaebccdfe40a13166116c122b49c74845af2f063b35c986",
+    "assistance": "Dataset annotation pose"
+  }
+]

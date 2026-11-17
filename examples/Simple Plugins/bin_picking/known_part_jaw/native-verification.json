@@ -10,6 +10,36 @@
     "expected_sha256": "1de03747769c3d66d5cf50ae24cc1a92d11fca4405c2a8d41ce7b7633b5f7579"
   },
   {
+    "case": "native_training/clear",
+    "passed": true,
+    "eligible": 1,
+    "reopened_exact": true,
+    "portable_save_as_exact": true,
+    "native_flyaround_colors_preserved": true,
+    "review_did_not_replan": true,
+    "expected_sha256": "8834bde46f0cda5231aabbd02d9a2316071a8de38b27be2a1b8e29fc40b85557"
+  },
+  {
+    "case": "native_training/obstacle",
+    "passed": false,
+    "eligible": 0,
+    "reopened_exact": true,
+    "portable_save_as_exact": true,
+    "native_flyaround_colors_preserved": true,
+    "review_did_not_replan": true,
+    "expected_sha256": "1c5fbcab757e10296ed193529b5760cb77ceacc23dd25672553edcf91e1bbb9c"
+  },
+  {
+    "case": "native_training/tless_frame000013",
+    "passed": false,
+    "eligible": 0,
+    "reopened_exact": true,
+    "portable_save_as_exact": true,
+    "native_flyaround_colors_preserved": true,
+    "review_did_not_replan": true,
+    "expected_sha256": "5fb79eebb2304b25eaaebccdfe40a13166116c122b49c74845af2f063b35c986"
+  },
+  {
     "case": "obstacle",
     "passed": false,
     "eligible": 0,
