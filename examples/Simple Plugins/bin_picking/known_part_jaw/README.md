@@ -1,6 +1,6 @@
 # CAD-taught jaw alternatives
 
-Twelve offline projects exercise **SimpleBinPicking Jaw** and native CAD-contact teaching. They
+Fourteen offline projects exercise **SimpleBinPicking Jaw** and native CAD-contact teaching. They
 retain the CAD surface, two authored part-relative grasp frames, calibrated
 depth/camera, gripper dimensions and TCP mounting in checksummed `.sbpj` files.
 They use the same generic jaw settings. The clear control demonstrates a usable
@@ -31,7 +31,7 @@ environment. NumPy, SciPy and OpenCV must already be available.
 
 | Package | Version | Wheel SHA-256 |
 | --- | --- | --- |
-| `opencv-simple-bin-picking` | `0.1.0.dev10` | `0ef50388dfbd0a9fd5bfffc9f5d7eafd988f3b5793b0cb06281893c27e0e55ae` |
+| `opencv-simple-bin-picking` | `0.1.0.dev11` | `7960114b4f4dd01c1f111d47a7630b8585bb51c2b355d2e0577867b5cbcf38c5` |
 | `opencv-simple-3d-locate` | `0.1.0.dev20` | `c124a55e5105c087e1a849ad47d648d9801c4caeaa76ce4e8fcc0f77d846c2f9` |
 
 Opening a project does not load Python code automatically. If a different
@@ -149,15 +149,21 @@ hypotheses and two additional native file-only reviews (six clouds each).
 Dev10 shows testable coverage beside conditional support in the trainer;
 the current gate remains unchanged.
 
+[Reviewed contact proposals](contact_proposals/README.md) add the native
+**Suggest CAD contacts…** worker/popup, two actual-inspector teaching projects
+and two real CAD-only review graphs. Pad support and sampled CAD collisions
+share the existing runtime checks. Explicit Add requires a new depth/pose
+preview before Stage; runtime pose and clearance acceptance are unchanged.
+
 ## Verification and reproduction
 
 `verification.json` records saved-project reopen and graphics-off/cache parity.
 `native-verification.json` records actual offscreen app thumbnail/popout orbit,
-RGB preservation, review without replanning and portable Save As for all twelve
+RGB preservation, review without replanning and portable Save As for all fourteen
 projects. This is software acceptance, not hardware qualification. The bundled
-BinPicking wheel passed 138 checks against the checkout host, including existing
+BinPicking wheel passed 151 checks against the checkout host, including existing
 suction and mocked simulation checks. The locator wheel passed 25 focused checks
-for capture binding, block execution and separate-depth behavior. All 59 packaged
+for capture binding, block execution and separate-depth behavior. All 61 packaged
 source modules and both MIT notices match the source publication after newline
 normalization. Two additional capture controls preserve their outcomes and all
 assets after portable Save As.
@@ -165,7 +171,7 @@ assets after portable Save As.
 From an environment with the app, NumPy, SciPy and OpenCV:
 
 ```powershell
-python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev10-py3-none-any.whl --source tless/source
+python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev11-py3-none-any.whl --source tless/source
 python build_native_training.py C:\path\to\new-output C:\path\to\new-output\native_training
 python verify.py C:\path\to\new-output C:\path\to\new-checks
 python build_capture_controls.py . C:\path\to\new-capture-checks --verify-existing

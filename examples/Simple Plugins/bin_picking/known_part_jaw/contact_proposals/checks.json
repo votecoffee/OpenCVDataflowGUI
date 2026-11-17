@@ -1,0 +1,28 @@
+[
+  {
+    "case": "clear",
+    "eligible": 1,
+    "model_reviewable": 20,
+    "actual_inspector_cancel_add_stage_apply_reopen": true,
+    "retained_reference_and_geometry_exact": true,
+    "source_assistance": "Authored pose",
+    "robot_execution": false
+  },
+  {
+    "case": "tless_frame000013",
+    "eligible": 0,
+    "model_reviewable": 3,
+    "actual_inspector_cancel_add_stage_apply_reopen": true,
+    "retained_reference_and_geometry_exact": true,
+    "source_assistance": "T-LESS supplied pose",
+    "robot_execution": false
+  },
+  {
+    "case": "object8_rejected",
+    "model_reviewable": 0,
+    "cad_only": true,
+    "no_reference_pose_or_measurements": true,
+    "added_to_training": false,
+    "runtime_acceptance_asserted": false
+  }
+]

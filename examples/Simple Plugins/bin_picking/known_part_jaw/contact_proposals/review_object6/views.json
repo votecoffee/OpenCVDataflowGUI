@@ -1,0 +1,14 @@
+[
+  {
+    "block": "proposal",
+    "path": "assets/proposal.ply",
+    "frame": "tless6",
+    "sha256": "cc6be6458f8c8d09536266a9c1fbd099e7309f8a1e721284c6b961dd837384c6"
+  },
+  {
+    "block": "rejected",
+    "path": "assets/rejected.ply",
+    "frame": "tless6",
+    "sha256": "2db49b6307f0f14f358bbc911482d065cd7825f0b8d36c724fdde992166e2bdb"
+  }
+]

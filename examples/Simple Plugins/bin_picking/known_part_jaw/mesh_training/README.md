@@ -51,7 +51,7 @@ python verify.py . C:\path\to\new-native-checks --native
 ```
 
 For unattended checks set QT_QPA_PLATFORM=offscreen. The parent explicit plugin
-pins BinPicking dev10 plus locator dev20 without modifying the app environment.
+pins BinPicking dev11 plus locator dev20 without modifying the app environment.
 The core runtime mesh review is NumPy-only; explicit STL/PLY import uses the
 companion geometry reader. No robot or simulator is contacted.
 

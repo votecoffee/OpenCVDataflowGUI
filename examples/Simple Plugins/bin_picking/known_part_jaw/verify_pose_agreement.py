@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 import numpy as np
+
 from opencv_dataflow.assistant_api import ProjectSession
 from opencv_dataflow.blocks import builtin_registry
 
@@ -42,7 +43,7 @@ def verify(root, output, *, native=False):
                     block = session.graph.blocks[view["block"]]
                     assert block.last_result is not None, block.error
                     cloud = block.last_result.outputs["cloud"]
-                    assert cloud.units == "m" and cloud.frame == "study_camera"
+                    assert cloud.units == "m" and cloud.frame == view.get("frame", "study_camera")
                     assert cloud.colors is not None and len(cloud.points) > 0
                     expected[block.id] = cloud
                     if window is not None:

@@ -7,7 +7,7 @@ supplies the isolated locator scene; this is assisted segmentation, not an
 independent instance detector.
 
 Load the parent `plugin.py` first. It loads pinned Simple3DLocate `0.1.0.dev20`
-and BinPicking `0.1.0.dev10` wheels without modifying the app environment. Restart
+and BinPicking `0.1.0.dev11` wheels without modifying the app environment. Restart
 if a different package version is already imported.
 
 | Project | Locator matches | Converted instances | Eligible jaw alternatives |

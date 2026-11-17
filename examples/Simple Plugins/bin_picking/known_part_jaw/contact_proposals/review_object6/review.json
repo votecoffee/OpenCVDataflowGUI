@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "proposal",
+      "type": "input.cloud",
+      "name": "Model reviewable",
+      "parameters": {
+        "path": "assets/proposal.ply",
+        "units": "m",
+        "frame": "tless6",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "rejected",
+      "type": "input.cloud",
+      "name": "Model rejected",
+      "parameters": {
+        "path": "assets/rejected.ply",
+        "units": "m",
+        "frame": "tless6",
+        "max_points": 1000000
+      },
+      "position": [
+        450,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    }
+  ],
+  "connections": []
+}

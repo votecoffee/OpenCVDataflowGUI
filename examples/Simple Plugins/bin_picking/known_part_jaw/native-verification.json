@@ -13,6 +13,32 @@
     "expected_sha256": "1de03747769c3d66d5cf50ae24cc1a92d11fca4405c2a8d41ce7b7633b5f7579"
   },
   {
+    "case": "contact_proposals/clear",
+    "passed": true,
+    "eligible": 1,
+    "reopened_exact": true,
+    "portable_save_as_exact": true,
+    "native_flyaround_colors_preserved": true,
+    "review_did_not_replan": true,
+    "native_pose_fit_review": true,
+    "native_mesh_fit_review": true,
+    "pose_fit_instances": 1,
+    "expected_sha256": "964e0e9811d6f7b9dcfa5f1b2c34395c029b889b021978b3c3e8a31e905e5684"
+  },
+  {
+    "case": "contact_proposals/tless_frame000013",
+    "passed": false,
+    "eligible": 0,
+    "reopened_exact": true,
+    "portable_save_as_exact": true,
+    "native_flyaround_colors_preserved": true,
+    "review_did_not_replan": true,
+    "native_pose_fit_review": true,
+    "native_mesh_fit_review": true,
+    "pose_fit_instances": 1,
+    "expected_sha256": "e56c6276e1cfd54343dfefe9b50cf69bc378a8c735907addfbc3c4b49be610ef"
+  },
+  {
     "case": "locator_chain/cad",
     "passed": false,
     "eligible": 0,

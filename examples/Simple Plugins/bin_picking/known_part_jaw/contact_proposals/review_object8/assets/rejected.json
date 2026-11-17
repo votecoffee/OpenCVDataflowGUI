@@ -1,0 +1,1425 @@
+{
+  "model": "jaw_contact_proposal_graphics_v1",
+  "components": [
+    {
+      "role": "retained_CAD",
+      "row_start": 0,
+      "row_stop": 20000,
+      "observations": false
+    },
+    {
+      "role": "CAD_collisions",
+      "row_start": 20000,
+      "row_stop": 20128,
+      "observations": false
+    },
+    {
+      "role": "source_contacts",
+      "row_start": 20128,
+      "row_stop": 20130,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20130,
+      "row_stop": 20146,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20146,
+      "row_stop": 20162,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20162,
+      "row_stop": 20178,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20178,
+      "row_stop": 20194,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20194,
+      "row_stop": 20210,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20210,
+      "row_stop": 20226,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20226,
+      "row_stop": 20242,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20242,
+      "row_stop": 20258,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20258,
+      "row_stop": 20274,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20274,
+      "row_stop": 20290,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20290,
+      "row_stop": 20306,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20306,
+      "row_stop": 20322,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20322,
+      "row_stop": 20338,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20338,
+      "row_stop": 20354,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20354,
+      "row_stop": 20370,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20370,
+      "row_stop": 20386,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20386,
+      "row_stop": 20402,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20402,
+      "row_stop": 20418,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20418,
+      "row_stop": 20434,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20434,
+      "row_stop": 20450,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20450,
+      "row_stop": 20466,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20466,
+      "row_stop": 20482,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20482,
+      "row_stop": 20498,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20498,
+      "row_stop": 20514,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20514,
+      "row_stop": 20530,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20530,
+      "row_stop": 20546,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20546,
+      "row_stop": 20562,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20562,
+      "row_stop": 20578,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20578,
+      "row_stop": 20594,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20594,
+      "row_stop": 20610,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20610,
+      "row_stop": 20626,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20626,
+      "row_stop": 20642,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20642,
+      "row_stop": 20658,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20658,
+      "row_stop": 20674,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20674,
+      "row_stop": 20690,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20690,
+      "row_stop": 20706,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20706,
+      "row_stop": 20722,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20722,
+      "row_stop": 20738,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20738,
+      "row_stop": 20754,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20754,
+      "row_stop": 20770,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20770,
+      "row_stop": 20786,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20786,
+      "row_stop": 20802,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20802,
+      "row_stop": 20818,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20818,
+      "row_stop": 20834,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20834,
+      "row_stop": 20850,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20850,
+      "row_stop": 20866,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20866,
+      "row_stop": 20882,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20882,
+      "row_stop": 20898,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20898,
+      "row_stop": 20914,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20914,
+      "row_stop": 20930,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20930,
+      "row_stop": 20946,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20946,
+      "row_stop": 20962,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20962,
+      "row_stop": 20978,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20978,
+      "row_stop": 20994,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 20994,
+      "row_stop": 21010,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21010,
+      "row_stop": 21026,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21026,
+      "row_stop": 21042,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21042,
+      "row_stop": 21058,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21058,
+      "row_stop": 21074,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21074,
+      "row_stop": 21090,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21090,
+      "row_stop": 21106,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21106,
+      "row_stop": 21122,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21122,
+      "row_stop": 21138,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21138,
+      "row_stop": 21154,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21154,
+      "row_stop": 21170,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21170,
+      "row_stop": 21186,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21186,
+      "row_stop": 21202,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21202,
+      "row_stop": 21218,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21218,
+      "row_stop": 21234,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21234,
+      "row_stop": 21250,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21250,
+      "row_stop": 21266,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21266,
+      "row_stop": 21282,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21282,
+      "row_stop": 21298,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21298,
+      "row_stop": 21314,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21314,
+      "row_stop": 21330,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21330,
+      "row_stop": 21346,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21346,
+      "row_stop": 21362,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21362,
+      "row_stop": 21378,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21378,
+      "row_stop": 21394,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21394,
+      "row_stop": 21410,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21410,
+      "row_stop": 21426,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21426,
+      "row_stop": 21442,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21442,
+      "row_stop": 21458,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21458,
+      "row_stop": 21474,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21474,
+      "row_stop": 21490,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21490,
+      "row_stop": 21506,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21506,
+      "row_stop": 21522,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21522,
+      "row_stop": 21538,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21538,
+      "row_stop": 21554,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21554,
+      "row_stop": 21570,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21570,
+      "row_stop": 21586,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21586,
+      "row_stop": 21602,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21602,
+      "row_stop": 21618,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21618,
+      "row_stop": 21634,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21634,
+      "row_stop": 21650,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21650,
+      "row_stop": 21666,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21666,
+      "row_stop": 21682,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21682,
+      "row_stop": 21698,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21698,
+      "row_stop": 21714,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21714,
+      "row_stop": 21730,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21730,
+      "row_stop": 21746,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21746,
+      "row_stop": 21762,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21762,
+      "row_stop": 21778,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21778,
+      "row_stop": 21794,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21794,
+      "row_stop": 21810,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21810,
+      "row_stop": 21826,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21826,
+      "row_stop": 21842,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21842,
+      "row_stop": 21858,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21858,
+      "row_stop": 21874,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21874,
+      "row_stop": 21890,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21890,
+      "row_stop": 21906,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21906,
+      "row_stop": 21922,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21922,
+      "row_stop": 21938,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21938,
+      "row_stop": 21954,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21954,
+      "row_stop": 21970,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21970,
+      "row_stop": 21986,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 21986,
+      "row_stop": 22002,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22002,
+      "row_stop": 22018,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22018,
+      "row_stop": 22034,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22034,
+      "row_stop": 22050,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22050,
+      "row_stop": 22066,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22066,
+      "row_stop": 22082,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22082,
+      "row_stop": 22098,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22098,
+      "row_stop": 22114,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22114,
+      "row_stop": 22130,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22130,
+      "row_stop": 22146,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22146,
+      "row_stop": 22162,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22162,
+      "row_stop": 22178,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22178,
+      "row_stop": 22194,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22194,
+      "row_stop": 22210,
+      "observations": false
+    },
+    {
+      "role": "derived_gripper",
+      "row_start": 22210,
+      "row_stop": 22226,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22226,
+      "row_stop": 22231,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22231,
+      "row_stop": 22236,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22236,
+      "row_stop": 22241,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22241,
+      "row_stop": 22246,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22246,
+      "row_stop": 22251,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22251,
+      "row_stop": 22256,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22256,
+      "row_stop": 22261,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22261,
+      "row_stop": 22266,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22266,
+      "row_stop": 22271,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22271,
+      "row_stop": 22276,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22276,
+      "row_stop": 22281,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22281,
+      "row_stop": 22286,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22286,
+      "row_stop": 22291,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22291,
+      "row_stop": 22296,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22296,
+      "row_stop": 22301,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22301,
+      "row_stop": 22306,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22306,
+      "row_stop": 22311,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22311,
+      "row_stop": 22316,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22316,
+      "row_stop": 22321,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22321,
+      "row_stop": 22326,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22326,
+      "row_stop": 22331,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22331,
+      "row_stop": 22336,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22336,
+      "row_stop": 22341,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22341,
+      "row_stop": 22346,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22346,
+      "row_stop": 22351,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22351,
+      "row_stop": 22356,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22356,
+      "row_stop": 22361,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22361,
+      "row_stop": 22366,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22366,
+      "row_stop": 22371,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22371,
+      "row_stop": 22376,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22376,
+      "row_stop": 22381,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22381,
+      "row_stop": 22386,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22386,
+      "row_stop": 22391,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22391,
+      "row_stop": 22396,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22396,
+      "row_stop": 22401,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22401,
+      "row_stop": 22406,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22406,
+      "row_stop": 22411,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22411,
+      "row_stop": 22416,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22416,
+      "row_stop": 22421,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22421,
+      "row_stop": 22426,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22426,
+      "row_stop": 22431,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22431,
+      "row_stop": 22436,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22436,
+      "row_stop": 22441,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22441,
+      "row_stop": 22446,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22446,
+      "row_stop": 22451,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22451,
+      "row_stop": 22456,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22456,
+      "row_stop": 22461,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22461,
+      "row_stop": 22466,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22466,
+      "row_stop": 22471,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22471,
+      "row_stop": 22476,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22476,
+      "row_stop": 22481,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22481,
+      "row_stop": 22486,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22486,
+      "row_stop": 22491,
+      "observations": false
+    },
+    {
+      "role": "finite_pad_test",
+      "row_start": 22491,
+      "row_stop": 22496,
+      "observations": false
+    }
+  ],
+  "proposal": {
+    "grasp": {
+      "name": "suggested_15",
+      "part_from_grasp": [
+        [
+          0.9998779412387016,
+          0.008863524535350442,
+          0.012866256528891624,
+          0.04829631413562551
+        ],
+        [
+          -0.008862790810946417,
+          0.9999607181948754,
+          -0.00011404486030973841,
+          -0.027477265396131226
+        ],
+        [
+          -0.012866761958527461,
+          -1.5852639755054399e-16,
+          0.9999172197920698,
+          -0.014842269393050868
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "span": 0.04940548976043636
+    },
+    "source_rows": [
+      1123,
+      36420
+    ],
+    "contact_sides": [
+      0.6666666666666666,
+      0.3333333333333333
+    ],
+    "pad_points": [
+      [
+        0.023522531574120004,
+        -0.03125783087400025,
+        -0.017524176714331076
+      ],
+      [
+        0.02356113034370668,
+        -0.03125817300858118,
+        -0.014524425054954868
+      ],
+      [
+        0.023599729113293357,
+        -0.03125851514316211,
+        -0.011524673395578658
+      ],
+      [
+        0.023557985672261406,
+        -0.027257988001220746,
+        -0.017524176714331076
+      ],
+      [
+        0.023596584441848083,
+        -0.027258330135801673,
+        -0.014524425054954868
+      ],
+      [
+        0.02363518321143476,
+        -0.027258672270382603,
+        -0.011524673395578658
+      ],
+      [
+        0.02359343977040281,
+        -0.02325814512844124,
+        -0.017524176714331076
+      ],
+      [
+        0.023632038539989485,
+        -0.02325848726302217,
+        -0.014524425054954868
+      ],
+      [
+        0.02367063730957616,
+        -0.0232588293976031,
+        -0.011524673395578658
+      ],
+      [
+        0.07292199096167486,
+        -0.03169570139465935,
+        -0.018159865390523076
+      ],
+      [
+        0.07296058973126154,
+        -0.03169604352924028,
+        -0.015160113731146868
+      ],
+      [
+        0.07299918850084822,
+        -0.03169638566382121,
+        -0.012160362071770658
+      ],
+      [
+        0.07295744505981626,
+        -0.02769585852187985,
+        -0.018159865390523076
+      ],
+      [
+        0.07299604382940295,
+        -0.02769620065646078,
+        -0.015160113731146868
+      ],
+      [
+        0.07303464259898962,
+        -0.027696542791041705,
+        -0.012160362071770658
+      ],
+      [
+        0.07299289915795766,
+        -0.023696015649100344,
+        -0.018159865390523076
+      ],
+      [
+        0.07303149792754435,
+        -0.023696357783681274,
+        -0.015160113731146868
+      ],
+      [
+        0.07307009669713102,
+        -0.023696699918262204,
+        -0.012160362071770658
+      ]
+    ],
+    "pad_supported": [
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      true,
+      false,
+      true,
+      false,
+      false,
+      true,
+      false,
+      false,
+      true,
+      false
+    ],
+    "model_collision_rows": [
+      55,
+      59,
+      61,
+      72,
+      77,
+      109,
+      115,
+      146,
+      165,
+      195,
+      218,
+      437,
+      448,
+      464,
+      556,
+      597,
+      599,
+      643,
+      721,
+      741,
+      771,
+      773,
+      778,
+      807,
+      810,
+      832,
+      883,
+      884,
+      989,
+      1068,
+      1098,
+      1247,
+      1315,
+      1335,
+      1423,
+      1461,
+      1543,
+      1559,
+      1627,
+      1664,
+      1680,
+      1717,
+      1727,
+      1731,
+      1738,
+      1755,
+      1800,
+      1877,
+      1894,
+      1920,
+      1978,
+      1992,
+      2001,
+      2037,
+      2145,
+      2216,
+      2267,
+      2333,
+      2341,
+      2417,
+      2434,
+      2439,
+      2464,
+      2521,
+      2543,
+      2544,
+      2563,
+      2596,
+      2601,
+      2605,
+      2634,
+      2640,
+      2723,
+      2736,
+      2805,
+      2947,
+      2983,
+      3114,
+      3260,
+      3262,
+      3274,
+      3339,
+      3346,
+      3382,
+      3395,
+      3474,
+      3476,
+      3554,
+      3572,
+      3600,
+      3606,
+      3650,
+      3680,
+      3778,
+      3781,
+      3823,
+      3976,
+      4035,
+      4140,
+      4220,
+      4239,
+      4298,
+      4522,
+      4574,
+      4603,
+      4644,
+      4678,
+      4705,
+      4730,
+      4802,
+      4830,
+      4837,
+      4838,
+      4920,
+      4922,
+      4930,
+      4975,
+      5124,
+      5128,
+      5136,
+      5149,
+      5202,
+      5245,
+      5297,
+      5309,
+      5398,
+      5421,
+      5446
+    ],
+    "model_collision_count": 945,
+    "status": "rejected",
+    "reasons": [
+      "unsupported_CAD_contact_pads",
+      "CAD_gripper_sweep_collision"
+    ],
+    "contact_source": "CAD_model_assisted",
+    "current_pose_and_scene_clearance_checked": false
+  },
+  "acceptance_applied": false,
+  "runtime_scene_checked": false
+}

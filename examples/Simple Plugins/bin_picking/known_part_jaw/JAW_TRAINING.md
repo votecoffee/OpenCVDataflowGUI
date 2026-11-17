@@ -7,6 +7,11 @@ The popup edits a private draft. **Stage recipe** proposes a new checksummed
 asset; **Apply configuration** in the inspector activates it. Cancel preserves
 the applied parameters and original training file.
 
+Version dev11 adds [Suggest CAD contacts…](JAW_CONTACTS.md): bounded opposing-patch
+search, native colored pad/sweep review and explicit additions to the training
+draft. Adding invalidates prior previews; Stage still requires a new depth/pose
+preview. The runtime pose and clearance checks are unchanged.
+
 ## Begin or reopen
 
 Existing `.sbpj` recipes restore their actual CAD rows and taught jaw graphics

@@ -147,7 +147,7 @@ def verify(root, output, *, native=False):
                 ).hexdigest(),
             )
         )
-    assert len(rows) in (5, 8, 10, 12)
+    assert len(rows) in (5, 8, 10, 12, 14)
     (output / "checks.json").write_text(json.dumps(rows, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(rows, indent=2))
 

@@ -1,0 +1,2135 @@
+{
+  "derived_review": true,
+  "components": [
+    {
+      "role": "measured_scene",
+      "rows": [
+        0,
+        30000
+      ],
+      "observations": true
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30000,
+        30020
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30020,
+        30040
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30040,
+        30060
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30060,
+        30080
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30080,
+        30100
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30100,
+        30120
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30120,
+        30140
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30140,
+        30160
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30160,
+        30180
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30180,
+        30200
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30200,
+        30220
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30220,
+        30240
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_CAD",
+      "rows": [
+        30240,
+        33240
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33240,
+        33260
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33260,
+        33280
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33280,
+        33300
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33300,
+        33320
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33320,
+        33340
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33340,
+        33360
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33360,
+        33380
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33380,
+        33400
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33400,
+        33420
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33420,
+        33440
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33440,
+        33460
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33460,
+        33480
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33480,
+        33500
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33500,
+        33520
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33520,
+        33540
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33540,
+        33560
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33560,
+        33580
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33580,
+        33600
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33600,
+        33620
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33620,
+        33640
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33640,
+        33660
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33660,
+        33680
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33680,
+        33700
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33700,
+        33720
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33720,
+        33740
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33740,
+        33760
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33760,
+        33780
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33780,
+        33800
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33800,
+        33820
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33820,
+        33840
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33840,
+        33860
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33860,
+        33880
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33880,
+        33900
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33900,
+        33920
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33920,
+        33940
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33940,
+        33960
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33960,
+        33980
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33980,
+        34000
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34000,
+        34020
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34020,
+        34040
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34040,
+        34060
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34060,
+        34080
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34080,
+        34100
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34100,
+        34120
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34120,
+        34140
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34140,
+        34160
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34160,
+        34180
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34180,
+        34200
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34200,
+        34220
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34220,
+        34240
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34240,
+        34260
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34260,
+        34280
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34280,
+        34300
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34300,
+        34320
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34320,
+        34340
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34340,
+        34360
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34360,
+        34380
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34380,
+        34400
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34400,
+        34420
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34420,
+        34440
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34440,
+        34460
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34460,
+        34480
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34480,
+        34500
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34500,
+        34520
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34520,
+        34540
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34540,
+        34560
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34560,
+        34580
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34580,
+        34600
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34600,
+        34620
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34620,
+        34640
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34640,
+        34660
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34660,
+        34680
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34680,
+        34700
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34700,
+        34720
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34720,
+        34740
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34740,
+        34760
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34760,
+        34780
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34780,
+        34800
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34800,
+        34820
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34820,
+        34840
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34840,
+        34860
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34860,
+        34880
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34880,
+        34900
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34900,
+        34920
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34920,
+        34940
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34940,
+        34960
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34960,
+        34980
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34980,
+        35000
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35000,
+        35020
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35020,
+        35040
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35040,
+        35060
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35060,
+        35080
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35080,
+        35100
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35100,
+        35120
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35120,
+        35140
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35140,
+        35160
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35160,
+        35180
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35180,
+        35200
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35200,
+        35220
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35220,
+        35240
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35240,
+        35260
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35260,
+        35280
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35280,
+        35300
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35300,
+        35320
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35320,
+        35340
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35340,
+        35360
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35360,
+        35380
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35380,
+        35400
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35400,
+        35420
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35420,
+        35440
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35440,
+        35460
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35460,
+        35480
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35480,
+        35500
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35500,
+        35520
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35520,
+        35540
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35540,
+        35560
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35560,
+        35580
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35580,
+        35600
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35600,
+        35620
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35620,
+        35640
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35640,
+        35660
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35660,
+        35680
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35680,
+        35700
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35700,
+        35720
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35720,
+        35740
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35740,
+        35760
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35760,
+        35780
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35780,
+        35800
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35800,
+        35820
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35820,
+        35840
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35840,
+        35860
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35860,
+        35880
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35880,
+        35900
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35900,
+        35920
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35920,
+        35940
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35940,
+        35960
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35960,
+        35980
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35980,
+        36000
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        36000,
+        36020
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        36020,
+        36040
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        36040,
+        36060
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        36060,
+        36080
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        36080,
+        36100
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        36100,
+        36120
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_approach",
+      "rows": [
+        36120,
+        36160
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_TCP_axes",
+      "rows": [
+        36160,
+        36180
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_TCP_axes",
+      "rows": [
+        36180,
+        36200
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_TCP_axes",
+      "rows": [
+        36200,
+        36220
+      ],
+      "observations": false
+    },
+    {
+      "role": "observed_collision_witness",
+      "rows": [
+        36220,
+        36220
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_unknown_queries",
+      "rows": [
+        36220,
+        36220
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_CAD_collision_witness",
+      "rows": [
+        36220,
+        36348
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36348,
+        36368
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36368,
+        36388
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36388,
+        36408
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36408,
+        36428
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36428,
+        36448
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36448,
+        36468
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36468,
+        36488
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36488,
+        36508
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36508,
+        36528
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36528,
+        36548
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36548,
+        36568
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36568,
+        36588
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36588,
+        36608
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36608,
+        36628
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36628,
+        36648
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36648,
+        36668
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36668,
+        36688
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36688,
+        36708
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36708,
+        36728
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36728,
+        36748
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36748,
+        36768
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36768,
+        36788
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36788,
+        36808
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36808,
+        36828
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36828,
+        36848
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36848,
+        36868
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36868,
+        36888
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36888,
+        36908
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36908,
+        36928
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36928,
+        36948
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36948,
+        36968
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36968,
+        36988
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36988,
+        37008
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        37008,
+        37028
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        37028,
+        37048
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        37048,
+        37068
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37068,
+        37088
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37088,
+        37108
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37108,
+        37128
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37128,
+        37148
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37148,
+        37168
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37168,
+        37188
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37188,
+        37208
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37208,
+        37228
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37228,
+        37248
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37248,
+        37268
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37268,
+        37288
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37288,
+        37308
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37308,
+        37328
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37328,
+        37348
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37348,
+        37368
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37368,
+        37388
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37388,
+        37408
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37408,
+        37428
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37428,
+        37448
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37448,
+        37468
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37468,
+        37488
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37488,
+        37508
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37508,
+        37528
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37528,
+        37548
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_approach",
+      "rows": [
+        37548,
+        37588
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_TCP_axes",
+      "rows": [
+        37588,
+        37608
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_TCP_axes",
+      "rows": [
+        37608,
+        37628
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_TCP_axes",
+      "rows": [
+        37628,
+        37648
+      ],
+      "observations": false
+    },
+    {
+      "role": "observed_collision_witness",
+      "rows": [
+        37648,
+        37648
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_unknown_queries",
+      "rows": [
+        37648,
+        37648
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_pose_supported",
+      "rows": [
+        37648,
+        37904
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_pose_contradiction",
+      "rows": [
+        37904,
+        38160
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_pose_occluded",
+      "rows": [
+        38160,
+        38416
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_pose_unknown",
+      "rows": [
+        38416,
+        38672
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_pose_ambiguous",
+      "rows": [
+        38672,
+        38928
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_pose_label_mismatch",
+      "rows": [
+        38928,
+        38928
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_mesh_supported",
+      "rows": [
+        38928,
+        39184
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_mesh_contradiction",
+      "rows": [
+        39184,
+        39440
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_mesh_occluded",
+      "rows": [
+        39440,
+        39689
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_mesh_unknown",
+      "rows": [
+        39689,
+        39945
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_mesh_ambiguous",
+      "rows": [
+        39945,
+        39945
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_mesh_label_mismatch",
+      "rows": [
+        39945,
+        39945
+      ],
+      "observations": false
+    }
+  ],
+  "capture_id": "frame000013",
+  "contact_source": "CAD_taught_not_measured_force_closure",
+  "selected_candidate": null,
+  "unobserved_space": "unknown_not_free",
+  "physical_grasp_qualified": false,
+  "pose_fit": [
+    {
+      "instance_id": "part-1",
+      "inspected_samples": 6692,
+      "counts": {
+        "supported": 1935,
+        "contradiction": 1451,
+        "occluded": 1938,
+        "unknown": 847,
+        "ambiguous": 521,
+        "label_mismatch": 0
+      },
+      "retained_counts": {
+        "supported": 256,
+        "contradiction": 256,
+        "occluded": 256,
+        "unknown": 256,
+        "ambiguous": 256,
+        "label_mismatch": 0
+      },
+      "rows_per_state_limit": 256,
+      "pose_tolerance_m": 0.003,
+      "nearest_residual_p05_p50_p95_m": [
+        -0.00733691884951484,
+        -0.00017244914369396458,
+        0.03802470299899701
+      ],
+      "farthest_residual_p05_p50_p95_m": [
+        -0.008904992899116148,
+        -0.000922546556580528,
+        0.037390920999325734
+      ],
+      "residual_definition": "Predicted camera Z minus observed neighbor Z; all known rays",
+      "residual_scope": "Includes occlusion and discontinuities; not independent pose error",
+      "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays"
+    }
+  ],
+  "pose_fit_legend": {
+    "supported": [
+      65,
+      230,
+      100
+    ],
+    "contradiction": [
+      245,
+      55,
+      210
+    ],
+    "occluded": [
+      70,
+      135,
+      245
+    ],
+    "unknown": [
+      255,
+      165,
+      45
+    ],
+    "ambiguous": [
+      245,
+      230,
+      65
+    ],
+    "label_mismatch": [
+      165,
+      95,
+      235
+    ]
+  },
+  "pose_fit_points": "Predicted CAD samples; not additional sensor returns or free space",
+  "mesh_fit": [
+    {
+      "instance_id": "part-1",
+      "inspected_samples": 2269,
+      "counts": {
+        "supported": 963,
+        "contradiction": 743,
+        "occluded": 249,
+        "unknown": 314,
+        "ambiguous": 0,
+        "label_mismatch": 0
+      },
+      "retained_counts": {
+        "supported": 256,
+        "contradiction": 256,
+        "occluded": 249,
+        "unknown": 256,
+        "ambiguous": 0,
+        "label_mismatch": 0
+      },
+      "rows_per_state_limit": 256,
+      "pose_tolerance_m": 0.003,
+      "nearest_residual_p05_p50_p95_m": [
+        -0.008375776734294316,
+        -0.0021863276607828608,
+        0.009621834779946737
+      ],
+      "farthest_residual_p05_p50_p95_m": [
+        -0.008375776734294316,
+        -0.0021863276607828608,
+        0.009621834779946737
+      ],
+      "residual_definition": "Predicted camera Z minus observed depth at the same integer pixel",
+      "residual_scope": "Includes occlusion; separate diagnostic population from the point gate",
+      "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays",
+      "model": "jaw_triangle_pose_review_v1",
+      "status": "reviewed",
+      "reason": null,
+      "triangle_count": 5700,
+      "grid_stride_pixels": 2,
+      "renderer": "bounded_perspective_first_surface_v1",
+      "acceptance_applied": false,
+      "point_gate_unchanged": true,
+      "row_identity": "Full-image integer pixel ID",
+      "weighting": {
+        "model": "mesh_ray_weighting_diagnostics_v1",
+        "pixel": {
+          "status": "available",
+          "units": "rays",
+          "rays": 2269,
+          "expected_mass": 2269.0,
+          "testable_mass": 1706.0,
+          "state_mass": {
+            "supported": 963.0,
+            "contradiction": 743.0,
+            "occluded": 249.0,
+            "unknown": 314.0,
+            "ambiguous": 0.0,
+            "label_mismatch": 0.0
+          },
+          "observed_fraction": 0.8616130453944469,
+          "testable_fraction": 0.751873071837814,
+          "supported_expected_fraction": 0.4244160423093874,
+          "support_testable_fraction": 0.5644783118405627,
+          "contradiction_testable_fraction": 0.43552168815943726,
+          "label_mismatch_testable_fraction": 0.0,
+          "occluded_fraction": 0.10973997355663288,
+          "unknown_fraction": 0.13838695460555311,
+          "ambiguous_fraction": 0.0
+        },
+        "visible_area": {
+          "status": "available",
+          "units": "m2",
+          "invalid_weight_rays": 0,
+          "rays": 2269,
+          "expected_mass": 0.011039524021807776,
+          "testable_mass": 0.006255639420539165,
+          "state_mass": {
+            "supported": 0.003833503457652113,
+            "contradiction": 0.002422135962887052,
+            "occluded": 0.0036219743362122057,
+            "unknown": 0.0011619102650564051,
+            "ambiguous": 0.0,
+            "label_mismatch": 0.0
+          },
+          "observed_fraction": 0.8947499672303681,
+          "testable_fraction": 0.5666584363765688,
+          "supported_expected_fraction": 0.3472526034708839,
+          "support_testable_fraction": 0.6128076124505445,
+          "contradiction_testable_fraction": 0.38719238754945556,
+          "label_mismatch_testable_fraction": 0.0,
+          "occluded_fraction": 0.3280915308537994,
+          "unknown_fraction": 0.10525003276963173,
+          "ambiguous_fraction": 0.0
+        },
+        "acceptance_applied": false,
+        "testable_states": [
+          "supported",
+          "contradiction",
+          "label_mismatch"
+        ],
+        "excluded_from_conditional_support": [
+          "occluded",
+          "unknown",
+          "ambiguous"
+        ],
+        "scope": "Same first-surface rays; pixel count versus visible-area midpoint quadrature",
+        "interpretation": "Conditional support requires testable fraction and absolute evidence; neither weighting is a probability, calibrated confidence or acceptance gate"
+      }
+    }
+  ]
+}
