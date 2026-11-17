@@ -1,0 +1,7 @@
+# Native arrays, trained archives and wheels must survive Windows checkout exactly.
+*.npy -text
+*.sri -text
+*.npz -text
+*.whl -text
+*.png -text
+*.jpg -text

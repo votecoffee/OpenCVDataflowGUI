@@ -1,0 +1,80 @@
+{
+  "core_only": true,
+  "native": false,
+  "exported_reviews_verified": 9,
+  "cases": [
+    {
+      "case": "generated",
+      "frame": 0,
+      "state": "pass",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "generated",
+      "frame": 1,
+      "state": "fail",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "fixture",
+      "frame": 0,
+      "state": "pass",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "fixture",
+      "frame": 1,
+      "state": "pass",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "fixture",
+      "frame": 2,
+      "state": "fail",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "visa_limited",
+      "frame": 0,
+      "state": "pass",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "visa_limited",
+      "frame": 1,
+      "state": "not_evaluated",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "visa_posed",
+      "frame": 0,
+      "state": "fail",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "visa_posed",
+      "frame": 1,
+      "state": "fail",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    }
+  ],
+  "scope": "Complete reports and reference/source/default raster bytes; real-data errors remain, no accuracy claim"
+}

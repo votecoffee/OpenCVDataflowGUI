@@ -1,5 +1,11 @@
 # SimpleReferenceInspect result review
 
+For direct review of a finished runtime frame, use the new
+[completed-run examples](../completed_runtime/README.md) and pinned dev4 plugin.
+The independent Results action captures exact input/model/reference/source maps,
+keeps training drafts separate and exports frozen native evidence. The dev3
+training-preview workflow and archived examples below remain available.
+
 Requires **SimpleReferenceInspect 0.1.0.dev3**.
 Open [the assessment project](../assessment-project.json) to show the six-view
 assessment image in the result filmstrip. The existing generated recipe

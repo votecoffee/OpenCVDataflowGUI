@@ -1,0 +1,9 @@
+{
+  "wheel": "opencv_simple_reference_inspect-0.1.0.dev4-py3-none-any.whl",
+  "sha256": "099693e91b18a7441e5bf0fb7f21f02999a94d622ca327dcca3c4df8b80a5041",
+  "source_revision": "7c5b0b7bf7d81e4bd1bfdc0d019f7ce751818868",
+  "source_modules": 12,
+  "source_matches_after_newline_normalization": true,
+  "mit_notice_matches": true,
+  "host_environment_install": false
+}

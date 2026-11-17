@@ -1,0 +1,8324 @@
+[
+  {
+    "image": "assets/test-normal-0011.jpg",
+    "original_image": "pcb2/Data/Images/Normal/0011.JPG",
+    "label": "normal",
+    "matching_score": 0.690489047080866,
+    "inspection": {
+      "model": "simple_reference_inspect_v1",
+      "passed": false,
+      "evaluated": true,
+      "failures": [
+        "defect_area_above_maximum"
+      ],
+      "coverage": 1.0,
+      "exposure": {
+        "gain": 0.9159979128059946,
+        "offset": 8.15412383321997,
+        "correlation": 0.9653096048611532
+      },
+      "inspected_pixels": 182871,
+      "defect_area": 2794,
+      "defects": [
+        {
+          "reference_bounds": [
+            84,
+            75,
+            5,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            90,
+            85,
+            4,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            298,
+            87,
+            7,
+            4
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            482,
+            99,
+            6,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            579,
+            99,
+            5,
+            7
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            121,
+            104,
+            5,
+            8
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            573,
+            109,
+            6,
+            2
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            271,
+            130,
+            5,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            525,
+            143,
+            6,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            568,
+            149,
+            4,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            271,
+            159,
+            12,
+            2
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            290,
+            159,
+            19,
+            2
+          ],
+          "area": 27
+        },
+        {
+          "reference_bounds": [
+            322,
+            159,
+            16,
+            3
+          ],
+          "area": 23
+        },
+        {
+          "reference_bounds": [
+            346,
+            160,
+            20,
+            2
+          ],
+          "area": 27
+        },
+        {
+          "reference_bounds": [
+            373,
+            160,
+            11,
+            2
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            216,
+            162,
+            33,
+            5
+          ],
+          "area": 81
+        },
+        {
+          "reference_bounds": [
+            250,
+            163,
+            7,
+            2
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            385,
+            164,
+            180,
+            9
+          ],
+          "area": 593
+        },
+        {
+          "reference_bounds": [
+            239,
+            166,
+            3,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            573,
+            183,
+            5,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            79,
+            189,
+            3,
+            9
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            427,
+            197,
+            1,
+            13
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            450,
+            197,
+            7,
+            7
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            459,
+            200,
+            9,
+            4
+          ],
+          "area": 23
+        },
+        {
+          "reference_bounds": [
+            172,
+            203,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            200,
+            204,
+            5,
+            5
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            436,
+            205,
+            5,
+            6
+          ],
+          "area": 21
+        },
+        {
+          "reference_bounds": [
+            229,
+            207,
+            11,
+            1
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            448,
+            208,
+            6,
+            6
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            463,
+            209,
+            6,
+            4
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            489,
+            208,
+            4,
+            8
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            117,
+            214,
+            7,
+            2
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            465,
+            216,
+            4,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            165,
+            221,
+            4,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            573,
+            220,
+            6,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            527,
+            224,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            430,
+            227,
+            11,
+            14
+          ],
+          "area": 61
+        },
+        {
+          "reference_bounds": [
+            202,
+            230,
+            3,
+            8
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            394,
+            231,
+            11,
+            2
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            416,
+            230,
+            9,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            454,
+            231,
+            8,
+            5
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            392,
+            235,
+            13,
+            2
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            413,
+            235,
+            7,
+            2
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            196,
+            239,
+            9,
+            12
+          ],
+          "area": 53
+        },
+        {
+          "reference_bounds": [
+            572,
+            249,
+            4,
+            8
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            207,
+            250,
+            4,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            159,
+            253,
+            5,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            430,
+            253,
+            12,
+            9
+          ],
+          "area": 60
+        },
+        {
+          "reference_bounds": [
+            571,
+            266,
+            4,
+            6
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            214,
+            268,
+            4,
+            6
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            392,
+            281,
+            6,
+            2
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            289,
+            297,
+            4,
+            6
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            141,
+            305,
+            4,
+            7
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            337,
+            307,
+            30,
+            25
+          ],
+          "area": 286
+        },
+        {
+          "reference_bounds": [
+            481,
+            310,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            141,
+            313,
+            3,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            449,
+            326,
+            4,
+            8
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            358,
+            329,
+            9,
+            8
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            410,
+            335,
+            35,
+            24
+          ],
+          "area": 354
+        },
+        {
+          "reference_bounds": [
+            254,
+            338,
+            6,
+            4
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            264,
+            341,
+            6,
+            4
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            392,
+            343,
+            8,
+            8
+          ],
+          "area": 26
+        },
+        {
+          "reference_bounds": [
+            401,
+            343,
+            5,
+            6
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            274,
+            344,
+            20,
+            22
+          ],
+          "area": 175
+        },
+        {
+          "reference_bounds": [
+            367,
+            347,
+            5,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            505,
+            351,
+            7,
+            8
+          ],
+          "area": 28
+        },
+        {
+          "reference_bounds": [
+            367,
+            353,
+            12,
+            18
+          ],
+          "area": 123
+        },
+        {
+          "reference_bounds": [
+            267,
+            354,
+            4,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            348,
+            358,
+            11,
+            7
+          ],
+          "area": 43
+        },
+        {
+          "reference_bounds": [
+            251,
+            360,
+            13,
+            10
+          ],
+          "area": 79
+        },
+        {
+          "reference_bounds": [
+            425,
+            360,
+            4,
+            5
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            408,
+            367,
+            4,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            571,
+            366,
+            4,
+            5
+          ],
+          "area": 15
+        }
+      ],
+      "area_units": "reference_pixels",
+      "max_deviation": 10.398148536682129,
+      "settings": {
+        "absolute_threshold": 12.0,
+        "variation_multiplier": 3.0,
+        "edge_tolerance_px": 0.75,
+        "normalization": "gain_offset",
+        "min_gain": 0.5,
+        "max_gain": 2.0,
+        "min_correlation": 0.85,
+        "min_coverage": 0.98,
+        "min_defect_area": 9,
+        "max_total_defect_area": 0
+      }
+    },
+    "predicted_label": "anomaly"
+  },
+  {
+    "image": "assets/test-normal-0013.jpg",
+    "original_image": "pcb2/Data/Images/Normal/0013.JPG",
+    "label": "normal",
+    "matching_score": 0.6810616723801876,
+    "inspection": {
+      "model": "simple_reference_inspect_v1",
+      "passed": false,
+      "evaluated": true,
+      "failures": [
+        "defect_area_above_maximum"
+      ],
+      "coverage": 1.0,
+      "exposure": {
+        "gain": 0.906794920828405,
+        "offset": 9.258667129935176,
+        "correlation": 0.9692129386168977
+      },
+      "inspected_pixels": 182871,
+      "defect_area": 2132,
+      "defects": [
+        {
+          "reference_bounds": [
+            291,
+            90,
+            7,
+            65
+          ],
+          "area": 142
+        },
+        {
+          "reference_bounds": [
+            317,
+            91,
+            9,
+            64
+          ],
+          "area": 164
+        },
+        {
+          "reference_bounds": [
+            345,
+            90,
+            9,
+            65
+          ],
+          "area": 159
+        },
+        {
+          "reference_bounds": [
+            372,
+            92,
+            9,
+            64
+          ],
+          "area": 170
+        },
+        {
+          "reference_bounds": [
+            311,
+            163,
+            1,
+            11
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            339,
+            165,
+            1,
+            9
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            283,
+            167,
+            2,
+            8
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            563,
+            191,
+            2,
+            9
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            324,
+            195,
+            2,
+            6
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            562,
+            201,
+            3,
+            8
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            87,
+            206,
+            7,
+            8
+          ],
+          "area": 25
+        },
+        {
+          "reference_bounds": [
+            535,
+            210,
+            6,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            573,
+            227,
+            3,
+            12
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            445,
+            231,
+            5,
+            7
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            491,
+            234,
+            4,
+            8
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            518,
+            234,
+            5,
+            8
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            249,
+            279,
+            9,
+            1
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            452,
+            295,
+            6,
+            8
+          ],
+          "area": 27
+        },
+        {
+          "reference_bounds": [
+            289,
+            297,
+            4,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            209,
+            301,
+            6,
+            4
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            203,
+            303,
+            5,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            289,
+            305,
+            3,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            343,
+            311,
+            6,
+            5
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            141,
+            315,
+            3,
+            6
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            322,
+            317,
+            8,
+            6
+          ],
+          "area": 32
+        },
+        {
+          "reference_bounds": [
+            97,
+            319,
+            6,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            167,
+            319,
+            3,
+            6
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            89,
+            324,
+            5,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            277,
+            324,
+            8,
+            12
+          ],
+          "area": 62
+        },
+        {
+          "reference_bounds": [
+            523,
+            324,
+            5,
+            6
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            330,
+            326,
+            9,
+            5
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            479,
+            329,
+            9,
+            12
+          ],
+          "area": 32
+        },
+        {
+          "reference_bounds": [
+            186,
+            331,
+            8,
+            6
+          ],
+          "area": 32
+        },
+        {
+          "reference_bounds": [
+            469,
+            330,
+            6,
+            5
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            560,
+            330,
+            3,
+            22
+          ],
+          "area": 53
+        },
+        {
+          "reference_bounds": [
+            239,
+            334,
+            7,
+            5
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            250,
+            335,
+            6,
+            6
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            315,
+            334,
+            9,
+            6
+          ],
+          "area": 26
+        },
+        {
+          "reference_bounds": [
+            224,
+            337,
+            6,
+            8
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            272,
+            339,
+            7,
+            6
+          ],
+          "area": 26
+        },
+        {
+          "reference_bounds": [
+            280,
+            338,
+            3,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            238,
+            341,
+            15,
+            11
+          ],
+          "area": 81
+        },
+        {
+          "reference_bounds": [
+            110,
+            343,
+            42,
+            24
+          ],
+          "area": 418
+        },
+        {
+          "reference_bounds": [
+            264,
+            343,
+            7,
+            12
+          ],
+          "area": 40
+        },
+        {
+          "reference_bounds": [
+            219,
+            345,
+            8,
+            6
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            327,
+            352,
+            5,
+            5
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            446,
+            354,
+            17,
+            18
+          ],
+          "area": 121
+        },
+        {
+          "reference_bounds": [
+            224,
+            357,
+            4,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            235,
+            359,
+            11,
+            10
+          ],
+          "area": 44
+        },
+        {
+          "reference_bounds": [
+            340,
+            363,
+            5,
+            7
+          ],
+          "area": 21
+        },
+        {
+          "reference_bounds": [
+            530,
+            364,
+            4,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            291,
+            366,
+            4,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            246,
+            387,
+            6,
+            6
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            403,
+            393,
+            5,
+            7
+          ],
+          "area": 14
+        }
+      ],
+      "area_units": "reference_pixels",
+      "max_deviation": 12.229286193847656,
+      "settings": {
+        "absolute_threshold": 12.0,
+        "variation_multiplier": 3.0,
+        "edge_tolerance_px": 0.75,
+        "normalization": "gain_offset",
+        "min_gain": 0.5,
+        "max_gain": 2.0,
+        "min_correlation": 0.85,
+        "min_coverage": 0.98,
+        "min_defect_area": 9,
+        "max_total_defect_area": 0
+      }
+    },
+    "predicted_label": "anomaly"
+  },
+  {
+    "image": "assets/test-normal-0016.jpg",
+    "original_image": "pcb2/Data/Images/Normal/0016.JPG",
+    "label": "normal",
+    "matching_score": 0.7248204654835209,
+    "inspection": {
+      "model": "simple_reference_inspect_v1",
+      "passed": false,
+      "evaluated": true,
+      "failures": [
+        "defect_area_above_maximum"
+      ],
+      "coverage": 1.0,
+      "exposure": {
+        "gain": 0.8814956877914361,
+        "offset": 11.321351164960618,
+        "correlation": 0.9536371273631852
+      },
+      "inspected_pixels": 182871,
+      "defect_area": 1846,
+      "defects": [
+        {
+          "reference_bounds": [
+            339,
+            92,
+            7,
+            5
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            366,
+            92,
+            4,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            90,
+            112,
+            5,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            292,
+            166,
+            5,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            351,
+            167,
+            6,
+            10
+          ],
+          "area": 25
+        },
+        {
+          "reference_bounds": [
+            354,
+            182,
+            10,
+            5
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            365,
+            185,
+            11,
+            3
+          ],
+          "area": 21
+        },
+        {
+          "reference_bounds": [
+            324,
+            193,
+            9,
+            7
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            197,
+            201,
+            8,
+            11
+          ],
+          "area": 33
+        },
+        {
+          "reference_bounds": [
+            204,
+            208,
+            3,
+            6
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            394,
+            209,
+            11,
+            2
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            413,
+            209,
+            12,
+            1
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            437,
+            209,
+            7,
+            8
+          ],
+          "area": 43
+        },
+        {
+          "reference_bounds": [
+            445,
+            208,
+            7,
+            10
+          ],
+          "area": 32
+        },
+        {
+          "reference_bounds": [
+            393,
+            212,
+            9,
+            2
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            415,
+            212,
+            12,
+            2
+          ],
+          "area": 21
+        },
+        {
+          "reference_bounds": [
+            199,
+            215,
+            6,
+            8
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            165,
+            219,
+            5,
+            6
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            454,
+            227,
+            7,
+            4
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            213,
+            233,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            165,
+            235,
+            23,
+            16
+          ],
+          "area": 177
+        },
+        {
+          "reference_bounds": [
+            189,
+            241,
+            4,
+            7
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            523,
+            241,
+            8,
+            10
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            311,
+            245,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            438,
+            244,
+            6,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            368,
+            253,
+            2,
+            6
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            430,
+            253,
+            6,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            412,
+            255,
+            12,
+            1
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            414,
+            259,
+            12,
+            1
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            360,
+            260,
+            5,
+            7
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            281,
+            263,
+            2,
+            6
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            487,
+            266,
+            4,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            250,
+            271,
+            6,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            366,
+            277,
+            3,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            225,
+            279,
+            8,
+            2
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            248,
+            279,
+            11,
+            2
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            429,
+            278,
+            4,
+            8
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            439,
+            280,
+            5,
+            6
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            230,
+            293,
+            9,
+            4
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            249,
+            293,
+            4,
+            7
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            310,
+            293,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            323,
+            293,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            525,
+            294,
+            3,
+            6
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            207,
+            301,
+            5,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            480,
+            303,
+            5,
+            11
+          ],
+          "area": 25
+        },
+        {
+          "reference_bounds": [
+            530,
+            304,
+            4,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            544,
+            305,
+            4,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            143,
+            309,
+            3,
+            7
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            444,
+            309,
+            15,
+            17
+          ],
+          "area": 92
+        },
+        {
+          "reference_bounds": [
+            172,
+            316,
+            5,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            265,
+            320,
+            28,
+            20
+          ],
+          "area": 141
+        },
+        {
+          "reference_bounds": [
+            393,
+            324,
+            12,
+            1
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            439,
+            324,
+            3,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            193,
+            327,
+            7,
+            15
+          ],
+          "area": 61
+        },
+        {
+          "reference_bounds": [
+            412,
+            326,
+            39,
+            31
+          ],
+          "area": 427
+        },
+        {
+          "reference_bounds": [
+            89,
+            333,
+            5,
+            6
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            473,
+            338,
+            5,
+            6
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            273,
+            340,
+            4,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            464,
+            346,
+            11,
+            8
+          ],
+          "area": 32
+        },
+        {
+          "reference_bounds": [
+            265,
+            349,
+            6,
+            10
+          ],
+          "area": 31
+        },
+        {
+          "reference_bounds": [
+            226,
+            357,
+            6,
+            12
+          ],
+          "area": 41
+        },
+        {
+          "reference_bounds": [
+            329,
+            357,
+            5,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            354,
+            356,
+            5,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            276,
+            361,
+            6,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            483,
+            368,
+            6,
+            4
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            106,
+            386,
+            6,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            223,
+            397,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            290,
+            397,
+            3,
+            7
+          ],
+          "area": 11
+        }
+      ],
+      "area_units": "reference_pixels",
+      "max_deviation": 10.020444869995117,
+      "settings": {
+        "absolute_threshold": 12.0,
+        "variation_multiplier": 3.0,
+        "edge_tolerance_px": 0.75,
+        "normalization": "gain_offset",
+        "min_gain": 0.5,
+        "max_gain": 2.0,
+        "min_correlation": 0.85,
+        "min_coverage": 0.98,
+        "min_defect_area": 9,
+        "max_total_defect_area": 0
+      }
+    },
+    "predicted_label": "anomaly"
+  },
+  {
+    "image": "assets/test-normal-0024.jpg",
+    "original_image": "pcb2/Data/Images/Normal/0024.JPG",
+    "label": "normal",
+    "matching_score": 0.662770825945058,
+    "inspection": {
+      "model": "simple_reference_inspect_v1",
+      "passed": false,
+      "evaluated": true,
+      "failures": [
+        "defect_area_above_maximum"
+      ],
+      "coverage": 1.0,
+      "exposure": {
+        "gain": 0.8471581327861767,
+        "offset": 16.73037715896767,
+        "correlation": 0.9180692963393237
+      },
+      "inspected_pixels": 182871,
+      "defect_area": 5692,
+      "defects": [
+        {
+          "reference_bounds": [
+            84,
+            63,
+            4,
+            6
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            90,
+            77,
+            5,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            136,
+            82,
+            5,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            234,
+            86,
+            7,
+            8
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            288,
+            89,
+            6,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            314,
+            90,
+            7,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            344,
+            90,
+            7,
+            12
+          ],
+          "area": 28
+        },
+        {
+          "reference_bounds": [
+            370,
+            92,
+            10,
+            36
+          ],
+          "area": 66
+        },
+        {
+          "reference_bounds": [
+            320,
+            122,
+            2,
+            8
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            375,
+            129,
+            1,
+            12
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            198,
+            134,
+            5,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            202,
+            142,
+            6,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            207,
+            146,
+            3,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            555,
+            155,
+            8,
+            4
+          ],
+          "area": 25
+        },
+        {
+          "reference_bounds": [
+            295,
+            160,
+            6,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            319,
+            160,
+            7,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            347,
+            160,
+            9,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            377,
+            161,
+            6,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            353,
+            164,
+            4,
+            9
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            292,
+            166,
+            4,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            171,
+            171,
+            8,
+            2
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            403,
+            171,
+            5,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            352,
+            173,
+            5,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            159,
+            175,
+            10,
+            2
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            185,
+            175,
+            7,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            298,
+            177,
+            9,
+            10
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            391,
+            179,
+            13,
+            3
+          ],
+          "area": 25
+        },
+        {
+          "reference_bounds": [
+            275,
+            181,
+            13,
+            6
+          ],
+          "area": 32
+        },
+        {
+          "reference_bounds": [
+            358,
+            183,
+            19,
+            5
+          ],
+          "area": 36
+        },
+        {
+          "reference_bounds": [
+            332,
+            184,
+            6,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            339,
+            185,
+            6,
+            2
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            226,
+            187,
+            36,
+            4
+          ],
+          "area": 57
+        },
+        {
+          "reference_bounds": [
+            353,
+            188,
+            5,
+            2
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            392,
+            189,
+            14,
+            3
+          ],
+          "area": 27
+        },
+        {
+          "reference_bounds": [
+            229,
+            191,
+            29,
+            4
+          ],
+          "area": 51
+        },
+        {
+          "reference_bounds": [
+            269,
+            190,
+            12,
+            4
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            290,
+            191,
+            27,
+            10
+          ],
+          "area": 72
+        },
+        {
+          "reference_bounds": [
+            319,
+            191,
+            16,
+            7
+          ],
+          "area": 62
+        },
+        {
+          "reference_bounds": [
+            346,
+            191,
+            17,
+            5
+          ],
+          "area": 37
+        },
+        {
+          "reference_bounds": [
+            373,
+            191,
+            12,
+            4
+          ],
+          "area": 23
+        },
+        {
+          "reference_bounds": [
+            412,
+            190,
+            16,
+            2
+          ],
+          "area": 21
+        },
+        {
+          "reference_bounds": [
+            364,
+            193,
+            9,
+            2
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            395,
+            193,
+            12,
+            2
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            412,
+            193,
+            12,
+            3
+          ],
+          "area": 25
+        },
+        {
+          "reference_bounds": [
+            206,
+            194,
+            7,
+            2
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            310,
+            194,
+            8,
+            2
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            307,
+            197,
+            9,
+            1
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            80,
+            198,
+            2,
+            9
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            281,
+            198,
+            12,
+            6
+          ],
+          "area": 29
+        },
+        {
+          "reference_bounds": [
+            317,
+            199,
+            4,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            419,
+            198,
+            4,
+            9
+          ],
+          "area": 26
+        },
+        {
+          "reference_bounds": [
+            253,
+            200,
+            4,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            371,
+            200,
+            6,
+            10
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            395,
+            201,
+            14,
+            5
+          ],
+          "area": 26
+        },
+        {
+          "reference_bounds": [
+            307,
+            203,
+            6,
+            4
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            336,
+            202,
+            6,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            431,
+            203,
+            7,
+            5
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            206,
+            204,
+            18,
+            4
+          ],
+          "area": 35
+        },
+        {
+          "reference_bounds": [
+            226,
+            205,
+            15,
+            4
+          ],
+          "area": 33
+        },
+        {
+          "reference_bounds": [
+            247,
+            205,
+            14,
+            4
+          ],
+          "area": 31
+        },
+        {
+          "reference_bounds": [
+            354,
+            205,
+            6,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            114,
+            207,
+            27,
+            6
+          ],
+          "area": 37
+        },
+        {
+          "reference_bounds": [
+            393,
+            206,
+            13,
+            5
+          ],
+          "area": 36
+        },
+        {
+          "reference_bounds": [
+            412,
+            207,
+            15,
+            4
+          ],
+          "area": 40
+        },
+        {
+          "reference_bounds": [
+            510,
+            206,
+            10,
+            4
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            225,
+            211,
+            14,
+            3
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            246,
+            211,
+            10,
+            1
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            281,
+            210,
+            7,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            336,
+            211,
+            9,
+            2
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            344,
+            213,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            414,
+            212,
+            14,
+            3
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            476,
+            212,
+            3,
+            6
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            229,
+            214,
+            13,
+            4
+          ],
+          "area": 23
+        },
+        {
+          "reference_bounds": [
+            245,
+            214,
+            8,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            292,
+            215,
+            8,
+            2
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            308,
+            214,
+            8,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            395,
+            215,
+            14,
+            3
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            216,
+            217,
+            7,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            413,
+            216,
+            10,
+            2
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            467,
+            216,
+            4,
+            5
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            225,
+            219,
+            14,
+            13
+          ],
+          "area": 42
+        },
+        {
+          "reference_bounds": [
+            277,
+            218,
+            6,
+            2
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            430,
+            219,
+            7,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            476,
+            218,
+            5,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            207,
+            221,
+            7,
+            2
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            362,
+            220,
+            13,
+            5
+          ],
+          "area": 29
+        },
+        {
+          "reference_bounds": [
+            542,
+            223,
+            6,
+            7
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            207,
+            224,
+            7,
+            7
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            229,
+            224,
+            5,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            178,
+            226,
+            5,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            214,
+            227,
+            9,
+            4
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            302,
+            226,
+            14,
+            6
+          ],
+          "area": 33
+        },
+        {
+          "reference_bounds": [
+            413,
+            226,
+            14,
+            8
+          ],
+          "area": 44
+        },
+        {
+          "reference_bounds": [
+            429,
+            226,
+            12,
+            7
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            246,
+            228,
+            14,
+            4
+          ],
+          "area": 37
+        },
+        {
+          "reference_bounds": [
+            334,
+            228,
+            10,
+            3
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            392,
+            230,
+            15,
+            3
+          ],
+          "area": 30
+        },
+        {
+          "reference_bounds": [
+            189,
+            233,
+            14,
+            17
+          ],
+          "area": 55
+        },
+        {
+          "reference_bounds": [
+            338,
+            233,
+            5,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            529,
+            233,
+            4,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            428,
+            234,
+            14,
+            7
+          ],
+          "area": 41
+        },
+        {
+          "reference_bounds": [
+            458,
+            235,
+            5,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            516,
+            235,
+            6,
+            4
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            171,
+            237,
+            19,
+            25
+          ],
+          "area": 173
+        },
+        {
+          "reference_bounds": [
+            230,
+            237,
+            11,
+            2
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            391,
+            236,
+            14,
+            4
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            412,
+            236,
+            15,
+            3
+          ],
+          "area": 30
+        },
+        {
+          "reference_bounds": [
+            205,
+            238,
+            9,
+            4
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            217,
+            238,
+            7,
+            9
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            243,
+            244,
+            18,
+            11
+          ],
+          "area": 76
+        },
+        {
+          "reference_bounds": [
+            311,
+            245,
+            3,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            417,
+            245,
+            7,
+            8
+          ],
+          "area": 27
+        },
+        {
+          "reference_bounds": [
+            437,
+            244,
+            7,
+            3
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            91,
+            247,
+            7,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            412,
+            246,
+            3,
+            7
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            205,
+            249,
+            18,
+            4
+          ],
+          "area": 31
+        },
+        {
+          "reference_bounds": [
+            225,
+            248,
+            15,
+            7
+          ],
+          "area": 41
+        },
+        {
+          "reference_bounds": [
+            429,
+            250,
+            18,
+            12
+          ],
+          "area": 98
+        },
+        {
+          "reference_bounds": [
+            392,
+            253,
+            13,
+            4
+          ],
+          "area": 27
+        },
+        {
+          "reference_bounds": [
+            412,
+            254,
+            15,
+            3
+          ],
+          "area": 29
+        },
+        {
+          "reference_bounds": [
+            225,
+            257,
+            14,
+            3
+          ],
+          "area": 23
+        },
+        {
+          "reference_bounds": [
+            246,
+            257,
+            16,
+            5
+          ],
+          "area": 34
+        },
+        {
+          "reference_bounds": [
+            207,
+            258,
+            7,
+            6
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            216,
+            259,
+            8,
+            5
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            391,
+            259,
+            15,
+            2
+          ],
+          "area": 25
+        },
+        {
+          "reference_bounds": [
+            414,
+            259,
+            13,
+            4
+          ],
+          "area": 27
+        },
+        {
+          "reference_bounds": [
+            245,
+            261,
+            12,
+            3
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            394,
+            262,
+            15,
+            3
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            412,
+            263,
+            11,
+            2
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            435,
+            264,
+            8,
+            5
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            230,
+            266,
+            6,
+            7
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            206,
+            269,
+            17,
+            3
+          ],
+          "area": 32
+        },
+        {
+          "reference_bounds": [
+            516,
+            270,
+            4,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            160,
+            272,
+            5,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            225,
+            274,
+            14,
+            4
+          ],
+          "area": 25
+        },
+        {
+          "reference_bounds": [
+            391,
+            275,
+            15,
+            5
+          ],
+          "area": 34
+        },
+        {
+          "reference_bounds": [
+            430,
+            274,
+            5,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            436,
+            275,
+            8,
+            3
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            245,
+            276,
+            16,
+            2
+          ],
+          "area": 29
+        },
+        {
+          "reference_bounds": [
+            413,
+            278,
+            13,
+            2
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            225,
+            280,
+            14,
+            2
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            246,
+            280,
+            15,
+            4
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            228,
+            283,
+            12,
+            2
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            244,
+            283,
+            13,
+            2
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            391,
+            282,
+            15,
+            5
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            413,
+            282,
+            14,
+            3
+          ],
+          "area": 28
+        },
+        {
+          "reference_bounds": [
+            518,
+            282,
+            8,
+            4
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            402,
+            285,
+            6,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            160,
+            286,
+            4,
+            6
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            206,
+            286,
+            7,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            216,
+            286,
+            8,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            301,
+            287,
+            17,
+            6
+          ],
+          "area": 30
+        },
+        {
+          "reference_bounds": [
+            412,
+            286,
+            11,
+            2
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            505,
+            286,
+            4,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            537,
+            288,
+            5,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            288,
+            291,
+            5,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            229,
+            292,
+            9,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            314,
+            293,
+            5,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            204,
+            295,
+            8,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            214,
+            294,
+            9,
+            6
+          ],
+          "area": 26
+        },
+        {
+          "reference_bounds": [
+            225,
+            295,
+            14,
+            6
+          ],
+          "area": 27
+        },
+        {
+          "reference_bounds": [
+            245,
+            295,
+            15,
+            6
+          ],
+          "area": 40
+        },
+        {
+          "reference_bounds": [
+            412,
+            295,
+            14,
+            11
+          ],
+          "area": 66
+        },
+        {
+          "reference_bounds": [
+            522,
+            294,
+            4,
+            6
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            391,
+            298,
+            5,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            436,
+            298,
+            9,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            160,
+            300,
+            4,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            399,
+            301,
+            7,
+            3
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            224,
+            303,
+            15,
+            3
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            245,
+            303,
+            16,
+            3
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            295,
+            303,
+            5,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            308,
+            303,
+            6,
+            3
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            336,
+            303,
+            5,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            349,
+            304,
+            6,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            228,
+            306,
+            11,
+            2
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            243,
+            306,
+            8,
+            2
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            394,
+            307,
+            13,
+            4
+          ],
+          "area": 30
+        },
+        {
+          "reference_bounds": [
+            164,
+            309,
+            10,
+            5
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            206,
+            308,
+            14,
+            6
+          ],
+          "area": 29
+        },
+        {
+          "reference_bounds": [
+            214,
+            308,
+            9,
+            4
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            300,
+            309,
+            6,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            309,
+            309,
+            7,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            428,
+            309,
+            7,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            318,
+            310,
+            5,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            436,
+            310,
+            9,
+            4
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            300,
+            312,
+            7,
+            5
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            291,
+            317,
+            5,
+            7
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            413,
+            316,
+            11,
+            10
+          ],
+          "area": 37
+        },
+        {
+          "reference_bounds": [
+            205,
+            319,
+            8,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            214,
+            319,
+            8,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            244,
+            318,
+            15,
+            6
+          ],
+          "area": 38
+        },
+        {
+          "reference_bounds": [
+            112,
+            321,
+            8,
+            4
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            131,
+            321,
+            9,
+            5
+          ],
+          "area": 29
+        },
+        {
+          "reference_bounds": [
+            225,
+            321,
+            13,
+            3
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            267,
+            320,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            298,
+            320,
+            9,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            391,
+            321,
+            14,
+            4
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            428,
+            321,
+            7,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            342,
+            323,
+            7,
+            4
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            513,
+            323,
+            7,
+            3
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            222,
+            324,
+            40,
+            7
+          ],
+          "area": 94
+        },
+        {
+          "reference_bounds": [
+            523,
+            324,
+            4,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            390,
+            326,
+            17,
+            4
+          ],
+          "area": 41
+        },
+        {
+          "reference_bounds": [
+            411,
+            326,
+            18,
+            5
+          ],
+          "area": 42
+        },
+        {
+          "reference_bounds": [
+            118,
+            328,
+            6,
+            5
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            128,
+            328,
+            6,
+            4
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            432,
+            329,
+            4,
+            6
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            276,
+            331,
+            9,
+            7
+          ],
+          "area": 21
+        },
+        {
+          "reference_bounds": [
+            269,
+            333,
+            5,
+            3
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            285,
+            333,
+            7,
+            4
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            420,
+            332,
+            5,
+            8
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            118,
+            335,
+            7,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            262,
+            335,
+            6,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            417,
+            334,
+            3,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            334,
+            337,
+            8,
+            10
+          ],
+          "area": 33
+        },
+        {
+          "reference_bounds": [
+            348,
+            336,
+            5,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            116,
+            338,
+            8,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            271,
+            338,
+            4,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            417,
+            340,
+            8,
+            10
+          ],
+          "area": 36
+        },
+        {
+          "reference_bounds": [
+            424,
+            340,
+            15,
+            19
+          ],
+          "area": 135
+        },
+        {
+          "reference_bounds": [
+            265,
+            342,
+            6,
+            10
+          ],
+          "area": 31
+        },
+        {
+          "reference_bounds": [
+            311,
+            351,
+            3,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            315,
+            351,
+            30,
+            12
+          ],
+          "area": 103
+        },
+        {
+          "reference_bounds": [
+            242,
+            353,
+            3,
+            7
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            457,
+            354,
+            16,
+            15
+          ],
+          "area": 97
+        },
+        {
+          "reference_bounds": [
+            529,
+            356,
+            6,
+            4
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            291,
+            360,
+            8,
+            7
+          ],
+          "area": 28
+        },
+        {
+          "reference_bounds": [
+            349,
+            360,
+            5,
+            5
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            105,
+            376,
+            57,
+            8
+          ],
+          "area": 136
+        },
+        {
+          "reference_bounds": [
+            164,
+            377,
+            11,
+            4
+          ],
+          "area": 21
+        },
+        {
+          "reference_bounds": [
+            180,
+            377,
+            6,
+            2
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            216,
+            378,
+            7,
+            3
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            231,
+            378,
+            6,
+            6
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            290,
+            379,
+            9,
+            5
+          ],
+          "area": 28
+        },
+        {
+          "reference_bounds": [
+            314,
+            380,
+            9,
+            2
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            378,
+            381,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            400,
+            380,
+            7,
+            4
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            412,
+            381,
+            6,
+            2
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            423,
+            381,
+            8,
+            4
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            436,
+            381,
+            6,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            450,
+            381,
+            6,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            459,
+            381,
+            9,
+            3
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            470,
+            381,
+            27,
+            4
+          ],
+          "area": 46
+        },
+        {
+          "reference_bounds": [
+            297,
+            382,
+            6,
+            6
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            498,
+            382,
+            7,
+            2
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            523,
+            382,
+            44,
+            3
+          ],
+          "area": 86
+        },
+        {
+          "reference_bounds": [
+            384,
+            389,
+            3,
+            6
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            300,
+            390,
+            4,
+            7
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            221,
+            399,
+            6,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            244,
+            401,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            291,
+            400,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            154,
+            404,
+            7,
+            2
+          ],
+          "area": 11
+        }
+      ],
+      "area_units": "reference_pixels",
+      "max_deviation": 9.05453109741211,
+      "settings": {
+        "absolute_threshold": 12.0,
+        "variation_multiplier": 3.0,
+        "edge_tolerance_px": 0.75,
+        "normalization": "gain_offset",
+        "min_gain": 0.5,
+        "max_gain": 2.0,
+        "min_correlation": 0.85,
+        "min_coverage": 0.98,
+        "min_defect_area": 9,
+        "max_total_defect_area": 0
+      }
+    },
+    "predicted_label": "anomaly"
+  },
+  {
+    "image": "assets/test-anomaly-000.jpg",
+    "original_image": "pcb2/Data/Images/Anomaly/000.JPG",
+    "label": "anomaly",
+    "matching_score": 0.6675062064950544,
+    "inspection": {
+      "model": "simple_reference_inspect_v1",
+      "passed": false,
+      "evaluated": true,
+      "failures": [
+        "defect_area_above_maximum"
+      ],
+      "coverage": 1.0,
+      "exposure": {
+        "gain": 0.885430107317141,
+        "offset": 17.519739894316942,
+        "correlation": 0.9498752858365888
+      },
+      "inspected_pixels": 182871,
+      "defect_area": 3743,
+      "defects": [
+        {
+          "reference_bounds": [
+            91,
+            74,
+            4,
+            6
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            93,
+            79,
+            5,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            234,
+            88,
+            6,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            287,
+            95,
+            5,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            274,
+            107,
+            9,
+            35
+          ],
+          "area": 90
+        },
+        {
+          "reference_bounds": [
+            290,
+            126,
+            1,
+            17
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            371,
+            128,
+            1,
+            15
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            273,
+            144,
+            10,
+            11
+          ],
+          "area": 52
+        },
+        {
+          "reference_bounds": [
+            289,
+            149,
+            2,
+            11
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            297,
+            160,
+            7,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            373,
+            160,
+            10,
+            2
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            279,
+            162,
+            3,
+            8
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            387,
+            164,
+            6,
+            2
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            395,
+            164,
+            8,
+            2
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            432,
+            165,
+            6,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            457,
+            165,
+            9,
+            5
+          ],
+          "area": 23
+        },
+        {
+          "reference_bounds": [
+            465,
+            165,
+            16,
+            1
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            484,
+            165,
+            13,
+            2
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            508,
+            166,
+            19,
+            1
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            267,
+            174,
+            3,
+            16
+          ],
+          "area": 30
+        },
+        {
+          "reference_bounds": [
+            212,
+            180,
+            5,
+            6
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            549,
+            182,
+            5,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            260,
+            189,
+            2,
+            20
+          ],
+          "area": 21
+        },
+        {
+          "reference_bounds": [
+            511,
+            188,
+            5,
+            4
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            246,
+            192,
+            5,
+            2
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            294,
+            192,
+            5,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            304,
+            192,
+            3,
+            6
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            323,
+            193,
+            8,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            427,
+            192,
+            1,
+            19
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            354,
+            197,
+            4,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            303,
+            201,
+            5,
+            7
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            329,
+            203,
+            4,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            354,
+            203,
+            8,
+            8
+          ],
+          "area": 32
+        },
+        {
+          "reference_bounds": [
+            276,
+            205,
+            4,
+            7
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            328,
+            206,
+            6,
+            7
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            470,
+            207,
+            4,
+            6
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            449,
+            208,
+            6,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            260,
+            212,
+            2,
+            21
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            427,
+            213,
+            1,
+            20
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            226,
+            214,
+            7,
+            17
+          ],
+          "area": 29
+        },
+        {
+          "reference_bounds": [
+            324,
+            214,
+            5,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            467,
+            215,
+            4,
+            9
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            385,
+            217,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            149,
+            219,
+            5,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            222,
+            218,
+            1,
+            9
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            90,
+            229,
+            4,
+            6
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            102,
+            229,
+            6,
+            5
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            182,
+            229,
+            3,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            96,
+            232,
+            9,
+            4
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            176,
+            232,
+            4,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            310,
+            233,
+            4,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            337,
+            233,
+            5,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            365,
+            232,
+            5,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            490,
+            233,
+            5,
+            9
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            543,
+            233,
+            7,
+            5
+          ],
+          "area": 21
+        },
+        {
+          "reference_bounds": [
+            396,
+            235,
+            9,
+            1
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            430,
+            235,
+            11,
+            6
+          ],
+          "area": 35
+        },
+        {
+          "reference_bounds": [
+            504,
+            234,
+            5,
+            10
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            518,
+            234,
+            4,
+            10
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            530,
+            234,
+            6,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            558,
+            235,
+            6,
+            3
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            227,
+            239,
+            1,
+            14
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            365,
+            239,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            392,
+            238,
+            2,
+            17
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            531,
+            239,
+            4,
+            5
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            559,
+            239,
+            3,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            545,
+            240,
+            4,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            101,
+            242,
+            6,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            438,
+            244,
+            6,
+            4
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            491,
+            245,
+            4,
+            6
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            505,
+            245,
+            3,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            532,
+            245,
+            4,
+            6
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            100,
+            246,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            177,
+            246,
+            6,
+            4
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            149,
+            252,
+            3,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            429,
+            252,
+            18,
+            11
+          ],
+          "area": 123
+        },
+        {
+          "reference_bounds": [
+            98,
+            257,
+            9,
+            4
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            116,
+            258,
+            4,
+            6
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            96,
+            260,
+            9,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            148,
+            260,
+            5,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            392,
+            264,
+            1,
+            13
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            149,
+            266,
+            4,
+            6
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            99,
+            270,
+            7,
+            2
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            115,
+            270,
+            4,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            155,
+            272,
+            6,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            158,
+            284,
+            4,
+            6
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            506,
+            288,
+            8,
+            15
+          ],
+          "area": 39
+        },
+        {
+          "reference_bounds": [
+            521,
+            289,
+            5,
+            15
+          ],
+          "area": 34
+        },
+        {
+          "reference_bounds": [
+            496,
+            293,
+            3,
+            6
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            357,
+            295,
+            4,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            100,
+            297,
+            7,
+            6
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            467,
+            296,
+            4,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            89,
+            298,
+            3,
+            6
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            155,
+            298,
+            6,
+            7
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            431,
+            300,
+            9,
+            9
+          ],
+          "area": 45
+        },
+        {
+          "reference_bounds": [
+            280,
+            303,
+            5,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            455,
+            304,
+            6,
+            3
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            487,
+            304,
+            4,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            515,
+            304,
+            4,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            131,
+            306,
+            14,
+            16
+          ],
+          "area": 57
+        },
+        {
+          "reference_bounds": [
+            446,
+            307,
+            6,
+            5
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            172,
+            309,
+            5,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            101,
+            311,
+            7,
+            6
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            321,
+            315,
+            11,
+            11
+          ],
+          "area": 70
+        },
+        {
+          "reference_bounds": [
+            536,
+            314,
+            5,
+            9
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            96,
+            316,
+            7,
+            2
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            491,
+            316,
+            6,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            499,
+            319,
+            11,
+            5
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            138,
+            320,
+            15,
+            9
+          ],
+          "area": 47
+        },
+        {
+          "reference_bounds": [
+            240,
+            325,
+            5,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            522,
+            325,
+            4,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            337,
+            326,
+            5,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            351,
+            328,
+            7,
+            11
+          ],
+          "area": 36
+        },
+        {
+          "reference_bounds": [
+            107,
+            330,
+            8,
+            6
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            478,
+            330,
+            3,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            535,
+            330,
+            8,
+            9
+          ],
+          "area": 26
+        },
+        {
+          "reference_bounds": [
+            278,
+            333,
+            8,
+            5
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            340,
+            332,
+            3,
+            6
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            465,
+            333,
+            13,
+            7
+          ],
+          "area": 50
+        },
+        {
+          "reference_bounds": [
+            521,
+            332,
+            6,
+            5
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            257,
+            338,
+            5,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            418,
+            341,
+            28,
+            31
+          ],
+          "area": 460
+        },
+        {
+          "reference_bounds": [
+            462,
+            340,
+            7,
+            3
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            138,
+            342,
+            21,
+            10
+          ],
+          "area": 105
+        },
+        {
+          "reference_bounds": [
+            249,
+            344,
+            13,
+            12
+          ],
+          "area": 40
+        },
+        {
+          "reference_bounds": [
+            267,
+            344,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            477,
+            347,
+            14,
+            8
+          ],
+          "area": 66
+        },
+        {
+          "reference_bounds": [
+            206,
+            351,
+            4,
+            5
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            265,
+            351,
+            5,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            328,
+            352,
+            6,
+            6
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            456,
+            352,
+            23,
+            15
+          ],
+          "area": 113
+        },
+        {
+          "reference_bounds": [
+            365,
+            355,
+            6,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            492,
+            356,
+            5,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            291,
+            365,
+            6,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            545,
+            367,
+            7,
+            6
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            183,
+            379,
+            5,
+            6
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            227,
+            380,
+            5,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            297,
+            381,
+            6,
+            6
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            125,
+            382,
+            8,
+            6
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            347,
+            383,
+            3,
+            6
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            446,
+            383,
+            6,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            78,
+            385,
+            4,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            239,
+            384,
+            6,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            304,
+            384,
+            8,
+            4
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            404,
+            385,
+            2,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            415,
+            385,
+            7,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            462,
+            385,
+            10,
+            17
+          ],
+          "area": 56
+        },
+        {
+          "reference_bounds": [
+            262,
+            387,
+            6,
+            6
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            269,
+            388,
+            6,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            455,
+            388,
+            7,
+            9
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            301,
+            391,
+            4,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            134,
+            393,
+            6,
+            5
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            227,
+            392,
+            5,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            392,
+            393,
+            16,
+            8
+          ],
+          "area": 44
+        },
+        {
+          "reference_bounds": [
+            341,
+            394,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            449,
+            396,
+            18,
+            12
+          ],
+          "area": 62
+        },
+        {
+          "reference_bounds": [
+            291,
+            398,
+            8,
+            7
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            420,
+            398,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            444,
+            399,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            140,
+            401,
+            7,
+            9
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            433,
+            400,
+            8,
+            6
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            157,
+            403,
+            4,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            250,
+            402,
+            4,
+            9
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            343,
+            403,
+            4,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            409,
+            402,
+            6,
+            5
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            423,
+            405,
+            6,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            444,
+            404,
+            5,
+            7
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            462,
+            404,
+            8,
+            6
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            576,
+            405,
+            7,
+            6
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            77,
+            407,
+            5,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            90,
+            406,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            212,
+            406,
+            7,
+            5
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            239,
+            407,
+            6,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            296,
+            407,
+            5,
+            4
+          ],
+          "area": 10
+        }
+      ],
+      "area_units": "reference_pixels",
+      "max_deviation": 7.916121006011963,
+      "settings": {
+        "absolute_threshold": 12.0,
+        "variation_multiplier": 3.0,
+        "edge_tolerance_px": 0.75,
+        "normalization": "gain_offset",
+        "min_gain": 0.5,
+        "max_gain": 2.0,
+        "min_correlation": 0.85,
+        "min_coverage": 0.98,
+        "min_defect_area": 9,
+        "max_total_defect_area": 0
+      }
+    },
+    "predicted_label": "anomaly",
+    "ground_truth_mask": "assets/truth-anomaly-000.png",
+    "mask_metrics": {
+      "truth_pixels": 468,
+      "predicted_pixels": 3759,
+      "true_positive_pixels": 116,
+      "covered_truth_pixels": 468,
+      "precision": 0.03085927108273477,
+      "recall": 0.24786324786324787
+    }
+  },
+  {
+    "image": "assets/test-anomaly-001.jpg",
+    "original_image": "pcb2/Data/Images/Anomaly/001.JPG",
+    "label": "anomaly",
+    "matching_score": 0.6740437212002767,
+    "inspection": {
+      "model": "simple_reference_inspect_v1",
+      "passed": false,
+      "evaluated": true,
+      "failures": [
+        "defect_area_above_maximum"
+      ],
+      "coverage": 1.0,
+      "exposure": {
+        "gain": 0.8961676258130852,
+        "offset": 13.837385589968576,
+        "correlation": 0.962495160900163
+      },
+      "inspected_pixels": 182871,
+      "defect_area": 3435,
+      "defects": [
+        {
+          "reference_bounds": [
+            121,
+            107,
+            4,
+            6
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            373,
+            114,
+            25,
+            31
+          ],
+          "area": 425
+        },
+        {
+          "reference_bounds": [
+            184,
+            127,
+            4,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            344,
+            145,
+            2,
+            10
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            352,
+            147,
+            12,
+            11
+          ],
+          "area": 82
+        },
+        {
+          "reference_bounds": [
+            108,
+            152,
+            11,
+            2
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            171,
+            153,
+            9,
+            2
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            345,
+            163,
+            10,
+            12
+          ],
+          "area": 70
+        },
+        {
+          "reference_bounds": [
+            330,
+            164,
+            3,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            339,
+            165,
+            2,
+            8
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            320,
+            171,
+            11,
+            13
+          ],
+          "area": 63
+        },
+        {
+          "reference_bounds": [
+            172,
+            173,
+            10,
+            10
+          ],
+          "area": 49
+        },
+        {
+          "reference_bounds": [
+            200,
+            181,
+            5,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            216,
+            180,
+            2,
+            11
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            161,
+            189,
+            12,
+            15
+          ],
+          "area": 100
+        },
+        {
+          "reference_bounds": [
+            302,
+            193,
+            4,
+            8
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            317,
+            193,
+            16,
+            20
+          ],
+          "area": 68
+        },
+        {
+          "reference_bounds": [
+            290,
+            195,
+            11,
+            15
+          ],
+          "area": 49
+        },
+        {
+          "reference_bounds": [
+            274,
+            198,
+            4,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            381,
+            203,
+            3,
+            6
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            265,
+            206,
+            14,
+            12
+          ],
+          "area": 37
+        },
+        {
+          "reference_bounds": [
+            326,
+            206,
+            7,
+            7
+          ],
+          "area": 27
+        },
+        {
+          "reference_bounds": [
+            317,
+            211,
+            8,
+            11
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            350,
+            210,
+            8,
+            16
+          ],
+          "area": 41
+        },
+        {
+          "reference_bounds": [
+            296,
+            215,
+            5,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            455,
+            214,
+            3,
+            8
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            270,
+            218,
+            9,
+            12
+          ],
+          "area": 34
+        },
+        {
+          "reference_bounds": [
+            513,
+            219,
+            3,
+            10
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            548,
+            219,
+            7,
+            7
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            394,
+            221,
+            4,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            182,
+            227,
+            5,
+            7
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            377,
+            226,
+            5,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            278,
+            229,
+            6,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            292,
+            228,
+            4,
+            7
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            346,
+            228,
+            5,
+            6
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            472,
+            231,
+            6,
+            6
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            553,
+            234,
+            4,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            239,
+            242,
+            5,
+            4
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            194,
+            244,
+            4,
+            24
+          ],
+          "area": 44
+        },
+        {
+          "reference_bounds": [
+            204,
+            250,
+            3,
+            6
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            207,
+            274,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            226,
+            279,
+            12,
+            1
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            249,
+            279,
+            9,
+            1
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            236,
+            289,
+            3,
+            7
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            165,
+            294,
+            8,
+            5
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            168,
+            303,
+            3,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            430,
+            302,
+            8,
+            5
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            267,
+            305,
+            3,
+            8
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            464,
+            308,
+            11,
+            5
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            492,
+            311,
+            4,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            456,
+            313,
+            6,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            497,
+            313,
+            7,
+            7
+          ],
+          "area": 23
+        },
+        {
+          "reference_bounds": [
+            531,
+            312,
+            6,
+            6
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            268,
+            314,
+            3,
+            6
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            147,
+            322,
+            6,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            172,
+            323,
+            3,
+            7
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            527,
+            322,
+            7,
+            5
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            539,
+            322,
+            4,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            546,
+            327,
+            8,
+            7
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            476,
+            329,
+            8,
+            10
+          ],
+          "area": 30
+        },
+        {
+          "reference_bounds": [
+            348,
+            330,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            512,
+            331,
+            8,
+            4
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            531,
+            330,
+            5,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            294,
+            334,
+            14,
+            8
+          ],
+          "area": 26
+        },
+        {
+          "reference_bounds": [
+            514,
+            335,
+            14,
+            12
+          ],
+          "area": 35
+        },
+        {
+          "reference_bounds": [
+            345,
+            336,
+            10,
+            4
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            390,
+            336,
+            6,
+            6
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            448,
+            336,
+            5,
+            6
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            524,
+            337,
+            37,
+            37
+          ],
+          "area": 415
+        },
+        {
+          "reference_bounds": [
+            537,
+            338,
+            4,
+            6
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            499,
+            341,
+            14,
+            5
+          ],
+          "area": 30
+        },
+        {
+          "reference_bounds": [
+            392,
+            344,
+            13,
+            7
+          ],
+          "area": 40
+        },
+        {
+          "reference_bounds": [
+            501,
+            347,
+            11,
+            9
+          ],
+          "area": 41
+        },
+        {
+          "reference_bounds": [
+            514,
+            347,
+            6,
+            8
+          ],
+          "area": 28
+        },
+        {
+          "reference_bounds": [
+            525,
+            347,
+            8,
+            8
+          ],
+          "area": 29
+        },
+        {
+          "reference_bounds": [
+            326,
+            350,
+            5,
+            7
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            129,
+            353,
+            3,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            394,
+            353,
+            23,
+            18
+          ],
+          "area": 167
+        },
+        {
+          "reference_bounds": [
+            279,
+            355,
+            21,
+            13
+          ],
+          "area": 74
+        },
+        {
+          "reference_bounds": [
+            132,
+            357,
+            8,
+            10
+          ],
+          "area": 34
+        },
+        {
+          "reference_bounds": [
+            465,
+            357,
+            59,
+            16
+          ],
+          "area": 412
+        },
+        {
+          "reference_bounds": [
+            122,
+            359,
+            8,
+            9
+          ],
+          "area": 29
+        },
+        {
+          "reference_bounds": [
+            486,
+            358,
+            4,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            439,
+            366,
+            4,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            242,
+            381,
+            4,
+            8
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            464,
+            383,
+            14,
+            10
+          ],
+          "area": 36
+        },
+        {
+          "reference_bounds": [
+            139,
+            388,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            457,
+            388,
+            7,
+            8
+          ],
+          "area": 23
+        },
+        {
+          "reference_bounds": [
+            275,
+            391,
+            6,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            465,
+            392,
+            3,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            377,
+            394,
+            5,
+            8
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            274,
+            397,
+            5,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            357,
+            397,
+            9,
+            6
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            313,
+            400,
+            5,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            229,
+            402,
+            4,
+            6
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            299,
+            404,
+            3,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            441,
+            405,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            238,
+            407,
+            6,
+            4
+          ],
+          "area": 13
+        }
+      ],
+      "area_units": "reference_pixels",
+      "max_deviation": 15.319872856140137,
+      "settings": {
+        "absolute_threshold": 12.0,
+        "variation_multiplier": 3.0,
+        "edge_tolerance_px": 0.75,
+        "normalization": "gain_offset",
+        "min_gain": 0.5,
+        "max_gain": 2.0,
+        "min_correlation": 0.85,
+        "min_coverage": 0.98,
+        "min_defect_area": 9,
+        "max_total_defect_area": 0
+      }
+    },
+    "predicted_label": "anomaly",
+    "ground_truth_mask": "assets/truth-anomaly-001.png",
+    "mask_metrics": {
+      "truth_pixels": 688,
+      "predicted_pixels": 3441,
+      "true_positive_pixels": 458,
+      "covered_truth_pixels": 688,
+      "precision": 0.13310084277826215,
+      "recall": 0.6656976744186046
+    }
+  },
+  {
+    "image": "assets/test-anomaly-002.jpg",
+    "original_image": "pcb2/Data/Images/Anomaly/002.JPG",
+    "label": "anomaly",
+    "matching_score": 0.6827641315092383,
+    "inspection": {
+      "model": "simple_reference_inspect_v1",
+      "passed": false,
+      "evaluated": true,
+      "failures": [
+        "defect_area_above_maximum"
+      ],
+      "coverage": 1.0,
+      "exposure": {
+        "gain": 0.8978739930792387,
+        "offset": 13.5594708745992,
+        "correlation": 0.9494604414601131
+      },
+      "inspected_pixels": 182871,
+      "defect_area": 2871,
+      "defects": [
+        {
+          "reference_bounds": [
+            288,
+            95,
+            4,
+            3
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            335,
+            97,
+            4,
+            58
+          ],
+          "area": 117
+        },
+        {
+          "reference_bounds": [
+            281,
+            99,
+            4,
+            56
+          ],
+          "area": 83
+        },
+        {
+          "reference_bounds": [
+            307,
+            98,
+            3,
+            57
+          ],
+          "area": 83
+        },
+        {
+          "reference_bounds": [
+            387,
+            120,
+            45,
+            37
+          ],
+          "area": 428
+        },
+        {
+          "reference_bounds": [
+            290,
+            126,
+            1,
+            21
+          ],
+          "area": 21
+        },
+        {
+          "reference_bounds": [
+            516,
+            147,
+            3,
+            9
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            289,
+            149,
+            2,
+            8
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            316,
+            148,
+            2,
+            10
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            290,
+            159,
+            17,
+            5
+          ],
+          "area": 27
+        },
+        {
+          "reference_bounds": [
+            346,
+            160,
+            20,
+            2
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            373,
+            160,
+            11,
+            6
+          ],
+          "area": 29
+        },
+        {
+          "reference_bounds": [
+            306,
+            163,
+            5,
+            19
+          ],
+          "area": 51
+        },
+        {
+          "reference_bounds": [
+            333,
+            163,
+            5,
+            19
+          ],
+          "area": 47
+        },
+        {
+          "reference_bounds": [
+            279,
+            165,
+            4,
+            16
+          ],
+          "area": 40
+        },
+        {
+          "reference_bounds": [
+            314,
+            164,
+            3,
+            11
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            342,
+            164,
+            3,
+            10
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            354,
+            165,
+            7,
+            19
+          ],
+          "area": 46
+        },
+        {
+          "reference_bounds": [
+            366,
+            165,
+            6,
+            9
+          ],
+          "area": 34
+        },
+        {
+          "reference_bounds": [
+            362,
+            164,
+            19,
+            18
+          ],
+          "area": 114
+        },
+        {
+          "reference_bounds": [
+            385,
+            164,
+            3,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            78,
+            167,
+            5,
+            7
+          ],
+          "area": 30
+        },
+        {
+          "reference_bounds": [
+            300,
+            169,
+            3,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            327,
+            173,
+            3,
+            9
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            534,
+            172,
+            6,
+            6
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            543,
+            173,
+            3,
+            9
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            229,
+            175,
+            4,
+            8
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            257,
+            174,
+            3,
+            6
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            300,
+            176,
+            3,
+            7
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            320,
+            181,
+            3,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            110,
+            183,
+            3,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            271,
+            182,
+            6,
+            7
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            405,
+            182,
+            9,
+            5
+          ],
+          "area": 24
+        },
+        {
+          "reference_bounds": [
+            78,
+            186,
+            4,
+            8
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            544,
+            186,
+            4,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            169,
+            193,
+            3,
+            6
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            293,
+            195,
+            8,
+            9
+          ],
+          "area": 28
+        },
+        {
+          "reference_bounds": [
+            315,
+            194,
+            16,
+            15
+          ],
+          "area": 48
+        },
+        {
+          "reference_bounds": [
+            346,
+            197,
+            6,
+            6
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            347,
+            202,
+            9,
+            9
+          ],
+          "area": 23
+        },
+        {
+          "reference_bounds": [
+            489,
+            203,
+            6,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            290,
+            204,
+            6,
+            4
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            511,
+            204,
+            6,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            325,
+            206,
+            7,
+            6
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            498,
+            208,
+            4,
+            6
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            488,
+            211,
+            4,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            345,
+            214,
+            27,
+            16
+          ],
+          "area": 118
+        },
+        {
+          "reference_bounds": [
+            164,
+            217,
+            5,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            268,
+            217,
+            6,
+            14
+          ],
+          "area": 32
+        },
+        {
+          "reference_bounds": [
+            490,
+            216,
+            6,
+            6
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            511,
+            216,
+            6,
+            12
+          ],
+          "area": 23
+        },
+        {
+          "reference_bounds": [
+            178,
+            222,
+            8,
+            14
+          ],
+          "area": 30
+        },
+        {
+          "reference_bounds": [
+            374,
+            223,
+            4,
+            9
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            499,
+            224,
+            5,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            547,
+            224,
+            7,
+            9
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            418,
+            231,
+            7,
+            2
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            310,
+            234,
+            5,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            338,
+            235,
+            5,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            365,
+            235,
+            5,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            428,
+            234,
+            7,
+            5
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            392,
+            236,
+            12,
+            1
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            413,
+            236,
+            11,
+            1
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            560,
+            236,
+            3,
+            8
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            374,
+            240,
+            5,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            437,
+            244,
+            6,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            428,
+            252,
+            14,
+            10
+          ],
+          "area": 77
+        },
+        {
+          "reference_bounds": [
+            161,
+            258,
+            4,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            406,
+            259,
+            4,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            416,
+            259,
+            10,
+            1
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            160,
+            272,
+            4,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            429,
+            272,
+            7,
+            13
+          ],
+          "area": 44
+        },
+        {
+          "reference_bounds": [
+            451,
+            281,
+            5,
+            6
+          ],
+          "area": 16
+        },
+        {
+          "reference_bounds": [
+            414,
+            282,
+            11,
+            1
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            304,
+            292,
+            3,
+            7
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            359,
+            294,
+            3,
+            9
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            509,
+            295,
+            3,
+            6
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            522,
+            294,
+            4,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            418,
+            298,
+            5,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            179,
+            300,
+            7,
+            5
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            470,
+            301,
+            3,
+            6
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            233,
+            305,
+            7,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            454,
+            307,
+            4,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            200,
+            313,
+            3,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            356,
+            313,
+            3,
+            6
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            490,
+            313,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            538,
+            319,
+            6,
+            9
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            522,
+            320,
+            7,
+            9
+          ],
+          "area": 21
+        },
+        {
+          "reference_bounds": [
+            505,
+            322,
+            4,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            515,
+            323,
+            6,
+            8
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            423,
+            326,
+            7,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            489,
+            328,
+            5,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            478,
+            331,
+            4,
+            6
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            521,
+            330,
+            6,
+            6
+          ],
+          "area": 18
+        },
+        {
+          "reference_bounds": [
+            227,
+            332,
+            6,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            401,
+            335,
+            4,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            549,
+            335,
+            6,
+            6
+          ],
+          "area": 26
+        },
+        {
+          "reference_bounds": [
+            482,
+            336,
+            4,
+            7
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            515,
+            336,
+            6,
+            4
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            519,
+            337,
+            8,
+            11
+          ],
+          "area": 32
+        },
+        {
+          "reference_bounds": [
+            507,
+            339,
+            8,
+            4
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            418,
+            344,
+            3,
+            6
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            247,
+            349,
+            9,
+            8
+          ],
+          "area": 30
+        },
+        {
+          "reference_bounds": [
+            483,
+            349,
+            6,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            424,
+            350,
+            8,
+            3
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            527,
+            351,
+            13,
+            12
+          ],
+          "area": 36
+        },
+        {
+          "reference_bounds": [
+            204,
+            354,
+            8,
+            10
+          ],
+          "area": 36
+        },
+        {
+          "reference_bounds": [
+            278,
+            356,
+            9,
+            10
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            327,
+            356,
+            5,
+            7
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            404,
+            360,
+            4,
+            5
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            246,
+            362,
+            8,
+            6
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            291,
+            364,
+            6,
+            3
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            533,
+            366,
+            4,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            411,
+            382,
+            2,
+            7
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            293,
+            391,
+            4,
+            3
+          ],
+          "area": 9
+        }
+      ],
+      "area_units": "reference_pixels",
+      "max_deviation": 14.648680686950684,
+      "settings": {
+        "absolute_threshold": 12.0,
+        "variation_multiplier": 3.0,
+        "edge_tolerance_px": 0.75,
+        "normalization": "gain_offset",
+        "min_gain": 0.5,
+        "max_gain": 2.0,
+        "min_correlation": 0.85,
+        "min_coverage": 0.98,
+        "min_defect_area": 9,
+        "max_total_defect_area": 0
+      }
+    },
+    "predicted_label": "anomaly",
+    "ground_truth_mask": "assets/truth-anomaly-002.png",
+    "mask_metrics": {
+      "truth_pixels": 689,
+      "predicted_pixels": 2874,
+      "true_positive_pixels": 514,
+      "covered_truth_pixels": 689,
+      "precision": 0.17884481558803061,
+      "recall": 0.7460087082728593
+    }
+  },
+  {
+    "image": "assets/test-anomaly-003.jpg",
+    "original_image": "pcb2/Data/Images/Anomaly/003.JPG",
+    "label": "anomaly",
+    "matching_score": 0.6813720137219675,
+    "inspection": {
+      "model": "simple_reference_inspect_v1",
+      "passed": false,
+      "evaluated": true,
+      "failures": [
+        "defect_area_above_maximum"
+      ],
+      "coverage": 1.0,
+      "exposure": {
+        "gain": 0.9110804251877989,
+        "offset": 10.050860626977851,
+        "correlation": 0.9683523465425973
+      },
+      "inspected_pixels": 182871,
+      "defect_area": 1257,
+      "defects": [
+        {
+          "reference_bounds": [
+            525,
+            93,
+            6,
+            7
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            287,
+            95,
+            5,
+            4
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            288,
+            125,
+            3,
+            31
+          ],
+          "area": 41
+        },
+        {
+          "reference_bounds": [
+            413,
+            133,
+            4,
+            6
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            533,
+            132,
+            4,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            295,
+            160,
+            6,
+            4
+          ],
+          "area": 14
+        },
+        {
+          "reference_bounds": [
+            250,
+            164,
+            11,
+            6
+          ],
+          "area": 28
+        },
+        {
+          "reference_bounds": [
+            209,
+            169,
+            8,
+            6
+          ],
+          "area": 25
+        },
+        {
+          "reference_bounds": [
+            78,
+            170,
+            5,
+            6
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            230,
+            170,
+            6,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            456,
+            171,
+            3,
+            7
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            159,
+            172,
+            23,
+            14
+          ],
+          "area": 168
+        },
+        {
+          "reference_bounds": [
+            441,
+            172,
+            10,
+            8
+          ],
+          "area": 47
+        },
+        {
+          "reference_bounds": [
+            459,
+            175,
+            6,
+            4
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            183,
+            177,
+            7,
+            4
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            209,
+            176,
+            3,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            385,
+            177,
+            3,
+            12
+          ],
+          "area": 28
+        },
+        {
+          "reference_bounds": [
+            423,
+            177,
+            3,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            552,
+            179,
+            6,
+            5
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            334,
+            181,
+            4,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            351,
+            193,
+            7,
+            2
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            481,
+            194,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            554,
+            199,
+            5,
+            3
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            317,
+            203,
+            7,
+            6
+          ],
+          "area": 20
+        },
+        {
+          "reference_bounds": [
+            345,
+            204,
+            7,
+            4
+          ],
+          "area": 19
+        },
+        {
+          "reference_bounds": [
+            303,
+            207,
+            3,
+            7
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            239,
+            242,
+            10,
+            3
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            472,
+            246,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            94,
+            266,
+            10,
+            2
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            326,
+            275,
+            5,
+            5
+          ],
+          "area": 13
+        },
+        {
+          "reference_bounds": [
+            459,
+            276,
+            12,
+            22
+          ],
+          "area": 149
+        },
+        {
+          "reference_bounds": [
+            453,
+            281,
+            5,
+            6
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            537,
+            288,
+            6,
+            2
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            166,
+            293,
+            7,
+            4
+          ],
+          "area": 15
+        },
+        {
+          "reference_bounds": [
+            176,
+            299,
+            16,
+            16
+          ],
+          "area": 90
+        },
+        {
+          "reference_bounds": [
+            524,
+            305,
+            5,
+            6
+          ],
+          "area": 17
+        },
+        {
+          "reference_bounds": [
+            143,
+            307,
+            5,
+            7
+          ],
+          "area": 21
+        },
+        {
+          "reference_bounds": [
+            496,
+            307,
+            3,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            481,
+            308,
+            7,
+            7
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            158,
+            311,
+            5,
+            4
+          ],
+          "area": 10
+        },
+        {
+          "reference_bounds": [
+            492,
+            316,
+            7,
+            3
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            196,
+            324,
+            3,
+            7
+          ],
+          "area": 12
+        },
+        {
+          "reference_bounds": [
+            73,
+            326,
+            3,
+            5
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            482,
+            328,
+            15,
+            9
+          ],
+          "area": 65
+        },
+        {
+          "reference_bounds": [
+            341,
+            333,
+            7,
+            4
+          ],
+          "area": 22
+        },
+        {
+          "reference_bounds": [
+            499,
+            334,
+            5,
+            3
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            550,
+            341,
+            3,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            542,
+            347,
+            14,
+            13
+          ],
+          "area": 57
+        },
+        {
+          "reference_bounds": [
+            326,
+            357,
+            3,
+            4
+          ],
+          "area": 9
+        },
+        {
+          "reference_bounds": [
+            401,
+            359,
+            11,
+            4
+          ],
+          "area": 26
+        },
+        {
+          "reference_bounds": [
+            425,
+            383,
+            3,
+            7
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            138,
+            388,
+            5,
+            5
+          ],
+          "area": 11
+        },
+        {
+          "reference_bounds": [
+            308,
+            390,
+            4,
+            4
+          ],
+          "area": 9
+        }
+      ],
+      "area_units": "reference_pixels",
+      "max_deviation": 8.06380558013916,
+      "settings": {
+        "absolute_threshold": 12.0,
+        "variation_multiplier": 3.0,
+        "edge_tolerance_px": 0.75,
+        "normalization": "gain_offset",
+        "min_gain": 0.5,
+        "max_gain": 2.0,
+        "min_correlation": 0.85,
+        "min_coverage": 0.98,
+        "min_defect_area": 9,
+        "max_total_defect_area": 0
+      }
+    },
+    "predicted_label": "anomaly",
+    "ground_truth_mask": "assets/truth-anomaly-003.png",
+    "mask_metrics": {
+      "truth_pixels": 887,
+      "predicted_pixels": 1262,
+      "true_positive_pixels": 0,
+      "covered_truth_pixels": 887,
+      "precision": 0.0,
+      "recall": 0.0
+    }
+  }
+]

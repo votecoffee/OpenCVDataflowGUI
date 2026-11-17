@@ -1,0 +1,772 @@
+{
+  "model": "simple_reference_inspect_review_v1",
+  "state": "pass",
+  "inspection": {
+    "area_units": "reference_pixels",
+    "coverage": 1.0,
+    "defect_area": 0,
+    "defects": [],
+    "evaluated": true,
+    "exposure": {
+      "correlation": 0.9985029423930798,
+      "gain": 0.8065683337195437,
+      "offset": -2.885952952558142
+    },
+    "failures": [],
+    "inspected_pixels": 24576,
+    "max_deviation": 0.41030454635620117,
+    "model": "simple_reference_inspect_v1",
+    "passed": true,
+    "settings": {
+      "absolute_threshold": 12,
+      "edge_tolerance_px": 0.75,
+      "max_gain": 2.0,
+      "max_total_defect_area": 0,
+      "min_correlation": 0.85,
+      "min_coverage": 0.98,
+      "min_defect_area": 12,
+      "min_gain": 0.5,
+      "normalization": "gain_offset",
+      "variation_multiplier": 3
+    }
+  },
+  "metrics": [
+    {
+      "name": "Geometric support",
+      "value": 1.0,
+      "units": "fraction",
+      "minimum": 0.98,
+      "maximum": null,
+      "status": "within limits"
+    },
+    {
+      "name": "Exposure gain",
+      "value": 0.8065683337195437,
+      "units": "ratio",
+      "minimum": 0.5,
+      "maximum": 2.0,
+      "status": "within limits"
+    },
+    {
+      "name": "Reference correlation",
+      "value": 0.9985029423930798,
+      "units": "correlation",
+      "minimum": 0.85,
+      "maximum": null,
+      "status": "within limits"
+    },
+    {
+      "name": "Accepted change area",
+      "value": 0,
+      "units": "reference pixels",
+      "minimum": null,
+      "maximum": 0,
+      "status": "within limits"
+    },
+    {
+      "name": "Maximum deviation",
+      "value": 0.41030454635620117,
+      "units": "tolerance ratio",
+      "minimum": null,
+      "maximum": null,
+      "status": "diagnostic"
+    }
+  ],
+  "expected_inspection_pixels": 24576,
+  "inspected_reference_pixels": 24576,
+  "reference_size": [
+    256,
+    192
+  ],
+  "input_size": [
+    256,
+    192
+  ],
+  "input_dtype": "uint8",
+  "input_pixels_sha256": "0c3981e69eec5131a884215630a0530e081a08c1875ff04ac64ecaf2b21c99b4",
+  "reference_mean_sha256": "09009e516b3297f824f4bcb16ebddfbab964faf13bd5dcae5859dec163273dab",
+  "reference_tolerance_sha256": "564d3a5c1b4455ef91e2eca769fa617db5acceb84d5437c0be2b88eb7feefce1",
+  "inspection_region_sha256": "f1e8804658a998aecac556871458b2a62a92fdf1214d2ea0c176c970e7852190",
+  "normalization_region_sha256": "ba08e6bed258bc9085215be92fa264a75208eb4a66ba40fd7953b3415e5da47a",
+  "reference_to_image": [
+    [
+      1.0,
+      0.0,
+      8.0
+    ],
+    [
+      0.0,
+      1.0,
+      -5.0
+    ]
+  ],
+  "display": {
+    "intensity_range": [
+      28.87030601501465,
+      217.69383239746094
+    ],
+    "signed_residual_range": [
+      -89.23947143554688,
+      89.23947143554688
+    ],
+    "deviation_range": [
+      0.0,
+      2.0
+    ],
+    "tolerance_boundary": 1.0
+  },
+  "training_health": {
+    "mean_standard_deviation": 0.9922160506248474,
+    "sample_count": 8,
+    "samples": [
+      {
+        "correlation": 1.0,
+        "gain": 1.0,
+        "offset": 0.0
+      },
+      {
+        "correlation": 0.9982264402949956,
+        "gain": 0.9528400360155448,
+        "offset": -0.6828231117079753
+      },
+      {
+        "correlation": 0.9972011953179938,
+        "gain": 0.9095208444776995,
+        "offset": -1.2380789008404918
+      },
+      {
+        "correlation": 0.9959820939772609,
+        "gain": 0.869152029232691,
+        "offset": -1.6728663635849301
+      },
+      {
+        "correlation": 0.9976565995294413,
+        "gain": 0.8398042153986786,
+        "offset": -3.1853668061061313
+      },
+      {
+        "correlation": 0.9981774688209705,
+        "gain": 0.808293328154277,
+        "offset": -3.914061235212472
+      },
+      {
+        "correlation": 0.9982893798326438,
+        "gain": 0.7783304325347632,
+        "offset": -4.449857544161205
+      },
+      {
+        "correlation": 0.9983530490945292,
+        "gain": 0.7508755155341652,
+        "offset": -5.0545117587004285
+      }
+    ],
+    "warnings": []
+  },
+  "arrays": {
+    "residual": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "71632e13ba8437fa6721beaf09fe37fe5502f972371a55a4063a64d7579d2565"
+    },
+    "deviation_map": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "e7bfeaaf9cbb42d7936fbcc0c2707c68db27e630c6d1bb222c04231a6c1f5227"
+    },
+    "inspected_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "3c19c89da5c6b87f74c637c0c2596e57f21661273d5709394f36eabf5caef1cd"
+    },
+    "defect_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "2aae7dc846aaf25f1cadf55f1666862046c6db9d65d84bdc07fa039dac405606"
+    }
+  },
+  "images": {
+    "0_reference_mean.png": {
+      "view": "Reference mean",
+      "grid": "reference"
+    },
+    "1_normalized_current.png": {
+      "view": "Normalized current",
+      "grid": "reference"
+    },
+    "2_signed_residual.png": {
+      "view": "Signed residual",
+      "grid": "reference"
+    },
+    "3_deviation_tolerance.png": {
+      "view": "Deviation / tolerance",
+      "grid": "reference"
+    },
+    "4_inspected_coverage.png": {
+      "view": "Inspected coverage",
+      "grid": "reference"
+    },
+    "5_input_overlay.png": {
+      "view": "Input overlay",
+      "grid": "input"
+    }
+  },
+  "completed_execution": {
+    "model": "simple_reference_completed_review_v1",
+    "execution_binding": "9d08084f37e8469ab6f48fa0506b4d67",
+    "original_recipe_sha256": "b29114a05b9c1b47693a3f561882b70e3c8ff515a1274741aa5c5bd62f5b2e7f",
+    "source_image": {
+      "shape": [
+        192,
+        256
+      ],
+      "dtype": "|u1",
+      "format": "gray",
+      "sha256": "0c3981e69eec5131a884215630a0530e081a08c1875ff04ac64ecaf2b21c99b4"
+    },
+    "measurement_image": {
+      "shape": [
+        192,
+        256
+      ],
+      "dtype": "|u1"
+    },
+    "reference_size": [
+      256,
+      192
+    ],
+    "reference_to_image": [
+      [
+        1.0,
+        0.0,
+        8.0
+      ],
+      [
+        0.0,
+        1.0,
+        -5.0
+      ]
+    ],
+    "inspection": {
+      "area_units": "reference_pixels",
+      "coverage": 1.0,
+      "defect_area": 0,
+      "defects": [],
+      "evaluated": true,
+      "exposure": {
+        "correlation": 0.9985029423930798,
+        "gain": 0.8065683337195437,
+        "offset": -2.885952952558142
+      },
+      "failures": [],
+      "inspected_pixels": 24576,
+      "max_deviation": 0.41030454635620117,
+      "model": "simple_reference_inspect_v1",
+      "passed": true,
+      "settings": {
+        "absolute_threshold": 12,
+        "edge_tolerance_px": 0.75,
+        "max_gain": 2.0,
+        "max_total_defect_area": 0,
+        "min_correlation": 0.85,
+        "min_coverage": 0.98,
+        "min_defect_area": 12,
+        "min_gain": 0.5,
+        "normalization": "gain_offset",
+        "variation_multiplier": 3
+      }
+    },
+    "source_maps": {
+      "residual": {
+        "shape": [
+          192,
+          256
+        ],
+        "dtype": "<f4",
+        "sha256": "df0f28840fa58d8eb04b4a211ec2e55d54417475e9841d8e42a04fdd951b74c1"
+      },
+      "deviation_map": {
+        "shape": [
+          192,
+          256
+        ],
+        "dtype": "<f4",
+        "sha256": "156315e08cea361d703c5b03b3ef730e69741e774a7d31a2656c7bb104943166"
+      },
+      "inspected_mask": {
+        "shape": [
+          192,
+          256
+        ],
+        "dtype": "|u1",
+        "sha256": "f7a751f8717db3731558db2490dc0df654f5d21851c1538c33d4eda4f61d9fea"
+      },
+      "defect_mask": {
+        "shape": [
+          192,
+          256
+        ],
+        "dtype": "|u1",
+        "sha256": "2aae7dc846aaf25f1cadf55f1666862046c6db9d65d84bdc07fa039dac405606"
+      }
+    },
+    "provenance": {
+      "snapshot_id": "4bc388b4f88146f38e581e84637712f9",
+      "block_id": "inspection",
+      "output_revision": 0,
+      "execution_count": 2,
+      "passed": true,
+      "score": null,
+      "message": "0 reference pixels in 0 regions",
+      "inputs": {
+        "image": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-nominal.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:2",
+            "sequence": 2,
+            "source": "source"
+          },
+          "spatial": {
+            "root_id": "source:image",
+            "root_size": [
+              256,
+              192
+            ],
+            "image_size": [
+              256,
+              192
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.678925+00:00",
+            "started_ns": 121391641199100,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T21:50:28.686517+00:00",
+            "finished_ns": 121391648789900,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 7.5908
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "source",
+              "name": "Image file",
+              "type": "input.file",
+              "path": "source"
+            },
+            "score": null,
+            "message": "moved-nominal.png \u00b7 gray / uint8",
+            "data": {},
+            "fail_reasons": []
+          }
+        },
+        "pose": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-nominal.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:2",
+            "sequence": 2,
+            "source": "source"
+          },
+          "spatial": {
+            "root_id": "source:image",
+            "root_size": [
+              256,
+              192
+            ],
+            "image_size": [
+              256,
+              192
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.678925+00:00",
+            "started_ns": 121391641199100,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T21:50:28.695764+00:00",
+            "finished_ns": 121391658037400,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 16.8383
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "fixture",
+              "name": "Pose from feature",
+              "type": "pose.from_feature",
+              "path": "fixture"
+            },
+            "score": null,
+            "message": "",
+            "data": {},
+            "fail_reasons": []
+          }
+        }
+      },
+      "outputs": {
+        "inspection": {
+          "sri_completed_review": {
+            "id": "9d08084f37e8469ab6f48fa0506b4d67",
+            "recipe_sha256": "b29114a05b9c1b47693a3f561882b70e3c8ff515a1274741aa5c5bd62f5b2e7f"
+          },
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-nominal.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:2",
+            "sequence": 2,
+            "source": "source"
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.697488+00:00",
+            "started_ns": 121391659761900,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": true,
+            "finished_at": "2026-11-17T21:50:28.705399+00:00",
+            "finished_ns": 121391667672700,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 7.9108
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "inspection",
+              "name": "SimpleReferenceInspect",
+              "type": "inspect.simple_reference",
+              "path": "inspection"
+            },
+            "score": null,
+            "message": "0 reference pixels in 0 regions",
+            "data": {
+              "filmstrip_priority": -1
+            },
+            "fail_reasons": []
+          }
+        },
+        "residual": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-nominal.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:2",
+            "sequence": 2,
+            "source": "source"
+          },
+          "spatial": {
+            "root_id": "source:image",
+            "root_size": [
+              256,
+              192
+            ],
+            "image_size": [
+              256,
+              192
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.678925+00:00",
+            "started_ns": 121391641199100,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T21:50:28.705399+00:00",
+            "finished_ns": 121391667672700,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 26.4736
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "inspection",
+              "name": "SimpleReferenceInspect",
+              "type": "inspect.simple_reference",
+              "path": "inspection"
+            },
+            "score": null,
+            "message": "0 reference pixels in 0 regions",
+            "data": {
+              "filmstrip_priority": -1
+            },
+            "fail_reasons": []
+          }
+        },
+        "deviation_map": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-nominal.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:2",
+            "sequence": 2,
+            "source": "source"
+          },
+          "spatial": {
+            "root_id": "source:image",
+            "root_size": [
+              256,
+              192
+            ],
+            "image_size": [
+              256,
+              192
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.678925+00:00",
+            "started_ns": 121391641199100,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T21:50:28.705399+00:00",
+            "finished_ns": 121391667672700,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 26.4736
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "inspection",
+              "name": "SimpleReferenceInspect",
+              "type": "inspect.simple_reference",
+              "path": "inspection"
+            },
+            "score": null,
+            "message": "0 reference pixels in 0 regions",
+            "data": {
+              "filmstrip_priority": -1
+            },
+            "fail_reasons": []
+          }
+        },
+        "inspected_mask": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-nominal.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:2",
+            "sequence": 2,
+            "source": "source"
+          },
+          "spatial": {
+            "root_id": "source:image",
+            "root_size": [
+              256,
+              192
+            ],
+            "image_size": [
+              256,
+              192
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.678925+00:00",
+            "started_ns": 121391641199100,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T21:50:28.705399+00:00",
+            "finished_ns": 121391667672700,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 26.4736
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "inspection",
+              "name": "SimpleReferenceInspect",
+              "type": "inspect.simple_reference",
+              "path": "inspection"
+            },
+            "score": null,
+            "message": "0 reference pixels in 0 regions",
+            "data": {
+              "filmstrip_priority": -1
+            },
+            "fail_reasons": []
+          }
+        },
+        "defect_mask": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-nominal.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:2",
+            "sequence": 2,
+            "source": "source"
+          },
+          "spatial": {
+            "root_id": "source:image",
+            "root_size": [
+              256,
+              192
+            ],
+            "image_size": [
+              256,
+              192
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.678925+00:00",
+            "started_ns": 121391641199100,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T21:50:28.705399+00:00",
+            "finished_ns": 121391667672700,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 26.4736
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "inspection",
+              "name": "SimpleReferenceInspect",
+              "type": "inspect.simple_reference",
+              "path": "inspection"
+            },
+            "score": null,
+            "message": "0 reference pixels in 0 regions",
+            "data": {
+              "filmstrip_priority": -1
+            },
+            "fail_reasons": []
+          }
+        }
+      }
+    },
+    "coordinate_scope": "Reference maps, exact consumed-input maps and assessment display grids remain distinct",
+    "identity_scope": "Software completion identifiers do not establish physical exposure identity",
+    "review_reconstruction": "Normalized current is resampled with captured pose/exposure; no exposure refitting",
+    "inspection_reexecuted": false,
+    "exposure_refitted": false,
+    "recipe_reloaded": false,
+    "training_changed": false,
+    "exported_model": {
+      "file": "executed_model.sri",
+      "sha256": "cd4dd604b64efeb059cb57facf5e47991d2343071938f3fce4fcb679ed5449b2",
+      "scope": "Re-encoded executed model; archive bytes may differ from original pin"
+    }
+  }
+}

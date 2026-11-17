@@ -1,0 +1,202 @@
+{
+  "publisher_revision": "2a692ab575001cbde74d402d897a7286086c6199",
+  "mirror_revision": "912ae1aa35ac0791e64524a42342850af1605363",
+  "split_csv_url": "https://raw.githubusercontent.com/amazon-science/spot-diff/2a692ab575001cbde74d402d897a7286086c6199/split_csv/1cls.csv",
+  "split_csv_sha256": "a48557e6033318cb90556f706196bc9d247a776a23ea51aecee5a80dd0332995",
+  "selection": [
+    {
+      "object": "pcb2",
+      "split": "train",
+      "label": "normal",
+      "image": "pcb2/Data/Images/Normal/0000.JPG",
+      "mask": ""
+    },
+    {
+      "object": "pcb2",
+      "split": "train",
+      "label": "normal",
+      "image": "pcb2/Data/Images/Normal/0001.JPG",
+      "mask": ""
+    },
+    {
+      "object": "pcb2",
+      "split": "train",
+      "label": "normal",
+      "image": "pcb2/Data/Images/Normal/0002.JPG",
+      "mask": ""
+    },
+    {
+      "object": "pcb2",
+      "split": "train",
+      "label": "normal",
+      "image": "pcb2/Data/Images/Normal/0003.JPG",
+      "mask": ""
+    },
+    {
+      "object": "pcb2",
+      "split": "train",
+      "label": "normal",
+      "image": "pcb2/Data/Images/Normal/0004.JPG",
+      "mask": ""
+    },
+    {
+      "object": "pcb2",
+      "split": "train",
+      "label": "normal",
+      "image": "pcb2/Data/Images/Normal/0005.JPG",
+      "mask": ""
+    },
+    {
+      "object": "pcb2",
+      "split": "train",
+      "label": "normal",
+      "image": "pcb2/Data/Images/Normal/0006.JPG",
+      "mask": ""
+    },
+    {
+      "object": "pcb2",
+      "split": "train",
+      "label": "normal",
+      "image": "pcb2/Data/Images/Normal/0007.JPG",
+      "mask": ""
+    },
+    {
+      "object": "pcb2",
+      "split": "test",
+      "label": "normal",
+      "image": "pcb2/Data/Images/Normal/0011.JPG",
+      "mask": ""
+    },
+    {
+      "object": "pcb2",
+      "split": "test",
+      "label": "normal",
+      "image": "pcb2/Data/Images/Normal/0013.JPG",
+      "mask": ""
+    },
+    {
+      "object": "pcb2",
+      "split": "test",
+      "label": "normal",
+      "image": "pcb2/Data/Images/Normal/0016.JPG",
+      "mask": ""
+    },
+    {
+      "object": "pcb2",
+      "split": "test",
+      "label": "normal",
+      "image": "pcb2/Data/Images/Normal/0024.JPG",
+      "mask": ""
+    },
+    {
+      "object": "pcb2",
+      "split": "test",
+      "label": "anomaly",
+      "image": "pcb2/Data/Images/Anomaly/000.JPG",
+      "mask": "pcb2/Data/Masks/Anomaly/000.png"
+    },
+    {
+      "object": "pcb2",
+      "split": "test",
+      "label": "anomaly",
+      "image": "pcb2/Data/Images/Anomaly/001.JPG",
+      "mask": "pcb2/Data/Masks/Anomaly/001.png"
+    },
+    {
+      "object": "pcb2",
+      "split": "test",
+      "label": "anomaly",
+      "image": "pcb2/Data/Images/Anomaly/002.JPG",
+      "mask": "pcb2/Data/Masks/Anomaly/002.png"
+    },
+    {
+      "object": "pcb2",
+      "split": "test",
+      "label": "anomaly",
+      "image": "pcb2/Data/Images/Anomaly/003.JPG",
+      "mask": "pcb2/Data/Masks/Anomaly/003.png"
+    }
+  ],
+  "files": {
+    "pcb2/Data/Images/Anomaly/000.JPG": {
+      "sha256": "7ee5d8e7d7496860aa60447f3e779003f4bd852a9f2a1f35b9ed49103a7ef708",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Anomaly/000.JPG"
+    },
+    "pcb2/Data/Images/Anomaly/001.JPG": {
+      "sha256": "2d71a3af119e7495bb69af5a063020ad23e8ee0089be0ca1a1e8ac022d48bab9",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Anomaly/001.JPG"
+    },
+    "pcb2/Data/Images/Anomaly/002.JPG": {
+      "sha256": "8a9335e83494f8284a379db3ba5902aa0a99002104f233514c2308ea6b94f40e",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Anomaly/002.JPG"
+    },
+    "pcb2/Data/Images/Anomaly/003.JPG": {
+      "sha256": "bb30a33d3516f0207e49de98cbdcc4d1834226b6571859bb26147bd40db62b3f",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Anomaly/003.JPG"
+    },
+    "pcb2/Data/Images/Normal/0000.JPG": {
+      "sha256": "b3f01fc1c1bd43df2c5a1afa63348097f7ecbcc9ebe2fd43bed6f2d074531a37",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Normal/0000.JPG"
+    },
+    "pcb2/Data/Images/Normal/0001.JPG": {
+      "sha256": "41f9b0f002ad1d0d779830152508364d6ab020f1bb6de47b803f55db2bd8d7cc",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Normal/0001.JPG"
+    },
+    "pcb2/Data/Images/Normal/0002.JPG": {
+      "sha256": "311ac803df6dd6ae275ce51a9bc0be02c90cbd4c086c037bb57ac93c6daf4622",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Normal/0002.JPG"
+    },
+    "pcb2/Data/Images/Normal/0003.JPG": {
+      "sha256": "7615d396f18ace89d7312382d4b8209a64480638165284f566974a04406da3c6",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Normal/0003.JPG"
+    },
+    "pcb2/Data/Images/Normal/0004.JPG": {
+      "sha256": "f073db8a203a092a5b31c47c66036db689288145a29c9e7b4f789ddedaa9c9de",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Normal/0004.JPG"
+    },
+    "pcb2/Data/Images/Normal/0005.JPG": {
+      "sha256": "919389ff912bfe74e4182758ee8383d6c1d7419ef8bc2c39e47cc06cad883fd0",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Normal/0005.JPG"
+    },
+    "pcb2/Data/Images/Normal/0006.JPG": {
+      "sha256": "784b5032fa85321f9e9b02c6843edfb6b74033ee800015fb4ca7effd68983cf9",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Normal/0006.JPG"
+    },
+    "pcb2/Data/Images/Normal/0007.JPG": {
+      "sha256": "10867ebf21b0c07e0bc1c918105fc3cc652f47263284314411316af483476d2f",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Normal/0007.JPG"
+    },
+    "pcb2/Data/Images/Normal/0011.JPG": {
+      "sha256": "d2e925aba355079bbb108322e64efcb9db5f68bca3d0763d3b1b2fd95706fbe6",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Normal/0011.JPG"
+    },
+    "pcb2/Data/Images/Normal/0013.JPG": {
+      "sha256": "e147fb6bc898b1e23f97b34b7d78bf7f19a29aefb2b40003776fea187fdef9ec",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Normal/0013.JPG"
+    },
+    "pcb2/Data/Images/Normal/0016.JPG": {
+      "sha256": "2b2d715d67201bbf308daa916e82c87b820b63899bd5e7ca284863501c5c9d52",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Normal/0016.JPG"
+    },
+    "pcb2/Data/Images/Normal/0024.JPG": {
+      "sha256": "72c6b7df4d2db7621d2f9f6076f7ce9a0f66a7a785b8eb18e908dece6c53d6f1",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Images/Normal/0024.JPG"
+    },
+    "pcb2/Data/Masks/Anomaly/000.png": {
+      "sha256": "f42fd0018ffafe756cbea26e556a5d0fab36ca2413ad18896206559d63ee7667",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Masks/Anomaly/000.png"
+    },
+    "pcb2/Data/Masks/Anomaly/001.png": {
+      "sha256": "15684849f94e0a588227e5182288236a40f75cc816f2fb293174b9d00574dce0",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Masks/Anomaly/001.png"
+    },
+    "pcb2/Data/Masks/Anomaly/002.png": {
+      "sha256": "75551e611ab2b9c621299f2bc29269759871618dad8796f4f8844c52d59b9575",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Masks/Anomaly/002.png"
+    },
+    "pcb2/Data/Masks/Anomaly/003.png": {
+      "sha256": "c6710a29b0e8d571fa808439ef0ee06d53a2fbd13bc9dd45ded8dc3f66007661",
+      "url": "https://huggingface.co/datasets/imaadd05/visa-anomaly-detection/resolve/912ae1aa35ac0791e64524a42342850af1605363/pcb2/Data/Masks/Anomaly/003.png"
+    }
+  }
+}
