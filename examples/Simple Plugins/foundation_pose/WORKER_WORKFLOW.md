@@ -10,7 +10,8 @@ This is an experimental single-instance pose tool. It uses a supplied visible
 instance mask, registered uint8 RGB/physical axial depth, rectified pinhole
 calibration and an original-origin metric mesh retained in `trained.sfp`.
 Setting up the object retains these inputs; it does not train new network weights.
-The native setup/mask editor is the next milestone and is not provided yet.
+The native **Set up object...** editor restores and teaches these retained inputs.
+See [native setup and inspector workflow](NATIVE_SETUP.md).
 
 ## Runtime setup
 
@@ -78,7 +79,8 @@ serialized. Whole-request and cache timing is reported separately from inference
 
 The original [pilot README](README.md) and its checksum manifest describe that
 earlier saved-output release. This document and `worker_execution/sha256.json`
-describe the additional execution release; the earlier assets remain intact.
+describe the current execution collection; `v1_sha256.json` preserves the original
+execution manifest, and its version-1 receipts remain historical snapshots.
 
 ## Data and model attribution
 

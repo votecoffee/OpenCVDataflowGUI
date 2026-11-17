@@ -1,0 +1,28 @@
+[
+  {
+    "case": "held_out_frame13",
+    "actual_published_plugin": true,
+    "novel_image_files_and_worker_cad": true,
+    "canonical_geometry_rgb_mask_camera_exact": true,
+    "depth_import_max_difference_m": 5.960464477539063e-08,
+    "assisted_candidates_exact": true,
+    "accepted_candidates": 0,
+    "inspector_cancel_preserved_applied": true,
+    "inspector_stage_apply_reopen": true,
+    "source_filmstrip_frames": 3,
+    "calibration_exact": true
+  },
+  {
+    "case": "different_object_negative",
+    "actual_published_plugin": true,
+    "novel_image_files_and_worker_cad": true,
+    "canonical_geometry_rgb_mask_camera_exact": true,
+    "depth_import_max_difference_m": 5.960464477539063e-08,
+    "assisted_candidates_exact": true,
+    "accepted_candidates": 0,
+    "inspector_cancel_preserved_applied": true,
+    "inspector_stage_apply_reopen": true,
+    "source_filmstrip_frames": 3,
+    "calibration_exact": true
+  }
+]

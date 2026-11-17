@@ -3,6 +3,7 @@
   "assets/different_object_negative_prior_proposals.json": "d24ea26ff3e550dfe0a0a093d80d0369eba2071ecbc05faa06934df5321b1f93",
   "assets/held_out_frame13.npz": "3d95a011c077043016207678e502f3839bf352ce4a85542097d5442a293529c9",
   "assets/held_out_frame13_prior_proposals.json": "6e907d67ed57cdf2a0268ccf67de4eaa73e5295f4ab42fac4c9f833feb07ba66",
+  "assets/native_setup.sfp": "49ecc7ea751c73ee62c4c3bd0e1dd7dfd6ce4a0db641994b676f165510a5d3b2",
   "assets/trained.sfp": "9dd8370f3f04e0fd18c5898b1f286bbb3c3a253fdfb6d02a0e183db18c963e1d",
   "assisted_checks.json": "aaacff131abb9937ca4d94e05520271296e19ae0f92b9bed250ea5fe0df71d96",
   "assisted_results/different_object_negative/overlay.png": "164fbc9f70508325e58399472e84fd2ba311e3a2256efd46ecdc975ef804b8fe",
@@ -23,7 +24,15 @@
   "global_results/held_out_frame13/report.json": "17148d7bed8a270ce9d7f8f06e975b2415ac2d3acb70bde6591916e482d861f3",
   "held_out_frame13_assisted_replay.json": "3d1596f10d425343eceaf9adafb8e127a0c9e1782b151f99dda5652c16733fee",
   "held_out_frame13_global.json": "de54056a475bd02278c7ff90262409ea733e6d2b5cd8c1652a8802591d6601c3",
+  "native_setup_different_object_negative.json": "42df9579a6d5b5b8b7e5a90157c47a2c05093def2399a5b50eeebdaacd346490",
+  "native_setup_evidence/different_object_negative_global_gui_checks.json": "7e6d16431145a1b05b8b575e4fc34c3a236308b588a2c920e404b9ac856e10c4",
+  "native_setup_evidence/held_out_frame13_global_gui_checks.json": "a1ba860f3dc3cd9f6e26c24e20d103660f1290725f7b10f72e2648e25789f7db",
+  "native_setup_evidence/package_verification.json": "7a0a189bce7bdad63b2a7353f836862d3b76518ed2662f718cbd69c8acdf858b",
+  "native_setup_evidence/publication_checks.json": "9decfdf445e98fa44d11700c7eab7f8a9e0dd11561f98b9fd866e42d26e2280b",
+  "native_setup_evidence/published_inspector_checks.json": "1b3a9e6960de34ac0973b1fed31f9b38fb2f34cb21e36b86c63acdb88424ebc8",
+  "native_setup_held_out_frame13.json": "3564ffb8e9df2e3d5408d0c3c0296568aad1531e169951b7c056d56bda24d55f",
   "package_verification.json": "a92860cdd3576d6c78140e2804b1811b2b06ba19770b4f2d4784f0d0001db957",
   "publication_checks.json": "5c785b001c9a55418c84cac28874c273eb230b12d39ff57ecea1dedc83bd776b",
-  "README.md": "4e809dcbea69adb645130b54ba8f67a86e53745d21bc6d700824e4d99463d6f6"
+  "README.md": "3b719ea8c32ad58d253564adff5c8f5352f7b69f742ec3338fe2dd1324c7d18c",
+  "v1_sha256.json": "24ebfd39f13f94724f4f658c70bfdb317416098393ae436f160827b51d7021d7"
 }

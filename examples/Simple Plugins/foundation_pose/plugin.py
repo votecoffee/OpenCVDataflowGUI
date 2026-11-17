@@ -7,9 +7,9 @@ from pathlib import Path
 WHEEL = (
     Path(__file__).resolve().parent
     / "releases"
-    / "opencv_simple_foundation_pose-0.1.0.dev1-py3-none-any.whl"
+    / "opencv_simple_foundation_pose-0.1.0.dev2-py3-none-any.whl"
 )
-EXPECTED = "8f7865dda4fa5333fc654291a1b61b686e88fef35323ed62c9ca3003cd9ec957"
+EXPECTED = "089b3be7b6344b90f1456485fffd31747b58756fcbfd135f15f3b34772625d0c"
 
 
 def checked(path):

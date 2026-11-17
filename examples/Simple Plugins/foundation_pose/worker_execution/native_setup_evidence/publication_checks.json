@@ -1,0 +1,17 @@
+{
+  "source_commit": "d3c8c85",
+  "plugin_sha256": "97e7bf430a667d172cf688e14909aa256e53553e1d02505b7bbc9fa8d175e728",
+  "wheel_sha256": "089b3be7b6344b90f1456485fffd31747b58756fcbfd135f15f3b34772625d0c",
+  "runtime_modules": 20,
+  "native_setup_editor": true,
+  "source_global_gui_previews": 2,
+  "published_inspector_workflows": 2,
+  "novel_image_and_cad_import": true,
+  "all_global_candidates_preserved": true,
+  "source_raw_depth_rejection_preserved": true,
+  "calibration_precision_preserved": true,
+  "no_host_dependency_changes": true,
+  "single_visible_instance_only": true,
+  "physical_grasp_qualified": false,
+  "gpu_accuracy_qualified": false
+}

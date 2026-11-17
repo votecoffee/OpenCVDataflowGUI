@@ -1,0 +1,12 @@
+{
+  "case": "held_out_frame13",
+  "full_global_candidates": 252,
+  "candidates_exact": true,
+  "accepted_candidates": 0,
+  "reference_preserved": true,
+  "staged_reopened": true,
+  "native_cloud": true,
+  "source_overlay": true,
+  "source": "working source GUI, original pinned ONNX assets",
+  "elapsed_seconds": 501.9348387999926
+}

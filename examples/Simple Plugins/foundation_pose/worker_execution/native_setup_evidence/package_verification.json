@@ -1,0 +1,24 @@
+{
+  "source_commit": "d3c8c85",
+  "wheel": "opencv_simple_foundation_pose-0.1.0.dev2-py3-none-any.whl",
+  "sha256": "089b3be7b6344b90f1456485fffd31747b58756fcbfd135f15f3b34772625d0c",
+  "runtime_modules": 20,
+  "source_wheel_installed_modules_exact": true,
+  "license_members": [
+    "opencv_simple_foundation_pose-0.1.0.dev2.dist-info/licenses/LICENSE",
+    "opencv_simple_foundation_pose-0.1.0.dev2.dist-info/licenses/THIRD_PARTY.md",
+    "opencv_simple_foundation_pose-0.1.0.dev2.dist-info/licenses/licenses/Apache-2.0.txt",
+    "opencv_simple_foundation_pose-0.1.0.dev2.dist-info/licenses/licenses/NVIDIA_TAO_MIT.txt"
+  ],
+  "isolated_tests": {
+    "passed": 37,
+    "skipped": 2,
+    "skip": "Host and native Qt modules absent in isolated worker environment"
+  },
+  "host_checks": {
+    "installed": 21,
+    "checkout": 21
+  },
+  "no_host_dependencies_installed": true,
+  "no_weights_included": true
+}

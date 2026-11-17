@@ -1,0 +1,12 @@
+{
+  "case": "different_object_negative",
+  "full_global_candidates": 252,
+  "candidates_exact": true,
+  "accepted_candidates": 0,
+  "reference_preserved": true,
+  "staged_reopened": true,
+  "native_cloud": true,
+  "source_overlay": true,
+  "source": "working source GUI, original pinned ONNX assets",
+  "elapsed_seconds": 512.6177106999967
+}
