@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 167 | 3 | 5 | 175 | 95.4% |
+| 1. Core and baseline 2D | 168 | 4 | 3 | 175 | 96.0% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 230 | 45 | 195 | 470 | 48.9% |
+| **Overall** | 231 | 46 | 193 | 470 | 49.1% |
 
 <!-- coverage-summary:end -->
 
@@ -173,7 +173,7 @@ fixture or result needed to close the item.
 | S1-101 | Image-space regions and pose transforms | Homogeneous 2D image geometry and mask rasterization | Complete | pose.define, pose.from_feature, pose.offset, region.transform, region.filter_points, region.measure. Verify offset axes and region coverage. |
 | S1-102 | Clearance and discontinuity on an image path | distanceTransform, ordered path sampling | Complete | inspect.mask_clearance, inspect.path_continuity. Distinguish isolated misses and persistent gaps, including on a closed path. |
 | S1-103 | Curved-strip defect extraction and source graphics | remap, contiguous spans and mapped geometry | Complete | inspect.strip_defects, inspect.judge_strip_defects, inspect.map_strip_graphics. Measure defect spans and map them back onto the source. |
-| S1-104 | Registration of unordered rotating views | Stitcher or explicit feature registration and panorama projection | Planned | Build a panorama with known overlapping views and report disconnected or inconsistent views. |
+| S1-104 | Registration of unordered rotating views | Stitcher or explicit feature registration and panorama projection | Complete | cv.stitch_rotating_panorama and cv.panorama_points qualify native camera estimation, independent overlap/model checks, anchored connectivity, reject/fail/allow partial policies, optional wave correction, spherical/cylindrical/plane rendering, masks/regions, source-depth retention and explicit nonlinear point conversion. Eight original known-camera projects verify bridging overlap, order changes, disconnected/distorted rejection, partial judgments, uint16 and source/target masks in Debug/Lean. Analytic ray pixels/projections, fitted focal/rotation and independent world landmarks, crop/ticket/grid identity, source ownership, budgets, native failure/recovery, XML/offscreen controls and graphics-disabled behavior are checked. Relative rotating-pinhole geometry is not metric calibration; manual solver refinement and reserved validation remain S1-147. See [contracts](rotating-panorama.md). |
 | S1-105 | Deterministic image and noise generation | Seeded Gaussian and uniform noise | Complete | input.random_image, cv.add_image_noise. Verify reproducible frames and selected noise with preserved sample types. |
 | S1-106 | Image annotation and reusable overlays | polylines, markers and text rasterization | Complete | cv.annotation_layer, cv.overlay_result_graphics. Compose selected image-frame layers and preserve geometry on resampling. |
 | S1-107 | Stateful image references | Ticketed image memory, running background estimate | Complete | sequence.image_memory, sequence.background. Verify learning, reset, and reference reuse across replay frames. |
@@ -226,7 +226,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S1-145 | Hard-shadow detection and compensation | Aligned reference ratios, chromatic agreement, connected components and robust regional gains | Complete | cv.reference_shadows detects neutral darker regions, fits reciprocal-median attenuation on eroded/trusted support, and preserves local image samples and hard boundaries. Exposes selection, topology/hole, gain/spread and clipping policies with diagnostic masks/data; invalid evidence withholds Image/Gain. Original 16-bit RGB clear/shadow replay restores exact independent pixels and retains defect contrast; inconsistent attenuation is rejected. Qualifies a region-constant neutral-shadow hypothesis, not universal shadow/material separation, registration or penumbra correction. |
 | S1-146 | Correct lateral chromatic aberration | correctChromaticAberration, loadChromaticAberrationParams | Complete | cv.correct_chromatic_aberration applies a versioned supplied polynomial on green's pixel grid; input.chromatic_calibration loads native YAML/XML/JSON and calibration.chromatic_model exposes editable coefficients. Preserves color depth/order/alpha and image-owned tickets/frames, with mask/region selection, bounded work/displacement, conservative support and no image event below the valid-fraction limit. An original 16-bit RGB fringe fixture restores independent reference pixels exactly on 36,895 supported pixels; a 100% support requirement deliberately fails. Synthetic tests qualify polynomial/Bayer/native file conventions, not a real-lens calibration fit. |
-| S1-147 | Estimate and refine camera parameters for panoramas | detail rotation estimators, bundle adjustment and wave correction | Planned | Fit a rotating-camera image set with known focal length and yaw. Verify overlap consistency, residuals, and bad-view rejection. |
+| S1-147 | Estimate and refine camera parameters for panoramas | detail rotation estimators, bundle adjustment and wave correction | Partial | cv.stitch_rotating_panorama exposes high-level native camera fits, original-grid intrinsics, relative rotations, optional wave correction and independently computed overlap/model residuals. Known-focal/yaw/world-landmark fixtures verify geometry and contradictory-view rejection. Explicit solver/refinement choices, adjustable intrinsic priors and reserved-observation validation remain; the separate SIFT check may reuse observations used in native fitting. |
 | S1-148 | Fill stabilization borders for review | Video stabilization inpainting or neighboring-frame fill | Planned | Fill uncovered display pixels from aligned neighbors where possible and preserve a separate measured-coverage mask for inspection. Verify both outputs on known jitter. |
 
 ### Buffer I/O, exposure and binary shape tools

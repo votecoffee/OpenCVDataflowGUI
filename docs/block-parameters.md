@@ -3145,6 +3145,31 @@ Inputs: `map_x` (image), `map_y` (image).
 | --- | --- | --- |
 | `sampling` | `"subpixel"` | `subpixel`, `nearest` Subpixel retains fractional indices. Nearest stores rounded coordinates only. |
 
+## Map source points into panorama (`cv.panorama_points`)
+
+Image processing / Panoramas
+
+Inputs: `layout` (data), `points` (data), `source_label` (text, optional), `mask` (image, optional), `source_mask` (image, optional).
+
+Input `layout` — Current rotating panorama layout; nonlinear grid identity is checked.
+
+Input `points` — Up to 100000 finite source [x,y] points; compatible crop frames are converted.
+
+Input `source_label` — Optional source label overriding the configured label.
+
+Input `mask` — Optional panorama uint8 support, typically the stitcher's Coverage output.
+
+Input `source_mask` — Optional full-source uint8 selection, before projection.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `source_label` | `""` | Optional source label. Input overrides label, then input index/anchor. |
+| `source_index` | `-1` | Value must be a whole number between -1 and 7. Original input index, or -1 for the anchor; label overrides. |
+| `outside` | `"filter"` | `filter`, `error` Filter points outside source/projection/mask, or reject them. |
+| `ticket_policy` | `"matching_source"` | `matching_source`, `ignore` Require known current source tickets, or explicitly ignore them. |
+| `minimum_points` | `1` | Value must be a whole number between 0 and 100000. Minimum retained points; zero permits an empty set. |
+| `maximum_graphics_points` | `256` | Value must be a whole number between 0 and 4096. Bound accepted/rejected mask markers on the panorama grid. |
+
 ## Paste image patch (`cv.paste_patch`)
 
 Image processing / Geometry
@@ -3961,6 +3986,48 @@ Input `region_b` — Optional region in Image B coordinates.
 | `seam_bad_region_penalty` | `1000.0` | Value must be a finite number between 0 and 1e+06. Graph cut penalty for crossing invalid support boundaries. |
 | `min_overlap_pixels` | `1` | Value must be a whole number between 0 and 2.68435e+08. Withhold the mosaic below this count. Zero permits disjoint tiles. |
 | `ticket_policy` | `"same_ticket"` | `same_ticket`, `anchor_a` Anchor A allows distinct tickets for offline stitching and reports both. |
+
+## Stitch rotating-camera views (`cv.stitch_rotating_panorama`)
+
+Image processing / Panoramas
+
+Inputs: `views` (any), `masks` (any, optional), `regions` (any, optional).
+
+Input `views` — Unordered 2–8 gray/RGB/BGR images; repeated labels use view indices.
+
+Input `masks` — Optional uint8 mask batch, matching source labels/order and source frames.
+
+Input `regions` — Optional region batch, intersected with source masks on each source grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_index` | `0` | Value must be a whole number between 0 and 7. Anchor index when Anchor label is empty; not the assumed view order. |
+| `anchor_label` | `""` | Stable source label; must survive component selection. |
+| `source_labels` | `[]` | Unique labels in batch order; empty uses labels or view indices. |
+| `component_policy` | `"reject"` | `reject`, `fail_partial`, `allow_partial` Reject missing views, fail a partial output, or allow partial output. |
+| `projection` | `"spherical"` | `spherical`, `cylindrical`, `plane` Spherical, cylindrical or plane projection on a new image grid. |
+| `projection_scale` | `0.0` | Value must be a finite number between 0 and 16384. Projection pixels per radian; zero uses median estimated focal length. |
+| `wave_correction` | `"none"` | `none`, `horizontal`, `vertical`, `auto` Optional native global horizon correction after anchoring rotations. |
+| `registration_megapixels` | `0.2` | Value must be a finite number between 0.01 and 4. Work-image megapixels per source; render original-depth pixels. |
+| `native_confidence` | `0.5` | Value must be a finite number between 0.01 and 5. Native Stitcher panorama-component confidence threshold. |
+| `verification_features` | `1000` | Value must be a whole number between 32 and 4000. Bound independent SIFT validation keypoints per source. |
+| `maximum_verification_pairs` | `32000000` | Value must be a whole number between 1 and 2.56e+08. Maximum pairwise descriptor products before validation. |
+| `match_ratio` | `0.75` | Value must be a finite number between 0.01 and 0.99. Independent mutual descriptor nearest/second-nearest distance ratio. |
+| `maximum_descriptor_distance` | `400.0` | Value must be a finite number between 1 and 1000. Maximum independent SIFT match distance. |
+| `minimum_inliers` | `12` | Value must be a whole number between 4 and 1000. Minimum independent homography inliers for a validated overlap edge. |
+| `minimum_inlier_ratio` | `0.3` | Value must be a finite number between 0.01 and 1. Minimum inlier fraction after mutual descriptor matching. |
+| `inlier_pixels` | `3.0` | Value must be a finite number between 0.1 and 20. Independent homography RANSAC threshold, in original source pixels. |
+| `maximum_camera_error` | `3.0` | Value must be a finite number between 0.1 and 30. Maximum bidirectional camera-model RMS, in original source pixels. |
+| `ransac_iterations` | `2000` | Value must be a whole number between 1 and 10000. Independent validation homography iteration limit. |
+| `ransac_confidence` | `0.995` | Value must be a finite number between 0.01 and 0.999999. Independent validation homography confidence. |
+| `minimum_focal_ratio` | `0.2` | Value must be a finite number between 0.05 and 20. Minimum estimated focal / longest source side. |
+| `maximum_focal_ratio` | `5.0` | Value must be a finite number between 0.1 and 20. Maximum estimated focal / longest source side. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Image sampling; cubic/Lanczos use conservative support halos. |
+| `blend` | `"average"` | `average`, `first` Average supported samples or prefer the first retained input. |
+| `minimum_covered_fraction` | `0.0` | Value must be a finite number between 0 and 1. Minimum covered fraction of the rectangular panorama canvas. |
+| `maximum_input_pixels` | `16777216` | Value must be a whole number between 64 and 6.71089e+07. Total source pixel cap before registration preparation. |
+| `maximum_output_pixels` | `8388608` | Value must be a whole number between 1 and 6.4e+07. Canvas and total local warp-map pixel cap before rendering. |
+| `maximum_working_bytes` | `536870912` | Value must be a whole number between 1 and 2.14748e+09. Estimated arrays, excluding runtime copies and native workspaces. |
 
 ## Stitch scan sequence (`cv.stitch_scan_sequence`)
 

@@ -44,3 +44,4 @@ For recorded media timing, stride and loop/reset inspection, try [paced video re
 For whole selections through lens correction, exact holes and border validity, try [selection remap](selection_remap/README.md).
 For candidate appearance support before clearance/downstream selection, try [visible support](visible_support/README.md).
 For motion-aware HDR, measured support and native exposure alignment, try [HDR motion](hdr_motion/README.md).
+For unordered rotating views, fitted cameras, partial components and mapped measurements, try [rotating panoramas](rotating_panorama/README.md).

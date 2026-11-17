@@ -832,6 +832,7 @@ def builtin_registry():
     from .oriented_edges import FindOrientedEdges
     from .overlay_graphics import OverlayResultGraphics, SetFilmstripImage
     from .paced_video import PacedVideoFile
+    from .panorama_points import PanoramaPoints
     from .parallel_inspection import ParallelInspect, RepeatedPartsDemo
     from .path_continuity import InspectPathContinuity
     from .path_strip import UnwrapPathStrip
@@ -880,6 +881,7 @@ def builtin_registry():
     from .restoration import RESTORATION_BLOCKS
     from .ridge_response import RidgeResponse
     from .ros2_blocks import ROS2_BLOCKS
+    from .rotating_panorama import StitchRotatingPanorama
     from .run_contours import RunContours
     from .scan_stitching import StitchScanSequence
     from .scanline_motion import EstimateScanlineMotion
@@ -960,6 +962,8 @@ def builtin_registry():
         VideoTiming,
         RemapSelection,
         RemapSelectionPacked,
+        StitchRotatingPanorama,
+        PanoramaPoints,
         VisibleSupport,
         DecodeVideo,
         TiffFile,

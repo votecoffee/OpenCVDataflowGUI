@@ -107,7 +107,8 @@ IMPLEMENTATION_MODULES = {
     "dnn": "dnn_blocks ocr",
     "photo": "chromatic_aberration exposure hdr hdr_motion photo_filters restoration",
     "ml": "svm_blocks",
-    "stitching": "image_stitching scan_stitching tiled_mosaic mosaic_layout_io registered_replay",
+    "stitching": "image_stitching scan_stitching tiled_mosaic mosaic_layout_io registered_replay "
+    "rotating_panorama panorama_points",
     "stereo": "stereo3d",
     "ccm": "color_calibration",
     "quality": "image_quality",

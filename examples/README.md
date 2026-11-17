@@ -123,6 +123,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | Example | Demonstrates |
 | --- | --- |
 | [HDR motion and measured support](<opencv tools/hdr_motion/README.md>) | Timed radiance, clipped moving parts, separate reference fills, coverage failure and native shifted-frame alignment. |
+| [Unordered rotating-camera panoramas](<opencv tools/rotating_panorama/README.md>) | Native cameras, disconnected/partial policies, masks, 16-bit rendering and source points on the panorama grid. |
 | [Visible support before picking](<opencv tools/visible_support/README.md>) | Native candidate detection, exact appearance/coverage counts, touching/covered parts and separate clearance/downstream selection. |
 | [Whole nonlinear selections](<opencv tools/selection_remap/README.md>) | Correct RGB16 images and selections together; exact holes, coverage, border validity, packed-map precision and masked measurements. |
 | [25 template instances](<opencv tools/template_instances/README.md>) | Find a repeated fixed-scale template in a 25-part synthetic scene and emit a pose for each match. |

@@ -22,6 +22,7 @@
 | Custom Python blocks | [Plugin skill](../skills/opencv-dataflow-plugins/SKILL.md), [plugin contract](../skills/opencv-dataflow-plugins/references/plugin-contract.md) |
 | Dialogs, captures and worker training | [Plugin dialogs](plugin-dialogs.md) |
 | HDR brackets, rejected motion and measured-versus-review support | [HDR motion](hdr-motion.md) |
+| Unordered rotating views, fitted cameras and nonlinear source-point mapping | [Rotating panoramas](rotating-panorama.md) |
 | Pixel formats and high-depth images | [Image formats](image-formats.md) |
 | Ordered multipage buffers, typed page metadata and decode limits | [Multipage TIFF in memory](multipage-memory.md) |
 | Random TIFF pages, bounded LRU caching and snapshot refresh | [On-demand TIFF pages](tiff-page-access.md) |

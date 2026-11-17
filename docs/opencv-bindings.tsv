@@ -350,7 +350,7 @@ P2	class	cv2.detail.BundleAdjusterRay	no static reference	-
 P2	class	cv2.detail.BundleAdjusterReproj	no static reference	-
 P2	function	cv2.detail.calibrateRotatingCamera	no static reference	-
 P2	class	cv2.detail.CameraParams	no static reference	-
-P2	method	cv2.detail.CameraParams.K	no static reference	-
+P2	method	cv2.detail.CameraParams.K	method name only	-
 P2	class	cv2.detail.ChannelsCompensator	no static reference	-
 P2	method	cv2.detail.ChannelsCompensator.apply	method name only	-
 P2	method	cv2.detail.ChannelsCompensator.getMatGains	no static reference	-
@@ -453,7 +453,7 @@ P2	function	cv2.detail.Timelapser_createDefault	no static reference	-
 P2	class	cv2.detail.TimelapserCrop	no static reference	-
 P2	class	cv2.detail.VoronoiSeamFinder	no static reference	-
 P2	method	cv2.detail.VoronoiSeamFinder.find	method name only	-
-P2	function	cv2.detail.waveCorrect	no static reference	-
+P2	function	cv2.detail.waveCorrect	literal reference	-
 P2	function	cv2.dft	literal reference	-
 P2	class	cv2.DISOpticalFlow	literal reference	-
 P2	method	cv2.DISOpticalFlow.create	literal reference	-
@@ -1087,26 +1087,26 @@ P2	method	cv2.stereo.QuasiDenseStereo.process	method name only	-
 P2	method	cv2.stereo.QuasiDenseStereo.saveParameters	no static reference	-
 P2	function	cv2.stereo.QuasiDenseStereo_create	no static reference	-
 P2	class	cv2.Stitcher	no static reference	-
-P2	method	cv2.Stitcher.cameras	no static reference	-
-P2	method	cv2.Stitcher.component	no static reference	-
+P2	method	cv2.Stitcher.cameras	method name only	-
+P2	method	cv2.Stitcher.component	method name only	-
 P2	method	cv2.Stitcher.composePanorama	no static reference	-
 P2	method	cv2.Stitcher.compositingResol	no static reference	-
 P2	method	cv2.Stitcher.create	method name only	-
-P2	method	cv2.Stitcher.estimateTransform	no static reference	-
+P2	method	cv2.Stitcher.estimateTransform	method name only	-
 P2	method	cv2.Stitcher.interpolationFlags	no static reference	-
 P2	method	cv2.Stitcher.panoConfidenceThresh	no static reference	-
 P2	method	cv2.Stitcher.registrationResol	no static reference	-
 P2	method	cv2.Stitcher.seamEstimationResol	no static reference	-
 P2	method	cv2.Stitcher.setCompositingResol	no static reference	-
 P2	method	cv2.Stitcher.setInterpolationFlags	no static reference	-
-P2	method	cv2.Stitcher.setPanoConfidenceThresh	no static reference	-
-P2	method	cv2.Stitcher.setRegistrationResol	no static reference	-
+P2	method	cv2.Stitcher.setPanoConfidenceThresh	method name only	-
+P2	method	cv2.Stitcher.setRegistrationResol	method name only	-
 P2	method	cv2.Stitcher.setSeamEstimationResol	no static reference	-
-P2	method	cv2.Stitcher.setWaveCorrection	no static reference	-
+P2	method	cv2.Stitcher.setWaveCorrection	method name only	-
 P2	method	cv2.Stitcher.stitch	no static reference	-
 P2	method	cv2.Stitcher.waveCorrection	no static reference	-
 P2	method	cv2.Stitcher.workScale	no static reference	-
-P2	function	cv2.Stitcher_create	no static reference	-
+P2	function	cv2.Stitcher_create	literal reference	-
 P2	class	cv2.wechat_qrcode.WeChatQRCode	no static reference	-
 P2	method	cv2.wechat_qrcode.WeChatQRCode.detectAndDecode	method name only	-
 P2	method	cv2.wechat_qrcode.WeChatQRCode.getScaleFactor	no static reference	-
@@ -4063,15 +4063,15 @@ P3	function	cv2.projectPointsSepJ	no static reference	-
 P3	function	cv2.putText	literal reference	-
 P3	function	cv2.pyrDown	literal reference	-
 P3	function	cv2.pyrMeanShiftFiltering	literal reference	-
-P3	class	cv2.PyRotationWarper	no static reference	-
-P3	method	cv2.PyRotationWarper.buildMaps	no static reference	-
+P3	class	cv2.PyRotationWarper	literal reference	-
+P3	method	cv2.PyRotationWarper.buildMaps	method name only	-
 P3	method	cv2.PyRotationWarper.getScale	no static reference	-
 P3	method	cv2.PyRotationWarper.setScale	no static reference	-
 P3	method	cv2.PyRotationWarper.warp	no static reference	-
 P3	method	cv2.PyRotationWarper.warpBackward	no static reference	-
 P3	method	cv2.PyRotationWarper.warpPoint	no static reference	-
 P3	method	cv2.PyRotationWarper.warpPointBackward	no static reference	-
-P3	method	cv2.PyRotationWarper.warpRoi	no static reference	-
+P3	method	cv2.PyRotationWarper.warpRoi	method name only	-
 P3	function	cv2.pyrUp	literal reference	-
 P3	class	cv2.quality_QualityBase	alias	cv2.quality.QualityBase
 P3	method	cv2.quality_QualityBase.clear	alias	cv2.quality.QualityBase.clear
