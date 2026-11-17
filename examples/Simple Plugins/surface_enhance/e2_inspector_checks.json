@@ -1,0 +1,15 @@
+{
+  "actual_host_inspector": true,
+  "staged_without_mutating_applied": true,
+  "apply_committed": true,
+  "reopened_roi": [
+    20,
+    10,
+    100,
+    90
+  ],
+  "reopened_valid_pixels": 9000,
+  "cancel_preserved_applied": true,
+  "scope": "Offscreen UI and saved recipe; no desktop input or physical accuracy evidence",
+  "using_packaged_wheel": true
+}

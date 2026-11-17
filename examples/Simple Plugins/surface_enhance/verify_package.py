@@ -19,7 +19,9 @@ def verify(wheel, studies, *, source=None):
             for name in archive.namelist()
             if name.startswith("opencv_simple_surface_enhance/") and name.endswith(".py")
         }
-        assert len(modules) == 5, "Unexpected wheel modules"
+        assert {"__init__", "inputs", "solver", "cli", "render"} <= {
+            Path(name).stem for name in modules
+        }, "Missing runtime modules"
         assert any(name.endswith("/LICENSE") for name in archive.namelist())
         entry = next(name for name in archive.namelist() if name.endswith("/entry_points.txt"))
         assert b"simple-surface-enhance = opencv_simple_surface_enhance.cli:main" in (

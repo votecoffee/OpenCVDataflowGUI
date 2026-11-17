@@ -1,0 +1,67 @@
+{
+  "scope": "Rendered controls; actual plugin estimation, not acquired-camera accuracy",
+  "plugin_sha256": "6b51e051e102c4d8e16d04e36cfe54e87260d931abaa061ed2ebf0d0f9b2a673",
+  "cases": [
+    {
+      "case": "analytic_clean",
+      "opened_without_processing": true,
+      "expected_pass": true,
+      "actual_pass": true,
+      "valid_pixels": 19344,
+      "raw_maps_exact": true,
+      "graphics_off_maps_exact": true,
+      "compiled_estimator_reused": true,
+      "rgb_result_views": 8,
+      "expected_judgment_matched": true
+    },
+    {
+      "case": "analytic_contaminated",
+      "opened_without_processing": true,
+      "expected_pass": true,
+      "actual_pass": true,
+      "valid_pixels": 19144,
+      "raw_maps_exact": true,
+      "graphics_off_maps_exact": true,
+      "compiled_estimator_reused": true,
+      "rgb_result_views": 8,
+      "expected_judgment_matched": true
+    },
+    {
+      "case": "four_light_ambiguity",
+      "opened_without_processing": true,
+      "expected_pass": false,
+      "actual_pass": false,
+      "valid_pixels": 11952,
+      "raw_maps_exact": true,
+      "graphics_off_maps_exact": true,
+      "compiled_estimator_reused": true,
+      "rgb_result_views": 8,
+      "expected_judgment_matched": true
+    },
+    {
+      "case": "polyhaven_clean",
+      "opened_without_processing": true,
+      "expected_pass": true,
+      "actual_pass": true,
+      "valid_pixels": 63504,
+      "raw_maps_exact": true,
+      "graphics_off_maps_exact": true,
+      "compiled_estimator_reused": true,
+      "rgb_result_views": 8,
+      "expected_judgment_matched": true
+    },
+    {
+      "case": "polyhaven_contaminated",
+      "opened_without_processing": true,
+      "expected_pass": true,
+      "actual_pass": true,
+      "valid_pixels": 63304,
+      "raw_maps_exact": true,
+      "graphics_off_maps_exact": true,
+      "compiled_estimator_reused": true,
+      "rgb_result_views": 8,
+      "expected_judgment_matched": true
+    }
+  ],
+  "expected_judgments_matched": true
+}

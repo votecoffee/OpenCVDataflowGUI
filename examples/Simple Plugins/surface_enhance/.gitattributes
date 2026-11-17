@@ -8,3 +8,4 @@
 *.exr binary
 *.whl binary
 LICENSE -text whitespace=cr-at-eol
+*.sse binary

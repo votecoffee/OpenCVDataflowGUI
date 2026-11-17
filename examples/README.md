@@ -95,10 +95,11 @@ See the [Simple Plugins guide](<Simple Plugins/README.md>) for setup, real-data 
 | [Simple3DMeasure](<Simple Plugins/3d_measure/README.md>) | Review plane measurements on real T-LESS clouds and known/raised/missing generated surfaces with native RGB flyaround. |
 | [SimpleGDRNPP (experimental)](<Simple Plugins/gdrnpp/README.md>) | Review three rejected T-LESS pose results without inference, or explicitly load the isolated-worker setup plugin. [Cold/warm worker measurements](<Simple Plugins/gdrnpp/worker_cycles/README.md>) and [same-client resource preparation](<Simple Plugins/gdrnpp/resource_prepare/README.md>) provide supporting evidence. New-object training and broader pose accuracy remain open. |
 
-The [SimpleSurfaceEnhance map reviews](<Simple Plugins/surface_enhance/README.md>)
-provide five rendered controls with normal/albedo, relighting, fit and
-unavailable-reason maps. Analytic and CC0 material-map references are
-retained. File-only reviews and explicit CLI replay are separate.
+The [SimpleSurfaceEnhance setup/execution examples](<Simple Plugins/surface_enhance/README.md>)
+add retained lighting/reference/ROI teaching, independent previews and cached
+normal/albedo/relighting execution. Five labeled rendered controls retain
+fit/coverage views and attributed CC0 material inputs; file-only map reviews
+remain available separately. Acquired-camera qualification is open.
 
 ## Industrial integration
 

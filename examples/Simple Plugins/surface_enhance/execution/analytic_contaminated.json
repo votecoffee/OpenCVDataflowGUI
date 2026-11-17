@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "surface",
+      "type": "image.simple_surface_enhance",
+      "name": "SimpleSurfaceEnhance",
+      "description": "Rendered diffuse control; frozen reference/calibration. Same 95% availability threshold for all cases. Not defect or gauge acceptance.",
+      "parameters": {
+        "recipe_path": "assets/analytic_clean.sse",
+        "sha256": "1f7ff1583d3617ddec6ad7f9846c75ccc590a859e3ff63946c116580d9f7b846",
+        "source": "capture manifest",
+        "capture_manifest": "../studies/analytic_contaminated/capture.json",
+        "minimum_coverage": 0.95,
+        "render_graphics": true
+      },
+      "position": [
+        0,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "capture"
+      ],
+      "exposed_outputs": [
+        "image",
+        "maps",
+        "report",
+        "coverage",
+        "valid_pixels",
+        "overview"
+      ],
+      "thumbnail": true,
+      "preview_output": "overview"
+    }
+  ],
+  "connections": []
+}

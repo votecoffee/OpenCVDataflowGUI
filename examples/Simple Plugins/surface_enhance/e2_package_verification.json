@@ -1,0 +1,142 @@
+{
+  "schema": "simple_surface_package_verification/v1",
+  "scope": "Rendered-input replay; not acquired-camera or physical accuracy qualification",
+  "wheel": "opencv_simple_surface_enhance-0.1.0.dev3-py3-none-any.whl",
+  "sha256": "d08ace480ee7f86f1e9691d33566a0291053998a6f5029e490f79a8719201cb3",
+  "source_bytes_checked": true,
+  "modules": {
+    "opencv_simple_surface_enhance/__init__.py": "61bf24d8b565a9b57a553d5688b43590766783131451dd27e9936d91ce178bf8",
+    "opencv_simple_surface_enhance/cli.py": "3264e6aa30df8faf78c88b553a3c2d74862559346ede1f7f1f3d9d0ff1469222",
+    "opencv_simple_surface_enhance/dataflow.py": "5e68ebb39d1a31366cc47e4d0d550309cf5ed2cf6d3bea4573fd6ee3a9ecac87",
+    "opencv_simple_surface_enhance/execution.py": "69c2a9ac69a657685c042615b9c33bb79ab0a351bd0e47a5042de750e3066418",
+    "opencv_simple_surface_enhance/inputs.py": "024323753e6b354eba1b5714d09ceeb43482564a31ac76f3e828bcd3d902dec7",
+    "opencv_simple_surface_enhance/qt_region.py": "7b65b45f0b98d9f50a377172ac36dd54369c9f8f497ecfa461e2205759cbb00b",
+    "opencv_simple_surface_enhance/qt_training.py": "eee637d5c7f9099132e67f64aca4e90509dc1faf13c38e04f3ded955c5b02ffc",
+    "opencv_simple_surface_enhance/recipe.py": "ee830d6262fa37529df85ab0d82a33af74e3908abaf261cd5bae4718394d440c",
+    "opencv_simple_surface_enhance/render.py": "01bc91171cb6ed3d23b8cdd3a137b8e990909fb9265995561cba4ce8a176d81f",
+    "opencv_simple_surface_enhance/solver.py": "249f2aa1d0e6443eff9cf0bdd640107b4eb9a3fc464fd0ba273386b599a1e5f9"
+  },
+  "controls": [
+    {
+      "case": "analytic_clean",
+      "numerical_maps": [
+        "albedo",
+        "all_rms_relative",
+        "available",
+        "fit_rms_relative",
+        "normal_change",
+        "normals",
+        "observation_flags",
+        "reason",
+        "relight",
+        "residual",
+        "singular_ratio",
+        "support",
+        "used",
+        "valid"
+      ],
+      "absolute_float_tolerance": 1e-06,
+      "exact_equal_including_nan": true,
+      "reason_and_support_exact": true,
+      "cli_reexecuted": true,
+      "passed": true
+    },
+    {
+      "case": "analytic_contaminated",
+      "numerical_maps": [
+        "albedo",
+        "all_rms_relative",
+        "available",
+        "fit_rms_relative",
+        "normal_change",
+        "normals",
+        "observation_flags",
+        "reason",
+        "relight",
+        "residual",
+        "singular_ratio",
+        "support",
+        "used",
+        "valid"
+      ],
+      "absolute_float_tolerance": 1e-06,
+      "exact_equal_including_nan": true,
+      "reason_and_support_exact": true,
+      "cli_reexecuted": true,
+      "passed": true
+    },
+    {
+      "case": "four_light_ambiguity",
+      "numerical_maps": [
+        "albedo",
+        "all_rms_relative",
+        "available",
+        "fit_rms_relative",
+        "normal_change",
+        "normals",
+        "observation_flags",
+        "reason",
+        "relight",
+        "residual",
+        "singular_ratio",
+        "support",
+        "used",
+        "valid"
+      ],
+      "absolute_float_tolerance": 1e-06,
+      "exact_equal_including_nan": true,
+      "reason_and_support_exact": true,
+      "cli_reexecuted": true,
+      "passed": true
+    },
+    {
+      "case": "polyhaven_clean",
+      "numerical_maps": [
+        "albedo",
+        "all_rms_relative",
+        "available",
+        "fit_rms_relative",
+        "normal_change",
+        "normals",
+        "observation_flags",
+        "reason",
+        "relight",
+        "residual",
+        "singular_ratio",
+        "support",
+        "used",
+        "valid"
+      ],
+      "absolute_float_tolerance": 1e-06,
+      "exact_equal_including_nan": true,
+      "reason_and_support_exact": true,
+      "cli_reexecuted": true,
+      "passed": true
+    },
+    {
+      "case": "polyhaven_contaminated",
+      "numerical_maps": [
+        "albedo",
+        "all_rms_relative",
+        "available",
+        "fit_rms_relative",
+        "normal_change",
+        "normals",
+        "observation_flags",
+        "reason",
+        "relight",
+        "residual",
+        "singular_ratio",
+        "support",
+        "used",
+        "valid"
+      ],
+      "absolute_float_tolerance": 1e-06,
+      "exact_equal_including_nan": true,
+      "reason_and_support_exact": true,
+      "cli_reexecuted": true,
+      "passed": true
+    }
+  ],
+  "passed": true
+}
