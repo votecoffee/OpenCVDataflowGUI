@@ -125,6 +125,12 @@ class BatchImageInference(DNNInference):
         preparation.update(width=1, height=1)
         PrepareImageTensor(parameters=preparation).validate_parameters()
 
+    def canonical_outputs(self, arrays, submitted):
+        """Validate/normalize native output batch axes before forming ordered rows."""
+        if not arrays or any(a.ndim < 1 or a.shape[0] != submitted for a in arrays.values()):
+            raise ValidationError("Every selected output must retain the submitted batch axis")
+        return arrays
+
     def process(self, inputs):
         self.begin_inference()
         try:
@@ -220,9 +226,7 @@ class BatchImageInference(DNNInference):
                 array_outputs=True,
                 preprocessing={p["input_name"]: geometries[0]["preprocessing_contract"]},
             )
-            arrays = tensors
-            if not arrays or any(a.ndim < 1 or a.shape[0] != submitted for a in arrays.values()):
-                raise ValidationError("Every selected output must retain the submitted batch axis")
+            arrays = self.canonical_outputs(tensors, submitted)
             retained += sum(a.size for a in arrays.values())
             if retained > p["max_output_elements"]:
                 raise ValidationError(

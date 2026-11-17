@@ -1,0 +1,234 @@
+{
+  "cases": {
+    "dynamic_batch": {},
+    "padded_tail": {
+      "tail_policy": "pad_repeat"
+    },
+    "blank_failure": {
+      "blank": true,
+      "passed": false
+    },
+    "minimum_reads": {
+      "blank": true,
+      "aggregate": "minimum_reads",
+      "minimum_reads": 4
+    },
+    "confidence_gate": {
+      "minimum_confidence": 0.99999,
+      "passed": false
+    },
+    "selected_roi": {
+      "roi": true
+    },
+    "empty_selection": {
+      "empty_roi": true,
+      "passed": false
+    },
+    "native_serial": {
+      "native": true
+    }
+  },
+  "patterns": [
+    [
+      255,
+      255,
+      128,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      128,
+      255,
+      255
+    ],
+    [
+      255,
+      128,
+      255,
+      128,
+      255
+    ],
+    [
+      128,
+      128,
+      128,
+      128,
+      128
+    ],
+    [
+      0,
+      128,
+      0,
+      128,
+      0
+    ]
+  ],
+  "texts": [
+    "ABA",
+    "BA",
+    "AAA",
+    "",
+    "BBB"
+  ],
+  "quads": [
+    [
+      [
+        20,
+        10
+      ],
+      [
+        69,
+        10
+      ],
+      [
+        69,
+        24
+      ],
+      [
+        20,
+        24
+      ]
+    ],
+    [
+      [
+        20,
+        42
+      ],
+      [
+        69,
+        42
+      ],
+      [
+        69,
+        56
+      ],
+      [
+        20,
+        56
+      ]
+    ],
+    [
+      [
+        20,
+        74
+      ],
+      [
+        69,
+        74
+      ],
+      [
+        69,
+        88
+      ],
+      [
+        20,
+        88
+      ]
+    ],
+    [
+      [
+        20,
+        106
+      ],
+      [
+        69,
+        106
+      ],
+      [
+        69,
+        120
+      ],
+      [
+        20,
+        120
+      ]
+    ],
+    [
+      [
+        20,
+        138
+      ],
+      [
+        69,
+        138
+      ],
+      [
+        69,
+        152
+      ],
+      [
+        20,
+        152
+      ]
+    ]
+  ],
+  "native_quads": [
+    [
+      [
+        63,
+        54
+      ],
+      [
+        278,
+        54
+      ],
+      [
+        278,
+        90
+      ],
+      [
+        63,
+        90
+      ]
+    ],
+    [
+      [
+        63,
+        139
+      ],
+      [
+        255,
+        139
+      ],
+      [
+        255,
+        174
+      ],
+      [
+        63,
+        174
+      ]
+    ],
+    [
+      [
+        63,
+        225
+      ],
+      [
+        188,
+        225
+      ],
+      [
+        188,
+        260
+      ],
+      [
+        63,
+        260
+      ]
+    ]
+  ],
+  "native_texts": [
+    "lot2048",
+    "pnax12",
+    "pass"
+  ],
+  "asset_sha256": {
+    "dynamic_ntc.onnx": "4c20a8d1de2399495c98aecdfa2311626aca4cf6c3cf8a950435588c0d4f726f",
+    "dynamic_tnc.onnx": "06a358dff0e01aa020455378f09e8fd469d7fec8335fa1f65f3476aa3821bbab",
+    "native_labels.png": "f4a4f12982d54a088dc5c4fddef9e6d24f5014bf3a43e3e7d3dac75a42b891e9",
+    "stripes.png": "c55acd6622998221aa3d4dc9f49d87b0f42348a6af8064fd357042c8bfd6367c"
+  }
+}

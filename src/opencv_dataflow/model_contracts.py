@@ -145,7 +145,13 @@ def model_bytes(path, *, bounded=False):
 
 def export_contract(block, directory, *, preprocessing=None):
     """Publish a new self-contained folder without running processing or overwriting files."""
-    if block.type_id not in ("ml.dnn", "ml.dnn_multi", "ml.dnn_batch", "ml.efficientsam"):
+    if block.type_id not in (
+        "ml.dnn",
+        "ml.dnn_multi",
+        "ml.dnn_batch",
+        "ml.efficientsam",
+        "ml.recognize_text_batch",
+    ):
         raise ValidationError("Choose an ONNX inference block")
     block.validate_parameters()
     source, bound = resolve_contract(block, check_configuration=False)

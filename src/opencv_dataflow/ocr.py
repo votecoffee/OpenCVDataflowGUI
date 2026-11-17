@@ -11,6 +11,7 @@ from .dnn_blocks import ENGINES
 from .features import overlay_image
 from .graphics_layers import GraphicDrawing, graphic_object
 from .ml_common import file_key, local_path, selected_tensor
+from .onnx_loading import load_onnx_snapshot
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, ValuePacket, require_same_frame
 from .processing import finite, gray_image, image_value, integer
@@ -381,9 +382,7 @@ class RecognizeText(Block):
         path = local_path(self, p["model_path"])
         key = (*file_key(path), p["engine"], p["output_name"])
         if key != self._key:
-            net = cv2.dnn.readNetFromONNX(
-                np.frombuffer(path.read_bytes(), np.uint8), ENGINES[p["engine"]]
-            )
+            net, _ = load_onnx_snapshot(path.read_bytes(), ENGINES[p["engine"]])
             model = cv2.dnn.TextRecognitionModel(net)
             if p["output_name"]:
                 model.setOutputNames([p["output_name"]])

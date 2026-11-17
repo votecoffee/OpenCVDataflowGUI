@@ -96,6 +96,7 @@ See the [Simple Plugins guide](<Simple Plugins/README.md>) for setup, real-data 
 | [SimpleReferenceInspect completed results](<Simple Plugins/reference_inspect/completed_runtime/README.md>) | Review retained reference/current maps, coverage and executed pose/exposure evidence with the explicitly pinned plugin. |
 | [SimpleSegmentation completed results](<Simple Plugins/pixel_segmentation/completed_runtime/README.md>) | Review retained inputs, native class votes, coverage, components and executed model evidence using the explicitly pinned plugin. |
 | [SimpleClassify completed results](<Simple Plugins/image_classification/completed_runtime/README.md>) | Review retained source images, full class rankings, confusion and executed model evidence independently of training, with the explicitly pinned plugin. |
+| [Simple3DLocate completed results](<Simple Plugins/3d_locate/completed_runtime/README.md>) | Review retained clouds, poses, support/visibility and executed model evidence with the pinned plugin and native fly-around viewer. |
 | [SimpleSegmentation](<Simple Plugins/pixel_segmentation/README.md>) | Train foreground masks for brick mortar, a cup rim, PCB laminate, and inventory in real totes. |
 | [SimpleFringeScan setup and execution](<Simple Plugins/fringe_scan/README.md>) | Retained native setup, references, ROI and known calibration; three one-block metric/phase execution examples with explicit expected availability judgments and source attribution. |
 | [SimpleDeflectometry initial reviews](<Simple Plugins/deflectometry/README.md>) | Four file-only phase/change reviews, including an attributed CC BY-SA SOFAST camera self-comparison; optional standalone replay is documented separately. |
@@ -253,6 +254,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Prompted segmentation](<opencv tools/prompted_segmentation/README.md>) | Pinned EfficientSAM point/box requests, inspectable native candidates, source masks, independent shape truth and normal/error controls. |
 | [Overlapping tile segmentation](<opencv tools/segmentation_tile_fusion/README.md>) | Probability or label fusion, feathered overlap, source-grid coverage, seam continuity and current failure controls. |
 | [Pinned text detection](<opencv tools/pinned_text_detection/README.md>) | PP-OCRv3 source polygons, rotated labels, split/joined tokens, selected ROI and explicit empty/count/truncation failures. |
+| [OCR regions in batches](<opencv tools/ocr_batch/README.md>) | Native dynamic CTC batches, ordered source crops, per-read confidence/failures and an unchanged fixed-N CRNN baseline. |
 | [KAZE registration](<opencv tools/kaze_registration/README.md>) | Match extended KAZE descriptors with FLANN and recover a known translation. |
 | [Labeled distance transform](<opencv tools/labeled_distance/README.md>) | Partition an image into nearest-seed zones and emit a mask for one zone. |
 | [Laplacian pyramids](<opencv tools/laplacian_pyramid/README.md>) | Decompose an odd-sized 16-bit color image into signed bands, verify exact reconstruction, and remove the finest detail. |

@@ -772,6 +772,7 @@ def builtin_registry():
     from .neighbor_restoration import RestoreFromNeighbors
     from .network_video import NetworkVideo
     from .ocr import OCR_BLOCKS
+    from .ocr_batch import RecognizeTextBatch
     from .offline_stabilization import StabilizeRecordedSequence
     from .oriented_edges import FindOrientedEdges
     from .overlay_graphics import OverlayResultGraphics, SetFilmstripImage
@@ -1190,6 +1191,7 @@ def builtin_registry():
         KMeansImage,
         *CLUSTER_MODEL_BLOCKS,
         *OCR_BLOCKS,
+        RecognizeTextBatch,
         *ANNOY_BLOCKS,
         *SVM_BLOCKS,
         *KNN_BLOCKS,
