@@ -290,6 +290,8 @@ BINDINGS = {
     "ml.decode_detections": "dnn.NMSBoxes",
     "ml.fuse_tile_detections": "dnn.NMSBoxes",
     "ml.box_appearance": "calcHist cvtColor",
+    "ml.efficientsam": "dnn.readNetFromONNX resize cvtColor",
+    "ml.decode_prompt_masks": "resize findContours",
     "ml.decode_rotated_detections": "dnn.NMSBoxesRotated rotatedRectangleIntersection boxPoints",
     "ml.decode_segmentation": "remap findContours",
     "ml.decode_instances": "dnn.NMSBoxes remap findContours",

@@ -83,3 +83,5 @@ For pinned raw/decoded YOLO layouts, portrait/landscape letterboxing, class-awar
 For parallel crop detectors, shared-ticket source mapping and duplicate suppression, try [tile detection fusion](detection_tile_fusion/README.md).
 
 For optional appearance association and measured identity switches/misses/fragments, try [detection tracking](detection_tracking/README.md).
+
+For point/box requests, inspectable native masks and exact source-grid shape checks, try [prompted segmentation](prompted_segmentation/README.md).

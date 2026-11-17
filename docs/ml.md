@@ -24,6 +24,12 @@ training/preprocessing settings. This also uses the base OpenCV installation.
 
 ## Installation
 
+Point/box [prompted segmentation](prompted-segmentation.md) uses the pinned
+EfficientSAM model with separate prompt, inference and mask-decoding blocks.
+Three native candidates, raw predicted qualities and exact source/request binding
+remain inspectable. [Eight examples](<../examples/opencv tools/prompted_segmentation/README.md>)
+include an openly licensed photograph and independent exact shape truth.
+
 OpenCV DNN is included in the base OpenCV 5 contrib installation. Bundled control
 models need no additional packages or downloads. The optional pretrained detector
 uses its explicit model-preparation script. For Annoy:

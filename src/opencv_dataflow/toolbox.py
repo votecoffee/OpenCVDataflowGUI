@@ -111,7 +111,7 @@ IMPLEMENTATION_MODULES = {
     "xobjdetect": "hog",
     "dnn": "batch_inference detection_decode detection_fusion dnn_blocks "
     "instance_segmentation landmarks multi_inference ocr rotated_detection "
-    "semantic_segmentation",
+    "semantic_segmentation prompt_segmentation prompt_mask_decode",
     "photo": "chromatic_aberration exposure hdr hdr_motion photo_filters restoration",
     "ml": "svm_blocks",
     "stitching": "image_stitching scan_stitching tiled_mosaic mosaic_layout_io registered_replay "

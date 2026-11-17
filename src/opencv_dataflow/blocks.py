@@ -808,6 +808,8 @@ def builtin_registry():
     from .processing import PROCESSING_BLOCKS
     from .profile_resampling import ResampleImageProfile
     from .projection import IntensityProfile, PathIntensityProfile
+    from .prompt_mask_decode import DecodePromptMasks
+    from .prompt_segmentation import EfficientSAMInference, SegmentationPrompts
     from .ptcloud3d import PTCLOUD3D_BLOCKS
     from .pyramids import PYRAMID_BLOCKS
     from .qr_append import ReadQRAppend
@@ -1159,6 +1161,9 @@ def builtin_registry():
         FuseTileDetections,
         DecodeRotatedDetections,
         DecodeSegmentation,
+        SegmentationPrompts,
+        EfficientSAMInference,
+        DecodePromptMasks,
         *INSTANCE_BLOCKS,
         *LANDMARK_BLOCKS,
         FitFeatureCovariance,

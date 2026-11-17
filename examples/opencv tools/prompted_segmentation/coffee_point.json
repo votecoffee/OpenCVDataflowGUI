@@ -1,0 +1,343 @@
+{
+  "schema_version": 1,
+  "program": {
+    "name": "",
+    "description": "",
+    "enabled": false,
+    "variables": {},
+    "scripts": {
+      "startup": "",
+      "before_run": "",
+      "after_run": "",
+      "shutdown": ""
+    },
+    "script_timeout_seconds": 10.0,
+    "services": [],
+    "assets": [
+      "SOURCES.md",
+      "MODEL-LICENSE.txt"
+    ]
+  },
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "../../assets/coffee.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "prompts",
+      "type": "ml.segmentation_prompts",
+      "name": "Define segmentation prompts",
+      "description": "Define current-image foreground/background points and an optional box.",
+      "documentation": "<p>Point labels are 1 foreground and 0 background. A box uses two of six native prompt slots. Points do not crop or move the image. Prompts retain their source ticket, coordinate frame and recipe. See docs/prompted-segmentation.md.</p>",
+      "parameters": {
+        "points": [
+          [
+            300,
+            140
+          ]
+        ],
+        "point_labels": [
+          1
+        ],
+        "box": [],
+        "maximum_image_pixels": 4194304
+      },
+      "position": [
+        380,
+        150
+      ],
+      "exposed_inputs": [
+        "image",
+        "points",
+        "point_labels",
+        "box"
+      ],
+      "exposed_outputs": [
+        "image",
+        "prompts",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "infer",
+      "type": "ml.efficientsam",
+      "name": "EfficientSAM prompted inference",
+      "description": "Run the fixed EfficientSAM-Ti image/point/box ONNX interface.",
+      "documentation": "<p>Uses full-image uint8 RGB preprocessing and all six padded prompt slots. Returns three network-grid logit candidates, predicted qualities and bound request/model/source identity. Decode masks separately. No download or training occurs during execution; no split image-embedding cache is claimed.</p>",
+      "parameters": {
+        "contract_path": ".local/efficient_sam/contract.json",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "",
+        "output_names": [
+          "output_masks",
+          "iou_predictions"
+        ],
+        "engine": "new",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 4000000,
+        "maximum_image_pixels": 4194304
+      },
+      "position": [
+        780,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "prompts"
+      ],
+      "exposed_outputs": [
+        "image",
+        "candidates",
+        "qualities",
+        "prompts",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "ml.decode_prompt_masks",
+      "name": "Decode prompted masks",
+      "description": "Select and inspect a prompted mask on its exact source image grid.",
+      "documentation": "<p>Checks model/request/source identity, chooses by predicted quality or index, and reports point membership separately. A box is a prompt, not a clip. Mask/region restrict output support after full-image inference. Inspection failures retain current geometry; malformed/mixed inputs emit no current result. See docs/prompted-segmentation.md.</p>",
+      "parameters": {
+        "selection": "best_quality",
+        "candidate_index": 0,
+        "prompt_policy": "require_consistent",
+        "minimum_quality": 0.0,
+        "logit_threshold": 0.0,
+        "resampling": "mask_nearest",
+        "minimum_pixels": 1,
+        "maximum_pixels": 0,
+        "minimum_fraction": 0.0,
+        "maximum_fraction": 1.0,
+        "emit_region": true,
+        "emit_logits": false,
+        "maximum_region_runs": 100000,
+        "maximum_image_pixels": 4194304,
+        "graphics_maximum_contours": 2000,
+        "graphics_maximum_points": 100000
+      },
+      "position": [
+        1200,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "candidates",
+        "qualities",
+        "prompts",
+        "info"
+      ],
+      "exposed_outputs": [
+        "image",
+        "mask",
+        "region",
+        "logits",
+        "quality",
+        "pixel_count",
+        "fraction",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "candidate_view",
+      "type": "flow.select_entry",
+      "name": "Inspect native candidate",
+      "description": "Choose index 0..2 to inspect an unthresholded 1024x1024 logit plane.",
+      "parameters": {
+        "index": 1
+      },
+      "position": [
+        1200,
+        700
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1650,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        2050,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Model, photograph and reference credits",
+      "description": "EfficientSAM / OpenCV Zoo contributors, Apache 2.0, revision 48b10fa505aeb51fbd127fc60a5c660040e823b7, unchanged April 2025 Ti ONNX. Coffee: Rachel Michetti, courtesy Pikolo Espresso Bar, scikit-image CC0. Shapes, exact rectangle reference and pipelines: original MIT repository material. Point labels: 1 foreground, 0 background; box is a prompt, not output clipping. Three native masks remain inspectable; predicted quality is not measured IoU. Explicit preparation only, no runtime download. See README.md and SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -470
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "infer",
+      "output": "candidates",
+      "target": "candidate_view",
+      "input": "group"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "prompts",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "infer",
+      "input": "image"
+    },
+    {
+      "source": "prompts",
+      "output": "prompts",
+      "target": "infer",
+      "input": "prompts"
+    },
+    {
+      "source": "infer",
+      "output": "image",
+      "target": "decode",
+      "input": "image"
+    },
+    {
+      "source": "infer",
+      "output": "candidates",
+      "target": "decode",
+      "input": "candidates"
+    },
+    {
+      "source": "infer",
+      "output": "qualities",
+      "target": "decode",
+      "input": "qualities"
+    },
+    {
+      "source": "infer",
+      "output": "info",
+      "target": "decode",
+      "input": "info"
+    },
+    {
+      "source": "decode",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "decode",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "prompts",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_2"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    },
+    {
+      "source": "infer",
+      "output": "prompts",
+      "target": "decode",
+      "input": "prompts"
+    }
+  ]
+}

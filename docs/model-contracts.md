@@ -1,6 +1,6 @@
 # ONNX model contracts and execution receipts
 
-Single-image, named multi-input and batch inference share three controls:
+Single-image, named multi-input, batch and EfficientSAM inference share three controls:
 
 | Field | Behavior |
 | --- | --- |
@@ -34,6 +34,11 @@ preprocessing, input declarations, bounds and fallback policy are included.
 Each bundle contains `contract.json` and an unchanged `model.onnx`. Save As copies
 both through normal project assets, preserving bytes and rejecting conflicts.
 JSON/XML projects omit native handles.
+
+`ml.efficientsam` uses the fixed, named EfficientSAM image/prompt preprocessing
+profile in its bundle. Its source masks are decoded separately, so candidate,
+quality, membership and area thresholds can change without resealing weights.
+See [prompted segmentation](prompted-segmentation.md).
 
 For changed settings, explicitly export another folder, then select its contract.
 Export can reuse the verified model from a bound bundle; running new settings

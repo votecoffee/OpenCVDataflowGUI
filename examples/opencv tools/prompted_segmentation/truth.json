@@ -1,0 +1,107 @@
+{
+  "cases": {
+    "coffee_point": {
+      "points": [
+        [
+          300,
+          140
+        ]
+      ],
+      "point_labels": [
+        1
+      ]
+    },
+    "coffee_box": {
+      "box": [
+        170,
+        18,
+        245,
+        292
+      ]
+    },
+    "coffee_background": {
+      "points": [
+        [
+          300,
+          140
+        ],
+        [
+          300,
+          180
+        ]
+      ],
+      "point_labels": [
+        1,
+        0
+      ]
+    },
+    "rectangle_box": {
+      "box": [
+        19,
+        19,
+        42,
+        52
+      ]
+    },
+    "rectangle_linear": {
+      "points": [
+        [
+          40,
+          45
+        ]
+      ],
+      "point_labels": [
+        1
+      ],
+      "resampling": "logits_linear",
+      "emit_logits": true
+    },
+    "quality_fail": {
+      "points": [
+        [
+          300,
+          140
+        ]
+      ],
+      "point_labels": [
+        1
+      ],
+      "minimum_quality": 2
+    },
+    "selected_out": {
+      "points": [
+        [
+          300,
+          140
+        ]
+      ],
+      "point_labels": [
+        1
+      ]
+    },
+    "mismatched_prompts": {
+      "points": [
+        [
+          300,
+          140
+        ]
+      ],
+      "point_labels": [
+        1
+      ]
+    }
+  },
+  "photo_sha256": "cc02f8ca188b167c775a7101b5d767d1e71792cf762c33d6fa15a4599b5a8de7",
+  "asset_sha256": {
+    "shapes": "0e132290cd61b3b1c9b33fa708bda5f349e1e82dac5002e864e09f28f16cfedb",
+    "rectangle_truth": "8fa020996c1abeb7a346880e97ed72fc30865ffa68cfbd36736ae4bd0d4a057b"
+  },
+  "rectangle_xywh": [
+    20,
+    20,
+    40,
+    50
+  ],
+  "rectangle_pixels": 2000,
+  "reference_method": "Independent exact construction mask; not sampled from model predictions"
+}

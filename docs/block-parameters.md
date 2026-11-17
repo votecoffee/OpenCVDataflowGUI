@@ -8658,6 +8658,45 @@ Input `region` — Optional circle/rectangle/polygon/raster selection intersecte
 | `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound source image pixels; axes are limited to 16384. |
 | `graphics_maximum_landmarks` | `256` | Value must be a whole number between 1 and 1024. Limit optional markers/labels/links without truncating numerical results. |
 
+## Decode prompted masks (`ml.decode_prompt_masks`)
+
+ML / Prompted segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `candidates` (any), `qualities` (data), `prompts` (data), `info` (data).
+
+Input `image` — Exact inference source image; pixels/encoding, current frame and ticket are verified.
+
+Input `candidates` — Three float32 network-grid logit planes from EfficientSAM, preserving their child payloads.
+
+Input `qualities` — Bound quality record, not an arbitrary score list.
+
+Input `prompts` — Exact source-grid prompt record used for this inference.
+
+Input `info` — Matching model/request/preprocessing/source identity from inference.
+
+Input `mask` — Optional source-grid output support; full-image inference and raw prompt membership are unchanged.
+
+Input `region` — Optional source-grid output support, intersected with Mask; the box prompt itself never clips outputs.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `selection` | `"best_quality"` | `best_quality`, `index` Highest predicted quality, optionally preferring consistent point membership, or explicit candidate index. |
+| `candidate_index` | `0` | Value must be a whole number between 0 and 2. Zero-based native candidate index; used only by Index selection. |
+| `prompt_policy` | `"require_consistent"` | `report_only`, `prefer_consistent`, `require_consistent` Report only; prefer candidates satisfying point labels; or also fail if no selected candidate satisfies them. |
+| `minimum_quality` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Raw predicted IoU-quality floor; a heuristic, not measured IoU or a calibrated probability. |
+| `logit_threshold` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Foreground is logit >= threshold. Default zero matches the pinned native demo. |
+| `resampling` | `"mask_nearest"` | `mask_nearest`, `logits_linear` Threshold on the native grid then nearest resize, or linearly resize logits then threshold. |
+| `minimum_pixels` | `1` | Value must be a whole number between 0 and 1.67772e+07. Minimum selected output-mask pixels to pass. |
+| `maximum_pixels` | `0` | Value must be a whole number between 0 and 1.67772e+07. Maximum selected mask pixels; zero disables the upper limit. |
+| `minimum_fraction` | `0.0` | Value must be a finite number between 0 and 1. Minimum foreground fraction within selected ROI/mask support. |
+| `maximum_fraction` | `1.0` | Value must be a finite number between 0 and 1. Maximum foreground fraction within selected ROI/mask support. |
+| `emit_region` | `true` | Emit an exact bounded scanline-run region; off avoids region encoding work and emits no Region event. |
+| `emit_logits` | `false` | Retain the selected source-grid float32 linearly resized logits. Mask-nearest can differ at boundaries. |
+| `maximum_region_runs` | `100000` | Value must be a whole number between 1 and 1e+06. Reject region encoding overflow, never silently truncate. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Source-grid allocation limit; maximum axis is 16384. |
+| `graphics_maximum_contours` | `2000` | Value must be a whole number between 0 and 20000. Bound optional drawn outlines; numerical masks stay complete. |
+| `graphics_maximum_points` | `100000` | Value must be a whole number between 0 and 1e+06. Bound optional outline vertices; zero suppresses outlines. |
+
 ## Decode rotated detections (`ml.decode_rotated_detections`)
 
 ML / Object detection
@@ -8894,6 +8933,30 @@ Input `input_4` — Connect prepared images or float32 tensor records/maps.
 | `input_4_shape` | `[1, 3, -1, -1]` | Expected axes; -1 permits variation if the model supports it. |
 | `input_4_tensor` | `""` | Empty for a tensor/one-entry map; otherwise select an output name. |
 | `input_4_role` | `"reference"` | `current`, `reference` Current checks live tickets; Reference allows cached/constant input. |
+
+## EfficientSAM prompted inference (`ml.efficientsam`)
+
+ML / Prompted segmentation
+
+Inputs: `image` (image), `prompts` (data).
+
+Input `image` — Original uint8 color/gray source. Full-image inference; no implicit ROI crop.
+
+Input `prompts` — Current segmentation_prompts_v1 record; points/background/box and source context are checked.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `contract_path` | `""` | Project-relative contract.json; uses its bundled, verified ONNX model. |
+| `receipt_mode` | `"summary"` | `summary`, `detailed`, `off` Summary: identity/settings/shapes. Detailed: tensor hashes. Off: no receipt. |
+| `fallback_policy` | `"error"` | `error`, `cpu_if_unavailable` Error by default; CPU fallback only for an unavailable requested target. |
+| `model_path` | `""` | Local ONNX path; Contract path instead uses its bundled model. |
+| `output_names` | `["output_masks", "iou_predictions"]` | Exactly two terminal names in masks, quality order, for the fixed EfficientSAM ABI. |
+| `engine` | `"new"` | `auto`, `classic`, `new`, `ort` Classic does not retry with New; non-CPU targets require Classic. |
+| `backend` | `"opencv"` | `opencv`, `cuda`, `default` Shared native inference control. |
+| `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` Shared native inference control. |
+| `fusion` | `true` | Shared native inference control. |
+| `max_output_elements` | `4000000` | Value must be a whole number between 3.14573e+06 and 8e+06. Budget must fit three 1024x1024 logit planes plus three quality values. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Source grid limit before 1024x1024 RGB preprocessing; axis limit 16384. |
 
 ## Evaluate image class predictions (`ml.evaluate_classification`)
 
@@ -9447,6 +9510,27 @@ Inputs: `samples` (any), `labels` (data, optional), `sample_weights` (data, opti
 | `normalization` | `"none"` | `none`, `l2` None or per-row L2, stored with the model and applied to queries. |
 | `labels` | `[]` | One class string per training row; a wired Labels input overrides this list. |
 | `sample_weights` | `[]` | [] gives equal weights. Otherwise one positive value per row; the wired Sample weights input overrides this list. |
+
+## Define segmentation prompts (`ml.segmentation_prompts`)
+
+ML / Prompted segmentation
+
+Inputs: `image` (image), `points` (data, optional), `point_labels` (data, optional), `box` (data, optional).
+
+Input `image` — Current source grid/ticket. Points and box do not crop the image.
+
+Input `points` — Optional current-event override of the matching saved field; no last-value fallback.
+
+Input `point_labels` — Optional current-event override of the matching saved field; no last-value fallback.
+
+Input `box` — Optional current-event override of the matching saved field; no last-value fallback.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `points` | `[]` | Source pixel-center [x,y] pairs; at most six total model slots including box corners. |
+| `point_labels` | `[]` | One integer per point: 1 foreground, 0 background. Padding is internal. |
+| `box` | `[]` | Optional [x,y,width,height] source pixel-edge rectangle; costs two prompt slots. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Reject larger source grids; maximum axis is 16384. |
 
 ## Select instance mask (`ml.select_instance_mask`)
 
