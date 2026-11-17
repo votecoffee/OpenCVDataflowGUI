@@ -9231,6 +9231,41 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `gaussian_window` | `false` |  |
 | `initial_flow` | `"none"` | `none`, `previous` |
 
+## Fill stabilization borders for review (`sequence.fill_stabilization_borders`)
+
+Image processing / Video restoration
+
+Inputs: `frames` (any), `coverage` (any), `mask` (image, optional), `region` (data, optional).
+
+Input `frames` — 2-64 corrected gray/RGB(A)/BGR(A) images, same dimensions and pixel depth.
+
+Input `coverage` — Required ordered group of original measured uint8 masks, one per frame.
+
+Input `mask` — Optional current-grid selection of fill centers; measured pixels never change.
+
+Input `region` — Optional current-grid region intersected with Mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `target_index` | `0` | Value must be a whole number between 0 and 63. Current capture index; retain its ticket, timing and coordinate frame. |
+| `temporal_radius` | `2` | Value must be a whole number between 1 and 63. Only use neighbors within this many ordered batch positions. |
+| `alignment` | `"spatial"` | `spatial`, `pixel_grid` Spatial uses a shared known root; pixel grid asserts registration. |
+| `different_segment` | `"skip"` | `skip`, `error` Skip another known root, or reject it. Unknown spatial roots reject. |
+| `coverage_tickets` | `"matching_if_known"` | `matching_if_known`, `ignore` Check known per-image/mask acquisition tickets, or explicitly ignore. |
+| `interpolation` | `"linear"` | `nearest`, `linear` Resample neighboring measured pixels with full kernel support. |
+| `holes` | `"border_only"` | `border_only`, `all` Only border-connected geometric holes, or all geometric holes. |
+| `blend` | `"nearest"` | `nearest`, `mean` Nearest capture wins (earlier index breaks ties), or mean accepted samples. |
+| `consistency` | `"overlap"` | `overlap`, `off` Require measured overlap, or explicitly disable the photometric check. |
+| `maximum_error` | `0.03` | Value must be a finite number between 0 and 2. Maximum channel error divided by shared integer/full-batch float scale. |
+| `minimum_overlap_pixels` | `64` | Value must be a whole number between 1 and 1.67772e+07. Minimum shared measured pixels for overlap consistency. |
+| `minimum_consistent_fraction` | `0.8` | Value must be a finite number between 0 and 1. Minimum fraction of shared pixels within Maximum error. |
+| `change_radius` | `3` | Value must be a whole number between 0 and 63. Exclude this halo around detected overlap changes before filling. |
+| `maximum_fill_distance` | `32.0` | Value must be a finite number between 0 and 4096. Distance to current measured support; zero means unlimited. |
+| `minimum_fill_fraction` | `0.0` | Value must be a finite number between 0 and 1. Required filled fraction of selected holes; no holes means 1. |
+| `unfilled` | `"allow"` | `allow`, `fail` Allow partial review fills, or fail if any selected eligible hole remains. |
+| `maximum_working_bytes` | `536870912` | Value must be a whole number between 1 and 2.14748e+09. Array estimate before preparation; excludes graph/native copies. |
+| `maximum_graphics_points` | `256` | Value must be a whole number between 0 and 4096. Bound fill/missing contour vertices and review annotation. |
+
 ## Debounce foreground components (`sequence.foreground_debounce`)
 
 Sequence / Foreground masks

@@ -2087,7 +2087,7 @@ P3	function	cv2.completeSymm	literal reference	-
 P3	function	cv2.composeRT	no static reference	-
 P3	function	cv2.computeCorrespondEpilines	literal reference	-
 P3	function	cv2.computeECC	literal reference	-
-P3	function	cv2.connectedComponents	no static reference	-
+P3	function	cv2.connectedComponents	literal reference	-
 P3	function	cv2.connectedComponentsWithAlgorithm	literal reference	-
 P3	function	cv2.connectedComponentsWithStats	literal reference	-
 P3	function	cv2.connectedComponentsWithStatsWithAlgorithm	literal reference	-

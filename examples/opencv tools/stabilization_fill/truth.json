@@ -1,0 +1,70 @@
+{
+  "license": "MIT - original repository fixtures",
+  "size": [
+    160,
+    112
+  ],
+  "margin": 8,
+  "offsets": [
+    [
+      -4,
+      -2
+    ],
+    [
+      0,
+      0
+    ],
+    [
+      4,
+      2
+    ]
+  ],
+  "cases": {
+    "project": {},
+    "shifted_grids": {
+      "grids": [
+        1,
+        -2,
+        2
+      ],
+      "unfilled": "allow",
+      "minimum_fill_fraction": 0.98
+    },
+    "changed_donor": {},
+    "highdepth_mean": {
+      "highdepth": true,
+      "blend": "mean"
+    },
+    "no_consistent_neighbors": {
+      "passed": false
+    },
+    "distance_limited": {
+      "maximum_fill_distance": 1,
+      "passed": false
+    },
+    "native_stabilization": {
+      "native": true,
+      "unfilled": "allow",
+      "minimum_fill_fraction": 0.98
+    }
+  },
+  "asset_sha256": {
+    "frame0.png": "93f2f946b2e44eec21b96b6bc50271eb69cc8a4f1585b468b4e0006ceec7949e",
+    "frame1.png": "112469e836c413193f1cbe351900ee19dbff79ab2fc3a599c90ee6f4fb2f69ff",
+    "frame2.png": "f2929cf58cf5347880ae5bde3dd071b55e07de2c870541f82259d98ae367e81e",
+    "world.png": "df7d4e91b8f98921efcd0887ea39f743ca68a5551265376de261b1a03fb9243f",
+    "frame016.png": "2c2a28445fa76f2df00babb0adfc623d44d99ab314c178256644d17e09d73934",
+    "frame116.png": "d3822dcdb10470255839c02b68aabbfbacf82e68cc3f44901d6fb00959d9d44b",
+    "frame216.png": "3362ca0beb0ac5a91a41375fcf2ffd85754a86256d22b862b755e6ad938fc423",
+    "world16.png": "880f96e33ca48258c7db0ce850d47b7ff67b81656ec482b76de47eb5739c659e",
+    "changed.png": "f1215ecffb173ef78dea39c3fb2cd96aa333b896b7edff4c9ff4b6eecf0e51ff",
+    "bright1.png": "fea9d81bf6f1a8d5ff9461c90dacf802c7078a16410abb19a28556e5107ea854",
+    "bright2.png": "78410daa0479d2534b26b9bc56f9d4a9e29d00a2e8739f41f004fd7731dc3c6b",
+    "project.trajectory.json": "2c657377f36e5eee1d784dd87779199e8a35dbb8eefa067421289977521624a3",
+    "shifted_grids.trajectory.json": "1eda0550489458af74522cc5160b7aac944f1c03678d1f731b41f46e99566a40",
+    "changed_donor.trajectory.json": "c897c8a16d41158f1b1d0d73867be667371c929dae6e523e3d179705a22cecca",
+    "highdepth_mean.trajectory.json": "e5bfd5d1612ea9cca21472771d88dd1512909a5f769182e2816c0ccfa2769603",
+    "no_consistent_neighbors.trajectory.json": "57ddf0850c234a165be4de1986da7936b0591106f5ae6ea5264a9d2c887a5970",
+    "distance_limited.trajectory.json": "2c657377f36e5eee1d784dd87779199e8a35dbb8eefa067421289977521624a3"
+  }
+}

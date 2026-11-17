@@ -7,6 +7,7 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "sequence.fill_stabilization_borders": "remap connectedComponents distanceTransform dilate",
     "cv.panorama_points": "perspectiveTransform",
     "cv.stitch_rotating_panorama": (
         "Stitcher_create Stitcher.estimateTransform PyRotationWarper detail.waveCorrect remap "

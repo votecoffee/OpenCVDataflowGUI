@@ -46,3 +46,4 @@ For candidate appearance support before clearance/downstream selection, try [vis
 For motion-aware HDR, measured support and native exposure alignment, try [HDR motion](hdr_motion/README.md).
 For unordered rotating views, fitted cameras, partial components and mapped measurements, try [rotating panoramas](rotating_panorama/README.md).
 For explicit native solvers, fixed/refined intrinsics and reserved validation, try [panorama refinement](panorama_refinement/README.md).
+For stabilized borders, neighboring samples and unchanged measured coverage, try [review border fills](stabilization_fill/README.md).

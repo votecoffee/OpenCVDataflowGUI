@@ -907,6 +907,7 @@ def builtin_registry():
     from .spanning_tree import MinimumSpanningTree
     from .spectral import SPECTRAL_BLOCKS
     from .stabilization import StabilizeCameraMotion
+    from .stabilization_fill import FillStabilizationBorders
     from .stack_blur import StackBlur
     from .stereo3d import STEREO3D_BLOCKS
     from .stream_stabilization import StabilizeStream
@@ -1033,6 +1034,7 @@ def builtin_registry():
         LoadMotionTrajectory,
         SaveMotionTrajectory,
         RestoreFromNeighbors,
+        FillStabilizationBorders,
         EstimateScanlineMotion,
         TrackImageParts,
         ResampleImageProfile,

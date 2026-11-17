@@ -99,6 +99,7 @@ IMPLEMENTATION_MODULES = {
         "background_reference color_tracking ecc_registration flow_files flow_refinement "
         "flow_warp frame_interpolation "
         "mil_tracking motion_trajectory motion_trajectory_io neighbor_restoration scanline_motion "
+        "stabilization_fill "
         "image_correlation image_tracking refresh_tracking native_background sequence_tools"
     ),
     "videoio": "network_video paced_video video_buffer video_files video_time video_timing",

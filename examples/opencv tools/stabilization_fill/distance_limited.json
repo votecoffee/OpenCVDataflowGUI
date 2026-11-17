@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture0",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/frame0.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "capture1",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/frame1.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        290
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "capture2",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/frame2.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        580
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "frames",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "trajectory",
+      "type": "sequence.load_trajectory",
+      "name": "Load motion trajectory",
+      "parameters": {
+        "path": "assets/distance_limited.trajectory.json",
+        "expected_sha256": "2c657377f36e5eee1d784dd87779199e8a35dbb8eefa067421289977521624a3"
+      },
+      "position": [
+        380,
+        400
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "trajectory",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "corrected",
+      "type": "sequence.replay_trajectory",
+      "name": "Replay motion trajectory",
+      "parameters": {
+        "interpolation": "recorded",
+        "min_coverage_fraction": 0.65,
+        "invalid_frames": "reject",
+        "preview_frame": 0
+      },
+      "position": [
+        760,
+        0
+      ],
+      "exposed_inputs": [
+        "frames",
+        "trajectory"
+      ],
+      "exposed_outputs": [
+        "corrected",
+        "coverage",
+        "transforms",
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fill",
+      "type": "sequence.fill_stabilization_borders",
+      "name": "Fill stabilization borders for review",
+      "description": "Fill uncovered review pixels without inventing coverage.",
+      "documentation": "<p>Transfer measured samples from bounded neighboring corrected frames onto the current grid. Optional overlap checks reject lighting/scene changes and exclude a local change halo. Only Display is filled; Image/Coverage stay current measured data. Neighbors cannot prove the current scene in an unseen area. See docs/stabilization-fill.md.</p>",
+      "parameters": {
+        "target_index": 0,
+        "temporal_radius": 2,
+        "alignment": "spatial",
+        "different_segment": "skip",
+        "coverage_tickets": "matching_if_known",
+        "interpolation": "nearest",
+        "holes": "border_only",
+        "blend": "nearest",
+        "consistency": "overlap",
+        "maximum_error": 0.03,
+        "minimum_overlap_pixels": 64,
+        "minimum_consistent_fraction": 0.8,
+        "change_radius": 3,
+        "maximum_fill_distance": 1,
+        "minimum_fill_fraction": 0.0,
+        "unfilled": "fail",
+        "maximum_working_bytes": 536870912,
+        "maximum_graphics_points": 256
+      },
+      "position": [
+        1140,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "frames",
+        "coverage",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "display",
+        "coverage",
+        "filled_mask",
+        "report",
+        "remaining_mask",
+        "preview",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1520,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 10
+      },
+      "position": [
+        1900,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original jitter and border-fill controls - MIT",
+      "description": "Original MIT world pattern, captures, known trajectories, projects and controls by OpenCVDataflowGUI contributors; no customer or third-party images. Three 160x112 captures have known world offsets (-4,-2), (0,0), (+4,+2). Sealed replay preserves source pixels and explicit measured support. The native stabilization case fits motion independently. Fill Image/Coverage remain current measured data; only Display uses neighboring captures. Filled pixels are review-only, not current defect evidence. Changed donors, distance limits, independent corrected grids and high-depth means have dedicated controls. Use README/truth.json for expected availability and numerical checks.",
+      "parameters": {},
+      "position": [
+        0,
+        -430
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture0",
+      "output": "image",
+      "target": "frames",
+      "input": "item_1"
+    },
+    {
+      "source": "capture1",
+      "output": "image",
+      "target": "frames",
+      "input": "item_2"
+    },
+    {
+      "source": "capture2",
+      "output": "image",
+      "target": "frames",
+      "input": "item_3"
+    },
+    {
+      "source": "trajectory",
+      "output": "trajectory",
+      "target": "corrected",
+      "input": "trajectory"
+    },
+    {
+      "source": "frames",
+      "output": "group",
+      "target": "corrected",
+      "input": "frames"
+    },
+    {
+      "source": "corrected",
+      "output": "corrected",
+      "target": "fill",
+      "input": "frames"
+    },
+    {
+      "source": "corrected",
+      "output": "coverage",
+      "target": "fill",
+      "input": "coverage"
+    },
+    {
+      "source": "fill",
+      "output": "display",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "fill",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

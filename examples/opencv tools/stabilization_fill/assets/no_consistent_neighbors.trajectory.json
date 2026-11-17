@@ -1,0 +1,298 @@
+{
+  "model": "image_motion_trajectory_v1",
+  "direction": "source_to_target",
+  "interpolation": "nearest",
+  "clock": {
+    "mode": "indexed",
+    "frame_period_ms": 40.0
+  },
+  "frames": [
+    {
+      "index": 0,
+      "source": {
+        "label": "capture0",
+        "image": {
+          "shape": [
+            112,
+            160
+          ],
+          "dtype": "uint8",
+          "encoding": "gray",
+          "sha256": "35d6e9bb0d28137d42aba9d9aa6a8c3d2ab4830e50f4a5c615a8266b11a62696"
+        },
+        "spatial": {
+          "root_id": "raw-capture",
+          "root_size": [
+            160,
+            112
+          ],
+          "image_size": [
+            160,
+            112
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "time": {
+        "media_index": null,
+        "timestamp_ms": 0.0
+      },
+      "valid": true,
+      "segment": 0,
+      "reason": "",
+      "source_to_target": [
+        [
+          1.0,
+          0.0,
+          -4.0
+        ],
+        [
+          0.0,
+          1.0,
+          -2.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "target_spatial": {
+        "root_id": null,
+        "root_size": [
+          160,
+          112
+        ],
+        "image_size": [
+          160,
+          112
+        ],
+        "to_root": [
+          [
+            1.0,
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "source": {
+        "label": "capture1",
+        "image": {
+          "shape": [
+            112,
+            160
+          ],
+          "dtype": "uint8",
+          "encoding": "gray",
+          "sha256": "cfee2e08bddc63bb566fccfa2d3b223653ce8fdf1a03e2c9373e8bdb418489b4"
+        },
+        "spatial": {
+          "root_id": "raw-capture",
+          "root_size": [
+            160,
+            112
+          ],
+          "image_size": [
+            160,
+            112
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "time": {
+        "media_index": null,
+        "timestamp_ms": 40.0
+      },
+      "valid": true,
+      "segment": 0,
+      "reason": "",
+      "source_to_target": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "target_spatial": {
+        "root_id": null,
+        "root_size": [
+          160,
+          112
+        ],
+        "image_size": [
+          160,
+          112
+        ],
+        "to_root": [
+          [
+            1.0,
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "source": {
+        "label": "capture2",
+        "image": {
+          "shape": [
+            112,
+            160
+          ],
+          "dtype": "uint8",
+          "encoding": "gray",
+          "sha256": "c0cb39e03dc525660fd0c590a6db9765e7b1c714a489cfafcaa704039b6f95ab"
+        },
+        "spatial": {
+          "root_id": "raw-capture",
+          "root_size": [
+            160,
+            112
+          ],
+          "image_size": [
+            160,
+            112
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "time": {
+        "media_index": null,
+        "timestamp_ms": 80.0
+      },
+      "valid": true,
+      "segment": 0,
+      "reason": "",
+      "source_to_target": [
+        [
+          1.0,
+          0.0,
+          4.0
+        ],
+        [
+          0.0,
+          1.0,
+          2.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "target_spatial": {
+        "root_id": null,
+        "root_size": [
+          160,
+          112
+        ],
+        "image_size": [
+          160,
+          112
+        ],
+        "to_root": [
+          [
+            1.0,
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    }
+  ],
+  "clip_id": "09a9e069846d6ced927088d393c960d1bd15036de7018acac813e724b3df434f",
+  "trajectory_id": "de58bf404e8581bb2345551f71960450c50620909588c94696d05b9064d4edd9"
+}
