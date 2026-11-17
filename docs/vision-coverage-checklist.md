@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 21 | 8 | 33 | 62 | 33.9% |
+| 2. ML and DNN | 22 | 8 | 32 | 62 | 35.5% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 247 | 40 | 183 | 470 | 52.6% |
+| **Overall** | 248 | 40 | 182 | 470 | 52.8% |
 
 <!-- coverage-summary:end -->
 
@@ -333,7 +333,7 @@ fixture or result needed to close the item.
 | S2-18 | Image embedding retrieval | Annoy build, query, save and load | Complete | ml.annoy_build, ml.annoy_search, ml.annoy_save, ml.annoy_load. Index, rank, and persist image-derived embeddings. |
 | S2-19 | Reusable image color or descriptor clusters | kmeans with persisted centers, nearest-center prediction | Complete | ml.palette_train/palette_predict and ml.kmeans_train/kmeans_predict plus shared ml.kmeans_save/load qualify fixed normalized BGR/Lab/gray palettes and descriptor vocabularies. Sorted training IDs, saved normalization/preprocessing/revisions, inclusive distance/ID filters, unknown fractions, masked/alpha selection, source-depth/context retention, separate quantization and drawable filmstrip graphics are checked. Nine original public projects train/reload palettes and native HOG batches, inspect disjoint captures and demonstrate defect/contract rejection. Native fit/color/HOG references, large-coordinate distances, JSON/XML/portable Save As, strict model loading and exact regeneration qualify the bounded CPU baseline. Retraining identity, rare-color coverage, incremental/multi-reference fitting, calibrated confidence and production accuracy remain separate. See [contracts](reusable-clusters.md). |
 | S2-20 | SVM image classification | ml.SVM C-SVC train/predict and portable native model I/O | Complete | ml.svm_train, ml.svm_predict, ml.svm_save and ml.svm_load expose six kernels, C, gamma, polynomial/sigmoid controls, class weights, normalization and termination. Explicit string mappings, native weights and checked feature contracts persist in revisioned JSON bundles. HOG carries window/encoding/depth/settings/OpenCV-version metadata. Graph-native training/reload correctly predicts nine disjoint original synthetic printed 0/1/2 images in Debug/Lean; same-length wrong preprocessing fails without outputs. This qualifies a bounded C-SVC classifier workflow, not general OCR, probabilities, regression, one-class inference or detector training. |
-| S2-21 | K-nearest image classification | ml.KNearest train and findNearest | Planned | Classify held-out image descriptors with neighbor distances and an unknown-class cutoff. |
+| S2-21 | K-nearest image classification | ml.KNearest train and findNearest | Complete | ml.knn_train/predict/save/load qualify exact native brute-force classification with persisted float32 rows, class IDs, normalization, preprocessing and revisions. Exposed K, distance statistic/cutoff, vote fraction/tie and accepted-class policies distinguish unknown recognition from known inspection failure. Nine public HOG projects train/reload on disjoint original stripe positions, reject unseen diagonal images and ties, retain candidate/neighbors and withhold unknown label events. Native response/distance/vote parity, context/admission guards, exception recovery, drawable filmstrip graphics, JSON/XML/portable Save As and exact regeneration are checked. Shared descriptor helpers retain SVM model compatibility. KD-tree adaptation, regression, incremental/weighted training, calibrated confidence and production accuracy remain separate. See [contracts](knn-classification.md). |
 | S2-22 | Random forest image classification | ml.RTrees train, predict and getVotes | Planned | Train on measured image features and verify held-out labels and reported class votes after reload. |
 | S2-23 | Image classifier and detector evaluation | Image-level split, confusion matrix, IoU-based matching | Planned | Use labeled images to report per-class errors and confidence thresholds. Keep frames from one sequence together when splitting. |
 

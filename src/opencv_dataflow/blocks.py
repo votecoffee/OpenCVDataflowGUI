@@ -727,6 +727,7 @@ def builtin_registry():
     from .image_validity import CheckImageValidity, ReplaceNonfiniteSamples
     from .instance_segmentation import INSTANCE_BLOCKS
     from .judgments import FinalJudgment
+    from .knn_blocks import KNN_BLOCKS
     from .label_measurement import MaskFromLabelCollection, MeasureLabelRegions
     from .landmarks import LANDMARK_BLOCKS
     from .laplacian_pyramids import LAPLACIAN_PYRAMID_BLOCKS
@@ -1177,6 +1178,7 @@ def builtin_registry():
         *OCR_BLOCKS,
         *ANNOY_BLOCKS,
         *SVM_BLOCKS,
+        *KNN_BLOCKS,
         *LIGHTGLUE_BLOCKS,
         *LOCAL_FEATURE_BLOCKS,
         *DISK_BLOCKS,

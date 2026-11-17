@@ -8952,6 +8952,54 @@ Input `initial_labels` — Optional cluster ID per fitted row; used on the first
 | `epsilon` | `0.01` | Value must be a finite number at least 0. Center movement tolerance in feature units, used by both and epsilon modes. |
 | `normalization` | `"none"` | `none`, `l2` Per-row L2 or none; stored and reused at prediction. |
 
+## Load K-nearest classifier (`ml.knn_load`)
+
+ML / Classical classification
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+
+## Predict OpenCV K-nearest classes (`ml.knn_predict`)
+
+ML / Classical classification
+
+Inputs: `model` (data), `samples` (data), `image` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `k` | `0` | Value must be a whole number between 0 and 64. 0 uses the stored model default; 1..64 overrides it. Must not exceed training rows. |
+| `contract_policy` | `"require_match"` | `require_match`, `dimensions_only` Require exact descriptor preprocessing, or explicitly check dimensions only. Stored normalization always applies. |
+| `max_distance` | `0.0` | Value must be a finite number between 0 and 1e+18. Inclusive Euclidean limit for the selected neighbor-distance statistic. 0 disables distance rejection. Native squared distances are also reported. |
+| `distance_policy` | `"winning_class_nearest"` | `winning_class_nearest`, `nearest`, `mean`, `kth` Nearest neighbor of the voted class, nearest of all neighbors, mean Euclidean distance of all K, or Kth/farthest returned neighbor. |
+| `min_vote_fraction` | `0.0` | Value must be a finite number between 0 and 1. Minimum fraction of K neighbors voting for the native candidate. This is vote agreement, not a calibrated probability. |
+| `reject_vote_ties` | `true` | Withhold recognized labels when two or more classes tie for most votes. Raw candidate and neighbor diagnostics remain available. |
+| `accepted_labels` | `[]` | Optional allowed trained classes for inspection pass/fail; [] accepts all recognized classes. A disallowed class is still a recognized label. |
+
+## Save K-nearest classifier (`ml.knn_save`)
+
+Output / ML models
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"knn-classifier.json"` |  |
+
+## Train OpenCV K-nearest classifier (`ml.knn_train`)
+
+ML / Classical classification
+
+Inputs: `samples` (any), `labels` (data, optional).
+
+Input `samples` — Numeric feature rows or a batch of image descriptor vectors. Known preprocessing contracts must agree.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `k` | `3` | Value must be a whole number between 1 and 64. Stored default neighbor count; must not exceed the number of training rows. Prediction can explicitly override it. No silent native clamping. |
+| `normalization` | `"none"` | `none`, `l2` None or per-row L2; saved rows are already normalized and the same normalization is applied to incoming descriptors. Zero vectors cannot use L2. |
+| `labels` | `[]` | One string per row, in training/batch order. Wired Labels overrides this list. Native vote ties prefer the first-appearing encoded class; prediction rejects ties by default. Stored models include the descriptor rows, not just a summary. |
+
 ## Pose from ordered landmarks (`ml.landmark_pose`)
 
 ML / Landmarks

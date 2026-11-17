@@ -757,17 +757,17 @@ P2	function	cv2.ml.EM_create	no static reference	-
 P2	function	cv2.ml.EM_load	no static reference	-
 P2	class	cv2.ml.KNearest	no static reference	-
 P2	method	cv2.ml.KNearest.create	method name only	-
-P2	method	cv2.ml.KNearest.findNearest	no static reference	-
+P2	method	cv2.ml.KNearest.findNearest	method name only	-
 P2	method	cv2.ml.KNearest.getAlgorithmType	no static reference	-
 P2	method	cv2.ml.KNearest.getDefaultK	no static reference	-
 P2	method	cv2.ml.KNearest.getEmax	no static reference	-
 P2	method	cv2.ml.KNearest.getIsClassifier	no static reference	-
 P2	method	cv2.ml.KNearest.load	method name only	-
-P2	method	cv2.ml.KNearest.setAlgorithmType	no static reference	-
-P2	method	cv2.ml.KNearest.setDefaultK	no static reference	-
+P2	method	cv2.ml.KNearest.setAlgorithmType	method name only	-
+P2	method	cv2.ml.KNearest.setDefaultK	method name only	-
 P2	method	cv2.ml.KNearest.setEmax	no static reference	-
-P2	method	cv2.ml.KNearest.setIsClassifier	no static reference	-
-P2	function	cv2.ml.KNearest_create	no static reference	-
+P2	method	cv2.ml.KNearest.setIsClassifier	method name only	-
+P2	function	cv2.ml.KNearest_create	literal reference	-
 P2	function	cv2.ml.KNearest_load	no static reference	-
 P2	class	cv2.ml.LogisticRegression	no static reference	-
 P2	method	cv2.ml.LogisticRegression.create	method name only	-
@@ -4583,7 +4583,7 @@ P3	function	cv2.stylization	literal reference	-
 P3	class	cv2.Subdiv2D	literal reference	-
 P3	method	cv2.Subdiv2D.edgeDst	no static reference	-
 P3	method	cv2.Subdiv2D.edgeOrg	no static reference	-
-P3	method	cv2.Subdiv2D.findNearest	no static reference	-
+P3	method	cv2.Subdiv2D.findNearest	method name only	-
 P3	method	cv2.Subdiv2D.getEdge	no static reference	-
 P3	method	cv2.Subdiv2D.getEdgeList	no static reference	-
 P3	method	cv2.Subdiv2D.getLeadingEdgeList	no static reference	-

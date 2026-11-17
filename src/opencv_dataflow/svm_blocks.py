@@ -1,17 +1,29 @@
 """Portable OpenCV C-SVC image-descriptor classifiers, without native handles on wires."""
 
 import copy
-import hashlib
 import json
 
 import cv2
 import numpy as np
 
+from .classifier_common import (
+    canonical_json as _json,
+)
+from .classifier_common import (
+    descriptor_matrix,
+    label_strings,
+)
+from .classifier_common import (
+    model_revision as _revision,
+)
+from .classifier_common import (
+    normalize_features as _normalize,
+)
 from .core import Block, Port, Result
 from .graphics_layers import GraphicDrawing, graphic_object
 from .ml_common import local_path
 from .parameter_validation import NumericRange, ValidationError
-from .payloads import NO_VALUE, FlowGroup, ValuePacket, metadata, require_same_frame
+from .payloads import NO_VALUE, FlowGroup, ValuePacket, require_same_frame
 from .tickets import ticket_key
 
 MAX_ELEMENTS = 2_000_000
@@ -28,10 +40,6 @@ KERNELS = {
 }
 
 
-def _json(value):
-    return json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False)
-
-
 def _json_object(pairs):
     result = {}
     for key, value in pairs:
@@ -46,62 +54,13 @@ def _invalid_constant(token):
 
 
 def _strings(value, name, *, maximum=MAX_ROWS):
-    if (
-        not isinstance(value, list)
-        or len(value) > maximum
-        or any(not isinstance(s, str) or not 1 <= len(s) <= 128 for s in value)
-    ):
-        raise ValidationError(
-            f"{name} requires up to {maximum} nonempty strings (1..128 characters)"
-        )
-    return value
+    return label_strings(value, name, maximum=maximum)
 
 
 def _matrix(value):
-    contracts = []
-    if isinstance(value, FlowGroup):
-        contracts = [metadata(item).get("feature_contract") for item in value.items]
-        value = [item.value for item in value.items]
-    array = np.asarray(value)
-    if array.dtype.kind not in "iuf" or array.dtype.kind == "b":
-        raise ValidationError("Features must be finite numeric values, not strings or booleans")
-    if array.ndim == 1:
-        array = array[None, :]
-    if (
-        array.ndim != 2
-        or not 1 <= array.shape[0] <= MAX_ROWS
-        or not 1 <= array.shape[1] <= MAX_DIMENSIONS
-        or array.size > MAX_ELEMENTS
-        or not np.isfinite(array).all()
-        or np.any(np.abs(array) > np.finfo(np.float32).max)
-    ):
-        raise ValidationError("Features exceed finite float32 row/dimension/element limits")
-    if contracts and any(contract != contracts[0] for contract in contracts):
-        raise ValidationError("Training features have different preprocessing contracts")
-    converted = np.ascontiguousarray(array, np.float32)
-    if np.any((array != 0) & (converted == 0)):
-        raise ValidationError("Feature values underflow float32; rescale before classification")
-    contract = copy.deepcopy(contracts[0]) if contracts else None
-    return converted, contract
-
-
-def _normalize(values, mode):
-    if mode == "none":
-        return values
-    if mode != "l2":
-        raise ValidationError("Unknown SVM feature normalization")
-    wide = values.astype(np.float64)
-    peak = np.max(np.abs(wide), axis=1, keepdims=True)
-    if np.any(peak == 0):
-        raise ValidationError("Cannot L2 normalize a zero feature vector")
-    scaled = wide / peak
-    return (scaled / np.sqrt(np.sum(scaled * scaled, axis=1, keepdims=True))).astype(np.float32)
-
-
-def _revision(model):
-    return hashlib.sha256(
-        _json({k: v for k, v in model.items() if k != "revision"}).encode()
-    ).hexdigest()
+    return descriptor_matrix(
+        value, max_rows=MAX_ROWS, max_dimensions=MAX_DIMENSIONS, max_elements=MAX_ELEMENTS
+    )
 
 
 def read_svm(model):

@@ -65,3 +65,5 @@ For separate object masks, preserved overlap, ROI/prototype heads and per-instan
 For ordered keypoints, heatmap fitting, partial results and local inspection poses, try [landmarks](landmarks/README.md).
 
 For saved palettes, HOG vocabularies and unknown-sample inspection, try [reusable image clusters](reusable_clusters/README.md).
+
+For native HOG training, held-out labels and unknown-image policies, try [K-nearest classification](knn_classification/README.md).

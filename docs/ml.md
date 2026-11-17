@@ -12,6 +12,11 @@ OpenCV installation. Train, save, reload and predict without refitting each
 capture; distance/cluster filters report unknown samples. See
 [reusable clusters](reusable-clusters.md) for preprocessing and model contracts.
 
+Native [K-nearest image classification](knn-classification.md) adds portable
+training/reload, neighbor votes/distances and explicit unknown-image rejection.
+It shares descriptor validation and normalization with SVM, preserving saved
+preprocessing contracts. Both run with the base OpenCV installation.
+
 ## Installation
 
 OpenCV DNN is included in the base OpenCV 5 contrib installation. Bundled control
