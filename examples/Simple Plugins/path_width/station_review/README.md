@@ -1,5 +1,11 @@
 # SimplePathWidth station review
 
+For direct review of the finished runtime frame, use the newer
+[completed-run examples](../completed_runtime/README.md) and their pinned dev13
+plugin. Its independent Results action captures exact input/model/calibration
+and measured stations, with linked views and frozen exports. The dev12 training
+preview and archived assessments below remain available.
+
 Requires **SimplePathWidth 0.1.0.dev12**. These views use the existing saved
 generated, calibrated and real weld recipes without changing their settings.
 The builder measures each source frame once, then restores the completed

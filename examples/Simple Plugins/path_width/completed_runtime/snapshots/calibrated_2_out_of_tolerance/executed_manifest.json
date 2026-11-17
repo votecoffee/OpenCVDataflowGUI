@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "vertices": [
+    [
+      198.4536082474227,
+      189.94845360824743
+    ],
+    [
+      340.90909090909093,
+      160.53719008264463
+    ]
+  ],
+  "closed": false,
+  "settings": {
+    "station_spacing": 5.0,
+    "scan_half_width": 60.0,
+    "sample_spacing": 0.25,
+    "smoothing_sigma": 0.7,
+    "polarity": "bright",
+    "min_gradient": 12.0,
+    "min_width": null,
+    "max_width": null,
+    "max_center_offset": null,
+    "min_coverage": 0.9,
+    "max_gap": null,
+    "corner_angle": 45.0,
+    "corner_margin": 2.0,
+    "nominal_width": null,
+    "edge_search_radius": null,
+    "edge_continuity": 0.0,
+    "physical_units": "mm",
+    "min_width_physical": 5.8,
+    "max_width_physical": 6.2,
+    "max_center_offset_physical": 1.5
+  },
+  "source_to_reference": null,
+  "cad_units": null,
+  "reference_size": [
+    420,
+    340
+  ]
+}

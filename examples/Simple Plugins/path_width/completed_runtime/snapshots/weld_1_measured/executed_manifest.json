@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "vertices": [
+    [
+      100.0,
+      165.0
+    ],
+    [
+      348.0,
+      165.0
+    ]
+  ],
+  "closed": false,
+  "settings": {
+    "station_spacing": 8.0,
+    "scan_half_width": 106.0,
+    "sample_spacing": 0.5,
+    "smoothing_sigma": 2.0,
+    "polarity": "dark",
+    "min_gradient": 2.0,
+    "min_width": 100.0,
+    "max_width": 160.0,
+    "max_center_offset": null,
+    "min_coverage": 0.9,
+    "max_gap": null,
+    "corner_angle": 45.0,
+    "corner_margin": 2.0,
+    "nominal_width": 130.0,
+    "edge_search_radius": 25.0
+  },
+  "source_to_reference": null,
+  "cad_units": null,
+  "reference_size": [
+    448,
+    448
+  ]
+}

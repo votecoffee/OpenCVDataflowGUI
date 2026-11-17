@@ -1,0 +1,6 @@
+# Native arrays/archives and executed manifests are byte-exact review evidence.
+*.npy -text
+*.spw -text
+*.whl -text
+*.png -text
+snapshots/**/executed_manifest.json -text
