@@ -9,6 +9,7 @@ import cv2
 BINDINGS = {
     "input.paced_video_file": "VideoCapture",
     "input.network_video": "VideoCapture.open VideoCapture.read",
+    "input.video_at_time": "VideoCapture.set VideoCapture.read",
     "sequence.track_refreshed": (
         "KalmanFilter calcOpticalFlowPyrLK goodFeaturesToTrack estimateAffinePartial2D"
     ),

@@ -1,0 +1,120 @@
+{
+  "license": "MIT - original repository fixtures",
+  "image_size": [
+    160,
+    96
+  ],
+  "fps": 20,
+  "frames": [
+    {
+      "index": 0,
+      "timestamp_ms": 0,
+      "center": [
+        31.5,
+        41.5
+      ],
+      "area": 672,
+      "sha256": "5d99756d5804c84f7c547496bd97b2d1f7ed711bab95dbcf456b05fb5d11b807"
+    },
+    {
+      "index": 1,
+      "timestamp_ms": 50,
+      "center": [
+        39.5,
+        41.5
+      ],
+      "area": 672,
+      "sha256": "52c471f237937b56e0222a408922c55cceffd6e47e5775e81828bef8da9e5487"
+    },
+    {
+      "index": 2,
+      "timestamp_ms": 100,
+      "center": [
+        47.5,
+        41.5
+      ],
+      "area": 672,
+      "sha256": "c9df71575e0e583d0d9a3492c31cbe4d161cb55a4b2625cb0f7724f61f98853c"
+    },
+    {
+      "index": 3,
+      "timestamp_ms": 150,
+      "center": [
+        55.5,
+        41.5
+      ],
+      "area": 672,
+      "sha256": "241b3b4cdb5883904c2f8ce5cddb0b9091a701db10bd4dc0459fc4fe00d95efb"
+    },
+    {
+      "index": 4,
+      "timestamp_ms": 200,
+      "center": [
+        63.5,
+        41.5
+      ],
+      "area": 672,
+      "sha256": "75325ee0027537fd18817c7d2205ab6f7b6cc342942deca9898fcb6b528f254b"
+    },
+    {
+      "index": 5,
+      "timestamp_ms": 250,
+      "center": [
+        71.5,
+        41.5
+      ],
+      "area": 672,
+      "sha256": "aff7741f46ac927d10907e9de40c3f2f0f31dd8a58b92a01c8434025594cc869"
+    },
+    {
+      "index": 6,
+      "timestamp_ms": 300,
+      "center": [
+        79.5,
+        41.5
+      ],
+      "area": 672,
+      "sha256": "0a5a4c8760b5977cb7fdc9c1259a82e7aac348a078da708b578e48b413f87abb"
+    },
+    {
+      "index": 7,
+      "timestamp_ms": 350,
+      "center": [
+        87.5,
+        41.5
+      ],
+      "area": 672,
+      "sha256": "971ae8d2fc4cd5e5fafd3c72ae3de6ed2cb1fab6e7df628ae6ddae44671605fa"
+    }
+  ],
+  "cases": {
+    "native_exact": {
+      "time_ms": 250,
+      "seek_method": "native_only",
+      "index": 5
+    },
+    "nearest": {
+      "time_ms": 175,
+      "selection": "nearest",
+      "index": 3
+    },
+    "at_or_before": {
+      "time_ms": 175,
+      "selection": "at_or_before",
+      "index": 3
+    },
+    "at_or_after": {
+      "time_ms": 175,
+      "selection": "at_or_after",
+      "index": 4
+    },
+    "error_guard": {
+      "time_ms": 225,
+      "maximum_error_ms": 10,
+      "index": null
+    }
+  },
+  "asset_sha256": {
+    "time_samples.avi": "b7c9dc2b73d58bc083643a00198bb67aabb809d2834705a2a98e09455eb57a1e"
+  }
+}

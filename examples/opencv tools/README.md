@@ -37,5 +37,6 @@ For exact binary neighborhoods, try [hit-or-miss patterns](hit_or_miss/README.md
 For sparse-mask extraction and allocation limits, try [run-linked contours](run_contours/README.md).
 For oriented part identities and bounded missed detections, try [image tracking](image_tracking/README.md).
 For scheduled full-frame detection with local image refinement, try [detector refresh](detector_refresh/README.md).
+For independent frame sampling with requested/actual time and bracket policies, try [video at time](video_time/README.md).
 For live reception, bounded reconnects and sequence resets, try [network video](network_video/README.md).
 For recorded media timing, stride and loop/reset inspection, try [paced video replay](paced_video/README.md).

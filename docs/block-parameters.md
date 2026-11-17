@@ -5555,6 +5555,38 @@ Input `reset` — True discards the snapshot and LRU before this request, includ
 | `maximum_page_pixels` | `16777216` | Value must be a whole number between 1 and 1.67772e+07. Checked from the TIFF directory before native pixel decoding. |
 | `maximum_decoded_bytes` | `268435456` | Value must be a whole number between 1 and 5.36871e+08. Conservative raw/conversion workspace estimate, excluding retained cache, encoded snapshot, native codec internals and runtime copies. Not a hard RSS limit. |
 
+## Video frame at time (`input.video_at_time`)
+
+Input / Video
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+Inputs: `time_ms` (number, optional).
+
+Input `time_ms` — Finite nonnegative milliseconds, independent of playback wall time.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Local video file. Each request opens and closes its own decoder. |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
+| `backend` | `"ffmpeg"` | `ffmpeg` |
+| `time_ms` | `0.0` | Value must be a finite number between 0 and 1e+12. Presentation time in milliseconds; a connected Time ms overrides this value. |
+| `selection` | `"nearest"` | `nearest`, `at_or_before`, `at_or_after` Bracket the requested time. Nearest ties prefer the earlier frame. |
+| `seek_method` | `"native_then_scan"` | `native_then_scan`, `native_only`, `scan_from_start` Try native time positioning, require it, or decode from the beginning. |
+| `preroll_ms` | `0.0` | Value must be a finite number between 0 and 1e+12. Native seek anchor is max(0, requested time minus preroll). |
+| `maximum_error_ms` | `1000.0` | Value must be a finite number between 0 and 1e+12. Maximum selected-time error; zero requires numerical equality. |
+| `timestamp_policy` | `"decoder_only"` | `decoder_only`, `decoder_or_fps` Require decoder time or allow labeled native-FPS estimates. |
+| `frame_ticket` | `true` | Auto tickets label filename/index/time; every request stays distinct. |
+| `open_timeout_ms` | `5000` | Value must be a whole number between 1 and 60000. Native FFmpeg opening timeout; not a hard execution deadline. |
+| `read_timeout_ms` | `5000` | Value must be a whole number between 1 and 60000. Native FFmpeg read timeout. Stop is cooperative between native calls. |
+| `decoder_threads` | `1` | Value must be a whole number between 1 and 16. |
+| `maximum_read_frames` | `10000` | Value must be a whole number between 1 and 1e+06. Read-request budget, including native probe, fallback and EOF. |
+| `maximum_frame_pixels` | `16000000` | Value must be a whole number between 1 and 6.4e+07. |
+| `maximum_working_bytes` | `268435456` | Value must be a whole number between 1 and 1.07374e+09. Estimated candidate/conversion storage; excludes native memory. |
+| `color_format` | `"bgr"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` Convert native uint8 BGR. Automatic orientation is disabled. |
+| `pixel_depth` | `"uint8"` | `unchanged`, `uint8`, `uint16`, `float32` Output conversion, not recovery of encoded high-bit-depth samples. |
+
 ## Video file (`input.video_file`)
 
 Input / Video

@@ -60,6 +60,7 @@ def catalog_block(tmp_path):
     settings = {
         "input.tiff_page": {"path": str(tmp_path / "catalog-placeholder.tiff")},
         "input.network_video": {"url": "http://127.0.0.1:18764/stream"},
+        "input.video_at_time": {"path": str(tmp_path / "catalog-placeholder.avi")},
         "sequence.capture_background_reference": {
             "camera_id": "catalog-camera",
             "calibration_id": "catalog-calibration",

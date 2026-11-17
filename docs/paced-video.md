@@ -41,7 +41,8 @@ as a video-position property and documents backend-dependent behavior. This is
 not an independent demuxed PTS guarantee. The shipped native checks cover FFmpeg
 FFV1 and OpenCV MJPEG. Variable gaps and bad metadata are checked with a controlled
 clock/property source; qualification of actual variable-frame-rate/bad-metadata
-clips remains S1-123. Network streams and seeking by media time are separate work.
+clips remains S1-123. [Network streams](network-video.md) and independent
+[media-time sampling](video-time-seeking.md) use separate source blocks.
 
 Maximum gap rejects excessive or nonpositive selected-frame intervals before
 waiting. It is measured in media milliseconds before Speed. An allowed long gap
