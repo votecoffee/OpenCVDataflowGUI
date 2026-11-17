@@ -133,6 +133,7 @@ class Block:
     parameter_ranges: ClassVar[dict[str, NumericRange]] = {}
     plugin_dialog_label: ClassVar[str] = ""
     plugin_dialog_modeless: ClassVar[bool] = False
+    plugin_review_dialog_label: ClassVar[str] = ""
 
     def project_assets(self):
         """Return project-contained files to copy on Save As; override for bundle dependencies."""
@@ -146,6 +147,10 @@ class Block:
     def create_plugin_dialog(self, parent, parameters, context):
         """Return a fresh QDialog that edits the supplied inspector draft."""
         raise NotImplementedError("A block with a plugin dialog label must create a dialog")
+
+    def create_plugin_review_dialog(self, parent, context):
+        """Return a read-only result-review QDialog; no parameter draft is supplied."""
+        raise NotImplementedError("A block with a review label must create a review dialog")
 
     def __init__(self, *, block_id=None, parameters=None):
         self.id = block_id or uuid.uuid4().hex

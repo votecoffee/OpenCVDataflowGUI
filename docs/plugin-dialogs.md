@@ -17,6 +17,33 @@ working in the graph or running it. The popup belongs to the selected block.
 Changing the selection, leaving the inspector, or saving to a different
 project directory closes it.
 
+## Read-only completed-result review
+
+Set `plugin_review_dialog_label` and implement
+`create_plugin_review_dialog(self, parent, context)` to add a separate button to
+the inspector's **Results** page. Return a fresh PySide6 `QDialog`. The host always
+shows it modelessly, with one review popup per selected block. Reopening raises
+the existing popup. Training/configuration and review have independent dialog
+slots and contexts, and can both receive output publications.
+
+The review factory receives **no parameter draft**. Accepting or rejecting it
+does not stage parameters, call the training factory, validate an unrelated
+inspector draft, run the block or apply configuration. It may open before a run
+or while a job runs; capture availability is reported by the context. Plugins
+should provide an explicit Capture latest action that calls
+`snapshot_processed_execution(input_ports=..., output_ports=...)`, and display
+the captured completed-model evidence without loading a configured recipe or
+repeating a search. Output subscriptions may update an availability indicator;
+the host does not automatically capture or execute for review.
+
+The host owns popup/context disposal on close, selection changes, inspector
+hiding, graph replacement, project-directory changes and application shutdown.
+Private captured packets can outlive the window. Factory exceptions and invalid
+return types are logged and shown as warnings; subscriber failures are isolated
+as for configuration dialogs. A later retry can open a new popup. The assistant
+block schema reports `capabilities.plugin_review_dialog` without opening a factory.
+Trusted plugins remain responsible for honoring the read-only review contract.
+
 ## Draft and apply
 
 `parameters` is a private copy of the current inspector draft. Update the

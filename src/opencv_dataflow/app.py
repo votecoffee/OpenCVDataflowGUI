@@ -326,6 +326,8 @@ class Inspector(QWidget):
         layout.addWidget(self.apply_button)
         self._plugin_dialog = None
         self._plugin_context = None
+        self._plugin_review_dialog = None
+        self._plugin_review_context = None
         self._plugin_output_timer = QTimer(self)
         self._plugin_output_timer.setSingleShot(True)
         self._plugin_output_timer.timeout.connect(self._notify_plugin_outputs)
@@ -346,6 +348,14 @@ class Inspector(QWidget):
         self.pop_out_image.clicked.connect(self.open_image_popout)
         image_controls.addWidget(self.pop_out_image)
         results_layout.addWidget(self.timing_label)
+        self.plugin_review_button = QPushButton()
+        self.plugin_review_button.setObjectName("pluginReviewResults")
+        self.plugin_review_button.setToolTip(
+            "Review completed results without training or applying configuration."
+        )
+        self.plugin_review_button.hide()
+        self.plugin_review_button.clicked.connect(self.open_plugin_review_dialog)
+        results_layout.addWidget(self.plugin_review_button)
         results_layout.addLayout(image_controls)
         results_split = QSplitter(Qt.Orientation.Vertical)
         results_split.setChildrenCollapsible(False)
@@ -398,6 +408,9 @@ class Inspector(QWidget):
             self._region_source = None
             self._region_inputs = {}
         self.block = block
+        review_label = block.plugin_review_dialog_label if block is not None else ""
+        self.plugin_review_button.setText(review_label)
+        self.plugin_review_button.setVisible(bool(review_label))
         if hasattr(self.window, "diagnostics_view"):
             self.window.diagnostics_view.set_block(block)
         self.reference_capture = None
@@ -1104,13 +1117,88 @@ class Inspector(QWidget):
             block.logger.exception("Plugin dialog could not open")
             self.window.warn(f"{block_display_title(block)} dialog · {exception_message(exc)}")
 
+    def open_plugin_review_dialog(self):
+        block = self.block
+        if block is None or not block.plugin_review_dialog_label:
+            return
+        if self._plugin_review_dialog is not None:
+            self._plugin_review_dialog.raise_()
+            self._plugin_review_dialog.activateWindow()
+            return
+        context = None
+        widget = None
+        try:
+            context = PluginDialogContext(self.window.graph, block)
+            widget = block.create_plugin_review_dialog(self, context)
+            if not isinstance(widget, QDialog):
+                raise TypeError("create_plugin_review_dialog must return a PySide6 QDialog")
+            if self.block is not block or context._graph is not self.window.graph:
+                context._close()
+                widget.deleteLater()
+                return
+            self._plugin_review_dialog = widget
+            self._plugin_review_context = context
+            if widget.parentWidget() is not self:
+                widget.setParent(self, widget.windowFlags())
+            widget.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, False)
+
+            def finished(_status):
+                self._release_plugin_context(context)
+                if self._plugin_review_dialog is widget:
+                    self._plugin_review_dialog = None
+                    widget.deleteLater()
+
+            def destroyed():
+                self._release_plugin_context(context)
+                if self._plugin_review_dialog is widget:
+                    self._plugin_review_dialog = None
+
+            widget.finished.connect(finished)
+            widget.destroyed.connect(destroyed)
+            widget.setWindowModality(Qt.WindowModality.NonModal)
+            widget.show()
+        except (Exception, SystemExit) as exc:
+            self.close_plugin_review_dialog()
+            if context is not None:
+                context._close()
+            if isinstance(widget, QDialog):
+                widget.deleteLater()
+            block.logger.exception("Plugin result review could not open")
+            self.window.warn(f"{block_display_title(block)} review · {exception_message(exc)}")
+
+    def _plugin_contexts(self):
+        return tuple(
+            context
+            for context in (self._plugin_context, self._plugin_review_context)
+            if context is not None
+        )
+
     def _release_plugin_context(self, context):
+        registered = context in self._plugin_contexts()
         context._close()
         if self._plugin_context is context:
             self._plugin_context = None
-            self._plugin_output_timer.stop()
+        if self._plugin_review_context is context:
+            self._plugin_review_context = None
+        if registered and not self._plugin_contexts():
+            try:
+                self._plugin_output_timer.stop()
+            except RuntimeError:
+                # Parent teardown may delete the timer before a child's destroyed signal.
+                pass
+
+    def close_plugin_review_dialog(self):
+        if self._plugin_review_context is not None:
+            self._release_plugin_context(self._plugin_review_context)
+        dialog, self._plugin_review_dialog = self._plugin_review_dialog, None
+        if dialog is not None:
+            try:
+                QDialog.reject(dialog)
+            finally:
+                dialog.deleteLater()
 
     def close_plugin_dialog(self):
+        self.close_plugin_review_dialog()
         if self._plugin_context is not None:
             self._release_plugin_context(self._plugin_context)
         dialog, self._plugin_dialog = self._plugin_dialog, None
@@ -1121,18 +1209,19 @@ class Inspector(QWidget):
                 dialog.deleteLater()
 
     def plugin_outputs_published(self):
-        context = self._plugin_context
-        if context is not None and context._outputs_published():
-            if not self._plugin_output_timer.isActive():
-                self._plugin_output_timer.start(0)
+        notify = False
+        for context in self._plugin_contexts():
+            notify = context._outputs_published() or notify
+        if notify and not self._plugin_output_timer.isActive():
+            self._plugin_output_timer.start(0)
 
     def _notify_plugin_outputs(self):
-        context = self._plugin_context
-        if context is None:
-            return
-        newer_outputs = context._notify_outputs(self.block.logger.exception)
-        if newer_outputs and self._plugin_context is context:
-            self._plugin_output_timer.start(0)
+        for context in self._plugin_contexts():
+            if context not in self._plugin_contexts():
+                continue
+            newer_outputs = context._notify_outputs(self.block.logger.exception)
+            if newer_outputs and context in self._plugin_contexts():
+                self._plugin_output_timer.start(0)
 
     def finish_plugin_dialog(self, dialog, block, original, draft, status):
         if self._plugin_dialog is not dialog:

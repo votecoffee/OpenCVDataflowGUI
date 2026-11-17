@@ -117,6 +117,7 @@ def block_schema(type_id, registry=None):
                 "layout_only": block.layout_only,
                 "ticket_source": block.ticket_source,
                 "plugin_dialog": bool(block.plugin_dialog_label),
+                "plugin_review_dialog": bool(block.plugin_review_dialog_label),
             },
             "project_path_parameters": list(block.project_path_parameters),
             "project_asset_parameters": list(block.project_asset_parameters),
