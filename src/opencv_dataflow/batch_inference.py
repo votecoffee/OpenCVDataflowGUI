@@ -239,7 +239,9 @@ class BatchImageInference(DNNInference):
                             "label": group.labels[start + index],
                             "image": selected["image"],
                             "tensors": {
-                                name: tensor_record(a[index : index + 1], p["max_output_elements"])
+                                name: tensor_record(
+                                    a[index : index + 1], p["max_output_elements"], allow_empty=True
+                                )
                                 for name, a in arrays.items()
                             },
                             "preprocessing": geometries[index],
@@ -318,7 +320,7 @@ class UnpackImageInference(Block):
         ):
             raise ValidationError("Select one complete image_inference_result_v1 record")
         for name, value in row["tensors"].items():
-            tensor = read_tensor(value, "", 8_000_000, name)
+            tensor = read_tensor(value, "", 8_000_000, name, allow_empty=True)
             if tensor.ndim < 1 or tensor.shape[0] != 1:
                 raise ValidationError("Unpacked outputs must contain exactly one image row")
         context = copy.deepcopy(self.input_payloads.get("result", {}))

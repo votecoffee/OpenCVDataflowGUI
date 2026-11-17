@@ -85,7 +85,9 @@ def tensor_rows(inputs, p):
         chosen = tensors.get(p["output_name"]) if p["output_name"] else next(iter(tensors.values()))
         if not isinstance(chosen, dict) or chosen.get("dtype") != "float32":
             raise ValidationError("Use dequantized float32 tensor_v1 detector outputs")
-        values = selected_tensor(inputs["tensors"], p["output_name"]).astype(np.float64)
+        values = selected_tensor(inputs["tensors"], p["output_name"], allow_empty=True).astype(
+            np.float64
+        )
     except (AttributeError, StopIteration, TypeError, ValueError, OverflowError) as exc:
         raise ValidationError(str(exc)) from exc
     if p["format"] == "ssd":

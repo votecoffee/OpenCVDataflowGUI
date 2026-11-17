@@ -59,3 +59,5 @@ For model/settings revisions, portable bundles, receipt verbosity and target fal
 For oriented boxes, rotated IoU, affine poses and local inspection regions, try [rotated detection](rotated_detection/README.md).
 
 For per-pixel score/ID heads, source-grid masks, confidence and area checks, try [semantic segmentation](semantic_segmentation/README.md).
+
+For separate object masks, preserved overlap, ROI/prototype heads and per-instance inspection, try [instance segmentation](instance_segmentation/README.md).

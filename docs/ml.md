@@ -89,7 +89,7 @@ class-agnostic native NMS and maps boxes back through preprocessing. It emits
 sortable/filterable source-frame collections and optional drawable labels/boxes.
 The generic inference block does not guess an export schema. See
 [detection contracts](object-detection.md) and [control/real-photo projects](<../examples/opencv tools/dnn_detection/README.md>).
-Instance-mask adapters remain separate roadmap work.
+Instance mask decoding is covered below.
 
 **Decode rotated detections** handles explicit oriented score/objectness/class
 heads, angle units/directions, corrected or native rotated suppression and exact
@@ -104,6 +104,13 @@ class/area statistics. Choose nearest labels or linear raw scores; ignored IDs,
 ROI selection, confidence thresholds and area judgments remain explicit. Use the
 mask with ordinary blob/contour/morphology tools. See [contracts](semantic-segmentation.md)
 and [twelve controls](<../examples/opencv tools/semantic_segmentation/README.md>).
+
+**Decode instance segmentation** adds box-relative/class masks and coefficient/
+prototype masks, retaining separate source-grid regions through NMS and overlap.
+Pack separate boxes/scores/classes when needed; sort/filter by mask metrics and
+select an exact individual mask for further inspection. See
+[contracts](instance-segmentation.md) and
+[twelve controls](<../examples/opencv tools/instance_segmentation/README.md>).
 
 **Multi-input ONNX inference** now binds up to four explicitly named float32
 tensors. **Image to DNN tensor** prepares each image independently; **Create

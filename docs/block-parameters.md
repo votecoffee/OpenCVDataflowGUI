@@ -8482,6 +8482,68 @@ Input `region` — Optional region intersected with the mask. Does not crop or a
 | `maximum_results` | `1000` | Value must be a whole number between 1 and 10000. Reject excess retained results instead of emitting an incomplete collection. |
 | `maximum_image_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. Reject larger source images before selection; collection axes are limited to 16384. |
 
+## Decode instance segmentation (`ml.decode_instances`)
+
+ML / Instance segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `tensors` (data), `preprocessing` (data).
+
+Input `image` — Original image whose source coordinates and ticket own the detections.
+
+Input `tensors` — Matching detection AND mask/prototype heads; row IDs preserve mask identity through NMS.
+
+Input `preprocessing` — Matching inference resize/letterbox maps. Known frame/ticket/recipe mismatches reject.
+
+Input `mask` — Source-grid selection of mask pixels and/or centers according to Selection mode.
+
+Input `region` — Source-grid circle/rectangle/polygon/raster selection; intersected with Mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_name` | `""` | Exact tensor name; empty selects the first named output. |
+| `format` | `"xywh_scores"` | `xywh_scores`, `xywh_objectness`, `xyxy_score_class`, `ssd` Detection row schema. Prototype mode appends K coefficients after XYWH class scores/objectness. |
+| `layout` | `"rows"` | `rows`, `channels_first` Rows [N,C] or channels-first [C,N], optionally with one leading batch of size one. SSD is fixed. |
+| `coordinate_units` | `"network_pixels"` | `network_pixels`, `normalized` Box coordinates relative to the network input; normalized values scale by its width/height. |
+| `grid_decode` | `"none"` | `none`, `yolox` YOLOX expands XY offsets and exponential sizes using the exact network stride grids. |
+| `strides` | `[8, 16, 32]` | Ascending distinct YOLOX head strides, normally [8,16,32]; all must divide network axes. |
+| `score_activation` | `"probability"` | `probability`, `sigmoid` Probability validates [0,1]; sigmoid explicitly converts class/objectness logits. |
+| `labels` | `[]` | Optional zero-based string table. Score-head formats require one entry per class channel. |
+| `accepted_class_ids` | `[]` | Empty keeps all classes. Otherwise keep these adjusted, zero-based IDs. |
+| `class_id_offset` | `0` | Value must be a whole number between -1000 and 1000. Adjustment for explicit-ID SSD/XYXY rows, e.g. -1 for one-based classes. |
+| `confidence_threshold` | `0.25` | Value must be a finite number between 0 and 1. Keep scores strictly above this value. Objectness heads multiply class and objectness. |
+| `objectness_threshold` | `0.0` | Value must be a finite number between 0 and 1. Objectness-head gate before combined-score filtering; other formats ignore it. |
+| `nms_enabled` | `true` | Disable when the model already performs suppression, or to inspect duplicate proposals. |
+| `class_agnostic_nms` | `false` | Otherwise suppress separately per class, including boxes with negative coordinates. |
+| `nms_iou` | `0.45` | Value must be a finite number between 0 and 1. Native hard-NMS overlap threshold, applied to unclipped boxes in the source grid. |
+| `nms_eta` | `1.0` | Value must be a finite number between 0.001 and 1. Native adaptive IoU factor in (0,1]; one keeps a fixed threshold. |
+| `nms_top_k` | `0` | Value must be a whole number between 0 and 100000. Native pre-NMS score cap per class, or globally in class-agnostic mode; zero is unlimited. |
+| `border_policy` | `"clip"` | `clip`, `discard`, `keep` Clip partly visible boxes, discard them, or keep their unclipped coordinates. Fully outside boxes drop. |
+| `minimum_count` | `1` | Value must be a whole number between 0 and 100000. Fewest instances remaining AFTER mask area filtering required to pass. |
+| `maximum_count` | `0` | Value must be a whole number between 0 and 100000. Most instances after mask filtering; zero disables the upper count judgment. |
+| `maximum_raw_rows` | `100000` | Value must be a whole number between 1 and 100000. Reject larger tensors before row processing; tensor_v1 also caps total values. |
+| `maximum_candidates` | `10000` | Value must be a whole number between 1 and 10000. Reject excess valid candidates before quadratic NMS; never silently truncate. |
+| `maximum_results` | `256` | Value must be a whole number between 1 and 10000. Reject excess retained results instead of emitting an incomplete collection. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Reject larger source images before selection; collection axes are limited to 16384. |
+| `mask_mode` | `"roi"` | `roi`, `roi_per_class`, `prototypes` One ROI mask, class-indexed ROI masks, or packed coefficients plus full- field prototypes. |
+| `mask_output_name` | `"masks"` | Exact ROI mask/prototype tensor name; distinct from the detection head. |
+| `mask_layout` | `"NCHW"` | `NCHW`, `NHWC`, `NHW`, `CHW`, `HWC` ROI: NCHW/NHWC/NHW, N=raw rows. Prototypes: CHW/HWC or batch-one NCHW/NHWC. |
+| `mask_class_offset` | `0` | Value must be a whole number between -4096 and 4096. roi_per_class channel = final detection class ID + offset; unused in other modes. |
+| `mask_activation` | `"probability"` | `probability`, `sigmoid` Declared mask probabilities, or sigmoid logits; independent of detection scores. |
+| `activation_order` | `"before_resampling"` | `before_resampling`, `after_resampling` Activate the raw mask grid before interpolation, or activate sampled logits afterward. |
+| `mask_interpolation` | `"linear"` | `nearest`, `linear` Nearest head cells or native floating linear interpolation with replicated head edges. |
+| `mask_threshold` | `0.5` | Value must be a finite number between 0 and 1. Mask probability >= threshold is foreground, within source/box/selection support. |
+| `crop_to_box` | `true` | Prototypes only: restrict masks to original predicted boxes. ROI masks always use their boxes. |
+| `selection_mode` | `"pixels"` | `pixels`, `centers`, `centers_and_pixels` Gate mask pixels, detection centers, or both with the optional mask/region. |
+| `minimum_mask_pixels` | `1` | Value must be a whole number between 0 and 1.67772e+07. Drop instances below this selected source-pixel area; zero keeps valid empty masks. |
+| `maximum_mask_pixels` | `0` | Value must be a whole number between 0 and 1.67772e+07. Drop larger masks; zero disables this area filter. |
+| `label_overlap` | `"detection_score"` | `detection_score`, `mask_confidence`, `score_times_mask` Resolve only the summary Labels image. Separate instance masks retain ALL overlapping pixels. |
+| `maximum_mask_elements` | `8000000` | Value must be a whole number between 1 and 8e+06. Reject larger serialized mask/prototype heads before conversion. |
+| `maximum_decoded_pixels` | `16777216` | Value must be a whole number between 1 and 1.28e+08. Bound summed source tiles before resampling, rather than allocate N full- size masks. |
+| `maximum_prototype_operations` | `128000000` | Value must be a whole number between 1 and 5.12e+08. Bound retained instances x prototype channels x prototype pixels before mixing. |
+| `maximum_region_runs` | `200000` | Value must be a whole number between 1 and 1e+06. Total scanline-run budget across all retained instance masks; never truncate masks. |
+| `graphics_maximum_contours` | `2000` | Value must be a whole number between 1 and 20000. Bound optional outline objects; report truncation without changing masks. |
+| `graphics_maximum_points` | `100000` | Value must be a whole number between 1 and 1e+06. Bound optional outline vertices; report truncation without changing masks. |
+
 ## Decode rotated detections (`ml.decode_rotated_detections`)
 
 ML / Object detection
@@ -8791,6 +8853,23 @@ Input `data` — Optional scalar or flat numeric list, replacing the Values para
 | `values` | `[1.0, 1.0, 1.0]` | Fallback scalar/flat numeric list when Data is absent; converted to finite float32. |
 | `maximum_elements` | `2000000` | Value must be a whole number between 1 and 2e+06. Bound values before array allocation; graph snapshots are separate. |
 
+## Pack separate detection heads (`ml.pack_detection_heads`)
+
+ML / Instance segmentation
+
+Inputs: `tensors` (data).
+
+Input `tensors` — One inference activation's boxes/scores/classes and optional mask heads.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `boxes_output` | `"boxes"` | Named XYXY [N,4] or [1,N,4] head, in the export's coordinate units. |
+| `scores_output` | `"scores"` | Named [N] scores with optional singleton axes; probabilities in [0,1]. |
+| `classes_output` | `"labels"` | Named [N] nonnegative integer class IDs, with optional singleton axes. |
+| `output_name` | `"packed_boxes"` | New [1,N,6] XYXY/score/class head; retain original heads. |
+| `maximum_rows` | `10000` | Value must be a whole number between 1 and 100000. Reject more boxes before packing. |
+| `maximum_total_elements` | `8000000` | Value must be a whole number between 1 and 8e+06. Bound original heads plus the packed head before copying. |
+
 ## Recognize text (CTC ONNX) (`ml.recognize_text`)
 
 ML / Text inspection
@@ -8815,6 +8894,25 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `vocabulary_prune` | `0` | Maximum tokens per beam step. Zero disables pruning. |
 | `background` | `255` | Fill masked or out-of-image pixels with this uint8 intensity. |
 | `minimum_reads` | `1` | Minimum number of regions that produce nonempty text. |
+
+## Select instance mask (`ml.select_instance_mask`)
+
+ML / Instance segmentation
+
+Inputs: `image` (image), `collection` (data).
+
+Input `image` — Original source-grid image, with the matching ticket/frame/recipe.
+
+Input `collection` — Decode instance segmentation collection, optionally sorted/filtered; overlaps remain intact.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `selection` | `"index"` | `index`, `id` Choose collection position after sorting/filtering, or original row ID. |
+| `index` | `0` | Value must be a whole number between 0 and 9999. Zero-based position in the current collection. |
+| `instance_id` | `0` | Value must be a whole number between 0 and 99999. Original detection-row ID, preserved through suppression/sorting/filtering. |
+| `missing` | `"empty"` | `empty`, `error` Emit a normal failed empty mask/region, or reject without current output. |
+| `maximum_region_runs` | `200000` | Value must be a whole number between 1 and 1e+06. Reject larger selected mask encodings before rasterizing. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound the full source mask allocation. |
 
 ## Load OpenCV SVM classifier (`ml.svm_load`)
 

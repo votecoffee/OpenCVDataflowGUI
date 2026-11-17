@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/parts.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "infer",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "assets/instance_heads.onnx",
+        "width": 32,
+        "height": 32,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "packed",
+          "prototypes"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        410,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "ml.decode_instances",
+      "name": "Decode instance segmentation",
+      "parameters": {
+        "output_name": "packed",
+        "format": "xywh_scores",
+        "layout": "rows",
+        "coordinate_units": "network_pixels",
+        "grid_decode": "none",
+        "strides": [
+          8,
+          16,
+          32
+        ],
+        "score_activation": "probability",
+        "labels": [
+          "part A",
+          "part B"
+        ],
+        "accepted_class_ids": [],
+        "class_id_offset": 0,
+        "confidence_threshold": 0.25,
+        "objectness_threshold": 0.0,
+        "nms_enabled": true,
+        "class_agnostic_nms": false,
+        "nms_iou": 0.45,
+        "nms_eta": 1.0,
+        "nms_top_k": 0,
+        "border_policy": "clip",
+        "minimum_count": 1,
+        "maximum_count": 0,
+        "maximum_raw_rows": 100000,
+        "maximum_candidates": 10000,
+        "maximum_results": 256,
+        "maximum_image_pixels": 4194304,
+        "mask_mode": "prototypes",
+        "mask_output_name": "prototypes",
+        "mask_layout": "NCHW",
+        "mask_class_offset": 0,
+        "mask_activation": "sigmoid",
+        "activation_order": "before_resampling",
+        "mask_interpolation": "nearest",
+        "mask_threshold": 0.5,
+        "crop_to_box": false,
+        "selection_mode": "pixels",
+        "minimum_mask_pixels": 1,
+        "maximum_mask_pixels": 0,
+        "label_overlap": "detection_score",
+        "maximum_mask_elements": 8000000,
+        "maximum_decoded_pixels": 16777216,
+        "maximum_prototype_operations": 128000000,
+        "maximum_region_runs": 200000,
+        "graphics_maximum_contours": 2000,
+        "graphics_maximum_points": 100000
+      },
+      "position": [
+        820,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing"
+      ],
+      "exposed_outputs": [
+        "image",
+        "collection",
+        "count",
+        "mask",
+        "labels",
+        "overlap_count",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1230,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1640,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original instance-mask controls - MIT",
+      "description": "Original MIT synthetic images, image-dependent arithmetic ONNX and independent mask references by OpenCVDataflowGUI contributors. Fixed proposals and mask templates are numerical controls, not learned recognition. Per-instance scanline masks preserve overlap and original row identity after NMS. Clipped ROI masks keep original box support. Empty/count-failure projects intentionally fail inspection. See README/truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -500
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "infer",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "decode",
+      "input": "image"
+    },
+    {
+      "source": "infer",
+      "output": "preprocessing",
+      "target": "decode",
+      "input": "preprocessing"
+    },
+    {
+      "source": "decode",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "decode",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    },
+    {
+      "source": "infer",
+      "output": "tensors",
+      "target": "decode",
+      "input": "tensors"
+    }
+  ]
+}

@@ -27,15 +27,21 @@ def digest_file(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
-def array(value, name, max_elements=2_000_000):
+def array(value, name, max_elements=2_000_000, *, allow_empty=False):
     result = np.asarray(value, dtype=np.float32)
-    if not result.size or result.size > max_elements or not np.isfinite(result).all():
-        raise ValueError(f"{name} must contain 1..{max_elements} finite numeric values")
+    if (
+        (not result.size and not allow_empty)
+        or result.size > max_elements
+        or not np.isfinite(result).all()
+    ):
+        raise ValueError(
+            f"{name} must contain {0 if allow_empty else 1}..{max_elements} finite numeric values"
+        )
     return result
 
 
-def tensor_record(value, max_elements):
-    value = array(value, "Network output", max_elements)
+def tensor_record(value, max_elements, *, allow_empty=False):
+    value = array(value, "Network output", max_elements, allow_empty=allow_empty)
     return {
         "model": "tensor_v1",
         "shape": list(value.shape),
@@ -44,19 +50,21 @@ def tensor_record(value, max_elements):
     }
 
 
-def selected_tensor(tensors, name="", *, max_elements=2_000_000):
+def selected_tensor(tensors, name="", *, max_elements=2_000_000, allow_empty=False):
     if not isinstance(tensors, dict) or not tensors:
         raise ValueError("Connect the DNN tensors output")
     value = tensors.get(name) if name else next(iter(tensors.values()))
     if not isinstance(value, dict) or value.get("model") != "tensor_v1":
         raise ValueError("Select an existing tensor output name")
-    values = array(value.get("values"), "Tensor", max_elements)
+    values = array(value.get("values"), "Tensor", max_elements, allow_empty=allow_empty)
     shape = value.get("shape")
     if (
         not isinstance(shape, list)
         or not shape
         or len(shape) > 8
-        or any(type(n) is not int or n < 1 for n in shape)
+        or any(
+            type(n) is not int or n < (0 if allow_empty else 1) or n > 2_000_000_000 for n in shape
+        )
         or int(np.prod(shape, dtype=object)) != values.size
     ):
         raise ValueError("Invalid tensor shape")

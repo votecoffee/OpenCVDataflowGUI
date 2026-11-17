@@ -38,12 +38,14 @@ NETWORK_FIELDS = (
 )
 
 
-def shape(value, field, *, wildcard=False):
+def shape(value, field, *, wildcard=False, allow_zero=False):
     if (
         not isinstance(value, list)
         or not 1 <= len(value) <= 8
         or any(
-            type(n) is not int or not (n == -1 and wildcard or 1 <= n <= 2_000_000) for n in value
+            type(n) is not int
+            or not (n == -1 and wildcard or (0 if allow_zero else 1) <= n <= 2_000_000)
+            for n in value
         )
     ):
         raise ValidationError(
@@ -52,7 +54,7 @@ def shape(value, field, *, wildcard=False):
     return value
 
 
-def float_tensor(value, limit, field="data"):
+def float_tensor(value, limit, field="data", *, allow_empty=False):
     if not isinstance(value, (list, int, float)):
         raise ValidationError("Supply flat finite numeric tensor values", field)
     if isinstance(value, list) and (
@@ -64,12 +66,12 @@ def float_tensor(value, limit, field="data"):
             values = np.asarray(value, np.float32).reshape(-1)
     except (ValueError, TypeError, OverflowError) as exc:
         raise ValidationError("Tensor conversion to float32 failed", field) from exc
-    if not 1 <= values.size <= limit or not np.isfinite(values).all():
+    if not (0 if allow_empty else 1) <= values.size <= limit or not np.isfinite(values).all():
         raise ValidationError("Tensor must contain bounded finite float32 values", field)
     return values
 
 
-def read_tensor(value, selector, limit, port):
+def read_tensor(value, selector, limit, port, *, allow_empty=False):
     if not isinstance(value, dict):
         raise ValidationError(f"{port} needs a tensor_v1 record or named tensor map")
     if value.get("model") != "tensor_v1":
@@ -87,10 +89,10 @@ def read_tensor(value, selector, limit, port):
         or value.get("dtype") != "float32"
     ):
         raise ValidationError(f"{port} requires a selected float32 tensor_v1 record")
-    dimensions = shape(value.get("shape"), port)
+    dimensions = shape(value.get("shape"), port, allow_zero=allow_empty)
     if math.prod(dimensions) > limit:
         raise ValidationError(f"{port} exceeds the input element budget", "maximum_input_elements")
-    values = float_tensor(value.get("values"), limit, port)
+    values = float_tensor(value.get("values"), limit, port, allow_empty=allow_empty)
     if values.size != math.prod(dimensions):
         raise ValidationError(f"{port} values do not match its declared tensor shape")
     return np.ascontiguousarray(values.reshape(dimensions))

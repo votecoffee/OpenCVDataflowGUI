@@ -318,9 +318,9 @@ class DNNInference(Block):
             # Batch adapters split native rows before making portable records, avoiding
             # an unnecessary full-batch Python-list conversion and reconstruction.
             tensors = {
-                name: array(value, "Network output", limit)
+                name: array(value, "Network output", limit, allow_empty=True)
                 if array_outputs
-                else tensor_record(value, limit)
+                else tensor_record(value, limit, allow_empty=True)
                 for name, value in zip(names, values)
             }
             if p["receipt_mode"] != "off":

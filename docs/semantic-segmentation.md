@@ -129,9 +129,9 @@ Original image-dependent color-arithmetic ONNX fixtures qualify decoding, source
 mapping, confidence/class semantics, empty/failing inspections, blob handoff,
 graphics, JSON/XML and Save As. Their independently calculated PNG label references
 are numerical test truth, not trained industrial segmentation accuracy. No models
-are downloaded during a graph run. Instance masks/prototypes, promptable models,
-arbitrary export support, accelerators and task-specific recognition accuracy
-remain separate roadmap capabilities.
+are downloaded during a graph run. Promptable models, arbitrary export support, accelerators and task-specific
+recognition accuracy remain separate qualification. [Instance segmentation](instance-segmentation.md)
+now covers declared ROI and prototype heads.
 
 Upstream references: [OpenCV semantic-segmentation sample](https://github.com/opencv/opencv/blob/5.x/samples/dnn/segmentation.py)
 for per-pixel class decoding, and [OpenCV image-transform declarations](https://github.com/opencv/opencv/blob/5.x/modules/imgproc/include/opencv2/imgproc.hpp)

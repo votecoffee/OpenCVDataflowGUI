@@ -43,13 +43,13 @@ The mosaic project was refreshed without changing its images; regeneration now
 runs in a temporary folder, compares normalized project text/exact image bytes,
 and verifies the source collection stays untouched. **100 focused rechecks**
 passed before the clean full rerun above. This closes the twentieth increment
-ending with S1-173. The next targeted cycle is at **19/20**, covering paced file
+ending with S1-173. The current targeted cycle is at **20/20**, covering paced file
 replay (S1-11), bounded live network acquisition (S1-12), media-time sampling
 (S1-110), actual variable/unreliable video timing (S1-123), and whole
 selections through nonlinear correction (S1-69), candidate visible support (S1-61),
 HDR moving-region rejection (S1-150), unordered rotating views (S1-104), and
 explicit camera refinement with reserved observations (S1-147), and review-only
-stabilization border fills (S1-148), and controlled motion-kernel estimation (S1-84), and shared capture-setting negotiation/readback (S1-115), and controlled curved-QR decoding (S1-121), and image detection/decoding (S2-08), and complete named multi-input inference (S2-03), and ordered batched/dynamic-shape image inference (S2-04), and revisioned model/preprocessing/execution receipts (S2-05), and rotated detection/affine poses (S2-09), and source-grid semantic segmentation (S2-10).
+stabilization border fills (S1-148), and controlled motion-kernel estimation (S1-84), and shared capture-setting negotiation/readback (S1-115), and controlled curved-QR decoding (S1-121), and image detection/decoding (S2-08), and complete named multi-input inference (S2-03), and ordered batched/dynamic-shape image inference (S2-04), and revisioned model/preprocessing/execution receipts (S2-05), and rotated detection/affine poses (S2-09), and source-grid semantic segmentation (S2-10), and independent instance masks (S2-11).
 
 The previous broad checkpoint was `1e1cccb`: **4,801 passed, 31 skipped** in
 298.51 seconds with the offscreen suite, Python 3.14.3, OpenCV 5.0.0 and contrib
@@ -161,6 +161,54 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+**Independent instance masks (S2-11)** adds `ml.decode_instances`,
+`ml.pack_detection_heads` and `ml.select_instance_mask` under OpenCV DNN.
+Explicit ROI/class-indexed masks and packed coefficient/prototype heads reuse
+ordinary detector score/class selection and box NMS while preserving original row
+IDs. ROI masks keep their original unclipped box support; full-network prototype
+fields map through exact rounded preprocessing. Activation order, sampling,
+thresholds, box crop, pixel/center ROI selection and area/count limits are explicit.
+Separate boxes/scores/classes pack into detector rows while retaining other heads.
+
+Each retained item carries an exact source-grid raster region. Overlap remains
+in every individual mask, independently of the union/summary labels/overlap count.
+Sort/filter preserves masks and supports custom mask area/confidence/centroid
+metrics; a selector emits one exact mask/region for further inspection. Missing
+connected selections prevent unmasked fallback. Source pixels/encoding/depth,
+tickets, recipe, pyramid and processing start survive. Known conflicts reject;
+native errors publish no current result and valid subsequent input recovers.
+Tile, prototype-operation and total-run budgets reject without partial masks.
+Optional outlined masks/holes/labels feed filmstrip overlays; Off/Lean skips them.
+
+Correctly shaped zero-row outputs now survive inference serialization, detector
+and instance adapters, separate-head packing and batch unpacking. General input
+creation/classification/embedding retain strict nonempty rules. Explicit zero-row
+data and stubbed native-array handoffs qualify this transport/ownership contract;
+they do not claim an unsupported native model can execute zero-shape operators.
+
+**484 focused regression checks passed**, followed by **102 focused checks** for
+final instance, zero-row, required-selection and catalog/reference contracts.
+Independent scalar masks/packed-pixel truth cover ROI clipping, class/layout,
+prototype mixing/crop, activation order, overlap, selection, filters, malformed
+heads/budgets, source context, JSON/XML/Save As and exact regeneration. Twelve
+original MIT image-dependent ONNX projects use fixed proposals/templates and
+RGB score/gain arithmetic, with no learned recognition claim. Explicit tiling
+avoids an observed scalar-broadcast importer failure in the fixture.
+
+All **26 installed outcomes** matched (22 passes/four intentional count failures,
+including existing model-contract/semantic regressions); nine packaged/installed
+modules match source. Strict JSON, three asset hashes, local links, 18 original
+text contracts, generated parameters/inventory/coverage, Ruff and repository
+hygiene passed. App refreshed and root README reviewed unchanged. See
+[contracts](instance-segmentation.md) and
+[twelve projects](<../examples/opencv tools/instance_segmentation/README.md>).
+
+Current ML/DNN scope is **17/62 (27.4%)**, overall **243/470 (51.7%)**; core
+remains **173/175 (98.9%)**. This reaches targeted cycle **20/20**; the scheduled
+broad checkpoint follows this implementation publication. Next vision capability:
+keypoint/heatmap decoding (S2-12). Arbitrary export conventions, trained task
+accuracy, accelerators and physical occlusion/pose remain separate qualification.
+
 **Source-grid semantic segmentation (S2-10)** adds `ml.decode_segmentation`
 under OpenCV DNN. Explicit multiclass logits/probabilities, binary foreground
 scores and decoded class IDs use six declared layouts and a single-image batch.
@@ -202,9 +250,9 @@ physical-equipment/accelerator qualification repeated. See
 [contracts](semantic-segmentation.md) and
 [twelve projects](<../examples/opencv tools/semantic_segmentation/README.md>).
 
-Current ML/DNN scope is **16/62 (25.8%)**, overall **242/470 (51.5%)**; core
-remains **173/175 (98.9%)**. Targeted cycle **19/20**. Next: instance segmentation
-(S2-11), followed by the scheduled broad checkpoint after roughly 20 increments.
+At the S2-10 checkpoint ML/DNN reached **16/62 (25.8%)**, overall
+**242/470 (51.5%)**; core remained **173/175 (98.9%)**, targeted cycle **19/20**.
+The next increment above qualifies instance segmentation (S2-11).
 Arbitrary/cropped/multilabel/promptable exports and industrial accuracy remain
 separate qualified capabilities.
 

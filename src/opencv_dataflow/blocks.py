@@ -722,6 +722,7 @@ def builtin_registry():
     from .image_stitching import StitchImagePair
     from .image_tracking import TrackImageParts
     from .image_validity import CheckImageValidity, ReplaceNonfiniteSamples
+    from .instance_segmentation import INSTANCE_BLOCKS
     from .judgments import FinalJudgment
     from .label_measurement import MaskFromLabelCollection, MeasureLabelRegions
     from .laplacian_pyramids import LAPLACIAN_PYRAMID_BLOCKS
@@ -1145,6 +1146,7 @@ def builtin_registry():
         DecodeDetections,
         DecodeRotatedDetections,
         DecodeSegmentation,
+        *INSTANCE_BLOCKS,
         FitFeatureCovariance,
         EvaluateImageFeatures,
         SolveLinearSystem,
