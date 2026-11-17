@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 12 | 10 | 40 | 62 | 19.4% |
+| 2. ML and DNN | 13 | 9 | 40 | 62 | 21.0% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 238 | 42 | 190 | 470 | 50.6% |
+| **Overall** | 239 | 41 | 190 | 470 | 50.9% |
 
 <!-- coverage-summary:end -->
 
@@ -315,8 +315,8 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S2-01 | Single-image ONNX inference | dnn.readNetFromONNX, blobFromImage, Net.setInput, Net.forward | Complete | ml.dnn. Local model load and a reproducible CPU inference fixture. |
 | S2-02 | Named model outputs | Net.getUnconnectedOutLayersNames, Net.forward | Complete | ml.dnn. Select the named outputs and preserve tensor shapes for downstream decoders. |
-| S2-03 | Multi-input inference | Net.setInput by name, typed image/tensor inputs | Complete | ml.image_tensor, ml.make_tensor and ml.dnn_multi qualify up to four complete named float32 inputs with independent image normalization/layout, numeric auxiliaries, declared shape/element bounds and explicit current/reference ticket policies. Primary image context and per-input provenance are retained; shared recipe rules remain enforced. Native CPU pair/gain/NHWC/four-input models, numerical references, nine projects, missing/wrong bindings, cache reset/recovery, output subset/order, JSON/XML/Save As and existing single-input regressions are checked. General typed ONNX signatures, arbitrary exports, image-set batching, accelerators and versioned receipts remain separate work. See [contracts](multi-input-inference.md). |
-| S2-04 | Batched and dynamic-shape image inference | dnn.blobFromImages, backend shape validation | Partial | ml.dnn supports single-image inference. Verify mixed batch sizes, supported dynamic dimensions, result order, and per-image tickets. |
+| S2-03 | Multi-input inference | Net.setInput by name, typed image/tensor inputs | Complete | ml.image_tensor, ml.make_tensor and ml.dnn_multi qualify up to four complete named float32 inputs with independent image normalization/layout, numeric auxiliaries, declared shape/element bounds and explicit current/reference ticket policies. Primary image context and per-input provenance are retained; shared recipe rules remain enforced. Native CPU pair/gain/NHWC/four-input models, numerical references, nine projects, missing/wrong bindings, cache reset/recovery, output subset/order, JSON/XML/Save As and existing single-input regressions are checked. Image-set batching is qualified separately in S2-04; general typed ONNX signatures, arbitrary exports, accelerators and versioned receipts remain separate work. See [contracts](multi-input-inference.md). |
+| S2-04 | Batched and dynamic-shape image inference | dnn.blobFromImages, backend shape validation | Complete | ml.dnn_batch and ml.unpack_inference qualify ordered single-input float32 NCHW image groups, bounded chunking, variable/padded/rejected tails, declared fixed/dynamic shapes and native batch-axis checks. Per-member image/ticket/frame/pyramid/recipe/start-time metadata and independent outcomes survive source/configured-size preparation, selections, result selection and serial downstream decoding. Native RGB/grayscale/fixed-shape controls, changing N/H/W, atomic late-error recovery, resource guards, output selection, JSON/XML/Save As and ten projects have numerical references. General paired-input/typed/ragged export adapters, semantic model ordering, speed claims and accelerators remain outside this baseline. See [contracts](batch-inference.md). |
 | S2-05 | Portable model preprocessing and execution receipt | dnn preprocessing, dnn.getAvailableTargets | Partial | ml.dnn stores input preprocessing and backend settings. Publish a revisioned model/preprocessing contract with fixture results and an explicit fallback report. |
 | S2-06 | Image classification | Tensor softmax and top-K label decoding | Complete | ml.classify. Decode class scores, confidence, and labels. |
 | S2-07 | Image embeddings | Output tensor vectorization and optional normalization | Complete | ml.tensor_vector. Carry a normalized image feature vector to search and matching. |

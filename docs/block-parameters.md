@@ -8507,6 +8507,45 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `fusion` | `true` |  |
 | `max_output_elements` | `1000000` | Total tensor values retained per activation (bounded). |
 
+## Batched ONNX image inference (`ml.dnn_batch`)
+
+ML / DNN inference
+
+Inputs: `images` (any), `masks` (any, optional), `regions` (any, optional).
+
+Input `images` — Ordered image Flow group, for example from Batch serial entries or TIFF pages.
+
+Input `masks` — Optional same-order, same-label mask group; known tickets and grids must match.
+
+Input `regions` — Optional same-order, same-label region group on the corresponding image grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model_path` | `""` | Local ONNX model; relative paths resolve beside the project. |
+| `width` | `224` | Value must be a whole number between 1 and 4096. Configured mode: network width. Source mode uses each source width (up to 4096). |
+| `height` | `224` | Value must be a whole number between 1 and 4096. Configured mode: network height. Source mode uses source height (up to 4096). |
+| `color_format` | `"rgb"` | `rgb`, `bgr`, `gray` Explicit network channel order; this does not rescale source intensity units. |
+| `resize_mode` | `"stretch"` | `stretch`, `letterbox` Stretch axes or retain aspect ratio with centered rounded letterbox padding. |
+| `padding_value` | `0.0` | Value must be a finite number between -3.40282e+38 and 3.40282e+38. Letterbox intensity before normalization. |
+| `scale` | `0.00392156862745098` | Value must be a finite number between -3.40282e+38 and 3.40282e+38. Normalization is (pixel - mean) * scale / std, in chosen channel order. |
+| `mean` | `[0.0, 0.0, 0.0]` | One value per network channel, in original intensity units. |
+| `std` | `[1.0, 1.0, 1.0]` | One strictly positive divisor per network channel. |
+| `input_name` | `"image"` | Exact native model image input name; this block binds one NCHW input. |
+| `output_names` | `[]` | JSON list; empty selects all unconnected output layers. |
+| `engine` | `"auto"` | `auto`, `classic`, `new`, `ort` OpenCV 5 engine. Non-CPU targets require classic. |
+| `backend` | `"opencv"` | `opencv`, `cuda`, `default` Native backend; the selected target must be available on this installation. |
+| `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` Native compute target. Non-CPU execution requires the classic engine. |
+| `fusion` | `true` | Native layer fusion; disabling requires the classic engine. |
+| `max_output_elements` | `1000000` | Value must be a whole number between 1 and 8e+06. Combined retained outputs for the activation, including padding. |
+| `input_shape` | `[-1, 3, -1, -1]` | Declared [N,C,H,W]; -1 permits supported variation, never reshaping. |
+| `batch_size` | `8` | Value must be a whole number between 1 and 64. Maximum rows per native call, preserving group order across chunks. |
+| `tail_policy` | `"variable"` | `variable`, `pad_repeat`, `reject` Variable submits the real tail; Pad repeat copies its last row and discards padded outputs; Reject requires a complete multiple. Padding can affect batch-coupled models. |
+| `spatial_mode` | `"configured"` | `configured`, `source` Configured resizes each image; Source keeps dimensions, requiring one size per group. |
+| `maximum_images` | `64` | Value must be a whole number between 1 and 64. Maximum group entries. No internal waiting or collection of images. |
+| `maximum_image_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. Per-source pixel guard; excludes runtime copies. |
+| `maximum_source_pixels` | `32000000` | Value must be a whole number between 1 and 6.4e+07. Combined source pixel budget checked before image conversion. |
+| `maximum_tensor_elements` | `4000000` | Value must be a whole number between 1 and 8e+06. Prepared N*C*H*W budget per native call, including padding. |
+
 ## Multi-input ONNX inference (`ml.dnn_multi`)
 
 ML / DNN inference
@@ -8761,6 +8800,16 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `t
 | `padding_ratio` | `1.1` | Multiply the detected rectangle dimensions by this ratio. |
 | `maximum_regions` | `64` |  |
 | `draw_overlay` | `true` |  |
+
+## Unpack image inference result (`ml.unpack_inference`)
+
+ML / DNN inference
+
+Inputs: `result` (any).
+
+Input `result` — One result from Select group entry or Unbatch serial entries.
+
+No configurable algorithm parameters.
 
 ## Vector data (`ml.vector_data`)
 

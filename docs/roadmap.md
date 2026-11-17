@@ -43,13 +43,13 @@ The mosaic project was refreshed without changing its images; regeneration now
 runs in a temporary folder, compares normalized project text/exact image bytes,
 and verifies the source collection stays untouched. **100 focused rechecks**
 passed before the clean full rerun above. This closes the twentieth increment
-ending with S1-173. The next targeted cycle is at **15/20**, covering paced file
+ending with S1-173. The next targeted cycle is at **16/20**, covering paced file
 replay (S1-11), bounded live network acquisition (S1-12), media-time sampling
 (S1-110), actual variable/unreliable video timing (S1-123), and whole
 selections through nonlinear correction (S1-69), candidate visible support (S1-61),
 HDR moving-region rejection (S1-150), unordered rotating views (S1-104), and
 explicit camera refinement with reserved observations (S1-147), and review-only
-stabilization border fills (S1-148), and controlled motion-kernel estimation (S1-84), and shared capture-setting negotiation/readback (S1-115), and controlled curved-QR decoding (S1-121), and image detection/decoding (S2-08), and complete named multi-input inference (S2-03).
+stabilization border fills (S1-148), and controlled motion-kernel estimation (S1-84), and shared capture-setting negotiation/readback (S1-115), and controlled curved-QR decoding (S1-121), and image detection/decoding (S2-08), and complete named multi-input inference (S2-03), and ordered batched/dynamic-shape image inference (S2-04).
 
 The previous broad checkpoint was `1e1cccb`: **4,801 passed, 31 skipped** in
 298.51 seconds with the offscreen suite, Python 3.14.3, OpenCV 5.0.0 and contrib
@@ -161,6 +161,48 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+**Ordered batched/dynamic-shape image inference (S2-04)** adds `ml.dnn_batch`
+and `ml.unpack_inference` under OpenCV DNN. Existing ticketed image groups feed
+bounded NCHW calls with declared exact names/axes, independently prepared image
+sizes/colors/normalization, masks/regions and explicit variable/padded/rejected
+tails. Source mode qualifies changing common H/W between activations; configured
+mode resizes mixed source sizes. Native leading output axes must match submitted
+counts, and padding outputs never become acquisitions. Each real row retains
+its source image, ticket/grid/pyramid/companion/recipe/start time and preparation
+maps. Member outcomes stay independent; conflicting recipes still reject.
+Selection or serial unbatching exposes ordinary image/tensor ports to existing
+decoders. Actual signatures key native handle reuse, every call rebinds input,
+late failures publish no partial results, and subsequent valid input recovers.
+
+**121 targeted checks passed** for native CPU auto/classic/new image arithmetic,
+variable N/H/W, fixed native reshaping, output subset/order, tail policies,
+preallocation/cumulative budgets, RGB/uint16/letterbox/selection semantics,
+per-image status/timing/coordinate ownership, failed-input gates, warm failures,
+recipe conflicts, serial downstream execution, JSON/XML/Save As and exact
+regeneration. Existing named multi-input/single-image inference, shared metadata
+and native-reference checks passed. Ten original MIT projects include six valid
+controls and four contained invalid activations. Native 40×24 float32 pooling
+uses an explicit 2e-5 absolute tolerance; 8×8 controls use 2e-6. The shared helper
+can split native arrays before portable row conversion, removing an unnecessary
+full-batch list round trip without claiming a measured performance improvement.
+All **20 installed Debug/Lean batch outcomes** matched (12 pass, eight deliberate
+invalid-input failures), with numerical rows, source ticket/grid ownership and
+serial execution counts verified. Two installed regression spot checks also
+passed: paired multi-input inference and the pinned pretrained YOLOX coffee
+example. Five packaged/installed runtime modules match source bytes. Eleven
+strict JSON files, ten model/image hashes, 833 local links, fourteen original
+text contracts, generated references/counts, Ruff and repository hygiene passed.
+The application was refreshed and root README reviewed unchanged.
+See [contracts](batch-inference.md) and
+[ten projects](<../examples/opencv tools/batch_inference/README.md>).
+
+ML/DNN is **13/62 (21.0%)**, overall **239/470 (50.9%)**; core remains
+**173/175 (98.9%)**. Targeted cycle **16/20**, no broad suite repeated.
+Next: revisioned model/preprocessing/execution receipts (S2-05). This is the
+declared single-input float32 CPU batch baseline, without arbitrary exports,
+paired multi-input batches, model semantic-order guarantees or accelerator
+qualification. Native allocated work and padding effects remain model-dependent.
+
 **Complete named multi-input inference (S2-03)** adds `ml.image_tensor`,
 `ml.make_tensor` and `ml.dnn_multi` under OpenCV DNN. Independent image branches
 share existing preprocessing with explicit NCHW/NHWC, color/units, mean/std,
@@ -196,9 +238,10 @@ references/counts, local links, Ruff and text contracts passed; root README revi
 unchanged and application refreshed. No broad suite, physical synchronization or
 accelerator qualification repeated. See [contracts](multi-input-inference.md) and
 [nine projects](<../examples/opencv tools/multi_input_inference/README.md>).
-ML/DNN is **12/62 (19.4%)**, overall **238/470 (50.6%)**; core remains
-**173/175 (98.9%)**. Targeted cycle **15/20**. Next: batched/dynamic-shape image
-inference (S2-04), then revisioned model/preprocessing/execution receipts (S2-05).
+At that S2-03 checkpoint ML/DNN reached **12/62 (19.4%)**, overall
+**238/470 (50.6%)**; core remained **173/175 (98.9%)**, targeted cycle **15/20**.
+The following increment above qualifies batched/dynamic-shape image inference
+(S2-04); revisioned model/preprocessing/execution receipts (S2-05) remain next.
 This baseline covers declared float32 bindings, not automatic ONNX signature
 discovery, every model input type/operator, arbitrary batch workflows or accelerators.
 

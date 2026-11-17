@@ -288,6 +288,7 @@ BINDINGS = {
     "inspect.thin_mask": "ximgproc.thinning",
     "inspect.watershed": "watershed",
     "ml.decode_detections": "dnn.NMSBoxes",
+    "ml.dnn_batch": "dnn.readNetFromONNX dnn.blobFromImages dnn.Net.setInput dnn.Net.forward",
     "ml.dnn_multi": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward",
     "ml.image_tensor": "resize",
     "ml.dnn": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward",

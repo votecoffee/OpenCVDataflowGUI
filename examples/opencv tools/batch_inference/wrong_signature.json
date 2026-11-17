@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "collect",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_0",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/0.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_1",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/1.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        270
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_2",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/2.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        540
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "infer",
+      "type": "ml.dnn_batch",
+      "name": "Batched ONNX image inference",
+      "parameters": {
+        "model_path": "assets/dynamic.onnx",
+        "width": 8,
+        "height": 8,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "scores"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000,
+        "input_shape": [
+          2,
+          3,
+          8,
+          8
+        ],
+        "batch_size": 2,
+        "tail_policy": "variable",
+        "spatial_mode": "configured",
+        "maximum_images": 64,
+        "maximum_image_pixels": 16777216,
+        "maximum_source_pixels": 32000000,
+        "maximum_tensor_elements": 4000000
+      },
+      "position": [
+        760,
+        0
+      ],
+      "exposed_inputs": [
+        "images",
+        "masks",
+        "regions"
+      ],
+      "exposed_outputs": [
+        "results",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "select",
+      "type": "flow.select_entry",
+      "name": "Select group entry",
+      "parameters": {
+        "index": 1
+      },
+      "position": [
+        1120,
+        0
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "unpack",
+      "type": "ml.unpack_inference",
+      "name": "Unpack image inference result",
+      "parameters": {},
+      "position": [
+        1480,
+        0
+      ],
+      "exposed_inputs": [
+        "result"
+      ],
+      "exposed_outputs": [
+        "image",
+        "tensors",
+        "preprocessing",
+        "index",
+        "label"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "classify",
+      "type": "ml.classify",
+      "name": "Classify DNN tensor",
+      "parameters": {
+        "output_name": "scores",
+        "labels": [
+          "red",
+          "green",
+          "blue"
+        ],
+        "softmax": true,
+        "top_k": 5,
+        "minimum_confidence": 0.0,
+        "accepted_labels": [
+          "green"
+        ]
+      },
+      "position": [
+        1840,
+        0
+      ],
+      "exposed_inputs": [
+        "tensors"
+      ],
+      "exposed_outputs": [
+        "predictions",
+        "label",
+        "confidence"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original batch controls - MIT",
+      "description": "Original MIT images, ONNX arithmetic models, graphs and independent references by OpenCVDataflowGUI contributors. No customer/third-party assets or learned weights. Three captures have distinct tickets and grids. Results retain stored order, source images and per-image preprocessing. Default Select shows green row 1; Grayscale uses one channel and Serial emits all three rows. Variable tail submits 2+1 rows; fixed padding submits 2+2 but returns only 3. Reject-tail, wrong-signature, mixed-source-size and collapsed-output projects intentionally emit no predictions. See README and truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -500
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source_0",
+      "output": "image",
+      "target": "collect",
+      "input": "item_1"
+    },
+    {
+      "source": "source_1",
+      "output": "image",
+      "target": "collect",
+      "input": "item_2"
+    },
+    {
+      "source": "source_2",
+      "output": "image",
+      "target": "collect",
+      "input": "item_3"
+    },
+    {
+      "source": "collect",
+      "output": "group",
+      "target": "infer",
+      "input": "images"
+    },
+    {
+      "source": "infer",
+      "output": "results",
+      "target": "select",
+      "input": "group"
+    },
+    {
+      "source": "select",
+      "output": "value",
+      "target": "unpack",
+      "input": "result"
+    },
+    {
+      "source": "unpack",
+      "output": "tensors",
+      "target": "classify",
+      "input": "tensors"
+    }
+  ]
+}

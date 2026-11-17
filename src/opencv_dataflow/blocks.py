@@ -623,6 +623,7 @@ def builtin_registry():
     from .aruco_markers import DetectArucoMarkers
     from .background_reference import CaptureBackgroundReference, SaveBackgroundReference
     from .basic_processing import BASIC_PROCESSING_BLOCKS
+    from .batch_inference import BATCH_INFERENCE_BLOCKS
     from .blob_detection import SimpleBlobDetection
     from .blur_estimation import EstimateMotionBlur
     from .calibration import (
@@ -1137,6 +1138,7 @@ def builtin_registry():
         ConveyorDemo,
         FinalJudgment,
         *DNN_BLOCKS,
+        *BATCH_INFERENCE_BLOCKS,
         *MULTI_INFERENCE_BLOCKS,
         DecodeDetections,
         FitFeatureCovariance,

@@ -98,10 +98,17 @@ bindings, Current/Reference roles and ticket policies remain explicit. Primary
 input owns result coordinates and optional preprocessing. Shared recipe rules
 still apply. See [contracts](multi-input-inference.md) and
 [nine numerical examples](<../examples/opencv tools/multi_input_inference/README.md>).
-Image-set batching/dynamic-shape qualification and revisioned execution receipts
-remain separate roadmap work.
+Revisioned execution receipts remain separate roadmap work.
 
-Both inference blocks fetch all native terminal outputs once before selecting a
+**Batched ONNX image inference** accepts ordered image groups, chunks them into
+native NCHW calls and preserves a result row for each real image. Declared shapes,
+dynamic source sizes, variable/padded/rejected tails, per-member selections and
+resource limits are explicit. **Unpack image inference result** exposes each
+row's original image, tensors and preprocessing to existing decoders after
+Select group entry or Unbatch. See [contracts](batch-inference.md) and
+[ten numerical projects](<../examples/opencv tools/batch_inference/README.md>).
+
+The inference blocks fetch all native terminal outputs once before selecting a
 requested subset/order, accommodating this OpenCV 5 engine's complete-output
 requirement. Unselected output allocations remain part of native network work.
 

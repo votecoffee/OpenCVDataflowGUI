@@ -100,9 +100,10 @@ physical synchronization. Use [input coordination](input-coordination.md),
 queues or an appropriate shared trigger upstream. A repeated filename or PLC
 value is only as unique as the source's ticket convention. Value matching does not
 merge the ticket ledger; use a shared ticket identity upstream when one ledger
-entry must cover both acquisitions. Batching and dynamic
-image-set inference remain separate S2-04 work; revisioned model/preprocessing
-receipts remain S2-05.
+entry must cover both acquisitions. Ordered single-input image sets now use the
+separate [batch inference adapter](batch-inference.md), including dynamic sizes
+and per-image results. General paired multi-input image batching is outside
+that adapter; revisioned model/preprocessing receipts remain S2-05.
 
 ## Qualification
 

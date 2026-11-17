@@ -5,7 +5,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .images import format_image
-from .ml_common import file_key, local_path, selected_tensor, tensor_record
+from .ml_common import array, file_key, local_path, selected_tensor, tensor_record
 from .parameter_validation import ValidationError
 from .processing import finite, image_value, integer, letterbox_bounds
 from .selection import SELECTION_INPUTS, selection_mask
@@ -137,7 +137,7 @@ class DNNInference(Block):
             message=f"{filename}: {len(tensors)} tensor outputs",
         )
 
-    def infer_tensors(self, inputs, cache_token=()):
+    def infer_tensors(self, inputs, cache_token=(), *, array_outputs=False):
         """Bind every input for this activation; never keep a partially rebound network."""
         p = self.parameters
         try:
@@ -194,7 +194,14 @@ class DNNInference(Block):
             values = [by_name[name] for name in names]
             if sum(v.size for v in values) > limit:
                 raise ValueError("Network output exceeds configured element limit")
-            tensors = {name: tensor_record(value, limit) for name, value in zip(names, values)}
+            # Batch adapters split native rows before making portable records, avoiding
+            # an unnecessary full-batch Python-list conversion and reconstruction.
+            tensors = {
+                name: array(value, "Network output", limit)
+                if array_outputs
+                else tensor_record(value, limit)
+                for name, value in zip(names, values)
+            }
             return tensors, path.name
         except Exception:
             self.reset_runtime()

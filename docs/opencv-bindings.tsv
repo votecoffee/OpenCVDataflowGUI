@@ -483,7 +483,7 @@ P2	method	cv2.DISOpticalFlow.setVariationalRefinementGamma	method name only	-
 P2	method	cv2.DISOpticalFlow.setVariationalRefinementIterations	method name only	-
 P2	function	cv2.DISOpticalFlow_create	no static reference	-
 P2	function	cv2.dnn.blobFromImage	no static reference	-
-P2	function	cv2.dnn.blobFromImages	no static reference	-
+P2	function	cv2.dnn.blobFromImages	literal reference	-
 P2	function	cv2.dnn.blobFromImagesWithParams	no static reference	-
 P2	function	cv2.dnn.blobFromImageWithParams	no static reference	-
 P2	class	cv2.dnn.ClassificationModel	no static reference	-
