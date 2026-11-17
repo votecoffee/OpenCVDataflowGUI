@@ -75,6 +75,11 @@ history intact. It executes trusted configured processing/lifecycle behavior und
 the same output-skipping rules as the validation dialog. Classifier setup and
 denominators are documented in `docs/classifier-evaluation.md` in the source checkout.
 
+Optional set `detection` settings and case `detection_truth` source-box annotations
+use the same command/API, with matching ticket/grid checks, IoU, precision/recall/AP
+and sweeps. Compact responses add `data.detection`; full reports retain matches,
+missed IDs and curves. See `docs/detector-evaluation.md` for exact schemas/semantics.
+
 Store a JSON **list** of operations in an operations file. Duplicate JSON keys and
 nonfinite constants are rejected by the CLI. Explicit IDs make edits and review
 repeatable. Parameters omitted from `add` inherit actual block defaults.

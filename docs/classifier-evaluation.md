@@ -4,7 +4,8 @@ Evaluate one recognized class per image using **Results > Validation image setsâ
 the saved-project API or the command line. The existing validation runner substitutes
 one root image source and processes the declared cases on separate program copies.
 Production counters, previews and learned state in the open job are preserved.
-This is the classifier portion of S2-23; detector IoU matching remains planned.
+This is the classifier portion of S2-23; [detector evaluation](detector-evaluation.md)
+provides its source-box IoU matching and precision/recall/AP counterpart.
 
 ## Build and run a labeled set
 
@@ -134,5 +135,5 @@ Try [the six public projects](<../examples/opencv tools/classifier_evaluation/RE
 They use original, disjoint stripe captures with native HOG/KNN. Independent count
 references, explicit error controls and persistence checks establish software behavior;
 they do not establish inspection accuracy on production parts. Detector one-to-one
-IoU matching, AP/PR, folds/bootstrap confidence and representative dataset qualification
-remain future work.
+IoU matching and AP/PR are now available in the companion detector workflow.
+Folds/bootstrap confidence and representative dataset qualification remain future work.

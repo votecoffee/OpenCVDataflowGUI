@@ -234,21 +234,27 @@ class DNNInference(Block):
                 raise ValueError("Select the classic engine to disable fusion")
             selected = {k: p[k] for k in ("engine", "backend", "target", "fusion")}
             requested = dict(selected)
-            available_targets = [
-                int(t) for t in cv2.dnn.getAvailableTargets(BACKENDS[p["backend"]])
-            ]
+            # OpenCV-backend enumeration probes OpenCL as well as CPU. A first
+            # probe on a transient Windows worker can leave a device whose native
+            # shutdown aborts after the worker exits. CPU inference needs no GPU
+            # discovery; native load/forward still validates the execution path.
+            cpu_only = p["target"] == "cpu" and p["backend"] in ("opencv", "default")
+            available_targets = (
+                [cv2.dnn.DNN_TARGET_CPU]
+                if cpu_only
+                else [int(t) for t in cv2.dnn.getAvailableTargets(BACKENDS[p["backend"]])]
+            )
+            availability_scope = "requested_cpu_only" if cpu_only else "backend_discovery"
             selected_available = available_targets
+            selected_scope = availability_scope
             fallback = None
             if TARGETS[p["target"]] not in available_targets:
                 if p["fallback_policy"] == "error":
                     raise ValueError(
                         f"DNN target {p['target']} is unavailable for backend {p['backend']}"
                     )
-                selected_available = [
-                    int(t) for t in cv2.dnn.getAvailableTargets(cv2.dnn.DNN_BACKEND_OPENCV)
-                ]
-                if cv2.dnn.DNN_TARGET_CPU not in selected_available:
-                    raise ValueError("Requested target and OpenCV CPU fallback are unavailable")
+                selected_available = [cv2.dnn.DNN_TARGET_CPU]
+                selected_scope = "requested_cpu_only"
                 selected.update(engine="classic", backend="opencv", target="cpu")
                 fallback = "requested_target_unavailable"
                 if not self._fallback_reported:
@@ -338,6 +344,8 @@ class DNNInference(Block):
                         "selected_execution": selected,
                         "requested_available_target_ids": available_targets,
                         "selected_available_target_ids": selected_available,
+                        "requested_availability_scope": availability_scope,
+                        "selected_availability_scope": selected_scope,
                         "fallback": fallback,
                         "native_placement_verified": False,
                         "native_placement_note": (

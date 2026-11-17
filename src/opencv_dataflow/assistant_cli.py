@@ -246,6 +246,7 @@ def _dispatch(args):
                 {
                     "summary": report["summary"],
                     "classification": report.get("classification", {}).get("summary"),
+                    "detection": report.get("detection", {}).get("summary"),
                 }
                 if args.summary
                 else report

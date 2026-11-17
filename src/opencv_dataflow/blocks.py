@@ -669,6 +669,7 @@ def builtin_registry():
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
     from .detection_decode import DecodeDetections
+    from .detection_evaluation import EvaluateDetections
     from .differential_exposure import DifferentialExposure
     from .disk_features import DISK_BLOCKS
     from .distortion_fixture import DistortImageFixture
@@ -1183,6 +1184,7 @@ def builtin_registry():
         *KNN_BLOCKS,
         *RTREES_BLOCKS,
         *CLASSIFICATION_EVALUATION_BLOCKS,
+        EvaluateDetections,
         *LIGHTGLUE_BLOCKS,
         *LOCAL_FEATURE_BLOCKS,
         *DISK_BLOCKS,

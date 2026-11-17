@@ -7,8 +7,8 @@ import threading
 import uuid
 from pathlib import Path
 
-from PySide6.QtCore import QThread, Signal
-from PySide6.QtGui import QColor
+from PySide6.QtCore import Qt, QThread, Signal
+from PySide6.QtGui import QColor, QImageReader
 from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -30,6 +30,7 @@ from PySide6.QtWidgets import (
 )
 
 from .classification_evaluation import CLASSIFICATION_DEFAULTS
+from .detection_validation_editor import DetectionReport, DetectionSettings, DetectionTruthEditor
 from .filmstrip import Filmstrip
 from .filmstrip_viewer import FilmstripViewer
 from .validation import EXPECTATIONS, run_set, validate_sets
@@ -119,8 +120,10 @@ class ValidationManager(QDialog):
         image_layout.addLayout(form)
         settings_tabs.addTab(image_settings, "Image set")
         settings_tabs.addTab(self.classification_fields(), "Classifier evaluation")
+        self.detector = DetectionSettings(window.root_graph)
+        settings_tabs.addTab(self.detector, "Detector evaluation")
         edit.addWidget(settings_tabs)
-        self.images = QTableWidget(0, 7)
+        self.images = QTableWidget(0, 8)
         self.images.setHorizontalHeaderLabels(
             [
                 "Image path (project relative)",
@@ -130,6 +133,7 @@ class ValidationManager(QDialog):
                 "Expected class",
                 "Capture group",
                 "Image SHA-256 (optional)",
+                "Object labels (double-click)",
             ]
         )
         self.images.horizontalHeader().setStretchLastSection(True)
@@ -138,6 +142,8 @@ class ValidationManager(QDialog):
         edit.addWidget(self.images)
         self.class_enabled.toggled.connect(self.classification_visibility)
         self.class_advanced.toggled.connect(self.classification_visibility)
+        self.detector.changed.connect(self.classification_visibility)
+        self.images.cellDoubleClicked.connect(self.edit_object_labels)
         self.classification_visibility()
         row = QHBoxLayout()
         for title, callback in (
@@ -183,6 +189,9 @@ class ValidationManager(QDialog):
         class_layout.addWidget(self.class_metrics)
         self.result_tabs.addTab(class_results, "Classifier report")
         self.result_tabs.setTabVisible(1, False)
+        self.detection_report = DetectionReport()
+        self.result_tabs.addTab(self.detection_report, "Detector report")
+        self.result_tabs.setTabVisible(2, False)
         layout.addWidget(self.result_tabs, 2)
         if not self.catalog:
             self.new_set()
@@ -267,9 +276,39 @@ class ValidationManager(QDialog):
         enabled = self.class_enabled.isChecked()
         self.class_options.setEnabled(enabled)
         self.class_extra.setVisible(enabled and self.class_advanced.isChecked())
-        for column in (4, 5):
-            self.images.setColumnHidden(column, not enabled)
-        self.images.setColumnHidden(6, not (enabled and self.class_advanced.isChecked()))
+        detected = self.detector.enabled.isChecked()
+        self.images.setColumnHidden(4, not enabled)
+        self.images.setColumnHidden(5, not (enabled or detected))
+        self.images.setColumnHidden(
+            6,
+            not (
+                (enabled and self.class_advanced.isChecked())
+                or (detected and self.detector.advanced.isChecked())
+            ),
+        )
+        self.images.setColumnHidden(7, not detected)
+
+    def edit_object_labels(self, row, column):
+        if column != 7 or not self.detector.enabled.isChecked():
+            return
+        cell = self.images.item(row, 0)
+        case = copy.deepcopy(cell.data(257) or {})
+        root = Path(self.window.root_graph.project_dir or Path.cwd())
+        size = QImageReader(str(root / cell.text())).size()
+        initial = [size.width(), size.height()] if size.isValid() else [640, 480]
+        dialog = DetectionTruthEditor(self, case.get("detection_truth"), initial)
+        try:
+            if dialog.exec() == QDialog.DialogCode.Accepted:
+                case["detection_truth"] = dialog.result_truth
+                cell.setData(257, case)
+                self.images.item(row, 7).setText(self.object_label_summary(case))
+        finally:
+            dialog.deleteLater()
+
+    @staticmethod
+    def object_label_summary(case):
+        value = case.get("detection_truth")
+        return f"{len(value['objects'])} objects · {value['size']}" if value else "Unlabeled"
 
     def read_set(self):
         if self.current < 0:
@@ -330,6 +369,8 @@ class ValidationManager(QDialog):
                 "score_direction": self.score_direction.currentText(),
                 "thresholds": thresholds,
             }
+        if self.detector.enabled.isChecked():
+            result["detection"] = self.detector.read()
         return result
 
     def stash(self):
@@ -358,6 +399,7 @@ class ValidationManager(QDialog):
             field.setCurrentIndex(found)
         self.state.setCurrentText(item.get("state_mode", "isolated"))
         self.outputs.setChecked(item.get("allow_outputs", False))
+        self.detector.load(item.get("detection"))
         config = {**copy.deepcopy(CLASSIFICATION_DEFAULTS), **item.get("classification", {})}
         self.class_enabled.setChecked("classification" in item)
         self.class_block.setCurrentIndex(self.class_block.findData(config["block"]))
@@ -394,6 +436,12 @@ class ValidationManager(QDialog):
         self.images.setItem(row, 3, QTableWidgetItem(case.get("notes", "")))
         for column, key in ((4, "class_label"), (5, "capture_group"), (6, "image_sha256")):
             self.images.setItem(row, column, QTableWidgetItem(case.get(key) or ""))
+        cell = QTableWidgetItem(self.object_label_summary(case))
+        cell.setFlags(cell.flags() & ~Qt.ItemIsEditable)
+        cell.setToolTip(
+            "Double-click to edit source-image object boxes; empty labeled means negative."
+        )
+        self.images.setItem(row, 7, cell)
 
     def new_set(self):
         self.stash()
@@ -507,6 +555,7 @@ class ValidationManager(QDialog):
             return
         self.report = None
         self.result_tabs.setTabVisible(1, False)
+        self.result_tabs.setTabVisible(2, False)
         self.results.clear()
         self.filmstrip.clear()
         self.worker = ValidationWorker(
@@ -564,6 +613,10 @@ class ValidationManager(QDialog):
                 f"{summary['execution_errors']} execution errors"
             )
             self.show_classification_report(self.report.get("classification"))
+            detected = self.report.get("detection")
+            self.result_tabs.setTabVisible(2, detected is not None)
+            if detected is not None:
+                self.detection_report.show_report(detected)
         self.worker = None
         worker.deleteLater()
         self.editor.setEnabled(True)

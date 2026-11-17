@@ -74,6 +74,7 @@
 | Native neighbor classes, explicit votes/distances and unknown-image rejection | [K-nearest classification](knn-classification.md) |
 | Native forest training, class votes, importance and portable checked trees | [Random forest classification](rtrees-classification.md) |
 | Labeled image sets, grouped splits, confusion matrices and classifier reports | [Classifier evaluation](classifier-evaluation.md) |
+| Labeled boxes, class-aware IoU matches, precision/recall/AP and detector reports | [Detector evaluation](detector-evaluation.md) |
 | Object detection heads, class-aware NMS and source box geometry | [DNN detection](object-detection.md) |
 | Oriented heads, rotated overlap and exact affine source poses | [Rotated detection](rotated-detection.md) |
 | Per-pixel class scores/IDs, source-grid masks and confidence/area decisions | [Semantic segmentation](semantic-segmentation.md) |

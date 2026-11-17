@@ -1,0 +1,182 @@
+{
+  "projects": {
+    "correct": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "support": 3,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "map": 1.0,
+      "ap_classes": 2,
+      "total_images": 2,
+      "labeled_images": 2,
+      "unlabeled_images": 0,
+      "status_counts": {
+        "predicted": 2
+      },
+      "mean_ap_over_iou": 1.0,
+      "passed": true
+    },
+    "duplicates": {
+      "tp": 3,
+      "fp": 1,
+      "fn": 0,
+      "support": 3,
+      "precision": 0.75,
+      "recall": 1.0,
+      "f1": 0.8571428571428571,
+      "map": 0.9166666666666666,
+      "ap_classes": 2,
+      "total_images": 2,
+      "labeled_images": 2,
+      "unlabeled_images": 0,
+      "status_counts": {
+        "predicted": 2
+      },
+      "mean_ap_over_iou": 0.9166666666666666,
+      "passed": false
+    },
+    "low_recall": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 2,
+      "support": 3,
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "f1": 0.5,
+      "map": 0.25,
+      "ap_classes": 2,
+      "total_images": 2,
+      "labeled_images": 2,
+      "unlabeled_images": 0,
+      "status_counts": {
+        "predicted": 2
+      },
+      "mean_ap_over_iou": 0.25,
+      "passed": false
+    },
+    "localization": {
+      "tp": 2,
+      "fp": 1,
+      "fn": 1,
+      "support": 3,
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "map": 0.625,
+      "ap_classes": 2,
+      "total_images": 2,
+      "labeled_images": 2,
+      "unlabeled_images": 0,
+      "status_counts": {
+        "predicted": 2
+      },
+      "mean_ap_over_iou": 0.8125,
+      "passed": false
+    },
+    "wrong_class": {
+      "tp": 2,
+      "fp": 1,
+      "fn": 1,
+      "support": 3,
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "map": 0.5,
+      "ap_classes": 3,
+      "total_images": 2,
+      "labeled_images": 2,
+      "unlabeled_images": 0,
+      "status_counts": {
+        "predicted": 2
+      },
+      "mean_ap_over_iou": 0.5,
+      "passed": false
+    },
+    "negative_false_positives": {
+      "tp": 0,
+      "fp": 3,
+      "fn": 0,
+      "support": 0,
+      "precision": 0.0,
+      "recall": null,
+      "f1": 0.0,
+      "map": null,
+      "ap_classes": 0,
+      "total_images": 2,
+      "labeled_images": 2,
+      "unlabeled_images": 0,
+      "status_counts": {
+        "predicted": 2
+      },
+      "mean_ap_over_iou": null,
+      "passed": false
+    },
+    "decoder_error": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 3,
+      "support": 3,
+      "precision": null,
+      "recall": 0.0,
+      "f1": 0.0,
+      "map": 0.0,
+      "ap_classes": 2,
+      "total_images": 2,
+      "labeled_images": 2,
+      "unlabeled_images": 0,
+      "status_counts": {
+        "error": 2
+      },
+      "mean_ap_over_iou": 0.0,
+      "passed": false
+    }
+  },
+  "asset_sha256": {
+    "color.png": "91083612c31a6f7ebf06016ad46402b5e7212610d97071dc8e5d5f04f2c666d8",
+    "black.png": "91d4f511f54189f345326b7a2b87fd086258768395d3bf402aca0db48c15c8fb",
+    "proposal_heads.onnx": "6ff409f48f7c6cad7fc1e529e48c212c8a84d084390e4aee395e95441fde35df"
+  },
+  "source_truth": {
+    "size": [
+      160,
+      80
+    ],
+    "objects": [
+      {
+        "id": "red-a",
+        "label": "red",
+        "bbox": [
+          25.0,
+          20.0,
+          50.0,
+          20.0
+        ]
+      },
+      {
+        "id": "green-a",
+        "label": "green",
+        "bbox": [
+          25.0,
+          20.0,
+          50.0,
+          20.0
+        ]
+      },
+      {
+        "id": "red-b",
+        "label": "red",
+        "bbox": [
+          100.0,
+          47.5,
+          30.0,
+          15.0
+        ]
+      }
+    ]
+  },
+  "duplicate_expected_red_ap": 0.8333333333333334,
+  "duplicate_expected_map": 0.9166666666666666
+}

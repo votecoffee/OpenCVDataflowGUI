@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "evaluate",
+      "type": "ml.evaluate_detections",
+      "name": "Evaluate image detections",
+      "parameters": {
+        "classes": [
+          "red",
+          "green"
+        ],
+        "iou_threshold": 0.5,
+        "score_threshold": 0.0,
+        "iou_thresholds": [
+          0.5,
+          0.75
+        ],
+        "score_thresholds": [
+          0,
+          0.6,
+          0.75,
+          1
+        ],
+        "ap_interpolation": "all_points",
+        "min_precision": 1.0,
+        "min_recall": 1.0,
+        "records": [
+          {
+            "id": "black",
+            "group": "control-black",
+            "truth": {
+              "size": [
+                160,
+                80
+              ],
+              "objects": []
+            },
+            "size": [
+              160,
+              80
+            ],
+            "status": "predicted",
+            "predictions": []
+          },
+          {
+            "id": "color",
+            "group": "control-color",
+            "truth": {
+              "size": [
+                160,
+                80
+              ],
+              "objects": [
+                {
+                  "id": "green-a",
+                  "label": "green",
+                  "bbox": [
+                    25.0,
+                    20.0,
+                    50.0,
+                    20.0
+                  ]
+                },
+                {
+                  "id": "red-a",
+                  "label": "red",
+                  "bbox": [
+                    25.0,
+                    20.0,
+                    50.0,
+                    20.0
+                  ]
+                },
+                {
+                  "id": "red-b",
+                  "label": "red",
+                  "bbox": [
+                    100.0,
+                    47.5,
+                    30.0,
+                    15.0
+                  ]
+                }
+              ]
+            },
+            "size": [
+              160,
+              80
+            ],
+            "status": "predicted",
+            "predictions": [
+              {
+                "id": "0",
+                "label": "red",
+                "score": 0.7764986753463745,
+                "bbox": [
+                  25.0,
+                  20.0,
+                  50.0,
+                  20.0
+                ]
+              },
+              {
+                "id": "1",
+                "label": "red",
+                "score": 0.6902210712432861,
+                "bbox": [
+                  27.5,
+                  20.0,
+                  50.0,
+                  20.0
+                ]
+              },
+              {
+                "id": "2",
+                "label": "green",
+                "score": 0.6352888345718384,
+                "bbox": [
+                  25.0,
+                  20.0,
+                  50.0,
+                  20.0
+                ]
+              },
+              {
+                "id": "3",
+                "label": "red",
+                "score": 0.5176658034324646,
+                "bbox": [
+                  100.0,
+                  47.5,
+                  30.0,
+                  15.0
+                ]
+              }
+            ]
+          }
+        ],
+        "expected_cases": []
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "records"
+      ],
+      "exposed_outputs": [
+        "report",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original MIT detector evaluation controls",
+      "description": "Original MIT ONNX proposal fixture and images by OpenCVDataflowGUI contributors; copied unchanged from dnn_detection with pinned hashes. Fixed proposal boxes and image-dependent scores, not a trained part detector or accuracy benchmark. Truth comes from declared network geometry and an independent scale calculation. Run Results > Validation image sets > Run image set. Stored actual duplicate-control records. Run once for Report/PR plot. See README.md, SOURCES.md and truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -510
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

@@ -101,6 +101,11 @@ per-class precision/recall/F1, accuracy, coverage and score sweeps. See
 Both ordinary and classifier-enabled sets can run through
 `ProjectSession.run_validation()` or `opencv-dataflow-api run-validation`.
 
+The optional **Detector evaluation** tab adds source-image object labels and
+class-aware IoU matching, precision/recall/AP and score/IoU sweeps. Double-click
+**Object labels** to edit boxes; empty labeled images are negatives and unlabeled
+images are excluded from object metrics. See [detector evaluation](detector-evaluation.md).
+
 Validation runs in a separate worker/program instance, preserving the live job's learned
 runtime state, previews and production totals. Trained assets/configuration and the saved
 default recipe are copied. The chosen source uses immutable image bytes with the original

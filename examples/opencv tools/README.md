@@ -71,3 +71,5 @@ For native HOG training, held-out labels and unknown-image policies, try [K-near
 For native forest weights, feature importance and held-out class votes, try [random forest classification](rtrees_classification/README.md).
 
 For labeled image sets, grouped splits, confusion matrices and explicit wrong/rejected/error controls, try [classifier evaluation](classifier_evaluation/README.md).
+
+For source-box labels, IoU matches, precision/recall/AP and duplicate/miss/error controls, try [detector evaluation](detector_evaluation/README.md).

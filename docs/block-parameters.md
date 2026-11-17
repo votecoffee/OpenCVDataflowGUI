@@ -8870,6 +8870,25 @@ Inputs: `records` (any, optional).
 | `records` | `[]` | Per-image id, expected, prediction, status, optional score/score_kind. Status is predicted/rejected/missing/error. A validation report may be wired directly. |
 | `expected_cases` | `[]` | Full set: id, class_label, capture_group. Missing IDs remain scored. |
 
+## Evaluate image detections (`ml.evaluate_detections`)
+
+ML / Evaluation
+
+Inputs: `records` (any, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `classes` | `[]` | Optional display order. Observed extra labels stay in the report. |
+| `iou_threshold` | `0.5` | Value must be a finite number between 1e-06 and 1. Class-aware score-greedy matching; continuous source XYWH edges. |
+| `score_threshold` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. Keep >= cutoff for precision/recall; AP uses all supplied scores. |
+| `iou_thresholds` | `[0.5, 0.75]` | Up to ten extra IoU cutoffs for separate AP/precision/recall reports. |
+| `score_thresholds` | `[]` | Up to 32 cutoffs; cannot recover detections removed upstream. |
+| `ap_interpolation` | `"all_points"` | `all_points`, `101_points` Envelope area or 101 recall samples. Equal-score points grouped. |
+| `min_precision` | `1.0` | Value must be a finite number between 0 and 1. TP/(TP+FP). Clean negative-only sets pass without numeric precision. |
+| `min_recall` | `1.0` | Value must be a finite number between 0 and 1. Operating TP/ground-truth objects. Missing/error images always fail. |
+| `records` | `[]` | Records: id, size, truth, predictions, status. Accepts reports/groups too. |
+| `expected_cases` | `[]` | Full expected set with detection_truth; absent IDs count as missing. |
+
 ## Image to DNN tensor (`ml.image_tensor`)
 
 ML / Tensor preparation

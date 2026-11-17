@@ -71,6 +71,14 @@ image results or current receipt events.
 
 ## Availability, integrity and scope
 
+CPU requests on the OpenCV/default backend do not enumerate accelerator devices.
+Receipts mark availability scope `requested_cpu_only` and list only CPU; this is
+not a complete device inventory. Native load/forward still validates the selected
+execution path. Explicit accelerator requests retain `backend_discovery`; an
+opt-in CPU fallback does not repeat accelerator discovery. This avoids initializing
+OpenCL devices on a transient worker merely to run CPU inference, which caused a
+native OpenCV shutdown abort on the supported Windows installation.
+
 Opt-in fallback selects OpenCV/classic/CPU, logs a warning and records
 `requested_target_unavailable`. Invalid engine/target combinations still reject;
 import, binding or forward errors do not silently retry. Native internal

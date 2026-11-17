@@ -48,6 +48,10 @@ The optional [classifier evaluation](classifier-evaluation.md) configuration add
 truth/group/hash checks, confusion matrices and per-class metrics. Reports use
 isolated processing copies and preserve the session's production history.
 
+[Detector evaluation](detector-evaluation.md) uses that same API with optional
+source-box truth and detector configuration. Reports include current-ticket/grid
+checks, one-to-one IoU matches, per-class precision/recall/AP and threshold sweeps.
+
 1. Define the acquisition sources, desired detections/measurements, tolerances,
    calibration, final judgment and output consumers. Use the
    [plan template](application-plan-template.md) for substantial applications.

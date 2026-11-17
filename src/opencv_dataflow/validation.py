@@ -21,6 +21,10 @@ from .classification_evaluation import (
     evaluate_classification,
 )
 from .core import Graph, Result
+from .detection_evaluation import (
+    METRICS as DETECTION_METRICS,
+)
+from .detection_evaluation import capture_detections, detection_config, evaluate_detections, truth
 from .fail_reasons import merge_reasons
 from .payloads import NO_VALUE
 
@@ -41,6 +45,7 @@ def validate_sets(sets):
             "allow_outputs",
             "cases",
             "classification",
+            "detection",
         }:
             raise ValueError("Invalid validation set")
         for key in ("id", "name", "source"):
@@ -69,6 +74,7 @@ def validate_sets(sets):
                 "class_label",
                 "capture_group",
                 "image_sha256",
+                "detection_truth",
             }:
                 raise ValueError("Invalid validation image case")
             for key, maximum in (("id", 128), ("path", 4096)):
@@ -85,8 +91,11 @@ def validate_sets(sets):
             if not isinstance(case.get("notes", ""), str) or len(case.get("notes", "")) > 4096:
                 raise ValueError("Validation notes exceed 4096 characters")
             case_metadata(case)
+            truth(case.get("detection_truth"))
         if "classification" in item:
             classification_config(item["classification"], cases)
+        if "detection" in item:
+            detection_config(item["detection"], cases)
         total += len(cases)
     if total > 10000:
         raise ValueError("Validation catalog exceeds 10,000 images")
@@ -121,6 +130,11 @@ def prepare_graph(definition, manifest, registry, project_dir):
     graph.blocks[old.id] = source
     graph.connections = [c for c in graph.connections if c.target != old.id]
     decision = manifest.get("judgment", "")
+    if "detection" in manifest:
+        config = detection_config(manifest["detection"], manifest["cases"])
+        detector = graph.blocks.get(config["block"])
+        if detector is None or config["output"] not in {p.name for p in detector.execution_outputs}:
+            raise ValueError("Choose an existing root detector collection output")
     if "classification" in manifest:
         config = classification_config(manifest["classification"], manifest["cases"])
         predictor = graph.blocks.get(config["block"])
@@ -205,6 +219,11 @@ def run_set(
     classification = (
         classification_config(manifest["classification"], manifest["cases"])
         if "classification" in manifest
+        else None
+    )
+    detection = (
+        detection_config(manifest["detection"], manifest["cases"])
+        if "detection" in manifest
         else None
     )
     try:
@@ -304,6 +323,22 @@ def run_set(
                         "score": None,
                         "error": error_text("; ".join(row["errors"])),
                     }
+            if detection is not None:
+                if executed:
+                    row["detection"] = capture_detections(
+                        graph, detection, case, row.get("ticket"), row["errors"], manifest["source"]
+                    )
+                else:
+                    known = truth(case.get("detection_truth"))
+                    row["detection"] = {
+                        "id": case["id"],
+                        "group": case.get("capture_group", case["id"]),
+                        "truth": known,
+                        "size": None,
+                        "status": "error",
+                        "predictions": [],
+                        "error": error_text("; ".join(row["errors"])),
+                    }
             if case["expectation"] != "unknown":
                 expected = case["expectation"].endswith("_pass")
                 preferred = case.get("preferred_fail_reason", "")
@@ -338,6 +373,18 @@ def run_set(
             report["classification"]["summary"]["passed"] and report["classification"]["complete"]
         )
         report["summary"]["classification_passed"] = bool(passed)
+        report["summary"]["passed"] &= bool(passed)
+    if detection is not None:
+        report["detection"] = evaluate_detections(
+            [row["detection"] for row in report["cases"]],
+            expected_cases=manifest["cases"],
+            **{key: detection[key] for key in DETECTION_METRICS},
+        )
+        report["detection"]["complete"] = (
+            len(report["cases"]) == len(manifest["cases"]) and not report["summary"]["cancelled"]
+        )
+        passed = report["detection"]["summary"]["passed"] and report["detection"]["complete"]
+        report["summary"]["detection_passed"] = bool(passed)
         report["summary"]["passed"] &= bool(passed)
     if report["cleanup_errors"]:
         report["summary"]["passed"] = False
