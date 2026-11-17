@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fringe",
+      "type": "3d.simple_fringe_scan",
+      "name": "SimpleFringeScan",
+      "description": "Retained sequence/calibration. Uniform 95% coverage gate. Rendered controls; camera accuracy remains unqualified.",
+      "parameters": {
+        "recipe_path": "assets/analytic_clean.sfs",
+        "sha256": "13a20df8becee347b2d90154fabc0e2bd8d4068eb7c75db2c283c253f63689b4",
+        "source": "capture manifest",
+        "capture_manifest": "../studies/analytic_clean/capture.json",
+        "minimum_coverage": 0.95,
+        "render_graphics": true
+      },
+      "position": [
+        0,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "capture"
+      ],
+      "exposed_outputs": [
+        "image",
+        "cloud",
+        "maps",
+        "report",
+        "coverage",
+        "count",
+        "metric",
+        "overview"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    }
+  ],
+  "connections": []
+}

@@ -1,0 +1,46 @@
+{
+  "scope": "Actual plugin execution on rendered inputs; no acquired-camera accuracy proof",
+  "plugin_sha256": "233a55cbc4ea4fcc3ebdabe419b99c89ffe8d79d11614731da0470bc9190882d",
+  "cases": [
+    {
+      "case": "analytic_clean",
+      "opened_without_processing": true,
+      "accepted": 6912,
+      "actual_pass": true,
+      "expected_pass": true,
+      "raw_maps_exact": true,
+      "graphics_off_maps_points_report_exact": true,
+      "compiled_model_reused": true,
+      "rgb_result_views": 8,
+      "native_metric_cloud": true,
+      "expected_judgment_matched": true
+    },
+    {
+      "case": "analytic_missing",
+      "opened_without_processing": true,
+      "accepted": 6415,
+      "actual_pass": false,
+      "expected_pass": false,
+      "raw_maps_exact": true,
+      "graphics_off_maps_points_report_exact": true,
+      "compiled_model_reused": true,
+      "rgb_result_views": 8,
+      "native_metric_cloud": true,
+      "expected_judgment_matched": true
+    },
+    {
+      "case": "warsaw_crown_phase",
+      "opened_without_processing": true,
+      "accepted": 56985,
+      "actual_pass": false,
+      "expected_pass": false,
+      "raw_maps_exact": true,
+      "graphics_off_maps_points_report_exact": true,
+      "compiled_model_reused": true,
+      "rgb_result_views": 6,
+      "native_metric_cloud": false,
+      "expected_judgment_matched": true
+    }
+  ],
+  "expected_judgments_matched": true
+}

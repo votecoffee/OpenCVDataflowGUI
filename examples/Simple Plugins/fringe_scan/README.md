@@ -1,67 +1,83 @@
-# SimpleFringeScan initial result reviews
+# SimpleFringeScan setup and execution
 
-These native OpenCVDataflowGUI projects load retained maps and, only for the two
-known-calibration analytic controls, accepted XYZ with colored **fly-around cloud
-thumbnails**. Open a project and run its file sources. No plugin, environment
-installation or hardware is needed for review. File-source PASS means loading
-only; no phase decoding or reconstruction executes in these saved reviews.
+These examples run the estimator through one **SimpleFringeScan** block. Its
+native setup editor retains all reference images, sequence, known calibration
+and inspection mask. Reopening restores the source and fit layers. Metric
+results use colored **fly-around cloud thumbnails**; wrapped phase has image
+results and no XYZ cloud.
 
-| Project | Available result | Scope |
+## Open and run
+
+Explicitly load the bundled `plugin.py` using the host's plugin loader, then
+open an execution project below. No environment installation, network access,
+camera or projector activation is needed. Loading trusted plugins runs Python.
+
+| Execution project | Accepted samples | Expected availability judgment |
 | --- | --- | --- |
-| [Analytic clean](studies/analytic_clean/project.json) | 6,912/6,912 metric samples | Independent rendered tilted-plane ray reference. |
-| [Analytic missing](studies/analytic_missing/project.json) | 6,415/6,912 metric samples | Missing, clipped, dark and weak-phase regions remain gaps. |
-| [External crown phase](studies/warsaw_crown_phase/project.json) | 56,985/559,872 phase pixels, 10.18% | CC BY4 external **simulated** images; phase-only, no metric cloud. |
+| [Analytic clean](execution/analytic_clean.json) | 6,912/6,912 metric points | PASS |
+| [Analytic missing](execution/analytic_missing.json) | 6,415/6,912 metric points | FAIL, 92.81% below 95% |
+| [External crown phase](execution/warsaw_crown_phase.json) | 56,985/559,872 phase pixels | FAIL, 10.18% below 95%; no metric cloud |
 
-Select Overview to see source, cyclic phase, amplitude, sinusoidal fit residual,
-availability and depth where calibrated. Named source-aligned maps support zoom.
-Only accepted finite XYZ rows become cloud points; raw maps preserve rejected
-locations and ray/fit evidence. Camera/projector calibration is always explicit.
-Neither wrapped-phase values nor missing pixels are converted into fake height.
+All three use the same generic fit settings and **95% coverage** gate. The two
+analytic captures share one retained clean training recipe. A coverage failure
+keeps its maps/cloud available for diagnosis. This judgment is availability,
+not accuracy or defect acceptance. Open the block's result list to compare
+source-aligned phase, amplitude, fit, decoded/final quality and calibrated depth.
+Accepted cloud colors run green toward orange as ray gap approaches its limit;
+rejected pixels remain gaps. Phase-only has six review images; metric has eight.
 
-All examples use identical generic decode/phase/geometry settings. The crown has
-many low-signal/poor-fit regions; those remain visible under the defaults. Its
-primary data and exact transformation are retained with
-[dataset attribution](DATASET_CREDITS.md): **Michał Własiuk / Robert Sitnik**, Warsaw
-University of Technology, *Simulated structured light 3D scanner datasets*,
-[Zenodo](https://doi.org/10.5281/zenodo.17826191), **CC BY 4.0**.
+## Teach a new setup
 
-The controls' maximum rendering-reference XYZ discrepancy is about 1.04e-8 m. This
-checks the declared mathematical construction; it is not physical accuracy.
-The external crown's standard-PBRT sRGB-inverse assumption and 3×3 linear-area
-averaging are recorded explicitly, with original RGB/command PNGs and hashes.
+1. Save a project and add SimpleFringeScan. Open **Set up sequence and
+   calibration**. Import an ordered capture manifest, a retained `.sfs`, or
+   capture a private snapshot from the connected stack.
+2. Select a reference frame, zoom/pan and draw or adjust the inspection rectangle.
+   Imported exact masks remain intact until replaced by a rectangle.
+3. Review sequence identity, exposure and fit limits. Review/import known camera
+   and projector intrinsics, distortion and rigid pose in meters. Calibration
+   estimation from images is future work. Phase-only remains explicitly nonmetric.
+4. Preview the reference. Inspect availability/reasons, fit/depth layers and the
+   native cloud. A fresh preview with accepted evidence is required before Stage.
+   Edits clear stale results. Independent manifest/connected previews never
+   replace the saved reference or its health assessment.
+5. **Stage recipe** creates a new sealed source/recipe asset and updates the
+   inspector draft. **Apply** commits it. Cancel preserves applied training.
+   Reopen to restore the retained images, calibration and mask.
+6. Choose **connected capture** or **capture manifest** explicitly for execution.
+   A connected source must match the taught order, grid, exposure and calibration.
+   Runtime never silently falls back to the training images.
 
-## Replay the estimator
+`image` is unpainted wrapped phase in radians. `maps` retains full numeric reasons
+and metric evidence where calibrated; `report` describes availability/identity.
+`cloud` is native accepted XYZ in camera meters with source pixel indices.
+Graphics-off execution removes review rasters/colors while preserving maps,
+accepted points, report and judgment. Unchanged recipes reuse the compiled phase
+basis and calibrated camera rays; each capture is decoded independently.
 
-The standalone package has a CLI. After installation, from this examples folder:
+## Data, scope and verification
+
+The clean/missing controls are analytic rendered tilted planes. The external
+crown frames are **simulated PBRT images**, not acquired-camera evidence.
+Credits: **Michał Własiuk**, **Robert Sitnik**, Warsaw University of Technology,
+*Simulated structured light 3D scanner datasets*, v1.0.0,
+[Zenodo DOI](https://doi.org/10.5281/zenodo.17826191), **CC BY 4.0**. Exact original
+members, hashes and transformations are retained in [DATASET_CREDITS.md](DATASET_CREDITS.md).
+No metric calibration was imported for the crown. Its low coverage remains
+visible; generic settings were not tuned to make it pass.
+
+[E1 file-only reviews](MAP_REVIEWS.md) remain separate from execution. The new
+`verify_execution.py` explicitly loads the plugin, reopens/runs all three
+execution graphs and checks raw-map parity, judgments, caches and native clouds.
+`verify_package.py` replays the CLI from the selected wheel. All numerical
+results are software evidence; acquired-camera accuracy remains unqualified.
+
+From a published examples folder, using the host's Python:
 
 ```powershell
-simple-fringe-scan studies/analytic_missing/capture.json --output new-metric-review
-simple-fringe-scan studies/warsaw_crown_phase/capture.json --output new-phase-review
+python verify_execution.py . --plugin plugin.py --receipt new-execution-checks.json
 ```
 
-Published examples also include a wheel and `run_capture.py` to explicitly select
-that wheel without installing into the host. Use the Python that runs the host:
-
-```powershell
-python run_capture.py --wheel releases/opencv_simple_fringe_scan-0.1.0.dev1-py3-none-any.whl studies/analytic_clean/capture.json --output new-review
-```
-
-Use a new output directory. `--no-graphics` preserves every raw map without PNG
-generation. `maps.npz` keeps source coordinates, NaN gaps and discrete reasons;
-`report.json` separates decoded from metric availability. A metric result exports
-`accepted.ply` in meters with the named physical camera frame. Phase-only exports
-have no PLY, metric XYZ or calibrated depth.
-
-## Rebuild
-
-`fetch_warsaw.py` downloads only 15 pinned members using bounded HTTP ranges and
-verifies member SHA-256 plus ZIP CRC. It checks the primary license and publisher
-archive identity before fetching; no whole-archive checksum claim is made.
-`build_examples.py` rebuilds controls and the external derived phase example into
-a fresh folder. `build_review_projects.py` adds/reopens the native saved reviews
-through the host API. Processing/review never downloads data implicitly.
-
-Retained camera/projector setup, calibration teaching and a host execution plugin
-are next. Acquired physical captures, independent geometry accuracy, projector
-response calibration, motion/coding-error checks and scalable stream processing
-remain open. Phase fit/coverage is not defect acceptance or measurement accuracy.
+See [capture/recipe contract](CAPTURE_CONTRACT.md),
+[validation](E2_VALIDATION.md), [remaining work](FUTURE_WORK.md) and
+[code license](LICENSE). Keep runtime manifest/image folders intact when
+moving a project; retained training assets travel with host Save As.

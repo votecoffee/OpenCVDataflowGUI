@@ -1,0 +1,24 @@
+"""Explicit trusted loader for the bundled SimpleFringeScan wheel; no installation."""
+
+import hashlib
+import sys
+from pathlib import Path
+
+NAME = "@WHEEL@"
+WHEEL = Path(__file__).resolve().parent / "releases" / NAME
+EXPECTED = "@SHA256@"
+if WHEEL.stat().st_size > 2 * 1024 * 1024 or (
+    hashlib.sha256(WHEEL.read_bytes()).hexdigest() != EXPECTED
+):
+    raise RuntimeError("Bundled SimpleFringeScan wheel checksum/size differs")
+if str(WHEEL) not in sys.path:
+    sys.path.insert(0, str(WHEEL))
+
+import opencv_simple_fringe_scan  # noqa: E402
+
+if not str(opencv_simple_fringe_scan.__file__).startswith(str(WHEEL)):
+    raise RuntimeError("Another fringe-tool version is loaded; restart and load this plugin first")
+
+from opencv_simple_fringe_scan.dataflow import register  # noqa: E402
+
+__all__ = ["register"]

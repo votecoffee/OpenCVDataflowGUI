@@ -1,0 +1,47 @@
+[
+  {
+    "case": "analytic_clean",
+    "training": "analytic_clean",
+    "expected_pass": true,
+    "actual_pass": true,
+    "accepted": 6912,
+    "coverage": 1.0,
+    "minimum_coverage": 0.95,
+    "metric": true,
+    "standalone_maps_exact": true,
+    "graphics_off_maps_exact": true,
+    "compiled_model_reused": true,
+    "saved_reopened": true,
+    "expected_judgment_matched": true
+  },
+  {
+    "case": "analytic_missing",
+    "training": "analytic_clean",
+    "expected_pass": false,
+    "actual_pass": false,
+    "accepted": 6415,
+    "coverage": 0.9280960648148148,
+    "minimum_coverage": 0.95,
+    "metric": true,
+    "standalone_maps_exact": true,
+    "graphics_off_maps_exact": true,
+    "compiled_model_reused": true,
+    "saved_reopened": true,
+    "expected_judgment_matched": true
+  },
+  {
+    "case": "warsaw_crown_phase",
+    "training": "warsaw_crown_phase",
+    "expected_pass": false,
+    "actual_pass": false,
+    "accepted": 56985,
+    "coverage": 0.10178219307270234,
+    "minimum_coverage": 0.95,
+    "metric": false,
+    "standalone_maps_exact": true,
+    "graphics_off_maps_exact": true,
+    "compiled_model_reused": true,
+    "saved_reopened": true,
+    "expected_judgment_matched": true
+  }
+]

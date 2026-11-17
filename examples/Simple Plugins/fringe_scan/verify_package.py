@@ -19,7 +19,9 @@ def verify(wheel, studies, source=None):
             for name in archive.namelist()
             if name.startswith("opencv_simple_fringe_scan/") and name.endswith(".py")
         }
-        assert len(modules) == 7
+        assert {"__init__", "patterns", "phase", "decode", "geometry", "cli", "render"} <= {
+            Path(name).stem for name in modules
+        }
         assert any(name.endswith("/LICENSE") for name in archive.namelist())
         entry = next(name for name in archive.namelist() if name.endswith("/entry_points.txt"))
         assert b"simple-fringe-scan = opencv_simple_fringe_scan.cli:main" in archive.read(entry)
