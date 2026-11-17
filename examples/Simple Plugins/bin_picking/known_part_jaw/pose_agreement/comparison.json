@@ -1,0 +1,3088 @@
+{
+  "model": "pose_agreement_study_v1",
+  "settings": {
+    "model_samples": 40000,
+    "sample_seed": 27,
+    "tile_pixels": 16,
+    "boundary_pixels": 2,
+    "iterations": 30,
+    "correspondence_tolerances": 5.0,
+    "retained_fraction": 0.75,
+    "translation_tolerances": 3.0,
+    "translation_diagonal": 0.05,
+    "maximum_rotation_degrees": 10.0
+  },
+  "cases": [
+    {
+      "scene": 2,
+      "frame": 3,
+      "object_id": 6,
+      "model": "cad",
+      "annotation_pose": [
+        [
+          0.8791272253471225,
+          0.47650812796191455,
+          0.008679034491317699,
+          -0.08526493987000001
+        ],
+        [
+          0.4589360986469511,
+          -0.8415169479231567,
+          -0.285003304747175,
+          -0.024908051780000003
+        ],
+        [
+          -0.12850283659198175,
+          0.254537286746612,
+          -0.9584872407306668,
+          0.77235824095
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          0.8645215655374807,
+          0.5022425369275101,
+          -0.018838705402496336,
+          -0.08551509953432894
+        ],
+        [
+          0.4738985334427577,
+          -0.8270707211101931,
+          -0.3022816605139457,
+          -0.024087613678229057
+        ],
+        [
+          -0.1673996497052096,
+          0.2524013795185826,
+          -0.9530324763069145,
+          0.7752381489747358
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 3748,
+        "translation_change_m": 0.0030049240868001564,
+        "rotation_change_degrees": 2.5339497517608964,
+        "translation_bound_m": 0.009000000000000001,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.2484375,
+          "contradiction": 0.349609375,
+          "samples": 7680,
+          "known_samples": 7599,
+          "supported_samples": 1908
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.0921875,
+          "contradiction": 0.13255208333333332,
+          "samples": 7680,
+          "known_samples": 2598,
+          "supported_samples": 708
+        },
+        "heldout_known_support": 0.27251732101616627,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2639,
+          "known_rays": 2626,
+          "supported_rays": 940,
+          "contradiction_rays": 1334,
+          "occluded_rays": 352,
+          "unknown_rays": 13,
+          "expected_ray_support": 0.3561955286093217,
+          "heldout_known_rays": 1072,
+          "heldout_known_ray_support": 0.37779850746268656,
+          "normal_residual_p05_p50_p95_m": [
+            -0.010273637680477465,
+            -0.002303207479316613,
+            0.0027879257724463006
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.42857142857142855,
+          "contradiction": 0.14402173913043478,
+          "samples": 7728,
+          "known_samples": 7654,
+          "supported_samples": 3312
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.1652432712215321,
+          "contradiction": 0.04412525879917184,
+          "samples": 7728,
+          "known_samples": 2541,
+          "supported_samples": 1277
+        },
+        "heldout_known_support": 0.5025580480125935,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2616,
+          "known_rays": 2603,
+          "supported_rays": 1602,
+          "contradiction_rays": 514,
+          "occluded_rays": 487,
+          "unknown_rays": 13,
+          "expected_ray_support": 0.6123853211009175,
+          "heldout_known_rays": 1072,
+          "heldout_known_ray_support": 0.6856343283582089,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0058710323280088276,
+            -0.00014314928887987046,
+            0.0038641115121173576
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 2,
+      "frame": 3,
+      "object_id": 6,
+      "model": "reconst",
+      "annotation_pose": [
+        [
+          0.8791272253471225,
+          0.47650812796191455,
+          0.008679034491317699,
+          -0.08526493987000001
+        ],
+        [
+          0.4589360986469511,
+          -0.8415169479231567,
+          -0.285003304747175,
+          -0.024908051780000003
+        ],
+        [
+          -0.12850283659198175,
+          0.254537286746612,
+          -0.9584872407306668,
+          0.77235824095
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          0.8524297304944817,
+          0.5219282271243928,
+          -0.030894664586188635,
+          -0.08517046374831547
+        ],
+        [
+          0.4935886389441972,
+          -0.8228179093643638,
+          -0.2816752448023652,
+          -0.025072065890578213
+        ],
+        [
+          -0.1724349444698488,
+          0.22485909757011308,
+          -0.9590122919783847,
+          0.7752031329929702
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 4462,
+        "translation_change_m": 0.0028511817027667653,
+        "rotation_change_degrees": 3.7827397940999843,
+        "translation_bound_m": 0.009000000000000001,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.2187617732010549,
+          "contradiction": 0.3963330403114404,
+          "samples": 7963,
+          "known_samples": 7875,
+          "supported_samples": 1742
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.0694461886223785,
+          "contradiction": 0.14554816024111517,
+          "samples": 7963,
+          "known_samples": 2712,
+          "supported_samples": 553
+        },
+        "heldout_known_support": 0.2039085545722714,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2597,
+          "known_rays": 2584,
+          "supported_rays": 837,
+          "contradiction_rays": 1491,
+          "occluded_rays": 256,
+          "unknown_rays": 13,
+          "expected_ray_support": 0.3222949557181363,
+          "heldout_known_rays": 1072,
+          "heldout_known_ray_support": 0.31343283582089554,
+          "normal_residual_p05_p50_p95_m": [
+            -0.006595577838634615,
+            -0.0025866349635504044,
+            0.0018692165309825918
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.4671739971623888,
+          "contradiction": 0.11298852057268154,
+          "samples": 7753,
+          "known_samples": 7662,
+          "supported_samples": 3622
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.18702437766026053,
+          "contradiction": 0.030052882755062557,
+          "samples": 7753,
+          "known_samples": 2675,
+          "supported_samples": 1450
+        },
+        "heldout_known_support": 0.5420560747663551,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2532,
+          "known_rays": 2519,
+          "supported_rays": 1756,
+          "contradiction_rays": 411,
+          "occluded_rays": 352,
+          "unknown_rays": 13,
+          "expected_ray_support": 0.693522906793049,
+          "heldout_known_rays": 1072,
+          "heldout_known_ray_support": 0.7882462686567164,
+          "normal_residual_p05_p50_p95_m": [
+            -0.003888001434237922,
+            -0.000577338725347145,
+            0.0027126177798783425
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 2,
+      "frame": 13,
+      "object_id": 6,
+      "model": "cad",
+      "annotation_pose": [
+        [
+          0.20638003167178814,
+          0.9784422504566416,
+          0.007618730110429752,
+          -0.03303962683
+        ],
+        [
+          0.9373236555353787,
+          -0.1954607447185455,
+          -0.2884778363199974,
+          -0.06978034692
+        ],
+        [
+          -0.2807697407146063,
+          0.06667728095397481,
+          -0.9574562616138855,
+          0.78628778032
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          0.18337429066858335,
+          0.9830430156281201,
+          -0.0005467600624008006,
+          -0.03405376019084643
+        ],
+        [
+          0.9351994827316334,
+          -0.17462103027286613,
+          -0.30807373027398527,
+          -0.06813152012685317
+        ],
+        [
+          -0.30294520464975105,
+          0.055981472035080866,
+          -0.9513623272804668,
+          0.7882515579352108
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 2593,
+        "translation_change_m": 0.0027574478760955144,
+        "rotation_change_degrees": 1.8492338962091484,
+        "translation_bound_m": 0.009000000000000001,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.289151225343694,
+          "contradiction": 0.21682606096832038,
+          "samples": 6692,
+          "known_samples": 5845,
+          "supported_samples": 1935
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.11237298266586969,
+          "contradiction": 0.07396891811117752,
+          "samples": 6692,
+          "known_samples": 1991,
+          "supported_samples": 752
+        },
+        "heldout_known_support": 0.37769964841788045,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2269,
+          "known_rays": 1955,
+          "supported_rays": 963,
+          "contradiction_rays": 743,
+          "occluded_rays": 249,
+          "unknown_rays": 314,
+          "expected_ray_support": 0.4244160423093874,
+          "heldout_known_rays": 806,
+          "heldout_known_ray_support": 0.5831265508684863,
+          "normal_residual_p05_p50_p95_m": [
+            -0.007641396147373269,
+            -0.001744100168132311,
+            0.0032809231278698252
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.4106573553969941,
+          "contradiction": 0.08850766661606194,
+          "samples": 6587,
+          "known_samples": 5719,
+          "supported_samples": 2705
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.1636556854410202,
+          "contradiction": 0.018824958251100653,
+          "samples": 6587,
+          "known_samples": 1921,
+          "supported_samples": 1078
+        },
+        "heldout_known_support": 0.5611660593440916,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2253,
+          "known_rays": 1939,
+          "supported_rays": 1358,
+          "contradiction_rays": 275,
+          "occluded_rays": 306,
+          "unknown_rays": 314,
+          "expected_ray_support": 0.6027518863737239,
+          "heldout_known_rays": 801,
+          "heldout_known_ray_support": 0.8014981273408239,
+          "normal_residual_p05_p50_p95_m": [
+            -0.004689513999634793,
+            1.61145370645761e-05,
+            0.0034233648299186333
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 2,
+      "frame": 13,
+      "object_id": 6,
+      "model": "reconst",
+      "annotation_pose": [
+        [
+          0.20638003167178814,
+          0.9784422504566416,
+          0.007618730110429752,
+          -0.03303962683
+        ],
+        [
+          0.9373236555353787,
+          -0.1954607447185455,
+          -0.2884778363199974,
+          -0.06978034692
+        ],
+        [
+          -0.2807697407146063,
+          0.06667728095397481,
+          -0.9574562616138855,
+          0.78628778032
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          0.20059910826478533,
+          0.9795363325525436,
+          -0.016388135125301538,
+          -0.03343229368088224
+        ],
+        [
+          0.9295184811749476,
+          -0.1955865179257704,
+          -0.3126360618353083,
+          -0.06848262780603723
+        ],
+        [
+          -0.3094436797182829,
+          0.0474814407446171,
+          -0.949731605174443,
+          0.7881625256577305
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 2919,
+        "translation_change_m": 0.0023136404724736766,
+        "rotation_change_degrees": 2.0281852771774034,
+        "translation_bound_m": 0.009000000000000001,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.2978605168102251,
+          "contradiction": 0.21158655181994998,
+          "samples": 7198,
+          "known_samples": 6369,
+          "supported_samples": 2144
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.11197554876354543,
+          "contradiction": 0.06474020561267019,
+          "samples": 7198,
+          "known_samples": 2122,
+          "supported_samples": 806
+        },
+        "heldout_known_support": 0.37983034872761545,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2306,
+          "known_rays": 1992,
+          "supported_rays": 1063,
+          "contradiction_rays": 736,
+          "occluded_rays": 193,
+          "unknown_rays": 314,
+          "expected_ray_support": 0.46097137901127494,
+          "heldout_known_rays": 806,
+          "heldout_known_ray_support": 0.6017369727047146,
+          "normal_residual_p05_p50_p95_m": [
+            -0.005157969990712027,
+            -0.0015993134079541537,
+            0.0021463529547633463
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.4578749477788609,
+          "contradiction": 0.04790419161676647,
+          "samples": 7181,
+          "known_samples": 6322,
+          "supported_samples": 3288
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.17239938727196769,
+          "contradiction": 0.006266536694053753,
+          "samples": 7181,
+          "known_samples": 2096,
+          "supported_samples": 1238
+        },
+        "heldout_known_support": 0.5906488549618321,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2292,
+          "known_rays": 1978,
+          "supported_rays": 1579,
+          "contradiction_rays": 169,
+          "occluded_rays": 230,
+          "unknown_rays": 314,
+          "expected_ray_support": 0.6889179755671903,
+          "heldout_known_rays": 796,
+          "heldout_known_ray_support": 0.9020100502512562,
+          "normal_residual_p05_p50_p95_m": [
+            -0.002741137135431266,
+            -0.0001299491519912162,
+            0.0023752713987245876
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 2,
+      "frame": 24,
+      "object_id": 6,
+      "model": "cad",
+      "annotation_pose": [
+        [
+          -0.683921931726909,
+          0.7294797928418022,
+          0.010489191504388084,
+          0.043115302560000006
+        ],
+        [
+          0.696151351704829,
+          0.6568407186187184,
+          -0.28971290251555276,
+          -0.055988071980000005
+        ],
+        [
+          -0.21822943619611415,
+          -0.19083894309057592,
+          -0.9570561169427831,
+          0.78292419834
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          -0.6635982754888572,
+          0.7480690747132951,
+          0.005476150637920313,
+          0.04395268906829374
+        ],
+        [
+          0.7087164371393769,
+          0.6309990993292446,
+          -0.31553311771373466,
+          -0.054986550064323236
+        ],
+        [
+          -0.2394960135298337,
+          -0.20550619480511162,
+          -0.9488987635148657,
+          0.7819316719641536
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 3409,
+        "translation_change_m": 0.0016399301566237955,
+        "rotation_change_degrees": 2.2229037391785043,
+        "translation_bound_m": 0.009000000000000001,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.3675632701735789,
+          "contradiction": 0.09818470915595601,
+          "samples": 7547,
+          "known_samples": 7539,
+          "supported_samples": 2774
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.14363323174771433,
+          "contradiction": 0.027428117132635484,
+          "samples": 7547,
+          "known_samples": 2329,
+          "supported_samples": 1084
+        },
+        "heldout_known_support": 0.4654358093602404,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2520,
+          "known_rays": 2518,
+          "supported_rays": 1359,
+          "contradiction_rays": 382,
+          "occluded_rays": 777,
+          "unknown_rays": 2,
+          "expected_ray_support": 0.5392857142857143,
+          "heldout_known_rays": 989,
+          "heldout_known_ray_support": 0.6370070778564206,
+          "normal_residual_p05_p50_p95_m": [
+            -0.00556004244481104,
+            0.0005455141608369395,
+            0.005905714152005889
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.40229885057471265,
+          "contradiction": 0.14615987460815047,
+          "samples": 7656,
+          "known_samples": 7645,
+          "supported_samples": 3080
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.15086206896551724,
+          "contradiction": 0.03735632183908046,
+          "samples": 7656,
+          "known_samples": 2343,
+          "supported_samples": 1155
+        },
+        "heldout_known_support": 0.49295774647887325,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2565,
+          "known_rays": 2563,
+          "supported_rays": 1483,
+          "contradiction_rays": 495,
+          "occluded_rays": 585,
+          "unknown_rays": 2,
+          "expected_ray_support": 0.5781676413255361,
+          "heldout_known_rays": 988,
+          "heldout_known_ray_support": 0.6690283400809717,
+          "normal_residual_p05_p50_p95_m": [
+            -0.005844308694240612,
+            -0.00012763862411648694,
+            0.004777801922511223
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 2,
+      "frame": 24,
+      "object_id": 6,
+      "model": "reconst",
+      "annotation_pose": [
+        [
+          -0.683921931726909,
+          0.7294797928418022,
+          0.010489191504388084,
+          0.043115302560000006
+        ],
+        [
+          0.696151351704829,
+          0.6568407186187184,
+          -0.28971290251555276,
+          -0.055988071980000005
+        ],
+        [
+          -0.21822943619611415,
+          -0.19083894309057592,
+          -0.9570561169427831,
+          0.78292419834
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          -0.6905915755524521,
+          0.7222619999721795,
+          0.0376945509612302,
+          0.04370030409364631
+        ],
+        [
+          0.6887256621755311,
+          0.6726462997733553,
+          -0.2705622251203771,
+          -0.055147838496202646
+        ],
+        [
+          -0.22077191405805632,
+          -0.1608867887596759,
+          -0.9619642421450714,
+          0.7805822129304381
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 4616,
+        "translation_change_m": 0.0025559958451186883,
+        "rotation_change_degrees": 1.9997584380656022,
+        "translation_bound_m": 0.009000000000000001,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.4420474853203983,
+          "contradiction": 0.055271891753893285,
+          "samples": 7834,
+          "known_samples": 7821,
+          "supported_samples": 3463
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.18100587184069442,
+          "contradiction": 0.010467194281337758,
+          "samples": 7834,
+          "known_samples": 2433,
+          "supported_samples": 1418
+        },
+        "heldout_known_support": 0.5828195643238799,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2483,
+          "known_rays": 2481,
+          "supported_rays": 1685,
+          "contradiction_rays": 212,
+          "occluded_rays": 584,
+          "unknown_rays": 2,
+          "expected_ray_support": 0.6786145791381394,
+          "heldout_known_rays": 989,
+          "heldout_known_ray_support": 0.8200202224469161,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0031113026319440516,
+            0.0005567258508535607,
+            0.004573219142244397
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.38147423352902804,
+          "contradiction": 0.17116764514024788,
+          "samples": 7665,
+          "known_samples": 7649,
+          "supported_samples": 2924
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.1355512067840835,
+          "contradiction": 0.05792563600782779,
+          "samples": 7665,
+          "known_samples": 2365,
+          "supported_samples": 1039
+        },
+        "heldout_known_support": 0.43932346723044396,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2467,
+          "known_rays": 2465,
+          "supported_rays": 1464,
+          "contradiction_rays": 683,
+          "occluded_rays": 318,
+          "unknown_rays": 2,
+          "expected_ray_support": 0.5934333198216457,
+          "heldout_known_rays": 988,
+          "heldout_known_ray_support": 0.6690283400809717,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0046473918720545335,
+            -0.0011030137617254023,
+            0.0027232087008403007
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 2,
+      "frame": 255,
+      "object_id": 6,
+      "model": "cad",
+      "annotation_pose": [
+        [
+          -0.8991938896157317,
+          -0.43720263197970594,
+          0.017441544305170614,
+          0.06958572335
+        ],
+        [
+          -0.3081817065584848,
+          0.6045330003372213,
+          -0.7345501257545174,
+          -0.00025958694
+        ],
+        [
+          0.31060325919157966,
+          -0.6658781495839126,
+          -0.6783302332096617,
+          0.75310601404
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          -0.9022095371205416,
+          -0.43050602194138404,
+          0.026125011022820138,
+          0.06966561725461451
+        ],
+        [
+          -0.3072818603798026,
+          0.5991014934020056,
+          -0.7393613858493113,
+          0.0012474673326906447
+        ],
+        [
+          0.30264799588014035,
+          -0.6750866356814442,
+          -0.6728017723773052,
+          0.7495473932163632
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 4630,
+        "translation_change_m": 0.003865407841774398,
+        "rotation_change_degrees": 0.7702525018277632,
+        "translation_bound_m": 0.009000000000000001,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.2071366405570061,
+          "contradiction": 0.015121845082680592,
+          "samples": 9192,
+          "known_samples": 9192,
+          "supported_samples": 1904
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.07865535248041776,
+          "contradiction": 0.0026109660574412533,
+          "samples": 9192,
+          "known_samples": 3229,
+          "supported_samples": 723
+        },
+        "heldout_known_support": 0.22390833075255498,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 3271,
+          "known_rays": 3271,
+          "supported_rays": 993,
+          "contradiction_rays": 104,
+          "occluded_rays": 2174,
+          "unknown_rays": 0,
+          "expected_ray_support": 0.30357688780189546,
+          "heldout_known_rays": 1386,
+          "heldout_known_ray_support": 0.33766233766233766,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0007746675856520465,
+            0.002733056058204093,
+            0.005835666392476251
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.6010244115082825,
+          "contradiction": 0.03694420226678291,
+          "samples": 9176,
+          "known_samples": 9176,
+          "supported_samples": 5515
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.21392763731473408,
+          "contradiction": 0.013731473408892764,
+          "samples": 9176,
+          "known_samples": 3173,
+          "supported_samples": 1963
+        },
+        "heldout_known_support": 0.618657421998109,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 3298,
+          "known_rays": 3298,
+          "supported_rays": 2678,
+          "contradiction_rays": 235,
+          "occluded_rays": 385,
+          "unknown_rays": 0,
+          "expected_ray_support": 0.8120072771376592,
+          "heldout_known_rays": 1386,
+          "heldout_known_ray_support": 0.8484848484848485,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0021669621103841386,
+            5.330622181476055e-05,
+            0.0028109394807899497
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 2,
+      "frame": 255,
+      "object_id": 6,
+      "model": "reconst",
+      "annotation_pose": [
+        [
+          -0.8991938896157317,
+          -0.43720263197970594,
+          0.017441544305170614,
+          0.06958572335
+        ],
+        [
+          -0.3081817065584848,
+          0.6045330003372213,
+          -0.7345501257545174,
+          -0.00025958694
+        ],
+        [
+          0.31060325919157966,
+          -0.6658781495839126,
+          -0.6783302332096617,
+          0.75310601404
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          -0.8965565877772563,
+          -0.4412276555903604,
+          0.03878712228868426,
+          0.07061900044461925
+        ],
+        [
+          -0.32889277512251686,
+          0.6045176834423088,
+          -0.7255259560331071,
+          -0.0006067125256393287
+        ],
+        [
+          0.29667461533709377,
+          -0.6632318797734162,
+          -0.6871008996259635,
+          0.748728808123048
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 4955,
+        "translation_change_m": 0.004510885652049929,
+        "rotation_change_degrees": 1.4422017319014764,
+        "translation_bound_m": 0.009000000000000001,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.21832529592284086,
+          "contradiction": 0.0076720736519070585,
+          "samples": 9124,
+          "known_samples": 9124,
+          "supported_samples": 1992
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.08844804910127137,
+          "contradiction": 0.002082419991231916,
+          "samples": 9124,
+          "known_samples": 3322,
+          "supported_samples": 807
+        },
+        "heldout_known_support": 0.24292594822396146,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 3132,
+          "known_rays": 3132,
+          "supported_rays": 1165,
+          "contradiction_rays": 47,
+          "occluded_rays": 1920,
+          "unknown_rays": 0,
+          "expected_ray_support": 0.3719667943805875,
+          "heldout_known_rays": 1384,
+          "heldout_known_ray_support": 0.4111271676300578,
+          "normal_residual_p05_p50_p95_m": [
+            2.2749077260336495e-06,
+            0.0023958754472894646,
+            0.005802832772850073
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.5517429789094088,
+          "contradiction": 0.06884493497978363,
+          "samples": 9151,
+          "known_samples": 9151,
+          "supported_samples": 5049
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.22314501147415583,
+          "contradiction": 0.019342148399082066,
+          "samples": 9151,
+          "known_samples": 3369,
+          "supported_samples": 2042
+        },
+        "heldout_known_support": 0.6061145740575838,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 3184,
+          "known_rays": 3184,
+          "supported_rays": 2436,
+          "contradiction_rays": 414,
+          "occluded_rays": 334,
+          "unknown_rays": 0,
+          "expected_ray_support": 0.7650753768844221,
+          "heldout_known_rays": 1379,
+          "heldout_known_ray_support": 0.8353879622915156,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0033323591918692982,
+            -0.00022840093847049809,
+            0.002576660722954001
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 2,
+      "frame": 494,
+      "object_id": 6,
+      "model": "cad",
+      "annotation_pose": [
+        [
+          0.7702043719013675,
+          -0.6372489685907309,
+          0.02643818325961541,
+          -0.06578673468
+        ],
+        [
+          -0.11840430595786432,
+          -0.1835939978298856,
+          -0.9758451026118212,
+          -0.02933276969
+        ],
+        [
+          0.626710176903691,
+          0.7484697695905219,
+          -0.2168579216317788,
+          0.73527236708
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          0.8060481119757354,
+          -0.591779086412484,
+          -0.009162645096138034,
+          -0.06385945801573654
+        ],
+        [
+          -0.12862755121721045,
+          -0.16004718823049455,
+          -0.9786929296808964,
+          -0.02951199783414614
+        ],
+        [
+          0.5777035522205277,
+          0.7900521567746767,
+          -0.20512482864701123,
+          0.7361598215848252
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 4866,
+        "translation_change_m": 0.002129341110861073,
+        "rotation_change_degrees": 3.9610815267401924,
+        "translation_bound_m": 0.009000000000000001,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.4159628880694659,
+          "contradiction": 0.193410253360295,
+          "samples": 8407,
+          "known_samples": 8230,
+          "supported_samples": 3497
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.16058046865707148,
+          "contradiction": 0.06744379683597003,
+          "samples": 8407,
+          "known_samples": 3032,
+          "supported_samples": 1350
+        },
+        "heldout_known_support": 0.44525065963060684,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 3001,
+          "known_rays": 2956,
+          "supported_rays": 1860,
+          "contradiction_rays": 911,
+          "occluded_rays": 185,
+          "unknown_rays": 45,
+          "expected_ray_support": 0.6197934021992669,
+          "heldout_known_rays": 1283,
+          "heldout_known_ray_support": 0.6804364770070148,
+          "normal_residual_p05_p50_p95_m": [
+            -0.006104244099016611,
+            -0.0012253148817139938,
+            0.0021336020971379705
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.4750830564784053,
+          "contradiction": 0.12458471760797342,
+          "samples": 8428,
+          "known_samples": 8263,
+          "supported_samples": 4004
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.19352159468438537,
+          "contradiction": 0.03274798291409587,
+          "samples": 8428,
+          "known_samples": 3085,
+          "supported_samples": 1631
+        },
+        "heldout_known_support": 0.5286871961102106,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2998,
+          "known_rays": 2956,
+          "supported_rays": 2108,
+          "contradiction_rays": 602,
+          "occluded_rays": 246,
+          "unknown_rays": 42,
+          "expected_ray_support": 0.7031354236157439,
+          "heldout_known_rays": 1275,
+          "heldout_known_ray_support": 0.7819607843137255,
+          "normal_residual_p05_p50_p95_m": [
+            -0.006005218809727883,
+            -0.0011017071182503936,
+            0.0027474288775521617
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 2,
+      "frame": 494,
+      "object_id": 6,
+      "model": "reconst",
+      "annotation_pose": [
+        [
+          0.7702043719013675,
+          -0.6372489685907309,
+          0.02643818325961541,
+          -0.06578673468
+        ],
+        [
+          -0.11840430595786432,
+          -0.1835939978298856,
+          -0.9758451026118212,
+          -0.02933276969
+        ],
+        [
+          0.626710176903691,
+          0.7484697695905219,
+          -0.2168579216317788,
+          0.73527236708
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          0.8074914361053396,
+          -0.5896996590955448,
+          -0.01455653389837006,
+          -0.06503922815330432
+        ],
+        [
+          -0.13585994847013852,
+          -0.16190964965447877,
+          -0.9774084815216488,
+          -0.030485442754523157
+        ],
+        [
+          0.5740206050467419,
+          0.7912266283507916,
+          -0.2108572208163865,
+          0.7376898305435737
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 4249,
+        "translation_change_m": 0.002780566632692662,
+        "rotation_change_degrees": 4.201454992970437,
+        "translation_bound_m": 0.009000000000000001,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.3360665478312537,
+          "contradiction": 0.2638146167557932,
+          "samples": 8415,
+          "known_samples": 8255,
+          "supported_samples": 2828
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.12346999405822935,
+          "contradiction": 0.10160427807486631,
+          "samples": 8415,
+          "known_samples": 3101,
+          "supported_samples": 1039
+        },
+        "heldout_known_support": 0.3350532086423734,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2956,
+          "known_rays": 2911,
+          "supported_rays": 1465,
+          "contradiction_rays": 1309,
+          "occluded_rays": 137,
+          "unknown_rays": 45,
+          "expected_ray_support": 0.4956021650879567,
+          "heldout_known_rays": 1279,
+          "heldout_known_ray_support": 0.5222830336200156,
+          "normal_residual_p05_p50_p95_m": [
+            -0.005149224645361692,
+            -0.0019673372699835997,
+            0.001052236877639803
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.5548831138008782,
+          "contradiction": 0.05980776076895693,
+          "samples": 8427,
+          "known_samples": 8261,
+          "supported_samples": 4676
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.21882045805150113,
+          "contradiction": 0.01162928681618607,
+          "samples": 8427,
+          "known_samples": 3077,
+          "supported_samples": 1844
+        },
+        "heldout_known_support": 0.5992850178745531,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 2939,
+          "known_rays": 2895,
+          "supported_rays": 2423,
+          "contradiction_rays": 254,
+          "occluded_rays": 218,
+          "unknown_rays": 44,
+          "expected_ray_support": 0.8244300782579108,
+          "heldout_known_rays": 1273,
+          "heldout_known_ray_support": 0.9065200314218381,
+          "normal_residual_p05_p50_p95_m": [
+            -0.00393574714833188,
+            -0.00023989279188082294,
+            0.002162754588243279
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 3,
+      "frame": 5,
+      "object_id": 8,
+      "model": "cad",
+      "annotation_pose": [
+        [
+          0.9472614789012264,
+          -0.0070495502957497605,
+          -0.3203841357347309,
+          0.04028032132
+        ],
+        [
+          -0.30543397932081595,
+          0.28270239254175783,
+          -0.9092796277974217,
+          -0.0281932448
+        ],
+        [
+          0.09698337417369024,
+          0.9591817664508611,
+          0.2656399142487675,
+          0.74937473577
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          0.9545197089590385,
+          0.031940546490334065,
+          -0.29643199337900616,
+          0.04199656585351956
+        ],
+        [
+          -0.28824597910998595,
+          0.35296728137760014,
+          -0.8901282794091153,
+          -0.022185223384185753
+        ],
+        [
+          0.0761996111255026,
+          0.9350903163688551,
+          0.34612096078902393,
+          0.747816969771477
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 1568,
+        "translation_change_m": 0.00643960026227348,
+        "rotation_change_degrees": 5.002353706120936,
+        "translation_bound_m": 0.011104064033013271,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.15371496366602402,
+          "contradiction": 0.055909832418804685,
+          "samples": 13486,
+          "known_samples": 9873,
+          "supported_samples": 2073
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.05813436156013644,
+          "contradiction": 0.01616491176034406,
+          "samples": 13486,
+          "known_samples": 3447,
+          "supported_samples": 784
+        },
+        "heldout_known_support": 0.22744415433710474,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 8269,
+          "known_rays": 6760,
+          "supported_rays": 4414,
+          "contradiction_rays": 1243,
+          "occluded_rays": 1103,
+          "unknown_rays": 1509,
+          "expected_ray_support": 0.5338009432821381,
+          "heldout_known_rays": 2755,
+          "heldout_known_ray_support": 0.7491833030852995,
+          "normal_residual_p05_p50_p95_m": [
+            -0.004200262653959284,
+            -0.0009542535933967998,
+            0.004758489698084109
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.15215352427674772,
+          "contradiction": 0.17408556381213477,
+          "samples": 13861,
+          "known_samples": 10269,
+          "supported_samples": 2109
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.05122285549383161,
+          "contradiction": 0.021427025467138015,
+          "samples": 13861,
+          "known_samples": 2892,
+          "supported_samples": 710
+        },
+        "heldout_known_support": 0.24550484094052558,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 8838,
+          "known_rays": 7334,
+          "supported_rays": 4144,
+          "contradiction_rays": 2452,
+          "occluded_rays": 738,
+          "unknown_rays": 1504,
+          "expected_ray_support": 0.4688843629780493,
+          "heldout_known_rays": 2663,
+          "heldout_known_ray_support": 0.7033420953811491,
+          "normal_residual_p05_p50_p95_m": [
+            -0.011387189659063214,
+            -0.001185728123640427,
+            0.0034390532060347835
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 3,
+      "frame": 5,
+      "object_id": 8,
+      "model": "reconst",
+      "annotation_pose": [
+        [
+          0.9472614789012264,
+          -0.0070495502957497605,
+          -0.3203841357347309,
+          0.04028032132
+        ],
+        [
+          -0.30543397932081595,
+          0.28270239254175783,
+          -0.9092796277974217,
+          -0.0281932448
+        ],
+        [
+          0.09698337417369024,
+          0.9591817664508611,
+          0.2656399142487675,
+          0.74937473577
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          0.9498167722179818,
+          0.01773774464410564,
+          -0.3123034928212536,
+          0.04169975916669772
+        ],
+        [
+          -0.30240832565779713,
+          0.3073526529017341,
+          -0.9022657875189072,
+          -0.026291592688022652
+        ],
+        [
+          0.0799831468889667,
+          0.9514303543450813,
+          0.29729274637052844,
+          0.7485494338943083
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 1830,
+        "translation_change_m": 0.00251241074302075,
+        "rotation_change_degrees": 2.106552638390543,
+        "translation_bound_m": 0.011074025830962262,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.2586405529953917,
+          "contradiction": 0.0419786866359447,
+          "samples": 13888,
+          "known_samples": 10368,
+          "supported_samples": 3592
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.0986463133640553,
+          "contradiction": 0.011592741935483871,
+          "samples": 13888,
+          "known_samples": 3754,
+          "supported_samples": 1370
+        },
+        "heldout_known_support": 0.3649440596696857,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 7931,
+          "known_rays": 6463,
+          "supported_rays": 5270,
+          "contradiction_rays": 312,
+          "occluded_rays": 881,
+          "unknown_rays": 1468,
+          "expected_ray_support": 0.6644811499180431,
+          "heldout_known_rays": 2719,
+          "heldout_known_ray_support": 0.8837808017653549,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0021717352179138065,
+            0.00024386565278145228,
+            0.003637033774831482
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.2727594256207116,
+          "contradiction": 0.08643983872108651,
+          "samples": 14137,
+          "known_samples": 10739,
+          "supported_samples": 3856
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.10285067553229114,
+          "contradiction": 0.009832354813609676,
+          "samples": 14137,
+          "known_samples": 3690,
+          "supported_samples": 1454
+        },
+        "heldout_known_support": 0.3940379403794038,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 8129,
+          "known_rays": 6650,
+          "supported_rays": 5519,
+          "contradiction_rays": 631,
+          "occluded_rays": 500,
+          "unknown_rays": 1479,
+          "expected_ray_support": 0.6789272973305449,
+          "heldout_known_rays": 2687,
+          "heldout_known_ray_support": 0.9278005210271678,
+          "normal_residual_p05_p50_p95_m": [
+            -0.004309547627481425,
+            -0.00013971567428145917,
+            0.0022151520638393784
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 3,
+      "frame": 10,
+      "object_id": 8,
+      "model": "cad",
+      "annotation_pose": [
+        [
+          0.9939128823510182,
+          -0.0060528722198279995,
+          0.11000247740202052,
+          0.04745418048
+        ],
+        [
+          0.10717060683132379,
+          0.28448185937318493,
+          -0.9526723113006812,
+          -0.0064571758
+        ],
+        [
+          -0.025527305539311825,
+          0.95866231511699,
+          0.28339887481505016,
+          0.74284632411
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          0.9906198588753248,
+          0.005075663807828704,
+          0.13655230806815932,
+          0.04857333660547726
+        ],
+        [
+          0.12766611616064108,
+          0.32191778178824754,
+          -0.9381206236689353,
+          -0.003061515621838667
+        ],
+        [
+          -0.04872020100830136,
+          0.9467540226507856,
+          0.31825015727924866,
+          0.7413593182127414
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 1707,
+        "translation_change_m": 0.0038722351448776653,
+        "rotation_change_degrees": 2.7975730195020425,
+        "translation_bound_m": 0.011104064033013271,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.15388110564180235,
+          "contradiction": 0.0436198409693298,
+          "samples": 13205,
+          "known_samples": 9375,
+          "supported_samples": 2032
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.05755395683453238,
+          "contradiction": 0.013252555850056797,
+          "samples": 13205,
+          "known_samples": 3280,
+          "supported_samples": 760
+        },
+        "heldout_known_support": 0.23170731707317074,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 8450,
+          "known_rays": 6726,
+          "supported_rays": 4455,
+          "contradiction_rays": 1219,
+          "occluded_rays": 1052,
+          "unknown_rays": 1724,
+          "expected_ray_support": 0.5272189349112426,
+          "heldout_known_rays": 2857,
+          "heldout_known_ray_support": 0.7399369968498425,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0045991359569547184,
+            -0.0007274543526032799,
+            0.004138302562582696
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.15144517282479142,
+          "contradiction": 0.1066746126340882,
+          "samples": 13424,
+          "known_samples": 9490,
+          "supported_samples": 2033
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.056093563766388556,
+          "contradiction": 0.021156138259833136,
+          "samples": 13424,
+          "known_samples": 3162,
+          "supported_samples": 753
+        },
+        "heldout_known_support": 0.2381404174573055,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 8724,
+          "known_rays": 6969,
+          "supported_rays": 4135,
+          "contradiction_rays": 2128,
+          "occluded_rays": 706,
+          "unknown_rays": 1755,
+          "expected_ray_support": 0.47397982576799635,
+          "heldout_known_rays": 2820,
+          "heldout_known_ray_support": 0.6783687943262411,
+          "normal_residual_p05_p50_p95_m": [
+            -0.005963109029036169,
+            -0.0013898817253917423,
+            0.003043836351248989
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 3,
+      "frame": 10,
+      "object_id": 8,
+      "model": "reconst",
+      "annotation_pose": [
+        [
+          0.9939128823510182,
+          -0.0060528722198279995,
+          0.11000247740202052,
+          0.04745418048
+        ],
+        [
+          0.10717060683132379,
+          0.28448185937318493,
+          -0.9526723113006812,
+          -0.0064571758
+        ],
+        [
+          -0.025527305539311825,
+          0.95866231511699,
+          0.28339887481505016,
+          0.74284632411
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          0.9932191103687924,
+          0.014843751070482126,
+          0.11530594890283147,
+          0.04964405043236435
+        ],
+        [
+          0.10693314979739046,
+          0.27254217828688554,
+          -0.9561830695682961,
+          -0.006141978648508455
+        ],
+        [
+          -0.045619077945895266,
+          0.9620293260128808,
+          0.26910681079929766,
+          0.7420351776331718
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 2156,
+        "translation_change_m": 0.0023564461079021723,
+        "rotation_change_degrees": 1.4263991055683143,
+        "translation_bound_m": 0.011074025830962262,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.2499106185198427,
+          "contradiction": 0.030532713621737578,
+          "samples": 13985,
+          "known_samples": 10142,
+          "supported_samples": 3495
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.1023239184840901,
+          "contradiction": 0.00736503396496246,
+          "samples": 13985,
+          "known_samples": 3791,
+          "supported_samples": 1431
+        },
+        "heldout_known_support": 0.37747296227908206,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 8163,
+          "known_rays": 6493,
+          "supported_rays": 5281,
+          "contradiction_rays": 304,
+          "occluded_rays": 908,
+          "unknown_rays": 1670,
+          "expected_ray_support": 0.6469435256645841,
+          "heldout_known_rays": 2802,
+          "heldout_known_ray_support": 0.8797287651677373,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0022188300694716712,
+            0.0006342592818451611,
+            0.003435225651948119
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.2724471515585812,
+          "contradiction": 0.03031171623074167,
+          "samples": 13955,
+          "known_samples": 10039,
+          "supported_samples": 3802
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.10211393765675385,
+          "contradiction": 0.006019347903977069,
+          "samples": 13955,
+          "known_samples": 3663,
+          "supported_samples": 1425
+        },
+        "heldout_known_support": 0.389025389025389,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 8086,
+          "known_rays": 6425,
+          "supported_rays": 5658,
+          "contradiction_rays": 288,
+          "occluded_rays": 479,
+          "unknown_rays": 1661,
+          "expected_ray_support": 0.6997279248083107,
+          "heldout_known_rays": 2751,
+          "heldout_known_ray_support": 0.9360232642675391,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0021752564788426725,
+            -0.00011547614453509166,
+            0.0023514963310257535
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 3,
+      "frame": 16,
+      "object_id": 8,
+      "model": "cad",
+      "annotation_pose": [
+        [
+          0.8056817162227736,
+          -0.007101257739981997,
+          0.5923061237931245,
+          0.04270042514
+        ],
+        [
+          0.569028664913523,
+          0.28708510181383545,
+          -0.7705767468742315,
+          0.02042097807
+        ],
+        [
+          -0.16457019976611628,
+          0.9578787587450986,
+          0.2353400367423493,
+          0.7345339679
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          0.8050308604808387,
+          0.0077450485770739165,
+          0.5931823732175623,
+          0.043540768380267325
+        ],
+        [
+          0.5657259822957185,
+          0.2909261789166834,
+          -0.7715672824689255,
+          0.02368179892874305
+        ],
+        [
+          -0.17854810732411805,
+          0.9567141540938323,
+          0.22982297693550663,
+          0.7339240949464142
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 1584,
+        "translation_change_m": 0.0034221447154952787,
+        "rotation_change_degrees": 0.8833892148335956,
+        "translation_bound_m": 0.011104064033013271,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.15691890262285196,
+          "contradiction": 0.08177570093457943,
+          "samples": 13268,
+          "known_samples": 10381,
+          "supported_samples": 2082
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.06097377148025324,
+          "contradiction": 0.02833886041603859,
+          "samples": 13268,
+          "known_samples": 3709,
+          "supported_samples": 809
+        },
+        "heldout_known_support": 0.21811809112968455,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 8269,
+          "known_rays": 7150,
+          "supported_rays": 4708,
+          "contradiction_rays": 1476,
+          "occluded_rays": 966,
+          "unknown_rays": 1119,
+          "expected_ray_support": 0.5693554238722941,
+          "heldout_known_rays": 3099,
+          "heldout_known_ray_support": 0.7202323330106486,
+          "normal_residual_p05_p50_p95_m": [
+            -0.005138521931385212,
+            -0.0006638286039276195,
+            0.0038308435613209793
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.17264710354264862,
+          "contradiction": 0.09419188079671582,
+          "samples": 13154,
+          "known_samples": 10146,
+          "supported_samples": 2271
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.062338452181845826,
+          "contradiction": 0.024099133343469668,
+          "samples": 13154,
+          "known_samples": 3533,
+          "supported_samples": 820
+        },
+        "heldout_known_support": 0.23209736767619588,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 8200,
+          "known_rays": 7081,
+          "supported_rays": 5220,
+          "contradiction_rays": 1136,
+          "occluded_rays": 725,
+          "unknown_rays": 1119,
+          "expected_ray_support": 0.6365853658536585,
+          "heldout_known_rays": 3034,
+          "heldout_known_ray_support": 0.7953197099538563,
+          "normal_residual_p05_p50_p95_m": [
+            -0.004849004456439115,
+            -0.0007664190885847661,
+            0.004093226261681156
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 3,
+      "frame": 16,
+      "object_id": 8,
+      "model": "reconst",
+      "annotation_pose": [
+        [
+          0.8056817162227736,
+          -0.007101257739981997,
+          0.5923061237931245,
+          0.04270042514
+        ],
+        [
+          0.569028664913523,
+          0.28708510181383545,
+          -0.7705767468742315,
+          0.02042097807
+        ],
+        [
+          -0.16457019976611628,
+          0.9578787587450986,
+          0.2353400367423493,
+          0.7345339679
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          0.8127932521738885,
+          0.031972892451448055,
+          0.5816741900487608,
+          0.04463619859008162
+        ],
+        [
+          0.5542505562432076,
+          0.26499666544027994,
+          -0.7890393451594334,
+          0.02056309470814463
+        ],
+        [
+          -0.17936959085834078,
+          0.9637190988321341,
+          0.19766650809252145,
+          0.7339503032321713
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 2107,
+        "translation_change_m": 0.0020268400117794453,
+        "rotation_change_degrees": 2.6907055530569286,
+        "translation_bound_m": 0.011074025830962262,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.2577903682719547,
+          "contradiction": 0.07481659039732694,
+          "samples": 13767,
+          "known_samples": 10897,
+          "supported_samples": 3549
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.10285465242972325,
+          "contradiction": 0.02680322510350839,
+          "samples": 13767,
+          "known_samples": 4029,
+          "supported_samples": 1416
+        },
+        "heldout_known_support": 0.351451973194341,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 7933,
+          "known_rays": 6826,
+          "supported_rays": 5502,
+          "contradiction_rays": 646,
+          "occluded_rays": 678,
+          "unknown_rays": 1107,
+          "expected_ray_support": 0.6935585528803732,
+          "heldout_known_rays": 3057,
+          "heldout_known_ray_support": 0.8694798822374877,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0032154797620921466,
+            0.000610612314499717,
+            0.002749968073902236
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.27749740240463117,
+          "contradiction": 0.042452130028202466,
+          "samples": 13474,
+          "known_samples": 10466,
+          "supported_samples": 3739
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.10791153332343774,
+          "contradiction": 0.019815941813863737,
+          "samples": 13474,
+          "known_samples": 3887,
+          "supported_samples": 1454
+        },
+        "heldout_known_support": 0.3740674041677386,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 7642,
+          "known_rays": 6565,
+          "supported_rays": 5836,
+          "contradiction_rays": 310,
+          "occluded_rays": 419,
+          "unknown_rays": 1077,
+          "expected_ray_support": 0.7636744307772835,
+          "heldout_known_rays": 2966,
+          "heldout_known_ray_support": 0.9241402562373567,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0022870273832042167,
+            0.00011285021586184305,
+            0.0022647488121013614
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 3,
+      "frame": 261,
+      "object_id": 8,
+      "model": "cad",
+      "annotation_pose": [
+        [
+          -0.9997180883263687,
+          -0.015465043122803127,
+          0.018016001617463244,
+          -0.061485056290000006
+        ],
+        [
+          0.0008841629761810712,
+          0.7340083630481115,
+          0.6791398539559165,
+          -0.03314969179
+        ],
+        [
+          -0.023726822983749233,
+          0.6789643255846672,
+          -0.7337877639034706,
+          0.74918541564
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          -0.9999819684839626,
+          -0.0034756822218030203,
+          -0.004897176740981211,
+          -0.060971218557354934
+        ],
+        [
+          -0.005857011788886675,
+          0.7445395798577897,
+          0.6675526267179916,
+          -0.03066798436327413
+        ],
+        [
+          0.001325941116417859,
+          0.6675692725540011,
+          -0.7445465117921628,
+          0.7494129870947788
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 3397,
+        "translation_change_m": 0.0025445411638223324,
+        "rotation_change_degrees": 1.7344733689780072,
+        "translation_bound_m": 0.011104064033013271,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.18437628371901957,
+          "contradiction": 0.12638641654114746,
+          "samples": 14606,
+          "known_samples": 14606,
+          "supported_samples": 2693
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.07175133506778036,
+          "contradiction": 0.04785704504997946,
+          "samples": 14606,
+          "known_samples": 5591,
+          "supported_samples": 1048
+        },
+        "heldout_known_support": 0.1874441065998927,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 11127,
+          "known_rays": 11127,
+          "supported_rays": 4905,
+          "contradiction_rays": 3728,
+          "occluded_rays": 2494,
+          "unknown_rays": 0,
+          "expected_ray_support": 0.44081962793205715,
+          "heldout_known_rays": 4725,
+          "heldout_known_ray_support": 0.4708994708994709,
+          "normal_residual_p05_p50_p95_m": [
+            -0.004564100165821473,
+            -0.0006545570995052652,
+            0.00974269772731522
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.2944148572989212,
+          "contradiction": 0.052505803632391095,
+          "samples": 14646,
+          "known_samples": 14645,
+          "supported_samples": 4312
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.10924484500887614,
+          "contradiction": 0.018025399426464563,
+          "samples": 14646,
+          "known_samples": 5421,
+          "supported_samples": 1600
+        },
+        "heldout_known_support": 0.2951484965873455,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 11172,
+          "known_rays": 11172,
+          "supported_rays": 8097,
+          "contradiction_rays": 1574,
+          "occluded_rays": 1501,
+          "unknown_rays": 0,
+          "expected_ray_support": 0.7247583243823845,
+          "heldout_known_rays": 4642,
+          "heldout_known_ray_support": 0.7641102972856527,
+          "normal_residual_p05_p50_p95_m": [
+            -0.0031705804024088507,
+            -0.0002919264331171736,
+            0.0048064481165768155
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 3,
+      "frame": 261,
+      "object_id": 8,
+      "model": "reconst",
+      "annotation_pose": [
+        [
+          -0.9997180883263687,
+          -0.015465043122803127,
+          0.018016001617463244,
+          -0.061485056290000006
+        ],
+        [
+          0.0008841629761810712,
+          0.7340083630481115,
+          0.6791398539559165,
+          -0.03314969179
+        ],
+        [
+          -0.023726822983749233,
+          0.6789643255846672,
+          -0.7337877639034706,
+          0.74918541564
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          -0.9999685655934323,
+          -0.006630534936342042,
+          -0.0043478536625994445,
+          -0.06095764485706724
+        ],
+        [
+          -0.00784083184817701,
+          0.7454169420369825,
+          0.6665524014510509,
+          -0.031607336531404844
+        ],
+        [
+          -0.0011786352031247069,
+          0.6665655395613339,
+          -0.7454454992072631,
+          0.7490031369817519
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 5343,
+        "translation_change_m": 0.0016401975711959295,
+        "rotation_change_degrees": 1.690545078921534,
+        "translation_bound_m": 0.011074025830962262,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.39188176803105634,
+          "contradiction": 0.07587005380371858,
+          "samples": 14683,
+          "known_samples": 14683,
+          "supported_samples": 5754
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.15282980317373834,
+          "contradiction": 0.029489886263025268,
+          "samples": 14683,
+          "known_samples": 5536,
+          "supported_samples": 2244
+        },
+        "heldout_known_support": 0.40534682080924855,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 10473,
+          "known_rays": 10473,
+          "supported_rays": 6532,
+          "contradiction_rays": 1918,
+          "occluded_rays": 2023,
+          "unknown_rays": 0,
+          "expected_ray_support": 0.623699035615392,
+          "heldout_known_rays": 4537,
+          "heldout_known_ray_support": 0.6610094776283888,
+          "normal_residual_p05_p50_p95_m": [
+            -0.003730527173823918,
+            -0.00019990977211029317,
+            0.007109880395145512
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.4817035775127768,
+          "contradiction": 0.035502555366269166,
+          "samples": 14675,
+          "known_samples": 14675,
+          "supported_samples": 7069
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.18098807495741057,
+          "contradiction": 0.010766609880749574,
+          "samples": 14675,
+          "known_samples": 5341,
+          "supported_samples": 2656
+        },
+        "heldout_known_support": 0.4972851525931474,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 10484,
+          "known_rays": 10484,
+          "supported_rays": 8190,
+          "contradiction_rays": 930,
+          "occluded_rays": 1364,
+          "unknown_rays": 0,
+          "expected_ray_support": 0.7811903853491033,
+          "heldout_known_rays": 4477,
+          "heldout_known_ray_support": 0.8313602859057404,
+          "normal_residual_p05_p50_p95_m": [
+            -0.00285348615909458,
+            -0.00028164278983013914,
+            0.004878768023612082
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 3,
+      "frame": 493,
+      "object_id": 8,
+      "model": "cad",
+      "annotation_pose": [
+        [
+          -0.20517583267659098,
+          -0.026464482006092527,
+          -0.9783672668674155,
+          -0.027225320490000003
+        ],
+        [
+          -0.21855540606085846,
+          0.9756308170501046,
+          0.019443335714821274,
+          -0.07649819494
+        ],
+        [
+          0.9540106981407709,
+          0.21781675788215943,
+          -0.20595982088423023,
+          0.8389746949100001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          -0.19037285450150598,
+          -0.04771467955217974,
+          -0.9805516231306648,
+          -0.0296907744803965
+        ],
+        [
+          -0.22543325873751796,
+          0.9742518115477331,
+          -0.0036405426715786227,
+          -0.07440914442638832
+        ],
+        [
+          0.9554779024780908,
+          0.22035588726238536,
+          -0.19622757406866942,
+          0.8373953597395618
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 1190,
+        "translation_change_m": 0.0035967895417672907,
+        "rotation_change_degrees": 1.4946052394073446,
+        "translation_bound_m": 0.011104064033013271,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.09346685741535526,
+          "contradiction": 0.048927038626609444,
+          "samples": 10485,
+          "known_samples": 8528,
+          "supported_samples": 980
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.03195040534096328,
+          "contradiction": 0.015546018121125417,
+          "samples": 10485,
+          "known_samples": 2304,
+          "supported_samples": 335
+        },
+        "heldout_known_support": 0.14539930555555555,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 4427,
+          "known_rays": 3748,
+          "supported_rays": 1686,
+          "contradiction_rays": 711,
+          "occluded_rays": 1351,
+          "unknown_rays": 679,
+          "expected_ray_support": 0.380844815902417,
+          "heldout_known_rays": 1202,
+          "heldout_known_ray_support": 0.5823627287853578,
+          "normal_residual_p05_p50_p95_m": [
+            -0.008234095306001764,
+            0.00020338247941276258,
+            0.06534638741382957
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.07121009367233798,
+          "contradiction": 0.08917988912253871,
+          "samples": 10462,
+          "known_samples": 8559,
+          "supported_samples": 745
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.022366660294398776,
+          "contradiction": 0.03144714203785127,
+          "samples": 10462,
+          "known_samples": 2281,
+          "supported_samples": 234
+        },
+        "heldout_known_support": 0.10258658483121438,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 4358,
+          "known_rays": 3678,
+          "supported_rays": 1185,
+          "contradiction_rays": 1407,
+          "occluded_rays": 1086,
+          "unknown_rays": 680,
+          "expected_ray_support": 0.27191372189077556,
+          "heldout_known_rays": 1148,
+          "heldout_known_ray_support": 0.37369337979094075,
+          "normal_residual_p05_p50_p95_m": [
+            -0.009381014353389172,
+            -0.0013523222291485508,
+            0.06571901004230775
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    },
+    {
+      "scene": 3,
+      "frame": 493,
+      "object_id": 8,
+      "model": "reconst",
+      "annotation_pose": [
+        [
+          -0.20517583267659098,
+          -0.026464482006092527,
+          -0.9783672668674155,
+          -0.027225320490000003
+        ],
+        [
+          -0.21855540606085846,
+          0.9756308170501046,
+          0.019443335714821274,
+          -0.07649819494
+        ],
+        [
+          0.9540106981407709,
+          0.21781675788215943,
+          -0.20595982088423023,
+          0.8389746949100001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "research_pose": [
+        [
+          -0.14056356402800207,
+          -0.02352524201429764,
+          -0.9897921233551592,
+          -0.0231096420398964
+        ],
+        [
+          -0.1997092023882168,
+          0.9798420807739023,
+          0.00507259560104315,
+          -0.07390953175599899
+        ],
+        [
+          0.9697206396427829,
+          0.19838361760195372,
+          -0.14242830237685838,
+          0.8379110277644941
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "refinement": {
+        "termination": "iteration_limit",
+        "iterations": 30,
+        "correspondences": 1516,
+        "translation_change_m": 0.004977084887891539,
+        "rotation_change_degrees": 3.9608446067985716,
+        "translation_bound_m": 0.011074025830962262,
+        "maximum_rotation_degrees": 10.0,
+        "production_pose_updated": false
+      },
+      "segmentation_and_pose_assistance": true,
+      "before": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.16129393328856056,
+          "contradiction": 0.014439220953660174,
+          "samples": 8934,
+          "known_samples": 7147,
+          "supported_samples": 1441
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.0567494963062458,
+          "contradiction": 0.006044325050369375,
+          "samples": 8934,
+          "known_samples": 1829,
+          "supported_samples": 507
+        },
+        "heldout_known_support": 0.27720065609622746,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 4129,
+          "known_rays": 3545,
+          "supported_rays": 1779,
+          "contradiction_rays": 95,
+          "occluded_rays": 1671,
+          "unknown_rays": 584,
+          "expected_ray_support": 0.4308549285541293,
+          "heldout_known_rays": 1188,
+          "heldout_known_ray_support": 0.6447811447811448,
+          "normal_residual_p05_p50_p95_m": [
+            -0.00165840734837299,
+            0.0017365277808767312,
+            0.06733452161971823
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      },
+      "after": {
+        "sampled_pose_gate": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.21354987274269785,
+          "contradiction": 0.03890437522724518,
+          "samples": 8251,
+          "known_samples": 7208,
+          "supported_samples": 1762
+        },
+        "heldout_sampled": {
+          "id": "study",
+          "status": "rejected",
+          "reason": "insufficient_current_pose_evidence",
+          "coverage": 0.0759907889952733,
+          "contradiction": 0.012968125075748394,
+          "samples": 8251,
+          "known_samples": 1907,
+          "supported_samples": 627
+        },
+        "heldout_known_support": 0.3287886733088621,
+        "triangle": {
+          "grid_stride_pixels": 2,
+          "renderer_reason": null,
+          "rendered_rays": 3708,
+          "known_rays": 3396,
+          "supported_rays": 2182,
+          "contradiction_rays": 322,
+          "occluded_rays": 892,
+          "unknown_rays": 312,
+          "expected_ray_support": 0.5884573894282632,
+          "heldout_known_rays": 1175,
+          "heldout_known_ray_support": 0.7880851063829787,
+          "normal_residual_p05_p50_p95_m": [
+            -0.00306908732542852,
+            -0.00021010875329621802,
+            0.0434145719416257
+          ],
+          "scope": "Exact triangle rays at reported stride; axial tolerance, no gate replacement"
+        }
+      }
+    }
+  ],
+  "recipe_sha256": "1eb1fc1c85ee2a07e2d80c1594ebd41148628226604d95fe9e5621f0278a3079",
+  "source_pose_gate_settings": {
+    "tolerance_m": 0.003,
+    "minimum_support": 0.7,
+    "maximum_contradiction": 0.1
+  },
+  "split_scope": "Disjoint capture tiles; not independent sessions or pose truth",
+  "fitting_scope": "Training depth only; no held-out normals, values or calibration fitting",
+  "runtime_recipes_and_poses_modified": false,
+  "robot_execution": false,
+  "publisher_paper": "https://cmp.felk.cvut.cz/~hodanto2/data/hodan2017tless.pdf"
+}

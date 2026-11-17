@@ -1,0 +1,22 @@
+[
+  {
+    "block": "cad_before",
+    "path": "assets/cad_before.ply",
+    "sha256": "6c0e2bdcebddc45827f2b8d11f3b47c38097bbc49c9457f82e732699051b9c8b"
+  },
+  {
+    "block": "cad_after",
+    "path": "assets/cad_after.ply",
+    "sha256": "a1e5429c4347a67e27b006083419012d60924c0d2ee0c09afd11f969d9812ad6"
+  },
+  {
+    "block": "reconst_before",
+    "path": "assets/reconst_before.ply",
+    "sha256": "56edfc15829c21b5d7a2fe9c3f48935dbf34432946329dd987109cc7a11de072"
+  },
+  {
+    "block": "reconst_after",
+    "path": "assets/reconst_after.ply",
+    "sha256": "0384cd42937ee4b127f847a770514b57fb77d2995ff20ed4e1d68b7cbda115ea"
+  }
+]

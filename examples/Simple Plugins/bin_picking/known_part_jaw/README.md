@@ -129,6 +129,14 @@ checks per-image intrinsics, declared depth scale and measured cloud rays.
 Conversion agrees within float32 roundoff; physical CAD/depth agreement remains
 unresolved.
 
+## Geometry and refinement study
+
+[The frozen comparison](pose_agreement/README.md) adds ten real captures of two
+industrial parts, matched CAD/reconstructed sampling, a disjoint-tile refinement
+experiment, exact triangle-ray diagnostics and two native 3D replay projects.
+Held-out support improves in 18/20 model/capture cases and worsens in two; all
+current pose gates still reject. It changes no runtime recipe or acceptance gate.
+
 ## Verification and reproduction
 
 `verification.json` records saved-project reopen and graphics-off/cache parity.

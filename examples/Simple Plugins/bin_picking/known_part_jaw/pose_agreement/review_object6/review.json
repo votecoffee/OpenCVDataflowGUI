@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "cad_before",
+      "type": "input.cloud",
+      "name": "cad before: rejected / derived",
+      "parameters": {
+        "path": "assets/cad_before.ply",
+        "units": "m",
+        "frame": "study_camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "cad_after",
+      "type": "input.cloud",
+      "name": "cad after: rejected / derived",
+      "parameters": {
+        "path": "assets/cad_after.ply",
+        "units": "m",
+        "frame": "study_camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "reconst_before",
+      "type": "input.cloud",
+      "name": "reconst before: rejected / derived",
+      "parameters": {
+        "path": "assets/reconst_before.ply",
+        "units": "m",
+        "frame": "study_camera",
+        "max_points": 1000000
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "reconst_after",
+      "type": "input.cloud",
+      "name": "reconst after: rejected / derived",
+      "parameters": {
+        "path": "assets/reconst_after.ply",
+        "units": "m",
+        "frame": "study_camera",
+        "max_points": 1000000
+      },
+      "position": [
+        400,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    }
+  ],
+  "connections": []
+}

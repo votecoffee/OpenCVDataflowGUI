@@ -15,6 +15,9 @@ and [matching/conflicting capture controls](known_part_jaw/capture_controls/READ
 Neither wheel is installed into the host environment.
 The jaw results also include a dedicated native **Cloud / pose_fit** result and
 cached training layer/count summary. [Pose-fit gallery](known_part_jaw/pose_fit_review/README.md).
+A [frozen CAD/reconstruction study](known_part_jaw/pose_agreement/README.md) adds
+ten real captures, spatially held-out refinement comparisons and two native
+3D replay projects. Its research proposals remain separate from runtime poses.
 
 Install the included `opencv-simple-bin-picking` **0.1.0.dev3** in the Python
 environment running this app, from the application repository root:

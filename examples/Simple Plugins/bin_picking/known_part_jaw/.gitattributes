@@ -3,3 +3,4 @@ tless/source/models_cad/*.ply -diff
 locator_chain/source/** -diff
 locator_chain/**/assets/*.ply -diff
 capture_controls/**/assets/*.ply -diff
+pose_agreement/source/** -diff

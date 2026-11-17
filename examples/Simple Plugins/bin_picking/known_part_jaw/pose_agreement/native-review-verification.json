@@ -1,0 +1,26 @@
+[
+  {
+    "object_id": 6,
+    "derived_clouds": 4,
+    "source_hashes_valid": true,
+    "exact_saved_replay": true,
+    "save_as_original_asset_references_valid": true,
+    "native_thumbnail_popout_orbit": true,
+    "rgb_preserved": true,
+    "file_inputs_only": true,
+    "inference_or_motion_executed": false,
+    "qualification": "Replay success only; no accepted pose or grasp asserted"
+  },
+  {
+    "object_id": 8,
+    "derived_clouds": 4,
+    "source_hashes_valid": true,
+    "exact_saved_replay": true,
+    "save_as_original_asset_references_valid": true,
+    "native_thumbnail_popout_orbit": true,
+    "rgb_preserved": true,
+    "file_inputs_only": true,
+    "inference_or_motion_executed": false,
+    "qualification": "Replay success only; no accepted pose or grasp asserted"
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "model": "pose_study_reproduction_v1",
+  "source_revision": "bdcdd85",
+  "model_capture_cases": 20,
+  "numerical_comparison_exact": true,
+  "summary_exact": true,
+  "original_member_hashes_verified": 38,
+  "derived_cloud_hashes_verified": 8,
+  "source_bundle_relocated_to_host": true,
+  "pinned_packages": {
+    "bin_picking": "0.1.0.dev8",
+    "3d_locate": "0.1.0.dev20"
+  },
+  "runtime_package_or_recipe_changed": false,
+  "scope": "Reproduction of assisted study only; no accepted runtime pose or grasp established"
+}

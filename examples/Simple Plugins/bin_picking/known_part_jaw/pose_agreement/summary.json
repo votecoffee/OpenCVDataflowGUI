@@ -1,0 +1,32 @@
+{
+  "model_capture_cases": 20,
+  "captures": 10,
+  "heldout_improved": 18,
+  "heldout_degraded": 2,
+  "heldout_unchanged": 0,
+  "pose_gate_accepted_before": 0,
+  "pose_gate_accepted_after": 0,
+  "model_averages": {
+    "cad": {
+      "before": {
+        "sampled_pose_coverage": 0.2270609637208798,
+        "triangle_expected_ray_support": 0.46953073211057356
+      },
+      "after": {
+        "sampled_pose_coverage": 0.31595058541452703,
+        "triangle_expected_ray_support": 0.5884569150426444
+      }
+    },
+    "reconst": {
+      "before": {
+        "sampled_pose_coverage": 0.28325788601925794,
+        "triangle_expected_ray_support": 0.5388987065968617
+      },
+      "after": {
+        "sampled_pose_coverage": 0.3931106701019963,
+        "triangle_expected_ray_support": 0.7077357085017724
+      }
+    }
+  },
+  "production_refinement_enabled": false
+}
