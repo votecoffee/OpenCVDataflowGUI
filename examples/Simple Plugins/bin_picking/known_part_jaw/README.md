@@ -31,7 +31,7 @@ environment. NumPy, SciPy and OpenCV must already be available.
 
 | Package | Version | Wheel SHA-256 |
 | --- | --- | --- |
-| `opencv-simple-bin-picking` | `0.1.0.dev7` | `2920315ef4f57a4f65feefa7f3affa0a23738fd5a29cdb0e5d8187d33739e0e7` |
+| `opencv-simple-bin-picking` | `0.1.0.dev8` | `1cc60d7c9fe4ebd92f1446937e01e4396639ce48624e9d80a677b6aaf609251b` |
 | `opencv-simple-3d-locate` | `0.1.0.dev20` | `c124a55e5105c087e1a849ad47d648d9801c4caeaa76ce4e8fcc0f77d846c2f9` |
 
 Opening a project does not load Python code automatically. If a different
@@ -49,6 +49,14 @@ native colored fly-around viewer. The `graphics` output contains:
 - Blue open fingers and conservative approach/closure/retract envelopes.
 - RGB TCP axes, approach segments, magenta collision witnesses and orange
   unknown query points.
+
+Select **Cloud / pose_fit** for isolated color-coded model queries from the exact
+depth check. [The result gallery](pose_fit_review/README.md) and
+[pose-fit guide](JAW_POSE_FIT.md) explain support, contradiction, occlusion,
+unknown, ambiguous depth and label mismatch. Counts cover every tested ray;
+display points are a bounded subset per state. The trainer has a **Pose fit**
+layer and a full-count summary, with cached export metadata. A good pose fit
+still cannot override unknown gripper clearance, as the unknown control shows.
 
 `graphics.json` identifies measured versus derived row ranges. Only measured
 depth feeds scene clearance; graphics and hidden CAD surfaces never become
@@ -127,9 +135,9 @@ unresolved.
 `native-verification.json` records actual offscreen app thumbnail/popout orbit,
 RGB preservation, review without replanning and portable Save As for all ten
 projects. This is software acceptance, not hardware qualification. The bundled
-BinPicking wheel passed 95 checks against the checkout host, including existing
+BinPicking wheel passed 100 checks against the checkout host, including existing
 suction and mocked simulation checks. The locator wheel passed 25 focused checks
-for capture binding, block execution and separate-depth behavior. All 55 packaged
+for capture binding, block execution and separate-depth behavior. All 56 packaged
 source modules and both MIT notices match the source publication after newline
 normalization. Two additional capture controls preserve their outcomes and all
 assets after portable Save As.
@@ -137,7 +145,7 @@ assets after portable Save As.
 From an environment with the app, NumPy, SciPy and OpenCV:
 
 ```powershell
-python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev7-py3-none-any.whl --source tless/source
+python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev8-py3-none-any.whl --source tless/source
 python build_native_training.py C:\path\to\new-output C:\path\to\new-output\native_training
 python verify.py C:\path\to\new-output C:\path\to\new-checks
 python build_capture_controls.py . C:\path\to\new-capture-checks --verify-existing

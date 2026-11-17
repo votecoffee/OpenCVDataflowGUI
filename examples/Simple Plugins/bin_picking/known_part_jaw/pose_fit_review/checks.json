@@ -1,0 +1,412 @@
+[
+  {
+    "case": "clear",
+    "report_exact": true,
+    "evaluated_instances": 1,
+    "summaries": [
+      {
+        "instance_id": "part-1",
+        "inspected_samples": 1681,
+        "counts": {
+          "supported": 1521,
+          "contradiction": 0,
+          "occluded": 0,
+          "unknown": 0,
+          "ambiguous": 160,
+          "label_mismatch": 0
+        },
+        "retained_counts": {
+          "supported": 256,
+          "contradiction": 0,
+          "occluded": 0,
+          "unknown": 0,
+          "ambiguous": 160,
+          "label_mismatch": 0
+        },
+        "rows_per_state_limit": 256,
+        "pose_tolerance_m": 0.003,
+        "nearest_residual_p05_p50_p95_m": [
+          -8.344650304081824e-09,
+          -8.344650304081824e-09,
+          -8.344650304081824e-09
+        ],
+        "farthest_residual_p05_p50_p95_m": [
+          -0.040000000000000036,
+          -8.344650304081824e-09,
+          -8.344650304081824e-09
+        ],
+        "residual_definition": "Predicted camera Z minus observed neighbor Z; all known rays",
+        "residual_scope": "Includes occlusion and discontinuities; not independent pose error",
+        "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays"
+      }
+    ],
+    "measured_and_derived_rows_labeled": true,
+    "cloud_sha256": "27e279ebb5ef17aa21c1ca5620b2b0a9934d41969f33fd68fb17dedc0085442b",
+    "display_crop_only": true
+  },
+  {
+    "case": "locator_chain/cad",
+    "evaluated_instances": 0,
+    "report_exact": true
+  },
+  {
+    "case": "locator_chain/reconstructed",
+    "report_exact": true,
+    "evaluated_instances": 1,
+    "summaries": [
+      {
+        "instance_id": "tless6-1",
+        "inspected_samples": 9216,
+        "counts": {
+          "supported": 5294,
+          "contradiction": 218,
+          "occluded": 2899,
+          "unknown": 0,
+          "ambiguous": 805,
+          "label_mismatch": 0
+        },
+        "retained_counts": {
+          "supported": 256,
+          "contradiction": 218,
+          "occluded": 256,
+          "unknown": 0,
+          "ambiguous": 256,
+          "label_mismatch": 0
+        },
+        "rows_per_state_limit": 256,
+        "pose_tolerance_m": 0.003,
+        "nearest_residual_p05_p50_p95_m": [
+          -0.0019717422449730404,
+          0.0018841604524384992,
+          0.04172720646310957
+        ],
+        "farthest_residual_p05_p50_p95_m": [
+          -0.0031786259134188033,
+          0.0009759178177651262,
+          0.039989920020029074
+        ],
+        "residual_definition": "Predicted camera Z minus observed neighbor Z; all known rays",
+        "residual_scope": "Includes occlusion and discontinuities; not independent pose error",
+        "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays"
+      }
+    ],
+    "measured_and_derived_rows_labeled": true,
+    "cloud_sha256": "038c1a5bed12bec18e98c5ac68ffc92d349c5e1cb65db64f06e3c7f554800fef",
+    "display_crop_only": true
+  },
+  {
+    "case": "native_training/clear",
+    "report_exact": true,
+    "evaluated_instances": 1,
+    "summaries": [
+      {
+        "instance_id": "part-1",
+        "inspected_samples": 1681,
+        "counts": {
+          "supported": 1521,
+          "contradiction": 0,
+          "occluded": 0,
+          "unknown": 0,
+          "ambiguous": 160,
+          "label_mismatch": 0
+        },
+        "retained_counts": {
+          "supported": 256,
+          "contradiction": 0,
+          "occluded": 0,
+          "unknown": 0,
+          "ambiguous": 160,
+          "label_mismatch": 0
+        },
+        "rows_per_state_limit": 256,
+        "pose_tolerance_m": 0.003,
+        "nearest_residual_p05_p50_p95_m": [
+          -8.344650304081824e-09,
+          -8.344650304081824e-09,
+          -8.344650304081824e-09
+        ],
+        "farthest_residual_p05_p50_p95_m": [
+          -0.040000000000000036,
+          -8.344650304081824e-09,
+          -8.344650304081824e-09
+        ],
+        "residual_definition": "Predicted camera Z minus observed neighbor Z; all known rays",
+        "residual_scope": "Includes occlusion and discontinuities; not independent pose error",
+        "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays"
+      }
+    ],
+    "measured_and_derived_rows_labeled": true,
+    "cloud_sha256": "27e279ebb5ef17aa21c1ca5620b2b0a9934d41969f33fd68fb17dedc0085442b",
+    "display_crop_only": true
+  },
+  {
+    "case": "native_training/obstacle",
+    "report_exact": true,
+    "evaluated_instances": 1,
+    "summaries": [
+      {
+        "instance_id": "part-1",
+        "inspected_samples": 1681,
+        "counts": {
+          "supported": 1521,
+          "contradiction": 0,
+          "occluded": 0,
+          "unknown": 0,
+          "ambiguous": 160,
+          "label_mismatch": 0
+        },
+        "retained_counts": {
+          "supported": 256,
+          "contradiction": 0,
+          "occluded": 0,
+          "unknown": 0,
+          "ambiguous": 160,
+          "label_mismatch": 0
+        },
+        "rows_per_state_limit": 256,
+        "pose_tolerance_m": 0.003,
+        "nearest_residual_p05_p50_p95_m": [
+          -8.344650304081824e-09,
+          -8.344650304081824e-09,
+          -8.344650304081824e-09
+        ],
+        "farthest_residual_p05_p50_p95_m": [
+          -0.040000000000000036,
+          -8.344650304081824e-09,
+          -8.344650304081824e-09
+        ],
+        "residual_definition": "Predicted camera Z minus observed neighbor Z; all known rays",
+        "residual_scope": "Includes occlusion and discontinuities; not independent pose error",
+        "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays"
+      }
+    ],
+    "measured_and_derived_rows_labeled": true,
+    "cloud_sha256": "27e279ebb5ef17aa21c1ca5620b2b0a9934d41969f33fd68fb17dedc0085442b",
+    "display_crop_only": true
+  },
+  {
+    "case": "native_training/tless_frame000013",
+    "report_exact": true,
+    "evaluated_instances": 1,
+    "summaries": [
+      {
+        "instance_id": "part-1",
+        "inspected_samples": 6702,
+        "counts": {
+          "supported": 1941,
+          "contradiction": 1481,
+          "occluded": 1918,
+          "unknown": 869,
+          "ambiguous": 493,
+          "label_mismatch": 0
+        },
+        "retained_counts": {
+          "supported": 256,
+          "contradiction": 256,
+          "occluded": 256,
+          "unknown": 256,
+          "ambiguous": 256,
+          "label_mismatch": 0
+        },
+        "rows_per_state_limit": 256,
+        "pose_tolerance_m": 0.003,
+        "nearest_residual_p05_p50_p95_m": [
+          -0.007326061936845418,
+          -0.00016919845453700066,
+          0.03844523692026702
+        ],
+        "farthest_residual_p05_p50_p95_m": [
+          -0.008893570410489614,
+          -0.0010001317103922602,
+          0.03765606058845742
+        ],
+        "residual_definition": "Predicted camera Z minus observed neighbor Z; all known rays",
+        "residual_scope": "Includes occlusion and discontinuities; not independent pose error",
+        "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays"
+      }
+    ],
+    "measured_and_derived_rows_labeled": true,
+    "cloud_sha256": "6cf82cfee974e672f8f2e87d34aceb3baefc8ec119f55840b72426c28009703f",
+    "display_crop_only": true
+  },
+  {
+    "case": "obstacle",
+    "report_exact": true,
+    "evaluated_instances": 1,
+    "summaries": [
+      {
+        "instance_id": "part-1",
+        "inspected_samples": 1681,
+        "counts": {
+          "supported": 1521,
+          "contradiction": 0,
+          "occluded": 0,
+          "unknown": 0,
+          "ambiguous": 160,
+          "label_mismatch": 0
+        },
+        "retained_counts": {
+          "supported": 256,
+          "contradiction": 0,
+          "occluded": 0,
+          "unknown": 0,
+          "ambiguous": 160,
+          "label_mismatch": 0
+        },
+        "rows_per_state_limit": 256,
+        "pose_tolerance_m": 0.003,
+        "nearest_residual_p05_p50_p95_m": [
+          -8.344650304081824e-09,
+          -8.344650304081824e-09,
+          -8.344650304081824e-09
+        ],
+        "farthest_residual_p05_p50_p95_m": [
+          -0.040000000000000036,
+          -8.344650304081824e-09,
+          -8.344650304081824e-09
+        ],
+        "residual_definition": "Predicted camera Z minus observed neighbor Z; all known rays",
+        "residual_scope": "Includes occlusion and discontinuities; not independent pose error",
+        "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays"
+      }
+    ],
+    "measured_and_derived_rows_labeled": true,
+    "cloud_sha256": "27e279ebb5ef17aa21c1ca5620b2b0a9934d41969f33fd68fb17dedc0085442b",
+    "display_crop_only": true
+  },
+  {
+    "case": "tless/frame000003",
+    "report_exact": true,
+    "evaluated_instances": 1,
+    "summaries": [
+      {
+        "instance_id": "part-1",
+        "inspected_samples": 7713,
+        "counts": {
+          "supported": 1936,
+          "contradiction": 2694,
+          "occluded": 2175,
+          "unknown": 80,
+          "ambiguous": 828,
+          "label_mismatch": 0
+        },
+        "retained_counts": {
+          "supported": 256,
+          "contradiction": 256,
+          "occluded": 256,
+          "unknown": 80,
+          "ambiguous": 256,
+          "label_mismatch": 0
+        },
+        "rows_per_state_limit": 256,
+        "pose_tolerance_m": 0.003,
+        "nearest_residual_p05_p50_p95_m": [
+          -0.009972621356831347,
+          -0.0013521878419264777,
+          0.03516992069607896
+        ],
+        "farthest_residual_p05_p50_p95_m": [
+          -0.014522736679809854,
+          -0.0023729515118976474,
+          0.03380139904291213
+        ],
+        "residual_definition": "Predicted camera Z minus observed neighbor Z; all known rays",
+        "residual_scope": "Includes occlusion and discontinuities; not independent pose error",
+        "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays"
+      }
+    ],
+    "measured_and_derived_rows_labeled": true,
+    "cloud_sha256": "8c258894a58f27f39ed0a7326de6eb4626e5067ec753465781e0538622fcd5c5",
+    "display_crop_only": true
+  },
+  {
+    "case": "tless/frame000013",
+    "report_exact": true,
+    "evaluated_instances": 1,
+    "summaries": [
+      {
+        "instance_id": "part-1",
+        "inspected_samples": 6702,
+        "counts": {
+          "supported": 1941,
+          "contradiction": 1481,
+          "occluded": 1918,
+          "unknown": 869,
+          "ambiguous": 493,
+          "label_mismatch": 0
+        },
+        "retained_counts": {
+          "supported": 256,
+          "contradiction": 256,
+          "occluded": 256,
+          "unknown": 256,
+          "ambiguous": 256,
+          "label_mismatch": 0
+        },
+        "rows_per_state_limit": 256,
+        "pose_tolerance_m": 0.003,
+        "nearest_residual_p05_p50_p95_m": [
+          -0.007326061936845418,
+          -0.00016919845453700066,
+          0.03844523692026702
+        ],
+        "farthest_residual_p05_p50_p95_m": [
+          -0.008893570410489614,
+          -0.0010001317103922602,
+          0.03765606058845742
+        ],
+        "residual_definition": "Predicted camera Z minus observed neighbor Z; all known rays",
+        "residual_scope": "Includes occlusion and discontinuities; not independent pose error",
+        "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays"
+      }
+    ],
+    "measured_and_derived_rows_labeled": true,
+    "cloud_sha256": "6cf82cfee974e672f8f2e87d34aceb3baefc8ec119f55840b72426c28009703f",
+    "display_crop_only": true
+  },
+  {
+    "case": "unknown",
+    "report_exact": true,
+    "evaluated_instances": 1,
+    "summaries": [
+      {
+        "instance_id": "part-1",
+        "inspected_samples": 1681,
+        "counts": {
+          "supported": 1521,
+          "contradiction": 0,
+          "occluded": 0,
+          "unknown": 0,
+          "ambiguous": 160,
+          "label_mismatch": 0
+        },
+        "retained_counts": {
+          "supported": 256,
+          "contradiction": 0,
+          "occluded": 0,
+          "unknown": 0,
+          "ambiguous": 160,
+          "label_mismatch": 0
+        },
+        "rows_per_state_limit": 256,
+        "pose_tolerance_m": 0.003,
+        "nearest_residual_p05_p50_p95_m": [
+          -8.344650304081824e-09,
+          -8.344650304081824e-09,
+          -8.344650304081824e-09
+        ],
+        "farthest_residual_p05_p50_p95_m": [
+          -0.040000000000000036,
+          -8.344650304081824e-09,
+          -8.344650304081824e-09
+        ],
+        "residual_definition": "Predicted camera Z minus observed neighbor Z; all known rays",
+        "residual_scope": "Includes occlusion and discontinuities; not independent pose error",
+        "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays"
+      }
+    ],
+    "measured_and_derived_rows_labeled": true,
+    "cloud_sha256": "27e279ebb5ef17aa21c1ca5620b2b0a9934d41969f33fd68fb17dedc0085442b",
+    "display_crop_only": true
+  }
+]

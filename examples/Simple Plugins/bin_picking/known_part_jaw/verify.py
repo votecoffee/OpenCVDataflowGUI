@@ -34,6 +34,7 @@ def verify(root, output, *, native=False):
             assert result.outputs["report"] == expected
             assert result.passed is (expected["eligible_grasps"] > 0)
             cloud = result.outputs["graphics"]
+            pose_fit = result.outputs["pose_fit"]
             assert cloud.colors is not None and cloud.metadata["derived_review"]
             assert cloud.units == "m" and cloud.frame == expected["frame"]
             if not result.passed:
@@ -78,6 +79,25 @@ def verify(root, output, *, native=False):
                     np.testing.assert_array_equal(viewer.cloud.colors, cloud.colors)
                     viewer.close()
                     assert not viewer.orbit_timer.isActive()
+                    if pose_fit is not NO_VALUE:
+                        block.preview_output = "pose_fit"
+                        assert node.thumbnail_value() is pose_fit
+                        window.inspector.preview_choice.setCurrentText("Cloud / pose_fit")
+                        window.inspector.open_image_popout()
+                        viewer = next(
+                            v
+                            for v in window.inspector.image_popouts.values()
+                            if v.output_name == "pose_fit"
+                        )
+                        assert viewer.cloud is pose_fit
+                        np.testing.assert_array_equal(viewer.cloud.colors, pose_fit.colors)
+                        viewer.flyaround.setChecked(True)
+                        yaw = viewer.yaw.value()
+                        viewer.advance_orbit()
+                        assert viewer.yaw.value() != yaw
+                        assert not viewer.image.pixmap().isNull()
+                        viewer.close()
+                        block.preview_output = "graphics"
                 finally:
                     window.dirty = False
                     window.close()
@@ -113,6 +133,10 @@ def verify(root, output, *, native=False):
                 portable_save_as_exact=True,
                 native_flyaround_colors_preserved=bool(native),
                 review_did_not_replan=bool(native),
+                native_pose_fit_review=bool(native and pose_fit is not NO_VALUE),
+                pose_fit_instances=(
+                    len(pose_fit.metadata["pose_fit"]) if pose_fit is not NO_VALUE else 0
+                ),
                 expected_sha256=hashlib.sha256(
                     path.with_name("expected.json").read_bytes()
                 ).hexdigest(),

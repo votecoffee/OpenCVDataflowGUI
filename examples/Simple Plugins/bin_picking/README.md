@@ -13,6 +13,8 @@ capture/units/frame checks and the downstream jaw rejections. The pinned
 locator and jaw wheels now propagate capture IDs, with strict report binding
 and [matching/conflicting capture controls](known_part_jaw/capture_controls/README.md).
 Neither wheel is installed into the host environment.
+The jaw results also include a dedicated native **Cloud / pose_fit** result and
+cached training layer/count summary. [Pose-fit gallery](known_part_jaw/pose_fit_review/README.md).
 
 Install the included `opencv-simple-bin-picking` **0.1.0.dev3** in the Python
 environment running this app, from the application repository root:

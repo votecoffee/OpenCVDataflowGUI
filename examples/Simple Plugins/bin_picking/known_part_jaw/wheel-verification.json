@@ -9,10 +9,10 @@
       "mit_license_matches": true
     },
     {
-      "wheel": "opencv_simple_bin_picking-0.1.0.dev7-py3-none-any.whl",
-      "source_revision": "71635c0",
-      "modules": 26,
-      "sha256": "2920315ef4f57a4f65feefa7f3affa0a23738fd5a29cdb0e5d8187d33739e0e7",
+      "wheel": "opencv_simple_bin_picking-0.1.0.dev8-py3-none-any.whl",
+      "source_revision": "028bc870c2785ce4d54d9167536b58ffdc1947eb",
+      "modules": 27,
+      "sha256": "1cc60d7c9fe4ebd92f1446937e01e4396639ce48624e9d80a677b6aaf609251b",
       "source_matches_after_newline_normalization": true,
       "mit_license_matches": true
     }

@@ -7,6 +7,8 @@
     "portable_save_as_exact": true,
     "native_flyaround_colors_preserved": true,
     "review_did_not_replan": true,
+    "native_pose_fit_review": true,
+    "pose_fit_instances": 1,
     "expected_sha256": "1de03747769c3d66d5cf50ae24cc1a92d11fca4405c2a8d41ce7b7633b5f7579"
   },
   {
@@ -17,6 +19,8 @@
     "portable_save_as_exact": true,
     "native_flyaround_colors_preserved": true,
     "review_did_not_replan": true,
+    "native_pose_fit_review": false,
+    "pose_fit_instances": 0,
     "expected_sha256": "4ae04f487b58f58da755e2b3e33030b3946d88412e05af389b979471452d955b"
   },
   {
@@ -27,6 +31,8 @@
     "portable_save_as_exact": true,
     "native_flyaround_colors_preserved": true,
     "review_did_not_replan": true,
+    "native_pose_fit_review": true,
+    "pose_fit_instances": 1,
     "expected_sha256": "531113ac06428a14d487a8f4f136a459dc86081590cb11da88188f529cef6132"
   },
   {
@@ -37,6 +43,8 @@
     "portable_save_as_exact": true,
     "native_flyaround_colors_preserved": true,
     "review_did_not_replan": true,
+    "native_pose_fit_review": true,
+    "pose_fit_instances": 1,
     "expected_sha256": "8834bde46f0cda5231aabbd02d9a2316071a8de38b27be2a1b8e29fc40b85557"
   },
   {
@@ -47,6 +55,8 @@
     "portable_save_as_exact": true,
     "native_flyaround_colors_preserved": true,
     "review_did_not_replan": true,
+    "native_pose_fit_review": true,
+    "pose_fit_instances": 1,
     "expected_sha256": "1c5fbcab757e10296ed193529b5760cb77ceacc23dd25672553edcf91e1bbb9c"
   },
   {
@@ -57,6 +67,8 @@
     "portable_save_as_exact": true,
     "native_flyaround_colors_preserved": true,
     "review_did_not_replan": true,
+    "native_pose_fit_review": true,
+    "pose_fit_instances": 1,
     "expected_sha256": "5fb79eebb2304b25eaaebccdfe40a13166116c122b49c74845af2f063b35c986"
   },
   {
@@ -67,6 +79,8 @@
     "portable_save_as_exact": true,
     "native_flyaround_colors_preserved": true,
     "review_did_not_replan": true,
+    "native_pose_fit_review": true,
+    "pose_fit_instances": 1,
     "expected_sha256": "b6483a264cd1a724ba9bf2da012cf39ba932166ae019c06c6528b520d1b0b2a2"
   },
   {
@@ -77,6 +91,8 @@
     "portable_save_as_exact": true,
     "native_flyaround_colors_preserved": true,
     "review_did_not_replan": true,
+    "native_pose_fit_review": true,
+    "pose_fit_instances": 1,
     "expected_sha256": "81fcf1aa4068a18f06cc551659f611445ae0bdaa5df894049bb419becceba16b"
   },
   {
@@ -87,6 +103,8 @@
     "portable_save_as_exact": true,
     "native_flyaround_colors_preserved": true,
     "review_did_not_replan": true,
+    "native_pose_fit_review": true,
+    "pose_fit_instances": 1,
     "expected_sha256": "59c30bfcf83e27a1be1f49bde95f173192e40bee281d0910f425affdbd4fbe28"
   },
   {
@@ -97,6 +115,8 @@
     "portable_save_as_exact": true,
     "native_flyaround_colors_preserved": true,
     "review_did_not_replan": true,
+    "native_pose_fit_review": true,
+    "pose_fit_instances": 1,
     "expected_sha256": "1e57fe336371eef5c8b4cf99f6744dd2c614a178f41731ab9867bb7c1b787cd1"
   }
 ]

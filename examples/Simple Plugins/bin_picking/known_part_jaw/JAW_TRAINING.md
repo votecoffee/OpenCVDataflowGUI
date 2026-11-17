@@ -99,6 +99,11 @@ red rejected, orange unknown and magenta collision; cyan CAD and blue sweeps are
 derived graphics. Raw rejected candidates remain visible. Missing depth does
 not become free space through CAD assistance.
 
+The **Pose fit** layer colors the tested CAD samples as supported, contradictory,
+occluded, unknown, ambiguous or label-mismatched. Counts below the table cover
+every tested ray; display points are a bounded sample per state. Hide Model and
+the gripper layers to see this evidence clearly. [Color and residual guide](JAW_POSE_FIT.md).
+
 Only a completed preview of the current draft enables **Stage recipe**. Expected
 rejection/unknown is a valid preview outcome and stays rejected after Apply.
 Staging writes a unique asset and updates only the inspector draft. The original
