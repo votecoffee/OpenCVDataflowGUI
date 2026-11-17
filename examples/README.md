@@ -118,6 +118,8 @@ See the [industrial integration guide](<industrial integration/README.md>) for P
 
 ## OpenCV tools
 
+For camera setting/readback policies without hardware, try [capture negotiation](<opencv tools/capture_negotiation/README.md>).
+
 Examples of OpenCV image/video processing, calibration, ML and 3D operations, including short module workflows. See the [category guide](<opencv tools/README.md>).
 
 | Example | Demonstrates |

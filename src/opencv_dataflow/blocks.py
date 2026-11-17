@@ -12,6 +12,7 @@ from xml.etree import ElementTree as ET
 import cv2
 import numpy as np
 
+from .capture_settings import Camera, RecordedCapture
 from .codec_metadata import write_metadata_file
 from .core import Block, Graph, Port, Registry, Result
 from .graphics_layers import GraphicDrawing, graphic_object
@@ -244,77 +245,6 @@ class ImageFile(ReplaySource):
 
     def read_bytes(self, path):
         return path.read_bytes()
-
-
-class Camera(Block):
-    block_type, subtype = "Input", "Cameras"
-    type_id, title, category = "input.camera", "Camera", "Input"
-    outputs = (Port("image"),)
-    defaults = {
-        "device": 0,
-        "backend": "auto",
-        "width": 0,
-        "height": 0,
-        "fps": 0.0,
-        "buffer_size": 0,
-    }
-    parameter_choices = {
-        "backend": ("auto", "dshow", "msmf", "v4l2", "gstreamer", "ffmpeg", "avfoundation")
-    }
-    parameter_ranges = {
-        **{key: NumericRange(0, 16384, whole=True) for key in ("width", "height", "buffer_size")},
-        "fps": NumericRange(0),
-    }
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self._capture = None
-        self._device = None
-
-    def process(self, inputs):
-        device = int(self.parameters["device"])
-        p = self.parameters
-        width, height, buffer_size = (int(p[k]) for k in ("width", "height", "buffer_size"))
-        fps = float(p["fps"])
-        settings = (device, p["backend"], width, height, fps, buffer_size)
-        if self._capture is None or settings != self._device:
-            self.close()
-            backends = {
-                "auto": cv2.CAP_ANY,
-                "dshow": cv2.CAP_DSHOW,
-                "msmf": cv2.CAP_MSMF,
-                "v4l2": cv2.CAP_V4L2,
-                "gstreamer": cv2.CAP_GSTREAMER,
-                "ffmpeg": cv2.CAP_FFMPEG,
-                "avfoundation": cv2.CAP_AVFOUNDATION,
-            }
-            self._capture = (
-                cv2.VideoCapture(device)
-                if p["backend"] == "auto"
-                else cv2.VideoCapture(device, backends[p["backend"]])
-            )
-            self._device = settings
-            for prop, value in (
-                (cv2.CAP_PROP_FRAME_WIDTH, width),
-                (cv2.CAP_PROP_FRAME_HEIGHT, height),
-                (cv2.CAP_PROP_FPS, fps),
-                (cv2.CAP_PROP_BUFFERSIZE, buffer_size),
-            ):
-                if value and not self._capture.set(prop, value):
-                    self.close()
-                    raise ValueError("Camera backend rejected a requested acquisition setting")
-        if not self._capture.isOpened():
-            self.close()
-            raise RuntimeError(f"Cannot open camera {device}")
-        ok, image = self._capture.read()
-        if not ok:
-            raise RuntimeError("Camera did not return a frame")
-        return Result({"image": image}, message=f"Camera {device}")
-
-    def close(self):
-        if self._capture is not None:
-            self._capture.release()
-            self._capture = None
 
 
 class GAPIBlock(Block):
@@ -958,6 +888,7 @@ def builtin_registry():
         *ROS2_BLOCKS,
         ImageFile,
         VideoFile,
+        RecordedCapture,
         PacedVideoFile,
         NetworkVideo,
         VideoAtTime,

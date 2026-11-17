@@ -5232,12 +5232,72 @@ Ticket mode and fixed value are common inspector controls.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `device` | `0` |  |
-| `backend` | `"auto"` | `auto`, `dshow`, `msmf`, `v4l2`, `gstreamer`, `ffmpeg`, `avfoundation` |
-| `width` | `0` | Value must be a whole number between 0 and 16384. |
-| `height` | `0` | Value must be a whole number between 0 and 16384. |
-| `fps` | `0.0` | Value must be a finite number at least 0. |
-| `buffer_size` | `0` | Value must be a whole number between 0 and 16384. |
+| `device` | `0` | Value must be a whole number between 0 and 65535. Local capture-device index. Opening happens only on execution. |
+| `backend` | `"auto"` | `auto`, `dshow`, `msmf`, `v4l2`, `gstreamer`, `ffmpeg`, `avfoundation` Native capture backend; Auto lets OpenCV choose. Build-specific availability. |
+| `width` | `0` | Value must be a whole number between 0 and 16384. Requested decoded width; zero leaves the backend unchanged. |
+| `height` | `0` | Value must be a whole number between 0 and 16384. Requested decoded height; zero leaves the backend unchanged. |
+| `fps` | `0.0` | Value must be a finite number between 0 and 100000. Requested backend frame rate; zero leaves it unchanged. Not measured cadence. |
+| `buffer_size` | `0` | Value must be a whole number between 0 and 16384. Requested backend buffer size; zero leaves it unchanged. |
+| `fourcc` | `""` | Optional four-character transport/codec request, including meaningful spaces. |
+| `auto_exposure_mode` | `"unchanged"` | `unchanged`, `backend_value` Apply a raw backend auto-exposure value, or leave its state unchanged. |
+| `auto_exposure_value` | `0.75` | Value must be a finite number between -1e+06 and 1e+06. Backend-specific auto-exposure encoding; no portable 0/1 mapping. |
+| `exposure_mode` | `"unchanged"` | `unchanged`, `backend_value` Apply Exposure value in native backend units, or leave it unchanged. |
+| `exposure_value` | `-6.0` | Value must be a finite number between -1e+06 and 1e+06. Backend units can be negative, steps or time; not universally milliseconds. |
+| `gain_mode` | `"unchanged"` | `unchanged`, `backend_value` Apply Gain value in native backend units, or leave it unchanged. |
+| `gain_value` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Native gain request; zero is a real request when its mode is enabled. |
+| `focus_mode` | `"unchanged"` | `unchanged`, `auto`, `manual` Auto writes autofocus=1; Manual writes autofocus=0 then Focus value. |
+| `focus_value` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Manual focus in backend units; zero is permitted. |
+| `white_balance_mode` | `"unchanged"` | `unchanged`, `auto`, `manual` Auto writes auto-WB=1; Manual disables it then requests temperature. |
+| `white_balance_temperature` | `4500.0` | Value must be a finite number between -1e+06 and 1e+06. Manual white balance in backend units, usually kelvin. |
+| `additional_controls` | `{}` | Optional named raw controls: brightness, contrast, saturation, hue, sharpness, gamma, zoom, backlight, pan, tilt, roll, iris. |
+| `negotiation_policy` | `"require_setter"` | `require_setter`, `require_readback`, `report` Require successful setters, matching readback/frame geometry, or report only. |
+| `readback` | `"on_open"` | `on_open`, `every_frame` Poll after opening/first frame, or every frame. Geometry is always observed. |
+| `absolute_tolerance` | `0.01` | Value must be a finite number between 0 and 1e+06. Absolute tolerance for scalar property readback; size/FourCC are exact. |
+| `relative_tolerance` | `0.005` | Value must be a finite number between 0 and 1. Relative tolerance for scalar readback; not a hardware accuracy claim. |
+| `maximum_frame_pixels` | `16777216` | Value must be a whole number between 1 and 6.71089e+07. Decoded frame guard; native read may already allocate its frame. |
+| `maximum_frame_bytes` | `134217728` | Value must be a whole number between 1 and 1.07374e+09. Decoded array byte guard; excludes driver/native/graph copies. |
+
+## Recorded capture with settings (`input.capture_file`)
+
+Input / Video
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Recorded video for offline property negotiation; does not qualify a camera. |
+| `path_base` | `"working_directory"` | `working_directory`, `project` |
+| `backend` | `"auto"` | `auto`, `ffmpeg`, `gstreamer`, `msmf`, `avfoundation`, `opencv_mjpeg` |
+| `start_frame` | `0` | Zero-based first frame. |
+| `end_frame` | `-1` | Exclusive end frame. -1 reads until the decoder reaches end of file. |
+| `stride` | `1` | Emit every Nth frame, counting from the start frame. |
+| `repeat` | `"stop"` | `stop`, `loop` |
+| `frame_ticket` | `true` | Use filename and frame index as the default ticket value. |
+| `color_format` | `"bgr"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` Host conversion after decoding; independent of backend FourCC/format. |
+| `pixel_depth` | `"uint8"` | `unchanged`, `uint8`, `uint16`, `float32` Host conversion after decoding; raw decoded type is reported separately. |
+| `width` | `0` | Value must be a whole number between 0 and 16384. Requested decoded width; zero leaves the backend unchanged. |
+| `height` | `0` | Value must be a whole number between 0 and 16384. Requested decoded height; zero leaves the backend unchanged. |
+| `fps` | `0.0` | Value must be a finite number between 0 and 100000. Requested backend frame rate; zero leaves it unchanged. Not measured cadence. |
+| `buffer_size` | `0` | Value must be a whole number between 0 and 16384. Requested backend buffer size; zero leaves it unchanged. |
+| `fourcc` | `""` | Optional four-character transport/codec request, including meaningful spaces. |
+| `auto_exposure_mode` | `"unchanged"` | `unchanged`, `backend_value` Apply a raw backend auto-exposure value, or leave its state unchanged. |
+| `auto_exposure_value` | `0.75` | Value must be a finite number between -1e+06 and 1e+06. Backend-specific auto-exposure encoding; no portable 0/1 mapping. |
+| `exposure_mode` | `"unchanged"` | `unchanged`, `backend_value` Apply Exposure value in native backend units, or leave it unchanged. |
+| `exposure_value` | `-6.0` | Value must be a finite number between -1e+06 and 1e+06. Backend units can be negative, steps or time; not universally milliseconds. |
+| `gain_mode` | `"unchanged"` | `unchanged`, `backend_value` Apply Gain value in native backend units, or leave it unchanged. |
+| `gain_value` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Native gain request; zero is a real request when its mode is enabled. |
+| `focus_mode` | `"unchanged"` | `unchanged`, `auto`, `manual` Auto writes autofocus=1; Manual writes autofocus=0 then Focus value. |
+| `focus_value` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Manual focus in backend units; zero is permitted. |
+| `white_balance_mode` | `"unchanged"` | `unchanged`, `auto`, `manual` Auto writes auto-WB=1; Manual disables it then requests temperature. |
+| `white_balance_temperature` | `4500.0` | Value must be a finite number between -1e+06 and 1e+06. Manual white balance in backend units, usually kelvin. |
+| `additional_controls` | `{}` | Optional named raw controls: brightness, contrast, saturation, hue, sharpness, gamma, zoom, backlight, pan, tilt, roll, iris. |
+| `negotiation_policy` | `"require_setter"` | `require_setter`, `require_readback`, `report` Require successful setters, matching readback/frame geometry, or report only. |
+| `readback` | `"on_open"` | `on_open`, `every_frame` Poll after opening/first frame, or every frame. Geometry is always observed. |
+| `absolute_tolerance` | `0.01` | Value must be a finite number between 0 and 1e+06. Absolute tolerance for scalar property readback; size/FourCC are exact. |
+| `relative_tolerance` | `0.005` | Value must be a finite number between 0 and 1. Relative tolerance for scalar readback; not a hardware accuracy claim. |
+| `maximum_frame_pixels` | `16777216` | Value must be a whole number between 1 and 6.71089e+07. Decoded frame guard; native read may already allocate its frame. |
+| `maximum_frame_bytes` | `134217728` | Value must be a whole number between 1 and 1.07374e+09. Decoded array byte guard; excludes driver/native/graph copies. |
 
 ## Load chromatic calibration (`input.chromatic_calibration`)
 

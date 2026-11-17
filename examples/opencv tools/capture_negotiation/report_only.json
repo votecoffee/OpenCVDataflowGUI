@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.capture_file",
+      "name": "Recorded capture with settings",
+      "parameters": {
+        "path": "assets/reference.avi",
+        "path_base": "project",
+        "backend": "ffmpeg",
+        "start_frame": 0,
+        "end_frame": -1,
+        "stride": 1,
+        "repeat": "stop",
+        "frame_ticket": true,
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "width": 640,
+        "height": 480,
+        "fps": 30,
+        "buffer_size": 0,
+        "fourcc": "",
+        "auto_exposure_mode": "unchanged",
+        "auto_exposure_value": 0.75,
+        "exposure_mode": "backend_value",
+        "exposure_value": -6,
+        "gain_mode": "unchanged",
+        "gain_value": 0.0,
+        "focus_mode": "unchanged",
+        "focus_value": 0.0,
+        "white_balance_mode": "unchanged",
+        "white_balance_temperature": 4500.0,
+        "additional_controls": {},
+        "negotiation_policy": "report",
+        "readback": "every_frame",
+        "absolute_tolerance": 0.01,
+        "relative_tolerance": 0.005,
+        "maximum_frame_pixels": 16777216,
+        "maximum_frame_bytes": 134217728
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket",
+        "diagnostic"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray",
+      "type": "cv.gray",
+      "name": "Grayscale",
+      "parameters": {
+        "algorithm_hint": "default"
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Recorded capture qualification - original MIT fixtures",
+      "description": "Original MIT clip, code and annotations by OpenCVDataflowGUI contributors. No customer or third-party images. Three exact 128x96 BGR uint8 frames at 24 FPS, encoded losslessly as FFV1. The recorded FFmpeg backend rejects camera width, FPS, exposure and FourCC setters. Report only keeps actual frames with warning details; strict policies withhold images and emit a failed ticket/report. Host conversion is separate from decoder format. These projects verify software behavior, not physical camera acceptance.",
+      "parameters": {},
+      "position": [
+        0,
+        -450
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "gray",
+      "input": "image"
+    }
+  ]
+}

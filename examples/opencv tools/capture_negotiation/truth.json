@@ -1,0 +1,56 @@
+{
+  "license": "MIT - original repository fixtures",
+  "size": [
+    128,
+    96
+  ],
+  "fps": 24,
+  "decoded_format": "uint8 BGR",
+  "fourcc": "FFV1",
+  "frame_sha256": [
+    "6973d050d2d1bc6233d2b21276832d6a76888e7a879ba968d50b82fe33371b0c",
+    "a8089e010e26c8a3e37bf59ff962d0ad8e2bef59c118a44b49ca442e6aad30ab",
+    "bc4c43ec4361298fde09102c01f050398802d02e70cf68707f27597ce9807faf"
+  ],
+  "asset_sha256": "4cd6ed183bd430bfaa1b19f6baa8f90fab8980017a54cbeae1f5d5b8c674d3e6",
+  "cases": {
+    "unchanged": {
+      "passed": true,
+      "settings": {}
+    },
+    "report_only": {
+      "passed": true,
+      "settings": {
+        "width": 640,
+        "height": 480,
+        "fps": 30,
+        "exposure_mode": "backend_value",
+        "exposure_value": -6,
+        "negotiation_policy": "report",
+        "readback": "every_frame"
+      }
+    },
+    "reject_settings": {
+      "passed": false,
+      "settings": {
+        "width": 640,
+        "fps": 30,
+        "negotiation_policy": "require_setter"
+      }
+    },
+    "reject_format": {
+      "passed": false,
+      "settings": {
+        "fourcc": "MJPG",
+        "negotiation_policy": "require_readback"
+      }
+    },
+    "converted_host": {
+      "passed": true,
+      "settings": {
+        "color_format": "gray",
+        "pixel_depth": "uint16"
+      }
+    }
+  }
+}

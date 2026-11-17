@@ -47,3 +47,4 @@ For motion-aware HDR, measured support and native exposure alignment, try [HDR m
 For unordered rotating views, fitted cameras, partial components and mapped measurements, try [rotating panoramas](rotating_panorama/README.md).
 For explicit native solvers, fixed/refined intrinsics and reserved validation, try [panorama refinement](panorama_refinement/README.md).
 For stabilized borders, neighboring samples and unchanged measured coverage, try [review border fills](stabilization_fill/README.md).
+For requested capture settings, actual backend replies and strict/report-only policies, try [capture negotiation](capture_negotiation/README.md).

@@ -112,6 +112,7 @@ class VideoFile(ReplaySource):
         self._capture = cv2.VideoCapture(str(path), backend)
         if not self._capture.isOpened():
             raise ValueError(f"OpenCV cannot open video with this backend: {path}")
+        self.configure_capture()
         if index:
             positioned = self._capture.set(cv2.CAP_PROP_POS_FRAMES, index) and (
                 self._capture.get(cv2.CAP_PROP_POS_FRAMES) == index
@@ -119,10 +120,19 @@ class VideoFile(ReplaySource):
             if not positioned:
                 self.close()
                 self._capture = cv2.VideoCapture(str(path), backend)
+                if not self._capture.isOpened():
+                    raise ValueError(f"OpenCV cannot reopen video with this backend: {path}")
+                self.configure_capture()
                 for _ in range(index):
                     if self._cancelled() or not self._capture.grab():
                         return False
         return not self._cancelled() and self._capture.grab()
+
+    def configure_capture(self):
+        """Optional subclass negotiation after opening, including fallback reopens."""
+
+    def observe_capture_frame(self, image, index):
+        """Optional decoded-frame observation before EOF handling releases the backend."""
 
     def prepare_frame(self, index):
         """Optional source-specific scheduling before a ticket or output event is issued."""
@@ -199,6 +209,7 @@ class VideoFile(ReplaySource):
             ok, raw = self._capture.retrieve()
             if not ok:
                 raise ValueError(f"Decoder could not retrieve frame {index}")
+            self.observe_capture_frame(raw, index)
             info = self.frame_info(index)
             output = format_image(raw, p["color_format"], p["pixel_depth"])
             next_index = index + int(p["stride"])

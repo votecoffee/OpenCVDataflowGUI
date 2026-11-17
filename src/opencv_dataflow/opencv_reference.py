@@ -216,7 +216,14 @@ BINDINGS = {
     "gapi.blur": "gapi.gaussianBlur",
     "gapi.canny": "gapi.Canny",
     "gapi.gray": "gapi.BGR2Gray",
-    "input.camera": "VideoCapture.open VideoCapture.read",
+    "input.camera": (
+        "VideoCapture.open VideoCapture.set VideoCapture.get "
+        "VideoCapture.getBackendName VideoCapture.read"
+    ),
+    "input.capture_file": (
+        "VideoCapture.open VideoCapture.set VideoCapture.get "
+        "VideoCapture.getBackendName VideoCapture.retrieve"
+    ),
     "input.depth_file": "imdecode",
     "input.file": "imdecode imdecodeWithMetadata",
     "input.tiff_file": "imdecodemulti",

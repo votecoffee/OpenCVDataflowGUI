@@ -102,7 +102,10 @@ IMPLEMENTATION_MODULES = {
         "stabilization_fill "
         "image_correlation image_tracking refresh_tracking native_background sequence_tools"
     ),
-    "videoio": "network_video paced_video video_buffer video_files video_time video_timing",
+    "videoio": (
+        "capture_settings network_video paced_video video_buffer video_files "
+        "video_time video_timing"
+    ),
     "objdetect": "aruco_markers charuco code_readers qr_encoding qr_append",
     "xobjdetect": "hog",
     "dnn": "dnn_blocks ocr",
