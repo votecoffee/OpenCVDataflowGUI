@@ -4001,6 +4001,18 @@ Input `regions` — Optional region batch, intersected with source masks on each
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
+| `camera_solver` | `"automatic"` | `automatic`, `explicit` Automatic Stitcher or explicit native fit with reserved keypoints. |
+| `bundle_adjustment` | `"reprojection"` | `none`, `ray`, `reprojection` Explicit mode only: no adjustment, ray or reprojection cost. |
+| `initial_intrinsics` | `[]` | Explicit mode: one original-source 3x3 pinhole K per input, or [] for estimated focal. |
+| `refine_focal` | `true` | Explicit reprojection: optimize focal. Ray requires this on. |
+| `refine_aspect` | `false` | Explicit reprojection: optimize fy/fx. Ray requires this off. |
+| `refine_principal_point` | `false` | Explicit reprojection: optimize cx/cy. Ray requires this off. |
+| `camera_features` | `1500` | Value must be a whole number between 32 and 4000. Explicit mode: cap detected SIFT observations before partitioning. |
+| `native_match_confidence` | `0.65` | Value must be a finite number between 0.01 and 0.99. Explicit native matching uses distance ratio < 1 - this value. |
+| `adjustment_iterations` | `100` | Value must be a whole number between 1 and 1000. Explicit native adjustment iteration limit. |
+| `adjustment_epsilon` | `1e-06` | Value must be a finite number between 1e-10 and 0.1. Explicit native adjustment termination epsilon. |
+| `holdout_fraction` | `0.35` | Value must be a finite number between 0.1 and 0.6. Explicit mode: reserve this fraction of rounded keypoint centers. |
+| `holdout_seed` | `104` | Value must be a whole number between 0 and 2.14748e+09. Explicit mode: stable spatial partition seed; no automatic retries. |
 | `reference_index` | `0` | Value must be a whole number between 0 and 7. Anchor index when Anchor label is empty; not the assumed view order. |
 | `anchor_label` | `""` | Stable source label; must survive component selection. |
 | `source_labels` | `[]` | Unique labels in batch order; empty uses labels or view indices. |
@@ -4010,8 +4022,8 @@ Input `regions` — Optional region batch, intersected with source masks on each
 | `wave_correction` | `"none"` | `none`, `horizontal`, `vertical`, `auto` Optional native global horizon correction after anchoring rotations. |
 | `registration_megapixels` | `0.2` | Value must be a finite number between 0.01 and 4. Work-image megapixels per source; render original-depth pixels. |
 | `native_confidence` | `0.5` | Value must be a finite number between 0.01 and 5. Native Stitcher panorama-component confidence threshold. |
-| `verification_features` | `1000` | Value must be a whole number between 32 and 4000. Bound independent SIFT validation keypoints per source. |
-| `maximum_verification_pairs` | `32000000` | Value must be a whole number between 1 and 2.56e+08. Maximum pairwise descriptor products before validation. |
+| `verification_features` | `1000` | Value must be a whole number between 32 and 4000. Automatic solver: bound separate SIFT validation keypoints. |
+| `maximum_verification_pairs` | `32000000` | Value must be a whole number between 1 and 2.56e+08. Fit and validation each obey this descriptor-product cap. |
 | `match_ratio` | `0.75` | Value must be a finite number between 0.01 and 0.99. Independent mutual descriptor nearest/second-nearest distance ratio. |
 | `maximum_descriptor_distance` | `400.0` | Value must be a finite number between 1 and 1000. Maximum independent SIFT match distance. |
 | `minimum_inliers` | `12` | Value must be a whole number between 4 and 1000. Minimum independent homography inliers for a validated overlap edge. |

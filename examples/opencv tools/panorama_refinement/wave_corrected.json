@@ -1,0 +1,497 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "left",
+      "type": "input.file",
+      "name": "left camera view",
+      "parameters": {
+        "path": "../rotating_panorama/assets/left.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "input.file",
+      "name": "right camera view",
+      "parameters": {
+        "path": "../rotating_panorama/assets/right.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "center",
+      "type": "input.file",
+      "name": "center camera view",
+      "parameters": {
+        "path": "../rotating_panorama/assets/center.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        600
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        760,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "panorama",
+      "type": "cv.stitch_rotating_panorama",
+      "name": "Stitch rotating-camera views",
+      "description": "Register unordered views from a rotating camera.",
+      "documentation": "<p>Native panorama camera estimation plus independent overlap/rotation-model checks. Masks restrict registration and supported rendering. Source depth is retained; panorama coordinates are a new nonlinear grid. See docs/rotating-panorama.md. Rotation/static-scene assumptions require camera qualification.</p>",
+      "parameters": {
+        "camera_solver": "explicit",
+        "bundle_adjustment": "reprojection",
+        "initial_intrinsics": [
+          [
+            [
+              420.0,
+              0,
+              240.0
+            ],
+            [
+              0,
+              420.0,
+              180.0
+            ],
+            [
+              0,
+              0,
+              1
+            ]
+          ],
+          [
+            [
+              420.0,
+              0,
+              240.0
+            ],
+            [
+              0,
+              420.0,
+              180.0
+            ],
+            [
+              0,
+              0,
+              1
+            ]
+          ],
+          [
+            [
+              420.0,
+              0,
+              240.0
+            ],
+            [
+              0,
+              420.0,
+              180.0
+            ],
+            [
+              0,
+              0,
+              1
+            ]
+          ]
+        ],
+        "refine_focal": false,
+        "refine_aspect": false,
+        "refine_principal_point": false,
+        "camera_features": 1500,
+        "native_match_confidence": 0.65,
+        "adjustment_iterations": 100,
+        "adjustment_epsilon": 1e-06,
+        "holdout_fraction": 0.35,
+        "holdout_seed": 104,
+        "reference_index": 0,
+        "anchor_label": "center",
+        "source_labels": [],
+        "component_policy": "reject",
+        "projection": "spherical",
+        "projection_scale": 280.0,
+        "wave_correction": "horizontal",
+        "registration_megapixels": 0.2,
+        "native_confidence": 0.5,
+        "verification_features": 1000,
+        "maximum_verification_pairs": 32000000,
+        "match_ratio": 0.75,
+        "maximum_descriptor_distance": 400.0,
+        "minimum_inliers": 12,
+        "minimum_inlier_ratio": 0.7,
+        "inlier_pixels": 3.0,
+        "maximum_camera_error": 3.0,
+        "ransac_iterations": 2000,
+        "ransac_confidence": 0.995,
+        "minimum_focal_ratio": 0.2,
+        "maximum_focal_ratio": 5.0,
+        "interpolation": "linear",
+        "blend": "average",
+        "minimum_covered_fraction": 0.0,
+        "maximum_input_pixels": 16777216,
+        "maximum_output_pixels": 8388608,
+        "maximum_working_bytes": 536870912
+      },
+      "position": [
+        1140,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "views",
+        "masks",
+        "regions"
+      ],
+      "exposed_outputs": [
+        "image",
+        "coverage",
+        "layout",
+        "report",
+        "diagnostic",
+        "contributors",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "corner_pixels",
+      "type": "cv.convert",
+      "name": "Convert image",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        380,
+        -350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "corners",
+      "type": "inspect.corners",
+      "name": "Good features / corners",
+      "parameters": {
+        "max_corners": 32,
+        "quality": 0.01,
+        "min_distance": 12.0,
+        "block_size": 3,
+        "use_harris": false,
+        "harris_k": 0.04,
+        "gradient_size": "3"
+      },
+      "position": [
+        760,
+        -350
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "points",
+      "type": "cv.panorama_points",
+      "name": "Map source points into panorama",
+      "description": "Carry source measurements into a panorama grid.",
+      "documentation": "<p>Map pinhole source points through a rotating panorama layout. Known crop frames are converted; source tickets and nonlinear layout identity are checked. Source and panorama masks can filter results. See docs/rotating-panorama.md.</p>",
+      "parameters": {
+        "source_label": "",
+        "source_index": 0,
+        "outside": "filter",
+        "ticket_policy": "matching_source",
+        "minimum_points": 1,
+        "maximum_graphics_points": 256
+      },
+      "position": [
+        1520,
+        -350
+      ],
+      "exposed_inputs": [
+        "layout",
+        "points",
+        "mask"
+      ],
+      "exposed_outputs": [
+        "points",
+        "indices",
+        "valid",
+        "count",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1900,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 10
+      },
+      "position": [
+        2280,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "diagnostic_filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1520,
+        450
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original camera refinement controls - MIT",
+      "description": "Original MIT fixtures by OpenCVDataflowGUI contributors, shared from the rotating_panorama example. No customer/third-party images. Known 480x360 pinhole views, focal 420 pixels, yaw -36/0/+36 degrees. Explicit native homography estimation and selected bundle adjustment consume only fit keypoints. Seeded rounded-center partition reserves keypoints before native matching; validation does not feed back into fitting. Intrinsics can be fixed or refined; ray adjustment requires centered square work intrinsics. Wrong fixed intrinsics and inadequate reserved support fail normally. Shared-image observations are correlated and do not replace external calibration data. See README and ../rotating_panorama/truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -650
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "left",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "batch",
+      "input": "item_2"
+    },
+    {
+      "source": "center",
+      "output": "image",
+      "target": "batch",
+      "input": "item_3"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "panorama",
+      "input": "views"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "corner_pixels",
+      "input": "image"
+    },
+    {
+      "source": "corner_pixels",
+      "output": "image",
+      "target": "corners",
+      "input": "image"
+    },
+    {
+      "source": "panorama",
+      "output": "layout",
+      "target": "points",
+      "input": "layout"
+    },
+    {
+      "source": "corners",
+      "output": "points",
+      "target": "points",
+      "input": "points"
+    },
+    {
+      "source": "panorama",
+      "output": "coverage",
+      "target": "points",
+      "input": "mask"
+    },
+    {
+      "source": "panorama",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "panorama",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "points",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_2"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    },
+    {
+      "source": "panorama",
+      "output": "diagnostic",
+      "target": "diagnostic_filmstrip",
+      "input": "image"
+    }
+  ]
+}

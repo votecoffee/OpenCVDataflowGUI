@@ -309,8 +309,8 @@ P2	function	cv2.createGeneralizedHoughGuil	literal reference	-
 P2	function	cv2.dct	literal reference	-
 P2	class	cv2.detail.AffineBasedEstimator	no static reference	-
 P2	class	cv2.detail.AffineBestOf2NearestMatcher	no static reference	-
-P2	class	cv2.detail.BestOf2NearestMatcher	no static reference	-
-P2	method	cv2.detail.BestOf2NearestMatcher.collectGarbage	no static reference	-
+P2	class	cv2.detail.BestOf2NearestMatcher	literal reference	-
+P2	method	cv2.detail.BestOf2NearestMatcher.collectGarbage	method name only	-
 P2	method	cv2.detail.BestOf2NearestMatcher.create	method name only	-
 P2	function	cv2.detail.BestOf2NearestMatcher_create	no static reference	-
 P2	class	cv2.detail.BestOf2NearestRangeMatcher	no static reference	-
@@ -342,14 +342,14 @@ P2	class	cv2.detail.BundleAdjusterAffinePartial	no static reference	-
 P2	class	cv2.detail.BundleAdjusterBase	no static reference	-
 P2	method	cv2.detail.BundleAdjusterBase.confThresh	no static reference	-
 P2	method	cv2.detail.BundleAdjusterBase.refinementMask	no static reference	-
-P2	method	cv2.detail.BundleAdjusterBase.setConfThresh	no static reference	-
-P2	method	cv2.detail.BundleAdjusterBase.setRefinementMask	no static reference	-
+P2	method	cv2.detail.BundleAdjusterBase.setConfThresh	method name only	-
+P2	method	cv2.detail.BundleAdjusterBase.setRefinementMask	method name only	-
 P2	method	cv2.detail.BundleAdjusterBase.setTermCriteria	method name only	-
 P2	method	cv2.detail.BundleAdjusterBase.termCriteria	no static reference	-
-P2	class	cv2.detail.BundleAdjusterRay	no static reference	-
-P2	class	cv2.detail.BundleAdjusterReproj	no static reference	-
+P2	class	cv2.detail.BundleAdjusterRay	literal reference	-
+P2	class	cv2.detail.BundleAdjusterReproj	literal reference	-
 P2	function	cv2.detail.calibrateRotatingCamera	no static reference	-
-P2	class	cv2.detail.CameraParams	no static reference	-
+P2	class	cv2.detail.CameraParams	literal reference	-
 P2	method	cv2.detail.CameraParams.K	method name only	-
 P2	class	cv2.detail.ChannelsCompensator	no static reference	-
 P2	method	cv2.detail.ChannelsCompensator.apply	method name only	-
@@ -360,7 +360,7 @@ P2	method	cv2.detail.ChannelsCompensator.setMatGains	no static reference	-
 P2	method	cv2.detail.ChannelsCompensator.setNrFeeds	no static reference	-
 P2	method	cv2.detail.ChannelsCompensator.setSimilarityThreshold	no static reference	-
 P2	function	cv2.detail.computeImageFeatures	no static reference	-
-P2	function	cv2.detail.computeImageFeatures2	no static reference	-
+P2	function	cv2.detail.computeImageFeatures2	literal reference	-
 P2	function	cv2.detail.createLaplacePyr	literal reference	-
 P2	function	cv2.detail.createLaplacePyrGpu	no static reference	-
 P2	function	cv2.detail.createWeightMap	no static reference	-
@@ -386,8 +386,8 @@ P2	method	cv2.detail.FeatherBlender.setSharpness	no static reference	-
 P2	method	cv2.detail.FeatherBlender.sharpness	no static reference	-
 P2	class	cv2.detail.FeaturesMatcher	no static reference	-
 P2	method	cv2.detail.FeaturesMatcher.apply	method name only	-
-P2	method	cv2.detail.FeaturesMatcher.apply2	no static reference	-
-P2	method	cv2.detail.FeaturesMatcher.collectGarbage	no static reference	-
+P2	method	cv2.detail.FeaturesMatcher.apply2	method name only	-
+P2	method	cv2.detail.FeaturesMatcher.collectGarbage	method name only	-
 P2	method	cv2.detail.FeaturesMatcher.isThreadSafe	no static reference	-
 P2	function	cv2.detail.focalsFromHomography	no static reference	-
 P2	class	cv2.detail.GainCompensator	no static reference	-
@@ -400,14 +400,14 @@ P2	method	cv2.detail.GainCompensator.setNrFeeds	no static reference	-
 P2	method	cv2.detail.GainCompensator.setSimilarityThreshold	no static reference	-
 P2	class	cv2.detail.GraphCutSeamFinder	literal reference	-
 P2	method	cv2.detail.GraphCutSeamFinder.find	method name only	-
-P2	class	cv2.detail.HomographyBasedEstimator	no static reference	-
+P2	class	cv2.detail.HomographyBasedEstimator	literal reference	-
 P2	class	cv2.detail.ImageFeatures	no static reference	-
 P2	method	cv2.detail.ImageFeatures.getKeypoints	no static reference	-
 P2	function	cv2.detail.leaveBiggestComponent	no static reference	-
 P2	class	cv2.detail.LightGlueFeaturesMatcher	no static reference	-
 P2	method	cv2.detail.LightGlueFeaturesMatcher.setScoreThreshold	no static reference	-
 P2	function	cv2.detail.matchesGraphAsString	no static reference	-
-P2	class	cv2.detail.MatchesInfo	no static reference	-
+P2	class	cv2.detail.MatchesInfo	literal reference	-
 P2	method	cv2.detail.MatchesInfo.getInliers	no static reference	-
 P2	method	cv2.detail.MatchesInfo.getMatches	no static reference	-
 P2	class	cv2.detail.MultiBandBlender	literal reference	-
@@ -1408,7 +1408,7 @@ P2	method	cv2.xfeatures2d.VGG.setUseNormalizeImage	no static reference	-
 P2	method	cv2.xfeatures2d.VGG.setUseScaleOrientation	no static reference	-
 P2	function	cv2.xfeatures2d.VGG_create	no static reference	-
 P2	class	cv2.ximgproc.AdaptiveManifoldFilter	no static reference	-
-P2	method	cv2.ximgproc.AdaptiveManifoldFilter.collectGarbage	no static reference	-
+P2	method	cv2.ximgproc.AdaptiveManifoldFilter.collectGarbage	method name only	-
 P2	method	cv2.ximgproc.AdaptiveManifoldFilter.create	method name only	-
 P2	method	cv2.ximgproc.AdaptiveManifoldFilter.filter	method name only	-
 P2	function	cv2.ximgproc.AdaptiveManifoldFilter_create	no static reference	-
@@ -2040,7 +2040,7 @@ P3	function	cv2.circle	literal reference	-
 P3	class	cv2.CirclesGridFinderParameters	literal reference	-
 P3	class	cv2.CLAHE	no static reference	-
 P3	method	cv2.CLAHE.apply	method name only	-
-P3	method	cv2.CLAHE.collectGarbage	no static reference	-
+P3	method	cv2.CLAHE.collectGarbage	method name only	-
 P3	method	cv2.CLAHE.getBitShift	no static reference	-
 P3	method	cv2.CLAHE.getClipLimit	no static reference	-
 P3	method	cv2.CLAHE.getTilesGridSize	no static reference	-
@@ -2154,7 +2154,7 @@ P3	function	cv2.demosaicing	literal reference	-
 P3	function	cv2.denoise_TVL1	literal reference	-
 P3	class	cv2.DenseOpticalFlow	no static reference	-
 P3	method	cv2.DenseOpticalFlow.calc	method name only	-
-P3	method	cv2.DenseOpticalFlow.collectGarbage	no static reference	-
+P3	method	cv2.DenseOpticalFlow.collectGarbage	method name only	-
 P3	function	cv2.depthTo3d	no static reference	-
 P3	function	cv2.depthTo3dSparse	no static reference	-
 P3	class	cv2.DescriptorMatcher	no static reference	-

@@ -9,7 +9,9 @@ import cv2
 BINDINGS = {
     "cv.panorama_points": "perspectiveTransform",
     "cv.stitch_rotating_panorama": (
-        "Stitcher_create Stitcher.estimateTransform PyRotationWarper detail.waveCorrect remap"
+        "Stitcher_create Stitcher.estimateTransform PyRotationWarper detail.waveCorrect remap "
+        "detail.computeImageFeatures2 detail.BestOf2NearestMatcher detail.HomographyBasedEstimator "
+        "detail.BundleAdjusterRay detail.BundleAdjusterReproj"
     ),
     "cv.merge_hdr_motion": "LUT",
     "inspect.visible_support": "remap perspectiveTransform",

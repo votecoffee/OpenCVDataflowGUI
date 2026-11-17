@@ -12,6 +12,11 @@ from .core import Port, Result
 from .flow_warp import sample_mask
 from .graphics_layers import GraphicDrawing, graphic_object
 from .images import ImageArray, image_format
+from .panorama_fitting import CHOICES as FIT_CHOICES
+from .panorama_fitting import DEFAULTS as FIT_DEFAULTS
+from .panorama_fitting import HELP as FIT_HELP
+from .panorama_fitting import RANGES as FIT_RANGES
+from .panorama_fitting import explicit_fit, validate_settings
 from .panorama_geometry import (
     PROJECTIONS,
     camera_homography,
@@ -169,6 +174,7 @@ class StitchRotatingPanorama(ImageTool):
         Port("diagnostic", required=False),
     )
     defaults = {
+        **FIT_DEFAULTS,
         "reference_index": 0,
         "anchor_label": "",
         "source_labels": [],
@@ -198,6 +204,7 @@ class StitchRotatingPanorama(ImageTool):
         "maximum_working_bytes": 512 * 1024**2,
     }
     parameter_choices = {
+        **FIT_CHOICES,
         "component_policy": ("reject", "fail_partial", "allow_partial"),
         "projection": PROJECTIONS,
         "wave_correction": ("none", *WAVE),
@@ -205,6 +212,7 @@ class StitchRotatingPanorama(ImageTool):
         "blend": ("average", "first"),
     }
     parameter_ranges = {
+        **FIT_RANGES,
         "reference_index": NumericRange(0, 7, whole=True),
         "projection_scale": NumericRange(0, 16384),
         "registration_megapixels": NumericRange(0.01, 4),
@@ -227,6 +235,7 @@ class StitchRotatingPanorama(ImageTool):
         "maximum_working_bytes": NumericRange(1, 2 * 1024**3, whole=True),
     }
     parameter_help = {
+        **FIT_HELP,
         "reference_index": "Anchor index when Anchor label is empty; not the assumed view order.",
         "anchor_label": "Stable source label; must survive component selection.",
         "source_labels": "Unique labels in batch order; empty uses labels or view indices.",
@@ -240,8 +249,8 @@ class StitchRotatingPanorama(ImageTool):
             "Work-image megapixels per source; render original-depth pixels."
         ),
         "native_confidence": "Native Stitcher panorama-component confidence threshold.",
-        "verification_features": "Bound independent SIFT validation keypoints per source.",
-        "maximum_verification_pairs": "Maximum pairwise descriptor products before validation.",
+        "verification_features": "Automatic solver: bound separate SIFT validation keypoints.",
+        "maximum_verification_pairs": "Fit and validation each obey this descriptor-product cap.",
         "match_ratio": "Independent mutual descriptor nearest/second-nearest distance ratio.",
         "maximum_descriptor_distance": "Maximum independent SIFT match distance.",
         "minimum_inliers": "Minimum independent homography inliers for a validated overlap edge.",
@@ -294,6 +303,7 @@ class StitchRotatingPanorama(ImageTool):
     def validate_parameters(self, parameters=None):
         super().validate_parameters(parameters)
         p = self.parameters if parameters is None else parameters
+        validate_settings(p)
         for key, bounds in self.parameter_ranges.items():
             if type(p[key]) not in (int, float) or (bounds.whole and type(p[key]) is not int):
                 raise ValidationError("Use typed numeric panorama parameters", key)
@@ -313,9 +323,10 @@ class StitchRotatingPanorama(ImageTool):
             raise ValidationError(
                 "Focal limits must increase", "minimum_focal_ratio", "maximum_focal_ratio"
             )
-        if p["minimum_inliers"] > p["verification_features"]:
+        limit = "verification_features" if p["camera_solver"] == "automatic" else "camera_features"
+        if p["minimum_inliers"] > p[limit]:
             raise ValidationError(
-                "Minimum inliers exceeds verification features", "minimum_inliers"
+                "Minimum inliers exceeds available feature limit", "minimum_inliers", limit
             )
 
     def finish(self, report, layout=None, image=None, coverage=None, counts=None):
@@ -497,22 +508,37 @@ class StitchRotatingPanorama(ImageTool):
             )
             work_masks.append(cv2.resize(mask, size, interpolation=cv2.INTER_NEAREST))
             scales.append([size[0] / gray.shape[1], size[1] / gray.shape[0]])
-        solver = cv2.Stitcher_create(cv2.Stitcher_PANORAMA)
-        solver.setRegistrationResol(-1)
-        solver.setPanoConfidenceThresh(p["native_confidence"])
-        solver.setWaveCorrection(False)
-        status = int(
-            solver.estimateTransform([work[i] for i in active], [work_masks[i] for i in active])
-        )
-        report["native_status"] = STATUS.get(status, "unknown_native_status")
-        if status != cv2.Stitcher_OK:
-            report["status"] = report["native_status"]
-            return self.finish(report)
-        indices = list(map(int, solver.component()))
-        if len(set(indices)) != len(indices) or any(not 0 <= i < len(active) for i in indices):
-            raise ValidationError("Native component indices are invalid")
-        component = [active[i] for i in indices]
-        native = list(solver.cameras())
+        validation_features = None
+        if p["camera_solver"] == "explicit":
+            status, component, native, validation_features, audit = explicit_fit(
+                work, work_masks, scales, active, anchor, p
+            )
+            report.update(native_status=status, camera_fit=audit)
+            if status != "ok":
+                report["status"] = status
+                return self.finish(report)
+        else:
+            solver = cv2.Stitcher_create(cv2.Stitcher_PANORAMA)
+            solver.setRegistrationResol(-1)
+            solver.setPanoConfidenceThresh(p["native_confidence"])
+            solver.setWaveCorrection(False)
+            status = int(
+                solver.estimateTransform([work[i] for i in active], [work_masks[i] for i in active])
+            )
+            report["native_status"] = STATUS.get(status, "unknown_native_status")
+            report["camera_fit"] = {
+                "solver": "automatic",
+                "validation_basis": "separate_detection",
+                "validation_excluded_from_camera_fit": False,
+            }
+            if status != cv2.Stitcher_OK:
+                report["status"] = report["native_status"]
+                return self.finish(report)
+            indices = list(map(int, solver.component()))
+            if len(set(indices)) != len(indices) or any(not 0 <= i < len(active) for i in indices):
+                raise ValidationError("Native component indices are invalid")
+            component = [active[i] for i in indices]
+            native = list(solver.cameras())
         if (
             len(component) != len(native)
             or len(set(component)) != len(component)
@@ -556,11 +582,14 @@ class StitchRotatingPanorama(ImageTool):
             for camera, R in zip(cameras, corrected, strict=True):
                 camera["camera_to_panorama"] = rotation(R).tolist()
         report["camera_estimates"] = copy.deepcopy(cameras)
-        detector = cv2.SIFT_create(p["verification_features"])
-        features = {
-            i: _features(detector, work[i], work_masks[i], p["verification_features"])
-            for i in component
-        }
+        if validation_features is None:
+            detector = cv2.SIFT_create(p["verification_features"])
+            features = {
+                i: _features(detector, work[i], work_masks[i], p["verification_features"])
+                for i in component
+            }
+        else:
+            features = {i: validation_features[i] for i in component}
         comparisons = sum(
             len(features[a][0]) * len(features[b][0]) for a, b in combinations(component, 2)
         )

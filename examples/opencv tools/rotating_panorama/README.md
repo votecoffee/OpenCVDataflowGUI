@@ -55,8 +55,9 @@ python "examples/opencv tools/rotating_panorama/build_example.py"
 Generation does not run camera estimation. Exact regeneration checks compare the
 eight PNGs, eight saved projects and truth record. See the
 [block contracts](../../../docs/rotating-panorama.md) for assumptions, parameters,
-nonlinear coordinate ownership, partial policies and the remaining camera
-refinement work in S1-147.
+nonlinear coordinate ownership and partial policies. The
+[camera refinement examples](../panorama_refinement/README.md) add native solver
+controls, fixed/refined intrinsics and observations reserved from fitting (S1-147).
 
 ## Attribution
 

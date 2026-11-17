@@ -35,10 +35,75 @@ establish an overlap. The retained graph must connect to the anchor through
 validated edges. Pair counts, inliers, residuals, native selection, retained
 indices, dropped labels and all native camera estimates are available in Report.
 
-This separate check can reuse image observations used by native fitting; it is
-not a reserved validation set. Native high-level camera fitting and optional
-wave correction are exposed now. Explicit solver/refinement choices, adjustable
-intrinsic priors and reserved-observation validation remain in **S1-147**.
+The default Automatic solver's separate check can reuse image observations used
+by native fitting. Choose Explicit for reserved observations and controllable
+camera refinement, as shown in the
+[nine refinement projects](<../examples/opencv tools/panorama_refinement/README.md>).
+
+## Explicit fitting and reserved validation
+
+Camera solver Explicit uses native `detail.HomographyBasedEstimator` followed
+by the selected bundle adjustment. It detects bounded SIFT observations on the
+masked work images and partitions them **before native matching or estimation**.
+A SHA-256 decision from Holdout seed and each rounded pixel center reserves the
+configured fraction. Multiple orientations/scales at the same rounded center
+stay together. Native matching, initial rotation estimation and adjustment
+receive only the fit observations. The reserved keypoints/descriptors are used
+only after fitting, for mutual matching and independent homography/model checks.
+There is no fallback to fitting observations when validation support is sparse,
+and no automatic seed search or retry driven by the validation result.
+
+Camera features bounds detection before partitioning. Holdout fraction defaults
+to 0.35; the seed defaults to 104. Native match confidence has OpenCV's convention
+`distance_ratio < 1 - confidence`, distinct from the validation Match ratio.
+Native confidence selects fit edges. The anchor's connected fit component is
+selected; weak edges are removed before native initial estimation. Validation
+must then establish anchored connectivity using the reserved observations.
+The existing component policy governs missing views, including views that lack
+enough reserved evidence. At least two validated cameras remain necessary.
+
+Initial intrinsics accepts one original-source 3×3 matrix per input in input
+order, or an empty list to estimate focal lengths from fit homographies. Matrices
+must be finite, non-skewed pinhole intrinsics with positive focal lengths and
+principal points inside their sources. They are scaled to actual work grids,
+then restored to original pixel units in Layout. They are initial values unless
+the relevant refinement flags are off. They are not weighted statistical priors.
+
+| Bundle adjustment | Controls and constraints |
+| --- | --- |
+| None | Keep initial intrinsics and native estimated rotations, projected to proper rotations by SVD. Refinement flags do not apply. |
+| Reprojection | Refine focal, aspect (`fy/fx`) and principal point (`cx/cy`) independently. All flags off keeps K fixed while refining rotations. |
+| Ray | Native ray cost always refines focal. Refine focal must be on; aspect/principal-point flags must be off. Supplied priors must be centered and square on the rounded work grid. |
+
+Adjustment iterations and epsilon set native termination criteria. Optional wave
+correction follows fitting and anchoring in both solver modes. Invalid settings
+or source-dependent priors reject before detection. Failed native estimation or
+adjustment returns a failed inspection without numerical outputs; unexpected
+native exceptions use the common contained error path.
+
+Report's `camera_fit` records solver/cost, partition algorithm/seed/fraction,
+fit/validation feature counts, training pair counts/confidence, descriptor work,
+initial/fitted work-grid intrinsics and the reprojection refinement mask. Explicit
+mode marks `validation_excluded_from_camera_fit: true`; Automatic marks it false.
+Report's existing Pairs are validation pairs, with original-source pixel errors.
+The descriptor budget is checked separately before fit matching and validation
+matching. The native feature cap is separate from Automatic's Verification
+features setting. A validation consensus fits its own homography to classify
+outliers; its observations never update the panorama cameras.
+
+Reserved keypoint observations share source images, detector parameters and
+possibly overlapping descriptor neighborhoods. They are not independent captures
+or a proof of intrinsic identifiability. A scene with only yaw can constrain
+some intrinsic parameters poorly: allowing every parameter to vary can give
+very different intrinsics with small overlap residuals. Keep known intrinsics
+fixed or refine only supported parameters; physical calibration requires
+appropriate separate observations. The current tests qualify the declared
+rotating-view workflow, not arbitrary intrinsic recovery.
+
+Native contracts are documented in OpenCV's
+[rotation estimator interfaces](https://github.com/opencv/opencv/blob/5.x/modules/stitching/include/opencv2/stitching/detail/motion_estimators.hpp),
+[ray solver implementation](https://github.com/opencv/opencv/blob/5.x/modules/stitching/src/motion_estimators.cpp)
+and [feature/matcher interfaces](https://github.com/opencv/opencv/blob/5.x/modules/stitching/include/opencv2/stitching/detail/matchers.hpp).
 
 ## Missing views and output validity
 
