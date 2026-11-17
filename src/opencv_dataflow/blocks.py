@@ -649,6 +649,7 @@ def builtin_registry():
     from .chessboard_quality import CheckChessboardQuality
     from .chromatic_aberration import ChromaticModel, CorrectChromaticAberration, LoadChromaticModel
     from .circle_fitting import FitCircleArc
+    from .classification_evaluation import CLASSIFICATION_EVALUATION_BLOCKS
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_tools import CLOUD_BLOCKS
     from .cluster_models import CLUSTER_MODEL_BLOCKS
@@ -1181,6 +1182,7 @@ def builtin_registry():
         *SVM_BLOCKS,
         *KNN_BLOCKS,
         *RTREES_BLOCKS,
+        *CLASSIFICATION_EVALUATION_BLOCKS,
         *LIGHTGLUE_BLOCKS,
         *LOCAL_FEATURE_BLOCKS,
         *DISK_BLOCKS,

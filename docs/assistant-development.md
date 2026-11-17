@@ -41,6 +41,13 @@ depends on the assistant host refreshing its skill catalog.
 
 ## A practical workflow
 
+Saved [validation image sets](production-validation.md) run through
+`ProjectSession.run_validation(set_id)` or
+`opencv-dataflow-api run-validation program.json --set heldout --report new-report.json`.
+The optional [classifier evaluation](classifier-evaluation.md) configuration adds
+truth/group/hash checks, confusion matrices and per-class metrics. Reports use
+isolated processing copies and preserve the session's production history.
+
 1. Define the acquisition sources, desired detections/measurements, tolerances,
    calibration, final judgment and output consumers. Use the
    [plan template](application-plan-template.md) for substantial applications.

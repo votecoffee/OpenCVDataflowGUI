@@ -8854,6 +8854,22 @@ Input `input_4` — Connect prepared images or float32 tensor records/maps.
 | `input_4_tensor` | `""` | Empty for a tensor/one-entry map; otherwise select an output name. |
 | `input_4_role` | `"reference"` | `current`, `reference` Current checks live tickets; Reference allows cached/constant input. |
 
+## Evaluate image class predictions (`ml.evaluate_classification`)
+
+ML / Evaluation
+
+Inputs: `records` (any, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `classes` | `[]` | Optional class order; observed extra labels are appended. |
+| `min_accuracy` | `1.0` | Value must be a finite number between 0 and 1. Correct / all labeled images, including rejected/missing/errors. |
+| `min_coverage` | `1.0` | Value must be a finite number between 0 and 1. Recognized / all labeled images, including wrong recognized labels. |
+| `thresholds` | `[]` | Distinct cutoffs; recognized rows need comparable finite scores. Sweeps can further reject recognized rows, not recover upstream rejected candidates. |
+| `score_direction` | `"higher"` | `higher`, `lower` Keep >= cutoff for higher, <= for lower; scores are not probabilities. |
+| `records` | `[]` | Per-image id, expected, prediction, status, optional score/score_kind. Status is predicted/rejected/missing/error. A validation report may be wired directly. |
+| `expected_cases` | `[]` | Full set: id, class_label, capture_group. Missing IDs remain scored. |
+
 ## Image to DNN tensor (`ml.image_tensor`)
 
 ML / Tensor preparation
@@ -9354,6 +9370,20 @@ Input `collection` — Decode instance segmentation collection, optionally sorte
 | `missing` | `"empty"` | `empty`, `error` Emit a normal failed empty mask/region, or reject without current output. |
 | `maximum_region_runs` | `200000` | Value must be a whole number between 1 and 1e+06. Reject larger selected mask encodings before rasterizing. |
 | `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound the full source mask allocation. |
+
+## Split labeled images by capture group (`ml.split_image_groups`)
+
+ML / Evaluation
+
+Inputs: `samples` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `samples` | `[]` | Image records: id, path, class_label, capture_group, optional image_sha256. Groups represent correlated captures. Paths/hash claims cannot cross groups or labels; files are not read here. |
+| `test_fraction` | `0.25` | Value must be a finite number between 0 and 1. Fraction of whole groups, rounded with at least one if positive. |
+| `validation_fraction` | `0.0` | Value must be a finite number between 0 and 1. Additional validation groups; leave at least one training group. |
+| `seed` | `0` | Value must be a whole number between -2.14748e+09 and 2.14748e+09. Deterministic group hash order; independent of input order or global RNG state. |
+| `require_training_classes` | `true` | Reject missing training classes. Split is not stratified. |
 
 ## Load OpenCV SVM classifier (`ml.svm_load`)
 

@@ -8,23 +8,28 @@ import uuid
 from pathlib import Path
 
 from PySide6.QtCore import QThread, Signal
+from PySide6.QtGui import QColor
 from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
     QDialog,
+    QDoubleSpinBox,
     QFileDialog,
     QFormLayout,
     QHBoxLayout,
     QLabel,
     QLineEdit,
+    QPlainTextEdit,
     QPushButton,
     QTableWidget,
     QTableWidgetItem,
+    QTabWidget,
     QTextEdit,
     QVBoxLayout,
     QWidget,
 )
 
+from .classification_evaluation import CLASSIFICATION_DEFAULTS
 from .filmstrip import Filmstrip
 from .filmstrip_viewer import FilmstripViewer
 from .validation import EXPECTATIONS, run_set, validate_sets
@@ -108,15 +113,32 @@ class ValidationManager(QDialog):
         ):
             form.addRow(label, field)
         form.addRow(self.outputs)
-        edit.addLayout(form)
-        self.images = QTableWidget(0, 4)
+        settings_tabs = QTabWidget()
+        image_settings = QWidget()
+        image_layout = QVBoxLayout(image_settings)
+        image_layout.addLayout(form)
+        settings_tabs.addTab(image_settings, "Image set")
+        settings_tabs.addTab(self.classification_fields(), "Classifier evaluation")
+        edit.addWidget(settings_tabs)
+        self.images = QTableWidget(0, 7)
         self.images.setHorizontalHeaderLabels(
-            ["Image path (project relative)", "Expectation", "Preferred fail reason code", "Notes"]
+            [
+                "Image path (project relative)",
+                "Expectation",
+                "Preferred fail reason code",
+                "Notes",
+                "Expected class",
+                "Capture group",
+                "Image SHA-256 (optional)",
+            ]
         )
         self.images.horizontalHeader().setStretchLastSection(True)
         for column, width in enumerate((380, 130, 240)):
             self.images.setColumnWidth(column, width)
         edit.addWidget(self.images)
+        self.class_enabled.toggled.connect(self.classification_visibility)
+        self.class_advanced.toggled.connect(self.classification_visibility)
+        self.classification_visibility()
         row = QHBoxLayout()
         for title, callback in (
             ("Add images…", self.add_images),
@@ -147,11 +169,107 @@ class ValidationManager(QDialog):
         layout.addLayout(row)
         self.results = QTextEdit()
         self.results.setReadOnly(True)
-        layout.addWidget(self.results, 2)
+        self.result_tabs = QTabWidget()
+        self.result_tabs.addTab(self.results, "Events")
+        class_results = QWidget()
+        class_layout = QVBoxLayout(class_results)
+        self.class_summary = QLabel()
+        self.confusion = QTableWidget()
+        self.class_metrics = QTableWidget()
+        for table in (self.confusion, self.class_metrics):
+            table.setEditTriggers(QTableWidget.NoEditTriggers)
+        class_layout.addWidget(self.class_summary)
+        class_layout.addWidget(self.confusion)
+        class_layout.addWidget(self.class_metrics)
+        self.result_tabs.addTab(class_results, "Classifier report")
+        self.result_tabs.setTabVisible(1, False)
+        layout.addWidget(self.result_tabs, 2)
         if not self.catalog:
             self.new_set()
         else:
             self.populate(0)
+
+    def classification_fields(self):
+        widget = QWidget()
+        layout = QVBoxLayout(widget)
+        self.class_enabled = QCheckBox("Evaluate classifier labels")
+        layout.addWidget(self.class_enabled)
+        self.class_options = QWidget()
+        form = QFormLayout(self.class_options)
+        self.class_block = QComboBox()
+        for block in self.window.root_graph.blocks.values():
+            if any(p.kind in ("data", "text") for p in block.outputs):
+                self.class_block.addItem(f"{block.name} [{block.id[:8]}]", block.id)
+        self.class_output, self.class_path = QLineEdit("labels"), QLineEdit("0")
+        self.class_path.setToolTip(
+            "Dotted fields/indices; 0 selects the only label in a list. "
+            "Blank uses the scalar output."
+        )
+        self.class_accuracy, self.class_coverage = QDoubleSpinBox(), QDoubleSpinBox()
+        for field in (self.class_accuracy, self.class_coverage):
+            field.setRange(0, 100)
+            field.setSuffix(" %")
+            field.setValue(100)
+        self.class_accuracy.setToolTip(
+            "Correct / all labeled images, including rejected, missing and errors."
+        )
+        self.class_coverage.setToolTip(
+            "Recognized labels / all labeled images, including wrong recognized labels."
+        )
+        for label, field in (
+            ("Classifier block", self.class_block),
+            ("Label output", self.class_output),
+            ("Value within output", self.class_path),
+            ("Minimum accuracy", self.class_accuracy),
+            ("Minimum coverage", self.class_coverage),
+        ):
+            form.addRow(label, field)
+        self.class_advanced = QCheckBox("Show score and capture-group settings")
+        form.addRow(self.class_advanced)
+        self.class_extra = QWidget()
+        extra = QFormLayout(self.class_extra)
+        self.class_order, self.training_groups = QPlainTextEdit(), QPlainTextEdit()
+        for field in (self.class_order, self.training_groups):
+            field.setMaximumHeight(55)
+            field.setPlaceholderText("One per line")
+        self.training_groups.setToolTip(
+            "Training groups must not occur in evaluation. "
+            "Group labels do not prove model training provenance."
+        )
+        self.score_output, self.score_path, self.score_kind = (
+            QLineEdit(),
+            QLineEdit(),
+            QLineEdit("score"),
+        )
+        self.score_path.setToolTip(
+            "For example winning_vote_fractions.0 in a forest Report output. "
+            "A data lookup, not an expression."
+        )
+        self.score_direction = QComboBox()
+        self.score_direction.addItems(["higher", "lower"])
+        self.thresholds = QLineEdit()
+        self.thresholds.setPlaceholderText("For example: 0.5, 0.8, 0.9")
+        for label, field in (
+            ("Class display order", self.class_order),
+            ("Training capture groups", self.training_groups),
+            ("Score output (optional)", self.score_output),
+            ("Value within score output", self.score_path),
+            ("Score meaning", self.score_kind),
+            ("Better scores are", self.score_direction),
+            ("Score cutoffs", self.thresholds),
+        ):
+            extra.addRow(label, field)
+        form.addRow(self.class_extra)
+        layout.addWidget(self.class_options)
+        return widget
+
+    def classification_visibility(self):
+        enabled = self.class_enabled.isChecked()
+        self.class_options.setEnabled(enabled)
+        self.class_extra.setVisible(enabled and self.class_advanced.isChecked())
+        for column in (4, 5):
+            self.images.setColumnHidden(column, not enabled)
+        self.images.setColumnHidden(6, not (enabled and self.class_advanced.isChecked()))
 
     def read_set(self):
         if self.current < 0:
@@ -160,7 +278,8 @@ class ValidationManager(QDialog):
         old = self.catalog[self.current]
         for index in range(self.images.rowCount()):
             cells = [self.images.item(index, c).text() for c in (0, 2, 3)]
-            cases.append(
+            case = copy.deepcopy(self.images.item(index, 0).data(257) or {})
+            case.update(
                 {
                     "id": self.images.item(index, 0).data(256),
                     "path": cells[0],
@@ -169,7 +288,20 @@ class ValidationManager(QDialog):
                     "notes": cells[2],
                 }
             )
-        return {
+            if (
+                self.class_enabled.isChecked()
+                or "class_label" in case
+                or self.images.item(index, 4).text()
+            ):
+                case["class_label"] = self.images.item(index, 4).text() or None
+            for column, key in ((5, "capture_group"), (6, "image_sha256")):
+                value = self.images.item(index, column).text()
+                if value:
+                    case[key] = value
+                else:
+                    case.pop(key, None)
+            cases.append(case)
+        result = {
             "id": old["id"],
             "name": self.name.text(),
             "source": self.source.currentData() or "",
@@ -178,6 +310,27 @@ class ValidationManager(QDialog):
             "allow_outputs": self.outputs.isChecked(),
             "cases": cases,
         }
+        if self.class_enabled.isChecked():
+            raw = [v.strip() for v in self.thresholds.text().split(",") if v.strip()]
+            try:
+                thresholds = [float(v) for v in raw]
+            except ValueError:
+                thresholds = raw  # Keep the draft; Save/Run displays its validation error.
+            result["classification"] = {
+                "block": self.class_block.currentData() or "",
+                "output": self.class_output.text(),
+                "value_path": self.class_path.text(),
+                "classes": self.class_order.toPlainText().splitlines(),
+                "training_groups": self.training_groups.toPlainText().splitlines(),
+                "min_accuracy": self.class_accuracy.value() / 100,
+                "min_coverage": self.class_coverage.value() / 100,
+                "score_output": self.score_output.text(),
+                "score_path": self.score_path.text(),
+                "score_kind": self.score_kind.text(),
+                "score_direction": self.score_direction.currentText(),
+                "thresholds": thresholds,
+            }
+        return result
 
     def stash(self):
         if 0 <= self.current < len(self.catalog):
@@ -205,6 +358,24 @@ class ValidationManager(QDialog):
             field.setCurrentIndex(found)
         self.state.setCurrentText(item.get("state_mode", "isolated"))
         self.outputs.setChecked(item.get("allow_outputs", False))
+        config = {**copy.deepcopy(CLASSIFICATION_DEFAULTS), **item.get("classification", {})}
+        self.class_enabled.setChecked("classification" in item)
+        self.class_block.setCurrentIndex(self.class_block.findData(config["block"]))
+        for field, key in (
+            (self.class_output, "output"),
+            (self.class_path, "value_path"),
+            (self.score_output, "score_output"),
+            (self.score_path, "score_path"),
+            (self.score_kind, "score_kind"),
+        ):
+            field.setText(config[key])
+        self.class_order.setPlainText("\n".join(config["classes"]))
+        self.training_groups.setPlainText("\n".join(config["training_groups"]))
+        self.class_accuracy.setValue(config["min_accuracy"] * 100)
+        self.class_coverage.setValue(config["min_coverage"] * 100)
+        self.score_direction.setCurrentText(config["score_direction"])
+        self.thresholds.setText(", ".join(map(str, config["thresholds"])))
+        self.classification_visibility()
         for case in item["cases"]:
             self.append_case(case)
 
@@ -213,6 +384,7 @@ class ValidationManager(QDialog):
         self.images.insertRow(row)
         cell = QTableWidgetItem(case["path"])
         cell.setData(256, case["id"])
+        cell.setData(257, copy.deepcopy(case))
         self.images.setItem(row, 0, cell)
         expectation = QComboBox()
         expectation.addItems(EXPECTATIONS)
@@ -220,6 +392,8 @@ class ValidationManager(QDialog):
         self.images.setCellWidget(row, 1, expectation)
         self.images.setItem(row, 2, QTableWidgetItem(case.get("preferred_fail_reason", "")))
         self.images.setItem(row, 3, QTableWidgetItem(case.get("notes", "")))
+        for column, key in ((4, "class_label"), (5, "capture_group"), (6, "image_sha256")):
+            self.images.setItem(row, column, QTableWidgetItem(case.get(key) or ""))
 
     def new_set(self):
         self.stash()
@@ -332,6 +506,7 @@ class ValidationManager(QDialog):
             self.status.setText("Add images before running the set")
             return
         self.report = None
+        self.result_tabs.setTabVisible(1, False)
         self.results.clear()
         self.filmstrip.clear()
         self.worker = ValidationWorker(
@@ -388,6 +563,7 @@ class ValidationManager(QDialog):
                 f"{summary['unknown']} unknown · "
                 f"{summary['execution_errors']} execution errors"
             )
+            self.show_classification_report(self.report.get("classification"))
         self.worker = None
         worker.deleteLater()
         self.editor.setEnabled(True)
@@ -395,6 +571,53 @@ class ValidationManager(QDialog):
         self.stop_button.setEnabled(False)
         if self.closing:
             self.close()
+
+    def show_classification_report(self, report):
+        self.result_tabs.setTabVisible(1, report is not None)
+        if report is None:
+            return
+        summary, classes = report["summary"], report["classes"]
+
+        def percent(value):
+            return f"{100 * value:.1f}%" if value is not None else "unscored"
+
+        message = (
+            f"Class accuracy {percent(summary['accuracy'])} · "
+            f"coverage {percent(summary['coverage'])} · "
+            f"{summary['correct']}/{summary['labeled']} correct · "
+            f"{summary['unlabeled']} unlabeled"
+        )
+        self.class_summary.setText(message)
+        self.status.setText(self.status.text() + " · " + message)
+        self.confusion.setRowCount(len(classes))
+        self.confusion.setColumnCount(len(classes) + 3)
+        self.confusion.setVerticalHeaderLabels(classes)
+        self.confusion.setHorizontalHeaderLabels(
+            classes + ["Rejected (no label)", "Missing", "Error"]
+        )
+        for i, row in enumerate(report["confusion"]):
+            for j, count in enumerate(row):
+                cell = QTableWidgetItem(str(count))
+                if count:
+                    cell.setBackground(
+                        QColor(
+                            "#d5f2d6" if i == j else "#f5d6d6" if j >= len(classes) else "#fff0bb"
+                        )
+                    )
+                self.confusion.setItem(i, j, cell)
+        self.class_metrics.setRowCount(len(classes))
+        self.class_metrics.setColumnCount(5)
+        self.class_metrics.setHorizontalHeaderLabels(
+            ["Class", "Support", "Precision", "Recall", "F1"]
+        )
+        for i, row in enumerate(report["per_class"]):
+            values = [
+                row["label"],
+                str(row["support"]),
+                *[percent(row[key]) for key in ("precision", "recall", "f1")],
+            ]
+            for j, value in enumerate(values):
+                self.class_metrics.setItem(i, j, QTableWidgetItem(value))
 
     def export_report(self):
         if self.report:

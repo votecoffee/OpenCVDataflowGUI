@@ -59,6 +59,22 @@ currently **1**. The API protocol version is independent of the project schema.
 
 ## Authoring operations
 
+Saved validation sets can be executed independently of the session's production
+history:
+
+```text
+run-validation <project.json> --set <id-or-unique-name> --report <new-report.json> --summary
+```
+
+This uses the existing validation runner, including optional image classifier
+confusion/per-class metrics and group/hash guards. `--profile debug|balanced|lean`
+is optional. The report destination must be new; exit 1 means a failed or incomplete
+report. Python callers use `ProjectSession.run_validation(set_id, cancelled=...,
+progress=...)`. The call processes copies of the applied graph, leaving session
+history intact. It executes trusted configured processing/lifecycle behavior under
+the same output-skipping rules as the validation dialog. Classifier setup and
+denominators are documented in `docs/classifier-evaluation.md` in the source checkout.
+
 Store a JSON **list** of operations in an operations file. Duplicate JSON keys and
 nonfinite constants are rejected by the CLI. Explicit IDs make edits and review
 repeatable. Parameters omitted from `add` inherit actual block defaults.

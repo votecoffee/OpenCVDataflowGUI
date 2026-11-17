@@ -12,6 +12,14 @@ from pathlib import Path
 import cv2
 
 from .blocks import ImageFile, builtin_registry
+from .classification_evaluation import (
+    METRIC_DEFAULTS,
+    capture_classification,
+    case_metadata,
+    classification_config,
+    error_text,
+    evaluate_classification,
+)
 from .core import Graph, Result
 from .fail_reasons import merge_reasons
 from .payloads import NO_VALUE
@@ -32,6 +40,7 @@ def validate_sets(sets):
             "state_mode",
             "allow_outputs",
             "cases",
+            "classification",
         }:
             raise ValueError("Invalid validation set")
         for key in ("id", "name", "source"):
@@ -57,6 +66,9 @@ def validate_sets(sets):
                 "expectation",
                 "preferred_fail_reason",
                 "notes",
+                "class_label",
+                "capture_group",
+                "image_sha256",
             }:
                 raise ValueError("Invalid validation image case")
             for key, maximum in (("id", 128), ("path", 4096)):
@@ -72,6 +84,9 @@ def validate_sets(sets):
                 raise ValueError("Preferred fail reason applies only to expected failures")
             if not isinstance(case.get("notes", ""), str) or len(case.get("notes", "")) > 4096:
                 raise ValueError("Validation notes exceed 4096 characters")
+            case_metadata(case)
+        if "classification" in item:
+            classification_config(item["classification"], cases)
         total += len(cases)
     if total > 10000:
         raise ValueError("Validation catalog exceeds 10,000 images")
@@ -106,6 +121,16 @@ def prepare_graph(definition, manifest, registry, project_dir):
     graph.blocks[old.id] = source
     graph.connections = [c for c in graph.connections if c.target != old.id]
     decision = manifest.get("judgment", "")
+    if "classification" in manifest:
+        config = classification_config(manifest["classification"], manifest["cases"])
+        predictor = graph.blocks.get(config["block"])
+        ports = (
+            {port.name for port in predictor.execution_outputs} if predictor is not None else set()
+        )
+        if config["output"] not in ports or (
+            config["score_output"] and config["score_output"] not in ports
+        ):
+            raise ValueError("Choose existing root classifier label/score outputs")
     if decision and (
         decision not in graph.blocks or graph.blocks[decision].type_id != "inspect.final_judgment"
     ):
@@ -177,6 +202,11 @@ def run_set(
         "cleanup_errors": [],
     }
     run_id, graph = uuid.uuid4().hex, None
+    classification = (
+        classification_config(manifest["classification"], manifest["cases"])
+        if "classification" in manifest
+        else None
+    )
     try:
         for case in manifest["cases"]:
             if cancelled():
@@ -191,6 +221,7 @@ def run_set(
                 "reason_matched": None,
                 "processing_ms": None,
             }
+            executed = False
             try:
                 if graph is None or manifest.get("state_mode", "isolated") == "isolated":
                     if graph is not None:
@@ -202,6 +233,11 @@ def run_set(
                 path = path if path.is_absolute() else root / path
                 data = path.read_bytes()
                 row["image_sha256"] = hashlib.sha256(data).hexdigest()
+                if (
+                    case.get("image_sha256") is not None
+                    and row["image_sha256"] != case["image_sha256"]
+                ):
+                    raise ValueError("Validation image bytes differ from the pinned SHA-256")
                 source = graph.blocks[manifest["source"]]
                 source.parameters["path"] = str(path.resolve())
                 source.read_bytes = lambda path, frozen=data: frozen
@@ -210,6 +246,7 @@ def run_set(
                     "value": f"validation:{run_id}:{case['id']}",
                 }
                 graph.run(cancelled)
+                executed = True
                 ticket = (
                     source.last_result.outputs["ticket"]
                     if source.last_result
@@ -252,6 +289,21 @@ def run_set(
                     ).get("elapsed_ms")
             except Exception as exc:
                 row["errors"].append(f"{type(exc).__name__}: {exc}")
+            if classification is not None:
+                if executed:
+                    row["classification"] = capture_classification(
+                        graph, classification, case, row.get("ticket"), row["errors"]
+                    )
+                else:
+                    row["classification"] = {
+                        "id": case["id"],
+                        "group": case.get("capture_group", case["id"]),
+                        "expected": case.get("class_label"),
+                        "prediction": None,
+                        "status": "error",
+                        "score": None,
+                        "error": error_text("; ".join(row["errors"])),
+                    }
             if case["expectation"] != "unknown":
                 expected = case["expectation"].endswith("_pass")
                 preferred = case.get("preferred_fail_reason", "")
@@ -273,6 +325,20 @@ def run_set(
             except Exception as exc:
                 report["cleanup_errors"].append(f"{type(exc).__name__}: {exc}")
     report["summary"] = score_report(report["cases"], cancelled())
+    if classification is not None:
+        report["classification"] = evaluate_classification(
+            [row["classification"] for row in report["cases"]],
+            expected_cases=manifest["cases"],
+            **{key: classification[key] for key in METRIC_DEFAULTS},
+        )
+        report["classification"]["complete"] = (
+            len(report["cases"]) == len(manifest["cases"]) and not report["summary"]["cancelled"]
+        )
+        passed = (
+            report["classification"]["summary"]["passed"] and report["classification"]["complete"]
+        )
+        report["summary"]["classification_passed"] = bool(passed)
+        report["summary"]["passed"] &= bool(passed)
     if report["cleanup_errors"]:
         report["summary"]["passed"] = False
         report["summary"]["execution_errors"] += len(report["cleanup_errors"])

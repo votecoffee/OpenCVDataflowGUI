@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "split",
+      "type": "ml.split_image_groups",
+      "name": "Split labeled images by capture group",
+      "parameters": {
+        "samples": [
+          {
+            "id": "train-vertical-0",
+            "path": "assets/train-vertical-0.png",
+            "class_label": "vertical",
+            "capture_group": "capture-0",
+            "image_sha256": "538330fa02cecf94166637838cc3e5d870b77a1ce8993e74c886b401c303cc4b"
+          },
+          {
+            "id": "train-vertical-1",
+            "path": "assets/train-vertical-1.png",
+            "class_label": "vertical",
+            "capture_group": "capture-1",
+            "image_sha256": "45c5261eca9d0e0b9b5fa69d83e8989587745d44cfcada88c382d04d406bb050"
+          },
+          {
+            "id": "train-vertical-2",
+            "path": "assets/train-vertical-2.png",
+            "class_label": "vertical",
+            "capture_group": "capture-2",
+            "image_sha256": "4b3b1d636491355386de3abedbe1e75ca84a20a9d6131adf2045a170ce8ecb56"
+          },
+          {
+            "id": "train-horizontal-0",
+            "path": "assets/train-horizontal-0.png",
+            "class_label": "horizontal",
+            "capture_group": "capture-0",
+            "image_sha256": "d407ccb5608cea90a4a8d0612bccf8917ccfcb19e8d0173f18881a2c4c5c0654"
+          },
+          {
+            "id": "train-horizontal-1",
+            "path": "assets/train-horizontal-1.png",
+            "class_label": "horizontal",
+            "capture_group": "capture-1",
+            "image_sha256": "b5ab6968170e84cf11226b53ebe8360a23fe8663b7704aac3e6f5d810bc34e0a"
+          },
+          {
+            "id": "train-horizontal-2",
+            "path": "assets/train-horizontal-2.png",
+            "class_label": "horizontal",
+            "capture_group": "capture-2",
+            "image_sha256": "938259dfb4369a4dc3b9bcfe9448ff6547603d1ad233d4f8aec69cbe3d21b85b"
+          },
+          {
+            "id": "heldout-vertical",
+            "path": "assets/heldout-vertical.png",
+            "class_label": "vertical",
+            "capture_group": "heldout",
+            "image_sha256": "d0815aa3ffe92d63d012b42e9278f9649e11c05dc5746958ba432b9841e15a54"
+          },
+          {
+            "id": "heldout-horizontal",
+            "path": "assets/heldout-horizontal.png",
+            "class_label": "horizontal",
+            "capture_group": "heldout",
+            "image_sha256": "eb05dfdda069dcd6f3ff28423c47b4705600c285c3859c3b30c90eb0e1784133"
+          }
+        ],
+        "test_fraction": 0.25,
+        "validation_fraction": 0.25,
+        "seed": 17,
+        "require_training_classes": true
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "samples"
+      ],
+      "exposed_outputs": [
+        "train",
+        "validation",
+        "test",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original classifier evaluation controls",
+      "description": "Original MIT stripe images and HOG/KNN controls by OpenCVDataflowGUI contributors. Copied unchanged from knn_classification with pinned SHA-256. No outside tutorial, dataset or model content. Training captures 0/1/2 and held-out capture are separate; these tiny synthetic controls prove software behavior only. Four independent capture groups. Split outputs plan whole groups, not image pixels or feature matrices. Hash claims are not file verification. See README.md, SOURCES.md and truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -470
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

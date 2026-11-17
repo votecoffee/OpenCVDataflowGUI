@@ -1,0 +1,279 @@
+{
+  "schema_version": 1,
+  "validation_sets": [
+    {
+      "id": "heldout",
+      "name": "Held-out image classes",
+      "source": "source",
+      "state_mode": "sequence",
+      "cases": [
+        {
+          "id": "vertical",
+          "path": "assets/heldout-vertical.png",
+          "class_label": "vertical",
+          "capture_group": "heldout",
+          "expectation": "unknown",
+          "image_sha256": "d0815aa3ffe92d63d012b42e9278f9649e11c05dc5746958ba432b9841e15a54"
+        },
+        {
+          "id": "horizontal",
+          "path": "assets/heldout-horizontal.png",
+          "class_label": "horizontal",
+          "capture_group": "heldout",
+          "expectation": "unknown",
+          "image_sha256": "eb05dfdda069dcd6f3ff28423c47b4705600c285c3859c3b30c90eb0e1784133"
+        }
+      ],
+      "classification": {
+        "block": "predict",
+        "classes": [
+          "vertical",
+          "horizontal"
+        ],
+        "training_groups": [
+          "capture-0",
+          "capture-1",
+          "capture-2"
+        ],
+        "score_output": "report",
+        "score_path": "vote_fractions.0",
+        "score_kind": "native_knn_vote_fraction",
+        "thresholds": [
+          0,
+          0.8,
+          1
+        ]
+      }
+    }
+  ],
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/heldout-vertical.png",
+          "assets/heldout-horizontal.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "hog",
+      "type": "inspect.hog",
+      "name": "Histogram of oriented gradients",
+      "parameters": {
+        "cell_size": [
+          8,
+          8
+        ],
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "bins": 9,
+        "win_sigma": -1.0,
+        "l2_hys_threshold": 0.2,
+        "gamma_correction": true,
+        "signed_gradient": false
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "descriptor",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "model",
+      "type": "ml.knn_load",
+      "name": "Load K-nearest classifier",
+      "parameters": {
+        "path": "assets/classifier-none.json"
+      },
+      "position": [
+        360,
+        420
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "predict",
+      "type": "ml.knn_predict",
+      "name": "Predict OpenCV K-nearest classes",
+      "parameters": {
+        "k": 0,
+        "contract_policy": "require_match",
+        "max_distance": 0.5,
+        "distance_policy": "winning_class_nearest",
+        "min_vote_fraction": 0.0,
+        "reject_vote_ties": true,
+        "accepted_labels": []
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "model",
+        "samples",
+        "image"
+      ],
+      "exposed_outputs": [
+        "labels",
+        "label",
+        "candidate_labels",
+        "distances",
+        "neighbors",
+        "accepted",
+        "image",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1080,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1440,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original classifier evaluation controls",
+      "description": "Original MIT stripe images and HOG/KNN controls by OpenCVDataflowGUI contributors. Copied unchanged from knn_classification with pinned SHA-256. No outside tutorial, dataset or model content. Training captures 0/1/2 and held-out capture are separate; these tiny synthetic controls prove software behavior only. Run Results > Validation image sets > Run image set. Expected: 2/2 correct. See README.md, SOURCES.md and truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -470
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "hog",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "predict",
+      "input": "image"
+    },
+    {
+      "source": "hog",
+      "output": "descriptor",
+      "target": "predict",
+      "input": "samples"
+    },
+    {
+      "source": "model",
+      "output": "model",
+      "target": "predict",
+      "input": "model"
+    },
+    {
+      "source": "predict",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "predict",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

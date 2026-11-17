@@ -94,6 +94,13 @@ The catalog supports up to 64 sets and 10,000 total image entries.
 
 ## Execution and reports
 
+Image-class recognition can be evaluated alongside pass/fail criteria. The optional
+**Classifier evaluation** tab adds class labels/capture groups and reports confusion,
+per-class precision/recall/F1, accuracy, coverage and score sweeps. See
+[classifier evaluation](classifier-evaluation.md) for setup and failure accounting.
+Both ordinary and classifier-enabled sets can run through
+`ProjectSession.run_validation()` or `opencv-dataflow-api run-validation`.
+
 Validation runs in a separate worker/program instance, preserving the live job's learned
 runtime state, previews and production totals. Trained assets/configuration and the saved
 default recipe are copied. The chosen source uses immutable image bytes with the original

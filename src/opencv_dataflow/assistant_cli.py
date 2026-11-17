@@ -141,7 +141,7 @@ def _parser():
     p = sub.add_parser("examples", help="Find public project examples in a source checkout")
     p.add_argument("--root", type=Path, required=True)
     p.add_argument("--query", default="")
-    for name in ("inspect", "validate", "apply", "run", "export", "export-model"):
+    for name in ("inspect", "validate", "apply", "run", "run-validation", "export", "export-model"):
         p = sub.add_parser(name)
         p.add_argument("project", type=Path)
         if name == "apply":
@@ -159,6 +159,11 @@ def _parser():
             p.add_argument("--report", type=Path)
             p.add_argument("--summary", action="store_true", help="Return a compact run response")
             p.add_argument("--artifacts", type=Path, help="New directory for final review previews")
+        if name == "run-validation":
+            p.add_argument("--set", required=True, dest="set_id")
+            p.add_argument("--report", type=Path, required=True)
+            p.add_argument("--profile", choices=("debug", "balanced", "lean"))
+            p.add_argument("--summary", action="store_true")
         if name == "export":
             p.add_argument("--format", choices=("html", "xml"), required=True)
             p.add_argument("--output", type=Path, required=True)
@@ -207,6 +212,7 @@ def _dispatch(args):
                 "validate",
                 "apply",
                 "run",
+                "run-validation",
                 "export",
                 "export-model",
                 "compatibility",
@@ -228,6 +234,23 @@ def _dispatch(args):
         else ProjectSession.open(args.project, registry)
     )
     with session:
+        if args.command == "run-validation":
+            if args.report.exists():
+                raise FileExistsError(f"Report already exists: {args.report}")
+            if args.profile:
+                session.graph.set_run_profile(args.profile)
+            report = session.run_validation(args.set_id)
+            with args.report.open("x", encoding="utf-8", newline="\n") as stream:
+                stream.write(json.dumps(report, indent=2, allow_nan=False) + "\n")
+            data = (
+                {
+                    "summary": report["summary"],
+                    "classification": report.get("classification", {}).get("summary"),
+                }
+                if args.summary
+                else report
+            )
+            return data, 0 if report["summary"]["passed"] else 1
         if args.command == "export-model":
             from .model_contracts import export_contract
 

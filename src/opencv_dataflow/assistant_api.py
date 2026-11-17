@@ -514,6 +514,28 @@ class ProjectSession:
             "program": self.graph.program_status(),
         }
 
+    def run_validation(self, set_id, *, cancelled=lambda: False, progress=lambda row: None):
+        """Run a saved image set on isolated project copies, retaining classifier diagnostics.
+
+        Like the validation dialog, this executes configured program behavior. It
+        neither attaches to a GUI nor mutates this session's processing history.
+        """
+        from .validation import run_set
+
+        matches = [
+            item for item in self.graph.validation_sets if set_id in (item["id"], item["name"])
+        ]
+        if len(matches) != 1:
+            raise ValueError("Select one validation set by ID or unique name")
+        return run_set(
+            self.graph.to_dict(),
+            matches[0],
+            self.registry,
+            self.graph.project_dir,
+            cancelled=cancelled,
+            progress=progress,
+        )
+
     def connection(self, source_kind, target_kind):
         """Describe a possible conversion; actual values still need runtime checks."""
         mode = connection_mode(source_kind, target_kind)

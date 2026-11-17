@@ -69,3 +69,5 @@ For saved palettes, HOG vocabularies and unknown-sample inspection, try [reusabl
 For native HOG training, held-out labels and unknown-image policies, try [K-nearest classification](knn_classification/README.md).
 
 For native forest weights, feature importance and held-out class votes, try [random forest classification](rtrees_classification/README.md).
+
+For labeled image sets, grouped splits, confusion matrices and explicit wrong/rejected/error controls, try [classifier evaluation](classifier_evaluation/README.md).
