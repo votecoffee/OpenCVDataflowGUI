@@ -77,6 +77,7 @@
 | Labeled boxes, class-aware IoU matches, precision/recall/AP and detector reports | [Detector evaluation](detector-evaluation.md) |
 | Explicit ONNX engine dispatch, immutable snapshots and import evidence | [ONNX engine loading](onnx-engine-loading.md) |
 | Object detection heads, class-aware NMS and source box geometry | [DNN detection](object-detection.md) |
+| Shared-ticket tile boxes, exact source mapping and duplicate suppression | [Tile detection fusion](tile-detection-fusion.md) |
 | Oriented heads, rotated overlap and exact affine source poses | [Rotated detection](rotated-detection.md) |
 | Per-pixel class scores/IDs, source-grid masks and confidence/area decisions | [Semantic segmentation](semantic-segmentation.md) |
 | Per-object masks, prototype/ROI heads, overlap and individual inspection | [Instance segmentation](instance-segmentation.md) |

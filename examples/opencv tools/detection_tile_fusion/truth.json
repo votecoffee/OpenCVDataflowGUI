@@ -1,0 +1,62 @@
+{
+  "cases": {
+    "coffee": {
+      "count": 1,
+      "passed": true
+    },
+    "duplicates": {
+      "count": 2,
+      "passed": true,
+      "nms_enabled": false
+    },
+    "resized": {
+      "count": 1,
+      "passed": true
+    },
+    "selected_out": {
+      "count": 0,
+      "passed": false
+    },
+    "count_fail": {
+      "count": 1,
+      "passed": false,
+      "minimum_count": 2
+    },
+    "failed_tile": {
+      "count": 1,
+      "passed": false
+    },
+    "empty": {
+      "count": 0,
+      "passed": false
+    },
+    "missing_tile": {
+      "count": null,
+      "passed": false,
+      "expected_tiles": 3
+    }
+  },
+  "photo_sha256": "cc02f8ca188b167c775a7101b5d767d1e71792cf762c33d6fa15a4599b5a8de7",
+  "crops_xywh": {
+    "left": [
+      80,
+      0,
+      440,
+      380
+    ],
+    "right": [
+      140,
+      0,
+      420,
+      400
+    ]
+  },
+  "black_sha256": "20063f3f3bfa2ce20b692a293bc79cf1360006bffbafaa571e18e53ed6bca821",
+  "cup_xywh": [
+    170,
+    18,
+    245,
+    292
+  ],
+  "annotation_method": "Independent hand-marked outer cup including handle, excluding saucer"
+}

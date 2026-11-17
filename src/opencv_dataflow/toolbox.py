@@ -108,8 +108,8 @@ IMPLEMENTATION_MODULES = {
     ),
     "objdetect": "aruco_markers charuco code_readers qr_encoding qr_append",
     "xobjdetect": "hog",
-    "dnn": "batch_inference detection_decode dnn_blocks instance_segmentation landmarks "
-    "multi_inference ocr rotated_detection "
+    "dnn": "batch_inference detection_decode detection_fusion dnn_blocks "
+    "instance_segmentation landmarks multi_inference ocr rotated_detection "
     "semantic_segmentation",
     "photo": "chromatic_aberration exposure hdr hdr_motion photo_filters restoration",
     "ml": "svm_blocks",

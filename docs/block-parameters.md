@@ -8904,6 +8904,42 @@ Inputs: `records` (any, optional).
 | `records` | `[]` | Records: id, size, truth, predictions, status. Accepts reports/groups too. |
 | `expected_cases` | `[]` | Full expected set with detection_truth; absent IDs count as missing. |
 
+## Fuse tile detections (`ml.fuse_tile_detections`)
+
+ML / Object detection
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `detections` (any).
+
+Input `image` — Reference image owning the output grid/ticket; known spatial root and acquisition ticket are required.
+
+Input `detections` — Flat FlowGroup of tile vision_collection_v1 boxes, e.g. Join parallel branches. Each packet must retain its tile spatial frame and the reference ticket/recipe.
+
+Input `mask` — Optional reference-grid center selection, intersected with region; no image cropping.
+
+Input `region` — Optional reference-grid selection using each unclipped mapped box center.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `confidence_threshold` | `0.25` | Value must be a finite number between 0 and 1. Scores and threshold are compared as float32, strictly greater than, matching native NMS. Original tile scores remain in source_detection provenance. |
+| `accepted_class_ids` | `[]` | Empty keeps all classes. Otherwise keep these adjusted, zero-based IDs. |
+| `nms_enabled` | `true` | Disable when the model already performs suppression, or to inspect duplicate proposals. |
+| `class_agnostic_nms` | `false` | Otherwise suppress separately per class, including boxes with negative coordinates. |
+| `nms_eta` | `1.0` | Value must be a finite number between 0.001 and 1. Native adaptive IoU factor in (0,1]; one keeps a fixed threshold. |
+| `nms_top_k` | `0` | Value must be a whole number between 0 and 100000. Native pre-NMS score cap per class, or globally in class-agnostic mode; zero is unlimited. |
+| `border_policy` | `"clip"` | `clip`, `discard`, `keep` Clip partly visible boxes, discard them, or keep their unclipped coordinates. Fully outside boxes drop. |
+| `minimum_count` | `1` | Value must be a whole number between 0 and 100000. Fail the inspection below this many retained detections. |
+| `maximum_count` | `0` | Value must be a whole number between 0 and 100000. Zero disables the upper count judgment; positive values bound retained detections. |
+| `maximum_results` | `1000` | Value must be a whole number between 1 and 10000. Reject excess retained results instead of emitting an incomplete collection. |
+| `maximum_image_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. Reject larger source images before selection; collection axes are limited to 16384. |
+| `expected_tiles` | `0` | Value must be a whole number between 0 and 64. Zero accepts any complete supplied group. Positive values require this many distinct tile labels; this does not prove full image coverage. |
+| `box_source` | `"bbox"` | `bbox`, `unclipped` Use each local bbox, or explicitly require geometry.unclipped_xyxy from every detection. No partial-object reconstruction or weighted averaging. |
+| `nms_iou` | `0.5` | Value must be a finite number between 0 and 1. Native hard-NMS overlap threshold, applied to unclipped boxes in the source grid. |
+| `edge_policy` | `"keep"` | `keep`, `drop_internal` Keep all boxes, or discard those touching internal tile edges before NMS. Reference outer edges are exempt; sufficient tile overlap remains necessary. |
+| `edge_margin` | `0.0` | Value must be a finite number between 0 and 16384. Local tile pixels around an internal edge. Only used by drop_internal; must leave a nonempty tile interior. |
+| `include_candidate_details` | `false` | Include a bounded per-detection mapping/filter/NMS trace. Off avoids optional report overhead. |
+| `maximum_raw_detections` | `10000` | Value must be a whole number between 1 and 50000. Reject excess total detections across tiles before mapping and suppression. |
+| `maximum_candidates` | `4096` | Value must be a whole number between 1 and 10000. Reject excess score/class/region/border-selected candidates before quadratic native NMS; never silently truncate. |
+
 ## Image to DNN tensor (`ml.image_tensor`)
 
 ML / Tensor preparation

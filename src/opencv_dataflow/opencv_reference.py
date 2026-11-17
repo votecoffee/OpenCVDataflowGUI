@@ -288,6 +288,7 @@ BINDINGS = {
     "inspect.thin_mask": "ximgproc.thinning",
     "inspect.watershed": "watershed",
     "ml.decode_detections": "dnn.NMSBoxes",
+    "ml.fuse_tile_detections": "dnn.NMSBoxes",
     "ml.decode_rotated_detections": "dnn.NMSBoxesRotated rotatedRectangleIntersection boxPoints",
     "ml.decode_segmentation": "remap findContours",
     "ml.decode_instances": "dnn.NMSBoxes remap findContours",

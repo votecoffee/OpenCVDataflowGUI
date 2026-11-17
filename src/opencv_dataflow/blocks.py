@@ -670,6 +670,7 @@ def builtin_registry():
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
     from .detection_decode import DecodeDetections
     from .detection_evaluation import EvaluateDetections
+    from .detection_fusion import FuseTileDetections
     from .differential_exposure import DifferentialExposure
     from .disk_features import DISK_BLOCKS
     from .distortion_fixture import DistortImageFixture
@@ -1153,6 +1154,7 @@ def builtin_registry():
         *BATCH_INFERENCE_BLOCKS,
         *MULTI_INFERENCE_BLOCKS,
         DecodeDetections,
+        FuseTileDetections,
         DecodeRotatedDetections,
         DecodeSegmentation,
         *INSTANCE_BLOCKS,

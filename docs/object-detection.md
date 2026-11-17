@@ -165,3 +165,7 @@ anchor, quantization and accelerator contracts remain open.
 
 Native references: [OpenCV NMS implementation](https://github.com/opencv/opencv/blob/5.0.0/modules/dnn/src/nms.cpp),
 [YOLOX grid/score convention](https://github.com/opencv/opencv_zoo/blob/48b10fa505aeb51fbd127fc60a5c660040e823b7/models/object_detection_yolox/yolox.py).
+
+For overlapping crop detections, use [tile fusion](tile-detection-fusion.md).
+It verifies shared tickets/frames, maps pixel-edge rectangles to a reference
+image, optionally rejects internal-edge observations, and applies cross-tile NMS.

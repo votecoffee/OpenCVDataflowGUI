@@ -79,3 +79,5 @@ For explicit Classic/New/Auto loading, frozen snapshots and native rejection con
 For a pinned pretrained SSD model, separate output heads, source-image graphics and a hand-marked real photograph, try [SSD detection](ssd_detection/README.md).
 
 For pinned raw/decoded YOLO layouts, portrait/landscape letterboxing, class-aware suppression and duplicate validation, try [YOLO detection](yolo_detection/README.md).
+
+For parallel crop detectors, shared-ticket source mapping and duplicate suppression, try [tile detection fusion](detection_tile_fusion/README.md).

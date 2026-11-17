@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 26 | 8 | 28 | 62 | 41.9% |
+| 2. ML and DNN | 27 | 8 | 27 | 62 | 43.5% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 252 | 40 | 178 | 470 | 53.6% |
+| **Overall** | 253 | 40 | 177 | 470 | 53.8% |
 
 <!-- coverage-summary:end -->
 
@@ -344,7 +344,7 @@ fixture or result needed to close the item.
 | S2-24 | Image letterboxing and geometry round trip | Model input resize, border fill and source/network transforms | Complete | ml.dnn. Verify normalization, channel order, mask handling, pad sizes and inverse coordinates with known pixels. |
 | S2-25 | SSD-style detector tensor adapter | Decode class, score and corners from packed DetectionOutput or separate named heads | Complete | ml.decode_detections supports packed ssd rows and explicit ssd_heads boxes/classes/scores with optional count, XYXY/YXYX order, shape/batch/row budgets and scored label/coordinate rejection. Pinned unmodified ONNX Model Zoo SSD ResNet-34 runs under OpenCV 5 New CPU through a sealed model/preprocessing bundle; independent native tensor/box references, a hand-marked CC0 coffee cup, empty/region/score/count controls, ticket/grid/graphics, XML/portable Save As and cold-worker teardown qualify this export. Unknown anchors, arbitrary SSD exports, quantized heads and accelerators remain unqualified. |
 | S2-26 | YOLO-style detector tensor adapter | Decode box/class outputs and apply class-aware NMS | Complete | ml.dnn and ml.decode_detections qualify pinned OpenCV Zoo YOLOX-S raw grid/objectness rows under Classic CPU and a separately pinned local decoded row/channel export under New CPU, retaining learned weights. Sealed preprocessing/model bundles, independent native tensor/grid/NMS/source-box references, portrait/landscape rounded letterboxing, hand-marked CC0 cup truth, class-aware/agnostic and duplicate controls, strict score/objectness gates, selection/empty/layout errors, graphics/Lean, XML/portable Save As and cold-worker teardown verify the stated export baseline. The derivative is YOLOX, not YOLOv8; other families, anchors, quantization and accelerators remain unqualified. |
-| S2-27 | Object-detection box fusion across image tiles | Model coordinate transforms, IoU and cross-tile suppression | Planned | Merge overlapping tile detections onto one source grid and verify boundary objects occur once. |
+| S2-27 | Object-detection box fusion across image tiles | Model coordinate transforms, IoU and cross-tile suppression | Complete | ml.fuse_tile_detections maps shared-ticket box groups onto a known reference grid with exact pixel-center/edge conversion for crops, scales, flips and right-angle transforms. Explicit local/unclipped geometry, internal-edge filtering, center selection, class-aware/agnostic native hard NMS, eta/top-k, rejecting budgets and original local provenance are exposed. Failed tiles and count limits give distinct inspection reasons; malformed identities/maps or native exceptions emit no current events and recover. Eight credited real-photo/negative projects, independent native preprocessing/grid/box references, exact seams/geometry, Debug/Lean, serial/parallel, XML, Save As and cold-worker checks qualify this axis-aligned CPU baseline. No fragment reconstruction, weighted fusion, arbitrary homography or dataset accuracy claim. See [contracts](tile-detection-fusion.md). |
 | S2-28 | Detection tracking across frames | Image detection association and optional re-identification embeddings | Planned | Verify stable object IDs and count identity switches and fragmented tracks on clips with occlusions, crossing parts and re-entry. |
 | S2-29 | Prompted image segmentation | Image embedding and point/box prompt model inputs | Planned | Use one pinned ONNX model to verify prompt coordinate mapping and output masks on a controlled image. |
 | S2-30 | Image segmentation over tiles | Per-tile inference and overlap-aware label or score fusion | Planned | Match full-frame labels on a shared fixture and preserve object edges across seams. |
