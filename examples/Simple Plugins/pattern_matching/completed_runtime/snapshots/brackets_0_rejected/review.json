@@ -1,0 +1,380 @@
+{
+  "model": "ogpm_candidate_review_v1",
+  "accepted": false,
+  "reason": "score_cutoff",
+  "explanation": "Fine fit score is below the acceptance setting.",
+  "pose_working": {
+    "x": 331.951210650619,
+    "y": 218.04531107207666,
+    "angle_deg": 5.770719675037956,
+    "scale": 0.9877596741883795,
+    "aspect": 1.0
+  },
+  "datum_source": [
+    331.951210650619,
+    218.04531107207666
+  ],
+  "model_to_source": [
+    [
+      0.9827539279665501,
+      0.09931712349363686,
+      331.951210650619
+    ],
+    [
+      -0.09931712349363686,
+      0.9827539279665501,
+      218.04531107207666
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "working_to_source": [
+    [
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "metrics": [
+    {
+      "name": "Fine score",
+      "value": 0.13403899656956417,
+      "units": "fit fraction",
+      "minimum": 0.55,
+      "status": "below limit"
+    },
+    {
+      "name": "Coarse score",
+      "value": 0.32003066119025736,
+      "units": "coarse vote fraction",
+      "minimum": 0.25,
+      "status": "meets limit"
+    },
+    {
+      "name": "Contrast",
+      "value": 161.1374063683696,
+      "units": "working 8-bit gradient",
+      "minimum": 0.0,
+      "status": "meets limit"
+    },
+    {
+      "name": "Coverage",
+      "value": 0.15489130434782608,
+      "units": "probe fraction",
+      "minimum": null,
+      "status": "diagnostic"
+    },
+    {
+      "name": "Fit RMS",
+      "value": 0.4822880345804959,
+      "units": "working pixels",
+      "minimum": null,
+      "status": "diagnostic"
+    },
+    {
+      "name": "Clutter",
+      "value": null,
+      "units": "extra edge fraction",
+      "minimum": null,
+      "status": "not measured"
+    },
+    {
+      "name": "Outside image/ROI",
+      "value": 0.0,
+      "units": "probe fraction",
+      "minimum": null,
+      "status": "diagnostic"
+    }
+  ],
+  "edges": {
+    "trained": 368,
+    "found": 57,
+    "missing": 311,
+    "unmeasured": 0,
+    "correspondences_captured": true
+  },
+  "selection_limits": {
+    "maximum_results": 8,
+    "xy_overlap": 0.35,
+    "angle_overlap_deg": 360.0,
+    "scale_overlap": 1.4
+  },
+  "score_using_clutter": false,
+  "layers": [
+    "found",
+    "missing",
+    "unmeasured",
+    "residuals",
+    "pose"
+  ],
+  "working_image_size": [
+    440,
+    290
+  ],
+  "display_crop_working": [
+    281,
+    168,
+    105,
+    97
+  ],
+  "completed_execution": {
+    "model": "ogpm_completed_execution_review_v1",
+    "execution_binding": "872b6320ef714df6ae909cac6802c144",
+    "executed_model": {
+      "model": "ogpm_recipe_model_v1",
+      "id": "776278a4590b4968580117bd7b0d5b873a2dffd255d3af6dda8895055c72f50c",
+      "recipe_sha256": "776278a4590b4968580117bd7b0d5b873a2dffd255d3af6dda8895055c72f50c",
+      "features": 368,
+      "input_scale": 1.0
+    },
+    "source_image": {
+      "shape": [
+        290,
+        440
+      ],
+      "dtype": "|u1",
+      "format": "gray",
+      "sha256": "b5ae3d0a911b89eea5d61482b2bac2429825d4f8ab4fad09e96899d13d8910b8"
+    },
+    "working_size": [
+      440,
+      290
+    ],
+    "working_to_input": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "accepted": 6,
+    "retained_rejections": 40,
+    "rejection_counts": {
+      "overlap": 84,
+      "score_cutoff": 21
+    },
+    "correspondences_captured": true,
+    "rejection_diagnostics_retained": true,
+    "inspected_pixels": 127600,
+    "working_pixels": 127600,
+    "search_roi": null,
+    "provenance": {
+      "snapshot_id": "7eafcfd09ce34719ba789b544fe85c57",
+      "block_id": "matcher",
+      "output_revision": 0,
+      "execution_count": 1,
+      "passed": true,
+      "score": 0.9826415177582741,
+      "message": "6 geometric matches, best score 0.983",
+      "inputs": {
+        "image": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "tray.png",
+            "session": "a917315162f647e3a0c935e7c9e553e2:file:1",
+            "sequence": 1,
+            "source": "scene"
+          },
+          "spatial": {
+            "root_id": "scene:image",
+            "root_size": [
+              440,
+              290
+            ],
+            "image_size": [
+              440,
+              290
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T20:52:55.928596+00:00",
+            "started_ns": 117938890690400,
+            "clock_id": "16fa01f352b443ee8d568c3d73ab9a37",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T20:52:55.938661+00:00",
+            "finished_ns": 117938900753400,
+            "finished_clock_id": "16fa01f352b443ee8d568c3d73ab9a37",
+            "elapsed_ms": 10.063
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "scene",
+              "name": "Generated tray scenes",
+              "type": "input.file",
+              "path": "scene"
+            },
+            "score": null,
+            "message": "tray.png \u00b7 gray / uint8",
+            "data": {},
+            "fail_reasons": []
+          }
+        }
+      },
+      "outputs": {
+        "matches": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "tray.png",
+            "session": "a917315162f647e3a0c935e7c9e553e2:file:1",
+            "sequence": 1,
+            "source": "scene"
+          },
+          "spatial": {
+            "root_id": "scene:image",
+            "root_size": [
+              440,
+              290
+            ],
+            "image_size": [
+              440,
+              290
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T20:52:55.928596+00:00",
+            "started_ns": 117938890690400,
+            "clock_id": "16fa01f352b443ee8d568c3d73ab9a37",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T20:52:56.427756+00:00",
+            "finished_ns": 117939389845900,
+            "finished_clock_id": "16fa01f352b443ee8d568c3d73ab9a37",
+            "elapsed_ms": 499.1555
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "matcher",
+              "name": "SimplePatternMatch",
+              "type": "pattern.ogpm_recipe",
+              "path": "matcher"
+            },
+            "score": 0.9826415177582741,
+            "message": "6 geometric matches, best score 0.983",
+            "data": {
+              "filmstrip_priority": -1
+            },
+            "fail_reasons": []
+          }
+        },
+        "review": {
+          "ogpm_completed_review": {
+            "model": "ogpm_execution_binding_v1",
+            "id": "872b6320ef714df6ae909cac6802c144"
+          },
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "tray.png",
+            "session": "a917315162f647e3a0c935e7c9e553e2:file:1",
+            "sequence": 1,
+            "source": "scene"
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T20:52:55.940715+00:00",
+            "started_ns": 117938902809300,
+            "clock_id": "16fa01f352b443ee8d568c3d73ab9a37",
+            "inferred_start": true,
+            "finished_at": "2026-11-17T20:52:56.427756+00:00",
+            "finished_ns": 117939389845900,
+            "finished_clock_id": "16fa01f352b443ee8d568c3d73ab9a37",
+            "elapsed_ms": 487.0366
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "matcher",
+              "name": "SimplePatternMatch",
+              "type": "pattern.ogpm_recipe",
+              "path": "matcher"
+            },
+            "score": 0.9826415177582741,
+            "message": "6 geometric matches, best score 0.983",
+            "data": {
+              "filmstrip_priority": -1
+            },
+            "fail_reasons": []
+          }
+        }
+      }
+    },
+    "coordinate_scope": "Exact consumed input grid; upstream spatial/pyramid metadata retained",
+    "identity_scope": "Execution binding/snapshot IDs are not acquisition or exposure identities",
+    "search_reexecuted": false,
+    "recipe_reloaded": false,
+    "training_changed": false,
+    "exported_recipe": {
+      "file": "executed_recipe.npz",
+      "sha256": "776278a4590b4968580117bd7b0d5b873a2dffd255d3af6dda8895055c72f50c",
+      "scope": "Re-encoded immutable executed model; archive bytes may differ from original pin"
+    }
+  }
+}

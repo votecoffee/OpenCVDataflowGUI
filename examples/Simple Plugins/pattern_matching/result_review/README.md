@@ -1,5 +1,11 @@
 # SimplePatternMatch selected-result review
 
+For direct review of a finished runtime frame, use the newer
+[completed-run examples](../completed_runtime/README.md) and their pinned dev2
+plugin. That separate Results action uses exact completed inputs/model/fits
+without opening training or running another search. The dev1 preview workflow
+and archived assessments below remain available.
+
 Requires **SimplePatternMatch 0.1.0.dev1**. These samples use the existing
 generated bracket and real VisA PCB2 recipes without changing their training,
 search parameters or acceptance settings.
