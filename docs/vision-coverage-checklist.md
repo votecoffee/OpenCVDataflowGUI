@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 163 | 6 | 6 | 175 | 93.1% |
+| 1. Core and baseline 2D | 164 | 5 | 6 | 175 | 93.7% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 226 | 48 | 196 | 470 | 48.1% |
+| **Overall** | 227 | 47 | 196 | 470 | 48.3% |
 
 <!-- coverage-summary:end -->
 
@@ -192,7 +192,7 @@ fixture or result needed to close the item.
 | S1-120 | Transport distance between image histograms | EMD on image histograms | Complete | inspect.compare_histograms. Compare histogram signatures using the native transport distance and known distributions. |
 | S1-121 | Curved QR decoding | QRCodeDetector.detectAndDecodeCurved | Partial | inspect.read_qr exposes curved mode. Qualify a known wrapped label and verify source and rectified module coordinates. |
 | S1-122 | Native linear barcode decoding | barcode.BarcodeDetector | Complete | inspect.read_barcode. Verify EAN or UPC text, pose and outline. |
-| S1-123 | Variable-frame-rate and unreliable video timing diagnostics | VideoCapture properties and timestamp checks | Partial | input.video_file labels decoder timestamps and estimated timing. Qualify variable-frame-rate and missing or incorrect metadata fixtures. |
+| S1-123 | Variable-frame-rate and unreliable video timing diagnostics | VideoCapture properties and timestamp checks | Complete | sequence.video_timing observes raw/effective clocks, index order, normalized cadence, labeled estimates and independent time references with bounded history/session counters and explicit reset/latching policies. File, paced, encoded-group and network metadata preserve raw decoder values. Six original binary-authored Matroska/MJPEG controls, independently parsed wire times, native VFR/repeated/backward/zero/missing-duration/wrong-rate behavior and eight annotated pipelines qualify the baseline, including paced loop/reset, stride/reopen and time sampling. No automatic clock repair, demuxed-PTS authentication, drop detection or physical synchronization guarantee is claimed. |
 
 ### Precision, multiscale processing and video fidelity
 

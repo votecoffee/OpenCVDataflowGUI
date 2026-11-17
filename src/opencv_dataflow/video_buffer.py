@@ -115,15 +115,18 @@ def encoded_bytes(value, maximum):
     return value.tobytes() if isinstance(value, np.ndarray) else bytes(value)
 
 
-def timestamp(capture, index, fps, policy):
+def timestamp(capture, index, fps, policy, *, with_raw=False):
     value = capture.get(cv2.CAP_PROP_POS_MSEC)
+    reported = float(value) if math.isfinite(value) else None
     if math.isfinite(value) and value >= 0 and not (index and value == 0):
-        return value, "decoder"
-    if policy == "decoder_or_fps" and fps is not None:
-        return index * 1000.0 / fps, "frame_rate_estimate"
-    if policy == "allow_missing":
-        return None, "unavailable"
-    raise ValidationError("Video presentation timestamp unavailable under Timestamp policy")
+        result = value, "decoder"
+    elif policy == "decoder_or_fps" and fps is not None:
+        result = index * 1000.0 / fps, "frame_rate_estimate"
+    elif policy == "allow_missing":
+        result = None, "unavailable"
+    else:
+        raise ValidationError("Video presentation timestamp unavailable under Timestamp policy")
+    return (*result, reported) if with_raw else result
 
 
 class DecodeVideo(Block):
@@ -349,10 +352,13 @@ class DecodeVideo(Block):
                     raise ValidationError("Decoded video changed its uint8 BGR header layout")
                 if index < p["start_frame"] or (index - p["start_frame"]) % p["stride"]:
                     continue
-                value, origin = timestamp(capture, index, fps, p["timestamp_policy"])
+                value, origin, reported = timestamp(
+                    capture, index, fps, p["timestamp_policy"], with_raw=True
+                )
                 info = {
                     "frame_index": index,
                     "timestamp_ms": value,
+                    "decoder_timestamp_ms": reported,
                     "timestamp_source": origin,
                     "fps": fps,
                     "backend": capture.getBackendName(),

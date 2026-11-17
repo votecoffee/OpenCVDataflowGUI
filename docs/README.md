@@ -32,6 +32,7 @@
 | Seeded MIL tracking, loss/reseed and native confidence limits | [MIL tracking](mil-tracking.md) |
 | Precomputed optical-flow pyramids and Python consumer qualification | [Pyramid binding audit](optical-flow-pyramid-audit.md) |
 | Encoded video bytes, bounded FFmpeg callbacks and per-frame groups | [Video buffers](video-buffer.md) |
+| Video clock reliability, valid variable rate and independent timing references | [Video timing monitor](video-timing.md) |
 | Requested-time frame sampling, bracket selection and native seek diagnostics | [Video at time](video-time-seeking.md) |
 | Live network video, decoder ownership, deadlines and reconnect | [Network video](network-video.md) |
 | Timestamp-paced files, playback policy, loop/reset and Stop/Resume | [Paced video replay](paced-video.md) |

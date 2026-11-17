@@ -87,6 +87,7 @@ def main():
                         "shape": list(shape),
                         "connection_frame_index": index,
                         "timestamp_ms": stamp if increasing else None,
+                        "decoder_timestamp_ms": (float(stamp) if math.isfinite(stamp) else None),
                         "timestamp_source": "decoder" if increasing else "unavailable",
                         "fps": fps if math.isfinite(fps) and 0 < fps <= 100000 else None,
                         "backend": capture.getBackendName(),

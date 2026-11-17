@@ -84,7 +84,9 @@ depend on the decoder/backend. Qualification here covers constant-rate lossless
 FFV1 and interframe MPEG-4 through this FFmpeg build. The local monotonic-bracket
 checks cannot prove the accuracy of every container's position properties, all
 earlier timestamps or an independent demuxed PTS. Actual variable-frame-rate,
-duplicate-PTS and malformed-timing fixtures remain S1-123.
+duplicate-time and malformed-clock [fixtures](video-timing.md) qualify source
+diagnostics and bounded start-scan sampling separately; arbitrary native seek
+properties still require decoder-specific qualification.
 
 ## Work limits and lifecycle
 

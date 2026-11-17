@@ -92,6 +92,7 @@ See the [Simple Plugins guide](<Simple Plugins/README.md>) for setup, real-data 
 | [SimplePatternMatch on real PCB photographs](<Simple Plugins/pattern_matching/visa_pcb2/README.md>) | Train on one VisA PCB and transfer its mounting-hole datum to a separate photograph. |
 | [SimplePatternMatch](<Simple Plugins/pattern_matching/asymmetric_brackets/README.md>) | Locate synthetic brackets with direct and wired recipes, and inspect the pose and edge overlays. |
 | [SimpleSegmentation](<Simple Plugins/pixel_segmentation/README.md>) | Train foreground masks for brick mortar, a cup rim, PCB laminate, and inventory in real totes. |
+| [SimpleFringeScan retained reviews](<Simple Plugins/fringe_scan/README.md>) | File-only phase maps and analytic colored-cloud reviews, with explicit calibration and external simulated-data attribution. |
 | [Simple3DMeasure](<Simple Plugins/3d_measure/README.md>) | Review plane measurements on real T-LESS clouds and known/raised/missing generated surfaces with native RGB flyaround. |
 | [SimpleGDRNPP (experimental)](<Simple Plugins/gdrnpp/README.md>) | Review three rejected T-LESS pose results without inference, or explicitly load the isolated-worker setup plugin. [Cold/warm worker measurements](<Simple Plugins/gdrnpp/worker_cycles/README.md>) and [same-client resource preparation](<Simple Plugins/gdrnpp/resource_prepare/README.md>) provide supporting evidence. New-object training and broader pose accuracy remain open. |
 
@@ -289,6 +290,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Background reference restoration](<opencv tools/background_reference/README.md>) | Capture sealed clean scenes, restore MOG2/KNN before the first current part, protect learning and verify restart/replay masks. |
 | [Image-track prediction](<opencv tools/image_tracking/README.md>) | Follow position, scale and angle through missed blob detections; inspect uncertainty, expiry, reacquisition and filmstrip overlays. |
 | [Periodic detector refresh](<opencv tools/detector_refresh/README.md>) | Schedule any detector at a cadence, refine existing parts with local image motion and inspect entry, loss, freshness and call budgets. |
+| [Video timing controls](<opencv tools/video_timing/README.md>) | Observe actual variable, repeated, backward, zero and wrongly declared clocks, reference errors and paced loop resets. |
 | [Video at requested time](<opencv tools/video_time/README.md>) | Select nearest/earlier/later frames, verify actual native positions and explicitly reject excessive time error. |
 | [Live network video](<opencv tools/network_video/README.md>) | Program-owned loopback streams, bounded reconnect and Stop, tickets and explicit image-tracker resets. |
 | [Paced video replay](<opencv tools/paced_video/README.md>) | Play at media speed, select stride/speed, stop/resume pending frames and reset image tracking on loop boundaries. |

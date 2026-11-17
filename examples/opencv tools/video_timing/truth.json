@@ -1,0 +1,180 @@
+{
+  "license": "MIT - original repository fixtures",
+  "image_size": [
+    160,
+    96
+  ],
+  "clocks_ms": {
+    "constant": [
+      0,
+      40,
+      80,
+      120,
+      160,
+      200,
+      240,
+      280
+    ],
+    "variable": [
+      0,
+      40,
+      130,
+      160,
+      340,
+      380,
+      550,
+      600
+    ],
+    "duplicate": [
+      0,
+      40,
+      40,
+      130,
+      160,
+      160,
+      340,
+      380
+    ],
+    "backward": [
+      0,
+      40,
+      100,
+      80,
+      140,
+      180,
+      220,
+      260
+    ],
+    "zero_time": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "wrong_rate": [
+      0,
+      40,
+      80,
+      120,
+      160,
+      200,
+      240,
+      280
+    ]
+  },
+  "cases": {
+    "constant": {
+      "clip": "constant",
+      "rejected": 0
+    },
+    "variable": {
+      "clip": "variable",
+      "rejected": 0
+    },
+    "duplicate": {
+      "clip": "duplicate",
+      "rejected": 2
+    },
+    "backward": {
+      "clip": "backward",
+      "rejected": 1
+    },
+    "zero_time": {
+      "clip": "zero_time",
+      "rejected": 7
+    },
+    "wrong_rate": {
+      "clip": "wrong_rate",
+      "rejected": 7,
+      "cadence_policy": "match_nominal_fps"
+    },
+    "wrong_reference": {
+      "clip": "variable",
+      "rejected": 6,
+      "reference": "constant"
+    },
+    "paced_variable": {
+      "clip": "variable",
+      "rejected": 0,
+      "paced": true
+    }
+  },
+  "asset_sha256": {
+    "constant.mkv": "dd95e19ebfb33b9e76db705a909574b3b38808adfb3ccfd746559e5268b43960",
+    "variable.mkv": "8d96314bbb30c8ed12bdbe020f88cde2868d493ba235d60e8f3fc94a5cb96ee7",
+    "duplicate.mkv": "107536fd591400a4041bf58821819d0b63cb9088b73d5af1a1c003b33b96b929",
+    "backward.mkv": "55ee6863d582692d7c35894c2859d6ab729f81c796db6b75ee48d9fc2e7cb561",
+    "zero_time.mkv": "ceb9299d7592bb7bb7496ad62f2534e5d862323a6f8ada31c2bc9a4d0cf7cfb7",
+    "wrong_rate.mkv": "60512c31d37a000d72ad7e1fe182e1684853c3b60bba6735a8ef06d3538825ce"
+  },
+  "geometry": [
+    {
+      "index": 0,
+      "center": [
+        31.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 1,
+      "center": [
+        39.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 2,
+      "center": [
+        47.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 3,
+      "center": [
+        55.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 4,
+      "center": [
+        63.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 5,
+      "center": [
+        71.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 6,
+      "center": [
+        79.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 7,
+      "center": [
+        87.5,
+        41.5
+      ],
+      "area": 672
+    }
+  ]
+}

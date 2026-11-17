@@ -38,10 +38,10 @@ the ordinary Video file settings contract. Playback controls cannot be recipe-bo
 
 OpenCV defines [CAP_PROP_POS_MSEC](https://docs.opencv.org/5.0/main_modules/videoio_flags_base.html)
 as a video-position property and documents backend-dependent behavior. This is
-not an independent demuxed PTS guarantee. The shipped native checks cover FFmpeg
-FFV1 and OpenCV MJPEG. Variable gaps and bad metadata are checked with a controlled
-clock/property source; qualification of actual variable-frame-rate/bad-metadata
-clips remains S1-123. [Network streams](network-video.md) and independent
+not an independent demuxed PTS guarantee. Native checks cover FFmpeg FFV1, OpenCV
+MJPEG and authored variable-rate Matroska/MJPEG clocks. The [timing monitor](video-timing.md)
+qualifies actual repeated/backward/zero-time and wrong-rate controls separately
+from source estimates. These fixtures do not qualify every codec or a physical camera clock. [Network streams](network-video.md) and independent
 [media-time sampling](video-time-seeking.md) use separate source blocks.
 
 Maximum gap rejects excessive or nonpositive selected-frame intervals before

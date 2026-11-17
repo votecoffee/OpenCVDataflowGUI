@@ -9791,6 +9791,38 @@ Input `refresh` — Wire cadence Refresh on every image. True requires current d
 | `fit_confidence` | `0.99` | Value must be a finite number between 0.001 and 0.999999. RANSAC confidence control, not track probability. |
 | `fit_refine_iterations` | `10` | Value must be a whole number between 0 and 100. Native similarity-fit refinement iterations. |
 
+## Video timing monitor (`sequence.video_timing`)
+
+Sequence / Video diagnostics
+
+Inputs: `image` (image), `info` (data, optional), `reference` (data, optional), `reset` (boolean, optional), `stream` (data, optional).
+
+Input `image` — Current image with video_frame/network_frame metadata; pixels remain unchanged.
+
+Input `info` — Optional matching source Info; otherwise reads the image's timing payload.
+
+Input `reference` — Optional list of independent times, overriding Reference timestamps ms.
+
+Input `reset` — Wire paced Cycle start here to keep loop boundaries out of the timing history.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `1` | Value must be a whole number between 1 and 10000. Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` | Value must be a whole number between 1 and 64. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.001 and 4096. Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Value must be a finite number between 0 and 1e+12. Reset after this ingress gap; zero keeps state across pauses. |
+| `history_size` | `256` | Value must be a whole number between 3 and 4096. Bounded row/plot window. Session counters survive row eviction. |
+| `timestamp_policy` | `"decoder_only"` | `decoder_only`, `allow_estimates` Require decoder properties, or explicitly allow labeled estimates. |
+| `cadence_policy` | `"allow_variable"` | `allow_variable`, `require_constant`, `match_nominal_fps` Allow VFR, require constant cadence, or match the reported FPS. |
+| `absolute_tolerance_ms` | `1.0` | Value must be a finite number between 0 and 1e+09. Cadence tolerance floor in media milliseconds per decoded frame. |
+| `relative_tolerance_percent` | `5.0` | Value must be a finite number between 0 and 100. Additional relative cadence tolerance; not a drop detector. |
+| `maximum_interval_ms` | `0.0` | Value must be a finite number between 0 and 1e+12. Reject larger selected-frame media gaps. Zero disables this check. |
+| `latch_failures` | `true` | Keep stream failures until Reset or a context reset. |
+| `reference_timestamps_ms` | `[]` | Independent full-clip times indexed by source frame index. |
+| `reference_tolerance_ms` | `1.0` | Value must be a finite number between 0 and 1e+12. Maximum absolute difference from the time reference. |
+
 ## Apply medical metadata (`sitk.apply_metadata`)
 
 Image processing / Metadata

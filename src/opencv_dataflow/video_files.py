@@ -132,6 +132,7 @@ class VideoFile(ReplaySource):
         fps = self._capture.get(cv2.CAP_PROP_FPS)
         fps = fps if math.isfinite(fps) and fps > 0 else None
         timestamp = self._capture.get(cv2.CAP_PROP_POS_MSEC)
+        reported = float(timestamp) if math.isfinite(timestamp) else None
         origin = "decoder"
         if not math.isfinite(timestamp) or timestamp < 0 or (index and timestamp == 0):
             timestamp = 1000.0 * index / fps if fps else None
@@ -140,6 +141,7 @@ class VideoFile(ReplaySource):
             "filename": video_path(self).name,
             "frame_index": index,
             "timestamp_ms": timestamp,
+            "decoder_timestamp_ms": reported,
             "timestamp_source": origin,
             "fps": fps,
             "backend": self._capture.getBackendName(),
