@@ -1,0 +1,85 @@
+{
+  "license": "MIT - original control model/images",
+  "model_sha256": "6ff409f48f7c6cad7fc1e529e48c212c8a84d084390e4aee395e95441fde35df",
+  "cases": {
+    "stretch": {
+      "count": 3
+    },
+    "letterbox": {
+      "count": 3,
+      "resize": "letterbox"
+    },
+    "channels": {
+      "count": 3,
+      "output": "channels",
+      "layout": "channels_first"
+    },
+    "objectness": {
+      "count": 3,
+      "output": "objectness",
+      "format": "xywh_objectness"
+    },
+    "ssd": {
+      "count": 3,
+      "output": "ssd",
+      "format": "ssd",
+      "units": "normalized",
+      "offset": -1
+    },
+    "agnostic": {
+      "count": 2,
+      "agnostic": true
+    },
+    "selected": {
+      "count": 1
+    },
+    "empty": {
+      "count": 0,
+      "passed": false
+    },
+    "count_failure": {
+      "count": 3,
+      "minimum": 4,
+      "passed": false
+    }
+  },
+  "source_size": [
+    160,
+    80
+  ],
+  "network_size": [
+    64,
+    64
+  ],
+  "network_xyxy": [
+    [
+      10,
+      16,
+      30,
+      32
+    ],
+    [
+      11,
+      16,
+      31,
+      32
+    ],
+    [
+      10,
+      16,
+      30,
+      32
+    ],
+    [
+      40,
+      38,
+      52,
+      50
+    ]
+  ],
+  "asset_sha256": {
+    "black.png": "91d4f511f54189f345326b7a2b87fd086258768395d3bf402aca0db48c15c8fb",
+    "color.png": "91083612c31a6f7ebf06016ad46402b5e7212610d97071dc8e5d5f04f2c666d8",
+    "proposal_heads.onnx": "6ff409f48f7c6cad7fc1e529e48c212c8a84d084390e4aee395e95441fde35df"
+  }
+}

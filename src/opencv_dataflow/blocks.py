@@ -664,6 +664,7 @@ def builtin_registry():
     from .conveyor_tracking import ConveyorDemo, TrackConveyorParts
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
+    from .detection_decode import DecodeDetections
     from .differential_exposure import DifferentialExposure
     from .distortion_fixture import DistortImageFixture
     from .dnn_blocks import DNN_BLOCKS
@@ -1135,6 +1136,7 @@ def builtin_registry():
         ConveyorDemo,
         FinalJudgment,
         *DNN_BLOCKS,
+        DecodeDetections,
         FitFeatureCovariance,
         EvaluateImageFeatures,
         SolveLinearSystem,

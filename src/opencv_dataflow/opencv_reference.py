@@ -287,6 +287,7 @@ BINDINGS = {
     "inspect.simple_blob_detector": "SimpleBlobDetector.create Feature2D.detect",
     "inspect.thin_mask": "ximgproc.thinning",
     "inspect.watershed": "watershed",
+    "ml.decode_detections": "dnn.NMSBoxes",
     "ml.dnn": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward",
     "ml.kmeans": "kmeans",
     "output.image": "imencode imwriteWithMetadata",

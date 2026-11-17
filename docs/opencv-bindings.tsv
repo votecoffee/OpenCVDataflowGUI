@@ -571,7 +571,7 @@ P2	method	cv2.dnn.Net.setPreferableTarget	method name only	-
 P2	method	cv2.dnn.Net.setProfilingMode	no static reference	-
 P2	method	cv2.dnn.Net.setTracingMode	no static reference	-
 P2	function	cv2.dnn.Net_readFromModelOptimizer	no static reference	-
-P2	function	cv2.dnn.NMSBoxes	no static reference	-
+P2	function	cv2.dnn.NMSBoxes	literal reference	-
 P2	function	cv2.dnn.NMSBoxesBatched	no static reference	-
 P2	function	cv2.dnn.NMSBoxesRotated	no static reference	-
 P2	function	cv2.dnn.readNet	no static reference	-

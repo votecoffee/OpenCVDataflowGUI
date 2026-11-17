@@ -82,6 +82,7 @@ def preprocess(inputs, p):
 class DNNInference(Block):
     type_id, title = "ml.dnn", "DNN ONNX inference"
     category, block_type, subtype = "ML", "ML", "DNN inference"
+    project_path_parameters = ("model_path",)
     inputs = SELECTION_INPUTS
     outputs = (Port("tensors", "data"), Port("preprocessing", "data"))
     defaults = {

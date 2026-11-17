@@ -8439,6 +8439,49 @@ Inputs: `tensors` (data).
 | `minimum_confidence` | `0.0` |  |
 | `accepted_labels` | `[]` |  |
 
+## Decode object detections (`ml.decode_detections`)
+
+ML / Object detection
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `tensors` (data), `preprocessing` (data).
+
+Input `image` — Original image whose source coordinates and ticket own the detections.
+
+Input `tensors` — Single-image tensor_v1 outputs from the matching inference activation.
+
+Input `preprocessing` — Matching inference resize/letterbox maps. Known frame/ticket/recipe mismatches reject.
+
+Input `mask` — Optional image-grid selection; only detections whose unclipped center is selected survive.
+
+Input `region` — Optional region intersected with the mask. Does not crop or alter network inference.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_name` | `""` | Exact tensor name; empty selects the first named output. |
+| `format` | `"xywh_scores"` | `xywh_scores`, `xywh_objectness`, `xyxy_score_class`, `ssd` Explicit row schema. XYWH scores suits decoded YOLOv8-style heads; objectness suits YOLOv5/YOLOX. |
+| `layout` | `"rows"` | `rows`, `channels_first` Rows [N,C] or channels-first [C,N], optionally with one leading batch of size one. SSD is fixed. |
+| `coordinate_units` | `"network_pixels"` | `network_pixels`, `normalized` Box coordinates relative to the network input; normalized values scale by its width/height. |
+| `grid_decode` | `"none"` | `none`, `yolox` YOLOX expands XY offsets and exponential sizes using the exact network stride grids. |
+| `strides` | `[8, 16, 32]` | Ascending distinct YOLOX head strides, normally [8,16,32]; all must divide network axes. |
+| `score_activation` | `"probability"` | `probability`, `sigmoid` Probability validates [0,1]; sigmoid explicitly converts class/objectness logits. |
+| `labels` | `[]` | Optional zero-based string table. Score-head formats require one entry per class channel. |
+| `accepted_class_ids` | `[]` | Empty keeps all classes. Otherwise keep these adjusted, zero-based IDs. |
+| `class_id_offset` | `0` | Value must be a whole number between -1000 and 1000. Adjustment for explicit-ID SSD/XYXY rows, e.g. -1 for one-based classes. |
+| `confidence_threshold` | `0.25` | Value must be a finite number between 0 and 1. Keep scores strictly above this value. Objectness heads multiply class and objectness. |
+| `objectness_threshold` | `0.0` | Value must be a finite number between 0 and 1. Objectness-head gate before combined-score filtering; other formats ignore it. |
+| `nms_enabled` | `true` | Disable when the model already performs suppression, or to inspect duplicate proposals. |
+| `class_agnostic_nms` | `false` | Otherwise suppress separately per class, including boxes with negative coordinates. |
+| `nms_iou` | `0.45` | Value must be a finite number between 0 and 1. Native hard-NMS overlap threshold, applied to unclipped boxes in the source grid. |
+| `nms_eta` | `1.0` | Value must be a finite number between 0.001 and 1. Native adaptive IoU factor in (0,1]; one keeps a fixed threshold. |
+| `nms_top_k` | `0` | Value must be a whole number between 0 and 100000. Native pre-NMS score cap per class, or globally in class-agnostic mode; zero is unlimited. |
+| `border_policy` | `"clip"` | `clip`, `discard`, `keep` Clip partly visible boxes, discard them, or keep their unclipped coordinates. Fully outside boxes drop. |
+| `minimum_count` | `1` | Value must be a whole number between 0 and 100000. Fail the inspection below this many retained detections. |
+| `maximum_count` | `0` | Value must be a whole number between 0 and 100000. Zero disables the upper count judgment; positive values bound retained detections. |
+| `maximum_raw_rows` | `100000` | Value must be a whole number between 1 and 100000. Reject larger tensors before row processing; tensor_v1 also caps total values. |
+| `maximum_candidates` | `10000` | Value must be a whole number between 1 and 10000. Reject excess valid candidates before quadratic NMS; never silently truncate. |
+| `maximum_results` | `1000` | Value must be a whole number between 1 and 10000. Reject excess retained results instead of emitting an incomplete collection. |
+| `maximum_image_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. Reject larger source images before selection; collection axes are limited to 16384. |
+
 ## DNN ONNX inference (`ml.dnn`)
 
 ML / DNN inference

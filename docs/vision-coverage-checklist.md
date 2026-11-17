@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
+| 2. ML and DNN | 11 | 11 | 40 | 62 | 17.7% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 236 | 43 | 191 | 470 | 50.2% |
+| **Overall** | 237 | 43 | 190 | 470 | 50.4% |
 
 <!-- coverage-summary:end -->
 
@@ -320,7 +320,7 @@ fixture or result needed to close the item.
 | S2-05 | Portable model preprocessing and execution receipt | dnn preprocessing, dnn.getAvailableTargets | Partial | ml.dnn stores input preprocessing and backend settings. Publish a revisioned model/preprocessing contract with fixture results and an explicit fallback report. |
 | S2-06 | Image classification | Tensor softmax and top-K label decoding | Complete | ml.classify. Decode class scores, confidence, and labels. |
 | S2-07 | Image embeddings | Output tensor vectorization and optional normalization | Complete | ml.tensor_vector. Carry a normalized image feature vector to search and matching. |
-| S2-08 | Object detection and NMS | dnn.NMSBoxes, common detection tensor adapters | Planned | Decode boxes, classes and confidence from a pinned detector, apply class-aware NMS and undo letterboxing. |
+| S2-08 | Object detection and NMS | dnn.NMSBoxes, common detection tensor adapters | Complete | ml.decode_detections qualifies explicit XYWH score/objectness, XYXY/class and SSD rows; optional YOLOX stride decoding, normalized units, inverse rounded preprocessing, class filters and per-class/agnostic native NMS. Center selections, unclipped suppression/border policy, source ticket/frame/recipe guards, bounded complete box collections and result graphics are checked. Nine original image-dependent ONNX control projects and a pinned Apache-2 YOLOX-S/CC0 coffee example verify native CPU inference, independent box references and batched-NMS parity. Export guessing, multi-image batches, rotated/segmentation/quantized heads, general semantic accuracy and accelerators remain outside this baseline. See [contracts](object-detection.md). |
 | S2-09 | Rotated object detection | dnn.NMSBoxesRotated, oriented box adapter | Planned | Decode angle, dimensions and pose, and verify rotated suppression on overlapping parts. |
 | S2-10 | Semantic segmentation | Per-pixel argmax, resize, remap | Planned | Decode a known model into a label plane and masks on the source grid, including ignored classes. |
 | S2-11 | Instance segmentation | Box and mask tensor decoding, NMS, resize | Planned | Emit a distinct source-aligned mask and confidence for each retained detection. |

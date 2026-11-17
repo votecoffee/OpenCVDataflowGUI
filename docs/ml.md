@@ -9,8 +9,9 @@ The index writer is under **Custom > Output > ML models > Save Annoy index**.
 
 ## Installation
 
-OpenCV DNN is included in the base OpenCV 5 contrib installation. The DNN example
-needs no additional packages or downloads. For Annoy:
+OpenCV DNN is included in the base OpenCV 5 contrib installation. Bundled control
+models need no additional packages or downloads. The optional pretrained detector
+uses its explicit model-preparation script. For Annoy:
 
 ```powershell
 .\.venv\Scripts\python -m pip install -e ".[annoy]"
@@ -50,6 +51,7 @@ resolve beside the project. Keep application models in ignored `.local/` or anot
 chosen artifact directory; store paths in recipe parameters when selecting models
 by recipe. Native networks/indexes are cached per execution block and released on
 close/reset, rather than serialized into saved projects or copied between workers.
+Save As rebases DNN model input references while leaving those external files intact.
 
 ## OpenCV DNN
 
@@ -80,8 +82,14 @@ letterbox dimensions and padding, for model-specific postprocessing.
 labels and returns top-K predictions. Confidence/accepted-label criteria produce a
 normal failed inspection and a `classification` reason when rejected. Softmax-off
 requires probability values in [0,1]. This decoder is for single-image class scores.
-Object detection, segmentation and multi-input models need model-specific adapters;
-the generic inference block does not guess a YOLO/SSD/segmentation schema.
+**Decode object detections** accepts explicit YOLO-style XYWH score/objectness,
+postprocessed XYXY and SSD row layouts. It expands declared YOLOX grids when
+requested, filters classes/scores/selected centers, applies class-aware or
+class-agnostic native NMS and maps boxes back through preprocessing. It emits
+sortable/filterable source-frame collections and optional drawable labels/boxes.
+The generic inference block does not guess an export schema. See
+[detection contracts](object-detection.md) and [control/real-photo projects](<../examples/opencv tools/dnn_detection/README.md>).
+Segmentation and multi-input adapters remain separate roadmap work.
 
 **Tensor to embedding vector** selects a tensor and flattens it or globally averages
 all axes except a configured channel axis. It accepts one-image batches, with
