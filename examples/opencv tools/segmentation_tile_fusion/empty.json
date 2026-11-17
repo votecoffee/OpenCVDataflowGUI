@@ -1,0 +1,691 @@
+{
+  "schema_version": 1,
+  "branch_workers": 2,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/black.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left",
+      "type": "cv.crop",
+      "name": "Crop ROI",
+      "parameters": {
+        "x": 0,
+        "y": 0,
+        "width": 64,
+        "height": 32
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "infer_left",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "assets/pixel_color.onnx",
+        "width": 64,
+        "height": 32,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "logits"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        800,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode_left",
+      "type": "ml.decode_segmentation",
+      "name": "Decode semantic segmentation",
+      "parameters": {
+        "export_segmentation": true,
+        "output_name": "logits",
+        "format": "multiclass",
+        "layout": "NCHW",
+        "score_activation": "softmax",
+        "resampling": "labels_nearest",
+        "class_count": 0,
+        "labels": [
+          "background",
+          "red part",
+          "green part",
+          "blue part"
+        ],
+        "selected_class_ids": [
+          1,
+          2,
+          3
+        ],
+        "ignored_class_ids": [],
+        "minimum_confidence": 0.0,
+        "binary_threshold": 0.5,
+        "minimum_pixels": 0,
+        "maximum_pixels": 0,
+        "minimum_fraction": 0.0,
+        "maximum_fraction": 1.0,
+        "maximum_tensor_elements": 8000000,
+        "maximum_image_pixels": 4194304,
+        "maximum_resample_elements": 32000000,
+        "graphics_maximum_contours": 2000,
+        "graphics_maximum_points": 100000
+      },
+      "position": [
+        1200,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing"
+      ],
+      "exposed_outputs": [
+        "image",
+        "labels",
+        "mask",
+        "confidence",
+        "pixel_count",
+        "fraction",
+        "report",
+        "segmentation"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "cv.crop",
+      "name": "Crop ROI",
+      "parameters": {
+        "x": 32,
+        "y": 0,
+        "width": 64,
+        "height": 32
+      },
+      "position": [
+        400,
+        500
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "infer_right",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "assets/pixel_color.onnx",
+        "width": 64,
+        "height": 32,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "logits"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        800,
+        500
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode_right",
+      "type": "ml.decode_segmentation",
+      "name": "Decode semantic segmentation",
+      "parameters": {
+        "export_segmentation": true,
+        "output_name": "logits",
+        "format": "multiclass",
+        "layout": "NCHW",
+        "score_activation": "softmax",
+        "resampling": "labels_nearest",
+        "class_count": 0,
+        "labels": [
+          "background",
+          "red part",
+          "green part",
+          "blue part"
+        ],
+        "selected_class_ids": [
+          1,
+          2,
+          3
+        ],
+        "ignored_class_ids": [],
+        "minimum_confidence": 0.0,
+        "binary_threshold": 0.5,
+        "minimum_pixels": 0,
+        "maximum_pixels": 0,
+        "minimum_fraction": 0.0,
+        "maximum_fraction": 1.0,
+        "maximum_tensor_elements": 8000000,
+        "maximum_image_pixels": 4194304,
+        "maximum_resample_elements": 32000000,
+        "graphics_maximum_contours": 2000,
+        "graphics_maximum_points": 100000
+      },
+      "position": [
+        1200,
+        500
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing"
+      ],
+      "exposed_outputs": [
+        "image",
+        "labels",
+        "mask",
+        "confidence",
+        "pixel_count",
+        "fraction",
+        "report",
+        "segmentation"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "infer_full",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "assets/pixel_color.onnx",
+        "width": 96,
+        "height": 32,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "logits"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        400,
+        1100
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode_full",
+      "type": "ml.decode_segmentation",
+      "name": "Decode semantic segmentation",
+      "parameters": {
+        "export_segmentation": false,
+        "output_name": "logits",
+        "format": "multiclass",
+        "layout": "NCHW",
+        "score_activation": "softmax",
+        "resampling": "labels_nearest",
+        "class_count": 0,
+        "labels": [
+          "background",
+          "red part",
+          "green part",
+          "blue part"
+        ],
+        "selected_class_ids": [
+          1,
+          2,
+          3
+        ],
+        "ignored_class_ids": [],
+        "minimum_confidence": 0.0,
+        "binary_threshold": 0.5,
+        "minimum_pixels": 0,
+        "maximum_pixels": 0,
+        "minimum_fraction": 0.0,
+        "maximum_fraction": 1.0,
+        "maximum_tensor_elements": 8000000,
+        "maximum_image_pixels": 4194304,
+        "maximum_resample_elements": 32000000,
+        "graphics_maximum_contours": 2000,
+        "graphics_maximum_points": 100000
+      },
+      "position": [
+        800,
+        1100
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing"
+      ],
+      "exposed_outputs": [
+        "image",
+        "labels",
+        "mask",
+        "confidence",
+        "pixel_count",
+        "fraction",
+        "report",
+        "segmentation"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "join",
+      "type": "flow.join",
+      "name": "Join parallel branches",
+      "parameters": {
+        "branches": 2,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        1600,
+        400
+      ],
+      "exposed_inputs": [
+        "branch_1",
+        "branch_2",
+        "branch_3",
+        "branch_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "branch_1",
+        "branch_2",
+        "branch_3",
+        "branch_4",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fuse",
+      "type": "ml.fuse_tile_segmentation",
+      "name": "Fuse tile segmentation",
+      "parameters": {
+        "selected_class_ids": [
+          1,
+          2,
+          3
+        ],
+        "ignored_class_ids": [],
+        "minimum_confidence": 0.0,
+        "minimum_pixels": 1,
+        "maximum_pixels": 0,
+        "minimum_fraction": 0.0,
+        "maximum_fraction": 1,
+        "maximum_image_pixels": 4194304,
+        "graphics_maximum_contours": 2000,
+        "graphics_maximum_points": 100000,
+        "export_segmentation": false,
+        "mode": "probability_mean",
+        "weighting": "uniform",
+        "feather_width": 8,
+        "expected_tiles": 2,
+        "minimum_coverage": 1.0,
+        "maximum_input_elements": 32000000,
+        "maximum_resample_elements": 8000000,
+        "maximum_mapped_elements": 64000000
+      },
+      "position": [
+        2000,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tiles"
+      ],
+      "exposed_outputs": [
+        "image",
+        "labels",
+        "mask",
+        "confidence",
+        "pixel_count",
+        "fraction",
+        "report",
+        "segmentation",
+        "coverage",
+        "weight",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        2450,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        2850,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original MIT seam-crossing controls",
+      "description": "Original MIT synthetic images, pixel-dependent ONNX equations and independent labels by OpenCVDataflowGUI contributors. No pretrained model or customer images. Red part crosses both overlap boundaries. Full decode is an independent whole-image execution. Coverage, failed tile, area and empty controls intentionally fail. Resized tiles use bilinear probabilities and may change edge pixels. See README.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -500
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "left",
+      "input": "image"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "infer_left",
+      "input": "image"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "decode_left",
+      "input": "image"
+    },
+    {
+      "source": "infer_left",
+      "output": "tensors",
+      "target": "decode_left",
+      "input": "tensors"
+    },
+    {
+      "source": "infer_left",
+      "output": "preprocessing",
+      "target": "decode_left",
+      "input": "preprocessing"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "right",
+      "input": "image"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "infer_right",
+      "input": "image"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "decode_right",
+      "input": "image"
+    },
+    {
+      "source": "infer_right",
+      "output": "tensors",
+      "target": "decode_right",
+      "input": "tensors"
+    },
+    {
+      "source": "infer_right",
+      "output": "preprocessing",
+      "target": "decode_right",
+      "input": "preprocessing"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "infer_full",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "decode_full",
+      "input": "image"
+    },
+    {
+      "source": "infer_full",
+      "output": "tensors",
+      "target": "decode_full",
+      "input": "tensors"
+    },
+    {
+      "source": "infer_full",
+      "output": "preprocessing",
+      "target": "decode_full",
+      "input": "preprocessing"
+    },
+    {
+      "source": "decode_left",
+      "output": "segmentation",
+      "target": "join",
+      "input": "branch_1"
+    },
+    {
+      "source": "decode_right",
+      "output": "segmentation",
+      "target": "join",
+      "input": "branch_2"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "fuse",
+      "input": "image"
+    },
+    {
+      "source": "join",
+      "output": "group",
+      "target": "fuse",
+      "input": "tiles"
+    },
+    {
+      "source": "fuse",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "fuse",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

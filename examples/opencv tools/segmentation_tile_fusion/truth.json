@@ -1,0 +1,52 @@
+{
+  "license": "MIT",
+  "cases": {
+    "probability_mean": {},
+    "feather": {
+      "weighting": "feather"
+    },
+    "label_vote": {
+      "mode": "label_vote"
+    },
+    "resized_tile": {
+      "resized": true
+    },
+    "selected_roi": {
+      "roi": true
+    },
+    "coverage_failure": {
+      "gap": true,
+      "passed": false
+    },
+    "failed_tile": {
+      "failed_tile": true,
+      "passed": false
+    },
+    "area_failure": {
+      "maximum_fraction": 0.01,
+      "passed": false
+    },
+    "empty": {
+      "empty": true,
+      "passed": false
+    }
+  },
+  "class_names": [
+    "background",
+    "red part",
+    "green part",
+    "blue part"
+  ],
+  "class_pixels": [
+    2284,
+    448,
+    160,
+    180
+  ],
+  "asset_sha256": {
+    "black.png": "63c7a21690fe18f1cdc88a60c39a54a7b752564e3970b26f7ca3e924b771846b",
+    "parts.png": "de16f9591dade0a0846668fafa2fbccbaf4e99146487746c51e5311dbbbef7e1",
+    "pixel_color.onnx": "9cdbe7a1de93830e8d868b6a2bb9b2247c3289edcb92286f2e84a9d6879cb56b",
+    "truth_labels_plus_one.png": "f3fbb73b14d433ba87e1eb8e7eaff1465b8abd6ba3450bb6d0bc68d450c6b489"
+  }
+}

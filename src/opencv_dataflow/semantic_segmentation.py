@@ -67,15 +67,14 @@ def head_tensor(inputs, p):
     return values, classes
 
 
-def classify(values, p):
+def class_scores(values, p):
+    """Exclusive class probabilities, preserving explicit binary score meaning."""
     if p["format"] == "class_ids":
-        return values[0].astype(np.int32), None
+        return None
     if p["format"] == "binary":
         foreground = probability(values[0], p["score_activation"])
-        labels = (foreground >= p["binary_threshold"]).astype(np.int32)
-        return labels, np.where(labels == 1, foreground, 1 - foreground).astype(np.float32)
+        return np.stack((1 - foreground, foreground)).astype(np.float32)
     if p["score_activation"] == "softmax":
-        # Use float64 subtraction for finite extreme float32 logits, without overflow.
         shifted = values.astype(np.float64) - np.max(values, axis=0)
         np.exp(shifted, out=shifted)
         scores = shifted / shifted.sum(axis=0)
@@ -83,8 +82,19 @@ def classify(values, p):
         scores = probability(values, "probability")
         if not np.allclose(scores.sum(axis=0), 1, atol=1e-4, rtol=0):
             raise ValidationError("Multiclass probabilities must sum to one at every pixel")
-    labels = np.argmax(scores, axis=0).astype(np.int32)
-    return labels, np.max(scores, axis=0).astype(np.float32)
+    return scores
+
+
+def classify(values, p):
+    scores = class_scores(values, p)
+    if scores is None:
+        return values[0].astype(np.int32), None
+    labels = (
+        (scores[1] >= p["binary_threshold"]).astype(np.int32)
+        if p["format"] == "binary"
+        else np.argmax(scores, axis=0).astype(np.int32)
+    )
+    return labels, np.take_along_axis(scores, labels[None], axis=0)[0].astype(np.float32)
 
 
 def source_coordinates(size, reverse, shape, head_shape):
@@ -120,8 +130,10 @@ class DecodeSegmentation(Block):
         Port("pixel_count", "integer"),
         Port("fraction", "float"),
         Port("report", "data"),
+        Port("segmentation", "any", required=False, visual_type="collection"),
     )
     defaults = {
+        "export_segmentation": False,
         "output_name": "",
         "format": "multiclass",
         "layout": "NCHW",
@@ -174,6 +186,10 @@ class DecodeSegmentation(Block):
         "graphics_maximum_points": NumericRange(1, 1_000_000, whole=True),
     }
     parameter_help = {
+        "export_segmentation": (
+            "Emit bounded array-backed class probabilities or decoded labels for tile fusion; "
+            "off avoids retaining class planes. Class filtering/ROI gates apply."
+        ),
         "output_name": "Named tensor_v1 output; empty selects the first output.",
         "format": "Multiclass exclusive scores, one binary foreground score, or decoded class IDs.",
         "layout": "Explicit axes; N must equal one. HW/NHW denote a single-channel plane.",
@@ -224,6 +240,8 @@ class DecodeSegmentation(Block):
     def validate_parameters(self, parameters=None):
         super().validate_parameters(parameters)
         p = self.parameters if parameters is None else parameters
+        if type(p["export_segmentation"]) is not bool:
+            raise ValidationError("Use a checkbox boolean", "export_segmentation")
         if not isinstance(p["output_name"], str) or len(p["output_name"]) > 1024:
             raise ValidationError("Output name must be bounded text", "output_name")
         if (
@@ -277,6 +295,11 @@ class DecodeSegmentation(Block):
         size, reverse = preprocessing_geometry(inputs["preprocessing"], image)
         values, classes = head_tensor(inputs, p)
         x, y = source_coordinates(size, reverse, image.shape, values.shape[1:])
+        if p["export_segmentation"] and classes * w * h > p["maximum_resample_elements"]:
+            raise ValidationError(
+                "Exported class planes exceed the resampling budget", "maximum_resample_elements"
+            )
+        scores = None
         if p["resampling"] == "scores_linear":
             if values.shape[0] * w * h > p["maximum_resample_elements"]:
                 raise ValidationError(
@@ -293,6 +316,10 @@ class DecodeSegmentation(Block):
             if not np.isfinite(mapped).all():
                 raise ValidationError("Interpolating scores produced nonfinite values")
             labels, confidence = classify(mapped, p)
+            if p["export_segmentation"]:
+                scores = class_scores(mapped, p)
+                if scores is not None:
+                    scores = scores.astype(np.float32)
         else:
             labels, confidence = classify(values, p)
             xi = np.floor(x).astype(np.int32).clip(0, labels.shape[1] - 1)
@@ -300,119 +327,162 @@ class DecodeSegmentation(Block):
             labels = labels[yi[:, None], xi]
             if confidence is not None:
                 confidence = confidence[yi[:, None], xi]
-        selection = selection_mask(inputs, image)
-        eligible = np.ones((h, w), bool) if selection is None else selection != 0
-        roi_pixels = int(np.count_nonzero(eligible))
-        valid = eligible & (labels >= 0) & ~np.isin(labels, p["ignored_class_ids"])
-        if confidence is not None:
-            valid &= confidence >= p["minimum_confidence"]
-        labels[~valid] = -1
-        if confidence is not None:
-            confidence[~valid] = 0
-        included = valid & (
-            np.isin(labels, p["selected_class_ids"]) if p["selected_class_ids"] else True
-        )
-        mask = included.astype(np.uint8) * 255
-        pixels = int(np.count_nonzero(included))
-        fraction = pixels / roi_pixels if roi_pixels else 0.0
-        passed = (
-            pixels >= p["minimum_pixels"]
-            and (not p["maximum_pixels"] or pixels <= p["maximum_pixels"])
-            and p["minimum_fraction"] <= fraction <= p["maximum_fraction"]
-        )
-        counts = np.bincount(labels[valid], minlength=classes)
-        sums = (
-            np.bincount(labels[valid], weights=confidence[valid], minlength=classes)
-            if confidence is not None
-            else None
-        )
-        statistics = [
-            {
-                "class_id": i,
-                "label": p["labels"][i] if p["labels"] else str(i),
-                "pixels": int(counts[i]),
-                "fraction": int(counts[i]) / roi_pixels if roi_pixels else 0.0,
-                "mean_confidence": float(sums[i] / counts[i])
-                if sums is not None and counts[i]
-                else None,
-                "selected": (not p["selected_class_ids"] or i in p["selected_class_ids"])
-                and i not in p["ignored_class_ids"],
-                "ignored": i in p["ignored_class_ids"],
-            }
-            for i in range(classes)
-        ]
-        report = {
+        if p["export_segmentation"] and p["resampling"] == "labels_nearest":
+            raw_scores = class_scores(values, p)
+            if raw_scores is not None:
+                scores = raw_scores[:, yi[:, None], xi].astype(np.float32)
+        details = {
             "model": "semantic_segmentation_decode_v1",
             "format": p["format"],
             "layout": p["layout"],
             "head_shape_chw": list(values.shape),
-            "class_count": classes,
-            "classes": statistics,
-            "source_size": [w, h],
-            "roi_pixels": roi_pixels,
-            "selected_pixels": pixels,
-            "ignored_pixels_in_roi": roi_pixels - int(counts.sum()),
-            "selected_fraction": fraction,
-            "confidence_available": confidence is not None,
-            "minimum_confidence": p["minimum_confidence"],
             "resampling": p["resampling"],
             "grid_convention": "full_network_pixel_edges_source_centers_half_pixel_head",
             "context_checks": checked,
             "preprocessing": copy.deepcopy(inputs["preprocessing"]),
-            "graphics_truncated": False,
         }
-        drawings, graphics = {}, {}
-        if self.generate_graphics:
-            graphics["Semantic labels"] = label_color_map(labels + 1)
-            contours, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-            objects, points = [], 0
-            color = (60, 230, 120) if passed else (60, 80, 240)
-            for contour in contours:
-                n = len(contour)
-                if (
-                    len(objects) >= p["graphics_maximum_contours"]
-                    or points + n > p["graphics_maximum_points"]
-                ):
-                    report["graphics_truncated"] = True
-                    break
-                points += n
-                objects.append(
-                    graphic_object("polyline", contour.reshape(-1, 2), color, closed=True)
-                )
-            objects.append(
-                graphic_object(
-                    "label",
-                    [[2, 16]],
-                    color,
-                    text=f"{pixels} selected pixels ({fraction:.1%})"
-                    + ("; outlines limited" if report["graphics_truncated"] else ""),
-                )
+        return segmentation_result(self, inputs, labels, confidence, classes, details, scores)
+
+
+def segmentation_result(
+    block,
+    inputs,
+    labels,
+    confidence,
+    classes,
+    details,
+    scores=None,
+    class_names=None,
+    extra_fail_reasons=(),
+):
+    """Common selected-mask judgments, graphics and optional fusion transport."""
+    p, source = block.parameters, inputs["image"]
+    if class_names is not None:
+        p = {**p, "labels": class_names}
+    h, w = source.shape[:2]
+    image = image_value(source)
+    selection = selection_mask(inputs, image)
+    eligible = np.ones((h, w), bool) if selection is None else selection != 0
+    roi_pixels = int(np.count_nonzero(eligible))
+    valid = eligible & (labels >= 0) & ~np.isin(labels, p["ignored_class_ids"])
+    if confidence is not None:
+        valid &= confidence >= p["minimum_confidence"]
+    labels[~valid] = -1
+    if confidence is not None:
+        confidence[~valid] = 0
+    included = valid & (
+        np.isin(labels, p["selected_class_ids"]) if p["selected_class_ids"] else True
+    )
+    mask = included.astype(np.uint8) * 255
+    pixels = int(np.count_nonzero(included))
+    fraction = pixels / roi_pixels if roi_pixels else 0.0
+    passed = (
+        pixels >= p["minimum_pixels"]
+        and (not p["maximum_pixels"] or pixels <= p["maximum_pixels"])
+        and p["minimum_fraction"] <= fraction <= p["maximum_fraction"]
+    )
+    area_passed = passed
+    passed = passed and not extra_fail_reasons
+    counts = np.bincount(labels[valid], minlength=classes)
+    sums = (
+        np.bincount(labels[valid], weights=confidence[valid], minlength=classes)
+        if confidence is not None
+        else None
+    )
+    statistics = [
+        {
+            "class_id": i,
+            "label": p["labels"][i] if p["labels"] else str(i),
+            "pixels": int(counts[i]),
+            "fraction": int(counts[i]) / roi_pixels if roi_pixels else 0.0,
+            "mean_confidence": float(sums[i] / counts[i])
+            if sums is not None and counts[i]
+            else None,
+            "selected": (not p["selected_class_ids"] or i in p["selected_class_ids"])
+            and i not in p["ignored_class_ids"],
+            "ignored": i in p["ignored_class_ids"],
+        }
+        for i in range(classes)
+    ]
+    report = {
+        **details,
+        "class_count": classes,
+        "classes": statistics,
+        "source_size": [w, h],
+        "roi_pixels": roi_pixels,
+        "selected_pixels": pixels,
+        "ignored_pixels_in_roi": roi_pixels - int(counts.sum()),
+        "selected_fraction": fraction,
+        "confidence_available": confidence is not None,
+        "minimum_confidence": p["minimum_confidence"],
+        "graphics_truncated": False,
+    }
+    drawings, graphics = {}, {}
+    if block.generate_graphics:
+        graphics["Semantic labels"] = label_color_map(labels + 1)
+        contours, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        objects, points = [], 0
+        color = (60, 230, 120) if passed else (60, 80, 240)
+        for contour in contours:
+            n = len(contour)
+            if (
+                len(objects) >= p["graphics_maximum_contours"]
+                or points + n > p["graphics_maximum_points"]
+            ):
+                report["graphics_truncated"] = True
+                break
+            points += n
+            objects.append(graphic_object("polyline", contour.reshape(-1, 2), color, closed=True))
+        objects.append(
+            graphic_object(
+                "label",
+                [[2, 16]],
+                color,
+                text=f"{pixels} selected pixels ({fraction:.1%})"
+                + ("; outlines limited" if report["graphics_truncated"] else ""),
             )
-            drawings["Semantic selection"] = GraphicDrawing(tuple(objects))
-        outputs = {
-            "image": source,
-            "labels": labels,
-            "mask": mask,
-            "confidence": confidence if confidence is not None else NO_VALUE,
-            "pixel_count": pixels,
-            "fraction": fraction,
-            "report": report,
+        )
+        drawings["Semantic selection"] = GraphicDrawing(tuple(objects))
+    outputs = {
+        "image": source,
+        "labels": labels,
+        "mask": mask,
+        "confidence": confidence if confidence is not None else NO_VALUE,
+        "pixel_count": pixels,
+        "fraction": fraction,
+        "report": report,
+    }
+    context = block.input_payloads.get("image", {})
+    if p["export_segmentation"]:
+        outputs["segmentation"] = {
+            "model": "segmentation_tile_v1",
+            "class_count": classes,
+            "class_names": [p["labels"][i] if p["labels"] else str(i) for i in range(classes)],
+            "labels": labels.copy(),
+            "probabilities": scores,
+            "context": copy.deepcopy(context),
         }
-        context = self.input_payloads.get("image", {})
-        return Result(
-            outputs,
-            payloads={name: copy.deepcopy(context) for name in outputs},
-            passed=passed,
-            score=float(confidence[included].mean()) if confidence is not None and pixels else None,
-            message=f"{pixels} selected pixels ({fraction:.1%} of ROI)",
-            fail_reasons=[]
-            if passed
+    else:
+        outputs["segmentation"] = NO_VALUE
+    return Result(
+        outputs,
+        payloads={
+            name: copy.deepcopy(context) for name, value in outputs.items() if value is not NO_VALUE
+        },
+        passed=passed,
+        score=float(confidence[included].mean()) if confidence is not None and pixels else None,
+        message=f"{pixels} selected pixels ({fraction:.1%} of ROI)",
+        fail_reasons=list(extra_fail_reasons)
+        + (
+            []
+            if area_passed
             else [
                 {
                     "code": "segmentation.area",
                     "message": "Selected pixel count or ROI fraction outside configured limits",
                 }
-            ],
-            drawings=drawings,
-            graphics=graphics,
-        )
+            ]
+        ),
+        drawings=drawings,
+        graphics=graphics,
+    )

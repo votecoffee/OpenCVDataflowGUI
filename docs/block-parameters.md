@@ -8766,6 +8766,7 @@ Input `preprocessing` — Matching inference sizes and inverse resize/padding ma
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
+| `export_segmentation` | `false` | Emit bounded array-backed class probabilities or decoded labels for tile fusion; off avoids retaining class planes. Class filtering/ROI gates apply. |
 | `output_name` | `""` | Named tensor_v1 output; empty selects the first output. |
 | `format` | `"multiclass"` | `multiclass`, `binary`, `class_ids` Multiclass exclusive scores, one binary foreground score, or decoded class IDs. |
 | `layout` | `"NCHW"` | `NCHW`, `NHWC`, `CHW`, `HWC`, `NHW`, `HW` Explicit axes; N must equal one. HW/NHW denote a single-channel plane. |
@@ -9028,6 +9029,42 @@ Input `region` — Optional reference-grid selection using each unclipped mapped
 | `include_candidate_details` | `false` | Include a bounded per-detection mapping/filter/NMS trace. Off avoids optional report overhead. |
 | `maximum_raw_detections` | `10000` | Value must be a whole number between 1 and 50000. Reject excess total detections across tiles before mapping and suppression. |
 | `maximum_candidates` | `4096` | Value must be a whole number between 1 and 10000. Reject excess score/class/region/border-selected candidates before quadratic native NMS; never silently truncate. |
+
+## Fuse tile segmentation (`ml.fuse_tile_segmentation`)
+
+ML / Semantic segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `tiles` (any).
+
+Input `image` — Reference image; requires a known spatial root and acquisition ticket.
+
+Input `mask` — Optional reference-grid ROI; intersects Region.
+
+Input `region` — Reference-grid rectangle/circle/polygon/raster selection.
+
+Input `tiles` — Flat FlowGroup from Join of matching exported segmentation records. Shared ticket, root, class order and recipe required; crop/scale/flip/right-angle maps.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `selected_class_ids` | `[1]` | Integer IDs for Mask/area judgment; empty selects all nonignored. |
+| `ignored_class_ids` | `[]` | Integer IDs converted to -1 after winner selection; no runner-up reassignment. |
+| `minimum_confidence` | `0.0` | Value must be a finite number between 0 and 1. Minimum winning probability, or vote fraction in label mode. |
+| `minimum_pixels` | `1` | Value must be a whole number between 0 and 1.67772e+07. Fewest selected pixels to pass; zero allows an empty mask. |
+| `maximum_pixels` | `0` | Value must be a whole number between 0 and 1.67772e+07. Most selected pixels permitted; zero disables this limit. |
+| `minimum_fraction` | `0.0` | Value must be a finite number between 0 and 1. Minimum selected pixels divided by the full ROI/mask area. |
+| `maximum_fraction` | `1.0` | Value must be a finite number between 0 and 1. Maximum selected/ROI fraction; ignored/low confidence stays in denominator. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Source-grid pixel budget; maximum axis is 16384 pixels. |
+| `graphics_maximum_contours` | `2000` | Value must be a whole number between 1 and 20000. Limit optional outlines, including holes; numerical masks remain complete. |
+| `graphics_maximum_points` | `100000` | Value must be a whole number between 1 and 1e+06. Limit outline vertices; report truncation without changing the mask. |
+| `export_segmentation` | `false` | Emit bounded array-backed class probabilities or decoded labels for tile fusion; off avoids retaining class planes. Class filtering/ROI gates apply. |
+| `mode` | `"probability_mean"` | `probability_mean`, `label_vote` Average exclusive class probabilities with bilinear masked sampling, or vote on nearest decoded labels. Ties choose the lowest class ID. |
+| `weighting` | `"uniform"` | `uniform`, `feather` Uniform support or distance-to-tile-edge feathering, in tile pixels. |
+| `feather_width` | `16.0` | Value must be a finite number between 0.5 and 16384. Distance in tile pixels from its boundary to full feather weight. |
+| `expected_tiles` | `0` | Value must be a whole number between 0 and 64. Zero accepts 1..64 distinct tiles; positive requires exact count. |
+| `minimum_coverage` | `1.0` | Value must be a finite number between 0 and 1. Required valid tile support / reference ROI pixels before the final class/confidence gate; empty ROI has zero coverage. |
+| `maximum_input_elements` | `32000000` | Value must be a whole number between 1 and 6.4e+07. Bound total tile label and class-plane samples. |
+| `maximum_resample_elements` | `8000000` | Value must be a whole number between 1 and 3.2e+07. Bound classes x reference pixels before accumulation. |
+| `maximum_mapped_elements` | `64000000` | Value must be a whole number between 1 and 2.56e+08. Conservative tiles x classes x reference pixels work limit. |
 
 ## Image to DNN tensor (`ml.image_tensor`)
 

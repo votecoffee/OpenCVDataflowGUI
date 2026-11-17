@@ -89,6 +89,7 @@
       "type": "ml.decode_segmentation",
       "name": "Decode semantic segmentation",
       "parameters": {
+        "export_segmentation": false,
         "output_name": "binary",
         "format": "binary",
         "layout": "NCHW",
@@ -137,6 +138,7 @@
         "pixel_count",
         "fraction",
         "report",
+        "segmentation",
         "result_graphics"
       ],
       "thumbnail": true,
