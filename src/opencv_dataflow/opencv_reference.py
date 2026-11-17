@@ -291,6 +291,7 @@ BINDINGS = {
     "ml.decode_rotated_detections": "dnn.NMSBoxesRotated rotatedRectangleIntersection boxPoints",
     "ml.decode_segmentation": "remap findContours",
     "ml.decode_instances": "dnn.NMSBoxes remap findContours",
+    "ml.decode_landmarks": "minMaxLoc",
     "ml.dnn_batch": (
         "dnn.readNetFromONNX dnn.blobFromImages dnn.Net.setInput dnn.Net.forward "
         "dnn.getAvailableTargets"

@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/partial.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "infer",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "assets/landmarks.onnx",
+        "width": 24,
+        "height": 16,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 1.5259021896696422e-05,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "heatmaps"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        410,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "ml.decode_landmarks",
+      "name": "Decode keypoints and heatmaps",
+      "parameters": {
+        "output_name": "heatmaps",
+        "format": "heatmaps",
+        "layout": "NCHW",
+        "channels": [],
+        "names": [
+          "red",
+          "green",
+          "blue"
+        ],
+        "score_activation": "probability",
+        "minimum_confidence": 0.5,
+        "heatmap_mapping": "half_pixel",
+        "peak_search": "selection",
+        "ambiguity": "reject",
+        "refinement": "log_quadratic",
+        "refinement_radius": 1,
+        "refinement_failure": "integer",
+        "minimum_curvature": 1e-06,
+        "maximum_refinement_offset": 0.75,
+        "maximum_fit_rmse": 0.1,
+        "coordinate_layout": "rows",
+        "coordinate_units": "network_pixels",
+        "coordinate_origin": "pixel_centers",
+        "minimum_count": 1,
+        "require_all": true,
+        "points_policy": "complete_only",
+        "connections": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "maximum_tensor_elements": 8000000,
+        "maximum_landmarks": 1024,
+        "maximum_heatmap_pixels": 1048576,
+        "maximum_image_pixels": 4194304,
+        "graphics_maximum_landmarks": 256
+      },
+      "position": [
+        820,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "tensors",
+        "preprocessing",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "landmarks",
+        "points",
+        "indices",
+        "count",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1230,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1640,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original landmark fixtures - MIT",
+      "description": "Original MIT uint16 Gaussian color images, image-dependent identity/centroid ONNX, graphs and analytic landmark references by OpenCVDataflowGUI contributors. No learned recognition or customer data. Ordered rejected landmarks remain present; incomplete Points output is suppressed. Pinned project verifies model/settings bytes. Partial/empty projects intentionally fail inspection. See README/truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -500
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "infer",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "decode",
+      "input": "image"
+    },
+    {
+      "source": "infer",
+      "output": "tensors",
+      "target": "decode",
+      "input": "tensors"
+    },
+    {
+      "source": "infer",
+      "output": "preprocessing",
+      "target": "decode",
+      "input": "preprocessing"
+    },
+    {
+      "source": "decode",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "decode",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

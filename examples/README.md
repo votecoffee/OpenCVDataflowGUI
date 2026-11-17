@@ -95,6 +95,7 @@ See the [Simple Plugins guide](<Simple Plugins/README.md>) for setup, real-data 
 | [SimpleFringeScan setup and execution](<Simple Plugins/fringe_scan/README.md>) | Retained native setup, references, ROI and known calibration; three one-block metric/phase execution examples with explicit expected availability judgments and source attribution. |
 | [SimpleDeflectometry initial reviews](<Simple Plugins/deflectometry/README.md>) | Four file-only phase/change reviews, including an attributed CC BY-SA SOFAST camera self-comparison; optional standalone replay is documented separately. |
 | [Simple3DMeasure](<Simple Plugins/3d_measure/README.md>) | Review plane measurements on real T-LESS clouds and known/raised/missing generated surfaces with native RGB flyaround. |
+| [SimpleFoundationPose CPU execution (experimental)](<Simple Plugins/foundation_pose/WORKER_WORKFLOW.md>) | Supplied-mask, single-instance T-LESS controls; global and assisted execution examples retain rejected results with no accepted pose. Setup, model terms and unqualified physical-pick limits are explicit. |
 | [SimpleGDRNPP (experimental)](<Simple Plugins/gdrnpp/README.md>) | Review three rejected T-LESS pose results without inference, or explicitly load the isolated-worker setup plugin. [Cold/warm worker measurements](<Simple Plugins/gdrnpp/worker_cycles/README.md>) and [same-client resource preparation](<Simple Plugins/gdrnpp/resource_prepare/README.md>) provide supporting evidence. New-object training and broader pose accuracy remain open. |
 
 The [SimpleSurfaceEnhance setup/execution examples](<Simple Plugins/surface_enhance/README.md>)
@@ -129,6 +130,8 @@ For oriented detector heads, exact source footprints, suppression choices and po
 For per-pixel labels, selected masks, confidence and source-grid mapping, try [semantic segmentation](<opencv tools/semantic_segmentation/README.md>).
 
 For per-object masks, preserved overlap, ROI/prototype heads and individual inspection, try [instance segmentation](<opencv tools/instance_segmentation/README.md>).
+
+For ordered heatmaps/direct coordinates, subpixel landmarks and local inspection poses, try [landmarks](<opencv tools/landmarks/README.md>).
 
 For detector inference, decoded box collections and suppression, try [DNN detection](<opencv tools/dnn_detection/README.md>).
 

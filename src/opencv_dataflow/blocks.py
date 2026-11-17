@@ -725,6 +725,7 @@ def builtin_registry():
     from .instance_segmentation import INSTANCE_BLOCKS
     from .judgments import FinalJudgment
     from .label_measurement import MaskFromLabelCollection, MeasureLabelRegions
+    from .landmarks import LANDMARK_BLOCKS
     from .laplacian_pyramids import LAPLACIAN_PYRAMID_BLOCKS
     from .lens_map_files import LoadLensMaps, SaveLensMaps
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
@@ -1147,6 +1148,7 @@ def builtin_registry():
         DecodeRotatedDetections,
         DecodeSegmentation,
         *INSTANCE_BLOCKS,
+        *LANDMARK_BLOCKS,
         FitFeatureCovariance,
         EvaluateImageFeatures,
         SolveLinearSystem,

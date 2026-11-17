@@ -151,6 +151,14 @@ The synthetic network averages RGB channels. Its labels are channel names, not
 semantic object recognition. Replace its ONNX path and preprocessing with those
 required by a real application model.
 
+**Decode keypoints and heatmaps** recovers ordered single-object landmarks from
+explicit heatmap or X/Y/confidence heads, with source-grid resize/letterbox
+mapping, optional mask/region, ambiguity policy and qualified local subpixel
+fits. Rejected entries retain their indices; incomplete compact Points is
+suppressed by default. **Pose from ordered landmarks** defines a local frame
+from accepted points for pose-relative inspection. See [contracts](landmarks.md)
+and [twelve original image-dependent controls](<../examples/opencv tools/landmarks/README.md>).
+
 ## LightGlue reference matching
 
 This initial adapter uses OpenCV SIFT/RootSIFT descriptors with the official learned

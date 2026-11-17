@@ -1,0 +1,341 @@
+{
+  "license": "MIT - original image landmarks and numerical controls",
+  "cases": {
+    "refined": {
+      "passed": true,
+      "channels": [
+        0,
+        1,
+        2
+      ],
+      "accepted": [
+        0,
+        1,
+        2
+      ],
+      "source_points": [
+        [
+          28.25,
+          34.0
+        ],
+        [
+          88.5,
+          53.0
+        ],
+        [
+          52.5,
+          23.0
+        ]
+      ],
+      "source_tolerance": 0.002
+    },
+    "channels_last": {
+      "output": "channels",
+      "layout": "NHWC",
+      "passed": true,
+      "channels": [
+        0,
+        1,
+        2
+      ],
+      "accepted": [
+        0,
+        1,
+        2
+      ],
+      "source_points": [
+        [
+          28.25,
+          34.0
+        ],
+        [
+          88.5,
+          53.0
+        ],
+        [
+          52.5,
+          23.0
+        ]
+      ],
+      "source_tolerance": 0.002
+    },
+    "integer": {
+      "refinement": "none",
+      "passed": true,
+      "channels": [
+        0,
+        1,
+        2
+      ],
+      "accepted": [
+        0,
+        1,
+        2
+      ],
+      "source_points": [
+        [
+          27.0,
+          32.0
+        ],
+        [
+          87.0,
+          52.0
+        ],
+        [
+          52.0,
+          22.0
+        ]
+      ],
+      "source_tolerance": 0.002
+    },
+    "letterbox": {
+      "wide": true,
+      "passed": true,
+      "channels": [
+        0,
+        1,
+        2
+      ],
+      "accepted": [
+        0,
+        1,
+        2
+      ],
+      "source_points": [
+        [
+          28.25,
+          34.0
+        ],
+        [
+          88.5,
+          53.0
+        ],
+        [
+          52.5,
+          23.0
+        ]
+      ],
+      "source_tolerance": 0.06
+    },
+    "coordinates": {
+      "output": "xy_score",
+      "format": "xy_score",
+      "passed": true,
+      "channels": [
+        0,
+        1,
+        2
+      ],
+      "accepted": [
+        0,
+        1,
+        2
+      ],
+      "source_points": [
+        [
+          28.25055205919289,
+          33.999945664423095
+        ],
+        [
+          88.4999059689537,
+          52.99836565818522
+        ],
+        [
+          52.49993591305521,
+          23.007909687647484
+        ]
+      ],
+      "source_tolerance": 0.002
+    },
+    "normalized_coordinates": {
+      "output": "xy_normalized",
+      "format": "xy_score",
+      "coordinate_units": "normalized",
+      "passed": true,
+      "channels": [
+        0,
+        1,
+        2
+      ],
+      "accepted": [
+        0,
+        1,
+        2
+      ],
+      "source_points": [
+        [
+          28.25055205919289,
+          33.999945664423095
+        ],
+        [
+          88.4999059689537,
+          52.99836565818522
+        ],
+        [
+          52.49993591305521,
+          23.007909687647484
+        ]
+      ],
+      "source_tolerance": 0.002
+    },
+    "subset": {
+      "channels": [
+        1,
+        0
+      ],
+      "passed": true,
+      "accepted": [
+        0,
+        1
+      ],
+      "source_points": [
+        [
+          88.5,
+          53.0
+        ],
+        [
+          28.25,
+          34.0
+        ]
+      ],
+      "source_tolerance": 0.002
+    },
+    "selection": {
+      "selection": true,
+      "channels": [
+        0
+      ],
+      "passed": true,
+      "accepted": [
+        0
+      ],
+      "source_points": [
+        [
+          28.25,
+          34.0
+        ]
+      ],
+      "source_tolerance": 0.002
+    },
+    "pose_region": {
+      "pose": true,
+      "passed": true,
+      "channels": [
+        0,
+        1,
+        2
+      ],
+      "accepted": [
+        0,
+        1,
+        2
+      ],
+      "source_points": [
+        [
+          28.25,
+          34.0
+        ],
+        [
+          88.5,
+          53.0
+        ],
+        [
+          52.5,
+          23.0
+        ]
+      ],
+      "source_tolerance": 0.002
+    },
+    "partial": {
+      "image": "partial",
+      "passed": false,
+      "channels": [
+        0,
+        1,
+        2
+      ],
+      "accepted": [
+        0,
+        1
+      ],
+      "source_points": [
+        [
+          28.25,
+          34.0
+        ],
+        [
+          88.5,
+          53.0
+        ],
+        [
+          52.5,
+          23.0
+        ]
+      ],
+      "source_tolerance": 0.002
+    },
+    "empty": {
+      "image": "black",
+      "passed": false,
+      "channels": [
+        0,
+        1,
+        2
+      ],
+      "accepted": [],
+      "source_points": [
+        [
+          28.25,
+          34.0
+        ],
+        [
+          88.5,
+          53.0
+        ],
+        [
+          52.5,
+          23.0
+        ]
+      ],
+      "source_tolerance": 0.002
+    },
+    "pinned": {
+      "pinned": true,
+      "passed": true,
+      "channels": [
+        0,
+        1,
+        2
+      ],
+      "accepted": [
+        0,
+        1,
+        2
+      ],
+      "source_points": [
+        [
+          28.25,
+          34.0
+        ],
+        [
+          88.5,
+          53.0
+        ],
+        [
+          52.5,
+          23.0
+        ]
+      ],
+      "source_tolerance": 0.002
+    }
+  },
+  "asset_sha256": {
+    "assets/black.png": "5e6b5fda4f039aeacc14611e88bb78cfeeee37aeb74dc8785b3246f361d98cf4",
+    "assets/gaussians.png": "bad8ab18f36aed414f04423b2ad4fab8bd28656832da45d902e2490b7a81d260",
+    "assets/landmarks.onnx": "fc19679ed79fcba77c587768615c29df0ec6c460327958ec7711545538365fb6",
+    "assets/partial.png": "4f58ac8e4863d240b75bafb917764cef84d62fe679941296d8bd6f07d726bfea",
+    "assets/wide.png": "29217f9d0bffa4ec040f15c16463ee34e500525b06caf324383bfdefcc99654f",
+    "bundle/contract.json": "a2409ad0124fd2daadc66b3311f01ea8bf8c23d5e4759474d78b9d3ba86fa9fa",
+    "bundle/model.onnx": "fc19679ed79fcba77c587768615c29df0ec6c460327958ec7711545538365fb6"
+  }
+}

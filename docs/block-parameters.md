@@ -8544,6 +8544,53 @@ Input `region` — Source-grid circle/rectangle/polygon/raster selection; inters
 | `graphics_maximum_contours` | `2000` | Value must be a whole number between 1 and 20000. Bound optional outline objects; report truncation without changing masks. |
 | `graphics_maximum_points` | `100000` | Value must be a whole number between 1 and 1e+06. Bound optional outline vertices; report truncation without changing masks. |
 
+## Decode keypoints and heatmaps (`ml.decode_landmarks`)
+
+ML / Landmarks
+
+Inputs: `image` (image), `tensors` (data), `preprocessing` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Original source image; pixels/encoding/depth remain unchanged.
+
+Input `tensors` — One object's ordered landmark head from this image's inference activation.
+
+Input `preprocessing` — Matching inference resize/letterbox dimensions and inverse maps.
+
+Input `mask` — Optional source-grid eligibility/filter; a wired missing value prevents execution.
+
+Input `region` — Optional circle/rectangle/polygon/raster selection intersected with Mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_name` | `""` | Named float32 model head; empty selects the first output. |
+| `format` | `"heatmaps"` | `heatmaps`, `xy_score` One ordered peak per heatmap channel, or explicit ordered X/Y/score rows. |
+| `layout` | `"NCHW"` | `NCHW`, `NHWC`, `CHW`, `HWC` Heatmap axes, with image batch N=1 when present. |
+| `channels` | `[]` | Ordered distinct channel/row IDs; empty uses all. This can exclude background maps. |
+| `names` | `[]` | Optional names in configured channel order; one name per selected landmark. |
+| `score_activation` | `"probability"` | `probability`, `sigmoid` Declare probabilities, or convert logits with sigmoid before peak/confidence tests. |
+| `minimum_confidence` | `0.5` | Value must be a finite number between 0 and 1. Accept confidence >= this threshold; heatmaps use the original integer-peak score. |
+| `heatmap_mapping` | `"half_pixel"` | `half_pixel`, `align_corners`, `asymmetric` Declared head-to-network alignment. One-cell align-corners axes use the field center. |
+| `peak_search` | `"selection"` | `selection`, `entire_head` Search eligible head-cell centers in source/ROI, or find the whole-head peak then filter it. |
+| `ambiguity` | `"reject"` | `reject`, `first` Reject equal global maxima, or explicitly select the first in row-major order. |
+| `refinement` | `"log_quadratic"` | `none`, `quadratic`, `log_quadratic` Fit a concave quadratic to local scores or log scores; none retains integer peak cells. |
+| `refinement_radius` | `1` | Value must be a whole number between 1 and 3. Square fit window radius in heatmap cells; source ROI boundaries are respected. |
+| `refinement_failure` | `"integer"` | `integer`, `reject` Keep integer position or reject when a requested fit cannot be qualified. |
+| `minimum_curvature` | `1e-06` | Value must be a finite number between 1e-12 and 100. Minimum negative Hessian curvature magnitude for an accepted fit. |
+| `maximum_refinement_offset` | `0.75` | Value must be a finite number between 0.01 and 3. Largest absolute fitted shift on either heatmap axis. |
+| `maximum_fit_rmse` | `0.1` | Value must be a finite number between 0 and 100. Maximum fit residual in score/log-score units; zero disables this gate. |
+| `coordinate_layout` | `"rows"` | `rows`, `channels_first` XY/score rows [K,3] or [3,K], optionally with leading image batch one. |
+| `coordinate_units` | `"network_pixels"` | `network_pixels`, `normalized` Direct coordinates in network pixels, or fractions multiplied by network width/height. |
+| `coordinate_origin` | `"pixel_centers"` | `pixel_centers`, `pixel_edges` Direct X/Y denote integer-origin pixel centers or continuous pixel edges. |
+| `minimum_count` | `1` | Value must be a whole number between 0 and 1024. Fewest accepted landmarks required for a normal pass judgment. |
+| `require_all` | `true` | Also fail if any requested landmark is rejected; identities are never renumbered. |
+| `points_policy` | `"complete_only"` | `complete_only`, `accepted_only` Default suppresses Points unless all requested landmarks are accepted; otherwise use Indices. |
+| `connections` | `[]` | Optional unique [index,index] pairs in configured landmark order for drawable links. |
+| `maximum_tensor_elements` | `8000000` | Value must be a whole number between 1 and 8e+06. Bound serialized values before conversion. |
+| `maximum_landmarks` | `1024` | Value must be a whole number between 1 and 1024. Bound selected landmarks; raw heads allow up to 1024 channels/rows. |
+| `maximum_heatmap_pixels` | `1048576` | Value must be a whole number between 1 and 4.1943e+06. Bound each head plane, including zero-channel heads. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound source image pixels; axes are limited to 16384. |
+| `graphics_maximum_landmarks` | `256` | Value must be a whole number between 1 and 1024. Limit optional markers/labels/links without truncating numerical results. |
+
 ## Decode rotated detections (`ml.decode_rotated_detections`)
 
 ML / Object detection
@@ -8793,6 +8840,27 @@ Input `initial_labels` — Optional list of zero-based labels for the first atte
 | `plot_x` | `0` | Value must be a whole number between 0 and 127. Zero-based feature index for the plot's horizontal axis. |
 | `plot_y` | `-1` | Value must be a whole number between -1 and 127. -1 chooses the first other feature or a one-dimensional strip. |
 | `draw_plot` | `true` |  |
+
+## Pose from ordered landmarks (`ml.landmark_pose`)
+
+ML / Landmarks
+
+Inputs: `image` (image), `landmarks` (data).
+
+Input `image` — Target image; shared-root transforms map the source landmark frame when needed.
+
+Input `landmarks` — Matching image_landmarks_v1 data with stable indices and source context.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `origin_index` | `0` | Value must be a whole number between 0 and 1023. Stable configured landmark index, including rejected/missing entries. |
+| `angle_mode` | `"pair"` | `pair`, `fixed` Pair uses origin-to-direction axis; fixed uses counterclockwise angle. |
+| `direction_index` | `1` | Value must be a whole number between 0 and 1023. Second accepted landmark defining the local positive x direction. |
+| `angle_degrees` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Fixed counterclockwise degrees, in the source landmark image grid. |
+| `minimum_baseline` | `1.0` | Value must be a finite number between 1e-06 and 1e+06. Minimum source-pixel separation before a landmark pair defines an axis. |
+| `pose_offset_x` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Local x offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_y` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Local y offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_angle` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Local counterclockwise rotation in degrees (OpenCV convention). |
 
 ## LightGlue feature matcher (`ml.lightglue`)
 
