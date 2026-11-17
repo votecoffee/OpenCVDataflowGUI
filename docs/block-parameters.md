@@ -7682,7 +7682,7 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `aruco_use_aruco3` | `false` | ArUco backend only: native multi-scale candidate extraction; use subpixel refinement. |
 | `aruco_apriltag_deglitch` | `false` | AprilTag candidate extraction only: remove isolated threshold artifacts. |
 | `maximum_pixels` | `16777216` | Value must be a whole number between 441 and 6.71089e+07. Reject larger images before grayscale/selection/native decoding; not a native workspace or time bound. |
-| `mode` | `"multi"` | `multi`, `single`, `curved` Multi reads all decoded symbols; single chooses one. Curved requires standard. |
+| `mode` | `"multi"` | `multi`, `single`, `curved` Multi reads all decoded symbols; single chooses one. Curved requires standard. Its native quadrilateral is approximate, not the curved surface boundary. |
 | `eps_x` | `0.2` | Value must be a finite number at least 0. Standard backend only: horizontal finder-pattern scan tolerance. |
 | `eps_y` | `0.1` | Value must be a finite number at least 0. Standard backend only: vertical finder-pattern scan tolerance. |
 | `use_alignment_markers` | `true` | Standard only: refine QR geometry using alignment markers. |

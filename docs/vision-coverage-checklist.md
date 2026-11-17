@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 172 | 2 | 1 | 175 | 98.3% |
+| 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 235 | 44 | 191 | 470 | 50.0% |
+| **Overall** | 236 | 43 | 191 | 470 | 50.2% |
 
 <!-- coverage-summary:end -->
 
@@ -190,7 +190,7 @@ fixture or result needed to close the item.
 | S1-118 | Resample coverage masks conservatively | Area sampling, explicit coverage threshold | Complete | cv.resample_mask. Bounded whole-grid pixel-cell area integration with uint8 nonzero or float fractional inputs, explicit inclusive/full/any-positive thresholds, float64 coverage, heatmap and resize geometry. Independent rational overlaps qualify reduction, enlargement, mixed axes, holes/stripes, partial pixels and coverage conservation; source tickets/recipes/spatial/pyramid provenance, target-frame guards, graphics-off, failures, XML/editor controls and three saved examples are checked. |
 | S1-119 | Correlation-based image comparison | computeECC and masked normalized correlation on aligned image pairs | Complete | inspect.image_correlation. Mask/region-selected ECC or normalized correlation, per-channel or grayscale comparison, minimum/mean aggregation, explicit constant-region policy and inclusive limits. Tests verify supported encodings/depths, raw-unit controls, numeric extremes, frames/tickets, residuals and graphics settings. An original intact/missing-bore fixture replays pass/fail cases. |
 | S1-120 | Transport distance between image histograms | EMD on image histograms | Complete | inspect.compare_histograms. Compare histogram signatures using the native transport distance and known distributions. |
-| S1-121 | Curved QR decoding | QRCodeDetector.detectAndDecodeCurved | Partial | inspect.read_qr exposes curved mode. Qualify a known wrapped label and verify source and rectified module coordinates. |
+| S1-121 | Curved QR decoding | QRCodeDetector.detectAndDecodeCurved | Complete | inspect.read_qr standard/curved qualifies original pinhole/cylinder labels with stored modules and analytic finder-associated corners. Seven projects retain five reads and two declared failures; flat-mode comparisons, masks/regions, encoding, ticket/recipe/pyramid context, fresh independent module grids, overlays and contained exceptions are checked. Explicit native-quadrilateral metadata and sampled-module provenance avoid claiming a curved boundary, inverse source map, error-corrected pixels or calibrated surface pose. See [curved QR contracts](curved-qr.md). |
 | S1-122 | Native linear barcode decoding | barcode.BarcodeDetector | Complete | inspect.read_barcode. Verify EAN or UPC text, pose and outline. |
 | S1-123 | Variable-frame-rate and unreliable video timing diagnostics | VideoCapture properties and timestamp checks | Complete | sequence.video_timing observes raw/effective clocks, index order, normalized cadence, labeled estimates and independent time references with bounded history/session counters and explicit reset/latching policies. File, paced, encoded-group and network metadata preserve raw decoder values. Six original binary-authored Matroska/MJPEG controls, independently parsed wire times, native VFR/repeated/backward/zero/missing-duration/wrong-rate behavior and eight annotated pipelines qualify the baseline, including paced loop/reset, stride/reopen and time sampling. No automatic clock repair, demuxed-PTS authentication, drop detection or physical synchronization guarantee is claimed. |
 

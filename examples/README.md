@@ -118,6 +118,8 @@ See the [industrial integration guide](<industrial integration/README.md>) for P
 
 ## OpenCV tools
 
+For wrapped-label decoding, sampled modules and source-geometry limits, try [curved QR](<opencv tools/curved_qr/README.md>).
+
 For camera setting/readback policies without hardware, try [capture negotiation](<opencv tools/capture_negotiation/README.md>).
 
 Examples of OpenCV image/video processing, calibration, ML and 3D operations, including short module workflows. See the [category guide](<opencv tools/README.md>).

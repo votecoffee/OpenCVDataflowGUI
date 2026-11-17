@@ -50,6 +50,7 @@
 | Acquisition queues and memory | [Input queues](input-queues.md), [sequence memory](sequence-memory.md) |
 | Per-pixel temporal noise, weighted support and paired covariance | [Temporal pixel statistics](temporal-pixel-statistics.md) |
 | QR backend selection, finder controls and module/camera result grids | [QR readers](qr-backends.md), [barcode reading](barcode-reading.md) |
+| Cylindrical QR labels, approximate source outlines and independent sampled modules | [Curved QR](curved-qr.md) |
 | Multipart QR recovery with header/order/count/parity checks | [Structured-append QR](qr-structured-append.md) |
 | Detector repeatability and thresholded descriptor precision/recall | [Image feature evaluation](feature-evaluation.md) |
 | Reference-based frequency gain/phase, excited bands and radial profiles | [Relative frequency response](frequency-response.md) |

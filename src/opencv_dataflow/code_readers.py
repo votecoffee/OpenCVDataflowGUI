@@ -1,5 +1,8 @@
 """Decode 2D and linear codes with OpenCV and retain their image-space geometry."""
 
+import copy
+import uuid
+
 import cv2
 import numpy as np
 
@@ -75,7 +78,8 @@ class CodeReader(Block):
             tuple(
                 graphic for code in codes for graphic in code_graphics(code, self.pose_corner_order)
             )
-            if overlay is not None or self.generate_graphics else ()
+            if overlay is not None or self.generate_graphics
+            else ()
         )
         if overlay is not None and objects:
             transform = np.eye(3)
@@ -97,7 +101,8 @@ class CodeReader(Block):
             outputs,
             graphics={"decoded codes": overlay} if overlay is not None else {},
             drawings={"decoded codes": GraphicDrawing(objects)}
-            if self.generate_graphics and objects else {},
+            if self.generate_graphics and objects
+            else {},
             passed=count >= minimum,
             message=f"Decoded {count} codes (minimum {minimum})",
             payloads=payloads,
@@ -108,7 +113,7 @@ class CodeReader(Block):
 class ReadQRCode(CodeReader):
     type_id, title = "inspect.read_qr", "Read QR codes"
     preview_safe = parallel_safe = process_inputs_readonly = True
-    outputs = (*CodeReader.outputs, Port("rectified", required=False))
+    outputs = (*CodeReader.outputs, Port("rectified", required=False), Port("info", "data", False))
     defaults = {
         **CodeReader.defaults,
         **DEFAULTS,
@@ -130,7 +135,10 @@ class ReadQRCode(CodeReader):
     }
     parameter_help = {
         **HELP,
-        "mode": "Multi reads all decoded symbols; single chooses one. Curved requires standard.",
+        "mode": (
+            "Multi reads all decoded symbols; single chooses one. Curved requires standard. "
+            "Its native quadrilateral is approximate, not the curved surface boundary."
+        ),
         "eps_x": "Standard backend only: horizontal finder-pattern scan tolerance.",
         "eps_y": "Standard backend only: vertical finder-pattern scan tolerance.",
         "use_alignment_markers": "Standard only: refine QR geometry using alignment markers.",
@@ -140,16 +148,17 @@ class ReadQRCode(CodeReader):
         super().validate_parameters(parameters)
         validate_qr(self.parameters if parameters is None else parameters)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.exposed_outputs.remove("info")
+
     def process(self, inputs):
         source = inputs["image"]
         if source.shape[0] * source.shape[1] > self.parameters["maximum_pixels"]:
             raise ValidationError("Image exceeds the configured QR pixel limit", "maximum_pixels")
         image, _ = barcode_image(inputs)
         if image is None:
-            result = self.code_result(source, [], rectified=NO_VALUE)
-            result.event_data["qr_backend"] = self.parameters["backend"]
-            result.message += f" ({self.parameters['backend']} QR backend)"
-            return result
+            return self.qr_result(source, [], None)
         detector = make_detector(self.parameters)
         mode = self.parameters["mode"]
         if mode == "multi":
@@ -166,20 +175,54 @@ class ReadQRCode(CodeReader):
                 for text, corners in zip(texts, np.asarray(points).reshape(-1, 4, 2), strict=True)
                 if text
             ]
-            if points is not None else []
+            if points is not None
+            else []
         )
         rectified = rectified_images[0] if len(codes) == len(rectified_images) == 1 else None
+        return self.qr_result(source, codes, rectified)
+
+    def qr_result(self, source, codes, rectified):
+        backend, mode = self.parameters["backend"], self.parameters["mode"]
+        available = rectified is not None and bool(rectified.size)
+        for code in codes:
+            code.update(backend=backend, mode=mode, corner_model="native_detection_quadrilateral")
+        info = {
+            "model": "qr_read_v1",
+            "backend": backend,
+            "mode": mode,
+            "decoded_count": len(codes),
+            "corner_model": "native_detection_quadrilateral",
+            "rectification": {
+                "available": available,
+                "coordinates": "independent_module_grid",
+                "geometry": "native_curved" if mode == "curved" else "native_flat",
+                "mapping_to_source": None,
+                "values": "native_sampled_modules",
+            },
+        }
         result = self.code_result(
-            source, codes,
-            rectified=rectified if rectified is not None and rectified.size else NO_VALUE,
+            source, codes, rectified=rectified if available else NO_VALUE, info=info
         )
-        if result.outputs["rectified"] is not NO_VALUE:
-            # Module coordinates are separate from the camera frame, including on curved labels.
+        if available:
+            context = self.input_payloads.get("image", {})
+            # A nonlinear surface decoder supplies no invertible image-space map. A fresh
+            # observation grid also prevents unrelated labels from sharing module graphics.
             result.payloads["rectified"] = {
-                "spatial": frame(rectified.shape[1::-1], f"{self.id}:qr_modules"),
+                "spatial": frame(
+                    rectified.shape[1::-1], f"{self.id}:qr_modules:{uuid.uuid4().hex}"
+                ),
+                "qr_observation": {
+                    "backend": backend,
+                    "mode": mode,
+                    "text": codes[0]["text"],
+                    "source_corners": copy.deepcopy(codes[0]["corners"]),
+                    "source_spatial": copy.deepcopy(context.get("spatial")),
+                    "source_pyramid": copy.deepcopy(context.get("pyramid")),
+                    "mapping_to_source": None,
+                },
             }
-        result.event_data["qr_backend"] = self.parameters["backend"]
-        result.message += f" ({self.parameters['backend']} QR backend)"
+        result.event_data.update(qr_backend=backend, qr_mode=mode)
+        result.message += f" ({backend} / {mode} QR)"
         return result
 
 

@@ -3,7 +3,7 @@
 **Read QR codes** (`inspect.read_qr`) offers a **Backend** dropdown: `standard`
 (`QRCodeDetector`) or `aruco` (`QRCodeDetectorAruco`). Existing saved programs
 keep the standard backend. Both produce the same `codes`, `count`, `overlay`
-and optional `rectified` outputs; downstream text checks need no changes.
+and optional `rectified`/`info` outputs; downstream text checks need no changes.
 There is no automatic fallback or combination of the backends' detections.
 
 Find the reader under **OpenCV → Object Detection (objdetect) → Code reading**.
@@ -75,6 +75,19 @@ The module image is not a camera crop or a complete source-resolution perspectiv
 warp. Exceptions produce no current outputs and are contained by the executor;
 a later valid invocation can recover. The pixel cap does not bound all native
 allocations, candidate count or execution time, nor runtime/editor image copies.
+
+Each rectified observation now has a fresh module root and a `qr_observation`
+payload retaining source corners, spatial/pyramid context and the acquisition
+ticket/recipe. No inverse source map is supplied. Code records identify backend,
+mode and the native quadrilateral geometry; optional `info` (hidden as a connector
+by default) reports these semantics and rectification availability. Event data
+also identifies `qr_mode`. Existing saved programs keep their exposed connectors.
+
+Curved mode has separate [cylindrical-label qualification](curved-qr.md) and
+[seven projects](<../examples/opencv tools/curved_qr/README.md>). Its returned
+quadrilateral can differ substantially from the physical curved boundary.
+Sampled modules can contain errors despite correct decoded text. Neither the
+outline nor rectification supplies a calibrated 3D surface pose.
 
 ## Qualified comparisons
 
