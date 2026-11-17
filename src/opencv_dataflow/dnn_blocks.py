@@ -23,6 +23,7 @@ from .model_contracts import (
     revision,
     tensor_description,
 )
+from .onnx_loading import load_onnx_snapshot
 from .parameter_validation import ValidationError
 from .payloads import NO_VALUE
 from .processing import finite, image_value, integer, letterbox_bounds
@@ -143,7 +144,7 @@ class DNNInference(Block):
         "mean": "Per-channel values in source intensity units, before scaling.",
         "std": "Per-channel divisors after mean subtraction and scaling.",
         "output_names": "JSON list; empty selects all unconnected output layers.",
-        "engine": "OpenCV 5 engine. Non-CPU targets require classic.",
+        "engine": "Classic does not retry with New; non-CPU targets require Classic.",
         "max_output_elements": "Total tensor values retained per activation (bounded).",
     }
 
@@ -154,6 +155,7 @@ class DNNInference(Block):
 
     def reset_runtime(self):
         self._net, self._key = None, None
+        self._import = None
         self._loaded_file_key = self._model_identity = self._snapshot = None
         self._receipt_calls = []
 
@@ -295,14 +297,13 @@ class DNNInference(Block):
                     raw, identity = model_bytes(path)
                     self._snapshot = path, contract, current_file_key, raw, identity
                     key = (*current_file_key, identity["sha256"], *selected.values(), cache_token)
-                net = cv2.dnn.readNetFromONNX(
-                    np.frombuffer(raw, np.uint8), ENGINES[selected["engine"]]
-                )
+                net, imported = load_onnx_snapshot(raw, ENGINES[selected["engine"]])
                 if selected["engine"] == "classic":
                     net.setPreferableBackend(BACKENDS[selected["backend"]])
                     net.setPreferableTarget(TARGETS[selected["target"]])
                     net.enableFusion(bool(selected["fusion"]))
                 self._net, self._key = net, key
+                self._import = imported
                 self._loaded_file_key, self._model_identity = current_file_key, identity
             for name, blob in inputs:
                 self._net.setInput(blob, name)
@@ -342,6 +343,7 @@ class DNNInference(Block):
                         "environment": environment(),
                         "requested_execution": requested,
                         "selected_execution": selected,
+                        "model_import": copy.deepcopy(self._import),
                         "requested_available_target_ids": available_targets,
                         "selected_available_target_ids": selected_available,
                         "requested_availability_scope": availability_scope,

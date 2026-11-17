@@ -57,7 +57,7 @@
         ],
         "input_name": "",
         "output_names": [],
-        "engine": "classic",
+        "engine": "new",
         "backend": "opencv",
         "target": "cpu",
         "fusion": true,

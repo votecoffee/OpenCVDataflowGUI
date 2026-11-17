@@ -1,5 +1,10 @@
 # DNN object detection
 
+The original proposal controls explicitly use the **New** CPU engine: their
+shared-constant heads are rejected by the classic importer on this build. The
+optional pinned YOLOX coffee project retains **Classic**, now imported through
+the correct native path. Model/image bytes, connections and layouts are unchanged.
+
 Open a project, press **Run**, and select **Decode object detections**. Inspect
 its box collection, scores/count and report, or enlarge the rendered **Overlay**
 image. The filmstrip uses that overlay. Inputs and outputs retain the image ticket

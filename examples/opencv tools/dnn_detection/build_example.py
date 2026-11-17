@@ -146,7 +146,7 @@ def build():
                         "resize_mode": "letterbox" if trained else options.get("resize", "stretch"),
                         "padding_value": 114 if trained else 0,
                         "scale": 1 if trained else 1 / 255,
-                        "engine": "classic",
+                        "engine": "classic" if trained else "new",
                     },
                 )
             )

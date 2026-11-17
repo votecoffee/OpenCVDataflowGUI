@@ -1,5 +1,10 @@
 # Rotated detection and pose inspection
 
+These original shared-constant proposal heads explicitly use the **New** CPU
+engine. The classic importer rejects them on this build; selecting Classic now
+reports that error instead of running through automatic engine selection.
+The migration changes only the engine setting, retaining all assets and layouts.
+
 Open a project and run once. The original arithmetic ONNX model and synthetic
 images are included; no downloads, plugins or optional packages are needed.
 

@@ -62,7 +62,7 @@
         "output_names": [
           "channels"
         ],
-        "engine": "classic",
+        "engine": "new",
         "backend": "opencv",
         "target": "cpu",
         "fusion": true,

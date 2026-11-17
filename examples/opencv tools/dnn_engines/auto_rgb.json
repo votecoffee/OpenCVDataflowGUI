@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "validation_sets": [
+    {
+      "id": "engine",
+      "name": "Engine import control",
+      "source": "source",
+      "cases": [
+        {
+          "id": "color",
+          "path": "assets/color.png",
+          "expectation": "must_pass",
+          "image_sha256": "91083612c31a6f7ebf06016ad46402b5e7212610d97071dc8e5d5f04f2c666d8"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/color.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "infer",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "detailed",
+        "fallback_policy": "error",
+        "model_path": "assets/rgb_average.onnx",
+        "width": 32,
+        "height": 32,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "",
+        "output_names": [],
+        "engine": "auto",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original MIT engine dispatch controls",
+      "description": "Original MIT color image and embedded-weight ONNX fixtures by OpenCVDataflowGUI contributors; copied unchanged from examples/assets and dnn_detection. No outside images or weights. These demonstrate model importing, not trained recognition or accelerator accuracy. Classic uses a frozen temporary file to preserve explicit native dispatch; the file is removed before forward. Run and inspect Tensors/Receipt: expected RGB means 220/255, 180/255, 30/255. See README.md, SOURCES.md and truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -510
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "infer",
+      "input": "image"
+    }
+  ]
+}

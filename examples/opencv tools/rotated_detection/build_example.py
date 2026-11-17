@@ -170,7 +170,7 @@ def build():
                         "height": 64,
                         "input_name": "image",
                         "output_names": [output],
-                        "engine": "classic",
+                        "engine": "new",
                         "resize_mode": options.get("resize", "stretch"),
                     },
                 )

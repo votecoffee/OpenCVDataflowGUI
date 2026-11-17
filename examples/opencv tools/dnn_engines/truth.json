@@ -1,0 +1,36 @@
+{
+  "asset_sha256": {
+    "rgb_average.onnx": "7c2e7d518ea34b6cca7ad8e0f2df64e702e94f62025e113962655602cba43ec5",
+    "color.png": "91083612c31a6f7ebf06016ad46402b5e7212610d97071dc8e5d5f04f2c666d8",
+    "proposal_heads.onnx": "6ff409f48f7c6cad7fc1e529e48c212c8a84d084390e4aee395e95441fde35df"
+  },
+  "cases": {
+    "classic_rgb": {
+      "passed": true,
+      "engine": "classic"
+    },
+    "new_rgb": {
+      "passed": true,
+      "engine": "new"
+    },
+    "auto_rgb": {
+      "passed": true,
+      "engine": "auto"
+    },
+    "new_proposals": {
+      "passed": true,
+      "engine": "new"
+    },
+    "classic_rejected": {
+      "passed": false,
+      "engine": "classic"
+    }
+  },
+  "rgb_expected": [
+    0.8627450980392157,
+    0.7058823529411765,
+    0.11764705882352941
+  ],
+  "proposal_expected_count": 3,
+  "scope": "CPU native loader dispatch; no accelerator or trained recognition claim"
+}

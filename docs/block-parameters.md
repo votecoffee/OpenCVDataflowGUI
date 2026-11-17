@@ -8758,7 +8758,7 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `std` | `[1.0, 1.0, 1.0]` | Per-channel divisors after mean subtraction and scaling. |
 | `input_name` | `""` |  |
 | `output_names` | `[]` | JSON list; empty selects all unconnected output layers. |
-| `engine` | `"auto"` | `auto`, `classic`, `new`, `ort` OpenCV 5 engine. Non-CPU targets require classic. |
+| `engine` | `"auto"` | `auto`, `classic`, `new`, `ort` Classic does not retry with New; non-CPU targets require Classic. |
 | `backend` | `"opencv"` | `opencv`, `cuda`, `default` |
 | `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` |
 | `fusion` | `true` |  |
@@ -8792,7 +8792,7 @@ Input `regions` — Optional same-order, same-label region group on the correspo
 | `std` | `[1.0, 1.0, 1.0]` | One strictly positive divisor per network channel. |
 | `input_name` | `"image"` | Exact native model image input name; this block binds one NCHW input. |
 | `output_names` | `[]` | JSON list; empty selects all unconnected output layers. |
-| `engine` | `"auto"` | `auto`, `classic`, `new`, `ort` OpenCV 5 engine. Non-CPU targets require classic. |
+| `engine` | `"auto"` | `auto`, `classic`, `new`, `ort` Classic does not retry with New; non-CPU targets require Classic. |
 | `backend` | `"opencv"` | `opencv`, `cuda`, `default` Native backend; the selected target must be available on this installation. |
 | `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` Native compute target. Non-CPU execution requires the classic engine. |
 | `fusion` | `true` | Native layer fusion; disabling requires the classic engine. |
@@ -8827,7 +8827,7 @@ Input `input_4` — Connect prepared images or float32 tensor records/maps.
 | `fallback_policy` | `"error"` | `error`, `cpu_if_unavailable` Error by default; CPU fallback only for an unavailable requested target. |
 | `model_path` | `""` | Local ONNX path; Contract path instead uses its bundled model. |
 | `output_names` | `[]` | JSON list; empty selects all unconnected output layers. |
-| `engine` | `"auto"` | `auto`, `classic`, `new`, `ort` OpenCV 5 engine. Non-CPU targets require classic. |
+| `engine` | `"auto"` | `auto`, `classic`, `new`, `ort` Classic does not retry with New; non-CPU targets require Classic. |
 | `backend` | `"opencv"` | `opencv`, `cuda`, `default` Shared native inference setting. |
 | `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` Shared native inference setting. |
 | `fusion` | `true` | Shared native inference setting. |

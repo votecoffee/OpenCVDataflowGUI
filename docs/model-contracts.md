@@ -71,6 +71,13 @@ image results or current receipt events.
 
 ## Availability, integrity and scope
 
+Receipts now include `model_import`: the native engine argument, frozen byte
+count and import transport. Classic uses an owned temporary snapshot to preserve
+explicit native dispatch; Auto/New retain memory import. The file is removed
+before forward or after an import exception. Cache/reset and artifact identity
+rules are unchanged. See [ONNX engine loading](onnx-engine-loading.md) for the
+upstream issue, exact guarantees and the distinction from native placement proof.
+
 CPU requests on the OpenCV/default backend do not enumerate accelerator devices.
 Receipts mark availability scope `requested_cpu_only` and list only CPU; this is
 not a complete device inventory. Native load/forward still validates the selected
