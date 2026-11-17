@@ -59,6 +59,7 @@ def catalog_block(tmp_path):
     """Supply required identities/file selections without opening a file or device."""
     settings = {
         "input.tiff_page": {"path": str(tmp_path / "catalog-placeholder.tiff")},
+        "input.network_video": {"url": "http://127.0.0.1:18764/stream"},
         "sequence.capture_background_reference": {
             "camera_id": "catalog-camera",
             "calibration_id": "catalog-calibration",

@@ -101,7 +101,7 @@ IMPLEMENTATION_MODULES = {
         "mil_tracking motion_trajectory motion_trajectory_io neighbor_restoration scanline_motion "
         "image_correlation image_tracking refresh_tracking native_background sequence_tools"
     ),
-    "videoio": "paced_video video_buffer video_files",
+    "videoio": "network_video paced_video video_buffer video_files",
     "objdetect": "aruco_markers charuco code_readers qr_encoding qr_append",
     "xobjdetect": "hog",
     "dnn": "dnn_blocks ocr",

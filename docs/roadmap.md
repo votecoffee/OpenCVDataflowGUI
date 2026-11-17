@@ -43,7 +43,8 @@ The mosaic project was refreshed without changing its images; regeneration now
 runs in a temporary folder, compares normalized project text/exact image bytes,
 and verifies the source collection stays untouched. **100 focused rechecks**
 passed before the clean full rerun above. This closes the twentieth increment
-ending with S1-173. The next targeted cycle is at **1/20**, starting with paced file replay (S1-11).
+ending with S1-173. The next targeted cycle is at **2/20**, covering paced file
+replay (S1-11) and bounded live network acquisition (S1-12).
 
 The previous broad checkpoint was `1e1cccb`: **4,801 passed, 31 skipped** in
 298.51 seconds with the offscreen suite, Python 3.14.3, OpenCV 5.0.0 and contrib
@@ -154,6 +155,36 @@ controls, local links and Python 3.12 worker syntax were checked. The app was
 reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
+
+**Network video input (S1-12)** adds `input.network_video` under OpenCV Video I/O.
+An owned FFmpeg worker and one bounded shared frame slot keep native open/read
+calls outside the graph worker, with separately enforced startup/open/read response
+deadlines and cancellable reconnect delays. Stop ends its private worker rather
+than waiting for a long backend timeout. Only successfully decoded/converted
+current frames receive tickets. Per-connection spatial roots and an optional
+Stream start signal make sequence resets explicit; neither stale frames nor
+invented exposure times are emitted after recovery. The original managed-service
+MJPEG projects verify normal reception and deliberate four-frame disconnection,
+known blob centers/areas, tracking resets and final filmstrip overlays.
+All **116 targeted checks** passed, including native loopback reads, bounded
+open/read stalls, unexpected worker exit, shared-slot/process cleanup, retry
+exhaustion, cancellable delay, offscreen Runner Stop/Resume, external tickets,
+runtime copies, XML/editor validation, exact asset/project regeneration and
+existing file-video/lifecycle regressions. Four installed Debug/Lean outcomes
+matched **32 activations**, and the owned server port closed after each run.
+Six packaged modules match exact source bytes. Eight original JPEG hashes, exact
+regeneration, three strict JSON files, 599 local links, generated controls/counts
+and thirteen original text contracts passed; root README reviewed and unchanged.
+See [contracts](network-video.md) and
+[two projects](<../examples/opencv tools/network_video/README.md>).
+Qualification covers Windows loopback HTTP MJPEG; exposed RTSP TCP/UDP and HTTPS
+controls still need their actual server/build qualification. Response deadlines
+are not hard real time, native buffers are not a process RSS bound, and physical
+camera FIFO/latency/losslessness is not established.
+Core is **162/175 (92.6%)**, overall **225/470 (47.9%)**; cycle **2/20**.
+No broad suite repeated. Next qualify media-time video seeking (S1-110), while
+actual VFR diagnostics (S1-123), native EXR (S1-125) and cached LK-pyramid
+consumption (S1-155) remain open.
 
 **Timestamp-paced file replay (S1-11)** adds `input.paced_video_file` alongside
 the existing fast source. A monotonic cancellable media clock preserves original

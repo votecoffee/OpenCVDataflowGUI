@@ -1,0 +1,88 @@
+{
+  "license": "MIT - original repository fixtures",
+  "image_size": [
+    160,
+    96
+  ],
+  "frames": [
+    {
+      "index": 0,
+      "center": [
+        31.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 1,
+      "center": [
+        39.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 2,
+      "center": [
+        47.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 3,
+      "center": [
+        55.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 4,
+      "center": [
+        63.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 5,
+      "center": [
+        71.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 6,
+      "center": [
+        79.5,
+        41.5
+      ],
+      "area": 672
+    },
+    {
+      "index": 7,
+      "center": [
+        87.5,
+        41.5
+      ],
+      "area": 672
+    }
+  ],
+  "asset_sha256": {
+    "frame_00.jpg": "d77e2de1fd97d4f9c1bd43cd1d8655ca13a768af1bbc5770781a51a33ba4fd44",
+    "frame_01.jpg": "469bf20471a031d9750283979962aec8eba7dd2b0b5a198753479e391bd77fc5",
+    "frame_02.jpg": "26c9525d1d4cac9f9e43e82078494c095b9b81103efb347add7562ca1db6456e",
+    "frame_03.jpg": "29fbf525edd62e1a47392695938195931f0c8f1e0a9fcb7eb731d4ef769b644d",
+    "frame_04.jpg": "7180ddab0bdf2abf4b3cf8504dc92381fbf38b1e118e27788c441d274c4caa61",
+    "frame_05.jpg": "30410a28ac5efe548b9e07d623bcb7640299266b39d69f7495948763943fbbcd",
+    "frame_06.jpg": "7647ee3da8c240481de673424c35db37e52680ec0401e2c6d0351eccf748942d",
+    "frame_07.jpg": "b051b9609c09f530b66b018b4b7379c9b4354a5b768c000f7f8573a8c5b0ddb2"
+  },
+  "cases": {
+    "live_stream": "/stream",
+    "reconnect_reset": "/drop"
+  },
+  "disconnect_after": 4
+}

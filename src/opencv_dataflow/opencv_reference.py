@@ -8,6 +8,7 @@ import cv2
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
     "input.paced_video_file": "VideoCapture",
+    "input.network_video": "VideoCapture.open VideoCapture.read",
     "sequence.track_refreshed": (
         "KalmanFilter calcOpticalFlowPyrLK goodFeaturesToTrack estimateAffinePartial2D"
     ),

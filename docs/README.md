@@ -32,6 +32,7 @@
 | Seeded MIL tracking, loss/reseed and native confidence limits | [MIL tracking](mil-tracking.md) |
 | Precomputed optical-flow pyramids and Python consumer qualification | [Pyramid binding audit](optical-flow-pyramid-audit.md) |
 | Encoded video bytes, bounded FFmpeg callbacks and per-frame groups | [Video buffers](video-buffer.md) |
+| Live network video, decoder ownership, deadlines and reconnect | [Network video](network-video.md) |
 | Timestamp-paced files, playback policy, loop/reset and Stop/Resume | [Paced video replay](paced-video.md) |
 | Binary corners, endpoints and junctions with signed kernels | [Hit-or-miss morphology](hit-or-miss.md) |
 | Sparse-mask contours with bounded run input and flat native polygons | [Run-linked contours](run-contours.md) |

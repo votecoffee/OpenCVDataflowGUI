@@ -46,6 +46,7 @@ def test_builtin_catalog_metadata_configured_defaults_and_persistence(tmp_path, 
     "kind, fields",
     [
         ("input.tiff_page", ("path",)),
+        ("input.network_video", ("url",)),
         ("sequence.capture_background_reference", ("camera_id", "calibration_id")),
     ],
 )

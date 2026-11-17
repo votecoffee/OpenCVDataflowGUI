@@ -145,6 +145,10 @@ last display update. See [input queues](input-queues.md) for limits and lifecycl
 Stopping is cooperative between blocks; it cannot interrupt a blocking camera
 driver, OpenCV call or custom Python function. Closing waits for that work to return.
 Camera handles are reused within a continuous session and released on worker exit.
+The [network-video source](network-video.md) isolates its native decoder in an
+owned process and enforces cancellable response deadlines. Its worker and shared
+frame slot close on stop/reset/failure; reconnects publish an explicit segment
+start and a new spatial root. This does not interrupt native calls in other blocks.
 
 Buffered image operators implement the `BufferedStreamBlock` lifecycle.
 The scheduler signals the end of finite image ancestors on the final call,

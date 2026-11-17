@@ -5232,6 +5232,30 @@ Ticket mode and fixed value are common inspector controls.
 | `include_retained` | `true` | Accept the retained message replayed when a subscription starts. |
 | `ticket_field` | `""` | Optional top-level JSON field containing an external ticket value. |
 
+## Network video (`input.network_video`)
+
+Input / Video
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `url` | `""` | HTTP, HTTPS or RTSP stream. Saved as plain project text; avoid embedded secrets. |
+| `source_name` | `"stream"` | Public result label, without the URL or credentials. |
+| `backend` | `"ffmpeg"` | `ffmpeg` Explicit FFmpeg in an owned decoder process; no automatic backend fallback. |
+| `rtsp_transport` | `"tcp"` | `tcp`, `udp` TCP or UDP for RTSP. Ignored for HTTP/HTTPS. |
+| `startup_timeout_ms` | `5000` | Value must be a whole number between 100 and 60000. Worker initialization deadline, separate from stream opening. |
+| `open_timeout_ms` | `3000` | Value must be a whole number between 50 and 60000. Per-connection opening deadline, checked by parent and FFmpeg. |
+| `read_timeout_ms` | `1000` | Value must be a whole number between 50 and 60000. Per-frame read deadline, checked by parent and FFmpeg. |
+| `reconnect_attempts` | `2` | Value must be a whole number between 0 and 20. Retries after an initial open/read failure in each activation. |
+| `reconnect_delay_ms` | `250` | Value must be a whole number between 0 and 60000. Cancellable wait between connection attempts. |
+| `decoder_threads` | `1` | Value must be a whole number between 1 and 16. |
+| `maximum_frame_pixels` | `16000000` | Value must be a whole number between 1 and 6.4e+07. Reject larger decoded frames. Native allocations excluded. |
+| `maximum_frame_bytes` | `48000000` | Value must be a whole number between 3 and 1.92e+08. Shared BGR slot. Native and converted buffers excluded. |
+| `color_format` | `"bgr"` | `unchanged`, `bgr`, `rgb`, `bgra`, `rgba`, `gray`, `hsv`, `lab` Convert decoded uint8 BGR; automatic display rotation is disabled. |
+| `pixel_depth` | `"uint8"` | `unchanged`, `uint8`, `uint16`, `float32` Output conversion, not recovery of encoded high-bit-depth samples. |
+
 ## Paced video file (`input.paced_video_file`)
 
 Input / Video

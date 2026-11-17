@@ -825,6 +825,7 @@ def builtin_registry():
     from .native_trackers import NATIVE_TRACKER_BLOCKS
     from .nearest_rows import FindNearestRows
     from .neighbor_restoration import RestoreFromNeighbors
+    from .network_video import NetworkVideo
     from .ocr import OCR_BLOCKS
     from .offline_stabilization import StabilizeRecordedSequence
     from .oriented_edges import FindOrientedEdges
@@ -949,6 +950,7 @@ def builtin_registry():
         ImageFile,
         VideoFile,
         PacedVideoFile,
+        NetworkVideo,
         DecodeVideo,
         TiffFile,
         TiffPageAccess,
