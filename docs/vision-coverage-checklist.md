@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 18 | 9 | 35 | 62 | 29.0% |
+| 2. ML and DNN | 19 | 9 | 34 | 62 | 30.6% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 244 | 41 | 185 | 470 | 51.9% |
+| **Overall** | 245 | 41 | 184 | 470 | 52.1% |
 
 <!-- coverage-summary:end -->
 
@@ -328,7 +328,7 @@ fixture or result needed to close the item.
 | S2-13 | CTC text recognition from image crops | Perspective crop, DNN inference, CTC decode | Complete | ml.recognize_text. Decode rectified crops with blank and repeat handling. |
 | S2-14 | SIFT LightGlue matching | SIFT, official PyTorch LightGlue adapter, geometric verification | Complete | ml.lightglue_features, ml.lightglue. Offline model fixture checks matches, transform and score. |
 | S2-15 | SuperPoint LightGlue adapter | SuperPoint detection/descriptor inference, matched LightGlue weights | Partial | ml.pack_superpoint_features and ml.lightglue_superpoint qualify explicit external XY/256-descriptor/score heads, source resize/letterbox mapping, score/ROI filtering, row identity, context and resource checks, pinned local matcher weights and planar geometry. Seven original prescribed-feature ONNX controls share the SIFT image pair, including real SIFT comparison, normal empty/count failures, overlays, JSON/XML/Save As and exact regeneration. CPU learned matching is qualified, but these synthetic descriptors are not detector inference. Real SuperPoint extraction/export conventions and repeatability remain open, subject to its separate restrictive detector/code/weight terms; no detector assets are bundled or downloaded. See [contracts and scope](local-features.md). |
-| S2-16 | DISK LightGlue adapter | DISK detection/descriptor inference, matched LightGlue weights | Planned | Verify descriptor shapes and pose accuracy on a pinned local model and pair. |
+| S2-16 | DISK LightGlue adapter | DISK detection/descriptor inference, matched LightGlue weights | Complete | ml.disk_features and ml.lightglue_disk run real local-weight depth/epipolar DISK extraction with matching 128-descriptor LightGlue weights. Exposed native top-N/NMS/raw-threshold/padding controls, explicit downscale/source-center mapping, post-top-N mask/region/alpha filtering, source-depth/encoding/context retention, model hashes/cache/cleanup and bounded work are qualified on CPU. Ten projects cover known transforms, RGB16, pose regions, empty/count failures, SIFT comparison and separate CC BY 4.0 VisA PCB photographs with approximate checkpoints. Native Kornia parity, descriptor norms/raw scores, admission gates, exceptions/recovery, JSON/XML/Save As, exact regeneration and Debug/Lean filmstrip graphics are checked. Arbitrary exports, cross-version repeatability, accelerators, repeated-part discovery and physical localization remain separate qualification. See [contracts](disk-features.md). |
 | S2-17 | ALIKED LightGlue adapter | ALIKED detection/descriptor inference, matched LightGlue weights | Planned | Verify model input requirements and pose accuracy on a pinned local model and pair. |
 | S2-18 | Image embedding retrieval | Annoy build, query, save and load | Complete | ml.annoy_build, ml.annoy_search, ml.annoy_save, ml.annoy_load. Index, rank, and persist image-derived embeddings. |
 | S2-19 | Reusable image color or descriptor clusters | kmeans with persisted centers, nearest-center prediction | Partial | inspect.kmeans_image fits current-frame colors. Reuse a trained palette or visual vocabulary on separate captures and verify label consistency after reload. |

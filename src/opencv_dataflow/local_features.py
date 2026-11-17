@@ -35,10 +35,10 @@ def read_head(inputs, name, limit):
         ).astype(np.float64)
 
 
-def feature_arrays(value):
-    if not isinstance(value, dict) or value.get("model") != MODEL:
+def feature_arrays(value, *, model=MODEL, dimension=256, probability_scores=True):
+    if not isinstance(value, dict) or value.get("model") != model:
         raise ValidationError(
-            "Connect declared SuperPoint local features, not SIFT/ORB descriptors"
+            f"Connect declared {model} features with the matching descriptor family"
         )
     points, descriptors, scores = (value.get(k) for k in ("points", "descriptors", "scores"))
     if (
@@ -49,7 +49,7 @@ def feature_arrays(value):
         or not isinstance(scores, list)
         or len(scores) != len(points)
         or any(not isinstance(row, list) or len(row) != 2 for row in points)
-        or any(not isinstance(row, list) or len(row) != 256 for row in descriptors)
+        or any(not isinstance(row, list) or len(row) != dimension for row in descriptors)
         or any(
             type(v) not in (float, int)
             for rows in (points, descriptors)
@@ -58,10 +58,10 @@ def feature_arrays(value):
         )
         or any(type(v) not in (float, int) for v in scores)
     ):
-        raise ValidationError("Bounded XY, 256-descriptor and score rows must correspond")
+        raise ValidationError(f"Bounded XY, {dimension}-descriptor and score rows must correspond")
     try:
         xy = np.asarray(points, np.float32).reshape(-1, 2)
-        desc = np.asarray(descriptors, np.float32).reshape(-1, 256)
+        desc = np.asarray(descriptors, np.float32).reshape(-1, dimension)
         conf = np.asarray(scores, np.float32)
         size = value.get("image_size")
         if (
@@ -71,8 +71,8 @@ def feature_arrays(value):
             or any(not np.isfinite(v).all() for v in (xy, desc, conf))
             or np.any(xy < 0)
             or np.any(xy > np.array(size) - 1)
-            or np.any(conf < 0)
-            or np.any(conf > 1)
+            or probability_scores
+            and (np.any(conf < 0) or np.any(conf > 1))
             or not np.allclose(np.linalg.norm(desc, axis=1), 1, atol=1e-3, rtol=0)
         ):
             raise ValueError("Invalid coordinates, confidence or non-unit descriptors")
@@ -354,7 +354,7 @@ class SuperPointLightGlueMatch(LightGlueMatch):
         if np.prod(inputs["image"].shape[:2]) > self.parameters["maximum_image_pixels"]:
             raise ValidationError("Query exceeds image budget", "maximum_image_pixels")
         for name, value in (("query_features", query), ("reference_features", reference)):
-            arrays = feature_arrays(value)
+            arrays = self.feature_arrays(value)
             if len(arrays["keypoints"]) > self.parameters["maximum_features"]:
                 raise ValidationError(
                     "Features exceed learned attention row budget", "maximum_features"

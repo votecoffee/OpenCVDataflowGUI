@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/large_reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_features",
+      "type": "ml.disk_features",
+      "name": "DISK learned features",
+      "parameters": {
+        "weights_path": "../../../.local/models/disk_depth.pth",
+        "weights_sha256": "9c2ee4ded238892dfa51569941372601e35e4a74aa6f84ea80053d2ab1c07abe",
+        "device": "cpu",
+        "max_features": 128,
+        "nms_window_size": 5,
+        "detection_threshold": 0.0,
+        "pad_if_not_divisible": true,
+        "resize_long_edge": 200,
+        "resize_interpolation": "area",
+        "alpha_policy": "exclude",
+        "minimum_count": 4,
+        "maximum_image_pixels": 4194304,
+        "maximum_network_pixels": 524288,
+        "graphics_maximum_features": 256
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/large_query.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        430
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_features",
+      "type": "ml.disk_features",
+      "name": "DISK learned features",
+      "parameters": {
+        "weights_path": "../../../.local/models/disk_depth.pth",
+        "weights_sha256": "9c2ee4ded238892dfa51569941372601e35e4a74aa6f84ea80053d2ab1c07abe",
+        "device": "cpu",
+        "max_features": 128,
+        "nms_window_size": 5,
+        "detection_threshold": 0.0,
+        "pad_if_not_divisible": true,
+        "resize_long_edge": 200,
+        "resize_interpolation": "area",
+        "alpha_policy": "exclude",
+        "minimum_count": 4,
+        "maximum_image_pixels": 4194304,
+        "maximum_network_pixels": 524288,
+        "graphics_maximum_features": 256
+      },
+      "position": [
+        380,
+        430
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match",
+      "type": "ml.lightglue_disk",
+      "name": "LightGlue DISK feature matcher",
+      "parameters": {
+        "weights_path": "../../../.local/models/disk_lightglue.pth",
+        "device": "cpu",
+        "layers": 9,
+        "filter_threshold": 0.1,
+        "depth_confidence": 0.95,
+        "width_confidence": 0.99,
+        "flash": true,
+        "mixed_precision": false,
+        "minimum_matches": 8,
+        "minimum_inliers": 6,
+        "minimum_inlier_ratio": 0.5,
+        "geometry": "ransac",
+        "ransac_threshold": 3.0,
+        "ransac_confidence": 0.995,
+        "ransac_iterations": 2000,
+        "weights_sha256": "b5b21d47ea24f2c5e501aec9c91b9716e4c8c3429a4dc1e615c133c4c9378335",
+        "maximum_features": 1024,
+        "maximum_image_pixels": 4194304
+      },
+      "position": [
+        800,
+        430
+      ],
+      "exposed_inputs": [
+        "image",
+        "query_features",
+        "reference_features"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "transform",
+        "pose",
+        "count",
+        "inliers",
+        "overlay",
+        "image",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1200,
+        430
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1600,
+        430
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "DISK / LightGlue and image attribution",
+      "description": "DISK: Tyszkiewicz, Fua and Trulls (NeurIPS 2020); Kornia and LightGlue (Lindenberger, Sarlin, Pollefeys, ICCV 2023), Apache-2.0; weights prepared separately. Original MIT synthetic images/graphs by OpenCVDataflowGUI contributors. PCB photos only: VisA, Zou, Jeong, Pemula, Zhang and Dabeer (ECCV 2022), CC BY 4.0, resized/JPEG prepared views copied unchanged. Real detector inference, not fixed feature rows. Empty/minimum_matches intentionally fail. See README and SOURCES.",
+      "parameters": {},
+      "position": [
+        0,
+        -500
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_features",
+      "input": "image"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "query_features",
+      "input": "image"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "match",
+      "input": "image"
+    },
+    {
+      "source": "reference_features",
+      "output": "features",
+      "target": "match",
+      "input": "reference_features"
+    },
+    {
+      "source": "query_features",
+      "output": "features",
+      "target": "match",
+      "input": "query_features"
+    },
+    {
+      "source": "match",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "match",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

@@ -12,6 +12,23 @@ SUPERPOINT_MATCHER_URL = (
     "https://github.com/cvg/LightGlue/releases/download/v0.1_arxiv/superpoint_lightglue.pth"
 )
 SUPERPOINT_MATCHER_SHA256 = "6ff7040d0a497fc6639337946d7538dae07428c18f77a067a0b5a960e7cc551a"
+DISK_ASSETS = (
+    (
+        "disk_depth.pth",
+        "https://raw.githubusercontent.com/cvlab-epfl/disk/master/depth-save.pth",
+        "9c2ee4ded238892dfa51569941372601e35e4a74aa6f84ea80053d2ab1c07abe",
+    ),
+    (
+        "disk_epipolar.pth",
+        "https://raw.githubusercontent.com/cvlab-epfl/disk/master/epipolar-save.pth",
+        "6e0cf5df4abab1fddbf0b62325647c9a6f387453b28c4b986542b7dabda972ee",
+    ),
+    (
+        "disk_lightglue.pth",
+        "https://github.com/cvg/LightGlue/releases/download/v0.1_arxiv/disk_lightglue.pth",
+        "b5b21d47ea24f2c5e501aec9c91b9716e4c8c3429a4dc1e615c133c4c9378335",
+    ),
+)
 
 
 def tiny_onnx(path):
@@ -74,6 +91,9 @@ def main():
         action="store_true",
         help="Download Apache-2.0 LightGlue matcher only, without the SuperPoint detector",
     )
+    parser.add_argument(
+        "--disk", action="store_true", help="Prepare pinned DISK depth/epipolar and matcher weights"
+    )
     args = parser.parse_args()
     args.directory.mkdir(parents=True, exist_ok=True)
     print(tiny_onnx(args.directory / "rgb_average.onnx"))
@@ -85,6 +105,9 @@ def main():
             url=SUPERPOINT_MATCHER_URL,
             expected_sha256=SUPERPOINT_MATCHER_SHA256,
         )
+    if args.disk:
+        for filename, url, digest in DISK_ASSETS:
+            prepare_lightglue(args.directory / filename, url=url, expected_sha256=digest)
 
 
 if __name__ == "__main__":

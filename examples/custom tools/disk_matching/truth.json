@@ -1,0 +1,163 @@
+{
+  "cases": {
+    "translation": {
+      "passed": true,
+      "translation": [
+        8,
+        6
+      ],
+      "pose_origin_tolerance": 0.5,
+      "reference_landmarks": [],
+      "query_landmarks": [],
+      "landmark_tolerance": 4.0
+    },
+    "resized": {
+      "passed": true,
+      "translation": [
+        16,
+        12
+      ],
+      "pose_origin_tolerance": 0.5,
+      "reference_landmarks": [],
+      "query_landmarks": [],
+      "landmark_tolerance": 4.0
+    },
+    "masked": {
+      "passed": true,
+      "translation": [
+        8,
+        6
+      ],
+      "pose_origin_tolerance": 1.0,
+      "reference_landmarks": [],
+      "query_landmarks": [],
+      "landmark_tolerance": 4.0
+    },
+    "epipolar": {
+      "passed": true,
+      "translation": [
+        8,
+        6
+      ],
+      "pose_origin_tolerance": 0.5,
+      "reference_landmarks": [],
+      "query_landmarks": [],
+      "landmark_tolerance": 4.0
+    },
+    "rgb16": {
+      "passed": true,
+      "translation": [
+        8,
+        6
+      ],
+      "pose_origin_tolerance": 0.5,
+      "reference_landmarks": [],
+      "query_landmarks": [],
+      "landmark_tolerance": 4.0
+    },
+    "empty": {
+      "passed": false,
+      "translation": [
+        8,
+        6
+      ],
+      "pose_origin_tolerance": 0.5,
+      "reference_landmarks": [],
+      "query_landmarks": [],
+      "landmark_tolerance": 4.0
+    },
+    "minimum_matches": {
+      "passed": false,
+      "translation": [
+        8,
+        6
+      ],
+      "pose_origin_tolerance": 0.5,
+      "reference_landmarks": [],
+      "query_landmarks": [],
+      "landmark_tolerance": 4.0
+    },
+    "pose_region": {
+      "passed": true,
+      "translation": [
+        8,
+        6
+      ],
+      "pose_origin_tolerance": 0.5,
+      "reference_landmarks": [],
+      "query_landmarks": [],
+      "landmark_tolerance": 4.0
+    },
+    "comparison": {
+      "passed": true,
+      "translation": [
+        8,
+        6
+      ],
+      "pose_origin_tolerance": 0.5,
+      "reference_landmarks": [],
+      "query_landmarks": [],
+      "landmark_tolerance": 4.0
+    },
+    "pcb_photos": {
+      "passed": true,
+      "translation": [
+        8,
+        6
+      ],
+      "pose_origin_tolerance": 0.5,
+      "reference_landmarks": [
+        [
+          99,
+          172
+        ],
+        [
+          556,
+          178
+        ],
+        [
+          96,
+          360
+        ],
+        [
+          553,
+          365
+        ]
+      ],
+      "query_landmarks": [
+        [
+          89,
+          172
+        ],
+        [
+          547,
+          184
+        ],
+        [
+          85,
+          360
+        ],
+        [
+          542,
+          372
+        ]
+      ],
+      "landmark_tolerance": 4.0
+    }
+  },
+  "weights_sha256": {
+    "depth": "9c2ee4ded238892dfa51569941372601e35e4a74aa6f84ea80053d2ab1c07abe",
+    "epipolar": "6e0cf5df4abab1fddbf0b62325647c9a6f387453b28c4b986542b7dabda972ee",
+    "matcher": "b5b21d47ea24f2c5e501aec9c91b9716e4c8c3429a4dc1e615c133c4c9378335"
+  },
+  "asset_sha256": {
+    "large_query.png": "d3ae9536606d119d7876f9d14d378f8f9b68a810f10721502121655bbbf0d496",
+    "large_reference.png": "754f40cee2fda634ae3fe4f7d158f2550ad6fd828f0964a7227cae6fd7226a15",
+    "pcb2-0000.jpg": "9cad63a1fbf0890e28773ab847a2f32f360bc819eff3432bdba8309fa2a600a4",
+    "pcb2-0621.jpg": "b9bf6245b8408151d2053a6cb4d51e788eefd0ee9e0f52265e2fbb91196b2067",
+    "query.png": "f14d98baa06acd54cdacf3024bfdd2d18fd0dd320c37207f7ae619d0018e49cf",
+    "reference.png": "a67762d5611fe9bfe396f42fba85311f62230627cd6573213de6869ec53d8201",
+    "rgb16_query.png": "84e9cf108b59c747e0ac2dfb319985a1ad427b2650dab648e3b8983e69f21e80",
+    "rgb16_reference.png": "f9bb3bf23e5e4130e70f7727e3183ec6b4a9d71b60d9414aa560d4d7f003c717"
+  }
+}

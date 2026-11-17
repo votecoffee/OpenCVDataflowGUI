@@ -8676,6 +8676,35 @@ Input `preprocessing` — Matching inference sizes and inverse resize/padding ma
 | `graphics_maximum_contours` | `2000` | Value must be a whole number between 1 and 20000. Limit optional outlines, including holes; numerical masks remain complete. |
 | `graphics_maximum_points` | `100000` | Value must be a whole number between 1 and 1e+06. Limit outline vertices; report truncation without changing the mask. |
 
+## DISK learned features (`ml.disk_features`)
+
+ML / Feature matching
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8/uint16 or normalized float32 gray/color; original pixels are retained.
+
+Input `mask` — Source-grid center filter after native top-N; missing wired events gate work.
+
+Input `region` — Source-grid shape intersected with Mask; descriptors see surrounding pixels.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `weights_path` | `""` | Local DISK depth/epipolar checkpoint; no automatic download. |
+| `weights_sha256` | `""` | Optional 64-character SHA-256; actual model digest is always reported. |
+| `device` | `"cpu"` | `cpu`, `cuda`, `auto` CPU, explicit CUDA, or Auto; unavailable explicitly requested CUDA rejects. |
+| `max_features` | `1024` | Value must be a whole number between 1 and 4096. Native whole-image top-N maximum before source/ROI/alpha filtering. |
+| `nms_window_size` | `5` | Value must be a positive odd integer between 1 and 31. Odd native local-maximum window in resized network pixels. |
+| `detection_threshold` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Native raw score must be strictly greater; not a probability. |
+| `pad_if_not_divisible` | `true` | Pad right/bottom to multiples of 16; outputs exclude padding. |
+| `resize_long_edge` | `0` | Value must be zero or a whole number between 32 and 4096. Zero keeps source size; otherwise only downscale the longest edge. |
+| `resize_interpolation` | `"area"` | `area`, `linear`, `cubic`, `nearest` OpenCV resize interpolation; cubic overshoot is clipped to [0,1]. |
+| `alpha_policy` | `"exclude"` | `exclude`, `ignore` Exclude zero-alpha centers, or ignore alpha; CNN still sees RGB context. |
+| `minimum_count` | `4` | Value must be a whole number between 0 and 4096. Fewest retained features for a pass; zero permits empty capture. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound source pixels before allocation; axes are at most 16384. |
+| `maximum_network_pixels` | `524288` | Value must be a whole number between 1024 and 2.09715e+06. Bound padded network pixels before dense descriptor inference. |
+| `graphics_maximum_features` | `256` | Value must be a whole number between 1 and 4096. Cap optional markers without truncating numeric output. |
+
 ## DNN ONNX inference (`ml.dnn`)
 
 ML / DNN inference
@@ -8892,6 +8921,39 @@ Input `reference_features` — Use cached SIFT reference features instead of a r
 | `ransac_threshold` | `3.0` |  |
 | `ransac_confidence` | `0.995` |  |
 | `ransac_iterations` | `2000` |  |
+
+## LightGlue DISK feature matcher (`ml.lightglue_disk`)
+
+ML / Feature matching
+
+Inputs: `image` (image), `query_features` (data), `reference_features` (data).
+
+Input `image` — Current query image for source coordinates, unchanged output and diagnostics.
+
+Input `query_features` — Current-image DISK features with 128-value learned descriptors.
+
+Input `reference_features` — Captured DISK reference; may use another acquisition ticket.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `weights_path` | `""` | Local disk_lightglue.pth matcher, not SIFT or SuperPoint weights. |
+| `device` | `"cpu"` | `cpu`, `cuda`, `auto` CPU, explicitly requested CUDA, or Auto; no unavailable CUDA fallback. |
+| `layers` | `9` | Value must be a whole number between 1 and 9. 1..9 pretrained layers; fewer layers trade accuracy for latency. |
+| `filter_threshold` | `0.1` | Value must be a finite number between 0 and 1. Learned match confidence threshold in [0,1]. |
+| `depth_confidence` | `0.95` | Early stopping confidence, or -1 to disable. |
+| `width_confidence` | `0.99` | Point pruning confidence, or -1 to disable. |
+| `flash` | `true` | Use the upstream attention acceleration when available. |
+| `mixed_precision` | `false` | CUDA mixed precision; CPU requires this disabled. |
+| `minimum_matches` | `8` | Value must be a whole number between 4 and 4096. Minimum learned correspondences for a passing geometric fit. |
+| `minimum_inliers` | `6` | Value must be a whole number between 4 and 4096. Minimum geometric inliers for a passing fit. |
+| `minimum_inlier_ratio` | `0.5` | Value must be a finite number between 0 and 1. Required inlier fraction among learned matches. |
+| `geometry` | `"ransac"` | `ransac`, `lmeds`, `rho` Native robust homography method; one planar registration only. |
+| `ransac_threshold` | `3.0` | Value must be a finite number between 0.0001 and 1e+06. Geometric reprojection threshold in query source pixels. |
+| `ransac_confidence` | `0.995` | Value must be a finite number between 0.0001 and 0.999999. Robust-fit confidence, strictly below one. |
+| `ransac_iterations` | `2000` | Value must be a whole number between 1 and 100000. Maximum native robust-fit iterations. |
+| `weights_sha256` | `""` | Optional 64-character SHA-256 for the local matcher checkpoint. |
+| `maximum_features` | `1024` | Value must be a whole number between 4 and 4096. Bound each descriptor set before learned attention; no truncation. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound current query image pixels before diagnostics. |
 
 ## LightGlue SIFT features (`ml.lightglue_features`)
 

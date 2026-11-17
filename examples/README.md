@@ -380,6 +380,7 @@ Project-defined inspection algorithms, region/metrology tools and integrations w
 | [Lens map files](<custom tools/lens_map_files/README.md>) | Reload a saved map pair and straighten a synthetic grid using the restored maps. |
 | [LightGlue feature matching](<custom tools/lightglue_match/README.md>) | Match a synthetic textured reference into a scene using SIFT features and LightGlue. |
 | [External local features](<custom tools/local_features/README.md>) | Pack exported feature tensors, test learned matching and compare SIFT on the same pair; prescribed controls do not qualify a SuperPoint detector. |
+| [DISK and LightGlue](<custom tools/disk_matching/README.md>) | Run real local-weight features on controlled pairs and separate VisA PCB photographs; inspect source poses, local regions and filmstrip graphics. |
 | [Line-pair metrology](<custom tools/line_pair_metrology/README.md>) | Detect cropped edges, align fitted lines to the original image, and judge corner angles or parallel gaps. |
 | [Minimum spanning tree](<custom tools/minimum_spanning_tree/README.md>) | Find and overlay the shortest network connecting five detected centers using Delaunay edges. |
 | [Motion deblur](<custom tools/motion_deblur/README.md>) | Restore a frame blurred by an eight-pixel horizontal motion path. |

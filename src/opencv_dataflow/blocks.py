@@ -667,6 +667,7 @@ def builtin_registry():
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
     from .detection_decode import DecodeDetections
     from .differential_exposure import DifferentialExposure
+    from .disk_features import DISK_BLOCKS
     from .distortion_fixture import DistortImageFixture
     from .dnn_blocks import DNN_BLOCKS
     from .ecc_registration import AlignECC
@@ -1175,6 +1176,7 @@ def builtin_registry():
         *SVM_BLOCKS,
         *LIGHTGLUE_BLOCKS,
         *LOCAL_FEATURE_BLOCKS,
+        *DISK_BLOCKS,
         *GEOMETRY3D_BLOCKS,
         CheckEpipolarCorrespondences,
         *STEREO3D_BLOCKS,
