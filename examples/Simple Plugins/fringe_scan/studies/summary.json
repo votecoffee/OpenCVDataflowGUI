@@ -1,0 +1,208 @@
+[
+  {
+    "case": "analytic_clean",
+    "report": {
+      "schema": "simple_fringe_decode/v1",
+      "capture_id": "analytic_clean",
+      "pixel_grid": "rendered_camera_original",
+      "image_size": [
+        96,
+        72
+      ],
+      "projector_size": [
+        128,
+        96
+      ],
+      "valid_pixels": 6912,
+      "active_pixels": 6912,
+      "coverage": 1.0,
+      "phase_steps": 6,
+      "no_phase_redundancy": false,
+      "reason_counts": {
+        "valid": 6912
+      },
+      "scope": "Decoded projector correspondence, not metric height or verified acquisition timing",
+      "metric": true,
+      "geometry": {
+        "schema": "simple_fringe_geometry/v1",
+        "frame": "camera",
+        "units": "m",
+        "transform": "X_projector = R_cp @ X_camera + translation_cp_m",
+        "samples": 6912,
+        "valid_samples": 6912,
+        "reason_counts": {
+          "valid": 6912
+        },
+        "scope": "Known-calibration ray fit; residuals do not qualify physical measurement accuracy"
+      },
+      "decoded_valid_pixels": 6912,
+      "decoded_coverage": 1.0,
+      "source_encoding": "linear",
+      "input_scale": 1,
+      "input_provenance": {
+        "source": "Original analytic tilted plane; one first visible surface per camera ray",
+        "scope": "Rendered software control, not acquired-camera or physical accuracy evidence"
+      }
+    },
+    "graphics_views": [
+      "amplitude",
+      "depth",
+      "overview",
+      "phase",
+      "quality",
+      "residual",
+      "source"
+    ],
+    "mean_render_reference_error_m": 2.7248603017342252e-09,
+    "maximum_render_reference_error_m": 1.0337082600979714e-08,
+    "reference_scope": "Independent analytic ray construction, not physical gauge accuracy"
+  },
+  {
+    "case": "analytic_missing",
+    "report": {
+      "schema": "simple_fringe_decode/v1",
+      "capture_id": "analytic_missing",
+      "pixel_grid": "rendered_camera_original",
+      "image_size": [
+        96,
+        72
+      ],
+      "projector_size": [
+        128,
+        96
+      ],
+      "valid_pixels": 6415,
+      "active_pixels": 6912,
+      "coverage": 0.9280960648148148,
+      "phase_steps": 6,
+      "no_phase_redundancy": false,
+      "reason_counts": {
+        "valid": 6415,
+        "nonfinite": 110,
+        "input_ceiling": 120,
+        "not_illuminated": 117,
+        "weak_phase": 150
+      },
+      "scope": "Decoded projector correspondence, not metric height or verified acquisition timing",
+      "metric": true,
+      "geometry": {
+        "schema": "simple_fringe_geometry/v1",
+        "frame": "camera",
+        "units": "m",
+        "transform": "X_projector = R_cp @ X_camera + translation_cp_m",
+        "samples": 6912,
+        "valid_samples": 6415,
+        "reason_counts": {
+          "valid": 6415,
+          "unavailable_correspondence": 497
+        },
+        "scope": "Known-calibration ray fit; residuals do not qualify physical measurement accuracy"
+      },
+      "decoded_valid_pixels": 6415,
+      "decoded_coverage": 0.9280960648148148,
+      "source_encoding": "linear",
+      "input_scale": 1,
+      "input_provenance": {
+        "source": "Original analytic tilted plane; one first visible surface per camera ray",
+        "scope": "Rendered software control, not acquired-camera or physical accuracy evidence"
+      }
+    },
+    "graphics_views": [
+      "amplitude",
+      "depth",
+      "overview",
+      "phase",
+      "quality",
+      "residual",
+      "source"
+    ],
+    "mean_render_reference_error_m": 2.731224521648781e-09,
+    "maximum_render_reference_error_m": 1.0337082600979714e-08,
+    "reference_scope": "Independent analytic ray construction, not physical gauge accuracy"
+  },
+  {
+    "case": "warsaw_crown_phase",
+    "report": {
+      "schema": "simple_fringe_phase_result/v1",
+      "capture_id": "warsaw_crown_phase",
+      "pixel_grid": "warsaw_perspective_green_area3",
+      "valid_pixels": 56985,
+      "active_pixels": 559872,
+      "phase_angles": [
+        2.0943951023931953,
+        3.141592653589793,
+        4.1887902047863905,
+        5.235987755982989,
+        6.283185307179586,
+        7.330382858376184
+      ],
+      "no_phase_redundancy": false,
+      "metric": false,
+      "reason_counts": {
+        "valid": 56985,
+        "input_ceiling": 1123,
+        "low_modulation": 470340,
+        "poor_sinusoidal_fit": 31424
+      },
+      "scope": "Wrapped phase evidence only; no absolute correspondence or metric XYZ",
+      "source_encoding": "linear",
+      "input_scale": 1,
+      "coverage": 0.10178219307270234,
+      "input_provenance": {
+        "source": "Michal Wlasiuk / Robert Sitnik; Simulated structured light 3D scanner datasets",
+        "record": "https://zenodo.org/records/17826191",
+        "license": "CC BY 4.0",
+        "image_kind": "External PBRT simulated images, not acquired camera captures",
+        "transformation": {
+          "source_size": [
+            2592,
+            1944
+          ],
+          "derived_size": [
+            864,
+            648
+          ],
+          "channel": "green",
+          "source_encoding": "Declared PBRT-v4 standard PNG sRGB output, inverse applied",
+          "radiometry_scope": "Inference from supplied PBRT rgb Film/PNG scene and standard writer; exact renderer build/photometric qualification unavailable",
+          "operation": "Linearize then 3x3 area average; any original ceiling propagates as ceiling",
+          "source_from_derived": [
+            [
+              3,
+              0,
+              1
+            ],
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              1
+            ]
+          ],
+          "phase_angles_rad": [
+            2.0943951023931953,
+            3.141592653589793,
+            4.1887902047863905,
+            5.235987755982989,
+            6.283185307179586,
+            7.330382858376184
+          ],
+          "phase_origin": "Six source projector commands: +pi/3 step, initial 2pi/3, period6px in X",
+          "geometry_scope": "Wrapped phase only; reconstruction calibration not imported"
+        }
+      }
+    },
+    "graphics_views": [
+      "amplitude",
+      "overview",
+      "phase",
+      "quality",
+      "residual",
+      "source"
+    ]
+  }
+]

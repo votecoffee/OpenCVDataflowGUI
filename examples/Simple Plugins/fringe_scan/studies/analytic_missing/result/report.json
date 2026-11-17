@@ -1,0 +1,48 @@
+{
+  "schema": "simple_fringe_decode/v1",
+  "capture_id": "analytic_missing",
+  "pixel_grid": "rendered_camera_original",
+  "image_size": [
+    96,
+    72
+  ],
+  "projector_size": [
+    128,
+    96
+  ],
+  "valid_pixels": 6415,
+  "active_pixels": 6912,
+  "coverage": 0.9280960648148148,
+  "phase_steps": 6,
+  "no_phase_redundancy": false,
+  "reason_counts": {
+    "valid": 6415,
+    "nonfinite": 110,
+    "input_ceiling": 120,
+    "not_illuminated": 117,
+    "weak_phase": 150
+  },
+  "scope": "Decoded projector correspondence, not metric height or verified acquisition timing",
+  "metric": true,
+  "geometry": {
+    "schema": "simple_fringe_geometry/v1",
+    "frame": "camera",
+    "units": "m",
+    "transform": "X_projector = R_cp @ X_camera + translation_cp_m",
+    "samples": 6912,
+    "valid_samples": 6415,
+    "reason_counts": {
+      "valid": 6415,
+      "unavailable_correspondence": 497
+    },
+    "scope": "Known-calibration ray fit; residuals do not qualify physical measurement accuracy"
+  },
+  "decoded_valid_pixels": 6415,
+  "decoded_coverage": 0.9280960648148148,
+  "source_encoding": "linear",
+  "input_scale": 1,
+  "input_provenance": {
+    "source": "Original analytic tilted plane; one first visible surface per camera ray",
+    "scope": "Rendered software control, not acquired-camera or physical accuracy evidence"
+  }
+}

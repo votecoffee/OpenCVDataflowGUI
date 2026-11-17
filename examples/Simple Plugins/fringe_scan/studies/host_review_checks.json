@@ -1,0 +1,26 @@
+[
+  {
+    "case": "analytic_clean",
+    "saved_reopened": true,
+    "file_sources_passed": true,
+    "reconstruction_reexecuted": false,
+    "native_cloud_points": 6912,
+    "native_flyaround": true
+  },
+  {
+    "case": "analytic_missing",
+    "saved_reopened": true,
+    "file_sources_passed": true,
+    "reconstruction_reexecuted": false,
+    "native_cloud_points": 6415,
+    "native_flyaround": true
+  },
+  {
+    "case": "warsaw_crown_phase",
+    "saved_reopened": true,
+    "file_sources_passed": true,
+    "reconstruction_reexecuted": false,
+    "native_cloud_points": 0,
+    "native_flyaround": false
+  }
+]

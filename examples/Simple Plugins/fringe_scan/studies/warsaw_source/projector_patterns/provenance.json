@@ -1,0 +1,38 @@
+[
+  {
+    "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/projector_images/vga/sine_patterns/0.png",
+    "size": 251028,
+    "crc32": "b44fe804",
+    "sha256": "7cda0b7df9926a1c522e76f26d892aa252bc018ca6a1b65a42a024f67f50ba23"
+  },
+  {
+    "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/projector_images/vga/sine_patterns/1.png",
+    "size": 251568,
+    "crc32": "9e76226f",
+    "sha256": "35fe9fccda59c4a7d32eda64cec13092a1ff8412741394ff304140a5c8d665b7"
+  },
+  {
+    "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/projector_images/vga/sine_patterns/2.png",
+    "size": 251028,
+    "crc32": "7b19c637",
+    "sha256": "40f2d0fc36e8840b416e67d82f8fa48cc1c35d227f655d2ec7748bb0f1b431bf"
+  },
+  {
+    "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/projector_images/vga/sine_patterns/3.png",
+    "size": 251589,
+    "crc32": "b0694f30",
+    "sha256": "59c5bd64626bf458e8655ceb8fa02037a3addab76b8b9414958b0c97ffb87074"
+  },
+  {
+    "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/projector_images/vga/sine_patterns/4.png",
+    "size": 251589,
+    "crc32": "c756e300",
+    "sha256": "1bf507bd140fbd71f4a35c364259476a0adb95d0fb94920a9d8e73223046ab25"
+  },
+  {
+    "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/projector_images/vga/sine_patterns/5.png",
+    "size": 251589,
+    "crc32": "1499580e",
+    "sha256": "8f443262b2ba3de28150136d435b479c769659640d68395111c1816dd57ff7e7"
+  }
+]

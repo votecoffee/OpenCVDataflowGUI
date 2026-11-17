@@ -1,0 +1,265 @@
+{
+  "schema": "simple_fringe_capture/v1",
+  "plan": {
+    "projector_size": [
+      128,
+      96
+    ],
+    "period_px": [
+      16.0,
+      16.0
+    ],
+    "phase_steps": 6
+  },
+  "capture_id": "analytic_missing",
+  "pixel_grid": "rendered_camera_original",
+  "exposure_s": 0.01,
+  "input_scale": 1,
+  "source_encoding": "linear",
+  "calibration": {
+    "camera": {
+      "matrix": [
+        [
+          120,
+          0,
+          48
+        ],
+        [
+          0,
+          120,
+          36
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "image_size": [
+        96,
+        72
+      ],
+      "frame": "camera"
+    },
+    "projector": {
+      "matrix": [
+        [
+          120,
+          0,
+          64
+        ],
+        [
+          0,
+          120,
+          48
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "image_size": [
+        128,
+        96
+      ],
+      "frame": "projector"
+    },
+    "rotation_cp": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "translation_cp_m": [
+      -0.08,
+      0,
+      0
+    ]
+  },
+  "provenance": {
+    "source": "Original analytic tilted plane; one first visible surface per camera ray",
+    "scope": "Rendered software control, not acquired-camera or physical accuracy evidence"
+  },
+  "frames": [
+    {
+      "id": "black",
+      "image": "frame_00.npy"
+    },
+    {
+      "id": "white",
+      "image": "frame_01.npy"
+    },
+    {
+      "id": "gray:x:6:positive",
+      "image": "frame_02.npy"
+    },
+    {
+      "id": "gray:x:6:inverse",
+      "image": "frame_03.npy"
+    },
+    {
+      "id": "gray:x:5:positive",
+      "image": "frame_04.npy"
+    },
+    {
+      "id": "gray:x:5:inverse",
+      "image": "frame_05.npy"
+    },
+    {
+      "id": "gray:x:4:positive",
+      "image": "frame_06.npy"
+    },
+    {
+      "id": "gray:x:4:inverse",
+      "image": "frame_07.npy"
+    },
+    {
+      "id": "gray:x:3:positive",
+      "image": "frame_08.npy"
+    },
+    {
+      "id": "gray:x:3:inverse",
+      "image": "frame_09.npy"
+    },
+    {
+      "id": "gray:x:2:positive",
+      "image": "frame_10.npy"
+    },
+    {
+      "id": "gray:x:2:inverse",
+      "image": "frame_11.npy"
+    },
+    {
+      "id": "gray:x:1:positive",
+      "image": "frame_12.npy"
+    },
+    {
+      "id": "gray:x:1:inverse",
+      "image": "frame_13.npy"
+    },
+    {
+      "id": "gray:x:0:positive",
+      "image": "frame_14.npy"
+    },
+    {
+      "id": "gray:x:0:inverse",
+      "image": "frame_15.npy"
+    },
+    {
+      "id": "gray:y:6:positive",
+      "image": "frame_16.npy"
+    },
+    {
+      "id": "gray:y:6:inverse",
+      "image": "frame_17.npy"
+    },
+    {
+      "id": "gray:y:5:positive",
+      "image": "frame_18.npy"
+    },
+    {
+      "id": "gray:y:5:inverse",
+      "image": "frame_19.npy"
+    },
+    {
+      "id": "gray:y:4:positive",
+      "image": "frame_20.npy"
+    },
+    {
+      "id": "gray:y:4:inverse",
+      "image": "frame_21.npy"
+    },
+    {
+      "id": "gray:y:3:positive",
+      "image": "frame_22.npy"
+    },
+    {
+      "id": "gray:y:3:inverse",
+      "image": "frame_23.npy"
+    },
+    {
+      "id": "gray:y:2:positive",
+      "image": "frame_24.npy"
+    },
+    {
+      "id": "gray:y:2:inverse",
+      "image": "frame_25.npy"
+    },
+    {
+      "id": "gray:y:1:positive",
+      "image": "frame_26.npy"
+    },
+    {
+      "id": "gray:y:1:inverse",
+      "image": "frame_27.npy"
+    },
+    {
+      "id": "gray:y:0:positive",
+      "image": "frame_28.npy"
+    },
+    {
+      "id": "gray:y:0:inverse",
+      "image": "frame_29.npy"
+    },
+    {
+      "id": "phase:x:0",
+      "image": "frame_30.npy"
+    },
+    {
+      "id": "phase:x:1",
+      "image": "frame_31.npy"
+    },
+    {
+      "id": "phase:x:2",
+      "image": "frame_32.npy"
+    },
+    {
+      "id": "phase:x:3",
+      "image": "frame_33.npy"
+    },
+    {
+      "id": "phase:x:4",
+      "image": "frame_34.npy"
+    },
+    {
+      "id": "phase:x:5",
+      "image": "frame_35.npy"
+    },
+    {
+      "id": "phase:y:0",
+      "image": "frame_36.npy"
+    },
+    {
+      "id": "phase:y:1",
+      "image": "frame_37.npy"
+    },
+    {
+      "id": "phase:y:2",
+      "image": "frame_38.npy"
+    },
+    {
+      "id": "phase:y:3",
+      "image": "frame_39.npy"
+    },
+    {
+      "id": "phase:y:4",
+      "image": "frame_40.npy"
+    },
+    {
+      "id": "phase:y:5",
+      "image": "frame_41.npy"
+    }
+  ]
+}

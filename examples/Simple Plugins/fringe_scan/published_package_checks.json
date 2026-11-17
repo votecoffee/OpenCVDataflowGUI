@@ -1,0 +1,40 @@
+{
+  "wheel": "opencv_simple_fringe_scan-0.1.0.dev1-py3-none-any.whl",
+  "sha256": "60eb66f8626d9d4515ceeb9107815f201f80c767e59d2b531abd70743b4016dd",
+  "runtime_modules": 7,
+  "source_bytes_checked": false,
+  "controls": [
+    {
+      "case": "analytic_clean",
+      "raw_maps": 18,
+      "exact_maps_including_nan": true,
+      "absolute_float_tolerance": 1e-06,
+      "discrete_reasons_exact": true,
+      "cli_reexecuted": true,
+      "metric": true,
+      "passed": true
+    },
+    {
+      "case": "analytic_missing",
+      "raw_maps": 18,
+      "exact_maps_including_nan": true,
+      "absolute_float_tolerance": 1e-06,
+      "discrete_reasons_exact": true,
+      "cli_reexecuted": true,
+      "metric": true,
+      "passed": true
+    },
+    {
+      "case": "warsaw_crown_phase",
+      "raw_maps": 6,
+      "exact_maps_including_nan": true,
+      "absolute_float_tolerance": 1e-06,
+      "discrete_reasons_exact": true,
+      "cli_reexecuted": true,
+      "metric": false,
+      "passed": true
+    }
+  ],
+  "scope": "Software replay, not acquired-camera accuracy",
+  "passed": true
+}

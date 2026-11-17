@@ -33,6 +33,12 @@ relighting, residual and unavailable-reason views, with attributed CC0 material
 inputs. Load its bundled-wheel plugin explicitly; file-only map reviews remain
 available separately. Acquired-camera accuracy remains unqualified.
 
+The [SimpleFringeScan initial map/cloud reviews](fringe_scan/README.md) add two
+known-calibration analytic scans with native colored fly-around clouds and a
+CC BY4 external simulated crown phase-only example. Weak/rejected evidence
+remains visible. File-only reviews and explicit standalone wheel replay are
+separate; retained setup and host execution integration are next.
+
 ## Start with real public data
 
 The [real-data showcase](real_data/README.md) links runnable projects for all

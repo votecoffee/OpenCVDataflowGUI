@@ -1,0 +1,120 @@
+{
+  "record": "https://zenodo.org/records/17826191",
+  "archive_url": "https://zenodo.org/api/records/17826191/files/camera-2592-1944-projector-640-480.zip/content",
+  "archive_size": 2104936687,
+  "publisher_archive_checksum": "md5:274e6cf0476ee0484c483851cf67da28",
+  "whole_archive_downloaded": false,
+  "whole_archive_md5_verified": false,
+  "selective_transfer_bytes": 26118979,
+  "license": "CC BY 4.0",
+  "members": [
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/crown/0.png",
+      "size": 4222793,
+      "crc32": "10a395d2",
+      "sha256": "dac1ff55e617429201d5b01050f39b708998191b32f46db30b9c2b842e82903b"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/crown/1.png",
+      "size": 4225638,
+      "crc32": "3ed9fef7",
+      "sha256": "19f82215e4a68ae9aefe9460e98e64fd96ffe5dd9e01e79902bb6d29820f83e2"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/crown/2.png",
+      "size": 4229316,
+      "crc32": "b0a2d845",
+      "sha256": "a56f0dcc4905217eff9f0f9c9f8bdcdfc7343e751546f926fbe73142bccb5fd8"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/crown/3.png",
+      "size": 4229075,
+      "crc32": "30a06b72",
+      "sha256": "47c2617c2c28d6b76e6b84f365cebef8a35c7655b6559e561352770e937ba5fe"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/crown/4.png",
+      "size": 4224411,
+      "crc32": "99c61189",
+      "sha256": "40b8f414e6807a2a1c67bafe7cc8a9b171d228a71f9cc54982bc52b673c402ff"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/crown/5.png",
+      "size": 4221218,
+      "crc32": "eebafcd4",
+      "sha256": "2d9c79b9b4cc3c3004b26a3c93ed8b704fabf35805ed0ef1f8b101b55c2ea6ab"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/include/camera.pbrt",
+      "size": 571,
+      "crc32": "ece90724",
+      "sha256": "984780f16c126fcf04ed1df883809eb32d3338f1d520f8062e3b88dfb1f5c068"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/include/cameras/film-2592-1944.pbrt",
+      "size": 108,
+      "crc32": "04919f96",
+      "sha256": "42ba4795286401de2cbc1b885be2e3c9b724de7fb7eeaa86714ba0d1e69d149b"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/include/projector_parameters.pbrt",
+      "size": 379,
+      "crc32": "6c204fb0",
+      "sha256": "44d08b2495957e0145fa2903649ae1b452e80d4fa9186c63921a4c6b2a134367"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/include/projector_pose.pbrt",
+      "size": 56,
+      "crc32": "c12612c9",
+      "sha256": "66880c668bdad8ba58be73d188d1d7f0b8381b9d9ae2fb1f0e2bef712b1ec70e"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/scenes-2592-1944-640-480/crown/0.pbrt",
+      "size": 154073,
+      "crc32": "a42637d5",
+      "sha256": "bc04d77f4aaa58a8640a3ddc2862ce192e87ed4bb8ce782372b4bd79cfefca8c"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/scenes-2592-1944-640-480/crown/1.pbrt",
+      "size": 154073,
+      "crc32": "1f1724e0",
+      "sha256": "c8d7e865b432295ae1a86de053fde329a7c07a5afc5e69450211036e06ddf9bc"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/scenes-4056-3040-1280-720/crown/0.pbrt",
+      "size": 154072,
+      "crc32": "0914d750",
+      "sha256": "047338e7b9a8eebdc7bf1f568fad7fb64c0ce5debdc8b8d602957a1fab167b7c"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/scenes-4056-3040-1280-720/crown/1.pbrt",
+      "size": 154072,
+      "crc32": "77fa5ec3",
+      "sha256": "473a06fcf4ec861f1127cbe2121c791f2ab97a76d0a38e1122acfb561026aa14"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/scenes-4056-3040-1920-1080/crown/0.pbrt",
+      "size": 154073,
+      "crc32": "5bade10b",
+      "sha256": "027b0999e2160b23a977eab1e1cedf7a713af2a14641b94967f566d4dc2fce32"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/scenes-4056-3040-1920-1080/crown/1.pbrt",
+      "size": 154073,
+      "crc32": "e09cf23e",
+      "sha256": "5959d489ced657c6e00b8b949ec025bf60901055854033c3f8b31cf195e17b69"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/scenes-5184-3456-1920-1080/crown/0.pbrt",
+      "size": 154073,
+      "crc32": "0b7a5386",
+      "sha256": "9d3d93572ff26c1340ca12c8bea8e83def8d97f44ffea28dcea3f857d724e02f"
+    },
+    {
+      "member": "camera-2592-1944-projector-640-480/perspective/scanner-simulation/scenes-5184-3456-1920-1080/crown/1.pbrt",
+      "size": 154073,
+      "crc32": "b04b40b3",
+      "sha256": "5ffb17bc9da3f8a78a978c7ce05a2c2bb279ddf8b9cfa523d4ea28cfa20f2a4e"
+    }
+  ]
+}
